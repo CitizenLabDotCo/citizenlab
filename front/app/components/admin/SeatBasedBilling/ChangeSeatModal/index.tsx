@@ -82,17 +82,17 @@ const ChangeSeatModal = ({
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
-  const { loading, getExceedsSeats } = useExceedsSeats();
+  const { loading, checkIfUserExceedsSeats } = useExceedsSeats();
 
   if (loading) return null;
 
   const getWouldExceedAnySeats = () => {
     if (changingToRoleType === 'admin') {
-      return getExceedsSeats(userToChangeSeat, 'admin');
+      return checkIfUserExceedsSeats(userToChangeSeat, 'admin');
     }
 
     if (changingToRoleType === 'moderator') {
-      return getExceedsSeats(userToChangeSeat, 'moderator');
+      return checkIfUserExceedsSeats(userToChangeSeat, 'moderator');
     }
 
     return false;

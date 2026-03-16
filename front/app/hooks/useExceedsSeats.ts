@@ -1,63 +1,3 @@
-// import useSeats from 'api/seats/useSeats';
-
-// import { isNil } from 'utils/helperUtils';
-
-// import useTotalSeats from './useTotalSeats';
-
-// export interface NewlyAddedSeats {
-//   newlyAddedAdminsNumber?: number;
-//   newlyAddedModeratorsNumber?: number;
-// }
-
-// interface ExceedsSeats {
-//   admin: boolean;
-//   moderator: boolean;
-//   any: boolean;
-//   all: boolean;
-// }
-
-// export default function useExceedsSeats(): (
-//   params: NewlyAddedSeats
-// ) => ExceedsSeats {
-//   const totalSeats = useTotalSeats();
-//   const { data: seats } = useSeats();
-
-//   if (isNil(seats) || isNil(totalSeats)) {
-//     return (_params: NewlyAddedSeats) => ({
-//       admin: false,
-//       moderator: false,
-//       any: false,
-//       all: false,
-//     });
-//   }
-
-//   const { totalAdminSeats, totalModeratorSeats } = totalSeats;
-
-//   return ({
-//     newlyAddedAdminsNumber,
-//     newlyAddedModeratorsNumber,
-//   }: NewlyAddedSeats) => {
-//     const expectedNewAdminSeats =
-//       seats.data.attributes.admins_number + (newlyAddedAdminsNumber ?? 0);
-//     const expectedNewModeratorSeats =
-//       seats.data.attributes.moderators_number +
-//       (newlyAddedModeratorsNumber ?? 0);
-
-//     const exceedsAdminSeats = totalAdminSeats
-//       ? expectedNewAdminSeats > totalAdminSeats
-//       : false;
-//     const exceedsModeratorSeats = totalModeratorSeats
-//       ? expectedNewModeratorSeats > totalModeratorSeats
-//       : false;
-//     return {
-//       admin: exceedsAdminSeats,
-//       moderator: exceedsModeratorSeats,
-//       any: exceedsAdminSeats || exceedsModeratorSeats,
-//       all: exceedsAdminSeats && exceedsModeratorSeats,
-//     };
-//   };
-// }
-
 import { useMemo } from 'react';
 
 import useSeats from 'api/seats/useSeats';
@@ -65,11 +5,45 @@ import { IUserData } from 'api/users/types';
 
 import useTotalSeats from './useTotalSeats';
 
+interface NewlyAddedSeats {
+  newlyAddedAdminsNumber: number;
+  newlyAddedModeratorsNumber: number;
+}
+
 const useExceedsSeats = () => {
   const totalSeats = useTotalSeats();
   const { data: seats } = useSeats();
 
-  const getExceedsSeats = useMemo(() => {
+  const checkIfSeatsExceeded = useMemo(() => {
+    if (!seats || !totalSeats) return undefined;
+
+    return ({
+      newlyAddedAdminsNumber,
+      newlyAddedModeratorsNumber,
+    }: NewlyAddedSeats) => {
+      const totalAdminSeats = totalSeats.totalAdminSeats ?? 0;
+      const totalModeratorSeats = totalSeats.totalModeratorSeats ?? 0;
+      const expectedNewAdminSeats =
+        seats.data.attributes.admins_number + newlyAddedAdminsNumber;
+      const expectedNewModeratorSeats =
+        seats.data.attributes.moderators_number + newlyAddedModeratorsNumber;
+
+      const exceedsAdminSeats = totalAdminSeats
+        ? expectedNewAdminSeats > totalAdminSeats
+        : false;
+      const exceedsModeratorSeats = totalModeratorSeats
+        ? expectedNewModeratorSeats > totalModeratorSeats
+        : false;
+      return {
+        admin: exceedsAdminSeats,
+        moderator: exceedsModeratorSeats,
+        any: exceedsAdminSeats || exceedsModeratorSeats,
+        all: exceedsAdminSeats && exceedsModeratorSeats,
+      };
+    };
+  }, [seats, totalSeats]);
+
+  const checkIfUserExceedsSeats = useMemo(() => {
     if (!seats || !totalSeats) return undefined;
 
     return (userToBeAdded: IUserData, roleToBeAdded: 'admin' | 'moderator') => {
@@ -100,11 +74,14 @@ const useExceedsSeats = () => {
     };
   }, [totalSeats, seats]);
 
-  if (!getExceedsSeats) return { loading: true } as const;
+  if (!checkIfSeatsExceeded || !checkIfUserExceedsSeats) {
+    return { loading: true } as const;
+  }
 
   return {
     loading: false,
-    getExceedsSeats,
+    checkIfSeatsExceeded,
+    checkIfUserExceedsSeats,
   } as const;
 };
 
