@@ -6,7 +6,7 @@ import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_MS = 60_000;
+const CHECK_INTERVAL_MS = 300_000; // Checks every 5 minutes unless the route is changed
 const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
 
 async function isSessionInvalidOnServer(): Promise<boolean> {
@@ -28,7 +28,10 @@ async function isSessionInvalidOnServer(): Promise<boolean> {
   }
 }
 
-export default function useSessionExpiryMonitor(isAuthenticated: boolean) {
+export default function useSessionExpiryMonitor(
+  isAuthenticated: boolean,
+  pathname: string
+) {
   const [sessionState, setSessionState] = useState<SessionState>('idle');
   const checkingRef = useRef(false);
   const wasAuthenticatedRef = useRef(isAuthenticated);
@@ -83,7 +86,7 @@ export default function useSessionExpiryMonitor(isAuthenticated: boolean) {
     check();
     const id = setInterval(check, CHECK_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [isAuthenticated]);
+  }, [isAuthenticated, pathname]);
 
   return { sessionState, resetState };
 }

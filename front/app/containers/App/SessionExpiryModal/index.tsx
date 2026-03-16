@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 
 import refreshToken from 'api/authentication/sign_in_out/refreshToken';
 import signOut from 'api/authentication/sign_in_out/signOut';
@@ -22,8 +23,12 @@ import useSessionExpiryMonitor from './useSessionExpiryMonitor';
 
 const SessionExpiryModal = () => {
   const { data: authUser } = useAuthUser();
+  const location = useLocation();
   const isAuthenticated = !!authUser;
-  const { sessionState, resetState } = useSessionExpiryMonitor(isAuthenticated);
+  const { sessionState, resetState } = useSessionExpiryMonitor(
+    isAuthenticated,
+    location.pathname
+  );
   const { formatMessage } = useIntl();
 
   const isExpired = sessionState === 'expired';
