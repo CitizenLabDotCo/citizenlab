@@ -2379,6 +2379,7 @@
   "app.errors.bulk_import_maximum_ideas_exceeded": "Tá an uasmhéid de {value} smaointe sáraithe.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Tá an uasmhéid de {value} leathanach i PDF sáraithe.",
   "app.errors.bulk_import_not_enough_pdf_pages": "Níl dóthain leathanach sa PDF uaslódáilte - ba chóir go mbeadh an líon leathanach céanna ann ar a laghad agus atá sa teimpléad íoslódáilte.",
+  "app.errors.bulk_import_pdf_pages_not_divisible": "Ní mór líon iomlán na leathanach sa PDF a bheith inroinnte go cothrom ar an líon leathanach sonraithe in aghaidh an fhoirm.",
   "app.errors.bulk_import_publication_date_invalid_format": "Smaoineamh le formáid dáta foilsithe neamhbhailí \"{value}\". Úsáid an fhormáid \"LL-MM-BBBB\" le do thoil.",
   "app.errors.cannot_contain_ideas": "Ní thacaíonn an modh rannpháirtíochta a roghnaigh tú leis an gcineál seo poist. Cuir do rogha in eagar agus déan iarracht arís.",
   "app.errors.cant_change_after_first_response": "Ní féidir leat é seo a athrú a thuilleadh, ós rud é go bhfuil roinnt úsáideoirí tar éis freagra a thabhairt cheana féin",
