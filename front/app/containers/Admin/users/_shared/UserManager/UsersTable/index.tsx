@@ -13,7 +13,6 @@ import Warning from 'components/UI/Warning';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import { TRole } from 'utils/permissions/roles';
 
 import messages from '../../../messages';
 import tracks from '../../../tracks';
@@ -216,11 +215,3 @@ const UsersTable = ({
 };
 
 export default UsersTable;
-
-const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
-  if (!user.attributes.roles || changeToNormalUser) {
-    return [];
-  }
-
-  return [...user.attributes.roles, { type: 'admin' }];
-};
