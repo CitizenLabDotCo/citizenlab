@@ -287,8 +287,8 @@ resource 'Users' do
 
         example_request 'Returns 422 with sso_enforced_for_domain error and message' do
           assert_status 422
-          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq('sso_enforced_for_domain')
-          expect(json_response_body.dig(:errors, :base, 0, :message)).to eq('Please use Azure AD to sign in.')
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+          expect(json_response_body.dig(:errors, :email, 0, :message)).to eq('Please use Azure AD to sign in.')
         end
       end
     end
@@ -324,8 +324,8 @@ resource 'Users' do
 
         example_request 'Returns 422 with sso_enforced_for_domain error and message' do
           assert_status 422
-          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq('sso_enforced_for_domain')
-          expect(json_response_body.dig(:errors, :base, 0, :message)).to eq('Please use Azure AD to sign in.')
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+          expect(json_response_body.dig(:errors, :email, 0, :message)).to eq('Please use Azure AD to sign in.')
         end
       end
 

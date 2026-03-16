@@ -53,7 +53,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   def sso_enforced?
     email = params.dig(:auth, :email)
     sso_enforced_message = AuthenticationService.sso_enforced_for_email(email)
-    return unless sso_enforced_message
+    return false unless sso_enforced_message
 
     render json: { errors: { email: [{ error: 'sso_enforced_for_domain', message: sso_enforced_message }] } }, status: :unprocessable_entity
   end
