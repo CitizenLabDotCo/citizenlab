@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Tá ríomhphost réamhamhairc seolta chuig do sheoladh ríomhphoist",
   "app.containers.Admin.emails.previewTitle": "Réamhamharc",
   "app.containers.Admin.emails.regionMultilocError": "Cuir luach ar fáil do gach teanga le do thoil",
+  "app.containers.Admin.emails.scheduled": "Sceidealaithe",
   "app.containers.Admin.emails.seeEmailHereText": "A luaithe a sheolfar ríomhphost den chineál seo beidh tú in ann é a sheiceáil anseo.",
   "app.containers.Admin.emails.send": "Seol",
   "app.containers.Admin.emails.sendNowButton": "Seol anois",
