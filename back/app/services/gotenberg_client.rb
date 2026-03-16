@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
 class GotenbergClient
-  class FileTypeUnsupportedError < StandardError; end
-  class GotenbergServiceUnavailableError < StandardError; end
+  class Error < StandardError; end
+  class FileTypeUnsupportedError < Error; end
+  class GotenbergServiceUnavailableError < Error; end
+
+  class HttpError < Error
+    attr_reader :status, :body
+
+    def initialize(status, body)
+      @status = status
+      @body = body
+      super("Gotenberg responded with #{status}: #{body.truncate(200)}")
+    end
+  end
 
   def initialize
-    @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
+    @api_url = ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')
   end
 
   # Use Gotenberg web service (separate docker container) to render html to PDF
@@ -29,6 +40,7 @@ class GotenbergClient
       f.adapter :net_http
     end
     response = conn.post(url, payload)
+    raise_if_error!(response)
 
     output_pdf = Tempfile.new(['gotenberg', '.pdf'])
     output_pdf.binmode
@@ -53,6 +65,7 @@ class GotenbergClient
     end
 
     response = conn.post(url, payload)
+    raise_if_error!(response)
 
     output_pdf = Tempfile.new([file_name, '.pdf'])
     output_pdf.binmode
@@ -74,6 +87,12 @@ class GotenbergClient
   end
 
   private
+
+  def raise_if_error!(response)
+    return if response.success?
+
+    raise HttpError.new(response.status, response.body)
+  end
 
   # Is the Gotenberg service up and running?
   def up?
