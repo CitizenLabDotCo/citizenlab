@@ -1,4 +1,3 @@
-import { TZDate } from '@date-fns/tz';
 import { isString } from 'lodash-es';
 // moment-timezone extends the regular moment library,
 // so there's no need to import both moment and moment-timezone
@@ -363,16 +362,6 @@ export const formatDateinTimezone = (
 ): string | null => {
   if (!date) return null;
 
-  const zonedDate = new TZDate(date, timeZone);
-  return zonedDate
-    .toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-      timeZone,
-    })
-    .replace(',', '');
+  const zonedDate = moment.tz(date, timeZone);
+  return zonedDate.format('M/D/YYYY h:mm A');
 };

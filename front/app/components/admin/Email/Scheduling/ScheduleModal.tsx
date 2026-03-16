@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { TZDate } from '@date-fns/tz';
 import isSameDay from 'date-fns/isSameDay';
+import moment from 'moment-timezone';
 import styled from 'styled-components';
 
 import { ICampaign } from 'api/campaigns/types';
@@ -33,33 +33,22 @@ interface Props {
   onClose: () => void;
 }
 
-const ScheduleModal = ({
-  opened,
-  campaign,
-  timeZone = 'Asia/Qatar',
-  onClose,
-}: Props) => {
+const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  const tenantTimeNow = timeZone
-    ? new TZDate(new Date(), timeZone)
-    : new Date();
-  const gmtOffset = new TZDate(new Date(), timeZone)
-    .toISOString()
-    .match(/([+-]\d{2}:\d{2})$/)?.[1];
-
+  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
+  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = new TZDate(
-        campaign.data.attributes.scheduled_at,
-        timeZone
-      );
+      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
+        .tz(timeZone)
+        .toDate();
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -84,7 +73,7 @@ const ScheduleModal = ({
 
     const combined = new Date(selectedDate);
     combined.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-    const scheduledAt = new Date(new TZDate(combined, timeZone)).toISOString();
+    const scheduledAt = moment.tz(combined, timeZone).toISOString();
     updateCampaign(
       {
         id: campaign.data.id,
@@ -115,7 +104,7 @@ const ScheduleModal = ({
         </Text>
         <Box>
           <StyledForm onSubmit={handleScheduleFormSubmit}>
-            <Box display="flex" gap="16px" alignItems="center">
+            <Box display="flex" gap="16px" alignItems="center" mb="12px">
               <DateSinglePicker
                 onChange={handleDateChange}
                 selectedDate={selectedDate}
@@ -131,14 +120,13 @@ const ScheduleModal = ({
               />
               <Text fontSize="l">GMT{gmtOffset}</Text>
             </Box>
-            <Warning mt="24px">
-              <Text mt="12px" fontSize="m">
+            <Warning mb="12px">
+              <Text fontSize="m">
                 <FormattedMessage {...messages.scheduleSendWarning} />
               </Text>
             </Warning>
             <Button
               type="submit"
-              mt="24px"
               disabled={!selectedDate || isUpdatingCampaign}
             >
               <FormattedMessage {...messages.confirmSchedule} />
