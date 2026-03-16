@@ -33,6 +33,6 @@ class FolderModeratorPolicy < ApplicationPolicy
   private
 
   def active_and_can_moderate?
-   user&.active? && user.can_moderate?(record, user)
+    user&.active? && user.can_moderate?(record, user)
   end
 end
