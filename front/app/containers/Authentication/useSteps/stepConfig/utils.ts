@@ -166,10 +166,10 @@ export const handleSubmitEmail = async (
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
       setCurrentStep('invite:taken');
-    } else if (e.errors?.base?.[0]?.error === 'sso_enforced_for_domain') {
-      const message = e.errors.base[0].message;
+    } else if (e.errors?.email?.[0]?.error === 'sso_enforced_for_domain') {
+      const message = e.errors.email[0].message;
       throw {
-        errors: { email: [{ error: 'sso_enforced_for_domain', message }] },
+        errors: { email: [{ message }] },
       };
     } else {
       throw e;

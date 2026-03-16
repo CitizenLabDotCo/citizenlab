@@ -64,7 +64,7 @@ const Input = ({
           scrollIntoView={scrollErrorIntoView}
         />
       )}
-      {apiError && !validationError && (
+      {apiError && (
         <Error
           id={`${name}-error`}
           fieldName={fieldName || (name as TFieldName)}

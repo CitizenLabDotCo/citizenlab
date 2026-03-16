@@ -110,7 +110,6 @@ export type GraphqlMultiloc = {
 
 export interface CLError {
   error: string;
-  message?: string;
   value?: string;
   row?: number;
   rows?: number[];
