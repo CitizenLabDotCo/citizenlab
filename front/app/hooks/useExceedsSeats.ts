@@ -65,18 +65,14 @@ import { IUserData } from 'api/users/types';
 
 import useTotalSeats from './useTotalSeats';
 
-interface Params {
-  roleToBeAdded: 'admin' | 'moderator';
-}
-
-const useExceedsSeats = ({ roleToBeAdded }: Params) => {
+const useExceedsSeats = () => {
   const totalSeats = useTotalSeats();
   const { data: seats } = useSeats();
 
   const getExceedsSeats = useMemo(() => {
     if (!seats || !totalSeats) return undefined;
 
-    return (userToBeAdded: IUserData) => {
+    return (userToBeAdded: IUserData, roleToBeAdded: 'admin' | 'moderator') => {
       const highestRole = userToBeAdded.attributes.highest_role ?? 'user';
 
       // If admin...
@@ -95,14 +91,14 @@ const useExceedsSeats = ({ roleToBeAdded }: Params) => {
       if (highestRole !== 'user') {
         // A new seat is only needed if a user is promoted to moderator.
         // If the user is already a moderator or admin, no extra seat is needed
-        return { loading: false, exceedsSeats: false };
+        return false;
       }
 
       const currentModeratorSeats = seats.data.attributes.moderators_number;
       const totalModeratorSeats = totalSeats.totalModeratorSeats ?? 0;
       return currentModeratorSeats + 1 > totalModeratorSeats;
     };
-  }, [roleToBeAdded, totalSeats, seats]);
+  }, [totalSeats, seats]);
 
   if (!getExceedsSeats) return { loading: true } as const;
 

@@ -37,9 +37,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const { loading, getExceedsSeats } = useExceedsSeats({
-    roleToBeAdded: 'moderator',
-  });
+  const { loading, getExceedsSeats } = useExceedsSeats();
 
   const closeModal = () => {
     setShowModal(false);
@@ -68,7 +66,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
 
   const handleAddClick = () => {
     if (loading || !moderatorToAdd) return;
-    const shouldOpenModal = getExceedsSeats(moderatorToAdd);
+    const shouldOpenModal = getExceedsSeats(moderatorToAdd, 'moderator');
 
     if (shouldOpenModal) {
       openModal();

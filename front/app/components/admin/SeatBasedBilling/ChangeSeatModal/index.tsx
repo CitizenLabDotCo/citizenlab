@@ -82,20 +82,33 @@ const ChangeSeatModal = ({
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: changingToRoleType === 'admin' ? 1 : 0,
-    newlyAddedModeratorsNumber: changingToRoleType === 'moderator' ? 1 : 0,
-  });
+  const { loading, getExceedsSeats } = useExceedsSeats();
+
+  if (loading) return null;
+
+  const getWouldExceedAnySeats = () => {
+    if (changingToRoleType === 'admin') {
+      return getExceedsSeats(userToChangeSeat, 'admin');
+    }
+
+    if (changingToRoleType === 'moderator') {
+      return getExceedsSeats(userToChangeSeat, 'moderator');
+    }
+
+    return false;
+  };
+
+  const wouldExceedAnySeats = getWouldExceedAnySeats();
 
   const confirmChangeQuestion = getInfoText(
     isUserToChangeSeatAdmin,
     isChangingModeratorToNormalUser,
-    exceedsSeats.any
+    wouldExceedAnySeats
   );
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeModerator,
-    exceedsSeats.any
+    wouldExceedAnySeats
   );
 
   const header = !showSuccess ? (
@@ -129,7 +142,7 @@ const ChangeSeatModal = ({
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}
-          hasExceededPlanSeatLimit={exceedsSeats[seatType]}
+          hasExceededPlanSeatLimit={wouldExceedAnySeats}
           seatType={seatType}
         />
       ) : (
