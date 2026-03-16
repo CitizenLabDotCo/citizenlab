@@ -100,7 +100,7 @@ module BulkImportIdeas::Parsers
 
     def create_files(file_content)
       source_file = @row_mapper.upload_source_file(file_content)
-      splitter = Pdf::PdfFileSplitter.new(project: @project, pages_per_idea: template_data[:page_count])
+      splitter = Pdf::PdfFileSplitter.new(project: @project, pages_per_form: @pages_per_form)
       splitter.split(source_file)
     end
 
