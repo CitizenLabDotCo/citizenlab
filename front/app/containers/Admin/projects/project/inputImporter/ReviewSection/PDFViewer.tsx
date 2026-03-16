@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
+import styled from 'styled-components';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
@@ -10,6 +11,24 @@ import { getJwt } from 'utils/auth/jwt';
 import PDFDownloadButton from './PDFDownloadButton';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
+
+const FullWidthPage = styled.div`
+  .react-pdf__Page {
+    width: 100% !important;
+  }
+  .react-pdf__Page__canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  .react-pdf__Page__textContent {
+    width: 100% !important;
+    height: auto !important;
+  }
+  .react-pdf__Page__annotations {
+    width: 100% !important;
+    height: auto !important;
+  }
+`;
 
 interface Props {
   file: string;
@@ -42,14 +61,15 @@ const PDFViewer = ({ file, ideaId }: Props) => {
         <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
           {pagesInDocument &&
             [...Array(pagesInDocument)].map((_, pageIndex) => (
-              <Box
-                key={pageIndex}
-                mb="12px"
-                border={`1px ${colors.grey400} solid`}
-                display="inline-block"
-              >
-                <Page key={pageIndex} pageNumber={pageIndex + 1} />
-              </Box>
+              <FullWidthPage key={pageIndex}>
+                <Box
+                  mb="12px"
+                  border={`1px ${colors.grey400} solid`}
+                  overflow="hidden"
+                >
+                  <Page pageNumber={pageIndex + 1} />
+                </Box>
+              </FullWidthPage>
             ))}
         </Document>
         {pagesInDocument && <PDFDownloadButton file={file} ideaId={ideaId} />}
