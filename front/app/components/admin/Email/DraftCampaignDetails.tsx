@@ -62,7 +62,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
         close={() => setIsDeleteModalOpen(false)}
         header={formatMessage(messages.campaignDeleteConfirmation)}
       >
-        <Box p="30px">
+        <Box p="32px">
           <Text color="textSecondary" mt="0">
             {formatMessage(messages.campaignDeleteWarning)}
           </Text>

@@ -41,7 +41,7 @@ const CancelScheduleModal = ({ campaign, opened, onClose }: Props) => {
       close={onClose}
       header={formatMessage(messages.cancelScheduleTitle)}
     >
-      <Box p="30px">
+      <Box p="32px">
         <Text mt="0">
           <FormattedMessage {...messages.cancelScheduleDescription} />
         </Text>

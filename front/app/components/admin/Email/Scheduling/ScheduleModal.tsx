@@ -98,7 +98,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
       close={handleClose}
       header={formatMessage(messages.scheduleSendTitle)}
     >
-      <Box p="30px">
+      <Box p="32px">
         <Text mt="0">
           <FormattedMessage {...messages.scheduleSendDescription} />
         </Text>
