@@ -58,9 +58,9 @@ interface Props {
   selected: boolean;
   authUser: IUserData;
   toggleSelect: () => void;
-  onMakeAdmin: () => void;
-  onMakeModerator: () => void;
-  onMakeNormalUser: () => void;
+  onMakeAdmin: (user: IUserData) => void;
+  onMakeModerator: (user: IUserData) => void;
+  onMakeNormalUser: (user: IUserData) => void;
 }
 
 export type ChangingRoleType = 'admin' | 'moderator' | 'user';
@@ -132,6 +132,16 @@ const UsersTableRow = ({
         break;
     }
   }, []);
+
+  const handleChangeSeat = () => {
+    if (showChangeSeatModalFor === 'admin') {
+      onMakeAdmin(userInRow);
+    } else if (showChangeSeatModalFor === 'moderator') {
+      onMakeModerator(userInRow);
+    } else if (showChangeSeatModalFor === 'user') {
+      onMakeNormalUser(userInRow);
+    }
+  };
 
   const actions = useMemo(() => {
     return getActions({
@@ -244,7 +254,7 @@ const UsersTableRow = ({
             returnFocusRef={moreActionsButtonRef}
             changingToRoleType={showChangeSeatModalFor}
             closeModal={() => setShowChangeSeatModalFor(undefined)}
-            onConfirm={() => {}}
+            onConfirm={handleChangeSeat}
           />
         </Suspense>
         <Modal

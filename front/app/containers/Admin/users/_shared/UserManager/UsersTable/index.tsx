@@ -13,11 +13,8 @@ import Warning from 'components/UI/Warning';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
 import { TRole } from 'utils/permissions/roles';
 
-import events from '../../../events';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
 
@@ -76,24 +73,26 @@ const UsersTable = ({
   const { data: authUser } = useAuthUser();
   const { mutate: updateUser } = useUpdateUser();
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
 
-  const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
-    trackEventByName(tracks.adminChangeRole);
+  const handleMakeAdmin = (user: IUserData) => {
+    updateUser({
+      userId: user.id,
+      roles: [...(user.attributes.roles ?? []), { type: 'admin' }],
+    });
+  };
 
-    if (authUser.data.id === user.id) {
-      eventEmitter.emit<JSX.Element>(
-        events.userRoleChangeFailed,
-        <FormattedMessage {...messages.youCantUnadminYourself} />
-      );
-    } else {
-      updateUser({
-        userId: user.id,
-        roles: getNewRoles(user, changeToNormalUser),
-      });
-    }
+  const handleMakeModerator = () => {
+    // TODO
+  };
+
+  const handleMakeNormalUser = (user: IUserData) => {
+    updateUser({
+      userId: user.id,
+      roles: [],
+    });
   };
 
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
@@ -194,9 +193,11 @@ const UsersTable = ({
                 selected={
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
-                toggleSelect={handleUserToggle(user.id)}
-                changeRoles={handleChangeRoles}
                 authUser={authUser.data}
+                toggleSelect={handleUserToggle(user.id)}
+                onMakeAdmin={handleMakeAdmin}
+                onMakeModerator={handleMakeModerator}
+                onMakeNormalUser={handleMakeNormalUser}
               />
             ))}
           </Tbody>
