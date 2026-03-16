@@ -8,7 +8,6 @@ Que::Job.tap do |config|
   config.maximum_retry_count = 9
 end
 
-
 # Rails 7.2 removed `ActiveRecord::Base.clear_active_connections!` but Que 2.3.0 still
 # calls it during job cleanup. This shim delegates to the new API so that jobs do not
 # appear as failed after their work has already completed successfully.
