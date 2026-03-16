@@ -62,7 +62,7 @@ module Analysis
 
     def filter_published_at(inputs)
       # Boundaries should be dates. Any time component is discarded: "from" is shifted to
-      # the beginning of the day, qand "to" is shifted to the end of the day.
+      # the beginning of the day, and "to" is shifted to the end of the day.
       from_time = params[:published_at_from]&.in_time_zone&.beginning_of_day
       to_time = params[:published_at_to]&.in_time_zone&.end_of_day
       inputs.where(published_at: from_time..to_time)
