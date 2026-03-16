@@ -62,66 +62,57 @@ const ScheduleLaunchModal = ({
     );
   };
 
-  const header = (
-    <Box>
-      <Text fontSize="xl" fontWeight="bold" m="0px">
-        {formatMessage(messages.scheduleLaunch)}
-      </Text>
-      <Text color="grey700" fontSize="s" mt="4px">
-        {formatMessage(messages.reviewSubtitle)}
-      </Text>
-    </Box>
-  );
-
-  const footer = (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      w="100%"
-    >
-      <Button buttonStyle="text" onClick={onClose} textColor={colors.black}>
-        <Text textDecoration="underline" m="0px">
-          {formatMessage(messages.cancelSchedule)}
-        </Text>
-      </Button>
-      {mode === 'schedule' ? (
-        <Button
-          buttonStyle="admin-dark"
-          icon="check"
-          onClick={handleSaveSchedule}
-          processing={isLoading}
-        >
-          {formatMessage(messages.saveChanges)}
-        </Button>
-      ) : (
-        <Button
-          buttonStyle="admin-dark"
-          icon="send"
-          onClick={onPublishNow}
-          processing={isLoading}
-        >
-          {formatMessage(messages.publishNow)}
-        </Button>
-      )}
-    </Box>
-  );
-
   return (
     <Modal
       opened={opened}
       close={onClose}
       width="640px"
-      header={header}
-      footer={footer}
+      header={
+        <Box>
+          <Text fontSize="xl" fontWeight="bold" m="0px">
+            {formatMessage(messages.scheduleLaunch)}
+          </Text>
+          <Text color="grey700" fontSize="s" mt="4px">
+            {formatMessage(messages.reviewSubtitle)}
+          </Text>
+        </Box>
+      }
+      footer={
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          w="100%"
+        >
+          <Button buttonStyle="text" onClick={onClose} textColor={colors.black}>
+            <Text textDecoration="underline" m="0px">
+              {formatMessage(messages.cancelSchedule)}
+            </Text>
+          </Button>
+          {mode === 'schedule' ? (
+            <Button
+              buttonStyle="admin-dark"
+              icon="check"
+              onClick={handleSaveSchedule}
+              processing={isLoading}
+            >
+              {formatMessage(messages.saveChanges)}
+            </Button>
+          ) : (
+            <Button
+              buttonStyle="admin-dark"
+              icon="send"
+              onClick={onPublishNow}
+              processing={isLoading}
+            >
+              {formatMessage(messages.publishNow)}
+            </Button>
+          )}
+        </Box>
+      }
     >
       <Box p="20px">
-        <Box mb="24px">
-          <Text fontWeight="bold" mb="12px">
-            {formatMessage(messages.when)}
-          </Text>
-          <ModeToggle mode={mode} onChange={setMode} />
-        </Box>
+        <ModeToggle mode={mode} onChange={setMode} />
 
         {mode === 'schedule' && (
           <WhenSection
