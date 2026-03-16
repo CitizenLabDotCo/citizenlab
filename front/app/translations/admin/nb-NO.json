@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "En e-post med forhåndsvisning er sendt til e-postadressen din",
   "app.containers.Admin.emails.previewTitle": "Forhåndsvisning",
   "app.containers.Admin.emails.regionMultilocError": "Vennligst oppgi en verdi for alle språk",
+  "app.containers.Admin.emails.scheduled": "Planlagt",
   "app.containers.Admin.emails.seeEmailHereText": "Så snart en e-post av denne typen er sendt, vil du kunne se den her.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send nå",
