@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IIdeaData } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -11,9 +12,17 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocale from 'hooks/useLocale';
+
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import {
+  isWeglotTranslatedPage,
+  getWeglotCurrentLang,
+  weglotTranslate,
+  WeglotData,
+} from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
 import tracks from '../tracks';
@@ -38,9 +47,11 @@ const IdeationForm = ({
 }) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const locale = useLocale();
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -66,6 +77,33 @@ const IdeationForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
+      let weglotData: WeglotData | Record<string, never> = {};
+      let translatedFormValues = { ...formValues };
+
+      const weglotApiKey =
+        appConfiguration?.data.attributes.settings.core.weglot_api_key;
+      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
+        const weglotLang = getWeglotCurrentLang()!;
+
+        if (formValues.title_multiloc?.[locale]) {
+          const translatedTitle = await weglotTranslate(
+            formValues.title_multiloc[locale]!,
+            weglotLang,
+            locale,
+            weglotApiKey
+          );
+          translatedFormValues = {
+            ...translatedFormValues,
+            title_multiloc: { [locale]: translatedTitle },
+          };
+        }
+
+        weglotData = {
+          locale: weglotLang,
+          body: formValues.body_multiloc?.[locale] ?? '',
+        };
+      }
+
       if (!idea) {
         // If the user is an admin or project moderator, we allow them to post to a specific phase
         const phase_ids =
@@ -74,11 +112,12 @@ const IdeationForm = ({
             : null;
 
         const idea = await addIdea({
-          ...formValues,
+          ...translatedFormValues,
           project_id: projectId,
           phase_ids,
           publication_status:
             participationMethod === 'common_ground' ? 'published' : undefined,
+          weglot_data: weglotData,
         });
         updateSearchParams({ idea_id: idea.data.id });
         trackEventByName(tracks.ideaFormSubmitted);
@@ -86,11 +125,12 @@ const IdeationForm = ({
         // Strip away idea_files_attributes from the form values
         // as they are handled via separate API calls
         const { idea_files_attributes: _, ...formValuesWithoutFiles } =
-          formValues;
+          translatedFormValues;
         await updateIdea({
           id: idea.id,
           requestBody: {
             ...formValuesWithoutFiles,
+            weglot_data: weglotData,
           },
         });
         updateSearchParams({ idea_id: idea.id });
