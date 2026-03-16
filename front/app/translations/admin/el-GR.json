@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Ένα email προεπισκόπησης έχει σταλεί στη διεύθυνση email σας",
   "app.containers.Admin.emails.previewTitle": "Προεπισκόπηση",
   "app.containers.Admin.emails.regionMultilocError": "Please provide a value for all languages",
+  "app.containers.Admin.emails.scheduled": "Προγραμματισμένο",
   "app.containers.Admin.emails.seeEmailHereText": "Μόλις σταλεί ένα τέτοιο μήνυμα ηλεκτρονικού ταχυδρομείου, θα μπορείτε να το ελέγξετε εδώ.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Στείλτε τώρα",
