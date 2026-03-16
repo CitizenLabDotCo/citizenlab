@@ -23,6 +23,12 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import {
+  isWeglotTranslatedPage,
+  getWeglotCurrentLang,
+  weglotTranslate,
+  WeglotData,
+} from 'utils/weglot';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
@@ -171,9 +177,26 @@ const ChildCommentForm = ({
 
   const continueSubmission = async () => {
     if (canSubmit) {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
+      const processedValue = inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2');
+
+      let commentBodyMultiloc: Record<string, string> = {
+        [locale]: processedValue,
       };
+      let weglotData: WeglotData | Record<string, never> = {};
+
+      const weglotApiKey =
+        appConfiguration?.data.attributes.settings.core.weglot_api_key;
+      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
+        const weglotLang = getWeglotCurrentLang()!;
+        const translatedValue = await weglotTranslate(
+          processedValue,
+          weglotLang,
+          locale,
+          weglotApiKey
+        );
+        commentBodyMultiloc = { [locale]: translatedValue };
+        weglotData = { locale: weglotLang, body: processedValue };
+      }
 
       setCanSubmit(false);
 
@@ -191,6 +214,7 @@ const ChildCommentForm = ({
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
+            weglot_data: weglotData,
             anonymous: postAnonymously,
           },
           {
