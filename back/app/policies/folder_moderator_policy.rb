@@ -15,11 +15,11 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def index?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def show?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def create?
@@ -32,11 +32,7 @@ class FolderModeratorPolicy < ApplicationPolicy
 
   private
 
-  def admin_or_moderator?
-    # In the case of moderator, the user must be moderator of that project
-    # (not just of any project).
-    return unless user&.active?
-
-    user.admin? || user.project_folder_moderator?(record.project_folder_id)
+  def active_and_can_moderate?
+   user&.active? && user.can_moderate?(record, user)
   end
 end
