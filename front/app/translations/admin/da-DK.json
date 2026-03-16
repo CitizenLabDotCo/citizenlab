@@ -387,7 +387,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/da/articles/527596-oprettelse-af-et-eksternt-undersogelsesprojekt}}",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "denne supportartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "{tenantName, select, DeloitteDK {Indlæg} other {Idé}}",
-  "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Forslag",
+  "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Borgerforslag",
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Screening af input",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hvad skal et input hedde?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Indsigt",
