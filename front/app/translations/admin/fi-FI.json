@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Sähköpostiosoitteeseesi on lähetetty esikatseluviesti",
   "app.containers.Admin.emails.previewTitle": "Esikatselu",
   "app.containers.Admin.emails.regionMultilocError": "Anna arvo kaikille kielille",
+  "app.containers.Admin.emails.scheduled": "Ajoitettu",
   "app.containers.Admin.emails.seeEmailHereText": "Heti kun tämäntyyppinen sähköposti on lähetetty, voit tarkistaa sen täältä.",
   "app.containers.Admin.emails.send": "Lähettää",
   "app.containers.Admin.emails.sendNowButton": "Lähetä nyt",
