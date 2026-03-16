@@ -115,7 +115,7 @@ const ScheduleLaunchModal = ({
       header={header}
       footer={footer}
     >
-      <Box>
+      <Box p="20px">
         <Box mb="24px">
           <Text fontWeight="bold" mb="12px">
             {formatMessage(messages.when)}

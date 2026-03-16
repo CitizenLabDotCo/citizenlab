@@ -20,7 +20,6 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const isProjectSchedulingEnabled = useFeatureFlag({
     name: 'project_scheduling',
   });
-  console.log(isProjectSchedulingEnabled);
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
