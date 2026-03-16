@@ -14,6 +14,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
@@ -58,9 +59,6 @@ interface Props {
   selected: boolean;
   authUser: IUserData;
   toggleSelect: () => void;
-  onMakeAdmin: (user: IUserData) => void;
-  onMakeModerator: (user: IUserData) => void;
-  onMakeNormalUser: (user: IUserData) => void;
 }
 
 export type ChangingRoleType = 'admin' | 'moderator' | 'user';
@@ -84,10 +82,8 @@ const UsersTableRow = ({
   selected,
   authUser,
   toggleSelect,
-  onMakeAdmin,
-  onMakeModerator,
-  onMakeNormalUser,
 }: Props) => {
+  const { mutate: updateUser } = useUpdateUser();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
   const [setAsModeratorOpened, setSetAsModeratorOpened] = useState(false);
@@ -133,13 +129,25 @@ const UsersTableRow = ({
     }
   }, []);
 
+  const handleMakeAdmin = () => {
+    updateUser({
+      userId: userInRow.id,
+      roles: [...(userInRow.attributes.roles ?? []), { type: 'admin' }],
+    });
+  };
+
+  const handleMakeNormalUser = () => {
+    updateUser({
+      userId: userInRow.id,
+      roles: [],
+    });
+  };
+
   const handleChangeSeat = () => {
     if (showChangeSeatModalFor === 'admin') {
-      onMakeAdmin(userInRow);
-    } else if (showChangeSeatModalFor === 'moderator') {
-      onMakeModerator(userInRow);
+      handleMakeAdmin();
     } else if (showChangeSeatModalFor === 'user') {
-      onMakeNormalUser(userInRow);
+      handleMakeNormalUser();
     }
   };
 
@@ -276,7 +284,6 @@ const UsersTableRow = ({
           <SetAsModerator
             user={userInRow}
             onClose={() => setSetAsModeratorOpened(false)}
-            onSuccess={() => setShowChangeSeatModalFor('moderator')}
           />
         </Modal>
       </Tr>

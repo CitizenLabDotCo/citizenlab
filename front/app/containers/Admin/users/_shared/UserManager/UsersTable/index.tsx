@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IQueryParameters, IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
 
 import Pagination from 'components/Pagination';
 import Warning from 'components/UI/Warning';
@@ -70,29 +69,10 @@ const UsersTable = ({
   notCitizenlabMember,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { mutate: updateUser } = useUpdateUser();
 
   if (!authUser) {
     return null;
   }
-
-  const handleMakeAdmin = (user: IUserData) => {
-    updateUser({
-      userId: user.id,
-      roles: [...(user.attributes.roles ?? []), { type: 'admin' }],
-    });
-  };
-
-  const handleMakeModerator = () => {
-    // TODO
-  };
-
-  const handleMakeNormalUser = (user: IUserData) => {
-    updateUser({
-      userId: user.id,
-      roles: [],
-    });
-  };
 
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
     trackEventByName(tracks.sortChange, {
@@ -194,9 +174,6 @@ const UsersTable = ({
                 }
                 authUser={authUser.data}
                 toggleSelect={handleUserToggle(user.id)}
-                onMakeAdmin={handleMakeAdmin}
-                onMakeModerator={handleMakeModerator}
-                onMakeNormalUser={handleMakeNormalUser}
               />
             ))}
           </Tbody>

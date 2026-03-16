@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { isFolder } from 'api/admin_publications/utils';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
@@ -21,10 +20,9 @@ import messages from '../../../../messages';
 interface Props {
   user: IUserData;
   onClose: () => void;
-  onAssign: (selectedPublications: IAdminPublicationData[]) => void;
 }
 
-const SetAsModerator = ({ user, onClose, onAssign }: Props) => {
+const SetAsModerator = ({ user, onClose }: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: addProjectFolderModerator } =
     useAddProjectFolderModerator();
@@ -75,7 +73,6 @@ const SetAsModerator = ({ user, onClose, onAssign }: Props) => {
       }
     } finally {
       setIsLoading(false);
-      onSuccess();
       onClose();
     }
   };
