@@ -2379,6 +2379,7 @@
   "app.errors.bulk_import_maximum_ideas_exceeded": "Maksimalus {value} idėjų skaičius viršytas.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Viršytas didžiausias leistinas {value} puslapių skaičius PDF formate.",
   "app.errors.bulk_import_not_enough_pdf_pages": "Įkeltame PDF dokumente yra nepakankamai puslapių - jis turi turėti bent tiek pat puslapių, kiek ir atsisiųstas šablonas.",
+  "app.errors.bulk_import_pdf_pages_not_divisible": "Bendras PDF formato puslapių skaičius turi būti tolygiai dalijamas iš nurodyto vienos formos puslapių skaičiaus.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idėja su neteisingu paskelbimo datos formatu \"{value}\". Prašome naudoti formatą \"DD-MM-GYYYY\".",
   "app.errors.cannot_contain_ideas": "Pasirinktas dalyvavimo būdas nepalaiko šio tipo pranešimų. Redaguokite savo pasirinkimą ir bandykite dar kartą.",
   "app.errors.cant_change_after_first_response": "To nebegalite pakeisti, nes kai kurie naudotojai jau atsakė",
