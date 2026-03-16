@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "E-maili takussutissiaq emailadressinnut nassiunneqarpoq",
   "app.containers.Admin.emails.previewTitle": "Takussutissiaq",
   "app.containers.Admin.emails.regionMultilocError": "Please provide a value for all languages",
+  "app.containers.Admin.emails.scheduled": "Scheduled",
   "app.containers.Admin.emails.seeEmailHereText": "As soon as an email of this type is sent you'll be able to check it here.",
   "app.containers.Admin.emails.send": "Nassiutiguk",
   "app.containers.Admin.emails.sendNowButton": "Massakkut nassiuguk",
