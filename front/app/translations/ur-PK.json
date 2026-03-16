@@ -2379,6 +2379,7 @@
   "app.errors.bulk_import_maximum_ideas_exceeded": "{value} خیالات کی زیادہ سے زیادہ حد سے تجاوز کر گیا ہے۔",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "PDF میں {value} صفحات کی زیادہ سے زیادہ حد سے تجاوز کر گیا ہے۔",
   "app.errors.bulk_import_not_enough_pdf_pages": "اپ لوڈ کردہ پی ڈی ایف میں کافی صفحات نہیں ہیں - اس میں کم از کم اتنے ہی صفحات ہونے چاہئیں جتنے ڈاؤن لوڈ کردہ ٹیمپلیٹ ہیں۔",
+  "app.errors.bulk_import_pdf_pages_not_divisible": "پی ڈی ایف میں صفحات کی کل تعداد فی فارم صفحات کی مخصوص تعداد سے یکساں طور پر تقسیم ہونی چاہیے۔",
   "app.errors.bulk_import_publication_date_invalid_format": "اشاعت کی تاریخ کی غلط شکل \"{value}\" کے ساتھ آئیڈیا۔ براہ کرم فارمیٹ \"DD-MM-YYYY\" استعمال کریں۔",
   "app.errors.cannot_contain_ideas": "آپ نے جو شرکت کا طریقہ منتخب کیا ہے وہ اس قسم کی پوسٹ کو سپورٹ نہیں کرتا ہے۔ براہ کرم اپنے انتخاب میں ترمیم کریں اور دوبارہ کوشش کریں۔",
   "app.errors.cant_change_after_first_response": "آپ اسے مزید تبدیل نہیں کر سکتے، کیونکہ کچھ صارفین پہلے ہی جواب دے چکے ہیں۔",
