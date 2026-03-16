@@ -15,6 +15,7 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def index?
+    puts "FolderModeratorPolicy index? user: #{user.inspect}"
     admin_or_moderator?
   end
 

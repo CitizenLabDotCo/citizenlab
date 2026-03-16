@@ -282,6 +282,7 @@ Rails.application.routes.draw do
       end
 
       resources :spaces, only: %i[index show create update destroy] do
+        resources :moderators, controller: 'space_moderators', except: %i[update]
         get 'tree_view', on: :member, to: 'spaces#tree_view'
       end
 

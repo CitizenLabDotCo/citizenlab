@@ -65,6 +65,14 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       where.not(id: project_folder_moderator(*project_folder_ids))
     }
 
+    scope :space_moderator, lambda { |space_id = nil|
+      if space_id
+        where('roles @> ?', JSON.generate([{ type: 'space_moderator', space_id: space_id }]))
+      else
+        where("roles @> '[{\"type\":\"space_moderator\"}]'")
+      end
+    }
+
     scope :project_reviewers, lambda { |project_reviewer = true|
       json_roles = [{ type: 'admin', project_reviewer: true }].to_json
       project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
