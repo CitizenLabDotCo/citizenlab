@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Community Monitor Report: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Start",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Купите 1 додатно седиште",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Потврди",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Да ли сте сигурни да желите да дате права менаџера 1 особи?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Дајте менаџерска права",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Достигли сте ограничење укључених места у оквиру вашег плана, биће додато 1 додатно место.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Додај статус",

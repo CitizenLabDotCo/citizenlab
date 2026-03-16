@@ -1385,8 +1385,6 @@
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Compra 1 seient addicional",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Confirmeu",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Confirmes que vols donar els drets de gestor a 1 persona?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Donar drets de gestor",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Has arribat al límit de seients inclosos dins del teu pla, {noOfSeats} addicionals {noOfSeats, plural, one {seient} other {seients}} s'afegirà.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Afegir un estat",

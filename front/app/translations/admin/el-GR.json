@@ -1385,8 +1385,6 @@
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Αγοράστε 1 επιπλέον θέση",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Επιβεβαίωση",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Είστε σίγουροι ότι θέλετε να δώσετε σε 1 άτομο δικαιώματα διαχειριστή;",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Δώστε δικαιώματα διαχειριστή",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Έχετε φτάσει στο όριο των θέσεων που περιλαμβάνονται στο πρόγραμμά σας, θα προστεθεί {noOfSeats} επιπλέον {noOfSeats, plural, one {θέση} other {θέσεις}}",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Προσθήκη κατάστασης",

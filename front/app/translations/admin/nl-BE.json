@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Rapport van de tevredenheidsmonitor: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Start",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Koop 1 extra account",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Bevestig",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Weet je zeker dat je 1 persoon map- of projectbeheerdersrechten wilt geven?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Geef map- of projectbeheerdersrechten",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Je hebt de limiet van inbegrepen accounts binnen je licentie bereikt, {noOfSeats} extra {noOfSeats, plural, one {account zal} other {accounts zullen}} worden toegevoegd.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Voeg een status toe",

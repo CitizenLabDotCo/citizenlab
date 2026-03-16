@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Report del Barometro Civico: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Inizia",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Acquista 1 posto aggiuntivo",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Conferma",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Sei sicuro di voler dare a una persona i diritti di manager?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Concedi diritti di manager",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Hai raggiunto il limite di posti inclusi nel tuo piano, verrà aggiunto 1 posto aggiuntivo.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Aggiungi status",

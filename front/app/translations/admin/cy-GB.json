@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Adroddiad Monitro Cymunedol: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Dechrau",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Prynwch 1 sedd ychwanegol",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Cadarnhau",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Ydych chi'n siŵr eich bod am roi hawliau rheolwr 1 person?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Rhoi hawliau rheolwr",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Rydych chi wedi cyrraedd y terfyn o seddi sydd wedi'u cynnwys yn eich cynllun, bydd 1 sedd ychwanegol yn cael ei hychwanegu.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ychwanegu statws",

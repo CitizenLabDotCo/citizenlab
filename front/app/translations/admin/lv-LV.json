@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Kopienas uzraudzības ziņojums: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Sākt",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Iegādājieties 1 papildu sēdvietu",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Apstipriniet",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Vai esat pārliecināts, ka vēlaties 1 personai piešķirt pārvaldnieka tiesības?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Piešķirt pārvaldnieka tiesības",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Jūs esat sasniedzis plānā iekļauto vietu limitu, {noOfSeats} tiks pievienotas papildu {noOfSeats, plural, one {sēdvietas} other {sēdvietas}} sēdvietas.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Pievienot statusu",

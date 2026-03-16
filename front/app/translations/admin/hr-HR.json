@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Izvješće Monitor zajednice: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Početak",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Kupite 1 dodatno sjedalo",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Potvrdi",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Jeste li sigurni da jednoj osobi želite dati upraviteljska prava?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Dajte upraviteljska prava",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Dosegli ste ograničenje uključenih sjedala u svoj plan, {noOfSeats} dodatna {noOfSeats, plural, one {sjedište} other {sjedala}} bit će dodan.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Dodaj status",
