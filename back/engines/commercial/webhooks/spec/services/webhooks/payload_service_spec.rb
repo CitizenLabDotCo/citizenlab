@@ -38,7 +38,7 @@ RSpec.describe Webhooks::PayloadService do
 
     it 'includes ISO8601 formatted acted_at' do
       payload = described_class.new.generate(activity)
-      expect(payload[:acted_at]).to match(time_regex)
+      expect(payload[:acted_at]).to match(iso8601_regex)
     end
 
     it 'serializes the item data using PublicApi::V2 serializer' do
