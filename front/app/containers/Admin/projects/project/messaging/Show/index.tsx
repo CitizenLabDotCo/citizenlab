@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
@@ -34,7 +35,7 @@ import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { formatDateinTimezone } from 'utils/dateUtils';
+import { formatDateInTimezone } from 'utils/dateUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -102,8 +103,8 @@ const Show = () => {
     // if the campaign is scheduled, we need to cancel the schedule ( send null ) before sending the campaign
     if (campaign?.data.attributes.scheduled_at) {
       updateCampaign({
-        id: campaignId,
-        campaign: { enabled: true, scheduled_at: null },
+        id: campaign.data.id,
+        campaign: { scheduled_at: null } as CampaignFormValues,
       });
     }
     sendCampaign(campaignId);
@@ -173,10 +174,10 @@ const Show = () => {
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   <Text fontSize="base" whiteSpace="nowrap">
-                    {formatDateinTimezone(
-                      campaign.data.attributes.scheduled_at,
-                      timeZone
-                    )}
+                    {formatDateInTimezone({
+                      date: campaign.data.attributes.scheduled_at,
+                      timeZone,
+                    })}
                   </Text>
                 </>
               )}
@@ -194,7 +195,7 @@ const Show = () => {
                 <Box
                   position="relative"
                   display="flex"
-                  gap="0.3px"
+                  gap="1px"
                   alignItems="center"
                   maxHeight="90px"
                 >

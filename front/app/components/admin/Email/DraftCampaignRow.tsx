@@ -21,7 +21,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { formatDateinTimezone } from 'utils/dateUtils';
+import { formatDateInTimezone } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -53,10 +53,10 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           {campaign.attributes.scheduled_at && (
             <>
               <Text fontSize="base">
-                {formatDateinTimezone(
-                  campaign.attributes.scheduled_at,
-                  timeZone
-                )}
+                {formatDateInTimezone({
+                  date: campaign.attributes.scheduled_at,
+                  timeZone,
+                })}
               </Text>
               <StatusLabel
                 backgroundColor={colors.teal500}

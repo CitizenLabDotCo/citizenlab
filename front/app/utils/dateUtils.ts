@@ -356,10 +356,15 @@ export const toBackendDateString = (date?: Date) => {
   return `${date.getFullYear()}-${month}-${day}`;
 };
 
-export const formatDateinTimezone = (
-  date: string | null | undefined,
-  timeZone: string = 'UTC'
-): string | null => {
+type FormatDateInTimezoneParams = {
+  date: string | null | undefined;
+  timeZone?: string;
+};
+
+export const formatDateInTimezone = ({
+  date,
+  timeZone = 'UTC',
+}: FormatDateInTimezoneParams): string | null => {
   if (!date) return null;
 
   const zonedDate = moment.tz(date, timeZone);

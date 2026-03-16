@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import { ICampaign } from 'api/campaigns/types';
+import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import Modal from 'components/UI/Modal';
@@ -27,7 +27,7 @@ const CancelScheduleModal = ({ campaign, opened, onClose }: Props) => {
     updateCampaign(
       {
         id: campaign.data.id,
-        campaign: { enabled: true, scheduled_at: null },
+        campaign: { scheduled_at: null } as CampaignFormValues,
       },
       {
         onSuccess: onClose,

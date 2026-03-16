@@ -6,7 +6,7 @@ import isSameDay from 'date-fns/isSameDay';
 import moment from 'moment-timezone';
 import styled from 'styled-components';
 
-import { ICampaign } from 'api/campaigns/types';
+import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
@@ -77,7 +77,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     updateCampaign(
       {
         id: campaign.data.id,
-        campaign: { enabled: true, scheduled_at: scheduledAt },
+        campaign: { scheduled_at: scheduledAt } as CampaignFormValues,
       },
       {
         onSuccess: handleClose,
