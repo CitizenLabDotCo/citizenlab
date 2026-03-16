@@ -148,15 +148,15 @@ resource 'Moderators' do
       shared_examples 'adding a folder moderator' do
         example 'Add a moderator role' do
           expect(test_user.reload.moderatable_project_ids).to be_empty
-          expect(user.roles).to be_empty
+          expect(test_user.roles).to be_empty
 
           do_request
 
           expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq user_id
-        expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
-        expect(user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
+        expect(json_response.dig(:data, :id)).to eq test_user.id
+        expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
+        expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
         end
       end
 
