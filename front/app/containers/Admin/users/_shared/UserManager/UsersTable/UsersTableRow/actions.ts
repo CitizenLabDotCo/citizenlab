@@ -83,6 +83,14 @@ export const getActions = ({
       icon: 'user-circle' as const,
     };
 
+    if (userInRowIsCurrentUser) {
+      if (isUserInRowAdmin) {
+        return [setSetAsProjectModeratorAction];
+      }
+
+      return [];
+    }
+
     if (isUserInRowAdmin) {
       return [setAsNormalUserAction, setSetAsProjectModeratorAction];
     } else if (isUserInRowModerator) {
