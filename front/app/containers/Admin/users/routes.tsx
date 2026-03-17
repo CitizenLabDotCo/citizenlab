@@ -1,5 +1,9 @@
 import React, { lazy } from 'react';
 
+import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
+
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminAdmins = lazy(() => import('./Admins'));
@@ -8,9 +12,7 @@ const AdminProjectModerators = lazy(() => import('./ProjectModerators'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 const AdminBannedEmails = lazy(() => import('./BannedEmails'));
-import PageLoading from 'components/UI/PageLoading';
-
-import { AdminRoute } from '../routes';
+const AdminSeatsOverview = lazy(() => import('./SeatsOverview'));
 
 export enum usersRoutes {
   users = 'users',
@@ -20,6 +22,7 @@ export enum usersRoutes {
   groupId = `:groupId`,
   blocked = 'blocked',
   bannedEmails = 'banned-emails',
+  seats = 'seats',
 }
 
 type UsersRoute<T extends string = string> =
@@ -32,6 +35,8 @@ export type userRouteTypes =
   | UsersRoute<`${usersRoutes.projectModerators}`>
   | UsersRoute<`${usersRoutes.blocked}`>
   | UsersRoute<`${usersRoutes.bannedEmails}`>
+  | UsersRoute<`${usersRoutes.seats}`>
+  // this one is needed for the `/users/:groupId route, which makes no sense but ok
   | UsersRoute<`${string}`>;
 
 const createAdminUsersRoutes = () => ({
@@ -95,6 +100,14 @@ const createAdminUsersRoutes = () => ({
       element: (
         <PageLoading>
           <AdminBannedEmails />
+        </PageLoading>
+      ),
+    },
+    {
+      path: usersRoutes.seats,
+      element: (
+        <PageLoading>
+          <AdminSeatsOverview />
         </PageLoading>
       ),
     },

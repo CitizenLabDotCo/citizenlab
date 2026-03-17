@@ -359,4 +359,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.BannedEmails.unbanButton',
     defaultMessage: 'Unban email',
   },
+  seatsOverview: {
+    id: 'app.containers.Admin.Users.Seats.seatsOverview',
+    defaultMessage: 'Seats overview',
+  },
 });

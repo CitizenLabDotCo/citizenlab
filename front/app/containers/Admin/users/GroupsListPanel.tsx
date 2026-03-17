@@ -339,6 +339,13 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       >
         <FormattedMessage {...messages.inviteUsers} />
       </ButtonWithLink>
+      <ButtonWithLink
+        linkTo="/admin/users/seats"
+        icon="shield-checkered"
+        mt="12px"
+      >
+        <FormattedMessage {...messages.seatsOverview} />
+      </ButtonWithLink>
     </Container>
   );
 };
