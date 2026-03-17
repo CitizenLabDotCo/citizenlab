@@ -23,7 +23,16 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (user.admin? || user.space_moderator?(record&.space_id)) # does this make sense for space moderators? maybe not!
+    return false unless user&.active?
+
+    space_id =
+      if record.respond_to?(:space_id)
+        record.space_id
+      elsif record.respond_to?(:project_folder_id)
+        ProjectFolders::Folder.find_by(id: record.project_folder_id)&.space_id
+      end
+
+    user.admin? || user.space_moderator?(space_id)
   end
 
   def destroy?
@@ -33,10 +42,22 @@ class FolderModeratorPolicy < ApplicationPolicy
   private
 
   def admin_or_moderator?
-    # In the case of folder moderator, the user must be moderator of that project's folder
-    # (not just of any project).
     return unless user&.active?
 
-    user.admin? || user.project_folder_moderator?(record&.folder&.id) || user.space_moderator?(record&.space_id)
+    folder_id = if record.respond_to?(:folder)
+                  record.folder&.id
+                elsif record.respond_to?(:project_folder_id)
+                  record.project_folder_id
+                end
+
+    space_id = if record.respond_to?(:space_id)
+                record.space_id
+              elsif record.respond_to?(:folder) && record.folder.respond_to?(:space_id)
+                record.folder.space_id
+              end
+
+    user.admin? ||
+      user.project_folder_moderator?(folder_id) ||
+      user.space_moderator?(space_id)
   end
 end

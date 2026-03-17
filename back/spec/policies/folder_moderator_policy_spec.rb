@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe FolderModeratorPolicy do
   subject { described_class.new(user, project) }
+
   let!(:space) { create(:space) }
   let!(:other_space) { create(:space) }
 

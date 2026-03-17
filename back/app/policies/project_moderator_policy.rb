@@ -24,8 +24,10 @@ class ProjectModeratorPolicy < ApplicationPolicy
   private
 
   def admin_or_moderator?
-    # In the case of moderator, the user must be moderator of that project
-    # (not just of any project).
-    user&.active? && (user&.admin? || user&.project_moderator?(record.project_id))
+    user&.active? && (
+      user.admin? ||
+      user.project_moderator?(record.project_id) ||
+      (record.space_id.present? && user.space_moderator?(record.space_id))
+    )
   end
 end
