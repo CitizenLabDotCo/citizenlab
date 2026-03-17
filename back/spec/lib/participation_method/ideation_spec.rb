@@ -248,8 +248,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  # validate_phase input checks have moved to Phase model (validate_no_inputs_on_participation_method_change)
-
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }

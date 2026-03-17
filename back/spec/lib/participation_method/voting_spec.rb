@@ -187,8 +187,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  # validate_phase input checks have moved to Phase model (validate_no_inputs_on_participation_method_change)
-
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
