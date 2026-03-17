@@ -47,11 +47,13 @@
 #
 # Indexes
 #
-#  index_custom_fields_on_ordering                         (ordering) UNIQUE WHERE (resource_id IS NULL)
-#  index_custom_fields_on_resource_id_and_ordering_unique  (resource_id,ordering) UNIQUE
-#  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
+#  custom_fields_resource_id_ordering_unique             (resource_id,ordering) UNIQUE
+#  index_custom_fields_on_ordering                       (ordering) UNIQUE WHERE (resource_id IS NULL)
+#  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
+  include BulkReorderable
+
   delegate :page?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
@@ -60,6 +62,7 @@ class CustomField < ApplicationRecord
     :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
+  bulk_reorderable constraint_name: :custom_fields_resource_id_ordering_unique
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images

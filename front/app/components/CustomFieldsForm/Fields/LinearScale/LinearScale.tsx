@@ -4,16 +4,10 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import useLocalize from 'hooks/useLocalize';
-
-import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
-import messages from '../../messages';
-
 import Labels from './Labels';
-import LinearScaleButton from './LinearScaleButton';
-import { getLinearScaleLabel } from './utils';
+import LinearScaleOption from './LinearScaleButton';
 
 interface Props {
   value?: number;
@@ -23,41 +17,11 @@ interface Props {
 
 const LinearScale = ({ value: data, question, onChange }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
-  const localize = useLocalize();
-
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
 
   const minimum = 1;
   const maximum = question.maximum ?? 11;
   const name = question.key;
-
-  const getAriaValueText = (value: number, total: number) => {
-    // If the value has a label, read it out
-    const label = getLinearScaleLabel(question, value);
-
-    if (label) {
-      return formatMessage(messages.valueOutOfTotalWithLabel, {
-        value,
-        total,
-        label: localize(label),
-      });
-    }
-
-    // If we don't have a label but we do have a maximum, read out the current value & maximum label
-    const maxLabel = getLinearScaleLabel(question, maximum);
-
-    if (maxLabel) {
-      return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
-        value,
-        total,
-        maxValue: maximum,
-        maxLabel: localize(maxLabel),
-      });
-    }
-    // Otherwise, just read out the value and the maximum value
-    return formatMessage(messages.valueOutOfTotal, { value, total });
-  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const value = data || minimum;
@@ -84,13 +48,12 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
     onChange(newValue);
 
-    if (sliderRef.current) {
-      sliderRef.current.setAttribute('aria-valuenow', String(newValue));
-      sliderRef.current.setAttribute(
-        'aria-valuetext',
-        getAriaValueText(newValue, maximum)
-      );
-    }
+    // Move focus to the newly selected option
+    const nextOption = groupRef.current?.querySelector(
+      `#linear-scale-option-${newValue}`
+    ) as HTMLElement | null;
+    nextOption?.focus();
+
     event.preventDefault();
   };
 
@@ -98,13 +61,9 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
     <>
       <div
         data-testid="linearScaleControl"
-        role="slider"
-        ref={sliderRef}
-        aria-valuemin={minimum}
-        aria-valuemax={maximum}
-        aria-valuenow={data || minimum}
+        role="radiogroup"
+        ref={groupRef}
         aria-labelledby={`${sanitizeForClassname(name)}-label`}
-        tabIndex={0}
         onKeyDown={handleKeyDown}
       >
         <Box
@@ -116,7 +75,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
           {[...Array(maximum).keys()].map((i) => {
             const visualIndex = i + 1;
             return (
-              <LinearScaleButton
+              <LinearScaleOption
                 key={visualIndex}
                 question={question}
                 visualIndex={visualIndex}
