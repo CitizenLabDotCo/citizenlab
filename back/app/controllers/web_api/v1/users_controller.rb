@@ -64,6 +64,18 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json(attributes)
   end
 
+  def billed_admins
+    authorize :user, :billed_admins?
+    @users = paginate User.billed_admins
+    render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
+  end
+
+  def billed_moderators
+    authorize :user, :billed_moderators?
+    @users = paginate User.billed_moderators
+    render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
+  end
+
   def index_xlsx
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?

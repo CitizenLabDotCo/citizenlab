@@ -872,6 +872,26 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/billed_admins' do
+        example 'Get list of admins that are billed' do
+          create(:super_admin) # super admin are not included in admins
+          @admins = [@user, *create_list(:admin, 3)]
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to contain_exactly(*@admins.map(&:id))
+        end
+      end
+
+      get 'web_api/v1/users/billed_moderators' do
+        example 'Get list of moderators that are billed' do
+          create(:super_admin) # super admin are not included in moderators
+          @moderators = create_list(:project_moderator, 3)
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to contain_exactly(*@moderators.map(&:id))
+        end
+      end
+
       get 'web_api/v1/users/as_xlsx' do
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
