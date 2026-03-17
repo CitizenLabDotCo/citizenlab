@@ -28,18 +28,18 @@ const UserAssignedItems = ({ user }: Props) => {
 
   if (!treeView) return null;
 
-  if (treeView.data.attributes.nodes.length === 0) {
+  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
+    user,
+    treeView
+  );
+
+  if (projectsUserModerates.length === 0 && foldersUserModerates.length === 0) {
     return (
       <Text>
         <FormattedMessage {...messages.noItemsAssigned} />
       </Text>
     );
   }
-
-  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
-    user,
-    treeView
-  );
 
   const hasFolders = foldersUserModerates.length > 0;
 
