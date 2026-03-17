@@ -18,7 +18,7 @@ describe FolderModeratorPolicy do
   let!(:resident) { create(:user) }
 
   before do
-    stub_const("Moderator", moderator_struct)
+    stub_const('Moderator', moderator_struct)
   end
 
   shared_examples 'all actions not permitted' do

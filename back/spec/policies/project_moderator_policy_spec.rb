@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 describe ProjectModeratorPolicy do
+  subject { described_class.new(user, record) }
+
   # Reference the Moderator struct from the controller for consistency
   let(:moderator_struct) { WebApi::V1::ProjectModeratorsController::Moderator }
-
-  before do
-    stub_const("Moderator", moderator_struct)
-  end
 
   let!(:project) { create(:project) }
   let!(:other_project) { create(:project) }
@@ -21,7 +19,9 @@ describe ProjectModeratorPolicy do
   let(:resident) { create(:user) }
   let(:target_moderator) { create(:user) }
 
-  subject { described_class.new(user, record) }
+  before do
+    stub_const('Moderator', moderator_struct)
+  end
 
   shared_examples 'permits actions' do |actions|
     actions.each do |action|
@@ -41,42 +41,40 @@ describe ProjectModeratorPolicy do
   # actions are authorized in the application, so the policy is tested with the same struct shape here.
   describe 'index, create, users_search (project-level actions)' do
     let(:record) { Moderator.new(nil, project.id) }
-    let(:actions) { [:index, :create, :users_search] }
 
     context 'for an admin' do
       let(:user) { admin }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:index, :create, :users_search]
     end
 
     context "for a folder moderator of the project's folder" do
       let(:user) { folder_moderator }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:index, :create, :users_search]
     end
 
     context 'for a folder moderator of an unrelated folder' do
       let(:user) { unrelated_folder_moderator }
-
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:index, :create, :users_search]
     end
 
     context 'for a project moderator of the project' do
       let(:user) { project_moderator }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:index, :create, :users_search]
     end
 
     context 'for a project moderator of another project' do
       let(:user) { other_project_moderator }
 
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:index, :create, :users_search]
     end
 
     context 'for a resident' do
       let(:user) { resident }
 
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:index, :create, :users_search]
     end
   end
 
@@ -87,42 +85,41 @@ describe ProjectModeratorPolicy do
   # This block tests the policy with the same struct shape as the controller uses.
   describe 'show, destroy (moderator-specific actions)' do
     let(:record) { Moderator.new(target_moderator.id, project.id) }
-    let(:actions) { [:show, :destroy] }
 
     context 'for an admin' do
       let(:user) { admin }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:show, :destroy]
     end
 
     context "for a folder moderator of the project's folder" do
       let(:user) { folder_moderator }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:show, :destroy]
     end
 
     context 'for a folder moderator of unrelated folder' do
       let(:user) { unrelated_folder_moderator }
 
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:show, :destroy]
     end
 
     context 'for a project moderator of the project' do
       let(:user) { project_moderator }
 
-      it_behaves_like 'permits actions', actions
+      it_behaves_like 'permits actions', [:show, :destroy]
     end
 
     context 'for a project moderator of another project' do
       let(:user) { other_project_moderator }
 
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:show, :destroy]
     end
 
     context 'for a resident' do
       let(:user) { resident }
 
-      it_behaves_like 'forbids actions', actions
+      it_behaves_like 'forbids actions', [:show, :destroy]
     end
   end
 end
