@@ -1472,9 +1472,10 @@ RSpec.describe User do
         expect(described_class.billed_admins).to contain_exactly(admin)
       end
 
-      it 'does not return Go Vocal admins' do
+      it 'does not return Go Vocal or Citizenlab admins' do
         create(:user)
         create(:admin, email: 'test@govocal.com')
+        create(:admin, email: 'test@citizenlab.co')
         non_gv_admin = create(:admin)
         expect(described_class.billed_admins).to contain_exactly(non_gv_admin)
       end
@@ -1503,9 +1504,10 @@ RSpec.describe User do
         expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
 
-      it 'does not return Go Vocal moderators' do
+      it 'does not return Go Vocal or Citizenlab moderators' do
         create(:user)
         create(:project_moderator, email: 'test@govocal.eu')
+        create(:project_moderator, email: 'test@citizenlab.co')
         non_cl_project_moderator = create(:project_moderator)
         expect(described_class.billed_moderators).to contain_exactly(non_cl_project_moderator)
       end
