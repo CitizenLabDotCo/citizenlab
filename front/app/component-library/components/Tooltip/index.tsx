@@ -63,7 +63,9 @@ const Tooltip = ({
   // issues with the document-level click/focusin handlers in useActiveElement.
   const manuallyHiddenRef = useRef(false);
 
-  // Check if the active element is inside the tooltip
+  // Check if the active element is inside the tooltip.
+  // Ignores activeElement === null (transient state from the document-level
+  // handleOutsideClick) to avoid interfering with click-based toggling.
   useEffect(() => {
     const tooltip = document.getElementById(tooltipId.current);
     const tooltipContent = document.querySelector('.tippy-content');
@@ -71,26 +73,30 @@ const Tooltip = ({
       if (!manuallyHiddenRef.current) {
         setIsFocused(true);
       }
-    } else if (
-      isFocused &&
-      tooltipContent &&
-      !tooltipContent.contains(activeElement)
-    ) {
-      setIsFocused(false);
+    } else if (activeElement !== null) {
+      // Focus has genuinely moved to another element outside the tooltip
+      if (
+        isFocused &&
+        tooltipContent &&
+        !tooltipContent.contains(activeElement)
+      ) {
+        setIsFocused(false);
+      }
       manuallyHiddenRef.current = false;
     }
   }, [activeElement, isFocused]);
 
   // Handle click (Space/Enter on button) to toggle tooltip visibility, and
-  // Escape to close. Uses native listeners so they fire before document-level
-  // handlers in useActiveElement, and stopPropagation prevents Escape from
-  // closing parent dialogs.
+  // Escape to close. Uses native listeners on the wrapper element.
+  // Click does NOT use stopPropagation, so clicks on interactive children
+  // (buttons, inputs) inside the tooltip wrapper propagate normally.
+  // Escape uses stopPropagation only when the tooltip is visible, preventing
+  // it from closing parent dialogs.
   useEffect(() => {
     const tooltip = document.getElementById(tooltipId.current);
     if (!tooltip) return;
 
-    const handleClick = (event: MouseEvent) => {
-      event.stopPropagation();
+    const handleClick = () => {
       if (manuallyHiddenRef.current) {
         manuallyHiddenRef.current = false;
         setIsFocused(true);
