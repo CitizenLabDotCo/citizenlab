@@ -1,6 +1,6 @@
 class SpaceModeratorPolicy < ApplicationPolicy
   def index?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   # def show?
@@ -22,7 +22,7 @@ class SpaceModeratorPolicy < ApplicationPolicy
   private
 
   # TODO: simple version for now
-  def admin_or_moderator?
-    user&.active? && user.admin?
+  def active_and_can_moderate?
+    user&.active? && UserRoleService.new.can_moderate?(Space.find_by(id: record.space_id), user)
   end
 end

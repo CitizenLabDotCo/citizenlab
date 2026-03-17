@@ -20,6 +20,8 @@ class UserRoleService
     when 'Permission'
       context = object.permission_scope
       context ? can_moderate?(context, user) : user.admin?
+    when 'Space'
+      user.admin? || (object.id && user.space_moderator?(object.id))
     end
   end
 
