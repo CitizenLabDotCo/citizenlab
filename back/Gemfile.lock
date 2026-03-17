@@ -1,19 +1,3 @@
-GIT
-  remote: https://github.com/crmne/ruby_llm.git
-  revision: 7282f9725cb3f83eee8f0f26a0812c998f82402f
-  ref: 7282f9725cb3f83eee8f0f26a0812c998f82402f
-  specs:
-    ruby_llm (1.12.1)
-      base64
-      event_stream_parser (~> 1)
-      faraday (>= 1.10.0)
-      faraday-multipart (>= 1)
-      faraday-net_http (>= 1)
-      faraday-retry (>= 1)
-      marcel (~> 1)
-      ruby_llm-schema (~> 0)
-      zeitwerk (~> 2)
-
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -654,11 +638,11 @@ GEM
     faraday-jwt (0.1.0)
       faraday (~> 2.0)
       json-jwt (~> 1.16)
-    faraday-multipart (1.1.0)
+    faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.0)
-      net-http (>= 0.5.0)
-    faraday-retry (2.2.1)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
+    faraday-retry (2.4.0)
       faraday (~> 2.0)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-arm64-darwin)
@@ -769,7 +753,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.9.1)
+    json (2.19.1)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -860,8 +844,8 @@ GEM
     nanoid (2.0.0)
     neighbor (0.5.0)
       activerecord (>= 7)
-    net-http (0.6.0)
-      uri
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-imap (0.5.7)
       date
       net-protocol
@@ -1191,7 +1175,17 @@ GEM
     rubyXL (3.4.27)
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
-    ruby_llm-schema (0.2.5)
+    ruby_llm (1.13.2)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 2.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 2.0)
+      marcel (~> 1)
+      ruby_llm-schema (~> 0)
+      zeitwerk (~> 2)
+    ruby_llm-schema (0.3.0)
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
@@ -1284,7 +1278,7 @@ GEM
     unparser (0.6.7)
       diff-lcs (~> 1.3)
       parser (>= 3.2.0)
-    uri (1.0.4)
+    uri (1.1.1)
     useragent (0.16.11)
     validate_email (0.1.6)
       activemodel (>= 3.0)
@@ -1316,7 +1310,7 @@ GEM
       rexml
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.3)
+    zeitwerk (2.7.5)
 
 PLATFORMS
   aarch64-linux
@@ -1472,7 +1466,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubyXL (~> 3.4.27)
-  ruby_llm!
+  ruby_llm (~> 1.13.0)
   rubyzip (~> 1.3.0)
   saharspec
   scenic
