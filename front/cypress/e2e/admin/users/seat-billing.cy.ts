@@ -106,9 +106,9 @@ describe('Seat based billing', () => {
 
           if (usedSeats >= totalSeats) {
             // Verify that user is required to confirm
-            cy.dataCy('e2e-confirm-change-seat-body').should('exist');
+            cy.dataCy('seat-limit-reached-body').should('exist');
             // Confirm setting user to admin user
-            cy.dataCy('e2e-confirm-change-seat-button').click();
+            cy.dataCy('confirm-add-seat').click();
 
             // Check that success is shown and close the modal
             cy.dataCy('e2e-seat-set-success-body').should('exist');
@@ -148,9 +148,9 @@ describe('Seat based billing', () => {
 
             cy.get('.tippy-content').contains('Set as normal user').click();
 
-            cy.dataCy('e2e-confirm-change-seat-body').should('exist');
+            cy.dataCy('seat-limit-reached-body').should('exist');
             // Confirm setting user to normal user
-            cy.dataCy('e2e-confirm-change-seat-button').click();
+            cy.dataCy('confirm-add-seat').click();
 
             cy.get('@firstRow').contains(user1Email);
             cy.get('@firstRow').contains('Registered user');
