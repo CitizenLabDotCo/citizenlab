@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 
 import {
   Tr,
@@ -19,7 +19,6 @@ import useUpdateUser from 'api/users/useUpdateUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import ChangeSeatModal from 'components/admin/SeatBasedBilling/ChangeSeatModal';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
@@ -100,56 +99,45 @@ const UsersTableRow = ({
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
-  const [showChangeSeatModalFor, setShowChangeSeatModalFor] = useState<
-    ChangingRoleType | undefined
-  >(undefined);
 
-  const onAction = useCallback((action: Action) => {
-    switch (action) {
-      case 'block-user':
-        setShowBlockUserModal(true);
-        break;
-      case 'unblock-user':
-        setShowUnblockUserModal(true);
-        break;
-      case 'delete-user':
-        setShowDeleteUserModal(true);
-        break;
-      case 'set-admin':
-        setShowChangeSeatModalFor('admin');
-        break;
-      case 'set-moderator':
-        setSetAsModeratorOpened(true);
-        break;
-      case 'set-normal-user':
-        setShowChangeSeatModalFor('user');
-        break;
-      default:
-        break;
-    }
-  }, []);
-
-  const handleMakeAdmin = () => {
+  const handleMakeAdmin = useCallback(() => {
     updateUser({
       userId: userInRow.id,
       roles: [...(userInRow.attributes.roles ?? []), { type: 'admin' }],
     });
-  };
+  }, [userInRow, updateUser]);
 
-  const handleMakeNormalUser = () => {
-    updateUser({
-      userId: userInRow.id,
-      roles: [],
-    });
-  };
-
-  const handleChangeSeat = () => {
-    if (showChangeSeatModalFor === 'admin') {
-      handleMakeAdmin();
-    } else if (showChangeSeatModalFor === 'user') {
-      handleMakeNormalUser();
-    }
-  };
+  const onAction = useCallback(
+    (action: Action) => {
+      switch (action) {
+        case 'block-user':
+          setShowBlockUserModal(true);
+          break;
+        case 'unblock-user':
+          setShowUnblockUserModal(true);
+          break;
+        case 'delete-user':
+          setShowDeleteUserModal(true);
+          break;
+        case 'set-admin':
+          // TODO
+          handleMakeAdmin();
+          break;
+        case 'set-moderator':
+          setSetAsModeratorOpened(true);
+          break;
+        case 'set-normal-user':
+          updateUser({
+            userId: userInRow.id,
+            roles: [],
+          });
+          break;
+        default:
+          break;
+      }
+    },
+    [handleMakeAdmin, updateUser, userInRow]
+  );
 
   const actions = useMemo(() => {
     return getActions({
@@ -256,15 +244,6 @@ const UsersTableRow = ({
             returnFocusRef={moreActionsButtonRef}
           />
         )}
-        <Suspense fallback={null}>
-          <ChangeSeatModal
-            userToChangeSeat={userInRow}
-            returnFocusRef={moreActionsButtonRef}
-            changingToRoleType={showChangeSeatModalFor}
-            closeModal={() => setShowChangeSeatModalFor(undefined)}
-            onConfirm={handleChangeSeat}
-          />
-        </Suspense>
         <Modal
           opened={isAssignedItemsOpened}
           close={() => setIsAssignedItemsOpened(false)}
