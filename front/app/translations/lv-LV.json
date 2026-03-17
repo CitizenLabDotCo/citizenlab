@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Šis e-pasts jau pastāv. Tam ir piesaistīts cits konts.",
   "app.errors.generics.unsupported_locales": "Šis lauks neatbalsta pašreizējo darbības vietu.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Kā projekta vadītājs jūs varat sūtīt e-pasta vēstules tikai tām personām, kuras var piekļūt jūsu projektam(-iem).",
+  "app.errors.has_inputs": "Jūs nevarat mainīt dalības metodi, jo šajā posmā jau ir ievades dati. Lūdzu, vispirms noņemiet visus ievades datus.",
   "app.errors.has_other_overlapping_phases": "Projektu posmi nedrīkst pārklāties.",
   "app.errors.invalid_email": "Rindā {row} atrodamais e-pasts {value} nav derīga e-pasta adrese",
   "app.errors.invalid_row": "Mēģinot apstrādāt rindu {row}, radās nezināma kļūda.",
