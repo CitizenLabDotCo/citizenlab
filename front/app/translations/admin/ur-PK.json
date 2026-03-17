@@ -170,8 +170,6 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "تاریخ منتخب کریں۔",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "اختتامی تاریخ صاف کریں۔",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "آغاز کی تاریخ صاف کریں۔",
-  "app.components.admin.DateTimeSelection.dateStartLabel": "شروع ہونے کی تاریخ اور وقت",
-  "app.components.admin.DateTimeSelection.datesEndLabel": "اختتامی تاریخ اور وقت",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "فعال",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "ایکٹو ایڈمنز",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "فعال پچھلے 30 دن:",
