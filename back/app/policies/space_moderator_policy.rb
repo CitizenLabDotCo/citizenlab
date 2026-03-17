@@ -1,7 +1,7 @@
 class SpaceModeratorPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user&.space_moderator?
+      if user&.active? && user.space_moderator?
         scope.where(id: user.moderated_space_ids)
       elsif user&.active? && user.admin?
         scope.all
