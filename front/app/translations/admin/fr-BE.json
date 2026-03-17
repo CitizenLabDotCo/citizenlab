@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Sélectionnez une date",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Effacer la date de fin",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Effacer la date de début",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Début",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Fin",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Actif",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Administrateurs actifs",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Actif au cours des 30 derniers jours :",
