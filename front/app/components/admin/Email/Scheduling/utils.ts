@@ -1,7 +1,7 @@
 // Set default time to 7:00 AM in time selector
 export const getDefaultTime = (): Date => {
   const now = new Date();
-  now.setHours(now.getHours() + 1, 0, 0, 0);
+  now.setHours(7, 0, 0, 0);
   return now;
 };
 
