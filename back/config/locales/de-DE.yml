@@ -398,5 +398,6 @@ de:
     event_details: "Veranstaltungsdetails"
   errors:
     messages:
+      in_the_past: "muss in der Zukunft liegen"
       max_must_be_greater_than_min_characters: "Das Maximum muss größer sein als das Minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Das Maximum muss größer oder gleich dem Minimum sein."
