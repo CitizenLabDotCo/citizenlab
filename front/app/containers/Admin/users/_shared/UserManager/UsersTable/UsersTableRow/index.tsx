@@ -19,12 +19,8 @@ import useUpdateUser from 'api/users/useUpdateUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
-import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
-import DeleteUser from 'components/admin/UserDeleteModal';
 import Avatar from 'components/Avatar';
-import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -36,8 +32,8 @@ import { getFullName } from 'utils/textUtils';
 import messages from '../../../../messages';
 
 import { Action, getActions } from './actions';
-import SetAsModerator from './SetAsModerator';
-import UserAssignedItems from './UserAssignedItems';
+import Modals from './Modals';
+import { ModalName } from './types';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -74,13 +70,6 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
   return roleMessage[highestRole];
 };
 
-type ModalOpened =
-  | 'block-user'
-  | 'unblock-user'
-  | 'delete-user'
-  | 'user-assigned-items'
-  | 'set-moderator';
-
 const UsersTableRow = ({
   userInRow,
   selected,
@@ -99,7 +88,7 @@ const UsersTableRow = ({
     userInRow.attributes.invite_status !== 'pending';
   const authUserIsAdmin = isAdmin({ data: authUser });
 
-  const [modalOpened, setModalOpened] = useState<ModalOpened | null>(null);
+  const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const closeModal = () => setModalOpened(null);
 
   const handleMakeAdmin = useCallback(() => {
@@ -225,45 +214,12 @@ const UsersTableRow = ({
             actions={actions}
           />
         </Td>
-        {modalOpened === 'block-user' && (
-          <BlockUser
-            user={userInRow}
-            setClose={closeModal}
-            returnFocusRef={moreActionsButtonRef}
-          />
-        )}
-        {modalOpened === 'unblock-user' && (
-          <UnblockUser
-            user={userInRow}
-            setClose={closeModal}
-            returnFocusRef={moreActionsButtonRef}
-          />
-        )}
-        {modalOpened === 'delete-user' && (
-          <DeleteUser
-            user={userInRow}
-            setClose={closeModal}
-            returnFocusRef={moreActionsButtonRef}
-          />
-        )}
-        <Modal
-          opened={modalOpened === 'user-assigned-items'}
-          close={closeModal}
-          // Return focus to the More Actions button on close
-          returnFocusRef={moreActionsButtonRef}
-          ariaLabelledBy="assigned-items-modal-title"
-        >
-          <UserAssignedItems user={userInRow} />
-        </Modal>
-        <Modal
-          opened={modalOpened === 'set-moderator'}
-          close={closeModal}
-          // Return focus to the More Actions button on close
-          returnFocusRef={moreActionsButtonRef}
-          ariaLabelledBy="set-moderator-modal-title"
-        >
-          <SetAsModerator user={userInRow} onClose={closeModal} />
-        </Modal>
+        <Modals
+          modalOpened={modalOpened}
+          user={userInRow}
+          moreActionsButtonRef={moreActionsButtonRef}
+          closeModal={closeModal}
+        />
       </Tr>
     </>
   );
