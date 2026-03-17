@@ -8,14 +8,16 @@ import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddPr
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
 
+import useExceedsSeats from 'hooks/useExceedsSeats';
 import useLocalize from 'hooks/useLocalize';
 
+import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 interface Props {
   user: IUserData;
@@ -27,6 +29,9 @@ const SetAsModerator = ({ user, onClose }: Props) => {
   const { mutateAsync: addProjectFolderModerator } =
     useAddProjectFolderModerator();
   const [isLoading, setIsLoading] = useState(false);
+  const [seatLimitReachedModalOpen, setSeatLimitReachedModalOpen] =
+    useState(false);
+
   const { formatMessage } = useIntl();
   const [selectedPublications, setSelectedPublications] = useState<string[]>(
     []
@@ -37,6 +42,8 @@ const SetAsModerator = ({ user, onClose }: Props) => {
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );
+
+  const { checkIfUserExceedsSeats } = useExceedsSeats();
 
   if (!flatAdminPublications) return null;
 
@@ -49,7 +56,16 @@ const SetAsModerator = ({ user, onClose }: Props) => {
       : localize(publication.attributes.publication_title_multiloc),
   }));
 
-  const handleAssign = async () => {
+  const handleAssign = () => {
+    if (!checkIfUserExceedsSeats) return;
+    if (checkIfUserExceedsSeats(user, 'moderator')) {
+      setSeatLimitReachedModalOpen(true);
+    } else {
+      doAssign();
+    }
+  };
+
+  const doAssign = async () => {
     setIsLoading(true);
     try {
       for (const publicationId of selectedPublications) {
@@ -103,6 +119,12 @@ const SetAsModerator = ({ user, onClose }: Props) => {
           {formatMessage(messages.assign)}
         </Button>
       </Box>
+      <SeatLimitReachedModal
+        seatType="admin"
+        showModal={seatLimitReachedModalOpen}
+        closeModal={() => setSeatLimitReachedModalOpen(false)}
+        addModerators={doAssign}
+      />
     </div>
   );
 };
