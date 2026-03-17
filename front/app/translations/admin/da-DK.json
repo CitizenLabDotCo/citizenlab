@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Vælg dato",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Ryd slutdato",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Ryd startdato",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Start",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "End",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktiv",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktive administratorer",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktiv de sidste 30 dage:",
