@@ -45,16 +45,16 @@ class FolderModeratorPolicy < ApplicationPolicy
     return unless user&.active?
 
     folder_id = if record.respond_to?(:folder)
-                  record.folder&.id
-                elsif record.respond_to?(:project_folder_id)
-                  record.project_folder_id
-                end
+      record.folder&.id
+    elsif record.respond_to?(:project_folder_id)
+      record.project_folder_id
+    end
 
     space_id = if record.respond_to?(:space_id)
-                record.space_id
-              elsif record.respond_to?(:folder) && record.folder.respond_to?(:space_id)
-                record.folder.space_id
-              end
+      record.space_id
+    elsif record.respond_to?(:folder) && record.folder.respond_to?(:space_id)
+      record.folder.space_id
+    end
 
     user.admin? ||
       user.project_folder_moderator?(folder_id) ||
