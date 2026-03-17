@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "ਮਿਤੀ ਚੁਣੋ",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "ਸਮਾਪਤੀ ਮਿਤੀ ਸਾਫ਼ ਕਰੋ",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ ਸਾਫ਼ ਕਰੋ",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "ਸ਼ੁਰੂਆਤੀ ਮਿਤੀ ਅਤੇ ਸਮਾਂ",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "ਸਮਾਪਤੀ ਮਿਤੀ ਅਤੇ ਸਮਾਂ",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "ਕਿਰਿਆਸ਼ੀਲ",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "ਸਰਗਰਮ ਪ੍ਰਸ਼ਾਸਕ",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "ਪਿਛਲੇ 30 ਦਿਨਾਂ ਤੋਂ ਸਰਗਰਮ:",
