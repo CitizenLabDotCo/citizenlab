@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Izvēlieties datumu",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Skaidrs beigu datums",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Skaidrs sākuma datums",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Sākuma datums un laiks",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Beigu datums un laiks",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktīvais",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktīvie administratori",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktīvs pēdējās 30 dienās:",
