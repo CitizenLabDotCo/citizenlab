@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Roghnaigh dáta",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Glan an dáta deiridh",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Glan an dáta tosaithe",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Dáta agus am tosaigh",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Dáta agus am deiridh",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Gníomhach",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Riarthóirí gníomhacha",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Gníomhach le 30 lá anuas:",
