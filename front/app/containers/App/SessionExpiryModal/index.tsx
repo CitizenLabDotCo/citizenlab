@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
@@ -24,14 +24,28 @@ const SessionExpiryModal = () => {
   const { data: authUser } = useAuthUser();
   const location = useLocation();
   const isAuthenticated = !!authUser;
-  const { sessionState, resetState, dismissModal } = useSessionExpiryMonitor(
-    isAuthenticated,
-    location.pathname
-  );
+  const { sessionState, initialSecondsRemaining, resetState, dismissModal } =
+    useSessionExpiryMonitor(isAuthenticated, location.pathname);
   const { formatMessage } = useIntl();
 
   const isExpired = sessionState === 'expired';
+  const [countdown, setCountdown] = useState<number>(0);
   const previousTitleRef = useRef<string | null>(null);
+
+  // Countdown timer for expiring_soon state
+  useEffect(() => {
+    if (sessionState !== 'expiring_soon' || initialSecondsRemaining === null) {
+      return;
+    }
+
+    setCountdown(initialSecondsRemaining);
+
+    const id = setInterval(() => {
+      setCountdown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, [sessionState, initialSecondsRemaining]);
 
   useEffect(() => {
     if (sessionState === 'expiring_soon' || sessionState === 'expired') {
@@ -110,28 +124,32 @@ const SessionExpiryModal = () => {
           )}
         </Title>
         <Text textAlign="center" color="textSecondary">
-          {formatMessage(
-            isExpired
-              ? messages.sessionExpiredDescription
-              : messages.sessionExpiringSoonDescription
-          )}
+          {isExpired
+            ? formatMessage(messages.sessionExpiredDescription)
+            : countdown <= 60
+            ? formatMessage(messages.sessionExpiringSoonDescriptionSeconds, {
+                seconds: countdown,
+              })
+            : formatMessage(messages.sessionExpiringSoonDescriptionMinutes, {
+                minutes: Math.ceil(countdown / 60),
+              })}
         </Text>
         {isExpired ? (
           <Box display="flex" gap="12px">
-            <Button onClick={handleLogInAgain}>
-              {formatMessage(messages.logInAgain)}
-            </Button>
             <Button buttonStyle="text" onClick={handleSignOut}>
               {formatMessage(messages.staySignedOut)}
+            </Button>
+            <Button onClick={handleLogInAgain}>
+              {formatMessage(messages.logInAgain)}
             </Button>
           </Box>
         ) : (
           <Box display="flex" gap="12px">
-            <Button onClick={handleStayLoggedIn}>
-              {formatMessage(messages.stayLoggedIn)}
-            </Button>
             <Button buttonStyle="text" onClick={handleSignOut}>
               {formatMessage(messages.signOut)}
+            </Button>
+            <Button onClick={handleStayLoggedIn}>
+              {formatMessage(messages.stayLoggedIn)}
             </Button>
           </Box>
         )}

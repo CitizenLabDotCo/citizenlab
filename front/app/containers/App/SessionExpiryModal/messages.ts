@@ -5,10 +5,15 @@ export default defineMessages({
     id: 'app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle',
     defaultMessage: 'Your session is about to expire',
   },
-  sessionExpiringSoonDescription: {
-    id: 'app.containers.App.SessionExpiryModal.sessionExpiringSoonDescription1',
+  sessionExpiringSoonDescriptionMinutes: {
+    id: 'app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes',
     defaultMessage:
-      'You will be signed out soon. Would you like to stay signed in?',
+      'You will be signed out automatically in {minutes} {minutes, plural, one {minute} other {minutes}}. Would you like to stay signed in?',
+  },
+  sessionExpiringSoonDescriptionSeconds: {
+    id: 'app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds',
+    defaultMessage:
+      'You will be signed out automatically in {seconds} {seconds, plural, one {second} other {seconds}}. Would you like to stay signed in?',
   },
   stayLoggedIn: {
     id: 'app.containers.App.SessionExpiryModal.staySignedIn',

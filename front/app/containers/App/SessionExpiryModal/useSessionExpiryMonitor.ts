@@ -6,8 +6,8 @@ import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_MS = 300_000; // Checks every 5 minutes unless the route is changed
-const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
+const CHECK_INTERVAL_MS = 10_000; // 300_000; // Checks every 5 minutes unless the route is changed
+const EXPIRING_SOON_THRESHOLD_S = 90; // 1800; // 30 minutes
 
 async function isSessionInvalidOnServer(): Promise<boolean> {
   const jwt = getJwt();
@@ -33,6 +33,9 @@ export default function useSessionExpiryMonitor(
   pathname: string
 ) {
   const [sessionState, setSessionState] = useState<SessionState>('idle');
+  const [initialSecondsRemaining, setInitialSecondsRemaining] = useState<
+    number | null
+  >(null);
   const checkingRef = useRef(false);
   const dismissedRef = useRef(false);
   const lastExpRef = useRef<number | null>(null);
@@ -84,6 +87,8 @@ export default function useSessionExpiryMonitor(
       try {
         const secondsLeft = getSecondsUntilExpiry();
 
+        console.log('Session expiry check:', { secondsLeft });
+
         // JWT clearly expired locally — no need to check server
         if (secondsLeft !== null && secondsLeft <= 0) {
           setSessionState('expired');
@@ -99,6 +104,7 @@ export default function useSessionExpiryMonitor(
         }
 
         if (secondsLeft !== null && secondsLeft <= EXPIRING_SOON_THRESHOLD_S) {
+          setInitialSecondsRemaining(Math.max(0, Math.floor(secondsLeft)));
           setSessionState('expiring_soon');
         }
       } finally {
@@ -111,5 +117,5 @@ export default function useSessionExpiryMonitor(
     return () => clearInterval(id);
   }, [isAuthenticated, pathname]);
 
-  return { sessionState, resetState, dismissModal };
+  return { sessionState, initialSecondsRemaining, resetState, dismissModal };
 }
