@@ -51,7 +51,6 @@ export function decode(jwt) {
 }
 
 export function getSecondsUntilExpiry(): number | null {
-  console.log('checking', Date.now());
   const jwt = getJwt();
   if (!jwt) return null;
   try {

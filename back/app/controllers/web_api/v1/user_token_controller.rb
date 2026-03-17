@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
-  TOKEN_LIFETIME = 1.day
+  TOKEN_LIFETIME = 1.minutes
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: %i[user_token_unconfirmed refresh]
   before_action :authenticate_from_jwt, only: [:refresh]

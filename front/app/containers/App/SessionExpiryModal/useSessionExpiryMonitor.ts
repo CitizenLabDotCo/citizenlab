@@ -6,8 +6,8 @@ import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_MS = 300_000; // Checks every 5 minutes unless the route is changed
-const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
+const CHECK_INTERVAL_MS = 10_000; // 300_000; // Checks every 5 minutes unless the route is changed
+const EXPIRING_SOON_THRESHOLD_S = 30; // 1800; // 30 minutes
 
 async function isSessionInvalidOnServer(): Promise<boolean> {
   const jwt = getJwt();
@@ -34,9 +34,17 @@ export default function useSessionExpiryMonitor(
 ) {
   const [sessionState, setSessionState] = useState<SessionState>('idle');
   const checkingRef = useRef(false);
+  const dismissedRef = useRef(false);
+  const lastExpRef = useRef<number | null>(null);
   const wasAuthenticatedRef = useRef(isAuthenticated);
 
   const resetState = useCallback(() => {
+    dismissedRef.current = true;
+    setSessionState('idle');
+  }, []);
+
+  // Hides the modal but keeps the monitor running
+  const dismissModal = useCallback(() => {
     setSessionState('idle');
   }, []);
 
@@ -44,6 +52,7 @@ export default function useSessionExpiryMonitor(
   // (i.e. they logged back in after session expired)
   useEffect(() => {
     if (!wasAuthenticatedRef.current && isAuthenticated) {
+      dismissedRef.current = false;
       setSessionState('idle');
     }
     wasAuthenticatedRef.current = isAuthenticated;
@@ -56,10 +65,26 @@ export default function useSessionExpiryMonitor(
 
     const check = async () => {
       if (checkingRef.current) return;
+
+      // Detect if the JWT has been refreshed (new login) since we dismissed
+      const secondsUntilExpiry = getSecondsUntilExpiry();
+      if (secondsUntilExpiry !== null) {
+        const currentExp = Math.floor(Date.now() / 1000) + secondsUntilExpiry;
+        if (lastExpRef.current !== null && currentExp > lastExpRef.current) {
+          // JWT was replaced with a newer one — user logged back in
+          dismissedRef.current = false;
+          setSessionState('idle');
+        }
+        lastExpRef.current = currentExp;
+      }
+
+      if (dismissedRef.current) return;
       checkingRef.current = true;
 
       try {
         const secondsLeft = getSecondsUntilExpiry();
+
+        console.log('seconds until JWT expiry:', secondsLeft);
 
         // JWT clearly expired locally — no need to check server
         if (secondsLeft !== null && secondsLeft <= 0) {
@@ -88,5 +113,5 @@ export default function useSessionExpiryMonitor(
     return () => clearInterval(id);
   }, [isAuthenticated, pathname]);
 
-  return { sessionState, resetState };
+  return { sessionState, resetState, dismissModal };
 }

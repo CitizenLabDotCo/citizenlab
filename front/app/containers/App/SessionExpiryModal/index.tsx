@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
 import refreshToken from 'api/authentication/sign_in_out/refreshToken';
-import signOut from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -25,13 +24,33 @@ const SessionExpiryModal = () => {
   const { data: authUser } = useAuthUser();
   const location = useLocation();
   const isAuthenticated = !!authUser;
-  const { sessionState, resetState } = useSessionExpiryMonitor(
+  const { sessionState, resetState, dismissModal } = useSessionExpiryMonitor(
     isAuthenticated,
     location.pathname
   );
   const { formatMessage } = useIntl();
 
   const isExpired = sessionState === 'expired';
+  const previousTitleRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (sessionState === 'expiring_soon' || sessionState === 'expired') {
+      if (previousTitleRef.current === null) {
+        previousTitleRef.current = document.title;
+      }
+      document.title =
+        sessionState === 'expiring_soon'
+          ? 'Session expiring soon'
+          : 'Signed out';
+    }
+
+    return () => {
+      if (previousTitleRef.current !== null) {
+        document.title = previousTitleRef.current;
+        previousTitleRef.current = null;
+      }
+    };
+  }, [sessionState]);
 
   if (sessionState === 'idle') return null;
 
@@ -45,18 +64,29 @@ const SessionExpiryModal = () => {
     }
   };
 
-  const handleLogInAgain = async () => {
-    await signOut();
+  const clearSession = async () => {
+    removeJwt();
+    await resetMeQuery();
+    invalidateQueryCache();
+  };
+
+  const handleLogInAgain = () => {
+    resetState();
     triggerAuthenticationFlow(undefined, 'signin');
+  };
+
+  const handleSignOut = async () => {
+    await clearSession();
+    resetState();
   };
 
   const handleClose = async () => {
     if (isExpired) {
-      removeJwt();
-      await resetMeQuery();
-      invalidateQueryCache();
+      await clearSession();
+      resetState();
+    } else {
+      dismissModal();
     }
-    resetState();
   };
 
   return (
@@ -86,11 +116,25 @@ const SessionExpiryModal = () => {
               : messages.sessionExpiringSoonDescription
           )}
         </Text>
-        <Button onClick={isExpired ? handleLogInAgain : handleStayLoggedIn}>
-          {formatMessage(
-            isExpired ? messages.logInAgain : messages.stayLoggedIn
-          )}
-        </Button>
+        {isExpired ? (
+          <Box display="flex" gap="12px">
+            <Button onClick={handleLogInAgain}>
+              {formatMessage(messages.logInAgain)}
+            </Button>
+            <Button buttonStyle="text" onClick={handleSignOut}>
+              {formatMessage(messages.staySignedOut)}
+            </Button>
+          </Box>
+        ) : (
+          <Box display="flex" gap="12px">
+            <Button onClick={handleStayLoggedIn}>
+              {formatMessage(messages.stayLoggedIn)}
+            </Button>
+            <Button buttonStyle="text" onClick={handleSignOut}>
+              {formatMessage(messages.signOut)}
+            </Button>
+          </Box>
+        )}
       </Box>
     </Modal>
   );
