@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Relatório do Monitor Comunitário: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Início",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Comprar 1 licença adicional",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Confirmar",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Tem a certeza de que quer dar direitos de gestor a uma pessoa?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Conceder direitos de gestor",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Você atingiu o limite de licenças incluídas em seu plano, 1 licença adicional será adicionada.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Adicionar status",

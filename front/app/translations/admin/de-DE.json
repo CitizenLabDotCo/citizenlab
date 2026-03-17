@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Gemeinschaftspuls-Bericht: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Start",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "1 zusätzlichen Zugang kaufen",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Bestätigen",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Sind Sie sicher, dass Sie einer Person Managementrechte erteilen wollen?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Managementrechte erteilen",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Sie haben das Limit der in Ihrem Tarif enthaltenen Plätze erreicht, {noOfSeats} zusätzliche {noOfSeats, plural, one {seat} other {seats}} werden hinzugefügt.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Status hinzufügen",

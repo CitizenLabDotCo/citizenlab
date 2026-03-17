@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Bendrijos stebėtojo ataskaita: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Pradžia",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Įsigykite 1 papildomą vietą",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Patvirtinkite",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Ar tikrai norite 1 asmeniui suteikti vadovo teises?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Suteikti vadybininko teises",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Pasiekėte savo plano vietų limitą, bus pridėta 1 papildoma vieta.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Pridėti būseną",

@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "کمیونٹی مانیٹر کی رپورٹ: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "شروع کریں۔",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "1 اضافی سیٹ خریدیں۔",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "تصدیق کریں۔",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "کیا آپ واقعی 1 شخص مینیجر کے حقوق دینا چاہتے ہیں؟",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "مینیجر کو حقوق دیں۔",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "آپ اپنے پلان میں شامل سیٹوں کی حد کو پہنچ گئے ہیں، 1 اضافی سیٹ شامل کی جائے گی۔",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "حیثیت شامل کریں۔",

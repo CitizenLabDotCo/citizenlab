@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Rapport de l'Observatoire de communauté : T{quarter}-{year}",
   "app.containers.admin.ReportBuilder.start1": "Début",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Acheter 1 siège supplémentaire",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Confirmer",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Êtes-vous sûr de vouloir accorder les droits de gestionnaire à une personne ?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Accorder les droits de gestionnaire",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Vous avez atteint la limite de sièges inclus dans votre plan, 1 siège supplémentaire sera ajouté.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ajouter un statut",

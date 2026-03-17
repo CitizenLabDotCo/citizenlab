@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Tuarascáil Monatóireachta Pobail: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Tosaigh",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Ceannaigh 1 suíochán breise",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Deimhnigh",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "An bhfuil tú cinnte gur mian leat cearta bainisteora a thabhairt do dhuine amháin?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Tabhair cearta do bhainisteoirí",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Tá teorainn na suíochán atá san áireamh i do phlean sroichte agat, cuirfear 1 suíochán breise leis.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Cuir stádas leis",

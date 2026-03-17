@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Yhteisön valvontaraportti: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "alkaa",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Osta 1 lisäpaikka",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Vahvistaa",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Haluatko varmasti antaa 1 henkilön ylläpitäjän oikeudet?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Anna johtajan oikeudet",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Olet saavuttanut suunnitelmaasi sisältyvien paikkojen enimmäismäärän, 1 lisäpaikka lisätään.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Lisää tila",

@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Toplum Gözlemcisi Raporu: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Başlangıç",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "1 ek koltuk satın alın",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Onaylayın",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Bir kişiye yönetici hakları vermek istediğinizden emin misiniz?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Yönetici hakları verin",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Planınız dahilindeki koltuk sınırına ulaştınız, {noOfSeats} ek {noOfSeats, plural, one {koltuk} other {koltuk}} eklenecektir.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Durum ekleyin",

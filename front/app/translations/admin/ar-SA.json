@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "تقرير مراقبة المجتمع: {year} س{quarter}",
   "app.containers.admin.ReportBuilder.start1": "يبدأ",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "شراء 1 مقعد إضافي",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "يتأكد",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "هل أنت متأكد أنك تريد منح شخص واحد مدير حقوق؟",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "امنح حقوق المدير",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "لقد وصلت إلى الحد الأقصى من المقاعد المضمنة في خطتك ، {noOfSeats} مقاعد إضافية {noOfSeats, plural, one {مقعد} other {مقاعد}} سوف تتم اضافته.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "إضافة حالة",

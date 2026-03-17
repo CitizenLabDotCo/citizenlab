@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "ਸ਼ੁਰੂ ਕਰੋ",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "1 ਵਾਧੂ ਸੀਟ ਖਰੀਦੋ",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "ਪੁਸ਼ਟੀ ਕਰੋ",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ 1 ਵਿਅਕਤੀ ਨੂੰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦੇਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "ਮੈਨੇਜਰ ਨੂੰ ਅਧਿਕਾਰ ਦਿਓ",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "ਤੁਸੀਂ ਆਪਣੇ ਪਲਾਨ ਵਿੱਚ ਸ਼ਾਮਲ ਸੀਟਾਂ ਦੀ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਏ ਹੋ, 1 ਵਾਧੂ ਸੀਟ ਸ਼ਾਮਲ ਕੀਤੀ ਜਾਵੇਗੀ।",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "ਸਥਿਤੀ ਸ਼ਾਮਲ ਕਰੋ",

@@ -3617,8 +3617,6 @@
   "app.containers.admin.ReportBuilder.quarterReport1": "Rapport från Community Monitor: {year} Q{quarter}",
   "app.containers.admin.ReportBuilder.start1": "Start",
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": "Köp 1 extra plats",
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": "Bekräfta",
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": "Är du säker på att du vill ge en person chefsrättigheter?",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Ge chefen rättigheter",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Du har nått gränsen för antalet inkluderade platser i din plan, {noOfSeats} ytterligare {noOfSeats, plural, one {plats} other {platser}} kommer att läggas till.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Lägg till status",
