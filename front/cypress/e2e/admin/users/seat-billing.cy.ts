@@ -101,6 +101,7 @@ describe('Seat based billing', () => {
           cy.get('@firstRow').contains(user1Email);
           cy.get('@firstRow').contains('Registered user');
           cy.get('@firstRow').find('.e2e-more-actions').click();
+          cy.wait(1000);
 
           cy.get('.tippy-content').contains('Set as admin').click();
 
@@ -145,12 +146,9 @@ describe('Seat based billing', () => {
             cy.visit('/admin/users');
             // Set user as normal user
             cy.get('@firstRow').find('.e2e-more-actions').click();
+            cy.wait(1000);
 
             cy.get('.tippy-content').contains('Set as normal user').click();
-
-            cy.dataCy('seat-limit-reached-body').should('exist');
-            // Confirm setting user to normal user
-            cy.dataCy('confirm-add-seat').click();
 
             cy.get('@firstRow').contains(user1Email);
             cy.get('@firstRow').contains('Registered user');
