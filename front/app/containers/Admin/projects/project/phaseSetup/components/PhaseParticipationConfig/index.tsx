@@ -489,7 +489,6 @@ const PhaseParticipationConfig = ({
     <Container>
       <StyledSection>
         <ParticipationMethodPicker
-          phase={phase}
           participation_method={participation_method}
           showSurveys={showSurveys}
           apiErrors={apiErrors}
