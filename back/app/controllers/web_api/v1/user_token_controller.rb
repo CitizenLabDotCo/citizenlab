@@ -57,7 +57,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   end
 
   def authenticate_from_jwt
-    token = request.headers['Authorization']&.split(' ')&.last
+    token = request.headers['Authorization']&.split&.last
     raise ActiveRecord::RecordNotFound if token.blank?
 
     decoded = AuthToken::AuthToken.new(token: token)
