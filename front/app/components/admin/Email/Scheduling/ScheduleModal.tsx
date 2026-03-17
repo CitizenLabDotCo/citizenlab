@@ -9,14 +9,13 @@ import styled from 'styled-components';
 import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
+import TimeInput from 'components/admin//DateTimeSelection/TimeInput';
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import { Form } from 'components/smallForm';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import TimeInput from '../../../../containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
 
 import messages from './messages';
 import { getDefaultTime, getNextHourTime } from './utils';
