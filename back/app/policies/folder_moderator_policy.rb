@@ -3,7 +3,7 @@
 class FolderModeratorPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user&.active? && user.project_folder_moderator?
+      if user&.project_folder_moderator?
         moderated_folders = user.moderated_project_folders
         scope.project_folder_moderator(moderated_folders.pluck(:id))
       elsif user&.active? && user.admin?
@@ -15,15 +15,15 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def index?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def show?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def create?
-    user&.active? && user.admin?
+    user&.active? && (user.admin? || user.space_moderator?(record&.space_id)) # does this make sense for space moderators? maybe not!
   end
 
   def destroy?
@@ -32,7 +32,11 @@ class FolderModeratorPolicy < ApplicationPolicy
 
   private
 
-  def active_and_can_moderate?
-    user&.active? && UserRoleService.new.can_moderate?(ProjectFolders::Folder.find_by(id: record.project_folder_id), user)
+  def admin_or_moderator?
+    # In the case of folder moderator, the user must be moderator of that project's folder
+    # (not just of any project).
+    return unless user&.active?
+
+    user.admin? || user.project_folder_moderator?(record&.folder&.id) || user.space_moderator?(record&.space_id)
   end
 end
