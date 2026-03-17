@@ -398,5 +398,6 @@ nb:
     event_details: "Detaljer om arrangementet"
   errors:
     messages:
+      in_the_past: "må ligge i fremtiden"
       max_must_be_greater_than_min_characters: "Maksimum må være større enn minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum må være større enn eller lik minimum."
