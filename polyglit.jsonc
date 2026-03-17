@@ -1,7 +1,6 @@
 {
   // Repository and branch configuration
-  "repo": "git@github.com:CitizenLabDotCo/citizenlab.git",
-  "baseBranch": "master",
+  "baseBranch": "switch-to-polyglit", // Temporary, just for the rollout
   "githubLabel": "waiting for translations",
 
   // Locale definitions
