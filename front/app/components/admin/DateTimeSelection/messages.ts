@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   dateStartLabel: {
-    id: 'app.components.admin.DateTimeSelection.dateStartLabel',
+    id: 'app.containers.AdminPage.ProjectEvents.dateStartLabel',
     defaultMessage: 'Starting date & time',
   },
   datesEndLabel: {
-    id: 'app.components.admin.DateTimeSelection.datesEndLabel',
+    id: 'app.containers.AdminPage.ProjectEvents.datesEndLabel',
     defaultMessage: 'End date & time',
   },
 });
