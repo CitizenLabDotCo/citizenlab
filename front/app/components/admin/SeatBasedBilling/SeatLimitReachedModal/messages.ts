@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.admin.addCollaboratorsModal.giveManagerRights',
     defaultMessage: 'Give manager rights',
   },
+  giveAdminRights: {
+    id: 'app.containers.admin.addCollaboratorsModal.giveAdminRights',
+    defaultMessage: 'Give admin rights',
+  },
   hasReachedOrIsOverLimit: {
     id: 'app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit',
     defaultMessage:

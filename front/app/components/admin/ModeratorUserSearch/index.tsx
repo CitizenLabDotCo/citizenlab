@@ -15,8 +15,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const AddModeratorsModal = lazy(
-  () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
+const SeatLimitReachedModal = lazy(
+  () => import('components/admin/SeatBasedBilling/SeatLimitReachedModal')
 );
 
 const AddButton = styled(ButtonWithLink)`
@@ -109,7 +109,8 @@ const UserSearch = memo(({ projectId, label }: Props) => {
         />
       </Box>
       <Suspense fallback={null}>
-        <AddModeratorsModal
+        <SeatLimitReachedModal
+          seatType="moderator"
           addModerators={handleOnAddModeratorsClick}
           showModal={showModal}
           closeModal={closeModal}

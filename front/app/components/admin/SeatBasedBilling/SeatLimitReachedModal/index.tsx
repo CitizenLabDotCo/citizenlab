@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import SeatInfo, {
+  TSeatType,
+} from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
 import Modal from 'components/UI/Modal';
@@ -12,12 +14,19 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
+  seatType: TSeatType;
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
 }
 
-const AddModeratorsModal = ({
+const HEADER_MESSAGE_PER_SEAT_TYPE = {
+  admin: messages.giveAdminRights,
+  moderator: messages.giveManagerRights,
+} as const;
+
+const SeatLimitReachedModal = ({
+  seatType,
   showModal,
   closeModal,
   addModerators,
@@ -29,14 +38,14 @@ const AddModeratorsModal = ({
 
   const header = !showSuccess ? (
     <Text
-      id="add-moderators-modal-title"
+      id="seat-limit-reached-modal-title"
       color="primary"
       my="8px"
       fontSize="l"
       fontWeight="bold"
       px="2px"
     >
-      {formatMessage(messages.giveManagerRights)}
+      {formatMessage(HEADER_MESSAGE_PER_SEAT_TYPE[seatType])}
     </Text>
   ) : undefined;
 
@@ -50,12 +59,12 @@ const AddModeratorsModal = ({
       opened={showModal}
       close={resetModal}
       header={header}
-      ariaLabelledBy="add-moderators-modal-title"
+      ariaLabelledBy="seat-limit-reached-modal-title"
     >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}
-          seatType="moderator"
+          seatType={seatType}
           hasExceededPlanSeatLimit={true}
         />
       ) : (
@@ -63,7 +72,7 @@ const AddModeratorsModal = ({
           display="flex"
           flexDirection="column"
           p="32px"
-          data-cy="e2e-add-moderators-body"
+          data-cy="seat-limit-reached-body"
         >
           <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
             <FormattedMessage {...messages.hasReachedOrIsOverLimit} />
@@ -81,7 +90,7 @@ const AddModeratorsModal = ({
                 addModerators();
                 setShowSuccess(true);
               }}
-              data-cy="e2e-confirm-add-moderator"
+              data-cy="confirm-add-seat"
             >
               {buttonText}
             </Button>
@@ -92,4 +101,4 @@ const AddModeratorsModal = ({
   );
 };
 
-export default AddModeratorsModal;
+export default SeatLimitReachedModal;

@@ -23,8 +23,8 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-const AddModeratorsModal = lazy(
-  () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
+const SeatLimitReachedModal = lazy(
+  () => import('components/admin/SeatBasedBilling/SeatLimitReachedModal')
 );
 
 const StyledA = styled.a`
@@ -152,7 +152,8 @@ const FolderPermissions = () => {
             />
           </Box>
           <Suspense fallback={null}>
-            <AddModeratorsModal
+            <SeatLimitReachedModal
+              seatType="moderator"
               addModerators={handleOnAddFolderModeratorsClick}
               showModal={showModal}
               closeModal={closeModal}

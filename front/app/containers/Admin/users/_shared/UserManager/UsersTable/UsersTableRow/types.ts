@@ -3,4 +3,5 @@ export type ModalName =
   | 'unblock-user'
   | 'delete-user'
   | 'user-assigned-items'
-  | 'set-moderator';
+  | 'set-moderator'
+  | 'TODO';

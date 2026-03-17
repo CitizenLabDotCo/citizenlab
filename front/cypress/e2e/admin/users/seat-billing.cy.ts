@@ -188,9 +188,9 @@ describe('Seat based billing', () => {
 
         if (usedSeats >= totalSeats && !hasSeatBeenAdded) {
           // Verify that user is required to confirm
-          cy.dataCy('e2e-add-moderators-body').should('exist');
+          cy.dataCy('seat-limit-reached-body').should('exist');
           // Confirm setting user to moderator user
-          cy.dataCy('e2e-confirm-add-moderator').click();
+          cy.dataCy('confirm-add-seat').click();
 
           // Check that success is shown and close the modal
           cy.dataCy('e2e-seat-set-success-body').should('exist');

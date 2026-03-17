@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
 
+import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
@@ -91,6 +92,8 @@ const UsersTableRow = ({
   const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const closeModal = () => setModalOpened(null);
 
+  const { checkIfUserExceedsSeats } = useExceedsSeats();
+
   const handleMakeAdmin = useCallback(() => {
     updateUser({
       userId: userInRow.id,
@@ -111,8 +114,13 @@ const UsersTableRow = ({
           setModalOpened('delete-user');
           break;
         case 'set-admin':
-          // TODO
-          handleMakeAdmin();
+          if (!checkIfUserExceedsSeats) return;
+
+          if (checkIfUserExceedsSeats(userInRow, 'admin')) {
+            // TODO
+          } else {
+            handleMakeAdmin();
+          }
           break;
         case 'set-moderator':
           setModalOpened('set-moderator');
@@ -127,7 +135,7 @@ const UsersTableRow = ({
           break;
       }
     },
-    [handleMakeAdmin, updateUser, userInRow]
+    [checkIfUserExceedsSeats, handleMakeAdmin, updateUser, userInRow]
   );
 
   const actions = useMemo(() => {
