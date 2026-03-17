@@ -3,7 +3,7 @@
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   include AuthToken::Authenticable
 
-  TOKEN_LIFETIME = 2.minutes
+  TOKEN_LIFETIME = 1.day
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: %i[user_token_unconfirmed refresh]
   before_action :authenticate_user, only: [:refresh]

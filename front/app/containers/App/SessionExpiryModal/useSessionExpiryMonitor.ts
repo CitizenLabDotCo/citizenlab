@@ -6,8 +6,8 @@ import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_MS = 10_000; // 300_000; // Checks every 5 minutes unless the route is changed
-const EXPIRING_SOON_THRESHOLD_S = 90; // 1800; // 30 minutes
+const CHECK_INTERVAL_MS = 300_000; // Checks every 5 minutes unless the route is changed
+const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
 
 async function isSessionInvalidOnServer(): Promise<boolean> {
   const jwt = getJwt();
