@@ -45,36 +45,37 @@ describe ProjectModeratorPolicy do
     context 'for an admin' do
       let(:user) { admin }
 
-      it_behaves_like 'permits actions', [:index, :create, :users_search]
+      it_behaves_like 'permits actions', %i[index create users_search]
     end
 
     context "for a folder moderator of the project's folder" do
       let(:user) { folder_moderator }
 
-      it_behaves_like 'permits actions', [:index, :create, :users_search]
+      it_behaves_like 'permits actions', %i[index create users_search]
     end
 
     context 'for a folder moderator of an unrelated folder' do
       let(:user) { unrelated_folder_moderator }
-      it_behaves_like 'forbids actions', [:index, :create, :users_search]
+
+      it_behaves_like 'forbids actions', %i[index create users_search]
     end
 
     context 'for a project moderator of the project' do
       let(:user) { project_moderator }
 
-      it_behaves_like 'permits actions', [:index, :create, :users_search]
+      it_behaves_like 'permits actions', %i[index create users_search]
     end
 
     context 'for a project moderator of another project' do
       let(:user) { other_project_moderator }
 
-      it_behaves_like 'forbids actions', [:index, :create, :users_search]
+      it_behaves_like 'forbids actions', %i[index create users_search]
     end
 
     context 'for a resident' do
       let(:user) { resident }
 
-      it_behaves_like 'forbids actions', [:index, :create, :users_search]
+      it_behaves_like 'forbids actions', %i[index create users_search]
     end
   end
 
@@ -89,37 +90,37 @@ describe ProjectModeratorPolicy do
     context 'for an admin' do
       let(:user) { admin }
 
-      it_behaves_like 'permits actions', [:show, :destroy]
+      it_behaves_like 'permits actions', %i[show destroy]
     end
 
     context "for a folder moderator of the project's folder" do
       let(:user) { folder_moderator }
 
-      it_behaves_like 'permits actions', [:show, :destroy]
+      it_behaves_like 'permits actions', %i[show destroy]
     end
 
     context 'for a folder moderator of unrelated folder' do
       let(:user) { unrelated_folder_moderator }
 
-      it_behaves_like 'forbids actions', [:show, :destroy]
+      it_behaves_like 'forbids actions', %i[show destroy]
     end
 
     context 'for a project moderator of the project' do
       let(:user) { project_moderator }
 
-      it_behaves_like 'permits actions', [:show, :destroy]
+      it_behaves_like 'permits actions', %i[show destroy]
     end
 
     context 'for a project moderator of another project' do
       let(:user) { other_project_moderator }
 
-      it_behaves_like 'forbids actions', [:show, :destroy]
+      it_behaves_like 'forbids actions', %i[show destroy]
     end
 
     context 'for a resident' do
       let(:user) { resident }
 
-      it_behaves_like 'forbids actions', [:show, :destroy]
+      it_behaves_like 'forbids actions', %i[show destroy]
     end
   end
 end
