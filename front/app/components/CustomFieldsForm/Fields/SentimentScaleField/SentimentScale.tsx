@@ -77,6 +77,7 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
       aria-valuemin={MINIMUM}
       aria-valuemax={MAXIMUM}
       aria-labelledby={`${sanitizeForClassname(id)}-label`}
+      aria-required={question.required}
       onKeyDown={(event) => {
         if (event.key !== 'Tab' && !event.metaKey) {
           // Don't override the default tab behaviour or meta key (E.g. Mac command key)
