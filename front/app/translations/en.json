@@ -1265,7 +1265,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "What kinds of email notifications do you want to receive? ",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Notifications",
   "app.containers.CampaignsConsentForm.submit": "Save",
-  "app.containers.ChangeEmail.adminEmailChangeWarning": "Changing your email address will log you out in all other tabs and browsers and you may lose any unsaved changes.",
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": "Changing your email address will sign you out in other browsers you are also signed into. You will lose any unsaved changes.",
   "app.containers.ChangeEmail.backToProfile": "Back to profile settings",
   "app.containers.ChangeEmail.confirmationModalTitle": "Confirm your email",
   "app.containers.ChangeEmail.emailEmptyError": "Provide an e-mail address",
