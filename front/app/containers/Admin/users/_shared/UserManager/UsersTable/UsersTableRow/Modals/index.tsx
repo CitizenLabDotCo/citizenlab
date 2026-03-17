@@ -2,6 +2,7 @@ import React, { RefObject } from 'react';
 
 import { IUserData } from 'api/users/types';
 
+import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import DeleteUser from 'components/admin/UserDeleteModal';
@@ -17,6 +18,7 @@ interface Props {
   user: IUserData;
   moreActionsButtonRef: RefObject<HTMLButtonElement>;
   closeModal: () => void;
+  onAcceptIncreasedSeatLimitForAdmin: () => void;
 }
 
 const Modals = ({
@@ -24,6 +26,7 @@ const Modals = ({
   user,
   moreActionsButtonRef,
   closeModal,
+  onAcceptIncreasedSeatLimitForAdmin,
 }: Props) => {
   return (
     <>
@@ -66,6 +69,12 @@ const Modals = ({
       >
         <SetAsModerator user={user} onClose={closeModal} />
       </Modal>
+      <SeatLimitReachedModal
+        seatType="admin"
+        showModal={modalOpened === 'seat-limit-reached'}
+        closeModal={closeModal}
+        addModerators={onAcceptIncreasedSeatLimitForAdmin}
+      />
     </>
   );
 };

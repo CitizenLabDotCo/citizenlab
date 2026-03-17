@@ -4,4 +4,4 @@ export type ModalName =
   | 'delete-user'
   | 'user-assigned-items'
   | 'set-moderator'
-  | 'TODO';
+  | 'seat-limit-reached';

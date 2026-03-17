@@ -117,7 +117,7 @@ const UsersTableRow = ({
           if (!checkIfUserExceedsSeats) return;
 
           if (checkIfUserExceedsSeats(userInRow, 'admin')) {
-            // TODO
+            setModalOpened('seat-limit-reached');
           } else {
             handleMakeAdmin();
           }
@@ -227,6 +227,7 @@ const UsersTableRow = ({
           user={userInRow}
           moreActionsButtonRef={moreActionsButtonRef}
           closeModal={closeModal}
+          onAcceptIncreasedSeatLimitForAdmin={handleMakeAdmin}
         />
       </Tr>
     </>
