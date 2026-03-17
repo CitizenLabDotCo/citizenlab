@@ -87,8 +87,6 @@ export default function useSessionExpiryMonitor(
       try {
         const secondsLeft = getSecondsUntilExpiry();
 
-        console.log('Session expiry check:', { secondsLeft });
-
         // JWT clearly expired locally — no need to check server
         if (secondsLeft !== null && secondsLeft <= 0) {
           setSessionState('expired');
