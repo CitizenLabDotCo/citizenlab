@@ -100,7 +100,10 @@ module EmailCampaigns
     def do_send
       if @campaign.valid?(:send)
         SideFxCampaignService.new.before_send(@campaign, current_user)
-        EmailCampaigns::DeliveryService.new.send_now(@campaign)
+        @campaign.with_lock do
+          @campaign.clear_scheduled_at!
+          EmailCampaigns::DeliveryService.new.send_now(@campaign)
+        end
         SideFxCampaignService.new.after_send(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
@@ -183,6 +186,7 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
+        :scheduled_at,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
