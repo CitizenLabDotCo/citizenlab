@@ -94,8 +94,8 @@ namespace :cl2_back do
           allowed: true
         },
         segment: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         },
         planhat: {
           enabled: false,
@@ -368,6 +368,10 @@ namespace :cl2_back do
           allowed: true
         },
         participation_location_tracking: {
+          enabled: false,
+          allowed: false
+        },
+        spaces: {
           enabled: false,
           allowed: false
         }

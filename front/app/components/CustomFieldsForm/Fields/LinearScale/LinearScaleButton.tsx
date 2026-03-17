@@ -1,14 +1,13 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { getLinearScaleLabel } from './utils';
 
 interface Props {
   question: IFlatCustomField;
@@ -18,14 +17,38 @@ interface Props {
   onSelect: (value: number | undefined) => void;
 }
 
-const StyledButton = styled(Button)<{ selected: boolean }>`
+const RadioOption = styled.div<{
+  selected: boolean;
+  borderColor: string;
+  selectedBorderColor: string;
+  bgColor: string;
+  selectedBgColor: string;
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 0;
+  border: 1px solid
+    ${({ selected, borderColor, selectedBorderColor }) =>
+      selected ? selectedBorderColor : borderColor};
+  border-radius: 3px;
+  background-color: ${({ selected, bgColor, selectedBgColor }) =>
+    selected ? selectedBgColor : bgColor};
+  cursor: pointer;
+
   &:hover {
-    box-shadow: 0 0 0 1px
-      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
+    box-shadow: ${({ selected, borderColor }) =>
+      selected ? 'none' : `0 0 0 1px ${borderColor}`};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ selectedBorderColor }) => selectedBorderColor};
+    outline-offset: 2px;
   }
 `;
 
-const LinearScaleButton = ({
+const LinearScaleOption = ({
   question,
   visualIndex,
   data,
@@ -34,8 +57,10 @@ const LinearScaleButton = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const localize = useLocalize();
 
   const name = question.key;
+  const isSelected = data === visualIndex;
 
   const getButtonWidth = () => {
     if (isSmallerThanPhone) {
@@ -44,6 +69,11 @@ const LinearScaleButton = ({
     return `calc(100% / ${maximum} - 8px)`; // Fit all buttons on one row for larger screens
   };
 
+  const label = getLinearScaleLabel(question, visualIndex);
+  const ariaLabel = label
+    ? `${visualIndex} - ${localize(label)}`
+    : `${visualIndex}`;
+
   return (
     <Box
       flexBasis={100 / maximum}
@@ -51,42 +81,32 @@ const LinearScaleButton = ({
       minWidth={getButtonWidth()}
       padding="16px, 20px, 16px, 20px"
     >
-      <StyledButton
-        py="12px"
+      <RadioOption
         id={`linear-scale-option-${visualIndex}`}
-        selected={data === visualIndex}
-        tabIndex={-1}
-        aria-pressed={data === visualIndex}
-        borderRadius="3px"
-        borderColor={
-          data === visualIndex
-            ? theme.colors.tenantPrimary
-            : theme.colors.borderDark
-        }
-        borderHoverColor={
-          data === visualIndex
-            ? theme.colors.tenantPrimary
-            : theme.colors.borderDark
-        }
-        bgColor={
-          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
-        }
-        bgHoverColor={
-          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
-        }
-        textHoverColor={
-          data === visualIndex ? colors.white : theme.colors.textPrimary
-        }
-        textColor={
-          data === visualIndex ? colors.white : theme.colors.textPrimary
-        }
-        width="100%"
-        onClick={() => onSelect(data === visualIndex ? undefined : visualIndex)}
+        role="radio"
+        aria-checked={isSelected}
+        aria-label={ariaLabel}
+        tabIndex={isSelected || (!data && visualIndex === 1) ? 0 : -1}
+        selected={isSelected}
+        borderColor={theme.colors.borderDark}
+        selectedBorderColor={theme.colors.tenantPrimary}
+        bgColor={theme.colors.white}
+        selectedBgColor={theme.colors.tenantPrimary}
+        onClick={(e) => {
+          onSelect(isSelected ? undefined : visualIndex);
+          (e.currentTarget as HTMLElement).focus();
+        }}
       >
-        {visualIndex}
-      </StyledButton>
+        <Text
+          m="0px"
+          color={isSelected ? 'white' : 'textPrimary'}
+          fontSize="base"
+        >
+          {visualIndex}
+        </Text>
+      </RadioOption>
     </Box>
   );
 };
 
-export default LinearScaleButton;
+export default LinearScaleOption;

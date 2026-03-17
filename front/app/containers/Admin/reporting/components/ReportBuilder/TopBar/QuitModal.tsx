@@ -19,10 +19,14 @@ interface Props {
 
 const QuitModal = ({ open, onCloseModal, onGoBack }: Props) => {
   return (
-    <Modal opened={open} close={onCloseModal}>
+    <Modal
+      opened={open}
+      close={onCloseModal}
+      ariaLabelledBy="quit-report-modal-title"
+    >
       <Box display="flex" flexDirection="column" width="100%" p="20px">
         <Box mb="40px">
-          <Title variant="h3" color="primary">
+          <Title id="quit-report-modal-title" variant="h3" color="primary">
             <FormattedMessage {...messages.quitReportConfirmationQuestion} />
           </Title>
           <Text color="primary" fontSize="l">

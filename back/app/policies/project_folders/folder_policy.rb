@@ -48,18 +48,22 @@ module ProjectFolders
     def destroy?
       create?
     end
-  end
 
-  # Returns a list of permitted attributes that a user can change
-  # @return [Array]
-  def permitted_attributes
-    [
-      :header_bg,
-      :slug,
-      { admin_publication_attributes: [:publication_status],
-        description_multiloc: CL2_SUPPORTED_LOCALES,
-        description_preview_multiloc: CL2_SUPPORTED_LOCALES,
-        title_multiloc: CL2_SUPPORTED_LOCALES }
-    ]
+    # Returns a list of permitted attributes that a user can change
+    # @return [Array]
+    def permitted_attributes
+      attrs = [
+        :header_bg,
+        :slug,
+        { admin_publication_attributes: [:publication_status],
+          description_multiloc: CL2_SUPPORTED_LOCALES,
+          description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+          title_multiloc: CL2_SUPPORTED_LOCALES,
+          header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES }
+      ]
+
+      attrs << :space_id if user&.admin?
+      attrs
+    end
   end
 end

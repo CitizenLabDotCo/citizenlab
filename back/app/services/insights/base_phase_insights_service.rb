@@ -23,19 +23,19 @@ module Insights
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
-      visits = VisitsService.new.phase_visits(@phase)
+      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visits, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, visits_service, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_service)
 
       metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
-    def metrics_data(participations, participant_ids, visits, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visits)
+    def metrics_data(participations, participant_ids, visits_service, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits_service)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -44,88 +44,87 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visits)
-      visitors_count = visits.pluck(:visitor_id).uniq.count
+    def base_metrics(participations, participant_ids, visits_service)
+      visitors_count = visits_service.total_visits[:visitors]
       participants_count = participant_ids.count
-      base_7_day_changes = base_7_day_changes(participations, visits)
+      base_7_day_changes = base_7_day_changes(participations, visitors_count, participants_count)
 
       {
         visitors: visitors_count,
         visitors_7_day_percent_change: base_7_day_changes[:visitors_7_day_percent_change],
         participants: participants_count,
         participants_7_day_percent_change: base_7_day_changes[:participants_7_day_percent_change],
-        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 0,
+        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 'participant_count_compared_with_zero_visitors',
         participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
       }
     end
 
-    def base_7_day_changes(participations, visits)
+    def base_7_day_changes(participations, visitors_count, participants_count)
+      unless phase_has_run_more_than_7_days?
+        return {
+          visitors_7_day_percent_change: nil,
+          participants_7_day_percent_change: nil,
+          participation_rate_7_day_percent_change: nil
+        }
+      end
+
       flattened_participations = participations.values.flatten
 
-      participants_last_7_days_count = flattened_participations.select do |p|
-        p[:acted_at] >= 7.days.ago
+      participants_count_7_days_ago = flattened_participations.select do |p|
+        p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      participants_previous_7_days_count = flattened_participations.select do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end.pluck(:participant_id).uniq.count
+      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago)
+      visitors_count_7_days_ago = visits_service_7_days_ago.total_visits[:visitors]
 
-      visitors_last_7_days_count = visits.select do |v|
-        v[:acted_at] >= 7.days.ago
-      end.pluck(:visitor_id).uniq.count
-
-      visitors_previous_7_days_count = visits.select do |v|
-        v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
-      end.pluck(:visitor_id).uniq.count
-
-      participation_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
-      participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+      participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0
+        participation_rate_7_days_ago = participants_count_7_days_ago.to_f / visitors_count_7_days_ago
+        participation_rate_now = participants_count.to_f / visitors_count
+        percentage_change(participation_rate_7_days_ago, participation_rate_now)
+      else
+        'no_visitors_in_one_or_both_periods'
+      end
 
       {
-        visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
-        participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_7_day_percent_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        visitors_7_day_percent_change: percentage_change(visitors_count_7_days_ago, visitors_count),
+        participants_7_day_percent_change: percentage_change(participants_count_7_days_ago, participants_count),
+        participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
       }
     end
 
-    def phase_has_run_more_than_14_days?
+    def phase_has_run_more_than_7_days?
       time_now = Time.current.to_date
       phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current date) is less than 14 days
+      # Check if the phase duration (start to end or current date) is less than 7 days
       # Add 1 to include both start and end dates (inclusive counting)
       phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
-      return false if phase_duration_days < 14
+      return false if phase_duration_days < 7
 
-      # Check if the elapsed time from phase start to now is more than 14 days
+      # Check if the elapsed time from phase start to now is more than 7 days
       elapsed_days = (time_now - @phase.start_at).to_i
 
-      elapsed_days >= 14
+      elapsed_days >= 7
     end
 
     def percentage_change(old_value, new_value)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
       return 0.0 if old_value == new_value # Includes case where both are zero
-      return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
+      return 'current_value_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
       # Round to one decimal place
       (((new_value - old_value).to_f / old_value) * 100.0).round(1)
     end
 
     def participations_7_day_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
       return 0.0 if participations.empty?
 
-      participations_last_7_days = participations.select { |p| p[:acted_at] >= 7.days.ago }
-      participations_previous_7_days = participations.select do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end
+      participations_count = participations.count
+      participations_count_7_days_ago = participations.count { |p| p[:acted_at] < 7.days.ago }
 
-      percentage_change(
-        participations_previous_7_days.count,
-        participations_last_7_days.count
-      )
+      percentage_change(participations_count_7_days_ago, participations_count)
     end
 
     def participant_id(item_id, user_id, user_hash = nil)
@@ -277,9 +276,11 @@ module Insights
       ref_distribution.distribution_by_option_key
     end
 
-    def participants_and_visitors_chart_data(flattened_participations, visits)
+    def participants_and_visitors_chart_data(flattened_participations, visits_service)
       resolution = chart_resolution
-      grouped_visits = visits.group_by { |v| date_truncate(v[:acted_at], resolution) }
+      grouped_visits = visits_service.visits_by_date(resolution).each_with_object({}) do |row, hash|
+        hash[row[:date_group]] = { visits: row[:visits], visitors: row[:visitors] }
+      end
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
@@ -287,11 +288,10 @@ module Insights
 
       grouped_timeseries = all_date_groups.map do |date_group|
         participations_in_group = grouped_participations[date_group] || []
-        visits_in_group = grouped_visits[date_group] || []
-
+        visits_in_group = grouped_visits[date_group] || {}
         {
           participants: participations_in_group.pluck(:participant_id).uniq.count,
-          visitors: visits_in_group.pluck(:visitor_id).uniq.count,
+          visitors: visits_in_group[:visitors] || 0,
           date_group: date_group
         }
       end

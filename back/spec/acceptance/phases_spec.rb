@@ -571,6 +571,7 @@ resource 'Phases' do
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :available_views, "The available views for the phase, an array of #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
         parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}", required: false
@@ -603,6 +604,7 @@ resource 'Phases' do
       let(:reacting_like_method) { 'limited' }
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
+      let(:available_views) { %w[card map] }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_mode) { 'all' }
       let(:similarity_enabled) { true }
@@ -620,6 +622,7 @@ resource 'Phases' do
           reacting_like_method: reacting_like_method,
           reacting_like_limited_max: reacting_like_limited_max,
           presentation_mode: presentation_mode,
+          available_views: available_views,
           allow_anonymous_participation: allow_anonymous_participation,
           prescreening_mode: prescreening_mode,
           similarity_enabled: similarity_enabled,
@@ -697,60 +700,16 @@ resource 'Phases' do
       end
 
       describe do
-        before do
-          @project.phases.first.update!(
-            participation_method: 'voting',
-            voting_method: 'budgeting',
-            voting_max_total: 30_000,
-            voting_filtering_enabled: false,
-            ideas_order: 'random'
-          )
-        end
-
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Change a phase with ideas into an information phase' do
-          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
-          do_request
-          assert_status 200
-        end
-      end
-
-      describe 'When updating ideation phase with ideas to a poll phase' do
-        before do
-          phase.update!(
-            participation_method: 'ideation',
-            ideas: create_list(:idea, 2, project: @project)
-          )
-        end
-
-        let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
-        let(:participation_method) { 'poll' }
-
-        example 'Existing related ideas_phase remains valid' do
-          expect(ideas_phase.valid?).to be true
-          do_request
-          ideas_phase.reload
-          expect(response_status).to eq 200
-          expect(ideas_phase.valid?).to be true
-        end
-      end
-
-      describe do
-        let(:project) { create(:project) }
-        let(:id) { create(:proposals_phase, project: project).id }
-        let(:participation_method) { 'ideation' }
-
-        example '[error] Cannot be changed to ideation when there are non-transitive inputs' do
-          proposal = create(:proposal, project: project, creation_phase_id: id)
+        example '[error] Cannot change participation method when phase has inputs' do
           do_request
           assert_status 422
           expect(json_response).to eq(
-            { errors: { participation_method: [{ error: 'non_complying_inputs' }] } }
+            { errors: { participation_method: [{ error: 'has_inputs' }] } }
           )
-          expect(proposal.reload).to be_valid
         end
       end
     end

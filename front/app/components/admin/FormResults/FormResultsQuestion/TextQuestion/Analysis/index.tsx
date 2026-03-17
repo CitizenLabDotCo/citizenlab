@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -28,10 +27,6 @@ import messages from '../../../messages';
 
 import AnalysisInsights from './AnalysisInsights';
 import { filterForCommunityMonitorQuarter } from './utils';
-
-const StyledDropdownListItem = styled(DropdownListItem)`
-  text-align: left;
-`;
 
 type Props = {
   customFieldId: string;
@@ -216,7 +211,7 @@ const Analysis = ({
               onClickOutside={() => setDropdownOpened(false)}
               content={
                 <>
-                  <StyledDropdownListItem
+                  <DropdownListItem
                     id="e2e-hide-summaries"
                     onClick={() => {
                       updateAnalysis(
@@ -237,7 +232,7 @@ const Analysis = ({
                     ) : (
                       formatMessage(messages.hideSummaries)
                     )}
-                  </StyledDropdownListItem>
+                  </DropdownListItem>
                 </>
               }
             />

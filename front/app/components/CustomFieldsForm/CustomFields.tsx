@@ -7,8 +7,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -19,6 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';
@@ -43,10 +42,12 @@ const renderField = ({
   question,
   projectId,
   ideaId,
+  scrollErrorIntoView = true,
 }: {
   question: IFlatCustomField;
   projectId?: string;
   ideaId?: string;
+  scrollErrorIntoView?: boolean;
 }) => {
   // Only user fields can be locked (disabled) for now due to a verification method!
   // Possible user fields are: text, number, multiline_text, select, multiselect, checkbox, date
@@ -59,7 +60,7 @@ const renderField = ({
           name={question.key}
           hideLocaleSwitcher
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -68,7 +69,7 @@ const renderField = ({
         <QuillMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           id={question.key}
           maxCharCount={question.max_characters}
           minCharCount={question.min_characters}
@@ -79,7 +80,7 @@ const renderField = ({
       return question.key === 'location_description' ? (
         <LocationInput
           name={question.key}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           isDisabled={disabled}
         />
       ) : (
@@ -87,7 +88,7 @@ const renderField = ({
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -96,7 +97,7 @@ const renderField = ({
         <TextArea
           name={question.key}
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           minRows={2}
           disabled={disabled}
         />
@@ -105,7 +106,7 @@ const renderField = ({
       return (
         <SingleSelectField
           question={question}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -113,7 +114,7 @@ const renderField = ({
       return (
         <MultiSelectField
           question={question}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -126,7 +127,7 @@ const renderField = ({
             'image/*': ['.jpg', '.jpeg', '.png'],
           }}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'files':
@@ -134,7 +135,7 @@ const renderField = ({
         <MultiFileUploadField
           name={question.key}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'topic_ids':
@@ -142,28 +143,57 @@ const renderField = ({
         <Topics
           name={question.key}
           projectId={projectId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'linear_scale':
       return (
-        <LinearScaleField question={question} scrollErrorIntoView={true} />
+        <LinearScaleField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'ranking':
-      return <RankingField question={question} scrollErrorIntoView={true} />;
+      return (
+        <RankingField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'rating':
-      return <RatingField question={question} scrollErrorIntoView={true} />;
+      return (
+        <RatingField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'matrix_linear_scale':
-      return <MatrixField question={question} scrollErrorIntoView={true} />;
+      return (
+        <MatrixField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'sentiment_linear_scale':
       return (
-        <SentimentScaleField question={question} scrollErrorIntoView={true} />
+        <SentimentScaleField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'cosponsor_ids':
-      return <CosponsorsField question={question} scrollErrorIntoView={true} />;
+      return (
+        <CosponsorsField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'multiselect_image':
       return (
-        <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
+        <ImageMultichoiceField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'file_upload':
     case 'shapefile_upload':
@@ -171,7 +201,7 @@ const renderField = ({
         <SingleFileUploadField
           name={question.key}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'point':
@@ -185,14 +215,14 @@ const renderField = ({
             }
           }
           projectId={projectId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'checkbox':
       return (
         <CheckboxField
           name={question.key}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -200,7 +230,7 @@ const renderField = ({
       return (
         <DateField
           name={question.key}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
       );
@@ -216,6 +246,7 @@ const CustomFields = ({
   phase,
   participationMethod,
   showQuestionNumbers,
+  scrollErrorIntoView = true,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
@@ -223,6 +254,7 @@ const CustomFields = ({
   phase?: IPhaseData;
   participationMethod?: ParticipationMethod;
   showQuestionNumbers?: boolean;
+  scrollErrorIntoView?: boolean;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -294,7 +326,12 @@ const CustomFields = ({
               )}
               <Box display="flex" alignItems="center" gap="8px">
                 <Box w="100%">
-                  {renderField({ question, projectId, ideaId })}
+                  {renderField({
+                    question,
+                    projectId,
+                    ideaId,
+                    scrollErrorIntoView,
+                  })}
                 </Box>
                 {question.constraints?.locked && (
                   <IconTooltip

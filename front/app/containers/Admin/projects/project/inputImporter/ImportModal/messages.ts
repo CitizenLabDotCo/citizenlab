@@ -49,15 +49,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.upload',
     defaultMessage: 'Upload',
   },
-  googleConsent: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2',
-    defaultMessage:
-      'I hereby consent to processing this file using the Google Cloud Form Parser',
-  },
-  consentNeeded: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded',
-    defaultMessage: 'You need to consent to this before you can continue',
-  },
   pleaseUploadFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile',
     defaultMessage: 'Please upload a file to continue',
@@ -66,5 +57,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData',
     defaultMessage:
       'The uploaded form was created with the "Personal data" section',
+  },
+  multipleFormsCheckbox: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.multipleFormsCheckbox',
+    defaultMessage: 'This file contains multiple scanned forms',
+  },
+  pagesPerFormLabel: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormLabel',
+    defaultMessage: 'Number of pages per single form',
+  },
+  pagesPerFormDescription: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormDescription',
+    defaultMessage:
+      'This is required to accurately split the PDF into separate submissions.',
+  },
+  pagesPerFormRequired: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormRequired',
+    defaultMessage: 'Please enter the number of pages per form',
   },
 });

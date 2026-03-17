@@ -47,7 +47,7 @@ export default defineMessages({
     defaultMessage: 'These conversation threads got the most traction',
   },
   notEnoughInputs: {
-    id: 'app.containers.Admin.projects.project.insights.ideation.notEnoughInputs',
+    id: 'app.containers.Admin.projects.project.insights.ideation.notEnoughInputs1',
     defaultMessage:
       'At least {minInputs} inputs are needed to generate an AI summary. Currently there {count, plural, one {is # input} other {are # inputs}}.',
   },

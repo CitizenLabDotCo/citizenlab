@@ -299,7 +299,7 @@ resource 'Users' do
             assert_status 201
             user = User.order(:created_at).last
             expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+            expect(user.confirmation_required?).to be(true)
           end
 
           example_request 'Registration is not completed by default' do
@@ -819,6 +819,36 @@ resource 'Users' do
 
           assert_status 200
           expect(response_ids).to contain_exactly(project_reviewer.id)
+        end
+
+        example 'List only project moderators' do
+          p1 = create(:project)
+          p2 = create(:project)
+          create(:admin)
+          create(:user)
+          pm1 = create(:project_moderator, projects: [p1, p2])
+          pm2 = create(:project_moderator, projects: [p1])
+          f = create(:project_folder)
+          create(:project_folder_moderator, project_folders: [f])
+
+          do_request(project_moderators_only: true)
+          assert_status 200
+          expect(response_ids).to contain_exactly(pm1.id, pm2.id)
+        end
+
+        example 'List only folder moderators' do
+          f1 = create(:project_folder)
+          f2 = create(:project_folder)
+          create(:admin)
+          create(:user)
+          fm1 = create(:project_folder_moderator, project_folders: [f1, f2])
+          fm2 = create(:project_folder_moderator, project_folders: [f1])
+          p = create(:project)
+          create(:project_moderator, projects: [p])
+
+          do_request(folder_moderators_only: true)
+          assert_status 200
+          expect(response_ids).to contain_exactly(fm1.id, fm2.id)
         end
       end
 
@@ -1358,6 +1388,29 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
+        end
+
+        context 'when enhanced_user_profile_privacy feature is active' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          let(:slug) { user.id }
+
+          example 'Get one user by id when enhanced_user_profile_privacy is active and user has posted publicly', document: false do
+            create(:idea, author: user)
+            do_request
+            expect(status).to eq 200
+            expect(response_data[:id]).to eq user.id
+            expect(response_data.dig(:attributes, :slug)).to eq user.id
+          end
+
+          example 'Returns error when enhanced_user_profile_privacy is active and user has not posted', document: false do
+            do_request
+            expect(status).to eq 401
+          end
         end
       end
 

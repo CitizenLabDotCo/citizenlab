@@ -25,7 +25,7 @@ describe IdeaFeed::TopicClassificationService do
     it 'classifies an unclassified idea into the correct subtopic' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Free bike sharing!' }, body_multiloc: { 'en' => 'I love biking around the city.' }, input_topics: [])
 
-      expect_any_instance_of(Analysis::LLM::Gemini3Flash).to receive(:chat).and_return(['1.1'])
+      expect_any_instance_of(Analysis::LLM::ClaudeHaiku45).to receive(:chat).and_return(['1.1'])
       service.classify_topics!(idea)
 
       expect(idea.input_topics).to contain_exactly(subtopics[0])
@@ -34,7 +34,7 @@ describe IdeaFeed::TopicClassificationService do
     it 'classifies an unclassified idea into the correct topic' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Free bike sharing!' }, body_multiloc: { 'en' => 'I love biking around the city.' }, input_topics: [])
 
-      expect_any_instance_of(Analysis::LLM::Gemini3Flash).to receive(:chat).and_return(['2'])
+      expect_any_instance_of(Analysis::LLM::ClaudeHaiku45).to receive(:chat).and_return(['2'])
       service.classify_topics!(idea)
 
       expect(idea.input_topics).to contain_exactly(topics[1])
@@ -43,7 +43,7 @@ describe IdeaFeed::TopicClassificationService do
     it 'erases previous topic associations when classifying' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Affordable housing for all' }, body_multiloc: { 'en' => 'We need more affordable housing.' }, input_topics: [topics[0]])
 
-      expect_any_instance_of(Analysis::LLM::Gemini3Flash).to receive(:chat).and_return(['2'])
+      expect_any_instance_of(Analysis::LLM::ClaudeHaiku45).to receive(:chat).and_return(['2'])
       service.classify_topics!(idea)
 
       expect(idea.input_topics).to contain_exactly(topics[1])
@@ -52,7 +52,7 @@ describe IdeaFeed::TopicClassificationService do
     it 'assigns multiple topics if applicable' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Better schools and public transport' }, body_multiloc: { 'en' => 'We need to improve both education and transportation.' }, input_topics: [])
 
-      expect_any_instance_of(Analysis::LLM::Gemini3Flash).to receive(:chat).and_return(['1.2', '3'])
+      expect_any_instance_of(Analysis::LLM::ClaudeHaiku45).to receive(:chat).and_return(['1.2', '3'])
       service.classify_topics!(idea)
 
       expect(idea.input_topics).to contain_exactly(subtopics[1], topics[2])
@@ -61,7 +61,7 @@ describe IdeaFeed::TopicClassificationService do
     it 'removes all topics if no topic is relevant' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'More parks and green spaces' }, body_multiloc: { 'en' => 'We need more parks in the city.' }, input_topics: [topics[0]])
 
-      expect_any_instance_of(Analysis::LLM::Gemini3Flash).to receive(:chat).and_return([])
+      expect_any_instance_of(Analysis::LLM::ClaudeHaiku45).to receive(:chat).and_return([])
       service.classify_topics!(idea)
 
       expect(idea.input_topics).to be_empty
@@ -70,8 +70,8 @@ describe IdeaFeed::TopicClassificationService do
     it 'retries when the LLM response contains invalid topic IDs' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Improve public transport' }, body_multiloc: { 'en' => 'Public transport needs to be more efficient.' }, input_topics: [])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(['99'], ['1'])
 
       service.classify_topics!(idea)
@@ -82,8 +82,8 @@ describe IdeaFeed::TopicClassificationService do
     it 'retries when the LLM response is not an in-bounds integer array' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Improve public transport' }, body_multiloc: { 'en' => 'Public transport needs to be more efficient.' }, input_topics: [])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(%w[a b], ['1'])
 
       service.classify_topics!(idea)
@@ -138,8 +138,8 @@ describe IdeaFeed::TopicClassificationService do
       idea2 = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Affordable housing' }, body_multiloc: { 'en' => 'Housing is too expensive.' }, input_topics: [])
       idea3 = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Better schools' }, body_multiloc: { 'en' => 'Schools need more funding.' }, input_topics: [])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(['1.1'], ['2'], ['3'])
 
       result = service.classify_parallel_batch([idea1, idea2, idea3], n_threads: 2)
@@ -160,8 +160,8 @@ describe IdeaFeed::TopicClassificationService do
     it 'handles ActiveRecord::Relation input' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(['1'])
 
       result = service.classify_parallel_batch(Idea.where(id: idea.id))
@@ -173,8 +173,8 @@ describe IdeaFeed::TopicClassificationService do
     it 'retries on invalid LLM responses' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(%w[invalid response], ['1'])
 
       service.classify_parallel_batch([idea])
@@ -185,8 +185,8 @@ describe IdeaFeed::TopicClassificationService do
     it 'assigns empty topics if all retries fail' do
       idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [topics[0]])
 
-      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
-      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      llm_instance = instance_double(Analysis::LLM::ClaudeHaiku45)
+      expect(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm_instance)
       expect(llm_instance).to receive(:chat).and_return(%w[invalid response]).exactly(3).times
 
       service.classify_parallel_batch([idea])

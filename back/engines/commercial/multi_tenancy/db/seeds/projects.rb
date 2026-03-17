@@ -18,11 +18,14 @@ module MultiTenancy
       end
 
       def create_mixed_3_methods_project
+        space = Space.find_by(title_multiloc: { 'en' => 'Space1' })
+
         project = Project.create!(
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
           description_multiloc: runner.rand_description_multiloc,
           slug: 'mixed-3-methods-project',
-          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open
+          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
+          space: space
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Past proposals phase' },

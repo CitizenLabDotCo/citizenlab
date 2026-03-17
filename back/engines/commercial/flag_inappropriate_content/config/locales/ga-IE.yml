@@ -1,0 +1,16 @@
+ga:
+  email_campaigns:
+    campaign_type_description:
+      "inappropriate_content_flagged": Ábhar míchuí brataithe
+    admin_campaign_type_description:
+      "inappropriate_content_flagged": Ábhar míchuí brataithe - riarthóirí
+    inappropriate_content_flagged:
+      subject: 'Tá bratach curtha ar phost le haghaidh athbhreithnithe'
+      title: 'Tá bratach curtha ar phost le haghaidh athbhreithnithe'
+      author_wrote: 'Scríobh %{authorName}:'
+      preheader: 'Tá bratach curtha ar phost ar d''ardán lena athbhreithniú'
+      automatically_flagged: >
+        Braitheadh go huathoibríoch go bhféadfadh ábhar míchuí a bheith sa phost seo. Táimid ag seoladh an fhógra seo chugat ionas gur féidir leat an post a athbhreithniú de réir do threoirlínte modhnóireachta féin.
+      how_to_review: >
+        Mura bhfuil ábhar míchuí sa phost, is féidir leat an rabhadh a bhaint trí d’ardán sa chluaisín Gníomhaíochta sa phainéal riaracháin.
+      cta_button: 'Athbhreithniú'

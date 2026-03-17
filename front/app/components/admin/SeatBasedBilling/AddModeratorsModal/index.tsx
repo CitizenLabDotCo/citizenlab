@@ -36,7 +36,14 @@ const AddModeratorsModal = ({
     : formatMessage(messages.confirmButtonText);
 
   const header = !showSuccess ? (
-    <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+    <Text
+      id="add-moderators-modal-title"
+      color="primary"
+      my="8px"
+      fontSize="l"
+      fontWeight="bold"
+      px="2px"
+    >
       {formatMessage(messages.giveManagerRights)}
     </Text>
   ) : undefined;
@@ -47,7 +54,12 @@ const AddModeratorsModal = ({
   };
 
   return (
-    <Modal opened={showModal} close={resetModal} header={header}>
+    <Modal
+      opened={showModal}
+      close={resetModal}
+      header={header}
+      ariaLabelledBy="add-moderators-modal-title"
+    >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}

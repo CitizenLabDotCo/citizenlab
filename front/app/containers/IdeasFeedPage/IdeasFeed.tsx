@@ -189,7 +189,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const topPadding = PEEK_HEIGHT / 2;
 
   return (
-    <FeedContainer ref={parentRef} onScroll={onScroll}>
+    <FeedContainer ref={parentRef} onScroll={onScroll} data-cy="e2e-ideas-feed">
       {isMobile && <ScrollHintOverlay />}
       <Box
         height={`${getTotalSize() + topPadding}px`}

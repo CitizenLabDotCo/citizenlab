@@ -42,6 +42,9 @@ class WebApi::V1::UsersController < ApplicationController
     when 'false' then @users = @users.not_admin
     end
 
+    @users = @users.project_moderator if params[:project_moderators_only].present?
+    @users = @users.project_folder_moderator if params[:folder_moderators_only].present?
+
     sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
@@ -104,7 +107,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def by_slug
-    @user = User.find_by!(slug: params[:slug])
+    @user = User.by_slug!(params[:slug])
     authorize @user
     show
   end
@@ -126,7 +129,7 @@ class WebApi::V1::UsersController < ApplicationController
         render json: raw_json({ action: 'terms' })
       elsif @user.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif !@user.no_password?
+      elsif !@user.no_password? || @user.sso?
         if @user.confirmation_required?
           # If a user has a password set but still needs to confirm their email,
           # we send them to the confirm action first.
@@ -138,6 +141,7 @@ class WebApi::V1::UsersController < ApplicationController
           render json: raw_json({ action: 'password' })
         end
       elsif !app_configuration.feature_activated?('user_confirmation')
+        # Only triggered for new users - at this point they have no password
         render json: raw_json({ action: 'token' })
       else
         if @user.email_confirmation_code_reset_count == 0

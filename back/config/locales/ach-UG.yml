@@ -16,6 +16,7 @@ ach:
     fi-FI: crwdns2344876:0crwdne2344876:0
     fr-BE: crwdns2344878:0crwdne2344878:0
     fr-FR: crwdns2344880:0crwdne2344880:0
+    ga-IE: crwdns6478809:0crwdne6478809:0
     hr-HR: crwdns2344882:0crwdne2344882:0
     hu-HU: crwdns2344884:0crwdne2344884:0
     it-IT: crwdns2344886:0crwdne2344886:0
@@ -246,6 +247,18 @@ ach:
           title: crwdns3324809:0crwdne3324809:0
         petition:
           title: crwdns3324811:0crwdne3324811:0
+        comment:
+          title: crwdns6446989:0crwdne6446989:0
+        response:
+          title: crwdns6446991:0crwdne6446991:0
+        suggestion:
+          title: crwdns6446993:0crwdne6446993:0
+        topic:
+          title: crwdns6446995:0crwdne6446995:0
+        post:
+          title: crwdns6446997:0crwdne6446997:0
+        story:
+          title: crwdns6446999:0crwdne6446999:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0

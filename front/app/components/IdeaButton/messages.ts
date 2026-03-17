@@ -22,8 +22,8 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.addAQuestion',
     defaultMessage: 'Add a question',
   },
-  submitAnIssue: {
-    id: 'app.containers.IdeaButton.submitAnIssue',
+  submitAnIssue1: {
+    id: 'app.containers.IdeaButton.submitAnIssue1',
     defaultMessage: 'Submit an issue',
   },
   addAContribution: {
@@ -41,6 +41,30 @@ export default defineMessages({
   addAPetition: {
     id: 'app.containers.IdeaButton.addAPetition',
     defaultMessage: 'Add a petition',
+  },
+  addAComment: {
+    id: 'app.containers.IdeaButton.addAComment',
+    defaultMessage: 'Add a comment',
+  },
+  addAResponse: {
+    id: 'app.containers.IdeaButton.addAResponse',
+    defaultMessage: 'Add a response',
+  },
+  addASuggestion: {
+    id: 'app.containers.IdeaButton.addASuggestion',
+    defaultMessage: 'Add a suggestion',
+  },
+  addATopic: {
+    id: 'app.containers.IdeaButton.addATopic',
+    defaultMessage: 'Add a topic',
+  },
+  addAPost: {
+    id: 'app.containers.IdeaButton.addAPost',
+    defaultMessage: 'Add a post',
+  },
+  addAStory: {
+    id: 'app.containers.IdeaButton.addAStory',
+    defaultMessage: 'Add a story',
   },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',

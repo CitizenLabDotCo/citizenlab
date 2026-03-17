@@ -85,6 +85,12 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         initiative: messages.initiativeEmailSharingSubject,
         proposal: messages.proposalEmailSharingSubject,
         petition: messages.petitionEmailSharingSubject,
+        comment: messages.commentEmailSharingSubject,
+        response: messages.responseEmailSharingSubject,
+        suggestion: messages.suggestionEmailSharingSubject,
+        topic: messages.topicEmailSharingSubject,
+        post: messages.postEmailSharingSubject,
+        story: messages.storyEmailSharingSubject,
       });
       emailSharingBody = getInputTermMessage(inputTerm, {
         idea: messages.ideaEmailSharingBody,
@@ -96,6 +102,12 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         initiative: messages.initiativeEmailSharingBody,
         proposal: messages.proposalEmailSharingBody,
         petition: messages.petitionEmailSharingBody,
+        comment: messages.commentEmailSharingBody,
+        response: messages.responseEmailSharingBody,
+        suggestion: messages.suggestionEmailSharingBody,
+        topic: messages.topicEmailSharingBody,
+        post: messages.postEmailSharingBody,
+        story: messages.storyEmailSharingBody,
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
@@ -107,6 +119,12 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         initiative: messages.initiativeWhatsAppMessage,
         proposal: messages.proposalWhatsAppMessage,
         petition: messages.petitionWhatsAppMessage,
+        comment: messages.commentWhatsAppMessage,
+        response: messages.responseWhatsAppMessage,
+        suggestion: messages.suggestionWhatsAppMessage,
+        topic: messages.topicWhatsAppMessage,
+        post: messages.postWhatsAppMessage,
+        story: messages.storyWhatsAppMessage,
       });
     }
 
@@ -140,6 +158,7 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
         <Title
+          id="success-modal-title"
           variant="h2"
           textAlign="center"
           className={`e2e-idea-social-sharing-modal-title`}

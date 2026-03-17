@@ -46,4 +46,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newPetition',
     defaultMessage: 'Add a petition',
   },
+  newComment: {
+    id: 'app.containers.AdminPage.ProjectEdit.newComment',
+    defaultMessage: 'Add a comment',
+  },
+  newResponse: {
+    id: 'app.containers.AdminPage.ProjectEdit.newResponse',
+    defaultMessage: 'Add a response',
+  },
+  newSuggestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.newSuggestion',
+    defaultMessage: 'Add a suggestion',
+  },
+  newTopic: {
+    id: 'app.containers.AdminPage.ProjectEdit.newTopic',
+    defaultMessage: 'Add a topic',
+  },
+  newPost: {
+    id: 'app.containers.AdminPage.ProjectEdit.newPost',
+    defaultMessage: 'Add a post',
+  },
+  newStory: {
+    id: 'app.containers.AdminPage.ProjectEdit.newStory',
+    defaultMessage: 'Add a story',
+  },
 });

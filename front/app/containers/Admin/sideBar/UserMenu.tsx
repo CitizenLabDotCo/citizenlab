@@ -49,7 +49,7 @@ export const UserMenu = () => {
   }
 
   const getRole = (user: IUserData): MessageDescriptor => {
-    const highestRole = user.attributes.highest_role;
+    const highestRole = user.attributes.highest_role ?? 'user';
     const roleMessage = {
       admin: messages.administrator,
       super_admin: messages.administrator,

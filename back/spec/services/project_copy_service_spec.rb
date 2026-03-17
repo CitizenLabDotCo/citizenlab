@@ -469,6 +469,26 @@ describe ProjectCopyService do
         end
       end
     end
+
+    context 'when project is in a space' do
+      it 'copies the space_id if copying locally' do
+        space = create(:space)
+        project = create(:project, space:)
+        template = service.export project, local_copy: true
+        copied_project = service.import template, local_copy: true
+
+        expect(copied_project.space_id).to eq space.id
+      end
+
+      it 'does not copy the space_id if not copying locally' do
+        space = create(:space)
+        project = create(:project, space:)
+        template = service.export project, local_copy: false
+        copied_project = service.import template, local_copy: false
+
+        expect(copied_project.space_id).to be_nil
+      end
+    end
   end
 
   private

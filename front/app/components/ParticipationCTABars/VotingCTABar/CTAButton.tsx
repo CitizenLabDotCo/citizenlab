@@ -10,7 +10,6 @@ import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
@@ -68,13 +67,12 @@ interface Props {
 }
 
 const CTAButton = ({ phase, project }: Props) => {
-  const basketId = phase.relationships.user_basket?.data?.id;
-  const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const {
     numberOfVotesCast,
     numberOfOptionsSelected,
     processing: votingProcessing,
+    basketId,
   } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const formatCurrency = useFormatCurrency();
@@ -101,49 +99,39 @@ const CTAButton = ({ phase, project }: Props) => {
   }
 
   const handleSubmitOnClick = () => {
-    if (basket) {
-      const update = () => {
-        updateBasket(
-          {
-            id: basket.data.id,
-            submitted: true,
-          },
-          {
-            onSuccess: () => {
-              setProcessing(false);
-              setIsSubmitSuccessful(true);
+    if (!basketId) return;
 
-              // If on the project page, scroll down to the status module
-              if (location.pathname.includes('/projects/')) {
-                confetti.addConfetti();
-                scrollToElement({
-                  id: 'voting-status-module',
-                });
-              }
+    setProcessing(true);
+    updateBasket(
+      {
+        id: basketId,
+        submitted: true,
+      },
+      {
+        onSuccess: () => {
+          setProcessing(false);
+          setIsSubmitSuccessful(true);
 
-              // If on the idea page, redirect to project page and scroll to status module
-              if (location.pathname.includes('/ideas/')) {
-                clHistory.push(
-                  `/projects/${project.attributes.slug}?scrollToStatusModule=true`
-                );
-              }
-
-              triggerPostActionEvents({});
-            },
+          // If on the project page, scroll down to the status module
+          if (location.pathname.includes('/projects/')) {
+            confetti.addConfetti();
+            scrollToElement({ id: 'voting-status-module' });
           }
-        );
-      };
 
-      if (votingProcessing) {
-        // Add a bit of timeout so that the voting request
-        // has time to complete
-        setTimeout(() => {
-          update();
-        }, 300);
-      } else {
-        update();
+          // If on the idea page, redirect to project page and scroll to status module
+          if (location.pathname.includes('/ideas/')) {
+            clHistory.push(
+              `/projects/${project.attributes.slug}?scrollToStatusModule=true`
+            );
+          }
+
+          triggerPostActionEvents({});
+        },
+        onError: () => {
+          setProcessing(false);
+        },
       }
-    }
+    );
   };
 
   const disabledExplanation =
@@ -156,6 +144,9 @@ const CTAButton = ({ phase, project }: Props) => {
       formatCurrency,
       numberOfOptionsSelected
     );
+
+  // Don't allow submitting while votes are still being saved
+  const isDisabled = !!disabledExplanation || votingProcessing;
 
   return (
     <Box width="100%">
@@ -177,9 +168,9 @@ const CTAButton = ({ phase, project }: Props) => {
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
-            disabled={!!disabledExplanation}
+            disabled={isDisabled}
             processing={processing}
-            className={disabledExplanation ? '' : 'pulse'}
+            className={isDisabled ? '' : 'pulse'}
             ariaDescribedby="explanation"
             opacityDisabled="0.6"
             textDisabledColor={colors.black}

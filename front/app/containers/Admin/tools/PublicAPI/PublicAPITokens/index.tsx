@@ -119,7 +119,11 @@ const PublicAPITokens = () => {
           <Title variant="h3">{formatMessage(messages.noTokens)}</Title>
         </Box>
       )}
-      <Modal opened={isModalOpen} close={closeTokenModal}>
+      <Modal
+        opened={isModalOpen}
+        close={closeTokenModal}
+        ariaLabelledBy="create-token-modal-title"
+      >
         <CreateTokenModal onClose={closeTokenModal} />
       </Modal>
     </>

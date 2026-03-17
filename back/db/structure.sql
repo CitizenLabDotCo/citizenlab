@@ -76,7 +76,9 @@ ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a3793c8571;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a34b51c948;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2cfad997d;
+ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_a2246de8b6;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2016447bc;
+ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS fk_rails_9fde33dc89;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_9ecfc9d2b9;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS fk_rails_9dd6f2f888;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_9b5a82cb55;
@@ -212,6 +214,7 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_global_topic_id;
@@ -222,6 +225,7 @@ DROP INDEX IF EXISTS public.index_project_imports_on_project_id;
 DROP INDEX IF EXISTS public.index_project_imports_on_import_user_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
+DROP INDEX IF EXISTS public.index_project_folders_folders_on_space_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_migrated_file_id;
@@ -291,7 +295,12 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_user_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
+DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_highest_role;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_session_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_project_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_created_at;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_search;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_phase_id;
@@ -496,6 +505,7 @@ ALTER TABLE IF EXISTS ONLY public.tenants DROP CONSTRAINT IF EXISTS tenants_pkey
 ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS surveys_responses_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS static_pages_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
+ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
@@ -630,6 +640,7 @@ DROP TABLE IF EXISTS public.static_pages_global_topics;
 DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
+DROP TABLE IF EXISTS public.spaces;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
@@ -1381,14 +1392,15 @@ CREATE TABLE public.projects (
     default_assignee_id uuid,
     include_all_areas boolean DEFAULT false NOT NULL,
     baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL,
+    votes_count bigint DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
-    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL
+    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
+    space_id uuid
 );
 
 
@@ -1764,7 +1776,7 @@ CREATE TABLE public.phases (
     voting_term_singular_multiloc jsonb DEFAULT '{}'::jsonb,
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL,
+    votes_count bigint DEFAULT 0 NOT NULL,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
@@ -1781,7 +1793,8 @@ CREATE TABLE public.phases (
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    prescreening_mode character varying
+    prescreening_mode character varying,
+    available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL
 );
 
 
@@ -3421,7 +3434,8 @@ CREATE TABLE public.project_folders_folders (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    space_id uuid
 );
 
 
@@ -3604,6 +3618,19 @@ CREATE TABLE public.report_builder_reports (
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
+);
+
+
+--
+-- Name: spaces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.spaces (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -4801,6 +4828,14 @@ ALTER TABLE ONLY public.report_builder_reports
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: spaces spaces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT spaces_pkey PRIMARY KEY (id);
 
 
 --
@@ -6247,10 +6282,45 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 
 
 --
+-- Name: index_impact_tracking_pageviews_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_created_at ON public.impact_tracking_pageviews USING btree (created_at);
+
+
+--
+-- Name: index_impact_tracking_pageviews_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_project_id ON public.impact_tracking_pageviews USING btree (project_id);
+
+
+--
+-- Name: index_impact_tracking_pageviews_on_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_session_id ON public.impact_tracking_pageviews USING btree (session_id);
+
+
+--
+-- Name: index_impact_tracking_sessions_on_highest_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_sessions_on_highest_role ON public.impact_tracking_sessions USING btree (highest_role);
+
+
+--
 -- Name: index_impact_tracking_sessions_on_monthly_user_hash; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impact_tracking_sessions USING btree (monthly_user_hash);
+
+
+--
+-- Name: index_impact_tracking_sessions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_sessions_on_user_id ON public.impact_tracking_sessions USING btree (user_id);
 
 
 --
@@ -6737,6 +6807,13 @@ CREATE INDEX index_project_folders_folders_on_slug ON public.project_folders_fol
 
 
 --
+-- Name: index_project_folders_folders_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_folders_folders_on_space_id ON public.project_folders_folders USING btree (space_id);
+
+
+--
 -- Name: index_project_folders_images_on_project_folder_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6804,6 +6881,13 @@ CREATE INDEX index_projects_global_topics_on_project_id ON public.projects_globa
 --
 
 CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug);
+
+
+--
+-- Name: index_projects_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id);
 
 
 --
@@ -7836,11 +7920,27 @@ ALTER TABLE ONLY public.areas_projects
 
 
 --
+-- Name: project_folders_folders fk_rails_9fde33dc89; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_folders_folders
+    ADD CONSTRAINT fk_rails_9fde33dc89 FOREIGN KEY (space_id) REFERENCES public.spaces(id);
+
+
+--
 -- Name: notifications fk_rails_a2016447bc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_a2016447bc FOREIGN KEY (initiating_user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: projects fk_rails_a2246de8b6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT fk_rails_a2246de8b6 FOREIGN KEY (space_id) REFERENCES public.spaces(id);
 
 
 --
@@ -8386,6 +8486,12 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260312142054'),
+('20260302101045'),
+('20260302100745'),
+('20260302100636'),
+('20260227120000'),
+('20260223103753'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),

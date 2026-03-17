@@ -111,7 +111,6 @@ describe('<ReportBuilderPage />', () => {
       mockReports = [];
       render(<ReportBuilderPage />);
 
-      document.body.innerHTML;
       expect(screen.getByText('Create your first report')).toBeInTheDocument();
     });
 

@@ -5,6 +5,7 @@ resource 'Phase insights' do
   before do
     admin_header_token
     # This reference time means we can expect exact dates in the chart data
+    AppConfiguration.instance.update!(platform_start_at: '2025-09-01')
     travel_to(Time.zone.parse('2025-12-02 12:00:00'))
   end
 
@@ -52,10 +53,10 @@ resource 'Phase insights' do
       manual_votes_count: 3,
       with_permissions: true
     ).tap do |phase|
-      # Ideas
-      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 1' })
-      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
-      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 3' })
+      # Ideas - created_at timestamps ensure deterministic ordering for ideas with equal votes
+      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 21.days.ago, title_multiloc: { en: 'Idea 1' })
+      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 22.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
+      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 23.days.ago, title_multiloc: { en: 'Idea 3' })
 
       # Users
       user1 = create(:user)
@@ -88,7 +89,7 @@ resource 'Phase insights' do
       idea3.update_column(:votes_count, idea3.baskets_ideas.sum(:votes))
 
       # Pageviews and sessions
-      session1 = create(:session, user_id: user2.id)
+      session1 = create(:session, user_id: user1.id)
       create(:pageview, session: session1, created_at: 20.days.ago, project_id: phase.project.id) # before voting phase
       create(:pageview, session: session1, created_at: 13.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
 
@@ -98,6 +99,7 @@ resource 'Phase insights' do
 
       session3 = create(:session, user_id: user3.id)
       create(:pageview, session: session3, created_at: 10.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
+
       session4 = create(:session, user_id: user4.id)
       create(:pageview, session: session4, created_at: 10.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
       create(:pageview, session: session4, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days
@@ -125,22 +127,22 @@ resource 'Phase insights' do
 
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
-        visitors: 6,
-        visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
+        visitors: 7,
+        visitors_7_day_percent_change: 75.0, # from 4 unique visitors 7-days ago, to 7 now = 75% increase
         participants: 5,
-        participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
-        participation_rate_as_percent: 83.3,
-        participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+        participants_7_day_percent_change: 66.7, # from 3 unique participants 7-days ago, to 5 now = 66.7% increase
+        participation_rate_as_percent: 71.4,
+        participation_rate_7_day_percent_change: -4.8, # participation_rate_7_days_ago = 0.75, participation_rate_now = 0.7142857142857143 = (((0.7142857142857143 - 0.75).to_f / 0.75) * 100.0).round(1)
         voting: {
           voting_method: 'multiple_voting',
           associated_ideas: 3,
           online_votes: 6,
-          online_votes_7_day_percent_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
+          online_votes_7_day_percent_change: 20.0, # from 5 by 7-days ago, to 6 now = 20% increase
           offline_votes: 3,
           voters: 3,
-          voters_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
+          voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
           comments_posted: 3,
-          comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          comments_posted_7_day_percent_change: 200.0 # from 1 by 7-days ago, to 3 now = 200% increase
         }
       })
     end
@@ -160,22 +162,22 @@ resource 'Phase insights' do
 
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
-          visitors: 6,
-          visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
+          visitors: 7,
+          visitors_7_day_percent_change: 75.0, # from 4 unique visitors 7-days ago, to 7 now = 75% increase
           participants: 5,
-          participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
-          participation_rate_as_percent: 83.3,
-          participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+          participants_7_day_percent_change: 66.7, # from 3 unique participants 7-days ago, to 5 now = 66.7% increase
+          participation_rate_as_percent: 71.4,
+          participation_rate_7_day_percent_change: -4.8, # participation_rate_7_days_ago = 0.75, participation_rate_now = 0.7142857142857143 = (((0.7142857142857143 - 0.75).to_f / 0.75) * 100.0).round(1)
           voting: {
             voting_method: 'budgeting',
             associated_ideas: 3,
             online_picks: 4,
-            online_picks_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 (in last 7 days) = 0% change
+            online_picks_7_day_percent_change: 33.3, # from 3 by 7-days ago, to 4 now = 33.3% increase
             offline_picks: 3,
             voters: 3,
-            voters_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
+            voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
             comments_posted: 3,
-            comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+            comments_posted_7_day_percent_change: 200.0 # from 1 by 7-days ago, to 3 now = 200% increase
           }
         })
 
@@ -289,7 +291,7 @@ resource 'Phase insights' do
         assert_status 200
 
         idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
-        expect(idea_titles).to contain_exactly('Idea 2', 'Idea 1', 'Idea 3')
+        expect(idea_titles).to eq(['Idea 2', 'Idea 3', 'Idea 1'])
       end
     end
 

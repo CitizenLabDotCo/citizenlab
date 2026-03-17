@@ -260,7 +260,12 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     event.preventDefault();
     if (!formData) return;
 
-    const { isValidated, errors } = validate(formData, phases, formatMessage);
+    const { isValidated, errors } = validate(
+      formData,
+      phases,
+      formatMessage,
+      phase?.data.id
+    );
 
     setValidationErrors(errors);
 

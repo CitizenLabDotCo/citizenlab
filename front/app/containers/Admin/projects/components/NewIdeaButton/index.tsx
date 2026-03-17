@@ -37,6 +37,12 @@ const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
             proposal: messages.newProposal,
             initiative: messages.newInitiative,
             petition: messages.newPetition,
+            comment: messages.newComment,
+            response: messages.newResponse,
+            suggestion: messages.newSuggestion,
+            topic: messages.newTopic,
+            post: messages.newPost,
+            story: messages.newStory,
           })
         );
 

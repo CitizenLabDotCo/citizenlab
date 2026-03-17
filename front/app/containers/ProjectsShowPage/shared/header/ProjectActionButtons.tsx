@@ -250,11 +250,17 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               option: messages.seeTheOptions,
               project: messages.seeTheProjects,
               question: messages.seeTheQuestions,
-              issue: messages.seeTheIssues,
+              issue: messages.seeTheIssues1,
               contribution: messages.seeTheContributions,
               proposal: messages.seeTheProposals,
               initiative: messages.seeTheInitiatives,
               petition: messages.seeThePetitions,
+              comment: messages.seeTheComments,
+              response: messages.seeTheResponses,
+              suggestion: messages.seeTheSuggestions,
+              topic: messages.seeTheTopics,
+              post: messages.seeThePosts,
+              story: messages.seeTheStories,
             })}
           />
         </ButtonWithLink>

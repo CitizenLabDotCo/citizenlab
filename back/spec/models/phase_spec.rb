@@ -76,32 +76,31 @@ RSpec.describe Phase do
       p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
     end
+  end
 
-    it 'can be changed from ideation to voting' do
+  describe '#validate_no_inputs_on_participation_method_change' do
+    it 'blocks changing the participation method when the phase has transitive inputs (via ideas_phases)' do
       phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.ideas_order = 'random'
-      phase.voting_max_total = 200
-      expect(phase.save).to be true
-    end
-
-    it 'can be changed from ideation to native_survey' do
-      phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'native_survey'
-      phase.native_survey_title_multiloc = { en: 'Survey' }
-      phase.native_survey_button_multiloc = { en: 'Take the survey' }
+      create(:idea, phases: [phase], project: phase.project)
+      phase.participation_method = 'information'
       phase.ideas_order = nil
-      expect(phase.save).to be true
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
     end
 
-    it 'can be changed from native_survey to ideation' do
-      phase = create(:native_survey_phase)
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.voting_max_total = 200
-      phase.input_term = 'idea'
-      expect(phase.save).to be true
+    it 'blocks changing the participation method when the phase has non-transitive inputs (via creation_phase)' do
+      phase = create(:proposals_phase)
+      create(:proposal, creation_phase: phase, project: phase.project)
+      phase.participation_method = 'ideation'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
+    end
+
+    it 'allows changing the participation method when there are no inputs' do
+      phase = create(:phase, participation_method: 'ideation')
+      phase.participation_method = 'information'
+      phase.ideas_order = nil
+      expect(phase).to be_valid
     end
   end
 
@@ -138,6 +137,65 @@ RSpec.describe Phase do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
       expect(p.save).to be false
+    end
+  end
+
+  describe 'available_views' do
+    describe 'defaults (set_presentation_mode callback)' do
+      it 'defaults to [card] when not explicitly set' do
+        phase = create(:phase, available_views: nil)
+        expect(phase.available_views).to eq %w[card]
+      end
+
+      it 'automatically includes the presentation_mode in available_views' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card])
+        expect(phase.available_views).to include('map')
+      end
+
+      it 'does not duplicate if presentation_mode is already included' do
+        phase = create(:phase, presentation_mode: 'card', available_views: %w[card map])
+        expect(phase.available_views).to eq %w[card map]
+      end
+    end
+
+    describe 'validation' do
+      # Stub set_presentation_mode so the before_validation callback
+      # doesn't auto-correct the values we're testing against.
+      before { allow_any_instance_of(described_class).to receive(:set_presentation_mode) }
+
+      it 'is invalid when empty' do
+        phase = build(:phase, presentation_mode: 'card', available_views: [])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('non-empty array')
+      end
+
+      it 'is invalid with an unrecognized view mode' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card unknown])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('invalid view modes')
+      end
+
+      it 'is invalid without card view' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[map])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include card view')
+      end
+
+      it 'is invalid when available_views does not include the presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include the default presentation mode')
+      end
+
+      it 'is valid with card and the current presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid with all presentation modes' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card map feed])
+        expect(phase).to be_valid
+      end
     end
   end
 

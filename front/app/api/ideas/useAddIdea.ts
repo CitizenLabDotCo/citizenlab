@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import analyticsKeys from 'api/analytics/keys';
-import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
@@ -30,16 +29,16 @@ const useAddIdea = () => {
   return useMutation<IIdea, CLErrors, IIdeaAdd>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
-      const { claim_token } = idea.data.attributes;
+      const { claim_token, claim_token_expires_at } = idea.data.attributes;
 
-      if (claim_token) {
-        storeClaimToken(claim_token);
+      if (claim_token && claim_token_expires_at) {
+        storeClaimToken(claim_token, claim_token_expires_at);
       }
 
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
-      queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
       queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),

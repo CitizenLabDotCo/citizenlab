@@ -14,10 +14,14 @@ import BulletPoint from './BulletPoint';
 import messages from './messages';
 
 interface Props {
+  showJoinDiscussionsBulletPoint?: boolean;
   onCreateAccount: () => void;
 }
 
-const PostParticipationBox = ({ onCreateAccount }: Props) => {
+const PostParticipationBox = ({
+  showJoinDiscussionsBulletPoint = false,
+  onCreateAccount,
+}: Props) => {
   return (
     <Box
       border={stylingConsts.border}
@@ -30,14 +34,16 @@ const PostParticipationBox = ({ onCreateAccount }: Props) => {
         <FormattedMessage {...messages.stayConnected} />
       </Title>
       <Text mb="12px">
-        <FormattedMessage {...messages.createAnAccountToFollow} />
+        <FormattedMessage {...messages.createOrLinkAnAccountToFollow} />
       </Text>
       <Box display="flex" flexDirection="column" gap="8px">
         <BulletPoint iconName="notification" message={messages.getUpdates} />
-        <BulletPoint
-          iconName="chat-bubble"
-          message={messages.joinDiscussions}
-        />
+        {showJoinDiscussionsBulletPoint && (
+          <BulletPoint
+            iconName="chat-bubble"
+            message={messages.joinDiscussions}
+          />
+        )}
         <BulletPoint
           iconName="projects"
           message={messages.participateInOtherProjects}
