@@ -60,15 +60,12 @@ const Modals = ({
       >
         <UserAssignedItems user={user} />
       </Modal>
-      <Modal
+      <SetAsModerator
         opened={modalOpened === 'set-moderator'}
-        close={closeModal}
-        // Return focus to the More Actions button on close
-        returnFocusRef={moreActionsButtonRef}
-        ariaLabelledBy="set-moderator-modal-title"
-      >
-        <SetAsModerator user={user} onClose={closeModal} />
-      </Modal>
+        user={user}
+        moreActionsButtonRef={moreActionsButtonRef}
+        onClose={closeModal}
+      />
       <SeatLimitReachedModal
         seatType="admin"
         showModal={modalOpened === 'seat-limit-reached'}

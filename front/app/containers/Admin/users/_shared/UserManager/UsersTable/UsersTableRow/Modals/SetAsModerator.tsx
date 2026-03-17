@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, RefObject } from 'react';
 
 import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
@@ -12,6 +12,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import useLocalize from 'hooks/useLocalize';
 
 import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
+import Modal from 'components/UI/Modal';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -20,11 +21,18 @@ import { getFullName } from 'utils/textUtils';
 import messages from '../../../../../messages';
 
 interface Props {
+  opened: boolean;
   user: IUserData;
+  moreActionsButtonRef: RefObject<HTMLButtonElement>;
   onClose: () => void;
 }
 
-const SetAsModerator = ({ user, onClose }: Props) => {
+const SetAsModerator = ({
+  opened,
+  moreActionsButtonRef,
+  user,
+  onClose,
+}: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: addProjectFolderModerator } =
     useAddProjectFolderModerator();
@@ -95,32 +103,42 @@ const SetAsModerator = ({ user, onClose }: Props) => {
 
   return (
     <div>
-      <Title id="set-moderator-modal-title" mb="40px">
-        <FormattedMessage
-          {...messages.setUserAsProjectModerator}
-          values={{ name: getFullName(user) }}
+      <Modal
+        opened={opened}
+        close={onClose}
+        // Return focus to the More Actions button on close
+        returnFocusRef={moreActionsButtonRef}
+        ariaLabelledBy="set-moderator-modal-title"
+      >
+        <Title id="set-moderator-modal-title" mb="40px">
+          <FormattedMessage
+            {...messages.setUserAsProjectModerator}
+            values={{ name: getFullName(user) }}
+          />
+        </Title>
+        <MultipleSelect
+          value={selectedPublications}
+          options={options}
+          onChange={(selectedOptions) =>
+            setSelectedPublications(
+              selectedOptions.map((option) => option.value)
+            )
+          }
+          label={formatMessage(messages.selectPublications)}
+          placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
         />
-      </Title>
-      <MultipleSelect
-        value={selectedPublications}
-        options={options}
-        onChange={(selectedOptions) =>
-          setSelectedPublications(selectedOptions.map((option) => option.value))
-        }
-        label={formatMessage(messages.selectPublications)}
-        placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
-      />
-      <Box display="flex" justifyContent="flex-end" mt="20px">
-        <Button
-          onClick={handleAssign}
-          disabled={selectedPublications.length === 0}
-          processing={isLoading}
-        >
-          {formatMessage(messages.assign)}
-        </Button>
-      </Box>
+        <Box display="flex" justifyContent="flex-end" mt="20px">
+          <Button
+            onClick={handleAssign}
+            disabled={selectedPublications.length === 0}
+            processing={isLoading}
+          >
+            {formatMessage(messages.assign)}
+          </Button>
+        </Box>
+      </Modal>
       <SeatLimitReachedModal
-        seatType="admin"
+        seatType="moderator"
         showModal={seatLimitReachedModalOpen}
         closeModal={() => setSeatLimitReachedModalOpen(false)}
         addModerators={doAssign}
