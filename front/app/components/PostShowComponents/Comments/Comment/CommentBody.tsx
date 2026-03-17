@@ -25,10 +25,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  isWeglotTranslatedPage,
-  getWeglotCurrentLang,
+  getWeglotSourceLang,
   weglotTranslate,
-  WeglotData,
+  WeglotDataOrEmpty,
 } from 'utils/weglot';
 
 import { commentTranslateButtonClicked$ } from '../events';
@@ -170,20 +169,20 @@ const CommentBody = ({
       let bodyMultiloc: Record<string, string> = {
         [locale]: processedValue,
       };
-      let weglotData: WeglotData | Record<string, never> = {};
+      let weglotData: WeglotDataOrEmpty = {};
 
       const weglotApiKey =
         appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
-        const weglotLang = getWeglotCurrentLang()!;
+      const weglotSourceLang = getWeglotSourceLang(locale);
+      if (weglotApiKey && weglotSourceLang) {
         const translatedValue = await weglotTranslate(
           processedValue,
-          weglotLang,
+          weglotSourceLang,
           locale,
           weglotApiKey
         );
         bodyMultiloc = { [locale]: translatedValue };
-        weglotData = { locale: weglotLang, body: processedValue };
+        weglotData = { locale: weglotSourceLang, body: processedValue };
       }
 
       const updatedComment: Omit<IUpdatedComment, 'commentId'> = {

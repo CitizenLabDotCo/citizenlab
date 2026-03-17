@@ -18,11 +18,10 @@ import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import {
-  isWeglotTranslatedPage,
-  getWeglotCurrentLang,
+  getWeglotSourceLang,
   weglotTranslate,
   weglotTranslateHtml,
-  WeglotData,
+  WeglotDataOrEmpty,
 } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
@@ -78,18 +77,17 @@ const IdeationForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
-      let weglotData: WeglotData | Record<string, never> = {};
+      let weglotData: WeglotDataOrEmpty = {};
       let translatedFormValues = { ...formValues };
 
       const weglotApiKey =
         appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
-        const weglotLang = getWeglotCurrentLang()!;
-
+      const weglotSourceLang = getWeglotSourceLang(locale);
+      if (weglotApiKey && weglotSourceLang) {
         if (formValues.title_multiloc?.[locale]) {
           const translatedTitle = await weglotTranslate(
             formValues.title_multiloc[locale]!,
-            weglotLang,
+            weglotSourceLang,
             locale,
             weglotApiKey
           );
@@ -105,7 +103,7 @@ const IdeationForm = ({
           // including images, formatting, and links.
           const translatedBody = await weglotTranslateHtml(
             formValues.body_multiloc[locale]!,
-            weglotLang,
+            weglotSourceLang,
             locale,
             weglotApiKey
           );
@@ -116,7 +114,7 @@ const IdeationForm = ({
         }
 
         weglotData = {
-          locale: weglotLang,
+          locale: weglotSourceLang,
           body: formValues.body_multiloc?.[locale] ?? '',
         };
       }

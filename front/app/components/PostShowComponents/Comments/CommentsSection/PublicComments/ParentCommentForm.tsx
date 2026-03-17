@@ -25,10 +25,9 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import {
-  isWeglotTranslatedPage,
-  getWeglotCurrentLang,
+  getWeglotSourceLang,
   weglotTranslate,
-  WeglotData,
+  WeglotDataOrEmpty,
 } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';
@@ -162,20 +161,20 @@ const ParentCommentForm = ({
       let commentBodyMultiloc: Record<string, string> = {
         [locale]: processedValue,
       };
-      let weglotData: WeglotData | Record<string, never> = {};
+      let weglotData: WeglotDataOrEmpty = {};
 
       const weglotApiKey =
         appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
-        const weglotLang = getWeglotCurrentLang()!;
+      const weglotSourceLang = getWeglotSourceLang(locale);
+      if (weglotApiKey && weglotSourceLang) {
         const translatedValue = await weglotTranslate(
           processedValue,
-          weglotLang,
+          weglotSourceLang,
           locale,
           weglotApiKey
         );
         commentBodyMultiloc = { [locale]: translatedValue };
-        weglotData = { locale: weglotLang, body: processedValue };
+        weglotData = { locale: weglotSourceLang, body: processedValue };
       }
 
       trackEventByName(tracks.clickParentCommentPublish, {

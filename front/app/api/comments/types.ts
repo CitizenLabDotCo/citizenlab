@@ -1,7 +1,7 @@
 import { IRelationship, Multiloc, ILinks } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
-import { WeglotData } from 'utils/weglot';
+import { WeglotDataOrEmpty } from 'utils/weglot';
 
 import commentsKeys from './keys';
 
@@ -23,7 +23,7 @@ interface CommentAttributes {
 
 export interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
-  weglot_data: WeglotData | Record<string, never>;
+  weglot_data: WeglotDataOrEmpty;
   publication_status: 'published';
   anonymous?: boolean;
   author_hash?: string;
@@ -68,7 +68,7 @@ export interface INewComment {
   author_id: string;
   parent_id?: string;
   body_multiloc: Multiloc;
-  weglot_data?: WeglotData | Record<string, never>;
+  weglot_data?: WeglotDataOrEmpty;
   anonymous?: boolean;
 }
 
@@ -77,7 +77,7 @@ export interface IUpdatedComment {
   author_id?: string;
   parent_id?: string;
   body_multiloc: Multiloc;
-  weglot_data?: WeglotData | Record<string, never>;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export const DeleteReasonCode = {

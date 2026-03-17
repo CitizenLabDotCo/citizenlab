@@ -11,7 +11,7 @@ import {
   IdeaVotingDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
-import { WeglotData } from 'utils/weglot';
+import { WeglotDataOrEmpty } from 'utils/weglot';
 
 import ideasKeys from './keys';
 
@@ -196,7 +196,7 @@ export interface IIdeaAdd {
   budget?: number | null;
   proposed_budget?: number | null;
   anonymous?: boolean;
-  weglot_data?: WeglotData | Record<string, never>;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export interface IIdeaUpdate {
@@ -217,7 +217,7 @@ export interface IIdeaUpdate {
   idea_images_attributes?: { image: string }[];
   manual_votes_amount?: number | null;
   publication_status?: IdeaPublicationStatus;
-  weglot_data?: WeglotData | Record<string, never>;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export interface IIdeas {

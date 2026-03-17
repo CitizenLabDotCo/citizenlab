@@ -29,10 +29,9 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage, isNilOrError } from 'utils/helperUtils';
 import {
-  isWeglotTranslatedPage,
-  getWeglotCurrentLang,
+  getWeglotSourceLang,
   weglotTranslate,
-  WeglotData,
+  WeglotDataOrEmpty,
 } from 'utils/weglot';
 
 import messages from './messages';
@@ -240,7 +239,7 @@ const OfficialFeedbackForm = ({
       const feedbackValues: {
         author_multiloc: Multiloc;
         body_multiloc: Multiloc;
-        weglot_data: WeglotData | Record<string, never>;
+        weglot_data: WeglotDataOrEmpty;
       } = {
         author_multiloc: formValues.authorMultiloc,
         body_multiloc: {} as Multiloc,
@@ -256,12 +255,12 @@ const OfficialFeedbackForm = ({
 
       const weglotApiKey =
         appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
-        const weglotLang = getWeglotCurrentLang()!;
+      const weglotSourceLang = getWeglotSourceLang(locale);
+      if (weglotApiKey && weglotSourceLang) {
         const originalBody = feedbackValues.body_multiloc[locale] ?? '';
         const translatedBody = await weglotTranslate(
           originalBody,
-          weglotLang,
+          weglotSourceLang,
           locale,
           weglotApiKey
         );
@@ -270,7 +269,7 @@ const OfficialFeedbackForm = ({
           [locale]: translatedBody,
         };
         feedbackValues.weglot_data = {
-          locale: weglotLang,
+          locale: weglotSourceLang,
           body: originalBody,
         };
       }

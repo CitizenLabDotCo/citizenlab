@@ -5,6 +5,9 @@ export interface WeglotData {
   body: string;
 }
 
+// Represents a submission with no Weglot translation data (the default case).
+export type WeglotDataOrEmpty = WeglotData | Record<string, never>;
+
 /**
  * Returns the current Weglot language if Weglot is active,
  * or null if Weglot is not loaded.
@@ -14,17 +17,54 @@ export function getWeglotCurrentLang(): string | null {
 }
 
 /**
- * Checks if Weglot is active and the user is on a translated page
- * (i.e., the current Weglot language differs from the platform's main locale).
+ * Returns the Weglot source language if the page is currently being viewed
+ * in a language different from the platform's primary locale, or null otherwise.
+ * Use this to check whether Weglot translation is active and get the source
+ * language in one call — avoids calling getWeglotCurrentLang() twice.
  */
-export function isWeglotTranslatedPage(mainLocale: SupportedLocale): boolean {
+export function getWeglotSourceLang(
+  mainLocale: SupportedLocale
+): string | null {
   const weglotLang = getWeglotCurrentLang();
-  if (!weglotLang) return false;
-
-  // Compare 2-letter Weglot code against the main locale
-  // e.g., "fr" !== "en", or "en" === "en"
+  if (!weglotLang) return null;
   const mainLangCode = mainLocale.split('-')[0];
-  return weglotLang !== mainLangCode;
+  return weglotLang !== mainLangCode ? weglotLang : null;
+}
+
+/**
+ * Shared fetch logic for both weglotTranslate and weglotTranslateHtml.
+ * Sends a batch of words to the Weglot REST API and returns the translated strings,
+ * or null on any failure so callers can gracefully degrade.
+ */
+async function callWeglotApi(
+  words: { w: string; t: number }[],
+  fromLang: string,
+  toLang: string,
+  apiKey: string
+): Promise<string[] | null> {
+  try {
+    const response = await fetch(
+      `https://api.weglot.com/translate?api_key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          l_from: fromLang,
+          l_to: toLang.split('-')[0],
+          request_url: window.location.href,
+          words,
+        }),
+        signal: AbortSignal.timeout(5000),
+      }
+    );
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return (data.to_words as string[] | undefined) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -52,43 +92,25 @@ export async function weglotTranslateHtml(
 
   if (textNodes.length === 0) return html;
 
-  const words = textNodes.map((n) => ({ w: n.textContent!, t: 1 }));
+  const translated = await callWeglotApi(
+    textNodes.map((n) => ({ w: n.textContent!, t: 1 })),
+    fromLang,
+    toLang,
+    apiKey
+  );
 
-  try {
-    const response = await fetch(
-      `https://api.weglot.com/translate?api_key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          l_from: fromLang,
-          l_to: toLang.split('-')[0],
-          request_url: window.location.href,
-          words,
-        }),
-        signal: AbortSignal.timeout(5000),
-      }
-    );
+  if (!translated || translated.length !== textNodes.length) return html;
 
-    if (!response.ok) return html;
+  textNodes.forEach((n, i) => {
+    n.textContent = translated[i];
+  });
 
-    const data = await response.json();
-    const translated = data.to_words as string[] | undefined;
-    if (!translated || translated.length !== textNodes.length) return html;
-
-    textNodes.forEach((n, i) => {
-      n.textContent = translated[i];
-    });
-
-    return doc.body.innerHTML;
-  } catch {
-    return html;
-  }
+  return doc.body.innerHTML;
 }
 
 /**
- * Calls the Weglot REST API to translate text from one language to another.
- * Returns the translated text, or the original text on failure (graceful degradation).
+ * Translates a plain text string via the Weglot REST API.
+ * Returns the translated text, or the original on failure (graceful degradation).
  */
 export async function weglotTranslate(
   text: string,
@@ -96,27 +118,11 @@ export async function weglotTranslate(
   toLang: string,
   apiKey: string
 ): Promise<string> {
-  try {
-    const response = await fetch(
-      `https://api.weglot.com/translate?api_key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          l_from: fromLang,
-          l_to: toLang.split('-')[0],
-          request_url: window.location.href,
-          words: [{ w: text, t: 1 }],
-        }),
-        signal: AbortSignal.timeout(5000),
-      }
-    );
-
-    if (!response.ok) return text;
-
-    const data = await response.json();
-    return data.to_words?.[0] ?? text;
-  } catch {
-    return text; // Graceful degradation
-  }
+  const translated = await callWeglotApi(
+    [{ w: text, t: 1 }],
+    fromLang,
+    toLang,
+    apiKey
+  );
+  return translated?.[0] ?? text;
 }
