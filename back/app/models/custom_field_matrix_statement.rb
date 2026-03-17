@@ -21,15 +21,17 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldMatrixStatement < ApplicationRecord
+  include BulkReorderable
+
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
+
+  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  bulk_reorderable constraint_name: :custom_field_matrix_statements_field_id_ordering_unique
 
   belongs_to :custom_field
 
   before_validation :generate_key, on: :create
-  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
-  include BulkReorderable
-  bulk_reorderable ordering_column: :ordering, constraint_name: :custom_field_matrix_statements_field_id_ordering_unique
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },

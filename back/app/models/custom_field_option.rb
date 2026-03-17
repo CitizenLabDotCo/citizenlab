@@ -24,12 +24,13 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  include BulkReorderable
+
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field, sequential_updates: true
-  include BulkReorderable
-  bulk_reorderable ordering_column: :ordering, constraint_name: :custom_field_options_field_id_ordering_unique
+  bulk_reorderable constraint_name: :custom_field_options_field_id_ordering_unique
 
   belongs_to :custom_field
 

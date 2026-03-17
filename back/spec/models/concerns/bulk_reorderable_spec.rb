@@ -71,12 +71,14 @@ RSpec.describe BulkReorderable do
       other_form = create(:custom_form)
       field_a = create_field(ordering: 0)
       field_b = create_field(ordering: 1)
-      other_field = create(:custom_field, :for_custom_form, resource: other_form, ordering: 0)
+      other_field_a = create(:custom_field, :for_custom_form, resource: other_form, ordering: 0)
+      other_field_b = create(:custom_field, :for_custom_form, resource: other_form, ordering: 1)
 
       CustomField.where(resource: custom_form).bulk_reorder!([field_b.id, field_a.id])
 
       expect(ordered_ids).to eq([field_b.id, field_a.id])
-      expect(other_field.reload.ordering).to eq(0)
+      expect(other_field_a.reload.ordering).to eq(0)
+      expect(other_field_b.reload.ordering).to eq(1)
     end
   end
 end

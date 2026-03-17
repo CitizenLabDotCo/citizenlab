@@ -251,11 +251,12 @@ module IdeaCustomFields
       statements_params.each_with_index do |statement_params, statement_index|
         if statement_params[:id] && statements_by_id[statement_params[:id]]
           statement = statements_by_id[statement_params[:id]]
-          update_statement!(statement, statement_params, field_index, statement_index)
+          next unless update_statement!(statement, statement_params, field_index, statement_index)
         else
           statement = create_statement!(statement_params, field, field_index, statement_index)
+          next unless statement
         end
-        processed_statement_ids << statement.id if statement&.persisted?
+        processed_statement_ids << statement.id
       end
 
       field.matrix_statements.bulk_reorder!(processed_statement_ids)
@@ -265,20 +266,23 @@ module IdeaCustomFields
       statement = CustomFieldMatrixStatement.new(statement_params.merge(custom_field: field))
       if statement.save
         SideFxCustomFieldMatrixStatementService.new.after_create(statement, @current_user)
+        statement
       else
         add_statements_errors(statement.errors.details, field_index, statement_index)
+        false
       end
-      statement
     end
 
     def update_statement!(statement, statement_params, field_index, statement_index)
       statement.assign_attributes(statement_params)
-      return unless statement.changed?
+      return statement unless statement.changed?
 
       if statement.save
         SideFxCustomFieldMatrixStatementService.new.after_update(statement, @current_user)
+        statement
       else
         add_statements_errors(statement.errors.details, field_index, statement_index)
+        false
       end
     end
 

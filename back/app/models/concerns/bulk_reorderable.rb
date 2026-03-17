@@ -9,8 +9,7 @@
 # Usage:
 #   class CustomField < ApplicationRecord
 #     include BulkReorderable
-#     bulk_reorderable ordering_column: :ordering,
-#       constraint_name: :custom_fields_resource_id_ordering_unique
+#     bulk_reorderable constraint_name: :custom_fields_resource_id_ordering_unique
 #   end
 #
 #   @custom_form.custom_fields.bulk_reorder!([id3, id1, id2])
@@ -19,7 +18,7 @@ module BulkReorderable
   extend ActiveSupport::Concern
 
   class_methods do
-    def bulk_reorderable(ordering_column:, constraint_name:)
+    def bulk_reorderable(constraint_name:, ordering_column: :ordering)
       @_bulk_reorder_config = {
         ordering_column: ordering_column,
         constraint_name: constraint_name
