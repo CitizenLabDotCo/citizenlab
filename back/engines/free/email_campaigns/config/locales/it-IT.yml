@@ -515,7 +515,7 @@ it:
         issue: 'Il tuo parere è in "%{prescreening_status_title}"'
         option: 'La tua opzione è in "%{prescreening_status_title}"'
         proposal: 'La tua proposta è in "%{prescreening_status_title}"'
-        initiative: 'La tua iniziativa è in "%{prescreening_status_title}".'
+        initiative: 'La tua iniziativa è in "%{prescreening_status_title}"'
         petition: 'La tua petizione è in "%{prescreening_status_title}"'
         comment: 'Il tuo commento è in "%{prescreening_status_title}"'
         response: 'La tua risposta è in "%{prescreening_status_title}"'
@@ -528,11 +528,11 @@ it:
       preheader: 'Attualmente si trova in %{prescreening_status_title}'
     screening_digest:
       subject: '%{count} input in attesa di revisione'
-      preheader: 'Esamina gli input per %{organizationName}'
-      title: '%{firstName}, gli input sono in attesa di essere rivisti'
-      event_description: "Questi input devono essere approvati prima di essere visibili al pubblico. Puoi esaminarli nel Gestore degli input dell'intera piattaforma o nel Gestore degli input di ciascuna fase."
-      cta_button: 'Recensioni sugli input'
-      inputs_awaiting_screening: 'input da rivedere'
+      preheader: 'Esamina i contributi per %{organizationName}'
+      title: '%{firstName}, i contributi sono in attesa di essere esaminati'
+      event_description: "Questi contributi devono essere approvati prima di essere visibili al pubblico. Puoi esaminarli nella pagina Gestione contributi della piattaforma o nella Gestione contributi di ogni singola fase."
+      cta_button: 'Esamina i contributi'
+      inputs_awaiting_screening: 'contributi da esaminare'
     voting_basket_submitted:
       subject: '%{organizationName}: Hai votato con successo'
       preheader: 'Hai votato con successo sulla piattaforma partecipativa di %{organizationName}'

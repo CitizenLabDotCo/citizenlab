@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Šis el. paštas jau egzistuoja. Su juo susieta kita paskyra.",
   "app.errors.generics.unsupported_locales": "Šis laukas nepalaiko dabartinės vietovės.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Kaip projekto vadovas galite siųsti el. laiškus tik tiems žmonėms, kurie turi prieigą prie jūsų projekto (-ų).",
+  "app.errors.has_inputs": "Dalyvavimo metodo keisti negalima, nes šiame etape jau yra įvestys. Pirmiausia pašalinkite visus įvesties duomenis.",
   "app.errors.has_other_overlapping_phases": "Projektų etapai negali sutapti.",
   "app.errors.invalid_email": "Eilutėje {row} rastas el. pašto adresas {value} nėra galiojantis el. pašto adresas",
   "app.errors.invalid_row": "Bandant apdoroti eilutę {row}įvyko nežinoma klaida.",
