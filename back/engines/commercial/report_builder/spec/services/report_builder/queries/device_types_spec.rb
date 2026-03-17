@@ -16,11 +16,11 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
     it 'returns device type analytics data for given time period' do
       2.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other')
+        create(:session, :with_pageview, device_type: 'desktop_or_other', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       3.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
+        create(:session, :with_pageview, device_type: 'mobile', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       params = {
@@ -38,11 +38,11 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
     it 'filters out nil device types' do
       2.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: nil)
+        create(:session, :with_pageview, device_type: nil, pageview_created_at: Date.new(2023, 2, 1))
       end
 
       3.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
+        create(:session, :with_pageview, device_type: 'mobile', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       params = {
@@ -59,23 +59,19 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
     it 'filters by project' do
       project = create(:project_with_active_ideation_phase)
-      project_path = "/en/projects/#{project.slug}"
-      project_id = project.id
 
       2.times do
-        session1 = create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other')
-        create(:pageview, session_id: session1.id, path: '/en/')
+        create(:session, :with_pageview, device_type: 'desktop_or_other', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       3.times do
-        session2 = create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
-        create(:pageview, session_id: session2.id, path: project_path, project_id: project_id)
+        create(:session, :with_pageview, device_type: 'mobile', project: project, pageview_created_at: Date.new(2023, 2, 1))
       end
 
       params = {
         start_at: Date.new(2023, 1, 1),
         end_at: Date.new(2023, 3, 1),
-        project_id: project_id
+        project_id: project.id
       }
 
       expect(query.run_query(**params)).to eq({
@@ -87,11 +83,11 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
     it 'applies exclude_roles filter' do
       2.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other', highest_role: 'admin')
+        create(:session, :with_pageview, device_type: 'desktop_or_other', highest_role: 'admin', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       3.times do
-        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
+        create(:session, :with_pageview, device_type: 'mobile', pageview_created_at: Date.new(2023, 2, 1))
       end
 
       params = {

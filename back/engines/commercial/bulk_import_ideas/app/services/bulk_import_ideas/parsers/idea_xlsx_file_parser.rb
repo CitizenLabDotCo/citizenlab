@@ -6,7 +6,7 @@ module BulkImportIdeas::Parsers
 
     attr_reader :row_mapper
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
+    def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
