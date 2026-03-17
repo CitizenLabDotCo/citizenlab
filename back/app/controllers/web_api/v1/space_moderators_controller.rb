@@ -20,9 +20,15 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def show; end
 
+  def create; end
+
   def destroy; end
 
   def do_authorize
     authorize Moderator.new(params[:space_id])
+  end
+
+  def set_moderator
+    @moderator = User.find params[:id]
   end
 end

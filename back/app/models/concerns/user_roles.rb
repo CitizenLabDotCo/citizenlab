@@ -151,6 +151,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     project_moderator? || project_folder_moderator?
   end
 
+  def space_moderator?(space_id = nil)
+    space_id ? moderated_space_ids.include?(space_id) : moderated_space_ids.present?
+  end
+
   def normal_user?
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
@@ -175,6 +179,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
   def moderated_project_folder_ids
     roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck('project_folder_id').compact
+  end
+
+  def moderated_space_ids
+    roles.select { |role| role['type'] == 'space_moderator' }.pluck('space_id').compact
   end
 
   def add_role(type, options = {})

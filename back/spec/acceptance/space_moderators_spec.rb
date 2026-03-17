@@ -35,4 +35,26 @@ resource 'Moderators' do
       end
     end
   end
+
+  context 'as a space moderator' do
+    let(:space) { create(:space) }
+    let(:space_moderator) { create(:space_moderator, spaces: [space]) }
+
+    before do
+      header_token_for(space_moderator)
+    end
+
+    get 'web_api/v1/spaces/:space_id/moderators' do
+      example 'List all moderators of a space' do
+        other_space = create(:space)
+        _other_space_moderator = create(:space_moderator, spaces: [other_space])
+
+        do_request space_id: space.id
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq(space_moderator.id)
+      end
+    end
+  end
 end
