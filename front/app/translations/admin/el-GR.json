@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Επιλέξτε ημερομηνία",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Clear end date",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Clear start date",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Ημερομηνία & ώρα έναρξης",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Ημερομηνία και ώρα λήξης",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Ενεργό",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Ενεργοί διαχειριστές",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Ενεργός τις τελευταίες 30 ημέρες:",
