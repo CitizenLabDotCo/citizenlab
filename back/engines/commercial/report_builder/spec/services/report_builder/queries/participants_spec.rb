@@ -89,8 +89,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
     it 'returns participation rate' do
       user = create(:user)
 
-      create(:session, created_at: @date_september, monthly_user_hash: 'hash_1')
-      create(:session, created_at: @date_september, monthly_user_hash: 'hash_2')
+      create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: 'hash_1', pageview_created_at: @date_september)
+      create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: 'hash_2', pageview_created_at: @date_september)
 
       project = create(:single_phase_ideation_project)
       create(:idea, created_at: @date_september, project: project, author: user)
@@ -116,8 +116,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
 
       # Setup september data: 1 participant, 2 unique visitors
       create(:idea, created_at: @date_september, project: project, author: pp1)
-      create(:session, created_at: @date_september, monthly_user_hash: 'september_visitor_1')
-      create(:session, created_at: @date_september, monthly_user_hash: 'september_visitor_2')
+      create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: 'september_visitor_1', pageview_created_at: @date_september)
+      create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: 'september_visitor_2', pageview_created_at: @date_september)
 
       # Setup october data: 3 participants, 4 unique visitors
       create(:idea, created_at: @date_october, project: project, author: pp1)
@@ -125,7 +125,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       create(:idea, created_at: @date_october, project: project, author: pp3)
 
       4.times do |i|
-        create(:session, created_at: @date_october, monthly_user_hash: "october_visitor_#{i}")
+        create(:session, :with_pageview, created_at: @date_october, monthly_user_hash: "october_visitor_#{i}", pageview_created_at: @date_october)
       end
 
       params = {
@@ -157,8 +157,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       8.times do |i|
-        session = create(:session, created_at: @date_september, monthly_user_hash: "visitor_#{i}")
-        create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
+        create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: "visitor_#{i}", pageview_created_at: @date_september, project: project)
       end
 
       # Create 3 participants and 4 visitors for other project
@@ -167,8 +166,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       4.times do |i|
-        session = create(:session, created_at: @date_september, monthly_user_hash: "another_visitor_#{i}")
-        create(:pageview, created_at: @date_september, session_id: session.id, project_id: another_project.id)
+        create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: "another_visitor_#{i}", pageview_created_at: @date_september, project: another_project)
       end
 
       params = {
@@ -196,12 +194,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       8.times do |i|
-        session = create(
-          :session,
-          created_at:
-          @date_september, monthly_user_hash: "visitor_#{i}"
-        )
-        create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
+        create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: "visitor_#{i}", pageview_created_at: @date_september, project: project)
       end
 
       # Create 3 participants and 4 visitors with admin role
@@ -210,14 +203,14 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       4.times do |i|
-        session = create(
-          :session,
-          created_at:
-          @date_september,
+        create(
+          :session, :with_pageview,
+          created_at: @date_september,
           monthly_user_hash: "another_visitor_#{i}",
-          highest_role: 'admin'
+          highest_role: 'admin',
+          pageview_created_at: @date_september,
+          project: project
         )
-        create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
       end
 
       params = {

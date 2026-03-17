@@ -42,6 +42,8 @@ class FolderModeratorPolicy < ApplicationPolicy
   private
 
   def admin_or_moderator?
+    # In the case of moderator, the user must be moderator of the folder
+    # referenced (by project_folder_id) in the Struct passed in.
     return unless user&.active?
 
     folder_id = if record.respond_to?(:folder)

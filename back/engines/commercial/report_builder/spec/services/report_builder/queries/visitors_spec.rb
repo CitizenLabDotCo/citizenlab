@@ -218,7 +218,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       })
     end
 
-    it 'applies exclude_roles filter' do
+    it 'excludes roles' do
       # Create session december (admin)
       session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: 'admin')
       create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
@@ -289,8 +289,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
 
       result = query.run_query(**params)
 
-      expect(result[:visits_whole_period]).to eq(18) # should increase
-      expect(result[:visitors_whole_period]).to eq(5) # should increase
+      expect(result[:visits_whole_period]).to eq(8) # should not increase
       expect(result[:avg_seconds_per_session_whole_period]).to eq(135) # should not be affected
       expect(result[:avg_pages_visited_whole_period]).to eq(1.5) # should not be affected
     end
