@@ -56,6 +56,7 @@ describe SpaceModeratorPolicy do
 
   context 'for residents' do
     let(:user) { create(:user) }
+
     it_behaves_like 'all actions not permitted'
   end
 end
