@@ -49,7 +49,6 @@ module EmailCampaigns
     # Virtual getter: extract scheduled datetime from IceCube rtimes
     def scheduled_at
       return nil if schedule.blank?
-      return nil if ic_schedule.rtimes.empty?
 
       ic_schedule.rtimes.first
     end
@@ -104,8 +103,7 @@ module EmailCampaigns
     end
 
     def clear_scheduled_at!
-      self.schedule = nil
-      save!
+      update!(schedule: nil)
     end
 
     protected

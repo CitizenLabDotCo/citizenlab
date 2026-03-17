@@ -9,10 +9,9 @@ module EmailCampaigns
       return unless campaign
 
       # Skip stale jobs from reschedules
-      if expected_scheduled_at.present?
-        expected_time = expected_scheduled_at
-        return unless campaign.scheduled_at.present? && campaign.scheduled_at == expected_time
-      end
+      return if expected_scheduled_at.blank? ||
+                campaign.scheduled_at.blank? ||
+                campaign.scheduled_at != expected_scheduled_at
 
       campaign.with_lock do
         campaign.clear_scheduled_at!

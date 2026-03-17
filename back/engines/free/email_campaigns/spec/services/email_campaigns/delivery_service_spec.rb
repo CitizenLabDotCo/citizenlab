@@ -86,12 +86,7 @@ describe EmailCampaigns::DeliveryService do
     end
 
     context 'with scheduled manual campaign' do
-      let!(:campaign) do
-        c = create(:manual_campaign)
-        c.scheduled_at = 1.hour.from_now
-        c.save!
-        c
-      end
+      let!(:campaign) { create(:manual_campaign, scheduled_at: 1.hour.from_now) }
       let!(:users) { create_list(:user, 3) }
 
       it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do

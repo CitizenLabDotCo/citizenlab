@@ -8,26 +8,28 @@ module EmailCampaigns
       validates :schedule, presence: true
 
       filter :filter_campaign_scheduled
-      before_validation :set_default_schedule, if: -> { schedule.blank? }
-      before_validation :force_schedule_start_in_config_timezone, if: -> { schedule.present? }
+      before_validation :force_schedule_start_in_config_timezone
     end
 
     def filter_campaign_scheduled(time:, activity: nil)
+      # TODO: prevent being here when time is nil
+      # This happened when triggering comment on your comment notification
       return unless time
-      return false if schedule.blank?
 
       time = AppConfiguration.timezone.at(time)
       ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
     end
 
     def ic_schedule
-      return nil if schedule.blank?
-
-      IceCube::Schedule.from_hash(schedule)
+      if schedule.blank?
+        self.class.default_schedule
+      else
+        IceCube::Schedule.from_hash(schedule)
+      end
     end
 
     def ic_schedule=(ics)
-      self.schedule = ics&.to_hash
+      self.schedule = ics.to_hash
     end
 
     # Ice cube assumes all rules are expressed in the same timezone as the
@@ -38,16 +40,8 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
-    def set_default_schedule
-      self.ic_schedule = self.class.default_schedule
-    end
-
-    def recurring_schedule?
-      ic_schedule&.rrules&.any?
-    end
-
     def schedule_multiloc_value
-      rules = schedule.to_h.dig('rrules', 0)
+      rules = schedule['rrules'][0]
       return unless rules
 
       # Quarterly schedule

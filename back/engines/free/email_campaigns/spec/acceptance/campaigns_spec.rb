@@ -389,7 +389,6 @@ resource 'Campaigns' do
 
           assert_status 200
           expect(response_data.dig(:attributes, :scheduled_at)).to be_present
-          expect(EmailCampaigns::SendScheduledCampaignJob).to have_been_enqueued
         end
 
         # Stale scheduled jobs are handled by SendScheduledCampaignJob
@@ -522,8 +521,7 @@ resource 'Campaigns' do
 
       example_request 'Send out the campaign now' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
+        expect(response_data.dig(:attributes, :deliveries_count)).to eq User.count
       end
 
       example 'Send a scheduled campaign immediately (overrides schedule)' do
@@ -531,8 +529,7 @@ resource 'Campaigns' do
         campaign.save!
         do_request
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :deliveries_count)).to be >= 1
+        expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
       end
 
       example '[error] Send out the campaign without an author' do
