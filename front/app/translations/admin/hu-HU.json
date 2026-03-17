@@ -170,8 +170,6 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Select date",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Clear end date",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Clear start date",
-  "app.components.admin.DateTimeSelection.dateStartLabel": "Kezdő dátum és idő",
-  "app.components.admin.DateTimeSelection.datesEndLabel": "Befejezési dátum és idő",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktív",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktív adminisztrátorok",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktív az elmúlt 30 napban:",
