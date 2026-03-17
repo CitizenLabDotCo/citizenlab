@@ -21,6 +21,7 @@ import {
   isWeglotTranslatedPage,
   getWeglotCurrentLang,
   weglotTranslate,
+  weglotTranslateHtml,
   WeglotData,
 } from 'utils/weglot';
 
@@ -95,6 +96,28 @@ const IdeationForm = ({
           translatedFormValues = {
             ...translatedFormValues,
             title_multiloc: { [locale]: translatedTitle },
+          };
+        }
+
+        if (formValues.body_multiloc?.[locale]) {
+          // Replicates Weglot's own parser approach: extract text nodes, translate
+          // them in one batched API call, inject back. Preserves all HTML structure
+          // including images, formatting, and links.
+          //
+          // Previous approach (kept for reference):
+          // const div = document.createElement('div');
+          // div.innerHTML = formValues.body_multiloc[locale]!;
+          // const plainBody = div.textContent ?? '';
+          // const translatedBody = await weglotTranslate(plainBody, weglotLang, locale, weglotApiKey);
+          const translatedBody = await weglotTranslateHtml(
+            formValues.body_multiloc[locale]!,
+            weglotLang,
+            locale,
+            weglotApiKey
+          );
+          translatedFormValues = {
+            ...translatedFormValues,
+            body_multiloc: { [locale]: translatedBody },
           };
         }
 
