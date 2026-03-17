@@ -20,7 +20,6 @@ const EmailScheduling = ({ campaign, timeZone }: Props) => {
     <>
       <EmailSchedulingButton
         campaign={campaign}
-        timeZone={timeZone}
         onOpenScheduleModal={() => setOpenScheduleModal(true)}
         onOpenCancelScheduleModal={() => setOpenCancelScheduleModal(true)}
       />

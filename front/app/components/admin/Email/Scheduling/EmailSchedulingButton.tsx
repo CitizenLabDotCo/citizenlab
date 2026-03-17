@@ -17,7 +17,6 @@ import messages from './messages';
 
 interface Props {
   campaign: ICampaign;
-  timeZone: string | undefined;
   onOpenScheduleModal: () => void;
   onOpenCancelScheduleModal: () => void;
 }
