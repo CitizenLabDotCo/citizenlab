@@ -103,12 +103,6 @@ const IdeationForm = ({
           // Replicates Weglot's own parser approach: extract text nodes, translate
           // them in one batched API call, inject back. Preserves all HTML structure
           // including images, formatting, and links.
-          //
-          // Previous approach (kept for reference):
-          // const div = document.createElement('div');
-          // div.innerHTML = formValues.body_multiloc[locale]!;
-          // const plainBody = div.textContent ?? '';
-          // const translatedBody = await weglotTranslate(plainBody, weglotLang, locale, weglotApiKey);
           const translatedBody = await weglotTranslateHtml(
             formValues.body_multiloc[locale]!,
             weglotLang,
