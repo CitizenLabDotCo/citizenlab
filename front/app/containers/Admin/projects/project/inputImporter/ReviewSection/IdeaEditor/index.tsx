@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -119,6 +119,24 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       [ideaId]: ideaFormData,
     }));
   };
+
+  // Auto-save form edits to the backend so that "Approve All" picks up changes
+  const autoSave = useCallback(
+    (id: string, formData: FormValues) => {
+      updateIdea({ id, requestBody: formData, skipRefetchCounts: true });
+    },
+    [updateIdea]
+  );
+
+  useEffect(() => {
+    if (!ideaId || !(ideaId in ideaFormStatePerIdea)) return;
+
+    const timeout = setTimeout(() => {
+      autoSave(ideaId, ideaFormStatePerIdea[ideaId]);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [ideaId, ideaFormStatePerIdea, autoSave]);
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
