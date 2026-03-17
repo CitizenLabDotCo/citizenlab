@@ -52,10 +52,11 @@ const SessionExpiryModal = () => {
       if (previousTitleRef.current === null) {
         previousTitleRef.current = document.title;
       }
-      document.title =
+      document.title = formatMessage(
         sessionState === 'expiring_soon'
-          ? 'Session expiring soon'
-          : 'Signed out';
+          ? messages.tabTitleExpiringSoon
+          : messages.tabTitleSignedOut
+      );
     }
 
     return () => {

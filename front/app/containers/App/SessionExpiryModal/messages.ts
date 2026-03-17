@@ -40,4 +40,12 @@ export default defineMessages({
     id: 'app.containers.App.SessionExpiryModal.staySignedOut',
     defaultMessage: 'Stay signed out',
   },
+  tabTitleExpiringSoon: {
+    id: 'app.containers.App.SessionExpiryModal.tabTitleExpiringSoon',
+    defaultMessage: 'Session expiring soon',
+  },
+  tabTitleSignedOut: {
+    id: 'app.containers.App.SessionExpiryModal.tabTitleSignedOut',
+    defaultMessage: 'Signed out',
+  },
 });
