@@ -392,11 +392,13 @@ resource 'Campaigns' do
           expect(EmailCampaigns::SendScheduledCampaignJob).to have_been_enqueued
         end
 
+        # Stale scheduled jobs are handled by SendScheduledCampaignJob
+        # which checks campaign.scheduled_at == expected_time before executing.
         example 'Unschedule a campaign by setting scheduled_at to nil', document: false do
           campaign.scheduled_at = 2.hours.from_now
           campaign.save!
-          expect { do_request(campaign: { scheduled_at: nil }) }
-            .to change(QueJob, :count).by(-1)
+
+          do_request(campaign: { scheduled_at: nil })
 
           assert_status 200
           expect(response_data.dig(:attributes, :scheduled_at)).to be_nil

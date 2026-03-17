@@ -88,15 +88,17 @@ describe EmailCampaigns::DeliveryService do
     context 'with scheduled manual campaign' do
       let!(:campaign) do
         c = create(:manual_campaign)
-        c.scheduled_at = 1.hour.ago
+        c.scheduled_at = 1.hour.from_now
         c.save!
         c
       end
       let!(:users) { create_list(:user, 3) }
 
       it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do
-        expect { service.send_on_schedule(Time.zone.now) }
-          .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        travel_to(2.hours.from_now) do
+          expect { service.send_on_schedule(Time.zone.now) }
+            .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        end
       end
     end
   end
