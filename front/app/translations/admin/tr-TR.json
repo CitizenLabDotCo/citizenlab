@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Tarih seçiniz",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Bitiş tarihini temizleyin",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Net başlangıç tarihi",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Başlangıç tarihi ve saati",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Bitiş tarihi ve saati",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktif",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktif yöneticiler",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Son 30 gündür aktif:",
