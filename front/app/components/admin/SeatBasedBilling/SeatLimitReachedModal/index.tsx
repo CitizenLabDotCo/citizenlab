@@ -78,7 +78,7 @@ const SeatLimitReachedModal = ({
             <FormattedMessage {...messages.hasReachedOrIsOverLimit} />
           </Text>
           <Box mb="24px">
-            <SeatInfo seatType="moderator" />
+            <SeatInfo seatType={seatType} />
           </Box>
 
           <BillingWarning mb="24px" />
