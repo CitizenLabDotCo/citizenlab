@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Dewiswch ddyddiad",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Dyddiad gorffen clir",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Dyddiad cychwyn clir",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Dyddiad ac amser cychwyn",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Dyddiad ac amser gorffen",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Gweithredol",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Gweinyddwyr gweithredol",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Yn weithredol yn y 30 diwrnod diwethaf:",
