@@ -105,29 +105,9 @@ module ReportBuilder
       participations
     end
 
-    def participation_rate_as_percent(
-      participants,
-      start_date,
-      end_date,
-      project_id: nil,
-      exclude_roles: nil
-    )
-      query = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
-
-      if project_id.present?
-        query = query
-          .joins('INNER JOIN impact_tracking_pageviews ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
-          .where(impact_tracking_pageviews: { project_id: project_id })
-      end
-
-      if exclude_roles == 'exclude_admins_and_moderators'
-        query = query
-          .where("highest_role IS NULL OR highest_role = 'user'")
-      end
-
-      visitors = query.distinct.count(:monthly_user_hash)
-
+    def participation_rate_as_percent(participants, start_date, end_date, project_id: nil, exclude_roles: nil)
+      visits_service = Insights::VisitsService.new(project_id, start_at: start_date, end_at: end_date, exclude_roles: exclude_roles)
+      visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (participants / visitors.to_f)
     end
   end
