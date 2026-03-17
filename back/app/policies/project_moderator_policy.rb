@@ -2,28 +2,30 @@
 
 class ProjectModeratorPolicy < ApplicationPolicy
   def index?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def show?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def create?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def destroy?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   def users_search?
-    active_and_can_moderate?
+    admin_or_moderator?
   end
 
   private
 
-  def active_and_can_moderate?
-    user&.active? && UserRoleService.new.can_moderate?(Project.find_by(id: record.project_id), user)
+  def admin_or_moderator?
+    # In the case of moderator, the user must be moderator of that project
+    # (not just of any project).
+    user&.active? && (user&.admin? || user&.project_moderator?(record.project_id))
   end
 end

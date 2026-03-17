@@ -45,9 +45,23 @@ describe FolderModeratorPolicy do
     it_behaves_like 'all actions permitted'
   end
 
-  context 'for a space moderator of an unrelated space' do
+  context 'for a space moderator of project in unmoderated space' do
     let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: other_space.id }]) }
     let(:record) { project }
+
+    it_behaves_like 'all actions not permitted'
+  end
+
+  context "for a space moderator of the folder's space" do
+    let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
+    let(:record) { folder }
+
+    it_behaves_like 'all actions permitted'
+  end
+
+  context 'for a space moderator of folder in unmoderated space' do
+    let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: other_space.id }]) }
+    let(:record) { folder }
 
     it_behaves_like 'all actions not permitted'
   end
