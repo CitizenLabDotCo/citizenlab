@@ -1,7 +1,12 @@
 require 'rails_helper'
 
 describe ProjectModeratorPolicy do
-  Moderator = WebApi::V1::ProjectModeratorsController::Moderator
+  # Reference the Moderator struct from the controller for consistency
+  let(:moderator_struct) { WebApi::V1::ProjectModeratorsController::Moderator }
+
+  before do
+    stub_const("Moderator", moderator_struct)
+  end
 
   let!(:project) { create(:project) }
   let!(:other_project) { create(:project) }
@@ -16,71 +21,62 @@ describe ProjectModeratorPolicy do
   let(:resident) { create(:user) }
   let(:target_moderator) { create(:user) }
 
+  subject { described_class.new(user, record) }
+
+  shared_examples 'permits actions' do |actions|
+    actions.each do |action|
+      it { is_expected.to permit(action) }
+    end
+  end
+
+  shared_examples 'forbids actions' do |actions|
+    actions.each do |action|
+      it { is_expected.not_to permit(action) }
+    end
+  end
+
   # For project-level actions (:index, :create, :users_search), the controller authorizes
   # with a Moderator struct where user_id is nil and project_id is set (see index and
   # users_search in WebApi::V1::ProjectModeratorsController). This matches how these
   # actions are authorized in the application, so the policy is tested with the same struct shape here.
   describe 'index, create, users_search (project-level actions)' do
     let(:record) { Moderator.new(nil, project.id) }
+    let(:actions) { [:index, :create, :users_search] }
 
     context 'for an admin' do
-      subject { described_class.new(user, record) }
-
       let(:user) { admin }
 
-      it { is_expected.to permit(:index) }
-      it { is_expected.to permit(:create) }
-      it { is_expected.to permit(:users_search) }
+      it_behaves_like 'permits actions', actions
     end
 
     context "for a folder moderator of the project's folder" do
-      subject { described_class.new(user, record) }
-
       let(:user) { folder_moderator }
 
-      it { is_expected.to permit(:index) }
-      it { is_expected.to permit(:create) }
-      it { is_expected.to permit(:users_search) }
+      it_behaves_like 'permits actions', actions
     end
 
-    context 'for a folder moderator of unrelated folder' do
-      subject { described_class.new(user, record) }
-
+    context 'for a folder moderator of an unrelated folder' do
       let(:user) { unrelated_folder_moderator }
 
-      it { is_expected.not_to permit(:index) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:users_search) }
+      it_behaves_like 'forbids actions', actions
     end
 
     context 'for a project moderator of the project' do
-      subject { described_class.new(user, record) }
-
       let(:user) { project_moderator }
 
-      it { is_expected.to permit(:index) }
-      it { is_expected.to permit(:create) }
-      it { is_expected.to permit(:users_search) }
+      it_behaves_like 'permits actions', actions
     end
 
     context 'for a project moderator of another project' do
-      subject { described_class.new(user, record) }
-
       let(:user) { other_project_moderator }
 
-      it { is_expected.not_to permit(:index) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:users_search) }
+      it_behaves_like 'forbids actions', actions
     end
 
     context 'for a resident' do
-      subject { described_class.new(user, record) }
-
       let(:user) { resident }
 
-      it { is_expected.not_to permit(:index) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:users_search) }
+      it_behaves_like 'forbids actions', actions
     end
   end
 
@@ -91,59 +87,42 @@ describe ProjectModeratorPolicy do
   # This block tests the policy with the same struct shape as the controller uses.
   describe 'show, destroy (moderator-specific actions)' do
     let(:record) { Moderator.new(target_moderator.id, project.id) }
+    let(:actions) { [:show, :destroy] }
 
     context 'for an admin' do
-      subject { described_class.new(user, record) }
-
       let(:user) { admin }
 
-      it { is_expected.to permit(:show) }
-      it { is_expected.to permit(:destroy) }
+      it_behaves_like 'permits actions', actions
     end
 
     context "for a folder moderator of the project's folder" do
-      subject { described_class.new(user, record) }
-
       let(:user) { folder_moderator }
 
-      it { is_expected.to permit(:show) }
-      it { is_expected.to permit(:destroy) }
+      it_behaves_like 'permits actions', actions
     end
 
     context 'for a folder moderator of unrelated folder' do
-      subject { described_class.new(user, record) }
-
       let(:user) { unrelated_folder_moderator }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:destroy) }
+      it_behaves_like 'forbids actions', actions
     end
 
     context 'for a project moderator of the project' do
-      subject { described_class.new(user, record) }
-
       let(:user) { project_moderator }
 
-      it { is_expected.to permit(:show) }
-      it { is_expected.to permit(:destroy) }
+      it_behaves_like 'permits actions', actions
     end
 
     context 'for a project moderator of another project' do
-      subject { described_class.new(user, record) }
-
       let(:user) { other_project_moderator }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:destroy) }
+      it_behaves_like 'forbids actions', actions
     end
 
     context 'for a resident' do
-      subject { described_class.new(user, record) }
-
       let(:user) { resident }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:destroy) }
+      it_behaves_like 'forbids actions', actions
     end
   end
 end
