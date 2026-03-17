@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Wielt Datum",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Clear end date",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Clear start date",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Ufanksdatum & Zäit",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Enndatum & Zäit",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktiv",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktiv Administrateuren",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktiv an de leschten 30 Deeg:",
