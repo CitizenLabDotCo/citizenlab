@@ -86,6 +86,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
         aria-valuemax={maximum}
         aria-valuenow={data || minimum}
         aria-labelledby={labelId}
+        aria-required={question.required}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
