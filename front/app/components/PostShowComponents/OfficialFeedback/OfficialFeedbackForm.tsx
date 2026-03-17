@@ -31,6 +31,7 @@ import { isPage, isNilOrError } from 'utils/helperUtils';
 import {
   isWeglotTranslatedPage,
   getWeglotCurrentLang,
+  weglotTranslate,
   WeglotData,
 } from 'utils/weglot';
 
@@ -257,9 +258,20 @@ const OfficialFeedbackForm = ({
         appConfiguration?.data.attributes.settings.core.weglot_api_key;
       if (weglotApiKey && isWeglotTranslatedPage(locale)) {
         const weglotLang = getWeglotCurrentLang()!;
+        const originalBody = feedbackValues.body_multiloc[locale] ?? '';
+        const translatedBody = await weglotTranslate(
+          originalBody,
+          weglotLang,
+          locale,
+          weglotApiKey
+        );
+        feedbackValues.body_multiloc = {
+          ...feedbackValues.body_multiloc,
+          [locale]: translatedBody,
+        };
         feedbackValues.weglot_data = {
           locale: weglotLang,
-          body: feedbackValues.body_multiloc[locale] ?? '',
+          body: originalBody,
         };
       }
 
