@@ -92,6 +92,7 @@ const IdeaForm = ({
                 participationMethod={
                   phase?.data.attributes.participation_method
                 }
+                showQuestionNumbers={true}
                 scrollErrorIntoView={false}
               />
             </Suspense>
