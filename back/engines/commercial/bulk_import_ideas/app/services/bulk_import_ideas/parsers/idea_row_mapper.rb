@@ -1,51 +1,14 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers
-  class IdeaBaseFileParser
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
-      @import_user = current_user
-      @phase = Phase.find(phase_id)
-      @project = @phase.project
-      @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
+  class IdeaRowMapper
+    def initialize(phase:, project:, locale:, personal_data_enabled:, strategy:, pages_per_form: nil)
+      @phase = phase
+      @project = project
+      @locale = locale
       @personal_data_enabled = personal_data_enabled
-    end
-
-    # Default is real time import of ideas
-    def parse_file(file_content)
-      files = create_files file_content
-
-      idea_rows = []
-      files.each do |file|
-        idea_rows += parse_rows file
-      end
-      idea_rows
-    end
-
-    # Asynchronous version is not implemented by default
-    def parse_file_async(file_content)
-      raise NotImplementedError, 'This method is not implemented'
-    end
-
-    def parse_rows(file)
-      raise NotImplementedError, 'This method is not implemented'
-    end
-
-    private
-
-    def create_files(file_content)
-      [upload_source_file(file_content)]
-    end
-
-    def upload_source_file(file_content)
-      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
-      BulkImportIdeas::IdeaImportFile.create!(
-        import_type: file_type,
-        project: @project,
-        file_by_content: {
-          name: "import.#{file_type}",
-          content: file_content # base64
-        }
-      )
+      @strategy = strategy
+      @pages_per_form = pages_per_form
     end
 
     def ideas_to_idea_rows(ideas_array, file)
@@ -80,30 +43,57 @@ module BulkImportIdeas::Parsers
       idea_row[:longitude]    = fields[locale_longitude_label]
       idea_row[:topic_titles] = fields[locale_tags_label].to_s.split(';').map(&:strip).compact_blank
 
-      fields = structure_raw_fields(fields)
+      fields = @strategy.structure_raw_fields(fields)
       idea_row = process_user_details(fields, idea_row)
       process_custom_form_fields(fields, idea_row)
     end
+
+    def upload_source_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      BulkImportIdeas::IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
+        file_by_content: {
+          name: "import.#{file_type}",
+          content: file_content # base64
+        }
+      )
+    end
+
+    def process_field_value(field, form_fields)
+      if %w[select multiselect multiselect_image ranking].include?(field[:input_type]) && field[:value]
+        values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
+        if values.count > 0
+          options = values.map do |value|
+            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.strip }
+            option[:key] if option
+          end
+          field[:value] = options.compact.uniq
+        else
+          field[:value] = []
+        end
+      elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
+        field[:value] = field[:value].to_i
+      elsif field[:input_type] == 'checkbox' && field[:value].present?
+        field[:value] = field[:value].downcase == 'x'
+      elsif field[:input_type] == 'date' && field[:value].present?
+        field[:value] = format_date(field[:value])
+      elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
+        field[:value] = @strategy.extract_matrix_value(field)
+      else
+        field[:value] = field[:value].to_s
+      end
+
+      field
+    end
+
+    private
 
     def idea_blank?(idea)
       idea.each_value do |value|
         return false if value.present?
       end
       true
-    end
-
-    def structure_raw_fields(fields)
-      index = 0
-      fields.map do |name, value|
-        name = Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix name
-        {
-          name: name,
-          value: value,
-          type: 'field',
-          page: 1,
-          position: index += 1 # So each field is unique even if they have the same name and value
-        }
-      end
     end
 
     def process_user_details(fields, idea_row)
@@ -137,15 +127,11 @@ module BulkImportIdeas::Parsers
       idea_row
     end
 
-    def merge_idea_with_form_fields(fields)
-      raise NotImplementedError, 'This method is not yet implemented'
-    end
-
     # Processes all fields - including built in fields
-    # @param [Array<Hash>] fields - comes from #structure_raw_fields
+    # @param [Array<Hash>] fields - comes from strategy#structure_raw_fields
     # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
-      merged_fields = merge_idea_with_form_fields(fields)
+      merged_fields = @strategy.merge_idea_with_form_fields(fields)
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil? || field[:value].nil?
@@ -163,33 +149,6 @@ module BulkImportIdeas::Parsers
       idea_row[:custom_field_values] = custom_fields
 
       idea_row
-    end
-
-    def process_field_value(field, form_fields)
-      if %w[select multiselect multiselect_image ranking].include?(field[:input_type]) && field[:value]
-        values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
-        if values.count > 0
-          options = values.map do |value|
-            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.strip }
-            option[:key] if option
-          end
-          field[:value] = options.compact.uniq
-        else
-          field[:value] = []
-        end
-      elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
-        field[:value] = field[:value].to_i
-      elsif field[:input_type] == 'checkbox' && field[:value].present?
-        field[:value] = field[:value].downcase == 'x'
-      elsif field[:input_type] == 'date' && field[:value].present?
-        field[:value] = format_date(field[:value])
-      elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
-        field[:value] = extract_matrix_value(field)
-      else
-        field[:value] = field[:value].to_s
-      end
-
-      field
     end
 
     def format_date(date)
@@ -215,35 +174,6 @@ module BulkImportIdeas::Parsers
       email = email.gsub(/(com|co|org|gov|uk|fr|be|nl|de|cl|us|dk|ca|at|nu)$/, '.\1') # Single domain suffixes
 
       email&.match(User::EMAIL_REGEX) ? email : nil
-    end
-
-    # Format the matrix field as: { "one_az7": 4, "blah_3w8": 2, "this_fn0": 1, "that_ptu": 4 }
-    # NOTE: This does not currently follow the model of other fields (ie the form_fields in template_data)
-    # This would be too complex to implement at this time
-    def extract_matrix_value(field)
-      return nil if field[:value].blank?
-
-      multiloc_service = MultilocService.new
-      matrix_field = CustomField.find_by(key: field[:key])
-
-      label_values = (1..matrix_field.maximum).each_with_object({}) do |i, res|
-        label_attr = :"linear_scale_label_#{i}_multiloc"
-        label = I18n.with_locale(@locale) { multiloc_service.t(matrix_field[label_attr]) }
-        res[label] = i if label.present?
-      end
-
-      statement_keys = matrix_field.matrix_statements.each_with_object({}) do |statement, res|
-        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
-        res[statement_title] = statement.key if statement_title.present?
-      end
-
-      # Extract the matrix value from the string
-      field[:value].split(';').each_with_object({}) do |statement, res|
-        key, val = statement.split(':').map(&:strip)
-        key = statement_keys[key]
-        val = label_values[val]
-        res[key] = val.to_i if key && val
-      end
     end
   end
 end

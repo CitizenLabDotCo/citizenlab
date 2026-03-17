@@ -56,6 +56,10 @@ PublicApi::Engine.routes.draw do
     resources :ideas_input_topics, only: %i[index]
     resources :project_topics, only: %i[index]
     resources :project_global_topics, only: %i[index]
+
+    namespace :insights do
+      resources :visits, only: [:index]
+    end
   end
 end
 

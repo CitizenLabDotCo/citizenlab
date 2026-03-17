@@ -45,7 +45,7 @@ const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
             option: messages.userCommentedOnOptionYouFollow,
             project: messages.userCommentedOnProjectYouFollow,
             question: messages.userCommentedOnQuestionYouFollow,
-            issue: messages.userCommentedOnIssueYouFollow,
+            issue: messages.userCommentedOnIssueYouFollow1,
             contribution: messages.userCommentedOnContributionYouFollow,
             proposal: messages.userCommentedOnProposalYouFollow,
             initiative: messages.userCommentedOnInitiativeYouFollow,

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { isFolder } from 'api/admin_publications/utils';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
@@ -41,14 +41,9 @@ const SetAsProjectModerator = ({
     (page) => page.data
   );
 
-  const isFolder = (publication: IAdminPublicationData) =>
-    publication.relationships.publication.data.type === 'folder';
-
   if (!flatAdminPublications) return null;
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const options = flatAdminPublications?.map((publication) => ({
+  const options = flatAdminPublications.map((publication) => ({
     value: publication.id,
     label: isFolder(publication)
       ? `${formatMessage(messages.folder)}: ${localize(
