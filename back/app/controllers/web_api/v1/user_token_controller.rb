@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+  include AuthToken::Authenticable
+
   TOKEN_LIFETIME = 1.day
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: %i[user_token_unconfirmed refresh]
-  before_action :authenticate_from_jwt, only: [:refresh]
+  before_action :authenticate_user, only: [:refresh]
 
   # This endpoint is only used when user_confirmation is disabled.
   def user_token_unconfirmed
@@ -31,7 +33,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   end
 
   def refresh
-    payload = @current_user.to_token_payload
+    payload = current_user.to_token_payload
     payload[:exp] = TOKEN_LIFETIME.from_now.to_i
     render json: AuthToken::AuthToken.new(payload: payload), status: :created
   end
@@ -54,16 +56,6 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def user_token_unconfirmed_params
     params.require(:auth).permit id_param
-  end
-
-  def authenticate_from_jwt
-    token = request.headers['Authorization']&.split&.last
-    raise ActiveRecord::RecordNotFound if token.blank?
-
-    decoded = AuthToken::AuthToken.new(token: token)
-    @current_user = User.find(decoded.payload['sub'])
-  rescue JWT::ExpiredSignature, JWT::DecodeError, ActiveRecord::RecordNotFound
-    head :unauthorized
   end
 
   def authenticate_user_token_unconfirmed
