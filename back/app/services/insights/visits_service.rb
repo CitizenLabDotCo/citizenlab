@@ -28,7 +28,7 @@ module Insights
         .select(sanitize_sql(<<~SQL.squish, resolution, Time.zone.name))
           COUNT(DISTINCT session_id) as visits,
           COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors,
-          DATE_TRUNC(?, pageviews.created_at at time zone 'UTC' at time zone ?) as date_group
+          DATE_TRUNC(?, impact_tracking_pageviews.created_at at time zone 'UTC' at time zone ?) as date_group
         SQL
         .group('date_group')
         .order('date_group')
