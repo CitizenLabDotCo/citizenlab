@@ -8,7 +8,7 @@ import { IUsers, UsersKeys } from './types';
 
 const fetchBilledModerators = (queryParams: Pagination) =>
   fetcher<IUsers>({
-    path: '/users/billed_admins',
+    path: '/users/billed_moderators',
     action: 'get',
     queryParams,
   });
