@@ -398,5 +398,6 @@ ca:
     event_details: "Detalls de l'esdeveniment"
   errors:
     messages:
+      in_the_past: "ha de ser en el futur"
       max_must_be_greater_than_min_characters: "El màxim ha de ser més gran que el mínim."
       max_must_be_greater_than_or_equal_to_min_select_count: "El màxim ha de ser més gran o igual que el mínim."
