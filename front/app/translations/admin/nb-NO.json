@@ -170,8 +170,6 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Velg dato",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Klar sluttdato",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Klar startdato",
-  "app.components.admin.DateTimeSelection.dateStartLabel": "Startdato og -tid",
-  "app.components.admin.DateTimeSelection.datesEndLabel": "Sluttdato og -tid",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktiv",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktive administratorer",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktiv de siste 30 dagene:",
