@@ -227,7 +227,6 @@ class WebApi::V1::UsersController < ApplicationController
       block_reason: params.dig(:user, :block_reason)
     )
       SideFxUserService.new.after_block(@user, current_user)
-      reset_token(@user) # Stop any active sessions of the blocked user
 
       render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
     else

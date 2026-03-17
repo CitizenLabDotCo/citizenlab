@@ -67,6 +67,7 @@ class SideFxUserService
       }
     )
     UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
+    user.expire_token! # Stop any active sessions of the blocked user
   end
 
   def after_unblock(user, current_user)
@@ -93,6 +94,10 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+
+    # Expire the user's token after they first get roles or all roles are removed
+    old_roles, new_roles = user.roles_previous_change
+    user.expire_token! if old_roles.blank? || new_roles.blank?
   end
 
   def role_created_side_fx(role, user, current_user)

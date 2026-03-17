@@ -134,6 +134,34 @@ describe SideFxUserService do
     end
   end
 
+  describe 'after_update - expire_token! on role change' do
+    it 'expires the token when a regular user gains roles' do
+      user.update!(roles: [{ 'type' => 'admin' }])
+      expect(user).to receive(:expire_token!)
+      service.after_update(user, current_user)
+    end
+
+    it 'does not expire the token when roles change but user already had roles' do
+      user.update!(roles: [{ 'type' => 'admin' }])
+      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => 'some-id' }])
+      expect(user).not_to receive(:expire_token!)
+      service.after_update(user, current_user)
+    end
+
+    it 'expires the token when all roles are removed' do
+      user.update!(roles: [{ 'type' => 'admin' }])
+      user.update!(roles: [])
+      expect(user).to receive(:expire_token!)
+      service.after_update(user, current_user)
+    end
+
+    it 'does not expire the token when roles are unchanged' do
+      user.update!(first_name: 'Updated')
+      expect(user).not_to receive(:expire_token!)
+      service.after_update(user, current_user)
+    end
+  end
+
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
       freeze_time do
