@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Pasirinkite datą",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Aiški pabaigos data",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Aiški pradžios data",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Pradžios data ir laikas",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Pabaigos data ir laikas",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktyvus",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktyvūs administratoriai",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktyvus per paskutines 30 dienų:",
