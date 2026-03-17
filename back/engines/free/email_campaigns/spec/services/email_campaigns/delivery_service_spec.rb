@@ -84,6 +84,18 @@ describe EmailCampaigns::DeliveryService do
       end
       expect { service.send_on_schedule(Time.now) }.not_to raise_error
     end
+
+    context 'with scheduled manual campaign' do
+      let!(:campaign) { create(:manual_campaign, scheduled_at: 1.hour.from_now) }
+      let!(:users) { create_list(:user, 3) }
+
+      it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do
+        travel_to(2.hours.from_now) do
+          expect { service.send_on_schedule(Time.zone.now) }
+            .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        end
+      end
+    end
   end
 
   describe 'send_on_activity' do

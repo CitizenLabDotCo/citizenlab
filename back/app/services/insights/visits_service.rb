@@ -1,28 +1,83 @@
 module Insights
   class VisitsService
-    def phase_visits(phase)
-      constraints = { project_id: phase.project.id }
+    # Definition of a visit - a session where a pageview happened
+    # When filtered by date - a session where a pageview has a date in the period
+    def initialize(project_id, start_at: nil, end_at: nil, exclude_roles: nil)
+      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      @project_id = project_id
+      @start_date = start_date
+      @end_date = end_date
+      @exclude_roles = exclude_roles
+    end
 
-      constraints[:created_at] = if phase.end_at.present?
-        phase.start_at.beginning_of_day..phase.end_at.end_of_day
-      else
-        phase.start_at.beginning_of_day..
-      end
+    # Totals only needs the sessions
+    def total_visits
+      result = filtered_sessions_query
+      result = result.select("
+        COUNT(*) as visits,
+        COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors
+      ")
+      row = result[0]
+      { visits: row&.visits || 0, visitors: row&.visitors || 0 }
+    end
 
-      visits = ImpactTracking::Session
-        .joins(:pageviews)
-        .where(impact_tracking_pageviews: constraints)
-
-      visits.select(
-        "impact_tracking_pageviews.created_at AS date,
-        impact_tracking_sessions.user_id AS user_id,
-        impact_tracking_sessions.monthly_user_hash AS monthly_user_hash"
-      ).map do |row|
+    # Grouping needs to join page views to session to be able to group by the date of each page view
+    # @param [String] resolution - hour|day|month|year
+    def visits_by_date(resolution)
+      result = filtered_page_views_query
+      result = result.select("
+        COUNT(DISTINCT session_id) as visits,
+        COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors,
+        DATE_TRUNC('#{resolution}', impact_tracking_pageviews.created_at) as date_group
+      ")
+        .group('date_group')
+        .order('date_group')
+      result.map do |row|
         {
-          acted_at: row.date,
-          visitor_id: row.user_id.present? ? row.user_id.to_s : row.monthly_user_hash
+          visits: row.visits,
+          visitors: row.visitors,
+          date_group: resolution == 'hour' ? row.date_group.to_datetime : row.date_group.to_date
         }
       end
+    end
+
+    # Because we want to calculate timings based on all page views of sessions that had a page view in the period,
+    # we need to get all page views of for the sessions, even the ones outside the period.
+    def all_page_views_query
+      ImpactTracking::Pageview.where(session_id: session_ids_excluding_roles)
+    end
+
+    def filtered_sessions_query
+      exclude_session_roles(ImpactTracking::Session.where(id: session_ids))
+    end
+
+    def filtered_page_views_query
+      result = filtered_page_views_root_query.joins(:session)
+      result = exclude_session_roles(result) if @exclude_roles
+      result
+    end
+
+    private
+
+    def filtered_page_views_root_query
+      page_views = ImpactTracking::Pageview.where(created_at: @start_date..@end_date)
+      page_views = page_views.where(project_id: @project_id) if @project_id
+      page_views
+    end
+
+    def session_ids
+      @session_ids ||= filtered_page_views_root_query.pluck(:session_id).uniq
+    end
+
+    # NOTE: An extra query is needed when excluding roles
+    def session_ids_excluding_roles
+      @session_ids_excluding_roles ||= @exclude_roles ? filtered_sessions_query.pluck(:id).uniq : session_ids
+    end
+
+    def exclude_session_roles(query)
+      return query unless @exclude_roles == 'exclude_admins_and_moderators'
+
+      query.where("highest_role IS NULL OR highest_role = 'user'")
     end
   end
 end
