@@ -170,8 +170,6 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Valitse päivämäärä",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Tyhjennä lopetuspäivä",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Tyhjennä aloituspäivä",
-  "app.components.admin.DateTimeSelection.dateStartLabel": "Aloituspäivämäärä ja -aika",
-  "app.components.admin.DateTimeSelection.datesEndLabel": "Päättymispäivä ja -aika",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Aktiivinen",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Aktiiviset ylläpitäjät",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Aktiivinen viimeiset 30 päivää:",
