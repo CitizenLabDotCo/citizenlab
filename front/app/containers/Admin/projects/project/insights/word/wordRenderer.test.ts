@@ -67,8 +67,9 @@ jest.mock('utils/word/utils/styleConstants', () => ({
   WORD_PAGE_SIZE: { width: 11906, height: 16838 },
   getScaledDimensions: jest.fn((w: number, h: number) => {
     const maxW = 600;
-    if (w <= 0 || h <= 0)
+    if (w <= 0 || h <= 0) {
       return { width: maxW, height: Math.round(maxW * 0.6) };
+    }
     const scale = Math.min(1, maxW / w);
     return { width: Math.round(w * scale), height: Math.round(h * scale) };
   }),
@@ -93,6 +94,7 @@ jest.mock('utils/word/converters/htmlConverter', () => ({
 import { Packer } from 'docx';
 
 import { createBreakdownTable } from 'utils/word/converters/breakdownBarConverter';
+import { createParagraphsFromHtml } from 'utils/word/converters/htmlConverter';
 import { createSimpleTable } from 'utils/word/converters/tableConverter';
 import {
   createTitle,
@@ -100,8 +102,6 @@ import {
   createParagraph,
   createEmptyParagraph,
 } from 'utils/word/converters/textConverter';
-
-import { createParagraphsFromHtml } from 'utils/word/converters/htmlConverter';
 
 import { sectionsToDocxBlob } from './wordRenderer';
 

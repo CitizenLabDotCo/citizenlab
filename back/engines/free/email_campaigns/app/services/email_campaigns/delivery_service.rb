@@ -89,11 +89,6 @@ module EmailCampaigns
       apply_send_pipeline(campaign_candidates, activity: activity)
     end
 
-    # called by SendScheduledCampaignJob to send a single scheduled campaign
-    def send_on_schedule_for(campaign, time = Time.zone.now)
-      apply_send_pipeline([campaign], time: time)
-    end
-
     #  called when explicit send is requested by human
     def send_now(campaign)
       apply_send_pipeline([campaign])

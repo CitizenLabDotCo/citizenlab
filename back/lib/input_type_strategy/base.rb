@@ -86,12 +86,8 @@ module InputTypeStrategy
       custom_field.enabled? && custom_field.include_in_printed_form
     end
 
-    def supports_pdf_gpt_import?
-      supports_printing?
-    end
-
     def supports_pdf_import?
-      supports_pdf_gpt_import?
+      supports_printing?
     end
 
     def supports_xlsx_import?

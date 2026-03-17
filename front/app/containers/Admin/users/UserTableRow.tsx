@@ -67,7 +67,7 @@ export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
-  const highestRole = user.attributes.highest_role;
+  const highestRole = user.attributes.highest_role ?? 'user';
   const roleMessage = {
     admin: messages.platformAdmin,
     super_admin: messages.platformAdmin,

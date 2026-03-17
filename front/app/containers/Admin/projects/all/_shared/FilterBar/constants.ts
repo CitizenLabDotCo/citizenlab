@@ -8,6 +8,7 @@ export const FILTER_CONFIG = {
   participation_methods: messages.participationMethodLabel,
   visibility: messages.visibilityLabel,
   discoverability: messages.discoverabilityLabel,
+  space_ids: messages.spaces,
 } as const;
 
 export type FilterKey = keyof typeof FILTER_CONFIG;
@@ -20,4 +21,5 @@ export const FILTER_KEYS: FilterKey[] = [
   'participation_methods',
   'visibility',
   'discoverability',
+  'space_ids',
 ];

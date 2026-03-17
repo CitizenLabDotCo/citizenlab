@@ -11,13 +11,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { INewProjectFolderDiff, IProjectFolder } from './types';
 
-export const addProjectFolder = async ({
-  ...requestBody
-}: Partial<INewProjectFolderDiff>) =>
+export const addProjectFolder = async (
+  requestBody: Partial<INewProjectFolderDiff>
+) =>
   fetcher<IProjectFolder>({
     path: `/project_folders`,
     action: 'post',
-    body: { project_folder: { ...requestBody } },
+    body: { project_folder: requestBody },
   });
 
 const useAddProjectFolder = () => {

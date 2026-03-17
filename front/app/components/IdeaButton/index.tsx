@@ -197,7 +197,7 @@ const IdeaButton = memo<Props>(
                     option: messages.addAnOption,
                     project: messages.addAProject,
                     question: messages.addAQuestion,
-                    issue: messages.submitAnIssue,
+                    issue: messages.submitAnIssue1,
                     contribution: messages.addAContribution,
                     proposal: messages.addAProposal,
                     initiative: messages.addAnInitiative,

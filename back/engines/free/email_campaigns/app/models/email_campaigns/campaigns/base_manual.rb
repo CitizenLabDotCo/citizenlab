@@ -39,7 +39,6 @@ module EmailCampaigns
     include SenderConfigurable
     include RecipientConfigurable
     include Trackable
-    include Schedulable
     include LifecycleStageRestrictable
 
     # Without this, the campaign would be sent on every event and every schedule trigger.
@@ -47,13 +46,9 @@ module EmailCampaigns
 
     validate :scheduled_at_in_future, if: -> { scheduled_at.present? && schedule_changed? }
 
-    def self.default_schedule
-      IceCube::Schedule.new(Time.current)
-    end
-
     # Virtual getter: extract scheduled datetime from IceCube rtimes
     def scheduled_at
-      return nil if schedule.blank? || ic_schedule.rtimes.empty?
+      return nil if schedule.blank?
 
       ic_schedule.rtimes.first
     end
@@ -66,8 +61,18 @@ module EmailCampaigns
         ics.add_recurrence_time(time)
         self.ic_schedule = ics
       else
-        self.ic_schedule = self.class.default_schedule
+        self.schedule = nil
       end
+    end
+
+    def ic_schedule
+      return nil if schedule.blank?
+
+      IceCube::Schedule.from_hash(schedule)
+    end
+
+    def ic_schedule=(ics)
+      self.schedule = ics&.to_hash
     end
 
     def mailer_class
@@ -97,19 +102,8 @@ module EmailCampaigns
       false
     end
 
-    def clear_scheduled_at_if_needed
-      return if scheduled_at.blank?
-
-      self.ic_schedule = self.class.default_schedule
-      save!(validate: false)
-    end
-
-    # Override Schedulable's filter to allow send_now (time is nil for manual triggers)
-    def filter_campaign_scheduled(time:, activity: nil)
-      return true unless time              # Allow send_now
-      return false unless scheduled_at     # No schedule = not eligible for cron
-
-      super
+    def clear_scheduled_at!
+      update!(schedule: nil)
     end
 
     protected
@@ -121,14 +115,11 @@ module EmailCampaigns
     private
 
     def only_manual_send(activity: nil, time: nil)
-      return false if activity  # Never send on activity
-      return true unless time   # Allow send_now
-
-      !sent?                    # Prevent re-sending via cron
+      !activity && !time
     end
 
     def scheduled_at_in_future
-      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.zone.now
+      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.now
     end
   end
 end
