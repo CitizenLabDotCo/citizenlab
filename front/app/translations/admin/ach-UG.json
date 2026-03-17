@@ -170,8 +170,6 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "crwdns6484155:0crwdne6484155:0",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "crwdns6484157:0crwdne6484157:0",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "crwdns6484159:0crwdne6484159:0",
-  "app.components.admin.DateTimeSelection.dateStartLabel": "crwdns6524111:0crwdne6524111:0",
-  "app.components.admin.DateTimeSelection.datesEndLabel": "crwdns6524113:0crwdne6524113:0",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "crwdns6484161:0crwdne6484161:0",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "crwdns6484163:0crwdne6484163:0",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "crwdns6484165:0crwdne6484165:0",
