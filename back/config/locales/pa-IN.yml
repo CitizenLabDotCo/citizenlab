@@ -398,5 +398,6 @@ pa:
     event_details: "ਘਟਨਾ ਦੇ ਵੇਰਵੇ"
   errors:
     messages:
+      in_the_past: "ਭਵਿੱਖ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
       max_must_be_greater_than_min_characters: "ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਡਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
       max_must_be_greater_than_or_equal_to_min_select_count: "ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਧ ਜਾਂ ਇਸਦੇ ਬਰਾਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
