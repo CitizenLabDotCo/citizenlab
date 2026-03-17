@@ -13,7 +13,7 @@ const fetchBilledAdmins = (queryParams: Pagination) =>
     queryParams,
   });
 
-const useBilledAdmins = (queryParams: Pagination) => {
+const useBilledAdmins = (queryParams: Pagination = {}) => {
   return useQuery<IUsers, CLErrors, IUsers, UsersKeys>({
     queryKey: usersKeys.list({ ...queryParams, endpoint: 'billed_admins' }),
     queryFn: () => fetchBilledAdmins(queryParams),
