@@ -60,8 +60,6 @@ interface Props {
   toggleSelect: () => void;
 }
 
-export type ChangingRoleType = 'admin' | 'moderator' | 'user';
-
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role ?? 'user';
@@ -76,6 +74,13 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
   return roleMessage[highestRole];
 };
 
+type ModalOpened =
+  | 'block-user'
+  | 'unblock-user'
+  | 'delete-user'
+  | 'user-assigned-items'
+  | 'set-moderator';
+
 const UsersTableRow = ({
   userInRow,
   selected,
@@ -84,8 +89,6 @@ const UsersTableRow = ({
 }: Props) => {
   const { mutate: updateUser } = useUpdateUser();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
-  const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
-  const [setAsModeratorOpened, setSetAsModeratorOpened] = useState(false);
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
@@ -96,9 +99,8 @@ const UsersTableRow = ({
     userInRow.attributes.invite_status !== 'pending';
   const authUserIsAdmin = isAdmin({ data: authUser });
 
-  const [showBlockUserModal, setShowBlockUserModal] = useState(false);
-  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
-  const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
+  const [modalOpened, setModalOpened] = useState<ModalOpened | null>(null);
+  const closeModal = () => setModalOpened(null);
 
   const handleMakeAdmin = useCallback(() => {
     updateUser({
@@ -111,20 +113,20 @@ const UsersTableRow = ({
     (action: Action) => {
       switch (action) {
         case 'block-user':
-          setShowBlockUserModal(true);
+          setModalOpened('block-user');
           break;
         case 'unblock-user':
-          setShowUnblockUserModal(true);
+          setModalOpened('unblock-user');
           break;
         case 'delete-user':
-          setShowDeleteUserModal(true);
+          setModalOpened('delete-user');
           break;
         case 'set-admin':
           // TODO
           handleMakeAdmin();
           break;
         case 'set-moderator':
-          setSetAsModeratorOpened(true);
+          setModalOpened('set-moderator');
           break;
         case 'set-normal-user':
           updateUser({
@@ -185,7 +187,7 @@ const UsersTableRow = ({
                 iconSize="18px"
                 disabled={!authUserIsAdmin}
                 onClick={() => {
-                  setIsAssignedItemsOpened(true);
+                  setModalOpened('user-assigned-items');
                 }}
               >
                 <FormattedMessage {...messages.seeAssignedItems} />
@@ -223,30 +225,30 @@ const UsersTableRow = ({
             actions={actions}
           />
         </Td>
-        {showBlockUserModal && (
+        {modalOpened === 'block-user' && (
           <BlockUser
             user={userInRow}
-            setClose={() => setShowBlockUserModal(false)}
+            setClose={closeModal}
             returnFocusRef={moreActionsButtonRef}
           />
         )}
-        {showUnblockUserModal && (
+        {modalOpened === 'unblock-user' && (
           <UnblockUser
             user={userInRow}
-            setClose={() => setShowUnblockUserModal(false)}
+            setClose={closeModal}
             returnFocusRef={moreActionsButtonRef}
           />
         )}
-        {showDeleteUserModal && (
+        {modalOpened === 'delete-user' && (
           <DeleteUser
             user={userInRow}
-            setClose={() => setShowDeleteUserModal(false)}
+            setClose={closeModal}
             returnFocusRef={moreActionsButtonRef}
           />
         )}
         <Modal
-          opened={isAssignedItemsOpened}
-          close={() => setIsAssignedItemsOpened(false)}
+          opened={modalOpened === 'user-assigned-items'}
+          close={closeModal}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
           ariaLabelledBy="assigned-items-modal-title"
@@ -254,16 +256,13 @@ const UsersTableRow = ({
           <UserAssignedItems user={userInRow} />
         </Modal>
         <Modal
-          opened={setAsModeratorOpened}
-          close={() => setSetAsModeratorOpened(false)}
+          opened={modalOpened === 'set-moderator'}
+          close={closeModal}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
           ariaLabelledBy="set-moderator-modal-title"
         >
-          <SetAsModerator
-            user={userInRow}
-            onClose={() => setSetAsModeratorOpened(false)}
-          />
+          <SetAsModerator user={userInRow} onClose={closeModal} />
         </Modal>
       </Tr>
     </>
