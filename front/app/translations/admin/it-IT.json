@@ -170,6 +170,8 @@
   "app.components.admin.DatePhasePicker.Input.selectDate": "Seleziona data",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Cancella data di fine",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Cancella data di inizio",
+  "app.components.admin.DateTimeSelection.dateStartLabel": "Data e ora di inizio",
+  "app.components.admin.DateTimeSelection.datesEndLabel": "Data e ora di fine",
   "app.components.admin.GraphCards.InternalAdoptionCard.active": "Attivo",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins": "Amministratori attivi",
   "app.components.admin.GraphCards.InternalAdoptionCard.activeLast30Days": "Attivi negli ultimi 30 giorni:",
