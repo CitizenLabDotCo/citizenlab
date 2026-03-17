@@ -34,7 +34,7 @@ describe ProjectModeratorPolicy do
     it_behaves_like 'all actions permitted'
   end
 
-  context "for a space moderator of an unrelated space" do
+  context 'for a space moderator of an unrelated space' do
     let(:space) { create(:space) }
     let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
 
@@ -48,7 +48,7 @@ describe ProjectModeratorPolicy do
     it_behaves_like 'all actions permitted'
   end
 
-  context "for a folder moderator of an unrelated folder" do
+  context 'for a folder moderator of an unrelated folder' do
     let(:folder) { create(:project_folder) }
     let(:user) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]) }
 
