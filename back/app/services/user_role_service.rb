@@ -29,7 +29,8 @@ class UserRoleService
     user.admin? ||
       (project.persisted? && user.project_moderator?(project.id)) ||
       (project.in_folder? && user.project_folder_moderator?(project.folder_id)) ||
-      (project.space_id && user.space_moderator?(project.space_id))
+      (project.space_id && user.space_moderator?(project.space_id)) ||
+      false
   end
 
   def moderators_for(object, scope = User)
