@@ -89,7 +89,7 @@ describe EmailCampaigns::DeliveryService do
       let!(:campaign) do
         c = create(:manual_campaign)
         c.scheduled_at = 1.hour.ago
-        c.save!(validate: false)
+        c.save!
         c
       end
       let!(:users) { create_list(:user, 3) }

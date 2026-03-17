@@ -101,7 +101,7 @@ module EmailCampaigns
       if @campaign.valid?(:send)
         SideFxCampaignService.new.before_send(@campaign, current_user)
         @campaign.with_lock do
-          @campaign.clear_scheduled_at
+          @campaign.clear_scheduled_at!
           EmailCampaigns::DeliveryService.new.send_now(@campaign)
         end
         SideFxCampaignService.new.after_send(@campaign, current_user)

@@ -5,10 +5,10 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      validates :schedule, presence: true, unless: :schedule_optional?
+      validates :schedule, presence: true
 
       filter :filter_campaign_scheduled
-      before_validation :set_default_schedule, if: -> { schedule.blank? && !schedule_optional? }
+      before_validation :set_default_schedule, if: -> { schedule.blank? }
       before_validation :force_schedule_start_in_config_timezone, if: -> { schedule.present? }
     end
 
@@ -17,14 +17,7 @@ module EmailCampaigns
       return false if schedule.blank?
 
       time = AppConfiguration.timezone.at(time)
-
-      if recurring_schedule?
-        # Recurring: existing 30-min window behavior (unchanged)
-        ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
-      else
-        # One-time: eligible once the scheduled rtime has passed
-        ic_schedule.occurs_between?(ic_schedule.start_time, time)
-      end
+      ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
     end
 
     def ic_schedule
@@ -45,22 +38,16 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
-    def schedule_optional?
-      false
-    end
-
     def set_default_schedule
       self.ic_schedule = self.class.default_schedule
     end
 
     def recurring_schedule?
-      ic_schedule&.rrules&.any? || false
+      ic_schedule&.rrules&.any?
     end
 
     def schedule_multiloc_value
-      return if schedule.blank?
-
-      rules = schedule.dig('rrules', 0)
+      rules = schedule.to_h.dig('rrules', 0)
       return unless rules
 
       # Quarterly schedule

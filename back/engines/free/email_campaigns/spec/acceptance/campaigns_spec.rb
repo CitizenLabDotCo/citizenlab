@@ -192,13 +192,12 @@ resource 'Campaigns' do
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
       end
 
-      example 'Get a scheduled campaign includes scheduled_at' do
+      example 'Get a scheduled campaign includes scheduled_at', document: false do
         campaign.scheduled_at = 2.hours.from_now
         campaign.save!
         do_request
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_present
+        expect(response_data.dig(:attributes, :scheduled_at)).to be_present
       end
 
       example 'Get a manual campaign that has been sent' do
@@ -382,23 +381,25 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
         end
 
-        example 'Schedule a campaign for future sending' do
+        example 'Schedule a campaign for future sending', document: false do
           scheduled_time = 2.hours.from_now.iso8601
-          do_request(campaign: { scheduled_at: scheduled_time })
+
+          expect { do_request(campaign: { scheduled_at: scheduled_time }) }
+            .to enqueue_job(EmailCampaigns::SendScheduledCampaignJob)
 
           assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_present
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_present
+          expect(EmailCampaigns::SendScheduledCampaignJob).to have_been_enqueued
         end
 
-        example 'Unschedule a campaign by setting scheduled_at to nil' do
+        example 'Unschedule a campaign by setting scheduled_at to nil', document: false do
           campaign.scheduled_at = 2.hours.from_now
           campaign.save!
-          do_request(campaign: { scheduled_at: nil })
+          expect { do_request(campaign: { scheduled_at: nil }) }
+            .to change(QueJob, :count).by(-1)
 
           assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_nil
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_nil
         end
 
         example '[error] Schedule a campaign with a past date' do

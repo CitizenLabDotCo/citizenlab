@@ -39,7 +39,6 @@ module EmailCampaigns
     include SenderConfigurable
     include RecipientConfigurable
     include Trackable
-    include Schedulable
     include LifecycleStageRestrictable
 
     # Without this, the campaign would be sent on every event and every schedule trigger.
@@ -67,8 +66,14 @@ module EmailCampaigns
       end
     end
 
-    def schedule_optional?
-      true
+    def ic_schedule
+      return nil if schedule.blank?
+
+      IceCube::Schedule.from_hash(schedule)
+    end
+
+    def ic_schedule=(ics)
+      self.schedule = ics&.to_hash
     end
 
     def mailer_class
@@ -98,17 +103,9 @@ module EmailCampaigns
       false
     end
 
-    def clear_scheduled_at
-      return if scheduled_at.blank?
-
+    def clear_scheduled_at!
       self.schedule = nil
       save!
-    end
-
-    # Manual campaigns bypass the schedule filter — sending is controlled
-    # by only_manual_send and the SendScheduledCampaignJob.
-    def filter_campaign_scheduled(time:, activity: nil)
-      true
     end
 
     protected
@@ -124,7 +121,7 @@ module EmailCampaigns
     end
 
     def scheduled_at_in_future
-      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.zone.now
+      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.now
     end
   end
 end
