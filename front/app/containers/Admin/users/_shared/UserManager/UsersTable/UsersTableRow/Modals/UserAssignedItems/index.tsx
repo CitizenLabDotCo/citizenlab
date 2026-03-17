@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import useTreeView from 'api/admin_publications/useTreeView';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
-import useTreeView from 'api/admin_publications/useTreeView';
 import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';
@@ -27,6 +27,14 @@ const UserAssignedItems = ({ user }: Props) => {
     useDeleteProjectFolderModerator();
 
   if (!treeView) return null;
+
+  if (treeView.data.attributes.nodes.length === 0) {
+    return (
+      <Text>
+        <FormattedMessage {...messages.noItemsAssigned} />
+      </Text>
+    );
+  }
 
   const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
     user,
