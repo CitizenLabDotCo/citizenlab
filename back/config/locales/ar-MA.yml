@@ -402,5 +402,6 @@ ar-MA:
     event_details: "تفاصيل الحدث"
   errors:
     messages:
+      in_the_past: "يجب أن يكون ذلك في المستقبل"
       max_must_be_greater_than_min_characters: "يجب أن يكون الحد الأقصى أكبر من الحد الأدنى."
       max_must_be_greater_than_or_equal_to_min_select_count: "يجب أن يكون الحد الأقصى أكبر من أو يساوي الحد الأدنى."
