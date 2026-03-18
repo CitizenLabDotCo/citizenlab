@@ -41,6 +41,9 @@ const Table = ({ users }: Props) => {
           <Th py="16px">
             <FormattedMessage {...messages.status} />
           </Th>
+          <Th py="16px">
+            <FormattedMessage {...messages.options} />
+          </Th>
         </Tr>
       </Thead>
       <Tbody>
