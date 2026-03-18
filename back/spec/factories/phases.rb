@@ -22,10 +22,7 @@ FactoryBot.define do
     end
 
     start_at { Time.zone.local(2017, 5, 1) }
-    end_at do
-      start_time = start_at.is_a?(String) ? Time.zone.parse(start_at) : start_at
-      start_time + 61.days
-    end
+    end_at { start_at.in_time_zone + 61.days }
 
     voting_min_total { 1 }
     voting_max_total { 10_000 }
@@ -64,15 +61,16 @@ FactoryBot.define do
       end
 
       after(:build) do |phase, evaluator|
-        phase.start_at = Time.now + ((evaluator.duration_in_days * Phase.count) + 1).days
-        phase.end_at = Time.now + ((evaluator.duration_in_days * (Phase.count + 1)) + 1).days
+        start_at = Time.now + ((evaluator.duration_in_days * Phase.count) + 1).days
+        phase.start_at = start_at
+        phase.end_at = start_at + evaluator.duration_in_days.days
       end
     end
 
     factory :proposals_phase do
       participation_method { 'proposals' }
-      start_at { Time.zone.now.beginning_of_day - 7.days }
-      end_at { Time.zone.now.beginning_of_day + 8.days }
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 8.days }
     end
 
     factory :poll_phase do
@@ -118,7 +116,7 @@ FactoryBot.define do
       participation_method { 'community_monitor_survey' }
       native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
       native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
-      start_at { Time.zone.now.beginning_of_day - 7.days }
+      start_at { Time.zone.today - 7.days }
       end_at { nil }
     end
 
@@ -162,8 +160,8 @@ FactoryBot.define do
     end
 
     trait :ongoing do
-      start_at { Time.zone.now.beginning_of_day - 7.days }
-      end_at { Time.zone.now.beginning_of_day + 8.days }
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 8.days }
     end
   end
 end
