@@ -785,7 +785,7 @@
   "app.containers.Admin.Users.assign": "Ανάθεση",
   "app.containers.Admin.Users.assignedItems": "Αποδεσμευμένα στοιχεία για το {name}",
   "app.containers.Admin.Users.buyOneAditionalSeat": "Αγοράστε μία επιπλέον θέση",
-  "app.containers.Admin.Users.changeUserRights": "Change user rights",
+  "app.containers.Admin.Users.changeUserRights": "Αλλαγή δικαιωμάτων χρήστη",
   "app.containers.Admin.Users.confirm": "Επιβεβαίωση",
   "app.containers.Admin.Users.confirmAdminQuestion": "Είστε σίγουροι ότι θέλετε να δώσετε δικαιώματα διαχειριστή της πλατφόρμας {name} ;",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Είστε σίγουροι ότι θέλετε να ορίσετε το {name} ως κανονικό χρήστη;",
