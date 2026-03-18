@@ -19,9 +19,9 @@ export default defineMessages({
       'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey6',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey7',
     defaultMessage:
-      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area) and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',
