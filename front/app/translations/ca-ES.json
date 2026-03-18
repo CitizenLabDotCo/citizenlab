@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Aquesta adreça de correu electrònic ja existeix. Hi ha enllaçat un altre compte.",
   "app.errors.generics.unsupported_locales": "Aquest camp no admet la configuració regional actual.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Com a gestor de projectes, només podeu enviar correus electrònics a persones que puguin accedir als vostres projectes",
+  "app.errors.has_inputs": "No podeu canviar el mètode de participació perquè aquesta fase ja té entrades. Primer, elimineu totes les entrades.",
   "app.errors.has_other_overlapping_phases": "Els projectes no poden tenir fases superposades.",
   "app.errors.invalid_email": "El correu electrònic {value} que es troba a la fila {row} no és una adreça electrònica vàlida",
   "app.errors.invalid_row": "S'ha produït un error desconegut en intentar processar la fila {row}",
