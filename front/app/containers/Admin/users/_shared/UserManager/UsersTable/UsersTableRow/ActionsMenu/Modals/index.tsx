@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 
 import { IUserData } from 'api/users/types';
 
@@ -14,7 +14,6 @@ import SetAsModerator from './SetAsModerator';
 interface Props {
   modalOpened: ModalName | null;
   user: IUserData;
-  moreActionsButtonRef: RefObject<HTMLButtonElement>;
   closeModal: () => void;
   onAcceptIncreasedSeatLimitForAdmin: () => void;
 }
@@ -22,37 +21,23 @@ interface Props {
 const Modals = ({
   modalOpened,
   user,
-  moreActionsButtonRef,
   closeModal,
   onAcceptIncreasedSeatLimitForAdmin,
 }: Props) => {
   return (
     <>
       {modalOpened === 'block-user' && (
-        <BlockUser
-          user={user}
-          setClose={closeModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        <BlockUser user={user} setClose={closeModal} />
       )}
       {modalOpened === 'unblock-user' && (
-        <UnblockUser
-          user={user}
-          setClose={closeModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        <UnblockUser user={user} setClose={closeModal} />
       )}
       {modalOpened === 'delete-user' && (
-        <DeleteUser
-          user={user}
-          setClose={closeModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        <DeleteUser user={user} setClose={closeModal} />
       )}
       <SetAsModerator
         opened={modalOpened === 'set-moderator'}
         user={user}
-        moreActionsButtonRef={moreActionsButtonRef}
         onClose={closeModal}
       />
       <SeatLimitReachedModal

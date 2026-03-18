@@ -1,27 +1,20 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React from 'react';
 
 import { Tr, Td, colors, Checkbox } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 
 import messages from '../../../../messages';
 
-import { Action, getActions } from './actions';
-import Modals from './Modals';
+import ActionsMenu from './ActionsMenu';
 import NameAvatarEmail from './NameAvatarEmail';
-import { ModalName } from './types';
 import UserRole from './UserRole';
 
 const RegisteredAt = styled(Td)`
@@ -31,85 +24,14 @@ const RegisteredAt = styled(Td)`
 interface Props {
   userInRow: IUserData;
   selected: boolean;
-  authUser: IUserData;
   toggleSelect: () => void;
 }
 
-const UsersTableRow = ({
-  userInRow,
-  selected,
-  authUser,
-  toggleSelect,
-}: Props) => {
-  const { mutate: updateUser } = useUpdateUser();
-  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+const UsersTableRow = ({ userInRow, selected, toggleSelect }: Props) => {
   const locale = useLocale();
-  const { formatMessage } = useIntl();
-  const isUserBlockingEnabled = useFeatureFlag({
-    name: 'user_blocking',
-  });
 
   const userInRowHasRegistered =
     userInRow.attributes.invite_status !== 'pending';
-
-  const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
-  const closeModal = () => setModalOpened(null);
-
-  const { checkIfUserExceedsSeats } = useExceedsSeats();
-
-  const handleMakeAdmin = useCallback(() => {
-    updateUser({
-      userId: userInRow.id,
-      roles: [...(userInRow.attributes.roles ?? []), { type: 'admin' }],
-    });
-  }, [userInRow, updateUser]);
-
-  const onAction = useCallback(
-    (action: Action) => {
-      switch (action) {
-        case 'block-user':
-          setModalOpened('block-user');
-          break;
-        case 'unblock-user':
-          setModalOpened('unblock-user');
-          break;
-        case 'delete-user':
-          setModalOpened('delete-user');
-          break;
-        case 'set-admin':
-          if (!checkIfUserExceedsSeats) return;
-
-          if (checkIfUserExceedsSeats(userInRow, 'admin')) {
-            setModalOpened('seat-limit-reached');
-          } else {
-            handleMakeAdmin();
-          }
-          break;
-        case 'set-moderator':
-          setModalOpened('set-moderator');
-          break;
-        case 'set-normal-user':
-          updateUser({
-            userId: userInRow.id,
-            roles: [],
-          });
-          break;
-        default:
-          break;
-      }
-    },
-    [checkIfUserExceedsSeats, handleMakeAdmin, updateUser, userInRow]
-  );
-
-  const actions = useMemo(() => {
-    return getActions({
-      formatMessage,
-      user: userInRow,
-      authUser,
-      isUserBlockingEnabled,
-      onAction,
-    });
-  }, [formatMessage, userInRow, authUser, isUserBlockingEnabled, onAction]);
 
   return (
     <>
@@ -151,19 +73,8 @@ const UsersTableRow = ({
         </RegisteredAt>
 
         <Td>
-          <MoreActionsMenu
-            showLabel={false}
-            ref={moreActionsButtonRef}
-            actions={actions}
-          />
+          <ActionsMenu user={userInRow} />
         </Td>
-        <Modals
-          modalOpened={modalOpened}
-          user={userInRow}
-          moreActionsButtonRef={moreActionsButtonRef}
-          closeModal={closeModal}
-          onAcceptIncreasedSeatLimitForAdmin={handleMakeAdmin}
-        />
       </Tr>
     </>
   );

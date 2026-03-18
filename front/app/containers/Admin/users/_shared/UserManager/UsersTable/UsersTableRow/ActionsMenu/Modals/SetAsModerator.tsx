@@ -1,4 +1,4 @@
-import React, { useState, RefObject } from 'react';
+import React, { useState } from 'react';
 
 import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
@@ -18,21 +18,15 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../../../../messages';
+import messages from '../../../../../../messages';
 
 interface Props {
   opened: boolean;
   user: IUserData;
-  moreActionsButtonRef: RefObject<HTMLButtonElement>;
   onClose: () => void;
 }
 
-const SetAsModerator = ({
-  opened,
-  moreActionsButtonRef,
-  user,
-  onClose,
-}: Props) => {
+const SetAsModerator = ({ opened, user, onClose }: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: addProjectFolderModerator } =
     useAddProjectFolderModerator();
@@ -106,8 +100,6 @@ const SetAsModerator = ({
       <Modal
         opened={opened}
         close={onClose}
-        // Return focus to the More Actions button on close
-        returnFocusRef={moreActionsButtonRef}
         ariaLabelledBy="set-moderator-modal-title"
       >
         <Title id="set-moderator-modal-title" mb="40px">
