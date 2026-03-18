@@ -44,18 +44,15 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const SEATS_OVERVIEW_PAGE: RouteType = '/admin/users/seats';
+
 const SeatInfo = ({ seatType }: SeatInfoProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const adminsAndManagersLinks: RouteType[] = [
-    '/admin/users/admins',
-    '/admin/users/moderators',
-  ];
-  const isOnAdminsOrManagersPage = adminsAndManagersLinks.some((link) =>
-    pathname.includes(link)
-  );
+
+  const isOnSeatsOverviewPage = pathname.includes(SEATS_OVERVIEW_PAGE);
 
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
@@ -73,8 +70,6 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
         .additional_moderators_number,
   };
   const additionalSeats = additionalSeatNumbers[seatType];
-  const linkTo =
-    seatType === 'admin' ? '/admin/users/admins' : '/admin/users/moderators';
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats) {
@@ -163,8 +158,8 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
           <Text fontSize="xl" my="4px" data-cy={`e2e-${seatType}-used-seats`}>
             {usedSeats}
           </Text>
-          {!isOnAdminsOrManagersPage && usedSeats > 0 && (
-            <StyledLink target="_blank" to={linkTo}>
+          {!isOnSeatsOverviewPage && usedSeats > 0 && (
+            <StyledLink target="_blank" to={SEATS_OVERVIEW_PAGE}>
               <Text variant="bodyXs" my="0px" color="coolGrey600">
                 {formatMessage(messages.view)}
               </Text>
