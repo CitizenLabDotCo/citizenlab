@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Poiché hai selezionato \"Anonimato completo\" in \"Raccolta dei dati dell'utente\", le risposte alle domande demografiche poste prima della partecipazione NON SARANNO CONSERVATE NEI RISULTATI. Le risposte saranno utilizzate solo per aggiornare il profilo dell'utente, ma questo profilo non è collegato alle risposte. Per raccogliere dati demografici e memorizzarli nei risultati, scegli un'altra opzione alla voce \"Raccolta dati utente\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "La scelta di come le domande demografiche sono poste ai partecipanti non è applicabile in quanto hai disabilitato l'autenticazione e selezionato l'anonimato completo",
   "app.components.admin.AddByEmail.invite": "Invita",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Scrivi l'e-mail per invitare il moderatore...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Scrivi un'e-mail per invitare il manager...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Per aggiungere contenuti all'interno della fisarmonica, apri la fisarmonica premendo sul simbolo \">\", quindi trascina i widget all'interno.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nessuna domanda selezionata. Seleziona prima una domanda.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nessuna risposta",
