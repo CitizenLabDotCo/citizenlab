@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "\"Kullanıcı veri toplama\" bölümünde \"Tam anonimlik\" seçeneğini seçtiğiniz için, katılımdan önce sorulan demografik soruların yanıtları SONUÇLARDA SAKLANMAYACAKTIR. Yanıtlar yalnızca kullanıcının profilini güncellemek için kullanılacaktır, ancak bu profil yanıtla bağlantılı değildir. Demografik verileri toplamak ve sonuçlarda saklamak için lütfen \"Kullanıcı verileri toplama\" altında başka bir seçenek seçin.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Kimlik doğrulamayı devre dışı bıraktığınız ve tam anonimliği seçtiğiniz için katılımcılara demografik soruların nasıl sorulacağını seçmek geçerli değildir",
   "app.components.admin.AddByEmail.invite": "Davetiye",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Moderatörü davet etmek için e-posta yazın...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Yöneticiyi davet etmek için e-posta yazın...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Akordeonun içine içerik eklemek için \">\" sembolüne basarak akordeonu açın, ardından tüm widget'ları içine sürükleyin.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Seçili soru yok. Lütfen önce bir soru seçin.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Cevap yok",
