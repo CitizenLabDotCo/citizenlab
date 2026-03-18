@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Gan eich bod wedi dewis \"Anhysbysrwydd llawn\" yn \"Casglu data defnyddwyr\", NI FYDD yr atebion i'r cwestiynau demograffig a ofynnwyd cyn cymryd rhan yn CAEL EU STORIO YN Y CANLYNIADAU. Dim ond i ddiweddaru proffil y defnyddiwr y bydd yr atebion yn cael eu defnyddio, ond nid yw'r proffil hwn wedi'i gysylltu â'r ymateb. I gasglu data demograffig a'i storio yn y canlyniadau dewiswch opsiwn arall o dan \"Casglu data defnyddwyr\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Nid yw dewis sut mae cwestiynau demograffig yn cael eu gofyn i gyfranogwyr yn berthnasol gan eich bod wedi analluogi dilysu ac wedi dewis anhysbysrwydd llawn",
   "app.components.admin.AddByEmail.invite": "Gwahodd",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Teipiwch e-bost i wahodd y cymedrolwr...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Teipiwch e-bost i wahodd y rheolwr...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "I ychwanegu cynnwys y tu mewn i'r acordion, agorwch yr acordion drwy wasgu ar y symbol \">\", yna llusgwch unrhyw widgets i mewn.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Dim cwestiwn wedi'i ddewis. Dewiswch gwestiwn yn gyntaf.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Dim Ateb",
