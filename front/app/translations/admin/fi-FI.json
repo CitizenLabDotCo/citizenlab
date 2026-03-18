@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Koska valitsit \"Täysi anonymiteetti\" kohdassa \"Käyttäjätietojen kerääminen\", ennen osallistumista esitettyihin demografisiin kysymyksiin annettuja vastauksia EI TALLENNETA TULOKSIIN. Vastauksia käytetään vain käyttäjän profiilin päivittämiseen, mutta tätä profiilia ei linkitetä vastaukseen. Demografisten tietojen keräämiseksi ja tallentamiseksi tuloksiin valitse toinen vaihtoehto kohdassa \"Käyttäjätietojen kerääminen\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Demografisten kysymysten esittämistavan valinta ei ole sovellettavissa, koska olet poistanut todennuksen käytöstä ja valinnut täyden anonymiteetin.",
   "app.components.admin.AddByEmail.invite": "Kutsu",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Kirjoita sähköpostiosoite kutsuaksesi moderaattorin...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Kirjoita sähköpostiosoite kutsuaksesi esimiehen...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Lisätäksesi sisältöä haitariin, avaa haitari painamalla symbolia \">\" ja vedä sitten widgetit sisään.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Yhtään kysymystä ei valittu. Valitse ensin kysymys.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Ei vastausta",
