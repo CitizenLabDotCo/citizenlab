@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  typeEmailToInviteModerator: {
-    id: 'app.components.admin.AddByEmail.inviteModeratorByEmail',
-    defaultMessage: 'Type email to invite moderator...',
+  typeEmailToInviteManager: {
+    id: 'app.components.admin.AddByEmail.typeEmailToInviteManager',
+    defaultMessage: 'Type email to invite manager...',
   },
   invite: {
     id: 'app.components.admin.AddByEmail.invite',

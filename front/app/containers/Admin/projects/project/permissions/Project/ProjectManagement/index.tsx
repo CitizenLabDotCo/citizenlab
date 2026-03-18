@@ -37,7 +37,7 @@ interface Props {
   projectId: string;
 }
 
-const TEMP_HIDE_STUFF = Math.random() > -1;
+const TEMP_HIDE_STUFF = Math.random() < -1;
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
