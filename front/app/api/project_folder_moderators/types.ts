@@ -11,6 +11,7 @@ export type ProjectForderParams = {
 };
 
 export type ProjectFolderModeratorAdd = {
-  moderatorId: string;
+  moderatorId?: string;
+  moderatorEmail?: string;
   projectFolderId: string;
 };

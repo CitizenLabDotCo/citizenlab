@@ -6,21 +6,17 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IQueryParameters, IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
 
 import Pagination from 'components/Pagination';
 import Warning from 'components/UI/Warning';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
-import { TRole } from 'utils/permissions/roles';
 
-import events from '../../events';
-import messages from '../../messages';
-import tracks from '../../tracks';
-import UserTableRow from './UserTableRow';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+
+import UsersTableRow from './UsersTableRow';
 
 const Container = styled.div`
   flex: 1;
@@ -73,27 +69,10 @@ const UsersTable = ({
   notCitizenlabMember,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { mutate: updateUser } = useUpdateUser();
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
-
-  const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
-    trackEventByName(tracks.adminChangeRole);
-
-    if (authUser.data.id === user.id) {
-      eventEmitter.emit<JSX.Element>(
-        events.userRoleChangeFailed,
-        <FormattedMessage {...messages.youCantUnadminYourself} />
-      );
-    } else {
-      updateUser({
-        userId: user.id,
-        roles: getNewRoles(user, changeToNormalUser),
-      });
-    }
-  };
 
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
     trackEventByName(tracks.sortChange, {
@@ -187,15 +166,14 @@ const UsersTable = ({
           </Thead>
           <Tbody>
             {usersList.map((user) => (
-              <UserTableRow
+              <UsersTableRow
                 key={user.id}
                 userInRow={user}
                 selected={
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
-                toggleSelect={handleUserToggle(user.id)}
-                changeRoles={handleChangeRoles}
                 authUser={authUser.data}
+                toggleSelect={handleUserToggle(user.id)}
               />
             ))}
           </Tbody>
@@ -214,11 +192,3 @@ const UsersTable = ({
 };
 
 export default UsersTable;
-
-const getNewRoles = (user: IUserData, changeToNormalUser: boolean): TRole[] => {
-  if (!user.attributes.roles || changeToNormalUser) {
-    return [];
-  }
-
-  return [...user.attributes.roles, { type: 'admin' }];
-};

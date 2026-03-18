@@ -17,7 +17,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import events from '../../events';
 
 import NoUsers from './NoUsers';
-import UserTable from './UserTable';
+import UsersTable from './UsersTable';
 import UserTableActions from './UserTableActions';
 
 interface Props {
@@ -196,10 +196,8 @@ const UserManager = ({
           <Error text={err.errorElement} key={err.errorName} />
         ))}
 
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {users?.data && users.data.length > 0 ? (
-        <UserTable
+      {users.data.length > 0 ? (
+        <UsersTable
           selectedUsers={selectedUsers}
           handleSelect={handleUserSelectedOnChange(allUsersIds)}
           notCitizenlabMember={notCitizenlabMember}

@@ -28,4 +28,8 @@ export default defineMessages({
     id: 'app.containers.Admin.users.UserAssignedItems.projectsUserManages',
     defaultMessage: 'Projects user manages',
   },
+  noItemsAssigned: {
+    id: 'app.containers.Admin.users.UserAssignedItems.noItemsAssigned',
+    defaultMessage: 'No items assigned to this user.',
+  },
 });

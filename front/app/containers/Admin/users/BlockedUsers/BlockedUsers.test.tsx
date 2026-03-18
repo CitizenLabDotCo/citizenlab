@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import BlockedUsers from './BlockedUsers';
+import BlockedUsers from '.';
 
 let mockedIsUserBlockingEnabled = true;
 

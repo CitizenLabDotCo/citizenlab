@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, RefObject } from 'react';
 
 import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
@@ -8,28 +8,38 @@ import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddPr
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
 
+import useExceedsSeats from 'hooks/useExceedsSeats';
 import useLocalize from 'hooks/useLocalize';
 
+import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
+import Modal from 'components/UI/Modal';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
 
-const SetAsProjectModerator = ({
+interface Props {
+  opened: boolean;
+  user: IUserData;
+  moreActionsButtonRef: RefObject<HTMLButtonElement>;
+  onClose: () => void;
+}
+
+const SetAsModerator = ({
+  opened,
+  moreActionsButtonRef,
   user,
   onClose,
-  onSuccess,
-}: {
-  user: IUserData;
-  onClose: () => void;
-  onSuccess: () => void;
-}) => {
+}: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: addProjectFolderModerator } =
     useAddProjectFolderModerator();
   const [isLoading, setIsLoading] = useState(false);
+  const [seatLimitReachedModalOpen, setSeatLimitReachedModalOpen] =
+    useState(false);
+
   const { formatMessage } = useIntl();
   const [selectedPublications, setSelectedPublications] = useState<string[]>(
     []
@@ -40,6 +50,8 @@ const SetAsProjectModerator = ({
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );
+
+  const { checkIfUserExceedsSeats } = useExceedsSeats();
 
   if (!flatAdminPublications) return null;
 
@@ -52,7 +64,16 @@ const SetAsProjectModerator = ({
       : localize(publication.attributes.publication_title_multiloc),
   }));
 
-  const handleAssign = async () => {
+  const handleAssign = () => {
+    if (!checkIfUserExceedsSeats) return;
+    if (checkIfUserExceedsSeats(user, 'moderator')) {
+      setSeatLimitReachedModalOpen(true);
+    } else {
+      doAssign();
+    }
+  };
+
+  const doAssign = async () => {
     setIsLoading(true);
     try {
       for (const publicationId of selectedPublications) {
@@ -76,39 +97,54 @@ const SetAsProjectModerator = ({
       }
     } finally {
       setIsLoading(false);
-      onSuccess();
       onClose();
     }
   };
 
   return (
     <div>
-      <Title id="set-moderator-modal-title" mb="40px">
-        <FormattedMessage
-          {...messages.setUserAsProjectModerator}
-          values={{ name: getFullName(user) }}
+      <Modal
+        opened={opened}
+        close={onClose}
+        // Return focus to the More Actions button on close
+        returnFocusRef={moreActionsButtonRef}
+        ariaLabelledBy="set-moderator-modal-title"
+      >
+        <Title id="set-moderator-modal-title" mb="40px">
+          <FormattedMessage
+            {...messages.setUserAsProjectModerator}
+            values={{ name: getFullName(user) }}
+          />
+        </Title>
+        <MultipleSelect
+          value={selectedPublications}
+          options={options}
+          onChange={(selectedOptions) =>
+            setSelectedPublications(
+              selectedOptions.map((option) => option.value)
+            )
+          }
+          label={formatMessage(messages.selectPublications)}
+          placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
         />
-      </Title>
-      <MultipleSelect
-        value={selectedPublications}
-        options={options}
-        onChange={(selectedOptions) =>
-          setSelectedPublications(selectedOptions.map((option) => option.value))
-        }
-        label={formatMessage(messages.selectPublications)}
-        placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
+        <Box display="flex" justifyContent="flex-end" mt="20px">
+          <Button
+            onClick={handleAssign}
+            disabled={selectedPublications.length === 0}
+            processing={isLoading}
+          >
+            {formatMessage(messages.assign)}
+          </Button>
+        </Box>
+      </Modal>
+      <SeatLimitReachedModal
+        seatType="moderator"
+        showModal={seatLimitReachedModalOpen}
+        closeModal={() => setSeatLimitReachedModalOpen(false)}
+        addModerators={doAssign}
       />
-      <Box display="flex" justifyContent="flex-end" mt="20px">
-        <Button
-          onClick={handleAssign}
-          disabled={selectedPublications.length === 0}
-          processing={isLoading}
-        >
-          {formatMessage(messages.assign)}
-        </Button>
-      </Box>
     </div>
   );
 };
 
-export default SetAsProjectModerator;
+export default SetAsModerator;

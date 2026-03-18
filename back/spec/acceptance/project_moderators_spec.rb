@@ -78,7 +78,8 @@ resource 'Moderators' do
 
   post 'web_api/v1/projects/:project_id/moderators' do
     with_options scope: :moderator do
-      parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+      parameter :user_id, 'The id of user to become moderator.', required: false
+      parameter :user_email, 'The email of user to become moderator.', required: false
     end
     ValidationErrorHelper.new.error_fields(self, User)
 
@@ -89,35 +90,50 @@ resource 'Moderators' do
       end
 
       let(:project_id) { @project.id }
-      let(:user_id) { create(:user).id }
 
-      example_request 'Add a moderator role' do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq user_id
-      end
-
-      context 'with limited seats' do
-        before do
-          config = AppConfiguration.instance
-          config.settings['core']['maximum_moderators_number'] = 2
-          config.settings['core']['additional_moderators_number'] = 0
-          config.save!
+      shared_examples 'adding a moderator' do
+        example_request 'Add a moderator role' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq test_user.id
         end
 
-        context 'when limit is reached' do
-          before { create(:project_moderator) } # to reach limit of 2
+        context 'with limited seats' do
+          before do
+            config = AppConfiguration.instance
+            config.settings['core']['maximum_moderators_number'] = 2
+            config.settings['core']['additional_moderators_number'] = 0
+            config.save!
+          end
 
-          example_request 'Increments additional seats', document: false do
+          context 'when limit is reached' do
+            before { create(:project_moderator) } # to reach limit of 2
+
+            example_request 'Increments additional seats', document: false do
+              assert_status 201
+              expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
+            end
+          end
+
+          example_request 'Does not increment additional seats if limit is not reached', document: false do
             assert_status 201
-            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
+            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
+      end
 
-        example_request 'Does not increment additional seats if limit is not reached', document: false do
-          assert_status 201
-          expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
-        end
+      context 'with user_id' do
+        let(:test_user) { create(:user) }
+        let(:user_id) { test_user.id }
+
+        include_examples 'adding a moderator'
+      end
+
+      context 'with user_email' do
+        let(:test_user) { create(:user) }
+        let(:user_email) { test_user.email }
+
+        include_examples 'adding a moderator'
       end
     end
   end
