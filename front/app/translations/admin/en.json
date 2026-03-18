@@ -1709,6 +1709,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": "Cancel schedule",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit": "Edit",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients": "Edit recipients",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally": "Email notifications for project launches have been disabled platform-wide.",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.everyone": "Everyone",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.now": "Now",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow": "Publish now",
