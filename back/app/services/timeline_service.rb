@@ -11,7 +11,7 @@ class TimelineService
 
   def current_phase(project, time = Time.now)
     project.phases.find do |phase|
-      phase.start_at <= time && (phase.end_at.nil? || phase.end_at > time)
+      phase.start_at <= time && (phase.end_at.nil? || time < phase.end_at)
     end
   end
 
@@ -78,7 +78,7 @@ class TimelineService
       .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamptz)"))
 
     projects.to_h do |project|
-      active = if starts[project.id].blank? # No phases
+      active_status = if starts[project.id].blank? # No phases
         nil
       elsif now < starts[project.id]
         :future
@@ -88,7 +88,7 @@ class TimelineService
         :present
       end
 
-      [project.id, active]
+      [project.id, active_status]
     end
   end
 
