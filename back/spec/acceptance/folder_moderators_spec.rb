@@ -134,7 +134,8 @@ resource 'Moderators' do
 
     post 'web_api/v1/project_folders/:project_folder_id/moderators' do
       with_options scope: :project_folder_moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+        parameter :user_id, 'The id of user to become moderator.', required: false
+        parameter :user_email, 'The email of user to become moderator.', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
@@ -142,21 +143,35 @@ resource 'Moderators' do
       let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
       let(:project_folder) { create(:project_folder) }
       let(:project_folder_id) { project_folder.id }
-      let(:user) { create(:user) }
-      let(:user_id) { user.id }
       let!(:child_projects) { create_list(:project, 3, folder: project_folder) }
 
-      example 'Add a moderator role' do
-        expect(user.reload.moderatable_project_ids).to be_empty
-        expect(user.roles).to be_empty
+      shared_examples 'adding a folder moderator' do
+        example 'Add a moderator role' do
+          expect(test_user.reload.moderatable_project_ids).to be_empty
+          expect(test_user.roles).to be_empty
 
-        do_request
+          do_request
 
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq user_id
-        expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
-        expect(user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
+          expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
+        end
+      end
+
+      context 'with user_id' do
+        let(:test_user) { create(:user) }
+        let(:user_id) { test_user.id }
+
+        include_examples 'adding a folder moderator'
+      end
+
+      context 'with user_email' do
+        let(:test_user) { create(:user) }
+        let(:user_email) { test_user.email }
+
+        include_examples 'adding a folder moderator'
       end
     end
 
