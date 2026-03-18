@@ -398,5 +398,6 @@ pt:
     event_details: "Detalhes do evento"
   errors:
     messages:
+      in_the_past: "deve estar no futuro"
       max_must_be_greater_than_min_characters: "O máximo deve ser maior que o mínimo."
       max_must_be_greater_than_or_equal_to_min_select_count: "O máximo deve ser maior ou igual ao mínimo."

@@ -106,7 +106,7 @@ const Invitations = () => {
     enabled: !!invitesImportId,
   });
 
-  const exceedsSeats = useExceedsSeats();
+  const { checkIfSeatsExceeded } = useExceedsSeats();
 
   const getRoles = useCallback(() => {
     const roles: INewBulkInvite['roles'] = [];
@@ -323,8 +323,10 @@ const Invitations = () => {
         newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
       }
 
+      if (!checkIfSeatsExceeded) return;
+
       if (
-        exceedsSeats({
+        checkIfSeatsExceeded({
           newlyAddedAdminsNumber,
           newlyAddedModeratorsNumber,
         }).any
@@ -334,7 +336,7 @@ const Invitations = () => {
         await onSubmit({ save: true }); // <-- add await here
       }
     },
-    [exceedsSeats, setNewSeatsResponse, setShowModal, onSubmit]
+    [setNewSeatsResponse, setShowModal, onSubmit, checkIfSeatsExceeded]
   );
 
   // State to track processed imports

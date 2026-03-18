@@ -46,10 +46,10 @@ const ChildWrapper = styled.div`
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-import GroupCreationStep1 from './GroupCreationStep1';
+import GroupCreationStep1 from './_shared/GroupCreationStep1';
 import GroupsListPanel from './GroupsListPanel';
 import messages from './messages';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import NormalGroupForm, { NormalFormValues } from './_shared/NormalGroupForm';
 
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
