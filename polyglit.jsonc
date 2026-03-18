@@ -1,6 +1,6 @@
 {
   // Repository and branch configuration
-  "baseBranch": "switch-to-polyglit", // Temporary, just for the rollout
+  "baseBranch": "master", // Temporary, just for the rollout
   "githubLabel": "waiting for translations",
 
   // Locale definitions
