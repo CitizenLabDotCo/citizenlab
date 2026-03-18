@@ -52,7 +52,7 @@ describe FolderModeratorPolicy do
     it_behaves_like 'all actions not permitted'
   end
 
-  context "for a folder moderator of the folder" do
+  context 'for a folder moderator of the folder' do
     let(:user) { folder_moderator }
 
     it { is_expected.to permit(:index) }
