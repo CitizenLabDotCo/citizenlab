@@ -1,0 +1,72 @@
+{
+  "analysis.cell_statement.bin_vs_bin.dislikes": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.bin_vs_bin.inputs": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.bin_vs_bin.likes": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.bin_vs_bin.participants": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.percent_less": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.percent_more": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.range_max": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.range_min": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.range_min_max": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.tag_vs_bin.dislikes": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.tag_vs_bin.inputs": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.tag_vs_bin.likes": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.cell_statement.tag_vs_bin.participants": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  },
+  "analysis.example_tag_n": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.641374Z",
+    "verified_by": "Admin"
+  }
+}
