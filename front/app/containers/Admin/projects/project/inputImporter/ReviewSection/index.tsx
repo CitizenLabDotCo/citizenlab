@@ -5,7 +5,6 @@ import {
   Title,
   Text,
   colors,
-  stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -160,7 +159,8 @@ const ReviewSection = ({
       </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
+        flex="1"
+        minHeight="0"
         display="flex"
         px="40px"
         justifyContent="space-between"

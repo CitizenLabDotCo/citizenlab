@@ -133,7 +133,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
     const timeout = setTimeout(() => {
       autoSave(ideaId, ideaFormStatePerIdea[ideaId]);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [ideaId, ideaFormStatePerIdea, autoSave]);
