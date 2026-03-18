@@ -211,6 +211,11 @@ describe SideFxUserService do
       expect { service.after_block(user, current_user) }
         .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
     end
+
+    it 'expires the user token' do
+      expect(user).to receive(:expire_token!)
+      service.after_block(user, current_user)
+    end
   end
 
   describe 'after_unblock' do
