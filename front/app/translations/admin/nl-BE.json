@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Omdat je \"Volledige anonimiteit\" hebt geselecteerd bij \"Verzamelen van gebruikersgegevens\", zullen de antwoorden op de demografische vragen die vóór deelname zijn gesteld NIET WORDEN OPGESLAGEN IN DE RESULTATEN. De antwoorden worden alleen gebruikt om het profiel van de gebruiker bij te werken, maar dit profiel is niet gekoppeld aan het antwoord. Om demografische gegevens te verzamelen en op te slaan in de resultaten, kies je een andere optie onder \"Verzamelen van gebruikersgegevens\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Kiezen hoe demografische vragen aan deelnemers worden gesteld is niet van toepassing omdat je authenticatie hebt uitgeschakeld en volledige anonimiteit hebt geselecteerd.",
   "app.components.admin.AddByEmail.invite": "Uitnodigen",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Typ e-mail om moderator uit te nodigen...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Typ e-mail om manager uit te nodigen...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Om inhoud in de accordeon toe te voegen, open je de accordeon door op het symbool \">\" te drukken en vervolgens widgets er in te slepen.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Geen vraag geselecteerd. Selecteer eerst een vraag.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Geen antwoord",
