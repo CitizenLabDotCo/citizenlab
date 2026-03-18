@@ -275,9 +275,9 @@ module ParticipationMethod
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.consponsor_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            ),
+            'custom_fields.ideas.consponsor_ids.description',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
           required: false,
           enabled: false,
           ordering: proposed_budget_in_form? ? 11 : 10
