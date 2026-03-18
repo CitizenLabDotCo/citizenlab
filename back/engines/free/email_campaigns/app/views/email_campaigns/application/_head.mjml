@@ -15,7 +15,12 @@
       font-size: 25px;
       margin-bottom: 25px;
     }
-    
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
     a {text-decoration: none;}
 
     <%# From https://github.com/mjmlio/mjml/issues/230 %>
