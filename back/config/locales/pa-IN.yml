@@ -147,43 +147,31 @@ pa:
     ideas:
       title:
         title: ਸਿਰਲੇਖ
-        description:
       body:
         title: ਵਰਣਨ
-        description:
       author_id:
         title: ਲੇਖਕ
       topic_ids:
         title: ਟੈਗਸ
-        description:
       consponsor_ids:
         title: ਸਹਿ-ਪ੍ਰਾਯੋਜਕ
         description: ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰ ਰਾਹੀਂ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ। ਸੱਦੇ ਗਏ ਸਹਿ-ਪ੍ਰਯੋਜਕ(ਆਂ) ਨੂੰ ਇੱਕ ਈਮੇਲ ਪ੍ਰਾਪਤ ਹੋਵੇਗੀ।
       location:
         title: ਟਿਕਾਣਾ
-        description:
       proposed_budget:
         title: ਪ੍ਰਸਤਾਵਿਤ ਬਜਟ
-        description:
       budget:
         title: ਬਜਟ
       images:
         title: ਚਿੱਤਰ
-        description:
       attachments:
         title: ਅਟੈਚਮੈਂਟਸ
-        description:
-      title_page:
-        description:
       body_page:
         title: ਸਾਨੂੰ ਹੋਰ ਦੱਸੋ
-        description:
       uploads_page:
         title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟਾਂ
-        description:
       details_page:
         title: ਵੇਰਵੇ
-        description:
       other_input_field:
         title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
         print_title: ਜੇਕਰ '%{other_option}' ਹੈ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਦੱਸੋ
