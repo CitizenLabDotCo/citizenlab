@@ -28,7 +28,7 @@ class ActivitiesService
     # notifications). We still allow the creation of new activities when the start date
     # is different (which can occur if the phase is edited).
     excluded_phases = Activity
-      .where(item_id: starting_phases, action: 'started', acted_at: start_time)
+      .where(item_id: starting_phases, action: 'started', acted_at: start_date.all_day)
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
