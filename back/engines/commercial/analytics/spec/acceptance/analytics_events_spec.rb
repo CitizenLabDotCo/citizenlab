@@ -13,10 +13,17 @@ resource 'Analytics - FactEvent' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      dates = [Date.new(2022, 9, 1), Date.new(2022, 9, 15), Date.new(2022, 10, 1)]
-      dates.each do |date|
-        create(:dimension_date, date: date)
-        create(:event, start_at: date, end_at: date)
+      # Using UTC explicitly, because (unfortunately) the fact_events view uses UTC
+      # instead of the tenant timezone when converting timestamps to dates.
+      times = [
+        Time.utc(2022, 9, 1),
+        Time.utc(2022, 9, 15),
+        Time.utc(2022, 10, 1)
+      ]
+
+      times.each do |time|
+        create(:dimension_date, date: time.to_date)
+        create(:event, start_at: time, end_at: time)
       end
     end
 
