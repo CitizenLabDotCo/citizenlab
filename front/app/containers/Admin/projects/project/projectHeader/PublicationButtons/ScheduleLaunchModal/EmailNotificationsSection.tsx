@@ -67,11 +67,7 @@ const EmailNotificationsSection = ({ projectId }: Props) => {
 
   return (
     <Box mb="24px">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box>
           <Text fontWeight="bold" mb="4px">
             {formatMessage(messages.sendEmailNotifications)}
@@ -85,17 +81,6 @@ const EmailNotificationsSection = ({ projectId }: Props) => {
                 style={{ cursor: 'pointer' }}
               >
                 {formatMessage(messages.editRecipients)}
-              </Text>
-              <Text color="grey700" fontSize="s">
-                &middot;
-              </Text>
-              <Text
-                color="grey700"
-                fontSize="s"
-                textDecoration="underline"
-                style={{ cursor: 'pointer' }}
-              >
-                {formatMessage(messages.editEmail)}
               </Text>
             </Box>
           )}

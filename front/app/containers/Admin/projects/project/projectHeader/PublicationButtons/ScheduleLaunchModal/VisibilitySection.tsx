@@ -56,7 +56,7 @@ const VisibilitySection = ({ project }: Props) => {
   };
 
   return (
-    <Box mb="24px">
+    <Box mb="8px">
       <Text fontWeight="bold" mb="4px">
         {formatMessage(messages.whoCanFindProject)}
       </Text>

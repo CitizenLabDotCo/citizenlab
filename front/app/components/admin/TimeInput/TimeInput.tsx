@@ -97,7 +97,8 @@ const TimeInput = ({ selectedTime, onChange }: Props) => {
         onClick={() => {
           setVisible(true);
         }}
-        textColor={colors.black}
+        textColor={colors.textPrimary}
+        h="48px"
       >
         {format(selectedTime, 'p', { locale: getLocale(locale) })}
       </Button>

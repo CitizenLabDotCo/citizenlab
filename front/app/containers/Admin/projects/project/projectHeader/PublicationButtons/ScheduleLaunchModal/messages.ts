@@ -49,10 +49,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients',
     defaultMessage: 'Edit recipients',
   },
-  editEmail: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editEmail',
-    defaultMessage: 'Edit email',
-  },
   cancelSchedule: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule',
     defaultMessage: 'Cancel schedule',

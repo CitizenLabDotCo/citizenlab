@@ -216,16 +216,16 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
   ${media.phone`
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -261,10 +261,10 @@ const FooterContainer = styled.div`
   flex-shrink: 0;
   flex-direction: row;
   align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   border-top: solid 1px ${colors.divider};
   background: #fff;
 

@@ -30,31 +30,27 @@ const WhenSection = ({
     appConfiguration?.data.attributes.settings.core.timezone ?? '';
 
   return (
-    <Box mb="24px">
+    <Box mb="8px">
       <Text fontWeight="bold" mb="12px">
         {formatMessage(messages.when)}
       </Text>
       <Box display="flex" gap="12px">
-        <Box flex="1">
-          <DateSinglePicker
-            selectedDate={selectedDate}
-            onChange={(date) => {
-              const h = selectedDate.getHours();
-              const m = selectedDate.getMinutes();
-              date.setHours(h);
-              date.setMinutes(m);
-              onDateChange(date);
-            }}
-          />
-        </Box>
-        <Box flex="1" display="flex" alignItems="center" gap="8px">
-          <TimeInput selectedTime={selectedTime} onChange={onTimeChange} />
-          {timezone && (
-            <Text color="grey600" fontSize="s">
-              {timezone}
-            </Text>
-          )}
-        </Box>
+        <DateSinglePicker
+          selectedDate={selectedDate}
+          onChange={(date) => {
+            const h = selectedDate.getHours();
+            const m = selectedDate.getMinutes();
+            date.setHours(h);
+            date.setMinutes(m);
+            onDateChange(date);
+          }}
+        />
+        <TimeInput selectedTime={selectedTime} onChange={onTimeChange} />
+        {timezone && (
+          <Text color="grey600" fontSize="s">
+            {timezone}
+          </Text>
+        )}
       </Box>
     </Box>
   );
