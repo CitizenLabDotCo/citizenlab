@@ -95,10 +95,22 @@ module EmailCampaigns
     def fix_image_widths(html)
       doc = Nokogiri::HTML.fragment(html)
       doc.css('img').each do |img|
-        # Set the width to 100% if it's not set.
-        # Otherwise, the image will be displayed at its original size.
-        # This can mess up the layout if the original image is e.g. 4000px wide.
-        img['width'] = '100%' if img['width'].blank?
+        existing_style = img['style'].to_s
+
+        # If the image already has a width in its style attribute, respect it
+        # but cap it with max-width so it never overflows the email container.
+        if existing_style.match?(/width\s*:/)
+          unless existing_style.match?(/max-width\s*:/)
+            img['style'] = "max-width: 100%; height: auto; #{existing_style}"
+          end
+        elsif img['width'].present?
+          # Image has an HTML width attribute — cap it with max-width
+          img['style'] = "max-width: 100%; height: auto; #{existing_style}".strip
+        else
+          # No width set at all — default to 100% so large images don't overflow
+          img['width'] = '100%'
+          img['style'] = "max-width: 100%; height: auto; #{existing_style}".strip
+        end
       end
       doc.to_s
     end
