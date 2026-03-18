@@ -9,4 +9,10 @@ class ReportBuilder::Queries::Base
       raise ArgumentError, "Invalid resolution: #{resolution}. Must be one of: #{valid_resolutions.join(', ')}"
     end
   end
+
+  private
+
+  def sanitize_sql(*args)
+    ActiveRecord::Base.sanitize_sql_array(args)
+  end
 end
