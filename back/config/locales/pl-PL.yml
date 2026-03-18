@@ -400,5 +400,6 @@ pl:
     event_details: "Szczegóły wydarzenia"
   errors:
     messages:
+      in_the_past: "musi być w przyszłości"
       max_must_be_greater_than_min_characters: "Maksimum musi być większe niż minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum musi być większe lub równe minimum."

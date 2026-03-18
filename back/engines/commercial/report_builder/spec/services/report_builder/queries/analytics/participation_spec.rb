@@ -7,14 +7,15 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
 
   describe '#run_query' do
     before_all do
-      @date = Date.new(2022, 9, 1)
+      @created_at = Time.utc(2022, 9, 1)
+      @date = @created_at.to_date
       create(:dimension_date, date: @date)
 
       Analytics::PopulateDimensionsService.populate_types
 
-      idea = create(:idea, created_at: @date)
-      create(:comment, created_at: @date, idea: idea)
-      create(:basket, created_at: @date)
+      idea = create(:idea, created_at: @created_at)
+      create(:comment, created_at: @created_at, idea: idea)
+      create(:basket, created_at: @created_at)
     end
 
     it 'returns correct time series' do

@@ -47,7 +47,7 @@
   "app.components.AuthProviders.continueWithAzure": "Continuer avec {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Continuer avec Facebook",
   "app.components.AuthProviders.continueWithFakeSSO": "Continuer avec Fake SSO",
-  "app.components.AuthProviders.continueWithFedera": "Connexion avec SPID, CIE ou CNS",
+  "app.components.AuthProviders.continueWithFedera": "Continuer avec SPID, CIE ou CNS",
   "app.components.AuthProviders.continueWithGoogle": "Continuer avec Google",
   "app.components.AuthProviders.continueWithHoplr": "Continuer avec Hoplr",
   "app.components.AuthProviders.continueWithIdAustria": "Continuer avec ID Austria",
