@@ -38,7 +38,7 @@ module BulkImportIdeas::Parsers
       job_ids
     end
 
-    # Strategy methods called by IdeaRowMapper
+    # Strategy methods called by IdeaRowMapper test
     def structure_raw_fields(idea)
       idea.map do |name, value|
         {

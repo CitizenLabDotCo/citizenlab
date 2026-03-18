@@ -700,60 +700,16 @@ resource 'Phases' do
       end
 
       describe do
-        before do
-          @project.phases.first.update!(
-            participation_method: 'voting',
-            voting_method: 'budgeting',
-            voting_max_total: 30_000,
-            voting_filtering_enabled: false,
-            ideas_order: 'random'
-          )
-        end
-
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Change a phase with ideas into an information phase' do
-          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
-          do_request
-          assert_status 200
-        end
-      end
-
-      describe 'When updating ideation phase with ideas to a poll phase' do
-        before do
-          phase.update!(
-            participation_method: 'ideation',
-            ideas: create_list(:idea, 2, project: @project)
-          )
-        end
-
-        let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
-        let(:participation_method) { 'poll' }
-
-        example 'Existing related ideas_phase remains valid' do
-          expect(ideas_phase.valid?).to be true
-          do_request
-          ideas_phase.reload
-          expect(response_status).to eq 200
-          expect(ideas_phase.valid?).to be true
-        end
-      end
-
-      describe do
-        let(:project) { create(:project) }
-        let(:id) { create(:proposals_phase, project: project).id }
-        let(:participation_method) { 'ideation' }
-
-        example '[error] Cannot be changed to ideation when there are non-transitive inputs' do
-          proposal = create(:proposal, project: project, creation_phase_id: id)
+        example '[error] Cannot change participation method when phase has inputs' do
           do_request
           assert_status 422
           expect(json_response).to eq(
-            { errors: { participation_method: [{ error: 'non_complying_inputs' }] } }
+            { errors: { participation_method: [{ error: 'has_inputs' }] } }
           )
-          expect(proposal.reload).to be_valid
         end
       end
     end

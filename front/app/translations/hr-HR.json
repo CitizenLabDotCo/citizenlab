@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Ova e-adresa već postoji i za nju je vezan drugi račun.",
   "app.errors.generics.unsupported_locales": "Ovo polje ne podržava trenutno područje.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Kao projektni menadžer, možete slati samo obavijesti o mogućnosti pristupa projektima",
+  "app.errors.has_inputs": "Ne možete promijeniti način sudjelovanja jer ova faza već ima ulazne podatke. Prvo uklonite sve ulazne podatke.",
   "app.errors.has_other_overlapping_phases": "Projekti ne mogu imati faze koje se preklapaju.",
   "app.errors.invalid_email": "E-pošta {value} pronađena u redu {row} nije valjana",
   "app.errors.invalid_row": "Došlo je do nepoznate pogreške prilikom obrade reda {row}",

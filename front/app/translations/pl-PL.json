@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Ten e-mail już istnieje. Inne konto jest z nim powiązane.",
   "app.errors.generics.unsupported_locales": "To pole nie obsługuje tej lokalizacji.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Jako kierownik projektu, możesz wysyłać e-maile tylko do osób, które mają dostęp do Twojego projektu(ów)",
+  "app.errors.has_inputs": "Nie możesz zmienić metody uczestnictwa, ponieważ ta faza zawiera już dane wejściowe. Najpierw usuń wszystkie dane wejściowe.",
   "app.errors.has_other_overlapping_phases": "Projekty nie mogą mieć nakładających się na siebie etapów.",
   "app.errors.invalid_email": "Email {value} znajdujący się w wierszu {row} nie jest prawidłowym adresem e-mail",
   "app.errors.invalid_row": "Wystąpił nieznany błąd podczas próby przetworzenia wiersza {row}",

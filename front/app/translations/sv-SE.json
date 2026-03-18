@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Den här e-postadressen finns redan. Ett annat konto är kopplat till den.",
   "app.errors.generics.unsupported_locales": "Det här fältet stödjer inte det aktuella språket.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Som projektledare kan du bara skicka e-post till personer som har tillgång till dina projekt",
+  "app.errors.has_inputs": "Du kan inte ändra deltagandemetoden eftersom denna fas redan har ingångar. Ta bort alla ingångar först.",
   "app.errors.has_other_overlapping_phases": "Projekt får inte ha överlappande faser.",
   "app.errors.invalid_email": "E-postadressen {value} som hittades på rad {row} är inte en giltig e-postadress",
   "app.errors.invalid_row": "Ett okänt fel inträffade vid försök att bearbeta rad {row}",
