@@ -64,7 +64,17 @@ module BulkImportIdeas
       approved = 0
       not_approved = 0
       side_fx_idea_service = SideFxIdeaService.new
+      participation_context = @phase.pmethod.transitive? ? @project : @phase
+      custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+      required_custom_fields = custom_form.custom_fields
+        .select { |f| f.enabled? && f.required? && !f.built_in? && f.supports_submission? }
+
       records.each do |record|
+        # Validate required custom fields have values before approving
+        missing = required_custom_fields.any? { |f| record.custom_field_values[f.key].blank? }
+        next if missing
+
+        # Built-in field validation is handled by model validations (which run when not draft)
         if record.update(publication_status: 'published')
           approved += 1
           side_fx_idea_service.after_import(record, current_user)
