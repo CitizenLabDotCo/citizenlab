@@ -235,7 +235,7 @@ class User < ApplicationRecord
   end
 
   def self.from_token_payload(payload)
-    find_by(id: payload['sub'], token_expiry_key: payload['expiry_key'])
+    find_by!(id: payload['sub'], token_expiry_key: payload['expiry_key'])
   end
 
   # We can expire a token by changing the token_expiry_key, which is checked when decoding the token in from_token_payload.

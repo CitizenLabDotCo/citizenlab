@@ -30,9 +30,10 @@ class SideFxUserService
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
-    after_roles_changed current_user, user if user.roles_previously_changed?
 
-    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
+    if user.roles_previously_changed?
+      after_roles_changed(current_user, user)
+    end
 
     UpdateMemberCountJob.perform_later
   end
@@ -94,15 +95,35 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
+    expire_token_on_role_change!(user)
+  end
 
-    # Expire the user's token after they first get roles or all roles are removed
+  def lost_roles(user)
     old_roles, new_roles = user.roles_previous_change
-    user.expire_token! if old_roles.blank? || new_roles.blank?
+    old_roles.to_a - new_roles.to_a
+  end
+
+  def gained_roles(user)
+    old_roles, new_roles = user.roles_previous_change
+    new_roles.to_a - old_roles.to_a
   end
 
   def role_created_side_fx(role, user, current_user)
     new_project_moderator(role, user, current_user) if role['type'] == 'project_moderator'
     new_admin(user, current_user) if role['type'] == 'admin'
+  end
+
+  def role_destroyed_side_fx(role, user, current_user)
+    project_moderator_destroyed(user, current_user) if role['type'] == 'project_moderator'
+  end
+
+  # Expire the user's token when they first get roles or all roles are removed.
+  # NOTE: Must be called after all side effects that depend on previous_changes,
+  # since expire_token! calls update! which resets previous_changes.
+  def expire_token_on_role_change!(user)
+    old_roles, new_roles = user.roles_previous_change
+    user.expire_token! if old_roles.blank? || new_roles.blank?
   end
 
   def new_admin(user, current_user)
@@ -119,22 +140,8 @@ class SideFxUserService
     )
   end
 
-  def role_destroyed_side_fx(role, user, current_user)
-    project_moderator_destroyed(user, current_user) if role['type'] == 'project_moderator'
-  end
-
   def project_moderator_destroyed(user, current_user)
     LogActivityJob.perform_later(user, 'project_moderation_rights_removed', current_user, Time.now.to_i)
-  end
-
-  def lost_roles(user)
-    old_roles, new_roles = user.roles_previous_change
-    old_roles.to_a - new_roles.to_a
-  end
-
-  def gained_roles(user)
-    old_roles, new_roles = user.roles_previous_change
-    new_roles.to_a - old_roles.to_a
   end
 
   def create_followers(user)

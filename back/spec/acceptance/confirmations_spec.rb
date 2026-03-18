@@ -189,7 +189,7 @@ resource 'Confirmations' do
         do_request(confirmation: { code: user.email_confirmation_code })
         assert_status 200
 
-        expect(CGI.unescape(response_headers['Set-Cookie'])).to include("cl2_jwt=")
+        expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
         expect(user.reload.token_expiry_key).not_to be_nil # It generates a new token expiry code to invalidate old tokens after email change
       end
 
