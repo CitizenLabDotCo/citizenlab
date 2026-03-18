@@ -227,4 +227,8 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.projectParticipants',
     defaultMessage: 'Project participants',
   },
+  preview: {
+    id: 'app.containers.Admin.project.emails.preview',
+    defaultMessage: 'Preview',
+  },
 });

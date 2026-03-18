@@ -77,6 +77,11 @@ const Edit = ({ campaignType }: EditProps) => {
   const handleSubmit = async (values: CampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
     setFeedbackType('updated');
+    if (campaignType === 'custom') {
+      clHistory.push(`/admin/messaging/emails/custom/${campaign.data.id}`);
+    } else {
+      clHistory.push('/admin/messaging/emails/automated');
+    }
   };
 
   const goBack = () => {
