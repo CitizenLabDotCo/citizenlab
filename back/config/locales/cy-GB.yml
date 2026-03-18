@@ -147,43 +147,31 @@ cy:
     ideas:
       title:
         title: Teitl
-        description:
       body:
         title: Disgrifiad
-        description:
       author_id:
         title: Awdur
       topic_ids:
         title: Tagiau
-        description:
       consponsor_ids:
         title: Cyd-noddwyr
         description: Gwahoddwch gyd-noddwyr drwy'r maes isod. Bydd y cyd-noddwyr gwadd yn derbyn e-bost.
       location:
         title: Lleoliad
-        description:
       proposed_budget:
         title: Cyllideb Arfaethedig
-        description:
       budget:
         title: Cyllideb
       images:
         title: Delweddau
-        description:
       attachments:
         title: Ymlyniadau
-        description:
-      title_page:
-        description:
       body_page:
         title: Dywedwch fwy wrthym
-        description:
       uploads_page:
         title: Delweddau ac atodiadau
-        description:
       details_page:
         title: Manylion
-        description:
       other_input_field:
         title: Teipiwch eich ateb
         print_title: Os '%{other_option}', nodwch
