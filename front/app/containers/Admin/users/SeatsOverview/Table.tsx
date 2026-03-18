@@ -12,6 +12,9 @@ import {
 
 import { IUserData } from 'api/users/types';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 import Row from './Row';
 
 interface Props {
@@ -19,6 +22,8 @@ interface Props {
 }
 
 const Table = ({ users }: Props) => {
+  if (users.length === 0) return null;
+
   return (
     <TableComponent
       border={`1px solid ${colors.grey300}`}
@@ -27,8 +32,12 @@ const Table = ({ users }: Props) => {
     >
       <Thead>
         <Tr background={colors.grey50}>
-          <Th py="16px">Column</Th>
-          <Th py="16px">Column</Th>
+          <Th py="16px">
+            <FormattedMessage {...messages.name} />
+          </Th>
+          <Th py="16px">
+            <FormattedMessage {...messages.status} />
+          </Th>
         </Tr>
       </Thead>
       <Tbody>

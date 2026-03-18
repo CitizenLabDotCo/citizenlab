@@ -4,6 +4,8 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import useBilledSeats from 'api/users/useBilledSeats';
 
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -33,10 +35,16 @@ const SeatsOverview = () => {
       <Title variant="h2">
         <FormattedMessage {...messages.adminSeats} />
       </Title>
+      <Box mb="20px">
+        <SeatInfo seatType="admin" />
+      </Box>
       <Table users={billedAdmins} />
-      <Title variant="h2">
+      <Title variant="h2" mt="40px">
         <FormattedMessage {...messages.moderatorsSeats} />
       </Title>
+      <Box mb="20px">
+        <SeatInfo seatType="moderator" />
+      </Box>
       <Table users={billedModerators} />
     </Box>
   );

@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.moderatorsSeats',
     defaultMessage: 'Moderators Seats',
   },
+  name: {
+    id: 'app.containers.Admin.Users.SeatsOverview.name',
+    defaultMessage: 'Name',
+  },
+  status: {
+    id: 'app.containers.Admin.Users.SeatsOverview.status',
+    defaultMessage: 'Status',
+  },
 });
