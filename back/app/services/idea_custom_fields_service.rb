@@ -55,6 +55,10 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options.select(&:supports_xlsx_import?)
   end
 
+  def fields_to_validate_on_import
+    enabled_fields.select { |f| f.required? && !f.built_in? && f.supports_submission? }
+  end
+
   def enabled_fields
     fields = all_fields.select(&:enabled?)
     UserFieldsInFormService.add_user_fields_to_form(fields, participation_method, custom_form)
