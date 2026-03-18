@@ -1,14 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
 
-import {
-  Tr,
-  Td,
-  colors,
-  Box,
-  Button,
-  fontSizes,
-  Checkbox,
-} from '@citizenlab/cl2-component-library';
+import { Tr, Td, colors, Checkbox } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -19,12 +11,10 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
-import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../../../messages';
 
@@ -32,6 +22,7 @@ import { Action, getActions } from './actions';
 import Modals from './Modals';
 import NameAvatarEmail from './NameAvatarEmail';
 import { ModalName } from './types';
+import UserRole from './UserRole';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -43,20 +34,6 @@ interface Props {
   authUser: IUserData;
   toggleSelect: () => void;
 }
-
-const getStatusMessage = (user: IUserData): MessageDescriptor => {
-  if (user.attributes.blocked) return blockUserMessages.blocked;
-  const highestRole = user.attributes.highest_role ?? 'user';
-  const roleMessage = {
-    admin: messages.platformAdmin,
-    super_admin: messages.platformAdmin,
-    project_folder_moderator: messages.folderManager,
-    project_moderator: messages.projectManager,
-    user: messages.registeredUser,
-  };
-
-  return roleMessage[highestRole];
-};
 
 const UsersTableRow = ({
   userInRow,
@@ -74,7 +51,6 @@ const UsersTableRow = ({
 
   const userInRowHasRegistered =
     userInRow.attributes.invite_status !== 'pending';
-  const authUserIsAdmin = isAdmin({ data: authUser });
 
   const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const closeModal = () => setModalOpened(null);
@@ -149,25 +125,7 @@ const UsersTableRow = ({
           <NameAvatarEmail user={userInRow} />
         </Td>
         <Td>
-          <FormattedMessage {...getStatusMessage(userInRow)} />
-          {userInRow.attributes.highest_role !== 'user' && (
-            <Box display="flex">
-              <Button
-                buttonStyle="text"
-                icon="chevron-down"
-                iconPos="right"
-                fontSize={`${fontSizes.s}px`}
-                p="0px"
-                iconSize="18px"
-                disabled={!authUserIsAdmin}
-                onClick={() => {
-                  setModalOpened('user-assigned-items');
-                }}
-              >
-                <FormattedMessage {...messages.seeAssignedItems} />
-              </Button>
-            </Box>
-          )}
+          <UserRole user={userInRow} />
         </Td>
         <Td>
           {userInRow.attributes.last_active_at &&
