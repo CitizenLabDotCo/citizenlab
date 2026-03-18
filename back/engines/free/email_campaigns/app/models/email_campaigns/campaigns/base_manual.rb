@@ -41,8 +41,39 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
 
-    # Without this, the campaign would be sent on every event and every schedule trigger
+    # Without this, the campaign would be sent on every event and every schedule trigger.
     filter :only_manual_send
+
+    validate :scheduled_at_in_future, if: -> { scheduled_at.present? && schedule_changed? }
+
+    # Virtual getter: extract scheduled datetime from IceCube rtimes
+    def scheduled_at
+      return nil if schedule.blank?
+
+      ic_schedule.rtimes.first
+    end
+
+    # Virtual setter: convert datetime to IceCube one-time schedule
+    def scheduled_at=(datetime)
+      if datetime.present?
+        time = datetime.is_a?(String) ? Time.zone.parse(datetime) : datetime
+        ics = IceCube::Schedule.new(time)
+        ics.add_recurrence_time(time)
+        self.ic_schedule = ics
+      else
+        self.schedule = nil
+      end
+    end
+
+    def ic_schedule
+      return nil if schedule.blank?
+
+      IceCube::Schedule.from_hash(schedule)
+    end
+
+    def ic_schedule=(ics)
+      self.schedule = ics&.to_hash
+    end
 
     def mailer_class
       ManualCampaignMailer
@@ -71,6 +102,10 @@ module EmailCampaigns
       false
     end
 
+    def clear_scheduled_at!
+      update!(schedule: nil)
+    end
+
     protected
 
     def unique_campaigns_per_context?
@@ -81,6 +116,10 @@ module EmailCampaigns
 
     def only_manual_send(activity: nil, time: nil)
       !activity && !time
+    end
+
+    def scheduled_at_in_future
+      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.now
     end
   end
 end
