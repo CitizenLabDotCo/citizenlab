@@ -56,6 +56,8 @@ class IdeaCustomFieldsService
   end
 
   def fields_to_validate_on_import
+    return [] if form_has_logic?
+
     enabled_fields.select { |f| f.required? && !f.built_in? && f.supports_submission? }
   end
 
@@ -173,6 +175,10 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  def form_has_logic?
+    all_fields.any? { |field| field.logic.present? && field.logic != { 'rules' => [] } }
+  end
 
   # @param fields [Enumerable<CustomField>]
   # @return [Array<CustomField>]
