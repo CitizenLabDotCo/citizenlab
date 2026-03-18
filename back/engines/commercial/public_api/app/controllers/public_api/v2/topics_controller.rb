@@ -42,7 +42,7 @@ module PublicApi
       )
 
       if params[:deleted_at]
-        deleted_items = deleted_items.where(date_filter_where_clause('acted_at', params[:deleted_at]))
+        deleted_items = deleted_items.where(acted_at: parse_date_range(params[:deleted_at]))
       end
 
       list_items(deleted_items, V2::DeletedItemSerializer, root_key: :deleted_items)
@@ -51,13 +51,9 @@ module PublicApi
     private
 
     def apply_date_filters(scope)
-      scope = apply_single_date_filter(scope, 'created_at', params[:created_at]) if params[:created_at]
-      scope = apply_single_date_filter(scope, 'updated_at', params[:updated_at]) if params[:updated_at]
+      scope = scope.where(created_at: parse_date_range(params[:created_at])) if params[:created_at]
+      scope = scope.where(updated_at: parse_date_range(params[:updated_at])) if params[:updated_at]
       scope
-    end
-
-    def apply_single_date_filter(scope, column, filter_value)
-      scope.where(date_filter_where_clause(column, filter_value))
     end
 
     def fetch_and_combine(global_topics, input_topics)
