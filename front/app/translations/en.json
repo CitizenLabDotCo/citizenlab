@@ -1281,7 +1281,7 @@
   "app.containers.ChangeEmail.titleAddEmail": "Add your email",
   "app.containers.ChangeEmail.titleChangeEmail": "Change your email",
   "app.containers.ChangeEmail.updateSuccessful": "Your email has been successfully updated.",
-  "app.containers.ChangePassword.adminPasswordChangeWarning": "Changing your password will log you out in all other tabs and browsers and you may lose any unsaved changes.",
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": "Changing your password will sign you out in other browsers you are also signed into. You will lose any unsaved changes.",
   "app.containers.ChangePassword.currentPasswordLabel": "Current password",
   "app.containers.ChangePassword.currentPasswordRequired": "Enter your current password",
   "app.containers.ChangePassword.goHome": "Go to home",
