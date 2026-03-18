@@ -398,5 +398,6 @@ da:
     event_details: "Detaljer om begivenheden"
   errors:
     messages:
+      in_the_past: "må være i fremtiden"
       max_must_be_greater_than_min_characters: "Maksimum skal være større end minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum skal være større end eller lig med minimum."

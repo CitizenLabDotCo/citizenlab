@@ -398,5 +398,6 @@ tr:
     event_details: "Etkinlik detayları"
   errors:
     messages:
+      in_the_past: "gelecekte olmalı"
       max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum değer minimum değerden büyük veya eşit olmalıdır."
