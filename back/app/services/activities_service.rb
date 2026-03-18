@@ -16,8 +16,10 @@ class ActivitiesService
 
   private
 
-  def create_phase_started_activities(now, last_time)
-    starting_phases = Phase.published.where(start_at: last_time..now)
+  def create_phase_started_activities(now, _last_time)
+    # Selects more phases than strictly necessary to make it more defensive and help
+    # recover if previous jobs failed.
+    starting_phases = Phase.published.where(start_at: (now - 1.day)..now)
 
     # Phases with a started activity in the last 24 hours are excluded to avoid creating
     # duplicate activities (and consequently, duplicate notifications). We still allow
