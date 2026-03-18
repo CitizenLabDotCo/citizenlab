@@ -2,30 +2,36 @@
 
 class ProjectModeratorPolicy < ApplicationPolicy
   def index?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def show?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def create?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def destroy?
-    admin_or_moderator?
+    return false unless has_role_higher_than_project_moderator? # Currently, we don't allow PM to remove other PMs
+
+    active_and_can_moderate?
   end
 
   def users_search?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   private
 
-  def admin_or_moderator?
+  def active_and_can_moderate?
     return false unless user&.active?
 
     user.admin? || UserRoleService.new.can_moderate?(record, user)
+  end
+
+  def has_role_higher_than_project_moderator?
+    user&.admin? || user&.project_folder_moderator? || user&.space_moderator?
   end
 end

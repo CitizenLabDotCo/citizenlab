@@ -71,7 +71,11 @@ describe ProjectModeratorPolicy do
   context 'for a project moderator of the project' do
     let(:user) { project_moderator }
 
-    it_behaves_like 'all actions permitted'
+    it { is_expected.to permit(:index) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.to permit(:create) }
+    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.to permit(:users_search) }
   end
 
   context 'for a project moderator of another project' do

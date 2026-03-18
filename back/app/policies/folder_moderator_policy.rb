@@ -15,31 +15,32 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def index?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def show?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def create?
-    admin_or_moderator?
+    active_and_can_moderate?
   end
 
   def destroy?
-    return false unless user&.active?
-    return false if user.project_folder_moderator? # Currently, we don't allow FM to remove other FMS
+    return false unless has_role_higher_than_folder_moderator? # Currently, we don't allow FM to remove other FMS
 
-    puts "UserRoleService.new.can_moderate?(record, user): #{UserRoleService.new.can_moderate?(record, user)}"
-
-    user.admin? || UserRoleService.new.can_moderate?(record, user)
+    active_and_can_moderate?
   end
 
   private
 
-  def admin_or_moderator?
+  def active_and_can_moderate?
     return false unless user&.active?
 
     user.admin? || UserRoleService.new.can_moderate?(record, user)
+  end
+
+  def has_role_higher_than_folder_moderator?
+    user&.admin? || user&.space_moderator?
   end
 end
