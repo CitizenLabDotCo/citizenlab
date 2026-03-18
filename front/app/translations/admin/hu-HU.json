@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Because you selected \"Full anonymity\" in \"User data collection\", the answers to the demographic questions asked before participation WILL NOT BE STORED IN THE RESULTS. The answers will only be used to update the user's profile, but this profile is not linked to the response. To collect demographic data and store it in the results please choose another option under \"User data collection\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Choosing how demographic questions are asked to participants is not applicable as you have disabled authentication and selected full anonymity",
   "app.components.admin.AddByEmail.invite": "Meghív",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Írd be az e-mail címedet a moderátor meghívásához...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Írja be az e-mail címet a vezető meghívásához...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Tartalom hozzáadásához a harmonikán belül nyisd meg a harmonikát a \">\" szimbólum megnyomásával, majd húzd át a widgeteket a belsejébe.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No question selected. Please select a question first.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "No answer",
