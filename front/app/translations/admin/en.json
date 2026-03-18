@@ -1708,7 +1708,6 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients": "≈ {count} recipients",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": "Cancel schedule",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit": "Edit",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editEmail": "Edit email",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients": "Edit recipients",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.everyone": "Everyone",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.now": "Now",
