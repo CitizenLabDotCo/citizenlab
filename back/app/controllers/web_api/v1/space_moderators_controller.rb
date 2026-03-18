@@ -1,14 +1,9 @@
 class WebApi::V1::SpaceModeratorsController < ApplicationController
+  before_action :set_space
   before_action :do_authorize
   before_action :set_moderator, only: %i[show destroy]
 
   skip_after_action :verify_policy_scoped, only: [:index]
-
-  Moderator = Struct.new(:space_id) do
-    def self.policy_class
-      SpaceModeratorPolicy
-    end
-  end
 
   def index
     @moderators = User.space_moderator(params[:space_id])
@@ -24,11 +19,17 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def destroy; end
 
+  private
+
   def do_authorize
-    authorize Moderator.new(params[:space_id])
+    authorize @space, policy_class: SpaceModeratorPolicy
   end
 
   def set_moderator
     @moderator = User.find params[:id]
+  end
+
+  def set_space
+    @space = Space.find(params[:space_id])
   end
 end

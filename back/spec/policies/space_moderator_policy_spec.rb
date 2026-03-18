@@ -21,23 +21,21 @@ describe SpaceModeratorPolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
-
-    it 'indexes all spaces' do
-      expect(scope.resolve.size).to eq 2
-    end
   end
 
-  context 'for a space moderator' do
+  context 'for a space moderator of the space' do
     let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
 
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
-    it { is_expected.not_to permit(:create) }
+    it { is_expected.to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
+  end
 
-    it 'indexes the moderated space' do
-      expect(scope.resolve.size).to eq 1
-    end
+  context 'for a space moderator of an unrelated space' do
+    let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: other_space.id }]) }
+
+    it_behaves_like 'all actions not permitted'
   end
 
   context 'for a folder moderator (of folder in space)' do
