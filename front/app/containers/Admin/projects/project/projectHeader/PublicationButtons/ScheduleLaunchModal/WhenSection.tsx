@@ -5,8 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
-import TimeInput from 'components/admin/TimeInput';
-
+import TimeInput from 'containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
