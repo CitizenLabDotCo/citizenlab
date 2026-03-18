@@ -93,8 +93,7 @@ module Insights
     end
 
     def phase_has_run_more_than_7_days?
-      now = AppConfiguration.timezone.now
-      effective_end = [@phase.end_at, now].compact.min
+      effective_end = [@phase.end_at, Time.now].compact.min
       (effective_end - @phase.start_at) / 1.day >= 7
     end
 
