@@ -82,6 +82,55 @@ describe SideFxProjectService do
         )
     end
 
+    context 'when publication_email_enabled is set to false' do
+      it 'creates a disabled project-scoped ProjectPublished campaign' do
+        project.admin_publication.update!(publication_status: 'draft')
+        project.publication_email_enabled = false
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, user)
+        project.save!
+        service.after_update(project, user)
+
+        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)
+        expect(campaign).to be_present
+        expect(campaign.enabled).to be false
+      end
+
+      it 'updates an existing project-scoped campaign to disabled' do
+        create(:project_published_campaign, context: project, enabled: true)
+        project.publication_email_enabled = false
+        service.before_update(project, user)
+        project.save!
+        service.after_update(project, user)
+
+        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)
+        expect(campaign).to be_present
+        expect(campaign.enabled).to be false
+      end
+    end
+
+    context 'when publication_email_enabled is set to true' do
+      it 'destroys any disabled project-scoped ProjectPublished campaign' do
+        create(:project_published_campaign, context: project, enabled: false)
+        project.publication_email_enabled = true
+        service.before_update(project, user)
+        project.save!
+        service.after_update(project, user)
+
+        expect(EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)).to be_nil
+      end
+    end
+
+    context 'when publication_email_enabled is nil (not set)' do
+      it 'does not modify any campaigns' do
+        service.before_update(project, user)
+        project.save!
+
+        expect { service.after_update(project, user) }
+          .not_to change { EmailCampaigns::Campaigns::ProjectPublished.count }
+      end
+    end
+
     it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
 

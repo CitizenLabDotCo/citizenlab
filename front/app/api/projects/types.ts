@@ -97,6 +97,8 @@ export interface IProjectAttributes {
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
+  publication_email_enabled: boolean;
+  publication_email_available: boolean;
 }
 
 export type ActionDescriptors = {
@@ -209,4 +211,5 @@ export interface IUpdatedProjectProperties {
   live_auto_input_topics_enabled?: boolean;
   space_id?: string | null;
   scheduled_at?: string | null;
+  publication_email_enabled?: boolean;
 }

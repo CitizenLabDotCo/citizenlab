@@ -44,6 +44,7 @@ class Project < ApplicationRecord
   include PgSearch::Model
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
+  attr_accessor :publication_email_enabled
 
   VISIBLE_TOS = %w[public groups admins].freeze
 

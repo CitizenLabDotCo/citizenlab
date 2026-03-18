@@ -54,6 +54,8 @@ class SideFxProjectService
   end
 
   def after_update(project, user)
+    sync_publication_email_campaign(project) unless project.publication_email_enabled.nil?
+
     change = project.saved_changes
     if project.admin_publication.publication_status != @publication_status_was
       change['publication_status'] = [@publication_status_was, project.admin_publication.publication_status]
@@ -126,6 +128,16 @@ class SideFxProjectService
 
   def after_publish(project, user)
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
+  end
+
+  def sync_publication_email_campaign(project)
+    if project.publication_email_enabled == false
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.enabled = false
+      campaign.save!
+    else
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    end
   end
 
   def after_folder_changed(project, current_user)

@@ -61,4 +61,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow',
     defaultMessage: 'Publish now',
   },
+  emailNotificationsDisabledGlobally: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally',
+    defaultMessage:
+      'Email notifications for project launches have been disabled platform-wide.',
+  },
 });

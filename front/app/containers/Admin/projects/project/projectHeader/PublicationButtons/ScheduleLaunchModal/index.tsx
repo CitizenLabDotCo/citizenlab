@@ -22,15 +22,9 @@ interface Props {
   opened: boolean;
   project: IProjectData;
   onClose: () => void;
-  onPublishNow: () => void;
 }
 
-const ScheduleLaunchModal = ({
-  opened,
-  project,
-  onClose,
-  onPublishNow,
-}: Props) => {
+const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateProject, isLoading } = useUpdateProject();
 
@@ -42,6 +36,11 @@ const ScheduleLaunchModal = ({
   const [mode, setMode] = useState<Mode>('schedule');
   const [selectedDate, setSelectedDate] = useState<Date>(defaultDate);
   const [selectedTime, setSelectedTime] = useState<Date>(defaultDate);
+  const [sendEmail, setSendEmail] = useState(
+    project.attributes.publication_email_enabled
+  );
+
+  const emailAvailable = project.attributes.publication_email_available;
 
   const handleSaveSchedule = () => {
     const scheduledDate = new Date(selectedDate);
@@ -53,6 +52,22 @@ const ScheduleLaunchModal = ({
       {
         projectId: project.id,
         scheduled_at: scheduledDate.toISOString(),
+        publication_email_enabled: sendEmail,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      }
+    );
+  };
+
+  const handlePublishNow = () => {
+    updateProject(
+      {
+        projectId: project.id,
+        publication_email_enabled: sendEmail,
+        admin_publication_attributes: { publication_status: 'published' },
       },
       {
         onSuccess: () => {
@@ -106,7 +121,7 @@ const ScheduleLaunchModal = ({
               <Button
                 buttonStyle="admin-dark"
                 icon="send"
-                onClick={onPublishNow}
+                onClick={handlePublishNow}
                 processing={isLoading}
               >
                 {formatMessage(messages.publishNow)}
@@ -129,7 +144,11 @@ const ScheduleLaunchModal = ({
         )}
 
         <VisibilitySection project={project} />
-        <EmailNotificationsSection projectId={project.id} />
+        <EmailNotificationsSection
+          checked={sendEmail}
+          onChange={setSendEmail}
+          disabled={!emailAvailable}
+        />
       </Box>
     </Modal>
   );

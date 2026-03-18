@@ -91,10 +91,6 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
           opened={scheduleModalOpen}
           project={project}
           onClose={() => setScheduleModalOpen(false)}
-          onPublishNow={() => {
-            publishProject();
-            setScheduleModalOpen(false);
-          }}
         />
       )}
     </Box>
