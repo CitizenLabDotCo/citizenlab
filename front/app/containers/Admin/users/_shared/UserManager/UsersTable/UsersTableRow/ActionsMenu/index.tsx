@@ -14,8 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 
-import messages from '../../../../../messages';
-
+import messages from './messages';
 import Modals from './Modals';
 import { ModalName, Action } from './types';
 

@@ -29,14 +29,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
-  setAsAdmin: {
-    id: 'app.containers.Admin.Users.setAsAdmin',
-    defaultMessage: 'Set as admin',
-  },
-  setAsNormalUser: {
-    id: 'app.containers.Admin.Users.setAsNormalUser',
-    defaultMessage: 'Set as normal user',
-  },
   role: {
     id: 'app.containers.Admin.Users.role',
     defaultMessage: 'Role',
@@ -49,14 +41,6 @@ export default defineMessages({
   options: {
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
-  },
-  seeProfile: {
-    id: 'app.containers.Admin.Users.seeProfile',
-    defaultMessage: 'See profile',
-  },
-  deleteUser: {
-    id: 'app.containers.Admin.Users.deleteUser',
-    defaultMessage: 'Delete user',
   },
   userDeletionConfirmation: {
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
@@ -71,11 +55,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionFailed',
     defaultMessage:
       'An error occured while deleting this user, please try again.',
-  },
-  youCantDeleteYourself: {
-    id: 'app.containers.Admin.Users.youCantDeleteYourself',
-    defaultMessage:
-      'You cannot delete your own account via the user admin page',
   },
   userExportFileName: {
     id: 'app.containers.Admin.Users.userExportFileName',
@@ -270,10 +249,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.removeModeratorFrom',
     defaultMessage:
       'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
-  },
-  assignAsManager: {
-    id: 'app.containers.Admin.Users.assignAsManager',
-    defaultMessage: 'Assign as manager',
   },
   folder: {
     id: 'app.containers.Admin.Users.folder',
