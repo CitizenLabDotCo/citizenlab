@@ -795,6 +795,7 @@
   "app.containers.Admin.Users.SeatsOverview.adminSeats": "Admin Seats",
   "app.containers.Admin.Users.SeatsOverview.moderatorsSeats": "Moderators Seats",
   "app.containers.Admin.Users.SeatsOverview.name": "Name",
+  "app.containers.Admin.Users.SeatsOverview.options": "Options",
   "app.containers.Admin.Users.SeatsOverview.role": "Role",
   "app.containers.Admin.Users.SeatsOverview.status": "Status",
   "app.containers.Admin.Users.SeatsOverview.title": "Seats Overview",
