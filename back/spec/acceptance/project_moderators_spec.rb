@@ -154,8 +154,9 @@ resource 'Moderators' do
       example 'Delete the moderator role of a user for a project' do
         n_roles_before = other_moderators.first.reload.roles.size
         do_request
-        expect(response_status).to eq 200
-        expect(other_moderators.first.reload.roles.size).to eq(n_roles_before - 1)
+
+        expect(response_status).to eq 401
+        expect(other_moderators.first.reload.roles.size).to eq(n_roles_before)
       end
     end
   end
