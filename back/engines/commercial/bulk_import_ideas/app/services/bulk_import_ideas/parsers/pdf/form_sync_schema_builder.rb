@@ -115,7 +115,7 @@ module BulkImportIdeas::Parsers::Pdf
                      'Return an empty string if the question was left unanswered.'
       }
       required << question_key
-      @key_mapping[question_key] = { type: :field, field_key: field.key, field_id: field.id }
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
     end
 
     def add_selection_property(field, question_key, question_num, properties, required)
@@ -132,7 +132,7 @@ module BulkImportIdeas::Parsers::Pdf
         }
       }
       required << question_key
-      @key_mapping[question_key] = { type: :field, field_key: field.key, field_id: field.id }
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
     end
 
     def add_scale_property(field, question_key, question_num, properties, required)
@@ -148,7 +148,7 @@ module BulkImportIdeas::Parsers::Pdf
         enum: scale_values + ['', NOT_FOUND]
       }
       required << question_key
-      @key_mapping[question_key] = { type: :field, field_key: field.key, field_id: field.id }
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
     end
 
     def add_ranking_property(field, question_key, question_num, properties, required)
@@ -166,7 +166,7 @@ module BulkImportIdeas::Parsers::Pdf
         }
       }
       required << question_key
-      @key_mapping[question_key] = { type: :field, field_key: field.key, field_id: field.id }
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
     end
 
     def add_matrix_property(field, question_key, question_num, properties, required)
@@ -207,7 +207,6 @@ module BulkImportIdeas::Parsers::Pdf
       @key_mapping[question_key] = {
         type: :matrix,
         field_key: field.key,
-        field_id: field.id,
         statements: statement_mapping
       }
     end
@@ -221,7 +220,7 @@ module BulkImportIdeas::Parsers::Pdf
         enum: ['checked', '', NOT_FOUND]
       }
       required << question_key
-      @key_mapping[question_key] = { type: :field, field_key: field.key, field_id: field.id }
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
     end
 
     def add_unsupported_property(_field, question_key, question_num, properties, required)

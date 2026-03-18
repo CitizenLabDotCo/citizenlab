@@ -247,14 +247,6 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
         'question_3.2' => 'ride_bicycles_more_often'
       })
     end
-
-    it 'includes field_id for traceability' do
-      mapping = builder.key_mapping
-
-      expect(mapping['question_1'][:field_id]).to eq(text_field.id)
-      expect(mapping['question_2'][:field_id]).to eq(select_field.id)
-      expect(mapping['question_3'][:field_id]).to eq(matrix_field.id)
-    end
   end
 
   describe 'personal data fields' do
