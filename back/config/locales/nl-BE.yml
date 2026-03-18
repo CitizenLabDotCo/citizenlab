@@ -398,5 +398,6 @@ nl-BE:
     event_details: "Details evenement"
   errors:
     messages:
+      in_the_past: "moet in de toekomst liggen"
       max_must_be_greater_than_min_characters: "Het maximum moet groter zijn dan het minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Het maximum moet groter zijn dan of gelijk aan het minimum."
