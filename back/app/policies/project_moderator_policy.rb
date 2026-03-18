@@ -14,7 +14,7 @@ class ProjectModeratorPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless has_role_higher_than_project_moderator? # Currently, we don't allow PM to remove other PMs
+    return false unless role_higher_than_folder_moderator? # Currently, we don't allow PM to remove other PMs
 
     active_and_can_moderate?
   end
@@ -31,7 +31,7 @@ class ProjectModeratorPolicy < ApplicationPolicy
     user.admin? || UserRoleService.new.can_moderate?(record, user)
   end
 
-  def has_role_higher_than_project_moderator?
+  def role_higher_than_folder_moderator?
     user&.admin? || user&.project_folder_moderator? || user&.space_moderator?
   end
 end

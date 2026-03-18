@@ -27,7 +27,7 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless has_role_higher_than_folder_moderator? # Currently, we don't allow FM to remove other FMS
+    return false unless role_higher_than_folder_moderator? # Currently, we don't allow FM to remove other FMS
 
     active_and_can_moderate?
   end
@@ -40,7 +40,7 @@ class FolderModeratorPolicy < ApplicationPolicy
     user.admin? || UserRoleService.new.can_moderate?(record, user)
   end
 
-  def has_role_higher_than_folder_moderator?
+  def role_higher_than_folder_moderator?
     user&.admin? || user&.space_moderator?
   end
 end
