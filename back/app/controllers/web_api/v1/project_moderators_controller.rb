@@ -21,7 +21,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
 
   # insert
   def create
-    @user = ::User.find create_moderator_params[:user_id]
+    @user = find_user_by_params
     @user.add_role 'project_moderator', project_id: params[:project_id]
     if @user.save
       ::SideFxUserService.new.after_update(@user, current_user)
@@ -57,6 +57,8 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     )
   end
 
+  private
+
   def set_moderator
     @moderator = User.find params[:id]
   end
@@ -66,7 +68,17 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-    params.require(:moderator).permit(:user_id)
+    params.require(:moderator).permit(:user_id, :user_email)
+  end
+
+  def find_user_by_params
+    if create_moderator_params[:user_id].present?
+      ::User.find(create_moderator_params[:user_id])
+    elsif create_moderator_params[:user_email].present?
+      ::User.find_by!(email: create_moderator_params[:user_email])
+    else
+      raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
+    end
   end
 
   def do_authorize
