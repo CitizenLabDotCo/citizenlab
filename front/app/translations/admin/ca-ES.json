@@ -785,7 +785,7 @@
   "app.containers.Admin.Users.assign": "Assignar",
   "app.containers.Admin.Users.assignedItems": "Elements assignats per a {name}",
   "app.containers.Admin.Users.buyOneAditionalSeat": "Compra un seient addicional",
-  "app.containers.Admin.Users.changeUserRights": "Change user rights",
+  "app.containers.Admin.Users.changeUserRights": "Canviar els drets de l'usuari",
   "app.containers.Admin.Users.confirm": "Confirmeu",
   "app.containers.Admin.Users.confirmAdminQuestion": "Esteu segur que voleu donar {name} drets d'administrador de la plataforma?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Esteu segur que voleu definir {name} com a usuari normal?",
