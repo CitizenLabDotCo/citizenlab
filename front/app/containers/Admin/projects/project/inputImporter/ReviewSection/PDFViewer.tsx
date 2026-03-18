@@ -61,7 +61,11 @@ const PDFViewer = ({ file, ideaId }: Props) => {
         background={colors.grey100}
         p="12px"
       >
-        <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
+        <Document
+          key={ideaId}
+          file={fileWithHeaders}
+          onLoadSuccess={handleLoadSuccess}
+        >
           {pagesInDocument &&
             [...Array(pagesInDocument)].map((_, pageIndex) => (
               <FullWidthPage key={pageIndex}>
