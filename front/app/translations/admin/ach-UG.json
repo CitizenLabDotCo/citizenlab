@@ -145,8 +145,6 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "crwdns6529901:0crwdne6529901:0",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "crwdns6529903:0crwdne6529903:0",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "crwdns6529905:0crwdne6529905:0",
-  "app.components.admin.AddByEmail.invite": "crwdns6529907:0crwdne6529907:0",
-  "app.components.admin.AddByEmail.typeEmailToInviteManager": "crwdns6539253:0crwdne6539253:0",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "crwdns6529911:0crwdne6529911:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "crwdns6529913:0crwdne6529913:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "crwdns6529915:0crwdne6529915:0",
