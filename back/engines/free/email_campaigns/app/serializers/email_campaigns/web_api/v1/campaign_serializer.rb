@@ -58,11 +58,11 @@ module EmailCampaigns
     end
 
     attribute :schedule, if: proc { |object|
-      schedulable? object
+      schedulable?(object) && !object.manual?
     }
 
     attribute :schedule_multiloc, if: proc { |object|
-      schedulable? object
+      schedulable?(object) && !object.manual?
     } do |object|
       AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, result|
         I18n.with_locale(locale) do
@@ -70,6 +70,10 @@ module EmailCampaigns
         end
       end
     end
+
+    attribute :scheduled_at, if: proc { |object|
+      object.manual?
+    }
 
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
