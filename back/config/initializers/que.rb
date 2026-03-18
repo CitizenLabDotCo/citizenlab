@@ -8,15 +8,6 @@ Que::Job.tap do |config|
   config.maximum_retry_count = 9
 end
 
-# Rails 7.2 removed `ActiveRecord::Base.clear_active_connections!` but Que 2.3.0 still
-# calls it during job cleanup. This shim delegates to the new API so that jobs do not
-# appear as failed after their work has already completed successfully.
-unless ActiveRecord::Base.respond_to?(:clear_active_connections!)
-  ActiveRecord::Base.define_singleton_method(:clear_active_connections!) do
-    ActiveRecord::Base.connection_handler.clear_active_connections!
-  end
-end
-
 # Rails 7.2 introduced transaction-aware job enqueueing, which requires queue adapters
 # to implement the `enqueue_after_transaction_commit?` method. The Que gem has not yet
 # implemented this method, causing an error.
