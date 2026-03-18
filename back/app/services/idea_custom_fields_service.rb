@@ -56,6 +56,8 @@ class IdeaCustomFieldsService
   end
 
   def fields_to_validate_on_import
+    # Currently we do not handle forms with logic, since we cannot validate required
+    # fields as the logic may hide required fields based on previous answers.
     return [] if form_has_logic?
 
     enabled_fields.select { |f| f.required? && !f.built_in? && f.supports_submission? }
