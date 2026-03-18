@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+  include EnforceUserSso
+
   TOKEN_LIFETIME = 1.day
   before_action :sso_enforced?, only: %i[create user_token_unconfirmed]
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
@@ -50,12 +52,8 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     params.require(:auth).permit id_param
   end
 
-  def sso_enforced?
-    email = params.dig(:auth, :email)
-    sso_enforced_message = AuthenticationService.sso_enforced_for_email(email)
-    return false unless sso_enforced_message
-
-    render json: { errors: { email: [{ error: 'sso_enforced_for_domain', message: sso_enforced_message }] } }, status: :unprocessable_entity
+  def email_param
+    params.dig(:auth, :email)
   end
 
   def authenticate_user_token_unconfirmed

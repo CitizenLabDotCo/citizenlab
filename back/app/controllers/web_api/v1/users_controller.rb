@@ -2,7 +2,9 @@
 
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
+  include EnforceUserSso
 
+  before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
@@ -121,11 +123,9 @@ class WebApi::V1::UsersController < ApplicationController
   # To validate an email without creating a user and return which action to go to next
   def check
     authorize :user, :check?
-    email = params[:user][:email]
+    email = email_param
 
     if User::EMAIL_REGEX.match?(email)
-      return if render_sso_enforced_error(email)
-
       @user = User.find_by_cimail(email)
       if @user.nil?
         render json: raw_json({ action: 'terms' })
@@ -167,11 +167,11 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def create
-    email = params.dig(:user, :email)
-    if render_sso_enforced_error(email)
-      skip_authorization
-      return
-    end
+    # email = params.dig(:user, :email)
+    # if render_sso_enforced_error(email)
+    #   skip_authorization
+    #   return
+    # end
 
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
@@ -292,7 +292,7 @@ class WebApi::V1::UsersController < ApplicationController
   # This endpoint is only used when user_confirmation is disabled.
   def update_email_unconfirmed
     authorize(current_user)
-    if current_user.update(email: params[:user][:email])
+    if current_user.update(email: email_param)
       render json: WebApi::V1::UserSerializer.new(
         current_user,
         params: jsonapi_serializer_params
@@ -303,14 +303,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   private
-
-  def render_sso_enforced_error(email)
-    sso_enforced_message = AuthenticationService.sso_enforced_for_email(email)
-    return false unless sso_enforced_message
-
-    render json: { errors: { email: [{ error: 'sso_enforced_for_domain', message: sso_enforced_message }] } }, status: :unprocessable_entity
-    true
-  end
 
   def set_user
     @user = User.find params[:id]
