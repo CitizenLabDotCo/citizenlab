@@ -19,7 +19,6 @@ describe ProjectModeratorPolicy do
   let(:project_moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
   let(:other_project_moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: other_project.id }]) }
   let(:resident) { create(:user) }
-  let(:target_moderator) { create(:user) }
 
   let(:record) { project }
 

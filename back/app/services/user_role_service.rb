@@ -12,7 +12,9 @@ class UserRoleService
     when 'Reaction'
       can_moderate? object.reactable, user
     when 'ProjectFolders::Folder'
-      user.admin? || (object.id && user.project_folder_moderator?(object.id))
+      user.admin? ||
+        (object.id && user.project_folder_moderator?(object.id)) ||
+        (object.space_id && user.space_moderator?(object.space_id))
     when 'Project'
       can_moderate_project? object, user
     when 'Phase'

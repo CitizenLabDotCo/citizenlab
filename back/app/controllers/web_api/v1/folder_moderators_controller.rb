@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
 class WebApi::V1::FolderModeratorsController < ApplicationController
+  before_action :set_folder
   before_action :do_authorize
   before_action :set_moderator, only: %i[show destroy]
 
   skip_after_action :verify_policy_scoped, only: [:index]
-
-  Moderator = Struct.new(:project_folder_id) do
-    def self.policy_class
-      FolderModeratorPolicy
-    end
-  end
 
   def index
     @moderators = User.project_folder_moderator(params[:project_folder_id])
@@ -56,6 +51,10 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     @moderator = User.find params[:id]
   end
 
+  def set_folder
+    @folder = ProjectFolders::Folder.find(params[:project_folder_id])
+  end
+
   def create_moderator_params
     params.require(:project_folder_moderator).permit(
       :user_id,
@@ -74,6 +73,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   def do_authorize
-    authorize Moderator.new(params[:project_folder_id])
+    authorize @folder, policy_class: FolderModeratorPolicy
   end
 end

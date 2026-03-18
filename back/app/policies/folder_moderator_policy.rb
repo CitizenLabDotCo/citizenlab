@@ -23,43 +23,23 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def create?
-    return false unless user&.active?
-
-    space_id =
-      if record.respond_to?(:space_id)
-        record.space_id
-      elsif record.respond_to?(:project_folder_id)
-        ProjectFolders::Folder.find_by(id: record.project_folder_id)&.space_id
-      end
-
-    user.admin? || user.space_moderator?(space_id)
+    admin_or_moderator?
   end
 
   def destroy?
-    create?
+    return false unless user&.active?
+    return false if user.project_folder_moderator? # Currently, we don't allow FM to remove other FMS
+
+    puts "UserRoleService.new.can_moderate?(record, user): #{UserRoleService.new.can_moderate?(record, user)}"
+
+    user.admin? || UserRoleService.new.can_moderate?(record, user)
   end
 
   private
 
   def admin_or_moderator?
-    # In the case of moderator, the user must be moderator of the folder
-    # referenced (by project_folder_id) in the Struct passed in.
-    return unless user&.active?
+    return false unless user&.active?
 
-    folder_id = if record.respond_to?(:folder)
-      record.folder&.id
-    elsif record.respond_to?(:project_folder_id)
-      record.project_folder_id
-    end
-
-    space_id = if record.respond_to?(:space_id)
-      record.space_id
-    elsif record.respond_to?(:folder) && record.folder.respond_to?(:space_id)
-      record.folder.space_id
-    end
-
-    user.admin? ||
-      user.project_folder_moderator?(folder_id) ||
-      user.space_moderator?(space_id)
+    user.admin? || UserRoleService.new.can_moderate?(record, user)
   end
 end
