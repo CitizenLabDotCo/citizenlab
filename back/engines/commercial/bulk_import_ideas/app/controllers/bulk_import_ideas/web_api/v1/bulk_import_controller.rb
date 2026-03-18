@@ -65,7 +65,7 @@ module BulkImportIdeas
       not_approved = 0
       side_fx_idea_service = SideFxIdeaService.new
       participation_context = @phase.pmethod.transitive? ? @project : @phase
-      custom_form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+      custom_form = participation_context.custom_form
       required_custom_fields = custom_form.custom_fields
         .select { |f| f.enabled? && f.required? && !f.built_in? && f.supports_submission? }
 
