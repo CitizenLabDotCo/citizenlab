@@ -11,9 +11,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from '../../../../../messages';
-
-import messages2 from './messages';
+import messages from './messages';
 import UserAssignedItems from './UserAssignedItems';
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
@@ -57,7 +55,7 @@ const UserRole = ({ user }: Props) => {
                 setModalOpened(true);
               }}
             >
-              <FormattedMessage {...messages2.seeAssignedItems} />
+              <FormattedMessage {...messages.seeAssignedItems} />
             </Button>
           </Box>
         )}

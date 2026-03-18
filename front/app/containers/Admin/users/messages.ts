@@ -37,22 +37,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.setAsNormalUser',
     defaultMessage: 'Set as normal user',
   },
-  registeredUser: {
-    id: 'app.containers.Admin.Users.registeredUser',
-    defaultMessage: 'Registered user',
-  },
-  platformAdmin: {
-    id: 'app.containers.Admin.Users.platformAdmin',
-    defaultMessage: 'Platform admin',
-  },
-  folderManager: {
-    id: 'app.containers.Admin.Users.folderManager',
-    defaultMessage: 'Folder manager',
-  },
-  projectManager: {
-    id: 'app.containers.Admin.Users.projectManager',
-    defaultMessage: 'Project manager',
-  },
   role: {
     id: 'app.containers.Admin.Users.role',
     defaultMessage: 'Role',
