@@ -401,5 +401,6 @@ ga:
     event_details: "Sonraí an imeachta"
   errors:
     messages:
+      in_the_past: "caithfidh sé a bheith sa todhchaí"
       max_must_be_greater_than_min_characters: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid."
       max_must_be_greater_than_or_equal_to_min_select_count: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis."

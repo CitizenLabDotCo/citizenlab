@@ -398,5 +398,6 @@ sv:
     event_details: "Detaljer om evenemanget"
   errors:
     messages:
+      in_the_past: "måste ligga i framtiden"
       max_must_be_greater_than_min_characters: "Maxvärdet måste vara större än minvärdet."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maxvärdet måste vara större än eller lika med minimivärdet."
