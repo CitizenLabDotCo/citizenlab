@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.status',
     defaultMessage: 'Status',
   },
+  role: {
+    id: 'app.containers.Admin.Users.SeatsOverview.role',
+    defaultMessage: 'Role',
+  },
 });

@@ -36,6 +36,9 @@ const Table = ({ users }: Props) => {
             <FormattedMessage {...messages.name} />
           </Th>
           <Th py="16px">
+            <FormattedMessage {...messages.role} />
+          </Th>
+          <Th py="16px">
             <FormattedMessage {...messages.status} />
           </Th>
         </Tr>

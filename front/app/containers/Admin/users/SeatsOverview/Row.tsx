@@ -5,6 +5,7 @@ import { Tr, Td } from '@citizenlab/cl2-component-library';
 import { IUserData } from 'api/users/types';
 
 import NameAvatarEmail from '../_shared/UserManager/UsersTable/UsersTableRow/NameAvatarEmail';
+import UserRole from '../_shared/UserManager/UsersTable/UsersTableRow/UserRole';
 
 interface Props {
   user: IUserData;
@@ -15,6 +16,9 @@ const Row = ({ user }: Props) => {
     <Tr>
       <Td>
         <NameAvatarEmail user={user} />
+      </Td>
+      <Td>
+        <UserRole user={user} />
       </Td>
       <Td>Value 2</Td>
     </Tr>
