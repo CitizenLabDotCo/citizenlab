@@ -179,10 +179,18 @@ resource 'Confirmations' do
 
       example 'sets email_confirmation_code_reset_count to 0 upon successful confirmation' do
         user.update(email_confirmation_code_reset_count: 3)
-        do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+        do_request(confirmation: { code: user.email_confirmation_code })
         assert_status 200
         user.reload
         expect(user.email_confirmation_code_reset_count).to eq 0
+      end
+
+      example 'resets the user JWT upon successful confirmation' do
+        do_request(confirmation: { code: user.email_confirmation_code })
+        assert_status 200
+
+        expect(CGI.unescape(response_headers['Set-Cookie'])).to include("cl2_jwt=")
+        expect(user.reload.token_expiry_key).not_to be_nil # It generates a new token expiry code to invalidate old tokens after email change
       end
 
       example 'returns an code.blank error code when no code is passed' do

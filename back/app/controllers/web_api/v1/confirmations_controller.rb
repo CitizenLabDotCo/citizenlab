@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ConfirmationsController < ApplicationController
-  include UpdateUserToken
+  include UserCookies
 
   skip_before_action :authenticate_user, only: %i[confirm_code_unauthenticated]
   skip_after_action :verify_authorized

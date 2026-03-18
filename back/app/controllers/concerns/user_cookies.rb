@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UpdateUserToken
+module UserCookies
   extend ActiveSupport::Concern
 
   private
@@ -21,7 +21,9 @@ module UpdateUserToken
 
     cookies[:cl2_jwt] = {
       value: AuthToken::AuthToken.new(payload: payload).token,
-      expires: Time.at(current_payload['exp'])
+      expires: Time.at(current_payload['exp']),
+      secure: false, # Unfortunately, we can't use secure cookies in production yet
+      same_site: 'Lax' # Strict won't work because of SSO
     }
   end
 end

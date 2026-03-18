@@ -2,7 +2,7 @@
 
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
-  include UpdateUserToken
+  include UserCookies
 
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
