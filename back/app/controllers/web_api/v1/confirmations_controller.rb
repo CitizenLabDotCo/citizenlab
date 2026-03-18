@@ -40,7 +40,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
 
-      reset_token(current_user)
+      reset_jwt_cookie
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
