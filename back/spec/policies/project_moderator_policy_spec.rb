@@ -11,15 +11,6 @@ describe ProjectModeratorPolicy do
   let!(:folder) { create(:project_folder, projects: [project]) }
   let!(:unrelated_folder) { create(:project_folder) }
 
-  let(:admin) { create(:admin) }
-  let(:space_moderator) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
-  let(:unrelated_space_moderator) { create(:user, roles: [{ type: 'space_moderator', space_id: other_space.id }]) }
-  let(:folder_moderator) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]) }
-  let(:unrelated_folder_moderator) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: unrelated_folder.id }]) }
-  let(:project_moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
-  let(:other_project_moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: other_project.id }]) }
-  let(:resident) { create(:user) }
-
   let(:record) { project }
 
   shared_examples 'all actions not permitted' do
@@ -39,37 +30,37 @@ describe ProjectModeratorPolicy do
   end
 
   context 'for an admin' do
-    let(:user) { admin }
+    let(:user) { create(:admin) }
 
     it_behaves_like 'all actions permitted'
   end
 
   context "for a space moderator of the project's space" do
-    let(:user) { space_moderator }
+    let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
 
     it_behaves_like 'all actions permitted'
   end
 
   context 'for a space moderator of an unrelated space' do
-    let(:user) { unrelated_space_moderator }
+    let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: other_space.id }]) }
 
     it_behaves_like 'all actions not permitted'
   end
 
   context "for a folder moderator of the project's folder" do
-    let(:user) { folder_moderator }
+    let(:user) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]) }
 
     it_behaves_like 'all actions permitted'
   end
 
   context 'for a folder moderator of an unrelated folder' do
-    let(:user) { unrelated_folder_moderator }
+    let(:user) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: unrelated_folder.id }]) }
 
     it_behaves_like 'all actions not permitted'
   end
 
   context 'for a project moderator of the project' do
-    let(:user) { project_moderator }
+    let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
 
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
@@ -79,13 +70,13 @@ describe ProjectModeratorPolicy do
   end
 
   context 'for a project moderator of another project' do
-    let(:user) { other_project_moderator }
+    let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: other_project.id }]) }
 
     it_behaves_like 'all actions not permitted'
   end
 
   context 'for a resident' do
-    let(:user) { resident }
+    let(:user) { create(:user) }
 
     it_behaves_like 'all actions not permitted'
   end
