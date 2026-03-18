@@ -146,7 +146,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Because you selected \"Full anonymity\" in \"User data collection\", the answers to the demographic questions asked before participation WILL NOT BE STORED IN THE RESULTS. The answers will only be used to update the user's profile, but this profile is not linked to the response. To collect demographic data and store it in the results please choose another option under \"User data collection\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Choosing how demographic questions are asked to participants is not applicable as you have disabled authentication and selected full anonymity",
   "app.components.admin.AddByEmail.invite": "Πρόσκληση",
-  "app.components.admin.AddByEmail.inviteModeratorByEmail": "Πληκτρολογήστε email για να προσκαλέσετε τον συντονιστή...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Πληκτρολογήστε email για να προσκαλέσετε τον διευθυντή...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Για να προσθέσετε περιεχόμενο μέσα στο ακορντεόν, ανοίξτε το ακορντεόν πατώντας το σύμβολο \">\" και, στη συνέχεια, σύρετε οποιοδήποτε widget μέσα σε αυτό.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Δεν έχει επιλεγεί καμία ερώτηση. Παρακαλώ επιλέξτε πρώτα μια ερώτηση.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "No answer",
