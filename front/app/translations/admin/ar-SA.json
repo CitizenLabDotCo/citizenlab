@@ -145,8 +145,6 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "لا يدعم هذا الإجراء طرح أسئلة ديموغرافية في الصفحة الأخيرة من النموذج.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "نظرًا لاختيارك خيار \"إخفاء الهوية الكامل\" في \"جمع بيانات المستخدم\"، فلن تُخزَّن إجاباتك على الأسئلة الديموغرافية التي طُرحت قبل المشاركة ضمن النتائج. ستُستخدم هذه الإجابات فقط لتحديث ملف تعريف المستخدم، ولكن هذا الملف غير مرتبط بالإجابات. لجمع البيانات الديموغرافية وتخزينها ضمن النتائج، يُرجى اختيار خيار آخر ضمن \"جمع بيانات المستخدم\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "لا ينطبق اختيار كيفية طرح الأسئلة الديموغرافية على المشاركين لأنك قمت بتعطيل المصادقة واخترت عدم الكشف عن هويتك بالكامل",
-  "app.components.admin.AddByEmail.invite": "يدعو",
-  "app.components.admin.AddByEmail.typeEmailToInviteManager": "اكتب البريد الإلكتروني لدعوة المدير...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "لإضافة محتوى داخل الأكورديون، افتح الأكورديون بالضغط على الرمز \">\"، ثم اسحب أي عناصر واجهة مستخدم إلى الداخل.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "لم يتم تحديد أي سؤال. الرجاء تحديد سؤال أولاً.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "لا اجابة",
