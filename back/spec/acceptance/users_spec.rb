@@ -878,7 +878,7 @@ resource 'Users' do
           @admins = [@user, *create_list(:admin, 3)]
           do_request
           expect(status).to eq 200
-          expect(response_data.pluck(:id)).to contain_exactly(*@admins.map(&:id))
+          expect(response_data.pluck(:id)).to match_array(@admins.map(&:id))
         end
       end
 
@@ -888,7 +888,7 @@ resource 'Users' do
           @moderators = create_list(:project_moderator, 3)
           do_request
           expect(status).to eq 200
-          expect(response_data.pluck(:id)).to contain_exactly(*@moderators.map(&:id))
+          expect(response_data.pluck(:id)).to match_array(@moderators.map(&:id))
         end
       end
 
