@@ -55,7 +55,7 @@ resource 'Moderators' do
         expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id) + [space_moderator.id])
       end
 
-      example "[error] List all moderators of a space not moderated by the user" do
+      example '[error] List all moderators of a space not moderated by the user' do
         do_request space_id: other_space.id
         expect(status).to eq(401)
       end
