@@ -315,7 +315,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       timeline_start_at = AppConfiguration.timezone.parse(timeline_start_at)
       # We could add support for arbitrary time shifts in the future, but for now we keep
       # the existing behavior of shifting by a whole number of days
-      shift_timestamps = ((timeline_start_at.to_time - kickoff_at) / 1.day).to_i
+      shift_timestamps = ((timeline_start_at - kickoff_at) / 1.day).to_i
     end
 
     @project.phases.map do |phase|
