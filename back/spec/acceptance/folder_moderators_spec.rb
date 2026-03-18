@@ -68,7 +68,16 @@ resource 'Moderators' do
       let(:user_id) { user.id }
       let!(:child_projects) { create_list(:project, 3) }
 
-      example_request '[error] Add a moderator of a project_folder' do
+      example_request 'Add a moderator of the moderated project_folder' do
+        expect(response_status).to eq 201
+
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq user.id
+        expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
+      end
+
+      example '[error] Add a moderator of an unmoderated project_folder' do
+        do_request project_folder_id: create(:project_folder).id
         expect(response_status).to eq 401
       end
     end
