@@ -399,5 +399,6 @@ lv:
     event_details: "Detalizēta informācija par pasākumu"
   errors:
     messages:
+      in_the_past: "jābūt nākotnē"
       max_must_be_greater_than_min_characters: "Maksimālajai vērtībai jābūt lielākai par minimālo."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimālajam lielumam jābūt lielākam vai vienādam ar minimālo lielumu."
