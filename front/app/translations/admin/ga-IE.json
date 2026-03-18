@@ -145,8 +145,6 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Ní thacaítear le ceisteanna déimeagrafacha a chur mar an leathanach deireanach den fhoirm don ghníomh seo.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Ós rud é gur roghnaigh tú \"Anaithnideacht iomlán\" i \"Bailiú sonraí úsáideora\", NÍ STÓRÁLFAÍ na freagraí ar na ceisteanna déimeagrafacha a cuireadh roimh rannpháirtíocht sna Torthaí. Ní úsáidfear na freagraí ach chun próifíl an úsáideora a nuashonrú, ach níl an phróifíl seo nasctha leis an bhfreagra. Chun sonraí déimeagrafacha a bhailiú agus iad a stóráil sna torthaí roghnaigh rogha eile faoi \"Bailiú sonraí úsáideora\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Ní féidir a roghnú conas a chuirtear ceisteanna déimeagrafacha ar rannpháirtithe mar go bhfuil fíordheimhniú díchumasaithe agat agus anaithnideacht iomlán roghnaithe agat",
-  "app.components.admin.AddByEmail.invite": "Cuireadh",
-  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Clóscríobh ríomhphost chun cuireadh a thabhairt don bhainisteoir...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Chun ábhar a chur leis an accordion, oscail an accordion trí bhrú ar an tsiombail \">\", ansin tarraing aon ghiuirléidí isteach ann.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Níl aon cheist roghnaithe. Roghnaigh ceist ar dtús le do thoil.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Gan freagra",
