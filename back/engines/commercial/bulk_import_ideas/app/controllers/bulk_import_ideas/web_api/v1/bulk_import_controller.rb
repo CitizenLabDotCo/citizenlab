@@ -72,7 +72,10 @@ module BulkImportIdeas
       records.each do |record|
         # Validate required custom fields have values before approving
         missing = required_custom_fields.any? { |f| record.custom_field_values[f.key].blank? }
-        next if missing
+        if missing
+          not_approved += 1
+          next
+        end
 
         # Built-in field validation is handled by model validations (which run when not draft)
         if record.update(publication_status: 'published')

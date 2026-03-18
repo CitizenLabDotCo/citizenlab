@@ -123,45 +123,40 @@ const ReviewSection = ({
         </Title>
       </Box>
 
-      <Box
-        px="25px"
-        borderBottom={`5px ${colors.grey200} solid`}
-        display="flex"
-      >
-        <Box w="100%" display="flex" alignItems="center">
-          {approvals.not_approved === 0 ? (
-            <>
-              <Box px="15px" py="10px">
-                <ButtonWithLink
-                  bgColor={colors.primary}
-                  icon="check"
-                  processing={isApproving}
-                  disabled={isApproving || importing}
-                  onClick={handleApproveAll}
-                >
-                  <FormattedMessage {...messages.approveAllInputs} />
-                </ButtonWithLink>
-              </Box>
-              <Box>
-                <Text>
-                  <FormattedMessage
-                    {...messages.inputsImported}
-                    values={{ numIdeas }}
-                  />
-                </Text>
-              </Box>
-            </>
-          ) : (
-            <Error
-              text={formatMessage(messages.inputsNotApproved, {
-                numNotApproved: approvals.not_approved,
-              })}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
-            />
-          )}
+      <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        <Box display="flex">
+          <Box w="100%" display="flex" alignItems="center">
+            <Box px="15px" py="10px">
+              <ButtonWithLink
+                bgColor={colors.primary}
+                icon="check"
+                processing={isApproving}
+                disabled={isApproving || importing}
+                onClick={handleApproveAll}
+              >
+                <FormattedMessage {...messages.approveAllInputs} />
+              </ButtonWithLink>
+            </Box>
+            <Box>
+              <Text>
+                <FormattedMessage
+                  {...messages.inputsImported}
+                  values={{ numIdeas }}
+                />
+              </Text>
+            </Box>
+          </Box>
         </Box>
+        {approvals.not_approved > 0 && (
+          <Error
+            text={formatMessage(messages.inputsNotApproved, {
+              numNotApproved: approvals.not_approved,
+            })}
+            marginTop="0px"
+            showBackground={false}
+            showIcon={true}
+          />
+        )}
       </Box>
 
       <Box
