@@ -314,8 +314,8 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
-        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_date.iso8601
-        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_date&.iso8601
+        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_at.as_json
+        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_at.as_json
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end

@@ -196,17 +196,7 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    # When end_at is sent as a date (YYYY-MM-DD), shift it +1 day to convert from
-    # inclusive end date to exclusive end boundary.
-    params.require(:phase).permit(permitted).tap do |attrs|
-      attrs[:end_at] = Date.parse(attrs[:end_at]) + 1.day if date_format?(attrs[:end_at])
-    end
-  end
-
-  def date_format?(str)
-    return false unless str.is_a?(String)
-
-    str.strip.match?(/\A\d{4}-\d{2}-\d{2}\z/)
+    params.require(:phase).permit(permitted)
   end
 
   def detect_invalid_timeline_changes
