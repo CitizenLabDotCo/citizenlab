@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Faigh forbhreathnú amhairc ar amlínte do thionscadail inár radharc féilire. Aithin go tapa cé na tionscadail agus na céimeanna atá ag tosú nó ag críochnú go luath agus a bhfuil gá le gníomh ina leith.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Tuig cad atá ag tarlú agus cathain",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Taispeántar na ceisteanna go léir ar an PDF. Mar sin féin, ní thacaítear leis na nithe seo a leanas faoi láthair le haghaidh allmhairithe trí FormSync: Íomhánna, Clibeanna agus Uaslódáil Comhad.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Taispeántar na ceisteanna uile ar an PDF. Mar sin féin, ní thacaítear leis na ceisteanna seo a leanas faoi láthair le haghaidh allmhairithe trí FormSync: ceisteanna mapála (biorán titim, bealach a tharraingt agus limistéar a tharraingt), ceisteanna rangú, ceisteanna maitrís agus ceisteanna uaslódála comhad.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Deireadh na foirme",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Tús na foirme",
   "app.containers.Admin.projects.all.components.archived": "Cartlannaithe",

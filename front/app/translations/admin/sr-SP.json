@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Get a visual overview of your project timelines in our calendar view. Quickly identify which projects and phases are starting or ending soon and require action.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Understand what is happening and when",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "End of the form",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Start of the form",
   "app.containers.Admin.projects.all.components.archived": "Архивирано",

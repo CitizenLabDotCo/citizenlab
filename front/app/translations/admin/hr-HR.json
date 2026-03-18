@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Dobijte vizualni pregled vremenskih okvira vaših projekata u našem kalendarskom prikazu. Brzo prepoznajte koji projekti i faze uskoro počinju ili završavaju i zahtijevaju djelovanje.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Razumjeti što se događa i kada",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSynca: slike, oznake i prijenos datoteka.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeća pitanja trenutno nisu podržana za uvoz putem FormSynca: pitanja o mapiranju (ispuštanje pribadače, crtanje rute i crtanje područja), pitanja o rangiranju, matrična pitanja i pitanja o prijenosu datoteka.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Kraj obrasca",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Početak obrasca",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
