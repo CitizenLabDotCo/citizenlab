@@ -2,7 +2,13 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Moderators' do
-  explanation 'Moderators can manage (e.g. changing phases, ideas) only certain spaces.'
+  explanation 'Space moderators can manage items (e.g. folder, project, phase, idea) and other moderators (e.g. folder moderators, project moderators) in their space.'
+
+  let!(:space) { create(:space) }
+  let!(:other_space) { create(:space) }
+
+  let!(:space_moderators) { create_list(:space_moderator, 2, spaces: [space]) }
+  let!(:other_space_moderator) { create(:space_moderator, spaces: [other_space]) }
 
   before do
     header 'Content-Type', 'application/json'
@@ -22,22 +28,17 @@ resource 'Moderators' do
       end
 
       example 'List all moderators of a space' do
-        space = create(:space)
-        space_moderators = create_list(:space_moderator, 5, spaces: [space])
-        other_space = create(:space)
-        _other_space_moderator = create(:space_moderator, spaces: [other_space])
-
         do_request space_id: space.id
         expect(status).to eq(200)
+
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id))
       end
     end
   end
 
   context 'as a space moderator' do
-    let(:space) { create(:space) }
     let(:space_moderator) { create(:space_moderator, spaces: [space]) }
 
     before do
@@ -46,14 +47,17 @@ resource 'Moderators' do
 
     get 'web_api/v1/spaces/:space_id/moderators' do
       example 'List all moderators of a space' do
-        other_space = create(:space)
-        _other_space_moderator = create(:space_moderator, spaces: [other_space])
-
         do_request space_id: space.id
         expect(status).to eq(200)
+
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data][0][:id]).to eq(space_moderator.id)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id) + [space_moderator.id])
+      end
+
+      example "[error] List all moderators of a space not moderated by the user" do
+        do_request space_id: other_space.id
+        expect(status).to eq(401)
       end
     end
   end
