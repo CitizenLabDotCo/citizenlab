@@ -37,9 +37,6 @@ class ChangePhasesDatesToTimestamps < ActiveRecord::Migration[7.2]
     # Reverse the exclusive end boundary backfill before type conversion
     Phase.where.not(end_at: nil).update_all("end_at = end_at - interval '1 day'")
 
-    # Drop the analytics view before changing column types back to date.
-    # The analytics migration's down will have already recreated v4, so we
-    # need to drop it again here, then recreate after the type change.
     drop_view :analytics_fact_project_statuses
 
     safety_assured do
@@ -47,10 +44,8 @@ class ChangePhasesDatesToTimestamps < ActiveRecord::Migration[7.2]
       change_column :phases, :end_at, :date
     end
 
-    # Recreate the v4 view now that columns are back to date type
     create_view :analytics_fact_project_statuses, version: 4
 
-    # Restore original constraint with <= for date semantics
     add_check_constraint :phases,
       'start_at IS NULL OR end_at IS NULL OR start_at <= end_at',
       name: 'phases_start_before_end', validate: false
