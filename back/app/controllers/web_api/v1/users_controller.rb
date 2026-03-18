@@ -123,7 +123,7 @@ class WebApi::V1::UsersController < ApplicationController
   # To validate an email without creating a user and return which action to go to next
   def check
     authorize :user, :check?
-    email = email_param
+    email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)
       @user = User.find_by_cimail(email)
@@ -167,12 +167,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def create
-    # email = params.dig(:user, :email)
-    # if render_sso_enforced_error(email)
-    #   skip_authorization
-    #   return
-    # end
-
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
       authorize @user
@@ -292,7 +286,7 @@ class WebApi::V1::UsersController < ApplicationController
   # This endpoint is only used when user_confirmation is disabled.
   def update_email_unconfirmed
     authorize(current_user)
-    if current_user.update(email: email_param)
+    if current_user.update(email: params[:user][:email])
       render json: WebApi::V1::UserSerializer.new(
         current_user,
         params: jsonapi_serializer_params
