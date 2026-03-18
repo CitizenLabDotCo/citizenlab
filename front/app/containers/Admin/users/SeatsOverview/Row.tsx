@@ -4,7 +4,7 @@ import { Tr, Td } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
-import { getFullName } from 'utils/textUtils';
+import NameAvatarEmail from '../_shared/UserManager/UsersTable/UsersTableRow/NameAvatarEmail';
 
 interface Props {
   user: IUserData;
@@ -13,7 +13,9 @@ interface Props {
 const Row = ({ user }: Props) => {
   return (
     <Tr>
-      <Td>{getFullName(user)}</Td>
+      <Td>
+        <NameAvatarEmail user={user} />
+      </Td>
       <Td>Value 2</Td>
     </Tr>
   );

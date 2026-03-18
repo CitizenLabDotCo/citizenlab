@@ -5,7 +5,6 @@ import {
   Td,
   colors,
   Box,
-  Text,
   Button,
   fontSizes,
   Checkbox,
@@ -21,33 +20,21 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
-import Avatar from 'components/Avatar';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import { isAdmin } from 'utils/permissions/roles';
-import { getFullName } from 'utils/textUtils';
 
 import messages from '../../../../messages';
 
 import { Action, getActions } from './actions';
 import Modals from './Modals';
+import NameAvatarEmail from './NameAvatarEmail';
 import { ModalName } from './types';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
-`;
-
-const StyledLink = styled(Link)`
-  cursor: pointer;
-  color: inherit;
-
-  &:hover {
-    color: inherit;
-    text-decoration: underline;
-  }
 `;
 
 interface Props {
@@ -159,17 +146,7 @@ const UsersTableRow = ({
           <Checkbox checked={selected} onChange={toggleSelect} />
         </Td>
         <Td>
-          <Box display="flex" alignItems="center" gap="8px">
-            <Avatar userId={userInRow.id} size={30} />
-            <Box>
-              <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
-                {getFullName(userInRow)}
-              </StyledLink>
-              <Text fontSize="s" m="0px" color="textSecondary">
-                {userInRow.attributes.email}
-              </Text>
-            </Box>
-          </Box>
+          <NameAvatarEmail user={userInRow} />
         </Td>
         <Td>
           <FormattedMessage {...getStatusMessage(userInRow)} />
