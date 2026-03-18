@@ -785,7 +785,7 @@
   "app.containers.Admin.Users.assign": "Assignéieren",
   "app.containers.Admin.Users.assignedItems": "Zougewisen Elementer fir {name}",
   "app.containers.Admin.Users.buyOneAditionalSeat": "Kafen een zousätzleche Sëtz",
-  "app.containers.Admin.Users.changeUserRights": "Change user rights",
+  "app.containers.Admin.Users.changeUserRights": "Benotzerrechter änneren",
   "app.containers.Admin.Users.confirm": "Bestätegen",
   "app.containers.Admin.Users.confirmAdminQuestion": "Sidd Dir sécher, datt Dir der {name}-Plattform Verwalterrechter wëllt ginn?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Sidd Dir sécher, datt Dir {name} als normale Benotzer ariichte wëllt?",
