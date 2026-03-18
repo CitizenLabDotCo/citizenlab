@@ -19,6 +19,7 @@ export enum usersRoutes {
   admins = 'admins',
   folderModerators = 'folder-moderators',
   projectModerators = 'project-moderators',
+  groups = 'groups',
   groupId = `:groupId`,
   blocked = 'blocked',
   bannedEmails = 'banned-emails',
@@ -36,82 +37,83 @@ export type userRouteTypes =
   | UsersRoute<`${usersRoutes.blocked}`>
   | UsersRoute<`${usersRoutes.bannedEmails}`>
   | UsersRoute<`${usersRoutes.seats}`>
-  // this one is needed for the `/users/:groupId route, which makes no sense but ok
-  | UsersRoute<`${string}`>;
+  | UsersRoute<`${usersRoutes.groups}/${string}`>;
 
-const createAdminUsersRoutes = () => ({
-  path: usersRoutes.users,
-  element: (
-    <PageLoading>
-      <AdminUsersIndex />
-    </PageLoading>
-  ),
-  children: [
-    {
-      index: true,
-      element: (
-        <PageLoading>
-          <AdminAllUsers />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.admins,
-      element: (
-        <PageLoading>
-          <AdminAdmins />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.folderModerators,
-      element: (
-        <PageLoading>
-          <AdminFolderModerators />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.projectModerators,
-      element: (
-        <PageLoading>
-          <AdminProjectModerators />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.groupId,
-      element: (
-        <PageLoading>
-          <AdminUsersGroup />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.blocked,
-      element: (
-        <PageLoading>
-          <AdminBlockedUsers />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.bannedEmails,
-      element: (
-        <PageLoading>
-          <AdminBannedEmails />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.seats,
-      element: (
-        <PageLoading>
-          <AdminSeatsOverview />
-        </PageLoading>
-      ),
-    },
-  ],
-});
+const createAdminUsersRoutes = () => [
+  {
+    path: usersRoutes.users,
+    element: (
+      <PageLoading>
+        <AdminUsersIndex />
+      </PageLoading>
+    ),
+    children: [
+      {
+        index: true,
+        element: (
+          <PageLoading>
+            <AdminAllUsers />
+          </PageLoading>
+        ),
+      },
+      {
+        path: usersRoutes.admins,
+        element: (
+          <PageLoading>
+            <AdminAdmins />
+          </PageLoading>
+        ),
+      },
+      {
+        path: usersRoutes.folderModerators,
+        element: (
+          <PageLoading>
+            <AdminFolderModerators />
+          </PageLoading>
+        ),
+      },
+      {
+        path: usersRoutes.projectModerators,
+        element: (
+          <PageLoading>
+            <AdminProjectModerators />
+          </PageLoading>
+        ),
+      },
+      {
+        path: usersRoutes.blocked,
+        element: (
+          <PageLoading>
+            <AdminBlockedUsers />
+          </PageLoading>
+        ),
+      },
+      {
+        path: usersRoutes.bannedEmails,
+        element: (
+          <PageLoading>
+            <AdminBannedEmails />
+          </PageLoading>
+        ),
+      },
+      {
+        path: `${usersRoutes.groups}/${usersRoutes.groupId}`,
+        element: (
+          <PageLoading>
+            <AdminUsersGroup />
+          </PageLoading>
+        ),
+      },
+    ],
+  },
+  {
+    path: `${usersRoutes.users}/${usersRoutes.seats}`,
+    element: (
+      <PageLoading>
+        <AdminSeatsOverview />
+      </PageLoading>
+    ),
+  },
+];
 
 export default createAdminUsersRoutes;
