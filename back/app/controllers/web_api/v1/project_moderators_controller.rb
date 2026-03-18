@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectModeratorsController < ApplicationController
-  before_action :do_authorize, except: :index
+  before_action :set_project
+  before_action :do_authorize
   before_action :set_moderator, only: %i[show destroy]
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: :users_search
   skip_after_action :verify_policy_scoped, only: :index
 
-  Moderator = Struct.new(:user_id, :project_id) do
-    def self.policy_class
-      ProjectModeratorPolicy
-    end
-  end
-
   def index
-    # TODO: something about authorize index (e.g. user_id nastiness)
-    authorize Moderator.new(nil, params[:project_id])
     @moderators = User.project_moderator(params[:project_id])
     @moderators = paginate @moderators
 
@@ -53,7 +46,6 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def users_search
-    authorize Moderator.new(nil, params[:project_id])
     @users = ::User.search_by_all(params[:search])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -68,12 +60,16 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   def set_moderator
     @moderator = User.find params[:id]
   end
+  
+  def set_project
+    @project = Project.find params[:project_id]
+  end
 
   def create_moderator_params
     params.require(:moderator).permit(:user_id)
   end
 
   def do_authorize
-    authorize Moderator.new(params[:id], params[:project_id])
+    authorize @project, policy_class: ProjectModeratorPolicy
   end
 end
