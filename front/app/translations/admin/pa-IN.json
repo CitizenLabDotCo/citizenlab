@@ -145,8 +145,6 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "ਇਸ ਕਾਰਵਾਈ ਲਈ ਫਾਰਮ ਦੇ ਆਖਰੀ ਪੰਨੇ ਵਜੋਂ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਪੁੱਛਣਾ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "ਕਿਉਂਕਿ ਤੁਸੀਂ \"ਉਪਭੋਗਤਾ ਡੇਟਾ ਸੰਗ੍ਰਹਿ\" ਵਿੱਚ \"ਪੂਰੀ ਗੁਮਨਾਮੀ\" ਨੂੰ ਚੁਣਿਆ ਹੈ, ਇਸ ਲਈ ਭਾਗੀਦਾਰੀ ਤੋਂ ਪਹਿਲਾਂ ਪੁੱਛੇ ਗਏ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਨਤੀਜਿਆਂ ਵਿੱਚ ਸਟੋਰ ਨਹੀਂ ਕੀਤੇ ਜਾਣਗੇ। ਜਵਾਬਾਂ ਦੀ ਵਰਤੋਂ ਸਿਰਫ਼ ਉਪਭੋਗਤਾ ਦੀ ਪ੍ਰੋਫਾਈਲ ਨੂੰ ਅਪਡੇਟ ਕਰਨ ਲਈ ਕੀਤੀ ਜਾਵੇਗੀ, ਪਰ ਇਹ ਪ੍ਰੋਫਾਈਲ ਜਵਾਬ ਨਾਲ ਲਿੰਕ ਨਹੀਂ ਹੈ। ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਡੇਟਾ ਇਕੱਠਾ ਕਰਨ ਅਤੇ ਇਸਨੂੰ ਨਤੀਜਿਆਂ ਵਿੱਚ ਸਟੋਰ ਕਰਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ \"ਉਪਭੋਗਤਾ ਡੇਟਾ ਸੰਗ੍ਰਹਿ\" ਦੇ ਅਧੀਨ ਕੋਈ ਹੋਰ ਵਿਕਲਪ ਚੁਣੋ।",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "ਭਾਗੀਦਾਰਾਂ ਤੋਂ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਕਿਵੇਂ ਪੁੱਛੇ ਜਾਣ, ਇਹ ਚੁਣਨਾ ਲਾਗੂ ਨਹੀਂ ਹੁੰਦਾ ਕਿਉਂਕਿ ਤੁਸੀਂ ਪ੍ਰਮਾਣੀਕਰਨ ਨੂੰ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਹੈ ਅਤੇ ਪੂਰਾ ਗੁਮਨਾਮੀ ਚੁਣਿਆ ਹੈ।",
-  "app.components.admin.AddByEmail.invite": "ਸੱਦਾ ਦਿਓ",
-  "app.components.admin.AddByEmail.typeEmailToInviteManager": "ਮੈਨੇਜਰ ਨੂੰ ਸੱਦਾ ਦੇਣ ਲਈ ਈਮੇਲ ਟਾਈਪ ਕਰੋ...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "ਐਕੋਰਡੀਅਨ ਦੇ ਅੰਦਰ ਸਮੱਗਰੀ ਜੋੜਨ ਲਈ, \">\" ਚਿੰਨ੍ਹ ਨੂੰ ਦਬਾ ਕੇ ਐਕੋਰਡੀਅਨ ਖੋਲ੍ਹੋ, ਫਿਰ ਕਿਸੇ ਵੀ ਵਿਜੇਟ ਨੂੰ ਅੰਦਰ ਖਿੱਚੋ।",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "ਕੋਈ ਸਵਾਲ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਇੱਕ ਸਵਾਲ ਚੁਣੋ।",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "ਕੋਈ ਜਵਾਬ ਨਹੀਂ",
