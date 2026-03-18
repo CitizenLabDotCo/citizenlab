@@ -18,6 +18,14 @@ export default defineMessages({
     defaultMessage:
       'Generate as many widgets as you like, and add the html-code to your website.',
   },
+  tabIdeas: {
+    id: 'app.containers.AdminPage.widgets.tabIdeas',
+    defaultMessage: 'Ideas',
+  },
+  tabProjects: {
+    id: 'app.containers.AdminPage.widgets.tabProjects',
+    defaultMessage: 'Projects',
+  },
   titleInputSelection: {
     id: 'app.containers.AdminPage.widgets.titleInputSelection',
     defaultMessage: 'Input selection',
