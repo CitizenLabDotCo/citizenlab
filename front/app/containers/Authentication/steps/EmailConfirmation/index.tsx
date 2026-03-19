@@ -119,7 +119,7 @@ const EmailConfirmation = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleConfirm)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
           <CodeSentMessage email={email} codeResent={codeResent} />
         </Box>

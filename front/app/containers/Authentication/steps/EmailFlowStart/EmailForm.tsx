@@ -71,7 +71,7 @@ const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px" color="tenantText">
           {formatMessage(topText)}
         </Text>
