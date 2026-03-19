@@ -258,7 +258,7 @@ const MultiSelectDropdown = ({
                         keyboard handlers. pointerEvents: 'none' ensures clicks
                         go through the <li>'s onClick handler. 
                     */}
-                    <Box aria-hidden="true" style={{ pointerEvents: 'none' }}>
+                    <Box aria-hidden="true" pointerEvents="none">
                       <Checkbox
                         checked={checked}
                         onChange={handleOnToggleCheckbox(entry)}
