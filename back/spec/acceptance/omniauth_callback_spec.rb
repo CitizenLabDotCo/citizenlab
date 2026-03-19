@@ -83,6 +83,8 @@ resource 'Omniauth Callback', document: false do
       allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
       allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
       allow(app_config_mock).to receive(:feature_activated?).with('user_confirmation').and_return(false)
+      # Timezone setting is accessed during tenant switch.
+      allow(app_config_mock).to receive(:settings).with(no_args).and_return({ 'core' => { 'timezone' => 'Europe/Brussels' } })
       allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
       allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
       allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)

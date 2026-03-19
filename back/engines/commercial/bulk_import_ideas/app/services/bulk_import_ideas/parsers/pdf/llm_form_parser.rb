@@ -2,10 +2,9 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class LLMFormParser
-    def initialize(phase, locale, llm_class: Analysis::LLM::ClaudeSonnet46)
+    def initialize(phase, locale)
       @phase = phase
       @locale = locale
-      @llm_class = llm_class
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -45,31 +44,9 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def prompt
-      <<~GPT_PROMPT
-        In this message is a scanned survey form that has been filled in by hand.
-  
-        Your task is to extract the text and checked options based on the questions in the JSON form schema below.
-  
-        Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
-  
-        Do not extract answers unless they are in the correct order in the scanned form.
-
-        The language used in the form is #{@locale}.
-
-        Return the same array of JSON objects in the same order, but with an additional 'answer' attribute for each question, according to the following rules:
-        - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
-        - if the question is of type select or multiselect then return an attribute answer as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
-        - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
-        - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
-        - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
-        - if the question is of type matrix_linear_scale, then there will checkboxes in rows against a list of matrix_statements on the left hand side. Return the answer as a hash with each statement as the key and the value as the number corresponding to the order (starting from 1, left to right) of the box that is checked or ticked for that row.
-        - if the question is optional, sometimes it may not be present in the scanned form.
-
-        Provide only the JSON without any additional text or markers.
-  
-        JSON form schema:
-        #{personal_data_schema + form_schema}
-      GPT_PROMPT
+      ::Analysis::LLM::Prompt.new.fetch('form_sync',
+        locale: @locale,
+        form_schema_json: (personal_data_schema + form_schema).to_json)
     end
 
     # Return a simple schema to send to GPT
@@ -135,7 +112,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def llm
-      @llm ||= @llm_class.new
+      @llm ||= LLMSelector.new.llm_class_for_use_case('form_sync').new
     end
 
     def printable_form_fields

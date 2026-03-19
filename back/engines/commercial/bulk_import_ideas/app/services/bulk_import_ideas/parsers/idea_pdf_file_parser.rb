@@ -3,7 +3,6 @@
 module BulkImportIdeas::Parsers
   class IdeaPdfFileParser
     IDEAS_PER_JOB = 5
-    MAX_TOTAL_PAGES = 100
 
     def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @import_user = current_user
@@ -16,8 +15,8 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
-      form_parsed_idea = claude_service.parse_idea(file.file, file.num_pages)
+      llm_parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale)
+      form_parsed_idea = llm_parser.parse_idea(file.file, file.num_pages)
 
       file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
 
@@ -39,8 +38,7 @@ module BulkImportIdeas::Parsers
       job_ids
     end
 
-    # Strategy methods called by IdeaRowMapper
-
+    # Strategy methods called by IdeaRowMapper test
     def structure_raw_fields(idea)
       idea = extract_permission_checkbox(idea)
       idea.map do |name, value|
@@ -101,59 +99,9 @@ module BulkImportIdeas::Parsers
     end
 
     def create_files(file_content)
-      source_file = @row_mapper.upload_source_file file_content
-
-      # Split a pdf into one PDF per idea
-      split_pdf_files = []
-      if source_file&.import_type == 'pdf'
-        pdf = begin
-          ::CombinePDF.parse source_file.file.read
-        rescue ::CombinePDF::ParsingError
-          raise BulkImportIdeas::Error.new 'bulk_import_malformed_pdf', value: source_file.file_content_url
-        end
-
-        source_file_page_count = pdf.pages.count
-        source_file.update!(num_pages: source_file_page_count)
-        raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if source_file_page_count > MAX_TOTAL_PAGES
-
-        # Use manual override if provided, otherwise treat entire PDF as a single form
-        pages_per_idea = @pages_per_form || source_file_page_count
-
-        raise BulkImportIdeas::Error.new 'bulk_import_not_enough_pdf_pages', value: source_file_page_count if source_file_page_count < pages_per_idea
-        if @pages_per_form && (source_file_page_count % pages_per_idea != 0)
-          raise BulkImportIdeas::Error.new 'bulk_import_pdf_pages_not_divisible', total_pages: source_file_page_count, pages_per_form: pages_per_idea
-        end
-
-        new_pdf = ::CombinePDF.new
-        new_pdf_count = 0
-        pdf.pages.each_with_index do |page, index|
-          new_pdf << page
-          current_page_num = index + 1
-          save_to_file = current_page_num % pages_per_idea == 0
-
-          if save_to_file
-            # Temporarily save to a file
-            new_pdf_count += 1
-            file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
-            new_pdf.save file.to_s
-            base_64_content = Base64.encode64 file.read
-            file.delete
-
-            split_pdf_files << BulkImportIdeas::IdeaImportFile.create!(
-              import_type: source_file.import_type,
-              project: @project,
-              num_pages: new_pdf.pages.count,
-              parent: source_file,
-              file_by_content: {
-                name: "import_#{new_pdf_count}.pdf",
-                content: "data:application/pdf;base64,#{base_64_content}"
-              }
-            )
-            new_pdf = ::CombinePDF.new
-          end
-        end
-      end
-      split_pdf_files
+      source_file = @row_mapper.upload_source_file(file_content)
+      splitter = Pdf::PdfFileSplitter.new(project: @project, pages_per_form: @pages_per_form)
+      splitter.split(source_file)
     end
 
     # This data is a combination of the form_fields and the context of where those fields are in the PDF

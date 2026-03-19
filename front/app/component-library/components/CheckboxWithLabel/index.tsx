@@ -30,6 +30,7 @@ const CheckboxWithLabel = ({
   labelTooltipText,
   dataTestId,
   usePrimaryBorder,
+  required,
   ariaLabel,
   tabIndex,
   dataCy,
@@ -61,6 +62,7 @@ const CheckboxWithLabel = ({
         size={size}
         usePrimaryBorder={usePrimaryBorder}
         name={name}
+        required={required}
         aria-label={ariaLabel}
         tabIndex={tabIndex}
         mr="8px"

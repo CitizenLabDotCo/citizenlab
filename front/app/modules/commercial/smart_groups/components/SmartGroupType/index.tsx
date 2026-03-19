@@ -16,7 +16,7 @@ import {
   GroupDescription,
   Step2Button,
   GroupName,
-} from 'containers/Admin/users/GroupCreationStep1';
+} from 'containers/Admin/users/_shared/GroupCreationStep1';
 import adminUsersMessages from 'containers/Admin/users/messages';
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

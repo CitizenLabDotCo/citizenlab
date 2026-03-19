@@ -51,4 +51,8 @@ class AdminPublicationPolicy < ApplicationPolicy
   def status_counts
     true
   end
+
+  def tree_view
+    active_admin?
+  end
 end

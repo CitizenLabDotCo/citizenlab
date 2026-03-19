@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Bu e-posta zaten var. E-postaya başka bir hesap bağlı.",
   "app.errors.generics.unsupported_locales": "Bu alan mevcut yerel ayarı desteklemiyor.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Bir proje yöneticisi olarak, yalnızca projelerinize erişebilen kişilere e-posta gönderebilirsiniz",
+  "app.errors.has_inputs": "Katılım yöntemini değiştiremezsiniz çünkü bu aşamada zaten girdiler vardır. Lütfen önce tüm girdileri kaldırın.",
   "app.errors.has_other_overlapping_phases": "Projelerde çakışan aşamalar olamaz.",
   "app.errors.invalid_email": "{row} satırında bulunan {value} geçerli bir e-posta adresi değil",
   "app.errors.invalid_row": "{row} satırı işlenmeye çalışılırken bilinmeyen bir hata oluştu",

@@ -56,11 +56,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   }
 
   return (
-    <Box
-      id="e2e-file-attachment"
-      maxWidth="1200px"
-      style={{ pointerEvents: 'none' }}
-    >
+    <Box id="e2e-file-attachment" maxWidth="1200px" pointerEvents="none">
       <FileDisplay
         file={{
           id: file.data.id,

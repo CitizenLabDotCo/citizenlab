@@ -85,7 +85,13 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
       expect(user_row[header_row.find_index 'idea2']).to eq baskets_idea4.votes
       expect(user_row[header_row.find_index 'idea3']).to eq 0
       expect(user_row[header_row.find_index 'idea4']).to eq 0
-      expect(user_row[header_row.find_index 'Submitted at'].to_i).to eq basket3.submitted_at.to_i
+
+      # On writing: Axlsx ignores timezone and offset when storing dates.
+      # On reading: RubyXL reads the naive datetime as UTC.
+      submitted_at = user_row[header_row.find_index('Submitted at')]
+      submitted_at = override_timezone(submitted_at, AppConfiguration.timezone)
+      # Not an exact match due to xlsx serialization precision loss
+      expect(submitted_at).to be_within(1e-3.seconds).of basket3.submitted_at
     end
 
     it 'handles ideas with same title multiloc values' do

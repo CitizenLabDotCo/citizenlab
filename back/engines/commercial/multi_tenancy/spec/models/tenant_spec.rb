@@ -35,6 +35,20 @@ RSpec.describe Tenant do
       expect(described_class.current).to eq(other_tenant)
     end
 
+    it 'sets Time.zone to the tenant timezone' do
+      timezone_before = AppConfiguration.timezone
+      timezone_after = other_tenant.switch do
+        AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+        AppConfiguration.instance.save!
+        AppConfiguration.timezone
+      end
+
+      expect { other_tenant.switch! }
+        .to change(Time, :zone)
+        .from(timezone_before)
+        .to(timezone_after)
+    end
+
     it 'fails when the tenant is not persisted' do
       tenant = build(:tenant, host: 'unused.hostname.com')
       expect { tenant.switch! }.to raise_error(Apartment::TenantNotFound)
@@ -59,11 +73,36 @@ RSpec.describe Tenant do
       expect(current_tenant).to eq(other_tenant)
     end
 
+    it 'sets Time.zone to the tenant timezone inside the block and restores it after' do
+      timezone_before = AppConfiguration.timezone
+      timezone_after = other_tenant.switch do
+        AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+        AppConfiguration.instance.save!
+        AppConfiguration.timezone
+      end
+
+      expect(Time.zone).to eq(timezone_before)
+      other_tenant.switch { expect(Time.zone).to eq(timezone_after) }
+      expect(Time.zone).to eq(timezone_before)
+    end
+
     it 'fails if the tenant is not persisted' do
       tenant = build(:tenant, host: 'unused.hostname.com')
       expect do
         tenant.switch { User.first }
       end.to raise_error(Apartment::TenantNotFound)
+    end
+  end
+
+  describe 'Apartment::Tenant.reset' do
+    it 'resets Time.zone to the Rails default' do
+      AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+      AppConfiguration.instance.save!
+
+      expect { Apartment::Tenant.reset }
+        .to change { Time.zone.name }
+        .from('America/New_York')
+        .to(Rails.application.config.time_zone)
     end
   end
 

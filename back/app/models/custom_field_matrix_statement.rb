@@ -12,6 +12,7 @@
 #
 # Indexes
 #
+#  custom_field_matrix_statements_field_id_ordering_unique  (custom_field_id,ordering) UNIQUE
 #  index_custom_field_matrix_statements_on_custom_field_id  (custom_field_id)
 #  index_custom_field_matrix_statements_on_key              (key)
 #
@@ -20,13 +21,17 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldMatrixStatement < ApplicationRecord
+  include BulkReorderable
+
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
+
+  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  bulk_reorderable constraint_name: :custom_field_matrix_statements_field_id_ordering_unique
 
   belongs_to :custom_field
 
   before_validation :generate_key, on: :create
-  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },
