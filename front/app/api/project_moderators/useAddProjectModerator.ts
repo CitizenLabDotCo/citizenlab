@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
-import { IUsers } from 'api/users/types';
+import { IUser } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -17,7 +17,7 @@ const addModerator = async ({
   moderatorEmail,
   projectId,
 }: ProjectModeratorAdd) =>
-  fetcher<IUsers>({
+  fetcher<IUser>({
     path: `/projects/${projectId}/moderators`,
     action: 'post',
     body: {
@@ -30,7 +30,7 @@ const addModerator = async ({
 
 const useAddProjectModerator = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUsers, CLErrors, ProjectModeratorAdd>({
+  return useMutation<IUser, CLErrors, ProjectModeratorAdd>({
     mutationFn: addModerator,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({

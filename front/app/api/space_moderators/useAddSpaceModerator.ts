@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
-import { IUsers } from 'api/users/types';
+import { IUser } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -17,7 +17,7 @@ interface Params {
 }
 
 const addSpaceModerator = ({ spaceId, userId }: Params) => {
-  return fetcher<IUsers>({
+  return fetcher<IUser>({
     path: `/spaces/${spaceId}/moderators`,
     action: 'post',
     body: {
@@ -30,7 +30,7 @@ const addSpaceModerator = ({ spaceId, userId }: Params) => {
 
 const useAddSpaceModerator = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUsers, CLErrors, Params>({
+  return useMutation<IUser, CLErrors, Params>({
     mutationFn: addSpaceModerator,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
