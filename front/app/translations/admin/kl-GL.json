@@ -394,6 +394,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.folderCardImageTooltip1": "This image is part of the folder card; the card that summarizes the folder and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Apeqqutit tamarmik PDF-imi ersipput. Taamaakkaluartoq, makku FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingatigut apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik nuussinermut apeqqutit.",
   "app.containers.Admin.projects.all.components.archived": "Allagaasivimmut inissinneqarpoq",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Manage",

@@ -360,6 +360,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.folderCardImageTooltip1": "هذه الصورة جزء من بطاقة المجلد؛ وهي البطاقة التي تلخص المجلد وتظهر في الصفحة الرئيسية على سبيل المثال. لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "تظهر هذه الصورة في الجزء العلوي من صفحة المجلد. لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "زيارة مركز الدعم التابع لنا",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "جميع الأسئلة تظهر في ملف PDF. ومع ذلك، فإن الأنواع التالية غير مدعومة حاليًا للاستيراد عبر FormSync: أسئلة الخرائط (تحديد نقطة، رسم مسار ورسم منطقة) وأسئلة تحميل الملفات.",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",
   "app.containers.Admin.projects.all.components.draft": "مسوّدة",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "إدارة",

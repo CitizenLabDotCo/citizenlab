@@ -1208,6 +1208,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Takvim görünümümüzde proje zaman çizelgelerinize görsel bir genel bakış elde edin. Hangi projelerin ve aşamaların yakında başlayacağını veya biteceğini ve eylem gerektirdiğini hızlıca belirleyin.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Ne olduğunu ve ne zaman olduğunu anlayın",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Tüm sorular PDF üzerinde gösterilir. Ancak, aşağıdakiler şu anda FormSync aracılığıyla içe aktarma için desteklenmemektedir: Resimler, Etiketler ve Dosya Yükleme.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Tüm sorular PDF'de gösterilir. Ancak, aşağıdakiler şu anda FormSync aracılığıyla içe aktarma için desteklenmemektedir: Haritalama soruları (iğne bırakma, rota çizme ve alan çizme) ve dosya yükleme soruları.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Formun sonu",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Formun başlangıcı",
   "app.containers.Admin.projects.all.components.archived": "Arşivlenmiş",

@@ -237,6 +237,7 @@
   "app.containers.Admin.emails.senderRecipients": "Sender and recipients",
   "app.containers.Admin.emails.sent": "Sent",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Minden kérdés megjelenik a PDF-ben. Azonban a következők jelenleg nem támogatottak a FormSync-en keresztüli importhoz: térképes kérdések (gombostű elhelyezése, útvonal rajzolása és terület rajzolása) és fájlfeltöltési kérdések.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
