@@ -37,6 +37,20 @@ resource 'Moderators' do
       end
     end
 
+    get 'web_api/v1/spaces/:space_id/moderators/:user_id' do
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      example 'Get one moderator by id' do
+        do_request space_id: space.id, user_id: moderator.id
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq moderator.id
+      end
+    end
+
     post 'web_api/v1/spaces/:space_id/moderators' do
       with_options scope: :space_moderator do
         parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true

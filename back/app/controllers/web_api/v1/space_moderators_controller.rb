@@ -13,7 +13,9 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
     render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
-  def show; end
+  def show
+    render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
+  end
 
   def create
     @user = find_user_by_params
