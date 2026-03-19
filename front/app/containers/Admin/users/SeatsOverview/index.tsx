@@ -9,7 +9,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 import Table from './Table';
@@ -40,11 +39,7 @@ const SeatsOverview = () => {
       alignItems="center"
     >
       <Box px="51px" maxWidth="1400px" w="100%">
-        <GoBackButton
-          onClick={() => {
-            clHistory.goBack();
-          }}
-        />
+        <GoBackButton linkTo="/admin/users" />
         <Title>
           <FormattedMessage {...messages.seatsOverview} />
         </Title>
