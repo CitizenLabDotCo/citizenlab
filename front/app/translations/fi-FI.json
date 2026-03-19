@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Tämä sähköpostiosoite on jo olemassa. Toinen tili on yhdistetty siihen.",
   "app.errors.generics.unsupported_locales": "Tämä kenttä ei tue nykyistä aluetta.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Projektipäällikkönä voit lähettää sähköpostia vain henkilöille, jotka voivat käyttää projektejasi",
+  "app.errors.has_inputs": "Et voi muuttaa osallistumistapaa, koska tässä vaiheessa on jo syötteitä. Poista ensin kaikki syötteet.",
   "app.errors.has_other_overlapping_phases": "Projekteissa ei voi olla päällekkäisiä vaiheita.",
   "app.errors.invalid_email": "Riviltä {row} löytynyt sähköposti {value} ei ole kelvollinen sähköpostiosoite",
   "app.errors.invalid_row": "Tapahtui tuntematon virhe, kun yritettiin käsitellä riviä {row}",

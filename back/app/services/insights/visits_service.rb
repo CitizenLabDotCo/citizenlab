@@ -24,21 +24,21 @@ module Insights
     # Grouping needs to join page views to session to be able to group by the date of each page view
     # @param [String] resolution - hour|day|month|year
     def visits_by_date(resolution)
-      result = filtered_page_views_query
-      result = result.select("
-        COUNT(DISTINCT session_id) as visits,
-        COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors,
-        DATE_TRUNC('#{resolution}', impact_tracking_pageviews.created_at) as date_group
-      ")
+      filtered_page_views_query
+        .select(sanitize_sql(<<~SQL.squish, resolution, Time.zone.name))
+          COUNT(DISTINCT session_id) as visits,
+          COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors,
+          DATE_TRUNC(?, impact_tracking_pageviews.created_at at time zone 'UTC' at time zone ?) as date_group
+        SQL
         .group('date_group')
         .order('date_group')
-      result.map do |row|
-        {
-          visits: row.visits,
-          visitors: row.visitors,
-          date_group: resolution == 'hour' ? row.date_group.to_datetime : row.date_group.to_date
-        }
-      end
+        .map do |row|
+          {
+            visits: row.visits,
+            visitors: row.visitors,
+            date_group: resolution == 'hour' ? row.date_group.to_datetime : row.date_group.to_date
+          }
+        end
     end
 
     # Because we want to calculate timings based on all page views of sessions that had a page view in the period,
@@ -78,6 +78,10 @@ module Insights
       return query unless @exclude_roles == 'exclude_admins_and_moderators'
 
       query.where("highest_role IS NULL OR highest_role = 'user'")
+    end
+
+    def sanitize_sql(*args)
+      ActiveRecord::Base.sanitize_sql_array(args)
     end
   end
 end

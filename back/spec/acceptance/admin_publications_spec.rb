@@ -43,8 +43,6 @@ resource 'AdminPublication' do
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
-      parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
       parameter :sort, 'Either title_multiloc or -title_multiloc to sort by title ascending or descending respectively. Defaults to ordering by order attribute if not specified.', required: false
@@ -91,22 +89,6 @@ resource 'AdminPublication' do
         do_request filter_can_moderate: true
         assert_status 200
         expect(response_data.size).to eq 10
-      end
-
-      example 'List publications a specific user can moderate', document: false do
-        moderated_folder = create(:project_folder, projects: [projects[0], projects[1]])
-        moderator = create(
-          :user,
-          roles: [
-            { type: 'project_moderator', project_id: projects[0].id },
-            { type: 'project_moderator', project_id: projects[1].id },
-            { type: 'project_folder_moderator', project_folder_id: moderated_folder.id }
-          ]
-        )
-
-        do_request filter_user_is_moderator_of: moderator.id
-        assert_status 200
-        expect(publication_ids).to contain_exactly(projects[0].id, projects[1].id, moderated_folder.id)
       end
 
       example 'Includes unlisted projects', document: false do
@@ -171,34 +153,6 @@ resource 'AdminPublication' do
           assert_status 200
           expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc) })
             .to eq expected_ascending_order.reverse
-        end
-      end
-
-      context 'when admin is moderator of publications' do
-        before do
-          @moderated_project1 = published_projects[0]
-          @moderated_project2 = published_projects[1]
-          @moderated_folder1 = create(:project_folder, projects: [@moderated_project1])
-          @moderated_folder2 = create(:project_folder)
-          @admin.roles += [
-            { type: 'project_moderator', project_id: @moderated_project1.id },
-            { type: 'project_moderator', project_id: @moderated_project2.id },
-            { type: 'project_folder_moderator', project_folder_id: @moderated_folder1.id },
-            { type: 'project_folder_moderator', project_folder_id: @moderated_folder2.id }
-          ]
-          @admin.save!
-        end
-
-        example 'List publications admin is moderator of', document: false do
-          do_request filter_is_moderator_of: true
-          assert_status 200
-          expect(publication_ids).to contain_exactly(@moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id)
-        end
-
-        example 'List only projects admin is moderator of', document: false do
-          do_request(filter_is_moderator_of: true, only_projects: true)
-          assert_status 200
-          expect(publication_ids).to contain_exactly(@moderated_project1.id, @moderated_project2.id)
         end
       end
 
@@ -442,6 +396,26 @@ resource 'AdminPublication' do
         expect(response_data[:attributes][:status_counts][:draft]).to eq 2
         expect(response_data[:attributes][:status_counts][:archived]).to eq 2
         expect(response_data[:attributes][:status_counts][:published]).to eq 3
+      end
+    end
+
+    get 'web_api/v1/admin_publications/tree_view' do
+      example 'Get tree view of admin publications' do
+        do_request
+        expect(status).to eq 200
+        nodes = response_data[:attributes][:nodes]
+        expect(nodes.length).to eq 7
+        folders = nodes.filter { |n| n[:type] == 'folder' }
+        expect(folders.length).to eq 2
+      end
+
+      example 'Filter by space id' do
+        space = create(:space, :with_projects)
+        create(:project_folder, space_id: space.id)
+        do_request({ space_id: space.id })
+        expect(status).to eq 200
+        nodes = response_data[:attributes][:nodes]
+        expect(nodes.length).to eq 3
       end
     end
   end
@@ -705,33 +679,11 @@ resource 'AdminPublication' do
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
-      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
       before do
         @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
         header_token_for(@moderator)
-      end
-
-      example 'List only the projects the current user is moderator of' do
-        do_request(filter_is_moderator_of: true, only_projects: true)
-
-        assert_status 200
-        expect(response_data.size).to eq 2
-        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) })
-          .to contain_exactly(published_projects[0].id, published_projects[1].id)
-      end
-
-      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
-      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
-      example 'List only folders (none unless also folder mod) and root level projects user is moderator of' do
-        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
-        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
-        @moderator.update!(roles: moderator_roles)
-
-        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
-        assert_status 200
-        expect(publication_ids).to contain_exactly(published_projects[0].id, published_projects[1].id, root_project.id)
       end
 
       example 'Lists projects', document: false do
@@ -799,32 +751,7 @@ resource 'AdminPublication' do
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
-      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
-
-      example 'List publications user is moderator of', document: false do
-        do_request filter_is_moderator_of: true
-        assert_status 200
-        expect(publication_ids).to match_array [project_folder.id, @folder.id, @folder.projects.pluck(:id)].flatten
-      end
-
-      example 'List only projects user is moderator of' do
-        do_request(filter_is_moderator_of: true, only_projects: true)
-        assert_status 200
-        expect(publication_ids).to match_array @folder.projects.pluck(:id)
-      end
-
-      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
-      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
-      example 'List only folders and root level projects user is moderator of' do
-        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
-        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
-        @moderator.update!(roles: moderator_roles)
-
-        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
-        assert_status 200
-        expect(publication_ids).to match_array [project_folder.id, @folder.id, root_project.id].flatten
-      end
 
       example 'Lists publications', document: false do
         do_request

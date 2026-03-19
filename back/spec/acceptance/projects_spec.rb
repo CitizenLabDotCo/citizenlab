@@ -84,7 +84,6 @@ resource 'Projects' do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
@@ -173,20 +172,6 @@ resource 'Projects' do
         do_request filter_can_moderate: true, publication_statuses: ['published']
         assert_status 200
         expect(json_response[:data].size).to eq 4
-      end
-
-      example 'List projects a specific user can moderate', document: false do
-        moderator = create(
-          :user,
-          roles: [
-            { type: 'project_moderator', project_id: @projects[0].id },
-            { type: 'project_moderator', project_id: @projects[1].id }
-          ]
-        )
-
-        do_request filter_user_is_moderator_of: moderator.id
-        assert_status 200
-        expect(json_response[:data].pluck(:id)).to contain_exactly(@projects[0].id, @projects[1].id)
       end
     end
 
@@ -636,10 +621,8 @@ resource 'Projects' do
         end
 
         example 'Move a project from one folder to another' do
-          old_folder = create(:project_folder, projects: [@project])
+          create(:project_folder, projects: [@project])
           new_folder = create(:project_folder)
-          old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
-          new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
 
           do_request(project: { folder_id: new_folder.id })
           @project.reload
@@ -647,10 +630,6 @@ resource 'Projects' do
           assert_status 200
           expect(@project.folder_id).to eq new_folder.id
           expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
-
-          project_moderators = User.project_moderator(@project.id)
-          expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
-          expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
         end
 
         example '[error] Put a project in a non-existing folder' do
@@ -1679,15 +1658,14 @@ resource 'Projects' do
             expect(admin_publication_parent).to eq project_folder.admin_publication
           end
 
-          example_request 'Adds all folder moderators as moderators of the project' do
+          example_request 'Does not add folder moderators as moderators of the project' do
             assert_status 201
 
             json_response              = json_parse(response_body)
             response_resource_id       = json_response.dig(:data, :id)
             project_moderators         = User.project_moderator(response_resource_id)
-            folder_moderators          = User.project_folder_moderator(project_folder.id)
 
-            expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+            expect(project_moderators.pluck(:id)).to eq []
           end
         end
 
@@ -1736,16 +1714,16 @@ resource 'Projects' do
 
           copied_project = Project.find(json_response.dig(:data, :id))
           expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
+          expect(copied_project.folder_id).to eq(project_in_folder_user_moderates.folder_id)
         end
 
-        example_request 'Adds all folder moderators as moderators of the project' do
+        example_request 'Does not add folder moderators as moderators of the project' do
           assert_status 201
 
           response_resource_id = json_response.dig(:data, :id)
           project_moderators = User.project_moderator(response_resource_id)
-          folder_moderators = User.project_folder_moderator(project_folder.id)
 
-          expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+          expect(project_moderators.pluck(:id)).to eq []
         end
       end
 
