@@ -77,7 +77,7 @@ module BulkImportIdeas::Parsers
             new_field[:value] = idea_field[:value]
             new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| extract_matrix_value(f) }
             merged_idea << new_field
-            idea.delete_if { |f| f == idea_field }
+            idea.delete_at(idea.index { |f| f.equal?(idea_field) })
             break
           end
         end
