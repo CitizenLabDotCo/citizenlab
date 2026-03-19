@@ -81,10 +81,14 @@ module BulkImportIdeas::Parsers
       label_to_column = {}
       (1..matrix_field.maximum).each do |num|
         label = matrix_field[:"linear_scale_label_#{num}_multiloc"]&.dig(@locale.to_s)
-        label_to_column[label] = num if label.present?
+        label_to_column[normalize_quotes(label)] = num if label.present?
       end
 
-      field[:value].transform_values { |label| label_to_column[label] || label }
+      field[:value].transform_values { |label| label_to_column[normalize_quotes(label)] }
+    end
+
+    def normalize_quotes(str)
+      str.to_s.tr("\u2018\u2019\u201C\u201D", %(''""))
     end
 
     def create_files(file_content)

@@ -207,7 +207,8 @@ module BulkImportIdeas::Parsers::Pdf
       @key_mapping[question_key] = {
         type: :matrix,
         field_key: field.key,
-        statements: statement_mapping
+        statements: statement_mapping,
+        label_to_index: labels.each_with_index.to_h { |label, i| [label, i + 1] }
       }
     end
 
