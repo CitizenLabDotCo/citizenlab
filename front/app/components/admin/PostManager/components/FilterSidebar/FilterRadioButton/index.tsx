@@ -51,7 +51,7 @@ const FilterRadioButton = ({
         checked={isSelected}
         onChange={onChange}
       />
-      <Label htmlFor={id} onClick={onChange} selected={isSelected}>
+      <Label htmlFor={id} selected={isSelected}>
         {labelContent}
       </Label>
     </>
