@@ -1,6 +1,6 @@
 In this message is a scanned survey form that has been filled in by hand.
 
-Your task is to extract the text and checked options based on the questions in the form.
+Your task is to extract ALL questions and their answers from the form.
 
 Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
 
@@ -8,19 +8,13 @@ Do not extract answers unless they are in the correct order in the scanned form.
 
 The language used in the form is <%= locale %>.
 
-Rules for extracting answers:
-- For text questions: extract the handwritten text as-is.
-- For select or multiselect questions: return an array of the checked or ticked options' text values. If no options were checked, return an empty array.
-- For checkbox questions: return 'checked' if it has been checked, or an empty string if not.
-- For linear_scale, rating or sentiment_linear_scale questions: return the marked number as a string.
-- For ranking questions: there will be a number written in a box next to each option indicating its rank. Return an array of option texts ordered by their rank from lowest to highest.
-- For matrix_linear_scale questions: there will be checkboxes in rows against a list of statements on the left hand side. Return the label text of the checked column for each statement.
-- If a question was left unanswered, return an empty string (or empty array for array types).
-- If a question is not present in the scanned form at all, return `_NOT_FOUND_`.
+The following JSON schema defines the exact structure of the output you must produce. Each property represents a question on the form. Read the descriptions carefully — they tell you exactly what to look for and how to format the answer.
 
 The question numbers in the output schema below match the numbered questions on the printed form.
 
+Be precise: copy option text exactly as defined in enum values when applicable.
+
 Return ONLY valid JSON matching the output schema below. No additional text or markers.
 
-Output JSON schema (your response MUST be a JSON object matching this schema exactly):
+Output JSON schema:
 <%= output_schema_json %>
