@@ -3979,36 +3979,6 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.Users.buyOneAditionalSeat": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.changeUserRights": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirm": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmAdminQuestion": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmNormalUserQuestion": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
   "app.containers.Admin.Users.deleteUser": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
@@ -4204,11 +4174,6 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.Users.reachedLimitMessage": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
   "app.containers.Admin.Users.registeredUser": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
@@ -4250,11 +4215,6 @@
     "verified_by": "Admin"
   },
   "app.containers.Admin.Users.setAsNormalUser": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.setAsProjectModerator": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
@@ -6044,10 +6004,10 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": {
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": {
     "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-03-19T11:35:48.233606Z",
+    "verified_by": "Rob"
   },
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": {
     "state": "verified",
@@ -9250,11 +9210,6 @@
     "verified_by": "Admin"
   },
   "app.containers.Admin.reporting.word.wordExportMissingWidget": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
@@ -18095,16 +18050,6 @@
     "verified_by": "Admin"
   },
   "app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.admin.addCollaboratorsModal.confirmButtonText": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.789251Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.admin.addCollaboratorsModal.confirmManagerRights": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
