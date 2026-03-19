@@ -3,7 +3,7 @@ module Analysis
     class ClaudeHaiku45 < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'eu.anthropic.claude-haiku-4-5-20251001-v1:0'
+        ENV.fetch('BEDROCK_HAIKU_MODEL', 'eu.anthropic.claude-haiku-4-5-20251001-v1:0')
       end
 
       def self.family
