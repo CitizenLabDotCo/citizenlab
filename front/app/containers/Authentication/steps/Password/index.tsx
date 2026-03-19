@@ -123,6 +123,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}
+            required
           />
         </Box>
         <Box mt="28px">
