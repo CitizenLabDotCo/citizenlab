@@ -147,43 +147,31 @@ ga:
     ideas:
       title:
         title: Teideal
-        description:
       body:
         title: Cur síos
-        description:
       author_id:
         title: Údar
       topic_ids:
         title: Clibeanna
-        description:
       consponsor_ids:
         title: Comhurraitheoirí
         description: Cuir cuireadh chuig comhurraitheoirí tríd an réimse thíos. Gheobhaidh an comhurraitheoir/na comhurraitheoirí a bhfuil cuireadh tugtha dóibh ríomhphost.
       location:
         title: Suíomh
-        description:
       proposed_budget:
         title: Buiséad Beartaithe
-        description:
       budget:
         title: Buiséad
       images:
         title: Íomhánna
-        description:
       attachments:
         title: Ceangaltáin
-        description:
-      title_page:
-        description:
       body_page:
         title: Inis dúinn tuilleadh
-        description:
       uploads_page:
         title: Íomhánna agus ceangaltáin
-        description:
       details_page:
         title: Sonraí
-        description:
       other_input_field:
         title: Clóscríobh do fhreagra
         print_title: Más '%{other_option}', sonraigh le do thoil

@@ -147,43 +147,31 @@ lt:
     ideas:
       title:
         title: Pavadinimas
-        description:
       body:
         title: Aprašymas
-        description:
       author_id:
         title: Autorius
       topic_ids:
         title: Žymos
-        description:
       consponsor_ids:
         title: Bendraautoriai
         description: Kvieskite bendrus rėmėjus toliau esančiame laukelyje. Pakviestas (-i) bendras (-iai) rėmėjas (-ai) gaus el. laišką.
       location:
         title: Vieta
-        description:
       proposed_budget:
         title: Siūlomas biudžetas
-        description:
       budget:
         title: Biudžetas
       images:
         title: Vaizdai
-        description:
       attachments:
         title: Priedai
-        description:
-      title_page:
-        description:
       body_page:
         title: Papasakokite mums daugiau
-        description:
       uploads_page:
         title: Vaizdai ir priedai
-        description:
       details_page:
         title: Išsami informacija
-        description:
       other_input_field:
         title: Įveskite atsakymą
         print_title: Jei "%{other_option}", nurodykite

@@ -147,43 +147,31 @@ lv:
     ideas:
       title:
         title: Nosaukums
-        description:
       body:
         title: Apraksts
-        description:
       author_id:
         title: Autors
       topic_ids:
         title: Tagi
-        description:
       consponsor_ids:
         title: Līdzfinansētāji
         description: Uzaiciniet līdzfinansētājus, izmantojot tālāk norādīto lauku. Uzaicinātais(-ie) līdzsponsors(-i) saņems e-pastu.
       location:
         title: Atrašanās vieta
-        description:
       proposed_budget:
         title: Ierosinātais budžets
-        description:
       budget:
         title: Budžets
       images:
         title: Attēli
-        description:
       attachments:
         title: Pielikumi
-        description:
-      title_page:
-        description:
       body_page:
         title: Pastāstiet mums vairāk
-        description:
       uploads_page:
         title: Attēli un pielikumi
-        description:
       details_page:
         title: Sīkāka informācija
-        description:
       other_input_field:
         title: Ierakstiet savu atbildi
         print_title: Ja "%{other_option}", lūdzu, norādiet

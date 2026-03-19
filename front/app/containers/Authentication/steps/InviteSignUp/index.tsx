@@ -103,7 +103,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
   return (
     <Box id="e2e-sign-up-email-password-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <SectionField>
             {profanityApiError && (
               <Error
@@ -129,6 +129,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               type="text"
               autocomplete="given-name"
               label={formatMessage(sharedMessages.firstNamesLabel)}
+              required
             />
           </Box>
           <Box id="e2e-lastName-container" mt="16px">
@@ -138,6 +139,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               type="text"
               autocomplete="family-name"
               label={formatMessage(sharedMessages.lastNameLabel)}
+              required
             />
           </Box>
           <Box id="e2e-email-container" mt="16px">
@@ -147,6 +149,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               type="email"
               autocomplete="email"
               label={formatMessage(sharedMessages.email)}
+              required
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">
@@ -164,6 +167,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               name="password"
               id="password"
               autocomplete="current-password"
+              required
             />
           </Box>
           <Box mt="24px">

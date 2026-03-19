@@ -147,43 +147,31 @@ sv:
     ideas:
       title:
         title: Titel
-        description:
       body:
         title: Beskrivning
-        description:
       author_id:
         title: Deltagare
       topic_ids:
         title: Topics
-        description:
       consponsor_ids:
         title: Medförslagsställare
         description: Bjud in medsponsorer genom att fylla i fältet nedan. Den eller de inbjudna medsponsorerna kommer att få ett e-postmeddelande.
       location:
         title: Plats
-        description:
       proposed_budget:
         title: Budgetförslag
-        description:
       budget:
         title: Budget
       images:
         title: Bilder
-        description:
       attachments:
         title: Bilagor
-        description:
-      title_page:
-        description:
       body_page:
         title: Berätta mer för oss
-        description:
       uploads_page:
         title: Bilder och bilagor
-        description:
       details_page:
         title: Detaljer
-        description:
       other_input_field:
         title: Skriv in ditt svar
         print_title: Om '%{other_option}', vänligen specificera

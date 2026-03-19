@@ -147,43 +147,31 @@ da:
     ideas:
       title:
         title: Titel
-        description:
       body:
         title: Beskrivelse
-        description:
       author_id:
         title: Forfatter
       topic_ids:
         title: Emner
-        description:
       consponsor_ids:
         title: Medstillere
         description: Inviter Medstillere via feltet nedenfor. De inviterede medstillere vil modtage en e-mail.
       location:
         title: Beliggenhed
-        description:
       proposed_budget:
         title: Estimeret Budget
-        description:
       budget:
         title: Budsjett
       images:
         title: Billeder
-        description:
       attachments:
         title: Vedhæftede filer
-        description:
-      title_page:
-        description:
       body_page:
         title: Fortæl os mere
-        description:
       uploads_page:
         title: Billeder og vedhæftede filer
-        description:
       details_page:
         title: Detaljer
-        description:
       other_input_field:
         title: Skriv dit svar
         print_title: Hvis '%{other_option}', angiv venligst

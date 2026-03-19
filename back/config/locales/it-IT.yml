@@ -147,43 +147,31 @@ it:
     ideas:
       title:
         title: Titolo
-        description:
       body:
         title: Descrizione
-        description:
       author_id:
         title: Autore
       topic_ids:
         title: Argomenti
-        description:
       consponsor_ids:
         title: Co-sponsor
         description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
       location:
         title: Posizione
-        description:
       proposed_budget:
         title: Budget Proposto
-        description:
       budget:
         title: Bilancio
       images:
         title: Immagini
-        description:
       attachments:
         title: Allegati
-        description:
-      title_page:
-        description:
       body_page:
         title: Raccontaci di più
-        description:
       uploads_page:
         title: Immagini e allegati
-        description:
       details_page:
         title: Dettagli
-        description:
       other_input_field:
         title: Scrivi la tua risposta
         print_title: Se la risposta è '%{other_option}', si prega di specificare
