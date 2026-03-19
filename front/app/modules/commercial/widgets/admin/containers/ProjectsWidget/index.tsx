@@ -15,26 +15,28 @@ import tracks from './tracks';
 
 const schema = object({
   ...sharedSchemaFields,
-  sort: string().oneOf(['trending', 'popular', 'newest']).required(),
-  topics: array().of(string().required()).required(),
-  projects: array().of(string().required()).required(),
-  limit: number().required(),
+  projects: array().of(string().required()).max(3).required(),
+  folders: array().of(string().required()).required(),
+  sort: string()
+    .oneOf(['newest', 'ending_soon', 'most_participants', 'platform_order'])
+    .required(),
+  limit: number().min(1).max(10).required(),
 });
 
-const IdeasWidget = () => {
+const ProjectsWidget = () => {
   const { formatMessage } = useIntl();
 
   const defaultValues = {
     ...getSharedDefaultValues(formatMessage),
-    sort: 'trending' as const,
     projects: [],
-    topics: [],
-    limit: 5,
+    folders: [],
+    sort: 'newest' as const,
+    limit: 3,
   };
 
   return (
     <WidgetBuilder
-      widgetPath="/ideas"
+      widgetPath="/projects"
       schema={schema}
       defaultValues={defaultValues}
       trackEventName={tracks.clickAdminExportHTML}
@@ -44,4 +46,4 @@ const IdeasWidget = () => {
   );
 };
 
-export default IdeasWidget;
+export default ProjectsWidget;

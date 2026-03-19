@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { Label } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import GetProjects from 'resources/GetProjects';
-import GetTopics from 'resources/GetTopics';
 
 import { IProjectData } from 'api/projects/types';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -19,22 +19,22 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import SharedFormSections from '../WidgetBuilder/SharedFormSections';
+import { SharedFormValues } from '../WidgetBuilder/shared';
 import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
 
-import { SharedFormValues } from '../WidgetBuilder/shared';
-
 export interface FormValues extends SharedFormValues {
-  sort: 'trending' | 'popular' | 'newest';
-  topics: string[];
   projects: string[];
+  folders: string[];
+  sort: 'newest' | 'ending_soon' | 'most_participants' | 'platform_order';
   limit: number;
 }
 
-const IdeasWidgetForm = () => {
+const ProjectsWidgetForm = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const methods = useFormContext();
   const [openedCollapse, setOpenedCollapse] = useState<string | null>(null);
+  const { data: projectFolders } = useProjectFolders({});
 
   const handleCollapseToggle = (section: string) => {
     setOpenedCollapse(openedCollapse === section ? null : section);
@@ -51,9 +51,19 @@ const IdeasWidgetForm = () => {
   };
 
   const sortOptions = () => [
-    { value: 'trending', label: formatMessage(messages.sortTrending) },
-    { value: 'popular', label: formatMessage(messages.sortPopular) },
-    { value: 'new', label: formatMessage(messages.sortNewest) },
+    { value: 'newest', label: formatMessage(messages.projectSortNewest) },
+    {
+      value: 'ending_soon',
+      label: formatMessage(messages.projectSortEndingSoon),
+    },
+    {
+      value: 'most_participants',
+      label: formatMessage(messages.projectSortMostParticipants),
+    },
+    {
+      value: 'platform_order',
+      label: formatMessage(messages.projectSortPlatformOrder),
+    },
   ];
 
   const relativeLinkOptions = (projects?: IProjectData[] | null) => [
@@ -65,6 +75,15 @@ const IdeasWidgetForm = () => {
           label: localize(project.attributes.title_multiloc),
         }))),
   ];
+
+  const selectedProjects: string[] = methods.watch('projects') || [];
+  const hasSelectedProjects = selectedProjects.length > 0;
+
+  // TODO: Consider filtering to only published folders (like with projects),
+  // or folders visible to everyone (then we also need to change this for projects).
+  const folderOptions = projectFolders
+    ? resourcesToOptionList(projectFolders.data)
+    : [];
 
   return (
     <>
@@ -83,7 +102,7 @@ const IdeasWidgetForm = () => {
             <Label htmlFor="projects">
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
-            <GetProjects publicationStatuses={['published', 'archived']}>
+            <GetProjects publicationStatuses={['published']}>
               {(projects) =>
                 projects && isNilOrError(projects) ? null : (
                   <MultipleSelect
@@ -94,21 +113,14 @@ const IdeasWidgetForm = () => {
               }
             </GetProjects>
           </SectionField>
-          <SectionField>
-            <Label htmlFor="topics">
-              <FormattedMessage {...messages.fieldTopics} />
-            </Label>
-            <GetTopics>
-              {(topics) =>
-                topics && isNilOrError(topics) ? null : (
-                  <MultipleSelect
-                    name="topics"
-                    options={resourcesToOptionList(topics)}
-                  />
-                )
-              }
-            </GetTopics>
-          </SectionField>
+          {!hasSelectedProjects && (
+            <SectionField>
+              <Label htmlFor="folders">
+                <FormattedMessage {...messages.fieldFolders} />
+              </Label>
+              <MultipleSelect name="folders" options={folderOptions} />
+            </SectionField>
+          )}
           <SectionField>
             <Select
               name="sort"
@@ -116,13 +128,15 @@ const IdeasWidgetForm = () => {
               options={sortOptions()}
             />
           </SectionField>
-          <SectionField>
-            <Input
-              type="number"
-              label={<FormattedMessage {...messages.fieldInputsLimit} />}
-              name="limit"
-            />
-          </SectionField>
+          {!hasSelectedProjects && (
+            <SectionField>
+              <Input
+                type="number"
+                label={formatMessage(messages.fieldProjectsLimit)}
+                name="limit"
+              />
+            </SectionField>
+          )}
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldDestinationLink} />
@@ -148,4 +162,4 @@ const IdeasWidgetForm = () => {
   );
 };
 
-export default IdeasWidgetForm;
+export default ProjectsWidgetForm;

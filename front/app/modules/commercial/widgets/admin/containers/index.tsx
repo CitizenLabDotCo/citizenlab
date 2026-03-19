@@ -14,6 +14,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 
 import IdeasWidget from './IdeasWidget';
+import ProjectsWidget from './ProjectsWidget';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 20px;
@@ -56,9 +57,7 @@ const AdminSettingsWidgets = () => {
       />
       <Box background={colors.white} p="40px">
         {selectedTab === 'ideas' && <IdeasWidget />}
-        {selectedTab === 'projects' && (
-          <Box>Projects widget coming soon...</Box>
-        )}
+        {selectedTab === 'projects' && <ProjectsWidget />}
       </Box>
     </>
   );
