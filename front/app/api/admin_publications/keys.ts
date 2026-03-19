@@ -11,11 +11,11 @@ const adminPublicationsKeys = {
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id: string | null }) => [
+  item: ({ id, type }: { id: string | null; type?: 'tree_view' }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id },
+      parameters: { id, type },
     },
   ],
 } satisfies QueryKeys;

@@ -147,43 +147,31 @@ fi:
     ideas:
       title:
         title: Otsikko
-        description:
       body:
         title: Kuvaus
-        description:
       author_id:
         title: Tekijä
       topic_ids:
         title: Tunnisteet
-        description:
       consponsor_ids:
         title: Yhteissponsorit
         description: Kutsu sponsoreita alla olevan kentän kautta. Kutsutut tukisponsorit saavat sähköpostin.
       location:
         title: Sijainti
-        description:
       proposed_budget:
         title: Ehdotettu budjetti
-        description:
       budget:
         title: Budjetti
       images:
         title: Kuvat
-        description:
       attachments:
         title: Liitteet
-        description:
-      title_page:
-        description:
       body_page:
         title: Kerro meille lisää
-        description:
       uploads_page:
         title: Kuvat ja liitteet
-        description:
       details_page:
         title: Yksityiskohdat
-        description:
       other_input_field:
         title: Kirjoita vastauksesi
         print_title: Jos '%{other_option}', tarkenna
@@ -398,5 +386,6 @@ fi:
     event_details: "Tapahtuman tiedot"
   errors:
     messages:
+      in_the_past: "täytyy olla tulevaisuudessa"
       max_must_be_greater_than_min_characters: "Maksimin on oltava suurempi kuin minimin."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimin on oltava suurempi tai yhtä suuri kuin minimi."

@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import messages from './messages';
-import UserManager from './UserManager';
-import UsersHeader from './UsersHeader';
+import UserManager from './_shared/UserManager';
+import UsersHeader from './_shared/UsersHeader';
 
 const StyledBox = styled(Box)`
   display: grid;

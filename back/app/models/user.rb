@@ -221,7 +221,12 @@ class User < ApplicationRecord
   end
 
   def to_token_payload
-    token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
+    # Converting into hours to avoid issues when crossing DST boundaries. In other words,
+    # days don't always have 24 hours in timezone-aware calculations.
+    token_lifetime = AppConfiguration.instance
+      .settings('core', 'authentication_token_lifetime_in_days')
+      .to_i * 24.hours
+
     {
       sub: id,
       highest_role: highest_role,

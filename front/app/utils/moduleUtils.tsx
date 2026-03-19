@@ -24,7 +24,7 @@ import { TVerificationMethod } from 'api/verification_methods/types';
 import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { NormalFormValues } from 'containers/Admin/users/_shared/NormalGroupForm';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 
 import { ManagerType } from 'components/admin/PostManager';

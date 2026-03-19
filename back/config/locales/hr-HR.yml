@@ -147,43 +147,31 @@ hr:
     ideas:
       title:
         title: Naslov
-        description:
       body:
         title: Opis
-        description:
       author_id:
         title: Autor
       topic_ids:
         title: Oznake
-        description:
       consponsor_ids:
         title: Supokrovitelji
         description: Pozovite susponzore putem donjeg polja. Pozvani susponzor(i) primit će e-poruku.
       location:
         title: Lokacija
-        description:
       proposed_budget:
         title: Predloženi proračun
-        description:
       budget:
         title: Proračun
       images:
         title: Slike
-        description:
       attachments:
         title: Privici
-        description:
-      title_page:
-        description:
       body_page:
         title: Recite nam više
-        description:
       uploads_page:
         title: Slike i prilozi
-        description:
       details_page:
         title: pojedinosti
-        description:
       other_input_field:
         title: Upišite svoj odgovor
         print_title: Ako je '%{other_option}', molimo navedite
@@ -399,5 +387,6 @@ hr:
     event_details: "Detalji događaja"
   errors:
     messages:
+      in_the_past: "mora biti u budućnosti"
       max_must_be_greater_than_min_characters: "Maksimalna vrijednost mora biti veća od minimalne."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimalna vrijednost mora biti veća ili jednaka minimalnoj vrijednosti."
