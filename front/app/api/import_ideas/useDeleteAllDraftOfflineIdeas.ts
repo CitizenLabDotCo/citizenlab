@@ -4,20 +4,20 @@ import ideasKeys from 'api/ideas/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-const deleteAllDraftOfflineIdeas = (phaseId: string) =>
+const deleteAllDraftImportedIdeas = (phaseId: string) =>
   fetcher({
     path: `/phases/${phaseId}/importer/delete_all/idea`,
     action: 'delete',
   });
 
-const useDeleteAllDraftOfflineIdeas = () => {
+const useDeleteAllDraftImportedIdeas = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteAllDraftOfflineIdeas,
+    mutationFn: deleteAllDraftImportedIdeas,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
     },
   });
 };
 
-export default useDeleteAllDraftOfflineIdeas;
+export default useDeleteAllDraftImportedIdeas;

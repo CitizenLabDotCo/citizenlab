@@ -13,8 +13,8 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
-import useDeleteAllOfflineIdeas from 'api/import_ideas/useDeleteAllDraftOfflineIdeas';
+import useApproveImportedIdeas from 'api/import_ideas/useApproveOfflineIdeas';
+import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
@@ -59,9 +59,9 @@ const ReviewSection = ({
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
-    useApproveOfflineIdeas();
+    useApproveImportedIdeas();
   const { mutate: deleteAllIdeas, isLoading: isDeleting } =
-    useDeleteAllOfflineIdeas();
+    useDeleteAllDraftImportedIdeas();
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
