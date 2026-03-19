@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import SeatInfo, {
+  TSeatType,
+} from 'components/admin/SeatBasedBilling/SeatInfo';
 import GoBackButton from 'components/UI/GoBackButton';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 import Table from './Table';
 
 const SeatsOverview = () => {
+  const { formatMessage } = useIntl();
+  const [selectedTab, setSelectedTab] = useState<TSeatType>('admin');
+
+  const seatTypeTabs: ITabItem[] = [
+    {
+      name: 'admin',
+      label: formatMessage(messages.admins),
+    },
+    {
+      name: 'moderator',
+      label: formatMessage(messages.managers),
+    },
+  ];
+
   return (
     <Box
       bgColor={colors.white}
@@ -31,20 +48,15 @@ const SeatsOverview = () => {
         <Title>
           <FormattedMessage {...messages.seatsOverview} />
         </Title>
-        <Title variant="h2">
-          <FormattedMessage {...messages.adminSeats} />
-        </Title>
-        <Box mb="20px">
-          <SeatInfo seatType="admin" />
+        <Tabs
+          items={seatTypeTabs}
+          selectedValue={selectedTab}
+          onClick={(name: TSeatType) => setSelectedTab(name)}
+        />
+        <Box mb="20px" mt="12px">
+          <SeatInfo seatType={selectedTab} />
         </Box>
-        <Table seatType="admin" />
-        <Title variant="h2" mt="40px">
-          <FormattedMessage {...messages.managerSeats} />
-        </Title>
-        <Box mb="20px">
-          <SeatInfo seatType="moderator" />
-        </Box>
-        <Table seatType="moderator" />
+        <Table seatType={selectedTab} />
       </Box>
     </Box>
   );

@@ -14,6 +14,7 @@ import {
 
 import useBilledSeats from 'api/users/useBilledSeats';
 
+import { TSeatType } from 'components/admin/SeatBasedBilling/SeatInfo';
 import Pagination from 'components/Pagination';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -23,7 +24,7 @@ import messages from './messages';
 import Row from './Row';
 
 interface Props {
-  seatType: 'admin' | 'moderator';
+  seatType: TSeatType;
 }
 
 const HeaderCel = ({ message }: { message: MessageDescriptor }) => (

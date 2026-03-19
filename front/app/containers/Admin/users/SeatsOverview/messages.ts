@@ -5,14 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.title',
     defaultMessage: 'Seats Overview',
   },
-  adminSeats: {
-    id: 'app.containers.Admin.Users.SeatsOverview.adminSeats',
-    defaultMessage: 'Admin Seats',
-  },
-  managerSeats: {
-    id: 'app.containers.Admin.Users.SeatsOverview.managerSeats',
-    defaultMessage: 'Manager Seats',
-  },
   name: {
     id: 'app.containers.Admin.Users.SeatsOverview.name',
     defaultMessage: 'Name',
@@ -28,5 +20,13 @@ export default defineMessages({
   options: {
     id: 'app.containers.Admin.Users.SeatsOverview.options',
     defaultMessage: 'Options',
+  },
+  admins: {
+    id: 'app.containers.Admin.Users.SeatsOverview.admins',
+    defaultMessage: 'Admins',
+  },
+  managers: {
+    id: 'app.containers.Admin.Users.SeatsOverview.managers',
+    defaultMessage: 'Managers',
   },
 });
