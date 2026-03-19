@@ -14,6 +14,7 @@ import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
+import useDeleteAllOfflineIdeas from 'api/import_ideas/useDeleteAllOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
@@ -59,6 +60,8 @@ const ReviewSection = ({
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
     useApproveOfflineIdeas();
+  const { mutate: deleteAllIdeas, isLoading: isDeleting } =
+    useDeleteAllOfflineIdeas();
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
@@ -100,6 +103,15 @@ const ReviewSection = ({
     });
   };
 
+  const handleDeleteAll = () => {
+    deleteAllIdeas(phaseId, {
+      onSuccess: () => {
+        setIdeaId(null);
+        refetchIdeas();
+      },
+    });
+  };
+
   return (
     <Box
       mt="40px"
@@ -125,24 +137,30 @@ const ReviewSection = ({
       <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
         <Box display="flex">
           <Box w="100%" display="flex" alignItems="center">
-            <Box px="15px" py="10px">
+            <Box pl="15px" py="10px">
               <ButtonWithLink
                 bgColor={colors.primary}
                 icon="check"
                 processing={isApproving}
-                disabled={isApproving || importing}
+                disabled={isApproving || isDeleting || importing}
                 onClick={handleApproveAll}
               >
-                <FormattedMessage {...messages.approveAllInputs} />
-              </ButtonWithLink>
-            </Box>
-            <Box>
-              <Text>
                 <FormattedMessage
-                  {...messages.inputsImported}
+                  {...messages.approveAllInputs}
                   values={{ numIdeas }}
                 />
-              </Text>
+              </ButtonWithLink>
+            </Box>
+            <Box px="12px" py="10px">
+              <ButtonWithLink
+                buttonStyle="admin-dark-outlined"
+                icon="delete"
+                processing={isDeleting}
+                disabled={isApproving || isDeleting || importing}
+                onClick={handleDeleteAll}
+              >
+                <FormattedMessage {...messages.removeAllInputs} />
+              </ButtonWithLink>
             </Box>
           </Box>
         </Box>

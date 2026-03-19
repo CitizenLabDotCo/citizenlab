@@ -3,7 +3,7 @@
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     skip_before_action :authenticate_user, only: %i[export_form]
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all delete_all]
 
     CONSTANTIZER = {
       'idea' => {
@@ -85,6 +85,15 @@ module BulkImportIdeas
       end
 
       render json: raw_json({ approved:, not_approved: })
+    end
+
+    def delete_all
+      send_not_found unless supported_model?
+
+      records = imported_draft_records
+      deleted = records.destroy_all.size
+
+      render json: raw_json({ deleted: })
     end
 
     def draft_records
