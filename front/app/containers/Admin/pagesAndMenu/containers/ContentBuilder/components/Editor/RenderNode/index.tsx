@@ -160,14 +160,9 @@ const RenderNode = ({ render }) => {
           )}
         </Box>
       )}
-      <div
-        style={{
-          pointerEvents: noPointerEvents ? 'none' : 'auto',
-          width: '100%',
-        }}
-      >
+      <Box pointerEvents={noPointerEvents ? 'none' : 'auto'} width="100%">
         {render}
-      </div>
+      </Box>
     </StyledBox>
   );
 };

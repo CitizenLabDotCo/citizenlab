@@ -147,43 +147,31 @@ fr:
     ideas:
       title:
         title: Titre
-        description:
       body:
         title: Description
-        description:
       author_id:
         title: Auteur
       topic_ids:
         title: Étiquettes
-        description:
       consponsor_ids:
         title: Coparrainants
         description: Invitez des soutiens via le champ ci-dessous. Les personnes invitées recevront un e-mail.
       location:
         title: Adresse
-        description:
       proposed_budget:
         title: Proposition de budget
-        description:
       budget:
         title: Budget
       images:
         title: Images
-        description:
       attachments:
         title: Pièces jointes
-        description:
-      title_page:
-        description:
       body_page:
         title: Dites-nous en plus
-        description:
       uploads_page:
         title: Images et pièces jointes
-        description:
       details_page:
         title: Détails 
-        description:
       other_input_field:
         title: Saisissez votre réponse
         print_title: Si "%{other_option}", veuillez préciser

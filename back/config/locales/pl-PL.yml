@@ -147,43 +147,31 @@ pl:
     ideas:
       title:
         title: Tytuł
-        description:
       body:
         title: Opis
-        description:
       author_id:
         title: Autor
       topic_ids:
         title: Tematy
-        description:
       consponsor_ids:
         title: Współsponsorzy
         description: Zaproś współsponsorów za pomocą poniższego pola. Zaproszeni współsponsorzy otrzymają wiadomość e-mail.
       location:
         title: Lokalizacja
-        description:
       proposed_budget:
         title: Proponowany budżet
-        description:
       budget:
         title: Budżet
       images:
         title: Zdjęcia
-        description:
       attachments:
         title: Załączniki
-        description:
-      title_page:
-        description:
       body_page:
         title: Powiedz nam więcej
-        description:
       uploads_page:
         title: Obrazy i załączniki
-        description:
       details_page:
         title: Szczegóły
-        description:
       other_input_field:
         title: Wpisz swoją odpowiedź
         print_title: Jeśli "%{other_option}", proszę określ
