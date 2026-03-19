@@ -189,14 +189,21 @@ import {
   Box,
   colors,
   Icon,
+  Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useSeats from 'api/seats/useSeats';
 
 import useTotalSeats from 'hooks/useTotalSeats';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -208,6 +215,7 @@ export type SeatTypeMessageDescriptor = {
 
 interface Props {
   seatType: TSeatType;
+  mb?: string;
 }
 
 const TOTAL_SEAT_MESSAGES = {
@@ -215,12 +223,27 @@ const TOTAL_SEAT_MESSAGES = {
   moderator: messages.totalManagerSeats,
 };
 
-const SeatInfo = ({ seatType }: Props) => {
+const SEATS_OVERVIEW_PAGE: RouteType = '/admin/users/seats';
+
+const StyledLink = styled(Link)`
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const SeatInfo = ({ seatType, mb }: Props) => {
   const totalSeatsObject = useTotalSeats();
   const { data: seats } = useSeats();
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
+  const { data: authUser } = useAuthUser();
 
   if (!totalSeatsObject || !seats) return null;
+
+  const isOnSeatsOverviewPage = pathname.includes(SEATS_OVERVIEW_PAGE);
+  const showLink = !isOnSeatsOverviewPage && isAdmin(authUser);
 
   const totalSeats =
     seatType === 'admin'
@@ -240,32 +263,41 @@ const SeatInfo = ({ seatType }: Props) => {
 
   return (
     <Box
-      display="flex"
       w="100%"
       maxWidth="800px"
-      justifyContent="space-between"
-      alignItems="center"
       border={`1px solid ${colors.borderLight}`}
       borderRadius={stylingConsts.borderRadius}
       px="20px"
       py="12px"
+      mb={mb}
     >
-      <Box display="flex" alignItems="center">
-        {seatType === 'admin' && (
-          <Icon name="shield-checkered" mr="8px" fill={colors.teal500} />
-        )}
-        {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
-      </Box>
-      <Box display="flex" alignItems="center">
-        <Box mr="20px">
-          {formatMessage(messages.assignedSeats, { assignedSeats })}
+      <Box justifyContent="space-between" display="flex" alignItems="center">
+        <Box display="flex" alignItems="center">
+          {seatType === 'admin' && (
+            <Icon name="shield-checkered" mr="8px" fill={colors.teal500} />
+          )}
+          {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
         </Box>
-        <Box>
-          {formatMessage(messages.availableSeats, {
-            availableSeats: totalSeats - assignedSeats,
-          })}
+        <Box display="flex" alignItems="center">
+          <Box mr="20px">
+            {formatMessage(messages.assignedSeats, { assignedSeats })}
+          </Box>
+          <Box>
+            {formatMessage(messages.availableSeats, {
+              availableSeats: totalSeats - assignedSeats,
+            })}
+          </Box>
         </Box>
       </Box>
+      {showLink && (
+        <Box mt="12px">
+          <StyledLink target="_blank" to={SEATS_OVERVIEW_PAGE}>
+            <Text variant="bodyXs" my="0px" color="coolGrey600">
+              {formatMessage(messages.goToSeatsOverview)}
+            </Text>
+          </StyledLink>
+        </Box>
+      )}
     </Box>
   );
 };

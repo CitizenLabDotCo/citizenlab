@@ -131,4 +131,8 @@ export default defineMessages({
     id: 'app.components.SeatInfo.availableSeats',
     defaultMessage: 'Available seats: {availableSeats}',
   },
+  goToSeatsOverview: {
+    id: 'app.components.SeatInfo.goToSeatsOverview',
+    defaultMessage: 'Go to seats overview',
+  },
 });

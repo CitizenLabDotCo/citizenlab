@@ -48,14 +48,14 @@ const SeatsOverview = () => {
         <Title>
           <FormattedMessage {...messages.seatsOverview} />
         </Title>
-        <Tabs
-          items={seatTypeTabs}
-          selectedValue={selectedTab}
-          onClick={(name: TSeatType) => setSelectedTab(name)}
-        />
-        <Box mb="20px" mt="12px">
-          <SeatInfo seatType={selectedTab} />
+        <Box mb="20px">
+          <Tabs
+            items={seatTypeTabs}
+            selectedValue={selectedTab}
+            onClick={(name: TSeatType) => setSelectedTab(name)}
+          />
         </Box>
+        <SeatInfo seatType={selectedTab} mb="20px" />
         <Table seatType={selectedTab} />
       </Box>
     </Box>
