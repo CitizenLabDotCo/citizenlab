@@ -2,29 +2,14 @@
 
 module BulkImportIdeas::Parsers
   class IdeaRowMapper
-    def initialize(phase:, project:, locale:, personal_data_enabled:, strategy:, pages_per_form: nil)
+    def initialize(phase:, project:, locale:, personal_data_enabled:)
       @phase = phase
       @project = project
       @locale = locale
       @personal_data_enabled = personal_data_enabled
-      @strategy = strategy
-      @pages_per_form = pages_per_form
     end
 
-    def ideas_to_idea_rows(ideas_array, file)
-      idea_rows = ideas_array.each_with_index.map do |idea, index|
-        idea_to_idea_row(idea, file, index: index)
-      end
-      idea_rows.compact
-    end
-
-    def idea_to_idea_row(idea, file, index: 0)
-      page_range = idea[:pdf_pages]
-      fields = idea[:fields]
-
-      return nil if idea_blank? fields
-
-      # Fields not in the idea/survey form
+    def build_base_idea_row(fields:, file:, index:, page_range: nil)
       locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
       locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
       locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
@@ -43,9 +28,7 @@ module BulkImportIdeas::Parsers
       idea_row[:longitude]    = fields[locale_longitude_label]
       idea_row[:topic_titles] = fields[locale_tags_label].to_s.split(';').map(&:strip).compact_blank
 
-      fields = @strategy.structure_raw_fields(fields)
-      idea_row = process_user_details(fields, idea_row)
-      process_custom_form_fields(fields, idea_row)
+      idea_row
     end
 
     def upload_source_file(file_content)
@@ -60,6 +43,9 @@ module BulkImportIdeas::Parsers
       )
     end
 
+    # Normalizes a field's value based on its input_type.
+    # Callers must pass a block to handle matrix_linear_scale fields, e.g.:
+    #   process_field_value(field, form_fields) { |f| extract_matrix_value(f) }
     def process_field_value(field, form_fields)
       if %w[select multiselect multiselect_image ranking].include?(field[:input_type]) && field[:value]
         values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
@@ -79,7 +65,7 @@ module BulkImportIdeas::Parsers
       elsif field[:input_type] == 'date' && field[:value].present?
         field[:value] = format_date(field[:value])
       elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
-        field[:value] = @strategy.extract_matrix_value(field)
+        field[:value] = yield(field)
       else
         field[:value] = field[:value].to_s
       end
@@ -87,10 +73,8 @@ module BulkImportIdeas::Parsers
       field
     end
 
-    private
-
-    def idea_blank?(idea)
-      idea.each_value do |value|
+    def idea_blank?(fields)
+      fields.each_value do |value|
         return false if value.present?
       end
       true
@@ -128,10 +112,9 @@ module BulkImportIdeas::Parsers
     end
 
     # Processes all fields - including built in fields
-    # @param [Array<Hash>] fields - comes from strategy#structure_raw_fields
-    # @param [Hash] idea_row - comes from #ideas_to_idea_rows
-    def process_custom_form_fields(fields, idea_row)
-      merged_fields = @strategy.merge_idea_with_form_fields(fields)
+    # @param [Array<Hash>] merged_fields - pre-merged fields from the parser
+    # @param [Hash] idea_row - the idea row being built
+    def process_custom_form_fields(merged_fields, idea_row)
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil? || field[:value].nil?

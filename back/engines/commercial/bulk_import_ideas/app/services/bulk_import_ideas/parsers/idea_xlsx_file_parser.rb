@@ -12,7 +12,7 @@ module BulkImportIdeas::Parsers
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
       @personal_data_enabled = personal_data_enabled
-      @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled, strategy: self)
+      @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled)
     end
 
     def parse_file(file_content)
@@ -26,8 +26,7 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
-      @row_mapper.ideas_to_idea_rows(xlsx_ideas, file)
+      ideas_to_idea_rows(parse_xlsx_ideas(file), file)
     end
 
     # Asynchronous version of the parse_file method
@@ -46,19 +45,25 @@ module BulkImportIdeas::Parsers
       job_ids
     end
 
-    # Strategy methods called by IdeaRowMapper
+    def ideas_to_idea_rows(ideas_array, file)
+      ideas_array.each_with_index.filter_map { |idea, index| idea_to_idea_row(idea, file, index: index) }
+    end
+
+    def idea_to_idea_row(idea, file, index: 0)
+      return nil if @row_mapper.idea_blank?(idea)
+
+      idea_row = @row_mapper.build_base_idea_row(fields: idea, file: file, index: index)
+      structured_fields = structure_raw_fields(idea)
+      idea_row = @row_mapper.process_user_details(structured_fields, idea_row)
+      merged_fields = merge_idea_with_form_fields(structured_fields)
+      @row_mapper.process_custom_form_fields(merged_fields, idea_row)
+    end
+
+    private
 
     def structure_raw_fields(fields)
-      index = 0
       fields.map do |name, value|
-        name = Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix name
-        {
-          name: name,
-          value: value,
-          type: 'field',
-          page: 1,
-          position: index += 1
-        }
+        { name: Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix(name), value: value }
       end
     end
 
@@ -70,13 +75,14 @@ module BulkImportIdeas::Parsers
           if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')
             new_field = form_field
             new_field[:value] = idea_field[:value]
-            new_field = @row_mapper.process_field_value(new_field, form_fields)
+            new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| extract_matrix_value(f) }
             merged_idea << new_field
             idea.delete_if { |f| f == idea_field }
             break
           end
         end
       end
+      merged_idea
     end
 
     def extract_matrix_value(field)
@@ -104,8 +110,6 @@ module BulkImportIdeas::Parsers
         res[key] = val.to_i if key && val
       end
     end
-
-    private
 
     def create_files(file_content)
       source_file = @row_mapper.upload_source_file(file_content)

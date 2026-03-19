@@ -72,35 +72,32 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     let(:xlsx_ideas_array) do
       [
         {
-          pdf_pages: [1],
-          fields: {
-            'First name(s)' => 'Bill',
-            'Last name' => 'Test',
-            'Email address' => 'bill@citizenlab.co',
-            'Permission' => 'X',
-            'Date Published (dd-mm-yyyy)' => '15-08-2023',
-            'Title' => 'A title',
-            'Description' => 'A description',
-            'Tags' => 'Economy; Waste',
-            'Location' => 'Somewhere',
-            'Text field' => 'Loads to say here',
-            'Multiline text field' => 'More to say here',
-            'Number field' => 5,
-            'Linear scale field' => 3,
-            'Rating field' => 2,
-            'Select field' => 'Yes',
-            'Multi select field' => 'This; That',
-            'Image select field' => 'Image 1; Image 2',
-            'Ranking field' => 'Two; One',
-            'Image URL' => 'https://images.com/image.png',
-            'Latitude' => 50.5035,
-            'Longitude' => 6.0944
-          }
+          'First name(s)' => 'Bill',
+          'Last name' => 'Test',
+          'Email address' => 'bill@citizenlab.co',
+          'Permission' => 'X',
+          'Date Published (dd-mm-yyyy)' => '15-08-2023',
+          'Title' => 'A title',
+          'Description' => 'A description',
+          'Tags' => 'Economy; Waste',
+          'Location' => 'Somewhere',
+          'Text field' => 'Loads to say here',
+          'Multiline text field' => 'More to say here',
+          'Number field' => 5,
+          'Linear scale field' => 3,
+          'Rating field' => 2,
+          'Select field' => 'Yes',
+          'Multi select field' => 'This; That',
+          'Image select field' => 'Image 1; Image 2',
+          'Ranking field' => 'Two; One',
+          'Image URL' => 'https://images.com/image.png',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944
         }
       ]
     end
     let!(:import_file) { create(:idea_import_file) }
-    let(:rows) { service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file) }
+    let(:rows) { service.ideas_to_idea_rows(xlsx_ideas_array, import_file) }
 
     it 'converts parsed XLSX core fields into idea rows' do
       expect(rows[0]).to include({
@@ -112,8 +109,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
         latitude: 50.5035,
         longitude: 6.0944,
         location_description: 'Somewhere',
-        image_url: 'https://images.com/image.png',
-        pdf_pages: [1]
+        image_url: 'https://images.com/image.png'
       })
     end
 
@@ -126,8 +122,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     end
 
     it 'does not include user details when "Permission" is blank' do
-      xlsx_ideas_array[0][:fields]['Permission'] = ''
-      rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      xlsx_ideas_array[0]['Permission'] = ''
+      rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
 
       expect(rows[0]).not_to include({
         user_first_name: 'Bill',
@@ -151,27 +147,24 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     it 'ignores completely blank rows' do
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'First name' => '',
-            'Last name' => '',
-            'Email address' => '',
-            'Permission' => '',
-            'Date Published (dd-mm-yyyy)' => '',
-            'Title' => '',
-            'Description' => '',
-            'Tags' => '',
-            'Location' => '',
-            'Text field' => '',
-            'Number field' => '',
-            'Select field' => '',
-            'Multi select field' => '',
-            'Another select field' => '',
-            'Image URL' => ''
-          }
+          'First name' => '',
+          'Last name' => '',
+          'Email address' => '',
+          'Permission' => '',
+          'Date Published (dd-mm-yyyy)' => '',
+          'Title' => '',
+          'Description' => '',
+          'Tags' => '',
+          'Location' => '',
+          'Text field' => '',
+          'Number field' => '',
+          'Select field' => '',
+          'Multi select field' => '',
+          'Another select field' => '',
+          'Image URL' => ''
         }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 0
     end
 
@@ -179,14 +172,11 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       create(:custom_field_text, resource: custom_form, key: 'text_field2', title_multiloc: { 'en' => 'Text field' })
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Text field' => 'First text field',
-            'Text field__1' => 'Second text field'
-          }
+          'Text field' => 'First text field',
+          'Text field__1' => 'Second text field'
         }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
@@ -265,23 +255,20 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       )
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Select integer field' => 2
-          }
+          'Select integer field' => 2
         }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
     end
 
     it 'text fields return text values if xlsx values are integers or floats' do
       xlsx_ideas_array = [
-        { pdf_pages: [1], fields: { 'Text field' => 2 } },
-        { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
+        { 'Text field' => 2 },
+        { 'Text field' => 2.2 }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 2
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
       expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
@@ -289,15 +276,15 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'parses matrix fields correctly' do
       xlsx_ideas_array = [
-        { pdf_pages: [1], fields: { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' } }
+        { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 2 })
 
       # Misformatted matrix field - detects what it can
-      xlsx_ideas_array[0][:fields]['Matrix field'] = 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes'
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      xlsx_ideas_array = [{ 'Matrix field' => 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes' }]
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'ride_bicycles_more_often' => 3 })
     end
 
@@ -319,16 +306,13 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Text field' => 'Something',
-            'Gender' => 'Male',
-            'A Checkbox field' => 'X',
-            'A Date field' => '01-01-2025'
-          }
+          'Text field' => 'Something',
+          'Gender' => 'Male',
+          'A Checkbox field' => 'X',
+          'A Date field' => '01-01-2025'
         }
       ]
-      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       custom_field_values = idea_rows[0][:custom_field_values]
       expect(custom_field_values[:text_field]).to eq 'Something'
@@ -341,19 +325,19 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
   describe 'format_date' do
     it 'formats date strings in dd-mm-yyyy format' do
       date_string = '15-08-2023'
-      formatted_date = service.row_mapper.send(:format_date, date_string)
+      formatted_date = service.row_mapper.format_date(date_string)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'formats date objects' do
       date_object = Date.new(2023, 8, 15)
-      formatted_date = service.row_mapper.send(:format_date, date_object)
+      formatted_date = service.row_mapper.format_date(date_object)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'returns nil for invalid date strings' do
       invalid_date_string = 'A DATE'
-      formatted_date = service.row_mapper.send(:format_date, invalid_date_string)
+      formatted_date = service.row_mapper.format_date(invalid_date_string)
       expect(formatted_date).to be_nil
     end
   end
