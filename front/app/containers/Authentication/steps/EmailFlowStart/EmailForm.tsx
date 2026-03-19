@@ -81,6 +81,7 @@ const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
             type="email"
             autocomplete="email"
             label={formatMessage(sharedMessages.email)}
+            required
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

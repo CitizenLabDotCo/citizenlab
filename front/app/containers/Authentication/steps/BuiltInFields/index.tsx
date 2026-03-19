@@ -121,6 +121,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="given-name"
                 label={formatMessage(sharedMessages.firstNamesLabel)}
+                required
               />
             </Box>
           )}
@@ -132,6 +133,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+                required
               />
             </Box>
           )}
@@ -143,6 +145,7 @@ const BuiltInFields = ({
                 type="email"
                 autocomplete="email"
                 label={formatMessage(sharedMessages.email)}
+                required
               />
             </Box>
           )}
@@ -153,6 +156,7 @@ const BuiltInFields = ({
                 id="password"
                 label={formatMessage(sharedMessages.password)}
                 autocomplete="current-password"
+                required
               />
             </Box>
           )}
