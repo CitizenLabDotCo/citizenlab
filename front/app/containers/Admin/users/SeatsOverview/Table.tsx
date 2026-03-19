@@ -50,7 +50,7 @@ const Table = ({ seatType }: Props) => {
   const lastPage = getPageNumberFromUrl(billedUsers.links.last);
 
   return (
-    <>
+    <Box mb="40px">
       <TableComponent
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
@@ -77,7 +77,7 @@ const Table = ({ seatType }: Props) => {
           loadPage={setPageNumber}
         />
       </Box>
-    </>
+    </Box>
   );
 };
 
