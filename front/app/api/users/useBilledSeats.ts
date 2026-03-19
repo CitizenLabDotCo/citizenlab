@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Pagination, CLErrors } from 'typings';
 
+import { TSeatType } from 'components/admin/SeatBasedBilling/SeatInfo';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import usersKeys from './keys';
@@ -9,7 +11,7 @@ import { IUsers, UsersKeys } from './types';
 const DEFAULT_PAGE_SIZE = 8;
 
 interface Params extends Pagination {
-  seatType: 'admin' | 'moderator';
+  seatType: TSeatType;
 }
 
 const fetchBilledSeats = ({ seatType, ...pagination }) =>
