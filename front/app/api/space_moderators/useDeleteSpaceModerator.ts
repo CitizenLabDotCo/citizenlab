@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
-import { IUser } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -12,38 +10,36 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import spaceModeratorsKeys from './keys';
 import { Params } from './types';
 
-const addSpaceModerator = ({ spaceId, userId }: Params) => {
-  return fetcher<IUser>({
-    path: `/spaces/${spaceId}/moderators`,
-    action: 'post',
-    body: {
-      space_moderator: {
-        user_id: userId,
-      },
-    },
+const deleteSpaceModerator = ({ spaceId, userId }: Params) => {
+  return fetcher({
+    path: `/spaces/${spaceId}/moderators/${userId}`,
+    action: 'delete',
   });
 };
 
-const useAddSpaceModerator = () => {
+const useDeleteSpaceModerator = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUser, CLErrors, Params>({
-    mutationFn: addSpaceModerator,
+
+  return useMutation({
+    mutationFn: deleteSpaceModerator,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: spaceModeratorsKeys.list({
           spaceId: variables.spaceId,
         }),
       });
+
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
-      queryClient.invalidateQueries({
-        queryKey: userCountKeys.items(),
-      });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
       });
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
+      });
+
       invalidateSeatsCache();
     },
   });
 };
 
-export default useAddSpaceModerator;
+export default useDeleteSpaceModerator;

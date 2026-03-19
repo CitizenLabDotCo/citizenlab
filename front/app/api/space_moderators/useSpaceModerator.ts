@@ -6,12 +6,7 @@ import { IUser, IUsers } from 'api/users/types';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import spaceModeratorsKeys from './keys';
-import { SpaceModeratorsKeys } from './types';
-
-interface Params {
-  spaceId: string;
-  userId: string;
-}
+import { SpaceModeratorsKeys, Params } from './types';
 
 const fetchSpaceModerator = ({ spaceId, userId }: Params) => {
   return fetcher<IUser>({
