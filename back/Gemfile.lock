@@ -550,7 +550,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.3.0)
-    bcrypt (3.1.20)
+    bcrypt (3.1.22)
     benchmark (0.5.0)
     bigdecimal (3.3.1)
     bindata (2.5.0)
@@ -1342,7 +1342,7 @@ DEPENDENCIES
   aws-sdk-cloudfront (~> 1.118.0)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
-  bcrypt (~> 3.1.20)
+  bcrypt (~> 3.1.22)
   bootsnap (~> 1)
   browser (~> 6.1)
   bulk_import_ideas!
