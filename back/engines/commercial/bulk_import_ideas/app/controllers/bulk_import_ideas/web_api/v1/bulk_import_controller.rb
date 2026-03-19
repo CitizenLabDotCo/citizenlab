@@ -90,10 +90,9 @@ module BulkImportIdeas
     def delete_all
       send_not_found unless supported_model?
 
-      records = imported_draft_records
-      deleted = records.destroy_all.size
+      imported_draft_records.destroy_all
 
-      render json: raw_json({ deleted: })
+      head :ok
     end
 
     def draft_records
