@@ -13,8 +13,8 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useApproveImportedIdeas from 'api/import_ideas/useApproveOfflineIdeas';
-import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftOfflineIdeas';
+import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
+import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
