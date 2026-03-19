@@ -36,6 +36,38 @@ resource 'Moderators' do
         expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id))
       end
     end
+
+    post 'web_api/v1/spaces/:space_id/moderators' do
+      with_options scope: :space_moderator do
+        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+      end
+
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:user) { create(:user) }
+
+      example 'Add a space moderator role to a user' do
+        do_request space_id: space.id, space_moderator: { user_id: user.id }
+        expect(response_status).to eq 201
+
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq user.id
+        expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      end
+    end
+
+    delete 'web_api/v1/spaces/:space_id/moderators/:user_id' do
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      example 'Remove a space moderator role from a user' do
+        do_request space_id: space.id, user_id: moderator.id
+        expect(response_status).to eq 200
+
+        expect(moderator.reload.roles).to eq []
+      end
+    end
   end
 
   context 'as a space moderator' do

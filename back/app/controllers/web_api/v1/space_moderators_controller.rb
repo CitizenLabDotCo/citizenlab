@@ -6,7 +6,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
-    @moderators = User.space_moderator(params[:space_id])
+    @moderators = User.space_moderator(@space.id)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -15,9 +15,27 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def show; end
 
-  def create; end
+  def create
+    @user = find_user_by_params
+    @user.add_role 'space_moderator', space_id: @space.id
+    if @user.save
+      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
+      SideFxSpaceModeratorService.new.after_create(@user, @space, current_user)
+      render json: serialized_data, status: :created
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
 
-  def destroy; end
+  def destroy
+    @moderator.delete_role 'space_moderator', space_id: @space.id
+    if @moderator.save
+      SideFxSpaceModeratorService.new.after_destroy(@moderator, @space, current_user)
+      head :ok
+    else
+      head :internal_server_error
+    end
+  end
 
   private
 
@@ -31,5 +49,22 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def set_space
     @space = Space.find(params[:space_id])
+  end
+
+  def create_moderator_params
+    params.require(:space_moderator).permit(
+      :user_id,
+      :user_email
+    )
+  end
+
+  def find_user_by_params
+    if create_moderator_params[:user_id].present?
+      User.find(create_moderator_params[:user_id])
+    elsif create_moderator_params[:user_email].present?
+      User.find_by!(email: create_moderator_params[:user_email])
+    else
+      raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
+    end
   end
 end
