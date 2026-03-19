@@ -284,10 +284,22 @@ const SeatInfo = ({ seatType, mb }: Props) => {
           {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
         </Box>
         <Box display="flex" alignItems="center">
-          <Box mr="20px">
+          <Box mr="20px" display="flex" alignItems="center">
+            <Icon
+              name="check-circle"
+              mr="4px"
+              fill={colors.teal500}
+              height="18px"
+            />
             {formatMessage(messages.assignedSeats, { assignedSeats })}
           </Box>
-          <Box>
+          <Box display="flex" alignItems="center">
+            <Icon
+              name="dotted-circle"
+              mr="4px"
+              fill={colors.teal500}
+              height="18px"
+            />
             {formatMessage(messages.availableSeats, {
               availableSeats: totalSeats - assignedSeats,
             })}
