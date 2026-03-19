@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.adminSeats',
     defaultMessage: 'Admin Seats',
   },
-  moderatorsSeats: {
-    id: 'app.containers.Admin.Users.SeatsOverview.moderatorsSeats',
-    defaultMessage: 'Moderators Seats',
+  managerSeats: {
+    id: 'app.containers.Admin.Users.SeatsOverview.managerSeats',
+    defaultMessage: 'Manager Seats',
   },
   name: {
     id: 'app.containers.Admin.Users.SeatsOverview.name',

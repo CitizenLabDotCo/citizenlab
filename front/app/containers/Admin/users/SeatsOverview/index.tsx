@@ -39,7 +39,7 @@ const SeatsOverview = () => {
         </Box>
         <Table seatType="admin" />
         <Title variant="h2" mt="40px">
-          <FormattedMessage {...messages.moderatorsSeats} />
+          <FormattedMessage {...messages.managerSeats} />
         </Title>
         <Box mb="20px">
           <SeatInfo seatType="moderator" />
