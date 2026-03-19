@@ -58,7 +58,10 @@ const IdeaForm = ({
 
   // Trigger validation on mount so errors show immediately
   useEffect(() => {
-    methods.trigger();
+    const timeout = setTimeout(() => {
+      methods.trigger();
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, [methods]);
 
   // Ensure initial form validation state is correct
