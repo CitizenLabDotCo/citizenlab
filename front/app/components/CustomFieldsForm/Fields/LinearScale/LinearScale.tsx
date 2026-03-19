@@ -64,6 +64,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
         role="radiogroup"
         ref={groupRef}
         aria-labelledby={`${sanitizeForClassname(name)}-label`}
+        aria-required={question.required}
         onKeyDown={handleKeyDown}
       >
         <Box

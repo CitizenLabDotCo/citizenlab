@@ -1,0 +1,42 @@
+{
+  "email_campaigns.admin_campaign_type_description.idea_assigned_to_you": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.idea_assigned_to_you": {
+    "state": "verified",
+    "verified_at": "2026-03-18T16:35:09.251711Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.by_author": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.event_description": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-18T16:35:09.251711Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.idea_assigned_to_you.title": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:50:36.812884Z",
+    "verified_by": "Admin"
+  }
+}

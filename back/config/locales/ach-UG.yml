@@ -147,43 +147,31 @@ ach:
     ideas:
       title:
         title: crwdns207864:0crwdne207864:0
-        description: crwdns207866:0crwdne207866:0
       body:
         title: crwdns207868:0crwdne207868:0
-        description: crwdns207870:0crwdne207870:0
       author_id:
         title: crwdns207872:0crwdne207872:0
       topic_ids:
         title: crwdns207874:0crwdne207874:0
-        description: crwdns207876:0crwdne207876:0
       consponsor_ids:
         title: crwdns3238295:0crwdne3238295:0
         description: crwdns3238297:0crwdne3238297:0
       location:
         title: crwdns207878:0crwdne207878:0
-        description: crwdns207880:0crwdne207880:0
       proposed_budget:
         title: crwdns207882:0crwdne207882:0
-        description: crwdns207884:0crwdne207884:0
       budget:
         title: crwdns207886:0crwdne207886:0
       images:
         title: crwdns207888:0crwdne207888:0
-        description: crwdns207890:0crwdne207890:0
       attachments:
         title: crwdns207892:0crwdne207892:0
-        description: crwdns207894:0crwdne207894:0
-      title_page:
-        description: crwdns4368150:0crwdne4368150:0
       body_page:
         title: crwdns4368152:0crwdne4368152:0
-        description: crwdns4368154:0crwdne4368154:0
       uploads_page:
         title: crwdns4368156:0crwdne4368156:0
-        description: crwdns4368158:0crwdne4368158:0
       details_page:
         title: crwdns4368160:0crwdne4368160:0
-        description: crwdns4368162:0crwdne4368162:0
       other_input_field:
         title: crwdns3058777:0crwdne3058777:0
         print_title: crwdns4607205:0%{other_option}crwdne4607205:0

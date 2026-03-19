@@ -5,7 +5,6 @@ import {
   Title,
   Text,
   colors,
-  stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -123,49 +122,45 @@ const ReviewSection = ({
         </Title>
       </Box>
 
-      <Box
-        px="25px"
-        borderBottom={`5px ${colors.grey200} solid`}
-        display="flex"
-      >
-        <Box w="100%" display="flex" alignItems="center">
-          {approvals.not_approved === 0 ? (
-            <>
-              <Box px="15px" py="10px">
-                <ButtonWithLink
-                  bgColor={colors.primary}
-                  icon="check"
-                  processing={isApproving}
-                  disabled={isApproving || importing}
-                  onClick={handleApproveAll}
-                >
-                  <FormattedMessage {...messages.approveAllInputs} />
-                </ButtonWithLink>
-              </Box>
-              <Box>
-                <Text>
-                  <FormattedMessage
-                    {...messages.inputsImported}
-                    values={{ numIdeas }}
-                  />
-                </Text>
-              </Box>
-            </>
-          ) : (
-            <Error
-              text={formatMessage(messages.inputsNotApproved, {
-                numNotApproved: approvals.not_approved,
-              })}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
-            />
-          )}
+      <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        <Box display="flex">
+          <Box w="100%" display="flex" alignItems="center">
+            <Box px="15px" py="10px">
+              <ButtonWithLink
+                bgColor={colors.primary}
+                icon="check"
+                processing={isApproving}
+                disabled={isApproving || importing}
+                onClick={handleApproveAll}
+              >
+                <FormattedMessage {...messages.approveAllInputs} />
+              </ButtonWithLink>
+            </Box>
+            <Box>
+              <Text>
+                <FormattedMessage
+                  {...messages.inputsImported}
+                  values={{ numIdeas }}
+                />
+              </Text>
+            </Box>
+          </Box>
         </Box>
+        {approvals.not_approved > 0 && (
+          <Error
+            text={formatMessage(messages.inputsNotApproved, {
+              numNotApproved: approvals.not_approved,
+            })}
+            marginTop="0px"
+            showBackground={false}
+            showIcon={true}
+          />
+        )}
       </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
+        flex="1"
+        minHeight="0"
         display="flex"
         px="40px"
         justifyContent="space-between"

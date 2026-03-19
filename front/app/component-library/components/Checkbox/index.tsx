@@ -92,6 +92,7 @@ export type CheckboxProps = {
   stopLabelPropagation?: boolean;
   checkedColor?: Color;
   usePrimaryBorder?: boolean;
+  required?: boolean;
 };
 
 type Props = {
@@ -118,6 +119,7 @@ const Checkbox = ({
   checkedColor,
   usePrimaryBorder = false,
   name,
+  required,
   tabIndex = 0,
   ...boxProps
 }: Props) => {
@@ -141,6 +143,7 @@ const Checkbox = ({
         disabled={disabled}
         tabIndex={tabIndex}
         name={name}
+        required={required}
       />
       <StyledCheckbox
         data-testid={dataTestId || testEnv('check-mark-background')}

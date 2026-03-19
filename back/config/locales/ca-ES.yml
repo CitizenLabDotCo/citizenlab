@@ -147,43 +147,31 @@ ca:
     ideas:
       title:
         title: Títol
-        description:
       body:
         title: Descripció
-        description:
       author_id:
         title: Autor
       topic_ids:
         title: Etiquetes
-        description:
       consponsor_ids:
         title: Copatrocinadors
         description: Convida als copatrocinadors a través del camp següent. Els copatrocinadors convidats rebran un correu electrònic.
       location:
         title: Ubicació
-        description:
       proposed_budget:
         title: Proposta de pressupost
-        description:
       budget:
         title: Pressupost
       images:
         title: Imatges
-        description:
       attachments:
         title: Adjunts
-        description:
-      title_page:
-        description:
       body_page:
         title: Explica'ns més
-        description:
       uploads_page:
         title: Imatges i fitxers adjunts
-        description:
       details_page:
         title: Detalls
-        description:
       other_input_field:
         title: Escriu la teva resposta
         print_title: Si '%{other_option}', especifiqueu-ho

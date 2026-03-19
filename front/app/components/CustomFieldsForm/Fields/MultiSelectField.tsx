@@ -42,6 +42,7 @@ const MultiSelectField = ({
           options={options}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
+          aria-required={question.required}
         />
       ) : (
         <CheckboxMultiSelect
@@ -50,6 +51,7 @@ const MultiSelectField = ({
           scrollErrorIntoView={scrollErrorIntoView}
           title={localize(question.title_multiloc)}
           disabled={disabled}
+          aria-required={question.required}
         />
       )}
       {value?.includes('other') && (

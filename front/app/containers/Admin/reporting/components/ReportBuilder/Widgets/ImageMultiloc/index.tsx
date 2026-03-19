@@ -47,7 +47,7 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       width="100%"
       display="flex"
       className="e2e-image"
-      style={{ pointerEvents: 'none' }}
+      pointerEvents="none"
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"

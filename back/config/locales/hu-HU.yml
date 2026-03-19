@@ -147,43 +147,31 @@ hu:
     ideas:
       title:
         title: Cím
-        description:
       body:
         title: Leírás
-        description:
       author_id:
         title: Szerző
       topic_ids:
         title: Címkék
-        description:
       consponsor_ids:
         title: Társszponzorok
         description: Hívja meg társszponzorait az alábbi mezőn keresztül. A meghívott társszponzor(ok) e-mailt kapnak.
       location:
         title: Elhelyezkedés
-        description:
       proposed_budget:
         title: Költségvetési javaslat
-        description:
       budget:
         title: Költségvetés
       images:
         title: Képek
-        description:
       attachments:
         title: Mellékletek
-        description:
-      title_page:
-        description:
       body_page:
         title: Mesélj többet
-        description:
       uploads_page:
         title: Képek és mellékletek
-        description:
       details_page:
         title: Részletek
-        description:
       other_input_field:
         title: Írja be a választ
         print_title: Ha '%{other_option}', kérjük, pontosítsa
