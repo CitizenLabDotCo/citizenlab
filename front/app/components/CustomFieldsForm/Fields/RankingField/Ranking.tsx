@@ -59,10 +59,9 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
 
   if (!question.options) return null;
 
-  const questionOptions = questionOptionsRef.current!;
-
   // If form data present, get options in that ranking order.
   // Otherwise, get option order from the question.
+  const questionOptions = questionOptionsRef.current!;
   const options = data
     ? getOptionsFromData(data, questionOptions)
     : questionOptions;
