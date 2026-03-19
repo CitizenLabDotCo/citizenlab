@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.name',
     defaultMessage: 'Name',
   },
-  status: {
-    id: 'app.containers.Admin.Users.SeatsOverview.status',
-    defaultMessage: 'Status',
+  inviteStatus: {
+    id: 'app.containers.Admin.Users.SeatsOverview.inviteStatus',
+    defaultMessage: 'Invite status',
   },
   role: {
     id: 'app.containers.Admin.Users.SeatsOverview.role',

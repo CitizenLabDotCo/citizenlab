@@ -43,7 +43,7 @@ const Table = ({ users }: Props) => {
         <Tr background={colors.grey50}>
           <HeaderCel message={messages.name} />
           <HeaderCel message={messages.role} />
-          <HeaderCel message={messages.status} />
+          <HeaderCel message={messages.inviteStatus} />
           <HeaderCel message={messages.options} />
         </Tr>
       </Thead>
