@@ -147,43 +147,31 @@ nb:
     ideas:
       title:
         title: Tittel
-        description:
       body:
         title: Beskrivelse
-        description:
       author_id:
         title: Forfatter
       topic_ids:
         title: Tagger
-        description:
       consponsor_ids:
         title: Medsponsorer
         description: Inviter medsponsorer via feltet nedenfor. De inviterte medsponsorene vil motta en e-post.
       location:
         title: Beliggenhet
-        description:
       proposed_budget:
         title: Forslag til budsjett
-        description:
       budget:
         title: Budsjett
       images:
         title: Bilder
-        description:
       attachments:
         title: Vedlegg
-        description:
-      title_page:
-        description:
       body_page:
         title: Fortell oss mer
-        description:
       uploads_page:
         title: Bilder og vedlegg
-        description:
       details_page:
         title: Detaljer
-        description:
       other_input_field:
         title: Skriv inn svaret ditt
         print_title: Hvis '%{other_option}', vennligst spesifiser
@@ -398,5 +386,6 @@ nb:
     event_details: "Detaljer om arrangementet"
   errors:
     messages:
+      in_the_past: "må ligge i fremtiden"
       max_must_be_greater_than_min_characters: "Maksimum må være større enn minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum må være større enn eller lik minimum."

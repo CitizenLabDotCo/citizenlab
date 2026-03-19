@@ -12,12 +12,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { useIntl } from 'utils/cl-intl';
-import { isRegularUser } from 'utils/permissions/roles';
 
 import messages from './messages';
 
-const AddModeratorsModal = lazy(
-  () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
+const SeatLimitReachedModal = lazy(
+  () => import('components/admin/SeatBasedBilling/SeatLimitReachedModal')
 );
 
 const AddButton = styled(ButtonWithLink)`
@@ -38,9 +37,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedModeratorsNumber: 1,
-  });
+  const { loading, checkIfUserExceedsSeats } = useExceedsSeats();
 
   const closeModal = () => {
     setShowModal(false);
@@ -68,9 +65,12 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   };
 
   const handleAddClick = () => {
-    const isSelectedUserAModerator =
-      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
+    if (loading || !moderatorToAdd) return;
+    const shouldOpenModal = checkIfUserExceedsSeats(
+      moderatorToAdd,
+      'moderator'
+    );
+
     if (shouldOpenModal) {
       openModal();
     } else {
@@ -109,7 +109,8 @@ const UserSearch = memo(({ projectId, label }: Props) => {
         />
       </Box>
       <Suspense fallback={null}>
-        <AddModeratorsModal
+        <SeatLimitReachedModal
+          seatType="moderator"
           addModerators={handleOnAddModeratorsClick}
           showModal={showModal}
           closeModal={closeModal}

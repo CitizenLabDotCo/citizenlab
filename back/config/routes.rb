@@ -281,14 +281,13 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :spaces, only: %i[index show create update destroy] do
-        get 'tree_view', on: :member, to: 'spaces#tree_view'
-      end
+      resources :spaces, only: %i[index show create update destroy]
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
         get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
+        get 'tree_view', on: :collection
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do

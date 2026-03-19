@@ -36,6 +36,7 @@ export const InputForm = () => {
             width="auto"
             icon="edit"
             data-cy="e2e-edit-input-form"
+            buttonStyle="admin-dark"
           >
             <FormattedMessage {...messages.editInputForm} />
           </ButtonWithLink>

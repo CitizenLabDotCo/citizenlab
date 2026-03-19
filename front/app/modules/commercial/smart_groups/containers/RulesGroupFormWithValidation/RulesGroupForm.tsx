@@ -8,7 +8,10 @@ import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
 
 import adminUsersMessages from 'containers/Admin/users/messages';
-import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
+import {
+  FooterContainer,
+  Fill,
+} from 'containers/Admin/users/_shared/NormalGroupForm';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';

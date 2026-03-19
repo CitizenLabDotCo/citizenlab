@@ -147,43 +147,31 @@ de:
     ideas:
       title:
         title: Titel
-        description:
       body:
         title: Beschreibung
-        description:
       author_id:
         title: Autor*in
       topic_ids:
         title: Themen
-        description:
       consponsor_ids:
         title: Unterstützer*innen
         description: Laden Sie Unterstützer*innen über das unten stehende Feld ein. Unterstützende werden eine E-Mail erhalten.
       location:
         title: Standort
-        description:
       proposed_budget:
         title: Vorgeschlagenes Budget
-        description:
       budget:
         title: Budget
       images:
         title: Bilder
-        description:
       attachments:
         title: Anhänge
-        description:
-      title_page:
-        description:
       body_page:
         title: Erzähl uns mehr
-        description:
       uploads_page:
         title: Bilder und Anhänge
-        description:
       details_page:
         title: Details
-        description:
       other_input_field:
         title: Antwort eingeben
         print_title: Wenn '%{other_option}', bitte angeben
@@ -398,5 +386,6 @@ de:
     event_details: "Veranstaltungsdetails"
   errors:
     messages:
+      in_the_past: "muss in der Zukunft liegen"
       max_must_be_greater_than_min_characters: "Das Maximum muss größer sein als das Minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Das Maximum muss größer oder gleich dem Minimum sein."

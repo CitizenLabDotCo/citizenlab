@@ -147,43 +147,31 @@ tr:
     ideas:
       title:
         title: Başlık
-        description:
       body:
         title: Açıklama
-        description:
       author_id:
         title: Yazan
       topic_ids:
         title: Etiketler
-        description:
       consponsor_ids:
         title: Eş sponsorlar
         description: Aşağıdaki alan aracılığıyla eş sponsorları davet edin. Davet edilen eş sponsor(lar) bir e-posta alacaktır.
       location:
         title: Konum
-        description:
       proposed_budget:
         title: Öngörülen Bütçe
-        description:
       budget:
         title: Bütçe
       images:
         title: Görseller
-        description:
       attachments:
         title: Ekler
-        description:
-      title_page:
-        description:
       body_page:
         title: Bize daha fazlasını anlatın
-        description:
       uploads_page:
         title: Resimler ve ekler
-        description:
       details_page:
         title: Detaylar
-        description:
       other_input_field:
         title: Cevabınızı yazın
         print_title: Eğer '%{other_option}' ise, lütfen belirtiniz
@@ -398,5 +386,6 @@ tr:
     event_details: "Etkinlik detayları"
   errors:
     messages:
+      in_the_past: "gelecekte olmalı"
       max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."
       max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum değer minimum değerden büyük veya eşit olmalıdır."
