@@ -165,34 +165,34 @@ describe UserRoleService do
     let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
     let!(:other_folder_moderator) { create(:project_folder_moderator, project_folders: [other_folder]) }
 
-    it 'lists all moderators of a project folder' do
+    it 'lists all explicit and implicit moderators of a project folder' do
       expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id)
     end
 
-    it 'lists all moderators of a project' do
+    it 'lists all explicit and implicit moderators of a project' do
       expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
-    it 'lists all moderators of a phase' do
+    it 'lists all explicit and implicit moderators of a phase' do
       phase = create(:phase, project: project)
 
       expect(service.moderators_for(phase.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
-    it 'lists all moderators of an idea' do
+    it 'lists all explicit and implicit moderators of an idea' do
       idea = create(:idea, project: project)
 
       expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
-    it 'lists all moderators of a comment' do
+    it 'lists all explicit and implicit moderators of a comment' do
       idea = create(:idea, project: project)
       comment = create(:comment, idea: idea)
 
       expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
-    it 'lists all moderators of a permission' do
+    it 'lists all explicit and implicit moderators of a permission' do
       phase = create(:phase, project: project)
       permission = create(:permission, permission_scope: phase)
 
