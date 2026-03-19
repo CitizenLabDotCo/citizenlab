@@ -17,8 +17,8 @@ const fetchBilledSeats = ({ seatType, ...pagination }) =>
     path: `/users/billed_${seatType}s`,
     action: 'get',
     queryParams: {
-      'page[number]': pagination.pageNumber ?? 1,
-      'page[size]': pagination.pageSize ?? DEFAULT_PAGE_SIZE,
+      'page[number]': pagination['page[number]'] ?? 1,
+      'page[size]': pagination['page[size]'] ?? DEFAULT_PAGE_SIZE,
     },
   });
 

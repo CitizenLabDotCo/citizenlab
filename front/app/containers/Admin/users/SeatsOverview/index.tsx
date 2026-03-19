@@ -1,8 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-
-import useBilledSeats from 'api/users/useBilledSeats';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -14,21 +12,6 @@ import messages from './messages';
 import Table from './Table';
 
 const SeatsOverview = () => {
-  const { data: billedAdminsData } = useBilledSeats({ seatType: 'admin' });
-  const { data: billedModeratorsData } = useBilledSeats({
-    seatType: 'moderator',
-  });
-
-  const billedAdmins = useMemo(
-    () => billedAdminsData?.pages.flatMap((page) => page.data) ?? [],
-    [billedAdminsData?.pages]
-  );
-
-  const billedModerators = useMemo(
-    () => billedModeratorsData?.pages.flatMap((page) => page.data) ?? [],
-    [billedModeratorsData?.pages]
-  );
-
   return (
     <Box
       bgColor={colors.white}
@@ -54,14 +37,14 @@ const SeatsOverview = () => {
         <Box mb="20px">
           <SeatInfo seatType="admin" />
         </Box>
-        <Table users={billedAdmins} />
+        <Table seatType="admin" />
         <Title variant="h2" mt="40px">
           <FormattedMessage {...messages.moderatorsSeats} />
         </Title>
         <Box mb="20px">
           <SeatInfo seatType="moderator" />
         </Box>
-        <Table users={billedModerators} />
+        <Table seatType="moderator" />
       </Box>
     </Box>
   );
