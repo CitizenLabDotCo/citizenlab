@@ -225,6 +225,7 @@ const MultiSelectDropdown = ({
               {values.map((entry, index) => {
                 const checked = includes(selected, entry.value);
                 const last = index === values.length - 1;
+                const labelId = `${baseID}-label-${index}`;
                 const classNames = [
                   `e2e-sort-item-${
                     entry.value !== '-new' ? entry.value : 'old'
@@ -240,22 +241,37 @@ const MultiSelectDropdown = ({
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
                     onKeyDown={handleOnKeyDown}
+                    onClick={() => onChange(entry.value)}
                     className={classNames}
                     ref={(el) => (tabsRef.current[index] = el)}
                     role="checkbox"
                     aria-checked={checked}
+                    aria-labelledby={labelId}
                     data-value={entry.value}
                     data-index={index}
                     tabIndex={0}
                   >
-                    <Checkbox
-                      checked={checked}
-                      onChange={handleOnToggleCheckbox(entry)}
-                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
-                      name={name}
-                      selectedBorderColor={colors.white}
-                      checkBoxTabIndex={-1}
-                    />
+                    {/* The inner Checkbox is purely visual. We hide it from the
+                        accessibility tree (aria-hidden) because JAWS sends
+                        Enter/Space to the native <input type="checkbox"> inside
+                        it instead of the <li role="checkbox"> that has the
+                        keyboard handlers. pointerEvents: 'none' ensures clicks
+                        go through the <li>'s onClick handler.
+                        See: https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/ */}
+                    <Box aria-hidden="true" style={{ pointerEvents: 'none' }}>
+                      <Checkbox
+                        checked={checked}
+                        onChange={handleOnToggleCheckbox(entry)}
+                        label={
+                          <CheckboxLabel id={labelId}>
+                            {entry.text}
+                          </CheckboxLabel>
+                        }
+                        name={name}
+                        selectedBorderColor={colors.white}
+                        checkBoxTabIndex={-1}
+                      />
+                    </Box>
                   </CheckboxListItem>
                 );
               })}
