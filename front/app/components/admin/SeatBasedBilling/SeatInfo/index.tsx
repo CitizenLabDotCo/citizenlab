@@ -274,7 +274,12 @@ const SeatInfo = ({ seatType, mb }: Props) => {
       <Box justifyContent="space-between" display="flex" alignItems="center">
         <Box display="flex" alignItems="center">
           {seatType === 'admin' && (
-            <Icon name="shield-checkered" mr="8px" fill={colors.teal500} />
+            <Icon
+              name="shield-checkered"
+              mr="4px"
+              fill={colors.teal500}
+              height="20px"
+            />
           )}
           {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
         </Box>
