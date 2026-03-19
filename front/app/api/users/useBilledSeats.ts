@@ -1,40 +1,32 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { CLErrors, Pagination } from 'typings';
+import { useQuery } from '@tanstack/react-query';
+import { Pagination, CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import usersKeys from './keys';
-import { IUsers } from './types';
+import { IUsers, UsersKeys } from './types';
 
 const DEFAULT_PAGE_SIZE = 8;
 
-interface Params {
+interface Params extends Pagination {
   seatType: 'admin' | 'moderator';
 }
 
-const fetchBilledSeats = ({ seatType }: Params, pagination: Pagination) =>
+const fetchBilledSeats = ({ seatType, ...pagination }) =>
   fetcher<IUsers>({
     path: `/users/billed_${seatType}s`,
     action: 'get',
-    queryParams: pagination,
+    queryParams: {
+      'page[number]': pagination.pageNumber ?? 1,
+      'page[size]': pagination.pageSize ?? DEFAULT_PAGE_SIZE,
+    },
   });
 
 const useBilledSeats = (params: Params) => {
-  return useInfiniteQuery<IUsers, CLErrors>(
-    usersKeys.list(params),
-    ({ pageParam = 1 }) =>
-      fetchBilledSeats(params, {
-        'page[number]': pageParam,
-        'page[size]': DEFAULT_PAGE_SIZE,
-      }),
-    {
-      getNextPageParam: (lastPage) => {
-        const nextLink = lastPage.links.next;
-        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
-      },
-    }
-  );
+  return useQuery<IUsers, CLErrors, IUsers, UsersKeys>({
+    queryKey: usersKeys.list(params),
+    queryFn: () => fetchBilledSeats(params),
+  });
 };
 
 export default useBilledSeats;
