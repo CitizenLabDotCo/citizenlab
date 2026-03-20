@@ -21,7 +21,7 @@ module WebApi
         end
 
         def moderator_policy_class
-          SpaceModeratorPolicy
+          ::Moderators::SpaceModeratorPolicy
         end
       end
     end

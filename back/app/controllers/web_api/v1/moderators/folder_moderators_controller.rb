@@ -21,7 +21,7 @@ module WebApi
         end
 
         def moderator_policy_class
-          FolderModeratorPolicy
+          ::Moderators::FolderModeratorPolicy
         end
       end
     end

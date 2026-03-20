@@ -21,7 +21,7 @@ module WebApi
         end
 
         def moderator_policy_class
-          ProjectModeratorPolicy
+          ::Moderators::ProjectModeratorPolicy
         end
       end
     end
