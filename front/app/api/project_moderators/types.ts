@@ -9,7 +9,7 @@ export type ProjectForderParams = {
 };
 
 export type ProjectModeratorAdd = {
-  moderatorId?: string;
-  moderatorEmail?: string;
+  user_id?: string;
+  user_email?: string;
   projectId: string;
 };

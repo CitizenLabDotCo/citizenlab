@@ -8,7 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
 import AddModerator from 'components/admin/AddModerator';
@@ -34,7 +33,6 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
 
   return (
@@ -74,12 +72,8 @@ const ProjectManagement = ({ projectId }: Props) => {
       </Text>
       <AddModerator
         projectId={projectId}
-        onAddModerator={async ({ moderatorId, moderatorEmail }) => {
-          if (moderatorId) {
-            await addProjectModerator({ moderatorId, projectId });
-          } else {
-            await addProjectModerator({ moderatorEmail, projectId });
-          }
+        onAddModerator={async (params) => {
+          await addProjectModerator({ ...params, projectId });
         }}
       />
     </ModeratorSubSection>

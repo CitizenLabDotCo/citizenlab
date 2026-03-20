@@ -87,7 +87,7 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         } else {
           await addProjectModerator({
             projectId: publication.relationships.publication.data.id,
-            moderatorId: user.id,
+            user_id: user.id,
           });
         }
       }
