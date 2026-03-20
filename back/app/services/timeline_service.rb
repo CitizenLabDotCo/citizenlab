@@ -75,7 +75,7 @@ class TimelineService
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects)
       .group(:project_id)
-      .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamptz)"))
+      .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamp)"))
 
     projects.to_h do |project|
       active_status = if starts[project.id].blank? # No phases
