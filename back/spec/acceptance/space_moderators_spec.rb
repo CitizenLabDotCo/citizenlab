@@ -67,6 +67,7 @@ resource 'Moderators' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user.id
         expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
+        expect(LogActivityJob).to have_been_enqueued.with(user, 'space_moderation_rights_received', admin, kind_of(Integer), payload: { project_id: nil })
       end
     end
 
@@ -80,6 +81,7 @@ resource 'Moderators' do
         expect(response_status).to eq 200
 
         expect(moderator.reload.roles).to eq []
+        expect(LogActivityJob).to have_been_enqueued.with(moderator, 'space_moderation_rights_removed', admin, kind_of(Integer), payload: { project_id: nil })
       end
     end
   end
@@ -144,6 +146,7 @@ resource 'Moderators' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user.id
         expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
+        expect(LogActivityJob).to have_been_enqueued.with(user, 'space_moderation_rights_received', space_moderator, kind_of(Integer), payload: { project_id: nil })
       end
 
       example '[error] Add a space moderator role to a user of a space not moderated by the user' do

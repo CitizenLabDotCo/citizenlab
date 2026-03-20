@@ -144,7 +144,7 @@ describe SideFxUserService do
       folder = create(:project_folder)
       user.update!(roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_received', current_user, user.updated_at.to_i, payload: { project_id: nil})
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_received', current_user, user.updated_at.to_i, payload: { project_id: nil })
     end
 
     it "logs a 'project_folder_moderation_rights_removed' action job when user has been removed from project folder moderator" do
@@ -186,7 +186,7 @@ describe SideFxUserService do
         { 'type' => 'admin' },
         { 'type' => 'project_moderator', 'project_id' => project_b.id }
       ])
-      
+
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
         .with(user, 'space_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
