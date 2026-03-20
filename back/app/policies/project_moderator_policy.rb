@@ -19,10 +19,6 @@ class ProjectModeratorPolicy < ApplicationPolicy
     active_and_can_moderate?
   end
 
-  def users_search?
-    active_and_can_moderate?
-  end
-
   private
 
   def active_and_can_moderate?

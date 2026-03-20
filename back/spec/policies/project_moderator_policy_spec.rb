@@ -18,7 +18,6 @@ describe ProjectModeratorPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
-    it { is_expected.not_to permit(:users_search) }
   end
 
   shared_examples 'all actions permitted' do
@@ -26,7 +25,6 @@ describe ProjectModeratorPolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
-    it { is_expected.to permit(:users_search) }
   end
 
   context 'for an admin' do
@@ -66,7 +64,6 @@ describe ProjectModeratorPolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
-    it { is_expected.to permit(:users_search) }
   end
 
   context 'for a project moderator of another project' do

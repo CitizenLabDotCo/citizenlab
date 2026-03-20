@@ -248,9 +248,7 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :moderators, controller: 'project_moderators', except: [:update] do
-          get :users_search, on: :collection
-        end
+        resources :moderators, controller: 'project_moderators', except: [:update]
 
         collection do
           get 'by_slug/:slug', to: 'projects#by_slug'

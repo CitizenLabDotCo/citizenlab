@@ -45,18 +45,6 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     end
   end
 
-  def users_search
-    @users = ::User.search_by_all(params[:search])
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
-    render json: linked_json(
-      @users,
-      ::WebApi::V1::ProjectModeratorSerializer,
-      params: jsonapi_serializer_params(project_id: params[:project_id])
-    )
-  end
-
   private
 
   def set_moderator
