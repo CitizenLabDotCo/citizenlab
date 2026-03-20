@@ -4,7 +4,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   before_action :set_project
   before_action :do_authorize
   before_action :set_moderator, only: %i[show destroy]
-  skip_before_action :authenticate_user
+
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
