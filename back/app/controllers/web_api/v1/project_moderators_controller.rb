@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class WebApi::V1::ProjectModeratorsController < ApplicationController
   before_action :set_project
   before_action :do_authorize
@@ -8,7 +6,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    @moderators = User.project_moderator(params[:project_id])
+    @moderators = User.project_moderator(@project.id)
     @moderators = paginate @moderators
 
     render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
@@ -18,10 +16,10 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
   end
 
-  # insert
   def create
     @user = find_user_by_params
-    @user.add_role 'project_moderator', project_id: params[:project_id]
+    @user.add_role 'project_moderator', project_id: @project.id
+
     if @user.save
       ::SideFxUserService.new.after_update(@user, current_user)
       render json: ::WebApi::V1::UserSerializer.new(
@@ -33,9 +31,9 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     end
   end
 
-  # delete
   def destroy
-    @moderator.delete_role 'project_moderator', project_id: params[:project_id]
+    @moderator.delete_role 'project_moderator', project_id: @project.id
+
     if @moderator.save
       ::SideFxUserService.new.after_update(@moderator, current_user)
       head :ok
@@ -45,6 +43,10 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   private
+
+  def do_authorize
+    authorize @project, policy_class: ProjectModeratorPolicy
+  end
 
   def set_moderator
     @moderator = User.find params[:id]
@@ -66,9 +68,5 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     else
       raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
-  end
-
-  def do_authorize
-    authorize @project, policy_class: ProjectModeratorPolicy
   end
 end

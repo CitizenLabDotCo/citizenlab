@@ -7,8 +7,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def index
     @moderators = User.space_moderator(@space.id)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @moderators = paginate @moderators
 
     render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
@@ -20,10 +19,13 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
   def create
     @user = find_user_by_params
     @user.add_role 'space_moderator', space_id: @space.id
+
     if @user.save
-      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
       ::SideFxUserService.new.after_update(@user, current_user)
-      render json: serialized_data, status: :created
+      render json: ::WebApi::V1::UserSerializer.new(
+        @user,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -31,6 +33,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
 
   def destroy
     @moderator.delete_role 'space_moderator', space_id: @space.id
+
     if @moderator.save
       ::SideFxUserService.new.after_update(@moderator, current_user)
       head :ok
@@ -54,10 +57,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-    params.require(:moderator).permit(
-      :user_id,
-      :user_email
-    )
+    params.require(:moderator).permit(:user_id,:user_email)
   end
 
   def find_user_by_params

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class WebApi::V1::FolderModeratorsController < ApplicationController
   before_action :set_folder
   before_action :do_authorize
@@ -8,9 +6,8 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
-    @moderators = User.project_folder_moderator(params[:project_folder_id])
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @moderators = User.project_folder_moderator(@folder.id)
+    @moderators = paginate @moderators
 
     render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
@@ -19,24 +16,24 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     render json: ::WebApi::V1::UserSerializer.new(@moderator, params: jsonapi_serializer_params).serializable_hash
   end
 
-  # insert
   def create
     @user = find_user_by_params
-    @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
+    @user.add_role 'project_folder_moderator', project_folder_id: @folder.id
+
     if @user.save
-      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
       ::SideFxUserService.new.after_update(@user, current_user)
-      render json: serialized_data, status: :created
+      render json: ::WebApi::V1::UserSerializer.new(
+        @user,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
-  # delete
   def destroy
-    @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
+    @moderator.delete_role 'project_folder_moderator', project_folder_id: @folder.id
+
     if @moderator.save
       ::SideFxUserService.new.after_update(@moderator, current_user)
       head :ok
@@ -47,6 +44,10 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
   private
 
+  def do_authorize
+    authorize @folder, policy_class: FolderModeratorPolicy
+  end
+
   def set_moderator
     @moderator = User.find params[:id]
   end
@@ -56,10 +57,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-    params.require(:moderator).permit(
-      :user_id,
-      :user_email
-    )
+    params.require(:moderator).permit(:user_id, :user_email)
   end
 
   def find_user_by_params
@@ -70,9 +68,5 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     else
       raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
-  end
-
-  def do_authorize
-    authorize @folder, policy_class: FolderModeratorPolicy
   end
 end
