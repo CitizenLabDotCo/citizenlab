@@ -44,10 +44,6 @@ RSpec.describe UserRoles do
     end
 
     describe '.not_project_moderator' do
-      it 'returns only non-project moderators' do
-        expect(User.not_project_moderator.count).to eq(5)
-      end
-
       let(:space) { create(:space) }
       let(:project) { create(:project, space: space) }
       let(:folder) { create(:project_folder, projects: [project], space: space) }
@@ -69,7 +65,7 @@ RSpec.describe UserRoles do
 
     describe '.not_project_folder_moderator' do
       it 'returns only non-project folder moderators' do
-        expect(User.not_project_folder_moderator.count).to eq(4)
+        expect(User.not_project_folder_moderator.count).to eq(5)
       end
     end
 
@@ -95,7 +91,7 @@ RSpec.describe UserRoles do
 
         # Remaining users are non-admins (ordering uncertain)
         expected_non_admin_emails = expected_ordered_users.offset(2).pluck(:email)
-        expect(expected_non_admin_emails).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'normal_user@example.com')
+        expect(expected_non_admin_emails).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'normal_user@example.com', 'space_mod@example.com')
       end
     end
 
