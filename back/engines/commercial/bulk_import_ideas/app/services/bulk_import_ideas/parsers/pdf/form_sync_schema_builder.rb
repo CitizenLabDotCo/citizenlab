@@ -177,8 +177,15 @@ module BulkImportIdeas::Parsers::Pdf
       end.compact_blank
 
       field.matrix_statements.each_with_index do |statement, index|
-        sub_key = "#{question_key}.#{index + 1}"
+        sub_key = "#{question_key}_#{index + 1}"
+        reasoning_key = "#{sub_key}_reasoning"
         statement_title = statement.title_multiloc[@locale.to_s]
+
+        properties[reasoning_key] = {
+          type: 'string',
+          description: "For the row '#{statement_title}', describe which column (counting from left) the mark is in."
+        }
+        required << reasoning_key
 
         properties[sub_key] = {
           type: 'string',
