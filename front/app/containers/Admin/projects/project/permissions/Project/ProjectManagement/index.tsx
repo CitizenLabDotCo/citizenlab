@@ -8,12 +8,18 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+
+import AddByEmail from 'components/admin/AddByEmail';
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import UserSearch from 'components/admin/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
+import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -33,6 +39,8 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
+  const { mutateAsync: addProjectModerator } = useAddProjectModerator();
 
   return (
     <ModeratorSubSection>
@@ -61,20 +69,38 @@ const ProjectManagement = ({ projectId }: Props) => {
           }
         />
       </Box>
-      <UserSearch
-        projectId={projectId}
-        label={
-          <Text
-            color="primary"
-            p="0px"
-            mb="0px"
-            style={{ fontWeight: '500', fontSize: '18px' }}
-          >
-            {formatMessage(messages.moderatorSearchFieldLabel)}
-          </Text>
-        }
+      <Text
+        color="primary"
+        p="0px"
+        mb="32px"
+        style={{ fontWeight: '500', fontSize: '18px' }}
+      >
+        {formatMessage(messages.addProjectModerators)}
+      </Text>
+      {isAdmin(authUser) && (
+        <>
+          <UserSearch projectId={projectId} />
+          <Box maxWidth="500px" mt="28px">
+            <Or />
+          </Box>
+        </>
+      )}
+      <AddByEmail
+        onSubmit={async (email) => {
+          await addProjectModerator({ moderatorEmail: email, projectId });
+        }}
       />
-      <ModeratorList projectId={projectId} />
+      <Box mt="40px">
+        <Text
+          color="primary"
+          p="0px"
+          mb="32px"
+          style={{ fontWeight: '500', fontSize: '18px' }}
+        >
+          {formatMessage(messages.moderatorSearchFieldLabel)}
+        </Text>
+        <ModeratorList projectId={projectId} />
+      </Box>
       <Box width="516px">
         <SeatInfo seatType="moderator" />
       </Box>
