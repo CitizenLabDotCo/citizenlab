@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Box, Button, IOption, Text } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
@@ -46,16 +46,22 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
 
+  // Compute randomized options just once and cache in a ref so that
+  // re-renders (e.g. typing in another field) don't re-shuffle.
+  const questionOptionsRef = useRef<IOption[] | null>(null);
+  if (questionOptionsRef.current === null && question.options) {
+    questionOptionsRef.current = extractOptions(
+      question,
+      localize,
+      question.random_option_ordering
+    );
+  }
+
   if (!question.options) return null;
 
   // If form data present, get options in that ranking order.
   // Otherwise, get option order from the question.
-  const questionOptions: IOption[] = extractOptions(
-    question,
-    localize,
-    question.random_option_ordering
-  );
-
+  const questionOptions = questionOptionsRef.current!;
   const options = data
     ? getOptionsFromData(data, questionOptions)
     : questionOptions;
