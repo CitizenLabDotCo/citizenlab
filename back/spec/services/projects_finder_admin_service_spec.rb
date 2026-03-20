@@ -173,24 +173,27 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_start_date' do
-    let(:today) { Time.zone.now.beginning_of_day }
-    let!(:p1) { create_project(start_at: today - 5.days, end_at: today + 6.days) }
-    let!(:p2) { create_project(start_at: today - 10.days, end_at: today - 4.days) }
-    let!(:p3) { create_project(start_at: today + 5.days, end_at: today + 11.days) }
-    let!(:p4) { create_project(start_at: today + 1.day, end_at: nil) }
+  describe '.filter_start_date' do
+    let!(:p1) { create_project(start_at: 5.days.ago, end_at: 5.days.from_now) }
+    let!(:p2) { create_project(start_at: 10.days.ago, end_at: 5.days.ago) }
+    let!(:p3) { create_project(start_at: 5.days.from_now, end_at: 10.days.from_now) }
+    let!(:p4) { create_project(start_at: 1.day.from_now) }
     let!(:p5) do
       create_project(
-        start_at: today - 50.days,
-        end_at: today - 4.days,
-        start_at2: today - 4.days,
-        end_at2: today + 4.days
+        start_at: 50.days.ago, end_at: 5.days.ago,
+        start_at2: 4.days.ago, end_at2: 3.days.from_now
       )
     end
 
     it 'filters projects by start date' do
-      result = described_class.filter_start_date(Project.all, { min_start_date: today - 7.days, max_start_date: today + 3.days })
-      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p4.id)
+      today = Date.current
+
+      result = described_class.filter_start_date(Project, {
+        min_start_date: today - 5.days,
+        max_start_date: today + 2.days
+      })
+
+      expect(result).to contain_exactly(p1, p4)
     end
 
     it 'returns all projects when range is empty' do
@@ -200,51 +203,39 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.filter_participation_states' do
-    let(:today) { Time.zone.now.beginning_of_day }
-
     # Project that has not started yet
-    let!(:not_started_project) do
-      project = create(:project)
-      create(:phase, start_at: today + 10.days, project: project)
-      project
-    end
+    let!(:not_started_project) { create(:phase, start_at: 10.days.from_now).project }
 
     # Project with current data collection phase
     let!(:collecting_data_project) do
-      project = create(:project)
-      create(:phase, start_at: today - 20.days, end_at: today - 10.days, project: project, participation_method: 'information')
-      create(:phase, start_at: today - 10.days, end_at: today + 11.days, project: project, participation_method: 'ideation')
-      project
+      create(:project).tap do |project|
+        p1 = create(:information_phase, start_at: 20.days.ago, end_at: 10.days.ago, project:)
+        create(:ideation_phase, start_at: p1.end_at, end_at: 10.days.from_now, project:)
+      end
     end
 
     # Project with current information phase
     let!(:information_phase_project) do
-      project = create(:project)
-      create(:phase, start_at: today - 20.days, end_at: today - 10.days, project: project, participation_method: 'ideation')
-      create(:phase, start_at: today - 10.days, end_at: today + 11.days, project: project, participation_method: 'information')
-      create(:phase, start_at: today + 11.days, end_at: nil, project: project, participation_method: 'ideation')
-      project
+      create(:project).tap do |project|
+        past_phase = create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago, project:)
+        current_phase = create(:information_phase, start_at: past_phase.end_at, end_at: 10.days.from_now, project:)
+        create(:ideation_phase, start_at: current_phase.end_at, project:)
+      end
     end
 
     # Project that is completely in the past
-    let!(:past_project) do
-      project = create(:project)
-      create(:phase, start_at: today - 30.days, end_at: today - 19.days, project: project)
-      project
-    end
+    let!(:past_project) { create(:phase, start_at: 30.days.ago, end_at: 20.days.ago).project }
 
     # Project that has a gap between phases, and right now we're in the gap
     let!(:gap_project) do
-      project = create(:project)
-      create(:phase, start_at: today - 30.days, end_at: today - 19.days, project: project)
-      create(:phase, start_at: today + 10.days, end_at: today + 21.days, project: project)
-      project
+      create(:project).tap do |project|
+        create(:phase, start_at: 30.days.ago, end_at: 20.days.ago, project:)
+        create(:phase, start_at: 10.days.from_now, end_at: 20.days.from_now, project:)
+      end
     end
 
     # Project without any phases
-    let!(:project_without_phases) do
-      create(:project)
-    end
+    let!(:project_without_phases) { create(:project) }
 
     it 'returns all projects when no participation states specified' do
       result = described_class.filter_participation_states(Project.all, {})
@@ -323,28 +314,10 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.filter_current_phase_participation_method' do
-    let(:today) { Time.zone.now.beginning_of_day }
-
-    let!(:project_ideation) do
-      project = create(:project)
-      create(:phase, start_at: today - 10.days, end_at: today + 11.days, project: project, participation_method: 'ideation')
-      project
-    end
-    let!(:project_voting) do
-      project = create(:project)
-      create(:phase, start_at: today - 10.days, end_at: today + 11.days, project: project, participation_method: 'voting', voting_method: 'single_voting')
-      project
-    end
-    let!(:project_information) do
-      project = create(:project)
-      create(:phase, start_at: today - 10.days, end_at: today + 11.days, project: project, participation_method: 'information')
-      project
-    end
-    let!(:project_ideation_future) do
-      project = create(:project)
-      create(:phase, start_at: today + 10.days, end_at: today + 21.days, project: project, participation_method: 'ideation')
-      project
-    end
+    let!(:project_ideation) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_voting) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_information) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_ideation_future) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
 
     it 'returns all projects when no participation_methods specified' do
       result = described_class.filter_current_phase_participation_method(Project.all, {})
@@ -538,34 +511,28 @@ describe ProjectsFinderAdminService do
 
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
-      let(:today) { Time.zone.now.beginning_of_day }
       let!(:user) { create(:admin) }
       let!(:p1) do
-        project = create_project(start_at: today - 40.days, end_at: today - 4.days)
-        create_session(project, today - 20.days)
-        project
+        create_project(start_at: 40.days.ago, end_at: 5.days.ago).tap do |project|
+          create_session(project, 20.days.ago)
+        end
       end
       let!(:p2) do
-        project = create_project(start_at: today - 30.days, end_at: today + 31.days)
-        create_session(project, today - 30.days)
-        create_session(project, today - 10.days)
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |project|
+          create_session(project, 30.days.ago)
+          create_session(project, 10.days.ago)
+        end
       end
       let!(:p3) do
-        project = create_project(start_at: today - 30.days, end_at: today + 31.days)
-        create_session(project, today - 5.days)
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |project|
+          create_session(project, 5.days.ago)
+        end
       end
       let!(:p4) do
-        project = create_project(start_at: today - 30.days, end_at: today + 31.days)
-        s4 = create(:session, created_at: today - 4.days, user_id: create(:user).id)
-        create(
-          :pageview,
-          session_id: s4.id,
-          path: '/en/',
-          created_at: today - 4.days
-        )
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |_project|
+          session = create(:session, created_at: 4.days.ago, user_id: create(:user).id)
+          create(:pageview, session_id: session.id, path: '/en/', created_at: session.created_at)
+        end
       end
 
       def create_session(project, created_at)
@@ -588,7 +555,7 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        min_start_date = today - 35.days
+        min_start_date = 35.days.ago
 
         result = described_class.execute(
           Project.all,
@@ -601,35 +568,19 @@ describe ProjectsFinderAdminService do
     end
 
     describe 'sort: phase_starting_or_ending_soon' do
-      let(:today) { Time.zone.now.beginning_of_day }
-
-      let!(:p1) do
-        create_project(
-          start_at: Time.zone.local(2020, 1, 1),
-          end_at: Time.zone.local(2021, 1, 2),
-          created_at: Date.new(2019, 1, 1)
-        )
-      end
-      let!(:p2) do
-        create_project(
-          start_at: Time.zone.local(2020, 2, 1),
-          end_at: nil,
-          created_at: Date.new(2019, 2, 1)
-        )
-      end
-
+      let!(:p1) { create_project(start_at: '2020-01-01', end_at: '2021-01-01', created_at: '2019-01-01') }
+      let!(:p2) { create_project(start_at: '2020-02-01', end_at: nil, created_at: '2019-02-01') }
       let!(:p3) do
         create_project(
-          start_at: Time.zone.local(2020, 2, 3), end_at: Time.zone.local(2023, 4, 2),
-          start_at2: Time.zone.local(2023, 4, 2), end_at2: today + 21.days
+          start_at: '2020-02-03', end_at: '2023-04-01',
+          start_at2: '2023-04-01', end_at2: 21.days.from_now
         )
       end
-
-      let!(:p4) { create_project(start_at: Time.zone.local(2020, 4, 1), end_at: today + 101.days) }
-      let!(:p5) { create_project(start_at: today + 5.days, end_at: today + 26.days) }
-      let!(:p6) { create_project(start_at: today + 4.days, end_at: today + 51.days) }
-      let!(:p7) { create_project(start_at: today + 8.days, end_at: nil) }
-      let!(:p8) { create_project(start_at: today + 60.days, end_at: today + 91.days) }
+      let!(:p4) { create_project(start_at: '2020-04-01', end_at: 100.days.from_now) }
+      let!(:p5) { create_project(start_at: 5.days.from_now, end_at: 25.days.from_now) }
+      let!(:p6) { create_project(start_at: 4.days.from_now, end_at: 50.days.from_now) }
+      let!(:p7) { create_project(start_at: 8.days.from_now, end_at: nil) }
+      let!(:p8) { create_project(start_at: 60.days.from_now, end_at: 90.days.from_now) }
 
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
@@ -646,7 +597,7 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        min_start_date = today
+        min_start_date = Date.current
 
         result = described_class.execute(
           Project.all,
