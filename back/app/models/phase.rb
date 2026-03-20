@@ -76,6 +76,7 @@ class Phase < ApplicationRecord
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment response suggestion topic post story].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit percent]
+  MIN_DURATION          = 1.day
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -100,6 +101,7 @@ class Phase < ApplicationRecord
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
+  before_save :close_previous_open_phase # see also Phase#validate_previous_phase_can_be_closed
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -108,8 +110,8 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
   validate :validate_end_at
-  validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
+  validate :validate_duration
+  validate :validate_previous_phase_can_be_closed # see also Phase#close_previous_open_phase
   validate :validate_no_other_overlapping_phases
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
@@ -259,11 +261,11 @@ class Phase < ApplicationRecord
   end
 
   def start_date
-    start_at && AppConfiguration.timezone.at(start_at).to_date
+    start_at&.to_date
   end
 
   def end_date
-    end_at && (AppConfiguration.timezone.at(end_at).to_date - 1.day)
+    end_at && (end_at.to_date - 1.day)
   end
 
   # Used for validations (which are hard to delegate through the participation method)
@@ -367,34 +369,40 @@ class Phase < ApplicationRecord
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
 
-  # If a previous phase has a blank end_at, update it and validate that the new phase
-  # starts after the previous phase (so the previous phase has nonzero duration).
-  def validate_previous_blank_end_at
-    previous_phase = TimelineService.new.previous_phase(self)
-    if previous_phase && previous_phase.end_at.blank?
-      if start_at <= previous_phase.start_at
-        errors.add(:start_at, message: 'must be after the start of the last phase')
-      else
-        previous_phase.update!(end_at: start_at)
-        @previous_phase_end_at_updated = true
-      end
-    end
-  end
+  def validate_duration
+    return unless start_at.present? && end_at.present? && (end_at - start_at) < MIN_DURATION
 
-  def validate_start_at_before_end_at
-    return unless start_at.present? && end_at.present? && start_at >= end_at
-
-    errors.add(:start_at, :after_end_at, message: 'is after end_at')
+    errors.add(:base, :too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
   end
 
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
-      next unless ts.overlaps?(self, other_phase)
+      # Skip open-ended phases as they have their own validation.
+      # See Phase#validate_previous_phase_can_be_closed
+      next unless other_phase.end_at && ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
-        message: 'has other phases which overlap in start and end date')
+        message: "overlaps with Phase##{other_phase.id}")
     end
+  end
+
+  def validate_previous_phase_can_be_closed
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.end_at = start_at
+    return unless previous_phase.valid?
+
+    previous_phase.errors.each { |error| errors.add(:previous_phase, error.full_message) }
+  end
+
+  def close_previous_open_phase
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.update!(end_at: start_at)
+    @previous_phase_end_at_updated = true
   end
 
   def strip_title
