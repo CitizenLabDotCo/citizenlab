@@ -35,11 +35,11 @@ RSpec.describe Analytics::FactProjectStatus do
 
   context 'when the project has phases' do
     let!(:project) { phase.project }
-    let(:phase) { create(:phase, start_at: Time.zone.now.beginning_of_day - 10.days, end_at: end_date) }
-    let(:end_date) { Time.zone.now.beginning_of_day + 11.days }
+    let(:phase) { create(:phase, start_at: 10.days.ago, end_at: end_date) }
+    let(:end_date) { 10.days.from_now }
 
     context 'and its last phase is finished' do
-      let(:end_date) { Time.zone.now.beginning_of_day - 4.days }
+      let(:end_date) { 5.days.ago }
 
       it 'the project is also finished', :aggregate_failures do
         expect(described_class.count).to eq(1)
@@ -53,7 +53,7 @@ RSpec.describe Analytics::FactProjectStatus do
     end
 
     context 'and its last phase is not finished' do
-      let(:end_date) { Time.zone.now.beginning_of_day + 11.days }
+      let(:end_date) { 10.days.from_now }
 
       it 'the project is not finished', :aggregate_failures do
         expect(described_class.count).to eq(1)
