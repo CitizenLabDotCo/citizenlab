@@ -1,5 +1,6 @@
 it-IT:
   email_campaigns:
     inappropriate_content_flagged:
+      preheader: Un post sulla piattaforma è stato segnalato per la revisione
       subject: Un post è stato segnalato per la revisione
       title: Un post è stato segnalato per la revisione
