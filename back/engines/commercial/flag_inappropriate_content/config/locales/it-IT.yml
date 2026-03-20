@@ -6,6 +6,7 @@ it-IT:
       inappropriate_content_flagged: Segnalazione di contenuto inappropriato
     inappropriate_content_flagged:
       author_wrote: "%{authorName} ha scritto:"
+      automatically_flagged: Il contenuto di questo post è stato rilevato automaticamente come potenzialmente inappropriato. Ti inviamo questa notifica affinché tu possa esaminarlo in accordo con le tue linee guida di moderazione.
       cta_button: Esamina
       how_to_review: Se il post non contiene contenuti inappropriati, puoi rimuovere l’avviso dalla tua piattaforma nella scheda Attività del pannello di amministrazione.
       preheader: Un post sulla piattaforma è stato segnalato per la revisione
