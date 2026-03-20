@@ -12,3 +12,4 @@ it-IT:
       main_header: "%{firstName}, hai un nuovo incarico"
       preheader: L'idea di %{authorName} ti è stata assegnata
       subject: Hai un compito sulla piattaforma di %{organizationName}
+      title: "%{firstName}, ti è stato assegnato un contributo"
