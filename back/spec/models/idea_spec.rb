@@ -458,10 +458,13 @@ RSpec.describe Idea do
     end
 
     it 'generates a slug when there is no current phase' do
+      now = Time.now
       project = create(:project)
-      create(:phase, project: project, start_at: (Time.zone.now.beginning_of_day - 10.days), end_at: (Time.zone.now.beginning_of_day - 4.days))
-      create(:phase, project: project, start_at: (Time.zone.now.beginning_of_day + 5.days), end_at: (Time.zone.now.beginning_of_day + 11.days))
+      create(:phase, project: project, start_at: now - 10.days, end_at: now - 4.days)
+      create(:phase, project: project, start_at: now + 5.days, end_at: now + 11.days)
+
       idea = create(:idea, slug: nil, project: project.reload)
+
       expect(idea.slug).to be_present
     end
 
