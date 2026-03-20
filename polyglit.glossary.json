@@ -6,7 +6,8 @@
     "de-DE": "Manager*innen"
   },
   "seat": {
-    "de-DE": "Zugang"
+    "de-DE": "Zugang",
+    "es-ES": "asiento"
   },
   "seats": {
     "es-ES": "asientos"
