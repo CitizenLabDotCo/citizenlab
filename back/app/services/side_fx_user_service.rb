@@ -97,7 +97,7 @@ class SideFxUserService
 
   def role_created_side_fx(role, user, current_user)
     LogActivityJob.set(wait: 5.seconds).perform_later(
-      user, "#{role_prefix(role)}_moderation_rights_received",
+      user, "#{role_prefix(role)}_rights_received",
       current_user, Time.now.to_i,
       payload: { project_id: role['project_id'] }
     )
@@ -105,14 +105,16 @@ class SideFxUserService
 
   def role_destroyed_side_fx(role, user, current_user)
     LogActivityJob.perform_later(
-      user, "#{role_prefix(role)}_moderation_rights_removed",
+      user, "#{role_prefix(role)}_rights_removed",
       current_user, Time.now.to_i,
       payload: { project_id: role['project_id'] }
     )
   end
 
   def role_prefix(role)
-    role['type'].split('_moderator').first
+    return 'admin' if role['type'] == 'admin'
+
+    role['type'].split('_moderator').first + '_moderation'
   end
 
   def lost_roles(user)
