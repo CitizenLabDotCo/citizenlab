@@ -22,7 +22,7 @@ const CommunityMonitorManagement = () => {
   return (
     <Box mt="40px">
       <Box display="flex">
-        <Title m="0px" mb="12px" color="primary" variant="h3">
+        <Title m="0px" mb="32px" color="primary" variant="h3">
           {formatMessage(messages.communityMonitorManagers)}
         </Title>
         <IconTooltip
