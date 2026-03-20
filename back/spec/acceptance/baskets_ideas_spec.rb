@@ -194,7 +194,7 @@ resource BasketsIdea do
         end
 
         context 'voting phase is over' do
-          let(:project) { create(:single_voting_phase, start_at: (Time.zone.now.beginning_of_day - 5.days), end_at: (Time.zone.now.beginning_of_day - 2.days)).project }
+          let(:project) { create(:single_voting_phase, start_at: 5.days.ago, end_at: 3.days.ago).project }
 
           example_request '[error] Add an idea to a new basket' do
             assert_status 401
