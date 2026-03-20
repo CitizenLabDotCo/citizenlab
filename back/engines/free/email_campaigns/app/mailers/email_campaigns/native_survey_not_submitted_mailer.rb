@@ -34,10 +34,10 @@ module EmailCampaigns
     helper_method :survey_end_date
 
     def survey_end_date
-      end_date = event&.phase_end_at ? I18n.l(event.phase_end_at, format: :long, locale: locale.locale_sym) : nil
-      return unless end_date
+      return unless (end_at = event&.phase_end_at)
 
-      format_message('submissions_close', values: { phaseEndDate: end_date })
+      formatted_date = I18n.l(end_at.in_time_zone.to_date, format: '%B %d', locale: locale.locale_sym)
+      format_message('submissions_close', values: { phaseEndDate: formatted_date })
     end
   end
 end
