@@ -248,7 +248,7 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :moderators, controller: 'project_moderators', except: [:update]
+        resources :moderators, controller: 'moderators/project_moderators', except: [:update]
 
         collection do
           get 'by_slug/:slug', to: 'projects#by_slug'
@@ -280,7 +280,7 @@ Rails.application.routes.draw do
       end
 
       resources :spaces, only: %i[index show create update destroy] do
-        resources :moderators, controller: 'space_moderators', except: %i[update]
+        resources :moderators, controller: 'moderators/space_moderators', except: %i[update]
       end
 
       resources :admin_publications, only: %i[index show] do
@@ -292,7 +292,7 @@ Rails.application.routes.draw do
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
         concerns :file_attachable, attachable_type: 'ProjectFolders::Folder'
-        resources :moderators, controller: 'folder_moderators', except: %i[update]
+        resources :moderators, controller: 'moderators/folder_moderators', except: %i[update]
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
