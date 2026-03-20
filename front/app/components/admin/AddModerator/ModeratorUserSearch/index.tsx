@@ -1,11 +1,9 @@
-import React, { memo, useState, lazy } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
-import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
@@ -13,10 +11,6 @@ import UserSelect from 'components/UI/UserSelect';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-
-const SeatLimitReachedModal = lazy(
-  () => import('components/admin/SeatBasedBilling/SeatLimitReachedModal')
-);
 
 const AddButton = styled(ButtonWithLink)`
   flex-grow: 0;
@@ -27,43 +21,25 @@ const AddButton = styled(ButtonWithLink)`
 interface Props {
   projectId: string;
   label?: JSX.Element | string;
+  onAddModerator: (id: string) => Promise<void>;
 }
 
-const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
+const ModeratorUserSearch = ({ projectId, label, onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
-
-  const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | undefined>(
+    undefined
+  );
 
   const handleOnChange = (user?: IUserData) => {
-    setModeratorToAdd(user || null);
+    setModeratorToAdd(user);
   };
 
-  const handleOnAddModeratorsClick = () => {
+  const handleOnAddModeratorsClick = async () => {
     if (moderatorToAdd) {
-      addProjectModerator(
-        { projectId, moderatorId: moderatorToAdd.id },
-        {
-          onSuccess: () => {
-            setModeratorToAdd(null);
-          },
-        }
-      );
-    }
-  };
-
-  const handleAddClick = async () => {
-    if (!moderatorToAdd) return;
-    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
-      user_id: moderatorToAdd.id,
-      seat_type: 'moderator',
-    });
-    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
-
-    if (shouldOpenModal) {
-      // openModal(); TODO
-    } else {
-      handleOnAddModeratorsClick();
+      setLoading(true);
+      await onAddModerator(moderatorToAdd.id);
+      setLoading(false);
     }
   };
 
@@ -91,14 +67,14 @@ const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
           buttonStyle="admin-dark"
           icon="plus-circle"
           padding="10px 16px"
-          onClick={handleAddClick}
+          onClick={handleOnAddModeratorsClick}
           disabled={!moderatorToAdd}
-          processing={isLoading}
+          processing={loading}
           data-cy="e2e-add-project-moderator-button"
         />
       </Box>
     </Box>
   );
-});
+};
 
 export default ModeratorUserSearch;

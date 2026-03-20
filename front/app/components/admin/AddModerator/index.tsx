@@ -3,10 +3,9 @@ import React, { useState, Suspense } from 'react';
 import { Text, Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
 
 import AddByEmail from 'components/admin/AddModerator/AddByEmail';
-import UserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
+import ModeratorUserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import Or from 'components/UI/Or';
@@ -30,8 +29,6 @@ interface Props {
 
 const AddModerator = ({ projectId, onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
-  const [moderatorToAddThroughSearch, setModeratorToAddThroughSearch] =
-    useState<IUserData | null>(null);
   const [showSeatLimitModal, setShowSeatLimitModal] = useState(false);
 
   const { data: authUser } = useAuthUser();
@@ -40,7 +37,12 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
     <>
       {isAdmin(authUser) && (
         <>
-          <UserSearch projectId={projectId} />
+          <ModeratorUserSearch
+            projectId={projectId}
+            onAddModerator={async (userId: string) => {
+              // TODO
+            }}
+          />
           <Box maxWidth="500px" mt="28px">
             <Or />
           </Box>
@@ -48,6 +50,7 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
       )}
       <AddByEmail
         onSubmit={async (email) => {
+          // TODO
           await onAddModerator({ moderatorEmail: email });
         }}
       />
@@ -69,7 +72,7 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         <SeatLimitReachedModal
           seatType="moderator"
           addModerators={() => {
-            onAddModerator({ moderatorId: moderatorToAddThroughSearch?.id });
+            // onAddModerator({ moderatorId: moderatorToAddThroughSearch?.id });
           }}
           showModal={showSeatLimitModal}
           closeModal={() => setShowSeatLimitModal(false)}
