@@ -304,9 +304,9 @@ describe IdeasFinder do
 
   def initialize_inputs_for_scope_filtering
     timeline_project = create(:project)
-    ideation_phase = create(:phase, project: timeline_project, start_at: (Time.zone.now.beginning_of_day - 1.month), end_at: Time.zone.now.beginning_of_day)
-    voting_phase = create(:budgeting_phase, project: timeline_project, start_at: Time.zone.now.beginning_of_day, end_at: (Time.zone.now.beginning_of_day + 1.day))
-    survey_phase = create(:native_survey_phase, project: timeline_project, start_at: (Time.zone.now.beginning_of_day + 1.day), end_at: (Time.zone.now.beginning_of_day + 1.month))
+    ideation_phase = create(:phase, project: timeline_project, start_at: 1.month.ago, end_at: 1.day.ago)
+    voting_phase = create(:budgeting_phase, project: timeline_project, start_at: ideation_phase.end_at, end_at: 1.day.from_now)
+    survey_phase = create(:native_survey_phase, project: timeline_project, start_at: 2.days.from_now, end_at: 1.month.from_now)
 
     create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase)
 
