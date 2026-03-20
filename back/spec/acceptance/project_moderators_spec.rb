@@ -194,3 +194,4 @@ resource 'Moderators' do
       end
     end
   end
+end
