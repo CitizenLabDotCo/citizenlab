@@ -3,6 +3,7 @@ import React, { useState, Suspense } from 'react';
 import { Text, Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 
 import AddByEmail from 'components/admin/AddModerator/AddByEmail';
 import ModeratorUserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
@@ -18,8 +19,8 @@ import SeatLimitReachedModal from '../SeatBasedBilling/SeatLimitReachedModal';
 import messages from './messages';
 
 type UserParams = {
-  moderatorId?: string;
-  moderatorEmail?: string;
+  user_id?: string;
+  user_email?: string;
 };
 
 interface Props {
@@ -29,7 +30,8 @@ interface Props {
 
 const AddModerator = ({ projectId, onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
-  const [showSeatLimitModal, setShowSeatLimitModal] = useState(false);
+  const [showSeatLimitModal, setShowSeatLimitModal] =
+    useState<UserParams | null>(null);
 
   const { data: authUser } = useAuthUser();
 
@@ -39,8 +41,17 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         <>
           <ModeratorUserSearch
             projectId={projectId}
-            onAddModerator={async (userId: string) => {
-              // TODO
+            onAddModerator={async (user_id: string) => {
+              const shouldOpenModal = await checkIfUserExceedsSeats({
+                user_id,
+                seat_type: 'moderator',
+              });
+
+              if (shouldOpenModal) {
+                setShowSeatLimitModal({ user_id });
+              } else {
+                await onAddModerator({ user_id });
+              }
             }}
           />
           <Box maxWidth="500px" mt="28px">
@@ -49,9 +60,17 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         </>
       )}
       <AddByEmail
-        onSubmit={async (email) => {
-          // TODO
-          await onAddModerator({ moderatorEmail: email });
+        onSubmit={async (user_email) => {
+          const shouldOpenModal = await checkIfUserExceedsSeats({
+            user_email,
+            seat_type: 'moderator',
+          });
+
+          if (shouldOpenModal) {
+            setShowSeatLimitModal({ user_email });
+          } else {
+            await onAddModerator({ user_email });
+          }
         }}
       />
       <Box mt="40px">
@@ -72,10 +91,11 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         <SeatLimitReachedModal
           seatType="moderator"
           addModerators={() => {
-            // onAddModerator({ moderatorId: moderatorToAddThroughSearch?.id });
+            if (showSeatLimitModal === null) return;
+            onAddModerator(showSeatLimitModal);
           }}
-          showModal={showSeatLimitModal}
-          closeModal={() => setShowSeatLimitModal(false)}
+          showModal={!!showSeatLimitModal}
+          closeModal={() => setShowSeatLimitModal(null)}
         />
       </Suspense>
     </>
