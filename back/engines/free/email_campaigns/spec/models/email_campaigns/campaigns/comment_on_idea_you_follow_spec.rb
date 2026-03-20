@@ -113,7 +113,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnIdeaYouFollow do
       end
 
       context 'for a future phase' do
-        let(:phase) { create(:ideation_phase, start_at: Time.zone.now.beginning_of_day + 2.days, end_at: Time.zone.now.beginning_of_day + 6.days) }
+        let(:phase) { create(:ideation_phase, start_at: 2.days.from_now, end_at: 6.days.from_now) }
 
         it 'receives process_command for the global campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
