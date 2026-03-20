@@ -20,13 +20,13 @@ context 'federa verification' do
         'credentials' => {},
         'extra' =>
           { 'raw_info' =>
-              { 'name' => 'Mario',
-                'familyName' => 'Rossi',
-                'email' => 'mario.rossi@example.org',
-                'domicileMunicipality' => '1234',
-                'dateOfBirth' => '1980-01-01',
-                'fiscalNumber' => user_uid,
-                'spidCode' => nil },
+              { 'nome' => 'Mario',
+                'cognome' => 'Rossi',
+                'emailAddressPersonale' => 'mario.rossi@example.org',
+                'comuneDomicilio' => '1234',
+                'dataNascita' => '1980-01-01',
+                'codiceFiscale' => user_uid,
+                'codiceIdentificativoSPID' => nil },
             'response_object' => '<saml:Response>...</saml:Response>' }
       }
     end
@@ -37,7 +37,7 @@ context 'federa verification' do
 
       # Create user custom fields that will be filled by the auth hash
       create(:custom_field, key: 'birthyear', resource_type: 'User')
-      create(:custom_field, key: 'domicile_municipality', resource_type: 'User')
+      create(:custom_field, key: 'municipality_code', resource_type: 'User')
 
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
@@ -89,7 +89,7 @@ context 'federa verification' do
       expect(user.identities.first.auth_hash.keys).to eq %w[uid info extra provider credentials]
     end
 
-    it 'successfully verifies a user', skip: 'Still under development' do
+    it 'successfully verifies a user' do
       get "/auth/federa?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
       follow_redirect!
 
@@ -123,7 +123,7 @@ context 'federa verification' do
 
       user2 = create(:user)
       token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-      auth_hash['extra']['raw_info']['fiscalNumber'] = 'TINIT-ZYXWVU98T76S543R'
+      auth_hash['extra']['raw_info']['codiceFiscale'] = 'TINIT-ZYXWVU98T76S543R'
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get "/auth/federa?token=#{token2}"
@@ -136,16 +136,16 @@ context 'federa verification' do
       follow_redirect!
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
-      expect(user.identities.first.auth_hash['extra']['raw_info']['email']).to eq('mario.rossi@example.org')
+      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq('mario.rossi@example.org')
 
       # Change the auth hash so we can check that it is updated
-      auth_hash['extra']['raw_info']['email'] = 'mario.rossi@newmail.org'
+      auth_hash['extra']['raw_info']['emailAddressPersonale'] = 'mario.rossi@newmail.org'
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get '/auth/federa'
       follow_redirect!
       expect_user_to_be_verified_and_identified(user)
-      expect(user.identities.first.auth_hash['extra']['raw_info']['email']).to eq('mario.rossi@newmail.org')
+      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq('mario.rossi@newmail.org')
     end
 
     it 'does not persist response_object in the stored auth_hash' do
@@ -170,7 +170,7 @@ context 'federa verification' do
       expect(@user.reload).to have_attributes(verified: false)
     end
 
-    it 'creates user when the authentication token is not passed', skip: 'Still under development' do
+    it 'creates user when the authentication token is not passed' do
       expect(User.count).to eq(1)
       get '/auth/federa?param=something'
       follow_redirect!
@@ -190,7 +190,7 @@ context 'federa verification' do
     end
 
     it 'does not send email to empty address (when just registered)' do
-      auth_hash['extra']['raw_info']['email'] = nil
+      auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get '/auth/federa'
@@ -201,8 +201,16 @@ context 'federa verification' do
 
     context 'when verification is already taken by new user' do
       before do
+        # Create user via SSO without email so they are considered "blank"
+        auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
+        OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
+
         get '/auth/federa'
         follow_redirect!
+
+        # Restore email for subsequent requests
+        auth_hash['extra']['raw_info']['emailAddressPersonale'] = 'mario.rossi@example.org'
+        OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
       end
 
       let!(:new_user) do
@@ -214,7 +222,7 @@ context 'federa verification' do
       context 'when verified registration is completed by new user' do
         before { new_user.update!(email: Faker::Internet.email) }
 
-        it 'does not verify another user and does not delete previously verified new user', skip: 'Still under development' do
+        it 'does not verify another user and does not delete previously verified new user' do
           get "/auth/federa?token=#{@token}&verification_pathname=/some-page"
           follow_redirect!
 
@@ -230,7 +238,7 @@ context 'federa verification' do
       end
 
       context 'when verified registration is not completed by new user' do
-        it 'successfully verifies another user and deletes previously verified blank new user', skip: 'Still under development' do
+        it 'successfully verifies another user and deletes previously verified blank new user' do
           get "/auth/federa?token=#{@token}&verification_pathname=/some-page"
           follow_redirect!
 
@@ -256,7 +264,7 @@ context 'federa verification' do
       context 'email confirmation enabled' do
         before do
           # Register with no email from Federa
-          auth_hash['extra']['raw_info']['email'] = nil
+          auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
           OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
           configuration = AppConfiguration.instance
@@ -310,7 +318,7 @@ context 'federa verification' do
 
       context 'email confirmation disabled' do
         before do
-          auth_hash['extra']['raw_info']['email'] = nil
+          auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
           OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
           configuration = AppConfiguration.instance
@@ -356,7 +364,34 @@ context 'federa verification' do
           name: 'federa',
           environment: 'test',
           spid_level: '1',
-          private_key: 'A_KEY',
+          private_key: '-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1+QbbGl/0vzDZ
+Rh6pXZOgXrYct+pGNULTWE6z8dNGXS77jszluzsQPDReEWW+AHKA60OqLqBuAz5G
+LCC/boDFBXuXt3GARdOZtt+DG1F8Ju7WuxwAiuo8FO3V2wjMqZRt1Pz/P3zfPmL4
+UyEFlp78C3KONSjes3NWnzhaCAS9lt0tNHS+H2jHNkdXdprXiQzt54BCjyWpruOG
+AtzkosFNQYSfMR1u+yNjDLi8czAx9aOSS9Rtr3+1v8htdCG9yV5NzWoRR4sYPJPe
+Ge8hi0BqsrqxEQqIgEDRRQIq5xcNk7Uovm6TTm1NrSGVPJ3qT/Goev6fHf8Ir8xw
+L0tG1FDbAgMBAAECggEAEBc0Dv23DGo3hI7ZuTooCp81VTbCBXFCNnPxiaHRf8BP
+njjTT2EN6PKZ4tOA/psFhPbIpey3jOLGh+fxAVxhEIrakeDLrX7/JfFwtCQfQW4j
+4mLrJ/Ugny1ulmFm1soL8OZLdLqFbSwUDkczfU4DQuA0QfTbZ03Q3hD4J6Xb3XOq
+cLPwpeSR4VQk5t/cPNAyE8zkMqqEQ+G2t34AwCjGWci29NS/51xPNYplyPGCRmrA
+UsXkOqAo/fNRDDlfWyYAOyAQU+UhTKO3PwKxoTXk4/1oE3QM7I7EbCQCDJsn2fLc
+tjRvOVG1dimQ0XIvqyY1kS5tVR+gwirXklweGoNbsQKBgQDaeY9cS1mFCu+IErHP
+pka9aW5AwyPKuQtbsZvSidjRy5qU2B+ihJre+HC/9uY7r6+4CML4wnCiZe9sLgXy
+QWb4LJHF0PzUBnzUNkscX/pWYwI7FCNK2bMIs+tA+irFfxrNspPyYx+Id4cP7UMF
+FJZXQqw+XeqbXWrQE+nPpzfwSQKBgQDVOnQLbH2KEAhy4zHFYCeiFSbFgM0p+bIg
+XEGRhq0y2aXX/J9inSWe2fM/yql7sNVe/Xy1p5se89Nol9ork0vDmca7W2VM7K9G
+q2OJHnHxPGDYokS29AoBmwMpST6Hfadkbrzo30F1Hv5mV080fw6cPF7rNrBHtvMY
+UJ9noMiAAwKBgQCHsdLSD1bVpHor+PiJsYvkX1SEUu+rHQ2p8QGIXefWPnCPnEDh
+zxzl+kcFZBOR5MfuNTrsCNCufUOc3GUDF44d/Ii55djy0+i6YdJ7GD3DZBFholtd
+RSPG9wDaRcdFDXIXaqArf1d5ikvQH5xtzmCmaBnVTr3Fq9sIzCV/vSuoSQKBgGyD
+Ots1cw336tTM2l9f98t8iCaqzb423Here5LbvvjJ2qR4Y4SEBMk6kZg9QtM3wt58
+kiLAESlHXKc14EmcxEne0Ew4zuy+5tRIFHeLjuD9oSueKOoSd6UphgpUxAWf5Lgv
+wuOf+mfoRf8/H4fPwVexQXzicAOPD1eob/cE1ASRAoGAUzxhAvv/BjA1+LaYQDy4
+dzqgBQdfAhTXrM/wveVIUu0F+LuISOvUFYRVgkzR7OyjbQEZOJGFDlBndSraz82S
+qUTyDBKO+NqjtR0+Y5liyenKvN2rgwJ4TYC7v7AZ+5OheZeISyZWNs9b1Q0SY1LP
+ICt/7LH3iUiRWjGjs6qRhdE=
+-----END PRIVATE KEY-----',
           enabled_for_verified_actions: true
         }]
       }
@@ -373,7 +408,7 @@ context 'federa verification' do
       query_params = Rack::Utils.parse_query(redirect_url.query)
       expect(query_params).to have_key('SAMLRequest')
       expect(query_params).to have_key('RelayState')
-      # TODO: Add in tests for sigalg and signature when those are implemented
+      # TODO: Not sure why sigalg and signature are not present
     end
   end
 end
