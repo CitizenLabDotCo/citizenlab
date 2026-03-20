@@ -13,17 +13,17 @@ describe WebApi::V1::ProjectMiniSerializer do
     end
 
     it 'returns the number of days before first phase starts' do
-      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day + 1.day)
+      create(:phase, project: project, start_at: 27.hours.from_now)
       expect(starts_days_from_now).to eq(1)
     end
 
-    it 'returns nil if first phase started today' do
-      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day)
-      expect(starts_days_from_now).to be_nil
+    it 'returns 0 if first phase starts today' do
+      create(:phase, project: project, start_at: 2.hours.from_now)
+      expect(starts_days_from_now).to be_zero
     end
 
     it 'returns nil if first phase started in the past' do
-      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day - 1.day)
+      create(:phase, project: project, start_at: 1.day.ago)
       expect(starts_days_from_now).to be_nil
     end
 
@@ -41,20 +41,17 @@ describe WebApi::V1::ProjectMiniSerializer do
     end
 
     it 'returns the number of days since the last phase ended' do
-      # With exclusive end, end_date = end_at - 1 day.
-      # end_at = beginning_of_day means end_date = yesterday
-      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day)
+      create(:phase, project: project, end_at: 27.hours.ago)
       expect(ended_days_ago).to eq(1)
     end
 
-    it 'returns nil if last phase ends today (end_date = today)' do
-      # end_at = tomorrow midnight → end_date = today
-      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day + 1.day)
-      expect(ended_days_ago).to be_nil
+    it 'returns 0 if last phase ends today' do
+      create(:phase, project: project, end_at: 2.hours.from_now)
+      expect(ended_days_ago).to be_zero
     end
 
     it 'returns nil if last phase ends in the future' do
-      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day + 2.days)
+      create(:phase, project: project, end_at: 2.days.from_now)
       expect(ended_days_ago).to be_nil
     end
 
