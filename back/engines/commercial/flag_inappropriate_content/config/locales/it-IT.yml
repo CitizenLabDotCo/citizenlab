@@ -1,21 +1,5 @@
 it-IT:
   email_campaigns:
-    admin_campaign_type_description:
-      inappropriate_content_flagged: Contenuto inappropriato segnalato - amministratori
-    campaign_type_description:
-      inappropriate_content_flagged: Contenuto inappropriato segnalato
     inappropriate_content_flagged:
-      automatically_flagged: Il contenuto di questo post è stato rilevato automaticamente come potenzialmente inappropriato. Ti inviamo questa notifica affinché tu possa esaminare il post in conformità alle tue linee guida di moderazione.
-      comment_author: "%{authorName} ha commentato:"
-      cta_button: Esamina
-      cta_review_post: Messaggio di revisione
-      header_title: Un post sulla tua piattaforma è stato segnalato per la revisione
-      how_to_review: Se il post non contiene contenuti inappropriati, puoi rimuovere l’avviso dalla tua piattaforma nella scheda Attività del pannello di amministrazione.
-      idea_author: "%{authorName} ha inserito un messaggio:"
-      initiative_author: "%{authorName} ha presentato una proposta:"
-      preheader: Un post della piattaforma è stato segnalato per 
-      subject: Un post sulla tua piattaforma è stato segnalato per la revisione
-      this_post_was_flagged: |
-  <p>Questo post è stato automaticamente rilevato come potenzialmente contenente contenuti inappropriati. Ti stiamo inviando questa notifica in modo che tu possa rivedere il post secondo le tue linee guida di moderazione.</p><p>Se il post non contiene contenuti inappropriati, puoi rimuovere l'avviso tramite la tua piattaforma nella scheda Attività nel pannello di amministrazione.</p>
-  
-
+      subject: Un post è stato segnalato per la revisione
+      title: Un post è stato segnalato per la revisione
