@@ -74,7 +74,7 @@ resource 'Moderators' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user.id
         expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
-        expect(LogActivityJob).to have_been_enqueued.with(user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_id: nil })
+        expect(LogActivityJob).to have_been_enqueued.with(user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
       end
 
       example '[error] Add a moderator of an unmoderated project_folder' do
@@ -167,7 +167,7 @@ resource 'Moderators' do
           expect(json_response.dig(:data, :id)).to eq test_user.id
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
-          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_id: nil })
+          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
       end
 
@@ -214,7 +214,7 @@ resource 'Moderators' do
           expect(@user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id }])
           expect(@user.reload.moderatable_project_ids).to eq [@child_projects.first.id]
 
-          expect(LogActivityJob).to have_been_enqueued.with(@user, 'project_folder_moderation_rights_removed', admin, kind_of(Integer), payload: { project_id: nil })
+          expect(LogActivityJob).to have_been_enqueued.with(@user, 'project_folder_moderation_rights_removed', admin, kind_of(Integer), payload: { project_folder_id: @project_folder.id })
         end
       end
     end

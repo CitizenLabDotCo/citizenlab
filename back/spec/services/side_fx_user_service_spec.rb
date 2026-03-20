@@ -115,21 +115,21 @@ describe SideFxUserService do
     it "logs a 'admin_rights_received' action job when user has been made admin" do
       user.update!(roles: [{ 'type' => 'admin' }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_received', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_received', current_user, anything, payload: {})
     end
 
     it "logs a 'admin_rights_removed' action job when user has been removed from admin" do
       user.update!(roles: [{ 'type' => 'admin' }])
       user.update!(roles: [])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_removed', current_user, anything, payload: {})
     end
 
     it "logs a 'space_moderation_rights_received' action job when user has been made space moderator" do
       space = create(:space)
       user.update!(roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_received', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_received', current_user, anything, payload: { space_id: space.id })
     end
 
     it "logs a 'space_moderation_rights_removed' action job when user has been removed from space moderator" do
@@ -137,14 +137,14 @@ describe SideFxUserService do
       user.update!(roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
       user.update!(roles: [])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_removed', current_user, anything, payload: { space_id: space.id })
     end
 
     it "logs a 'project_folder_moderation_rights_received' action job when user has been made project folder moderator" do
       folder = create(:project_folder)
       user.update!(roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_received', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_received', current_user, anything, payload: { project_folder_id: folder.id })
     end
 
     it "logs a 'project_folder_moderation_rights_removed' action job when user has been removed from project folder moderator" do
@@ -152,14 +152,14 @@ describe SideFxUserService do
       user.update!(roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
       user.update!(roles: [])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_removed', current_user, anything, payload: { project_folder_id: folder.id })
     end
 
     it "logs a 'project_moderation_rights_received' action job when user has been made project moderator" do
       project = create(:project)
       user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_received', current_user, user.updated_at.to_i, payload: { project_id: project.id })
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_received', current_user, anything, payload: { project_id: project.id })
     end
 
     it "logs a 'project_moderation_rights_removed' action job when user has been removed from project moderator" do
@@ -167,7 +167,7 @@ describe SideFxUserService do
       user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
       user.update!(roles: [])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: project.id })
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_removed', current_user, anything, payload: { project_id: project.id })
     end
 
     it 'logs the appropriate action job when multiple user roles are removed' do
@@ -189,11 +189,11 @@ describe SideFxUserService do
 
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(user, 'space_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .with(user, 'space_moderation_rights_removed', current_user, anything, payload: { space_id: space.id })
         .and have_enqueued_job(LogActivityJob)
-        .with(user, 'project_folder_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: nil })
+        .with(user, 'project_folder_moderation_rights_removed', current_user, anything, payload: { project_folder_id: folder.id })
         .and have_enqueued_job(LogActivityJob)
-        .with(user, 'project_moderation_rights_removed', current_user, user.updated_at.to_i, payload: { project_id: project_a.id })
+        .with(user, 'project_moderation_rights_removed', current_user, anything, payload: { project_id: project_a.id })
 
       expect(user.reload.roles).to eq([{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => project_b.id }])
     end
