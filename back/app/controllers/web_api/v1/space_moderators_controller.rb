@@ -22,7 +22,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
     @user.add_role 'space_moderator', space_id: @space.id
     if @user.save
       serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-      SideFxSpaceModeratorService.new.after_create(@user, @space, current_user)
+      ::SideFxUserService.new.after_update(@user, current_user)
       render json: serialized_data, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -32,7 +32,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
   def destroy
     @moderator.delete_role 'space_moderator', space_id: @space.id
     if @moderator.save
-      SideFxSpaceModeratorService.new.after_destroy(@moderator, @space, current_user)
+      ::SideFxUserService.new.after_update(@moderator, current_user)
       head :ok
     else
       head :internal_server_error

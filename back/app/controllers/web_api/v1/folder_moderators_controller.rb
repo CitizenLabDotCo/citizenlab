@@ -26,7 +26,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @user.save
       serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-      SideFxFolderModeratorService.new.after_create(@user, @folder, current_user)
+      ::SideFxUserService.new.after_update(@user, current_user)
       render json: serialized_data, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -38,7 +38,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
     @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @moderator.save
-      SideFxFolderModeratorService.new.after_destroy(@moderator, @folder, current_user)
+      ::SideFxUserService.new.after_update(@moderator, current_user)
       head :ok
     else
       head :internal_server_error
