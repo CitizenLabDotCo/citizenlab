@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ::Moderators::ProjectModeratorPolicy do
+describe Moderators::ProjectModeratorPolicy do
   subject { described_class.new(user, record) }
 
   let!(:space) { create(:space) }

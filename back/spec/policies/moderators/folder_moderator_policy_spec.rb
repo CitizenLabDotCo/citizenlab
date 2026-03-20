@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ::Moderators::FolderModeratorPolicy do
+describe Moderators::FolderModeratorPolicy do
   subject { described_class.new(user, folder) }
 
   let!(:space) { create(:space) }
