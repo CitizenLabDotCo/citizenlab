@@ -10,7 +10,7 @@ class SideFxUserService
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i, payload: create_user_activity_payload(user))
     UpdateMemberCountJob.perform_later
     if user.admin?
-      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
+      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_received', current_user, user.created_at.to_i)
     end
 
     if user.registration_completed_at # For example, when a user is created via SSO
@@ -97,16 +97,20 @@ class SideFxUserService
 
   def role_created_side_fx(role, user, current_user)
     LogActivityJob.set(wait: 5.seconds).perform_later(
-      user, "#{role_prefix(role)}_rights_received",
-      current_user, Time.now.to_i,
+      user,
+      "#{role_prefix(role)}_rights_received",
+      current_user,
+      Time.now.to_i,
       payload: { project_id: role['project_id'] }
     )
   end
 
   def role_destroyed_side_fx(role, user, current_user)
     LogActivityJob.perform_later(
-      user, "#{role_prefix(role)}_rights_removed",
-      current_user, Time.now.to_i,
+      user,
+      "#{role_prefix(role)}_rights_removed",
+      current_user,
+      Time.now.to_i,
       payload: { project_id: role['project_id'] }
     )
   end
