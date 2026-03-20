@@ -7,8 +7,8 @@ import styled from 'styled-components';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 import { IUserData } from 'api/users/types';
-import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
 import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
@@ -80,12 +80,11 @@ const FolderPermissions = () => {
 
   const handleAddClick = async () => {
     if (!moderatorToAdd) return;
-    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+
+    const shouldOpenModal = await checkIfUserExceedsSeats({
       user_id: moderatorToAdd.id,
       seat_type: 'moderator',
     });
-
-    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
 
     if (shouldOpenModal) {
       setShowModal(true);

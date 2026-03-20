@@ -6,8 +6,8 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { isFolder } from 'api/admin_publications/utils';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 import { IUserData } from 'api/users/types';
-import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -57,12 +57,10 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
   }));
 
   const handleAssign = async () => {
-    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+    const shouldOpenModal = await checkIfUserExceedsSeats({
       user_id: user.id,
       seat_type: 'moderator',
     });
-
-    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
 
     if (shouldOpenModal) {
       setSeatLimitReachedModalOpen(true);

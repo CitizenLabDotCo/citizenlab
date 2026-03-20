@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 import { IUserData } from 'api/users/types';
-import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 import useUpdateUser from 'api/users/useUpdateUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -58,12 +58,10 @@ const ActionsMenu = ({ user }: Props) => {
         setModalOpened('delete-user');
         break;
       case 'set-admin': {
-        const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+        const shouldOpenModal = await checkIfUserExceedsSeats({
           user_id: user.id,
           seat_type: 'admin',
         });
-
-        const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
 
         if (shouldOpenModal) {
           setModalOpened('seat-limit-reached');

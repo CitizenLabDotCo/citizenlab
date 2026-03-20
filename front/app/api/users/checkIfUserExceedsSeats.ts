@@ -17,9 +17,16 @@ type Response = {
   };
 };
 
-export const checkIfUserExceedsSeats = (queryParams: QueryParams) =>
+const fetchCheckIfUserExceedsSeats = (queryParams: QueryParams) =>
   fetcher<Response>({
     path: '/users/check_if_exceeds_seats',
     action: 'get',
     queryParams,
   });
+
+const checkIfUserExceedsSeats = async (queryParams: QueryParams) => {
+  const response = await fetchCheckIfUserExceedsSeats(queryParams);
+  return response.data.attributes.value;
+};
+
+export default checkIfUserExceedsSeats;
