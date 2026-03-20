@@ -118,7 +118,7 @@ class SideFxUserService
   def role_prefix(role)
     return 'admin' if role['type'] == 'admin'
 
-    role['type'].split('_moderator').first + '_moderation'
+    "#{role['type'].split('_moderator').first}_moderation"
   end
 
   def lost_roles(user)
