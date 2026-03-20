@@ -312,7 +312,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def yml_phases(shift_timestamps: 0, timeline_start_at: nil)
     if timeline_start_at && @project.phases.first
       kickoff_at = @project.phases.first.start_at
-      timeline_start_at = AppConfiguration.timezone.parse(timeline_start_at)
+      timeline_start_at = timeline_start_at.in_time_zone
       # We could add support for arbitrary time shifts in the future, but for now we keep
       # the existing behavior of shifting by a whole number of days
       shift_timestamps = ((timeline_start_at - kickoff_at) / 1.day).to_i
