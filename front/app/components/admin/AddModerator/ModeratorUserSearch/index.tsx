@@ -1,4 +1,4 @@
-import React, { Suspense, memo, useState, lazy } from 'react';
+import React, { memo, useState, lazy } from 'react';
 
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -108,14 +108,6 @@ const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
           data-cy="e2e-add-project-moderator-button"
         />
       </Box>
-      <Suspense fallback={null}>
-        <SeatLimitReachedModal
-          seatType="moderator"
-          addModerators={handleOnAddModeratorsClick}
-          showModal={showModal}
-          closeModal={closeModal}
-        />
-      </Suspense>
     </Box>
   );
 });

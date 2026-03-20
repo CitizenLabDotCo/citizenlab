@@ -19,10 +19,6 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform',
   },
-  moderatorSearchFieldLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',
-    defaultMessage: 'Who are the project managers?',
-  },
   addProjectModerators: {
     id: 'app.containers.AdminPage.ProjectEdit.addProjectModerators',
     defaultMessage: 'Add project moderators',
