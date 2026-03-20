@@ -5,17 +5,9 @@ require 'rails_helper'
 describe ActivitiesService do
   let(:service) { described_class.new }
 
-  def set_timezone(timezone) # rubocop:disable Naming/AccessorMethodName
-    settings = AppConfiguration.instance.settings
-    settings['core']['timezone'] = timezone
-    AppConfiguration.instance.update!(settings: settings)
-  end
-
   describe '#create_periodic_activities' do
     describe '#create_phase_started_activities' do
       let_it_be(:phase) { create(:phase) }
-      let_it_be(:timezone) { 'Asia/Kamchatka' }
-      before_all { set_timezone(timezone) }
 
       it 'logs phase started activity when a new phase starts' do
         now = phase.start_at + 1.minute
@@ -46,8 +38,6 @@ describe ActivitiesService do
 
     describe '#create_phase_upcoming_activities' do
       let_it_be(:phase) { create(:phase) }
-      let_it_be(:timezone) { 'Asia/Kamchatka' }
-      before_all { set_timezone(timezone) }
 
       it 'logs phase upcoming activity when a new phase starts within a week' do
         now = phase.start_at - 7.days
@@ -78,9 +68,6 @@ describe ActivitiesService do
     end
 
     describe '#create_invite_not_accepted_since_3_days_activities' do
-      let_it_be(:timezone) { 'Asia/Kamchatka' }
-      before_all { set_timezone(timezone) }
-
       it 'logs invite not accepted since 3 days activity when an invite was not accepted since (in the application timezone)' do
         created_at = Time.parse '2019-03-22 10:50:00 +0000'
         invite = create(:invite, created_at: created_at)
