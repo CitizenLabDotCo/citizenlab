@@ -13,7 +13,6 @@ resource 'Moderators' do
 
   before { header 'Content-Type', 'application/json' }
 
-
   context 'as a project moderator' do
     let!(:moderator) { create(:project_moderator, projects: [project]) }
 
