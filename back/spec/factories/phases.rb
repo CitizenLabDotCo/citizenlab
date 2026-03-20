@@ -21,8 +21,8 @@ FactoryBot.define do
       }
     end
 
-    start_at { Time.zone.local(2017, 5, 1) }
-    end_at { start_at.in_time_zone + 61.days }
+    start_at { '2017-05-01'.in_time_zone }
+    end_at { start_at.in_time_zone + 60.days }
 
     voting_min_total { 1 }
     voting_max_total { 10_000 }
@@ -44,14 +44,14 @@ FactoryBot.define do
     factory :active_phase do
       after(:create) do |phase, _evaluator|
         phase.start_at = Time.now - 7.days
-        phase.end_at = Time.now + 8.days
+        phase.end_at = Time.now + 7.days
       end
     end
 
     factory :past_phase do
       after(:create) do |phase, _evaluator|
         phase.start_at = Time.now - 30.days
-        phase.end_at = Time.now - 19.days
+        phase.end_at = Time.now - 20.days
       end
     end
 
@@ -70,7 +70,7 @@ FactoryBot.define do
     factory :proposals_phase do
       participation_method { 'proposals' }
       start_at { Time.zone.today - 7.days }
-      end_at { Time.zone.today + 8.days }
+      end_at { Time.zone.today + 7.days }
     end
 
     factory :poll_phase do
@@ -106,7 +106,7 @@ FactoryBot.define do
       factory :active_native_survey_phase do
         after(:create) do |phase, _evaluator|
           phase.start_at = Time.now - 7.days
-          phase.end_at = Time.now + 8.days
+          phase.end_at = Time.now + 7.days
         end
       end
     end
@@ -161,7 +161,7 @@ FactoryBot.define do
 
     trait :ongoing do
       start_at { Time.zone.today - 7.days }
-      end_at { Time.zone.today + 8.days }
+      end_at { Time.zone.today + 7.days }
     end
   end
 end
