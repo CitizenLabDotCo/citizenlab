@@ -56,7 +56,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-    params.require(:project_folder_moderator).permit(
+    params.require(:moderator).permit(
       :user_id,
       :user_email
     )

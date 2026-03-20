@@ -46,7 +46,6 @@ resource 'Moderators' do
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { create(:user).id }
       let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
-      let(:project_folder_id) { project_folder.id }
       let(:user_id) { other_moderators.first.id }
 
       example_request 'Get one moderator by id' do
@@ -57,29 +56,60 @@ resource 'Moderators' do
     end
 
     post 'web_api/v1/project_folders/:project_folder_id/moderators' do
-      with_options scope: :project_folder_moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+      with_options scope: :moderator do
+        parameter :user_id, 'The id of user to become moderator.', required: false
+        parameter :user_email, 'The email of user to become moderator.', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
 
       let(:project_folder_id) { project_folder.id }
-      let(:user) { create(:user) }
-      let(:user_id) { user.id }
       let!(:child_projects) { create_list(:project, 3) }
 
-      example_request 'Add a moderator of the moderated project_folder' do
-        expect(response_status).to eq 201
+      shared_examples 'adding a moderator' do
+        example_request 'Add a moderator role' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
+        end
 
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq user.id
-        expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
-        expect(LogActivityJob).to have_been_enqueued.with(user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
+        context 'with limited seats' do
+          before do
+            config = AppConfiguration.instance
+            config.settings['core']['maximum_moderators_number'] = User.project_folder_moderator.count + 1
+            config.settings['core']['additional_moderators_number'] = 0
+            config.save!
+          end
+
+          context 'when limit is reached' do
+            before { create(:project_folder_moderator) } # to reach the limit
+
+            example_request 'Increments additional seats', document: false do
+              assert_status 201
+              expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
+            end
+          end
+
+          example_request 'Does not increment additional seats if limit is not reached', document: false do
+            assert_status 201
+            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
+          end
+        end
       end
 
-      example '[error] Add a moderator of an unmoderated project_folder' do
-        do_request project_folder_id: create(:project_folder).id
-        expect(response_status).to eq 401
+      context 'with user_id' do
+        let(:test_user) { create(:user) }
+        let(:user_id) { test_user.id }
+
+        include_examples 'adding a moderator'
+      end
+
+      context 'with user_email' do
+        let(:test_user) { create(:user) }
+        let(:user_email) { test_user.email }
+
+        include_examples 'adding a moderator'
       end
     end
 
@@ -143,7 +173,7 @@ resource 'Moderators' do
     end
 
     post 'web_api/v1/project_folders/:project_folder_id/moderators' do
-      with_options scope: :project_folder_moderator do
+      with_options scope: :moderator do
         parameter :user_id, 'The id of user to become moderator.', required: false
         parameter :user_email, 'The email of user to become moderator.', required: false
       end

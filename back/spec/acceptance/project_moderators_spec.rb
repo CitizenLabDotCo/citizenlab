@@ -80,7 +80,6 @@ resource 'Moderators' do
             before { create(:project_moderator) } # to reach the limit
 
             example_request 'Increments additional seats', document: false do
-              puts "project moderators count: #{User.project_moderator.count}"
               assert_status 201
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
