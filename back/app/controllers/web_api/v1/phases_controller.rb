@@ -196,8 +196,6 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    '2023-07-01'.to_time
-
     # Temporary code to convert `start_at` and `end_at` to timestamps when they are sent
     # as dates to keep the API backward compatible.
     params.require(:phase).permit(permitted).tap do |attrs|
