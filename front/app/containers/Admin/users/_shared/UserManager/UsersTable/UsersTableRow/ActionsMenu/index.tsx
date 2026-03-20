@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
+import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 import useUpdateUser from 'api/users/useUpdateUser';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
@@ -30,7 +30,6 @@ const ActionsMenu = ({ user }: Props) => {
   });
   const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const { mutate: updateUser } = useUpdateUser();
-  const { checkIfUserExceedsSeats } = useExceedsSeats();
 
   if (!authUser) return null;
 
@@ -47,7 +46,7 @@ const ActionsMenu = ({ user }: Props) => {
     });
   };
 
-  const onAction = (action: Action) => {
+  const onAction = async (action: Action) => {
     switch (action) {
       case 'block-user':
         setModalOpened('block-user');
@@ -58,15 +57,21 @@ const ActionsMenu = ({ user }: Props) => {
       case 'delete-user':
         setModalOpened('delete-user');
         break;
-      case 'set-admin':
-        if (!checkIfUserExceedsSeats) return;
+      case 'set-admin': {
+        const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+          user_id: user.id,
+          seat_type: 'admin',
+        });
 
-        if (checkIfUserExceedsSeats(user, 'admin')) {
+        const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
+
+        if (shouldOpenModal) {
           setModalOpened('seat-limit-reached');
         } else {
           handleMakeAdmin();
         }
         break;
+      }
       case 'set-moderator':
         setModalOpened('set-moderator');
         break;

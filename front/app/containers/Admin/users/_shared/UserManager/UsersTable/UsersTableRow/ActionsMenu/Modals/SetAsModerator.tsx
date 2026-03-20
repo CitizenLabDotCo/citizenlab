@@ -7,8 +7,8 @@ import { isFolder } from 'api/admin_publications/utils';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
+import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
 import useLocalize from 'hooks/useLocalize';
 
 import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
@@ -45,8 +45,6 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
     (page) => page.data
   );
 
-  const { checkIfUserExceedsSeats } = useExceedsSeats();
-
   if (!flatAdminPublications) return null;
 
   const options = flatAdminPublications.map((publication) => ({
@@ -58,9 +56,15 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
       : localize(publication.attributes.publication_title_multiloc),
   }));
 
-  const handleAssign = () => {
-    if (!checkIfUserExceedsSeats) return;
-    if (checkIfUserExceedsSeats(user, 'moderator')) {
+  const handleAssign = async () => {
+    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+      user_id: user.id,
+      seat_type: 'moderator',
+    });
+
+    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
+
+    if (shouldOpenModal) {
       setSeatLimitReachedModalOpen(true);
     } else {
       doAssign();

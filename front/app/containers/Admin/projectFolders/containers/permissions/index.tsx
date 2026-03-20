@@ -8,8 +8,7 @@ import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddPr
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
 import { IUserData } from 'api/users/types';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
 import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
@@ -51,8 +50,6 @@ const FolderPermissions = () => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const { loading, checkIfUserExceedsSeats } = useExceedsSeats();
-
   const closeModal = () => {
     setShowModal(false);
   };
@@ -81,12 +78,14 @@ const FolderPermissions = () => {
     deleteFolderModerator({ projectFolderId, userId: moderatorId });
   };
 
-  const handleAddClick = () => {
-    if (loading || !moderatorToAdd) return;
-    const shouldOpenModal = checkIfUserExceedsSeats(
-      moderatorToAdd,
-      'moderator'
-    );
+  const handleAddClick = async () => {
+    if (!moderatorToAdd) return;
+    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+      user_id: moderatorToAdd.id,
+      seat_type: 'moderator',
+    });
+
+    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
 
     if (shouldOpenModal) {
       setShowModal(true);

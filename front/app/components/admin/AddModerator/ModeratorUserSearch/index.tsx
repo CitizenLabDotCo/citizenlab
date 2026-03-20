@@ -5,8 +5,7 @@ import styled from 'styled-components';
 
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
+import { checkIfUserExceedsSeats } from 'api/users/useCheckIfUserExceedsSeats';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
@@ -36,8 +35,6 @@ const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
 
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const { loading, checkIfUserExceedsSeats } = useExceedsSeats();
-
   const handleOnChange = (user?: IUserData) => {
     setModeratorToAdd(user || null);
   };
@@ -55,15 +52,16 @@ const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
     }
   };
 
-  const handleAddClick = () => {
-    if (loading || !moderatorToAdd) return;
-    const shouldOpenModal = checkIfUserExceedsSeats(
-      moderatorToAdd,
-      'moderator'
-    );
+  const handleAddClick = async () => {
+    if (!moderatorToAdd) return;
+    const userExceedsSeatsResponse = await checkIfUserExceedsSeats({
+      user_id: moderatorToAdd.id,
+      seat_type: 'moderator',
+    });
+    const shouldOpenModal = userExceedsSeatsResponse.data.attributes.value;
 
     if (shouldOpenModal) {
-      openModal();
+      // openModal(); TODO
     } else {
       handleOnAddModeratorsClick();
     }

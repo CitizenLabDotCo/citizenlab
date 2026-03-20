@@ -1,12 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
-
 import { TSeatType } from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-
-import usersKeys from './keys';
-import { UsersKeys } from './types';
 
 type QueryParams = {
   user_id?: string;
@@ -23,18 +17,9 @@ type Response = {
   };
 };
 
-const fetchCheckIfExceedsSeats = (queryParams: QueryParams) =>
+export const checkIfUserExceedsSeats = (queryParams: QueryParams) =>
   fetcher<Response>({
     path: '/users/check_if_exceeds_seats',
     action: 'get',
     queryParams,
   });
-
-const useBilledSeats = (queryParams: QueryParams) => {
-  return useQuery<Response, CLErrors, Response, UsersKeys>({
-    queryKey: usersKeys.list(queryParams),
-    queryFn: () => fetchCheckIfExceedsSeats(queryParams),
-  });
-};
-
-export default useBilledSeats;
