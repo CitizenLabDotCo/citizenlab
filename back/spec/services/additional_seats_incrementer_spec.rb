@@ -48,9 +48,33 @@ describe AdditionalSeatsIncrementer do
       expect(activity.user).to eq(current_user)
     end
 
-    it 'increments additional moderator seats' do
+    it 'increments additional moderator seats when project moderator role is added' do
       create(:project_moderator) # to reach limit
       new_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+      updated_user.update!(roles: [new_role])
+      expect do
+        described_class.increment_if_necessary(updated_user, nil)
+      end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
+        .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
+
+      expect(LogActivityJob).to have_been_enqueued
+    end
+
+    it 'increments additional moderator seats when folder moderator role is added' do
+      create(:project_folder_moderator) # to reach limit
+      new_role = { 'type' => 'project_folder_moderator', 'project_folder_id' => create(:project_folder).id }
+      updated_user.update!(roles: [new_role])
+      expect do
+        described_class.increment_if_necessary(updated_user, nil)
+      end.to not_change { AppConfiguration.instance.settings['core']['additional_admins_number'] }
+        .and(change { AppConfiguration.instance.settings['core']['additional_moderators_number'] }.from(0).to(1))
+
+      expect(LogActivityJob).to have_been_enqueued
+    end
+
+    it 'increments additional moderator seats when space moderator role is added' do
+      create(:space_moderator) # to reach limit
+      new_role = { 'type' => 'space_moderator', 'space_id' => create(:space).id }
       updated_user.update!(roles: [new_role])
       expect do
         described_class.increment_if_necessary(updated_user, nil)
@@ -92,7 +116,7 @@ describe AdditionalSeatsIncrementer do
         create(:admin) # to reach limit
         create(:project_moderator) # to reach limit
         admin_role = { 'type' => 'admin' }
-        moder_role = { 'type' => 'project_moderator', 'project_id' => create(:project).id }
+        moder_role = { 'type' => 'space_moderator', 'space_id' => create(:space).id }
         updated_user.update!(roles: [moder_role, admin_role])
         expect do
           described_class.increment_if_necessary(updated_user, nil)

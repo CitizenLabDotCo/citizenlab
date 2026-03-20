@@ -7,8 +7,9 @@ RSpec.describe UserRoles do
     before do
       create(:user, roles: [{ 'type' => 'admin', 'project_reviewer' => true }], email: 'admin@example.com')
       create(:user, roles: [{ 'type' => 'admin' }], email: 'super@citizenlab.eu')
-      create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }], email: 'project_mod@example.com')
+      create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }], email: 'space_mod@example.com')
       create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }], email: 'folder_mod@example.com')
+      create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }], email: 'project_mod@example.com')
       create(:user, roles: [], email: 'normal_user@example.com')
     end
 
@@ -20,7 +21,7 @@ RSpec.describe UserRoles do
 
     describe '.not_admin' do
       it 'returns only non-admins' do
-        expect(User.not_admin.count).to eq(3)
+        expect(User.not_admin.count).to eq(4)
       end
     end
 
@@ -32,7 +33,7 @@ RSpec.describe UserRoles do
 
     describe '.not_normal_user' do
       it 'returns users with any role' do
-        expect(User.not_normal_user.count).to eq(4)
+        expect(User.not_normal_user.count).to eq(5)
       end
     end
 
@@ -44,7 +45,19 @@ RSpec.describe UserRoles do
 
     describe '.not_project_moderator' do
       it 'returns only non-project moderators' do
-        expect(User.not_project_moderator.count).to eq(4)
+        expect(User.not_project_moderator.count).to eq(5)
+      end
+
+      let(:space) { create(:space) }
+      let(:project) { create(:project, space: space) }
+      let(:folder) { create(:project_folder, projects: [project], space: space) }
+
+      # Documenting this, as the scope name is rather misleading, and may need changing.
+      it 'does not include any user that can moderate a project' do
+        expect(User.not_project_moderator.count).to eq(5)
+        expect(User.not_project_moderator).not_to include(User.project_moderator(project.id))
+        expect(User.not_project_moderator).not_to include(User.space_moderator(space.id))
+        expect(User.not_project_moderator).not_to include(User.project_folder_moderator(folder.id))
       end
     end
 
@@ -95,8 +108,8 @@ RSpec.describe UserRoles do
 
     describe '.billed_moderators' do
       it 'returns moderators that are not citizenlab members' do
-        expect(User.billed_moderators.count).to eq(2)
-        expect(User.billed_moderators.pluck(:email)).to contain_exactly('project_mod@example.com', 'folder_mod@example.com')
+        expect(User.billed_moderators.count).to eq(3)
+        expect(User.billed_moderators.pluck(:email)).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'space_mod@example.com')
       end
     end
 
@@ -109,8 +122,8 @@ RSpec.describe UserRoles do
 
     describe '.not_super_admins' do
       it 'returns users that are not super admins' do
-        expect(User.not_super_admins.count).to eq(4)
-        expect(User.not_super_admins.pluck(:email)).to contain_exactly('admin@example.com', 'project_mod@example.com', 'folder_mod@example.com', 'normal_user@example.com')
+        expect(User.not_super_admins.count).to eq(5)
+        expect(User.not_super_admins.pluck(:email)).to contain_exactly('admin@example.com', 'project_mod@example.com', 'folder_mod@example.com', 'space_mod@example.com', 'normal_user@example.com')
       end
     end
   end
@@ -147,6 +160,19 @@ RSpec.describe UserRoles do
       )
 
       expect(user.highest_role).to eq(:admin)
+    end
+
+    it 'returns :space_moderator for space moderator' do
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'space_moderator', 'space_id' => '123' },
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => '123' },
+          { 'type' => 'project_moderator', 'project_id' => '456' }
+        ]
+      )
+
+      expect(user.highest_role).to eq(:space_moderator)
     end
 
     it 'returns :project_folder_moderator for folder moderator' do
