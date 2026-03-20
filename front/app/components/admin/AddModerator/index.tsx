@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  IconTooltip,
-  Box,
-  Title,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Text, Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
@@ -15,60 +9,27 @@ import AddByEmail from 'components/admin/AddModerator/AddByEmail';
 import UserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import { Section } from 'components/admin/Section';
 import Or from 'components/UI/Or';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from './messages';
-
-const ModeratorSubSection = styled(Section)`
-  margin-bottom: 30px;
-`;
-
-const StyledA = styled.a`
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+type UserParams = {
+  userId?: string;
+  userEmail?: string;
+};
 
 interface Props {
-  projectId: string;
+  onAddModerator: (params: UserParams) => Promise<void>;
 }
 
-const ProjectManagement = ({ projectId }: Props) => {
+const AddModerator = ({ onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
 
   return (
-    <ModeratorSubSection>
-      <Box display="flex" mb="16px">
-        <Title my="0px" mr="4px" variant="h2" color="primary">
-          <FormattedMessage {...messages.projectManagementTitle} />
-        </Title>
-        <IconTooltip
-          mt="4px"
-          content={
-            <FormattedMessage
-              {...messages.projectManagerTooltipContent}
-              values={{
-                moderationInfoCenterLink: (
-                  <StyledA
-                    href={formatMessage(messages.moreInfoModeratorLink2)}
-                    target="_blank"
-                  >
-                    <FormattedMessage
-                      {...messages.moderationInfoCenterLinkText}
-                    />
-                  </StyledA>
-                ),
-              }}
-            />
-          }
-        />
-      </Box>
+    <>
       <Text
         color="primary"
         p="0px"
@@ -87,7 +48,7 @@ const ProjectManagement = ({ projectId }: Props) => {
       )}
       <AddByEmail
         onSubmit={async (email) => {
-          await addProjectModerator({ moderatorEmail: email, projectId });
+          await onAddModerator({ userEmail: email });
         }}
       />
       <Box mt="40px">
@@ -104,8 +65,8 @@ const ProjectManagement = ({ projectId }: Props) => {
       <Box width="516px">
         <SeatInfo seatType="moderator" />
       </Box>
-    </ModeratorSubSection>
+    </>
   );
 };
 
-export default ProjectManagement;
+export default AddModerator;

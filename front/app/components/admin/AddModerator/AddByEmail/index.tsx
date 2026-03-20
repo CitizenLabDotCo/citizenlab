@@ -28,7 +28,7 @@ const DEFAULT_VALUES: FormValues = {
 };
 
 interface Props {
-  onSubmit: (email: string) => void;
+  onSubmit: (email: string) => Promise<void>;
 }
 
 const EmailForm = ({ onSubmit }: Props) => {

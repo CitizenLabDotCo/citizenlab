@@ -10,7 +10,7 @@ import {
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
-import UserSearch from 'components/admin/ModeratorUserSearch';
+import UserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import { useIntl } from 'utils/cl-intl';

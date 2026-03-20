@@ -30,7 +30,7 @@ interface Props {
   label?: JSX.Element | string;
 }
 
-const UserSearch = memo(({ projectId, label }: Props) => {
+const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
 
@@ -120,4 +120,4 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   );
 });
 
-export default UserSearch;
+export default ModeratorUserSearch;
