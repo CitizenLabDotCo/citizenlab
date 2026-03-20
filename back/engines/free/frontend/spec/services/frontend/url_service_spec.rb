@@ -21,9 +21,9 @@ describe Frontend::UrlService do
 
     it 'returns the correct url for a phase' do
       project = create(:project, slug: 'my-project')
-      _future_phase = create(:phase, project: project, start_at: (Time.zone.now.beginning_of_day + 20.days), end_at: (Time.zone.now.beginning_of_day + 26.days))
-      _past_phase = create(:phase, project: project, start_at: (Time.zone.now.beginning_of_day - 15.days), end_at: (Time.zone.now.beginning_of_day - 9.days))
-      current_phase = create(:phase, project: project, start_at: (Time.zone.now.beginning_of_day - 2.days), end_at: (Time.zone.now.beginning_of_day + 4.days))
+      _future_phase = create(:phase, project: project, start_at: 20.days.from_now, end_at: 26.days.from_now)
+      _past_phase = create(:phase, project: project, start_at: 15.days.ago, end_at: 9.days.ago)
+      current_phase = create(:phase, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
 
       expect(service.model_to_url(current_phase.reload, locale: locale)).to eq "#{base_uri}/en/projects/my-project/2"
     end
