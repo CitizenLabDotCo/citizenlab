@@ -1,5 +1,9 @@
 it-IT:
   email_campaigns:
+    admin_campaign_type_description:
+      inappropriate_content_flagged: Segnalazione di contenuto inappropriato - amministratori
+    campaign_type_description:
+      inappropriate_content_flagged: Segnalazione di contenuto inappropriato
     inappropriate_content_flagged:
       author_wrote: "%{authorName} ha scritto:"
       cta_button: Esamina
