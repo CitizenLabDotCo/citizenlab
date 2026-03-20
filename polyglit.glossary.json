@@ -3,7 +3,8 @@
     "de-DE": "Papier-Scans"
   },
   "manager": {
-    "de-DE": "Manager*innen"
+    "de-DE": "Manager*innen",
+    "es-ES": "administrador"
   },
   "seat": {
     "de-DE": "Zugang",
