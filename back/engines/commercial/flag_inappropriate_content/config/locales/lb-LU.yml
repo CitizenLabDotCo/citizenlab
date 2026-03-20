@@ -1,15 +1,23 @@
-lb:
+lb-LU:
   email_campaigns:
-    campaign_type_description:
-      "inappropriate_content_flagged": Net ugemiessen Inhalter gemellt
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Net ugemiessen Inhalter geellt - Verwalteren
+      inappropriate_content_flagged: Net ugemiessen Inhalter geellt - Verwalteren
+    campaign_type_description:
+      inappropriate_content_flagged: Net ugemiessen Inhalter gemellt
     inappropriate_content_flagged:
-      subject: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
-      header_title: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
-      comment_author: '%{authorName} huet kommentéiert:'
-      idea_author: '%{authorName} huet e Bäitrag gepost:'
-      initiative_author: '%{authorName} huet e Virschlag agereecht:'
-      this_post_was_flagged: >
-        <p>Dëse Post gouf automatesch als méiglecherweis net ugemiessenen Inhalt ausgemaach. Mir schécken Iech dës Benoriichtegung, fir datt Dir de Post entspriechend Ären eegene Moderatiounsrichtlinnen iwwerpréiwe kënnt.</p><p>Wann de Post keen net ugemiessenen Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform am Reiter Aktivitéit am Verwaltungspanel läschen.</p>
-      cta_review_post: 'Bäitrag iwwerpréiwen'
+      author_wrote: "%{authorName} huet geschriwwen:"
+      automatically_flagged: Dëse Bäitrag gouf automatesch erkannt, well e méiglecherweis onpassenden Inhalt enthält. Mir schécken dir dës Matdeelung, fir datt s du de Bäitrag am Aklang mat dengen eegene Moderatiounsrichtlinnen iwwerpréiwe kannst.
+      comment_author: "%{authorName} huet kommentéiert:"
+      cta_button: Iwwerpréiwen
+      cta_review_post: Bäitrag iwwerpréiwen
+      header_title: E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt
+      how_to_review: Wann de Bäitrag keen onpassenden Inhalt enthält, kanns du d'Warnung iwwer deng Plattform am Tab "Aktivitéit" am Admin-Panel ewechhuelen.
+      idea_author: "%{authorName} huet e Bäitrag gepost:"
+      initiative_author: "%{authorName} huet e Virschlag agereecht:"
+      preheader: E Bäitrag op denger Plattform gouf fir eng Iwwerpréiwung markéiert
+      subject: E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt
+      this_post_was_flagged: |
+  <p>Dëse Post gouf automatesch als méiglecherweis net ugemiessenen Inhalt ausgemaach. Mir schécken Iech dës Benoriichtegung, fir datt Dir de Post entspriechend Ären eegene Moderatiounsrichtlinnen iwwerpréiwe kënnt.</p><p>Wann de Post keen net ugemiessenen Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform am Reiter Aktivitéit am Verwaltungspanel läschen.</p>
+  
+
+      title: E Bäitrag gouf fir eng Iwwerpréiwung markéiert
