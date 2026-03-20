@@ -306,22 +306,10 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
-  def check_if_user_exceeds_seats
-    core = app_configuration.settings('core')
-    # user = find_user_by_params
-
-    if params[:role] == 'moderator'
-      max_moderators = core['maximum_admins_number']
-
-      if (max_moderators.nil?)
-        render raw_json({ value: false })
-      else
-        additional_admins = core['additional_admins_number'] || 0
-        
-      end
-    else
-      # Check if user exceeds the seat limit for admins
-    end
+  def check_if_exceeds_seats
+    authorize :user, :check_if_exceeds_seats?
+    result = UserExceedsSeatsService.new(user_exceeds_seats_params).execute
+    render json: raw_json({ value: result })
   end
 
   private
@@ -393,5 +381,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def params_service
     @params_service ||= CustomFieldParamsService.new
+  end
+
+  def user_exceeds_seats_params
+    params.permit(:seat_type, :user_id, :user_email)
   end
 end

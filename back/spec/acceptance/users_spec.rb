@@ -1903,6 +1903,23 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
         end
       end
+
+      get 'web_api/v1/users/check_if_exceeds_seats' do
+        before do
+          header_token_for create(:admin)
+        end
+
+        let(:user_id) { create(:user).id }
+        let(:seat_type) { 'moderator' }
+
+        example 'Check if user exceeds seat limits' do
+          do_request(user_id:, seat_type:)
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :value)).to eq(false)
+        end
+      end
     end
   end
 end

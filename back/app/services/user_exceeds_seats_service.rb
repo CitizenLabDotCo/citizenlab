@@ -2,7 +2,7 @@
 
 class UserExceedsSeatsService
   def initialize(params)
-    @seat_type = params[:seat_type]
+    @seat_type = params['seat_type']
     @user = find_user_by_params(params)
     @core = AppConfiguration.instance.settings('core')
   end
@@ -44,10 +44,10 @@ class UserExceedsSeatsService
   private
 
   def find_user_by_params(params)
-    if params[:user_id].present?
-      User.find(params[:user_id])
-    elsif params[:user_email].present?
-      User.find_by!(email: params[:user_email])
+    if params['user_id'].present?
+      User.find(params['user_id'])
+    elsif params['user_email'].present?
+      User.find_by!(email: params['user_email'])
     else
       raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
