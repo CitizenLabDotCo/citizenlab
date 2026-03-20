@@ -10,8 +10,8 @@ RSpec.describe ReportBuilder::ReportPolicy do
   let_it_be(:project) { create(:project) }
   let_it_be(:another_project) { create(:project) }
 
-  let_it_be(:current_phase) { create(:phase, project: project, start_at: 1.day.ago.beginning_of_day, end_at: 2.days.from_now.beginning_of_day) }
-  let_it_be(:future_phase) { create(:phase, project: project, start_at: 2.days.from_now.beginning_of_day) }
+  let_it_be(:current_phase) { create(:phase, project: project, start_at: 1.day.ago, end_at: 1.day.from_now) }
+  let_it_be(:future_phase) { create(:phase, project: project, start_at: 2.days.from_now) }
 
   shared_examples 'permitted everything' do
     it { is_expected.to permit(:show) }
