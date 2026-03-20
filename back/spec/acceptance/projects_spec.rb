@@ -832,7 +832,7 @@ resource 'Projects' do
         create(
           :volunteering_phase,
           project: project,
-          start_at: 30.days.ago,
+          start_at: ideation_phase.end_at,
           end_at: 20.days.ago
         )
       end
@@ -841,7 +841,7 @@ resource 'Projects' do
         create(
           :poll_phase,
           project: project,
-          start_at: 20.days.ago,
+          start_at: volunteering_phase.end_at,
           end_at: 10.days.ago
         )
       end
