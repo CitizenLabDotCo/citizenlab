@@ -6,6 +6,7 @@ it-IT:
       idea_assigned_to_you: Assegnazione di un'idea a me
     idea_assigned_to_you:
       by_author: da %{authorName}
+      cta_button: Dai un feedback a %{authorName}
       cta_reply_to: Dai un feedback a %{authorName}
       event_description: Ti è stato assegnato un contributo. Fornisci un feedback scrivendo un aggiornamento ufficiale o cambiando il suo status
       event_description_idea: Un'idea ti è stata assegnata. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.
