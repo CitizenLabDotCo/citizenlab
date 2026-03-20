@@ -176,40 +176,25 @@ module BulkImportIdeas::Parsers::Pdf
         field[attr_name][@locale.to_s]
       end.compact_blank
 
-      sub_properties = {}
-      sub_required = []
-      statement_mapping = {}
-
       field.matrix_statements.each_with_index do |statement, index|
         sub_key = "#{question_key}.#{index + 1}"
         statement_title = statement.title_multiloc[@locale.to_s]
 
-        sub_properties[sub_key] = {
+        properties[sub_key] = {
           type: 'string',
           description: 'The answer represented by the checkbox the respondent checked corresponding to the statement ' \
                        "'#{statement_title}'. Return an empty string if the statement was left unanswered. " \
                        "Return `#{NOT_FOUND}` if the question was not in the document.",
           enum: labels + ['', NOT_FOUND]
         }
-        sub_required << sub_key
-        statement_mapping[sub_key] = statement.key
+        required << sub_key
+        @key_mapping[sub_key] = {
+          type: :matrix_statement,
+          field_key: field.key,
+          statement_key: statement.key,
+          label_to_index: labels.each_with_index.to_h { |label, i| [label, i + 1] }
+        }
       end
-
-      properties[question_key] = {
-        type: 'object',
-        description: "The answers represented by the table of matrix questions under question #{question_num}: " \
-                     "'#{title}'.",
-        additionalProperties: false,
-        required: sub_required,
-        properties: sub_properties
-      }
-      required << question_key
-      @key_mapping[question_key] = {
-        type: :matrix,
-        field_key: field.key,
-        statements: statement_mapping,
-        label_to_index: labels.each_with_index.to_h { |label, i| [label, i + 1] }
-      }
     end
 
     def add_checkbox_property(field, question_key, question_num, properties, required)

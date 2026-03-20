@@ -30,7 +30,7 @@ module BulkImportIdeas::Parsers::Pdf
       message = Analysis::LLM::Message.new(prompt, pdf_file)
 
       begin
-        response = llm.chat(message)
+        response = llm.chat(message, response_schema: schema_builder.output_schema)
       rescue RubyLLM::BadRequestError => e
         raise unless e.message.include?('grammar is too large')
 
@@ -66,9 +66,11 @@ module BulkImportIdeas::Parsers::Pdf
           next if not_found?(answer)
 
           result[field_info[:field_key]] = normalize_answer(answer)
-        when :matrix
-          matrix_answer = build_matrix_answer(answer, field_info)
-          result[field_info[:field_key]] = matrix_answer if matrix_answer.present?
+        when :matrix_statement
+          next if not_found?(answer) || answer.blank?
+
+          result[field_info[:field_key]] ||= {}
+          result[field_info[:field_key]][field_info[:statement_key]] = answer
         end
       end
 
@@ -85,6 +87,7 @@ module BulkImportIdeas::Parsers::Pdf
 
         result[statement_key] = sub_answer
       end
+      Rails.logger.info("[FormSync] Mapped fields: #{result.inspect}")
       result
     end
 
