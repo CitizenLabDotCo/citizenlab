@@ -100,7 +100,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     scope :billed_admins, -> { admin.not_citizenlab_member }
     scope :billed_moderators, lambda {
       # use any conditions before `or` very carefully (inspect the generated SQL)
-      project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
+      project_moderator.or(User.project_folder_moderator).or(User.space_moderator).where.not(id: admin).not_citizenlab_member
     }
 
     scope :super_admins, -> { citizenlab_member.admin }
@@ -122,6 +122,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       :super_admin
     elsif admin?
       :admin
+    elsif space_moderator?
+      :space_moderator
     elsif project_folder_moderator?
       :project_folder_moderator
     elsif project_moderator?

@@ -54,7 +54,7 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-    params.require(:space_moderator).permit(
+    params.require(:moderator).permit(
       :user_id,
       :user_email
     )

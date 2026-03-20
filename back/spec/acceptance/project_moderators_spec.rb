@@ -71,7 +71,7 @@ resource 'Moderators' do
         context 'with limited seats' do
           before do
             config = AppConfiguration.instance
-            config.settings['core']['maximum_moderators_number'] = User.project_moderator.count + 1
+            config.settings['core']['maximum_moderators_number'] = User.billed_moderators.count + 1
             config.settings['core']['additional_moderators_number'] = 0
             config.save!
           end
