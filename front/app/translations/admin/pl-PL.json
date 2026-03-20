@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimalnie",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Wymagaj od uczestników spełnienia minimalnego budżetu, aby wysłać swój koszyk (wpisz '0' jeśli nie chcesz ustalać minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "odwiedź nasze Centrum Pomocy",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Kim są kierownicy projektów?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Więcej szczegółów",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Potrzebujesz inspiracji? Poznaj podobne projekty z innych miast na {inspirationHubLink}",

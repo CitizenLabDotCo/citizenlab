@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínimo",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exije a los participantes un presupuesto mínimo para presentar su bolsa (introduzca \"0\" si no desea establecer un mínimo).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visitar nuestro Centro de Ayuda",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "¿Quiénes son los administradores de proyecto?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Más detalles",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "¿Necesitas inspiración? Explora proyectos similares de otras ciudades en {inspirationHubLink}",

@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Demandez aux participants qu'ils respectent un budget minimum pour soumettre leur panier (entrez '0' si vous ne souhaitez pas fixer de minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visiter notre centre d'aide",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Qui sont les gestionnaires de projet ?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Plus de détails",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/fr/articles/527642-differents-roles-et-autorisations-sur-la-plateforme",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "En manque d'inspiration ? Explorez des projets similaires d'autres villes dans l'{inspirationHubLink}",

@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Isafswm",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Ei gwneud yn ofynnol i gyfranogwyr gwrdd ag isafswm cyllideb i gyflwyno eu basged (nodwch '0' os nad ydych am osod isafswm).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ewch i'n Canolfan Gymorth",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Pwy yw rheolwyr y prosiect?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mwy o fanylion",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Angen ysbrydoliaeth? Archwiliwch brosiectau tebyg o ddinasoedd eraill yn y {inspirationHubLink}",

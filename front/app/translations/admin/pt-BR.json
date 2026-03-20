@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínimo",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exigir aos participantes que cumpram um orçamento mínimo para enviar a sua cesta (insira '0' se não quiser definir um mínimo).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visite nossa Central de Ajuda",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Quem são os gerentes de projeto?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mais detalhes",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Você precisa de inspiração? Explore projetos semelhantes de outras cidades no site {inspirationHubLink}",

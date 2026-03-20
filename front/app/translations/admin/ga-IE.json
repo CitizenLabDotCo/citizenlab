@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Íosmhéid",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Éiligh ar rannpháirtithe buiséad íosta a chomhlíonadh chun a gciseán a chur isteach (cuir isteach '0' mura mian leat íosmhéid a shocrú).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "tabhair cuairt ar ár nIonad Cabhrach",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Cé hiad na bainisteoirí tionscadail?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Tuilleadh sonraí",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "An bhfuil inspioráid uait? Déan iniúchadh ar thionscadail chomhchosúla ó chathracha eile sa {inspirationHubLink}",

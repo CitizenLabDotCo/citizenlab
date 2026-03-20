@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Eis dat deelnemers aan een minimumbudget voldoen om hun mandje in te dienen (vul '0' in als je geen minimum wenst in te stellen).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "in ons Helpcentrum",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Wie zijn de projectbeheerders?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Meer details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Inspiratie nodig? Bekijk soortgelijke projecten van andere steden in het {inspirationHubLink}",

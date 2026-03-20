@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "ਘੱਟੋ-ਘੱਟ",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾ ਕਰਨ ਲਈ ਘੱਟੋ-ਘੱਟ ਬਜਟ ਨੂੰ ਪੂਰਾ ਕਰਨ ਦੀ ਲੋੜ ਹੈ (ਜੇ ਤੁਸੀਂ ਘੱਟੋ-ਘੱਟ ਸੈੱਟ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ '0' ਦਰਜ ਕਰੋ)।",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ਸਾਡੇ ਮਦਦ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਕੌਣ ਹਨ?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "ਹੋਰ ਵੇਰਵੇ",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "ਕੀ ਪ੍ਰੇਰਨਾ ਦੀ ਲੋੜ ਹੈ? {inspirationHubLink}ਦੇ ਹੋਰ ਸ਼ਹਿਰਾਂ ਤੋਂ ਮਿਲਦੇ-ਜੁਲਦੇ ਪ੍ਰੋਜੈਕਟਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ",

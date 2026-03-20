@@ -2476,7 +2476,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Минимум",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Захтевајте од учесника да испуне минимални буџет да би послали своју корпу (унесите '0' ако не желите да поставите минимум).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "посетите наш центар за помоћ",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Who are the project managers?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Детаљније",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Need inspiration? Explore similar projects from other cities in the {inspirationHubLink}",

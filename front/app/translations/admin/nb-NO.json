@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Krev at deltakerne har et minimumsbudsjett for å sende inn kurven sin (skriv inn \"0\" hvis du ikke ønsker å angi et minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besøk vårt hjelpesenter",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Hvem er prosjektlederne?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Flere detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Trenger du inspirasjon? Utforsk lignende prosjekter fra andre byer på {inspirationHubLink}",

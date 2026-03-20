@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimi",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Vaadi osallistujia täyttämään vähimmäisbudjetti ostoskorinsa lähettämiseksi (kirjoita \"0\", jos et halua asettaa vähimmäismäärää).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "käy ohjekeskuksessamme",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Ketkä ovat projektipäälliköt?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Lisätietoja",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Tarvitsetko inspiraatiota? Tutustu vastaaviin projekteihin muista kaupungeista {inspirationHubLink}",

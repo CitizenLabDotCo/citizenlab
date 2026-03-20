@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Zatražite od sudionika da ispune minimalni proračun prilikom slanja košarice (unesite „0“ ako ne želite da postavite minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "posjetite naš Centar za podršku",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Tko su voditelji projekta?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Više pojedinosti",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Trebate inspiraciju? Istražite slične projekte iz drugih gradova u {inspirationHubLink}",

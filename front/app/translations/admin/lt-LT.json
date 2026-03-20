@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimalus",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Reikalaukite, kad dalyviai atitiktų minimalų biudžetą, kad galėtų pateikti savo krepšelį (įveskite \"0\", jei nenorite nustatyti minimalaus biudžeto).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "apsilankykite mūsų pagalbos centre",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Kas yra projektų vadovai?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Daugiau informacijos",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Reikia įkvėpimo? Susipažinkite su panašiais projektais kituose miestuose {inspirationHubLink}",

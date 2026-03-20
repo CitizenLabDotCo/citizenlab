@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "کم از کم",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "شرکاء سے مطالبہ کریں کہ وہ اپنی ٹوکری جمع کرانے کے لیے کم از کم بجٹ کو پورا کریں (اگر آپ کم از کم سیٹ نہیں کرنا چاہتے تو '0' درج کریں)۔",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ہمارا امدادی مرکز ملاحظہ کریں۔",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "پروجیکٹ مینیجرز کون ہیں؟",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "مزید تفصیلات",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "پریرتا کی ضرورت ہے؟ {inspirationHubLink}میں دوسرے شہروں سے ملتے جلتے پروجیکٹس دریافت کریں۔",

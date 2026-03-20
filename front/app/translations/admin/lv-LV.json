@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimums",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Piemērot dalībniekiem prasību izpildīt minimālo budžetu sava groza iesniegšanai (ievadiet \"0\", ja nevēlaties noteikt minimālo budžetu).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "vērsieties mūsu palīdzības centrā",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Kas ir projektu vadītāji?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Sīkāka informācija",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Nepieciešama iedvesma? Izpētiet līdzīgus projektus citās pilsētās vietnē {inspirationHubLink}.",

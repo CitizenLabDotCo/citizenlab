@@ -2489,7 +2489,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Kræv, at deltagerne skal opfylde et minimumsbudget for at indsende deres valg (angiv \"0\", hvis du ikke ønsker at fastsætte et minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besøg vores Hjælp-center",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Hvem er projektlederne?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Flere detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform}}",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Har du brug for inspiration? Udforsk lignende projekter fra andre byer på {inspirationHubLink}",
