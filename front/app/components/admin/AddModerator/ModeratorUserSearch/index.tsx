@@ -34,18 +34,9 @@ const ModeratorUserSearch = memo(({ projectId, label }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
 
-  const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
   const { loading, checkIfUserExceedsSeats } = useExceedsSeats();
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const openModal = () => {
-    setShowModal(true);
-  };
 
   const handleOnChange = (user?: IUserData) => {
     setModeratorToAdd(user || null);
