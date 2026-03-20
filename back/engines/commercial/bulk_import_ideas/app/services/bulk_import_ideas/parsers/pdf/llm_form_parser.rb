@@ -87,7 +87,6 @@ module BulkImportIdeas::Parsers::Pdf
 
         result[statement_key] = sub_answer
       end
-      Rails.logger.info("[FormSync] Mapped fields: #{result.inspect}")
       result
     end
 
