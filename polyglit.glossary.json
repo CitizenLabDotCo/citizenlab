@@ -8,6 +8,9 @@
   "seat": {
     "de-DE": "Zugang"
   },
+  "seats": {
+    "es-ES": "asientos"
+  },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
   }
