@@ -297,4 +297,51 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
       expect(schema[:properties]).not_to have_key('consent')
     end
   end
+
+  # Guard test: dynamically discovers all input types where supports_pdf_import? is true,
+  # creates a field for each, and verifies they all appear in the key_mapping (i.e. they are
+  # handled by add_field_property and not falling through to add_unsupported_property).
+  # If a new field type is added and marked as pdf-importable, this test will fail automatically.
+  describe 'all pdf-importable field types generate non-null schema properties' do
+    it 'does not generate null type for any pdf-importable field' do
+      # Dynamically find all input types that are both pdf-importable and submittable
+      importable_types = CustomField::INPUT_TYPES.select do |input_type|
+        probe = CustomField.new(input_type: input_type, enabled: true, include_in_printed_form: true)
+        probe.supports_pdf_import? && probe.supports_submission?
+      end
+
+      # Create one field per importable type with the minimum required attributes
+      importable_types.each_with_index do |input_type, i|
+        attrs = {
+          resource: custom_form,
+          key: "importable_#{i}",
+          input_type: input_type,
+          title_multiloc: { 'en' => "Question #{input_type}" },
+          enabled: true,
+          required: false
+        }
+
+        probe = CustomField.new(input_type: input_type)
+        attrs[:maximum] = 5 if probe.supports_linear_scale?
+
+        field = CustomField.create!(attrs)
+
+        if field.supports_options?
+          field.options.create!(key: "opt_#{i}", title_multiloc: { 'en' => "Option #{i}" })
+        end
+        if input_type == 'matrix_linear_scale'
+          field.update!(linear_scale_label_1_multiloc: { 'en' => 'Low' })
+        end
+      end
+
+      # Fields handled by add_field_property are added to the key_mapping.
+      # Unsupported fields are not. So any importable field missing from the
+      # mapping indicates it fell through to add_unsupported_property.
+      mapped_field_keys = builder.key_mapping.values.map { |v| v[:field_key] }
+      unhandled_types = importable_types.select.with_index { |_, i| mapped_field_keys.exclude?("importable_#{i}") }
+
+      expect(unhandled_types).to be_empty,
+        "These pdf-importable field types are not handled by add_field_property: #{unhandled_types.join(', ')}"
+    end
+  end
 end
