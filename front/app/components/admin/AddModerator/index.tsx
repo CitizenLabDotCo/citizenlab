@@ -11,7 +11,7 @@ import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import Or from 'components/UI/Or';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import SeatLimitReachedModal from '../SeatBasedBilling/SeatLimitReachedModal';
@@ -19,21 +19,16 @@ import SeatLimitReachedModal from '../SeatBasedBilling/SeatLimitReachedModal';
 import messages from './messages';
 
 type UserParams = {
-  userId?: string;
-  userEmail?: string;
+  moderatorId?: string;
+  moderatorEmail?: string;
 };
 
 interface Props {
   projectId: string; // TODO remove
-  addModeratorsMessage: MessageDescriptor;
   onAddModerator: (params: UserParams) => Promise<void>;
 }
 
-const AddModerator = ({
-  projectId,
-  addModeratorsMessage,
-  onAddModerator,
-}: Props) => {
+const AddModerator = ({ projectId, onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
   const [moderatorToAddThroughSearch, setModeratorToAddThroughSearch] =
     useState<IUserData | null>(null);
@@ -43,14 +38,6 @@ const AddModerator = ({
 
   return (
     <>
-      <Text
-        color="primary"
-        p="0px"
-        mb="32px"
-        style={{ fontWeight: '500', fontSize: '18px' }}
-      >
-        {formatMessage(addModeratorsMessage)}
-      </Text>
       {isAdmin(authUser) && (
         <>
           <UserSearch projectId={projectId} />
@@ -61,7 +48,7 @@ const AddModerator = ({
       )}
       <AddByEmail
         onSubmit={async (email) => {
-          await onAddModerator({ userEmail: email });
+          await onAddModerator({ moderatorEmail: email });
         }}
       />
       <Box mt="40px">
@@ -82,7 +69,7 @@ const AddModerator = ({
         <SeatLimitReachedModal
           seatType="moderator"
           addModerators={() => {
-            onAddModerator({ userId: moderatorToAddThroughSearch?.id });
+            onAddModerator({ moderatorId: moderatorToAddThroughSearch?.id });
           }}
           showModal={showSeatLimitModal}
           closeModal={() => setShowSeatLimitModal(false)}

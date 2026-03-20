@@ -11,15 +11,10 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
-import AddByEmail from 'components/admin/AddModerator/AddByEmail';
-import UserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
-import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import AddModerator from 'components/admin/AddModerator';
 import { Section } from 'components/admin/Section';
-import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -77,33 +72,16 @@ const ProjectManagement = ({ projectId }: Props) => {
       >
         {formatMessage(messages.addProjectModerators)}
       </Text>
-      {isAdmin(authUser) && (
-        <>
-          <UserSearch projectId={projectId} />
-          <Box maxWidth="500px" mt="28px">
-            <Or />
-          </Box>
-        </>
-      )}
-      <AddByEmail
-        onSubmit={async (email) => {
-          await addProjectModerator({ moderatorEmail: email, projectId });
+      <AddModerator
+        projectId={projectId}
+        onAddModerator={async ({ moderatorId, moderatorEmail }) => {
+          if (moderatorId) {
+            await addProjectModerator({ moderatorId, projectId });
+          } else {
+            await addProjectModerator({ moderatorEmail, projectId });
+          }
         }}
       />
-      <Box mt="40px">
-        <Text
-          color="primary"
-          p="0px"
-          mb="32px"
-          style={{ fontWeight: '500', fontSize: '18px' }}
-        >
-          {formatMessage(messages.moderatorSearchFieldLabel)}
-        </Text>
-        <ModeratorList projectId={projectId} />
-      </Box>
-      <Box width="516px">
-        <SeatInfo seatType="moderator" />
-      </Box>
     </ModeratorSubSection>
   );
 };
