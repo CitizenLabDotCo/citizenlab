@@ -2,11 +2,11 @@
 
 class TimelineService
   def future_phases(project, time = Time.now)
-    project.phases.where('start_at > ?', time)
+    project.phases.where('start_at > ?', time.in_time_zone)
   end
 
   def past_phases(project, time = Time.now)
-    project.phases.where('end_at IS NOT NULL AND end_at <= ?', time)
+    project.phases.where('end_at IS NOT NULL AND end_at <= ?', time.in_time_zone)
   end
 
   def current_phase(project, time = Time.now)
@@ -19,7 +19,7 @@ class TimelineService
   def current_phase_not_archived(project, time = Time.now)
     return nil if project.admin_publication.archived?
 
-    current_phase project, time
+    current_phase(project, time)
   end
 
   def current_phase_or_last_completed_not_archived(project, time = Time.now)
@@ -32,7 +32,7 @@ class TimelineService
   end
 
   def phase_is_complete?(phase, time = Time.now)
-    phase.end_at.present? && phase.end_at <= time
+    phase.end_at.present? && phase.end_at <= time.in_time_zone
   end
 
   def current_or_backup_transitive_phase(project, time = Time.now)
