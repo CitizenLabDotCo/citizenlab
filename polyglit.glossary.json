@@ -5,6 +5,9 @@
   "manager": {
     "de-DE": "Manager*innen"
   },
+  "seat": {
+    "de-DE": "Zugang"
+  },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
   }
