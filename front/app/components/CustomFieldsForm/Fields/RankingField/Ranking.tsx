@@ -124,6 +124,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
         {data !== undefined && (
           <Box display="flex">
             <Button
+              type="button"
               p="0px"
               buttonStyle="text"
               textColor={theme.colors.textPrimary}
