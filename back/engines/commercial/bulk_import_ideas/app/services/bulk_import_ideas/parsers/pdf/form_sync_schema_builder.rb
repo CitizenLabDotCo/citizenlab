@@ -89,7 +89,7 @@ module BulkImportIdeas::Parsers::Pdf
 
     def add_field_property(field, question_key, question_num, properties, required)
       case field.input_type
-      when 'text', 'multiline_text'
+      when 'text', 'multiline_text', 'number'
         add_text_property(field, question_key, question_num, properties, required)
       when 'select', 'multiselect', 'select_image', 'multiselect_image'
         add_selection_property(field, question_key, question_num, properties, required)
