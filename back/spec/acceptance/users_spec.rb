@@ -760,8 +760,12 @@ resource 'Users' do
 
         example 'List all users who can moderate a project' do
           p = create(:project)
+          f = create(:project_folder, projects: [p])
+
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
+          f1 = create(:project_folder_moderator, project_folders: [f])
+
 
           create(:project_moderator)
           create(:user)
@@ -774,14 +778,18 @@ resource 'Users' do
 
         example 'List all users who can moderate' do
           p = create(:project)
+          f = create(:project_folder, projects: [p])
+
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
           m2 = create(:project_moderator)
+          f1 = create(:project_folder_moderator, project_folders: [f])
+          f2 = create(:project_folder_moderator)
           create(:user)
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, @user.id)
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, f1.id, f2.id, @user.id)
         end
 
         example 'List all moderators who are not admins' do
