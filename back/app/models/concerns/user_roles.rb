@@ -40,8 +40,6 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     scope :not_project_moderator, lambda { |project_id = nil|
       return where.not(id: project_moderator) if project_id.nil?
 
-      project = Project.find(project_id)
-
       where.not(id: project_moderator(project_id))
     }
 
