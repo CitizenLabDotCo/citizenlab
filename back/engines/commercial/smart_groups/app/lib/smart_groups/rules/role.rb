@@ -8,10 +8,10 @@ module SmartGroups::Rules
     PREDICATE_VALUES = %w[
       is_admin
       not_is_admin
-      is_project_moderator
-      not_is_project_moderator
       is_project_folder_moderator
       not_is_project_folder_moderator
+      is_project_moderator
+      not_is_project_moderator
       is_normal_user
       not_is_normal_user
     ]
