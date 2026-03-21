@@ -764,8 +764,7 @@ resource 'Users' do
 
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
-          f1 = create(:project_folder_moderator, project_folders: [f])
-
+          _f1 = create(:project_folder_moderator, project_folders: [f])
 
           create(:project_moderator)
           create(:user)
