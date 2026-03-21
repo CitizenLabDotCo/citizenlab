@@ -41,11 +41,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       return where.not(id: project_moderator) if project_id.nil?
 
       project = Project.find(project_id)
-      if project.folder
-        where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
-      else
-        where.not(id: project_moderator(project_id))
-      end
+
+      where.not(id: project_moderator(project_id))
     }
 
     # This scope works as an AND filter.
