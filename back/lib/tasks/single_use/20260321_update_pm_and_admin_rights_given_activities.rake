@@ -15,7 +15,8 @@ namespace :single_use do
 
     renames = {
       'admin_rights_given' => 'admin_rights_received',
-      'project_moderation_rights_given' => 'project_moderation_rights_received'
+      'project_moderation_rights_given' => 'project_moderation_rights_received',
+      'project_folder_moderation_rights_given' => 'project_folder_moderation_rights_received'
     }
 
     updated = 0
@@ -60,7 +61,7 @@ namespace :single_use do
 
     puts "Total activities updated: #{updated}\n\n" if execute
 
-    reporter.report!('remove_pm_roles_from_fms.json', verbose: true)
+    reporter.report!('update_rights_given_activities.json', verbose: true)
 
     puts "\n---------- FINISHED TASK: Update rights given activities ----------\n\n"
   end
