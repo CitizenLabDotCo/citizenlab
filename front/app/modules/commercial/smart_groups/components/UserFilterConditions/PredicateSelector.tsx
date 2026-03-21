@@ -37,6 +37,7 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_normal_user: messages.predicate_is_normal_user,
   is_one_of: messages.predicate_is_one_of,
   is_project_moderator: messages.predicate_is_project_moderator,
+  is_project_folder_moderator: messages.predicate_is_project_folder_moderator,
   is_smaller_than: messages.predicate_is_smaller_than,
   is_smaller_than_or_equal: messages.predicate_is_smaller_than_or_equal,
   is_verified: messages.predicate_is_verified,
@@ -55,6 +56,8 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   not_is_normal_user: messages.predicate_not_is_normal_user,
   not_is_one_of: messages.predicate_not_is_one_of,
   not_is_project_moderator: messages.predicate_not_is_project_moderator,
+  not_is_project_folder_moderator:
+    messages.predicate_not_is_project_folder_moderator,
   not_is_verified: messages.predicate_not_is_verified,
   not_posted_in: messages.predicate_not_posted_input,
   not_volunteered_in: messages.predicate_not_volunteered_in,
