@@ -44,16 +44,25 @@ RSpec.describe UserRoles do
     end
 
     describe '.not_project_moderator' do
-      let(:space) { create(:space) }
-      let(:project) { create(:project, space: space) }
-      let(:folder) { create(:project_folder, projects: [project], space: space) }
+      let(:space_a) { create(:space) }
+      let(:project_a) { create(:project, space: space_a) }
+      let(:folder_a) { create(:project_folder, projects: [project_a], space: space_a) }
 
-      # Documenting this, as the scope name is rather misleading, and may need changing.
-      it 'does not include any user that can moderate a project' do
+      it 'returns only non-project moderators' do
         expect(User.not_project_moderator.count).to eq(5)
-        expect(User.not_project_moderator).not_to include(User.project_moderator(project.id))
-        expect(User.not_project_moderator).not_to include(User.space_moderator(space.id))
-        expect(User.not_project_moderator).not_to include(User.project_folder_moderator(folder.id))
+      end
+
+      it 'returns only non-project moderators for a specific project' do
+        project_manager = create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project_a.id }])
+        folder_manager = create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
+        space_manager = create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space_a.id }])
+
+        expect(User.not_project_moderator.count).to eq(7)
+        expect(User.not_project_moderator(project_a.id)).not_to include(project_manager)
+
+        # Documenting that we no longer exclude indirect, de-facto moderators of project.
+        expect(User.not_project_moderator(project_a.id)).to include(folder_manager)
+        expect(User.not_project_moderator(project_a.id)).to include(space_manager)
       end
     end
 

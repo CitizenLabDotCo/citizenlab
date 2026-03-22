@@ -746,8 +746,10 @@ RSpec.describe User do
   describe 'moderator scopes' do
     let(:user) { create(:user) }
     let(:admin) { create(:admin) }
-    let!(:project) { create(:project) }
-    let!(:project_folder) { create(:project_folder, projects: [project]) }
+
+    let!(:space) { create(:space) }
+    let!(:project) { create(:project, space: space) }
+    let!(:project_folder) { create(:project_folder, projects: [project], space: space) }
     let(:project_moderator) { create(:project_moderator, projects: [project]) }
     let(:moderator_of_other_project) { create(:project_moderator, projects: [create(:project)]) }
     let(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
@@ -773,6 +775,10 @@ RSpec.describe User do
 
         it 'excludes folder moderators of project folder' do
           expect(described_class.project_moderator(project.id)).not_to include(project_folder_moderator)
+        end
+
+        it 'excludes space moderators of project space' do
+          expect(described_class.project_moderator(project.id)).not_to include(create(:space_moderator, spaces: [space]))
         end
 
         it 'excludes folder moderators of other folders' do
@@ -865,8 +871,8 @@ RSpec.describe User do
           expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
         end
 
-        it 'excludes folder moderators of project folder' do
-          expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
+        it 'includes folder moderators of project folder' do
+          expect(described_class.not_project_moderator(project.id)).to include(project_folder_moderator)
         end
 
         it 'includes folder moderators of other folders' do

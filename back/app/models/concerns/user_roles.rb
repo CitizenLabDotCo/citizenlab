@@ -37,15 +37,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       end
     }
 
-    # TODO: Rename to 'cannot_moderate_project' for clarity, but need to also check if this is the actual intended scope in all uses (e.g. in smart_groups, etc)
     scope :not_project_moderator, lambda { |project_id = nil|
       return where.not(id: project_moderator) if project_id.nil?
 
-      project = Project.find(project_id)
-      scope = where.not(id: project_moderator(project_id))
-      scope = scope.and(where.not(id: space_moderator(project.space_id))) if project.space
-      scope = scope.and(where(id: not_project_folder_moderator(project.folder.id))) if project.folder
-      scope
+      where.not(id: project_moderator(project_id))
     }
 
     # This scope works as an AND filter.

@@ -38,8 +38,7 @@ resource 'Users' do
       DESC
 
       parameter :is_not_project_moderator, <<~DESC, required: false
-        Users who are not project moderators of project, nor folder moderator of folder containing project (by project
-        id), OR Users who do not have project moderator role (if no project ID provided).
+        Users who are not project moderators of project, OR Users who do not have project moderator role (if no project ID provided).
       DESC
 
       parameter :is_not_folder_moderator, <<~DESC, required: false
@@ -728,32 +727,35 @@ resource 'Users' do
 
         describe 'Not moderator filters' do
           before do
-            @user                       = create(:user)
-            @admin                      = create(:admin)
-            @project                    = create(:project)
-            @project_folder             = create(:project_folder, projects: [@project])
-            @project_moderator          = create(:project_moderator, projects: [@project])
-            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
-            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
-            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+            @user                        = create(:user)
+            @admin                       = create(:admin)
+            @space                       = create(:space)
+            @project                     = create(:project, space: @space)
+            @project_folder              = create(:project_folder, projects: [@project], space: @space)
+            @project_moderator           = create(:project_moderator, projects: [@project])
+            @moderator_of_other_project  = create(:project_moderator, projects: [create(:project)])
+            @project_folder_moderator    = create(:project_folder_moderator, project_folders: [@project_folder])
+            @moderator_of_other_folder   = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+            @space_moderator             = create(:space_moderator, spaces: [@space])
+            @space_moderator_other_space = create(:space_moderator, spaces: [create(:space)])
           end
 
-          example 'List only users who cannot moderate a specific project' do
+          example 'List only users are not project moderators of a specific project' do
             do_request is_not_project_moderator: @project.id
             expect(status).to eq 200
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
-            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
-            expect(user_ids).not_to include(@project_moderator.id, @project_folder_moderator.id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id, @project_folder_moderator.id, @space_moderator.id, @space_moderator_other_space.id)
+            expect(user_ids).not_to include(@project_moderator.id)
           end
 
-          example 'List only users who cannot moderate a specific folder' do
+          example 'List only users are not folder moderators of a specific folder' do
             do_request is_not_folder_moderator: @project_folder.id
             expect(status).to eq 200
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
             expect(user_ids).to include(
-              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id, @space_moderator.id, @space_moderator_other_space.id
             )
             expect(user_ids).not_to include(@project_folder_moderator.id)
           end
@@ -761,8 +763,11 @@ resource 'Users' do
 
         example 'List all users who can moderate a project' do
           p = create(:project)
+          f = create(:project_folder, projects: [p])
+
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
+          _f1 = create(:project_folder_moderator, project_folders: [f])
 
           create(:project_moderator)
           create(:user)
