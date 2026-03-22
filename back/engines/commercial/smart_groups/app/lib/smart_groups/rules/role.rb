@@ -8,6 +8,8 @@ module SmartGroups::Rules
     PREDICATE_VALUES = %w[
       is_admin
       not_is_admin
+      is_project_folder_moderator
+      not_is_project_folder_moderator
       is_project_moderator
       not_is_project_moderator
       is_normal_user
@@ -60,6 +62,10 @@ module SmartGroups::Rules
         users_scope.admin
       when 'not_is_admin'
         users_scope.not_admin
+      when 'is_project_folder_moderator'
+        users_scope.project_folder_moderator
+      when 'not_is_project_folder_moderator'
+        users_scope.not_project_folder_moderator
       when 'is_project_moderator'
         users_scope.project_moderator
       when 'not_is_project_moderator'
