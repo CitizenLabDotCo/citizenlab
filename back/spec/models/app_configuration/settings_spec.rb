@@ -79,7 +79,7 @@ RSpec.describe AppConfiguration::Settings do
   end
 
   describe 'settings schema tracking_id pattern' do
-    let(:schema) { AppConfiguration.core_settings_json_schema }
+    let(:schema) { described_class.core_settings_json_schema }
     let(:tracking_id_pattern) do
       Regexp.new(schema.dig('properties', 'google_analytics', 'properties', 'tracking_id', 'pattern'))
     end
