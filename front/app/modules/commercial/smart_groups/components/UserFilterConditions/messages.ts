@@ -173,6 +173,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator',
     defaultMessage: 'is not a folder manager',
   },
+  predicate_is_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_moderator',
+    defaultMessage: 'is any type of manager',
+  },
+  predicate_not_is_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_moderator',
+    defaultMessage: 'is not any type of manager',
+  },
   predicate_is_normal_user: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_normal_user',
     defaultMessage: 'is a normal user',

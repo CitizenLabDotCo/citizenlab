@@ -92,6 +92,8 @@ type TRolePredicate =
   | 'not_is_project_folder_moderator'
   | 'is_project_moderator'
   | 'not_is_project_moderator'
+  | 'is_moderator'
+  | 'not_is_moderator'
   | 'is_normal_user'
   | 'not_is_normal_user';
 
@@ -340,6 +342,8 @@ export type TRule =
         | 'not_is_project_folder_moderator'
         | 'is_project_moderator'
         | 'not_is_project_moderator'
+        | 'is_moderator'
+        | 'not_is_moderator'
         | 'is_normal_user'
         | 'not_is_normal_user';
       value?: undefined;
@@ -605,6 +609,8 @@ export const ruleTypeConstraints = {
     not_is_project_folder_moderator: null,
     is_project_moderator: null,
     not_is_project_moderator: null,
+    is_moderator: null,
+    not_is_moderator: null,
     is_normal_user: null,
     not_is_normal_user: null,
   },

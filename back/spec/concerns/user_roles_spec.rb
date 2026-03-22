@@ -72,6 +72,18 @@ RSpec.describe UserRoles do
       end
     end
 
+    describe '.moderator' do
+      it 'returns only moderators' do
+        expect(User.moderator.count).to eq(2)
+      end
+    end
+
+    describe '.not_moderator' do
+      it 'returns only non-moderators' do
+        expect(User.not_moderator.count).to eq(3)
+      end
+    end
+
     describe '.order_role' do
       it 'orders admins first, then other users' do
         expected_ordered_users = User.order_role
