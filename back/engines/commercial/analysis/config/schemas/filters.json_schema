@@ -51,7 +51,7 @@
     }
   },
   "patternProperties": {
-    "^(author|input)_custom_([a-f0-9\-]+)_(from|to)$": {
+    "^(author|input)_custom_([a-f0-9\\-]+)_(from|to)$": {
       "anyOf": [
         {
           "type": "string"
@@ -61,7 +61,7 @@
         }
       ]
     },
-    "^(author|input)_custom_([a-f0-9\-]+)$": {
+    "^(author|input)_custom_([a-f0-9\\-]+)$": {
       "type": "array",
       "items": {
         "anyOf": [

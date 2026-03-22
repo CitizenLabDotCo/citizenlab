@@ -73,7 +73,21 @@ describe Analytics::QueryValidatorService do
       expect(validator.messages).to include 'Invalid \'from\' date for created_date.date.'
     end
 
-    it 'pass on valid query' do
+    it 'pass on valid query with dot notation' do
+      query_param = {
+        fact: 'post',
+        fields: 'dimension_type.id',
+        filters: {
+          'dimension_date_created.date': { from: '2021-01-01', to: '2022-01-01' }
+        }
+      }
+      query = Analytics::Query.new(query_param)
+
+      validator = described_class.new(query)
+      expect(validator.valid).to be true
+    end
+
+    it 'pass on valid query with plain field' do
       query_param = {
         fact: 'post',
         fields: 'id',
@@ -85,6 +99,31 @@ describe Analytics::QueryValidatorService do
 
       validator = described_class.new(query)
       expect(validator.valid).to be true
+    end
+  end
+
+  describe 'query schema field pattern' do
+    let(:schema) { JSON.parse(described_class.schema) }
+    let(:pattern) { Regexp.new(schema.dig('properties', 'fields', 'anyOf', 0, 'pattern')) }
+
+    it 'matches dot-notation fields' do
+      expect(pattern).to match('dimension_date.month')
+      expect(pattern).to match('fact_post.id')
+      expect(pattern).to match('a.b')
+    end
+
+    it 'matches plain fields without dot notation' do
+      expect(pattern).to match('status')
+      expect(pattern).to match('automated')
+      expect(pattern).to match('id')
+    end
+
+    it 'rejects fields with uppercase' do
+      expect(pattern).not_to match('Dimension.field')
+    end
+
+    it 'rejects fields with multiple dots' do
+      expect(pattern).not_to match('a.b.c')
     end
   end
 end
