@@ -49,14 +49,14 @@ describe 'single_use:update_smart_groups_with_is_pm_rule rake task' do
       let!(:project_folder_moderator) { create(:project_folder_moderator) }
 
       it 'updates nothing' do
-        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                                        
+        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }
           .not_to change { group.reload.rules }
       end
     end
 
     context 'when there are no folder moderators' do
       it 'updates nothing' do
-        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                            
+        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }
           .not_to change { group.reload.rules }
       end
     end
