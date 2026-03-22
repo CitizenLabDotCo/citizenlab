@@ -2,9 +2,9 @@ namespace :single_use do
   desc 'Update smart groups with is a project moderator rule'
   task :update_smart_groups_with_is_pm_rule, %i[execute] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     execute = args[:execute] == 'execute'
 
