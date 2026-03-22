@@ -43,22 +43,23 @@ describe 'single_use:update_smart_groups_with_is_pm_rule rake task' do
   end
 
   context 'when there are no smart groups with is_project_moderator rules' do
-    let!(:group) { create(:group, rules: [{ 'ruleType' => 'role', 'predicate' => 'is_admin' }]) } 
+    let!(:group) { create(:group, rules: [{ 'ruleType' => 'role', 'predicate' => 'is_admin' }]) }
 
     context 'when there is a folder moderator' do
       let!(:project_folder_moderator) { create(:project_folder_moderator) }
 
       it 'updates nothing' do
-        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                                                       
-        .not_to change { group.reload.rules } 
+        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                                               
+          .not_to change { group.reload.rules }
       end
     end
 
     context 'when there are no folder moderators' do
       it 'updates nothing' do
-        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                                                       
-        .not_to change { group.reload.rules } 
+        expect { Rake::Task['single_use:update_smart_groups_with_is_pm_rule'].invoke('execute') }                                                                                                             
+          .not_to change { group.reload.rules }
       end
     end
   end
 end
+# rubocop:enable RSpec/DescribeClass

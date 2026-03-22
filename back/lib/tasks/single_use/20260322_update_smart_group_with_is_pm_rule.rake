@@ -16,10 +16,10 @@ namespace :single_use do
     Tenant.safe_switch_each do |tenant|
       active = AppConfiguration.instance.settings['core']['lifecycle_stage'] == 'active'
 
-      if active 
+      if active
         puts "Processing tenant: #{tenant.host}"
 
-        groups = Group.where("rules @> ?", [{ predicate: "is_project_moderator" }].to_json)
+        groups = Group.where('rules @> ?', [{ predicate: 'is_project_moderator' }].to_json)
         fms = User.project_folder_moderator.count
 
         if groups.any? && fms > 0
@@ -56,10 +56,9 @@ namespace :single_use do
             else
               puts "Would update smart group #{group.id} - #{group.title_multiloc}"
             end
-
           end
         else
-          puts "... nothing to do for this tenant"
+          puts '... nothing to do for this tenant'
         end
       end
     end
