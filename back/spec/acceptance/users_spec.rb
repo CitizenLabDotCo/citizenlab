@@ -764,15 +764,16 @@ resource 'Users' do
 
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
-          _f1 = create(:project_folder_moderator, project_folders: [f])
+          f1 = create(:project_folder_moderator, project_folders: [f])
 
           create(:project_moderator)
+          create(:project_folder_moderator)
           create(:user)
           create(:idea, project: p) # a participant, just in case
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, @user.id)
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, f1.id, @user.id)
         end
 
         example 'List all users who can moderate' do
