@@ -4,11 +4,8 @@ require 'rails_helper'
 
 RSpec.describe AppConfiguration::Settings do
   describe 'settings schema tracking_id pattern' do
-    let(:schema) do
-      schema_filepath = Rails.root.join('config/schemas/settings.schema.json.erb')
-      JSON.parse(ERB.new(File.read(schema_filepath)).result(binding))
-    end
     let(:tracking_id_pattern) do
+      schema = described_class.json_schema
       Regexp.new(schema.dig('properties', 'google_analytics', 'properties', 'tracking_id', 'pattern'))
     end
 
