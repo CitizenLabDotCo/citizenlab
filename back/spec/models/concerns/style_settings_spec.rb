@@ -7,8 +7,7 @@ RSpec.describe StyleSettings do
   let(:color_patterns) do
     schema.dig('definitions', 'color', 'anyOf')
       .select { |entry| entry.key?('pattern') }
-      .map { |entry| [entry['title'], Regexp.new(entry['pattern'])] }
-      .to_h
+      .to_h { |entry| [entry['title'], Regexp.new(entry['pattern'])] }
   end
 
   describe 'style.schema.json color patterns' do

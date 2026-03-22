@@ -22,7 +22,7 @@ RSpec.describe Analysis::HasFilters do
     end
 
     describe 'custom field filter pattern' do
-      let(:pattern) { Regexp.new(pattern_properties.keys.find { |k| !k.include?('from|to') }) }
+      let(:pattern) { Regexp.new(pattern_properties.keys.find { |k| k.exclude?('from|to') }) }
 
       it 'matches valid custom field filters' do
         expect(pattern).to match('author_custom_a1b2c3d4-e5f6-7890-abcd-ef1234567890')
