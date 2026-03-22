@@ -144,6 +144,7 @@ gem 'faraday-multipart'
 # AI
 # Temporary SHA checkout to enable AWS Bedrock Schema support. Remove the ref and point to the latest version once Bedrock Schema support is released.
 gem 'ruby_llm', '~> 1.13.0'
+gem 'net-http', '~> 0.6.0' # Pin to avoid 0.9.x which changes default timeout behavior and causes hanging HTTP calls
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
