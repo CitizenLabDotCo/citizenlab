@@ -1260,7 +1260,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
-        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        french_column_headers = fixtures['fr-FR']['xlsx_export']['column_headers']
         @admin.update!(locale: 'fr-FR')
 
         do_request
