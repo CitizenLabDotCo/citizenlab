@@ -68,12 +68,18 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       end
     }
 
+    scope :not_space_moderator, lambda { |space_id = nil|
+      return where.not(id: space_moderator) if space_id.nil?
+
+      where.not(id: space_moderator(space_id))
+    }
+
     scope :project_reviewers, lambda { |project_reviewer = true|
       json_roles = [{ type: 'admin', project_reviewer: true }].to_json
       project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
     }
 
-    scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
+    scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
 
     scope :order_role, lambda { |direction = :asc|
       joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')

@@ -4,131 +4,359 @@ require 'rails_helper'
 
 RSpec.describe UserRoles do
   describe 'scopes' do
-    before do
-      create(:user, roles: [{ 'type' => 'admin', 'project_reviewer' => true }], email: 'admin@example.com')
-      create(:user, roles: [{ 'type' => 'admin' }], email: 'super@citizenlab.eu')
-      create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }], email: 'space_mod@example.com')
-      create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }], email: 'folder_mod@example.com')
-      create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }], email: 'project_mod@example.com')
-      create(:user, roles: [], email: 'normal_user@example.com')
-    end
+    let!(:space_a) { create(:space) }
+    let!(:project_a) { create(:project, space: space_a) }
+    let!(:folder_a) { create(:project_folder, projects: [project_a], space: space_a) }
+
+    let!(:space_b) { create(:space) }
+
+    let!(:project_b) { create(:project, space: space_b) }
+    let!(:folder_b) { create(:project_folder, projects: [project_b], space: space_b) }
+    
+    let!(:admin) { create(:admin) }
+    let!(:admin_reviewer) { create(:admin, roles: [{ 'type' => 'admin', 'project_reviewer' => true }]) }
+    let!(:space_moderator_a) { create(:space_moderator, spaces: [space_a]) }
+    let!(:space_moderator_b) { create(:space_moderator) } # For random space
+    let!(:folder_moderator_a) { create(:project_folder_moderator, project_folders: [folder_a]) }
+    let!(:folder_moderator_b) { create(:project_folder_moderator) } # For random folder
+    let!(:project_moderator_a) { create(:project_moderator, projects: [project_a]) }
+    let!(:project_moderator_b) { create(:project_moderator) } # For random project
+    let!(:normal_user) { create(:user) }
+
+    # before do
+    #   # create(:user, roles: [{ 'type' => 'admin', 'project_reviewer' => true }], email: 'admin@example.com')
+    #   create(:user, roles: [{ 'type' => 'admin' }], email: 'super@citizenlab.eu')
+    #   create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }], email: 'space_mod@example.com')
+    #   create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }], email: 'folder_mod@example.com')
+    #   create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }], email: 'project_mod@example.com')
+    #   create(:user, roles: [], email: 'normal_user@example.com')
+    # end
 
     describe '.admin' do
       it 'returns only admins' do
-        expect(User.admin.count).to eq(2)
+        expect(User.admin).to contain_exactly(admin, admin_reviewer)
       end
     end
 
     describe '.not_admin' do
       it 'returns only non-admins' do
-        expect(User.not_admin.count).to eq(4)
+        expect(User.not_admin).to contain_exactly(
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
       end
     end
 
     describe '.normal_user' do
       it 'returns users with no roles' do
-        expect(User.normal_user.count).to eq(1)
+        expect(User.normal_user).to contain_exactly(normal_user)
       end
     end
 
     describe '.not_normal_user' do
       it 'returns users with any role' do
-        expect(User.not_normal_user.count).to eq(5)
+        expect(User.not_normal_user).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b
+        )
       end
     end
 
     describe '.project_moderator' do
-      it 'returns only project moderators' do
-        expect(User.project_moderator.count).to eq(1)
+      it 'returns only project moderators when no specific project is given' do
+        expect(User.project_moderator).to contain_exactly(project_moderator_a, project_moderator_b)
+      end
+
+      it 'returns only project moderators of a specific project' do
+        expect(User.project_moderator(project_a.id)).to contain_exactly(project_moderator_a)
       end
     end
 
     describe '.not_project_moderator' do
-      let(:space_a) { create(:space) }
-      let(:project_a) { create(:project, space: space_a) }
-      let(:folder_a) { create(:project_folder, projects: [project_a], space: space_a) }
-
-      it 'returns only non-project moderators' do
-        expect(User.not_project_moderator.count).to eq(5)
+      it 'returns only users who are not project moderators when no specific project is given' do
+        expect(User.not_project_moderator).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          normal_user
+        )
       end
 
-      it 'returns only non-project moderators for a specific project' do
-        project_manager = create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project_a.id }])
-        folder_manager = create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
-        space_manager = create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space_a.id }])
-
-        expect(User.not_project_moderator.count).to eq(7)
-        expect(User.not_project_moderator(project_a.id)).not_to include(project_manager)
-
-        # Documenting that we no longer exclude indirect, de-facto moderators of project.
-        expect(User.not_project_moderator(project_a.id)).to include(folder_manager)
-        expect(User.not_project_moderator(project_a.id)).to include(space_manager)
+      it 'returns only users who are not project moderators of a specific project' do
+        expect(User.not_project_moderator(project_a.id)).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_b,
+          normal_user
+        )
       end
     end
 
     describe '.project_folder_moderator' do
-      it 'returns only project folder moderators' do
-        expect(User.project_folder_moderator.count).to eq(1)
+      it 'returns only project folder moderators when no specific folder(s) given' do
+        expect(User.project_folder_moderator).to contain_exactly(folder_moderator_a, folder_moderator_b)
+      end
+
+      it 'returns only project folder moderators of a specific folder' do
+        expect(User.project_folder_moderator(folder_a.id)).to eq([folder_moderator_a])
+      end
+
+      it 'returns only project folder moderators of all specified folders' do
+        folder_moderator_c = create(:project_folder_moderator, project_folders: [folder_a, folder_b])
+
+        expect(User.project_folder_moderator(folder_a.id, folder_b.id)).to eq([folder_moderator_c])
       end
     end
 
     describe '.not_project_folder_moderator' do
-      it 'returns only non-project folder moderators' do
-        expect(User.not_project_folder_moderator.count).to eq(5)
+      it 'returns only users who are not project folder moderators when no specific folder(s) given' do
+        expect(User.not_project_folder_moderator).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
+      end
+
+      it 'returns only users who are not project folder moderators of a specific folder' do
+        expect(User.not_project_folder_moderator(folder_a.id)).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
+      end
+
+      it 'returns only users who are not project folder moderators of all specified folders' do
+        folder_moderator_c = create(:project_folder_moderator, project_folders: [folder_a, folder_b])
+
+        expect(User.not_project_folder_moderator(folder_a.id, folder_b.id)).not_to include(folder_moderator_c)
+        expect(User.not_project_folder_moderator(folder_a.id, folder_b.id)).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
       end
     end
 
+    describe '.space_moderator' do
+      it 'returns only space moderators when no specific space is given' do
+        expect(User.space_moderator).to contain_exactly(space_moderator_a, space_moderator_b)
+      end
+
+      it 'returns only space moderators of a specific space' do
+        expect(User.space_moderator(space_a.id)).to eq([space_moderator_a])
+      end
+    end
+
+    describe '.not_space_moderator' do
+      it 'returns only users who are not space moderators when no specific space is given' do
+        expect(User.not_space_moderator).to contain_exactly(
+          admin,
+          admin_reviewer,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
+      end
+
+      it 'returns only users who are not space moderators of a specific space' do
+        expect(User.not_space_moderator(space_a.id)).to contain_exactly(
+          admin,
+          admin_reviewer,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          space_moderator_b,
+          normal_user
+        )
+      end
+    end
+
+
     describe '.project_reviewers' do
       it 'returns only project reviewers' do
-        expect(User.project_reviewers.count).to eq(1)
+        expect(User.project_reviewers).to eq([admin_reviewer])
       end
     end
 
     describe '.admin_or_moderator' do
       it 'returns admins and moderators' do
-        expect(User.admin_or_moderator.count).to eq(4)
+        expect(User.admin_or_moderator).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b
+        )
       end
     end
 
     describe '.order_role' do
       it 'orders admins first, then other users' do
         expected_ordered_users = User.order_role
-        expected_admin_emails = expected_ordered_users.limit(2).pluck(:email)
+        expected_admins = expected_ordered_users.limit(2)
 
         # First two should be admins (ordering uncertain)
-        expect(expected_admin_emails).to contain_exactly('super@citizenlab.eu', 'admin@example.com')
+        expect(expected_admins).to contain_exactly(admin, admin_reviewer)
 
         # Remaining users are non-admins (ordering uncertain)
-        expected_non_admin_emails = expected_ordered_users.offset(2).pluck(:email)
-        expect(expected_non_admin_emails).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'normal_user@example.com', 'space_mod@example.com')
+        expected_non_admins = expected_ordered_users.offset(2)
+        expect(expected_non_admins).to contain_exactly(
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
+      end
+    end
+
+    describe '.not_a_citizenlab_member' do
+      it 'returns only users that are not citizenlab or GioVocal members' do
+        user1 = create(:user, email: 'user1@citizenlab.co')
+        user2 = create(:user, email: 'user2@govocal.com')
+
+        expect(User.not_citizenlab_member).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
       end
     end
 
     describe '.billed_admins' do
       it 'returns admins that are not citizenlab members' do
-        expect(User.billed_admins.count).to eq(1)
-        expect(User.billed_admins.first.email).to eq('admin@example.com')
+        admin_cl = create(:admin, email: 'admincl@citizenlab.co')
+        admin_gv = create(:admin, email: 'admingv@govocal.com')
+
+        expect(User.billed_admins).to contain_exactly(admin, admin_reviewer)
       end
     end
 
     describe '.billed_moderators' do
       it 'returns moderators that are not citizenlab members' do
-        expect(User.billed_moderators.count).to eq(3)
-        expect(User.billed_moderators.pluck(:email)).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'space_mod@example.com')
+        project_moderator_cl = create(:project_moderator, email: 'project_mod_cl@citizenlab.co')
+        folder_moderator_gv = create(:project_folder_moderator, email: 'folder_mod_gv@govocal.com')
+
+        expect(User.billed_moderators).to contain_exactly(
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b
+        )
       end
-    end
+
+      it 'does not include admins that are also moderators' do
+        admin_a = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => project_a.id }])
+        admin_b = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
+        admin_c = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'space_moderator', 'space_id' => space_a.id }])
+
+        expect(User.billed_moderators).to contain_exactly(
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b
+        )
+      end
+    end 
 
     describe '.super_admins' do
       it 'returns admins with citizenlab/govocal emails' do
-        expect(User.super_admins.count).to eq(1)
-        expect(User.super_admins.first.email).to eq('super@citizenlab.eu')
+        super_admin_emails = %w[
+          admincl@citizenlab.co
+          admingv@govocal.com
+          hello+admin@citizenLab.co
+          hello@citizenlab.eu
+          moderator+admin@citizenlab.be
+          cheese.lover@CitizenLab.ch
+          Fritz+Wurst@Citizenlab.de
+          breek.nou.mijn.klomp@citizenlab.NL
+          bigger@citizenlab.us
+          magdalena@citizenlab.cl
+          hello+admin@CITIZENLAB.UK
+          hello@govocal.com
+          hello+admin@govocal.com
+          hello@govocal.eu
+          moderator+admin@govocal.be
+          cheese.lover@Govocal.ch
+          Fritz+Wurst@Govocal.de
+          breek.nou.mijn.klomp@govocal.NL
+          bigger@govocal.us
+          magdalena@govocal.cl
+          hello+admin@GOVOCAL.UK
+        ]
+        super_admins = super_admin_emails.map { |email| create(:admin, email: email) }
+
+        expect(User.super_admins).to contain_exactly(*super_admins)
       end
     end
 
     describe '.not_super_admins' do
       it 'returns users that are not super admins' do
-        expect(User.not_super_admins.count).to eq(5)
-        expect(User.not_super_admins.pluck(:email)).to contain_exactly('admin@example.com', 'project_mod@example.com', 'folder_mod@example.com', 'space_mod@example.com', 'normal_user@example.com')
+        admin_cl = create(:admin, email: 'admincl@citizenlab.co')
+        admin_gv = create(:admin, email: 'admingv@govocal.com')
+
+        expect(User.not_super_admins).to contain_exactly(
+          admin,
+          admin_reviewer,
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b,
+          normal_user
+        )
       end
     end
   end
