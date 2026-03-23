@@ -134,10 +134,20 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.campaignDeleteWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-23T14:53:08.010209Z",
+    "verified_by": "Adrien"
+  },
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Campaigns.cancel": {
+    "state": "verified",
+    "verified_at": "2026-03-23T14:53:08.010209Z",
+    "verified_by": "Adrien"
   },
   "app.components.Admin.Campaigns.clicked": {
     "state": "verified",
