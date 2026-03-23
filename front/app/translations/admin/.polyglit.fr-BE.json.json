@@ -274,6 +274,11 @@
     "verified_at": "2026-03-23T15:34:46.362142Z",
     "verified_by": "Adrien"
   },
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-23T15:40:32.625970Z",
+    "verified_by": "Adrien"
+  },
   "app.components.Admin.Email.scheduling.cancelScheduleTitle": {
     "state": "verified",
     "verified_at": "2026-03-23T15:34:46.362142Z",
@@ -312,6 +317,11 @@
   "app.components.Admin.Email.scheduling.scheduleSendTitle": {
     "state": "verified",
     "verified_at": "2026-03-23T15:34:46.362142Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-23T15:40:32.625970Z",
     "verified_by": "Adrien"
   },
   "app.components.Admin.ImageCropper.cropFinalSentence": {

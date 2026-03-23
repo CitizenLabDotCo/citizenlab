@@ -63,7 +63,7 @@
   "app.components.Admin.Email.scheduling.scheduleSend": "Programmer l'envoi",
   "app.components.Admin.Email.scheduling.scheduleSendDescription": "Quand voulez-vous envoyer cet e-mail ?",
   "app.components.Admin.Email.scheduling.scheduleSendTitle": "Programmer l'envoi",
-  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Remarque : l'envoi peut être légèrement retardé en fonction du nombre de destinataires.",
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Remarque : l'envoi peut prendre quelques minutes pour un grand nombre de destinataires.",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Voir aussi : {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Conservez le contenu essentiel à l’intérieur des pointillés pour qu’il reste toujours visible.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 sur mobile (seule la zone entre les pointillés est visible)",
