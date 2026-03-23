@@ -816,7 +816,7 @@ resource 'Users' do
             )
           end
 
-          example 'List only users who are folder moderators ' do
+          example 'List only users who are folder moderators' do
             do_request folder_moderators_only: true
             expect(status).to eq 200
 
