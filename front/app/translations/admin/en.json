@@ -1717,7 +1717,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges": "Save changes",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": "Schedule",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch": "Schedule launch",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendEmailNotifications": "Send email notifications",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": "Send project published email",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "When",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": "Who can find the project",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phase report",
