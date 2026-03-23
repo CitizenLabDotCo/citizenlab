@@ -37,6 +37,12 @@ FactoryBot.define do
       end
     end
 
+    trait :draft do
+      admin_publication_attributes do
+        { publication_status: 'draft' }.merge(@overrides[:admin_publication_attributes] || {})
+      end
+    end
+
     factory :project_with_input_topics do
       transient do
         input_topics_count { 5 }
