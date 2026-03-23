@@ -6,6 +6,7 @@ module AdminApi
       :title_multiloc,
       :body_multiloc,
       :slug,
+      :href,
       :published_at,
       :submitted_at,
       :project_id,
@@ -14,6 +15,10 @@ module AdminApi
       :comments_count,
       :created_at,
       :updated_at
+
+    def href
+      Frontend::UrlService.new.model_to_url(object)
+    end
 
     has_many :input_topics
     has_many :idea_images
