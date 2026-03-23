@@ -16,9 +16,10 @@ import messages from './messages';
 
 interface Props {
   project: IProjectData;
+  onClose: () => void;
 }
 
-const VisibilitySection = ({ project }: Props) => {
+const VisibilitySection = ({ project, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const visibleTo = project.attributes.visible_to;
@@ -53,6 +54,7 @@ const VisibilitySection = ({ project }: Props) => {
     clHistory.push(
       `/admin/projects/${projectId}/general/access-rights` as RouteType
     );
+    onClose();
   };
 
   return (

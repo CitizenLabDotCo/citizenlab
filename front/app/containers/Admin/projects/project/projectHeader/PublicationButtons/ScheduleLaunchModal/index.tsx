@@ -143,7 +143,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           />
         )}
 
-        <VisibilitySection project={project} />
+        <VisibilitySection project={project} onClose={onClose} />
         <EmailNotificationsSection
           checked={sendEmail}
           onChange={setSendEmail}
