@@ -106,6 +106,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                 minWidth={getButtonWidth()}
               >
                 <Button
+                  type="button"
                   py="12px"
                   id={`${inputId}-option-${visualIndex}`}
                   tabIndex={-1}

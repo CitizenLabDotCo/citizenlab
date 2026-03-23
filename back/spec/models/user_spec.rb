@@ -871,7 +871,7 @@ RSpec.describe User do
           expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
         end
 
-        it 'includes folder moderators of project folder' do
+        it 'does not exclude folder moderators of project folder' do
           expect(described_class.not_project_moderator(project.id)).to include(project_folder_moderator)
         end
 
