@@ -279,6 +279,7 @@ export interface IAppConfigurationSettings {
   phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
+  draft_phase_description?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

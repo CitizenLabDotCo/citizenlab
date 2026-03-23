@@ -4,6 +4,8 @@ import {
   Box,
   Title,
   IconTooltip,
+  StatusLabel,
+  Button,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -85,6 +87,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
   const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
+  const draftPhaseDescriptionEnabled = useFeatureFlag({
+    name: 'draft_phase_description',
+  });
+
+  console.log(draftPhaseDescriptionEnabled);
 
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
@@ -152,6 +159,25 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handleEditorOnChange = (description_multiloc: Multiloc) => {
     updateFormData({ description_multiloc });
+  };
+
+  const handleDraftDescriptionChange = (
+    draft_description_multiloc: Multiloc
+  ) => {
+    updateFormData({ draft_description_multiloc });
+  };
+
+  const handlePublishDescription = () => {
+    if (formData?.draft_description_multiloc) {
+      updateFormData({
+        description_multiloc: formData.draft_description_multiloc,
+        draft_description_multiloc: {},
+      });
+    }
+  };
+
+  const handleDiscardDraft = () => {
+    updateFormData({ draft_description_multiloc: {} });
   };
 
   const handlePhaseFileOnAttach = (file: IFileData) => {
@@ -422,25 +448,120 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             setValidationErrors={setValidationErrors}
           />
           <SectionField className="fullWidth intercom-phase-description-text-input">
-            <Box display="flex" alignItems="center">
-              <SubSectionTitle>
-                <FormattedMessage {...messages.descriptionLabel} />
-              </SubSectionTitle>
-              {phases && phases.data.length < 2 && (
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.emptyDescriptionWarning} />
-                  }
+            {draftPhaseDescriptionEnabled ? (
+              <>
+                <Box display="flex" alignItems="center" gap="8px" mb="12px">
+                  <SubSectionTitle style={{ margin: 0 }}>
+                    <FormattedMessage
+                      {...messages.draftDescriptionStateLabel}
+                      values={{
+                        state: formatMessage(
+                          messages.draftDescriptionPublishedState
+                        ),
+                      }}
+                    />
+                  </SubSectionTitle>
+                  <IconTooltip
+                    content={formatMessage(
+                      messages.draftDescriptionPublishedTooltip
+                    )}
+                  />
+                  <StatusLabel
+                    text={formatMessage(
+                      messages.draftDescriptionPublishedBadge
+                    )}
+                    backgroundColor={colors.green500}
+                  />
+                </Box>
+                <QuillMultilocWithLocaleSwitcher
+                  id="description"
+                  valueMultiloc={formData.description_multiloc}
+                  onChange={handleEditorOnChange}
+                  withCTAButton
                 />
-              )}
-            </Box>
-            <QuillMultilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={formData.description_multiloc}
-              onChange={handleEditorOnChange}
-              withCTAButton
-            />
-            <Error apiErrors={errors && errors.description_multiloc} />
+                <Error apiErrors={errors && errors.description_multiloc} />
+
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap="8px"
+                  mt="32px"
+                  mb="12px"
+                >
+                  <SubSectionTitle style={{ margin: 0 }}>
+                    <FormattedMessage
+                      {...messages.draftDescriptionStateLabel}
+                      values={{
+                        state: formatMessage(
+                          messages.draftDescriptionDraftState
+                        ),
+                      }}
+                    />
+                  </SubSectionTitle>
+                  <IconTooltip
+                    content={formatMessage(
+                      messages.draftDescriptionDraftTooltip
+                    )}
+                  />
+                  <StatusLabel
+                    text={formatMessage(messages.draftDescriptionDraftBadge)}
+                    backgroundColor={colors.orange500}
+                  />
+                </Box>
+                <QuillMultilocWithLocaleSwitcher
+                  id="draft-description"
+                  valueMultiloc={formData.draft_description_multiloc}
+                  onChange={handleDraftDescriptionChange}
+                  withCTAButton
+                />
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mt="8px"
+                >
+                  <Button
+                    buttonStyle="text"
+                    onClick={handleDiscardDraft}
+                    padding="0px"
+                  >
+                    {formatMessage(messages.draftDescriptionDiscardChanges)}
+                  </Button>
+                  <Button
+                    buttonStyle="admin-dark"
+                    onClick={handlePublishDescription}
+                    icon="chevron-down"
+                    iconPos="right"
+                  >
+                    {formatMessage(messages.draftDescriptionPublish)}
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <>
+                <Box display="flex" alignItems="center">
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.descriptionLabel} />
+                  </SubSectionTitle>
+                  {phases && phases.data.length < 2 && (
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.emptyDescriptionWarning}
+                        />
+                      }
+                    />
+                  )}
+                </Box>
+                <QuillMultilocWithLocaleSwitcher
+                  id="description"
+                  valueMultiloc={formData.description_multiloc}
+                  onChange={handleEditorOnChange}
+                  withCTAButton
+                />
+                <Error apiErrors={errors && errors.description_multiloc} />
+              </>
+            )}
           </SectionField>
           <SectionField>
             <SubSectionTitle>

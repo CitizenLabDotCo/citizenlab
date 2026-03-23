@@ -116,4 +116,46 @@ export default defineMessages({
     defaultMessage:
       'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
   },
+  draftDescriptionPublishedBadge: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge',
+    defaultMessage: 'PUBLISHED',
+  },
+  draftDescriptionDraftBadge: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge',
+    defaultMessage: 'DRAFT',
+  },
+  draftDescriptionClickToEdit: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionClickToEdit',
+    defaultMessage: 'Click to edit',
+  },
+  draftDescriptionDiscardChanges: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges',
+    defaultMessage: 'Discard changes',
+  },
+  draftDescriptionPublish: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish',
+    defaultMessage: 'Publish',
+  },
+  draftDescriptionPublishedTooltip: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip',
+    defaultMessage:
+      'This is the currently published description visible to participants. Click to edit to create a draft.',
+  },
+  draftDescriptionDraftTooltip: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip',
+    defaultMessage:
+      'You are editing a draft. Publish to make it visible to participants, or discard to revert.',
+  },
+  draftDescriptionStateLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionStateLabel',
+    defaultMessage: 'State: {state}',
+  },
+  draftDescriptionPublishedState: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedState',
+    defaultMessage: 'phase description is currently live',
+  },
+  draftDescriptionDraftState: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftState',
+    defaultMessage: 'editing the current description',
+  },
 });
