@@ -2439,7 +2439,7 @@
   "app.containers.AdminPage.ProjectEdit.enalyzer": "Enalyzer",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Eventi",
   "app.containers.AdminPage.ProjectEdit.feedDisplay": "Alimentazione",
-  "app.containers.AdminPage.ProjectEdit.feedViewDescription2": "I partecipanti esplorano la discussione attraverso gli argomenti emergenti. L'intelligenza artificiale fa emergere le voci rappresentative e crea un ponte tra le prospettive se attivi l'opzione Prospettive nel sito {inputTagsLink}. Ideale per: Consultazioni su larga scala, trovare un terreno comune, evitare le camere d'eco.",
+  "app.containers.AdminPage.ProjectEdit.feedViewDescription2": "I partecipanti esplorano la discussione attraverso gli argomenti emergenti. L'intelligenza artificiale fa emergere le voci rappresentative e crea un ponte tra le prospettive se attivi l'opzione Prospettive nella {inputTagsLink}. Ideale per: Consultazioni su larga scala, trovare un punto d'incontro, evitare le camere d'eco.",
   "app.containers.AdminPage.ProjectEdit.feedViewTitle": "Prospettive",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Allegati (max 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "I file non devono essere più grandi di 50Mb. I file aggiunti saranno mostrati nella pagina informativa del progetto.",
