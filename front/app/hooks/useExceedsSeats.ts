@@ -56,8 +56,10 @@ const useExceedsSeats = () => {
           return false;
         }
 
+        const totalAdminSeats = totalSeats.totalAdminSeats;
+        if (totalAdminSeats === null) return false;
+
         const currentAdminSeats = seats.data.attributes.admins_number;
-        const totalAdminSeats = totalSeats.totalAdminSeats ?? 0;
         return currentAdminSeats + 1 > totalAdminSeats;
       }
 
@@ -68,8 +70,10 @@ const useExceedsSeats = () => {
         return false;
       }
 
+      const totalModeratorSeats = totalSeats.totalModeratorSeats;
+      if (totalModeratorSeats === null) return false;
+
       const currentModeratorSeats = seats.data.attributes.moderators_number;
-      const totalModeratorSeats = totalSeats.totalModeratorSeats ?? 0;
       return currentModeratorSeats + 1 > totalModeratorSeats;
     };
   }, [totalSeats, seats]);
