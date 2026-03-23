@@ -12,7 +12,7 @@ RSpec.describe UserRoles do
 
     let!(:project_b) { create(:project, space: space_b) }
     let!(:folder_b) { create(:project_folder, projects: [project_b], space: space_b) }
-    
+
     let!(:admin) { create(:admin) }
     let!(:admin_reviewer) { create(:admin, roles: [{ 'type' => 'admin', 'project_reviewer' => true }]) }
     let!(:space_moderator_a) { create(:space_moderator, spaces: [space_a]) }
@@ -207,7 +207,6 @@ RSpec.describe UserRoles do
       end
     end
 
-
     describe '.project_reviewers' do
       it 'returns only project reviewers' do
         expect(User.project_reviewers).to eq([admin_reviewer])
@@ -253,8 +252,8 @@ RSpec.describe UserRoles do
 
     describe '.not_a_citizenlab_member' do
       it 'returns only users that are not citizenlab or GioVocal members' do
-        user1 = create(:user, email: 'user1@citizenlab.co')
-        user2 = create(:user, email: 'user2@govocal.com')
+        create(:user, email: 'user1@citizenlab.co')
+        create(:user, email: 'user2@govocal.com')
 
         expect(User.not_citizenlab_member).to contain_exactly(
           admin,
@@ -272,8 +271,8 @@ RSpec.describe UserRoles do
 
     describe '.billed_admins' do
       it 'returns admins that are not citizenlab members' do
-        admin_cl = create(:admin, email: 'admincl@citizenlab.co')
-        admin_gv = create(:admin, email: 'admingv@govocal.com')
+        create(:admin, email: 'admincl@citizenlab.co')
+        create(:admin, email: 'admingv@govocal.com')
 
         expect(User.billed_admins).to contain_exactly(admin, admin_reviewer)
       end
@@ -281,8 +280,8 @@ RSpec.describe UserRoles do
 
     describe '.billed_moderators' do
       it 'returns moderators that are not citizenlab members' do
-        project_moderator_cl = create(:project_moderator, email: 'project_mod_cl@citizenlab.co')
-        folder_moderator_gv = create(:project_folder_moderator, email: 'folder_mod_gv@govocal.com')
+        create(:project_moderator, email: 'project_mod_cl@citizenlab.co')
+        create(:project_folder_moderator, email: 'folder_mod_gv@govocal.com')
 
         expect(User.billed_moderators).to contain_exactly(
           space_moderator_a,
@@ -295,9 +294,9 @@ RSpec.describe UserRoles do
       end
 
       it 'does not include admins that are also moderators' do
-        admin_a = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => project_a.id }])
-        admin_b = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
-        admin_c = create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'space_moderator', 'space_id' => space_a.id }])
+        create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => project_a.id }])
+        create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
+        create(:admin, roles: [{ 'type' => 'admin' }, { 'type' => 'space_moderator', 'space_id' => space_a.id }])
 
         expect(User.billed_moderators).to contain_exactly(
           space_moderator_a,
@@ -308,7 +307,7 @@ RSpec.describe UserRoles do
           project_moderator_b
         )
       end
-    end 
+    end
 
     describe '.super_admins' do
       it 'returns admins with citizenlab/govocal emails' do
@@ -337,14 +336,14 @@ RSpec.describe UserRoles do
         ]
         super_admins = super_admin_emails.map { |email| create(:admin, email: email) }
 
-        expect(User.super_admins).to contain_exactly(*super_admins)
+        expect(User.super_admins).to match_array(super_admins)
       end
     end
 
     describe '.not_super_admins' do
       it 'returns users that are not super admins' do
-        admin_cl = create(:admin, email: 'admincl@citizenlab.co')
-        admin_gv = create(:admin, email: 'admingv@govocal.com')
+        create(:admin, email: 'admincl@citizenlab.co')
+        create(:admin, email: 'admingv@govocal.com')
 
         expect(User.not_super_admins).to contain_exactly(
           admin,
@@ -364,6 +363,7 @@ RSpec.describe UserRoles do
   describe '#highest_role' do
     it 'returns :super_admin for admin with citizenlab email' do
       user = build(:user, roles: [{ 'type' => 'admin' }], email: 'test@citizenlab.eu')
+
       expect(user.highest_role).to eq(:super_admin)
     end
 
