@@ -2488,7 +2488,7 @@
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Rendi l'impostazione predefinita",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Mappa",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mappa",
-  "app.containers.AdminPage.ProjectEdit.mapViewDescription": "Visualizza gli input come puntine su una mappa. Ideale per: consultazioni basate sulla posizione, pianificazione urbana, feedback sulle infrastrutture. Assicurati di aggiungere un campo di localizzazione al sito {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.mapViewDescription": "Mostra i contributi come puntine su una mappa. Ideale per: consultazioni basate sulla posizione, pianificazione urbana, feedback sulle infrastrutture. Assicurati di aggiungere un campo di localizzazione nella pagina {inputFormLink}.",
   "app.containers.AdminPage.ProjectEdit.mapViewTitle": "Vista sulla mappa",
   "app.containers.AdminPage.ProjectEdit.maxDislikes": "Numero massimo di \"Non mi piace\"",
   "app.containers.AdminPage.ProjectEdit.maxLikes": "Numero massimo di \"Mi piace\"",
