@@ -37,9 +37,11 @@ class WebApi::V1::UsersController < ApplicationController
       @users = @users.admin.or(moderators_scope)
     end
 
-    @users = @users.not_project_moderator(params[:is_not_project_moderator]) if params[:is_not_project_moderator].present?
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator).or(@users.space_moderator) if params[:can_moderate].present?
+
+    @users = @users.not_project_moderator(params[:is_not_project_moderator]) if params[:is_not_project_moderator].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
+    @users = @users.not_space_moderator(params[:is_not_space_moderator]) if params[:is_not_space_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
 
     @users = @users.project_reviewers(Utils.to_bool(params[:project_reviewer])) if params.key?(:project_reviewer)
@@ -51,6 +53,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @users = @users.project_moderator if params[:project_moderators_only].present?
     @users = @users.project_folder_moderator if params[:folder_moderators_only].present?
+    @users = @users.space_moderator if params[:space_moderators_only].present?
 
     sort_by_sort_param if params[:search].blank?
 
