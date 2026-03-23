@@ -1,13 +1,16 @@
-el:
+el-GR:
   email_campaigns:
-    campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea to me
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      idea_assigned_to_you: Assignment of an idea - admins and project managers
+    campaign_type_description:
+      idea_assigned_to_you: Assignment of an idea to me
     idea_assigned_to_you:
-      by_author: 'by %{authorName}'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader: 'The idea of %{authorName} has been assigned to you'
+      by_author: by %{authorName}
+      cta_button: Δώστε σχόλια στον/στην %{authorName}
+      cta_reply_to: Give feedback to %{authorName}
+      event_description: Σας έχει ανατεθεί μια καταχώριση. Δώστε σχόλια γράφοντας μια επίσημη ενημέρωση ή αλλάζοντας την κατάστασή της.
+      event_description_idea: An idea has been assigned to you. Give feedback by writing an official update or by changing its status.
+      main_header: "%{firstName}, you have a new assignment"
+      preheader: The idea of %{authorName} has been assigned to you
+      subject: You have an assignment on the platform of %{organizationName}
+      title: "%{firstName}, σας ανατέθηκε μια καταχώριση"

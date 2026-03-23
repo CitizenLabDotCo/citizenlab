@@ -364,6 +364,11 @@
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
   },
+  "errors.messages.in_the_past": {
+    "state": "verified",
+    "verified_at": "2026-03-19T13:12:54.406340Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "errors.messages.max_must_be_greater_than_min_characters": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",
