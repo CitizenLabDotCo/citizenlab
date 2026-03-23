@@ -2474,7 +2474,7 @@
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Gestione dei contributi",
   "app.containers.AdminPage.ProjectEdit.inputPostingEnabled": "Pubblicare post",
   "app.containers.AdminPage.ProjectEdit.inputReactingEnabled": "Reagire ai post",
-  "app.containers.AdminPage.ProjectEdit.inputTagsPageLink": "Pagina dei tag di input",
+  "app.containers.AdminPage.ProjectEdit.inputTagsPageLink": "Pagina tag dei contributi",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vista predefinita",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Scegli la vista predefinita per mostrare i contributi: le schede in una griglia o le puntine su una mappa. I partecipanti possono passare manualmente da una vista all'altra.",
   "app.containers.AdminPage.ProjectEdit.inspirationHub": "Centro ispirazione",
