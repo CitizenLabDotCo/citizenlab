@@ -764,12 +764,14 @@ resource 'Users' do
         end
 
         example 'List all users who can moderate a project' do
-          p = create(:project)
-          f = create(:project_folder, projects: [p])
+          s = create(:space)
+          p = create(:project, space: s)
+          f = create(:project_folder, projects: [p], space: s)
 
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
           f1 = create(:project_folder_moderator, project_folders: [f])
+          s1 = create(:space_moderator, spaces: [s])
 
           create(:project_moderator)
           create(:project_folder_moderator)
@@ -778,36 +780,47 @@ resource 'Users' do
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, f1.id, @user.id)
+
+          # @user is an admin at this point
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, f1.id, s1.id, @user.id)
         end
 
         example 'List all users who can moderate' do
-          p = create(:project)
-          f = create(:project_folder, projects: [p])
+          s = create(:space)
+          p = create(:project, space: s)
+          f = create(:project_folder, projects: [p], space: s)
 
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
           m2 = create(:project_moderator)
           f1 = create(:project_folder_moderator, project_folders: [f])
           f2 = create(:project_folder_moderator)
+          s1 = create(:space_moderator, spaces: [s])
+          s2 = create(:space_moderator)
           create(:user)
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, f1.id, f2.id, @user.id)
+
+          # @user is an admin at this point
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, f1.id, f2.id, s1.id, s2.id, @user.id)
         end
 
         example 'List all moderators who are not admins' do
-          p = create(:project)
+          s = create(:space)
+          p = create(:project, space: s)
+
           m1 = create(:project_moderator, projects: [p])
           m2 = create(:project_moderator)
           f = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          s1 = create(:space_moderator, spaces: [s])
+          s2 = create(:space_moderator)
           create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: p.id }])
           create(:user)
 
           do_request(can_moderate: true, can_admin: false)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(m1.id, m2.id, f.id)
+          expect(json_response[:data].pluck(:id)).to contain_exactly(m1.id, m2.id, f.id, s1.id, s2.id)
         end
 
         example 'List all admins' do
