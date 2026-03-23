@@ -37,9 +37,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit',
     defaultMessage: 'Edit',
   },
-  sendEmailNotifications: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendEmailNotifications',
-    defaultMessage: 'Send email notifications',
+  sendProjectPublishedEmail: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail',
+    defaultMessage: 'Send project published email',
   },
   approximateRecipients: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients',

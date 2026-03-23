@@ -25,7 +25,7 @@ const EmailNotificationsSection = ({ checked, onChange, disabled }: Props) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center" gap="4px">
           <Text fontWeight="bold" mb="0px">
-            {formatMessage(messages.sendEmailNotifications)}
+            {formatMessage(messages.sendProjectPublishedEmail)}
           </Text>
           {disabled && (
             <IconTooltip
