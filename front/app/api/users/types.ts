@@ -132,8 +132,8 @@ export interface IQueryParameters {
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
-  // Pass project id to exclude all users who can moderate
-  // the project
+  // Pass project id to exclude all users who are
+  // project moderators of the project
   is_not_project_moderator?: string;
   // Pass folder id to exclude all users who can moderate
   // the folder
