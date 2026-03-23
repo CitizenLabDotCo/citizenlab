@@ -2482,7 +2482,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Numero di \"Mi piace\" per partecipante",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitato",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "La visualizzazione a elenco è sempre disponibile e non può essere disattivata.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Gli input vengono visualizzati come un feed scorrevole, ordinato per trend, reazioni, commenti, data o attività. Ideale per: piccole consultazioni.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "I contributi vengono mostrati come un elenco scorrevole, ordinato per tendenza, reazioni, commenti, data o attività. Ideale per: piccole consultazioni.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Vista elenco",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Carica altri modelli",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Rendi l'impostazione predefinita",
