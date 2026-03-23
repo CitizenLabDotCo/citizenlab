@@ -165,7 +165,7 @@ class IdeaCustomFieldsService
     copied_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
-          rule['if'] = logic_id_map[rule['if']]
+          rule['if'] = logic_id_map[rule['if']] unless %w[any_other_answer no_answer].include?(rule['if'])
           rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
           rule
         end
