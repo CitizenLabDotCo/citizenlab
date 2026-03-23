@@ -3062,7 +3062,7 @@
   "app.containers.AdminPage.Topics.addSubtopic": "Aggiungi sottoetichetta",
   "app.containers.AdminPage.Topics.cancel": "Annulla",
   "app.containers.AdminPage.Topics.confirmHeader2": "Sei sicuro di voler eliminare questo tag contributo?",
-  "app.containers.AdminPage.Topics.defaultInputTopicsInfo": "I tag predefiniti per i nuovi progetti possono essere configurati in {settingsLink}.",
+  "app.containers.AdminPage.Topics.defaultInputTopicsInfo": "I tag predefiniti per i nuovi progetti possono essere configurati nella pagina {settingsLink}.",
   "app.containers.AdminPage.Topics.defaultInputTopicsSettings": "impostazioni piattaforma",
   "app.containers.AdminPage.Topics.delete": "Elimina",
   "app.containers.AdminPage.Topics.deleteInputTopicConfirmation": "Questo tag verrà rimosso da tutti i contributi in questo progetto. Questa azione non può essere annullata.",
