@@ -276,6 +276,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
+    publication_email_enabled = params[:project].delete(:publication_email_enabled)
     project_params = permitted_attributes(@project)
 
     @project.assign_attributes project_params
@@ -284,7 +285,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     sidefx.before_update(@project, current_user)
 
     if save_project(@project)
-      sidefx.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: jsonapi_serializer_params,

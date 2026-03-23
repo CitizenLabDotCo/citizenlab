@@ -34,7 +34,7 @@ const VisibilitySection = ({ project }: Props) => {
     if (visibleTo === 'admins') {
       return formatMessage(messages.adminsOnly);
     }
-    if (visibleTo === 'groups' && projectGroups && groups) {
+    if (projectGroups && groups) {
       const groupNames = projectGroups.data
         .map((pg) => {
           const group = groups.data.find(

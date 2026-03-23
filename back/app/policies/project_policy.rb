@@ -151,7 +151,6 @@ class ProjectPolicy < ApplicationPolicy
       :include_all_areas,
       :listed,
       :live_auto_input_topics_enabled,
-      :publication_email_enabled,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
