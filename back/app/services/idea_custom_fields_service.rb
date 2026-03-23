@@ -120,6 +120,7 @@ class IdeaCustomFieldsService
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = {}
+    logic_catch_all_values = %w[any_other_answer no_answer]
     copied_fields = fields.map do |field|
       # Duplicate fields to return with a new id
       copied_field = field.dup
@@ -165,7 +166,7 @@ class IdeaCustomFieldsService
     copied_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
-          rule['if'] = logic_id_map[rule['if']] unless %w[any_other_answer no_answer].include?(rule['if'])
+          rule['if'] = logic_id_map[rule['if']] unless logic_catch_all_values.include?(rule['if'])
           rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
           rule
         end
