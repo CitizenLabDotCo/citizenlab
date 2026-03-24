@@ -72,6 +72,7 @@ const Buttons = styled.div`
   & > * {
     padding: 0 10px;
   }
+  align-items: center;
 `;
 
 const GroupLink = styled.a`
