@@ -44,8 +44,8 @@ module BulkImportIdeas::Parsers
     end
 
     # Normalizes a field's value based on its input_type.
-    # Callers must pass a block to handle matrix_linear_scale fields, e.g.:
-    #   process_field_value(field, form_fields) { |f| extract_matrix_value(f) }
+    # Callers are expected to pre-process selection-type values into arrays
+    # and matrix values into hashes before calling this method.
     def process_field_value(field, form_fields)
       if %w[select multiselect multiselect_image ranking].include?(field[:input_type]) && field[:value]
         values = Array(field[:value])
@@ -64,8 +64,6 @@ module BulkImportIdeas::Parsers
         field[:value] = %w[x checked].include?(field[:value].downcase)
       elsif field[:input_type] == 'date' && field[:value].present?
         field[:value] = format_date(field[:value])
-      elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
-        field[:value] = yield(field)
       else
         field[:value] = field[:value].to_s
       end

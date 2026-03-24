@@ -30,68 +30,62 @@ RSpec.describe BulkImportIdeas::Parsers::IdeaRowMapper do
     end
 
     it 'maps select values to option keys' do
-      field = { key: 'colour', input_type: 'select', value: 'Red' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      field = { key: 'colour', input_type: 'select', value: ['Red'] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq ['red']
     end
 
     it 'maps multiselect array values to option keys' do
       field = { key: 'multi', input_type: 'multiselect', value: %w[A B] }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to match_array %w[opt_a opt_b]
     end
 
     it 'converts number fields to integer' do
       field = { key: 'num', input_type: 'number', value: '42' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq 42
     end
 
     it 'converts linear_scale fields to integer' do
       field = { key: 'scale', input_type: 'linear_scale', value: '3' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq 3
     end
 
     it 'converts rating fields to integer' do
       field = { key: 'rate', input_type: 'rating', value: '4' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq 4
     end
 
     it 'converts checkbox "X" to true' do
       field = { key: 'cb', input_type: 'checkbox', value: 'X' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to be true
     end
 
     it 'converts checkbox "checked" to true' do
       field = { key: 'cb', input_type: 'checkbox', value: 'checked' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to be true
     end
 
     it 'converts checkbox with other values to false' do
       field = { key: 'cb', input_type: 'checkbox', value: 'no' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to be false
     end
 
     it 'formats date fields' do
       field = { key: 'dt', input_type: 'date', value: '15-08-2023' }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq '2023-08-15'
-    end
-
-    it 'yields to block for matrix_linear_scale fields' do
-      field = { key: 'matrix', input_type: 'matrix_linear_scale', value: 'raw_input' }
-      result = mapper.process_field_value(field, form_fields) { |_f| { 'statement_1' => 3 } }
-      expect(result[:value]).to eq({ 'statement_1' => 3 })
     end
 
     it 'converts unknown types to string' do
       field = { key: 'other', input_type: 'text', value: 123 }
-      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to eq '123'
     end
   end

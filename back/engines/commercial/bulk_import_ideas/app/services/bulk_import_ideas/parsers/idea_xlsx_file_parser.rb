@@ -76,10 +76,7 @@ module BulkImportIdeas::Parsers
           if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')
             new_field = form_field
             new_field[:value] = idea_field[:value]
-            if MULTI_VALUE_INPUT_TYPES.include?(new_field[:input_type]) && new_field[:value].is_a?(String)
-              new_field[:value] = new_field[:value].split(';').map(&:strip)
-            end
-            new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| extract_matrix_value(f) }
+            new_field = normalize_field_value(new_field, form_fields)
             merged_idea << new_field
             idea.delete_at(idea.index { |f| f.equal?(idea_field) })
             break
@@ -87,6 +84,19 @@ module BulkImportIdeas::Parsers
         end
       end
       merged_idea
+    end
+
+    def normalize_field_value(field, form_fields)
+      if field[:input_type] == 'matrix_linear_scale'
+        field[:value] = extract_matrix_value(field) if field[:value].present?
+        return field
+      end
+
+      if MULTI_VALUE_INPUT_TYPES.include?(field[:input_type]) && field[:value].is_a?(String)
+        field[:value] = field[:value].split(';').map(&:strip)
+      end
+
+      @row_mapper.process_field_value(field, form_fields)
     end
 
     def extract_matrix_value(field)

@@ -67,7 +67,7 @@ module BulkImportIdeas::Parsers
 
         new_field = form_field
         new_field[:value] = idea_field[:value]
-        new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| f[:value] }
+        new_field = @row_mapper.process_field_value(new_field, form_fields) unless new_field[:input_type] == 'matrix_linear_scale'
         merged_fields << new_field
         idea_fields.delete_at(idea_fields.index { |f| f.equal?(idea_field) })
       end
