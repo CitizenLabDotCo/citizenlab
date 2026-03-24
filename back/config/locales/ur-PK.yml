@@ -147,43 +147,31 @@ ur:
     ideas:
       title:
         title: عنوان
-        description:
       body:
         title: تفصیل
-        description:
       author_id:
         title: مصنف
       topic_ids:
         title: ٹیگز
-        description:
       consponsor_ids:
         title: شریک سپانسرز
         description: ذیل میں فیلڈ کے ذریعے شریک سپانسرز کو مدعو کریں۔ مدعو شریک کفیل (زبانیں) ایک ای میل موصول کریں گے۔
       location:
         title: مقام
-        description:
       proposed_budget:
         title: مجوزہ بجٹ
-        description:
       budget:
         title: بجٹ
       images:
         title: امیجز
-        description:
       attachments:
         title: منسلکات
-        description:
-      title_page:
-        description:
       body_page:
         title: ہمیں مزید بتائیں
-        description:
       uploads_page:
         title: تصاویر اور منسلکات
-        description:
       details_page:
         title: تفصیلات
-        description:
       other_input_field:
         title: اپنا جواب ٹائپ کریں۔
         print_title: اگر '%{other_option}'، تو براہ کرم وضاحت کریں۔
@@ -398,5 +386,6 @@ ur:
     event_details: "واقعہ کی تفصیلات"
   errors:
     messages:
+      in_the_past: "مستقبل میں ہونا چاہئے"
       max_must_be_greater_than_min_characters: "زیادہ سے زیادہ کم از کم سے زیادہ ہونا چاہیے۔"
       max_must_be_greater_than_or_equal_to_min_select_count: "زیادہ سے زیادہ کم سے کم سے زیادہ یا اس کے برابر ہونا چاہیے۔"

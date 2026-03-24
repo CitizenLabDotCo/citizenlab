@@ -90,7 +90,8 @@ describe WebApi::V1::IdeaSerializer do
 
       it 'returns the sum of expire_days_limit and published_at when published' do
         proposal.update!(publication_status: 'published', published_at: '2024-07-20 20:00')
-        expect(result.dig(:data, :attributes, :expires_at)).to eq '2024-07-25 20:00'
+        expires_at = result.dig(:data, :attributes, :expires_at)
+        expect(expires_at).to eq Time.zone.parse('2024-07-25T20:00:00')
       end
 
       it 'returns nil for draft proposals' do

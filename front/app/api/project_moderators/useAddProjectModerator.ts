@@ -12,13 +12,18 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectModeratorsKeys from './keys';
 import { ProjectModeratorAdd } from './types';
 
-const addModerator = async ({ moderatorId, projectId }: ProjectModeratorAdd) =>
+const addModerator = async ({
+  moderatorId,
+  moderatorEmail,
+  projectId,
+}: ProjectModeratorAdd) =>
   fetcher<IUsers>({
     path: `/projects/${projectId}/moderators`,
     action: 'post',
     body: {
       moderator: {
         user_id: moderatorId,
+        user_email: moderatorEmail,
       },
     },
   });

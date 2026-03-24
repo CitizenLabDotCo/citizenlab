@@ -322,9 +322,7 @@ const DemographicsSection = ({ phase }: Props) => {
                 left={isSelected ? undefined : '0'}
                 width="100%"
                 opacity={isSelected ? 1 : 0}
-                style={{
-                  pointerEvents: isSelected ? 'auto' : 'none',
-                }}
+                pointerEvents={isSelected ? 'auto' : 'none'}
                 aria-hidden={!isSelected}
               >
                 <DemographicFieldContent
