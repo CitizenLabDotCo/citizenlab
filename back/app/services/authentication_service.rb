@@ -15,7 +15,7 @@ class AuthenticationService
       @all_methods[name.to_s] = authentication_method
     end
 
-    # Returns the error message string if SSO is enforced for this email's domain, nil otherwise.
+    # Returns the error message multiloc if SSO is enforced for this email's domain, nil otherwise.
     def sso_enforced_for_email(email)
       return nil if email.blank?
 
@@ -25,7 +25,7 @@ class AuthenticationService
       all_methods.each_value do |method|
         next unless method.enforced_email_domains.include?(domain)
 
-        return method.enforced_email_domain_error_message
+        return method.enforced_email_domain_error_multiloc
       end
 
       nil

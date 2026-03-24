@@ -18,17 +18,21 @@ describe AuthenticationService do
         settings['azure_ad_login'] = {
           'allowed' => true, 'enabled' => true,
           'enforced_email_domains' => 'example.com,company.org',
-          'enforced_email_domain_error_message' => 'Please use Azure AD to sign in.'
+          'enforced_email_domain_error_multiloc' => { 'en' => 'Please use Azure AD to sign in.', 'fr-FR' => 'Veuillez utiliser Azure AD pour vous connecter.' }
         }
         AppConfiguration.instance.update!(settings: settings)
       end
 
-      it 'returns the custom message when the email domain matches' do
-        expect(described_class.sso_enforced_for_email('user@example.com')).to eq('Please use Azure AD to sign in.')
+      it 'returns the custom multiloc message when the email domain matches' do
+        result = described_class.sso_enforced_for_email('user@example.com')
+        expect(result).to be_a(Hash)
+        expect(result['en']).to eq('Please use Azure AD to sign in.')
+        expect(result['fr-FR']).to eq('Veuillez utiliser Azure AD pour vous connecter.')
       end
 
-      it 'returns the custom message for another matching domain' do
-        expect(described_class.sso_enforced_for_email('user@company.org')).to eq('Please use Azure AD to sign in.')
+      it 'returns the custom multiloc message for another matching domain' do
+        result = described_class.sso_enforced_for_email('user@company.org')
+        expect(result['en']).to eq('Please use Azure AD to sign in.')
       end
 
       it 'returns nil when the email domain does not match' do
@@ -36,7 +40,8 @@ describe AuthenticationService do
       end
 
       it 'is case-insensitive' do
-        expect(described_class.sso_enforced_for_email('user@EXAMPLE.COM')).to eq('Please use Azure AD to sign in.')
+        result = described_class.sso_enforced_for_email('user@EXAMPLE.COM')
+        expect(result['en']).to eq('Please use Azure AD to sign in.')
       end
 
       it 'returns nil for blank email' do
@@ -55,10 +60,10 @@ describe AuthenticationService do
         AppConfiguration.instance.update!(settings: settings)
       end
 
-      it 'returns the default I18n message for a matching domain' do
-        expect(described_class.sso_enforced_for_email('user@example.com')).to eq(
-          'You must sign in using single sign-on (SSO) for this email domain.'
-        )
+      it 'returns the default I18n multiloc message for a matching domain' do
+        result = described_class.sso_enforced_for_email('user@example.com')
+        expect(result).to be_a(Hash)
+        expect(result['en']).to eq('You must sign in using single sign-on (SSO) for this email domain.')
       end
     end
   end

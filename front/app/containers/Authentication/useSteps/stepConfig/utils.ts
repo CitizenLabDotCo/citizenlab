@@ -1,7 +1,11 @@
+// import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
+
+// import { getLocalized } from 'utils/i18n';
+// import { LocaleSubject } from 'utils/localeStream';
 
 import {
   GetRequirements,
@@ -12,6 +16,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
+import useLocalize from 'hooks/useLocalize';
 
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
@@ -124,6 +129,7 @@ export const handleSubmitEmail = async (
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState
 ) => {
+  const localize = useLocalize();
   try {
     const response = await checkUser(email);
     const { action } = response.data.attributes;
@@ -167,7 +173,15 @@ export const handleSubmitEmail = async (
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
       setCurrentStep('invite:taken');
     } else if (e.errors?.email?.[0]?.error === 'sso_enforced_for_domain') {
-      const message = e.errors.email[0].message;
+      const messageMultiloc = e.errors.email[0].message_multiloc;
+      // const locale = LocaleSubject.getValue();
+      // const tenantLocales =
+      //   appConfigurationStream.getValue()?.data?.attributes?.settings?.core
+      //     ?.locales;
+      // const message =
+      //   getLocalized(messageMultiloc, locale, tenantLocales) ||
+      //   e.errors.email[0].message;
+      const message = localize(messageMultiloc);
       throw {
         errors: { email: [{ message }] },
       };

@@ -57,8 +57,10 @@ module OmniauthMethods
       []
     end
 
-    def enforced_email_domain_error_message
-      I18n.t('errors.messages.sso_enforced_for_domain')
+    def enforced_email_domain_error_multiloc
+      AppConfiguration.instance.settings('core', 'locales').each_with_object({}) do |locale, multiloc|
+        multiloc[locale] = I18n.with_locale(locale) { I18n.t('errors.messages.sso_enforced_for_domain') }
+      end
     end
   end
 end
