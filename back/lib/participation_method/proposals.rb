@@ -50,6 +50,10 @@ module ParticipationMethod
       false
     end
 
+    def destroy_ideas_on_phase_destroy?
+      true
+    end
+
     def use_reactions_as_votes?
       true
     end
