@@ -81,6 +81,18 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
     scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
 
+    scope :can_moderate, lambda { |project_id = nil|
+      if project_id
+        project = Project.find(project_id)
+        moderators = project_moderator(project.id)
+        moderators = moderators.or(project_folder_moderator(project.folder_id)) if project.folder_id
+        moderators = moderators.or(space_moderator(project.space_id)) if project.space_id
+        admin.or(moderators)
+      else
+        admin_or_moderator
+      end
+    }
+
     scope :order_role, lambda { |direction = :asc|
       joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
         .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))

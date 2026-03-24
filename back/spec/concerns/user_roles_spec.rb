@@ -23,15 +23,6 @@ RSpec.describe UserRoles do
     let!(:project_moderator_b) { create(:project_moderator) } # For random project
     let!(:normal_user) { create(:user) }
 
-    # before do
-    #   # create(:user, roles: [{ 'type' => 'admin', 'project_reviewer' => true }], email: 'admin@example.com')
-    #   create(:user, roles: [{ 'type' => 'admin' }], email: 'super@citizenlab.eu')
-    #   create(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }], email: 'space_mod@example.com')
-    #   create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }], email: 'folder_mod@example.com')
-    #   create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }], email: 'project_mod@example.com')
-    #   create(:user, roles: [], email: 'normal_user@example.com')
-    # end
-
     describe '.admin' do
       it 'returns only admins' do
         expect(User.admin).to contain_exactly(admin, admin_reviewer)
@@ -225,6 +216,46 @@ RSpec.describe UserRoles do
           project_moderator_a,
           project_moderator_b
         )
+      end
+    end
+
+    describe '.can_moderate' do
+      context 'without project_id' do
+        it 'returns all admins and moderators' do
+          expect(User.can_moderate).to contain_exactly(
+            admin,
+            admin_reviewer,
+            space_moderator_a,
+            space_moderator_b,
+            folder_moderator_a,
+            folder_moderator_b,
+            project_moderator_a,
+            project_moderator_b
+          )
+        end
+      end
+
+      context 'with project_id' do
+        it 'returns admins and moderators of the project (including folder and space moderators)' do
+          expect(User.can_moderate(project_a.id)).to contain_exactly(
+            admin,
+            admin_reviewer,
+            project_moderator_a,
+            folder_moderator_a,
+            space_moderator_a
+          )
+        end
+
+        it 'returns admins and project moderator only when project has no folder or space' do
+          project_without_folder = create(:project)
+          project_mod = create(:project_moderator, projects: [project_without_folder])
+
+          expect(User.can_moderate(project_without_folder.id)).to contain_exactly(
+            admin,
+            admin_reviewer,
+            project_mod
+          )
+        end
       end
     end
 

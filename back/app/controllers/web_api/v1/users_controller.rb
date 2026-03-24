@@ -29,15 +29,8 @@ class WebApi::V1::UsersController < ApplicationController
       @users = @users.where(id: participant_ids)
     end
 
-    if params[:can_moderate_project].present?
-      project = Project.find(params[:can_moderate_project])
-      moderators_scope = @users.project_moderator(project.id)
-      moderators_scope = moderators_scope.or(@users.project_folder_moderator(project.folder_id)) if project.folder_id
-      moderators_scope = moderators_scope.or(@users.space_moderator(project.space_id)) if project.space_id
-      @users = @users.admin.or(moderators_scope)
-    end
-
-    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator).or(@users.space_moderator) if params[:can_moderate].present?
+    @users = @users.can_moderate(params[:can_moderate_project]) if params[:can_moderate_project].present?
+    @users = @users.can_moderate if params[:can_moderate].present?
 
     @users = @users.not_project_moderator(params[:is_not_project_moderator]) if params[:is_not_project_moderator].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
