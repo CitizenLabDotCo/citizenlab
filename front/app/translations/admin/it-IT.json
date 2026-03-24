@@ -522,7 +522,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "È richiesto un numero minimo di voti",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Report",
   "app.components.app.containers.AdminPage.ProjectEdit.responseTerm": "Parere",
-  "app.components.app.containers.AdminPage.ProjectEdit.storyTerm": "L'esperienza",
+  "app.components.app.containers.AdminPage.ProjectEdit.storyTerm": "Esperienza",
   "app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm": "Suggerimento",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Timeline",
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
