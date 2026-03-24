@@ -7,7 +7,6 @@ import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 
 import AddByEmail from 'components/admin/AddModerator/AddByEmail';
 import ModeratorUserSearch from 'components/admin/AddModerator/ModeratorUserSearch';
-import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import Or from 'components/UI/Or';
 
@@ -18,17 +17,18 @@ import SeatLimitReachedModal from '../SeatBasedBilling/SeatLimitReachedModal';
 
 import messages from './messages';
 
-type UserParams = {
+export type UserParams = {
   user_id?: string;
   user_email?: string;
 };
 
 interface Props {
-  projectId: string; // TODO remove
+  projectId?: string;
+  folderId?: string;
   onAddModerator: (params: UserParams) => Promise<void>;
 }
 
-const AddModerator = ({ projectId, onAddModerator }: Props) => {
+const AddModerator = ({ projectId, folderId, onAddModerator }: Props) => {
   const { formatMessage } = useIntl();
   const [showSeatLimitModal, setShowSeatLimitModal] =
     useState<UserParams | null>(null);
@@ -41,6 +41,7 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         <>
           <ModeratorUserSearch
             projectId={projectId}
+            folderId={folderId}
             onAddModerator={async (user_id: string) => {
               const shouldOpenModal = await checkIfUserExceedsSeats({
                 user_id,
@@ -82,7 +83,6 @@ const AddModerator = ({ projectId, onAddModerator }: Props) => {
         >
           {formatMessage(messages.whoAreTheManagers)}
         </Text>
-        <ModeratorList projectId={projectId} />
       </Box>
       <Box width="516px">
         <SeatInfo seatType="moderator" />

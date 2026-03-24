@@ -19,12 +19,18 @@ const AddButton = styled(ButtonWithLink)`
 `;
 
 interface Props {
-  projectId: string;
+  projectId?: string;
+  folderId?: string;
   label?: JSX.Element | string;
   onAddModerator: (id: string) => Promise<void>;
 }
 
-const ModeratorUserSearch = ({ projectId, label, onAddModerator }: Props) => {
+const ModeratorUserSearch = ({
+  projectId,
+  folderId,
+  label,
+  onAddModerator,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | undefined>(
@@ -59,6 +65,7 @@ const ModeratorUserSearch = ({ projectId, label, onAddModerator }: Props) => {
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
             isNotProjectModeratorOfProjectId={projectId}
+            isNotFolderModeratorOfFolderId={folderId}
           />
         </Box>
 

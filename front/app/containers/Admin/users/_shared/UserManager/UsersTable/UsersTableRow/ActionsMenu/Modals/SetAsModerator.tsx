@@ -82,7 +82,7 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         if (isFolder(publication)) {
           await addProjectFolderModerator({
             projectFolderId: publication.relationships.publication.data.id,
-            moderatorId: user.id,
+            user_id: user.id,
           });
         } else {
           await addProjectModerator({

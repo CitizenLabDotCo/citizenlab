@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React from 'react';
 
 import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -7,24 +7,18 @@ import styled from 'styled-components';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
-import { IUserData } from 'api/users/types';
 
+import AddModerator from 'components/admin/AddModerator';
 import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SubSectionTitle } from 'components/admin/Section';
 import Avatar from 'components/Avatar';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import UserSelect from 'components/UI/UserSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
-
-const SeatLimitReachedModal = lazy(
-  () => import('components/admin/SeatBasedBilling/SeatLimitReachedModal')
-);
 
 const StyledA = styled.a`
   &:hover {
@@ -32,65 +26,18 @@ const StyledA = styled.a`
   }
 `;
 
-const UserSelectSection = styled.section`
-  display: flex;
-  margin-bottom: 12px;
-`;
-
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { mutate: deleteFolderModerator, isLoading: deleteIsLoading } =
     useDeleteProjectFolderModerator();
-  const { mutate: addFolderModerator, isLoading: addIsLoading } =
-    useAddProjectFolderModerator();
+  const { mutateAsync: addFolderModerator } = useAddProjectFolderModerator();
   const { formatMessage } = useIntl();
   const { data: folderModerators } = useProjectFolderModerators({
     projectFolderId,
   });
-  const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const handleOnChange = (user?: IUserData) => {
-    setModeratorToAdd(user || null);
-  };
-
-  const handleOnAddFolderModeratorsClick = async () => {
-    if (moderatorToAdd) {
-      addFolderModerator(
-        {
-          projectFolderId,
-          moderatorId: moderatorToAdd.id,
-        },
-        {
-          onSuccess: () => {
-            setModeratorToAdd(null);
-          },
-        }
-      );
-    }
-  };
 
   const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
     deleteFolderModerator({ projectFolderId, userId: moderatorId });
-  };
-
-  const handleAddClick = async () => {
-    if (!moderatorToAdd) return;
-
-    const shouldOpenModal = await checkIfUserExceedsSeats({
-      user_id: moderatorToAdd.id,
-      seat_type: 'moderator',
-    });
-
-    if (shouldOpenModal) {
-      setShowModal(true);
-    } else {
-      handleOnAddFolderModeratorsClick();
-    }
   };
 
   return (
@@ -125,7 +72,19 @@ const FolderPermissions = () => {
           />
         </SubSectionTitle>
 
-        <UserSelectSection>
+        <Box>
+          <AddModerator
+            folderId={projectFolderId}
+            onAddModerator={async (params) => {
+              await addFolderModerator({
+                ...params,
+                projectFolderId,
+              });
+            }}
+          />
+        </Box>
+
+        {/* <UserSelectSection>
           <Box display="flex" alignItems="center" mb="12px">
             <Box width="500px">
               <UserSelect
@@ -157,7 +116,7 @@ const FolderPermissions = () => {
               closeModal={closeModal}
             />
           </Suspense>
-        </UserSelectSection>
+        </UserSelectSection> */}
 
         <List>
           <>
