@@ -162,8 +162,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
   end
 
-  def project_or_folder_moderator?
-    project_moderator? || project_folder_moderator?
+  def moderator?
+    project_moderator? || project_folder_moderator? || space_moderator?
   end
 
   def space_moderator?(space_id = nil)
