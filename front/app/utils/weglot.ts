@@ -9,23 +9,11 @@ export interface WeglotData {
 export type WeglotDataOrEmpty = WeglotData | Record<string, never>;
 
 /**
- * Returns the current Weglot language if Weglot is active,
- * or null if Weglot is not loaded.
- */
-export function getWeglotCurrentLang(): string | null {
-  return window.Weglot?.getCurrentLang() ?? null;
-}
-
-/**
  * Returns the Weglot source language if the page is currently being viewed
  * in a language different from the platform's primary locale, or null otherwise.
- * Use this to check whether Weglot translation is active and get the source
- * language in one call — avoids calling getWeglotCurrentLang() twice.
  */
-export function getWeglotSourceLang(
-  mainLocale: SupportedLocale
-): string | null {
-  const weglotLang = getWeglotCurrentLang();
+function getWeglotSourceLang(mainLocale: SupportedLocale): string | null {
+  const weglotLang = window.Weglot?.getCurrentLang() ?? null;
   if (!weglotLang) return null;
   const mainLangCode = mainLocale.split('-')[0];
   return weglotLang !== mainLangCode ? weglotLang : null;
@@ -73,7 +61,7 @@ async function callWeglotApi(
  * Preserves all HTML structure, images, links, and formatting.
  * Returns the original HTML on failure (graceful degradation).
  */
-export async function weglotTranslateHtml(
+async function weglotTranslateHtml(
   html: string,
   fromLang: string,
   toLang: string,
@@ -112,7 +100,7 @@ export async function weglotTranslateHtml(
  * Translates a plain text string via the Weglot REST API.
  * Returns the translated text, or the original on failure (graceful degradation).
  */
-export async function weglotTranslate(
+async function weglotTranslate(
   text: string,
   fromLang: string,
   toLang: string,
