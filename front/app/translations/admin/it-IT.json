@@ -3807,7 +3807,7 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Vuoi davvero eliminare questa pagina? Questa azione non può essere annullata. Puoi anche rimuovere la pagina dalla barra di navigazione se non sei ancora pronto a eliminarla.",
   "app.modules.navbar.admin.containers.navBarMaxItemsNumber": "Puoi aggiungere solo un massimo di 5 elementi alla barra di navigazione",
   "app.modules.navbar.admin.containers.pageHeader": "Pagine e menu",
-  "app.modules.navbar.admin.containers.pageSubtitle": "La barra di navigazione può visualizzare fino a cinque pagine, oltre alle pagine Home e Progetti. Puoi rinominare le voci del menu, riordinarle e aggiungere nuove pagine con i tuoi contenuti.",
+  "app.modules.navbar.admin.containers.pageSubtitle": "La barra di navigazione può mostrare fino a cinque pagine, oltre alle pagine Home e Progetti. Puoi rinominare le voci del menu, riordinarle e aggiungere nuove pagine con i tuoi contenuti.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widget",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Usa l'icona ☰ qui sotto per trascinare i contenuti dell'AI nel tuo report.",
