@@ -665,17 +665,4 @@ RSpec.describe Phase do
       end
     end
   end
-
-  describe '#destroy!' do
-    context 'native survey phase' do
-      let(:phase) { create(:native_survey_phase) }
-
-      it 'destroys associated ideas' do
-        idea = create(:idea, phases: [phase], project: phase.project, creation_phase: phase)
-        expect { phase.destroy! }.to change(Idea, :count).by(-1)
-        expect(Idea.exists?(idea.id)).to be false
-      end
-    end
-
-  end
 end

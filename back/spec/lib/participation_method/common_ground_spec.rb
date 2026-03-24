@@ -77,7 +77,6 @@ RSpec.describe ParticipationMethod::CommonGround do
 
   its(:use_reactions_as_votes?) { is_expected.to be(true) }
   its(:transitive?) { is_expected.to be(false) }
-  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be(true) }
   its(:supports_status?) { is_expected.to be(false) }
   its(:supports_inputs_without_author?) { is_expected.to be(false) }
   its(:supports_submission?) { is_expected.to be(true) }

@@ -116,10 +116,6 @@ module ParticipationMethod
       %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
     end
 
-    def destroy_ideas_on_phase_destroy?
-      true
-    end
-
     def supports_submission?
       true
     end

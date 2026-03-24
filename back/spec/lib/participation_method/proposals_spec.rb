@@ -259,7 +259,6 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
-  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }

@@ -50,10 +50,6 @@ module ParticipationMethod
       true
     end
 
-    def destroy_ideas_on_phase_destroy?
-      true
-    end
-
     def supports_edits_after_publication?
       true
     end
