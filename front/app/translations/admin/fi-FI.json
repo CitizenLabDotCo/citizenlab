@@ -726,7 +726,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Sivun sisältö",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Muokkaa",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Yksivaiheisissa projekteissa, jos lopetuspäivämäärä on tyhjä ja kuvausta ei ole täytetty, aikajanaa ei näytetä projektisivulla.",
-  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Ei saatavilla olevia projektia {pageSettingsLink}perusteella.",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Ei saatavilla olevia projektia {pageSettingsLink} perusteella.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Tässä projektissa ei ole tunnistetta tai aluesuodatinta, joten projektia ei näytetä.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Hankeluettelo | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": "sivun asetukset",
