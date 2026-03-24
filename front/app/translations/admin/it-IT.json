@@ -122,7 +122,7 @@
   "app.components.SeatInfo.includedManagerToolTip": "Mostra il numero di posti manager disponibili inclusi nel contratto annuale.",
   "app.components.SeatInfo.includedSeats": "Posti inclusi",
   "app.components.SeatInfo.managerSeats": "Posti manager",
-  "app.components.SeatInfo.managerSeatsTooltip": "I manager di cartelle/progetti possono gestire un numero illimitato di cartelle/progetti. Puoi visitare il sito {visitHelpCenter} per saperne di più sui diversi ruoli.",
+  "app.components.SeatInfo.managerSeatsTooltip": "I manager di cartelle/progetti possono gestire un numero illimitato di cartelle/progetti. Per saperne di più sui diversi ruoli, {visitHelpCenter}.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} Posti manager inclusi",
   "app.components.SeatInfo.remainingSeats": "Posti rimanenti",
   "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
