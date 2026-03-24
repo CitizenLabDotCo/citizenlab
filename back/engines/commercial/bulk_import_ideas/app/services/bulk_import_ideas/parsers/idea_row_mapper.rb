@@ -61,7 +61,7 @@ module BulkImportIdeas::Parsers
       elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
       elsif field[:input_type] == 'checkbox' && field[:value].present?
-        field[:value] = field[:value].downcase == 'x'
+        field[:value] = %w[x checked].include?(field[:value].downcase)
       elsif field[:input_type] == 'date' && field[:value].present?
         field[:value] = format_date(field[:value])
       elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
