@@ -176,6 +176,8 @@ module BulkImportIdeas::Parsers::Pdf
         field[attr_name][@locale.to_s]
       end.compact_blank
 
+      columns_description = labels.each_with_index.map { |label, i| "#{i + 1} = '#{label}'" }.join(', ')
+
       sub_properties = {}
       sub_required = []
       statement_mapping = {}
@@ -185,11 +187,12 @@ module BulkImportIdeas::Parsers::Pdf
         statement_title = statement.title_multiloc[@locale.to_s]
 
         sub_properties[sub_key] = {
-          type: 'string',
-          description: 'The answer represented by the checkbox the respondent checked corresponding to the statement ' \
-                       "'#{statement_title}'. Return an empty string if the statement was left unanswered. " \
-                       "Return `#{NOT_FOUND}` if the question was not in the document.",
-          enum: labels + ['', NOT_FOUND]
+          type: 'integer',
+          description: "The column number the respondent marked for the row '#{statement_title}'. " \
+                       "The columns from left to right are: #{columns_description}. " \
+                       'Return 0 if the statement was left unanswered. ' \
+                       'Return -1 if the question was not in the document.',
+          enum: (1..labels.length).to_a + [0, -1]
         }
         sub_required << sub_key
         statement_mapping[sub_key] = statement.key
@@ -207,8 +210,7 @@ module BulkImportIdeas::Parsers::Pdf
       @key_mapping[question_key] = {
         type: :matrix,
         field_key: field.key,
-        statements: statement_mapping,
-        label_to_index: labels.each_with_index.to_h { |label, i| [label, i + 1] }
+        statements: statement_mapping
       }
     end
 

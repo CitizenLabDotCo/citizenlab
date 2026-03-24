@@ -114,9 +114,12 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
         expect(matrix_prop[:required]).to eq(['question_1.1', 'question_1.2'])
 
         sub_prop = matrix_prop[:properties]['question_1.1']
-        expect(sub_prop[:type]).to eq('string')
-        expect(sub_prop[:enum]).to eq(['Disagree', 'Neutral', 'Agree', '', '_NOT_FOUND_'])
+        expect(sub_prop[:type]).to eq('integer')
+        expect(sub_prop[:enum]).to eq([1, 2, 3, 0, -1])
         expect(sub_prop[:description]).to include('We should send more animals into space')
+        expect(sub_prop[:description]).to include("1 = 'Disagree'")
+        expect(sub_prop[:description]).to include("2 = 'Neutral'")
+        expect(sub_prop[:description]).to include("3 = 'Agree'")
 
         sub_prop2 = matrix_prop[:properties]['question_1.2']
         expect(sub_prop2[:description]).to include('We should ride our bicycles more often')

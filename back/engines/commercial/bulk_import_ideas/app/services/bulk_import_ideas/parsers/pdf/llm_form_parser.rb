@@ -30,7 +30,7 @@ module BulkImportIdeas::Parsers::Pdf
       message = Analysis::LLM::Message.new(prompt, pdf_file)
 
       begin
-        response = llm.chat(message)
+        response = llm.chat(message, response_schema: schema_builder.output_schema)
       rescue RubyLLM::BadRequestError => e
         raise unless e.message.include?('grammar is too large')
 
@@ -81,7 +81,7 @@ module BulkImportIdeas::Parsers::Pdf
       result = {}
       field_info[:statements].each do |sub_key, statement_key|
         sub_answer = answer[sub_key]
-        next if sub_answer.blank? || not_found?(sub_answer)
+        next if sub_answer.blank? || sub_answer == 0 || sub_answer == -1
 
         result[statement_key] = sub_answer
       end

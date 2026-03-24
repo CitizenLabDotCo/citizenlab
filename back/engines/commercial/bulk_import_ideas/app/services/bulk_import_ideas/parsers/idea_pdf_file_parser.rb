@@ -67,28 +67,11 @@ module BulkImportIdeas::Parsers
 
         new_field = form_field
         new_field[:value] = idea_field[:value]
-        new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| extract_matrix_value(f) }
+        new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| f[:value] }
         merged_fields << new_field
         idea_fields.delete_at(idea_fields.index { |f| f.equal?(idea_field) })
       end
       merged_fields
-    end
-
-    def extract_matrix_value(field)
-      return nil if field[:value].blank?
-
-      matrix_field = CustomField.find_by(key: field[:key])
-      label_to_column = {}
-      (1..matrix_field.maximum).each do |num|
-        label = matrix_field[:"linear_scale_label_#{num}_multiloc"]&.dig(@locale.to_s)
-        label_to_column[normalize_quotes(label)] = num if label.present?
-      end
-
-      field[:value].transform_values { |label| label_to_column[normalize_quotes(label)] }
-    end
-
-    def normalize_quotes(str)
-      str.to_s.tr("\u2018\u2019\u201C\u201D", %(''""))
     end
 
     def create_files(file_content)
