@@ -2166,7 +2166,7 @@
   "app.containers.AdminPage.FolderPermissions.addFolderManager": "Aggiungi",
   "app.containers.AdminPage.FolderPermissions.deleteFolderManagerLabel": "Elimina",
   "app.containers.AdminPage.FolderPermissions.folderManagerSectionTitle": "Manager di cartelle",
-  "app.containers.AdminPage.FolderPermissions.folderManagerTooltip": "I manager delle cartelle possono modificare la descrizione della cartella, creare nuovi progetti all'interno della cartella e avere i diritti di gestione di tutti i progetti all'interno della cartella. Non possono cancellare i progetti e non hanno accesso ai progetti che non fanno parte della loro cartella. Per maggiori informazioni sui diritti di gestione dei progetti, puoi visitare la pagina {projectManagementInfoCenterLink}.",
+  "app.containers.AdminPage.FolderPermissions.folderManagerTooltip": "I manager delle cartelle possono modificare la descrizione della cartella, creare nuovi progetti all'interno della cartella e avere i diritti di gestione di tutti i progetti all'interno della cartella. Non possono cancellare i progetti e non hanno accesso ai progetti che non fanno parte della loro cartella. Per maggiori informazioni sui diritti di gestione dei progetti, {projectManagementInfoCenterLink}.",
   "app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink2": "https://support.govocal.com/en/articles/527547-creating-and-managing-folders",
   "app.containers.AdminPage.FolderPermissions.noMatch": "Nessuna corrispondenza trovata",
   "app.containers.AdminPage.FolderPermissions.projectManagementInfoCenterLinkText": "visita il nostro Centro assistenza",
