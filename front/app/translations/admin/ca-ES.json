@@ -1188,6 +1188,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Totes les preguntes es mostren al PDF. Tanmateix, actualment els següents tipus no són compatibles amb la importació mitjançant FormSync: preguntes de mapatge (marcar un punt, dibuixar una ruta i dibuixar una àrea) i preguntes de càrrega de fitxers.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Suprimeix l'espai",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Espai",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Gestors de l'espai",

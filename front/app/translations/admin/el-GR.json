@@ -1188,6 +1188,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Όλες οι ερωτήσεις εμφανίζονται στο PDF. Ωστόσο, τα ακόλουθα δεν υποστηρίζονται επί του παρόντος για εισαγωγή μέσω του FormSync: Ερωτήσεις χαρτογράφησης (τοποθέτηση πινέζας, σχεδίαση διαδρομής και σχεδίαση περιοχής) και ερωτήσεις μεταφόρτωσης αρχείων.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Διαγραφή χώρου",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Χώρος",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Διαχειριστές χώρου",

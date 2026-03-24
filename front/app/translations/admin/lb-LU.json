@@ -1188,6 +1188,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "All Froe ginn um PDF ugewisen. Allerdéngs ginn déi folgend aktuell net fir den Import iwwer FormSync ënnerstëtzt: Kartéierungsfroen (Pin setzen, Route zeechnen a Beräich zeechnen) an Dateiupload-Froen.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Beräich läschen",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Raum",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Space-Manager",

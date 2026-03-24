@@ -1201,7 +1201,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Obtenez une vue d'ensemble des échéances de vos projets dans la vue calendrier. Identifiez rapidement les projets et les phases qui débutent ou se terminent prochainement et qui nécessitent un suivi.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Comprendre ce qui se passe et à quel moment",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Le PDF contient toutes les questions. Toutefois, les types de questions suivants ne sont pas encore pris en charge par l’importation via FormSync : images, étiquettes et téléchargement de fichiers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Le PDF contient toutes les questions. Toutefois, les types de questions suivants ne sont pas encore pris en charge par l’importation via FormSync : questions cartographiques (placer un repère, dessiner un tracé et délimiter une zone), questions de classement, questions matricielles et questions de téléchargement de fichiers.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Toutes les questions sont affichées sur le PDF. Cependant, les types suivants ne sont pas actuellement pris en charge pour l'importation via FormSync : les questions de cartographie (placer un repère, tracer un itinéraire et tracer une zone) et les questions de téléchargement de fichiers.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fin du formulaire",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Début du formulaire",
   "app.containers.Admin.projects.all.components.archived": "Archivé",

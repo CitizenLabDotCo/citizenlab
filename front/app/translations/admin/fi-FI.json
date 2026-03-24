@@ -1201,7 +1201,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Saat visuaalisen yleiskatsauksen projektiesi aikajanasta kalenterinäkymässämme. Tunnista nopeasti, mitkä projektit ja vaiheet alkavat tai päättyvät pian ja vaativat toimia.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Ymmärrä, mitä tapahtuu ja milloin",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Kaikki kysymykset näkyvät PDF-tiedostossa. Seuraavia ei kuitenkaan tällä hetkellä tueta tuonnissa FormSyncin kautta: kuvat, tunnisteet ja tiedostojen lataus.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Kaikki kysymykset näkyvät PDF-tiedostossa. Seuraavia kysymyksiä ei kuitenkaan tällä hetkellä tueta tuotaessa FormSyncin kautta: kartoituskysymykset (pudotusnasta, reitin piirtäminen ja alueen piirtäminen), ranking-kysymykset, matriisikysymykset ja tiedoston latauskysymykset.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Kaikki kysymykset näkyvät PDF-tiedostossa. Seuraavia ei kuitenkaan tällä hetkellä tueta FormSync-tuonnissa: karttakysymykset (pudota nasta, piirrä reitti ja piirrä alue) ja tiedoston latauskysymykset.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Lomakkeen loppu",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Lomakkeen alku",
   "app.containers.Admin.projects.all.components.archived": "Arkistoitu",
