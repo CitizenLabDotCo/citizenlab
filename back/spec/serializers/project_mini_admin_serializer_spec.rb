@@ -17,12 +17,12 @@ describe WebApi::V1::ProjectMiniAdminSerializer do
 
   it 'serializes first_phase_start_date' do
     first_phase = project.phases.order(:start_at).first
-    expect(serialized_project.dig(:data, :attributes, :first_phase_start_date)).to eq(first_phase.start_at)
+    expect(serialized_project.dig(:data, :attributes, :first_phase_start_date)).to eq(first_phase.start_date)
   end
 
   it 'serializes last_phase_end_date' do
     last_phase = project.phases.order(:start_at).last
-    expect(serialized_project.dig(:data, :attributes, :last_phase_end_date)).to eq(last_phase.end_at)
+    expect(serialized_project.dig(:data, :attributes, :last_phase_end_date)).to eq(last_phase.end_date)
   end
 
   it 'serializes folder_title_multiloc' do

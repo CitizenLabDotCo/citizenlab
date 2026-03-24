@@ -45,8 +45,8 @@ describe WebApi::V1::ProjectMiniSerializer do
       expect(ended_days_ago).to eq(1)
     end
 
-    it 'returns 0 if last phase ends today' do
-      create(:phase, project: project, end_at: 2.hours.from_now)
+    it 'returns 0 if last phase just ended' do
+      create(:phase, project: project, end_at: 1.second.ago)
       expect(ended_days_ago).to be_zero
     end
 

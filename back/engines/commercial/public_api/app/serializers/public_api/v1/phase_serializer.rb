@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PublicApi::V1::PhaseSerializer < ActiveModel::Serializer
-  attributes :id, :title
+  attributes :id, :title, :start_at, :end_at
 
   def start_at
     object.start_date
