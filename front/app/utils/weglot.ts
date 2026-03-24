@@ -1,5 +1,7 @@
 import { SupportedLocale } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+
 export interface WeglotData {
   locale: string;
   body: string;
@@ -125,4 +127,79 @@ export async function weglotTranslate(
     apiKey
   );
   return translated?.[0] ?? text;
+}
+
+/**
+ * Translates a plain-text submission (comments, official feedback) if Weglot
+ * is active and the user is viewing in a non-primary locale.
+ * Returns the translated text and weglot metadata, or the original text
+ * with empty metadata when no translation is needed.
+ */
+export async function weglotTranslateSubmission(
+  text: string,
+  locale: SupportedLocale,
+  appConfiguration: IAppConfiguration | undefined
+): Promise<{ translatedText: string; weglotData: WeglotDataOrEmpty }> {
+  const weglotApiKey =
+    appConfiguration?.data.attributes.settings.core.weglot_api_key;
+  const weglotSourceLang = getWeglotSourceLang(locale);
+
+  if (weglotApiKey && weglotSourceLang) {
+    const translatedText = await weglotTranslate(
+      text,
+      weglotSourceLang,
+      locale,
+      weglotApiKey
+    );
+    return {
+      translatedText,
+      weglotData: { locale: weglotSourceLang, body: text },
+    };
+  }
+
+  return { translatedText: text, weglotData: {} };
+}
+
+/**
+ * Translates an idea submission (plain-text title + HTML body) if Weglot
+ * is active and the user is viewing in a non-primary locale.
+ * Returns translated values and weglot metadata, or originals with empty
+ * metadata when no translation is needed.
+ */
+export async function weglotTranslateIdeaSubmission(
+  title: string | undefined,
+  bodyHtml: string | undefined,
+  locale: SupportedLocale,
+  appConfiguration: IAppConfiguration | undefined
+): Promise<{
+  translatedTitle: string | undefined;
+  translatedBody: string | undefined;
+  weglotData: WeglotDataOrEmpty;
+}> {
+  const weglotApiKey =
+    appConfiguration?.data.attributes.settings.core.weglot_api_key;
+  const weglotSourceLang = getWeglotSourceLang(locale);
+
+  if (weglotApiKey && weglotSourceLang) {
+    const translatedTitle = title
+      ? await weglotTranslate(title, weglotSourceLang, locale, weglotApiKey)
+      : undefined;
+
+    const translatedBody = bodyHtml
+      ? await weglotTranslateHtml(
+          bodyHtml,
+          weglotSourceLang,
+          locale,
+          weglotApiKey
+        )
+      : undefined;
+
+    return {
+      translatedTitle,
+      translatedBody,
+      weglotData: { locale: weglotSourceLang, body: bodyHtml ?? '' },
+    };
+  }
+
+  return { translatedTitle: title, translatedBody: bodyHtml, weglotData: {} };
 }

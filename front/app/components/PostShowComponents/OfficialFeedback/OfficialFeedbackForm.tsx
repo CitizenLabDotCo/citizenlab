@@ -28,11 +28,7 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage, isNilOrError } from 'utils/helperUtils';
-import {
-  getWeglotSourceLang,
-  weglotTranslate,
-  WeglotDataOrEmpty,
-} from 'utils/weglot';
+import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -253,26 +249,17 @@ const OfficialFeedbackForm = ({
         );
       });
 
-      const weglotApiKey =
-        appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      const weglotSourceLang = getWeglotSourceLang(locale);
-      if (weglotApiKey && weglotSourceLang) {
-        const originalBody = feedbackValues.body_multiloc[locale] ?? '';
-        const translatedBody = await weglotTranslate(
-          originalBody,
-          weglotSourceLang,
-          locale,
-          weglotApiKey
-        );
-        feedbackValues.body_multiloc = {
-          ...feedbackValues.body_multiloc,
-          [locale]: translatedBody,
-        };
-        feedbackValues.weglot_data = {
-          locale: weglotSourceLang,
-          body: originalBody,
-        };
-      }
+      const originalBody = feedbackValues.body_multiloc[locale] ?? '';
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        originalBody,
+        locale,
+        appConfiguration
+      );
+      feedbackValues.body_multiloc = {
+        ...feedbackValues.body_multiloc,
+        [locale]: translatedText,
+      };
+      feedbackValues.weglot_data = weglotData;
 
       const onSuccess = () => {
         setFormValues(getEmptyFormValues());

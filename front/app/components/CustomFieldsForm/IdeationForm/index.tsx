@@ -17,12 +17,7 @@ import useLocale from 'hooks/useLocale';
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import {
-  getWeglotSourceLang,
-  weglotTranslate,
-  weglotTranslateHtml,
-  WeglotDataOrEmpty,
-} from 'utils/weglot';
+import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
 import tracks from '../tracks';
@@ -77,47 +72,22 @@ const IdeationForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
-      let weglotData: WeglotDataOrEmpty = {};
-      let translatedFormValues = { ...formValues };
-
-      const weglotApiKey =
-        appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      const weglotSourceLang = getWeglotSourceLang(locale);
-      if (weglotApiKey && weglotSourceLang) {
-        if (formValues.title_multiloc?.[locale]) {
-          const translatedTitle = await weglotTranslate(
-            formValues.title_multiloc[locale]!,
-            weglotSourceLang,
-            locale,
-            weglotApiKey
-          );
-          translatedFormValues = {
-            ...translatedFormValues,
-            title_multiloc: { [locale]: translatedTitle },
-          };
-        }
-
-        if (formValues.body_multiloc?.[locale]) {
-          // Replicates Weglot's own parser approach: extract text nodes, translate
-          // them in one batched API call, inject back. Preserves all HTML structure
-          // including images, formatting, and links.
-          const translatedBody = await weglotTranslateHtml(
-            formValues.body_multiloc[locale]!,
-            weglotSourceLang,
-            locale,
-            weglotApiKey
-          );
-          translatedFormValues = {
-            ...translatedFormValues,
-            body_multiloc: { [locale]: translatedBody },
-          };
-        }
-
-        weglotData = {
-          locale: weglotSourceLang,
-          body: formValues.body_multiloc?.[locale] ?? '',
-        };
-      }
+      const { translatedTitle, translatedBody, weglotData } =
+        await weglotTranslateIdeaSubmission(
+          formValues.title_multiloc?.[locale],
+          formValues.body_multiloc?.[locale],
+          locale,
+          appConfiguration
+        );
+      const translatedFormValues = {
+        ...formValues,
+        ...(translatedTitle !== undefined && {
+          title_multiloc: { [locale]: translatedTitle },
+        }),
+        ...(translatedBody !== undefined && {
+          body_multiloc: { [locale]: translatedBody },
+        }),
+      };
 
       if (!idea) {
         // If the user is an admin or project moderator, we allow them to post to a specific phase
