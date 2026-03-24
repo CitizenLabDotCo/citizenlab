@@ -92,6 +92,14 @@ class WebApi::V1::UsersController < ApplicationController
 
   def ping
     skip_authorization
+
+    if params[:admin].present?
+      unless current_user&.admin? || current_user&.project_or_folder_moderator?
+        head :forbidden
+        return
+      end
+    end
+
     head :ok
   end
 

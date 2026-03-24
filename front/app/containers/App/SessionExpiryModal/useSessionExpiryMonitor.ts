@@ -9,22 +9,30 @@ type SessionState = 'idle' | 'expiring_soon' | 'expired';
 const CHECK_INTERVAL_MS = 300_000; // Checks every 5 minutes unless the route is changed
 const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
 
-async function isSessionInvalidOnServer(): Promise<boolean> {
+type PingResult = 'valid' | 'expired' | 'not_admin';
+
+async function checkSessionOnServer(
+  isAdminRoute: boolean
+): Promise<PingResult> {
   const jwt = getJwt();
-  if (!jwt) return true;
+  if (!jwt) return 'expired';
+
+  const adminParam = isAdminRoute ? '?admin=true' : '';
 
   try {
-    const response = await fetch(`${API_PATH}/users/me/ping`, {
+    const response = await fetch(`${API_PATH}/users/me/ping${adminParam}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${jwt}`,
       },
     });
-    return response.status === 401;
+    if (response.status === 401) return 'expired';
+    if (response.status === 403) return 'not_admin';
+    return 'valid';
   } catch {
     // Network error — don't treat as logged out
-    return false;
+    return 'valid';
   }
 }
 
@@ -95,8 +103,14 @@ export default function useSessionExpiryMonitor(
 
         // For all other cases (expiring soon, looks fine, or cookie missing),
         // verify against the server before deciding state
-        const invalidOnServer = await isSessionInvalidOnServer();
-        if (invalidOnServer) {
+        const isAdminRoute = pathname.startsWith('/admin');
+        const pingResult = await checkSessionOnServer(isAdminRoute);
+        if (pingResult === 'not_admin') {
+          // User is authenticated but lacks admin/moderator access
+          window.location.replace('/');
+          return;
+        }
+        if (pingResult === 'expired') {
           setSessionState('expired');
           return;
         }
