@@ -134,10 +134,25 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Campaigns.campaignDeleteWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Campaigns.cancel": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.Admin.Campaigns.clicked": {
     "state": "verified",
@@ -229,6 +244,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.Admin.Campaigns.sent": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -248,6 +268,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Email.scheduling.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.confirmSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.keepSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.rescheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.Admin.ImageCropper.cropFinalSentence": {
     "state": "verified",
@@ -509,6 +584,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.components.SeatInfo.assignedSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.SeatInfo.availableSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.SeatInfo.currentAdminSeatsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -518,6 +603,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.goToSeatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.SeatInfo.includedAdminToolTip": {
     "state": "verified",
@@ -558,6 +648,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.totalAdminSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.SeatInfo.totalManagerSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.SeatInfo.totalSeats": {
     "state": "verified",
@@ -3959,6 +4059,46 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.Seats.seatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.admins": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.managers": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.name": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.options": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.role": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.SeatsOverview.title": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:00:22.374876Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -3980,36 +4120,6 @@
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.Users.assignedItems": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.buyOneAditionalSeat": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.changeUserRights": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirm": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmAdminQuestion": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmNormalUserQuestion": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
@@ -4209,11 +4319,6 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.Users.reachedLimitMessage": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
   "app.containers.Admin.Users.registeredUser": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -4255,11 +4360,6 @@
     "verified_by": "Admin"
   },
   "app.containers.Admin.Users.setAsNormalUser": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.Users.setAsProjectModerator": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
@@ -4938,6 +5038,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.emails.seeEmailHereText": {
     "state": "verified",
@@ -5908,6 +6013,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.project.emails.save": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.project.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T10:54:26.338714Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.project.emails.send": {
     "state": "verified",
@@ -9255,11 +9370,6 @@
     "verified_by": "Admin"
   },
   "app.containers.Admin.reporting.word.wordExportMissingWidget": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"

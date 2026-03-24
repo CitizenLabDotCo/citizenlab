@@ -38,8 +38,7 @@ resource 'Users' do
       DESC
 
       parameter :is_not_project_moderator, <<~DESC, required: false
-        Users who are not project moderators of project, nor folder moderator of folder containing project (by project
-        id), OR Users who do not have project moderator role (if no project ID provided).
+        Users who are not project moderators of project, OR Users who do not have project moderator role (if no project ID provided).
       DESC
 
       parameter :is_not_folder_moderator, <<~DESC, required: false
@@ -738,16 +737,16 @@ resource 'Users' do
             @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
           end
 
-          example 'List only users who cannot moderate a specific project' do
+          example 'List only users who are not project moderators of a specific project' do
             do_request is_not_project_moderator: @project.id
             expect(status).to eq 200
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
-            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
-            expect(user_ids).not_to include(@project_moderator.id, @project_folder_moderator.id)
+            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id, @project_folder_moderator.id)
+            expect(user_ids).not_to include(@project_moderator.id)
           end
 
-          example 'List only users who cannot moderate a specific folder' do
+          example 'List only users are not folder moderators of a specific folder' do
             do_request is_not_folder_moderator: @project_folder.id
             expect(status).to eq 200
 
@@ -761,28 +760,36 @@ resource 'Users' do
 
         example 'List all users who can moderate a project' do
           p = create(:project)
+          f = create(:project_folder, projects: [p])
+
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
+          f1 = create(:project_folder_moderator, project_folders: [f])
 
           create(:project_moderator)
+          create(:project_folder_moderator)
           create(:user)
           create(:idea, project: p) # a participant, just in case
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, @user.id)
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, f1.id, @user.id)
         end
 
         example 'List all users who can moderate' do
           p = create(:project)
+          f = create(:project_folder, projects: [p])
+
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
           m2 = create(:project_moderator)
+          f1 = create(:project_folder_moderator, project_folders: [f])
+          f2 = create(:project_folder_moderator)
           create(:user)
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, @user.id)
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, f1.id, f2.id, @user.id)
         end
 
         example 'List all moderators who are not admins' do
