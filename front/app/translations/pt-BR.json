@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Este e-mail já existe. Outra conta está ligada ele.",
   "app.errors.generics.unsupported_locales": "Este campo não suporta a configuração atual.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Como administrador do projeto, você só pode enviar e-mail para pessoas que podem acessar seu (s) projeto (s)",
+  "app.errors.has_inputs": "Você não pode alterar o método de participação porque essa fase já tem entradas. Você deve remover todas as entradas primeiro.",
   "app.errors.has_other_overlapping_phases": "Os projetos não podem ter fases sobrepostas.",
   "app.errors.invalid_email": "O e-mail {value} encontrado na linha {row} não é um endereço de e-mail válido",
   "app.errors.invalid_row": "Ocorreu um erro desconhecido ao tentar processar a linha {row}",

@@ -46,14 +46,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.locationLabel',
     defaultMessage: 'Location',
   },
-  dateStartLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.dateStartLabel',
-    defaultMessage: 'Starting date & time',
-  },
-  datesEndLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.datesEndLabel',
-    defaultMessage: 'End date & time',
-  },
   descriptionLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.descriptionLabel',
     defaultMessage: 'Description',

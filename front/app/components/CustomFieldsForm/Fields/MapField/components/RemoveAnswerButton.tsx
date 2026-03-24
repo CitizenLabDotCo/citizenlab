@@ -19,6 +19,7 @@ const RemoveAnswerButton = ({ mapView, handleMultiPointChange }: Props) => {
   return (
     <Box display="flex" justifyContent="center" mt="12px">
       <Button
+        type="button"
         icon="close"
         buttonStyle="secondary"
         p="4px"

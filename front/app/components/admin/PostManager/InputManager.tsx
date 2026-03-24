@@ -168,8 +168,8 @@ const InputManager = ({
     setParams({ 'page[number]': 1, feedback_needed: feedbackNeeded });
   };
 
-  const onChangePhase = (phase: string) => {
-    setParams({ 'page[number]': 1, phase });
+  const onChangePhase = (phase: string | null) => {
+    setParams({ 'page[number]': 1, phase: phase ?? undefined });
   };
 
   const onChangeProjects = (projects: string[]) => {

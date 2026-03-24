@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Dës E-Mail-Adress gëtt et schonn. En anere Kont ass domat verbonnen.",
   "app.errors.generics.unsupported_locales": "Dëst Feld ënnerstëtzt net déi aktuell regional Astellungen. ",
   "app.errors.group_ids_unauthorized_choice_moderator": "Als Projetsmanager kënnt Dir nëmme Leit e-mailen, déi Zougang zu Äre Projet(en) hunn.",
+  "app.errors.has_inputs": "Dir kënnt d'Participatiounsmethod net änneren, well dës Phase scho Bäiträg huet. Huelt w.e.g. als éischt all Bäiträg ewech.",
   "app.errors.has_other_overlapping_phases": "Projeten däerfe keng Phasen hunn, déi sech iwwerschneiden.",
   "app.errors.invalid_email": "D’E-Mail-Adress {value}, aus der Rei{row}, ass keng gëlteg E-Mail-Adress",
   "app.errors.invalid_row": "En onbekannte Feeler ass wärend der Veraarbechtung vu Rei {row} opgetrueden",

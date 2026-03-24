@@ -1,0 +1,19 @@
+{
+  "FormSync": {
+    "de-DE": "Papier-Scans"
+  },
+  "manager": {
+    "de-DE": "Manager*innen",
+    "es-ES": "gestor"
+  },
+  "seat": {
+    "de-DE": "Zugang",
+    "es-ES": "asiento"
+  },
+  "seats": {
+    "es-ES": "asientos"
+  },
+  "seats overview": {
+    "de-DE": "Übersicht der Zugänge"
+  }
+}

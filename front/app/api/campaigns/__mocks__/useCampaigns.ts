@@ -9,6 +9,7 @@ export const campaignsData: ICampaignData[] = [
       can_be_disabled: true,
       sender: 'author',
       reply_to: 'author',
+      scheduled_at: null,
       subject_multiloc: {
         en: "We're almost done with your feedback",
       },

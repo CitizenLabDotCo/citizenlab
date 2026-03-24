@@ -3,8 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import messages from './messages';
-import UserManager from './UserManager';
-import UsersHeader from './UsersHeader';
+import UserManager from './_shared/UserManager';
+import UsersHeader from './_shared/UsersHeader';
 
 const AllUsers = () => (
   <Box className="intercom-users-registered-users">

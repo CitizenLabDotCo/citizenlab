@@ -147,43 +147,31 @@ nl:
     ideas:
       title:
         title: Titel
-        description:
       body:
         title: Beschrijving
-        description:
       author_id:
         title: Auteur
       topic_ids:
         title: Tags
-        description:
       consponsor_ids:
         title: Ondersteuners
         description: Nodig ondersteuners uit via het onderstaande veld. De uitgenodigde ondersteuner(s) ontvangen een e-mail.
       location:
         title: Locatie
-        description:
       proposed_budget:
         title: Voorgesteld budget
-        description:
       budget:
         title: Bedrag
       images:
         title: Afbeeldingen
-        description:
       attachments:
         title: Bijlagen
-        description:
-      title_page:
-        description:
       body_page:
         title: Vertel ons meer
-        description:
       uploads_page:
         title: Afbeeldingen en bijlagen
-        description:
       details_page:
         title: Details
-        description:
       other_input_field:
         title: Typ je antwoord
         print_title: Indien '%{other_option}', graag toelichten
@@ -398,5 +386,6 @@ nl:
     event_details: "Details evenement"
   errors:
     messages:
+      in_the_past: "moet in de toekomst liggen"
       max_must_be_greater_than_min_characters: "Het maximum moet groter zijn dan het minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "Het maximum moet groter zijn dan of gelijk aan het minimum."

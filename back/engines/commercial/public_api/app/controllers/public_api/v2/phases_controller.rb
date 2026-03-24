@@ -35,8 +35,8 @@ module PublicApi
     end
 
     def phase_date_filters(base_query)
-      base_query = base_query.where(date_filter_where_clause('start_at', params[:start_at])) if params[:start_at]
-      base_query = base_query.where(date_filter_where_clause('end_at', params[:end_at])) if params[:end_at]
+      base_query = base_query.where(start_at: parse_date_range(params[:start_at])) if params[:start_at]
+      base_query = base_query.where(end_at: parse_date_range(params[:end_at])) if params[:end_at]
       base_query
     end
   end
