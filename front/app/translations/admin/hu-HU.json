@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "Kérje meg a felhasználókat, hogy kövessenek területeket vagy témákat",
   "app.components.onboarding.followHelperText": "Ez aktivál egy lépést a regisztrációs folyamatban, ahol a felhasználók követhetik az alább kiválasztott területeket vagy témákat",
   "app.components.onboarding.followPreferences": "Követési beállítások",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} a csomagban, {noOfAdditionalSeats} további",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Helyek a csomagon belül",
   "app.containers.Admin.Campaigns.campaignFrom": "From:",
   "app.containers.Admin.Campaigns.campaignTo": "To:",
   "app.containers.Admin.Campaigns.customEmails": "Egyedi e-mailek",

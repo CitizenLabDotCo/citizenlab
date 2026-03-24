@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "Ζητήστε από τους χρήστες να ακολουθήσουν περιοχές ή θέματα",
   "app.components.onboarding.followHelperText": "Αυτό ενεργοποιεί ένα βήμα στη διαδικασία εγγραφής όπου οι χρήστες θα μπορούν να ακολουθούν περιοχές ή θέματα που επιλέγετε παρακάτω",
   "app.components.onboarding.followPreferences": "Προτιμήσεις παρακολούθησης",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} within plan, {noOfAdditionalSeats} additional",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Seats within plan",
   "app.containers.Admin.Campaigns.campaignFrom": "Από:",
   "app.containers.Admin.Campaigns.campaignTo": "Προς:",
   "app.containers.Admin.Campaigns.customEmails": "Προσαρμοσμένα emails",

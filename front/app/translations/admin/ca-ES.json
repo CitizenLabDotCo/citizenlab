@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "Demana als usuaris que segueixin àrees o temes",
   "app.components.onboarding.followHelperText": "Això activa un pas en el procés de registre on els usuaris podran seguir àrees o temes que seleccionis a continuació",
   "app.components.onboarding.followPreferences": "Preferències de seguiment",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} within plan, {noOfAdditionalSeats} additional",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Seats within plan",
   "app.containers.Admin.Campaigns.campaignFrom": "De:",
   "app.containers.Admin.Campaigns.campaignTo": "A:",
   "app.containers.Admin.Campaigns.customEmails": "Correus electrònics personalitzats",

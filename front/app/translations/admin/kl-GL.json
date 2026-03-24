@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "Atuisut sumiiffinnik imaluunniit sammisanik malinnaaqquneqarlik",
   "app.components.onboarding.followHelperText": "Nalunaarsornermi immikkoortoq manna atorlugu atuisut sumiiffiit qulequttalluunniit ataani toqqakkavit malinnaaffiginissaat periarfissaqalissavaat",
   "app.components.onboarding.followPreferences": "Malinnaanermi tulluarsakkat",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} pilersaarummiipput, {noOfAdditionalSeats} ilassutaallutik",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Pilersaarummi issiaviit",
   "app.containers.Admin.Campaigns.campaignFrom": "Uannga:",
   "app.containers.Admin.Campaigns.campaignTo": "Uunga:",
   "app.containers.Admin.Campaigns.customEmails": "E-mailit nammineq aaqqitat",

@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "Benotzer froen, Beräicher oder Themen ze verfollegen",
   "app.components.onboarding.followHelperText": "Dëst aktivéiert e Schrëtt am Registréierungsprozess, an deem d'Benotzer Beräicher oder Themen, déi Dir hei ënnen auswielt, verfollege kënnen.",
   "app.components.onboarding.followPreferences": "Follow-Astellungen",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} am Plang, {noOfAdditionalSeats} zousätzlech",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Sëtzer am Plang",
   "app.containers.Admin.Campaigns.campaignFrom": "From:",
   "app.containers.Admin.Campaigns.campaignTo": "To:",
   "app.containers.Admin.Campaigns.customEmails": "Personaliséiert E-Mailen",

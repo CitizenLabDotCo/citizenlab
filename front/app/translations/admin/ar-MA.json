@@ -538,8 +538,6 @@
   "app.components.onboarding.askFollowPreferences": "اطلب من المستخدمين متابعة مناطق أو مواضيع معينة",
   "app.components.onboarding.followHelperText": "يؤدي هذا إلى تفعيل خطوة في عملية التسجيل حيث سيتمكن المستخدمون من متابعة المناطق أو المواضيع التي تختارها أدناه.",
   "app.components.onboarding.followPreferences": "تفضيلات المتابعة",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} ضمن الخطة، {noOfAdditionalSeats} إضافية",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "المقاعد ضمن الخطة",
   "app.containers.Admin.Campaigns.campaignFrom": "من:",
   "app.containers.Admin.Campaigns.campaignTo": "إلى:",
   "app.containers.Admin.Campaigns.customEmails": "رسائل بريد إلكتروني مخصصة",
