@@ -1188,8 +1188,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "All Froe ginn um PDF ugewisen. Allerdéngs ginn déi folgend aktuell net fir den Import iwwer FormSync ënnerstëtzt: Kartéierungsfroen (Pin setzen, Route zeechnen a Beräich zeechnen) an Dateiupload-Froen.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Beräich läschen",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Raum",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Space-Manager",
@@ -1203,7 +1201,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Kritt eng visuell Iwwersiicht iwwer d'Zäitpläng vun Äre Projeten an eiser Kalenner-Usicht. Identifizéiert séier, wéi eng Projeten a Phasen geschwënn ufänken oder ophalen an eng Aktioun erfuerderen.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Verstoen, wat geschitt a wéini",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "All d'Froen ginn am PDF ugewisen. Déi folgend Elementer ginn awer de Moment net fir den Import iwwer FormSync ënnerstëtzt: Biller, Tags an Dateie-Upload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "All Froen ginn am PDF ugewisen. Déi folgend ginn awer de Moment net fir den Import iwwer FormSync ënnerstëtzt: Mapping-Froen (Pin setzen, Route zeechnen a Beräich zeechnen), Ranking-Froen, Matrix-Froen a Froen fir Dateie eropzelueden.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "All Froe ginn um PDF ugewisen. Allerdéngs ginn déi folgend aktuell net fir den Import iwwer FormSync ënnerstëtzt: Kartéierungsfroen (Pin setzen, Route zeechnen a Beräich zeechnen) an Dateiupload-Froen.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Enn vum Formular",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Ufank vum Formulaire",
   "app.containers.Admin.projects.all.components.archived": "Archived",

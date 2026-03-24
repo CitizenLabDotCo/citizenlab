@@ -1188,8 +1188,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Apeqqutit tamarmik PDF-imi ersipput. Taamaakkaluartoq, makku FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingatigut apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik nuussinermut apeqqutit.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Inissiaq piiaruk",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Inissaq",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Inimi aqutsisut",
@@ -1203,7 +1201,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Ullorsiutit atorlugit suliniutitit piffissalersugaanerallu takukkit. Suliniutit immikkoortullu sorliit aallartilersut imaluunniit naajartulersut iliuuseqarfigineqartussallu piaartumik takukkit.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Paasiniaruk suna pinerusoq qangalu",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Apeqqutit tamarmik PDF-imi takuneqarsinnaapput. Kisianni makku FormSync atorlugu eqqunneqarsinnaanngillat: Assit, Nalunaaqutsersuutit kiisalu Fiilinik nassiussineq.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Apeqqutit tamarmik PDF-imi takutinneqarput. Taamaattorli makku FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingani apeqqutit (sumiiffimmik nalunaaqutsiineq, aqqutissiorneq aamma sumiiffimmik titarnilersuineq), tulleriiaarinermi apeqqutit, matrix-imi apeqqutit aamma fiilinik ikkussinermi apeqqutit.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Apeqqutit tamarmik PDF-imi ersipput. Taamaakkaluartoq, makku FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingatigut apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik nuussinermut apeqqutit.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Immersugassap naggataa",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Immersugassap aallartinnera",
   "app.containers.Admin.projects.all.components.archived": "Allagaasivimmut inissinneqarpoq",

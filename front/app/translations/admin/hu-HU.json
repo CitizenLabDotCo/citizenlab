@@ -993,8 +993,6 @@
   "app.containers.Admin.emails.supportButtonLink3": "https://support.govocal.com/en/articles/527592-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "Címzett:",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
-
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Minden kérdés megjelenik a PDF-ben. Azonban a következők jelenleg nem támogatottak a FormSync-en keresztüli importhoz: térképes kérdések (gombostű elhelyezése, útvonal rajzolása és terület rajzolása) és fájlfeltöltési kérdések.",
   "app.containers.Admin.emails.viewExample": "Megtekintés",
   "app.containers.Admin.ideas.import": "Importálás",
   "app.containers.Admin.inspirationHub.AllProjects": "Összes projekt",
@@ -1203,7 +1201,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Tekintse át vizuálisan a projektjei idővonalát a naptár nézetben. Gyorsan azonosíthatja, mely projektek és szakaszok kezdődnek vagy fejeződnek be hamarosan, és igényelnek intézkedést.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Értse meg, mi történik és mikor",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Minden kérdés megjelenik a PDF-ben. Azonban a következők importálása jelenleg nem támogatott a FormSync-en keresztül: Képek, Címkék és Fájlfeltöltés.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Minden kérdés megjelenik a PDF-ben. Azonban a következők jelenleg nem támogatottak a FormSync-en keresztüli importáláshoz: térképes kérdések (gombostű elhelyezése, útvonal rajzolása és terület rajzolása), rangsorolási kérdések, mátrix kérdések és fájlfeltöltési kérdések.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey7": "Minden kérdés megjelenik a PDF-ben. Azonban a következők jelenleg nem támogatottak a FormSync-en keresztüli importhoz: térképes kérdések (gombostű elhelyezése, útvonal rajzolása és terület rajzolása) és fájlfeltöltési kérdések.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Az űrlap vége",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Űrlap kezdete",
   "app.containers.Admin.projects.all.components.archived": "Archived",
