@@ -321,5 +321,4 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(custom_field_values[:u_date]).to eq '2025-01-01'
     end
   end
-
 end
