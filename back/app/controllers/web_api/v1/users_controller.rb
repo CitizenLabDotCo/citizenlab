@@ -46,11 +46,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @users = @users.project_reviewers(Utils.to_bool(params[:project_reviewer])) if params.key?(:project_reviewer)
 
-    case params[:can_admin]&.downcase
-    when 'true' then @users = @users.admin
-    when 'false' then @users = @users.not_admin
-    end
-
+    @users = @users.admin if params[:admins_only].present?
     @users = @users.project_moderator if params[:project_moderators_only].present?
     @users = @users.project_folder_moderator if params[:folder_moderators_only].present?
     @users = @users.space_moderator if params[:space_moderators_only].present?

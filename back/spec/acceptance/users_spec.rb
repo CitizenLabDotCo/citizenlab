@@ -28,7 +28,7 @@ resource 'Users' do
       parameter :group, 'Filter by group_id', required: false
       parameter :project, 'Filter by users who participated in the project (by project id)', required: false
       parameter :project_reviewer, 'When true, return only project reviewers. When false, exclude project reviewers.', required: false
-      parameter :can_admin, 'Return only admins', required: false
+      parameter :admins_only, 'Return only admins', required: false
       parameter :can_moderate, 'Return only admins and moderators', required: false
 
       parameter :can_moderate_project, <<~DESC, required: false
@@ -387,7 +387,7 @@ resource 'Users' do
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
-        parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
+        parameter :admins_only, 'Return only admins', required: false
         parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
@@ -875,29 +875,12 @@ resource 'Users' do
           end
 
           example 'List only admins' do
-            do_request can_admin: true
+            do_request admins_only: true
             expect(status).to eq 200
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
 
             expect(user_ids).to contain_exactly(@user.id, admin.id, admin_reviewer.id)
-          end
-
-          example 'List only non-admins' do
-            do_request can_admin: false
-            expect(status).to eq 200
-
-            user_ids = json_parse(response_body)[:data].pluck(:id)
-            expect(user_ids).not_to include(@user.id, admin.id, admin_reviewer.id)
-            expect(user_ids).to contain_exactly(
-              space_moderator_a.id,
-              space_moderator_b.id,
-              folder_moderator_a.id,
-              folder_moderator_b.id,
-              project_moderator_a.id,
-              project_moderator_b.id,
-              normal_user.id
-            )
           end
 
           example 'List only project reviewers' do
@@ -907,22 +890,6 @@ resource 'Users' do
             user_ids = json_parse(response_body)[:data].pluck(:id)
 
             expect(user_ids).to contain_exactly(admin_reviewer.id)
-          end
-
-          example 'List only moderators who are not admins' do
-            do_request can_moderate: true, can_admin: false
-            expect(status).to eq 200
-
-            user_ids = json_parse(response_body)[:data].pluck(:id)
-
-            expect(user_ids).to contain_exactly(
-              space_moderator_a.id,
-              space_moderator_b.id,
-              folder_moderator_a.id,
-              folder_moderator_b.id,
-              project_moderator_a.id,
-              project_moderator_b.id
-            )
           end
 
           example 'List only users who do not have citizenlab or Govocal email' do
