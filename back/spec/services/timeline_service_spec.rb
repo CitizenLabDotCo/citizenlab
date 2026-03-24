@@ -430,7 +430,7 @@ describe TimelineService do
     create(:phase_sequence, phase_options.merge(project: project))
   end
 
-  def set_timezone(timezone)
+  def set_timezone(timezone) # rubocop:disable Naming/AccessorMethodName
     AppConfiguration.instance.settings['core']['timezone'] = timezone
     AppConfiguration.instance.save!
   end
