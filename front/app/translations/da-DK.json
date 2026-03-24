@@ -2662,7 +2662,7 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stemme er afgivet 🎉",
   "app.utils.votingMethodUtils.votesCast": "Afgivne stemmer",
   "app.utils.votingMethodUtils.votingClosed": "Afstemning lukket",
-  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Din stemme vil ikke blive talt med</b>, før du klikker på \"Send\".",
+  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Din stemme vil ikke blive talt med</b>, før du klikker på \"Indsend\".",
   "app.utils.votingMethodUtils.votingSubmittedInstructions1": "<b>Tillykke, din stemme er indsendt!</b> Du kan kontrollere eller ændre din indsendelse før <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate1": "<b>Tillykke, din stemme er afgivet!</b> Du kan til enhver tid kontrollere eller ændre din indsendelse nedenfor.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Der er ingen idéer til rådighed.",
