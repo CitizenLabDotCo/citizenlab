@@ -61,6 +61,7 @@ const PasswordInputComponent = ({
   intl: { formatMessage },
   ariaInvalid,
   ariaDescribedBy,
+  required,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -119,6 +120,7 @@ const PasswordInputComponent = ({
             setRef={setInputRef}
             ariaInvalid={ariaInvalid}
             ariaDescribedBy={ariaDescribedBy}
+            required={required}
           />
           <ShowPasswordIconButton
             showPassword={showPassword}

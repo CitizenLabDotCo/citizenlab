@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Tá an ríomhphost seo ann cheana féin. Tá cuntas eile nasctha leis.",
   "app.errors.generics.unsupported_locales": "Ní thacaíonn an réimse seo leis an logán reatha.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Mar bhainisteoir tionscadail, ní féidir leat ríomhphost a sheoladh ach chuig daoine a bhfuil rochtain acu ar do thionscadal(anna).",
+  "app.errors.has_inputs": "Ní féidir leat an modh rannpháirtíochta a athrú mar go bhfuil ionchuir sa chéim seo cheana féin. Bain na hionchuir go léir ar dtús, le do thoil.",
   "app.errors.has_other_overlapping_phases": "Ní féidir céimeanna forluiteacha a bheith ag tionscadail.",
   "app.errors.invalid_email": "Ní seoladh ríomhphoist bailí é an ríomhphost {value} atá le fáil i ró {row}",
   "app.errors.invalid_row": "Tharla earráid anaithnid agus iarracht á déanamh ró {row} a phróiseáil",

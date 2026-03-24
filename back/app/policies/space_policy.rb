@@ -29,8 +29,4 @@ class SpacePolicy < ApplicationPolicy
   def destroy?
     active_admin?
   end
-
-  def tree_view?
-    active_admin?
-  end
 end

@@ -53,7 +53,7 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>

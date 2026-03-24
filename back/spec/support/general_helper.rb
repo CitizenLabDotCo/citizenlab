@@ -17,8 +17,15 @@ module GeneralHelper
     proxy.instance_variable_get(:@messages_received)
   end
 
-  def time_regex
-    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/
+  def iso8601_datetime_regex
+    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})/
+  end
+  alias iso8601_regex iso8601_datetime_regex
+  alias time_regex iso8601_datetime_regex
+
+  # Replaces the timezone of a timestamp without shifting the time values.
+  def override_timezone(timestamp, timezone)
+    timezone.local_to_utc(timestamp).in_time_zone(timezone)
   end
 
   def uuid_regex

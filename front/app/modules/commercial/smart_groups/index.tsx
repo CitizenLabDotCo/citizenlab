@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { MembershipType } from 'api/groups/types';
 
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { NormalFormValues } from 'containers/Admin/users/_shared/NormalGroupForm';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

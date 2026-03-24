@@ -73,9 +73,14 @@ const SingleSelectField = ({
           options={selectOptions}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
+          aria-required={question.required}
         />
       ) : (
-        <RadioGroup name={question.key} padding="0px">
+        <RadioGroup
+          name={question.key}
+          padding="0px"
+          aria-required={question.required}
+        >
           <ScreenReaderOnly>
             <legend>{localize(question.title_multiloc)}</legend>
           </ScreenReaderOnly>

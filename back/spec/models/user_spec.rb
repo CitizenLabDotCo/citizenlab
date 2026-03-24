@@ -727,7 +727,8 @@ RSpec.describe User do
 
   describe 'project_or_folder_moderator?' do
     it 'responds true when the user has the project_folder_moderator role' do
-      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
+      folder = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
       expect(u.project_or_folder_moderator?).to be true
     end
 
@@ -864,8 +865,8 @@ RSpec.describe User do
           expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
         end
 
-        it 'excludes folder moderators of project folder' do
-          expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
+        it 'does not exclude folder moderators of project folder' do
+          expect(described_class.not_project_moderator(project.id)).to include(project_folder_moderator)
         end
 
         it 'includes folder moderators of other folders' do
@@ -1471,9 +1472,10 @@ RSpec.describe User do
         expect(described_class.billed_admins).to contain_exactly(admin)
       end
 
-      it 'does not return Go Vocal admins' do
+      it 'does not return Go Vocal or Citizenlab admins' do
         create(:user)
         create(:admin, email: 'test@govocal.com')
+        create(:admin, email: 'test@citizenlab.co')
         non_gv_admin = create(:admin)
         expect(described_class.billed_admins).to contain_exactly(non_gv_admin)
       end
@@ -1502,9 +1504,10 @@ RSpec.describe User do
         expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
 
-      it 'does not return Go Vocal moderators' do
+      it 'does not return Go Vocal or Citizenlab moderators' do
         create(:user)
         create(:project_moderator, email: 'test@govocal.eu')
+        create(:project_moderator, email: 'test@citizenlab.co')
         non_cl_project_moderator = create(:project_moderator)
         expect(described_class.billed_moderators).to contain_exactly(non_cl_project_moderator)
       end
