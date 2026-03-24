@@ -103,7 +103,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
   return (
     <Box id="e2e-sign-up-email-password-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <SectionField>
             {profanityApiError && (
               <Error

@@ -4049,6 +4049,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.assignAsManager": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:48.331730Z",
+    "verified_by": "Simon"
+  },
   "app.containers.Admin.Users.assignedItems": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -10059,6 +10064,41 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.users.UserAssignedItems.asAnAdmin": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.foldersUserManages": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.lockedProject": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.projectsUserManages": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.remove": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
+  },
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -11958,6 +11998,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
   },
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": {
     "state": "verified",
@@ -18143,6 +18188,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.addCollaboratorsModal.giveAdminRights": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.932849Z",
+    "verified_by": "Simon"
   },
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": {
     "state": "verified",
