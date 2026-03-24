@@ -509,6 +509,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.SeatInfo.assignedSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:21:24.328902Z",
+    "verified_by": "Adrien"
+  },
   "app.components.SeatInfo.availableSeats": {
     "state": "verified",
     "verified_at": "2026-03-24T09:12:03.726389Z",
