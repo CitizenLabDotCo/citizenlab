@@ -43,7 +43,7 @@ describe SideFxUserService do
         .to have_enqueued_job(TrackUserJob).with(user)
     end
 
-    it 'logs a UpdateMemberCountJob' do
+    it 'logs an UpdateMemberCountJob' do
       expect { service.after_create(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
     end
 
@@ -112,13 +112,13 @@ describe SideFxUserService do
         .to have_enqueued_job(LogActivityJob).with(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
 
-    it "logs a 'admin_rights_received' action job when user has been made admin" do
+    it "logs an 'admin_rights_received' action job when user has been made admin" do
       user.update!(roles: [{ 'type' => 'admin' }])
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_received', current_user, anything, payload: {})
     end
 
-    it "logs a 'admin_rights_removed' action job when user has been removed from admin" do
+    it "logs an 'admin_rights_removed' action job when user has been removed from admin" do
       user.update!(roles: [{ 'type' => 'admin' }])
       user.update!(roles: [])
       expect { service.after_update(user, current_user) }
@@ -223,7 +223,7 @@ describe SideFxUserService do
       end
     end
 
-    it 'enqueues a UpdateMemberCountJob by default' do
+    it 'enqueues an UpdateMemberCountJob by default' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
     end
 

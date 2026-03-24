@@ -98,8 +98,6 @@ RSpec.describe ParticipationMethod::Voting do
     before { SettingsService.new.activate_feature! 'idea_author_change' }
 
     it 'returns false for a resident when idea_author_change is activated' do
-      user = create(:user)
-      pp user
       expect(participation_method.author_in_form?(user)).to be false
     end
 

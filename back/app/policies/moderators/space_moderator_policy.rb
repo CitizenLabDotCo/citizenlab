@@ -13,7 +13,7 @@ module Moderators
     end
 
     def destroy?
-      user&.active? && user.admin?
+      user&.active? && user.admin? # Only admins can remove space moderators
     end
 
     private
