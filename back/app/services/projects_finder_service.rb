@@ -182,7 +182,8 @@ class ProjectsFinderService
   def projects_with_active_phase(projects)
     now = Time.zone.now
 
-    projects.phases
+    projects
+      .joins(:phases)
       .where('phases.start_at <= ?', now)
       .where('phases.end_at IS NULL OR phases.end_at > ?', now)
       .select('projects.*, phases.end_at AS phase_end_at')

@@ -322,14 +322,16 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       end
 
       example 'Includes correct ended_days_ago attribute value', document: false do
-        finished_project1.phases[0].update!(start_at: 342.days.ago, end_at: 339.days.ago)
-        finished_project1.phases[1].update!(start_at: 338.days.ago, end_at: 335.days.ago)
+        freeze_time do
+          finished_project1.phases[1].update!(start_at: 1.week.ago, end_at: 49.hours.ago)
+          finished_project1.phases[0].update!(start_at: 2.months.ago, end_at: 1.month.ago)
 
-        do_request({ filter_by: 'finished_and_archived' })
-        expect(status).to eq 200
+          do_request({ filter_by: 'finished_and_archived' })
+          assert_status :ok
+        end
 
         project = json_response[:data].find { |d| d[:id] == finished_project1.id }
-        expect(project[:attributes][:ended_days_ago]).to eq 335
+        expect(project[:attributes][:ended_days_ago]).to eq(2)
       end
 
       # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.

@@ -4,7 +4,7 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :slug
 
   attribute :starts_days_from_now do |object|
-    first_phase = object.phases.order(start_at: :asc).first
+    first_phase = object.phases.first
     now = Time.now
 
     if first_phase && first_phase.start_at > now
@@ -13,7 +13,7 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :ended_days_ago do |object|
-    last_phase = object.phases.order(end_at: :desc).first
+    last_phase = object.phases.last
     now = Time.now
 
     if last_phase&.end_at && last_phase.end_at < now
