@@ -10,10 +10,9 @@ import ErrorComponent from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
-import { ErrorType } from '../../types';
-
+import messages from './messages';
 import TimeInput from './TimeInput';
+import { ErrorType } from './types';
 
 interface Props {
   startAt: string;

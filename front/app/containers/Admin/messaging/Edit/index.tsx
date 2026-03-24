@@ -8,13 +8,16 @@ import {
   IconTooltip,
   StatusLabel,
   Title,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import { isDraft } from 'api/campaigns/util';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
@@ -28,6 +31,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { formatDateInTimezone } from 'utils/dateUtils';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
@@ -45,6 +49,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const { campaignId } = useParams() as {
     campaignId: string;
   };
+  const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
@@ -82,19 +87,36 @@ const Edit = ({ campaignType }: EditProps) => {
   const goBack = () => {
     clHistory.goBack();
   };
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
 
   return (
     <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
       {campaignType === 'custom' ? (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" gap="12px">
           <Title mr="12px">
             <T value={campaign.data.attributes.subject_multiloc} />
           </Title>
-          <StatusLabel
-            backgroundColor={colors.brown}
-            text={<FormattedMessage {...messages.draft} />}
-          />
+          {isDraft(campaign.data) && (
+            <StatusLabel
+              backgroundColor={colors.brown}
+              text={<FormattedMessage {...messages.draft} />}
+            />
+          )}
+          {campaign.data.attributes.scheduled_at && timeZone && (
+            <>
+              <StatusLabel
+                backgroundColor={colors.teal500}
+                text={<FormattedMessage {...messages.scheduled} />}
+              />
+              <Text fontSize="base" whiteSpace="nowrap">
+                {formatDateInTimezone({
+                  date: campaign.data.attributes.scheduled_at,
+                  timeZone,
+                })}
+              </Text>
+            </>
+          )}
         </Box>
       ) : (
         <Title>
@@ -131,6 +153,7 @@ const Edit = ({ campaignType }: EditProps) => {
                   (d) => d.id
                 ),
               }}
+              isScheduled={campaign.data.attributes.scheduled_at !== null}
             />
           )}
         </Box>
