@@ -837,7 +837,7 @@
   "app.containers.Admin.Users.deleteUserModal.votesCount": "{count, plural, one {# voto} other {# voti}}",
   "app.containers.Admin.Users.email": "Email",
   "app.containers.Admin.Users.folder": "Cartella",
-  "app.containers.Admin.Users.folderManager": "Manager di cartelle",
+  "app.containers.Admin.Users.folderManager": "Manager della cartella",
   "app.containers.Admin.Users.helmetDescription": "Elenco utenti in amministratore",
   "app.containers.Admin.Users.helmetTitle": "Amministratore - cruscotto utenti",
   "app.containers.Admin.Users.inviteUsers": "Invita utenti",
