@@ -1,18 +1,5 @@
 module Moderators
   class FolderModeratorPolicy < ApplicationPolicy
-    class Scope < ApplicationPolicy::Scope
-      def resolve
-        if user&.project_folder_moderator?
-          moderated_folders = user.moderated_project_folders
-          scope.project_folder_moderator(moderated_folders.pluck(:id))
-        elsif user&.active? && user.admin?
-          scope.project_folder_moderator
-        else
-          raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-        end
-      end
-    end
-
     def index?
       active_and_can_moderate?
     end
