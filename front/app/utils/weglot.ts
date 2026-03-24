@@ -1,7 +1,5 @@
 import { SupportedLocale } from 'typings';
 
-import { IAppConfiguration } from 'api/app_configuration/types';
-
 export interface WeglotData {
   locale: string;
   body: string;
@@ -138,10 +136,8 @@ export async function weglotTranslate(
 export async function weglotTranslateSubmission(
   text: string,
   locale: SupportedLocale,
-  appConfiguration: IAppConfiguration | undefined
+  weglotApiKey: string | null | undefined
 ): Promise<{ translatedText: string; weglotData: WeglotDataOrEmpty }> {
-  const weglotApiKey =
-    appConfiguration?.data.attributes.settings.core.weglot_api_key;
   const weglotSourceLang = getWeglotSourceLang(locale);
 
   if (weglotApiKey && weglotSourceLang) {
@@ -170,14 +166,12 @@ export async function weglotTranslateIdeaSubmission(
   title: string | undefined,
   bodyHtml: string | undefined,
   locale: SupportedLocale,
-  appConfiguration: IAppConfiguration | undefined
+  weglotApiKey: string | null | undefined
 ): Promise<{
   translatedTitle: string | undefined;
   translatedBody: string | undefined;
   weglotData: WeglotDataOrEmpty;
 }> {
-  const weglotApiKey =
-    appConfiguration?.data.attributes.settings.core.weglot_api_key;
   const weglotSourceLang = getWeglotSourceLang(locale);
 
   if (weglotApiKey && weglotSourceLang) {

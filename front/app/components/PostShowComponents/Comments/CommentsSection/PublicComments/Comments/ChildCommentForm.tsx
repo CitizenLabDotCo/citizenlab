@@ -177,7 +177,7 @@ const ChildCommentForm = ({
       const { translatedText, weglotData } = await weglotTranslateSubmission(
         processedValue,
         locale,
-        appConfiguration
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
       );
       const commentBodyMultiloc = { [locale]: translatedText };
 

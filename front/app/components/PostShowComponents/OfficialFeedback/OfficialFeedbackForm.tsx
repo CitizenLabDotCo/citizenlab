@@ -253,7 +253,7 @@ const OfficialFeedbackForm = ({
       const { translatedText, weglotData } = await weglotTranslateSubmission(
         originalBody,
         locale,
-        appConfiguration
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
       );
       feedbackValues.body_multiloc = {
         ...feedbackValues.body_multiloc,

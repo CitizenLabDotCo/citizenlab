@@ -77,7 +77,7 @@ const IdeationForm = ({
           formValues.title_multiloc?.[locale],
           formValues.body_multiloc?.[locale],
           locale,
-          appConfiguration
+          appConfiguration?.data.attributes.settings.core.weglot_api_key
         );
       const translatedFormValues = {
         ...formValues,
