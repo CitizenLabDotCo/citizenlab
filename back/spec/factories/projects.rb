@@ -73,7 +73,7 @@ FactoryBot.define do
         evaluator.phases_count.times do
           project.phases << create(
             :phase,
-            start_at: start_at + 1,
+            start_at: start_at,
             end_at: start_at += rand(1..120).days,
             project: project
           )
@@ -338,7 +338,7 @@ FactoryBot.define do
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
-            end_at: end_at - 1,
+            end_at: end_at,
             start_at: end_at -= rand(1..120).days,
             project: project,
             **phase_config.except(:factory))
@@ -348,7 +348,7 @@ FactoryBot.define do
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
-            start_at: start_at + 1,
+            start_at: start_at,
             end_at: start_at += rand(1..120).days,
             project: project,
             **phase_config.except(:factory))
