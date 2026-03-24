@@ -789,7 +789,7 @@
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Ottieni una panoramica di tutte le persone e organizzazioni che si sono registrate sulla piattaforma. Aggiungi una selezione di utenti ai gruppi manuali o ai gruppi Smart.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Panoramica dei posti",
   "app.containers.Admin.Users.SeatsOverview.admins": "Amministratori",
-  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Stato dell'invito",
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Status dell'invito",
   "app.containers.Admin.Users.SeatsOverview.managers": "Manager",
   "app.containers.Admin.Users.SeatsOverview.name": "Nome",
   "app.containers.Admin.Users.SeatsOverview.options": "Opzioni",
