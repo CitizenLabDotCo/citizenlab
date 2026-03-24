@@ -51,7 +51,7 @@ module BulkImportIdeas::Parsers
         values = Array(field[:value])
         if values.count > 0
           options = values.map do |value|
-            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.strip }
+            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.to_s.strip }
             option[:key] if option
           end
           field[:value] = options.compact.uniq
