@@ -9,7 +9,7 @@ module Moderators
     end
 
     def create?
-      active_and_can_moderate?
+      active_and_can_moderate? # Todo: Confirm this is not too permissive.
     end
 
     def destroy?
@@ -20,6 +20,7 @@ module Moderators
 
     private
 
+    # Admins, space moderators or folder moderators (of the folder) can add folder moderators
     def active_and_can_moderate?
       return false unless user&.active?
 
