@@ -35,15 +35,10 @@ RSpec.describe BulkImportIdeas::Parsers::IdeaRowMapper do
       expect(result[:value]).to eq ['red']
     end
 
-    it 'maps multiselect values to option keys from semicolon-separated string (XLSX) or array (PDF)' do
-      string_field = { key: 'multi', input_type: 'multiselect', value: 'A; B' }
-      array_field = { key: 'multi', input_type: 'multiselect', value: %w[A B] }
-
-      string_result = mapper.process_field_value(string_field, form_fields) { |f| f[:value] }
-      array_result = mapper.process_field_value(array_field, form_fields) { |f| f[:value] }
-
-      expect(string_result[:value]).to match_array %w[opt_a opt_b]
-      expect(array_result[:value]).to match_array %w[opt_a opt_b]
+    it 'maps multiselect array values to option keys' do
+      field = { key: 'multi', input_type: 'multiselect', value: %w[A B] }
+      result = mapper.process_field_value(field, form_fields) { |f| f[:value] }
+      expect(result[:value]).to match_array %w[opt_a opt_b]
     end
 
     it 'converts number fields to integer' do

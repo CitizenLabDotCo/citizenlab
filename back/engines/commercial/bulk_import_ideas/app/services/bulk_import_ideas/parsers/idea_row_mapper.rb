@@ -48,7 +48,7 @@ module BulkImportIdeas::Parsers
     #   process_field_value(field, form_fields) { |f| extract_matrix_value(f) }
     def process_field_value(field, form_fields)
       if %w[select multiselect multiselect_image ranking].include?(field[:input_type]) && field[:value]
-        values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
+        values = Array(field[:value])
         if values.count > 0
           options = values.map do |value|
             option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.strip }

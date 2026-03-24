@@ -3,6 +3,7 @@
 module BulkImportIdeas::Parsers
   class IdeaXlsxFileParser
     MAX_ROWS_PER_XLSX = 50
+    MULTI_VALUE_INPUT_TYPES = %w[select multiselect multiselect_image ranking].freeze
 
     attr_reader :row_mapper
 
@@ -75,6 +76,9 @@ module BulkImportIdeas::Parsers
           if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')
             new_field = form_field
             new_field[:value] = idea_field[:value]
+            if MULTI_VALUE_INPUT_TYPES.include?(new_field[:input_type]) && new_field[:value].is_a?(String)
+              new_field[:value] = new_field[:value].split(';').map(&:strip)
+            end
             new_field = @row_mapper.process_field_value(new_field, form_fields) { |f| extract_matrix_value(f) }
             merged_idea << new_field
             idea.delete_at(idea.index { |f| f.equal?(idea_field) })
