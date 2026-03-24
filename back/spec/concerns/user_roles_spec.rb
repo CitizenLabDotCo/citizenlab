@@ -552,12 +552,18 @@ RSpec.describe UserRoles do
       user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
       expect(user).not_to be_normal_user
     end
+
+    it 'returns false for space moderator' do
+      user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }])
+      expect(user).not_to be_normal_user
+    end
   end
 
   describe '#moderatable_project_ids' do
+    let!(:space) { create(:space) }
     let!(:project_a) { create(:project) }
     let!(:project_b) { create(:project) }
-    let!(:project_c) { create(:project) }
+    let!(:project_c) { create(:project, space: space) }
     let!(:folder) { create(:project_folder, projects: [project_b]) }
 
     it 'returns project ids of projects a user can moderate' do
@@ -565,11 +571,23 @@ RSpec.describe UserRoles do
         :user,
         roles: [
           { 'type' => 'project_moderator', 'project_id' => project_a.id },
-          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id },
+          { 'type' => 'space_moderator', 'space_id' => space.id }
         ]
       )
 
-      expect(user.moderatable_project_ids).to contain_exactly(project_a.id, project_b.id)
+      expect(user.moderatable_project_ids).to contain_exactly(project_a.id, project_b.id, project_c.id)
+    end
+
+    it 'includes projects in moderated spaces' do
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'space_moderator', 'space_id' => space.id }
+        ]
+      )
+
+      expect(user.moderatable_project_ids).to contain_exactly(project_c.id)
     end
   end
 

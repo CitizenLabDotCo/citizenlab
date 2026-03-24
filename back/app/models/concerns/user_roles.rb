@@ -171,10 +171,11 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def normal_user?
-    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
+    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank? && moderated_space_ids.blank?
   end
 
-  # Returns an array of project IDs that the user, other than an admin, moderates, either directly or through a folder.
+  # Returns an array of project IDs that the user, other than an admin, moderates,
+  # either directly, through a folder, or through a space.
   # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
     moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
@@ -189,7 +190,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       .where(publication_type: 'Project')
       .pluck(:publication_id)
 
-    (moderated_directly_ids + moderated_folder_project_ids).uniq
+    # Include ids of projects in spaces the user moderates
+    moderated_space_project_ids = Project.where(space_id: moderated_space_ids).pluck(:id)
+
+    (moderated_directly_ids + moderated_folder_project_ids + moderated_space_project_ids).uniq
   end
 
   def moderated_project_folder_ids

@@ -201,8 +201,9 @@ describe UserRoleService do
   end
 
   describe 'moderators_for_project' do
-    it 'lists only project and folder moderators and admins' do
-      project = create(:project)
+    it 'lists project, folder, and space moderators and admins' do
+      space = create(:space)
+      project = create(:project, space: space)
       other_project = create(:project)
       folder = create(:project_folder, projects: [project])
       other_folder = create(:project_folder, projects: [other_project])
@@ -217,8 +218,12 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [folder]),
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
+      space_moderator = create(:space_moderator, spaces: [space])
+      create(:space_moderator) # for another space
 
-      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id)
+      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(
+        admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id, space_moderator.id
+      )
     end
   end
 
@@ -264,6 +269,16 @@ describe UserRoleService do
       expect(service.moderatable_projects(other_moderator)).to match_array(other_project)
     end
 
+    it 'lists projects in moderated spaces for space moderators' do
+      space = create(:space)
+      projects_in_space = create_list(:project, 2, space: space)
+      create(:project) # project not in space
+
+      moderator = create(:space_moderator, spaces: [space])
+
+      expect(service.moderatable_projects(moderator)).to match_array(projects_in_space)
+    end
+
     context 'when the user is both project moderator and admin' do
       let(:projects) { create_list(:project, 2) }
       let(:folder) { create(:project_folder, projects: projects.take(1)) }
@@ -304,6 +319,10 @@ describe UserRoleService do
 
     it 'permits folders moderators' do
       expect(service.moderates_something?(create(:project_folder_moderator))).to be true
+    end
+
+    it 'permits space moderators' do
+      expect(service.moderates_something?(create(:space_moderator))).to be true
     end
   end
 
