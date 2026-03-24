@@ -79,7 +79,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
     }
 
-    scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
+    scope :moderator, -> { where(id: project_moderator).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
+    scope :admin_or_moderator, -> { admin.or(moderator) }
 
     scope :can_moderate, lambda { |project_id = nil|
       if project_id
@@ -111,10 +112,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     scope :billed_admins, -> { admin.not_citizenlab_member }
-    scope :billed_moderators, lambda {
-      # use any conditions before `or` very carefully (inspect the generated SQL)
-      project_moderator.or(User.project_folder_moderator).or(User.space_moderator).where.not(id: admin).not_citizenlab_member
-    }
+    scope :billed_moderators, -> { moderator.not_admin.not_citizenlab_member }
 
     scope :super_admins, -> { citizenlab_member.admin }
     scope :not_super_admins, -> { where.not(id: super_admins) }

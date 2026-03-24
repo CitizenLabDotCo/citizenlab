@@ -204,6 +204,19 @@ RSpec.describe UserRoles do
       end
     end
 
+    describe '.moderator' do
+      it 'returns all moderators but not admins or normal users' do
+        expect(User.moderator).to contain_exactly(
+          space_moderator_a,
+          space_moderator_b,
+          folder_moderator_a,
+          folder_moderator_b,
+          project_moderator_a,
+          project_moderator_b
+        )
+      end
+    end
+
     describe '.admin_or_moderator' do
       it 'returns admins and moderators' do
         expect(User.admin_or_moderator).to contain_exactly(
