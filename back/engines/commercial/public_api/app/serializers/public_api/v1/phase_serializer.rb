@@ -3,8 +3,13 @@
 class PublicApi::V1::PhaseSerializer < ActiveModel::Serializer
   attributes :id, :title
 
-  attribute :start_at, &:start_date
-  attribute :end_at, &:end_date
+  def start_at
+    object.start_date
+  end
+
+  def end_at
+    object.end_date
+  end
 
   def title
     multiloc_service.t(object.title_multiloc)
