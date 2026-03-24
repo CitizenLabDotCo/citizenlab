@@ -134,6 +134,8 @@ module BulkImportIdeas::Parsers
       idea_row
     end
 
+    private
+
     def format_date(date)
       return nil if date.blank?
 
