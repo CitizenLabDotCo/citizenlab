@@ -83,41 +83,6 @@ const FolderPermissions = () => {
             }}
           />
         </Box>
-
-        {/* <UserSelectSection>
-          <Box display="flex" alignItems="center" mb="12px">
-            <Box width="500px">
-              <UserSelect
-                id="folderModeratorUserSearch"
-                inputId="folderModeratorUserSearchInputId"
-                selectedUserId={moderatorToAdd?.id || null}
-                onChange={handleOnChange}
-                placeholder={formatMessage(messages.searchFolderManager)}
-                isNotFolderModeratorOfFolderId={projectFolderId}
-              />
-            </Box>
-            <ButtonWithLink
-              text={formatMessage(messages.addFolderManager)}
-              buttonStyle="admin-dark"
-              icon="plus-circle"
-              padding="10px 16px"
-              onClick={handleAddClick}
-              disabled={!moderatorToAdd}
-              processing={addIsLoading}
-              ml="12px"
-              data-cy="e2e-add-folder-moderator-button"
-            />
-          </Box>
-          <Suspense fallback={null}>
-            <SeatLimitReachedModal
-              seatType="moderator"
-              addModerators={handleOnAddFolderModeratorsClick}
-              showModal={showModal}
-              closeModal={closeModal}
-            />
-          </Suspense>
-        </UserSelectSection> */}
-
         <List>
           <>
             {folderModerators &&
