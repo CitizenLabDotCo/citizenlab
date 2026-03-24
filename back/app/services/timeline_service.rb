@@ -2,11 +2,13 @@
 
 class TimelineService
   def future_phases(project, time = Time.now)
-    project.phases.where('start_at > ?', time.in_time_zone)
+    time = time.in_time_zone
+    project.phases.select { |phase| phase.start_at > time }
   end
 
   def past_phases(project, time = Time.now)
-    project.phases.where('end_at IS NOT NULL AND end_at <= ?', time.in_time_zone)
+    time = time.in_time_zone
+    project.phases.select { |phase| phase.end_at && phase.end_at <= time }
   end
 
   def current_phase(project, time = Time.now)
@@ -49,7 +51,8 @@ class TimelineService
   end
 
   def current_and_future_phases(project, time = Time.now)
-    project.phases.where('end_at IS NULL OR end_at > ?', time.in_time_zone)
+    time = time.in_time_zone
+    project.phases.select { |phase| phase.end_at.nil? || phase.end_at > time }
   end
 
   def in_active_phase?(idea)
