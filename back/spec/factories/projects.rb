@@ -293,7 +293,8 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         end_at = evaluator.last_end_at
         evaluator.phases_count.times do
-          phase = create(:phase, project:, end_at:, start_at: end_at - rand(25.hours..2.months))
+          duration = rand((25.hours)..(2.months))
+          phase = create(:phase, project:, end_at:, start_at: end_at - duration)
           end_at = phase.start_at
         end
       end
