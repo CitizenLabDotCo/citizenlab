@@ -64,6 +64,7 @@ type CampaignFormProps = {
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
   campaignContextId?: string;
+  isScheduled?: boolean;
 };
 
 const CampaignForm = ({
@@ -71,6 +72,7 @@ const CampaignForm = ({
   defaultValues,
   isLoading,
   campaignContextId,
+  isScheduled,
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
@@ -241,7 +243,9 @@ const CampaignForm = ({
             type="submit"
             processing={isLoading}
           >
-            {formatMessage(messages.formSaveAsDraft)}
+            {isScheduled
+              ? formatMessage(messages.formSave)
+              : formatMessage(messages.formSaveAsDraft)}
           </Button>
         </Box>
       </form>

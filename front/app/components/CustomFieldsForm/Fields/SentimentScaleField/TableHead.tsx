@@ -62,6 +62,7 @@ const TableHead = ({
             <Td py="4px" key={`${id}-radio-${visualIndex}`}>
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Button
+                  type="button"
                   p="0px"
                   m="0px"
                   id={`${id}-linear-scale-option-${visualIndex}`}
