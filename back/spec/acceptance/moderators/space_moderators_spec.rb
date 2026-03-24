@@ -52,8 +52,9 @@ resource 'Moderators' do
     end
 
     post 'web_api/v1/spaces/:space_id/moderators' do
-      with_options scope: :space_moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+      with_options scope: :moderator do
+        parameter :user_id, 'The id of user to become moderator.', required: false
+        parameter :user_email, 'The email of user to become moderator.', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
