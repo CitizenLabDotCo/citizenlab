@@ -59,7 +59,7 @@
   "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Ja, geplante E-Mail abbrechen",
   "app.components.Admin.Email.scheduling.confirmSchedule": "Planen",
   "app.components.Admin.Email.scheduling.keepSchedule": "Nein, Zeitplan beibehalten",
-  "app.components.Admin.Email.scheduling.rescheduleSend": "Versand neu einstellen",
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Versand neu planen",
   "app.components.Admin.Email.scheduling.scheduleSend": "Versand planen",
   "app.components.Admin.Email.scheduling.scheduleSendDescription": "Wann soll diese E-Mail versendet werden?",
   "app.components.Admin.Email.scheduling.scheduleSendTitle": "E-Mailversand planen",
