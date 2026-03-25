@@ -13,16 +13,16 @@ resource 'Analytics - FactPosts model' do
 
   post 'web_api/v1/analytics' do
     before do
-      # Setup date dimensions
-      @dates = [
-        Date.new(2022, 9, 1),
-        Date.new(2022, 9, 15),
-        Date.new(2022, 10, 1),
-        Date.new(2022, 10, 15)
+      # Using UTC explicitly, because (unfortunately) the fact_posts view uses UTC when
+      # converting created_at to dates instead of tenant timezone.
+      @times = [
+        Time.utc(2022, 9, 1),
+        Time.utc(2022, 9, 15),
+        Time.utc(2022, 10, 1),
+        Time.utc(2022, 10, 15)
       ]
-      @dates.each do |date|
-        create(:dimension_date, date: date)
-      end
+
+      @times.each { |time| create(:dimension_date, date: time) }
 
       # Set up type dimensions
       [{ name: 'idea', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
@@ -32,10 +32,10 @@ resource 'Analytics - FactPosts model' do
 
     example 'returns posts by month' do
       # Create 3 posts in 2 months
-      create(:idea, created_at: @dates[0])
-      create(:proposal, created_at: @dates[1])
-      create(:idea, created_at: @dates[2])
-      create(:proposal, created_at: @dates[2])
+      create(:idea, created_at: @times[0])
+      create(:proposal, created_at: @times[1])
+      create(:idea, created_at: @times[2])
+      create(:proposal, created_at: @times[2])
       do_request({
         query: {
           fact: 'post',
@@ -59,9 +59,9 @@ resource 'Analytics - FactPosts model' do
           s: { factory: :native_survey_phase },
           p: { factory: :proposals_phase }
         })
-      create(:idea, created_at: @dates[0], project: project, phases: [project.phases[0]])
-      create(:native_survey_response, created_at: @dates[0], project: project, phases: [project.phases[1]], creation_phase: project.phases[1])
-      create(:proposal, created_at: @dates[0], project: project, phases: [project.phases[2]], creation_phase: project.phases[2])
+      create(:idea, created_at: @times[0], project: project, phases: [project.phases[0]])
+      create(:native_survey_response, created_at: @times[0], project: project, phases: [project.phases[1]], creation_phase: project.phases[1])
+      create(:proposal, created_at: @times[0], project: project, phases: [project.phases[2]], creation_phase: project.phases[2])
 
       do_request({
         query: {

@@ -59,20 +59,11 @@ class UserRoleService
     return scope.none unless user
     return scope.all if user.admin?
 
-    moderatable_projects = scope.none
-    if user.project_moderator?
-      moderatable_projects = moderatable_projects.or(scope.where(id: user.moderatable_project_ids))
+    if user.project_moderator? || user.project_folder_moderator?
+      scope.where(id: user.moderatable_project_ids)
+    else
+      scope.none
     end
-    if user.project_folder_moderator?
-      admin_publications = AdminPublication
-        .joins(:parent)
-        .where(parents_admin_publications: {
-          publication_type: 'ProjectFolders::Folder',
-          publication_id: user.moderated_project_folder_ids
-        })
-      moderatable_projects = moderatable_projects.or(scope.where(admin_publication: admin_publications))
-    end
-    moderatable_projects
   end
 
   def moderates_something?(user)

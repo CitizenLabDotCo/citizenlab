@@ -63,17 +63,16 @@ module PublicApi
 
     # TODO: Raise errors for incorrectly formatted parameters
     def common_date_filters(base_query)
-      base_query = base_query.where(date_filter_where_clause('created_at', params[:created_at])) if params[:created_at]
-      base_query = base_query.where(date_filter_where_clause('updated_at', params[:updated_at])) if params[:updated_at]
+      base_query = base_query.where(created_at: parse_date_range(params[:created_at])) if params[:created_at]
+      base_query = base_query.where(updated_at: parse_date_range(params[:updated_at])) if params[:updated_at]
       base_query
     end
 
-    def date_filter_where_clause(date_field, date_values)
-      dates = date_values.split(',')
-      # TODO: fix SQL injection vulnerability?
-      start_date = dates[0].presence || '-infinity'
-      end_date = dates[1].presence || 'infinity'
-      "#{date_field} BETWEEN '#{start_date}' AND '#{end_date}'"
+    def parse_date_range(date_values)
+      start_date, end_date = date_values.split(',', 2)
+      start_time = start_date&.in_time_zone&.beginning_of_day
+      end_time = end_date&.in_time_zone&.end_of_day
+      start_time..end_time
     end
 
     # Default per page is 25, maximum is 100

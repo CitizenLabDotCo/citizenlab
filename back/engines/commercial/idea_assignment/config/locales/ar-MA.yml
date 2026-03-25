@@ -1,13 +1,16 @@
 ar-MA:
   email_campaigns:
-    campaign_type_description:
-      "idea_assigned_to_you": تعيين فكرة إلي
     admin_campaign_type_description:
-      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
+      idea_assigned_to_you: تعيين الفكرة - المسؤولين ومديري المشاريع
+    campaign_type_description:
+      idea_assigned_to_you: تعيين فكرة إلي
     idea_assigned_to_you:
-      by_author: 'بواسطة %{authorName}'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
-      main_header: '%{firstName}، لديك مهمة جديدة'
-      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'تم نسب فكرة %{authorName} إليك'
+      by_author: بواسطة %{authorName}
+      cta_button: قدم ملاحظاتك لـ %{authorName}
+      cta_reply_to: قدّم ملاحظاتك لـ %{authorName}
+      event_description: تم تعيين مساهمة لك. قدم ملاحظاتك عبر كتابة تحديث رسمي أو بتغيير حالتها.
+      event_description_idea: تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.
+      main_header: "%{firstName}، لديك مهمة جديدة"
+      preheader: تم نسب فكرة %{authorName} إليك
+      subject: لديك مهمة على المنصة الخاصة بـ %{organizationName}
+      title: "%{firstName}، تم تعيين مساهمة لك"

@@ -6,10 +6,11 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
-    let(:date) { Date.new(2022, 9, 1) }
+    let(:created_at) { Time.utc(2022, 9, 1) }
+    let(:date) { created_at.to_date }
     let(:idea) do
       create(:dimension_date, date: date)
-      create(:idea, created_at: date)
+      create(:idea, created_at: created_at)
     end
 
     before_all do
@@ -17,7 +18,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
     end
 
     before do
-      create(:reaction, created_at: date, reactable: idea)
+      create(:reaction, created_at: created_at, reactable: idea)
     end
 
     it 'returns reactions by time' do

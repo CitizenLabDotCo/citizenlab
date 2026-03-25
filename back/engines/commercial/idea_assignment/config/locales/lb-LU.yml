@@ -1,13 +1,16 @@
-lb:
+lb-LU:
   email_campaigns:
-    campaign_type_description:
-      "idea_assigned_to_you": Eng Iddi gouf mir zougewisen
     admin_campaign_type_description:
-      "idea_assigned_to_you": Zouuerdung vun enger Iddi - Verwalteren a Projetsmanageren
+      idea_assigned_to_you: Zouuerdung vun enger Iddi - Verwalteren a Projetsmanageren
+    campaign_type_description:
+      idea_assigned_to_you: Eng Iddi gouf mir zougewisen
     idea_assigned_to_you:
-      by_author: 'vun %{authorName}'
-      cta_reply_to: '%{authorName} Feedback ginn'
-      event_description_idea: 'Eng Iddi ass Iech zougewise ginn. Gitt Feedback, andeem Dir en offizielle Kommentar schreift oder de Status ännert.'
-      main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
-      subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
-      preheader: 'D’Iddi vun %{authorName} ass iech zougewise ginn'
+      by_author: vun %{authorName}
+      cta_button: Gëff dem %{authorName} Feedback
+      cta_reply_to: "%{authorName} Feedback ginn"
+      event_description: Dir gouf en Input zougewisen. Gëff Feedback, andeem s du eng offiziell Aktualiséierung schreifs oder de Status ännerst.
+      event_description_idea: Eng Iddi ass Iech zougewise ginn. Gitt Feedback, andeem Dir en offizielle Kommentar schreift oder de Status ännert.
+      main_header: "%{firstName}, Dir hutt eng nei Zouweisung"
+      preheader: D’Iddi vun %{authorName} ass iech zougewise ginn
+      subject: Dir hutt eng Zouweisung op der Plattform vun %{organizationName}
+      title: "%{firstName}, dir gouf en Input zougewisen"

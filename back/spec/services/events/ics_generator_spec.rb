@@ -47,8 +47,8 @@ RSpec.describe Events::IcsGenerator do
         BEGIN:VEVENT
         DTSTAMP:%DTSTAMP_PLACEHOLDER%
         UID:%UID_PLACEHOLDER%
-        DTSTART;TZID=America/New_York:20170501T160000
-        DTEND;TZID=America/New_York:20170501T180000
+        DTSTART;TZID=America/New_York:20170501T200000
+        DTEND;TZID=America/New_York:20170501T220000
         DESCRIPTION:Event details: http://example.org/en/events/#{event.id[..-18]}
          #{event.id[-17..]}
         GEO:50.8465574798584;4.351710319519043

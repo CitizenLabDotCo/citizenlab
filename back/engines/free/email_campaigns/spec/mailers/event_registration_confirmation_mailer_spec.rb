@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
   describe 'campaign_mail' do
-    let_it_be(:event) { create(:event, start_at: '2017-05-01 18:00', end_at: '2017-05-01 20:00') }
+    let_it_be(:event) { create(:event, start_at: '2017-05-01T18:00:00Z', end_at: '2017-05-01T20:00:00Z') }
     let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Dave') }
 
     let(:event_attributes) { event.attributes }

@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',
     defaultMessage: 'Who are the project managers?',
   },
+  addProjectModerators: {
+    id: 'app.containers.AdminPage.ProjectEdit.addProjectModerators',
+    defaultMessage: 'Add project moderators',
+  },
 });

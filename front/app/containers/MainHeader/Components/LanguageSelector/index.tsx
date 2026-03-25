@@ -166,6 +166,7 @@ const LanguageSelector = ({
         style={{ marginLeft: isPhoneOrSmaller || isRtl ? '16px' : undefined }}
       >
         <DropdownButton
+          type="button"
           className="e2e-language-dropdown-toggle"
           aria-expanded={dropdownOpened}
         >
@@ -193,6 +194,7 @@ const LanguageSelector = ({
 
                 return (
                   <ListItem
+                    type="button"
                     key={tenantLocale}
                     onClick={handleLanguageSelect(tenantLocale)}
                     className={`e2e-langage-${tenantLocale} ${

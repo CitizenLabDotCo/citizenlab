@@ -67,7 +67,7 @@ const ModeratorListRow = ({
 
   const handleDeleteClick = () => {
     if (window.confirm(formatMessage(messages.moderatorDeletionConfirmation))) {
-      deleteProjectModerator({ projectId, id: moderatorId });
+      deleteProjectModerator({ projectId, userId: moderatorId });
     }
   };
 
