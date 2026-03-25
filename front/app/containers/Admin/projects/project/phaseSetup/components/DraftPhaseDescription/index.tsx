@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
-import { IUpdatedPhaseProperties } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -20,66 +19,68 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  phaseId: string | undefined;
-  descriptionMultiloc: Multiloc | undefined;
+  phaseId: string;
+  descriptionMultiloc: Multiloc;
   draftDescriptionMultiloc: Multiloc | undefined;
-  onChange: (data: Partial<IUpdatedPhaseProperties>) => void;
 }
 
 const DraftPhaseDescription = ({
   phaseId,
   descriptionMultiloc,
-  draftDescriptionMultiloc,
-  onChange,
+  draftDescriptionMultiloc: initialDraft,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [isEditing, setIsEditing] = useState(false);
   const { mutate: updatePhase } = useUpdatePhase();
 
+  const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [localDraft, setLocalDraft] = useState<Multiloc>(
+    hasSavedDraft ? initialDraft : descriptionMultiloc
+  );
+
   const handleClickToEdit = () => {
-    const hasDraft =
-      draftDescriptionMultiloc &&
-      Object.keys(draftDescriptionMultiloc).length > 0;
-    if (!hasDraft) {
-      onChange({ draft_description_multiloc: descriptionMultiloc || {} });
+    if (!hasSavedDraft) {
+      setLocalDraft(descriptionMultiloc);
     }
     setIsEditing(true);
   };
 
-  const handleDraftChange = (draft_description_multiloc: Multiloc) => {
-    onChange({ draft_description_multiloc });
+  const handleDraftChange = (value: Multiloc) => {
+    setLocalDraft(value);
   };
 
   const handlePublish = () => {
-    if (!phaseId) return;
     updatePhase(
       {
         phaseId,
-        description_multiloc: draftDescriptionMultiloc,
-        draft_description_multiloc: draftDescriptionMultiloc,
+        description_multiloc: localDraft,
+        draft_description_multiloc: {},
       },
       {
         onSuccess: () => {
-          onChange({
-            description_multiloc: draftDescriptionMultiloc,
-            draft_description_multiloc: draftDescriptionMultiloc,
-          });
           setIsEditing(false);
         },
       }
     );
   };
 
+  const handleSaveDraft = () => {
+    updatePhase({
+      phaseId,
+      draft_description_multiloc: localDraft,
+    });
+  };
+
   const handleDiscard = () => {
-    if (!phaseId) return;
     updatePhase(
       {
         phaseId,
-        draft_description_multiloc: descriptionMultiloc,
+        draft_description_multiloc: {},
       },
       {
         onSuccess: () => {
-          onChange({ draft_description_multiloc: descriptionMultiloc });
+          setLocalDraft(descriptionMultiloc);
           setIsEditing(false);
         },
       }
@@ -89,11 +90,19 @@ const DraftPhaseDescription = ({
   if (isEditing) {
     return (
       <Box>
+        <Box display="flex" justifyContent="flex-start" mb="8px">
+          <Button
+            buttonStyle="text"
+            onClick={() => setIsEditing(false)}
+            icon="arrow-left"
+            padding="0px"
+          >
+            {formatMessage(messages.draftDescriptionGoToPublished)}
+          </Button>
+        </Box>
         <Box display="flex" alignItems="center" gap="8px" mb="12px">
           <Text fontWeight="bold" fontSize="base" m="0px">
-            {formatMessage(messages.draftDescriptionStateLabel, {
-              state: formatMessage(messages.draftDescriptionDraftState),
-            })}
+            {formatMessage(messages.draftDescriptionDraftTitle)}
           </Text>
           <IconTooltip
             content={formatMessage(messages.draftDescriptionDraftTooltip)}
@@ -105,7 +114,7 @@ const DraftPhaseDescription = ({
         </Box>
         <QuillMultilocWithLocaleSwitcher
           id="draft-description"
-          valueMultiloc={draftDescriptionMultiloc}
+          valueMultiloc={localDraft}
           onChange={handleDraftChange}
           withCTAButton
         />
@@ -118,9 +127,14 @@ const DraftPhaseDescription = ({
           <Button buttonStyle="text" onClick={handleDiscard} padding="0px">
             {formatMessage(messages.draftDescriptionDiscardChanges)}
           </Button>
-          <Button buttonStyle="admin-dark" onClick={handlePublish}>
-            {formatMessage(messages.draftDescriptionPublish)}
-          </Button>
+          <Box display="flex" gap="8px">
+            <Button buttonStyle="secondary-outlined" onClick={handleSaveDraft}>
+              {formatMessage(messages.draftDescriptionSaveDraft)}
+            </Button>
+            <Button buttonStyle="admin-dark" onClick={handlePublish}>
+              {formatMessage(messages.draftDescriptionPublish)}
+            </Button>
+          </Box>
         </Box>
       </Box>
     );
@@ -130,9 +144,7 @@ const DraftPhaseDescription = ({
     <Box>
       <Box display="flex" alignItems="center" gap="8px" mb="12px">
         <Text fontWeight="bold" fontSize="base" m="0px">
-          {formatMessage(messages.draftDescriptionStateLabel, {
-            state: formatMessage(messages.draftDescriptionPublishedState),
-          })}
+          {formatMessage(messages.draftDescriptionPublishedTitle)}
         </Text>
         <IconTooltip
           content={formatMessage(messages.draftDescriptionPublishedTooltip)}
@@ -150,7 +162,7 @@ const DraftPhaseDescription = ({
         withCTAButton
       />
       <Box display="flex" justifyContent="flex-end" mt="4px">
-        <Button buttonStyle="text" onClick={handleClickToEdit} padding="0px">
+        <Button buttonStyle="primary" onClick={handleClickToEdit}>
           {formatMessage(messages.draftDescriptionClickToEdit)}
         </Button>
       </Box>

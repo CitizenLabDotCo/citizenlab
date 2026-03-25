@@ -45,7 +45,6 @@ import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
-import DraftPhaseDescription from './components/DraftPhaseDescription';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
@@ -425,40 +424,29 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
           />
-          <SectionField className="fullWidth intercom-phase-description-text-input">
-            {draftPhaseDescriptionEnabled ? (
-              <DraftPhaseDescription
-                phaseId={phaseId}
-                descriptionMultiloc={formData.description_multiloc}
-                draftDescriptionMultiloc={formData.draft_description_multiloc}
-                onChange={updateFormData}
+          {!draftPhaseDescriptionEnabled && (
+            <SectionField className="fullWidth intercom-phase-description-text-input">
+              <Box display="flex" alignItems="center">
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.descriptionLabel} />
+                </SubSectionTitle>
+                {phases && phases.data.length < 2 && (
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.emptyDescriptionWarning} />
+                    }
+                  />
+                )}
+              </Box>
+              <QuillMultilocWithLocaleSwitcher
+                id="description"
+                valueMultiloc={formData.description_multiloc}
+                onChange={handleEditorOnChange}
+                withCTAButton
               />
-            ) : (
-              <>
-                <Box display="flex" alignItems="center">
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.descriptionLabel} />
-                  </SubSectionTitle>
-                  {phases && phases.data.length < 2 && (
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.emptyDescriptionWarning}
-                        />
-                      }
-                    />
-                  )}
-                </Box>
-                <QuillMultilocWithLocaleSwitcher
-                  id="description"
-                  valueMultiloc={formData.description_multiloc}
-                  onChange={handleEditorOnChange}
-                  withCTAButton
-                />
-              </>
-            )}
-            <Error apiErrors={errors && errors.description_multiloc} />
-          </SectionField>
+              <Error apiErrors={errors && errors.description_multiloc} />
+            </SectionField>
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />

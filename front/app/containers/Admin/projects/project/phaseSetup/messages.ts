@@ -125,8 +125,12 @@ export default defineMessages({
     defaultMessage: 'DRAFT',
   },
   draftDescriptionClickToEdit: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionClickToEdit',
-    defaultMessage: 'Click to edit',
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionGoToDraft',
+    defaultMessage: 'Go to draft',
+  },
+  draftDescriptionGoToPublished: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionGoToPublished',
+    defaultMessage: 'Go to published',
   },
   draftDescriptionDiscardChanges: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges',
@@ -135,6 +139,10 @@ export default defineMessages({
   draftDescriptionPublish: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish',
     defaultMessage: 'Publish',
+  },
+  draftDescriptionSaveDraft: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaveDraft',
+    defaultMessage: 'Save draft',
   },
   draftDescriptionPublishedTooltip: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip',
@@ -146,16 +154,12 @@ export default defineMessages({
     defaultMessage:
       'You are editing a draft. Publish to make it visible to participants, or discard to revert.',
   },
-  draftDescriptionStateLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionStateLabel',
-    defaultMessage: 'State: {state}',
+  draftDescriptionPublishedTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle',
+    defaultMessage: 'Phase description',
   },
-  draftDescriptionPublishedState: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedState',
-    defaultMessage: 'phase description is currently live',
-  },
-  draftDescriptionDraftState: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftState',
-    defaultMessage: 'editing the current description',
+  draftDescriptionDraftTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTitle',
+    defaultMessage: 'Phase description',
   },
 });

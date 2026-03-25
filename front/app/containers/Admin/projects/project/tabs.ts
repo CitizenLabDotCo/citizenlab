@@ -15,6 +15,7 @@ export type FeatureFlags = {
   typeform_enabled: boolean;
   report_builder_enabled: boolean;
   phase_insights_enabled: boolean;
+  draft_phase_description_enabled: boolean;
 };
 
 export const getTabs = (
@@ -24,6 +25,7 @@ export const getTabs = (
     typeform_enabled,
     report_builder_enabled,
     phase_insights_enabled,
+    draft_phase_description_enabled,
   }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {
@@ -33,6 +35,12 @@ export const getTabs = (
       url: 'setup',
       name: 'setup',
       className: 'intercom-phase-setup-tab',
+    },
+    draft_phase_description_enabled && {
+      label: formatMessage(messages.descriptionTab),
+      url: 'description',
+      name: 'description',
+      className: 'intercom-phase-description-tab',
     },
     getMethodConfig(phase.attributes.participation_method).showInputManager && {
       label: formatMessage(messages.inputManagerTab),
