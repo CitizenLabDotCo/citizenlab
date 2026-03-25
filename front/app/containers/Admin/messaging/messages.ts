@@ -319,4 +319,8 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
     defaultMessage: 'Button text',
   },
+  scheduled: {
+    id: 'app.containers.Admin.emails.scheduled',
+    defaultMessage: 'Scheduled',
+  },
 });

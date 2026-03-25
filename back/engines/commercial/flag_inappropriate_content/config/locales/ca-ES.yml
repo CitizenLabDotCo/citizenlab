@@ -17,7 +17,6 @@ ca-ES:
       preheader: Una publicació de la teva plataforma s'ha marcat per revisar
       subject: A post on your platform has been flagged for review
       this_post_was_flagged: |
-  <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
-  
+        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
 
       title: Una publicació s'ha marcat per revisar

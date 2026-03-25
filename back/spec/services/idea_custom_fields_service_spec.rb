@@ -284,7 +284,12 @@ describe IdeaCustomFieldsService do
         _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
         map_field = create(:custom_field_point, resource: custom_form, map_config: create(:map_config))
         map_field_no_config = create(:custom_field_point, resource: custom_form)
-        select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
+        select_field.update!(logic: {
+          rules: [
+            { if: select_option.id, goto_page_id: page3.id },
+            { if: 'no_answer', goto_page_id: page3.id }
+          ]
+        })
         page2.update!(logic: { next_page_id: page3.id })
 
         expect(CustomField.count).to eq 9
@@ -303,7 +308,8 @@ describe IdeaCustomFieldsService do
         expect(fields[1].id).not_to eq select_field.id
         expect(fields[1].logic).to match({
           'rules' => [
-            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[5].id }
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[5].id },
+            { 'if' => 'no_answer', 'goto_page_id' => fields[5].id }
           ]
         })
         expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'
