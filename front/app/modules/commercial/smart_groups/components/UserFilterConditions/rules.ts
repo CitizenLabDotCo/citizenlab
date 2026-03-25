@@ -1,4 +1,3 @@
-import { is } from 'date-fns/locale';
 import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
