@@ -25,16 +25,33 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   end
 
   # insert
+  # def create
+  #   @user = find_user_by_params
+  #   @folder = ProjectFolders::Folder.find(params[:project_folder_id])
+  #   @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
+  #   if @user.save
+  #     serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
+  #     SideFxFolderModeratorService.new.after_create(@user, @folder, current_user)
+  #     render json: serialized_data, status: :created
+  #   else
+  #     render json: { errors: @user.errors.details }, status: :unprocessable_entity
+  #   end
+  # end
   def create
-    @user = find_user_by_params
-    @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
-    if @user.save
-      serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-      SideFxFolderModeratorService.new.after_create(@user, @folder, current_user)
-      render json: serialized_data, status: :created
+    @user = find_or_invite_user
+    
+    if @user.is_a?(InvitesImport)
+      # User doesn't exist, invite was sent
+      render json: raw_json({ status: 'invited' })
     else
-      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      # User exists, add role
+      @user.add_role 'project_moderator', project_id: params[:project_id]
+      if @user.save
+        ::SideFxUserService.new.after_update(@user, current_user)
+        render json: raw_json({ status: 'role_added' })
+      else
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      end
     end
   end
 
