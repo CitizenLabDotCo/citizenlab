@@ -419,7 +419,7 @@
   "app.components.PasswordInput.strength3Password": "Medio",
   "app.components.PasswordInput.strength4Password": "Forte",
   "app.components.PasswordInput.strength5Password": "Molto forte",
-  "app.components.PostCardsComponents.feed": "Alimentazione",
+  "app.components.PostCardsComponents.feed": "Bacheca",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Mappa",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Aggiungi un aggiornamento ufficiale",
