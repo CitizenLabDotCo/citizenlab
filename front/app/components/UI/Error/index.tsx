@@ -17,7 +17,7 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -185,7 +185,7 @@ export interface TFieldNameMap {
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
 
-export const findErrorMessage = (
+export const findErrorMessageDescriptor = (
   fieldName: TFieldName | undefined,
   error: string
 ) => {
@@ -196,19 +196,7 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as MessageDescriptor;
   }
-  return undefined;
-};
-
-const findErrorFromAppConfig = (
-  error: string, // TODO: Type this with API error types
-  appConfiguration: IAppConfiguration,
-  localize: Localize
-) => {
-  if (error === 'sso_enforced_for_domain') {
-    console.log('SSO enformce');
-    return 'HELLO';
-  }
-  return '';
+  return;
 };
 
 // Get the variables to use inside API error messages
@@ -230,6 +218,22 @@ export const getApiErrorValues = (
   };
 
   return payload ? { ...payload, ...values } : values;
+};
+
+// Allow custom error messages from app configuration for specific API errors
+const findErrorFromAppConfig = (
+  error: string,
+  appConfiguration: IAppConfiguration,
+  localize: Localize
+) => {
+  if (error === 'sso_enforced_for_domain') {
+    const customMultiloc =
+      appConfiguration?.data?.attributes?.settings?.azure_ad_login
+        ?.enforced_email_domain_error_multiloc;
+
+    return customMultiloc ? localize(customMultiloc) : undefined;
+  }
+  return;
 };
 
 const Error = (props: ErrorProps) => {
@@ -308,16 +312,14 @@ const Error = (props: ErrorProps) => {
                 !isEmpty(dedupApiErrors) && (
                   <ErrorList>
                     {dedupApiErrors.map((error, index) => {
-                      // TODO: findErrorFromAppConfig
-                      // TODO: findErrorMessage
-
                       // If we have multiple possible errors for a certain input field,
                       // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findErrorMessage for details
-                      const errorMessageDescriptor = findErrorMessage(
+                      // Check the implementation of findErrorMessageDescriptor for details
+                      const errorMessageDescriptor = findErrorMessageDescriptor(
                         fieldName,
                         error.error
                       );
+                      const values = getApiErrorValues(error, appConfiguration);
 
                       const customErrorMessage = findErrorFromAppConfig(
                         error.error,
@@ -325,47 +327,21 @@ const Error = (props: ErrorProps) => {
                         localize
                       );
 
-                      if (errorMessageDescriptor || customErrorMessage) {
-                        // Variables for inside messages.js
-                        const values = getApiErrorValues(
-                          error,
-                          appConfiguration
-                        );
+                      const errorMessage = customErrorMessage
+                        ? customErrorMessage
+                        : errorMessageDescriptor &&
+                          formatMessage(errorMessageDescriptor, values);
 
-                        const errorMessage = customErrorMessage
-                          ? customErrorMessage
-                          : formatMessage(errorMessageDescriptor, values);
+                      if (!errorMessage) return null;
 
-                        // TODO: Don't think this is needed
-                        // if (values.value || values.row || values.rows) {
-                        //   return (
-                        //     <ErrorListItem key={index}>
-                        //       {dedupApiErrors.length > 1 && (
-                        //         <Bullet aria-hidden>•</Bullet>
-                        //       )}
-                        //
-                        //       <FormattedMessage
-                        //         {...errorMessage}
-                        //         values={values}
-                        //       />
-                        //     </ErrorListItem>
-                        //   );
-                        // }
-
-                        return (
-                          <ErrorListItem key={index}>
-                            {dedupApiErrors.length > 1 && (
-                              <Bullet aria-hidden>•</Bullet>
-                            )}
-                            <FormattedMessage
-                              {...errorMessage}
-                              values={values}
-                            />
-                          </ErrorListItem>
-                        );
-                      }
-
-                      return null;
+                      return (
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
+                          {errorMessage}
+                        </ErrorListItem>
+                      );
                     })}
                   </ErrorList>
                 )}

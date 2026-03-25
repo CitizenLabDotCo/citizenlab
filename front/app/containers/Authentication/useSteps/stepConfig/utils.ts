@@ -1,11 +1,7 @@
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
-
-import { getLocalized } from 'utils/i18n';
-import { LocaleSubject } from 'utils/localeStream';
 
 import {
   GetRequirements,
@@ -170,26 +166,6 @@ export const handleSubmitEmail = async (
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
       setCurrentStep('invite:taken');
-      // } else if (e.errors?.email?.[0]?.error === 'sso_enforced_for_domain') {
-      //   const appConfig = appConfigurationStream.getValue();
-      //   const customMultiloc =
-      //     appConfig?.data?.attributes?.settings?.azure_ad_login
-      //       ?.enforced_email_domain_error_multiloc;
-      //
-      //   if (customMultiloc && Object.values(customMultiloc).some((v) => v)) {
-      //     const locale = LocaleSubject.getValue();
-      //     const tenantLocales =
-      //       appConfig?.data?.attributes?.settings?.core?.locales;
-      //     const message = getLocalized(customMultiloc, locale, tenantLocales);
-      //     if (message) {
-      //       throw {
-      //         errors: { email: [{ message }] },
-      //       };
-      //     }
-      //   }
-      //
-      //   // No custom message configured — let standard error pipeline handle it
-      //   throw e;
     } else {
       throw e;
     }
