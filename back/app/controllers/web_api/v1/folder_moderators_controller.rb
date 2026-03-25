@@ -63,14 +63,46 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     )
   end
 
-  def find_user_by_params
+  def find_or_invite_user
     if create_moderator_params[:user_id].present?
-      User.find(create_moderator_params[:user_id])
+      ::User.find(create_moderator_params[:user_id])
     elsif create_moderator_params[:user_email].present?
-      User.find_by!(email: create_moderator_params[:user_email])
+      email = create_moderator_params[:user_email]
+      user = ::User.find_by(email: email)
+      
+      if user
+        user
+      else
+        # User doesn't exist, send invite
+        send_moderator_invite(email)
+      end
     else
       raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
+  end
+
+  def send_moderator_invite(email)
+    import = InvitesImport.create!(
+      job_type: 'bulk_create',
+      importer: current_user
+    )
+
+    invite_params = {
+      emails: [email],
+      roles: [{ type: 'project_moderator', project_id: params[:project_id] }],
+      locale: current_user.locale || AppConfiguration.instance.settings('core', 'locales').first,
+      invite_text: nil, # Optional: add custom invite text
+      group_ids: []
+    }
+
+    ::Invites::BulkCreateJob.perform_later(
+      current_user,
+      invite_params,
+      import.id,
+      xlsx_import: false
+    )
+
+    import
   end
 
   def do_authorize
