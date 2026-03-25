@@ -7,11 +7,11 @@ import SeatInfo, {
 } from 'components/admin/SeatBasedBilling/SeatInfo';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
+import UsersTable from 'components/UsersTable';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import Table from './Table';
 
 const SeatsOverview = () => {
   const { formatMessage } = useIntl();
@@ -51,7 +51,7 @@ const SeatsOverview = () => {
           />
         </Box>
         <SeatInfo seatType={selectedTab} mb="20px" />
-        <Table seatType={selectedTab} />
+        <UsersTable seatType={selectedTab} />
       </Box>
     </Box>
   );
