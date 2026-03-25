@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors, Box, Text } from '@citizenlab/cl2-component-library';
+import { isSameDay, differenceInMinutes } from 'date-fns';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
@@ -8,9 +9,13 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import TimeInput from 'containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
+
+import { useIntl } from 'utils/cl-intl';
 import { userTimezone } from 'utils/dateUtils';
 
 import { getLocale } from '../../_shared/locales';
+import messages from '../messages';
 import { Props } from '../typings';
 
 import { generateModifiers } from './utils/generateModifiers';
@@ -121,6 +126,25 @@ const DayPickerStyles = styled.div`
   }
 `;
 
+const TimeInputContainer = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 16px 4px 4px 4px;
+  width: 95%;
+  border-top: 1px solid ${colors.grey300};
+`;
+
+const OpenEndTimeContainer = styled(Box)`
+  padding: 10px;
+  background-color: ${colors.grey100};
+  border: 1px solid ${colors.grey300};
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const modifiersClassNames = {
   isDisabledStart: 'is-disabled-start',
   isDisabledMiddle: 'is-disabled-middle',
@@ -138,6 +162,8 @@ const modifiersClassNames = {
   isSelectedSingleDay: 'is-selected-single-day',
 };
 
+const MINIMUM_PHASE_MINUTES = 23 * 60 + 59; // 23:59 in minutes
+
 const Calendar = ({
   selectedRange,
   disabledRanges = [],
@@ -147,6 +173,25 @@ const Calendar = ({
   onUpdateRange,
   className,
 }: Props) => {
+  const { formatMessage } = useIntl();
+  const [selectedStartTime, setSelectedStartTime] = useState<Date>(() => {
+    if (selectedRange.from) {
+      return selectedRange.from;
+    }
+    const defaultTime = new Date();
+    defaultTime.setHours(0, 0, 0, 0);
+    return defaultTime;
+  });
+
+  const [selectedEndTime, setSelectedEndTime] = useState<Date>(() => {
+    if (selectedRange.to) {
+      return selectedRange.to;
+    }
+    const defaultTime = new Date();
+    defaultTime.setHours(23, 59, 0, 0);
+    return defaultTime;
+  });
+
   const startMonth = getStartMonth({
     startMonth: _startMonth,
     selectedRange,
@@ -163,6 +208,19 @@ const Calendar = ({
 
   const locale = useLocale();
 
+  // Sync time states with selected range
+  useEffect(() => {
+    if (selectedRange.from) {
+      setSelectedStartTime(selectedRange.from);
+    }
+  }, [selectedRange.from, selectedRange.to]);
+
+  useEffect(() => {
+    if (selectedRange.to) {
+      setSelectedEndTime(selectedRange.to);
+    }
+  }, [selectedRange.to, selectedRange.from]);
+
   const modifiers = useMemo(
     () =>
       generateModifiers({
@@ -171,6 +229,49 @@ const Calendar = ({
       }),
     [selectedRange, disabledRanges]
   );
+
+  const handleStartTimeChange = (time: Date) => {
+    setSelectedStartTime(time);
+
+    if (!selectedRange.from) {
+      return;
+    }
+    const newDate = new Date(selectedRange.from);
+    newDate.setHours(time.getHours());
+    newDate.setMinutes(time.getMinutes());
+
+    onUpdateRange({
+      from: newDate,
+      to: selectedRange.to,
+    });
+  };
+
+  const handleEndTimeChange = (time: Date) => {
+    setSelectedEndTime(time);
+
+    if (!selectedRange.to) {
+      return;
+    }
+
+    const newDate = new Date(selectedRange.to);
+    newDate.setHours(time.getHours());
+    newDate.setMinutes(time.getMinutes());
+
+    // Check minimum duration if it's a same-day phase
+    if (selectedRange.from && isSameDay(selectedRange.from, selectedRange.to)) {
+      const startDate = new Date(selectedRange.from);
+      const minutesDiff = differenceInMinutes(newDate, startDate);
+
+      if (minutesDiff < MINIMUM_PHASE_MINUTES) {
+        // Don't update if it violates the minimum duration
+        return;
+      }
+    }
+    onUpdateRange({
+      from: selectedRange.from,
+      to: newDate,
+    });
+  };
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
@@ -191,7 +292,32 @@ const Calendar = ({
       clickedDate: day,
     });
 
-    onUpdateRange(updatedRange);
+    // Create new Date objects to avoid mutation issues
+    const newFrom = updatedRange.from ? new Date(updatedRange.from) : undefined;
+    const newTo = updatedRange.to ? new Date(updatedRange.to) : undefined;
+
+    // Check if it's a same-day selection
+    const isSameDaySelection = newFrom && newTo && isSameDay(newFrom, newTo);
+
+    if (newFrom) {
+      if (isSameDaySelection) {
+        newFrom.setHours(0, 0, 0, 0);
+      } else {
+        newFrom.setHours(selectedStartTime.getHours());
+        newFrom.setMinutes(selectedStartTime.getMinutes());
+      }
+    }
+
+    if (newTo) {
+      if (isSameDaySelection) {
+        newTo.setHours(23, 59, 0, 0);
+      } else {
+        newTo.setHours(selectedEndTime.getHours());
+        newTo.setMinutes(selectedEndTime.getMinutes());
+      }
+    }
+
+    onUpdateRange({ from: newFrom, to: newTo });
   };
 
   return (
@@ -216,6 +342,32 @@ const Calendar = ({
         timeZone={userTimezone}
         className={className}
       />
+      <TimeInputContainer>
+        <Box display="flex" gap="8px" alignItems="center">
+          <Text m="0">{formatMessage(messages.startTime)}</Text>
+          <TimeInput
+            selectedTime={selectedStartTime}
+            onChange={handleStartTimeChange}
+          />
+        </Box>
+        <Box display="flex" gap="8px" alignItems="center">
+          <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
+            {formatMessage(messages.endTime)}
+          </Text>
+          {selectedRange.to ? (
+            <TimeInput
+              selectedTime={selectedEndTime}
+              onChange={handleEndTimeChange}
+            />
+          ) : (
+            <OpenEndTimeContainer>
+              <Text m="0" color="grey600">
+                {formatMessage(messages.openEnded)}
+              </Text>
+            </OpenEndTimeContainer>
+          )}
+        </Box>
+      </TimeInputContainer>
     </DayPickerStyles>
   );
 };

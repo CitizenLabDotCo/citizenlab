@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { format, parseISO, startOfDay } from 'date-fns';
+import { parseISO, subDays } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -32,6 +32,20 @@ interface Props {
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
+/**
+ * Adjusts end dates for calendar display.
+ * If a phase ends at midnight (00:00), it visually appears to end on the previous day.
+ * This prevents visual overlaps and ensures clean calendar rendering.
+ */
+const adjustEndForDisplay = (date?: Date) => {
+  if (!date) return date;
+
+  const isMidnight =
+    date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0;
+
+  return isMidnight ? subDays(date, 1) : date;
+};
+
 const DateSetup = ({
   formData,
   errors,
@@ -47,26 +61,26 @@ const DateSetup = ({
 
   const selectedRange = useMemo(() => {
     return {
-      from: start_at ? startOfDay(parseISO(start_at)) : undefined,
-      to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+      from: start_at ? parseISO(start_at) : undefined,
+      to: end_at ? adjustEndForDisplay(parseISO(end_at)) : undefined,
     };
   }, [start_at, end_at]);
 
   const disabledRanges = useMemo(() => {
-    if (!phases) return undefined;
+    if (!phases) return [];
 
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
     const disabledRanges = otherPhases.map(
       ({ attributes: { start_at, end_at } }) => ({
-        from: startOfDay(parseISO(start_at)),
-        to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+        from: parseISO(start_at),
+        to: end_at ? adjustEndForDisplay(parseISO(end_at)) : undefined,
       })
     );
 
     return patchDisabledRanges(selectedRange, disabledRanges);
   }, [phases, phaseId, selectedRange]);
 
-  if (!phases || !disabledRanges) return null;
+  if (!phases) return null;
 
   const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
     selectedRange,
@@ -102,10 +116,8 @@ const DateSetup = ({
           }));
           setFormData({
             ...formData,
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            start_at: from ? format(from, 'yyyy-MM-dd') : '',
-            end_at: to ? format(to, 'yyyy-MM-dd') : '',
+            start_at: from ? from.toISOString() : '',
+            end_at: to ? to.toISOString() : '',
           });
         }}
         className="intercom-admin-phase-date-setup"

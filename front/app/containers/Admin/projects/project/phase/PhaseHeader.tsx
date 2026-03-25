@@ -85,9 +85,9 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     return null;
   }
 
-  const startAt = moment(phase.attributes.start_at).format('LL');
+  const startAt = moment(phase.attributes.start_at).format('LLL');
   const endAt = phase.attributes.end_at
-    ? moment(phase.attributes.end_at).format('LL')
+    ? moment(phase.attributes.end_at).format('LLL')
     : formatMessage(messages.noEndDate);
 
   const toggleDropdown = () => {

@@ -5,4 +5,12 @@ export default defineMessages({
     id: 'app.components.admin.DatePhasePicker.Input.openEnded',
     defaultMessage: 'Open ended',
   },
+  startTime: {
+    id: 'app.components.admin.DatePhasePicker.Input.startTime',
+    defaultMessage: 'Start time:',
+  },
+  endTime: {
+    id: 'app.components.admin.DatePhasePicker.Input.endTime',
+    defaultMessage: 'End time:',
+  },
 });

@@ -1,4 +1,4 @@
-import { differenceInDays, addDays } from 'date-fns';
+import { differenceInDays, addDays, isSameDay } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -157,7 +157,7 @@ const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
   const singleDayRanges: ClosedDateRange[] = [];
 
   for (const range of disabledRanges) {
-    if (range.to.getTime() === range.from.getTime()) {
+    if (isSameDay(range.from, range.to)) {
       singleDayRanges.push(range);
     } else {
       disabledRangesWithoutSingleDayRanges.push(range);
