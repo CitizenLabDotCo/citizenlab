@@ -62,7 +62,7 @@
   "app.components.Admin.Email.scheduling.rescheduleSend": "Neu planen",
   "app.components.Admin.Email.scheduling.scheduleSend": "Versand planen",
   "app.components.Admin.Email.scheduling.scheduleSendDescription": "Wann soll diese E-Mail versendet werden?",
-  "app.components.Admin.Email.scheduling.scheduleSendTitle": "E-Mail planen",
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "E-Mailversand planen",
   "app.components.Admin.Email.scheduling.scheduleSendWarning": "Hinweis: Der Versand kann sich je nach Anzahl der Empfänger*innen leicht verzögern.",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Siehe auch: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Halte wichtige Inhalte innerhalb der gestrichelten Linien, damit sie immer sichtbar sind.",
