@@ -60,12 +60,13 @@ module BulkImportIdeas::Parsers::Pdf
 
         case field_info[:type]
         when :personal_data
-          mapped_value = normalize_answer(answer)
-          result[field_info[:label]] = mapped_value if mapped_value.present?
+          next if not_found?(answer)
+
+          result[field_info[:label]] = answer if answer.present?
         when :field
           next if not_found?(answer)
 
-          result[field_info[:field_key]] = normalize_answer(answer)
+          result[field_info[:field_key]] = answer
         when :matrix
           matrix_answer = build_matrix_answer(answer, field_info)
           result[field_info[:field_key]] = matrix_answer if matrix_answer.present?
@@ -86,13 +87,6 @@ module BulkImportIdeas::Parsers::Pdf
         result[statement_key] = sub_answer
       end
       result
-    end
-
-    def normalize_answer(answer)
-      return answer if answer.is_a?(Array)
-      return nil if not_found?(answer)
-
-      answer
     end
 
     def not_found?(value)
