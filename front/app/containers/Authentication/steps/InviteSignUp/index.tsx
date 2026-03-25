@@ -166,7 +166,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
             <PasswordInput
               name="password"
               id="password"
-              autocomplete="current-password"
+              autocomplete="new-password"
               required
             />
           </Box>

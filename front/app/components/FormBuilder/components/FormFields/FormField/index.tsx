@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
@@ -31,6 +31,7 @@ import { useIntl } from 'utils/cl-intl';
 import { generateTempId } from 'utils/helperUtils';
 
 import { FlexibleRow } from '../../FlexibleRow';
+import { FieldArrayOperations } from '../types';
 import { getFieldBackgroundColor } from '../utils';
 
 import LocationDeletionModal from './components/LocationDeletionModal';
@@ -55,6 +56,7 @@ type Props = {
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
+  fieldArrayOperations: FieldArrayOperations;
 };
 
 export const FormField = ({
@@ -65,6 +67,7 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
+  fieldArrayOperations,
 }: Props) => {
   const {
     watch,
@@ -78,9 +81,7 @@ export const FormField = ({
   const [showLocationDeleteModal, setShowLocationDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
-  const { insert, move, remove } = useFieldArray({
-    name: 'customFields',
-  });
+  const { insert, move, remove } = fieldArrayOperations;
   const { formEndPageLogicOption, displayBuiltInFields } = builderConfig;
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
