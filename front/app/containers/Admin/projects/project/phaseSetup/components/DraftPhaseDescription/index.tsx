@@ -30,7 +30,10 @@ const DraftPhaseDescription = ({
   draftDescriptionMultiloc: initialDraft,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updatePhase } = useUpdatePhase();
+  const { mutate: updatePhase, isLoading } = useUpdatePhase();
+  const [loadingAction, setLoadingAction] = useState<
+    'publish' | 'saveDraft' | 'discard' | null
+  >(null);
 
   const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
 
@@ -51,6 +54,7 @@ const DraftPhaseDescription = ({
   };
 
   const handlePublish = () => {
+    setLoadingAction('publish');
     updatePhase(
       {
         phaseId,
@@ -59,20 +63,29 @@ const DraftPhaseDescription = ({
       },
       {
         onSuccess: () => {
+          setLoadingAction(null);
           setIsEditing(false);
         },
+        onError: () => setLoadingAction(null),
       }
     );
   };
 
   const handleSaveDraft = () => {
-    updatePhase({
-      phaseId,
-      draft_description_multiloc: localDraft,
-    });
+    setLoadingAction('saveDraft');
+    updatePhase(
+      {
+        phaseId,
+        draft_description_multiloc: localDraft,
+      },
+      {
+        onSettled: () => setLoadingAction(null),
+      }
+    );
   };
 
   const handleDiscard = () => {
+    setLoadingAction('discard');
     updatePhase(
       {
         phaseId,
@@ -80,9 +93,11 @@ const DraftPhaseDescription = ({
       },
       {
         onSuccess: () => {
+          setLoadingAction(null);
           setLocalDraft(descriptionMultiloc);
           setIsEditing(false);
         },
+        onError: () => setLoadingAction(null),
       }
     );
   };
@@ -100,8 +115,8 @@ const DraftPhaseDescription = ({
             {formatMessage(messages.draftDescriptionGoToPublished)}
           </Button>
         </Box>
-        <Box display="flex" alignItems="center" gap="8px" mb="12px">
-          <Text fontWeight="bold" fontSize="base" m="0px">
+        <Box display="flex" alignItems="center" gap="8px">
+          <Text fontWeight="bold" m="0px">
             {formatMessage(messages.draftDescriptionDraftTitle)}
           </Text>
           <IconTooltip
@@ -124,14 +139,30 @@ const DraftPhaseDescription = ({
           alignItems="center"
           mt="8px"
         >
-          <Button buttonStyle="text" onClick={handleDiscard} padding="0px">
+          <Button
+            buttonStyle="text"
+            onClick={handleDiscard}
+            padding="0px"
+            processing={loadingAction === 'discard'}
+            disabled={isLoading}
+          >
             {formatMessage(messages.draftDescriptionDiscardChanges)}
           </Button>
           <Box display="flex" gap="8px">
-            <Button buttonStyle="secondary-outlined" onClick={handleSaveDraft}>
+            <Button
+              buttonStyle="secondary-outlined"
+              onClick={handleSaveDraft}
+              processing={loadingAction === 'saveDraft'}
+              disabled={isLoading}
+            >
               {formatMessage(messages.draftDescriptionSaveDraft)}
             </Button>
-            <Button buttonStyle="admin-dark" onClick={handlePublish}>
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handlePublish}
+              processing={loadingAction === 'publish'}
+              disabled={isLoading}
+            >
               {formatMessage(messages.draftDescriptionPublish)}
             </Button>
           </Box>
@@ -142,8 +173,8 @@ const DraftPhaseDescription = ({
 
   return (
     <Box>
-      <Box display="flex" alignItems="center" gap="8px" mb="12px">
-        <Text fontWeight="bold" fontSize="base" m="0px">
+      <Box display="flex" alignItems="center" gap="8px">
+        <Text fontWeight="bold" m="0px">
           {formatMessage(messages.draftDescriptionPublishedTitle)}
         </Text>
         <IconTooltip
