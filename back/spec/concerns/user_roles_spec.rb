@@ -570,6 +570,11 @@ RSpec.describe UserRoles do
       user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => '123' }])
       expect(user).not_to be_normal_user
     end
+
+    it 'returns false for user with multiple roles' do
+      user = build(:user, roles: [{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => '123' }])
+      expect(user).not_to be_normal_user
+    end
   end
 
   describe '#moderatable_project_ids' do
