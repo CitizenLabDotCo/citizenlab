@@ -30,7 +30,7 @@ interface Props {
   users: IUserData[];
 }
 
-const Table = ({ users }: Props) => {
+const UsersTable = ({ users }: Props) => {
   return (
     <TableComponent
       border={`1px solid ${colors.grey300}`}
@@ -54,4 +54,4 @@ const Table = ({ users }: Props) => {
   );
 };
 
-export default Table;
+export default UsersTable;

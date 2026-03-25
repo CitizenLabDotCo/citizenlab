@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,13 +9,10 @@ import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDe
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
 
 import AddModerator from 'components/admin/AddModerator';
-import { List, Row } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import Avatar from 'components/Avatar';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import UsersTable from 'components/admin/UsersTable';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
@@ -82,41 +79,7 @@ const FolderPermissions = () => {
             }}
           />
         </Box>
-        <List>
-          <>
-            {folderModerators &&
-              folderModerators.data.map((folderModerator, index) => (
-                // This row is a near copy of ModeratorListRow. They could be
-                // extracted in 1 component.
-                <Row
-                  key={folderModerator.id}
-                  isLastItem={index === folderModerators.data.length - 1}
-                >
-                  <Box display="flex" alignItems="center">
-                    <Box mr="12px">
-                      <Avatar userId={folderModerator.id} size={30} />
-                    </Box>
-                    <Text as="span" m="0">
-                      {getFullName(folderModerator)}
-                    </Text>
-                  </Box>
-                  <Text as="span" m="0">
-                    {folderModerator.attributes.email}
-                  </Text>
-                  <ButtonWithLink
-                    onClick={handleDeleteFolderModeratorClick(
-                      folderModerator.id
-                    )}
-                    buttonStyle="text"
-                    icon="delete"
-                    processing={deleteIsLoading}
-                  >
-                    <FormattedMessage {...messages.deleteFolderManagerLabel} />
-                  </ButtonWithLink>
-                </Row>
-              ))}
-          </>
-        </List>
+        {folderModerators && <UsersTable users={folderModerators.data} />}
       </Box>
     </Box>
   );
