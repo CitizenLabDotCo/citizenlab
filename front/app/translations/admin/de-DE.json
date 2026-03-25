@@ -2503,7 +2503,7 @@
   "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Die Beiträge werden als scrollbarer Feed angezeigt, sortiert nach Trends, Reaktionen, Kommentaren, Datum oder Aktivität. Am besten geeignet für: kleinere Beratungsgespräche.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listenansicht",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Weitere Vorlagen laden",
-  "app.containers.AdminPage.ProjectEdit.makeDefault": "Standard festlegen",
+  "app.containers.AdminPage.ProjectEdit.makeDefault": "Als Standard festlegen",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karte",
   "app.containers.AdminPage.ProjectEdit.mapTab": "Karte",
   "app.containers.AdminPage.ProjectEdit.mapViewDescription": "Zeigt Beiträge als Pins auf einer Karte an. Am besten geeignet für: ortsbezogene Konsultationen, Stadtplanung, Feedback zur Infrastruktur. Vergewissern Sie sich, dass Sie dem {inputFormLink} ein Ortsfeld hinzufügen.",
