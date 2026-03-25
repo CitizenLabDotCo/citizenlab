@@ -17,10 +17,11 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import useLocalize, { Localize } from 'hooks/useLocalize';
 
 const timeout = 350;
 
@@ -228,8 +229,11 @@ const findErrorFromAppConfig = (
 ) => {
   if (error === 'sso_enforced_for_domain') {
     const customMultiloc =
-      appConfiguration?.data?.attributes?.settings?.azure_ad_login
+      appConfiguration.data.attributes.settings.azure_ad_login
         ?.enforced_email_domain_error_multiloc;
+
+    console.log(customMultiloc);
+    console.log(localize(customMultiloc));
 
     return customMultiloc ? localize(customMultiloc) : undefined;
   }
