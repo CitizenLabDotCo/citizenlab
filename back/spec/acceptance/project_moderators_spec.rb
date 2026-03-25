@@ -86,16 +86,16 @@ resource 'Moderators' do
     context 'when moderator' do
       before do
         @project = create(:project)
-        header_token_for create(:project_moderator, projects: [@project])
+        @moderator = create(:project_moderator, projects: [@project])
+        header_token_for @moderator
       end
 
       let(:project_id) { @project.id }
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_status).to eq 200
+          expect(response_data.dig(:attributes)).to eq({ status: 'role_added' })
         end
 
         context 'with limited seats' do
@@ -110,13 +110,13 @@ resource 'Moderators' do
             before { create(:project_moderator) } # to reach limit of 2
 
             example_request 'Increments additional seats', document: false do
-              assert_status 201
+              assert_status 200
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
           end
 
           example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 201
+            assert_status 200
             expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
@@ -127,6 +127,11 @@ resource 'Moderators' do
         let(:user_id) { test_user.id }
 
         include_examples 'adding a moderator'
+
+        example '[error] Returns error when user_id does not match any user' do
+          do_request(moderator: { user_id: 'non-existent-id' })
+          expect(response_status).to eq 404
+        end
       end
 
       context 'with user_email' do
@@ -134,6 +139,39 @@ resource 'Moderators' do
         let(:user_email) { test_user.email }
 
         include_examples 'adding a moderator'
+
+        context 'when email does not match any user' do
+          let(:user_email) { 'newuser@example.com' }
+
+          example 'Sends an invite to the email address' do
+            expect {
+              do_request
+            }.to change(InvitesImport, :count).by(1)
+              .and have_enqueued_job(Invites::BulkCreateJob)
+
+            expect(response_status).to eq 200
+            expect(response_data.dig(:attributes)).to eq({ status: 'invited' })
+
+            # Verify the invite has correct parameters
+            import = InvitesImport.last
+            expect(import.job_type).to eq 'bulk_create'
+            expect(import.importer).to eq @moderator
+          end
+
+          example 'Creates invite with correct role and project' do
+            do_request
+
+            expect(Invites::BulkCreateJob).to have_been_enqueued.with(
+              @moderator,
+              hash_including(
+                emails: [user_email],
+                roles: [{ type: 'project_moderator', project_id: project_id }]
+              ),
+              kind_of(String), # import.id
+              xlsx_import: false
+            )
+          end
+        end
       end
     end
   end
