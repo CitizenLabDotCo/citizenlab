@@ -62,6 +62,7 @@ const renderField = ({
           maxCharCount={question.max_characters}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
+          required={question.required}
         />
       );
     case 'html_multiloc':
@@ -82,6 +83,7 @@ const renderField = ({
           name={question.key}
           scrollErrorIntoView={scrollErrorIntoView}
           isDisabled={disabled}
+          required={question.required}
         />
       ) : (
         <Input
@@ -90,6 +92,7 @@ const renderField = ({
           maxCharCount={question.max_characters}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
+          required={question.required}
         />
       );
     case 'multiline_text':
@@ -100,6 +103,7 @@ const renderField = ({
           scrollErrorIntoView={scrollErrorIntoView}
           minRows={2}
           disabled={disabled}
+          required={question.required}
         />
       );
     case 'select':

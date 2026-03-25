@@ -26,9 +26,8 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
   # insert
   def create
-    @user = User.find(create_moderator_params[:user_id])
+    @user = find_user_by_params
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    SideFxFolderModeratorService.new.before_create(@user, @folder, current_user)
     @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @user.save
       serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
@@ -42,7 +41,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   # delete
   def destroy
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    SideFxFolderModeratorService.new.before_destroy(@moderator, @folder, current_user)
     @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @moderator.save
       SideFxFolderModeratorService.new.after_destroy(@moderator, @folder, current_user)
@@ -60,8 +58,19 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
   def create_moderator_params
     params.require(:project_folder_moderator).permit(
-      :user_id
+      :user_id,
+      :user_email
     )
+  end
+
+  def find_user_by_params
+    if create_moderator_params[:user_id].present?
+      User.find(create_moderator_params[:user_id])
+    elsif create_moderator_params[:user_email].present?
+      User.find_by!(email: create_moderator_params[:user_email])
+    else
+      raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
+    end
   end
 
   def do_authorize

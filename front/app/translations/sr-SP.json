@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Ова е-маил већ постоји. Други налог је повезан са њим.",
   "app.errors.generics.unsupported_locales": "Ово поље не подржава тренутни локалитет.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Као менаџер пројекта, можете да пошаљете е-пошту само људима који могу да приступе вашим пројектима",
+  "app.errors.has_inputs": "You cannot change the participation method because this phase already has inputs. Please remove all inputs first.",
   "app.errors.has_other_overlapping_phases": "Пројекти не могу имати фазе које се преклапају.",
   "app.errors.invalid_email": "Адреса е-поште {value} која се налази у реду {row} није важећа адреса е-поште",
   "app.errors.invalid_row": "Дошло је до непознате грешке при покушају обраде реда {row}",

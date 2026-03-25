@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Ya existe este correo electrónico. Otra cuenta está vinculada a ese correo.",
   "app.errors.generics.unsupported_locales": "Este campo no admite la configuración regional.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Como administrador de proyecto. sólo puedes enviar correos a las personas que pueden acceder a tu(s) proyecto(s)",
+  "app.errors.has_inputs": "No puedes cambiar el método de participación porque esta fase ya tiene entradas. Por favor, elimina primero todas las entradas.",
   "app.errors.has_other_overlapping_phases": "Las fases de un proyecto no se pueden traslapar.",
   "app.errors.invalid_email": "El correo {value} encontrado en {row} no es un correo válido",
   "app.errors.invalid_row": "Un error desconocido ocurrio mientras tratabamos de procesar la fila {row}",

@@ -23,6 +23,7 @@ export interface Props {
   errors?: PasswordErrors;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  required?: boolean;
 }
 
 export const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
@@ -48,6 +49,7 @@ const PasswordInput = ({
   errors,
   ariaInvalid,
   ariaDescribedBy,
+  required,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
@@ -70,6 +72,7 @@ const PasswordInput = ({
         errors={errors}
         ariaInvalid={ariaInvalid}
         ariaDescribedBy={ariaDescribedBy}
+        required={required}
       />
     );
   }

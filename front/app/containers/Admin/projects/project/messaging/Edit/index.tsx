@@ -26,24 +26,26 @@ const Edit = () => {
     projectId: string;
     campaignId: string;
   };
+
   const { formatMessage } = useIntl();
+
   const { data: campaign } = useCampaign(campaignId);
+
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
 
-  if (!campaign) {
-    return null;
-  }
-
-  const handleSubmit = async (values: FormValues) => {
-    await updateCampaign({ id: campaign.data.id, campaign: values });
+  const goBack = () => {
     clHistory.push(
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
     );
   };
+
+  if (!campaign) {
+    return null;
+  }
   const handleSendTestEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
@@ -54,8 +56,8 @@ const Edit = () => {
       },
     });
   };
-
-  const goBack = () => {
+  const handleSubmit = async (values: FormValues) => {
+    await updateCampaign({ id: campaign.data.id, campaign: values });
     clHistory.push(
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -81,6 +83,7 @@ const Edit = () => {
                 reply_to: campaign.data.attributes.reply_to,
                 subject_multiloc: campaign.data.attributes.subject_multiloc,
                 body_multiloc: campaign.data.attributes.body_multiloc,
+                isScheduled: campaign.data.attributes.scheduled_at !== null,
               }}
             />
           </Box>

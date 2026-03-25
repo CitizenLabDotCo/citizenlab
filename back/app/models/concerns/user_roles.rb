@@ -40,12 +40,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     scope :not_project_moderator, lambda { |project_id = nil|
       return where.not(id: project_moderator) if project_id.nil?
 
-      project = Project.find(project_id)
-      if project.folder
-        where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
-      else
-        where.not(id: project_moderator(project_id))
-      end
+      where.not(id: project_moderator(project_id))
     }
 
     # This scope works as an AND filter.
@@ -147,9 +142,22 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
 
+  # Returns an array of project IDs that the user, other than an admin, moderates, either directly or through a folder.
+  # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
-    # Does not include folders
-    roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
+    moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
+
+    # Include ids of projects in folders the user moderates
+    moderated_folder_project_ids = AdminPublication
+      .joins(:parent)
+      .where(parents_admin_publications: {
+        publication_type: 'ProjectFolders::Folder',
+        publication_id: moderated_project_folder_ids
+      })
+      .where(publication_type: 'Project')
+      .pluck(:publication_id)
+
+    (moderated_directly_ids + moderated_folder_project_ids).uniq
   end
 
   def moderated_project_folder_ids

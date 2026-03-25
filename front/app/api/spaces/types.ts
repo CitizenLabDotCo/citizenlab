@@ -42,27 +42,3 @@ export interface RequestBody {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
 }
-
-export type ProjectNode = {
-  id: string;
-  type: 'project';
-  title_multiloc: Multiloc;
-};
-
-export type FolderNode = {
-  id: string;
-  type: 'folder';
-  title_multiloc: Multiloc;
-  children: ProjectNode[];
-};
-
-export type TreeNode = FolderNode | ProjectNode;
-
-export type TreeView = {
-  data: {
-    type: 'tree_view';
-    attributes: {
-      nodes: TreeNode[];
-    };
-  };
-};

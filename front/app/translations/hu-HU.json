@@ -2405,6 +2405,7 @@
   "app.errors.generics.taken": "Ez az e-mail már létezik. Egy másik fiók kapcsolódik hozzá.",
   "app.errors.generics.unsupported_locales": "Ez a mező nem támogatja az aktuális területi beállítást.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Projektmenedzserként csak azoknak küldhet e-mailt, akik hozzáférhetnek a projektjeihez",
+  "app.errors.has_inputs": "A részvételi módszert nem módosíthatja, mert ebben a fázisban már vannak bemenetek. Kérjük, először távolítsa el az összes bemenetet.",
   "app.errors.has_other_overlapping_phases": "A projekteknek nem lehetnek átfedő szakaszai.",
   "app.errors.invalid_email": "A {value} a {row} sorban található e-mail cím nem érvényes e-mail cím",
   "app.errors.invalid_row": "Ismeretlen hiba történt a {row}sor feldolgozása közben",

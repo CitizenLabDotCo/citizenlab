@@ -231,4 +231,12 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.preview',
     defaultMessage: 'Preview',
   },
+  scheduled: {
+    id: 'app.containers.Admin.project.emails.scheduled',
+    defaultMessage: 'Scheduled',
+  },
+  save: {
+    id: 'app.containers.Admin.project.emails.save',
+    defaultMessage: 'Save',
+  },
 });

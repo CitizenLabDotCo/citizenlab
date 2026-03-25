@@ -73,6 +73,12 @@ class LLMSelector
       description: 'Classify ideas into existing topics in the Idea Feed constantly.',
       supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeHaiku45
+    ),
+    LLMUseCase.new(
+      key: 'form_sync',
+      description: 'Extract handwritten survey responses from scanned PDF forms',
+      supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::ClaudeSonnet46
     )
   ]
 

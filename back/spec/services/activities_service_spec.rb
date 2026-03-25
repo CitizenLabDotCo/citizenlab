@@ -19,28 +19,31 @@ describe ActivitiesService do
       it 'logs phase started activity when a new phase starts (in the application timezone)' do
         start_at = Date.new(2019, 3, 20)
         phase = create(:phase, start_at: start_at)
-        now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
+        start_time = start_at.in_time_zone(timezone)
+        now = start_time + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'started', nil, start_at.to_time, project_id: phase.project_id)
+          .with(phase, 'started', nil, start_time, project_id: phase.project_id)
       end
 
       it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
         start_at = Date.new(2019, 3, 20)
         phase = create(:phase, start_at: start_at)
-        now = start_at.to_time + 1.minute
+        start_time = start_at.in_time_zone
+        now = start_time - 1.day + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
-          .not_to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_at.to_time)
+          .not_to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_time)
       end
 
       it "doesn't log a new activity if there's already one with the same acted_at timestamp" do
         start_at = Date.new(2019, 3, 20)
         phase = create(:phase, start_at: start_at)
-        now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
+        start_time = start_at.in_time_zone
+        now = start_time + 1.minute
 
-        Activity.create(item: phase, action: 'started', acted_at: start_at)
+        Activity.create(item: phase, action: 'started', acted_at: start_time)
 
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
