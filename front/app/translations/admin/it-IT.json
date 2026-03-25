@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Messaggio",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Puoi rivolgerti direttamente ai cittadini utilizzando le variabili {firstName} {lastName}. Ad esempio: \"Gentile {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "partecipanti",
+  "app.containers.Admin.project.emails.preview": "Anteprima",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Un'email di anteprima è stata inviata al tuo indirizzo email",
   "app.containers.Admin.project.emails.previewTitle": "Anteprima",
   "app.containers.Admin.project.emails.projectParticipants": "Partecipanti al progetto",

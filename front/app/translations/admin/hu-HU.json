@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Üzenet",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Közvetlenül is megszólíthatja a polgárokat a {firstName} {lastName} változók használatával. Pl. „Kedves {firstName} {lastName}! ...”",
   "app.containers.Admin.project.emails.participants": "résztvevők",
+  "app.containers.Admin.project.emails.preview": "Előnézet",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Egy előnézeti e-mailt küldtünk az e-mail-címére.",
   "app.containers.Admin.project.emails.previewTitle": "Előnézet",
   "app.containers.Admin.project.emails.projectParticipants": "Projekt résztvevői",

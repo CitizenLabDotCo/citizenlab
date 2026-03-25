@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Viesti",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Voit puhua suoraan kansalaisille käyttämällä muuttujia {firstName} {lastName}. Esim \"Rakas {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "osallistujia",
+  "app.containers.Admin.project.emails.preview": "Esikatselu",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Sähköpostiosoitteeseesi on lähetetty esikatseluviesti",
   "app.containers.Admin.project.emails.previewTitle": "Esikatselu",
   "app.containers.Admin.project.emails.projectParticipants": "Projektin osallistujat",

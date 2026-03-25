@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Neges",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Gallwch siarad yn uniongyrchol â dinasyddion gan ddefnyddio'r newidynnau {firstName} {lastName}. Ee \"Annwyl {firstName} {lastName},...\"",
   "app.containers.Admin.project.emails.participants": "cyfranogwyr",
+  "app.containers.Admin.project.emails.preview": "Rhagolwg",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Mae e-bost rhagolwg wedi'i anfon i'ch cyfeiriad e-bost",
   "app.containers.Admin.project.emails.previewTitle": "Rhagolwg",
   "app.containers.Admin.project.emails.projectParticipants": "Cyfranogwyr y prosiect",

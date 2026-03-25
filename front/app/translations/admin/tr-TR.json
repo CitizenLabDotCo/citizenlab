@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Mesaj",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "{firstName} {lastName}değişkenlerini kullanarak vatandaşlarla doğrudan konuşabilirsiniz. Örneğin \"Sayın {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "Katılımcılar",
+  "app.containers.Admin.project.emails.preview": "Önizleme",
   "app.containers.Admin.project.emails.previewSentConfirmation": "E-posta adresinize bir önizleme e-postası gönderildi",
   "app.containers.Admin.project.emails.previewTitle": "Önizleme",
   "app.containers.Admin.project.emails.projectParticipants": "Proje katılımcıları",

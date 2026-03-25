@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Μήνυμα",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Μπορείτε να απευθυνθείτε απευθείας στους πολίτες χρησιμοποιώντας τις μεταβλητές {firstName} {lastName}. Π.χ. \"Αγαπητέ/ή {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "συμμετέχοντες",
+  "app.containers.Admin.project.emails.preview": "Προεπισκόπηση",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Ένα δοκιμαστικό email έχει σταλεί στη διεύθυνση email σας",
   "app.containers.Admin.project.emails.previewTitle": "Προεπισκόπηση",
   "app.containers.Admin.project.emails.projectParticipants": "Συμμετέχοντες έργου",

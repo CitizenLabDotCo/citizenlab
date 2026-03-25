@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Message",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Dir kënnt d'Bierger direkt uspriechen, andeems Dir d'Variabelen {firstName} {lastName} benotzt. Z. B. \"Léif {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "Participanten",
+  "app.containers.Admin.project.emails.preview": "Virschau",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Eng Virschau-E-Mail gouf un Är E-Mail-Adress geschéckt",
   "app.containers.Admin.project.emails.previewTitle": "Virschau",
   "app.containers.Admin.project.emails.projectParticipants": "Projets-Participanten",

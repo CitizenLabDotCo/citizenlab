@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Missatge",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Podeu adreçar-vos directament als ciutadans mitjançant les variables {firstName} {lastName}. P. ex. \"Benvolgut/da {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "participants",
+  "app.containers.Admin.project.emails.preview": "Previsualització",
   "app.containers.Admin.project.emails.previewSentConfirmation": "S'ha enviat un correu electrònic de vista prèvia a la vostra adreça electrònica",
   "app.containers.Admin.project.emails.previewTitle": "Previsualització",
   "app.containers.Admin.project.emails.projectParticipants": "Participants del projecte",

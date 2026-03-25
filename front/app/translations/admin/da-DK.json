@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Besked",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Du kan tale direkte til borgerne ved hjælp af variablerne {firstName} {lastName}. F.eks. \"Kære {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "deltagere",
+  "app.containers.Admin.project.emails.preview": "Forhåndsvisning",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Der er blevet sendt en preview e-mail til din e-mailadresse",
   "app.containers.Admin.project.emails.previewTitle": "Eksempel",
   "app.containers.Admin.project.emails.projectParticipants": "Deltagere i projektet",

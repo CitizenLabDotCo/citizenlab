@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Meddelande",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Du kan vända dig direkt till mottagarna genom att använda variablerna {firstName} {lastName}. T.ex. \"Kära {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "deltagare",
+  "app.containers.Admin.project.emails.preview": "Förhandsgranska",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Ett e-postmeddelande med förhandsgranskning har skickats till din e-postadress",
   "app.containers.Admin.project.emails.previewTitle": "Förhandsgranskning",
   "app.containers.Admin.project.emails.projectParticipants": "Deltagare i projektet",

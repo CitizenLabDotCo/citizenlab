@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Poruka",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Možete se obratiti izravno građanima koristeći varijable {firstName} {lastName}. Npr. \"Dragi {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "sudionika",
+  "app.containers.Admin.project.emails.preview": "Pretpregled",
   "app.containers.Admin.project.emails.previewSentConfirmation": "E-pošta za pregled poslana je na vašu adresu e-pošte",
   "app.containers.Admin.project.emails.previewTitle": "Pregled",
   "app.containers.Admin.project.emails.projectParticipants": "Sudionici projekta",

@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Teachtaireacht",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Is féidir leat labhairt go díreach le saoránaigh ag baint úsáide as na hathróga {firstName} {lastName}. M.sh. \"A chara {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "rannpháirtithe",
+  "app.containers.Admin.project.emails.preview": "Réamhamharc",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Tá ríomhphost réamhamhairc seolta chuig do sheoladh ríomhphoist",
   "app.containers.Admin.project.emails.previewTitle": "Réamhamharc",
   "app.containers.Admin.project.emails.projectParticipants": "Rannpháirtithe tionscadail",

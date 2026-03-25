@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Wiadomość",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Możesz zwracać się bezpośrednio do obywateli za pomocą zmiennych {firstName} {lastName}. Np. \"Drogi {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "uczestnicy",
+  "app.containers.Admin.project.emails.preview": "Podgląd",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Wiadomość z podglądem została wysłana na Twój adres e-mail",
   "app.containers.Admin.project.emails.previewTitle": "Podgląd",
   "app.containers.Admin.project.emails.projectParticipants": "Uczestnicy projektu",

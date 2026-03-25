@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Bericht",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Je kunt inwoners rechtstreeks aanspreken met de variabelen {firstName} {lastName}. Bijv. \"Beste {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "deelnemers",
+  "app.containers.Admin.project.emails.preview": "Voorbeeld",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Een voorbeeld e-mail is verzonden naar jouw e-mailadres",
   "app.containers.Admin.project.emails.previewTitle": "Test e-mail",
   "app.containers.Admin.project.emails.projectParticipants": "Project deelnemers",

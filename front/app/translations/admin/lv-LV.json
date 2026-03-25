@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Ziņa",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Jūs varat tieši sazināties ar iedzīvotājiem, izmantojot mainīgos lielumus {firstName} {lastName}. Piemēram, \"Dārgais {firstName} {lastName}, ...\".",
   "app.containers.Admin.project.emails.participants": "dalībnieki",
+  "app.containers.Admin.project.emails.preview": "Priekšskatījums",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Uz jūsu e-pasta adresi ir nosūtīts priekšskatījuma e-pasts",
   "app.containers.Admin.project.emails.previewTitle": "Priekšskatījums",
   "app.containers.Admin.project.emails.projectParticipants": "Projekta dalībnieki",

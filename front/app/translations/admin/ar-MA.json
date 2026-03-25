@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "رسالة",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "يمكنك التحدث مباشرة إلى المواطنين باستخدام المتغيرات {firstName} {lastName}. مثلاً: \"عزيزي(ة) {firstName} {lastName}، ...\"",
   "app.containers.Admin.project.emails.participants": "المشاركون",
+  "app.containers.Admin.project.emails.preview": "معاينة",
   "app.containers.Admin.project.emails.previewSentConfirmation": "تم إرسال بريد إلكتروني للمعاينة إلى عنوان بريدكم الإلكتروني",
   "app.containers.Admin.project.emails.previewTitle": "معاينة",
   "app.containers.Admin.project.emails.projectParticipants": "المشاركين فالمشروع",

@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Melding",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Du kan henvende deg direkte til innbyggerne ved hjelp av variablene {firstName} {lastName}. For eksempel: \"Kjære {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "deltakere",
+  "app.containers.Admin.project.emails.preview": "Forhåndsvisning",
   "app.containers.Admin.project.emails.previewSentConfirmation": "En e-post med forhåndsvisning er sendt til e-postadressen din",
   "app.containers.Admin.project.emails.previewTitle": "Forhåndsvisning",
   "app.containers.Admin.project.emails.projectParticipants": "Deltakere i prosjektet",

@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "پیغام",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "آپ متغیرات کا استعمال کرتے ہوئے شہریوں سے براہ راست بات کر سکتے ہیں {firstName} {lastName}۔ مثال کے طور پر \"پیارے {firstName} {lastName}، ...\"",
   "app.containers.Admin.project.emails.participants": "شرکاء",
+  "app.containers.Admin.project.emails.preview": "پیش منظر",
   "app.containers.Admin.project.emails.previewSentConfirmation": "ایک پیش نظارہ ای میل آپ کے ای میل پتے پر بھیج دیا گیا ہے۔",
   "app.containers.Admin.project.emails.previewTitle": "پیش نظارہ",
   "app.containers.Admin.project.emails.projectParticipants": "پروجیکٹ کے شرکاء",

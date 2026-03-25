@@ -1185,6 +1185,7 @@
   "app.containers.Admin.project.emails.message": "Nalunaarut",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Innuttaasut toqqaannartumik oqaloqatigisinnaavatit oqaatsit {firstName} {lastName} atorlugit. Ass. \"Asasara {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "peqataasut",
+  "app.containers.Admin.project.emails.preview": "Isiginnaaqqaarneq",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Isikkussaanik takutitsissut e-mailinnut nassiunneqarpoq",
   "app.containers.Admin.project.emails.previewTitle": "Isikkussaa takuuk",
   "app.containers.Admin.project.emails.projectParticipants": "Suliassami peqataasut",
