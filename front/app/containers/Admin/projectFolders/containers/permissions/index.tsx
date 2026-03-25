@@ -10,7 +10,6 @@ import useProjectFolderModerators from 'api/project_folder_moderators/useProject
 
 import AddModerator from 'components/admin/AddModerator';
 import { List, Row } from 'components/admin/ResourceList';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SubSectionTitle } from 'components/admin/Section';
 import Avatar from 'components/Avatar';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -118,9 +117,6 @@ const FolderPermissions = () => {
               ))}
           </>
         </List>
-      </Box>
-      <Box width="516px" py="32px">
-        <SeatInfo seatType="moderator" />
       </Box>
     </Box>
   );
