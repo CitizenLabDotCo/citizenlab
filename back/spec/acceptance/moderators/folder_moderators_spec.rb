@@ -30,8 +30,7 @@ resource 'Moderators' do
       example 'List all moderators of a project_folder' do
         do_request project_folder_id: project_folder.id
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq same_folder_moderators.size + 1
+        expect(response_data.size).to eq same_folder_moderators.size + 1
       end
 
       example '[error] List all moderators of a project_folder you don\'t moderate' do
@@ -50,8 +49,7 @@ resource 'Moderators' do
 
       example_request 'Get one moderator by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq other_moderators.first.id
+        expect(response_data[:id]).to eq other_moderators.first.id
       end
     end
 
@@ -69,8 +67,7 @@ resource 'Moderators' do
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
           expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_data[:id]).to eq test_user.id
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
 
@@ -150,8 +147,7 @@ resource 'Moderators' do
       example 'List all moderators of a project_folder', document: false do
         do_request
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq same_project_folder_moderators.size
+        expect(response_data.size).to eq same_project_folder_moderators.size
       end
     end
 
@@ -167,8 +163,7 @@ resource 'Moderators' do
 
       example_request 'Get one moderator by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq other_moderators.first.id
+        expect(response_data[:id]).to eq other_moderators.first.id
       end
     end
 
@@ -193,8 +188,7 @@ resource 'Moderators' do
           do_request
 
           expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_data[:id]).to eq test_user.id
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_folder_id: project_folder.id })
