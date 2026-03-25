@@ -5929,6 +5929,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.preview": {
+    "state": "verified",
+    "verified_at": "2026-03-25T16:12:18.760626Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.project.emails.previewSentConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
