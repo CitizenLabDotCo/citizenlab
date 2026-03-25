@@ -277,18 +277,16 @@ resource 'Users' do
           settings = AppConfiguration.instance.settings
           settings['azure_ad_login'] = {
             'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com',
-            'enforced_email_domain_error_multiloc' => { 'en' => 'Please use Azure AD to sign in.' }
+            'enforced_email_domains' => 'example.com'
           }
           AppConfiguration.instance.update!(settings: settings)
         end
 
         let(:email) { 'user@example.com' }
 
-        example_request 'Returns 422 with sso_enforced_for_domain error and message' do
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
           assert_status 422
           expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
-          expect(json_response_body.dig(:errors, :email, 0, :message_multiloc)).to eq({ 'en' => 'Please use Azure AD to sign in.' })
         end
       end
     end
@@ -313,8 +311,7 @@ resource 'Users' do
           settings = AppConfiguration.instance.settings
           settings['azure_ad_login'] = {
             'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com',
-            'enforced_email_domain_error_multiloc' => { 'en' => 'Please use Azure AD to sign in.' }
+            'enforced_email_domains' => 'example.com'
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -322,11 +319,9 @@ resource 'Users' do
         let(:email) { 'newuser@example.com' }
         let(:locale) { 'en' }
 
-        example_request 'Returns 422 with sso_enforced_for_domain error and message' do
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
           assert_status 422
           expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
-          expect(json_response_body.dig(:errors, :email, 0, :message)).to eq('Please use Azure AD to sign in.')
-          expect(json_response_body.dig(:errors, :email, 0, :message_multiloc)).to eq({ 'en' => 'Please use Azure AD to sign in.' })
         end
       end
 

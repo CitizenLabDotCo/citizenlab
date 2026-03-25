@@ -17,9 +17,10 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 const timeout = 350;
 
@@ -195,7 +196,18 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as MessageDescriptor;
   }
-  // Return a empty error message
+  return undefined;
+};
+
+const findErrorFromAppConfig = (
+  error: string, // TODO: Type this with API error types
+  appConfiguration: IAppConfiguration,
+  localize: Localize
+) => {
+  if (error === 'sso_enforced_for_domain') {
+    console.log('SSO enformce');
+    return 'HELLO';
+  }
   return '';
 };
 
@@ -223,6 +235,8 @@ export const getApiErrorValues = (
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const {
     text,
@@ -294,35 +308,49 @@ const Error = (props: ErrorProps) => {
                 !isEmpty(dedupApiErrors) && (
                   <ErrorList>
                     {dedupApiErrors.map((error, index) => {
+                      // TODO: findErrorFromAppConfig
+                      // TODO: findErrorMessage
+
                       // If we have multiple possible errors for a certain input field,
                       // we can 'group' them in the messages.js file using the fieldName as a prefix
                       // Check the implementation of findErrorMessage for details
-                      const errorMessage = findErrorMessage(
+                      const errorMessageDescriptor = findErrorMessage(
                         fieldName,
                         error.error
                       );
 
-                      if (errorMessage) {
+                      const customErrorMessage = findErrorFromAppConfig(
+                        error.error,
+                        appConfiguration,
+                        localize
+                      );
+
+                      if (errorMessageDescriptor || customErrorMessage) {
                         // Variables for inside messages.js
                         const values = getApiErrorValues(
                           error,
                           appConfiguration
                         );
 
-                        if (values.value || values.row || values.rows) {
-                          return (
-                            <ErrorListItem key={index}>
-                              {dedupApiErrors.length > 1 && (
-                                <Bullet aria-hidden>•</Bullet>
-                              )}
+                        const errorMessage = customErrorMessage
+                          ? customErrorMessage
+                          : formatMessage(errorMessageDescriptor, values);
 
-                              <FormattedMessage
-                                {...errorMessage}
-                                values={values}
-                              />
-                            </ErrorListItem>
-                          );
-                        }
+                        // TODO: Don't think this is needed
+                        // if (values.value || values.row || values.rows) {
+                        //   return (
+                        //     <ErrorListItem key={index}>
+                        //       {dedupApiErrors.length > 1 && (
+                        //         <Bullet aria-hidden>•</Bullet>
+                        //       )}
+                        //
+                        //       <FormattedMessage
+                        //         {...errorMessage}
+                        //         values={values}
+                        //       />
+                        //     </ErrorListItem>
+                        //   );
+                        // }
 
                         return (
                           <ErrorListItem key={index}>

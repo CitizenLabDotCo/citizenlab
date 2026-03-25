@@ -97,6 +97,7 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
     visibility?: 'show' | 'link' | 'hide';
+    enforced_email_domain_error_multiloc?: Multiloc;
   };
   azure_ad_b2c_login?: {
     allowed: boolean;

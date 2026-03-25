@@ -30,14 +30,6 @@ module OmniauthMethods
       domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
     end
 
-    def enforced_email_domain_error_multiloc
-      config = AppConfiguration.instance
-      return nil unless config.feature_activated?('azure_ad_login')
-
-      multiloc = config.settings('azure_ad_login', 'enforced_email_domain_error_multiloc')
-      multiloc.present? && multiloc.values.any?(&:present?) ? multiloc : super
-    end
-
     private
 
     def remote_avatar_url(auth)

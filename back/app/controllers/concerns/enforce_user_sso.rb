@@ -6,10 +6,9 @@ module EnforceUserSso
   private
 
   def sso_enforced?
-    sso_enforced_message_multiloc = AuthenticationService.sso_enforced_for_email(email_param)
-    return false unless sso_enforced_message_multiloc
+    return false unless AuthenticationService.sso_enforced_for_email?(email_param)
 
-    render json: { errors: { email: [{ error: 'sso_enforced_for_domain', message_multiloc: sso_enforced_message_multiloc }] } }, status: :unprocessable_entity
+    render json: { errors: { email: [{ error: 'sso_enforced_for_domain' }] } }, status: :unprocessable_entity
   end
 
   def email_param

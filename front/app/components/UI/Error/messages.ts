@@ -222,6 +222,11 @@ export default defineMessages({
     id: 'app.errors.email_blank',
     defaultMessage: 'Please enter your email address',
   },
+  email_sso_enforced_for_domain: {
+    id: 'app.errors.email_sso_enforced_for_domain',
+    defaultMessage:
+      'You must sign in using single sign-on (SSO) for this email domain.',
+  },
   first_name_blank: {
     id: 'app.errors.first_name_blank',
     defaultMessage: 'Please enter your first name',
