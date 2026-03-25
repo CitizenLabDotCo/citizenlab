@@ -3077,7 +3077,7 @@
   "app.containers.AdminPage.SideBar.users": "Utenti",
   "app.containers.AdminPage.SideBar.workshops": "Workshop",
   "app.containers.AdminPage.Topics.addInputTopic": "Aggiungi tag contributi",
-  "app.containers.AdminPage.Topics.addSubtopic": "Aggiungi sottoetichetta",
+  "app.containers.AdminPage.Topics.addSubtopic": "Aggiungi sottotag",
   "app.containers.AdminPage.Topics.cancel": "Annulla",
   "app.containers.AdminPage.Topics.confirmHeader2": "Sei sicuro di voler eliminare questo tag contributo?",
   "app.containers.AdminPage.Topics.defaultInputTopicsInfo": "I tag predefiniti per i nuovi progetti possono essere configurati nella pagina {settingsLink}.",
