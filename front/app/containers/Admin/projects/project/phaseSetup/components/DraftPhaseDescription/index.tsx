@@ -31,9 +31,6 @@ const DraftPhaseDescription = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updatePhase, isLoading } = useUpdatePhase();
-  const [loadingAction, setLoadingAction] = useState<
-    'publish' | 'saveDraft' | 'discard' | null
-  >(null);
 
   const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
 
@@ -54,7 +51,6 @@ const DraftPhaseDescription = ({
   };
 
   const handlePublish = () => {
-    setLoadingAction('publish');
     updatePhase(
       {
         phaseId,
@@ -63,29 +59,20 @@ const DraftPhaseDescription = ({
       },
       {
         onSuccess: () => {
-          setLoadingAction(null);
           setIsEditing(false);
         },
-        onError: () => setLoadingAction(null),
       }
     );
   };
 
   const handleSaveDraft = () => {
-    setLoadingAction('saveDraft');
-    updatePhase(
-      {
-        phaseId,
-        draft_description_multiloc: localDraft,
-      },
-      {
-        onSettled: () => setLoadingAction(null),
-      }
-    );
+    updatePhase({
+      phaseId,
+      draft_description_multiloc: localDraft,
+    });
   };
 
   const handleDiscard = () => {
-    setLoadingAction('discard');
     updatePhase(
       {
         phaseId,
@@ -93,11 +80,9 @@ const DraftPhaseDescription = ({
       },
       {
         onSuccess: () => {
-          setLoadingAction(null);
           setLocalDraft(descriptionMultiloc);
           setIsEditing(false);
         },
-        onError: () => setLoadingAction(null),
       }
     );
   };
@@ -143,7 +128,6 @@ const DraftPhaseDescription = ({
             buttonStyle="text"
             onClick={handleDiscard}
             padding="0px"
-            processing={loadingAction === 'discard'}
             disabled={isLoading}
           >
             {formatMessage(messages.draftDescriptionDiscardChanges)}
@@ -152,7 +136,6 @@ const DraftPhaseDescription = ({
             <Button
               buttonStyle="secondary-outlined"
               onClick={handleSaveDraft}
-              processing={loadingAction === 'saveDraft'}
               disabled={isLoading}
             >
               {formatMessage(messages.draftDescriptionSaveDraft)}
@@ -160,7 +143,6 @@ const DraftPhaseDescription = ({
             <Button
               buttonStyle="admin-dark"
               onClick={handlePublish}
-              processing={loadingAction === 'publish'}
               disabled={isLoading}
             >
               {formatMessage(messages.draftDescriptionPublish)}

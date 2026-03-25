@@ -36,7 +36,7 @@ export const getTabs = (
       name: 'setup',
       className: 'intercom-phase-setup-tab',
     },
-    draft_phase_description_enabled && {
+    {
       label: formatMessage(messages.descriptionTab),
       url: 'description',
       name: 'description',
