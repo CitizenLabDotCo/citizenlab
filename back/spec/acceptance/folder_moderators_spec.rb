@@ -152,9 +152,8 @@ resource 'Moderators' do
 
           do_request
 
-          expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_status).to eq 200
+          expect(response_data[:attributes]).to eq({ status: 'role_added' })
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
         end
