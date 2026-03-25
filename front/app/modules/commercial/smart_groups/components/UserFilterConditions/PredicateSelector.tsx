@@ -5,6 +5,8 @@ import { keys } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { IOption } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -92,6 +94,11 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   not_taken_survey: messages.predicate_not_taken_survey,
 };
 
+const SPACE_MODERATOR_PREDICATES: TPredicate[] = [
+  'is_space_moderator',
+  'not_is_space_moderator',
+];
+
 const PredicateSelector = memo(
   ({
     ruleType,
@@ -99,6 +106,8 @@ const PredicateSelector = memo(
     onChange,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
+    const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
+
     const getMessage = (predicate: TPredicate) => {
       return PREDICATE_MESSAGES[predicate];
     };
@@ -107,7 +116,14 @@ const PredicateSelector = memo(
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ruleType) {
-        const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
+        const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]).filter(
+          (predicate) => {
+            return (
+              isSpacesEnabled ||
+              !SPACE_MODERATOR_PREDICATES.includes(predicate as TPredicate)
+            );
+          }
+        );
         return ruleTypePredicates.map((predicate) => {
           const message = getMessage(predicate as TPredicate);
           return {

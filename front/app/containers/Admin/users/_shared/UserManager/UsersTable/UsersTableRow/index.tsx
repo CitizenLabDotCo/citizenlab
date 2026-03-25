@@ -63,6 +63,7 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
   const roleMessage = {
     admin: messages.platformAdmin,
     super_admin: messages.platformAdmin,
+    space_moderator: messages.spaceManager,
     project_folder_moderator: messages.folderManager,
     project_moderator: messages.projectManager,
     user: messages.registeredUser,

@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.platformAdmin',
     defaultMessage: 'Platform admin',
   },
+  spaceManager: {
+    id: 'app.containers.Admin.Users.spaceManager',
+    defaultMessage: 'Space manager',
+  },
   folderManager: {
     id: 'app.containers.Admin.Users.folderManager',
     defaultMessage: 'Folder manager',
