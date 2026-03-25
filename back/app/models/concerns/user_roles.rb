@@ -169,7 +169,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def normal_user?
-    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank? && moderated_space_ids.blank?
+    highest_role == :user
   end
 
   # Returns an array of project IDs that the user, other than an admin, moderates,

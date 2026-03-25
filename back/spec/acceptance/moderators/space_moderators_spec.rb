@@ -30,10 +30,8 @@ resource 'Moderators' do
       example 'List all moderators of a space' do
         do_request space_id: space.id
         expect(status).to eq(200)
-
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id))
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d[:id] }).to match_array(space_moderators.map(&:id))
       end
     end
 
@@ -45,9 +43,7 @@ resource 'Moderators' do
       example 'Get one space moderator by id' do
         do_request space_id: space.id, user_id: moderator.id
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq moderator.id
+        expect(response_data[:id]).to eq moderator.id
       end
     end
 
@@ -64,9 +60,7 @@ resource 'Moderators' do
       example 'Add a space moderator role to a user' do
         do_request space_id: space.id, moderator: { user_id: user.id }
         expect(response_status).to eq 201
-
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq user.id
+        expect(response_data[:id]).to eq user.id
         expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
         expect(LogActivityJob).to have_been_enqueued.with(user, 'space_moderation_rights_received', admin, kind_of(Integer), payload: { space_id: space.id })
       end
@@ -98,10 +92,8 @@ resource 'Moderators' do
       example 'List all moderators of a space' do
         do_request space_id: space.id
         expect(status).to eq(200)
-
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d[:id] }).to match_array(space_moderators.map(&:id) + [space_moderator.id])
+        expect(response_data.size).to eq 3
+        expect(response_data.map { |d| d[:id] }).to match_array(space_moderators.map(&:id) + [space_moderator.id])
       end
 
       example '[error] List all moderators of a space not moderated by the user' do
@@ -118,9 +110,7 @@ resource 'Moderators' do
       example 'Get one space moderator by id' do
         do_request space_id: space.id, user_id: moderator.id
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq moderator.id
+        expect(response_data[:id]).to eq moderator.id
       end
 
       example '[error] Get one space moderator by id of a space not moderated by the user' do
@@ -144,8 +134,7 @@ resource 'Moderators' do
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
           expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_data[:id]).to eq test_user.id
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'space_moderation_rights_received', space_moderator, kind_of(Integer), payload: { space_id: space.id })
         end
 

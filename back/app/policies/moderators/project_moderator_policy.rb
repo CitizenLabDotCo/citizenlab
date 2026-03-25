@@ -23,7 +23,7 @@ module Moderators
     def active_and_can_moderate?
       return false unless user&.active?
 
-      user.admin? || UserRoleService.new.can_moderate?(record, user)
+      UserRoleService.new.can_moderate?(record, user)
     end
 
     def role_higher_than_folder_moderator?

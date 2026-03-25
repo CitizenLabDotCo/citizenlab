@@ -13,7 +13,7 @@ module Moderators
     end
 
     def destroy?
-      user&.active? && user.admin? # Only admins can remove space moderators
+      active_admin? # Only admins can remove space moderators
     end
 
     private
@@ -21,7 +21,7 @@ module Moderators
     def active_and_can_moderate?
       return false unless user&.active?
 
-      user.admin? || UserRoleService.new.can_moderate?(record, user)
+      UserRoleService.new.can_moderate?(record, user)
     end
   end
 end
