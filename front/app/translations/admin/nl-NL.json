@@ -1,8 +1,8 @@
 {
-  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "De gekozen kleur heeft niet genoeg contrast (met een witte achtergrond) om te voldoen aan de {wcagLink} toegankelijkheidsnorm. {lineBreak} {lineBreak} Het niet halen van deze ratio kan de gebruikerservaring van gebruikers met een visuele beperking verslechteren, of het gebruik van het platform zelfs onmogelijk maken. {lineBreak} {lineBreak} Een ratio van ten minste 4,5 tot 1 is vereist om te voldoen. Huidige ratio: {contrastRatio} tot 1. Kies een donkerdere kleur om de ratio te verhogen.",
-  "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Voeg een link toe aan de navigatiebalk om alle projectevenementen te bekijken",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Maak een project aan op basis van de template '{templateTitle}'",
-  "app.components.admin.PostManager.allTopics": "Alle onderwerpen",
+  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "De gekozen kleur heeft niet genoeg contrast (met een witte achtergrond) om te voldoen aan de {wcagLink} toegankelijkheidsnorm. {lineBreak} {lineBreak} Het niet halen van deze ratio kan de gebruikerservaring van gebruikers met een visuele beperking verslechteren, of het gebruik van het platform zelfs onmogelijk maken. {lineBreak} {lineBreak} Een ratio van ten minste 4,5 tot 1 is vereist om te voldoen aan de norm. Huidige ratio: {contrastRatio} tot 1. Kies een donkerdere kleur om de ratio te verhogen.",
+  "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Voeg een link toe om alle projectevenementen aan de navigatiebalk te bekijken",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Maak een project aan op basis van de sjabloon '{templateTitle}'",
+  "app.components.admin.PostManager.allTopics": "Alle tags",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Verwijder {count} bijdragen",
   "app.components.admin.PostManager.exportAllInputs": "Exporteer alle bijdragen (.xslx)",
   "app.components.admin.PostManager.exportInputsProjects": "Exporteer bijdragen voor dit project (.xslx)",
