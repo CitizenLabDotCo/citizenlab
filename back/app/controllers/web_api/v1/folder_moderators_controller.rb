@@ -95,7 +95,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
     invite_params = {
       emails: [email],
-      roles: [{ type: 'project_moderator', project_id: params[:project_id] }],
+      roles: [{ type: 'project_folder_moderator', project_folder_id: params[:project_folder_id] }],
       locale: current_user.locale || AppConfiguration.instance.settings('core', 'locales').first,
       invite_text: nil, # Optional: add custom invite text
       group_ids: []
