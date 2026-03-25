@@ -5,9 +5,9 @@ import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import SeatInfo, {
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
+import UsersTable from 'components/admin/UsersTable';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import UsersTable from 'components/UsersTable';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
