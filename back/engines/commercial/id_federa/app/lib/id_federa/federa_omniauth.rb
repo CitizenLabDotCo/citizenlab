@@ -56,10 +56,10 @@ module IdFedera
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('federa_login')
 
-      environment = config['environment'] || 'test'
-      spid_level = config['spid_level'] || '1'
+      environment = config[:environment] || 'test'
+      spid_level = config[:spid_level] || '1'
 
-      private_key = config['private_key']
+      private_key = config[:private_key]
 
       metadata_file = ENVIRONMENTS.dig(environment, :metadata_xml_file)
 
@@ -80,6 +80,7 @@ module IdFedera
         issuer: "#{configuration.base_backend_uri}/auth/federa/metadata",
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
         idp_sso_service_url_runtime_params: { RelayState: :RelayState },
+        idp_sso_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
         authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1'])
       )
 
