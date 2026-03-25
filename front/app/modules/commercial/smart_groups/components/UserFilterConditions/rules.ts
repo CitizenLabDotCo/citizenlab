@@ -1,3 +1,4 @@
+import { is } from 'date-fns/locale';
 import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
@@ -88,6 +89,8 @@ type TFollowPredicate =
 type TRolePredicate =
   | 'is_admin'
   | 'not_is_admin'
+  | 'is_space_moderator'
+  | 'not_is_space_moderator'
   | 'is_project_moderator'
   | 'not_is_project_moderator'
   | 'is_normal_user'
@@ -334,6 +337,8 @@ export type TRule =
       predicate?:
         | 'is_admin'
         | 'not_is_admin'
+        | 'is_space_moderator'
+        | 'not_is_space_moderator'
         | 'is_project_moderator'
         | 'not_is_project_moderator'
         | 'is_normal_user'
@@ -597,6 +602,8 @@ export const ruleTypeConstraints = {
   role: {
     is_admin: null,
     not_is_admin: null,
+    is_space_moderator: null,
+    not_is_space_moderator: null,
     is_project_moderator: null,
     not_is_project_moderator: null,
     is_normal_user: null,

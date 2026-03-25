@@ -157,13 +157,21 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_admin',
     defaultMessage: 'is not an admin',
   },
+  predicate_is_space_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_space_moderator',
+    defaultMessage: 'is a space manager',
+  },
+  predicate_not_is_space_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_space_moderator',
+    defaultMessage: 'is not a space manager',
+  },
   predicate_is_project_moderator: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
-    defaultMessage: 'is a moderator',
+    defaultMessage: 'is a project manager',
   },
   predicate_not_is_project_moderator: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
-    defaultMessage: 'is not a moderator',
+    defaultMessage: 'is not a project manager',
   },
   predicate_is_normal_user: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_normal_user',
