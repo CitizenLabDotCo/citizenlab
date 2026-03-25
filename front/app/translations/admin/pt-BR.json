@@ -26,7 +26,11 @@
   "app.Admin.ManagementFeed.warning": "Recurso experimental: Uma lista mínima de ações selecionadas realizadas por administradores ou gerentes nos últimos 30 dias. Nem todas as ações estão incluídas.",
   "app.Admin.Moderation.managementFeed": "Feed de gerenciamento",
   "app.Admin.Moderation.participationFeed": "Feed de participação",
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": "Tem certeza de que deseja excluir esta campanha?",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Você tem certeza?",
+
+  "app.components.Admin.Campaigns.cancel": "Cancelar",
   "app.components.Admin.Campaigns.clicked": "Clicado",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Excluir campanha",
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Aceito",
@@ -45,10 +49,14 @@
   "app.components.Admin.Campaigns.project": "Projeto",
   "app.components.Admin.Campaigns.recipientsTitle": "Beneficiários",
   "app.components.Admin.Campaigns.reply_to": "Responder a",
+
+  "app.components.Admin.Campaigns.scheduled": "Agendado",
   "app.components.Admin.Campaigns.sent": "Enviado",
   "app.components.Admin.Campaigns.statsButton": "Estatísticas",
   "app.components.Admin.Campaigns.subject": "Assunto",
   "app.components.Admin.Campaigns.to": "Para",
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Cancelar agendamento",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Consulte também: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Mantenha o conteúdo principal dentro das linhas pontilhadas para garantir que ele esteja sempre visível.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 no celular (somente a área entre as linhas pontilhadas é mostrada)",
@@ -979,6 +987,8 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Um e-mail de visualização prévia foi enviado para o seu endereço de e-mail",
   "app.containers.Admin.emails.previewTitle": "Vista prévia",
   "app.containers.Admin.emails.regionMultilocError": "Forneça um valor para todos os idiomas",
+
+  "app.containers.Admin.emails.scheduled": "Agendado",
   "app.containers.Admin.emails.seeEmailHereText": "Assim que um e-mail deste tipo for enviado, poderá consultá-lo aqui.",
   "app.containers.Admin.emails.send": "Enviar",
   "app.containers.Admin.emails.sendNowButton": "enviar agora",
@@ -1173,6 +1183,8 @@
   "app.containers.Admin.project.emails.previewTitle": "Prévia",
   "app.containers.Admin.project.emails.projectParticipants": "Participantes do projeto",
   "app.containers.Admin.project.emails.recipients": "Beneficiários",
+
+  "app.containers.Admin.project.emails.save": "Salvar",
   "app.containers.Admin.project.emails.send": "Enviar",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Enviar uma visualização",
   "app.containers.Admin.project.emails.sendTestEmailTooltip": "Envie este rascunho de e-mail para o endereço de e-mail com o qual você está conectado, para verificar como ele se parece na \"vida real\".",
@@ -3842,3 +3854,27 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para mais informações sobre as resoluções de imagem recomendadas, {supportPageLink}."
 }
+
+  "app.containers.Admin.project.emails.scheduled": "Agendado",
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": "Esta ação não pode ser desfeita.",
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Sim, cancelar e-mail agendado",
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "Agendar e-mail",
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": "Agendar",
+
+  "app.components.Admin.Email.scheduling.keepSchedule": "Não, manter agendamento",
+
+  "app.components.Admin.Email.scheduling.scheduleSend": "Agendar envio",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Tem certeza de que deseja cancelar o agendamento desta campanha? A campanha não estará mais agendada para envio, mas você ainda poderá enviá-la manualmente ou reagendá-la.",
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": "Quando este e-mail deve ser enviado?",
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Reagendar",
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Nota: O envio pode sofrer um pequeno atraso dependendo do número de destinatários.",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Cancelar e-mail agendado",

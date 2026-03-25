@@ -26,7 +26,11 @@
   "app.Admin.ManagementFeed.warning": "Experimentele functionaliteit: Een minimale lijst van geselecteerde acties die in de afgelopen 30 dagen zijn uitgevoerd door platform- of projectbeheerders. Niet alle acties zijn opgenomen.",
   "app.Admin.Moderation.managementFeed": "Beheer feed",
   "app.Admin.Moderation.participationFeed": "Participatie feed",
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": "Weet je zeker dat je deze campagne wilt verwijderen?",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Zeker weten?",
+
+  "app.components.Admin.Campaigns.cancel": "Annuleren",
   "app.components.Admin.Campaigns.clicked": "Geklikt",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Campagne verwijderen",
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Geaccepteerd",
@@ -45,10 +49,14 @@
   "app.components.Admin.Campaigns.project": "Project",
   "app.components.Admin.Campaigns.recipientsTitle": "Ontvangers",
   "app.components.Admin.Campaigns.reply_to": "Antwoorden op",
+
+  "app.components.Admin.Campaigns.scheduled": "Ingepland",
   "app.components.Admin.Campaigns.sent": "Verzonden",
   "app.components.Admin.Campaigns.statsButton": "Statistieken",
   "app.components.Admin.Campaigns.subject": "Onderwerp",
   "app.components.Admin.Campaigns.to": "Aan",
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Planning annuleren",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Zie ook: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Houd belangrijke inhoud binnen de stippellijnen zodat deze altijd zichtbaar is.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 op mobiel (alleen het gebied tussen de stippellijnen wordt getoond)",
@@ -979,6 +987,8 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Een voorbeeld e-mail is verzonden naar jouw e-mailadres",
   "app.containers.Admin.emails.previewTitle": "Voorvertoning",
   "app.containers.Admin.emails.regionMultilocError": "Geef een waarde op voor alle talen",
+
+  "app.containers.Admin.emails.scheduled": "Ingepland",
   "app.containers.Admin.emails.seeEmailHereText": "Zodra dit type e-mail wordt verstuurd, kun je hem hier bekijken.",
   "app.containers.Admin.emails.send": "Verzenden",
   "app.containers.Admin.emails.sendNowButton": "Stuur nu",
@@ -1173,6 +1183,8 @@
   "app.containers.Admin.project.emails.previewTitle": "Test e-mail",
   "app.containers.Admin.project.emails.projectParticipants": "Project deelnemers",
   "app.containers.Admin.project.emails.recipients": "Ontvangers",
+
+  "app.containers.Admin.project.emails.save": "Opslaan",
   "app.containers.Admin.project.emails.send": "Verzenden",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Stuur een test e-mail",
   "app.containers.Admin.project.emails.sendTestEmailTooltip": "Zend deze test e-mail naar het e-mailadres waarmee je bent ingelogd om na te gaan hoe je e-mail er 'in het echt' zal uitzien.",
@@ -3842,3 +3854,27 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Meer informatie over aanbevolen beeldresoluties vind je op {supportPageLink}."
 }
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Weet je zeker dat je de planning voor deze campagne wilt annuleren? De campagne wordt niet meer automatisch verzonden, maar je kunt deze nog steeds handmatig verzenden of opnieuw inplannen.",
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Opnieuw inplannen",
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": "Deze actie kan niet ongedaan worden gemaakt.",
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Ja, geplande e-mail annuleren",
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": "Inplannen",
+
+  "app.components.Admin.Email.scheduling.scheduleSend": "Verzending inplannen",
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "E-mail inplannen",
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": "Wanneer moet deze e-mail worden verzonden?",
+
+  "app.containers.Admin.project.emails.scheduled": "Ingepland",
+
+  "app.components.Admin.Email.scheduling.keepSchedule": "Nee, planning behouden",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Geplande e-mail annuleren",
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Let op: de verzending kan enigszins vertraagd zijn, afhankelijk van het aantal ontvangers.",

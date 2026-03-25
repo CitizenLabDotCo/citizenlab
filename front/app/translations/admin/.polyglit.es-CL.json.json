@@ -134,10 +134,22 @@
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
   },
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.Admin.Campaigns.cancel": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
   },
   "app.components.Admin.Campaigns.clicked": {
     "state": "verified",
@@ -229,6 +241,12 @@
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
   },
+
+  "app.components.Admin.Campaigns.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
   "app.components.Admin.Campaigns.sent": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
@@ -248,6 +266,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
   },
   "app.components.Admin.ImageCropper.cropFinalSentence": {
     "state": "verified",
@@ -4899,6 +4923,12 @@
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
   "app.containers.Admin.emails.seeEmailHereText": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
@@ -5868,6 +5898,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.project.emails.save": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
   },
   "app.containers.Admin.project.emails.send": {
     "state": "verified",
@@ -19211,3 +19247,75 @@
     "verified_by": "Admin"
   }
 }
+
+  "app.components.Admin.Email.scheduling.scheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.keepSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.containers.Admin.project.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T11:41:43.461696Z",
+    "verified_by": "Rob"
+  },

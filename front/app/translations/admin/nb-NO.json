@@ -26,7 +26,11 @@
   "app.Admin.ManagementFeed.warning": "Eksperimentell funksjon: En minimal liste over utvalgte handlinger som er utført av administratorer eller ledere de siste 30 dagene. Ikke alle handlinger er inkludert.",
   "app.Admin.Moderation.managementFeed": "Ledelsens feed",
   "app.Admin.Moderation.participationFeed": "Deltakelse feed",
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": "Er du sikker på at du vil slette denne kampanjen?",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Er du sikker?",
+
+  "app.components.Admin.Campaigns.cancel": "Avbryt",
   "app.components.Admin.Campaigns.clicked": "Klikket",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Slett kampanje",
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Godkjent",
@@ -45,10 +49,14 @@
   "app.components.Admin.Campaigns.project": "Prosjekt",
   "app.components.Admin.Campaigns.recipientsTitle": "Mottakere",
   "app.components.Admin.Campaigns.reply_to": "Svar-til",
+
+  "app.components.Admin.Campaigns.scheduled": "Planlagt",
   "app.components.Admin.Campaigns.sent": "Sendt",
   "app.components.Admin.Campaigns.statsButton": "Statistikk",
   "app.components.Admin.Campaigns.subject": "Emne",
   "app.components.Admin.Campaigns.to": "Til",
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Avbryt planlegging",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Se også: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Hold det viktigste innholdet innenfor de stiplede linjene for å sikre at det alltid er synlig.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 på mobil (bare området mellom de stiplede linjene vises)",
@@ -979,6 +987,8 @@
   "app.containers.Admin.emails.previewSentConfirmation": "En e-post med forhåndsvisning er sendt til e-postadressen din",
   "app.containers.Admin.emails.previewTitle": "Forhåndsvisning",
   "app.containers.Admin.emails.regionMultilocError": "Vennligst oppgi en verdi for alle språk",
+
+  "app.containers.Admin.emails.scheduled": "Planlagt",
   "app.containers.Admin.emails.seeEmailHereText": "Så snart en e-post av denne typen er sendt, vil du kunne se den her.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send nå",
@@ -1173,6 +1183,8 @@
   "app.containers.Admin.project.emails.previewTitle": "Forhåndsvisning",
   "app.containers.Admin.project.emails.projectParticipants": "Deltakere i prosjektet",
   "app.containers.Admin.project.emails.recipients": "Mottakere",
+
+  "app.containers.Admin.project.emails.save": "Lagre",
   "app.containers.Admin.project.emails.send": "Send",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Send en forhåndsvisning",
   "app.containers.Admin.project.emails.sendTestEmailTooltip": "Send dette e-postutkastet til e-postadressen du er logget inn med, for å sjekke hvordan det ser ut i \"virkeligheten\".",
@@ -3842,3 +3854,27 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Du finner mer informasjon om anbefalte bildeoppløsninger på {supportPageLink}."
 }
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Ja, avbryt planlagt e-post",
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Planlegg på nytt",
+
+  "app.containers.Admin.project.emails.scheduled": "Planlagt",
+
+  "app.components.Admin.Email.scheduling.keepSchedule": "Nei, behold tidsplanen",
+
+  "app.components.Admin.Email.scheduling.scheduleSend": "Planlegg sending",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Er du sikker på at du vil avbryte planleggingen av denne kampanjen? Kampanjen vil ikke lenger være planlagt for sending, men du kan fortsatt sende den manuelt eller planlegge den på nytt.",
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": "Når skal denne e-posten sendes ut?",
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "Planlegg e-post",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Avbryt planlagt e-post",
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Merk: Sendingen kan bli noe forsinket avhengig av antall mottakere.",
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": "Planlegg",
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": "Denne handlingen kan ikke angres.",

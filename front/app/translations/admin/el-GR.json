@@ -26,7 +26,11 @@
   "app.Admin.ManagementFeed.warning": "Πειραματική λειτουργία: Μια ελάχιστη λίστα επιλεγμένων ενεργειών που πραγματοποιήθηκαν από διαχειριστές τις τελευταίες 30 ημέρες. Δεν περιλαμβάνονται όλες οι ενέργειες.",
   "app.Admin.Moderation.managementFeed": "Ροή διαχείρισης",
   "app.Admin.Moderation.participationFeed": "Ροή συμμετοχής",
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την καμπάνια;",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Είστε βέβαιοι;",
+
+  "app.components.Admin.Campaigns.cancel": "Ακύρωση",
   "app.components.Admin.Campaigns.clicked": "Έγινε κλικ",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Διαγραφή καμπάνιας",
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Έγινε δεκτή",
@@ -45,10 +49,14 @@
   "app.components.Admin.Campaigns.project": "Έργο",
   "app.components.Admin.Campaigns.recipientsTitle": "Παραλήπτες",
   "app.components.Admin.Campaigns.reply_to": "Απάντηση σε",
+
+  "app.components.Admin.Campaigns.scheduled": "Προγραμματισμένο",
   "app.components.Admin.Campaigns.sent": "Απεστάλη",
   "app.components.Admin.Campaigns.statsButton": "Στατιστικά",
   "app.components.Admin.Campaigns.subject": "Θέμα",
   "app.components.Admin.Campaigns.to": "Προς",
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Ακύρωση προγραμματισμού",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Δείτε επίσης: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "Διατηρήστε το βασικό περιεχόμενο εντός των διακεκομμένων γραμμών για να διασφαλίσετε ότι είναι πάντα ορατό.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 σε κινητά (εμφανίζεται μόνο η περιοχή ανάμεσα στις διακεκομμένες γραμμές)",
@@ -979,6 +987,8 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Ένα email προεπισκόπησης έχει σταλεί στη διεύθυνση email σας",
   "app.containers.Admin.emails.previewTitle": "Προεπισκόπηση",
   "app.containers.Admin.emails.regionMultilocError": "Παρακαλούμε συμπληρώστε μια τιμή για όλες τις γλώσσες",
+
+  "app.containers.Admin.emails.scheduled": "Προγραμματισμένο",
   "app.containers.Admin.emails.seeEmailHereText": "Μόλις σταλεί ένα τέτοιο μήνυμα ηλεκτρονικού ταχυδρομείου, θα μπορείτε να το ελέγξετε εδώ.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Στείλτε τώρα",
@@ -1173,6 +1183,8 @@
   "app.containers.Admin.project.emails.previewTitle": "Προεπισκόπηση",
   "app.containers.Admin.project.emails.projectParticipants": "Συμμετέχοντες έργου",
   "app.containers.Admin.project.emails.recipients": "Παραλήπτες",
+
+  "app.containers.Admin.project.emails.save": "Αποθήκευση",
   "app.containers.Admin.project.emails.send": "Αποστολή",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Αποστολή προεπισκόπησης",
   "app.containers.Admin.project.emails.sendTestEmailTooltip": "Στείλτε αυτό το προσχέδιο email στη διεύθυνση email με την οποία είστε συνδεδεμένοι, για να ελέγξετε πώς φαίνεται στην «πραγματικότητα».",
@@ -3844,3 +3856,27 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Είστε βέβαιοι ότι θέλετε να ακυρώσετε τον προγραμματισμό για αυτήν την καμπάνια; Η καμπάνια δεν θα είναι πλέον προγραμματισμένη για αποστολή, αλλά μπορείτε ακόμα να την στείλετε χειροκίνητα ή να την επαναπρογραμματίσετε.",
+
+  "app.components.Admin.Email.scheduling.scheduleSend": "Προγραμματισμός αποστολής",
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Σημείωση: Η αποστολή ενδέχεται να καθυστερήσει ελαφρώς ανάλογα με τον αριθμό των παραληπτών.",
+
+  "app.containers.Admin.project.emails.scheduled": "Προγραμματισμένο",
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Επαναπρογραμματισμός",
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": "Προγραμματισμός",
+
+  "app.components.Admin.Email.scheduling.keepSchedule": "Όχι, διατήρηση προγραμματισμού",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Ακύρωση προγραμματισμένου email",
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": "Πότε πρέπει να σταλεί αυτό το email;",
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "Προγραμματισμός email",
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Ναι, ακύρωση προγραμματισμένου email",

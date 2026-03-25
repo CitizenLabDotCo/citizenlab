@@ -26,7 +26,11 @@
   "app.Admin.ManagementFeed.warning": "Kísérleti funkció: Az adminisztrátorok vagy menedzserek által az elmúlt 30 napban végrehajtott kiválasztott műveletek minimális listája. Nem minden művelet szerepel benne.",
   "app.Admin.Moderation.managementFeed": "Kezelési hírfolyam",
   "app.Admin.Moderation.participationFeed": "Részvételi hírfolyam",
+
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": "Biztosan törölni szeretné ezt a kampányt?",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Biztos benne?",
+
+  "app.components.Admin.Campaigns.cancel": "Mégse",
   "app.components.Admin.Campaigns.clicked": "Kattintva",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Kampány törlése",
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Elfogadva",
@@ -45,10 +49,14 @@
   "app.components.Admin.Campaigns.project": "Projekt",
   "app.components.Admin.Campaigns.recipientsTitle": "Címzettek",
   "app.components.Admin.Campaigns.reply_to": "Válaszcím",
+
+  "app.components.Admin.Campaigns.scheduled": "Ütemezve",
   "app.components.Admin.Campaigns.sent": "Elküldve",
   "app.components.Admin.Campaigns.statsButton": "Statisztika",
   "app.components.Admin.Campaigns.subject": "Tárgy",
   "app.components.Admin.Campaigns.to": "Záró",
+
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Ütemezés visszavonása",
   "app.components.Admin.ImageCropper.cropFinalSentence": "Lásd még: {link}.",
   "app.components.Admin.ImageCropper.cropSentenceMobileCrop": "A fontos tartalmakat tartsa a szaggatott vonalakon belül, hogy azok mindig láthatóak maradjanak.",
   "app.components.Admin.ImageCropper.cropSentenceMobileRatio": "3:1 mobilon (csak a szaggatott vonalak közötti terület látható)",
@@ -979,6 +987,8 @@
   "app.containers.Admin.emails.previewSentConfirmation": "A preview email has been sent to your email address",
   "app.containers.Admin.emails.previewTitle": "Preview",
   "app.containers.Admin.emails.regionMultilocError": "Kérjük, adjon meg értéket minden nyelvhez",
+
+  "app.containers.Admin.emails.scheduled": "Ütemezve",
   "app.containers.Admin.emails.seeEmailHereText": "Amint egy ilyen típusú e-mailt elküldenek, itt ellenőrizheti.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send now",
@@ -1175,6 +1185,8 @@
   "app.containers.Admin.project.emails.previewTitle": "Előnézet",
   "app.containers.Admin.project.emails.projectParticipants": "Projekt résztvevői",
   "app.containers.Admin.project.emails.recipients": "Címzettek",
+
+  "app.containers.Admin.project.emails.save": "Mentés",
   "app.containers.Admin.project.emails.send": "Küldés",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Előnézet küldése",
   "app.containers.Admin.project.emails.sendTestEmailTooltip": "Küldje el ezt a piszkozatot arra az e-mail-címre, amellyel be van jelentkezve, hogy ellenőrizze, hogyan néz ki „élesben”.",
@@ -3844,3 +3856,27 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Az ajánlott képfelbontásokkal kapcsolatos további információkért: {supportPageLink}."
 }
+
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": "Megjegyzés: A küldés a címzettek számától függően kismértékben késhet.",
+
+  "app.components.Admin.Campaigns.campaignDeleteWarning": "Ez a művelet nem vonható vissza.",
+
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": "E-mail ütemezése",
+
+  "app.components.Admin.Email.scheduling.rescheduleSend": "Újraütemezés",
+
+  "app.components.Admin.Email.scheduling.scheduleSend": "Küldés ütemezése",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Biztosan vissza szeretné vonni a kampány ütemezését? A kampány küldése már nem lesz ütemezve, de továbbra is elküldheti manuálisan, vagy újraütemezheti.",
+
+  "app.components.Admin.Email.scheduling.confirmSchedule": "Ütemezés",
+
+  "app.containers.Admin.project.emails.scheduled": "Ütemezve",
+
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Igen, ütemezett e-mail visszavonása",
+
+  "app.components.Admin.Email.scheduling.keepSchedule": "Nem, maradjon az ütemezés",
+
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": "Mikor menjen ki ez az e-mail?",
+
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Ütemezett e-mail visszavonása",
