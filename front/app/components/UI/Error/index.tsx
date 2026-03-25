@@ -232,9 +232,6 @@ const findErrorFromAppConfig = (
       appConfiguration.data.attributes.settings.azure_ad_login
         ?.enforced_email_domain_error_multiloc;
 
-    console.log(customMultiloc);
-    console.log(localize(customMultiloc));
-
     return customMultiloc ? localize(customMultiloc) : undefined;
   }
   return;
