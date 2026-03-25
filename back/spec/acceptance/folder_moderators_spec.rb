@@ -164,6 +164,11 @@ resource 'Moderators' do
         let(:user_id) { test_user.id }
 
         include_examples 'adding a folder moderator'
+
+        example '[error] Returns error when user_id does not match any user' do
+          do_request(project_folder_moderator: { user_id: 'non-existent-id' })
+          expect(response_status).to eq 404
+        end
       end
 
       context 'with user_email' do
@@ -171,6 +176,39 @@ resource 'Moderators' do
         let(:user_email) { test_user.email }
 
         include_examples 'adding a folder moderator'
+
+        context 'when email does not match any user' do
+          let(:user_email) { 'newuser@example.com' }
+
+          example 'Sends an invite to the email address' do
+            expect {
+              do_request
+            }.to change(InvitesImport, :count).by(1)
+              .and have_enqueued_job(Invites::BulkCreateJob)
+
+            expect(response_status).to eq 200
+            expect(response_data.dig(:attributes)).to eq({ status: 'invited' })
+
+            # Verify the invite has correct parameters
+            import = InvitesImport.last
+            expect(import.job_type).to eq 'bulk_create'
+            expect(import.importer).to eq admin
+          end
+
+          example 'Creates invite with correct role and project_folder' do
+            do_request
+
+            expect(Invites::BulkCreateJob).to have_been_enqueued.with(
+              admin,
+              hash_including(
+                emails: [user_email],
+                roles: [{ type: 'project_folder_moderator', project_folder_id: project_folder_id }]
+              ),
+              kind_of(String), # import.id
+              xlsx_import: false
+            )
+          end
+        end
       end
     end
 
