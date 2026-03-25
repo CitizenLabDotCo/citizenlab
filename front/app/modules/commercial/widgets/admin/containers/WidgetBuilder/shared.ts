@@ -40,15 +40,21 @@ export const sharedSchemaFields = {
   buttonText: string().required(),
 };
 
+interface TenantColors {
+  accentColor?: string | null;
+  textColor?: string | null;
+}
+
 export const getSharedDefaultValues = (
-  formatMessage: (descriptor: MessageDescriptor) => string
+  formatMessage: (descriptor: MessageDescriptor) => string,
+  tenantColors?: TenantColors
 ) => ({
   width: 320,
   height: 400,
   siteBgColor: '#ffffff',
   bgColor: '#ffffff',
-  textColor: '#666666',
-  accentColor: '#2233aa',
+  textColor: tenantColors?.textColor || '#333333',
+  accentColor: tenantColors?.accentColor || '#0A5159',
   font: null,
   fontSize: 15,
   relativeLink: '/',
