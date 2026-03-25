@@ -66,7 +66,7 @@ module BulkImportIdeas::Parsers::Pdf
         when :field
           next if not_found?(answer)
 
-          result[field_info[:field_key]] = answer
+          result[field_info[:field_key]] = answer if answer.present?
         when :matrix
           matrix_answer = build_matrix_answer(answer, field_info)
           result[field_info[:field_key]] = matrix_answer if matrix_answer.present?
