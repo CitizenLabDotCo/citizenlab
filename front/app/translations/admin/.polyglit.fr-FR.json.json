@@ -584,6 +584,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.SeatInfo.assignedSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:21:24.185329Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.SeatInfo.availableSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:12:03.575457Z",
+    "verified_by": "Adrien"
+  },
   "app.components.SeatInfo.currentAdminSeatsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -593,6 +603,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.goToSeatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:12:03.575457Z",
+    "verified_by": "Adrien"
   },
   "app.components.SeatInfo.includedAdminToolTip": {
     "state": "verified",
@@ -633,6 +648,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.totalAdminSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:17:43.611148Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.SeatInfo.totalManagerSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:17:43.611148Z",
+    "verified_by": "Adrien"
   },
   "app.components.SeatInfo.totalSeats": {
     "state": "verified",
@@ -4033,6 +4058,46 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.Seats.seatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:12:48.937470Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.admins": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.managers": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.name": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.options": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.role": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:07:03.592069Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.title": {
+    "state": "verified",
+    "verified_at": "2026-03-24T09:12:03.575457Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",

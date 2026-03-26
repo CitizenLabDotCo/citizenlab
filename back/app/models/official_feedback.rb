@@ -11,6 +11,7 @@
 #  idea_id         :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  weglot_data     :jsonb            not null
 #
 # Indexes
 #
