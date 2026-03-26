@@ -19,7 +19,7 @@ module WebApi
 
         def create
           @user = find_or_invite_user
-          
+
           if @user.is_a?(InvitesImport)
             # User doesn't exist, invite was sent
             render json: raw_json({ status: 'invited' })
@@ -70,13 +70,9 @@ module WebApi
           elsif create_moderator_params[:user_email].present?
             email = create_moderator_params[:user_email]
             user = User.find_by(email: email)
-            
-            if user
-              user
-            else
-              # User doesn't exist, send invite
-              send_moderator_invite(email)
-            end
+
+            # If user doesn't exist, send invite
+            user || send_moderator_invite(email)
           else
             raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
           end

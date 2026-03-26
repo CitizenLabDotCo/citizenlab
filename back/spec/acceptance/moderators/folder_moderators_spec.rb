@@ -217,13 +217,13 @@ resource 'Moderators' do
           let(:user_email) { 'newuser@example.com' }
 
           example 'Sends an invite to the email address' do
-            expect {
+            expect do
               do_request
-            }.to change(InvitesImport, :count).by(1)
+            end.to change(InvitesImport, :count).by(1)
               .and have_enqueued_job(Invites::BulkCreateJob)
 
             expect(response_status).to eq 200
-            expect(response_data.dig(:attributes)).to eq({ status: 'invited' })
+            expect(response_data[:attributes]).to eq({ status: 'invited' })
 
             # Verify the invite has correct parameters
             import = InvitesImport.last

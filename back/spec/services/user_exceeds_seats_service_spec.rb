@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # filepath: /Users/work/cl/citizenlab/back/spec/services/user_exceeds_seats_service_spec.rb
 
 require 'rails_helper'
@@ -50,7 +51,7 @@ describe UserExceedsSeatsService do
         config.settings['core']['maximum_moderators_number'] = 5
         config.settings['core']['additional_moderators_number'] = 0
         config.save!
-        
+
         # Create 3 moderators (below limit of 5)
         create_list(:project_moderator, 3)
       end
@@ -66,7 +67,7 @@ describe UserExceedsSeatsService do
         config.settings['core']['maximum_moderators_number'] = 3
         config.settings['core']['additional_moderators_number'] = 0
         config.save!
-        
+
         # Create 3 moderators (at limit of 3)
         create_list(:project_moderator, 3)
       end
@@ -121,7 +122,7 @@ describe UserExceedsSeatsService do
             config.settings['core']['maximum_moderators_number'] = 5
             config.settings['core']['additional_moderators_number'] = 0
             config.save!
-            
+
             # Create 3 moderators (below limit of 5)
             create_list(:project_moderator, 3)
           end
@@ -137,7 +138,7 @@ describe UserExceedsSeatsService do
             config.settings['core']['maximum_moderators_number'] = 3
             config.settings['core']['additional_moderators_number'] = 0
             config.save!
-            
+
             # Create 3 moderators (at limit of 3)
             create_list(:project_moderator, 3)
           end
@@ -201,7 +202,7 @@ describe UserExceedsSeatsService do
         config.settings['core']['maximum_admins_number'] = 5
         config.settings['core']['additional_admins_number'] = 0
         config.save!
-        
+
         # Create 3 admins (below limit of 5)
         create_list(:admin, 3)
       end
@@ -217,7 +218,7 @@ describe UserExceedsSeatsService do
         config.settings['core']['maximum_admins_number'] = 3
         config.settings['core']['additional_admins_number'] = 0
         config.save!
-        
+
         # Create 3 admins (at limit of 3)
         create_list(:admin, 3)
       end
@@ -272,7 +273,7 @@ describe UserExceedsSeatsService do
             config.settings['core']['maximum_admins_number'] = 5
             config.settings['core']['additional_admins_number'] = 0
             config.save!
-            
+
             # Create 3 admins (below limit of 5)
             create_list(:admin, 3)
           end
@@ -288,7 +289,7 @@ describe UserExceedsSeatsService do
             config.settings['core']['maximum_admins_number'] = 3
             config.settings['core']['additional_admins_number'] = 0
             config.save!
-            
+
             # Create 3 admins (at limit of 3)
             create_list(:admin, 3)
           end
@@ -316,15 +317,15 @@ describe UserExceedsSeatsService do
 
   context 'error handling' do
     it 'raises error when neither user_id nor user_email provided' do
-      expect {
+      expect do
         described_class.new({ 'seat_type' => 'moderator' }).execute
-      }.to raise_error(ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email')
+      end.to raise_error(ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email')
     end
 
     it 'raises error when user not found by id' do
-      expect {
+      expect do
         described_class.new({ 'seat_type' => 'moderator', 'user_id' => 'invalid-id' }).execute
-      }.to raise_error(ActiveRecord::RecordNotFound)
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
