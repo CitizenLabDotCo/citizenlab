@@ -90,7 +90,7 @@ module WebApi
 
           invite_params = {
             emails: [email],
-            roles: [{ type: 'project_moderator', project_id: params[:project_id] }],
+            roles: [{ type: role_type, **role_id_params }],
             locale: current_user.locale || AppConfiguration.instance.settings('core', 'locales').first,
             invite_text: nil, # Optional: add custom invite text
             group_ids: []

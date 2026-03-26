@@ -66,8 +66,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 201
-          expect(response_data[:id]).to eq test_user.id
+          expect(response_status).to eq 200
+          expect(response_data[:attributes]).to eq({ status: 'role_added' })
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
 
@@ -83,13 +83,13 @@ resource 'Moderators' do
             before { create(:project_folder_moderator) } # to reach the limit
 
             example_request 'Increments additional seats', document: false do
-              assert_status 201
+              assert_status 200
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
           end
 
           example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 201
+            assert_status 200
             expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
@@ -202,7 +202,7 @@ resource 'Moderators' do
         include_examples 'adding a folder moderator'
 
         example '[error] Returns error when user_id does not match any user' do
-          do_request(project_folder_moderator: { user_id: 'non-existent-id' })
+          do_request(moderator: { user_id: 'non-existent-id' })
           expect(response_status).to eq 404
         end
       end
