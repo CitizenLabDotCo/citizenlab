@@ -355,6 +355,26 @@ const Calendar = ({
       return;
     }
 
+    // Check if the day is fully occupied (no available time)
+    // if start at midnight or end at 23:59, then it's fully occupied and we shouldn't allow selecting it
+    for (const range of disabledRanges) {
+      if (isSameDay(range.from, day)) {
+        const startAtMidnight =
+          range.from.getHours() === 0 && range.from.getMinutes() === 0;
+        if (startAtMidnight) {
+          return;
+        }
+      }
+
+      if (range.to && isSameDay(range.to, day)) {
+        const endAtAlmostMidnight =
+          range.to.getHours() === 23 && range.to.getMinutes() === 59;
+        if (endAtAlmostMidnight) {
+          return;
+        }
+      }
+    }
+
     const updatedRange = getUpdatedRange({
       selectedRange,
       disabledRanges,
@@ -372,8 +392,12 @@ const Calendar = ({
       if (isSameDaySelection) {
         newFrom.setHours(0, 0, 0, 0);
       } else {
-        newFrom.setHours(selectedStartTime.getHours());
-        newFrom.setMinutes(selectedStartTime.getMinutes());
+        newFrom.setHours(
+          selectedStartTime.getHours(),
+          selectedStartTime.getMinutes(),
+          0,
+          0
+        );
       }
     }
 
@@ -381,8 +405,12 @@ const Calendar = ({
       if (isSameDaySelection) {
         newTo.setHours(23, 59, 0, 0);
       } else {
-        newTo.setHours(selectedEndTime.getHours());
-        newTo.setMinutes(selectedEndTime.getMinutes());
+        newTo.setHours(
+          selectedEndTime.getHours(),
+          selectedEndTime.getMinutes(),
+          0,
+          0
+        );
       }
     }
 
