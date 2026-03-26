@@ -42,11 +42,12 @@ module Analytics
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
         first_activity_date = [tenant_creation, first_idea].compact.min.to_date
 
-        if Analytics::DimensionDate.none?
+        date_range = Analytics::DimensionDate.pick(Arel.sql('MIN(date), MAX(date)'))
+        first_dimension_date, last_dimension_date = date_range if date_range
+
+        if first_dimension_date.nil?
           from = first_activity_date
         else
-          first_dimension_date = Analytics::DimensionDate.order(date: :asc).first.date
-          last_dimension_date = Analytics::DimensionDate.order(date: :desc).first.date
           from = last_dimension_date + 1.day
           if first_activity_date < first_dimension_date
             # Back fill any earlier dates that may have been missed due to previous issue with population

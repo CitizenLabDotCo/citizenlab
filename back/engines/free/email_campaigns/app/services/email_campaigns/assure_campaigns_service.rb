@@ -31,9 +31,9 @@ module EmailCampaigns
         # These have to be deleted manually since EmailCampaigns::Campaign
         # does not have Trackable and RecipientConfigurable included.
 
-        EmailCampaigns::CampaignsGroup.where(campaign_id: unsupported_ids).destroy_all
-        EmailCampaigns::Delivery.where(campaign_id: unsupported_ids).destroy_all
-        EmailCampaigns::Campaign.where(id: unsupported_ids).destroy_all
+        EmailCampaigns::CampaignsGroup.where(campaign_id: unsupported_ids).delete_all
+        EmailCampaigns::Delivery.where(campaign_id: unsupported_ids).delete_all
+        EmailCampaigns::Campaign.where(id: unsupported_ids).delete_all
         # We don't delete the user consents because we may be legally required to do so.
       end
 
