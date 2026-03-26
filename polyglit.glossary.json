@@ -13,7 +13,8 @@
     "fr-FR": "contribution"
   },
   "inputs": {
-    "de-DE": "Beiträge"
+    "de-DE": "Beiträge",
+    "fr-FR": "contributions"
   },
   "manager": {
     "de-DE": "Manager*innen",
