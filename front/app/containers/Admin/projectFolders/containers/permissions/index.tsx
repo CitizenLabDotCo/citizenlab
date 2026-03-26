@@ -10,11 +10,11 @@ import useProjectFolderModerators from 'api/project_folder_moderators/useProject
 
 import AddModerator from 'components/admin/AddModerator';
 import { SubSectionTitle } from 'components/admin/Section';
-import UsersTable from 'components/admin/UsersTable';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import ModeratorsTable from './ModeratorsTable';
 
 const StyledA = styled.a`
   &:hover {
@@ -79,7 +79,9 @@ const FolderPermissions = () => {
             }}
           />
         </Box>
-        {folderModerators && <UsersTable users={folderModerators.data} />}
+        {folderModerators && (
+          <ModeratorsTable moderators={folderModerators.data} />
+        )}
       </Box>
     </Box>
   );
