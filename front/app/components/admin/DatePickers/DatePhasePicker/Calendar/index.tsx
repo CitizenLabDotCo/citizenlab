@@ -247,29 +247,6 @@ const Calendar = ({
   });
 
   const locale = useLocale();
-
-  // Sync time states with selected range
-  useEffect(() => {
-    if (selectedRange.from) {
-      setSelectedStartTime(selectedRange.from);
-    }
-  }, [selectedRange.from, selectedRange.to]);
-
-  useEffect(() => {
-    if (selectedRange.to) {
-      setSelectedEndTime(selectedRange.to);
-    }
-  }, [selectedRange.to, selectedRange.from]);
-
-  const modifiers = useMemo(
-    () =>
-      generateModifiers({
-        selectedRange,
-        disabledRanges,
-      }),
-    [selectedRange, disabledRanges]
-  );
-
   // Compute min/max time constraints from adjacent disabled ranges
   const startTimeMinTime = useMemo(() => {
     if (!selectedRange.from) return undefined;
@@ -292,6 +269,40 @@ const Calendar = ({
     }
     return undefined;
   }, [selectedRange.to, disabledRanges]);
+
+  // Sync time states with selected range changes, applying constraints if two phases are on the same day
+  useEffect(() => {
+    if (selectedRange.from) {
+      if (startTimeMinTime) {
+        const adjustedTime = new Date(startTimeMinTime);
+        adjustedTime.setMinutes(adjustedTime.getMinutes() + 15);
+        setSelectedStartTime(adjustedTime);
+      } else {
+        setSelectedStartTime(selectedRange.from);
+      }
+    }
+  }, [selectedRange.from, selectedRange.to, startTimeMinTime]);
+
+  useEffect(() => {
+    if (selectedRange.to) {
+      if (endTimeMaxTime) {
+        const adjustedTime = new Date(endTimeMaxTime);
+        adjustedTime.setMinutes(adjustedTime.getMinutes() - 15);
+        setSelectedEndTime(adjustedTime);
+      } else {
+        setSelectedEndTime(selectedRange.to);
+      }
+    }
+  }, [selectedRange.to, selectedRange.from, endTimeMaxTime]);
+
+  const modifiers = useMemo(
+    () =>
+      generateModifiers({
+        selectedRange,
+        disabledRanges,
+      }),
+    [selectedRange, disabledRanges]
+  );
 
   const handleStartTimeChange = (time: Date) => {
     setSelectedStartTime(time);
