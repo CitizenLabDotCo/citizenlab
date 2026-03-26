@@ -21,6 +21,9 @@
     "es-ES": "gestor",
     "fr-FR": "gestionnaire"
   },
+  "save": {
+    "fr-FR": "enregistrer"
+  },
   "seat": {
     "de-DE": "Zugang",
     "es-ES": "asiento"
