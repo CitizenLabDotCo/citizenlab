@@ -80,7 +80,9 @@ const FolderPermissions = () => {
           />
         </Box>
         {folderModerators && (
-          <ModeratorsTable moderators={folderModerators.data} />
+          <Box mt="20px">
+            <ModeratorsTable moderators={folderModerators.data} />
+          </Box>
         )}
       </Box>
     </Box>
