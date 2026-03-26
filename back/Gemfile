@@ -22,6 +22,7 @@ group :development, :test do
   gem 'ricecream', '~> 0.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', require: false
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'

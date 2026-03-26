@@ -29,21 +29,20 @@ class WebApi::V1::UsersController < ApplicationController
       @users = @users.where(id: participant_ids)
     end
 
-    @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
+    @users = @users.can_moderate(params[:can_moderate_project]) if params[:can_moderate_project].present?
+    @users = @users.can_moderate if params[:can_moderate].present?
+
     @users = @users.not_project_moderator(params[:is_not_project_moderator]) if params[:is_not_project_moderator].present?
-    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
+    @users = @users.not_space_moderator(params[:is_not_space_moderator]) if params[:is_not_space_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
 
     @users = @users.project_reviewers(Utils.to_bool(params[:project_reviewer])) if params.key?(:project_reviewer)
 
-    case params[:can_admin]&.downcase
-    when 'true' then @users = @users.admin
-    when 'false' then @users = @users.not_admin
-    end
-
+    @users = @users.admin if params[:admins_only].present?
     @users = @users.project_moderator if params[:project_moderators_only].present?
     @users = @users.project_folder_moderator if params[:folder_moderators_only].present?
+    @users = @users.space_moderator if params[:space_moderators_only].present?
 
     sort_by_sort_param if params[:search].blank?
 
@@ -62,6 +61,18 @@ class WebApi::V1::UsersController < ApplicationController
       moderators_number: User.billed_moderators.count
     }
     render json: raw_json(attributes)
+  end
+
+  def billed_admins
+    authorize :user, :billed_admins?
+    @users = paginate User.billed_admins
+    render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
+  end
+
+  def billed_moderators
+    authorize :user, :billed_moderators?
+    @users = paginate User.billed_moderators
+    render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx

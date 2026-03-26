@@ -134,10 +134,25 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Campaigns.campaignDeleteWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Campaigns.cancel": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
   },
   "app.components.Admin.Campaigns.clicked": {
     "state": "verified",
@@ -229,6 +244,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
   "app.components.Admin.Campaigns.sent": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -248,6 +268,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Email.scheduling.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.confirmSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.keepSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.rescheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
   },
   "app.components.Admin.ImageCropper.cropFinalSentence": {
     "state": "verified",
@@ -509,6 +584,16 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.SeatInfo.assignedSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.SeatInfo.availableSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
   "app.components.SeatInfo.currentAdminSeatsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -518,6 +603,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.goToSeatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
   },
   "app.components.SeatInfo.includedAdminToolTip": {
     "state": "verified",
@@ -558,6 +648,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.totalAdminSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.SeatInfo.totalManagerSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
   },
   "app.components.SeatInfo.totalSeats": {
     "state": "verified",
@@ -3959,6 +4059,46 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.Seats.seatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.admins": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.managers": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.name": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.options": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.role": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.title": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:22:08.768081Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -4939,6 +5079,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.emails.seeEmailHereText": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -5908,6 +6053,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.project.emails.save": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.project.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-20T08:23:45.337416Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.project.emails.send": {
     "state": "verified",

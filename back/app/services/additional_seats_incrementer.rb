@@ -37,7 +37,7 @@ class AdditionalSeatsIncrementer
       field =
         case role_type
         when 'admin' then 'additional_admins_number'
-        when 'project_moderator', 'project_folder_moderator' then 'additional_moderators_number'
+        when 'project_moderator', 'project_folder_moderator', 'space_moderator' then 'additional_moderators_number'
         else
           raise ArgumentError
         end
@@ -55,7 +55,7 @@ class AdditionalSeatsIncrementer
         case role_type
         when 'admin'
           ['maximum_admins_number', 'additional_admins_number', User.billed_admins.count]
-        when 'project_moderator', 'project_folder_moderator'
+        when 'project_moderator', 'project_folder_moderator', 'space_moderator'
           ['maximum_moderators_number', 'additional_moderators_number', User.billed_moderators.count]
         else
           raise ArgumentError
@@ -70,7 +70,7 @@ class AdditionalSeatsIncrementer
     def action_by_role_type(role_type)
       case role_type
       when 'admin' then 'additional_admins_number_incremented'
-      when 'project_moderator', 'project_folder_moderator' then 'additional_moderators_number_incremented'
+      when 'project_moderator', 'project_folder_moderator', 'space_moderator' then 'additional_moderators_number_incremented'
       else
         raise ArgumentError
       end

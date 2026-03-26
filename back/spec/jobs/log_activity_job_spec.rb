@@ -36,14 +36,14 @@ RSpec.describe LogActivityJob do
       admin = create(:admin)
       user = create(:user)
       t = Time.now
-      expect { job.perform(user, 'admin_rights_given', admin, t) }
+      expect { job.perform(user, 'admin_rights_received', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
         .with do |notification_class, activity|
         expect(notification_class).to eq 'Notifications::AdminRightsReceived'
         expect(activity.item).to match({
           item: user,
           user: admin,
-          action: 'admin_rights_given',
+          action: 'admin_rights_received',
           acted_at: t
         })
       end

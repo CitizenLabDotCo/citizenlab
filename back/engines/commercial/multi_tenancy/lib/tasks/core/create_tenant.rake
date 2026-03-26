@@ -374,6 +374,10 @@ namespace :cl2_back do
         spaces: {
           enabled: false,
           allowed: false
+        },
+        email_scheduling: {
+          enabled: true,
+          allowed: true
         }
       }
     )
