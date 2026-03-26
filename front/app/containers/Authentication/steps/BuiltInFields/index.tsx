@@ -109,7 +109,7 @@ const BuiltInFields = ({
   return (
     <Box id="e2e-built-in-fields-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px">
             {formatMessage(messages.pleaseCompleteYourProfile)}
           </Text>
@@ -155,7 +155,7 @@ const BuiltInFields = ({
                 name="password"
                 id="password"
                 label={formatMessage(sharedMessages.password)}
-                autocomplete="current-password"
+                autocomplete="new-password"
                 required
               />
             </Box>

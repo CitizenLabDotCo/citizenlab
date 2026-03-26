@@ -43,8 +43,22 @@ RSpec.describe UserRoles do
     end
 
     describe '.not_project_moderator' do
+      let(:project_a) { create(:project) }
+      let(:folder_a) { create(:project_folder, projects: [project_a]) }
+
       it 'returns only non-project moderators' do
         expect(User.not_project_moderator.count).to eq(4)
+      end
+
+      it 'returns only non-project moderators for a specific project' do
+        project_manager = create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project_a.id }])
+        folder_manager = create(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id }])
+
+        expect(User.not_project_moderator.count).to eq(5)
+        expect(User.not_project_moderator(project_a.id)).not_to include(project_manager)
+
+        # Documenting that we no longer exclude folder moderators of project's folder.
+        expect(User.not_project_moderator(project_a.id)).to include(folder_manager)
       end
     end
 

@@ -53,7 +53,7 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>
@@ -65,6 +65,11 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
           width="100%"
           disabled={loading}
           processing={loading}
+          ariaDescribedby={
+            showByContinuingText !== false
+              ? 'email-consent-description'
+              : undefined
+          }
         >
           {formatMessage(sharedMessages.continue)}
         </ButtonWithLink>
