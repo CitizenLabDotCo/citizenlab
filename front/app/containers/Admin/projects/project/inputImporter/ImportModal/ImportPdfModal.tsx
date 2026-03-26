@@ -14,7 +14,7 @@ import { SupportedLocale } from 'typings';
 import { object, mixed, boolean, number } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
-import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
+import useAddOfflineIdeasAsync from 'api/import_ideas/useAddImportedIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
