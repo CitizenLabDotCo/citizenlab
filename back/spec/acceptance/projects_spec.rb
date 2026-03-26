@@ -1194,7 +1194,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
-        dutch_column_headers = fixtures['nl-NL']['xlsx_export']['column_headers']
+        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
         @admin.update!(locale: 'nl-NL')
 
         do_request

@@ -1,4 +1,4 @@
-ga-IE:
+ga:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 uair an chloig.
