@@ -1,11 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import {
-  Box,
-  Title,
-  IconTooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 

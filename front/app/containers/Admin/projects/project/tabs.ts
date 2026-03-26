@@ -15,7 +15,6 @@ export type FeatureFlags = {
   typeform_enabled: boolean;
   report_builder_enabled: boolean;
   phase_insights_enabled: boolean;
-  draft_phase_description_enabled: boolean;
 };
 
 export const getTabs = (
@@ -25,7 +24,6 @@ export const getTabs = (
     typeform_enabled,
     report_builder_enabled,
     phase_insights_enabled,
-    draft_phase_description_enabled,
   }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {

@@ -52,9 +52,6 @@ const AdminProjectPhaseIndex = ({
     phase_insights_enabled: useFeatureFlag({
       name: 'phase_insights',
     }),
-    draft_phase_description_enabled: useFeatureFlag({
-      name: 'draft_phase_description',
-    }),
   };
 
   const isNewPhaseLink = pathname.endsWith(
