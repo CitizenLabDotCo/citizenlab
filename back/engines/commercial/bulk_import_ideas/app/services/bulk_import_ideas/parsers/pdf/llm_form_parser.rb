@@ -82,7 +82,7 @@ module BulkImportIdeas::Parsers::Pdf
       result = {}
       field_info[:statements].each do |sub_key, statement_key|
         sub_answer = answer[sub_key]
-        next if sub_answer.blank? || sub_answer == 0 || sub_answer == -1
+        next if sub_answer.blank? || not_found?(sub_answer) || sub_answer == 0
 
         result[statement_key] = sub_answer
       end
@@ -90,7 +90,10 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def not_found?(value)
-      value == FormSyncSchemaBuilder::NOT_FOUND
+      return true if value == FormSyncSchemaBuilder::NOT_FOUND
+      return true if value.is_a?(Integer) && value == -1
+
+      false
     end
 
     def prompt

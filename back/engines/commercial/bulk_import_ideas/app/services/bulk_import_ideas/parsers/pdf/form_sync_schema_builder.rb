@@ -89,8 +89,10 @@ module BulkImportIdeas::Parsers::Pdf
 
     def add_field_property(field, question_key, question_num, properties, required)
       case field.input_type
-      when 'text', 'multiline_text', 'number', 'date', 'html_multiloc', 'text_multiloc'
+      when 'text', 'multiline_text', 'date', 'html_multiloc', 'text_multiloc'
         add_text_property(field, question_key, question_num, properties, required)
+      when 'number'
+        add_number_property(field, question_key, question_num, properties, required)
       when 'select', 'multiselect', 'select_image', 'multiselect_image'
         add_selection_property(field, question_key, question_num, properties, required)
       when 'linear_scale', 'rating', 'sentiment_linear_scale'
@@ -113,6 +115,18 @@ module BulkImportIdeas::Parsers::Pdf
         description: "The answer the respondent wrote under question #{question_num}: '#{title}'. " \
                      "Return `#{NOT_FOUND}` if the question was not in the document. " \
                      'Return an empty string if the question was left unanswered.'
+      }
+      required << question_key
+      @key_mapping[question_key] = { type: :field, field_key: field.key }
+    end
+
+    def add_number_property(field, question_key, question_num, properties, required)
+      title = field_title(field)
+      properties[question_key] = {
+        type: 'integer',
+        description: "The numeric answer the respondent wrote under question #{question_num}: '#{title}'. " \
+                     'Extract only the number, ignoring any surrounding text or currency symbols. ' \
+                     'Return -1 if the question was left unanswered or was not in the document.'
       }
       required << question_key
       @key_mapping[question_key] = { type: :field, field_key: field.key }
