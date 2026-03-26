@@ -65,6 +65,11 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
           width="100%"
           disabled={loading}
           processing={loading}
+          ariaDescribedby={
+            showByContinuingText !== false
+              ? 'email-consent-description'
+              : undefined
+          }
         >
           {formatMessage(sharedMessages.continue)}
         </ButtonWithLink>
