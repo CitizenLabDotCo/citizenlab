@@ -29,9 +29,15 @@ export const generateModifiers = ({
 
   const disabledModifiers = generateDisabledModifiers(disabledRanges);
 
+  const boundaryModifiers = generateBoundaryModifiers({
+    selectedRange,
+    disabledRanges,
+  });
+
   return {
     ...selectedModifiers,
     ...disabledModifiers,
+    ...boundaryModifiers,
   };
 };
 
@@ -158,6 +164,45 @@ const generateDisabledMiddleRange = (disabledRanges: ClosedDateRange[]) => {
     const middleRange = generateMiddleRange(range);
     return middleRange ? [...acc, middleRange] : acc;
   }, []);
+};
+
+const generateBoundaryModifiers = ({
+  selectedRange: { from, to },
+  disabledRanges,
+}: GenerateModifiersParams) => {
+  const disabledEndSelectedStart: Date[] = [];
+  const disabledStartSelectedEnd: Date[] = [];
+  const disabledEndDisabledStart: Date[] = [];
+
+  for (const range of disabledRanges) {
+    if (from && range.to && isSameDay(range.to, from)) {
+      disabledEndSelectedStart.push(from);
+    }
+    if (to && isSameDay(range.from, to)) {
+      disabledStartSelectedEnd.push(to);
+    }
+  }
+
+  // Detect boundaries between two disabled ranges on the same day
+  for (let i = 0; i < disabledRanges.length - 1; i++) {
+    const current = disabledRanges[i];
+    const next = disabledRanges[i + 1];
+    if (current.to && isSameDay(current.to, next.from)) {
+      disabledEndDisabledStart.push(current.to);
+    }
+  }
+
+  return {
+    ...(disabledEndSelectedStart.length > 0
+      ? { isBoundaryDisabledEndSelectedStart: disabledEndSelectedStart }
+      : {}),
+    ...(disabledStartSelectedEnd.length > 0
+      ? { isBoundaryDisabledStartSelectedEnd: disabledStartSelectedEnd }
+      : {}),
+    ...(disabledEndDisabledStart.length > 0
+      ? { isBoundaryDisabledEndDisabledStart: disabledEndDisabledStart }
+      : {}),
+  };
 };
 
 const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import { isSameDay, differenceInMinutes } from 'date-fns';
+import { isSameDay, differenceInMinutes, startOfDay } from 'date-fns';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import TimeInput from 'components/admin//DateTimeSelection/TimeInput';
+import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
 
 import { useIntl } from 'utils/cl-intl';
 import { userTimezone } from 'utils/dateUtils';
@@ -47,7 +47,7 @@ const DayPickerStyles = styled.div`
   }
 
   .is-disabled-start > button {
-    cursor: not-allowed;
+    cursor: pointer;
   }
 
   .is-disabled-middle {
@@ -66,7 +66,7 @@ const DayPickerStyles = styled.div`
   }
 
   .is-disabled-end > button {
-    cursor: not-allowed;
+    cursor: pointer;
   }
 
   .is-disabled-gradient_one {
@@ -124,6 +124,39 @@ const DayPickerStyles = styled.div`
     color: ${colors.white};
     border-radius: 50%;
   }
+
+  .is-boundary-disabled-end-selected-start {
+    background: linear-gradient(
+      135deg,
+      ${disabledBackground} calc(50% - 1px),
+      ${colors.white} calc(50% - 1px),
+      ${colors.white} calc(50% + 1px),
+      ${selectedBackground} calc(50% + 1px)
+    ) !important;
+    border-radius: 0 !important;
+  }
+
+  .is-boundary-disabled-start-selected-end {
+    background: linear-gradient(
+      135deg,
+      ${selectedBackground} calc(50% - 1px),
+      ${colors.white} calc(50% - 1px),
+      ${colors.white} calc(50% + 1px),
+      ${disabledBackground} calc(50% + 1px)
+    ) !important;
+    border-radius: 0 !important;
+  }
+
+  .is-boundary-disabled-end-disabled-start {
+    background: linear-gradient(
+      135deg,
+      ${disabledBackground} calc(50% - 1px),
+      ${colors.white} calc(50% - 1px),
+      ${colors.white} calc(50% + 1px),
+      ${disabledBackground} calc(50% + 1px)
+    ) !important;
+    border-radius: 0 !important;
+  }
 `;
 
 const TimeInputContainer = styled(Box)`
@@ -160,6 +193,9 @@ const modifiersClassNames = {
   isSelectedGradient_two: 'is-selected-gradient_two',
   isSelectedGradient_three: 'is-selected-gradient_three',
   isSelectedSingleDay: 'is-selected-single-day',
+  isBoundaryDisabledEndSelectedStart: 'is-boundary-disabled-end-selected-start',
+  isBoundaryDisabledStartSelectedEnd: 'is-boundary-disabled-start-selected-end',
+  isBoundaryDisabledEndDisabledStart: 'is-boundary-disabled-end-disabled-start',
 };
 
 const MINIMUM_PHASE_MINUTES = 23 * 60 + 59; // 23:59 in minutes
@@ -230,6 +266,29 @@ const Calendar = ({
     [selectedRange, disabledRanges]
   );
 
+  // Compute min/max time constraints from adjacent disabled ranges
+  const startTimeMinTime = useMemo(() => {
+    if (!selectedRange.from) return undefined;
+    const fromDay = startOfDay(selectedRange.from);
+    for (const range of disabledRanges) {
+      if (range.to && startOfDay(range.to).getTime() === fromDay.getTime()) {
+        return range.to;
+      }
+    }
+    return undefined;
+  }, [selectedRange.from, disabledRanges]);
+
+  const endTimeMaxTime = useMemo(() => {
+    if (!selectedRange.to) return undefined;
+    const toDay = startOfDay(selectedRange.to);
+    for (const range of disabledRanges) {
+      if (startOfDay(range.from).getTime() === toDay.getTime()) {
+        return range.from;
+      }
+    }
+    return undefined;
+  }, [selectedRange.to, disabledRanges]);
+
   const handleStartTimeChange = (time: Date) => {
     setSelectedStartTime(time);
 
@@ -275,14 +334,9 @@ const Calendar = ({
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
-    { isDisabledStart, isDisabledMiddle, isDisabledEnd, isDisabledSingle }
+    { isDisabledMiddle, isDisabledSingle }
   ) => {
-    if (
-      isDisabledStart ||
-      isDisabledMiddle ||
-      isDisabledEnd ||
-      isDisabledSingle
-    ) {
+    if (isDisabledMiddle || isDisabledSingle) {
       return;
     }
 
@@ -348,6 +402,7 @@ const Calendar = ({
           <TimeInput
             selectedTime={selectedStartTime}
             onChange={handleStartTimeChange}
+            minTime={startTimeMinTime}
           />
         </Box>
         <Box display="flex" gap="8px" alignItems="center">
@@ -358,6 +413,7 @@ const Calendar = ({
             <TimeInput
               selectedTime={selectedEndTime}
               onChange={handleEndTimeChange}
+              maxTime={endTimeMaxTime}
             />
           ) : (
             <OpenEndTimeContainer>

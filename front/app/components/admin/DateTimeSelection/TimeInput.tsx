@@ -21,6 +21,8 @@ interface Props {
   onChange: (newDate: Date) => void;
   selectedDate?: Date;
   currentTimeInTz?: Date;
+  minTime?: Date;
+  maxTime?: Date;
 }
 
 const TimeInput = ({
@@ -28,6 +30,8 @@ const TimeInput = ({
   onChange,
   selectedDate = undefined,
   currentTimeInTz = undefined,
+  minTime,
+  maxTime,
 }: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -56,13 +60,28 @@ const TimeInput = ({
     : false;
 
   // Filter times based on whether it's today - use tenant timezone
-  const availableTimes = isToday
-    ? TIMES.filter((time) => {
-        const currentHour = referenceTime.getHours();
-        const timeHour = time.getHours();
-        return timeHour > currentHour;
-      })
-    : TIMES;
+  const availableTimes = TIMES.filter((time) => {
+    const timeHour = time.getHours();
+    const timeMinute = time.getMinutes();
+    const timeInMinutes = timeHour * 60 + timeMinute;
+
+    if (isToday) {
+      const currentHour = referenceTime.getHours();
+      if (timeHour <= currentHour) return false;
+    }
+
+    if (minTime) {
+      const minInMinutes = minTime.getHours() * 60 + minTime.getMinutes();
+      if (timeInMinutes <= minInMinutes) return false;
+    }
+
+    if (maxTime) {
+      const maxInMinutes = maxTime.getHours() * 60 + maxTime.getMinutes();
+      if (timeInMinutes >= maxInMinutes) return false;
+    }
+
+    return true;
+  });
 
   // Make sure the selected time is centered inside
   // of the scroll container
