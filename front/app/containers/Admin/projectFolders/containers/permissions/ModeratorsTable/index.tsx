@@ -7,6 +7,7 @@ import {
   Tbody,
   colors,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
@@ -14,8 +15,9 @@ import { IUserData } from 'api/users/types';
 import HeaderCell from 'components/admin/UsersTable/HeaderCell';
 import userTableMessages from 'components/admin/UsersTable/messages';
 
-import messages from './messages';
 import Row from './Row';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   moderators: IUserData[];
@@ -23,6 +25,14 @@ interface Props {
 }
 
 const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
+  if (moderators.length === 0) {
+    return (
+      <Text>
+        <FormattedMessage {...messages.noModerators} />
+      </Text>
+    );
+  }
+
   return (
     <TableComponent
       border={`1px solid ${colors.grey300}`}
