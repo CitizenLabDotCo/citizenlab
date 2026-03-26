@@ -152,6 +152,8 @@ class Project < ApplicationRecord
     where(visible_to: 'public')
   }
 
+  scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
+
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
     project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)

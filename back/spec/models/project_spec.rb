@@ -220,6 +220,38 @@ RSpec.describe Project do
     end
   end
 
+  describe 'with_active_phase scope' do
+    let!(:active_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: Time.zone.today + 7.days)
+      end
+    end
+
+    let!(:past_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 1.day)
+      end
+    end
+
+    let!(:future_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today + 1.day, end_at: Time.zone.today + 30.days)
+      end
+    end
+
+    let!(:open_ended_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: nil)
+      end
+    end
+
+    let!(:no_phase_project) { create(:project) }
+
+    it 'returns only projects with a currently active phase' do
+      expect(described_class.with_active_phase).to contain_exactly(active_project, open_ended_project)
+    end
+  end
+
   describe "'hidden' scopes" do
     let!(:project) { create(:project) }
     let!(:hidden_project) { create(:project, hidden: true) }
