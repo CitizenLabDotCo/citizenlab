@@ -21,7 +21,7 @@ const addModerator = async ({
     path: `/project_folders/${projectFolderId}/moderators`,
     action: 'post',
     body: {
-      project_folder_moderator: {
+      moderator: {
         user_id,
         user_email,
       },

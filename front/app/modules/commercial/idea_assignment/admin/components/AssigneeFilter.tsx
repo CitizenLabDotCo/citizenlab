@@ -48,7 +48,7 @@ const AssigneeFilter = ({
       ? {
           can_moderate: true,
         }
-      : { can_admin: true }),
+      : { admins_only: true }),
   });
 
   if (!authUser || !prospectAssignees) {

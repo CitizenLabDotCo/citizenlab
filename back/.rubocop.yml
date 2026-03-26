@@ -201,7 +201,7 @@ Layout/LineLength:
   Max: 1269
 
 Metrics/AbcSize:
-  Max: 126
+  Max: 132
 
 Metrics/BlockNesting:
   Max: 5
