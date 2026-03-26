@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
 import AsyncSelect from 'react-select/async';
 import { useTheme } from 'styled-components';
 
@@ -66,33 +67,64 @@ const LocationInput = (props: LocationInputProps) => {
     }
   }, [locale, props.value?.value]);
 
-  const promiseOptions = async (inputValue: string) => {
-    try {
-      const response = await fetcher<TextSearchResponse>({
-        path: '/location/autocomplete',
-        action: 'get',
-        queryParams: {
-          input: inputValue,
-          language: locale,
-        },
-      });
+  const fetchOptions = useCallback(
+    async (inputValue: string) => {
+      try {
+        const response = await fetcher<TextSearchResponse>({
+          path: '/location/autocomplete',
+          action: 'get',
+          queryParams: {
+            input: inputValue,
+            language: locale,
+          },
+        });
 
-      const options =
-        response.data.attributes.results?.map((item) => ({
-          label: item,
-          value: item,
-        })) || [];
+        const options =
+          response.data.attributes.results?.map((item) => ({
+            label: item,
+            value: item,
+          })) || [];
 
-      // Add the inputValue as an option if it is a valid coordinate
-      if (isValidCoordinate(inputValue)) {
-        options.push({ label: inputValue, value: inputValue });
+        // Add the inputValue as an option if it is a valid coordinate
+        if (isValidCoordinate(inputValue)) {
+          options.push({ label: inputValue, value: inputValue });
+        }
+
+        return options;
+      } catch (error) {
+        return [];
       }
+    },
+    [locale]
+  );
 
-      return options;
-    } catch (error) {
-      return [];
-    }
-  };
+  // Using debounce limit the number of calls to the location API
+  // by waiting X seconds after the last key press
+  const debouncedFetchRef = useRef(
+    debounce(
+      (inputValue: string, resolve: (options: Option[]) => void) => {
+        fetchOptions(inputValue).then(resolve);
+      },
+      500 // 0.5 seconds
+    )
+  );
+
+  useEffect(() => {
+    debouncedFetchRef.current = debounce(
+      (inputValue: string, resolve: (options: Option[]) => void) => {
+        fetchOptions(inputValue).then(resolve);
+      },
+      500
+    );
+  }, [fetchOptions]);
+
+  const promiseOptions = useCallback(
+    (inputValue: string) =>
+      new Promise<Option[]>((resolve) => {
+        debouncedFetchRef.current(inputValue, resolve);
+      }),
+    []
+  );
 
   return (
     <AsyncSelect
