@@ -9,7 +9,8 @@
     "fr-FR": "Spécialiste en participation Go Vocal"
   },
   "input": {
-    "de-DE": "Beitrag"
+    "de-DE": "Beitrag",
+    "fr-FR": "contribution"
   },
   "inputs": {
     "de-DE": "Beiträge"
