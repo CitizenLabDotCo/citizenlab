@@ -1,4 +1,4 @@
-lb-LU:
+lb:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 Stonnen.
