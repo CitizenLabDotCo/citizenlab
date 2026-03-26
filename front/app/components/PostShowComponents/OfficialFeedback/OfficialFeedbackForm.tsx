@@ -12,6 +12,7 @@ import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
@@ -27,6 +28,7 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage, isNilOrError } from 'utils/helperUtils';
+import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -96,6 +98,7 @@ const OfficialFeedbackForm = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { mutate: addOfficialFeedbackToIdea } = useAddIdeaOfficialFeedback();
@@ -221,7 +224,7 @@ const OfficialFeedbackForm = ({
     return validated;
   };
 
-  const handleOnSubmit = (event: React.FormEvent) => {
+  const handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!processing && validate()) {
@@ -229,9 +232,14 @@ const OfficialFeedbackForm = ({
       setError(false);
       setSuccess(false);
 
-      const feedbackValues = {
+      const feedbackValues: {
+        author_multiloc: Multiloc;
+        body_multiloc: Multiloc;
+        weglot_data: WeglotDataOrEmpty;
+      } = {
         author_multiloc: formValues.authorMultiloc,
         body_multiloc: {} as Multiloc,
+        weglot_data: {},
       };
 
       forOwn(formValues.bodyMultiloc, (bodyText, locale) => {
@@ -240,6 +248,18 @@ const OfficialFeedbackForm = ({
           '@$2'
         );
       });
+
+      const originalBody = feedbackValues.body_multiloc[locale] ?? '';
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        originalBody,
+        locale,
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
+      );
+      feedbackValues.body_multiloc = {
+        ...feedbackValues.body_multiloc,
+        [locale]: translatedText,
+      };
+      feedbackValues.weglot_data = weglotData;
 
       const onSuccess = () => {
         setFormValues(getEmptyFormValues());
