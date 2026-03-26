@@ -870,11 +870,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     it 'excludes empty string values when merging item and user custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}domicile" => '' })
-      user = create(:user, custom_field_values: { 'domicile' => 'some_area_id', 'gender' => 'male' })
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '' })
+      user = create(:user, custom_field_values: { 'key1' => 'value1', 'key2' => 'value2' })
 
       result = service.send(:parse_user_custom_field_values, item, user)
-      expect(result).to eq({ 'gender' => 'male' })
+      expect(result).to eq({ 'key2' => 'value2' })
     end
   end
 end
