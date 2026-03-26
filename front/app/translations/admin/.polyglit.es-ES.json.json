@@ -5959,6 +5959,11 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.preview": {
+    "state": "verified",
+    "verified_at": "2026-03-26T13:31:11.098901Z",
+    "verified_by": "Rob"
+  },
   "app.containers.Admin.project.emails.previewSentConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
