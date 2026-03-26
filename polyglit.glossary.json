@@ -18,7 +18,8 @@
   },
   "manager": {
     "de-DE": "Manager*innen",
-    "es-ES": "gestor"
+    "es-ES": "gestor",
+    "fr-FR": "gestionnaire"
   },
   "seat": {
     "de-DE": "Zugang",
