@@ -15,6 +15,11 @@ module AdminApi
       render json: tenants_json
     end
 
+    def by_host
+      tenant = Tenant.find_by!(host: params[:host])
+      render json: AdminApi::TenantSerializer.new(tenant).to_json
+    end
+
     def show
       # Call #to_json explicitly, otherwise 'data' is added as root.
       render json: AdminApi::TenantSerializer.new(@tenant).to_json

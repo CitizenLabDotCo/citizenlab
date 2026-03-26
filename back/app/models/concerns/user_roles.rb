@@ -3,7 +3,7 @@
 module UserRoles # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
-  ROLES = %w[admin project_moderator project_folder_moderator].freeze
+  ROLES = %w[admin project_moderator project_folder_moderator space_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
   GOVOCAL_MEMBER_REGEX_CONTENT = 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
@@ -60,12 +60,39 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       where.not(id: project_folder_moderator(*project_folder_ids))
     }
 
+    scope :space_moderator, lambda { |space_id = nil|
+      if space_id
+        where('roles @> ?', JSON.generate([{ type: 'space_moderator', space_id: space_id }]))
+      else
+        where("roles @> '[{\"type\":\"space_moderator\"}]'")
+      end
+    }
+
+    scope :not_space_moderator, lambda { |space_id = nil|
+      return where.not(id: space_moderator) if space_id.nil?
+
+      where.not(id: space_moderator(space_id))
+    }
+
     scope :project_reviewers, lambda { |project_reviewer = true|
       json_roles = [{ type: 'admin', project_reviewer: true }].to_json
       project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
     }
 
-    scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
+    scope :moderator, -> { where(id: project_moderator).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
+    scope :admin_or_moderator, -> { admin.or(moderator) }
+
+    scope :can_moderate, lambda { |project_id = nil|
+      if project_id
+        project = Project.find(project_id)
+        moderators = project_moderator(project.id)
+        moderators = moderators.or(project_folder_moderator(project.folder_id)) if project.folder_id
+        moderators = moderators.or(space_moderator(project.space_id)) if project.space_id
+        admin.or(moderators)
+      else
+        admin_or_moderator
+      end
+    }
 
     scope :order_role, lambda { |direction = :asc|
       joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -85,10 +112,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     scope :billed_admins, -> { admin.not_citizenlab_member }
-    scope :billed_moderators, lambda {
-      # use any conditions before `or` very carefully (inspect the generated SQL)
-      project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
-    }
+    scope :billed_moderators, -> { moderator.not_admin.not_citizenlab_member }
 
     scope :super_admins, -> { citizenlab_member.admin }
     scope :not_super_admins, -> { where.not(id: super_admins) }
@@ -109,6 +133,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       :super_admin
     elsif admin?
       :admin
+    elsif space_moderator?
+      :space_moderator
     elsif project_folder_moderator?
       :project_folder_moderator
     elsif project_moderator?
@@ -134,15 +160,20 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
   end
 
-  def project_or_folder_moderator?
-    project_moderator? || project_folder_moderator?
+  def moderator?
+    project_moderator? || project_folder_moderator? || space_moderator?
+  end
+
+  def space_moderator?(space_id = nil)
+    space_id ? moderated_space_ids.include?(space_id) : moderated_space_ids.present?
   end
 
   def normal_user?
-    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
+    highest_role == :user
   end
 
-  # Returns an array of project IDs that the user, other than an admin, moderates, either directly or through a folder.
+  # Returns an array of project IDs that the user, other than an admin, moderates,
+  # either directly, through a folder, or through a space.
   # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
     moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
@@ -157,11 +188,18 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       .where(publication_type: 'Project')
       .pluck(:publication_id)
 
-    (moderated_directly_ids + moderated_folder_project_ids).uniq
+    # Include ids of projects in spaces the user moderates
+    moderated_space_project_ids = Project.where(space_id: moderated_space_ids).pluck(:id)
+
+    (moderated_directly_ids + moderated_folder_project_ids + moderated_space_project_ids).uniq
   end
 
   def moderated_project_folder_ids
     roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck('project_folder_id').compact
+  end
+
+  def moderated_space_ids
+    roles.select { |role| role['type'] == 'space_moderator' }.pluck('space_id').compact
   end
 
   def add_role(type, options = {})

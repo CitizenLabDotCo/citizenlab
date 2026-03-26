@@ -155,7 +155,7 @@ const BuiltInFields = ({
                 name="password"
                 id="password"
                 label={formatMessage(sharedMessages.password)}
-                autocomplete="current-password"
+                autocomplete="new-password"
                 required
               />
             </Box>

@@ -65,15 +65,18 @@ Tenant changed
 Tenant changed_host
 Tenant timestamps_shifted
 Topic created
-User admin_rights_given
+User admin_rights_received
 User changed
 User completed_registration
 User created
 User deleted
 User exported_users_sheet
-User project_folder_moderation_rights_given
-User project_moderation_rights_given
+User project_folder_moderation_rights_received
+User project_folder_moderation_rights_removed
+User project_moderation_rights_received
 User project_moderation_rights_removed
+User space_moderation_rights_received
+User space_moderation_rights_removed
 User requested password reset
 User requested_password_reset
 User searched_users
