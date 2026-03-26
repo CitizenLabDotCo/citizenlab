@@ -550,7 +550,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.3.0)
-    bcrypt (3.1.20)
+    bcrypt (3.1.22)
     benchmark (0.5.0)
     bigdecimal (3.3.1)
     bindata (2.5.0)
@@ -621,6 +621,9 @@ GEM
       database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
     date (3.4.1)
+    debug (1.11.1)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     diff-lcs (1.5.1)
@@ -751,8 +754,11 @@ GEM
       rack (< 3)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    icalendar (2.10.1)
+    icalendar (2.12.2)
+      base64
       ice_cube (~> 0.16)
+      logger
+      ostruct
     ice_cube (0.17.0)
     image_processing (1.14.0)
       mini_magick (>= 4.9.5, < 6)
@@ -936,6 +942,7 @@ GEM
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.4)
+    ostruct (0.6.3)
     parallel (1.26.3)
     parser (3.3.6.0)
       ast (~> 2.4.1)
@@ -1361,6 +1368,7 @@ DEPENDENCIES
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.1.0)
+  debug
   document_annotation!
   docx (~> 0.3.0)
   drb

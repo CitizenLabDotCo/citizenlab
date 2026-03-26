@@ -43,9 +43,13 @@ const InviteUsersWithSeatsModal = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const newSeats = newSeatsResponse.data.attributes;
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.result.newly_added_moderators_number,
+  const { loading, checkIfSeatsExceeded } = useExceedsSeats();
+  if (loading) return null;
+
+  const exceedsSeats = checkIfSeatsExceeded({
+    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number ?? 0,
+    newlyAddedModeratorsNumber:
+      newSeats.result.newly_added_moderators_number ?? 0,
   });
 
   const handleConfirmClick = () => {

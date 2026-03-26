@@ -6,38 +6,119 @@ describe UserRoleService do
   let(:service) { described_class.new }
 
   describe 'can_moderate?' do
+    shared_examples 'shared expectations for object related to project' do |object_name|
+      it "permits admins and project moderators of related project for #{object_name}" do
+        object = send(object_name)
+        project = send(:project)
+
+        expect(service).to be_can_moderate(object, create(:admin))
+        expect(service).to be_can_moderate(object, create(:project_moderator, projects: [project]))
+
+        expect(service).not_to be_can_moderate(object, create(:user))
+        expect(service).not_to be_can_moderate(object, create(:project_moderator, projects: [create(:project)]))
+        expect(service).not_to be_can_moderate(object, create(:project_folder_moderator))
+      end
+
+      it "also permits folder moderators for #{object_name} when related project is in their moderated folder" do
+        object = send(object_name)
+        project = send(:project)
+        folder = create(:project_folder, projects: [project])
+
+        expect(service).to be_can_moderate(object, create(:admin))
+        expect(service).to be_can_moderate(object, create(:project_moderator, projects: [project]))
+        expect(service).to be_can_moderate(object, create(:project_folder_moderator, project_folders: [folder]))
+
+        expect(service).not_to be_can_moderate(object, create(:user))
+        expect(service).not_to be_can_moderate(object, create(:project_moderator, projects: [create(:project)]))
+        expect(service).not_to be_can_moderate(object, create(:project_folder_moderator, project_folders: [create(:project_folder)]))
+      end
+    end
+
+    it 'for a project' do
+      project = create(:project)
+
+      expect(service).to be_can_moderate(project, create(:admin))
+      expect(service).not_to be_can_moderate(project, create(:user))
+    end
+
     it 'for a project folder' do
       project = create(:project)
       folder = create(:project_folder, projects: [project])
 
       expect(service).to be_can_moderate(folder, create(:project_folder_moderator, project_folders: [folder]))
       expect(service).to be_can_moderate(folder, create(:admin))
+
       expect(service).not_to be_can_moderate(folder, create(:user))
       expect(service).not_to be_can_moderate(folder, create(:project_folder_moderator))
       expect(service).not_to be_can_moderate(folder, create(:project_moderator, projects: [project]))
     end
 
-    it 'for a project' do
+    it 'for a project in a folder' do
       project = create(:project)
+      folder = create(:project_folder, projects: [project])
 
-      expect(service.can_moderate?(project, create(:admin))).to be true
-      expect(service.can_moderate?(project, create(:user))).to be false
+      expect(service).to be_can_moderate(project, create(:project_moderator, projects: [project]))
+      expect(service).to be_can_moderate(project, create(:project_folder_moderator, project_folders: [folder]))
+      expect(service).to be_can_moderate(project, create(:admin))
+
+      expect(service).not_to be_can_moderate(project, create(:user))
+      expect(service).not_to be_can_moderate(project, create(:project_moderator, projects: [create(:project)]))
+      expect(service).not_to be_can_moderate(project, create(:project_folder_moderator, project_folders: [create(:project_folder)]))
     end
 
-    it 'for an idea' do
-      project = create(:project)
-      idea = create(:idea, project: project)
+    context 'for a phase' do
+      let(:project) { create(:project) }
+      let(:phase) { create(:phase, project: project) }
 
-      expect(service.can_moderate?(idea, create(:admin))).to be true
-      expect(service.can_moderate?(idea, create(:user))).to be false
+      include_examples 'shared expectations for object related to project', :phase
     end
 
-    it 'for a comment' do
-      proposal = create(:proposal)
-      comment = create(:comment, idea: proposal)
+    context 'for an idea' do
+      let(:project) { create(:project) }
+      let(:idea) { create(:idea, project: project) }
 
-      expect(service.can_moderate?(comment, create(:admin))).to be true
-      expect(service.can_moderate?(comment, create(:user))).to be false
+      include_examples 'shared expectations for object related to project', :idea
+    end
+
+    context 'for a comment' do
+      let(:project) { create(:single_phase_proposals_project) }
+      let(:proposal) { create(:proposal, project: project, creation_phase: project.phases.first) }
+      let(:comment) { create(:comment, idea: proposal) }
+
+      include_examples 'shared expectations for object related to project', :comment
+    end
+
+    context 'for a reaction to an idea' do
+      let(:project) { create(:project) }
+      let(:idea) { create(:idea, project: project) }
+      let(:reaction) { create(:reaction, reactable: idea) }
+
+      include_examples 'shared expectations for object related to project', :reaction
+    end
+
+    context 'for a reaction to a comment' do
+      let(:project) { create(:single_phase_proposals_project) }
+      let(:proposal) { create(:proposal, project: project, creation_phase: project.phases.first) }
+      let(:comment) { create(:comment, idea: proposal) }
+      let(:reaction) { create(:reaction, reactable: comment) }
+
+      include_examples 'shared expectations for object related to project', :reaction
+    end
+
+    context 'for a permission' do
+      let(:project) { create(:project) }
+      let(:phase) { create(:phase, project: project) }
+      let(:permission) { create(:permission, permission_scope: phase) }
+
+      include_examples 'shared expectations for object related to project', :permission
+    end
+
+    context 'for an official feedback' do
+      let(:project) { create(:project) }
+      let(:idea) { create(:idea, project: project) }
+      let(:official_feedback) { create(:official_feedback, idea: idea) }
+
+      include_examples 'shared expectations for object related to project', :official_feedback
     end
   end
 
@@ -71,69 +152,61 @@ describe UserRoleService do
   end
 
   describe 'moderators_for' do
-    it 'lists all moderators of a project folder' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      other_folder = create(:project_folder)
-      create(:user)
-      admin = create(:admin)
-      create(:project_moderator, projects: [project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
+    let!(:space) { create(:space) }
+    let!(:project) { create(:project, space: space) }
+    let!(:other_project) { create(:project) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
+    let!(:other_folder) { create(:project_folder) }
 
-      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderators[0].id)
+    let!(:user) { create(:user) }
+    let!(:admin) { create(:admin) }
+    let!(:project_moderator_a) { create(:project_moderator, projects: [project]) }
+    let!(:project_moderator_b) { create(:project_moderator, projects: [project]) }
+    let!(:other_project_moderator) { create(:project_moderator, projects: [other_project]) }
+    let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
+    let!(:other_folder_moderator) { create(:project_folder_moderator, project_folders: [other_folder]) }
+    let!(:space_moderator) { create(:space_moderator, spaces: [space]) }
+    let!(:other_space_moderator) { create(:space_moderator) }
+
+    it 'lists all explicit and implicit moderators of a project folder' do
+      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a project' do
-      project = create(:project)
-      other_project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      other_folder = create(:project_folder, projects: [other_project])
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [project, other_project])
-      create(:project_moderator, projects: [other_project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
-
-      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, moderator.id, folder_moderators[0].id)
+    it 'lists all explicit and implicit moderators of a project' do
+      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of an idea' do
-      project = create(:project)
-      other_project = create(:project)
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [other_project, project])
-      also_moderator = create(:project_moderator, projects: [project])
-      create(:project_moderator, projects: [other_project])
+    it 'lists all explicit and implicit moderators of a phase' do
+      phase = create(:phase, project: project)
+
+      expect(service.moderators_for(phase.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
+    end
+
+    it 'lists all explicit and implicit moderators of an idea' do
       idea = create(:idea, project: project)
 
-      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
+      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a comment' do
-      project = create(:project)
-      other_project = create(:project)
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [other_project, project])
-      also_moderator = create(:project_moderator, projects: [project])
-      create(:project_moderator, projects: [other_project])
+    it 'lists all explicit and implicit moderators of a comment' do
       idea = create(:idea, project: project)
       comment = create(:comment, idea: idea)
 
-      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
+      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
+    end
+
+    it 'lists all explicit and implicit moderators of a permission' do
+      phase = create(:phase, project: project)
+      permission = create(:permission, permission_scope: phase)
+
+      expect(service.moderators_for(permission).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
   end
 
   describe 'moderators_for_project' do
-    it 'lists only project and folder moderators and admins' do
-      project = create(:project)
+    it 'lists project, folder, and space moderators and admins' do
+      space = create(:space)
+      project = create(:project, space: space)
       other_project = create(:project)
       folder = create(:project_folder, projects: [project])
       other_folder = create(:project_folder, projects: [other_project])
@@ -148,8 +221,12 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [folder]),
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
+      space_moderator = create(:space_moderator, spaces: [space])
+      create(:space_moderator) # for another space
 
-      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id)
+      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(
+        admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id, space_moderator.id
+      )
     end
   end
 
@@ -160,13 +237,15 @@ describe UserRoleService do
       expect(service.moderatable_projects(create(:user)).ids).to eq []
     end
 
-    it 'lists all projects for admins' do
+    it 'lists all projects in the given scope for admins' do
       public_projects = create_list(:project, 3, visible_to: 'public')
       create(:project, visible_to: 'admins')
 
       expect(
         service.moderatable_projects(create(:admin), Project.where(visible_to: 'public')).ids
       ).to match_array public_projects.map(&:id)
+
+      expect(service.moderatable_projects(create(:admin)).ids).to match_array Project.all.map(&:id)
     end
 
     it 'lists some projects for project moderators' do
@@ -193,6 +272,16 @@ describe UserRoleService do
       expect(service.moderatable_projects(other_moderator)).to match_array(other_project)
     end
 
+    it 'lists projects in moderated spaces for space moderators' do
+      space = create(:space)
+      projects_in_space = create_list(:project, 2, space: space)
+      create(:project) # project not in space
+
+      moderator = create(:space_moderator, spaces: [space])
+
+      expect(service.moderatable_projects(moderator)).to match_array(projects_in_space)
+    end
+
     context 'when the user is both project moderator and admin' do
       let(:projects) { create_list(:project, 2) }
       let(:folder) { create(:project_folder, projects: projects.take(1)) }
@@ -200,6 +289,20 @@ describe UserRoleService do
 
       it 'lists all projects' do
         expect(service.moderatable_projects(user)).to match_array(projects)
+      end
+    end
+
+    context 'when the user is both project moderator and folder moderator' do
+      let(:projects) { create_list(:project, 2) }
+      let(:project_in_folder) { create(:project) }
+
+      let(:folder) { create(:project_folder, projects: [project_in_folder]) }
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]).add_role('project_moderator', project_id: projects.last.id) }
+
+      it 'lists all moderatable projects in given scope' do
+        expect(service.moderatable_projects(user)).to contain_exactly(projects.last, project_in_folder)
+
+        expect(service.moderatable_projects(user, Project.where(id: [projects.first.id, project_in_folder.id]))).to eq([project_in_folder])
       end
     end
   end
@@ -219,6 +322,10 @@ describe UserRoleService do
 
     it 'permits folders moderators' do
       expect(service.moderates_something?(create(:project_folder_moderator))).to be true
+    end
+
+    it 'permits space moderators' do
+      expect(service.moderates_something?(create(:space_moderator))).to be true
     end
   end
 

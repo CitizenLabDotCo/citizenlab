@@ -202,6 +202,10 @@ type BoxTransformProps = {
   transform?: string;
 };
 
+type BoxPointerEventsProps = {
+  pointerEvents?: 'auto' | 'none' | 'initial' | 'inherit';
+};
+
 export type BoxProps = BoxColorProps &
   BoxShadowProps &
   BoxBackgroundProps &
@@ -219,6 +223,7 @@ export type BoxProps = BoxColorProps &
   BoxCursorProps &
   BoxAspectRatioProps &
   BoxTransformProps &
+  BoxPointerEventsProps &
   React.HTMLAttributes<HTMLDivElement> &
   React.HTMLAttributes<HTMLQuoteElement>;
 
@@ -386,6 +391,11 @@ const Box = styled.div<BoxProps>`
   // transformation
   ${(props) => css`
     ${props.transform ? `transform: ${props.transform}` : ''};
+  `}
+
+  // pointer events
+  ${(props) => css`
+    ${props.pointerEvents ? `pointer-events: ${props.pointerEvents}` : ''};
   `}
 `;
 

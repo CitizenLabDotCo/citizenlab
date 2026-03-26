@@ -16,7 +16,7 @@ import useUnbanEmail from 'api/email_bans/useUnbanEmail';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import UsersHeader from './UsersHeader';
+import UsersHeader from './_shared/UsersHeader';
 
 const BannedEmails = () => {
   const { formatMessage } = useIntl();

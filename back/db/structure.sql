@@ -1312,7 +1312,8 @@ CREATE TABLE public.official_feedbacks (
     user_id uuid,
     idea_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1682,7 +1683,8 @@ CREATE TABLE public.comments (
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
     author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL
+    anonymous boolean DEFAULT false NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1737,7 +1739,8 @@ CREATE TABLE public.ideas (
     manual_votes_amount integer,
     manual_votes_last_updated_by_id uuid,
     manual_votes_last_updated_at timestamp(6) without time zone,
-    neutral_reactions_count integer DEFAULT 0 NOT NULL
+    neutral_reactions_count integer DEFAULT 0 NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -8506,6 +8509,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260313160000'),
+('20260313120000'),
 ('20260312142054'),
 ('20260311100002'),
 ('20260311100001'),

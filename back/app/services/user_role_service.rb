@@ -12,7 +12,9 @@ class UserRoleService
     when 'Reaction'
       can_moderate? object.reactable, user
     when 'ProjectFolders::Folder'
-      user.admin? || (object.id && user.project_folder_moderator?(object.id))
+      user.admin? ||
+        (object.id && user.project_folder_moderator?(object.id)) ||
+        (object.space_id && user.space_moderator?(object.space_id))
     when 'Project'
       can_moderate_project? object, user
     when 'Phase'
@@ -20,13 +22,17 @@ class UserRoleService
     when 'Permission'
       context = object.permission_scope
       context ? can_moderate?(context, user) : user.admin?
+    when 'Space'
+      user.admin? || (object.id && user.space_moderator?(object.id))
     end
   end
 
   def can_moderate_project?(project, user)
     user.admin? ||
       (project.persisted? && user.project_moderator?(project.id)) ||
-      (project.in_folder? && user.project_folder_moderator?(project.folder_id))
+      (project.in_folder? && user.project_folder_moderator?(project.folder_id)) ||
+      (project.space_id && user.space_moderator?(project.space_id)) ||
+      false # Avoid returning nil if a condition evaluates to nil
   end
 
   def moderators_for(object, scope = User)
@@ -36,7 +42,9 @@ class UserRoleService
     when 'Comment'
       moderators_for object.idea, scope
     when 'ProjectFolders::Folder'
-      scope.admin.or(scope.project_folder_moderator(object.id))
+      moderators = scope.admin.or(scope.project_folder_moderator(object.id))
+      moderators = moderators.or(scope.space_moderator(object.space_id)) if object.space_id
+      moderators
     when 'Project'
       moderators_for_project object, scope
     when 'Phase'
@@ -47,11 +55,12 @@ class UserRoleService
     end
   end
 
-  # Includes admins, folder and project moderators
+  # Includes admins, project, folder and space moderators
   def moderators_for_project(project, scope = User)
     moderators_scope = scope.admin
     moderators_scope = moderators_scope.or scope.project_moderator(project.id) if project.id
     moderators_scope = moderators_scope.or scope.project_folder_moderator(project.folder_id) if project.folder_id
+    moderators_scope = moderators_scope.or scope.space_moderator(project.space_id) if project.space_id
     moderators_scope
   end
 
@@ -59,24 +68,15 @@ class UserRoleService
     return scope.none unless user
     return scope.all if user.admin?
 
-    moderatable_projects = scope.none
-    if user.project_moderator?
-      moderatable_projects = moderatable_projects.or(scope.where(id: user.moderatable_project_ids))
+    if user.project_moderator? || user.project_folder_moderator? || user.space_moderator?
+      scope.where(id: user.moderatable_project_ids)
+    else
+      scope.none
     end
-    if user.project_folder_moderator?
-      admin_publications = AdminPublication
-        .joins(:parent)
-        .where(parents_admin_publications: {
-          publication_type: 'ProjectFolders::Folder',
-          publication_id: user.moderated_project_folder_ids
-        })
-      moderatable_projects = moderatable_projects.or(scope.where(admin_publication: admin_publications))
-    end
-    moderatable_projects
   end
 
   def moderates_something?(user)
-    user.admin? || user.project_moderator? || user.project_folder_moderator?
+    user.admin? || user.project_moderator? || user.project_folder_moderator? || user.space_moderator?
   end
 
   # Returns a hash with project IDs as keys and arrays of users as values
