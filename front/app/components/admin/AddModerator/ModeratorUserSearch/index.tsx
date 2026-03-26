@@ -45,6 +45,7 @@ const ModeratorUserSearch = ({
     if (moderatorToAdd) {
       setLoading(true);
       await onAddModerator(moderatorToAdd.id);
+      setModeratorToAdd(undefined);
       setLoading(false);
     }
   };
