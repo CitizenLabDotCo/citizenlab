@@ -1219,7 +1219,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "احصل على لمحة عامة مرئية عن الجداول الزمنية لمشاريعك في عرض التقويم. حدد بسرعة المشاريع والمراحل التي تبدأ أو تنتهي قريبًا والتي تتطلب اتخاذ إجراء.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "فهم ما يحدث ومتى يحدث",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "جميع الأسئلة معروضة في ملف PDF. مع ذلك، لا يُدعم استيراد ما يلي حاليًا عبر FormSync: الصور، والوسوم، وتحميل الملفات.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "جميع الأسئلة معروضة في ملف PDF. مع ذلك، لا يُدعم استيراد الأسئلة التالية عبر FormSync حاليًا: أسئلة التعيين (إسقاط الدبوس، مسار الرسم، ومنطقة الرسم)، وأسئلة التصنيف، وأسئلة المصفوفة، وأسئلة تحميل الملفات.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "نهاية النموذج",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "بداية النموذج",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",

@@ -1219,7 +1219,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Få et visuelt overblik over dine projekttidslinjer i vores kalendervisning. Identificer hurtigt, hvilke projekter og faser der snart starter eller slutter og kræver handling.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Forstå, hvad der sker og hvornår",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Billeder, tags og filupload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Kort-spørgsmål (drop pin, draw route og draw area), rangordningsspørgsmål, matrix-spørgsmål og filupload-spørgsmål.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Slut på formularen",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Start af formularen",
   "app.containers.Admin.projects.all.components.archived": "Arkiveret",

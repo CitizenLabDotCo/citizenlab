@@ -1219,7 +1219,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "ہمارے کیلنڈر کے منظر میں اپنے پروجیکٹ کی ٹائم لائنز کا بصری جائزہ حاصل کریں۔ فوری طور پر شناخت کریں کہ کون سے منصوبے اور مراحل جلد شروع یا ختم ہو رہے ہیں اور کارروائی کی ضرورت ہے۔",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "سمجھیں کہ کیا ہو رہا ہے اور کب ہو رہا ہے۔",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: امیجز، ٹیگز اور فائل اپ لوڈ۔",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: نقشہ سازی کے سوالات (ڈراپ پن، ڈرا روٹ اور ڈرا ایریا)، درجہ بندی کے سوالات، میٹرکس کے سوالات اور فائل اپ لوڈ کے سوالات۔",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "فارم کا اختتام",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "فارم کا آغاز",
   "app.containers.Admin.projects.all.components.archived": "محفوظ شدہ",
