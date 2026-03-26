@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { parseISO, subDays } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { SubmitStateType, ValidationErrors } from '../typings';
 
-import { getDefaultMonth } from './utils';
+import { getDefaultMonth, adjustEndForDisplay } from './utils';
 
 interface Props {
   formData: IUpdatedPhaseProperties;
@@ -31,20 +31,6 @@ interface Props {
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
-
-/**
- * Adjusts end dates for calendar display.
- * If a phase ends at midnight (00:00), it visually appears to end on the previous day.
- * This prevents visual overlaps and ensures clean calendar rendering.
- */
-const adjustEndForDisplay = (date?: Date) => {
-  if (!date) return date;
-
-  const isMidnight =
-    date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0;
-
-  return isMidnight ? subDays(date, 1) : date;
-};
 
 const DateSetup = ({
   formData,
