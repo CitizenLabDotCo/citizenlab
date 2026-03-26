@@ -81,7 +81,8 @@ module IdFedera
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
         idp_sso_service_url_runtime_params: { RelayState: :RelayState },
         idp_sso_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1'])
+        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1']),
+        request_attributes: []
       )
 
       if private_key.present?
