@@ -65,20 +65,30 @@ class ActivitiesService
   end
 
   def create_phase_ending_soon_activities(now)
-    if now.hour >= 8 && now.hour <= 20 # Only log activities during day time so they emails are more likely to be noticed
-      Phase.published.where(end_at: now..now + 2.days).each do |phase|
-        if Activity.find_by(item: phase, action: 'ending_soon').nil?
-          LogActivityJob.perform_later(phase, 'ending_soon', nil, now)
-        end
-      end
+    # Only log activities during daytime, so email notifications are more likely to be noticed.
+    return unless now.hour >= 8 && now.hour <= 20
+
+    ending_soon_phases = Phase.published.where(end_at: now..(now + 2.days))
+
+    excluded_phases = Activity
+      .where(item_id: ending_soon_phases, action: 'ending_soon')
+      .select(:item_id)
+
+    ending_soon_phases.where.not(id: excluded_phases).each do |phase|
+      LogActivityJob.perform_later(phase, 'ending_soon', nil, now)
     end
   end
 
   def create_basket_not_submitted_activities(now)
-    Basket.not_submitted.each do |basket|
-      next if Activity.find_by(item: basket, action: 'not_submitted')
+    baskets = Basket.not_submitted.includes(:phase, :baskets_ideas)
+
+    excluded_baskets = Activity
+      .where(item_id: baskets, action: 'not_submitted')
+      .select(:item_id)
+
+    baskets.where.not(id: excluded_baskets).each do |basket|
       next if basket.baskets_ideas.blank?
-      next if basket.baskets_ideas.order(:updated_at).last.updated_at > now - 1.day
+      next if basket.baskets_ideas.max_by(&:updated_at).updated_at > now - 1.day
       next if basket.phase.ends_before?(now)
 
       LogActivityJob.perform_later(basket, 'not_submitted', nil, now)
@@ -86,13 +96,17 @@ class ActivitiesService
   end
 
   def create_survey_not_submitted_activities(now)
-    Idea.draft_surveys.each do |idea|
-      next if Activity.find_by(item: idea, action: 'survey_not_submitted')
+    draft_surveys = Idea.draft_surveys.includes(:creation_phase)
+
+    excluded_ideas = Activity
+      .where(item_id: draft_surveys, action: 'survey_not_submitted')
+      .select(:item_id)
+
+    draft_surveys.where.not(id: excluded_ideas).each do |idea|
       next if idea.updated_at > now - 1.day
       next if idea.creation_phase.ends_before?(now)
-
       # Is there survey already submitted by the same author in the same phase?
-      next if Idea.find_by(author_id: idea.author_id, creation_phase: idea.creation_phase, publication_status: 'published')
+      next if Idea.exists?(author_id: idea.author_id, creation_phase: idea.creation_phase, publication_status: 'published')
 
       LogActivityJob.perform_later(idea, 'survey_not_submitted', nil, now)
     end
