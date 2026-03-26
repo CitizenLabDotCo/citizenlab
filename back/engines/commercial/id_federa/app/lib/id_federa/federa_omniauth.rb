@@ -88,7 +88,7 @@ module IdFedera
         options[:private_key] = private_key
         options[:security] = {
           authn_requests_signed: true,
-          signature_method: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
+          signature_method: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
         }
       end
 

@@ -409,7 +409,7 @@ ICt/7LH3iUiRWjGjs6qRhdE=
       expect(query_params).to have_key('SAMLRequest')
       expect(query_params).to have_key('RelayState')
       expect(query_params).to have_key('SigAlg')
-      expect(query_params['SigAlg']).to eq('http://www.w3.org/2001/04/xmldsig-more#rsa-sha256')
+      expect(query_params['SigAlg']).to eq('http://www.w3.org/2000/09/xmldsig#rsa-sha1')
       expect(query_params).to have_key('Signature')
     end
   end
