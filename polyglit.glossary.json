@@ -2,6 +2,9 @@
   "FormSync": {
     "de-DE": "Papier-Scans"
   },
+  "input": {
+    "de-DE": "Beitrag"
+  },
   "manager": {
     "de-DE": "Manager*innen",
     "es-ES": "gestor"
