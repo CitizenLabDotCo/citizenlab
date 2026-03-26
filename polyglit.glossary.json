@@ -5,6 +5,9 @@
   "input": {
     "de-DE": "Beitrag"
   },
+  "inputs": {
+    "de-DE": "Beiträge"
+  },
   "manager": {
     "de-DE": "Manager*innen",
     "es-ES": "gestor"
