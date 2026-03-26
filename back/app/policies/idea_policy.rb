@@ -7,7 +7,7 @@ class IdeaPolicy < ApplicationPolicy
 
       if user&.admin?
         scope.all
-      elsif user&.project_or_folder_moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
+      elsif user&.moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
         scope
           .submitted_or_published.where(author: user)
           .or(scope.published.where_pmethod(&:supports_public_visibility?))

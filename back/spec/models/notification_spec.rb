@@ -87,10 +87,10 @@ RSpec.describe Notification do
       expect(notifications).to be_present
     end
 
-    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
+    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_received' do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
-      activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
+      activity = create(:activity, item: moderator, action: 'project_moderation_rights_received',
         payload: { project_id: project.id })
 
       notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
