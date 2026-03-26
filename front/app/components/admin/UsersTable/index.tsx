@@ -4,27 +4,16 @@ import {
   Table as TableComponent,
   Thead,
   Tr,
-  Th,
   Tbody,
   colors,
   stylingConsts,
-  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
+import HeaderCell from './HeaderCell';
 import messages from './messages';
 import Row from './Row';
-
-const HeaderCel = ({ message }: { message: MessageDescriptor }) => (
-  <Th py="16px">
-    <Text m="0" fontSize="s" fontWeight="bold">
-      <FormattedMessage {...message} />
-    </Text>
-  </Th>
-);
 
 interface Props {
   users: IUserData[];
@@ -39,10 +28,10 @@ const UsersTable = ({ users }: Props) => {
     >
       <Thead>
         <Tr background={colors.grey50}>
-          <HeaderCel message={messages.name} />
-          <HeaderCel message={messages.role} />
-          <HeaderCel message={messages.inviteStatus} />
-          <HeaderCel message={messages.options} />
+          <HeaderCell message={messages.name} />
+          <HeaderCell message={messages.role} />
+          <HeaderCell message={messages.inviteStatus} />
+          <HeaderCell message={messages.options} />
         </Tr>
       </Thead>
       <Tbody>
