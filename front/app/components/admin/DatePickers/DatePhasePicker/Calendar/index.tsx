@@ -7,6 +7,7 @@ import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
@@ -209,6 +210,9 @@ const Calendar = ({
   onUpdateRange,
   className,
 }: Props) => {
+  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
+    name: 'phase_datetime_setup',
+  });
   const { formatMessage } = useIntl();
   const [selectedStartTime, setSelectedStartTime] = useState<Date>(() => {
     if (selectedRange.from) {
@@ -396,34 +400,36 @@ const Calendar = ({
         timeZone={userTimezone}
         className={className}
       />
-      <TimeInputContainer>
-        <Box display="flex" gap="8px" alignItems="center">
-          <Text m="0">{formatMessage(messages.startTime)}</Text>
-          <TimeInput
-            selectedTime={selectedStartTime}
-            onChange={handleStartTimeChange}
-            minTime={startTimeMinTime}
-          />
-        </Box>
-        <Box display="flex" gap="8px" alignItems="center">
-          <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
-            {formatMessage(messages.endTime)}
-          </Text>
-          {selectedRange.to ? (
+      {isPhaseDatetimeSetupEnabled && (
+        <TimeInputContainer>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0">{formatMessage(messages.startTime)}</Text>
             <TimeInput
-              selectedTime={selectedEndTime}
-              onChange={handleEndTimeChange}
-              maxTime={endTimeMaxTime}
+              selectedTime={selectedStartTime}
+              onChange={handleStartTimeChange}
+              minTime={startTimeMinTime}
             />
-          ) : (
-            <OpenEndTimeContainer>
-              <Text m="0" color="grey600">
-                {formatMessage(messages.openEnded)}
-              </Text>
-            </OpenEndTimeContainer>
-          )}
-        </Box>
-      </TimeInputContainer>
+          </Box>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
+              {formatMessage(messages.endTime)}
+            </Text>
+            {selectedRange.to ? (
+              <TimeInput
+                selectedTime={selectedEndTime}
+                onChange={handleEndTimeChange}
+                maxTime={endTimeMaxTime}
+              />
+            ) : (
+              <OpenEndTimeContainer>
+                <Text m="0" color="grey600">
+                  {formatMessage(messages.openEnded)}
+                </Text>
+              </OpenEndTimeContainer>
+            )}
+          </Box>
+        </TimeInputContainer>
+      )}
     </DayPickerStyles>
   );
 };

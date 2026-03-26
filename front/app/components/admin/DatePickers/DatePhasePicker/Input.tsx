@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon, Box, InputContainer } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
@@ -27,15 +28,21 @@ const Input = ({
   onClick,
   className,
 }: Props) => {
+  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
+    name: 'phase_datetime_setup',
+  });
+
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const dateLocale = getLocale(locale);
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   const formatDateTime = (date: Date) => {
-    return `${format(date, 'P', { locale: dateLocale })} ${format(date, 'p', {
-      locale: dateLocale,
-    })}`;
+    return isPhaseDatetimeSetupEnabled
+      ? `${format(date, 'P', { locale: dateLocale })} ${format(date, 'p', {
+          locale: dateLocale,
+        })}`
+      : format(date, 'P', { locale: dateLocale });
   };
 
   return (
