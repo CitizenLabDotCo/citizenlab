@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
-import seatsKeys from 'api/seats/keys';
 import usersKeys from 'api/users/keys';
 import { IUsers } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
@@ -45,9 +44,6 @@ const useAddProjectFolderModerator = () => {
       });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: seatsKeys.items(),
       });
 
       invalidateSeatsCache();
