@@ -3679,6 +3679,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T16:01:33.305288Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -3763,6 +3768,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T16:01:33.305288Z",
+    "verified_by": "Adrien"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_project_moderator": {
     "state": "verified",
