@@ -372,7 +372,7 @@ class Phase < ApplicationRecord
   def validate_duration
     return unless start_at.present? && end_at.present? && (end_at - start_at) < MIN_DURATION
 
-    errors.add(:base, :too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
+    errors.add(:base, :duration_too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
   end
 
   def validate_no_other_overlapping_phases
