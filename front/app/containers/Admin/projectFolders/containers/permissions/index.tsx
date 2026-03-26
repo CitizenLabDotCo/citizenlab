@@ -24,17 +24,13 @@ const StyledA = styled.a`
 
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
-  const { mutate: deleteFolderModerator, isLoading: deleteIsLoading } =
+  const { mutateAsync: deleteFolderModerator } =
     useDeleteProjectFolderModerator();
   const { mutateAsync: addFolderModerator } = useAddProjectFolderModerator();
   const { formatMessage } = useIntl();
   const { data: folderModerators } = useProjectFolderModerators({
     projectFolderId,
   });
-
-  const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
-    deleteFolderModerator({ projectFolderId, userId: moderatorId });
-  };
 
   return (
     <Box
@@ -81,7 +77,12 @@ const FolderPermissions = () => {
         </Box>
         {folderModerators && (
           <Box mt="20px">
-            <ModeratorsTable moderators={folderModerators.data} />
+            <ModeratorsTable
+              moderators={folderModerators.data}
+              onDeleteModerator={async (userId: string) => {
+                await deleteFolderModerator({ projectFolderId, userId });
+              }}
+            />
           </Box>
         )}
       </Box>

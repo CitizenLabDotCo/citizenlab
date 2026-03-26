@@ -19,9 +19,10 @@ import Row from './Row';
 
 interface Props {
   moderators: IUserData[];
+  onDeleteModerator: (userId: string) => Promise<void>;
 }
 
-const ModeratorsTable = ({ moderators }: Props) => {
+const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
   return (
     <TableComponent
       border={`1px solid ${colors.grey300}`}
@@ -33,12 +34,16 @@ const ModeratorsTable = ({ moderators }: Props) => {
           <HeaderCell message={userTableMessages.name} />
           <HeaderCell message={userTableMessages.role} />
           <HeaderCell message={userTableMessages.inviteStatus} />
-          <HeaderCell message={messages.deleteModerator} />
+          <HeaderCell message={userTableMessages.options} />
         </Tr>
       </Thead>
       <Tbody>
         {moderators.map((moderator) => (
-          <Row key={moderator.id} moderator={moderator} />
+          <Row
+            key={moderator.id}
+            moderator={moderator}
+            onDeleteModerator={onDeleteModerator}
+          />
         ))}
       </Tbody>
     </TableComponent>
