@@ -90,7 +90,7 @@ const CustomEmails = () => {
         <Box background={colors.white} p="40px">
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
-              isDraft(campaign) ? (
+              isDraft(campaign) || campaign.attributes.scheduled_at ? (
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}

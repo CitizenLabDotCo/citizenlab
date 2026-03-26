@@ -248,7 +248,7 @@ resource 'Phases' do
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
-        parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
+        parameter :title_multiloc, 'The title of the phase in multiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens submit inputs in this phase? Defaults to true', required: false
@@ -742,6 +742,19 @@ resource 'Phases' do
 
       context 'on an ideation phase' do
         let(:phase) { create(:phase, participation_method: 'ideation', project: @project) }
+
+        example 'Deleting a phase does not delete the ideas', document: false do
+          idea = create(:idea, project: @project, phases: [phase])
+
+          do_request
+
+          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      # Edge case: Historic code means a phase with ideas could be changed to an information phase
+      context 'on an information phase' do
+        let(:phase) { create(:phase, participation_method: 'information', project: @project) }
 
         example 'Deleting a phase does not delete the ideas', document: false do
           idea = create(:idea, project: @project, phases: [phase])

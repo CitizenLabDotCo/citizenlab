@@ -592,6 +592,17 @@ describe Export::Xlsx::ValueVisitor do
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
+
+      context 'when a file has been deleted' do
+        before { create(:idea_status_proposed) }
+
+        let(:model) { create(:native_survey_response) }
+
+        it 'returns an empty string' do
+          model.update!(custom_field_values: { field_key => { 'id' => 'FILE_ID_NO_LONGER_EXISTS', 'name' => 'Deleted file' } })
+          expect(visitor.visit_file_upload(field)).to eq ''
+        end
+      end
     end
 
     describe '#visit_shapefile_upload' do

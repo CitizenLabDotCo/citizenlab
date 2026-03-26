@@ -1631,6 +1631,18 @@
         }
       },
 
+      "email_scheduling": {
+        "type": "object",
+        "title": "Email scheduling",
+        "description": "Allow scheduling emails to be sent at a later time.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "enhanced_user_profile_privacy": {
         "type": "object",
         "title": "Enhanced user profile privacy",

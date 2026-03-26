@@ -1,6 +1,15 @@
 {
+  "Common Ground": {
+    "de-DE": "ZusammenFinden"
+  },
   "FormSync": {
     "de-DE": "Papier-Scans"
+  },
+  "input": {
+    "de-DE": "Beitrag"
+  },
+  "inputs": {
+    "de-DE": "Beiträge"
   },
   "manager": {
     "de-DE": "Manager*innen",
@@ -11,6 +20,7 @@
     "es-ES": "asiento"
   },
   "seats": {
+    "de-DE": "Zugänge",
     "es-ES": "asientos"
   },
   "seats overview": {

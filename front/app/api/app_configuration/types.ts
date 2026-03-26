@@ -280,6 +280,7 @@ export interface IAppConfigurationSettings {
   participation_location_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
+  email_scheduling?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
