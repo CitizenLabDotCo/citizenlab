@@ -14,8 +14,10 @@ import InviteBadge from 'containers/Admin/invitations/all/InviteBadge';
 
 import NameAvatarEmail from 'components/admin/UsersTable/NameAvatarEmail';
 import UserRole from 'components/admin/UsersTable/UserRole';
-import messages from './messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   moderator: IUserData;

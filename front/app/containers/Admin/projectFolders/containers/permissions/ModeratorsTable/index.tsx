@@ -15,9 +15,10 @@ import { IUserData } from 'api/users/types';
 import HeaderCell from 'components/admin/UsersTable/HeaderCell';
 import userTableMessages from 'components/admin/UsersTable/messages';
 
-import Row from './Row';
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
+import Row from './Row';
 
 interface Props {
   moderators: IUserData[];

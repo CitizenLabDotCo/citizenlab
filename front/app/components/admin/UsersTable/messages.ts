@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.SeatsOverview.options',
     defaultMessage: 'Options',
   },
+  unknown: {
+    id: 'app.containers.Admin.Users.SeatsOverview.unknown',
+    defaultMessage: 'Unknown',
+  },
 });
