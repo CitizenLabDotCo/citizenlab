@@ -18,7 +18,7 @@ const StyledBox = styled(Box)`
 const Admins = () => (
   <>
     <UsersHeader title={messages.admins} />
-    <UserManager canAdmin notCitizenlabMember includeInactive />
+    <UserManager adminsOnly notCitizenlabMember includeInactive />
     <StyledBox mt="20px">
       <SeatInfo seatType="admin" />
     </StyledBox>

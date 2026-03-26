@@ -65,7 +65,7 @@
 #
 module Notifications
   class AdminRightsReceived < Notification
-    ACTIVITY_TRIGGERS = { 'User' => { 'admin_rights_given' => true } }
+    ACTIVITY_TRIGGERS = { 'User' => { 'admin_rights_received' => true } }
     EVENT_NAME = 'Admin rights received'
 
     def self.make_notifications_on(activity)

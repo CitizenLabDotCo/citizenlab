@@ -11,8 +11,8 @@ resource 'Moderators' do
   end
 
   context 'as a folder moderator' do
-    let(:project_folder) { create(:project_folder) }
-    let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    let!(:project_folder) { create(:project_folder) }
+    let!(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
 
     before do
       header_token_for(moderator)
@@ -30,8 +30,7 @@ resource 'Moderators' do
       example 'List all moderators of a project_folder' do
         do_request project_folder_id: project_folder.id
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq same_folder_moderators.size + 1
+        expect(response_data.size).to eq same_folder_moderators.size + 1
       end
 
       example '[error] List all moderators of a project_folder you don\'t moderate' do
@@ -46,30 +45,68 @@ resource 'Moderators' do
       let(:project_folder_id) { project_folder.id }
       let(:user_id) { create(:user).id }
       let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folders: [project_folder]) }
-      let(:project_folder_id) { project_folder.id }
       let(:user_id) { other_moderators.first.id }
 
       example_request 'Get one moderator by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq other_moderators.first.id
+        expect(response_data[:id]).to eq other_moderators.first.id
       end
     end
 
     post 'web_api/v1/project_folders/:project_folder_id/moderators' do
-      with_options scope: :project_folder_moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+      with_options scope: :moderator do
+        parameter :user_id, 'The id of user to become moderator.', required: false
+        parameter :user_email, 'The email of user to become moderator.', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
 
       let(:project_folder_id) { project_folder.id }
-      let(:user) { create(:user) }
-      let(:user_id) { user.id }
       let!(:child_projects) { create_list(:project, 3) }
 
-      example_request '[error] Add a moderator of a project_folder' do
-        expect(response_status).to eq 401
+      shared_examples 'adding a moderator' do
+        example_request 'Add a moderator role' do
+          expect(response_status).to eq 201
+          expect(response_data[:id]).to eq test_user.id
+          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
+        end
+
+        context 'with limited seats' do
+          before do
+            config = AppConfiguration.instance
+            config.settings['core']['maximum_moderators_number'] = User.billed_moderators.count + 1
+            config.settings['core']['additional_moderators_number'] = 0
+            config.save!
+          end
+
+          context 'when limit is reached' do
+            before { create(:project_folder_moderator) } # to reach the limit
+
+            example_request 'Increments additional seats', document: false do
+              assert_status 201
+              expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
+            end
+          end
+
+          example_request 'Does not increment additional seats if limit is not reached', document: false do
+            assert_status 201
+            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
+          end
+        end
+      end
+
+      context 'with user_id' do
+        let(:test_user) { create(:user) }
+        let(:user_id) { test_user.id }
+
+        include_examples 'adding a moderator'
+      end
+
+      context 'with user_email' do
+        let(:test_user) { create(:user) }
+        let(:user_email) { test_user.email }
+
+        include_examples 'adding a moderator'
       end
     end
 
@@ -110,8 +147,7 @@ resource 'Moderators' do
       example 'List all moderators of a project_folder', document: false do
         do_request
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq same_project_folder_moderators.size
+        expect(response_data.size).to eq same_project_folder_moderators.size
       end
     end
 
@@ -127,13 +163,12 @@ resource 'Moderators' do
 
       example_request 'Get one moderator by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq other_moderators.first.id
+        expect(response_data[:id]).to eq other_moderators.first.id
       end
     end
 
     post 'web_api/v1/project_folders/:project_folder_id/moderators' do
-      with_options scope: :project_folder_moderator do
+      with_options scope: :moderator do
         parameter :user_id, 'The id of user to become moderator.', required: false
         parameter :user_email, 'The email of user to become moderator.', required: false
       end
@@ -153,10 +188,10 @@ resource 'Moderators' do
           do_request
 
           expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
+          expect(response_data[:id]).to eq test_user.id
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
+          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
       end
 
@@ -202,6 +237,8 @@ resource 'Moderators' do
           # and the project_folder_moderator role to be removed.
           expect(@user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id }])
           expect(@user.reload.moderatable_project_ids).to eq [@child_projects.first.id]
+
+          expect(LogActivityJob).to have_been_enqueued.with(@user, 'project_folder_moderation_rights_removed', admin, kind_of(Integer), payload: { project_folder_id: @project_folder.id })
         end
       end
     end
