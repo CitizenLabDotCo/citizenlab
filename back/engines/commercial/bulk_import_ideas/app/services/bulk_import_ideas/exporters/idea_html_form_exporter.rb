@@ -114,7 +114,7 @@ module BulkImportIdeas::Exporters
     def format_fields
       question_num = 0
       fields = printable_fields.filter_map do |field|
-        next if field.title_multiloc[@locale].blank?
+        next if field.title_multiloc[@locale].blank? && !(field.page? && field.description_multiloc[@locale].present?)
 
         {
           id: field.id,
