@@ -265,7 +265,10 @@ class Phase < ApplicationRecord
   end
 
   def end_date
-    end_at && (end_at.to_date - 1.day)
+    return unless end_at
+
+    date = end_at.to_date
+    end_at.seconds_since_midnight.zero? ? date - 1.day : date
   end
 
   # Used for validations (which are hard to delegate through the participation method)
