@@ -120,6 +120,9 @@ describe IdeaFeed::FeedService do
 
     context 'when all ideas have been exposed and requesting fewer than total' do
       let!(:ideas) { [] }
+      let!(:other_idea) { create(:idea) }
+      let!(:exposed_idea) { nil }
+      let!(:idea_exposure) { nil }
       let!(:idea_a) { create(:idea, project: phase.project, phases: [phase]) }
       let!(:idea_b) { create(:idea, project: phase.project, phases: [phase]) }
       let!(:idea_c) { create(:idea, project: phase.project, phases: [phase]) }
