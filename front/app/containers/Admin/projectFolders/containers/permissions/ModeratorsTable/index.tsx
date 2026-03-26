@@ -14,6 +14,7 @@ import { IUserData } from 'api/users/types';
 import HeaderCell from 'components/admin/UsersTable/HeaderCell';
 import userTableMessages from 'components/admin/UsersTable/messages';
 
+import messages from './messages';
 import Row from './Row';
 
 interface Props {
@@ -32,7 +33,7 @@ const ModeratorsTable = ({ moderators }: Props) => {
           <HeaderCell message={userTableMessages.name} />
           <HeaderCell message={userTableMessages.role} />
           <HeaderCell message={userTableMessages.inviteStatus} />
-          <HeaderCell message={userTableMessages.options} />
+          <HeaderCell message={messages.deleteModerator} />
         </Tr>
       </Thead>
       <Tbody>
