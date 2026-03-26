@@ -7,6 +7,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { ObjectSchema } from 'yup';
 
+import useLocale from 'hooks/useLocale';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
@@ -51,6 +53,7 @@ const WidgetBuilder = ({
   trackEventName,
   children,
 }: Props) => {
+  const locale = useLocale();
   const [codeModalOpened, setCodeModalOpened] = useState(false);
   const [widgetParams, setWidgetParams] = useState('');
 
@@ -68,7 +71,7 @@ const WidgetBuilder = ({
         formValues,
         (v) => isNil(v) || (isString(v) && isEmpty(v))
       );
-      setWidgetParams(stringify(cleanedParams));
+      setWidgetParams(stringify({ ...cleanedParams, locale }));
     }, 500);
   }, []);
 
