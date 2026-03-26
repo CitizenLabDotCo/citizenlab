@@ -1219,6 +1219,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Obteniu una visió general visual dels cronogrames dels projectes a la vista de calendari. Identifiqueu ràpidament quins projectes i fases comencen o acaben aviat i requereixen acció.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Enteneu què passa i quan",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Totes les preguntes es mostren al PDF. Tanmateix, actualment no es poden importar els elements següents mitjançant FormSync: imatges, etiquetes i pujada de fitxers.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Totes les preguntes es mostren al PDF. Tanmateix, les següents no són compatibles actualment per a la importació mitjançant FormSync: preguntes de mapatge (marcador, traçar ruta i dibuixar àrea) i preguntes de càrrega de fitxers.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Final del formulari",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Inici del formulari",
   "app.containers.Admin.projects.all.components.archived": "Archived",

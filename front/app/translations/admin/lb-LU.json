@@ -1219,6 +1219,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Kritt eng visuell Iwwersiicht iwwer d'Zäitpläng vun Äre Projeten an eiser Kalenner-Usicht. Identifizéiert séier, wéi eng Projeten a Phasen geschwënn ufänken oder ophalen an eng Aktioun erfuerderen.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Verstoen, wat geschitt a wéini",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "All d'Froen ginn am PDF ugewisen. Déi folgend Elementer ginn awer de Moment net fir den Import iwwer FormSync ënnerstëtzt: Biller, Tags an Dateie-Upload.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "All Froe ginn am PDF ugewisen. Déi folgend ginn awer de Moment net fir den Import iwwer FormSync ënnerstëtzt: Mapping-Froen (Pin setzen, Route zeechnen a Beräich zeechnen) an Dateiupload-Froen.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Enn vum Formular",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Ufank vum Formulaire",
   "app.containers.Admin.projects.all.components.archived": "Archived",
