@@ -799,6 +799,7 @@
   "app.containers.Admin.Users.SeatsOverview.options": "Options",
   "app.containers.Admin.Users.SeatsOverview.role": "Role",
   "app.containers.Admin.Users.SeatsOverview.title": "Seats Overview",
+  "app.containers.Admin.Users.SeatsOverview.unknown": "Unknown",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.assign": "Assign",
