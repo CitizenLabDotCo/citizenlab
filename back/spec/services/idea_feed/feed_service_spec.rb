@@ -111,6 +111,48 @@ describe IdeaFeed::FeedService do
         expect(top_ideas).to contain_exactly(exposed_idea)
         expect(top_ideas).not_to include(other_idea)
       end
+
+      it 'does not use diversity sampling' do
+        expect(IdeaFeed::DiversityService).not_to receive(:new)
+        service.top_n(5)
+      end
+    end
+
+    context 'when all ideas have been exposed and requesting fewer than total' do
+      let!(:ideas) { [] }
+      let!(:idea_a) { create(:idea, project: phase.project, phases: [phase]) }
+      let!(:idea_b) { create(:idea, project: phase.project, phases: [phase]) }
+      let!(:idea_c) { create(:idea, project: phase.project, phases: [phase]) }
+
+      it 'returns least exposed ideas first' do
+        create(:idea_exposure, idea: idea_a, user:, phase:)
+        create(:idea_exposure, idea: idea_b, user:, phase:)
+        create(:idea_exposure, idea: idea_c, user:, phase:)
+        # Expose idea_a a second time so it has the highest count
+        create(:idea_exposure, idea: idea_a, user:, phase:)
+
+        top_ideas = service.top_n(2)
+        expect(top_ideas).to contain_exactly(idea_b, idea_c)
+        expect(top_ideas).not_to include(idea_a)
+      end
+
+      it 'returns different ideas across consecutive calls as exposures accumulate' do
+        # First cycle: all ideas exposed once
+        create(:idea_exposure, idea: idea_a, user:, phase:)
+        create(:idea_exposure, idea: idea_b, user:, phase:)
+        create(:idea_exposure, idea: idea_c, user:, phase:)
+
+        first_batch = service.top_n(2)
+        expect(first_batch.size).to eq(2)
+
+        # Simulate exposures for the returned ideas (second exposure)
+        first_batch.each { |idea| create(:idea_exposure, idea:, user:, phase:) }
+
+        second_batch = service.top_n(2)
+        # The idea not in first_batch (exposure_count=1) should now appear
+        remaining_idea = [idea_a, idea_b, idea_c] - first_batch
+        expect(second_batch).to include(*remaining_idea)
+      end
     end
   end
 end
