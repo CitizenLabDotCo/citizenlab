@@ -86,6 +86,7 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
   if (disabledRanges.length === 0) {
     return {};
   }
+  // console.log('disabledRanges', disabledRanges);
 
   if (allAreClosedDateRanges(disabledRanges)) {
     return generateClosedDisabledRanges(disabledRanges);
@@ -129,12 +130,19 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
 };
 
 const generateMiddleRange = ({ from, to }: ClosedDateRange) => {
-  const diff = differenceInDays(to, from);
+  // Calculate days including partial days
+  const fromDate = new Date(from);
+  fromDate.setHours(0, 0, 0, 0);
+  const toDate = new Date(to);
+  toDate.setHours(0, 0, 0, 0);
+
+  const diff = differenceInDays(toDate, fromDate);
+
   if (diff < 2) return undefined;
-  if (diff === 2) return addDays(from, 1);
+  if (diff === 2) return addDays(fromDate, 1);
   return {
-    from: addDays(from, 1),
-    to: addDays(to, -1),
+    from: addDays(fromDate, 1),
+    to: addDays(toDate, -1),
   };
 };
 

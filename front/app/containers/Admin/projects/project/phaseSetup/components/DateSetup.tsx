@@ -43,6 +43,11 @@ const DateSetup = ({
   const { projectId, phaseId } = useParams();
   const { data: phases } = usePhases(projectId);
 
+  // console.log('phases', phases?.data.map(phase => ({
+  //   id: phase.id,
+  //   start_at: phase.attributes.start_at,
+  //   end_at: phase.attributes.end_at
+  // })));
   const { start_at, end_at } = formData;
 
   const selectedRange = useMemo(() => {

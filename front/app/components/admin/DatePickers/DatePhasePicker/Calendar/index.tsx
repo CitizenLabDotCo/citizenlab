@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import TimeInput from 'containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
+import TimeInput from 'components/admin//DateTimeSelection/TimeInput';
 
 import { useIntl } from 'utils/cl-intl';
 import { userTimezone } from 'utils/dateUtils';
