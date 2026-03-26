@@ -95,9 +95,6 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       end
     }
 
-    # scope :moderator, -> { where(id: project_moderator).or(where(id: project_folder_moderator)) }
-    
-
     scope :order_role, lambda { |direction = :asc|
       joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
         .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
