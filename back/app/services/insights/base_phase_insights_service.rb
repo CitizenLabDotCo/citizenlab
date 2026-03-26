@@ -142,7 +142,7 @@ module Insights
         .select { |key, _| key.to_s.start_with?(prefix) }
         .transform_keys { |key| key.to_s.delete_prefix(prefix) }
 
-      user_cfvs.merge(item_cfvs).reject { |_, v| v == '' }
+      user_cfvs.merge(item_cfvs).reject { |_, v| v.is_a?(String) && v.blank? }
     end
 
     def demographics_data(participations, participant_ids)

@@ -876,5 +876,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
+
+    it 'excludes whitespace-only string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '  ', "#{prefix}key2" => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
   end
 end
