@@ -2387,7 +2387,7 @@
   "app.errors.email_blank": "Ní féidir é seo a bheith folamh",
   "app.errors.email_domain_blacklisted": "Bain úsáid as fearann ríomhphoist difriúil le clárú.",
   "app.errors.email_invalid": "Bain úsáid as seoladh ríomhphoist bailí le do thoil.",
-  "app.errors.email_sso_enforced_for_domain": "Ní mór duit logáil isteach trí logáil isteach aonair (SSO) a úsáid don fhearann ríomhphoist seo.",
+  "app.errors.email_sso_enforced_for_domain": "Ní mór duit síniú isteach le sínithe isteach aonair (SSO) don fhearann ríomhphoist seo.",
   "app.errors.email_taken": "Tá cuntas leis an seoladh ríomhphoist seo ann cheana féin. Is féidir leat logáil isteach ina ionad.",
   "app.errors.email_taken_by_invite": "Tá cuireadh ar feitheamh ag glacadh le {value} cheana féin. Seiceáil d'fhillteán turscair nó déan teagmháil le {supportEmail} mura bhfuil tú in ann é a aimsiú.",
   "app.errors.emails_duplicate": "Fuarthas luach dúblach amháin nó níos mó don seoladh ríomhphoist {value} sna ró(anna) seo a leanas: {rows}",

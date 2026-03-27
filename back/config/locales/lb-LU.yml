@@ -148,7 +148,7 @@ lb-LU:
     messages:
       max_must_be_greater_than_min_characters: De Maximum muss méi grouss wéi de Minimum sinn.
       max_must_be_greater_than_or_equal_to_min_select_count: De Maximum muss méi grouss oder gläich dem Minimum sinn.
-      sso_enforced_for_domain: Dir musst Iech mat Single Sign-on (SSO) fir dësen E-Mail-Domain umellen.
+      sso_enforced_for_domain: Dir musst Iech fir dës E-Mail-Domain iwwer Single Sign-on (SSO) umellen.
   events:
     council_meeting_description: |
       <p>Bei dëser Conseilssëtzung wäerten déi Biergerinitiativen dobäi sinn, déi 100 Stëmmen a manner wéi 3 Méint kruten. </p><p>De Conseil wäert da seng Usiichten zu all Iddi matdeelen.</p>

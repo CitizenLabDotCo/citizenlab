@@ -2387,7 +2387,7 @@
   "app.errors.email_blank": "Denne kan ikke være tom",
   "app.errors.email_domain_blacklisted": "Bruk et annet e-postdomene for å registrere deg.",
   "app.errors.email_invalid": "Vennligst bruk en gyldig e-postadresse.",
-  "app.errors.email_sso_enforced_for_domain": "Du må logge inn med Single Sign-On (SSO) for dette e-postdomenet.",
+  "app.errors.email_sso_enforced_for_domain": "Du må logge inn med enkel pålogging (SSO) for dette e-postdomenet.",
   "app.errors.email_taken": "Det finnes allerede en konto med denne e-postadressen. Du kan logge inn i stedet.",
   "app.errors.email_taken_by_invite": "{value} er allerede opptatt av en ventende invitasjon. Sjekk søppelpostmappen din eller kontakt {supportEmail} hvis du ikke finner den.",
   "app.errors.emails_duplicate": "En eller flere dupliserte verdier for e-postadressen {value} ble funnet i følgende rad(er): {rows}",

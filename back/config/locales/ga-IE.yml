@@ -148,7 +148,7 @@ ga-IE:
     messages:
       max_must_be_greater_than_min_characters: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid.
       max_must_be_greater_than_or_equal_to_min_select_count: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis.
-      sso_enforced_for_domain: Ní mór duit logáil isteach trí logáil isteach aonair (SSO) a úsáid don fhearann ríomhphoist seo.
+      sso_enforced_for_domain: Ní mór duit síniú isteach le sínithe isteach aonair (SSO) don fhearann ríomhphoist seo.
   events:
     council_meeting_description: |
       <p>Le linn chruinniú na comhairle seo, cuirfear i láthair na tionscnaimh saoránach sin a fuair 100 vóta i níos lú ná 3 mhí.</p><p>Ansin, roinnfidh an chomhairle a dtuairimí ar gach smaoineamh.</p>

@@ -148,7 +148,7 @@ tr-TR:
     messages:
       max_must_be_greater_than_min_characters: Maksimum değer minimum değerden büyük olmalıdır.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum değer minimum değerden büyük veya eşit olmalıdır.
-      sso_enforced_for_domain: Bu e-posta alan adı için tekli oturum açma (SSO) ile oturum açmalısınız.
+      sso_enforced_for_domain: Bu e-posta alanı için tekli oturum açma (SSO) kullanarak oturum açmanız gerekir.
   events:
     council_meeting_description: |
       <p>Bu kurul toplantısında, 3 aydan kısa bir süre içinde 100 oy alan vatandaş girişimleri sunulacaktır.</p><p>Kurul daha sonra her bir fikir hakkındaki görüşlerini paylaşacaktır.</p>
