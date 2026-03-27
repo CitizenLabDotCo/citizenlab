@@ -30,6 +30,80 @@ resource 'Project', admin_api: true do
     end
   end
 
+  get 'admin_api/projects/widget_projects' do
+    parameter :projects, 'Filter by specific project IDs', required: false
+    parameter :limit, 'Maximum number of projects to return (default 3)', required: false
+
+    before do
+      header 'tenant', Tenant.current.id
+
+      @public_active = create(:project, visible_to: 'public')
+      create(:phase, project: @public_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+      create(:project_image, project: @public_active)
+
+      @public_active2 = create(:project, visible_to: 'public')
+      create(:phase, project: @public_active2, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @public_no_phase = create(:project, visible_to: 'public')
+
+      @restricted_active = create(:project, visible_to: 'groups')
+      create(:phase, project: @restricted_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @draft_active = create(:project,
+        admin_publication_attributes: { publication_status: 'draft' })
+      create(:phase, project: @draft_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+    end
+
+    example 'Returns only publicly visible projects with active phases by default' do
+      do_request
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id, @public_active2.id)
+      expect(ids).to_not include(@public_no_phase.id)
+      expect(ids).to_not include(@restricted_active.id)
+      expect(ids).to_not include(@draft_active.id)
+    end
+
+    example 'Returns specific projects filtered by visibility' do
+      do_request(projects: [@public_active.id, @restricted_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id)
+      expect(ids).to_not include(@restricted_active.id)
+    end
+
+    example 'Returns only publicly visible projects when filtering by non-active projects' do
+      do_request(projects: [@public_no_phase.id, @restricted_active.id, @draft_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_no_phase.id])
+    end
+
+    example 'Limits the number of projects' do
+      do_request(limit: 1)
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:projects].size).to eq 1
+    end
+
+    example 'Response includes widget fields' do
+      do_request(projects: [@public_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      project = json_response[:projects].first
+      expect(project[:title_multiloc]).to be_a(Hash)
+      expect(project[:description_preview_multiloc]).to be_a(Hash)
+      expect(project[:href]).to be_a(String)
+      expect(project).to have_key(:participants_count)
+      expect(project).to have_key(:current_phase_end_at)
+      expect(project[:project_images]).to be_present
+      expect(project[:project_images].first[:versions]).to be_a(Hash)
+    end
+  end
+
   get 'admin_api/projects/:id/template_export' do
     parameter :tenant_id, 'The tenant id from which to export the project', required: true
     with_options scope: :project do
