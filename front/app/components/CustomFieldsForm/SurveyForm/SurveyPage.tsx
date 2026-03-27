@@ -230,10 +230,10 @@ const SurveyPage = ({
 
   const handleEnterKeySubmit = () => {
     pageRef.current?.scrollTo(0, 0);
+    if (showSubmitConfirmation) setShowSubmitConfirmation(false);
     methods.handleSubmit((formValues) => {
       if (
         isSubmissionPage &&
-        !showSubmitConfirmation &&
         hasUnansweredQuestions(pageQuestions, formValues)
       ) {
         setShowSubmitConfirmation(true);
