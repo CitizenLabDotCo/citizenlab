@@ -156,7 +156,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         let!(:page_no_title) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => '' }, description_multiloc: { 'en' => 'Page description without title' }) }
 
         it 'includes the page description in the export' do
-          parsed = Nokogiri::HTML(service.export)
+          fresh_service = described_class.new(phase, 'en', false)
+          parsed = Nokogiri::HTML(fresh_service.export)
           page = parsed.css("div[id='#{page_no_title.id}']")
           expect(page).to be_present
           expect(page.text).to include 'Page description without title'
