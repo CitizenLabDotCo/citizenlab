@@ -56,7 +56,7 @@ const Row = ({ moderator, onDeleteModerator }: Props) => {
             iconSize={`${fontSizes.base}px`}
             p="4px 8px"
           >
-            <FormattedMessage {...messages.removeModerator} />
+            <FormattedMessage {...messages.removeManager} />
           </Button>
         </Box>
       </Td>

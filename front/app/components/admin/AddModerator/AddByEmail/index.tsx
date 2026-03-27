@@ -79,7 +79,7 @@ const EmailForm = ({ onSubmit }: Props) => {
               name="email"
               type="email"
               autocomplete="email"
-              placeholder={formatMessage(messages.typeEmailToInviteModerator)}
+              placeholder={formatMessage(messages.typeEmailToInviteManager)}
             />
           </Box>
           <ButtonWithLink

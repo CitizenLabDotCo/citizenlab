@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  removeModerator: {
+  removeManager: {
     id: 'app.containers.Admin.ModeratorsTable.removeModerator',
-    defaultMessage: 'Remove moderator',
+    defaultMessage: 'Remove manager',
   },
-  noModerators: {
+  noManagers: {
     id: 'app.containers.Admin.ModeratorsTable.noModerators',
-    defaultMessage: 'This folder does not have any moderators yet.',
+    defaultMessage: 'This folder does not have any managers yet.',
   },
 });

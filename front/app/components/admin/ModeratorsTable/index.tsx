@@ -29,7 +29,7 @@ const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
   if (moderators.length === 0) {
     return (
       <Text>
-        <FormattedMessage {...messages.noModerators} />
+        <FormattedMessage {...messages.noManagers} />
       </Text>
     );
   }
