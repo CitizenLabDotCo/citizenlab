@@ -5804,6 +5804,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.emailCreated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:42:20.653252Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.project.emails.emailUpdated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:42:20.653252Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.project.emails.emptyCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
