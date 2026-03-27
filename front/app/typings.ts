@@ -28,6 +28,10 @@ declare global {
     intercomSettings: any;
     satismeter?: any;
     Cypress?: any;
+    __GO_VOCAL_PLUGINS__: {
+      React: any;
+      register: (configuration: any) => void;
+    };
   }
 }
 

@@ -1641,6 +1641,33 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "plugins": {
+        "type": "object",
+        "title": "Plugins",
+        "description": "Plugins are a way to extend the functionality of the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "active_plugins": {
+            "type": "array",
+            "default": [],
+            "items": {
+              "type": "object",
+              "required": ["url"],
+              "additionalProperties": false,
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          }
+        }
       }
     },
   "dependencies": {

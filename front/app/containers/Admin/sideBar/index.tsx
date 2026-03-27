@@ -138,7 +138,6 @@ const Sidebar = ({ authUser }: Props) => {
 
   return (
     <Menu>
-      <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
       <MenuInner
         id="sidebar"
         className="intercom-admin-general-navigation-side-bar"
@@ -188,6 +187,10 @@ const Sidebar = ({ authUser }: Props) => {
         {topNavItems.map((navItem) => (
           <MenuItem navItem={navItem} key={navItem.name} />
         ))}
+        <Outlet
+          id="app.containers.Admin.sideBar.navItems"
+          onData={handleData}
+        />
 
         <Box display="flex" flexGrow={1} />
 
