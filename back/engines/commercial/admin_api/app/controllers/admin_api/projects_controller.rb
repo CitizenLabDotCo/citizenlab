@@ -10,6 +10,22 @@ module AdminApi
       render json: projects, adapter: :attributes
     end
 
+    def widget_projects
+      base = ProjectPolicy::Scope.new(nil, Project).resolve
+
+      projects = if params[:projects].present?
+        base.where(id: params[:projects])
+      else
+        base.with_active_phase
+      end
+
+      projects = projects
+        .includes(:project_images, :phases, :admin_publication)
+        .limit(params[:limit]&.to_i || 3)
+
+      render json: projects, each_serializer: AdminApi::ProjectSerializer, adapter: :json
+    end
+
     def template_export
       project = Project.find(params[:id])
       options = template_export_params.to_h.symbolize_keys
