@@ -1,16 +1,35 @@
 {
+  "Common Ground": {
+    "de-DE": "ZusammenFinden"
+  },
   "FormSync": {
     "de-DE": "Papier-Scans"
   },
+  "GovSuccess Manager": {
+    "fr-FR": "Spécialiste en participation Go Vocal"
+  },
+  "input": {
+    "de-DE": "Beitrag",
+    "fr-FR": "contribution"
+  },
+  "inputs": {
+    "de-DE": "Beiträge",
+    "fr-FR": "contributions"
+  },
   "manager": {
     "de-DE": "Manager*innen",
-    "es-ES": "gestor"
+    "es-ES": "gestor",
+    "fr-FR": "gestionnaire"
+  },
+  "save": {
+    "fr-FR": "enregistrer"
   },
   "seat": {
     "de-DE": "Zugang",
     "es-ES": "asiento"
   },
   "seats": {
+    "de-DE": "Zugänge",
     "es-ES": "asientos"
   },
   "seats overview": {

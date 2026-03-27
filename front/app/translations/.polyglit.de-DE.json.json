@@ -3619,6 +3619,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:19:05.302338Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -3678,6 +3683,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:19:05.302338Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": {
     "state": "verified",
@@ -3754,6 +3764,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:19:05.302338Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.UserFilterConditions.predicate_not_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -3763,6 +3778,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:19:05.302338Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_project_moderator": {
     "state": "verified",
