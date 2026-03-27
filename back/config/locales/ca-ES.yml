@@ -1,4 +1,4 @@
-ca-ES:
+ca:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 hores.
