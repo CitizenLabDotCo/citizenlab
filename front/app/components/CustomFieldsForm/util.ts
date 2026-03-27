@@ -41,7 +41,8 @@ export const isNillish = (value: any) => {
   if (Array.isArray(value) && value.length === 0) return true;
   if (value.constructor === Object) {
     if (Object.keys(value).length === 0) return true;
-    if (isEmptyMultiloc(value)) return true;
+    const isMultiloc = Object.values(value).every((v) => typeof v === 'string');
+    if (isMultiloc && isEmptyMultiloc(value)) return true;
   }
   return false;
 };
