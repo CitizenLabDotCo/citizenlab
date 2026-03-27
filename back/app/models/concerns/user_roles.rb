@@ -80,6 +80,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     scope :moderator, -> { where(id: project_moderator).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
+    scope :not_moderator, -> { where.not(id: moderator) }
     scope :admin_or_moderator, -> { admin.or(moderator) }
 
     scope :can_moderate, lambda { |project_id = nil|
