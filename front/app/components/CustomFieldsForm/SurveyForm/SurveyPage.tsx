@@ -251,7 +251,7 @@ const SurveyPage = ({
       isNillish(formValues[q.key])
     );
 
-    // Focus the user back to the first unanswered qCanuestion on the page
+    // Focus the user back to the first unanswered question on the page
     if (firstUnanswered) {
       const questionEl = document.querySelector(
         `[data-question-id="${firstUnanswered.id}"]`
