@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignFormValues } from 'api/campaigns/types';
@@ -29,7 +29,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { formatDateInTimezone } from 'utils/dateUtils';
 
 type EditProps = {
@@ -52,15 +51,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
-    created ? 'created' : null
-  );
-
-  useEffect(() => {
-    if (created) removeSearchParams(['created']);
-  }, [created]);
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(null);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
@@ -82,7 +73,9 @@ const Edit = ({ campaignType }: EditProps) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
     setFeedbackType('updated');
     if (campaignType === 'custom') {
-      clHistory.push(`/admin/messaging/emails/custom/${campaign.data.id}`);
+      clHistory.push(
+        `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
+      );
     } else {
       clHistory.push('/admin/messaging/emails/automated');
     }

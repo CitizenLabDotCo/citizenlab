@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   StatusLabel,
@@ -8,8 +8,9 @@ import {
   Box,
   fontSizes,
   Text,
+  Button,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
@@ -28,6 +29,7 @@ import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import EmailScheduling from 'components/admin/Email/Scheduling';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -37,6 +39,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { formatDateInTimezone } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
@@ -57,12 +60,6 @@ const FromTo = styled.div`
 
 const FromToHeader = styled.span`
   font-weight: bold;
-`;
-
-const SendTestEmailButton = styled.button`
-  text-decoration: underline;
-  font-size: ${fontSizes.base}px;
-  cursor: pointer;
 `;
 
 const Buttons = styled.div`
@@ -99,6 +96,7 @@ const SendNowWarning = styled.div`
   font-size: ${fontSizes.base}px;
   margin-bottom: 30px;
 `;
+type FeedbackType = 'sent' | 'updated' | 'created' | null;
 
 const Show = () => {
   const { campaignId } = useParams() as { campaignId: string };
@@ -120,7 +118,22 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
+  const [searchParams] = useSearchParams();
+  const created = searchParams.get('created');
+  const updated = searchParams.get('updated');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
+    created ? 'created' : updated ? 'updated' : null
+  );
+  useEffect(() => {
+    if (created) removeSearchParams(['created']);
+    if (updated) removeSearchParams(['updated']);
+  }, [created, updated]);
 
+  const feedbackMessages = {
+    sent: messages.previewSentConfirmation,
+    updated: messages.emailUpdated,
+    created: messages.emailCreated,
+  };
   const isLoading = isSendingCampaign || isSenndingCampaignPreview;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -142,10 +155,7 @@ const Show = () => {
   const handleSendTestEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        const previewSentConfirmation = formatMessage(
-          messages.previewSentConfirmation
-        );
-        window.alert(previewSentConfirmation);
+        setFeedbackType('sent');
       },
     });
   };
@@ -280,6 +290,12 @@ const Show = () => {
             </Buttons>
           )}
         </Box>
+        {feedbackType && (
+          <SuccessFeedback
+            successMessage={formatMessage(feedbackMessages[feedbackType])}
+            closeSuccessMessage={() => setFeedbackType(null)}
+          />
+        )}
         {apiSendErrors && (
           <Box mb="8px">
             <Error apiErrors={apiSendErrors.errors['base']} />
@@ -350,16 +366,23 @@ const Show = () => {
           </FromTo>
           {(isDraft(campaign.data) ||
             campaign.data.attributes.scheduled_at) && (
-            <Box mb="30px" display="flex" alignItems="center">
-              <SendTestEmailButton onClick={handleSendTestEmail}>
-                <FormattedMessage {...messages.sendTestEmailButton} />
-              </SendTestEmailButton>
-              &nbsp;
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.sendTestEmailTooltip} />
-                }
-              />
+            <Box>
+              <Button
+                icon="send"
+                buttonStyle="secondary-outlined"
+                onClick={handleSendTestEmail}
+              >
+                <Box display="inline-flex">
+                  <FormattedMessage {...messages.sendTestEmailButton} />
+                  <IconTooltip
+                    mt="3px"
+                    ml="4px"
+                    content={
+                      <FormattedMessage {...messages.sendTestEmailTooltip} />
+                    }
+                  />
+                </Box>
+              </Button>
             </Box>
           )}
         </Box>
