@@ -84,7 +84,7 @@ class TimelineService
     phases = project.phases.to_a
     if phases.blank?
       nil
-    elsif today < phases.map(&:start_at).compact.min
+    elsif today < phases.filter_map(&:start_at).min
       :future
     elsif phases.last.end_at.present? && today > phases.filter_map(&:end_at).max
       :past
