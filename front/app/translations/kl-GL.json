@@ -2387,6 +2387,7 @@
   "app.errors.email_blank": "Una allassimasoqassaaq",
   "app.errors.email_domain_blacklisted": "E-mailip suminngaanneerfittut atuuffia alla atorlugu isertaatiliorit.",
   "app.errors.email_invalid": "E-mail atorsinnaasoq allalaaruk",
+  "app.errors.email_sso_enforced_for_domain": "E-mailip domænia una atorlugu single sign-on (SSO) atorlugu isertariaqarputit.",
   "app.errors.email_taken": "Konto taama e-maililik pigineqareerpoq. Isiinnarsinnaavutit.",
   "app.errors.email_taken_by_invite": "{value} allamit ilanngutitinneqarnissaminik utaqqisumit atorneqareersimavoq. Spam-indbakkit takujuk, imaluunniit nassaarisinnaanngikkukku uunga attavigitigut support@citizenlab.co.",
   "app.errors.emails_duplicate": "E-mailadressimut uunga {value} assingusut duplikatværdit ataaseq arlallilluunniit titarnerni quleriiaani ukunani nassaarineqarput(r): {rows}",

@@ -2387,6 +2387,7 @@
   "app.errors.email_blank": "Això no pot estar buit",
   "app.errors.email_domain_blacklisted": "Feu servir un domini de correu electrònic diferent per registrar-vos.",
   "app.errors.email_invalid": "Utilitzeu una adreça de correu electrònic vàlida.",
+  "app.errors.email_sso_enforced_for_domain": "Heu d'iniciar la sessió mitjançant l'inici de sessió únic (SSO) per a aquest domini de correu electrònic.",
   "app.errors.email_taken": "Ja existeix un compte amb aquest correu electrònic. Enlloc, podeu iniciar sessió.",
   "app.errors.email_taken_by_invite": "{value} ja ha rebut una invitació pendent. Comproveu la vostra carpeta de correu brossa o contacteu amb {supportEmail} si no la trobeu.",
   "app.errors.emails_duplicate": "S'han trobat un o més valors duplicats per a l'adreça electrònica {value} a les files següents: {rows}",

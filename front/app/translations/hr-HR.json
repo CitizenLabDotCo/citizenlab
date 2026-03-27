@@ -2387,6 +2387,7 @@
   "app.errors.email_blank": "Ovo ne može biti prazno",
   "app.errors.email_domain_blacklisted": "Molimo vas da koristite drugu domenu e-pošte za registraciju.",
   "app.errors.email_invalid": "Molimo da unesete valjanu adresu e-pošte.",
+  "app.errors.email_sso_enforced_for_domain": "Morate se prijaviti putem jedinstvene prijave (SSO) za ovu domenu e-pošte.",
   "app.errors.email_taken": "Već postoji račun s ovom adresom e-pošte. Možete se pokušati prijaviti.",
   "app.errors.email_taken_by_invite": "{value} je već zauzet s pozivnicom koja je na čekanju. Provjerite mapu s neželjenim sadržajem ili kontaktirajte {supportEmail} ukoliko je ne možete pronaći.",
   "app.errors.emails_duplicate": "Jedna ili više dvostrukih adrese e-pošte {value} pronađena je u sljedećim redovima: {rows}",
