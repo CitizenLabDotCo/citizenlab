@@ -17,7 +17,7 @@ const InviteBadge = ({ user }: Props) => {
 
   if (invite_status === 'pending') {
     return (
-      <Badge>
+      <Badge color={colors.grey700}>
         <FormattedMessage {...messages.inviteStatusPending} />
       </Badge>
     );
