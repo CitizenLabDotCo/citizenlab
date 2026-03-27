@@ -9,12 +9,12 @@ import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDe
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
 
 import AddModerator from 'components/admin/AddModerator';
+import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import ModeratorsTable from './ModeratorsTable';
 
 const StyledA = styled.a`
   &:hover {
