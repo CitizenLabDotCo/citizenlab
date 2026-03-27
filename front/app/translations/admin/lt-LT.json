@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Projektas",
   "app.containers.Admin.project.emails.editButtonLabel": "Redaguoti",
   "app.containers.Admin.project.emails.editCampaignTitle": "Redaguoti kampaniją",
+  "app.containers.Admin.project.emails.emailCreated": "El. laiškas sėkmingai sukurtas kaip juodraštis",
+  "app.containers.Admin.project.emails.emailUpdated": "El. laiškas sėkmingai atnaujintas",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Lengvai palaikykite ryšį su dalyviais siųsdami jiems el. laiškus. Pasirinkite, su kuo susisiekti, ir stebėkite savo dalyvavimą.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Siųskite pirmąjį el. laišką",
   "app.containers.Admin.project.emails.failed": "Nepavyko",

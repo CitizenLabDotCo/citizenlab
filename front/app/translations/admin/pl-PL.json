@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Wersja robocza",
   "app.containers.Admin.project.emails.editButtonLabel": "Edytuj",
   "app.containers.Admin.project.emails.editCampaignTitle": "Edytuj kampanię",
+  "app.containers.Admin.project.emails.emailCreated": "E-mail został pomyślnie utworzony jako wersja robocza",
+  "app.containers.Admin.project.emails.emailUpdated": "E-mail został pomyślnie zaktualizowany",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Łatwo nawiązuj kontakt z uczestnikami, wysyłając im wiadomości e-mail. Wybierz, z kim chcesz się skontaktować i śledź swoje zaangażowanie.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Wyślij swoją pierwszą wiadomość e-mail",
   "app.containers.Admin.project.emails.failed": "Nie powiodło się",

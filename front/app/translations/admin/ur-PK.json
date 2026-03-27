@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "مسودہ",
   "app.containers.Admin.project.emails.editButtonLabel": "ترمیم کریں۔",
   "app.containers.Admin.project.emails.editCampaignTitle": "مہم میں ترمیم کریں۔",
+  "app.containers.Admin.project.emails.emailCreated": "ای میل کامیابی سے ڈرافٹ میں بنا لی گئی",
+  "app.containers.Admin.project.emails.emailUpdated": "ای میل کامیابی سے اپ ڈیٹ کر دی گئی",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "اپنے شرکاء کو ای میلز بھیج کر ان سے آسانی سے جڑیں۔ منتخب کریں کہ کس سے رابطہ کرنا ہے اور اپنی مصروفیت کو ٹریک کرنا ہے۔",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "اپنا پہلا ای میل بھیجیں۔",
   "app.containers.Admin.project.emails.failed": "ناکام",

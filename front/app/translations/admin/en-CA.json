@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Draft",
   "app.containers.Admin.project.emails.editButtonLabel": "Edit",
   "app.containers.Admin.project.emails.editCampaignTitle": "Edit campaign",
+  "app.containers.Admin.project.emails.emailCreated": "Email successfully created in draft",
+  "app.containers.Admin.project.emails.emailUpdated": "Email successfully updated",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Send your first email",
   "app.containers.Admin.project.emails.failed": "Failed",

@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Brouillon",
   "app.containers.Admin.project.emails.editButtonLabel": "Modifier",
   "app.containers.Admin.project.emails.editCampaignTitle": "Modifier campagne",
+  "app.containers.Admin.project.emails.emailCreated": "E-mail créé avec succès en tant que brouillon",
+  "app.containers.Admin.project.emails.emailUpdated": "E-mail mis à jour avec succès",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Communiquez facilement avec vos participants en leur envoyant des e-mails. Choisissez les destinataires et suivez leur engagement.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Envoyez votre premier e-mail",
   "app.containers.Admin.project.emails.failed": "Échoué",

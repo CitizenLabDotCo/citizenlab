@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Udkast",
   "app.containers.Admin.project.emails.editButtonLabel": "Rediger",
   "app.containers.Admin.project.emails.editCampaignTitle": "Rediger kampagne",
+  "app.containers.Admin.project.emails.emailCreated": "E-mailen blev oprettet som kladde",
+  "app.containers.Admin.project.emails.emailUpdated": "E-mailen blev opdateret",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Kom nemt i kontakt med dine deltagere ved at sende dem e-mails. Vælg, hvem du vil kontakte, og følg dit engagement.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Send din første e-mail",
   "app.containers.Admin.project.emails.failed": "Mislykkedes",

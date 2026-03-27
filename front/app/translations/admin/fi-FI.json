@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Luonnos",
   "app.containers.Admin.project.emails.editButtonLabel": "Muokkaa",
   "app.containers.Admin.project.emails.editCampaignTitle": "Muokkaa kampanjaa",
+  "app.containers.Admin.project.emails.emailCreated": "Sähköposti luotiin onnistuneesti luonnoksena",
+  "app.containers.Admin.project.emails.emailUpdated": "Sähköposti päivitettiin onnistuneesti",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Ota helposti yhteyttä osallistujiisi lähettämällä heille sähköpostia. Valitse, keneen otat yhteyttä ja seuraa sitoutumistasi.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Lähetä ensimmäinen sähköpostisi",
   "app.containers.Admin.project.emails.failed": "Epäonnistui",

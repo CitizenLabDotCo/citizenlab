@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Nacrt",
   "app.containers.Admin.project.emails.editButtonLabel": "Uredi",
   "app.containers.Admin.project.emails.editCampaignTitle": "Uredi kampanju",
+  "app.containers.Admin.project.emails.emailCreated": "E-pošta je uspješno izrađena u skicama",
+  "app.containers.Admin.project.emails.emailUpdated": "E-pošta je uspješno ažurirana",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Lako se povežite sa svojim sudionicima slanjem e-pošte. Odaberite koga ćete kontaktirati i pratite svoj angažman.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Pošaljite svoj prvi email",
   "app.containers.Admin.project.emails.failed": "Neuspjeh",

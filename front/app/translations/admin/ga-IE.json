@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Dréacht",
   "app.containers.Admin.project.emails.editButtonLabel": "Cuir in Eagar",
   "app.containers.Admin.project.emails.editCampaignTitle": "Cuir feachtas in eagar",
+  "app.containers.Admin.project.emails.emailCreated": "Cruthaíodh an ríomhphost mar dhréacht go rathúil",
+  "app.containers.Admin.project.emails.emailUpdated": "Nuashonraíodh an ríomhphost go rathúil",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Ceangail go héasca le do rannpháirtithe trí ríomhphoist a sheoladh chucu. Roghnaigh cé leis a ndéanfaidh tú teagmháil agus déan monatóireacht ar do rannpháirtíocht.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Seol do chéad ríomhphost",
   "app.containers.Admin.project.emails.failed": "Theip air",

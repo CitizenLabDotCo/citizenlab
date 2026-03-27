@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Bozza",
   "app.containers.Admin.project.emails.editButtonLabel": "Modifica",
   "app.containers.Admin.project.emails.editCampaignTitle": "Modifica campagna",
+  "app.containers.Admin.project.emails.emailCreated": "Email creata con successo come bozza",
+  "app.containers.Admin.project.emails.emailUpdated": "Email aggiornata con successo",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Contatta i partecipanti inviando loro delle e-mail. Scegli chi contattare e monitora il loro coinvolgimento.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Invia la tua prima e-mail",
   "app.containers.Admin.project.emails.failed": "Fallito",

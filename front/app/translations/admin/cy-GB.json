@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Drafft",
   "app.containers.Admin.project.emails.editButtonLabel": "Golygu",
   "app.containers.Admin.project.emails.editCampaignTitle": "Golygu ymgyrch",
+  "app.containers.Admin.project.emails.emailCreated": "Crëwyd yr e-bost fel drafft yn llwyddiannus",
+  "app.containers.Admin.project.emails.emailUpdated": "Diweddarwyd yr e-bost yn llwyddiannus",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Cysylltwch yn hawdd â'ch cyfranogwyr trwy anfon e-byst atynt. Dewiswch â phwy i gysylltu ac olrhain eich ymgysylltiad.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Anfonwch eich e-bost cyntaf",
   "app.containers.Admin.project.emails.failed": "Wedi methu",

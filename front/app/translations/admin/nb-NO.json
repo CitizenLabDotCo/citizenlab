@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Utkast",
   "app.containers.Admin.project.emails.editButtonLabel": "Rediger",
   "app.containers.Admin.project.emails.editCampaignTitle": "Rediger kampanje",
+  "app.containers.Admin.project.emails.emailCreated": "E-posten ble opprettet som utkast",
+  "app.containers.Admin.project.emails.emailUpdated": "E-posten ble oppdatert",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Få enkelt kontakt med deltakerne dine ved å sende dem e-post. Velg hvem du vil kontakte, og følg med på engasjementet ditt.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Send din første e-post",
   "app.containers.Admin.project.emails.failed": "Mislyktes",

@@ -1160,6 +1160,8 @@
   "app.containers.Admin.project.emails.draft": "Προσχέδιο",
   "app.containers.Admin.project.emails.editButtonLabel": "Επεξεργασία",
   "app.containers.Admin.project.emails.editCampaignTitle": "Επεξεργασία εκστρατείας",
+  "app.containers.Admin.project.emails.emailCreated": "Το email δημιουργήθηκε με επιτυχία ως προσχέδιο",
+  "app.containers.Admin.project.emails.emailUpdated": "Το email ενημερώθηκε με επιτυχία",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "Συνδεθείτε εύκολα με τους συμμετέχοντες στέλνοντάς τους email. Επιλέξτε με ποιους θα επικοινωνήσετε και παρακολουθήστε τη συμμετοχή τους.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "Στείλτε το πρώτο σας email",
   "app.containers.Admin.project.emails.failed": "Απέτυχε",
