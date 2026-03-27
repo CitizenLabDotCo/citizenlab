@@ -5804,6 +5804,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.emailCreated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:15:52.666939Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.project.emails.emailUpdated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:15:52.666939Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.project.emails.emptyCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
