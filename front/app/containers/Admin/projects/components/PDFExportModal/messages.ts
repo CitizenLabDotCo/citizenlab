@@ -59,4 +59,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.customiseEnd',
     defaultMessage: 'Customise the end of the form.',
   },
+  includeLogic: {
+    id: 'app.containers.Admin.projects.all.includeLogic',
+    defaultMessage: 'Include form logic',
+  },
+  includeLogicExplanation: {
+    id: 'app.containers.Admin.projects.all.includeLogicExplanation',
+    defaultMessage:
+      'This option will add text instructions to the PDF to indicate which sections to answer next, depending on the form logic configured.',
+  },
 });

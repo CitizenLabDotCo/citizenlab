@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlFormExporter < BaseFormExporter
-    def initialize(phase, locale, personal_data_enabled)
+    def initialize(phase, locale, personal_data_enabled, include_logic: false)
       super
       @personal_data_enabled = personal_data_enabled
     end
@@ -42,6 +42,7 @@ module BulkImportIdeas::Exporters
         fields: format_fields,
         header: form_header,
         footer: form_footer,
+        include_logic: @include_logic,
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
