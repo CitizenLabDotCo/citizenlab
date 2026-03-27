@@ -112,6 +112,8 @@ Rails.application.routes.draw do
         collection do
           get :me
           get :seats
+          get :billed_admins
+          get :billed_moderators
           get :as_xlsx, action: 'index_xlsx'
 
           post 'reset_password_email' => 'reset_password#reset_password_email'

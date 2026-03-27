@@ -1,4 +1,4 @@
-cy-GB:
+cy:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 awr.
