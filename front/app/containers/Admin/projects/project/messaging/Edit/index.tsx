@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -13,6 +13,7 @@ import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -20,6 +21,14 @@ import clHistory from 'utils/cl-router/history';
 
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
+
+type FeedbackType = 'sent' | 'updated' | 'created' | null;
+
+const feedbackMessages = {
+  sent: messages.previewSentConfirmation,
+  updated: messages.emailUpdated,
+  created: messages.emailCreated,
+};
 
 const Edit = () => {
   const { projectId, campaignId } = useParams() as {
@@ -34,7 +43,7 @@ const Edit = () => {
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
-
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(null);
   const goBack = () => {
     clHistory.push(
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
@@ -47,17 +56,14 @@ const Edit = () => {
   const handleSendTestEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        const previewSentConfirmation = formatMessage(
-          messages.previewSentConfirmation
-        );
-        window.alert(previewSentConfirmation);
+        setFeedbackType('sent');
       },
     });
   };
   const handleSubmit = async (values: FormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
     clHistory.push(
-      `/admin/projects/${projectId}/messaging/${campaign.data.id}`
+      `/admin/projects/${projectId}/messaging/${campaign.data.id}?updated=true`
     );
   };
 
@@ -68,7 +74,14 @@ const Edit = () => {
         <PageTitle>
           <FormattedMessage {...messages.editCampaignTitle} />
         </PageTitle>
-
+        <Box>
+          {feedbackType && (
+            <SuccessFeedback
+              successMessage={formatMessage(feedbackMessages[feedbackType])}
+              closeSuccessMessage={() => setFeedbackType(null)}
+            />
+          )}
+        </Box>
         <Box display="flex">
           <Box width="50%" mr="36px">
             <CampaignForm

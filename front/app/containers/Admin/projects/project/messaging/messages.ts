@@ -239,4 +239,12 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.save',
     defaultMessage: 'Save',
   },
+  emailUpdated: {
+    id: 'app.containers.Admin.project.emails.emailUpdated',
+    defaultMessage: 'Email successfully updated',
+  },
+  emailCreated: {
+    id: 'app.containers.Admin.project.emails.emailCreated',
+    defaultMessage: 'Email successfully created in draft',
+  },
 });
