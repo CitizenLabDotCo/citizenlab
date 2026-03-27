@@ -380,6 +380,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def participant_counts
     projects = policy_scope(Project)
       .where(id: params[:project_ids])
+      .includes(:phases)
 
     authorize projects, :participant_counts?
 
