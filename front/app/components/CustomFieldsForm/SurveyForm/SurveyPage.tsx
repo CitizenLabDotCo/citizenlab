@@ -266,10 +266,6 @@ const SurveyPage = ({
     }
   };
 
-  const handleConfirmSubmit = () => {
-    handleNextAndSubmit();
-  };
-
   // Ensure that pressing Enter in a text or number input field does not
   // accidentally submit the form with empty responses
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -386,7 +382,7 @@ const SurveyPage = ({
             {showSubmitConfirmation && (
               <SubmitConfirmation
                 onContinueEditing={handleContinueEditing}
-                onConfirmSubmit={handleConfirmSubmit}
+                onConfirmSubmit={handleNextAndSubmit}
               />
             )}
           </Box>
