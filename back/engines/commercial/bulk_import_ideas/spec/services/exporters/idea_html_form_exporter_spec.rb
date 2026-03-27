@@ -157,7 +157,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
 
         it 'includes the page description in the export' do
           parsed = Nokogiri::HTML(service.export)
-          page = parsed.css("div##{page_no_title.id}")
+          page = parsed.css("div[id='#{page_no_title.id}']")
           expect(page).to be_present
           expect(page.text).to include 'Page description without title'
         end
