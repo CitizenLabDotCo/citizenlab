@@ -4,8 +4,11 @@ import { Box, IconTooltip, Title } from '@citizenlab/cl2-component-library';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import useProjectModerators from 'api/project_moderators/useProjectModerators';
 
 import AddModerator from 'components/admin/AddModerator';
+import ModeratorsTable from 'components/admin/ModeratorsTable';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,6 +19,8 @@ const CommunityMonitorManagement = () => {
   const { data: project } = useCommunityMonitorProject({});
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const projectId = project?.data.id;
+  const { data: projectModerators } = useProjectModerators({ projectId });
+  const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
 
   if (!projectId) return null;
 
@@ -37,6 +42,16 @@ const CommunityMonitorManagement = () => {
           await addProjectModerator({ ...params, projectId });
         }}
       />
+      {projectModerators && (
+        <Box mt="20px">
+          <ModeratorsTable
+            moderators={projectModerators.data}
+            onDeleteModerator={async (userId: string) => {
+              await deleteProjectModerator({ projectId, userId });
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
