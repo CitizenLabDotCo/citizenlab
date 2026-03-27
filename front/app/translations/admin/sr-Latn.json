@@ -2357,7 +2357,6 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Начин гласања",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "Начин гласања одређује правила како корисници гласају",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Dodaj unos",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "Add project moderators",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "You can add your project to an folder now, or do it later in the project settings",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Dozvoljene kategorije unosa",
   "app.containers.AdminPage.ProjectEdit.altText": "Alt text",
