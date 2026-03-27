@@ -251,6 +251,7 @@ const SurveyPage = ({
       isNillish(formValues[q.key])
     );
 
+    // Focus the user back to the first unanswered qCanuestion on the page
     if (firstUnanswered) {
       const questionEl = document.querySelector(
         `[data-question-id="${firstUnanswered.id}"]`
@@ -269,11 +270,14 @@ const SurveyPage = ({
     handleNextAndSubmit();
   };
 
+  // Ensure that pressing Enter in a text or number input field does not
+  // accidentally submit the form with empty responses
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key !== 'Enter') return;
-    const target = e.target as HTMLElement;
-    const tagName = target.tagName.toLowerCase();
-    if (tagName === 'button' || tagName === 'textarea') return;
+    const target = e.target as HTMLInputElement;
+    if (target.tagName.toLowerCase() !== 'input') return;
+    const inputType = target.type;
+    if (inputType !== 'text' && inputType !== 'number') return;
     e.preventDefault();
     handleEnterKeySubmit();
   };
@@ -293,11 +297,7 @@ const SurveyPage = ({
 
   return (
     <FormProvider {...methods}>
-      <StyledForm
-        id="idea-form"
-        onSubmit={(e) => e.preventDefault()}
-        onKeyDown={handleFormKeyDown}
-      >
+      <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
         <Box
           id="container"
           display="flex"
