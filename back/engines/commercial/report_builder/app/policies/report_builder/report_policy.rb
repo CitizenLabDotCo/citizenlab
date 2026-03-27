@@ -8,7 +8,7 @@ module ReportBuilder
 
         if user.admin?
           @scope.all
-        elsif user.project_or_folder_moderator?
+        elsif user.moderator?
           @scope.where(owner: user)
         else
           raise Pundit::NotAuthorizedError
@@ -21,7 +21,7 @@ module ReportBuilder
 
       if admin?
         true
-      elsif user.project_or_folder_moderator?
+      elsif user.moderator?
         if record.phase?
           policy_for(record.phase).active_moderator?
         else
@@ -35,7 +35,7 @@ module ReportBuilder
     def layout?
       if admin?
         true
-      elsif user.present? && user.project_or_folder_moderator?
+      elsif user.present? && user.moderator?
         if record.phase?
           if policy_for(record.phase).show?
             record.public? || access_to_data?
@@ -55,7 +55,7 @@ module ReportBuilder
 
       if admin?
         true
-      elsif user.project_or_folder_moderator?
+      elsif user.moderator?
         if record.phase?
           policy_for(record.phase).update? && access_to_data?
         else

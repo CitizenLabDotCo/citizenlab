@@ -15,7 +15,7 @@ class ProjectsListedScopeService
 
     # Moderators: return all projects that
     # they can moderate.
-    if user&.project_or_folder_moderator?
+    if user&.moderator?
       projects_scope = projects_scope.joins(:admin_publication)
 
       return projects_scope

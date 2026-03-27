@@ -26,7 +26,7 @@ interface Props {
   onlyBlocked?: IQueryParameters['only_blocked'];
   deleteUsersFromGroup?: (userIds: string[]) => void;
   canModerate?: IQueryParameters['can_moderate'];
-  canAdmin?: IQueryParameters['can_admin'];
+  adminsOnly?: IQueryParameters['admins_only'];
   notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
   includeInactive?: IQueryParameters['include_inactive'];
   projectId?: string;
@@ -48,7 +48,7 @@ const UserManager = ({
   deleteUsersFromGroup,
   includeInactive,
   canModerate,
-  canAdmin,
+  adminsOnly,
   onlyBlocked,
   projectId,
   projectModeratorsOnly,
@@ -73,7 +73,7 @@ const UserManager = ({
     sort,
     pageNumber,
     not_citizenlab_member: notCitizenlabMember,
-    can_admin: canAdmin,
+    admins_only: adminsOnly,
     project: projectId,
     project_moderators_only: projectModeratorsOnly,
     folder_moderators_only: folderModeratorsOnly,
