@@ -19,7 +19,7 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_date, end_date = TimeBoundaries.parse(start_at, end_at)
 
       participations_in_period = participations(
         start_date,

@@ -2,7 +2,7 @@ module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
     def run_query(params = {})
       extract_params = extract_parameters(params)
-      start_date, end_date, no_data = TimeBoundariesParser.new(extract_params[:start_at], extract_params[:end_at]).parse
+      start_date, end_date, no_data = TimeBoundaries.parse(extract_params[:start_at], extract_params[:end_at])
 
       return empty_result if no_data
 

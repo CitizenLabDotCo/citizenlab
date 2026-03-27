@@ -10,7 +10,7 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_date, end_date = TimeBoundaries.parse(start_at, end_at)
       registrations_in_period = User.where(registration_completed_at: start_date..end_date)
 
       # Time series

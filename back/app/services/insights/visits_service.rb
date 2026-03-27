@@ -3,7 +3,7 @@ module Insights
     # Definition of a visit - a session where a pageview happened
     # When filtered by date - a session where a pageview has a date in the period
     def initialize(project_id, start_at: nil, end_at: nil, exclude_roles: nil)
-      @start_date, @end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      @start_date, @end_date = TimeBoundaries.parse(start_at, end_at)
       @project_id = project_id
       @exclude_roles = exclude_roles
     end

@@ -8,7 +8,7 @@ module ReportBuilder
       publication_statuses: nil,
       **_other_props
     )
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_date, end_date = TimeBoundaries.parse(start_at, end_at)
 
       json_response = {
         count_per_method: get_methods_used_in_overlapping_phases(

@@ -26,7 +26,7 @@ module ReportBuilder
     private
 
     def parse_time_boundaries(start_at, end_at)
-      TimeBoundariesParser.new(start_at, end_at).parse
+      TimeBoundaries.parse(start_at, end_at)
     end
 
     def comparison_requested?(compare_start_at, compare_end_at)
