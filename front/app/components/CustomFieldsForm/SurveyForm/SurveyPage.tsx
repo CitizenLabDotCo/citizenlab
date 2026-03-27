@@ -40,13 +40,12 @@ import {
   trackFormPageView,
 } from '../util';
 
-import SubmitConfirmation from './SubmitConfirmation';
-
 import {
   determineNextPageNumber,
   determinePreviousPageNumber,
   getSkippedPageIndices,
 } from './logic';
+import SubmitConfirmation from './SubmitConfirmation';
 
 const StyledForm = styled.form`
   height: 100%;
