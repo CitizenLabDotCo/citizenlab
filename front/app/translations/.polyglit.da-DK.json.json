@@ -6329,6 +6329,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:19:43.862093Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -6403,6 +6408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:19:43.862093Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
