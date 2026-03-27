@@ -798,7 +798,7 @@
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invito in attesa di risposta",
   "app.containers.Admin.Users.admin": "Amministratore",
   "app.containers.Admin.Users.assign": "Assegna",
-  "app.containers.Admin.Users.assignAsManager": "Assegna come manager",
+  "app.containers.Admin.Users.assignAsManager": "Imposta come manager",
   "app.containers.Admin.Users.assignedItems": "Elementi assegnati a {name}",
   "app.containers.Admin.Users.deleteUser": "Elimina utente",
   "app.containers.Admin.Users.deleteUserModal.banEmail": "Blocca e-mail",
