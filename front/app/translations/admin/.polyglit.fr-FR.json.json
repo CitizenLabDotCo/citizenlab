@@ -3289,9 +3289,19 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.ModeratorsTable.noModerators": {
     "state": "verified",
     "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.ModeratorsTable.removeModerator": {
@@ -12133,6 +12143,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
     "state": "verified",
