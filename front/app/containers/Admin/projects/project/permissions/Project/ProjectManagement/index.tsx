@@ -73,7 +73,7 @@ const ProjectManagement = ({ projectId }: Props) => {
         mb="32px"
         style={{ fontWeight: '500', fontSize: '18px' }}
       >
-        {formatMessage(messages.addProjectModerators)}
+        {formatMessage(messages.addProjectManagers)}
       </Text>
       <AddModerator
         projectId={projectId}

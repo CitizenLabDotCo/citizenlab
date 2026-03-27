@@ -633,7 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Not seen",
-  "app.containers.Admin.ModeratorsTable.noModerators": "This folder does not have any moderators yet.",
+  "app.containers.Admin.ModeratorsTable.noModerators": "This folder does not have any managers yet.",
   "app.containers.Admin.ModeratorsTable.removeModerator": "Remove moderator",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "This page consists of the following sections. You can turn them on/off and edit them as required.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
