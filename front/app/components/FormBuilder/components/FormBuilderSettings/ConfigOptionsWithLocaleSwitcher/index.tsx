@@ -64,6 +64,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     trigger,
+    setValue,
   } = useFormContext();
 
   // Handles drag and drop
@@ -187,6 +188,13 @@ const ConfigSelectWithLocaleSwitcher = ({
     });
   };
 
+  const updateChoiceTitle = useCallback(
+    (value: string, index: number, locale: SupportedLocale) => {
+      setValue(`${name}.${index}.title_multiloc.${locale}`, value);
+    },
+    [setValue, name]
+  );
+
   const handleMultilinePaste = useCallback(
     (lines, index) => {
       if (!selectedLocale) return;
@@ -307,6 +315,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   canDeleteLastOption={canDeleteLastOption}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  onTitleChange={updateChoiceTitle}
                                   optionImages={optionImages}
                                 />
                               </Row>
@@ -330,6 +339,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   optionImages={optionImages}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  onTitleChange={updateChoiceTitle}
                                   onMultilinePaste={
                                     multilinePasteAllowed
                                       ? handleMultilinePaste
