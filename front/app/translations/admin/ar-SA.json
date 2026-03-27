@@ -1160,7 +1160,7 @@
   "app.containers.Admin.project.emails.draft": "مسودة",
   "app.containers.Admin.project.emails.editButtonLabel": "يحرر",
   "app.containers.Admin.project.emails.editCampaignTitle": "تحرير الحملة",
-  "app.containers.Admin.project.emails.emailCreated": "تم إنشاء البريد الإلكتروني بنجاح كمسودة",
+  "app.containers.Admin.project.emails.emailCreated": "تم إنشاء البريد الإلكتروني كمسودة بنجاح",
   "app.containers.Admin.project.emails.emailUpdated": "تم تحديث البريد الإلكتروني بنجاح",
   "app.containers.Admin.project.emails.emptyCampaignsDescription": "تواصل بسهولة مع المشاركين عن طريق إرسال رسائل البريد الإلكتروني إليهم. اختر من تريد الاتصال به وتتبع خطوبتك.",
   "app.containers.Admin.project.emails.emptyCampaignsHeader": "أرسل بريدك الإلكتروني الأول",
