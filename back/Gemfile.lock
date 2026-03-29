@@ -96,6 +96,13 @@ PATH
       rails (~> 7.2)
 
 PATH
+  remote: engines/commercial/gv_plugins
+  specs:
+    gv_plugins (0.1.0)
+      extism (~> 1.0.0)
+      rails (~> 7.2)
+
+PATH
   remote: engines/commercial/id_acm
   specs:
     id_acm (1.0.0)
@@ -638,6 +645,8 @@ GEM
     erubi (1.13.1)
     event_stream_parser (1.0.0)
     excon (0.111.0)
+    extism (1.0.1)
+      ffi (~> 1.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.4)
@@ -1379,6 +1388,7 @@ DEPENDENCIES
   frontend!
   google_tag_manager!
   groupdate (~> 6.5)
+  gv_plugins!
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
   id_acm!

@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
 import staticModuleConfiguration from 'modules';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import usePluginFrontEntries from 'api/plugins/usePluginFrontEntries';
 import {
   loadModules,
   ParsedModuleConfiguration,
@@ -16,10 +16,10 @@ interface Props {
 }
 
 const OutletsProvider = ({ children }: Props) => {
-  const appConfigration = useAppConfiguration();
   const [dynamicModuleConfigurations, setDynamicModuleConfigurations] =
     useState<ParsedModuleConfiguration[]>([]);
   const pluginsActive = useFeatureFlag({ name: 'plugins' });
+  const { data: pluginFrontEntries } = usePluginFrontEntries(pluginsActive);
 
   useEffect(() => {
     if (!pluginsActive) return;
@@ -36,19 +36,14 @@ const OutletsProvider = ({ children }: Props) => {
   }, [pluginsActive]);
 
   useEffect(() => {
-    if (!pluginsActive) return;
-    appConfigration?.data?.data.attributes.settings.plugins?.active_plugins.forEach(
-      (plugin) => {
-        const script = document.createElement('script');
-        script.src = plugin.url;
-        script.async = true;
-        document.head.appendChild(script);
-      }
-    );
-  }, [
-    appConfigration?.data?.data.attributes.settings.plugins?.active_plugins,
-    pluginsActive,
-  ]);
+    if (!pluginFrontEntries) return;
+    pluginFrontEntries.data.forEach((entry) => {
+      const script = document.createElement('script');
+      script.src = entry.attributes.url;
+      script.async = true;
+      document.head.appendChild(script);
+    });
+  }, [pluginFrontEntries]);
 
   return (
     <OutletsContext.Provider

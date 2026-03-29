@@ -234,6 +234,7 @@ commercial_engines = [
   'machine_translations',
   'matomo',
   'moderation',
+  'gv_plugins',
   'posthog_integration',
   'public_api',
   'remove_vendor_branding',

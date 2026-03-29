@@ -31,6 +31,8 @@ services:
     user: "${USER_UID:-1000}:${USER_GID:-1000}"
     ports:
       - "4000:4000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - "./back:/citizenlab/back"
       - bundle:/bundle
