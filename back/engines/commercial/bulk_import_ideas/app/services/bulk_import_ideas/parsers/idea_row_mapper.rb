@@ -72,6 +72,8 @@ module BulkImportIdeas::Parsers
     end
 
     def idea_blank?(fields)
+      return true if fields.nil?
+
       fields.each_value do |value|
         return false if value.present?
       end

@@ -1,0 +1,22 @@
+{
+  "app.components.admin.UserFilterConditions.predicate_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:22:12.804534Z",
+    "verified_by": "Simon"
+  },
+  "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:22:12.804534Z",
+    "verified_by": "Simon"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:22:12.804534Z",
+    "verified_by": "Simon"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:22:12.804534Z",
+    "verified_by": "Simon"
+  }
+}
