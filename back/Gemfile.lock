@@ -1001,7 +1001,7 @@ GEM
       activesupport (>= 3.0.0)
     qonfig (0.30.0)
       base64 (>= 0.2)
-    que (2.3.0)
+    que (2.4.1)
     racc (1.8.1)
     rack (2.2.22)
     rack-attack (6.7.0)
@@ -1452,7 +1452,7 @@ DEPENDENCIES
   public_api!
   puma (~> 6.4.3)
   pundit (~> 2.5.0)
-  que (~> 2.3.0)
+  que (~> 2.4.1)
   rack-attack (~> 6)
   rack-cors (= 2.0.2)
   rack-mini-profiler (~> 4.0)

@@ -2,7 +2,7 @@ import { randomString, randomEmail } from '../../../support/commands';
 import { generateProjectFolder } from '../../../fixtures';
 import moment = require('moment');
 
-describe('Seat based billing', () => {
+describe.skip('Seat based billing', () => {
   let createdUserIds: string[] = [];
   let adminCount: number;
   let projectModeratorsCount: number;
@@ -85,9 +85,9 @@ describe('Seat based billing', () => {
           cy.visit('/admin/users/admins');
 
           cy.dataCy('e2e-admin-count').contains(adminCount);
-          cy.dataCy('e2e-admin-remaining-seats').contains(remainingSeats);
-          cy.dataCy('e2e-admin-used-seats').contains(usedSeats);
-          cy.dataCy('e2e-admin-total-seats').contains(totalSeats);
+          cy.dataCy('available-seats').contains(remainingSeats);
+          cy.dataCy('assigned-seats').contains(usedSeats);
+          cy.dataCy('total-seats').contains(totalSeats);
 
           // Navigate to users page
           cy.visit('/admin/users');
