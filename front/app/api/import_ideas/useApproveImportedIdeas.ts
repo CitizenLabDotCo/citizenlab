@@ -13,7 +13,7 @@ const approveIdeas = async (phaseId: string) =>
     body: {},
   });
 
-const useApproveOfflineIdeas = () => {
+const useApproveImportedIdeas = () => {
   const queryClient = useQueryClient();
   return useMutation<IIdeaApprovals, CLErrors, string>({
     mutationFn: approveIdeas,
@@ -23,4 +23,4 @@ const useApproveOfflineIdeas = () => {
   });
 };
 
-export default useApproveOfflineIdeas;
+export default useApproveImportedIdeas;

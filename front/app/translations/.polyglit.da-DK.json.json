@@ -854,6 +854,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.continueEditing": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:35:57.044515Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.CustomFieldsForm.descriptionMaxLength": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -949,6 +954,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.submitConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:35:57.044515Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.CustomFieldsForm.tagsRequired": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -1033,6 +1043,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.yesSubmit": {
+    "state": "verified",
+    "verified_at": "2026-03-27T11:35:57.044515Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
