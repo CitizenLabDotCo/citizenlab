@@ -10,8 +10,12 @@ module SmartGroups::Rules
       not_is_admin
       is_space_moderator
       not_is_space_moderator
+      is_project_folder_moderator
+      not_is_project_folder_moderator
       is_project_moderator
       not_is_project_moderator
+      is_moderator
+      not_is_moderator
       is_normal_user
       not_is_normal_user
     ]
@@ -66,10 +70,18 @@ module SmartGroups::Rules
         users_scope.space_moderator
       when 'not_is_space_moderator'
         users_scope.not_space_moderator
+      when 'is_project_folder_moderator'
+        users_scope.project_folder_moderator
+      when 'not_is_project_folder_moderator'
+        users_scope.not_project_folder_moderator
       when 'is_project_moderator'
         users_scope.project_moderator
       when 'not_is_project_moderator'
         users_scope.not_project_moderator
+      when 'is_moderator'
+        users_scope.moderator
+      when 'not_is_moderator'
+        users_scope.not_moderator
       when 'is_normal_user'
         users_scope.normal_user
       when 'not_is_normal_user'

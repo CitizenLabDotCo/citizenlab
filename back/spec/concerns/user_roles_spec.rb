@@ -217,6 +217,16 @@ RSpec.describe UserRoles do
       end
     end
 
+    describe '.not_moderator' do
+      it 'returns only non-moderators' do
+        expect(User.not_moderator).to contain_exactly(
+          admin,
+          admin_reviewer,
+          normal_user
+        )
+      end
+    end
+
     describe '.admin_or_moderator' do
       it 'returns admins and moderators' do
         expect(User.admin_or_moderator).to contain_exactly(

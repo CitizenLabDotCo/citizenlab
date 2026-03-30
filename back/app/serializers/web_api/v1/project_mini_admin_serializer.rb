@@ -12,13 +12,11 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :first_phase_start_date do |object|
-    first_phase = object.phases.order(:start_at).first
-    first_phase&.start_at
+    object.phases.min_by(&:start_at)&.start_at
   end
 
   attribute :last_phase_end_date do |object|
-    last_phase = object.phases.order(:start_at).last
-    last_phase&.end_at
+    object.phases.max_by(&:start_at)&.end_at
   end
 
   attribute :current_phase_start_date do |object|

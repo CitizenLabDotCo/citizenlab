@@ -51,7 +51,7 @@ namespace :single_use do
             end
           else
             n += 1
-            puts "Would update activity #{activity.id} - action would be set to '#{new_action}'"
+            puts "Would update activity #{activity.id} - action would be set from '#{old_action}' to '#{new_action}'"
           end
         end
 

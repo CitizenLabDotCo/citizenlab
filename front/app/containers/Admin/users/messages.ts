@@ -70,14 +70,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
   },
-  seeProfile: {
-    id: 'app.containers.Admin.Users.seeProfile',
-    defaultMessage: 'See profile',
-  },
-  deleteUser: {
-    id: 'app.containers.Admin.Users.deleteUser',
-    defaultMessage: 'Delete user',
-  },
   userDeletionConfirmation: {
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
     defaultMessage: 'Permanently remove this user?',
@@ -91,11 +83,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionFailed',
     defaultMessage:
       'An error occured while deleting this user, please try again.',
-  },
-  youCantDeleteYourself: {
-    id: 'app.containers.Admin.Users.youCantDeleteYourself',
-    defaultMessage:
-      'You cannot delete your own account via the user admin page',
   },
   userExportFileName: {
     id: 'app.containers.Admin.Users.userExportFileName',
@@ -133,10 +120,6 @@ export default defineMessages({
   projectManagers: {
     id: 'app.containers.Admin.Users.GroupsPanel.managers',
     defaultMessage: 'Project managers',
-  },
-  seeAssignedItems: {
-    id: 'app.containers.Admin.Users.GroupsPanel.seeAssignedItems',
-    defaultMessage: 'Assigned items',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
@@ -295,30 +278,6 @@ export default defineMessages({
     defaultMessage:
       'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
   },
-  assignAsManager: {
-    id: 'app.containers.Admin.Users.assignAsManager',
-    defaultMessage: 'Assign as manager',
-  },
-  folder: {
-    id: 'app.containers.Admin.Users.folder',
-    defaultMessage: 'Folder',
-  },
-  setUserAsProjectModerator: {
-    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
-    defaultMessage: 'Assign {name} as project manager',
-  },
-  assign: {
-    id: 'app.containers.Admin.Users.assign',
-    defaultMessage: 'Assign',
-  },
-  selectPublications: {
-    id: 'app.containers.Admin.Users.selectPublications',
-    defaultMessage: 'Select projects or folders',
-  },
-  selectPublicationsPlaceholder: {
-    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
-    defaultMessage: 'Type to search',
-  },
   projectFilterPlaceholder: {
     id: 'app.containers.Admin.Users.projectFilterPlaceholder',
     defaultMessage: 'Filter by project',
@@ -362,5 +321,9 @@ export default defineMessages({
   unbanButton: {
     id: 'app.containers.Admin.Users.BannedEmails.unbanButton',
     defaultMessage: 'Unban email',
+  },
+  seatsOverview: {
+    id: 'app.containers.Admin.Users.Seats.seatsOverview',
+    defaultMessage: 'Seats overview',
   },
 });

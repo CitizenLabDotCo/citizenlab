@@ -63,6 +63,17 @@ describe SideFxUserService do
       expect(user.follows.pluck(:followable_id)).to contain_exactly area.id
     end
 
+    context 'when user is an invitee' do
+      before { SettingsService.new.activate_feature!('user_confirmation') }
+
+      let(:invitee) { create(:user_with_confirmation, invite_status: 'pending') }
+
+      it 'does not send a confirmation code email' do
+        expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
+        service.after_create(invitee, current_user)
+      end
+    end
+
     describe 'claim_tokens' do
       let!(:claim_token) { create(:claim_token) }
       let(:idea) { claim_token.item }
