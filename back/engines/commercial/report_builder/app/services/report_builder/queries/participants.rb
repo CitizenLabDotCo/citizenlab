@@ -59,6 +59,7 @@ module ReportBuilder
       }
 
       if compare_start_at && compare_end_at
+        compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         participants_compared_period = participations(
           compare_start_at,
           compare_end_at,

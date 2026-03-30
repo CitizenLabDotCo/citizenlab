@@ -41,8 +41,9 @@ module ReportBuilder
       }
 
       if compare_start_at && compare_end_at
+        compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         registrations_compared_period = User
-          .where(registration_completed_at: compare_start_at..compare_end_at)
+          .where(registration_completed_at: compare_start_at...compare_end_at)
           .count
 
         response[:registrations_compared_period] = registrations_compared_period

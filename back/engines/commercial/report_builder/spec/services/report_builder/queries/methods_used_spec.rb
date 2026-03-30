@@ -7,6 +7,11 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
 
   describe '#run_query' do
     before_all do
+      # A timezone with a zero or negative offset is required for the compare-dates
+      # regression test below.
+      AppConfiguration.instance.settings['core']['timezone'] = 'UTC'
+      AppConfiguration.instance.save!
+
       project = create(:project)
 
       # No overlap
@@ -82,6 +87,27 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
           'volunteering' => 1,
           'voting' => 1
         })
+      end
+    end
+
+    context 'with compare dates' do
+      # This regression test needs a timezone with a zero or negative offset to be effective.
+      it 'includes phases starting on the compare end date' do
+        result = query.run_query(
+          start_at: Date.new(2021, 2, 13),
+          end_at: Date.new(2021, 5, 1),
+          compare_start_at: Date.new(2021, 1, 1),
+          compare_end_at: Date.new(2021, 2, 11)
+        )
+
+        expect(result[:count_per_method]).to eq({
+          'information' => 1,
+          'ideation' => 1,
+          'volunteering' => 1,
+          'voting' => 1
+        })
+
+        expect(result[:count_per_method_compared_period]).to eq({ 'information' => 2 })
       end
     end
   end

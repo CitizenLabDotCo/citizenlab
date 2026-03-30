@@ -19,6 +19,7 @@ module ReportBuilder
       }
 
       if compare_start_at.present? && compare_end_at.present?
+        # compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         json_response[:count_per_method_compared_period] = get_methods_used_in_overlapping_phases(
           compare_start_at, compare_end_at, publication_statuses
         )
