@@ -1,0 +1,12 @@
+{
+  "app.containers.Admin.project.emails.emailCreated": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:03.978269Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.project.emails.emailUpdated": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:03.978269Z",
+    "verified_by": "Jelena"
+  }
+}
