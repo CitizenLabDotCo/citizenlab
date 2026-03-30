@@ -6329,6 +6329,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:07:13.125400Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6403,6 +6408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:07:13.125400Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
