@@ -3833,5 +3833,3 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/de/articles/527652-was-sind-die-empfohlenen-abmessungen-und-grossen-der-plattformbilder",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."
 }
-
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle Fragen werden auf dem PDF angezeigt. Die Folgenden werden jedoch derzeit nicht für den Import über Papier-Scans unterstützt: Kartenfragen (Punkt setzen, Route zeichnen und Fläche zeichnen) und Fragen zum Hochladen von Dateien."
