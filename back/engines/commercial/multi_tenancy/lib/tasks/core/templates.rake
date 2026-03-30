@@ -9,6 +9,7 @@ MAX_VERIFICATION_TIMES = {
   'global-demo_template' => 14,
   'insights_template' => 15,
   'mi-municipio_template' => 15,
+  'blank-demo_template' => 15,
   'trial-en_template' => 23
 }.freeze
 

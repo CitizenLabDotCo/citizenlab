@@ -496,7 +496,7 @@ function apiCreateModeratorForFolder({
         method: 'POST',
         url: `web_api/v1/project_folders/${folderId}/moderators`,
         body: {
-          project_folder_moderator: {
+          moderator: {
             user_id: userId,
           },
         },
