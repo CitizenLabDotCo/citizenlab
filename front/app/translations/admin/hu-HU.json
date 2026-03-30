@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Not seen",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Ebben a mappában még nincsenek kezelők.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Kezelő eltávolítása",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Ez az oldal a következő szakaszokból áll. Szükség szerint be- vagy kikapcsolhatja és szerkesztheti őket.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Szakaszok",

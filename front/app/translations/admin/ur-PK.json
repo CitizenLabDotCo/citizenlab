@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "ترتیبات کامیابی کے ساتھ اپ ڈیٹ ہو گئیں۔",
   "app.containers.Admin.Moderation.type": "قسم",
   "app.containers.Admin.Moderation.unread": "نہیں دیکھا",
-  "app.containers.Admin.ModeratorsTable.noManagers": "اس فولڈر کا ابھی تک کوئی مینیجر نہیں ہے۔",
   "app.containers.Admin.ModeratorsTable.removeManager": "مینیجر کو ہٹائیں",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "یہ صفحہ درج ذیل حصوں پر مشتمل ہے۔ آپ انہیں آن/آف کر سکتے ہیں اور ضرورت کے مطابق ان میں ترمیم کر سکتے ہیں۔",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "سیکشنز",

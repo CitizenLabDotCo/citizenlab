@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Iestatījumi veiksmīgi atjaunināti.",
   "app.containers.Admin.Moderation.type": "Tips",
   "app.containers.Admin.Moderation.unread": "Nav apskatīts",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Šai mapei vēl nav neviena vadītāja.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Noņemt vadītāju",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Šī lapa sastāv no šādām sadaļām. Tās var aktvizēt/noņemt un rediģēt pēc vajadzības.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sadaļas",
