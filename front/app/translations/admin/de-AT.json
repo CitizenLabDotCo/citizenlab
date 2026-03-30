@@ -1,0 +1,5 @@
+{
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Alle Beiträge genehmigen ({numIdeas})",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} Beiträge konnten nicht genehmigt werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsfehler.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen"
+}
