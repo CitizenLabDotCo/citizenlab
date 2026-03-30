@@ -87,7 +87,7 @@ const AddModerator = ({
         <Text
           color="primary"
           p="0px"
-          mb="32px"
+          mb="20px"
           style={{ fontWeight: '500', fontSize: '18px' }}
         >
           {formatMessage(messages.whoAreTheManagers)}
