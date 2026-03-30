@@ -12,13 +12,14 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import spaceModeratorsKeys from './keys';
 import { Params } from './types';
 
-const addSpaceModerator = ({ spaceId, userId }: Params) => {
+const addSpaceModerator = ({ spaceId, user_email, user_id }: Params) => {
   return fetcher<IUser>({
     path: `/spaces/${spaceId}/moderators`,
     action: 'post',
     body: {
       space_moderator: {
-        user_id: userId,
+        user_id,
+        user_email,
       },
     },
   });
