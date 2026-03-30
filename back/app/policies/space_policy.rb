@@ -13,7 +13,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.space_moderator?
+    active_admin? || user && user.space_moderator?
   end
 
   def create?
