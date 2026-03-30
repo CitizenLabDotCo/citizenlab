@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
-import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  Box,
+  Title,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
+import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdea } from 'api/ideas/types';
@@ -22,6 +28,13 @@ import Container from './Container';
 import Footer from './Footer';
 import { useScrollToCard } from './hooks/useScrollToCard';
 import Interactions from './Interactions';
+
+const TitleClamp = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
 
 export interface Props {
   ideaId: string;
@@ -62,9 +75,16 @@ const IdeaCard = ({
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
-  const ideaTitle = localize(idea.data.attributes.title_multiloc, {
-    maxChar: 50,
-  });
+  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [isTitleClamped, setIsTitleClamped] = useState(false);
+
+  useEffect(() => {
+    const el = titleRef.current;
+    if (el) {
+      setIsTitleClamped(el.scrollHeight > el.clientHeight);
+    }
+  }, [ideaTitle]);
   const [searchParams] = useSearchParams();
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
@@ -123,14 +143,22 @@ const IdeaCard = ({
           }
         >
           <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
-            <Title
-              variant="h3"
-              mt="4px"
-              mb="16px"
-              className="e2e-idea-card-title"
+            <Tooltip
+              content={ideaTitle}
+              disabled={!isTitleClamped}
+              placement="top"
             >
-              {ideaTitle}
-            </Title>
+              <TitleClamp ref={titleRef}>
+                <Title
+                  variant="h3"
+                  mt="4px"
+                  mb="16px"
+                  className="e2e-idea-card-title"
+                >
+                  {ideaTitle}
+                </Title>
+              </TitleClamp>
+            </Tooltip>
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
