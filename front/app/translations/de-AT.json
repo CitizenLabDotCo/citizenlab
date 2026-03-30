@@ -761,7 +761,7 @@
   "app.components.admin.UserFilterConditions.predicate_not_is_one_of": "ist nicht einer von",
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": "ist kein*e Ordner-Manager*inn",
   "app.components.admin.UserFilterConditions.predicate_not_is_project_moderator": "ist kein*e Projektmanager*in",
-  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": "ist kein Space-Manager*innen",
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": "ist kein*e Space-Manager*innen",
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": "ist nicht verifiziert",
   "app.components.admin.UserFilterConditions.predicate_not_posted_input": "hat keinen Beitrag verfasst",
   "app.components.admin.UserFilterConditions.predicate_not_reacted_comment_in": "hat nicht auf den Kommentar reagiert",
