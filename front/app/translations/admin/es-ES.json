@@ -144,7 +144,7 @@
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Como has seleccionado \"Anonimato total\" en \"Recogida de datos del usuario\", las respuestas a las preguntas demográficas formuladas antes de participar NO SE ALMACENARÁN EN LOS RESULTADOS. Las respuestas sólo se utilizarán para actualizar el perfil del usuario, pero este perfil no está vinculado a la respuesta. Para recoger datos demográficos y almacenarlos en los resultados, elige otra opción en \"Recogida de datos del usuario\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Elegir cómo se hacen las preguntas demográficas a los participantes no es aplicable, ya que has desactivado la autenticación y seleccionado el anonimato total",
   "app.components.admin.AddByEmail.invite": "Invitar",
-  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Escribe un correo electrónico para invitar a un gestor...",
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Escribe un correo para invitar a un gestor...",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Para añadir contenido dentro del acordeón, ábrelo pulsando sobre el símbolo \">\", y luego arrastra los widgets que quieras dentro.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No hay ninguna pregunta seleccionada. Por favor, selecciona primero una pregunta.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Sin respuesta",
