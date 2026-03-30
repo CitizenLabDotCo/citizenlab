@@ -19238,5 +19238,40 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.AddByEmail.invite": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.SeatsOverview.unknown": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:12:31.834001Z",
+    "verified_by": "Jelena"
   }
 }

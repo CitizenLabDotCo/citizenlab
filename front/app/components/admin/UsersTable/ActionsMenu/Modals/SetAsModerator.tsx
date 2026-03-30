@@ -6,9 +6,9 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { isFolder } from 'api/admin_publications/utils';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 import { IUserData } from 'api/users/types';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
 import useLocalize from 'hooks/useLocalize';
 
 import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
@@ -45,8 +45,6 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
     (page) => page.data
   );
 
-  const { checkIfUserExceedsSeats } = useExceedsSeats();
-
   if (!flatAdminPublications) return null;
 
   const options = flatAdminPublications.map((publication) => ({
@@ -58,9 +56,13 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
       : localize(publication.attributes.publication_title_multiloc),
   }));
 
-  const handleAssign = () => {
-    if (!checkIfUserExceedsSeats) return;
-    if (checkIfUserExceedsSeats(user, 'moderator')) {
+  const handleAssign = async () => {
+    const shouldOpenModal = await checkIfUserExceedsSeats({
+      user_id: user.id,
+      seat_type: 'moderator',
+    });
+
+    if (shouldOpenModal) {
       setSeatLimitReachedModalOpen(true);
     } else {
       doAssign();
@@ -80,12 +82,12 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         if (isFolder(publication)) {
           await addProjectFolderModerator({
             projectFolderId: publication.relationships.publication.data.id,
-            moderatorId: user.id,
+            user_id: user.id,
           });
         } else {
           await addProjectModerator({
             projectId: publication.relationships.publication.data.id,
-            moderatorId: user.id,
+            user_id: user.id,
           });
         }
       }

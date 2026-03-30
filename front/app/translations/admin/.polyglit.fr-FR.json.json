@@ -829,6 +829,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.AddByEmail.invite": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -3279,6 +3289,26 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.noModerators": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.removeModerator": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -4098,6 +4128,11 @@
     "state": "verified",
     "verified_at": "2026-03-24T09:12:03.575457Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Admin.Users.SeatsOverview.unknown": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
@@ -12135,6 +12170,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.290440Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
     "state": "verified",
     "verified_at": "2026-03-23T11:07:11.773617Z",
@@ -13374,6 +13414,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.646065Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": {
     "state": "verified",

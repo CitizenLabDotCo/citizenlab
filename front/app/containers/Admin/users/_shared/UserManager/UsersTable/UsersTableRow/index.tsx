@@ -8,14 +8,14 @@ import { IUserData } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
 
+import ActionsMenu from 'components/admin/UsersTable/ActionsMenu';
+import NameAvatarEmail from 'components/admin/UsersTable/NameAvatarEmail';
+import UserRole from 'components/admin/UsersTable/UserRole';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 
 import messages from '../../../../messages';
-
-import ActionsMenu from './ActionsMenu';
-import NameAvatarEmail from './NameAvatarEmail';
-import UserRole from './UserRole';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
