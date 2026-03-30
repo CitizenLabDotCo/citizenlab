@@ -13,8 +13,8 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = parse_time_boundaries(start_at, end_at)
-      response = get_period_data(start_date, end_date, resolution)
+      start_at, end_at = parse_time_boundaries(start_at, end_at)
+      response = get_period_data(start_at, end_at, resolution)
 
       if comparison_requested?(compare_start_at, compare_end_at)
         response = merge_comparison_data(response, compare_start_at, compare_end_at)
@@ -34,9 +34,9 @@ module ReportBuilder
     end
 
     def merge_comparison_data(response, compare_start_at, compare_end_at)
-      compare_start_date, compare_end_date = parse_time_boundaries(compare_start_at, compare_end_at)
-      active_counts = get_active_counts(compare_start_date, compare_end_date)
-      registered_counts = get_registered_counts(compare_end_date)
+      compare_start_at, compare_end_at = parse_time_boundaries(compare_start_at, compare_end_at)
+      active_counts = get_active_counts(compare_start_at, compare_end_at)
+      registered_counts = get_registered_counts(compare_end_at)
 
       response.merge(
         admin_counts_compared: {
@@ -50,10 +50,10 @@ module ReportBuilder
       )
     end
 
-    def get_period_data(start_date, end_date, resolution)
-      active_counts = get_active_counts(start_date, end_date)
-      registered_counts = get_registered_counts(end_date)
-      timeseries = query_timeseries(start_date, end_date, resolution)
+    def get_period_data(start_at, end_at, resolution)
+      active_counts = get_active_counts(start_at, end_at)
+      registered_counts = get_registered_counts(end_at)
+      timeseries = query_timeseries(start_at, end_at, resolution)
 
       {
         admin_counts: {
@@ -68,9 +68,9 @@ module ReportBuilder
       }
     end
 
-    def query_timeseries(start_date, end_date, resolution)
+    def query_timeseries(start_at, end_at, resolution)
       ImpactTracking::Session
-        .where(created_at: start_date..end_date)
+        .where(created_at: start_at...end_at)
         .select(
           "date_trunc('#{resolution}', created_at)::date as date_group",
           role_count_sql(ADMIN_ROLES, 'admins_count'),
@@ -87,9 +87,9 @@ module ReportBuilder
         end
     end
 
-    def get_active_counts(start_date, end_date)
+    def get_active_counts(start_at, end_at)
       counts = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
+        .where(created_at: start_at...end_at)
         .select(
           role_count_sql(ADMIN_ROLES, 'admins_count'),
           role_count_sql(MODERATOR_ROLES, 'moderators_count')
@@ -102,8 +102,8 @@ module ReportBuilder
       }
     end
 
-    def get_registered_counts(end_date)
-      base_scope = User.not_super_admins.where(created_at: ..end_date)
+    def get_registered_counts(end_at)
+      base_scope = User.not_super_admins.where(created_at: ...end_at)
       admins = base_scope.admin.count
       moderators = base_scope.admin_or_moderator.count - admins
 

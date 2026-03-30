@@ -3,7 +3,7 @@ module Insights
     # Definition of a visit - a session where a pageview happened
     # When filtered by date - a session where a pageview has a date in the period
     def initialize(project_id, start_at: nil, end_at: nil, exclude_roles: nil)
-      @start_date, @end_date = TimeBoundaries.parse(start_at, end_at)
+      @start_at, @end_at = TimeBoundaries.parse(start_at, end_at)
       @project_id = project_id
       @exclude_roles = exclude_roles
     end
@@ -58,7 +58,7 @@ module Insights
     private
 
     def filtered_page_views_root_query
-      page_views = ImpactTracking::Pageview.where(created_at: @start_date..@end_date)
+      page_views = ImpactTracking::Pageview.where(created_at: @start_at...@end_at)
       page_views = page_views.where(project_id: @project_id) if @project_id
       page_views
     end

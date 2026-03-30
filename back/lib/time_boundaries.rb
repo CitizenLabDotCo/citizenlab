@@ -3,9 +3,17 @@ module TimeBoundaries
 
   module_function
 
+  # Parses from/to boundaries into timestamps clamped to the platform's lifetime.
+  #
+  # Date inputs (Date or "YYYY-MM-DD") are expanded to cover the full day:
+  # +from+ becomes the beginning of the day and +to+ becomes the start of the next day
+  # (exclusive end). Time inputs are used as-is.
+  #
+  # Returns [start_time, end_time, no_data] where no_data is true if the
+  # range doesn't overlap with the platform's lifetime.
   def parse(from, to)
     range = parse_range(from, to)
-    platform_range = AppConfiguration.instance.platform_start_at..Time.zone.now.end_of_day
+    platform_range = AppConfiguration.instance.platform_start_at..Time.zone.tomorrow.beginning_of_day
 
     if range.overlaps?(platform_range)
       clamped = clamp(range, platform_range)
@@ -16,22 +24,17 @@ module TimeBoundaries
   end
 
   def parse_range(from, to)
-    from = if from.is_a?(String) && DATE_REGEX.match?(from)
-      Time.zone.parse(from).beginning_of_day
-    else
-      from&.in_time_zone
-    end
-
-    to = if to.is_a?(String) && DATE_REGEX.match?(to)
-      Time.zone.parse(to).end_of_day
-    else
-      to&.in_time_zone
-    end
+    from = strict_date?(from) ? from.in_time_zone.beginning_of_day : from&.in_time_zone
+    to = strict_date?(to) ? to.in_time_zone.tomorrow.beginning_of_day : to&.in_time_zone
 
     from..to
   end
 
-  def clamp(range, bounds)
+  private_class_method def strict_date?(value)
+    value.is_a?(Date) || (value.is_a?(String) && DATE_REGEX.match?(value))
+  end
+
+  private_class_method def clamp(range, bounds)
     ([range.begin, bounds.begin].compact.max)..([range.end, bounds.end].compact.min)
   end
 end

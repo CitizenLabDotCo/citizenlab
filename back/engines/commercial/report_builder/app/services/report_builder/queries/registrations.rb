@@ -10,8 +10,8 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundaries.parse(start_at, end_at)
-      registrations_in_period = User.where(registration_completed_at: start_date..end_date)
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
+      registrations_in_period = User.where(registration_completed_at: start_at...end_at)
 
       # Time series
       registrations_timeseries = registrations_in_period
@@ -35,8 +35,8 @@ module ReportBuilder
         registrations_whole_period: registrations_whole_period,
         registration_rate_whole_period: registration_rate(
           registrations_whole_period,
-          start_date,
-          end_date
+          start_at,
+          end_at
         )
       }
 
@@ -56,8 +56,8 @@ module ReportBuilder
       response
     end
 
-    def registration_rate(registrations, start_date, end_date)
-      visits_service = Insights::VisitsService.new(nil, start_at: start_date, end_at: end_date)
+    def registration_rate(registrations, start_at, end_at)
+      visits_service = Insights::VisitsService.new(nil, start_at:, end_at:)
       visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (registrations / visitors.to_f)
     end

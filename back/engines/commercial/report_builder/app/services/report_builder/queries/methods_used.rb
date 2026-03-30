@@ -8,12 +8,12 @@ module ReportBuilder
       publication_statuses: nil,
       **_other_props
     )
-      start_date, end_date = TimeBoundaries.parse(start_at, end_at)
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
 
       json_response = {
         count_per_method: get_methods_used_in_overlapping_phases(
-          start_date,
-          end_date,
+          start_at,
+          end_at,
           publication_statuses
         )
       }
@@ -27,12 +27,12 @@ module ReportBuilder
       json_response
     end
 
-    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses)
-      non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
+    def get_methods_used_in_overlapping_phases(start_at, end_at, publication_statuses)
+      non_overlapping_phases = Phase.where('end_at <= ? OR start_at >= ?', start_at, end_at)
 
       query = Phase
         .joins(project: :admin_publication)
-        .where.not(id: non_overlapping_phase_ids)
+        .where.not(id: non_overlapping_phases)
 
       # Filter by publication status: specific statuses if provided, otherwise exclude drafts
       publication_filter = publication_statuses.presence || %w[published archived]
