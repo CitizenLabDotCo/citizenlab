@@ -25,6 +25,8 @@ AdminApi::Engine.routes.draw do
 
   resources :jobs, only: [:show]
 
+  resources :demo_tasks, only: [:create]
+
   resources :areas, only: [:index]
 
   resources :invites, only: [:create]
