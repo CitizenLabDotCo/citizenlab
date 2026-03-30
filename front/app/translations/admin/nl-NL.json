@@ -1,4 +1,4 @@
 {
-  "app.containers.Admin.projects.all.includeLogic": "Formulierlogica opnemen",
+  "app.containers.Admin.projects.all.includeLogic": "Formulierlogica toevoegen",
   "app.containers.Admin.projects.all.includeLogicExplanation": "Deze optie voegt tekstinstructies toe aan de PDF om aan te geven welke secties vervolgens beantwoord moeten worden, afhankelijk van de geconfigureerde formulierlogica."
 }
