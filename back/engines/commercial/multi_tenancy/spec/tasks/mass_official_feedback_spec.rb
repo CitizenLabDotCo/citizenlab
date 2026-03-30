@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 describe 'rake setup_and_support:mass_official_feedback' do # rubocop:disable RSpec/DescribeClass
-  before { load_rake_tasks_if_not_loaded }
-
-  after { Rake::Task['setup_and_support:mass_official_feedback'].reenable }
-
   let(:locale) { 'en' }
   let(:host) { Tenant.current.host }
   let!(:author) { create(:admin) }
@@ -22,8 +18,15 @@ describe 'rake setup_and_support:mass_official_feedback' do # rubocop:disable RS
     end
   end
 
-  before { allow(LogActivityJob).to receive(:perform_later) }
-  after { csv_file.unlink }
+  before do
+    load_rake_tasks_if_not_loaded
+    allow(LogActivityJob).to receive(:perform_later)
+  end
+
+  after do
+    Rake::Task['setup_and_support:mass_official_feedback'].reenable
+    csv_file.unlink
+  end
 
   def invoke
     Rake::Task['setup_and_support:mass_official_feedback'].invoke(csv_file.path, host, locale)

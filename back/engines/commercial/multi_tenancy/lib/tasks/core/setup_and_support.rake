@@ -61,7 +61,7 @@ namespace :setup_and_support do
             user_id: user.id
           }
           feedback = OfficialFeedback.create!(feedback_attributes)
-          jobs_to_enqueue << lambda { LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i) }
+          jobs_to_enqueue << -> { LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i) }
           reporter.add_create('OfficialFeedback', feedback_attributes, context: { idea_id: idea.id })
         end
       end
