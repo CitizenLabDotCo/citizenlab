@@ -633,7 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Inställningarna har uppdaterats framgångsrikt.",
   "app.containers.Admin.Moderation.type": "Typ",
   "app.containers.Admin.Moderation.unread": "Ej visat",
-  "app.containers.Admin.ModeratorsTable.noManagers2": "Det finns inga ansvariga än.",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Det finns inga ansvariga ännu.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Ta bort ansvarig",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Den här sidan består av följande avsnitt. Du kan aktivera/inaktivera dem och redigera dem vid behov.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Avsnitt",

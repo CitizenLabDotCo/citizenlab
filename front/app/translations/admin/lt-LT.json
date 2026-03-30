@@ -633,7 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Nustatymai sėkmingai atnaujinti.",
   "app.containers.Admin.Moderation.type": "Tipas",
   "app.containers.Admin.Moderation.unread": "Nepastebėta",
-  "app.containers.Admin.ModeratorsTable.noManagers2": "Dar nėra valdytojų.",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Dar nėra jokių valdytojų.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Pašalinti valdytoją",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Šį puslapį sudaro šie skyriai. Galite juos įjungti / išjungti ir redaguoti pagal poreikį.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Skyriai",
