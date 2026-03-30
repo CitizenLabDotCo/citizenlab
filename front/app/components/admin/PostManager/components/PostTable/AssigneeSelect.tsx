@@ -41,7 +41,7 @@ const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
     // filter to only admins and mods.
     ...(typeof projectId === 'string'
       ? { can_moderate_project: projectId }
-      : { can_admin: true }),
+      : { admins_only: true }),
   });
 
   if (!prospectAssignees || !authUser) return null;

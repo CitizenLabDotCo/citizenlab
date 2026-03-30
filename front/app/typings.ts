@@ -20,7 +20,20 @@ declare global {
   }
   interface Window {
     Intercom?: any;
-    Weglot?: any;
+    Weglot?: {
+      initialize: (options: { api_key: string }) => void;
+      getCurrentLang: () => string;
+      switchTo: (lang: string) => void;
+      on: (event: string, callback: (...args: any[]) => void) => void;
+      off: (event: string, callback: (...args: any[]) => void) => void;
+      translate: (
+        payload: {
+          words: { t: number; w: string }[];
+          languageTo: string;
+        },
+        callback: (data: any) => void
+      ) => void;
+    };
     _paq: any;
     attachEvent?: any;
     dataLayer?: any[];

@@ -38,6 +38,7 @@
 #  manual_votes_last_updated_by_id :uuid
 #  manual_votes_last_updated_at    :datetime
 #  neutral_reactions_count         :integer          default(0), not null
+#  weglot_data                     :jsonb            not null
 #
 # Indexes
 #
