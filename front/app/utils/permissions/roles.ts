@@ -35,12 +35,16 @@ export const isAdmin = (user: IUser | undefined) => {
   return userHasRole(user, 'admin');
 };
 
+const MODERATOR_TYPES = [
+  'project_moderator',
+  'project_folder_moderator',
+  'space_moderator',
+];
+
 export const isModerator = (user: IUser | undefined) => {
   if (!user) return false;
 
-  return ['project_moderator', 'project_folder_moderator'].includes(
-    user.data.attributes.highest_role as any
-  );
+  return MODERATOR_TYPES.includes(user.data.attributes.highest_role ?? 'user');
 };
 
 /*
