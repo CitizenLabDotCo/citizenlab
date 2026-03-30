@@ -80,9 +80,9 @@ const IdeaCard = ({
   const [isTitleClamped, setIsTitleClamped] = useState(false);
 
   useEffect(() => {
-    const el = titleRef.current;
-    if (el) {
-      setIsTitleClamped(el.scrollHeight > el.clientHeight);
+    const titleElement = titleRef.current;
+    if (titleElement) {
+      setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
   }, [ideaTitle]);
   const [searchParams] = useSearchParams();
