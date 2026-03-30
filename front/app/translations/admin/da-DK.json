@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Tryk på Esc for at springe karrusellen over",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Kortlægningsspørgsmål (sæt nål, tegn rute og tegn område) og spørgsmål om filupload.",
   "app.containers.Admin.projects.all.includeLogic": "Inkluder skemalogik",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Denne indstilling tilføjer tekstinstruktioner til PDF-filen for at angive, hvilke afsnit der skal besvares som det næste, afhængigt af den konfigurerede skemalogik."
 }

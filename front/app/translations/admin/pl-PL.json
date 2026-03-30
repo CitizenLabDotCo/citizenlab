@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Naciśnij Escape, aby pominąć karuzelę",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Wszystkie pytania są widoczne w pliku PDF. Jednak następujące elementy nie są obecnie obsługiwane podczas importu za pomocą FormSync: pytania mapowe (upuszczenie pinezki, rysowanie trasy i rysowanie obszaru) oraz pytania o przesłanie pliku.",
   "app.containers.Admin.projects.all.includeLogic": "Uwzględnij logikę formularza",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ta opcja doda do pliku PDF instrukcje tekstowe wskazujące, na które sekcje należy odpowiedzieć w następnej kolejności, w zależności od skonfigurowanej logiki formularza."
 }

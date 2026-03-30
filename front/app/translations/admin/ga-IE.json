@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Brúigh Escape chun an carúsall a scipeáil.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Taispeántar gach ceist ar an PDF. Mar sin féin, ní thacaítear leis na cinn seo a leanas faoi láthair le haghaidh iompórtála trí FormSync: Ceisteanna mapála (biorán a ligean anuas, bealach a tharraingt agus limistéar a tharraingt) agus ceisteanna uaslódála comhad.",
   "app.containers.Admin.projects.all.includeLogic": "Cuir loighic na foirme san áireamh",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Cuirfidh an rogha seo treoracha téacs leis an PDF chun a léiriú cé na rannáin ar cheart iad a fhreagairt ina dhiaidh sin, ag brath ar loighic na foirme atá cumraithe."
 }

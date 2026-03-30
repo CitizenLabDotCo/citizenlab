@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Karuseli atlamak için Escape tuşuna basın.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Tüm sorular PDF'de gösterilir. Ancak, aşağıdakiler şu anda FormSync aracılığıyla içe aktarma için desteklenmemektedir: Haritalama soruları (iğne bırakma, rota çizme ve alan çizme) ve dosya yükleme soruları.",
   "app.containers.Admin.projects.all.includeLogic": "Form mantığını dahil et",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Bu seçenek, yapılandırılan form mantığına bağlı olarak hangi bölümlerin yanıtlanacağını belirtmek için PDF'ye metin talimatları ekleyecektir."
 }

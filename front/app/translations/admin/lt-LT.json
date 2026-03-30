@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Paspauskite „Escape“, kad praleistumėte karuselę",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Visi klausimai rodomi PDF faile. Tačiau šiuo metu „FormSync“ nepalaiko šių klausimų importavimo: žemėlapio klausimų (taško pažymėjimo, maršruto nubraižymo ir ploto nubraižymo) bei failų įkėlimo klausimų.",
   "app.containers.Admin.projects.all.includeLogic": "Įtraukti formos logiką",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ši parinktis į PDF dokumentą pridės tekstines instrukcijas, nurodančias, kurias skiltis pildyti toliau, atsižvelgiant į sukonfigūruotą formos logiką."
 }

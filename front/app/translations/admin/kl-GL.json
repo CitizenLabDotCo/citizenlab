@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Carousel-i qaangiinnarniarlugu Escape tooruk",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Apeqqutit tamarmik PDF-imi takutinneqarput. Taamaattorli makku maannakkut FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingani apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik ilisivissat.",
   "app.containers.Admin.projects.all.includeLogic": "Immersugassap malittarisassai ilanngukkit",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Toqqagassap uuma PDF-imut allattukkanik ilitsersuutit ilanngutissavai, immersugassap malittarisassai aaqqissuunneqarsimasut malillugit immikkoortut sorliit tullianik akineqassanersut takutinniarlugu."
 }

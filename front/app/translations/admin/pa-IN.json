@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "ਕੈਰੋਜ਼ਲ ਨੂੰ ਛੱਡਣ ਲਈ Escape ਦਬਾਓ",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "ਸਾਰੇ ਸਵਾਲ PDF 'ਤੇ ਦਿਖਾਏ ਗਏ ਹਨ। ਹਾਲਾਂਕਿ, ਹੇਠਾਂ ਦਿੱਤੇ ਫਿਲਹਾਲ FormSync ਰਾਹੀਂ ਇੰਪੋਰਟ ਕਰਨ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਮੈਪਿੰਗ ਸਵਾਲ (ਪਿੰਨ ਡ੍ਰੌਪ ਕਰਨਾ, ਰੂਟ ਬਣਾਉਣਾ ਅਤੇ ਖੇਤਰ ਬਣਾਉਣਾ) ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ।",
   "app.containers.Admin.projects.all.includeLogic": "ਫਾਰਮ ਲੋਜਿਕ ਸ਼ਾਮਲ ਕਰੋ",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "ਇਹ ਵਿਕਲਪ PDF ਵਿੱਚ ਟੈਕਸਟ ਹਦਾਇਤਾਂ ਸ਼ਾਮਲ ਕਰੇਗਾ ਜੋ ਇਹ ਦਰਸਾਉਣਗੀਆਂ ਕਿ ਕੌਨਫਿਗਰ ਕੀਤੇ ਗਏ ਫਾਰਮ ਲੋਜਿਕ ਦੇ ਅਧਾਰ 'ਤੇ ਅੱਗੇ ਕਿਹੜੇ ਭਾਗਾਂ ਦਾ ਜਵਾਬ ਦੇਣਾ ਹੈ।"
 }

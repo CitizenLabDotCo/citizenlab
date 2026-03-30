@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Dobijte vizualni pregled vremenskih okvira vaših projekata u našem kalendarskom prikazu. Brzo prepoznajte koji projekti i faze uskoro počinju ili završavaju i zahtijevaju djelovanje.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Razumjeti što se događa i kada",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSynca: slike, oznake i prijenos datoteka.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Sva su pitanja prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSync-a: pitanja s mapiranjem (postavljanje pribadače, crtanje rute i crtanje područja) i pitanja s učitavanjem datoteka.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Kraj obrasca",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Početak obrasca",
@@ -1228,7 +1227,6 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Trajno izbrisati ovaj projekt?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Ovim će se trajno izbrisati ovaj projekt i svi povezani podaci, kao što su ideje, komentari, glasovi i odgovori na ankete.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Preuzmite PDF obrazac",
-
   "app.containers.Admin.projects.all.includeLogic": "Uključi logiku obrasca",
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ova će opcija u PDF dodati tekstualne upute koje pokazuju na koje odjeljke treba sljedeće odgovoriti, ovisno o konfiguriranoj logici obrasca."
 }

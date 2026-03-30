@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pressione Esc para pular o carrossel",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Todas as perguntas são exibidas no PDF. No entanto, as seguintes não são suportadas no momento para importação via FormSync: perguntas de mapeamento (marcar ponto, desenhar rota e desenhar área) e perguntas de upload de arquivos.",
   "app.containers.Admin.projects.all.includeLogic": "Incluir lógica do formulário",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Esta opção adicionará instruções em texto ao PDF para indicar quais seções devem ser respondidas em seguida, dependendo da lógica de formulário configurada."
 }

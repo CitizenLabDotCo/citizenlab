@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "کیروسل کو چھوڑنے کے لیے Escape دبائیں",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "تمام سوالات PDF پر دکھائے گئے ہیں۔ تاہم، درج ذیل فی الحال FormSync کے ذریعے امپورٹ کرنے کے لیے سپورٹڈ نہیں ہیں: میپنگ کے سوالات (پن ڈراپ کرنا، راستہ بنانا اور علاقہ بنانا) اور فائل اپ لوڈ کرنے کے سوالات۔",
   "app.containers.Admin.projects.all.includeLogic": "فارم کی منطق شامل کریں",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "یہ آپشن پی ڈی ایف میں تحریری ہدایات شامل کرے گا تاکہ یہ بتایا جا سکے کہ فارم کی ترتیب دی گئی منطق کے مطابق آگے کن حصوں کے جوابات دینے ہیں۔"
 }
