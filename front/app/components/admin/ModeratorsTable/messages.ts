@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Remove manager',
   },
   noManagers: {
-    id: 'app.containers.Admin.ModeratorsTable.noManagers',
-    defaultMessage: 'This folder does not have any managers yet.',
+    id: 'app.containers.Admin.ModeratorsTable.noManagers2',
+    defaultMessage: 'There are no managers yet.',
   },
 });
