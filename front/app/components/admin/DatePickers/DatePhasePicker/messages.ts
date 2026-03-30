@@ -13,4 +13,13 @@ export default defineMessages({
     id: 'app.components.admin.DatePhasePicker.Input.endTime',
     defaultMessage: 'End time:',
   },
+  sameDaySelection: {
+    id: 'app.components.admin.DatePhasePicker.Input.sameDaySelection',
+    defaultMessage: 'Single day phase selected',
+  },
+  sameDaySelectionWarning: {
+    id: 'app.components.admin.DatePhasePicker.Input.sameDaySelectionWarning',
+    defaultMessage:
+      'Minimum phase duration is 24 hours (Automatically start at 12:00 AM and end at midnight).',
+  },
 });

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import { isSameDay, differenceInMinutes, startOfDay } from 'date-fns';
+import { isSameDay, differenceInHours, startOfDay } from 'date-fns';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
@@ -11,6 +11,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { userTimezone } from 'utils/dateUtils';
@@ -199,8 +200,6 @@ const modifiersClassNames = {
   isBoundaryDisabledEndDisabledStart: 'is-boundary-disabled-end-disabled-start',
 };
 
-const MINIMUM_PHASE_MINUTES = 23 * 60 + 59; // 23:59 in minutes
-
 const Calendar = ({
   selectedRange,
   disabledRanges = [],
@@ -246,6 +245,11 @@ const Calendar = ({
     defaultMonth,
   });
 
+  const isSingleDaySelection =
+    selectedRange.from &&
+    selectedRange.to &&
+    differenceInHours(selectedRange.to, selectedRange.from) === 24;
+
   const locale = useLocale();
   // Compute min/max time constraints from adjacent disabled ranges
   const startTimeMinTime = useMemo(() => {
@@ -275,19 +279,27 @@ const Calendar = ({
     if (selectedRange.from) {
       if (startTimeMinTime) {
         const adjustedTime = new Date(startTimeMinTime);
-        adjustedTime.setMinutes(adjustedTime.getMinutes() + 15);
+        adjustedTime.setMinutes(adjustedTime.getMinutes());
         setSelectedStartTime(adjustedTime);
+        onUpdateRange({
+          from: adjustedTime,
+          to: selectedRange.to,
+        });
       } else {
         setSelectedStartTime(selectedRange.from);
+        onUpdateRange({
+          from: selectedRange.from,
+          to: selectedRange.to,
+        });
       }
     }
-  }, [selectedRange.from, selectedRange.to, startTimeMinTime]);
+  }, [selectedRange.from, selectedRange.to, startTimeMinTime, onUpdateRange]);
 
   useEffect(() => {
     if (selectedRange.to) {
       if (endTimeMaxTime) {
         const adjustedTime = new Date(endTimeMaxTime);
-        adjustedTime.setMinutes(adjustedTime.getMinutes() - 15);
+        adjustedTime.setMinutes(adjustedTime.getMinutes());
         setSelectedEndTime(adjustedTime);
       } else {
         setSelectedEndTime(selectedRange.to);
@@ -331,16 +343,6 @@ const Calendar = ({
     newDate.setHours(time.getHours());
     newDate.setMinutes(time.getMinutes());
 
-    // Check minimum duration if it's a same-day phase
-    if (selectedRange.from && isSameDay(selectedRange.from, selectedRange.to)) {
-      const startDate = new Date(selectedRange.from);
-      const minutesDiff = differenceInMinutes(newDate, startDate);
-
-      if (minutesDiff < MINIMUM_PHASE_MINUTES) {
-        // Don't update if it violates the minimum duration
-        return;
-      }
-    }
     onUpdateRange({
       from: selectedRange.from,
       to: newDate,
@@ -381,11 +383,9 @@ const Calendar = ({
       clickedDate: day,
     });
 
-    // Create new Date objects to avoid mutation issues
     const newFrom = updatedRange.from ? new Date(updatedRange.from) : undefined;
-    const newTo = updatedRange.to ? new Date(updatedRange.to) : undefined;
+    let newTo = updatedRange.to ? new Date(updatedRange.to) : undefined;
 
-    // Check if it's a same-day selection
     const isSameDaySelection = newFrom && newTo && isSameDay(newFrom, newTo);
 
     if (newFrom) {
@@ -402,15 +402,26 @@ const Calendar = ({
     }
 
     if (newTo) {
+      //  if it's a same-day selection, Set end to next day at 00:00 (midnight)
       if (isSameDaySelection) {
-        newTo.setHours(23, 59, 0, 0);
+        newTo = new Date(newFrom);
+        newTo.setDate(newTo.getDate() + 1);
+        newTo.setHours(0, 0, 0, 0);
       } else {
-        newTo.setHours(
-          selectedEndTime.getHours(),
-          selectedEndTime.getMinutes(),
-          0,
-          0
-        );
+        // in case changed from same-day to different days, set again to default end time
+        if (
+          selectedEndTime.getHours() === 0 &&
+          selectedEndTime.getMinutes() === 0
+        ) {
+          newTo.setHours(23, 59, 0, 0);
+        } else {
+          newTo.setHours(
+            selectedEndTime.getHours(),
+            selectedEndTime.getMinutes(),
+            0,
+            0
+          );
+        }
       }
     }
 
@@ -439,36 +450,46 @@ const Calendar = ({
         timeZone={userTimezone}
         className={className}
       />
-      {isPhaseDatetimeSetupEnabled && (
-        <TimeInputContainer>
-          <Box display="flex" gap="8px" alignItems="center">
-            <Text m="0">{formatMessage(messages.startTime)}</Text>
-            <TimeInput
-              selectedTime={selectedStartTime}
-              onChange={handleStartTimeChange}
-              minTime={startTimeMinTime}
-            />
-          </Box>
-          <Box display="flex" gap="8px" alignItems="center">
-            <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
-              {formatMessage(messages.endTime)}
+      {isPhaseDatetimeSetupEnabled &&
+        (isSingleDaySelection ? (
+          <Box mt="16px">
+            <Text m="0" mb="8px" fontSize="l">
+              {formatMessage(messages.sameDaySelection)}
             </Text>
-            {selectedRange.to ? (
-              <TimeInput
-                selectedTime={selectedEndTime}
-                onChange={handleEndTimeChange}
-                maxTime={endTimeMaxTime}
-              />
-            ) : (
-              <OpenEndTimeContainer>
-                <Text m="0" color="grey600">
-                  {formatMessage(messages.openEnded)}
-                </Text>
-              </OpenEndTimeContainer>
-            )}
+            <Warning w="95%">
+              {formatMessage(messages.sameDaySelectionWarning)}
+            </Warning>
           </Box>
-        </TimeInputContainer>
-      )}
+        ) : (
+          <TimeInputContainer>
+            <Box display="flex" gap="8px" alignItems="center">
+              <Text m="0">{formatMessage(messages.startTime)}</Text>
+              <TimeInput
+                selectedTime={selectedStartTime}
+                onChange={handleStartTimeChange}
+                minTime={startTimeMinTime}
+              />
+            </Box>
+            <Box display="flex" gap="8px" alignItems="center">
+              <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
+                {formatMessage(messages.endTime)}
+              </Text>
+              {selectedRange.to ? (
+                <TimeInput
+                  selectedTime={selectedEndTime}
+                  onChange={handleEndTimeChange}
+                  maxTime={endTimeMaxTime}
+                />
+              ) : (
+                <OpenEndTimeContainer>
+                  <Text m="0" color="grey600">
+                    {formatMessage(messages.openEnded)}
+                  </Text>
+                </OpenEndTimeContainer>
+              )}
+            </Box>
+          </TimeInputContainer>
+        ))}
     </DayPickerStyles>
   );
 };

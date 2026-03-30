@@ -1,4 +1,9 @@
-import { differenceInDays, addDays, isSameDay } from 'date-fns';
+import {
+  differenceInDays,
+  addDays,
+  isSameDay,
+  differenceInHours,
+} from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -49,6 +54,19 @@ const generateSelectedModifiers = ({
     return {};
   }
 
+  if (
+    to &&
+    from.getHours() === 0 &&
+    from.getMinutes() === 0 &&
+    to.getHours() === 0 &&
+    to.getMinutes() === 0 &&
+    differenceInHours(to, from) === 24
+  ) {
+    return {
+      isSelectedSingleDay: [from],
+    };
+  }
+
   if (to !== undefined) {
     return {
       isSelectedStart: from,
@@ -92,7 +110,6 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
   if (disabledRanges.length === 0) {
     return {};
   }
-  // console.log('disabledRanges', disabledRanges);
 
   if (allAreClosedDateRanges(disabledRanges)) {
     return generateClosedDisabledRanges(disabledRanges);
