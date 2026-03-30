@@ -33,6 +33,15 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     # `postgres` service in `docker-compose.yml`.
     && apt-get update && apt-get install -y postgresql-client-16
 
+# Install Extism shared library
+ARG EXTISM_VERSION=v1.21.0
+RUN curl -sSL "https://github.com/extism/extism/releases/download/${EXTISM_VERSION}/libextism-x86_64-unknown-linux-gnu-${EXTISM_VERSION}.tar.gz" \
+    | tar -xz -C /tmp \
+    && cp /tmp/libextism.so /usr/lib/ \
+    && cp /tmp/extism.h /usr/include/ \
+    && ldconfig \
+    && rm -f /tmp/libextism.so /tmp/extism.h /tmp/extism.pc.in /tmp/extism-static.pc.in /tmp/libextism.a
+
 # Create non-root user with proper UID/GID mapping
 ARG USERNAME=dev
 ARG USER_UID=1000

@@ -5,6 +5,7 @@ GVPlugins::Engine.routes.draw do
     namespace :v1 do
       get 'plugins/front_entries', to: 'plugins#front_entries'
       get 'plugins/:id/front_entry', to: 'plugins#front_entry', as: 'plugin_front_entry'
+      match 'plugins/:plugin_name/*path', to: 'plugin_proxy#handle', via: :all
     end
   end
 end

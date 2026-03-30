@@ -27,6 +27,36 @@ module GVPlugins
       fetch_file(entry[:url])
     end
 
+    def back_plugins
+      plugin_urls = AppConfiguration.instance.settings.dig('plugins', 'active_plugins') || []
+
+      plugin_urls.filter_map do |plugin|
+        manifest = fetch_manifest(plugin['url'])
+        next unless manifest
+        next unless manifest['back']
+
+        back = manifest['back']
+        wasm_url = resolve_url(plugin['url'], back['entry'])
+        routes = (back['routes'] || []).map do |route|
+          { method: route['method'].upcase, path: route['path'], handler: route['handler'] }
+        end
+
+        { name: manifest['name'], wasm_url: wasm_url, routes: routes }
+      end
+    end
+
+    def find_handler(plugin_name, request_method, path)
+      plugin = back_plugins.find { |p| p[:name] == plugin_name }
+      return nil unless plugin
+
+      route = plugin[:routes].find do |r|
+        r[:method] == request_method.upcase && r[:path] == "/#{path}"
+      end
+      return nil unless route
+
+      { wasm_url: plugin[:wasm_url], handler: route[:handler] }
+    end
+
     private
 
     def fetch_manifest(manifest_url)
