@@ -2425,6 +2425,7 @@
   "app.errors.password_blank": "This cannot be empty",
   "app.errors.password_invalid": "Please check your current password again.",
   "app.errors.password_too_short": "The password must be at least 8 characters long",
+  "app.errors.phase_too_short": "The phase is too short. It must be at least 24 hours.",
   "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",
