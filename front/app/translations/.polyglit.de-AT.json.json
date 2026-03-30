@@ -856,8 +856,8 @@
   },
   "app.components.CustomFieldsForm.continueEditing": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-03-30T15:27:05.788543Z",
+    "verified_by": "Jelena"
   },
   "app.components.CustomFieldsForm.descriptionMaxLength": {
     "state": "verified",
@@ -956,8 +956,8 @@
   },
   "app.components.CustomFieldsForm.submitConfirmation": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-03-30T15:27:05.788543Z",
+    "verified_by": "Jelena"
   },
   "app.components.CustomFieldsForm.tagsRequired": {
     "state": "verified",
@@ -1046,8 +1046,8 @@
   },
   "app.components.CustomFieldsForm.yesSubmit": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-03-30T15:27:05.788543Z",
+    "verified_by": "Jelena"
   },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
