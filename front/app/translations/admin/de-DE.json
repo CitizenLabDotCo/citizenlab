@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Einstellungen erfolgreich aktualisiert.",
   "app.containers.Admin.Moderation.type": "Typ",
   "app.containers.Admin.Moderation.unread": "Nicht gesehen",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Dieser Ordner hat noch keine Manager*innen.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Manager*innen entfernen",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Diese Seite besteht aus den folgenden Abschnitten. Sie können sie ein- und ausschalten und nach Bedarf bearbeiten.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Bereiche",

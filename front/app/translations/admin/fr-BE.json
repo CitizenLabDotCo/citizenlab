@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Les paramètres ont été mis à jour avec succès.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Non vu",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Ce dossier n'a pas encore de gestionnaires.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Retirer le gestionnaire",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Cette page se compose des sections suivantes. Vous pouvez les activer/désactiver et les modifier selon vos besoins.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",

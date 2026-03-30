@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Innstillingene er oppdatert.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Ikke sett",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Denne mappen har ingen administratorer ennå.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Fjern administrator",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Denne siden består av følgende seksjoner. Du kan slå dem på/av og redigere dem etter behov.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Seksjoner",

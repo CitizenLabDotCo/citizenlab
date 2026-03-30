@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Οι ρυθμίσεις ενημερώθηκαν με επιτυχία.",
   "app.containers.Admin.Moderation.type": "Τύπος",
   "app.containers.Admin.Moderation.unread": "Μη αναγνωσμένο",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Αυτός ο φάκελος δεν έχει ακόμα διαχειριστές.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Αφαίρεση διαχειριστή",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Αυτή η σελίδα αποτελείται από τις ακόλουθες ενότητες. Μπορείτε να τις ενεργοποιήσετε/απενεργοποιήσετε και να τις επεξεργαστείτε όπως απαιτείται.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
