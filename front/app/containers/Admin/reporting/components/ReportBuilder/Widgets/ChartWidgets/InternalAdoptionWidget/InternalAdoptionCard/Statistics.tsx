@@ -36,7 +36,7 @@ export const Statistic = ({
     (showActiveDelta || showRegisteredDelta) && !!previousDays;
 
   return (
-    <Box w="25%" pr="12px">
+    <Box flex="0 1 25%" pr="12px">
       <StatisticName name={formatMessage(nameMessage)} nameColor="black" />
       <Box mt="2px">
         <Text color="textPrimary" fontSize="xl" display="inline">
