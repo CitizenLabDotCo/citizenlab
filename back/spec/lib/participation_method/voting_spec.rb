@@ -98,9 +98,7 @@ RSpec.describe ParticipationMethod::Voting do
     before { SettingsService.new.activate_feature! 'idea_author_change' }
 
     it 'returns false for a resident when idea_author_change is activated' do
-      user = create(:user)
-      pp user
-      expect(participation_method.author_in_form?(user)).to be false
+      expect(participation_method.author_in_form?(create(:user))).to be false
     end
 
     it 'returns true for a moderator when idea_author_change is activated' do
@@ -207,6 +205,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_submission?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }

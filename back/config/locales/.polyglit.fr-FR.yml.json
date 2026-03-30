@@ -364,6 +364,11 @@
     "verified_at": "2026-03-18T11:50:36.611698Z",
     "verified_by": "Admin"
   },
+  "errors.messages.in_the_past": {
+    "state": "verified",
+    "verified_at": "2026-03-23T11:07:11.843749Z",
+    "verified_by": "Simon"
+  },
   "errors.messages.max_must_be_greater_than_min_characters": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.611698Z",
@@ -718,6 +723,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.611698Z",
     "verified_by": "Admin"
+  },
+  "locales.de-AT": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:29:53.218953Z",
+    "verified_by": "Cindy EB"
   },
   "locales.de-DE": {
     "state": "verified",

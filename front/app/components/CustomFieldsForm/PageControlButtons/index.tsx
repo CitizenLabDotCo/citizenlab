@@ -213,6 +213,7 @@ const PageControlButtons = ({
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && pageVariant !== 'after-submission' && (
           <Button
+            type="button"
             onClick={handlePrevious}
             data-cy="e2e-previous-page"
             icon="chevron-left"

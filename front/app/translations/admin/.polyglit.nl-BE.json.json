@@ -134,10 +134,25 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.campaignDeleteConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Campaigns.campaignDeleteWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Campaigns.cancel": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
   },
   "app.components.Admin.Campaigns.clicked": {
     "state": "verified",
@@ -229,6 +244,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.Admin.Campaigns.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
   "app.components.Admin.Campaigns.sent": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -248,6 +268,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.Admin.Email.scheduling.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.cancelScheduleTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.confirmCancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.confirmSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.keepSchedule": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.rescheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSend": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendDescription": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.Admin.Email.scheduling.scheduleSendWarning": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
   },
   "app.components.Admin.ImageCropper.cropFinalSentence": {
     "state": "verified",
@@ -509,6 +584,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.SeatInfo.assignedSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.SeatInfo.availableSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
   "app.components.SeatInfo.currentAdminSeatsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -518,6 +603,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.goToSeatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
   },
   "app.components.SeatInfo.includedAdminToolTip": {
     "state": "verified",
@@ -558,6 +648,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.SeatInfo.totalAdminSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.SeatInfo.totalManagerSeats": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
   },
   "app.components.SeatInfo.totalSeats": {
     "state": "verified",
@@ -3959,6 +4059,46 @@
     "verified_at": "2026-03-18T16:34:36.160245Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.Seats.seatsOverview": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.admins": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.managers": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.name": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.options": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.role": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.title": {
+    "state": "verified",
+    "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -4899,6 +5039,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.emails.seeEmailHereText": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -5559,6 +5704,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:35:56.540002Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -5869,6 +6019,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.save": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.project.emails.scheduled": {
+    "state": "verified",
+    "verified_at": "2026-03-19T12:38:02.160105Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.project.emails.send": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -6013,6 +6173,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
+    "state": "verified",
+    "verified_at": "2026-03-26T12:58:57.270715Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": {
     "state": "verified",
@@ -7694,6 +7860,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:42:38.349026Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -7764,6 +7935,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:42:38.349026Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -7798,6 +7974,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:42:38.349026Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": {
     "state": "verified",

@@ -13,19 +13,21 @@ RSpec.describe MultiTenancy::TenantService do
     end
 
     it 'shifts timestamps that are more than 24 hours in the past' do
-      user = create(:user, registration_completed_at: 3.days.ago)
+      original_time = 3.days.ago
+      user = create(:user, registration_completed_at: original_time)
 
       service.shift_timestamps(1)
 
-      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(2.days.ago)
+      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time + 24.hours)
     end
 
     it 'shifts timestamps that are in the future' do
-      user = create(:user, registration_completed_at: 3.days.from_now)
+      original_time = 3.days.from_now
+      user = create(:user, registration_completed_at: original_time)
 
       service.shift_timestamps(1)
 
-      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(4.days.from_now)
+      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time + 24.hours)
     end
 
     it 'does not shift timestamps that are less than 24 hours in the past' do
