@@ -1,0 +1,3 @@
+{
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle Fragen werden auf dem PDF angezeigt. Die Folgenden werden jedoch derzeit nicht für den Import über Papier-Scans unterstützt: Kartenfragen (Punkt setzen, Route zeichnen und Fläche zeichnen) und Fragen zum Hochladen von Dateien."
+}
