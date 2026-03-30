@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Bu projeyi kalıcı olarak silelim mi?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Bu işlem, bu projeyi ve fikirler, yorumlar, oylar ve anket yanıtları gibi ilgili tüm verileri kalıcı olarak silecektir.",
   "app.containers.Admin.projects.all.exportAsPDF1": "PDF formunu indirin",
+  "app.containers.Admin.projects.all.includeLogic": "Form mantığını dahil et",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Bu seçenek, yapılandırılan form mantığına bağlı olarak hangi bölümlerin yanıtlanması gerektiğini belirtmek için PDF'ye metin talimatları ekleyecektir.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Girdi yöneticisi' sekmesine gidin ve 'İçe aktar' seçeneğine tıklayın.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Anket' sekmesine gidin ve 'İçe Aktar'a tıklayın.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Anket mantığı indirilen PDF'ye yansıtılmayacaktır. Basılı anket katılımcıları tüm anket sorularını görecektir.",

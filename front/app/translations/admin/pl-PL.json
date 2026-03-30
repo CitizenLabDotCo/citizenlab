@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Usunąć ten projekt na stałe?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Spowoduje to trwałe usunięcie tego projektu i wszystkich powiązanych z nim danych, takich jak pomysły, komentarze, głosy i odpowiedzi na ankiety.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Pobierz formularz PDF",
+  "app.containers.Admin.projects.all.includeLogic": "Uwzględnij logikę formularza",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Ta opcja doda do pliku PDF instrukcje tekstowe wskazujące, na które sekcje należy odpowiedzieć w następnej kolejności, w zależności od skonfigurowanej logiki formularza.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Menedżer danych wejściowych\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Ankieta\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankiety nie zostanie odzwierciedlona w pobranym pliku PDF. Respondenci papierowi zobaczą wszystkie pytania ankiety.",

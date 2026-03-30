@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Dit project definitief verwijderen?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Hierdoor wordt dit project en alle bijbehorende gegevens, zoals ideeën, reacties, stemmen en vragenlijst-reacties, permanent verwijderd.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Download PDF formulier",
+  "app.containers.Admin.projects.all.includeLogic": "Formulierlogica opnemen",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Deze optie voegt tekstinstructies toe aan de PDF om aan te geven welke secties vervolgens beantwoord moeten worden, afhankelijk van de geconfigureerde formulierlogica.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Je kunt online en offline reacties combineren. Om offline reacties te uploaden, ga je naar het tabblad 'Beheer bijdragen' van dit project en klik je op 'Importeren'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Je kunt online en offline reacties combineren. Als je offline reacties wilt uploaden, ga je naar het tabblad 'Vragenlijst' van dit project en klik je op 'Importeren'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Enquêtelogica wordt niet weergegeven in de gedownloade PDF. Papieren respondenten zien alle enquêtevragen.",

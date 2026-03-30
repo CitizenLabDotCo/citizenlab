@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Dëse Projet permanent läschen?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Dëst läscht dëse Projet an all seng verbonne Daten, wéi Iddien, Kommentaren, Stëmmen an Ëmfro-Äntwerten, permanent.",
   "app.containers.Admin.projects.all.exportAsPDF1": "PDF-Formular eroflueden",
+  "app.containers.Admin.projects.all.includeLogic": "Formulairelogik mat abezéien",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Dës Optioun füügt Textinstruktiounen am PDF bäi, fir unzeginn, wéi eng Sektiounen als nächst beäntwert solle ginn, ofhängeg vun der konfiguréierter Formulairelogik.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Dir kënnt Online- an Offline-Äntwerte kombinéieren. Fir Offline-Äntwerten eropzelueden, gitt op den Tab 'Input-Manager' vun dësem Projet a klickt op 'Importéieren'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Dir kënnt Online- an Offline-Äntwerte kombinéieren. Fir Offline-Äntwerten eropzelueden, gitt op den Tab 'Ëmfro' vun dësem Projet a klickt op 'Importéieren'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "D'Ëmfro-Logik gëtt am erofgeluedene PDF net berücksichtegt. Participanten op Pabeier gesinn all d'Froe vun der Ëmfro.",

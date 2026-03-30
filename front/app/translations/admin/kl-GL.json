@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Pilersaarut una piivillugu piiaruk?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Tamatuma suliniut tassanilu paasissutissat tamarmik, soorlu isumassarsiat, oqaaseqaatit, taasinerit misissuinermilu akissutit, piujuaannartumik peerneqassapput.",
   "app.containers.Admin.projects.all.exportAsPDF1": "PDF-immersugassaq aajuk",
+  "app.containers.Admin.projects.all.includeLogic": "Skemap malittarisassai ilanngukkit",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Uuma PDF-imut ilitsersuutit ilanngutissavai, skemap malittarisassai naapertorlugit immikkoortut sorliit tullianik akineqassanersut takutillugu.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Akissutit internetikkut aamma internetiunngitsukkut katersukkatit ataatsimoortissinnaavatit. Akissutit internetiunngitsukkut katersukkatit ikkukkumallugit, suliniutip uuma 'Input manager'-ianut iserlutit 'Import' toqqaruk.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Akissutit internetikkut aamma internetiunngitsukkut akisat akuleriisissinnaavatit. Akissutit internetiunngitsukkut akisat ikkukkumallugit, suliniutip uuma immikkoortortaanut 'Misissuineq'-mut iserlutit 'Ikkussiguk' toqqaruk.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Misissuinermi tulleriiaarineq PDF-imi aaneqartumi takuneqarsinnaassanngilaq. Pappialakkut akisut apeqqutit tamaasa takussavaat.",

@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Dzēst šo projektu uz visiem laikiem?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Tas neatgriezeniski dzēsīs šo projektu un visus ar to saistītos datus, piemēram, idejas, komentārus, balsojumus un aptaujas atbildes.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Lejupielādēt PDF veidlapu",
+  "app.containers.Admin.projects.all.includeLogic": "Iekļaut veidlapas loģiku",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Šī opcija PDF failam pievienos teksta instrukcijas, lai norādītu, kuras sadaļas jāaizpilda tālāk atkarībā no konfigurētās veidlapas loģikas.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Varat apvienot tiešsaistes un bezsaistes atbildes. Lai augšupielādētu bezsaistes atbildes, dodieties uz šā projekta cilni \"Ievades pārvaldnieks\" un noklikšķiniet uz \"Importēt\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Varat apvienot tiešsaistes un bezsaistes atbildes. Lai augšupielādētu bezsaistes atbildes, dodieties uz šī projekta cilni \"Aptauja\" un noklikšķiniet uz \"Importēt\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Aptaujas loģika netiks atspoguļota lejupielādētajā PDF failā. Papīra formātā respondenti redzēs visus aptaujas jautājumus.",

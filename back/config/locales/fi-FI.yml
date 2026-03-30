@@ -1,4 +1,4 @@
-fi:
+fi-FI:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 tuntia.
@@ -168,6 +168,11 @@ fi:
       last_name: Sukunimi
       line_print_description: Ole hyvä ja piirrä reitti alla olevaan karttaan.
       linear_scale_print_description: Kirjoita vain numero väliltä %{min_label} ja %{max_label}
+      logic_go_to_section: Siirry seuraavaksi osioon <strong>%{section}</strong>.
+      logic_if_answered_end: Jos vastasit <strong>%{option}</strong> kysymykseen %{question}, sinun <strong>ei tarvitse</strong> vastata muihin kysymyksiin.
+      logic_if_answered_go_to: Jos vastasit <strong>%{option}</strong> kysymykseen %{question}, siirry seuraavaksi osioon <strong>%{section}</strong>.
+      logic_no_further_questions: Vastaustesi perusteella sinun <strong>ei tarvitse</strong> vastata muihin kysymyksiin.
+      logic_section: Osio %{letter}
       matrix_print_description: Merkitse jokaiselle riville yksi ympyrä ristillä osoittaaksesi mieltymyksesi.
       optional: valinnainen
       page: Sivu
