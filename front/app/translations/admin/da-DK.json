@@ -633,7 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Indstillingerne er blevet opdateret med succes.",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Ikke set",
-  "app.containers.Admin.ModeratorsTable.noManagers2": "Der er endnu ingen administratorer.",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Der er endnu ingen projektledere.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Fjern projektleder",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Denne side består af følgende afsnit. Du kan slå dem til/fra og redigere dem efter behov.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sektioner",
