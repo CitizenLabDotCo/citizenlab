@@ -4369,6 +4369,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.spaceManager": {
+    "state": "verified",
+    "verified_at": "2026-03-30T16:29:26.311532Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Users.userBlockModal.allDone": {
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.160245Z",
