@@ -21,7 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const AUTOSAVE_DEBOUNCE_MS = 1500;
+const AUTOSAVE_DEBOUNCE_MS = 1000;
 
 interface FormValues {
   draft_description_multiloc: Multiloc;

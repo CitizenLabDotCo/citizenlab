@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage: 'Publish',
   },
   draftDescriptionPublishedTooltip: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip',
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1',
     defaultMessage:
-      'This is the currently published description visible to participants. Click to edit to create a draft.',
+      'This is the currently published description visible to participants. Click to edit.',
   },
   draftDescriptionDraftTooltip: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip',
