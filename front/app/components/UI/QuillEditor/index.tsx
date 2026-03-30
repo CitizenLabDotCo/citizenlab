@@ -40,7 +40,6 @@ export interface Props {
   onBlur?: () => void;
   maxCharCount?: number;
   minCharCount?: number;
-  readOnly?: boolean;
 }
 
 configureQuill();
@@ -63,7 +62,6 @@ const QuillEditor = ({
   onFocus,
   maxCharCount,
   minCharCount,
-  readOnly = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -135,12 +133,6 @@ const QuillEditor = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Handle readOnly mode
-  useEffect(() => {
-    if (!editor) return;
-    editor.enable(!readOnly);
-  }, [editor, readOnly]);
 
   // Handle text and focus changes
   useEffect(() => {

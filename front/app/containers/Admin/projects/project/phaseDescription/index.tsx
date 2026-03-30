@@ -6,8 +6,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import DraftPhaseDescription from '../phaseSetup/components/DraftPhaseDescription';
-
+import DraftPhaseDescription from './DraftPhaseDescription';
 import SimplePhaseDescription from './SimplePhaseDescription';
 
 const AdminPhaseDescription = () => {
