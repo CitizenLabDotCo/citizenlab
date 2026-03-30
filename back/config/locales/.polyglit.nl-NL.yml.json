@@ -494,6 +494,12 @@
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
   },
+
+  "form_builder.pdf_export.logic_go_to_section": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:16:15.497614Z",
+    "verified_by": "Luuc"
+  },
   "form_builder.pdf_export.matrix_print_description": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
@@ -1450,3 +1456,27 @@
     "verified_by": "Admin"
   }
 }
+
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:16:15.497614Z",
+    "verified_by": "Luuc"
+  },
+
+  "form_builder.pdf_export.logic_section": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:16:15.497614Z",
+    "verified_by": "Luuc"
+  },
+
+  "form_builder.pdf_export.logic_if_answered_go_to": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:16:15.497614Z",
+    "verified_by": "Luuc"
+  },
+
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:16:15.497614Z",
+    "verified_by": "Luuc"
+  },
