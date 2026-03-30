@@ -849,6 +849,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Nustatyti kaip administratorius",
   "app.containers.Admin.Users.setAsNormalUser": "Nustatyti kaip įprastą naudotoją",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Projekto vadovu paskirti {name}",
+  "app.containers.Admin.Users.spaceManager": "Erdvės valdytojas",
   "app.containers.Admin.Users.userBlockModal.allDone": "Viskas padaryta",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokuoti naudotoją",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Atliekant šį veiksmą šio naudotojo turinys nebus pašalintas. Jei reikia, nepamirškite moderuoti jo turinio.",

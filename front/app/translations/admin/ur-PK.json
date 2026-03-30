@@ -849,6 +849,7 @@
   "app.containers.Admin.Users.setAsAdmin": "ایڈمن کے طور پر سیٹ کریں۔",
   "app.containers.Admin.Users.setAsNormalUser": "عام صارف کے طور پر سیٹ کریں۔",
   "app.containers.Admin.Users.setUserAsProjectModerator": "پروجیکٹ مینیجر کے طور پر {name} کو تفویض کریں۔",
+  "app.containers.Admin.Users.spaceManager": "اسپیس مینیجر",
   "app.containers.Admin.Users.userBlockModal.allDone": "سب ہو گیا",
   "app.containers.Admin.Users.userBlockModal.blockAction": "صارف کو مسدود کریں۔",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "اس صارف کا مواد اس کارروائی کے ذریعے نہیں ہٹایا جائے گا۔ اگر ضرورت ہو تو ان کے مواد کو معتدل کرنا نہ بھولیں۔",

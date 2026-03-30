@@ -849,6 +849,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Als Admin festleeën",
   "app.containers.Admin.Users.setAsNormalUser": "Als normale Benotzer festleeën",
   "app.containers.Admin.Users.setUserAsProjectModerator": "{name} als Projet-Manager zouweisen",
+  "app.containers.Admin.Users.spaceManager": "Space-Manager",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alles fäerdeg",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Benotzer blockéieren",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Den Inhalt vun dësem Benotzer gëtt net duerch dës Aktioun geläscht. Vergiesst net hiren Inhalt ze moderéieren wann néideg.",
