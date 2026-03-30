@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Ottieni una panoramica visiva della timeline dei tuoi progetti nella nostra vista calendario. Identifica rapidamente quali progetti e fasi stanno per iniziare o terminare e richiedono un intervento.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Comprendi cosa sta succedendo e quando",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Tutte le domande vengono mostrate nel PDF. Tuttavia, al momento non sono supportati per l'importazione tramite FormSync i seguenti elementi: Immagini, tag e caricamento di file.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Tutte le domande vengono mostrate nel PDF. Tuttavia, le seguenti non sono attualmente supportate per l'importazione tramite FormSync: domande di mappatura (segnaposto, percorso e area) e domande con caricamento di file.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fine del modulo",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Inizio del modulo",

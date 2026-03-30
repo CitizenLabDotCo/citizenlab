@@ -1208,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Kalendoriaus rodinyje galite vaizdžiai peržiūrėti savo projekto terminus. Greitai nustatykite, kurie projektai ir etapai netrukus prasidės arba baigsis ir kurių reikia imtis veiksmų.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Suprasti, kas ir kada vyksta",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Visi klausimai pateikti PDF formatu. Tačiau šiuo metu toliau išvardyti klausimai nėra importuojami per \"FormSync\": Vaizdai, žymos ir failų įkėlimas.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Visi klausimai rodomi PDF faile. Tačiau šiuo metu „FormSync“ nepalaiko šių klausimų importavimo: žemėlapio klausimų (taško pažymėjimo, maršruto nubraižymo ir ploto nubraižymo) bei failų įkėlimo klausimų.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Formos pabaiga",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Formos pradžia",
