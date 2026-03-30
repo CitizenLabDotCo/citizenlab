@@ -1208,7 +1208,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Obtenha uma visão geral dos cronogramas de seus projetos em nossa visualização de calendário. Identifique rapidamente quais projetos e fases estão começando ou terminando em breve e precisam de ação.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Entenda o que está acontecendo e quando",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Todas as perguntas são exibidas no PDF. No entanto, no momento, não há suporte para importação via FormSync para os seguintes itens: Imagens, Tags e Upload de arquivos.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Todas as perguntas são exibidas no PDF. No entanto, as perguntas a seguir não são compatíveis com a importação via FormSync: Perguntas de mapeamento (drop pin, draw route e draw area), perguntas de classificação, perguntas de matriz e perguntas de upload de arquivo.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Todas as perguntas são exibidas no PDF. No entanto, as seguintes não são suportadas no momento para importação via FormSync: perguntas de mapeamento (marcar ponto, desenhar rota e desenhar área) e perguntas de upload de arquivos.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fim do formulário",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Início do formulário",
   "app.containers.Admin.projects.all.components.archived": "Arquivado",
