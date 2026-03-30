@@ -1,4 +1,4 @@
-ca:
+ca-ES:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 hores.
@@ -168,6 +168,11 @@ ca:
       last_name: Cognom
       line_print_description: Si us plau, dibuixa una ruta al mapa següent.
       linear_scale_print_description: Escriu només un número entre %{min_label} i %{max_label}
+      logic_go_to_section: Aneu a la <strong>%{section}</strong> a continuació.
+      logic_if_answered_end: Si heu respost <strong>%{option}</strong> a la pregunta %{question}, <strong>no cal</strong> que respongueu cap més pregunta.
+      logic_if_answered_go_to: Si heu respost <strong>%{option}</strong> a la pregunta %{question}, aneu a la <strong>%{section}</strong> a continuació.
+      logic_no_further_questions: D'acord amb les vostres respostes, <strong>no cal</strong> que respongueu cap més pregunta.
+      logic_section: Secció %{letter}
       matrix_print_description: Per a cada fila, marqueu un cercle amb una creu per indicar la vostra preferència.
       optional: opcional
       page: Pàgina

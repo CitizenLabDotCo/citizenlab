@@ -1,4 +1,4 @@
-cy:
+cy-GB:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 awr.
@@ -172,6 +172,11 @@ cy:
       last_name: Enw olaf
       line_print_description: Lluniwch lwybr ar y map isod.
       linear_scale_print_description: Ysgrifennwch rif rhwng %{min_label} a %{max_label} yn unig
+      logic_go_to_section: Ewch i <strong>%{section}</strong> nesaf.
+      logic_if_answered_end: Os gwnaethoch ateb <strong>%{option}</strong> i Gwestiwn %{question}, <strong>nid oes angen</strong> i chi ateb unrhyw gwestiynau pellach.
+      logic_if_answered_go_to: Os gwnaethoch ateb <strong>%{option}</strong> i Gwestiwn %{question}, ewch i <strong>%{section}</strong> nesaf.
+      logic_no_further_questions: Yn seiliedig ar eich ymatebion, <strong>nid oes angen</strong> i chi ateb unrhyw gwestiynau pellach.
+      logic_section: Adran %{letter}
       matrix_print_description: Ar gyfer pob rhes, marciwch un cylch gyda chroes i nodi eich dewis.
       optional: dewisol
       page: Tudalen

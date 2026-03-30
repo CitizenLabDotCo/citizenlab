@@ -172,6 +172,11 @@ ar-MA:
       last_name: اسم العائلة
       line_print_description: يرجى رسم الطريق على الخريطة أدناه.
       linear_scale_print_description: الرجاء كتابة رقم بين %{min_label} و %{max_label} فقط
+      logic_go_to_section: انتقل إلى <strong>%{section}</strong>.
+      logic_if_answered_end: إذا كانت إجابتك هي <strong>%{option}</strong> عن السؤال %{question}، فـ <strong>لست بحاجة</strong> للإجابة على أي أسئلة أخرى.
+      logic_if_answered_go_to: إذا كانت إجابتك هي <strong>%{option}</strong> عن السؤال %{question}، فانتقل إلى <strong>%{section}</strong>.
+      logic_no_further_questions: بناءً على أجوبتك، <strong>لست بحاجة</strong> للإجابة على أي أسئلة أخرى.
+      logic_section: القسم %{letter}
       matrix_print_description: بالنسبة لكل صف، قم بوضع علامة على دائرة بعلامة X للإشارة إلى تفضيلاتك.
       optional: خياري
       page: صفحة

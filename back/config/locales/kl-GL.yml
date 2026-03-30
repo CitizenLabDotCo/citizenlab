@@ -197,6 +197,11 @@ kl-GL:
       last_name: Kinguliaq
       line_print_description: Nunap assingani ataaniittumi aqqut titartaruk.
       linear_scale_print_description: Kisitsit %{min_label}-ip aamma %{max_label}-ip akornanniittoq taamaallaat allaguk
+      logic_go_to_section: Tullianik <strong>%{section}</strong>-imut ingerlagit.
+      logic_if_answered_end: Apeqqummi %{question}-mi <strong>%{option}</strong> akigukku, apeqqutinik allanik <strong>akissuteqartariaqanngilatit</strong>.
+      logic_if_answered_go_to: Apeqqummi %{question}-mi <strong>%{option}</strong> akigukku, tullianik <strong>%{section}</strong>-imut ingerlagit.
+      logic_no_further_questions: Akissutitit tunngavigalugit, apeqqutinik allanik <strong>akissuteqartariaqanngilatit</strong>.
+      logic_section: Immikkoortoq %{letter}
       matrix_print_description: Sanileriiaani tamani ammalortoq ataaseq sanningasuleruk tulluunnerpaatut isigisat nalunaarlugu.
       optional: piumasaqaataanngitsoq
       page: Qupperneq

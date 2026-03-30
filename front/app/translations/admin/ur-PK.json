@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "اس پروجیکٹ کو مستقل طور پر حذف کریں؟",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "یہ اس پروجیکٹ اور اس سے وابستہ تمام ڈیٹا کو مستقل طور پر حذف کر دے گا، جیسے کہ خیالات، تبصرے، ووٹ، اور سروے کے جوابات۔",
   "app.containers.Admin.projects.all.exportAsPDF1": "پی ڈی ایف فارم ڈاؤن لوڈ کریں۔",
+
+  "app.containers.Admin.projects.all.includeLogic": "فارم کی منطق شامل کریں",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "آپ آن لائن اور آف لائن جوابات کو یکجا کر سکتے ہیں۔ آف لائن جوابات اپ لوڈ کرنے کے لیے، اس پروجیکٹ کے 'ان پٹ مینیجر' ٹیب پر جائیں، اور 'درآمد کریں' پر کلک کریں۔",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "آپ آن لائن اور آف لائن جوابات کو یکجا کر سکتے ہیں۔ آف لائن جوابات اپ لوڈ کرنے کے لیے، اس پروجیکٹ کے 'سروے' ٹیب پر جائیں، اور 'درآمد کریں' پر کلک کریں۔",
   "app.containers.Admin.projects.all.logicNotInPDF": "ڈاؤن لوڈ کردہ پی ڈی ایف میں سروے کی منطق کی عکاسی نہیں کی جائے گی۔ کاغذی جواب دہندگان سروے کے تمام سوالات دیکھیں گے۔",
@@ -3849,3 +3851,5 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔"
 }
+
+  "app.containers.Admin.projects.all.includeLogicExplanation": "یہ آپشن پی ڈی ایف (PDF) میں تحریری ہدایات شامل کرے گا تاکہ یہ بتایا جا سکے کہ فارم کی ترتیب شدہ منطق کے مطابق آگے کن حصوں کے جوابات دینے ہیں۔",

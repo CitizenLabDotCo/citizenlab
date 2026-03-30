@@ -6259,6 +6259,12 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.projects.all.includeLogic": {
+    "state": "verified",
+    "verified_at": "2026-03-30T09:28:29.409486Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.all.itIsAlsoPossible1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -19380,3 +19386,9 @@
     "verified_by": "Admin"
   }
 }
+
+  "app.containers.Admin.projects.all.includeLogicExplanation": {
+    "state": "verified",
+    "verified_at": "2026-03-30T09:28:29.409486Z",
+    "verified_by": "Cindy EB"
+  },

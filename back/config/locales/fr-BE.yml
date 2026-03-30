@@ -168,6 +168,11 @@ fr-BE:
       last_name: Nom
       line_print_description: Veuillez dessiner un tracé sur la carte ci-dessous.
       linear_scale_print_description: Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement
+      logic_go_to_section: Passez ensuite à la <strong>%{section}</strong>.
+      logic_if_answered_end: "Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, vous <strong>n'avez pas</strong> besoin de répondre à d'autres questions."
+      logic_if_answered_go_to: Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, passez ensuite à la <strong>%{section}</strong>.
+      logic_no_further_questions: "En fonction de vos réponses, vous <strong>n'avez pas</strong> besoin de répondre à d'autres questions."
+      logic_section: Section %{letter}
       matrix_print_description: Pour chaque ligne, cochez un cercle avec une croix pour indiquer votre préférence.
       optional: optionnel
       page: Page
