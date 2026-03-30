@@ -73,8 +73,13 @@ const DraftPhaseDescription = ({
     setIsEditing(true);
   };
 
+  const blurEditor = () => {
+    window.getSelection()?.removeAllRanges();
+  };
+
   const handlePublish = () => {
     debouncedSaveDraft.cancel();
+    blurEditor();
     updatePhase(
       {
         phaseId,
@@ -87,6 +92,7 @@ const DraftPhaseDescription = ({
 
   const handleDiscard = () => {
     debouncedSaveDraft.cancel();
+    blurEditor();
     updatePhase(
       { phaseId, draft_description_multiloc: {} },
       {
