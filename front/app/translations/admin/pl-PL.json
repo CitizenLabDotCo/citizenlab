@@ -1208,7 +1208,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Uzyskaj wizualny przegląd harmonogramów swoich projektów w naszym widoku kalendarza. Szybko zidentyfikuj projekty i fazy, które wkrótce się rozpoczną lub zakończą i wymagają działania.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Zrozum, co się dzieje i kiedy",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Wszystkie pytania są wyświetlane w pliku PDF. Jednak następujące elementy nie są obecnie obsługiwane w przypadku importu za pośrednictwem FormSync: Obrazy, tagi i przesyłanie plików.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Wszystkie pytania są wyświetlane w pliku PDF. Jednak następujące elementy nie są obecnie obsługiwane w przypadku importu za pośrednictwem FormSync: Pytania dotyczące mapowania (upuść pinezkę, narysuj trasę i narysuj obszar), pytania rankingowe, pytania dotyczące macierzy i pytania dotyczące przesyłania plików.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Wszystkie pytania są widoczne w pliku PDF. Jednak następujące elementy nie są obecnie obsługiwane podczas importu za pomocą FormSync: pytania mapowe (upuszczenie pinezki, rysowanie trasy i rysowanie obszaru) oraz pytania o przesłanie pliku.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Koniec formularza",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Początek formularza",
   "app.containers.Admin.projects.all.components.archived": "Zarchiwizowany",

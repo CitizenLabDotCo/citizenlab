@@ -1208,7 +1208,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "ਸਾਡੇ ਕੈਲੰਡਰ ਵਿਊ ਵਿੱਚ ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਸਮਾਂ-ਰੇਖਾਵਾਂ ਦਾ ਇੱਕ ਵਿਜ਼ੂਅਲ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ। ਜਲਦੀ ਪਛਾਣੋ ਕਿ ਕਿਹੜੇ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਪੜਾਅ ਜਲਦੀ ਸ਼ੁਰੂ ਹੋ ਰਹੇ ਹਨ ਜਾਂ ਖਤਮ ਹੋ ਰਹੇ ਹਨ ਅਤੇ ਕਾਰਵਾਈ ਦੀ ਲੋੜ ਹੈ।",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "ਸਮਝੋ ਕਿ ਕੀ ਹੋ ਰਿਹਾ ਹੈ ਅਤੇ ਕਦੋਂ",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "ਸਾਰੇ ਸਵਾਲ PDF 'ਤੇ ਦਿਖਾਏ ਗਏ ਹਨ। ਹਾਲਾਂਕਿ, ਹੇਠ ਲਿਖੀਆਂ ਗੱਲਾਂ ਵਰਤਮਾਨ ਵਿੱਚ FormSync ਰਾਹੀਂ ਆਯਾਤ ਕਰਨ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਚਿੱਤਰ, ਟੈਗ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ।",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "ਸਾਰੇ ਸਵਾਲ PDF 'ਤੇ ਦਿਖਾਏ ਗਏ ਹਨ। ਹਾਲਾਂਕਿ, ਹੇਠ ਲਿਖੇ ਇਸ ਵੇਲੇ FormSync ਰਾਹੀਂ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਮੈਪਿੰਗ ਸਵਾਲ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ ਅਤੇ ਡਰਾਅ ਖੇਤਰ), ਰੈਂਕਿੰਗ ਸਵਾਲ, ਮੈਟ੍ਰਿਕਸ ਸਵਾਲ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ।",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "ਸਾਰੇ ਸਵਾਲ PDF 'ਤੇ ਦਿਖਾਏ ਗਏ ਹਨ। ਹਾਲਾਂਕਿ, ਹੇਠਾਂ ਦਿੱਤੇ ਫਿਲਹਾਲ FormSync ਰਾਹੀਂ ਇੰਪੋਰਟ ਕਰਨ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਮੈਪਿੰਗ ਸਵਾਲ (ਪਿੰਨ ਡ੍ਰੌਪ ਕਰਨਾ, ਰੂਟ ਬਣਾਉਣਾ ਅਤੇ ਖੇਤਰ ਬਣਾਉਣਾ) ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ।",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "ਫਾਰਮ ਦਾ ਅੰਤ",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "ਫਾਰਮ ਦੀ ਸ਼ੁਰੂਆਤ",
   "app.containers.Admin.projects.all.components.archived": "ਪੁਰਾਲੇਖ",
