@@ -125,12 +125,11 @@ const DraftPhaseDescription = ({
             backgroundColor={isEditing ? colors.orange500 : colors.green500}
           />
         </Box>
-        <Box onClick={isEditing ? undefined : handleClickToEdit}>
-          <QuillMultilocWithLocaleSwitcher
-            name="draft_description_multiloc"
-            withCTAButton
-          />
-        </Box>
+        <QuillMultilocWithLocaleSwitcher
+          name="draft_description_multiloc"
+          withCTAButton
+          onFocus={isEditing ? undefined : handleClickToEdit}
+        />
         {isEditing && (
           <Box
             display="flex"
