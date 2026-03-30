@@ -17,7 +17,7 @@ const addSpaceModerator = ({ spaceId, user_email, user_id }: Params) => {
     path: `/spaces/${spaceId}/moderators`,
     action: 'post',
     body: {
-      space_moderator: {
+      moderator: {
         user_id,
         user_email,
       },
