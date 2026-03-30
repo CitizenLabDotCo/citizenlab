@@ -1,4 +1,4 @@
 {
-  "app.containers.Admin.projects.all.includeLogic": "Includi logica del modulo",
+  "app.containers.Admin.projects.all.includeLogic": "Includi la logica del modulo",
   "app.containers.Admin.projects.all.includeLogicExplanation": "Questa opzione aggiungerà istruzioni testuali al PDF per indicare quali sezioni compilare successivamente, in base alla logica del modulo configurata."
 }

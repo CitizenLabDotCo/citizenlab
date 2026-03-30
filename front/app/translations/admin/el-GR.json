@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Συμπερίληψη λογικής φόρμας",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Αυτή η επιλογή θα προσθέσει οδηγίες κειμένου στο PDF που θα υποδεικνύουν ποιες ενότητες πρέπει να απαντηθούν στη συνέχεια, ανάλογα με τη διαμορφωμένη λογική της φόρμας."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Αυτή η επιλογή θα προσθέσει οδηγίες κειμένου στο PDF για να υποδείξει ποιες ενότητες πρέπει να απαντηθούν στη συνέχεια, ανάλογα με τη διαμορφωμένη λογική της φόρμας."
 }

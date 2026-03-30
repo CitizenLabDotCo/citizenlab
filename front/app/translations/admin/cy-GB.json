@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Cynnwys rhesymeg ffurflen",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Bydd yr opsiwn hwn yn ychwanegu cyfarwyddiadau testun i'r PDF i nodi pa adrannau i'w hateb nesaf, gan ddibynnu ar y rhesymeg ffurflen a ffurfweddwyd."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Bydd yr opsiwn hwn yn ychwanegu cyfarwyddiadau testun i'r PDF i nodi pa adrannau i'w hateb nesaf, yn dibynnu ar y rhesymeg ffurflen a ffurfweddwyd."
 }

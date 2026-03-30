@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Inclure la logique du formulaire",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Cette option ajoutera des instructions textuelles au PDF pour indiquer quelles sections remplir ensuite, selon la logique de formulaire configurée."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Cette option ajoutera des instructions textuelles au PDF pour indiquer quelles sections remplir ensuite, selon la logique du formulaire configurée."
 }

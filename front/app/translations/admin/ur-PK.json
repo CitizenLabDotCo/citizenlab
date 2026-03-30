@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "فارم کی منطق شامل کریں",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "یہ آپشن پی ڈی ایف میں تحریری ہدایات شامل کرے گا تاکہ فارم کی ترتیب شدہ منطق کے مطابق یہ نشاندہی کی جا سکے کہ آگے کن حصوں کے جوابات دینے ہیں۔"
+  "app.containers.Admin.projects.all.includeLogicExplanation": "یہ آپشن پی ڈی ایف میں تحریری ہدایات شامل کرے گا تاکہ یہ بتایا جا سکے کہ فارم کی ترتیب دی گئی منطق کے مطابق آگے کن حصوں کے جوابات دینے ہیں۔"
 }

@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Iekļaut veidlapas loģiku",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Šī opcija PDF failā pievienos teksta norādes, kas norādīs, kuras sadaļas aizpildīt tālāk, atkarībā no konfigurētās veidlapas loģikas."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Šī opcija PDF failam pievienos teksta norādes, kas norādīs, kuras sadaļas jāaizpilda tālāk, atkarībā no konfigurētās veidlapas loģikas."
 }

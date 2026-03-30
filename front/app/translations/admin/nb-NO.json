@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Inkluder skjemalogikk",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Dette valget vil legge til tekstinstruksjoner i PDF-filen for å angi hvilke deler som skal besvares videre, avhengig av den konfigurerte skjemalogikken."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Dette alternativet vil legge til tekstinstruksjoner i PDF-en for å angi hvilke deler som skal besvares videre, avhengig av den konfigurerte skjemalogikken."
 }

@@ -1,4 +1,4 @@
 {
-  "app.containers.Admin.projects.all.includeLogic": "Immersugassap logikkia ilannguguk",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Toqqagassap uuma PDF-imut allattorsimasunik najoqqutassanik ilanngussissaaq, immersugassap logikkia aaqqissuunneqarsimasoq naapertorlugu immikkoortut sorliit tullianik akineqassanersut takutinniarlugit."
+  "app.containers.Admin.projects.all.includeLogic": "Immersugassap malittarisassai ilanngukkit",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Toqqagassap uuma PDF-imut allattukkanik ilitsersuutit ilanngutissavai, immersugassap malittarisassai aaqqissuunneqarsimasut malillugit immikkoortut sorliit tullianik akineqassanersut takutinniarlugu."
 }

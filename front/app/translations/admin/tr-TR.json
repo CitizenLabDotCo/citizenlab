@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Form mantığını dahil et",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Bu seçenek, yapılandırılan form mantığına bağlı olarak hangi bölümlerin yanıtlanacağını belirtmek için PDF'e metin talimatları ekleyecektir."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Bu seçenek, yapılandırılan form mantığına bağlı olarak hangi bölümlerin yanıtlanacağını belirtmek için PDF'ye metin talimatları ekleyecektir."
 }

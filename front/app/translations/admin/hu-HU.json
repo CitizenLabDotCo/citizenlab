@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Űrlaplogika belefoglalása",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Ez az opció szöveges utasításokat ad a PDF-hez, amelyek jelzik, hogy a beállított űrlaplogikától függően mely szakaszokat kell kitölteni a következőkben."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Ez az opció szöveges utasításokat ad a PDF-hez, amelyek a beállított űrlaplogikától függően jelzik, mely szakaszokat kell legközelebb megválaszolni."
 }

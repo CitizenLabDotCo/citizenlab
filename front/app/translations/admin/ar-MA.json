@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "تضمين منطق الاستمارة",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "سيضيف هذا الخيار تعليمات نصية إلى ملف PDF لتوضيح الأقسام التي يجب الإجابة عليها لاحقاً، بناءً على منطق الاستمارة الذي تم إعداده."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "سيضيف هذا الخيار تعليمات نصية إلى ملف PDF لتوضيح الأقسام التي يجب الإجابة عليها لاحقاً، بناءً على منطق الاستمارة الذي تمت تهيئته."
 }

@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Uključi logiku obrasca",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Ova će opcija u PDF dodati tekstualne upute koje naznačuju na koje odjeljke treba sljedeće odgovoriti, ovisno o konfiguriranoj logici obrasca."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Ova će opcija u PDF dodati tekstualne upute koje pokazuju na koje odjeljke treba sljedeće odgovoriti, ovisno o konfiguriranoj logici obrasca."
 }

@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Formularlogik mat abezéien",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Dës Optioun füügt Textinstruktiounen zum PDF bäi, fir unzeweisen, wéi eng Sektiounen als Nächst geäntwert solle ginn, ofhängeg vun der konfiguréierter Formularlogik."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Dës Optioun füügt Textinstruktiounen zum PDF derbäi, fir unzeginn, wéi eng Sektiounen als Nächst geäntwert solle ginn, ofhängeg vun der konfiguréierter Formularlogik."
 }

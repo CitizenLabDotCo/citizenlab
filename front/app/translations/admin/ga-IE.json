@@ -1,4 +1,4 @@
 {
   "app.containers.Admin.projects.all.includeLogic": "Cuir loighic na foirme san áireamh",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Cuirfidh an rogha seo treoracha téacs leis an PDF chun a léiriú cé na rannáin ba cheart a fhreagairt ina dhiaidh sin, ag brath ar an loighic foirme atá cumraithe."
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Cuirfidh an rogha seo treoracha téacs leis an PDF chun a léiriú cé na rannáin ar cheart iad a fhreagairt ina dhiaidh sin, ag brath ar loighic na foirme atá cumraithe."
 }
