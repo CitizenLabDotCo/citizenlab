@@ -10,7 +10,12 @@ import userCountKeys from 'api/users_count/keys';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import spaceModeratorsKeys from './keys';
-import { Params } from './types';
+
+interface Params {
+  user_id?: string;
+  user_email?: string;
+  spaceId: string;
+}
 
 const addSpaceModerator = ({ spaceId, user_email, user_id }: Params) => {
   return fetcher<IUser>({
