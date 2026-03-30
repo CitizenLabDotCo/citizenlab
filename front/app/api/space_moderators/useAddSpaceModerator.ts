@@ -29,11 +29,9 @@ const useAddSpaceModerator = () => {
   const queryClient = useQueryClient();
   return useMutation<IUser, CLErrors, Params>({
     mutationFn: addSpaceModerator,
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: spaceModeratorsKeys.list({
-          spaceId: variables.spaceId,
-        }),
+        queryKey: spaceModeratorsKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({

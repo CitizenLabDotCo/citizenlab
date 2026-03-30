@@ -28,6 +28,7 @@ export type OnboardingType = {
 export type HighestRole =
   | 'super_admin'
   | 'admin'
+  | 'space_moderator'
   | 'project_folder_moderator'
   | 'project_moderator'
   | 'user';
