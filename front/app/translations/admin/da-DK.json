@@ -1,4 +1,4 @@
 {
-  "app.containers.Admin.projects.all.includeLogic": "Inkluder formularlogik",
-  "app.containers.Admin.projects.all.includeLogicExplanation": "Denne indstilling tilføjer tekstinstruktioner til PDF-filen for at angive, hvilke afsnit der skal besvares som det næste, afhængigt af den konfigurerede formularlogik."
+  "app.containers.Admin.projects.all.includeLogic": "Inkluder skemalogik",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Denne indstilling tilføjer tekstinstruktioner til PDF-filen for at angive, hvilke afsnit der skal besvares som det næste, afhængigt af den konfigurerede skemalogik."
 }
