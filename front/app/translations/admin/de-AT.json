@@ -111,6 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "Das Projekt wurde erfolgreich erstellt!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Geben Sie den Namen des Projekts ein",
   "app.components.ProjectTemplatePreview.useTemplate": "Vorlage verwenden",
+
+  "app.components.SeatInfo.assignedSeats": "Zugewiesene Zugänge: {assignedSeats}",
   "app.components.UserSearch.addModerators": "Hinzufügen",
   "app.components.UserSearch.searchUsers": "Tippen um Person(en) zu suchen...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Alternative Fehlermeldung",
@@ -782,6 +784,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektmanager*innen",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Zugewiesene Elemente",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Verschaffen Sie sich einen Überblick über alle Personen und Organisationen, die sich auf der Plattform registriert haben. Fügen Sie eine Auswahl von Nutzer*innen zu manuellen oder intelligenten Gruppen hinzu.",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "Übersicht der Zugänge",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Einladung ausstehend",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.assign": "Zuordnen",
@@ -1102,7 +1106,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Kein Enddatum",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Nach links scrollen",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Nach rechts scrollen",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Drücken Sie die Esc-Taste, um das Karussell zu überspringen",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projekte und Ordner (alte Ansicht)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Titel der Projekte",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} arbeitet derzeit an",
@@ -1195,7 +1198,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Verschaffen Sie sich einen visuellen Überblick über Ihre Projektzeitpläne in unserer Kalenderansicht. Erkennen Sie schnell, welche Projekte und Phasen bald beginnen oder enden und Maßnahmen erfordern.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Verstehen, was passiert und wann",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle Fragen werden in der PDF-Datei angezeigt. Die folgenden Punkte werden jedoch derzeit nicht für den Import über Papier-Scans unterstützt: Bilder, Tags und Datei-Upload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle Fragen werden in der PDF-Datei angezeigt. Allerdings werden die folgenden Fragen derzeit nicht für den Import über Papier-Scans unterstützt: Mapping-Fragen (Pin setzen, Route zeichnen und Bereich zeichnen), Ranking-Fragen, Matrix-Fragen und Dateiupload-Fragen.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Ende des Formulars",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Beginn des Formulars",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
@@ -1533,6 +1535,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Es gibt bereits ein Konto, das mit dieser E-Mail verknüpft ist. Diese Eingabe wird zu diesem hinzugefügt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Zustimmung des/der Nutzer*in (Nutzer*innenkonto erstellen)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Freigeben",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Alle Beiträge genehmigen ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF herunterladen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-Mail-Adresse:",
@@ -1545,6 +1549,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importierte Beiträge",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importieren. Dieser Vorgang kann ein paar Minuten dauern.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dieser Beitrag wurde anonym importiert.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} Beiträge konnten nicht genehmigt werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsfehler.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Sprache:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Es gibt noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine PDF-Datei mit gescannten Eingabeformularen oder eine Excel-Datei mit Beiträgen zu importieren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine Excel-Datei mit Beiträgen zu importieren.",
@@ -1552,6 +1558,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Die importierte Datei kann nicht angezeigt werden. Die Anzeige importierter Dateien ist nur für PDF-Importe verfügbar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Die ausgewählte Phase kann keine Beiträge enthalten. Bitte wählen Sie eine andere.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dieses Projekt enthält keine Phasen, die Beitrage enthalten können.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Bitte wählen Sie aus, zu welcher Phase Sie diese Beiträge hinzufügen möchten.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Eingabe-Importeur",
@@ -3837,3 +3845,25 @@
 }
 
   "app.containers.Admin.projects.all.includeLogicExplanation": "Diese Option fügt dem PDF Textanweisungen hinzu, die angeben, welche Abschnitte abhängig von der konfigurierten Formularlogik als Nächstes beantwortet werden sollen.",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "Manager*innen",
+
+  "app.components.SeatInfo.totalManagerSeats": "Manager*innen-Zugänge insgesamt ({totalSeats})",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "Name",
+
+  "app.containers.Admin.Users.SeatsOverview.options": "Optionen",
+
+  "app.components.SeatInfo.totalAdminSeats": "Admin-Zugänge insgesamt ({totalSeats})",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "Übersicht der Zugänge",
+
+  "app.components.SeatInfo.goToSeatsOverview": "Übersicht der Zugänge",
+
+  "app.components.SeatInfo.availableSeats": "Verfügbare Zugänge: {availableSeats}",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "Admins",
+
+  "app.containers.Admin.Users.SeatsOverview.role": "Rolle",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Einladungsstatus",

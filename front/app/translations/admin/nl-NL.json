@@ -1115,7 +1115,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Geen einddatum",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Scroll naar links",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Scroll naar rechts",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Druk op escape om carrousel over te slaan",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Druk op escape om de carrousel over te slaan",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projecten en mappen (legacy)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Projectnaam",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} werkt momenteel aan",
@@ -1208,7 +1209,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Krijg een visueel overzicht van de tijdlijnen van je projecten in onze kalenderweergave. Zie snel welke projecten en fasen binnenkort beginnen of eindigen en actie vereisen.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Begrijp wat er gebeurt en wanneer",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle vragen worden getoond op de PDF. De volgende vragen worden momenteel echter niet ondersteund voor import via FormSync: Afbeeldingen, Tags en Bestanden uploaden.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle vragen worden getoond op de PDF. De volgende vragen worden momenteel echter niet ondersteund voor import via FormSync: kaart-gerelateerde vragen (pin prikken, route tekenen en gebied tekenen), rangschikkingsvragen, matrixvragen en bestand upload vragen.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle vragen worden weergegeven op de pdf. De volgende worden momenteel echter niet ondersteund voor import via FormSync: kaartvragen (speld plaatsen, route tekenen en gebied tekenen) en vragen voor het uploaden van bestanden.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Einde van het formulier",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Begin van het formulier",
   "app.containers.Admin.projects.all.components.archived": "Gearchiveerd",
