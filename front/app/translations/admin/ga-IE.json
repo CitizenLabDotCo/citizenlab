@@ -633,7 +633,6 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Nuashonraíodh na socruithe go rathúil.",
   "app.containers.Admin.Moderation.type": "Cineál",
   "app.containers.Admin.Moderation.unread": "Ní fhacthas",
-  "app.containers.Admin.ModeratorsTable.noManagers": "Níl aon bhainisteoirí ag an bhfillteán seo fós.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Bain bainisteoir",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Tá na rannóga seo a leanas ar an leathanach seo. Is féidir leat iad a chasadh air/as agus iad a chur in eagar de réir mar is gá.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Rannóga",
