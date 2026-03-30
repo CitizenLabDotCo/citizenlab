@@ -35,8 +35,7 @@ describe('generateModifiers', () => {
       };
 
       expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
-        isSelectedStart: selectedRange.from,
-        isSelectedEnd: selectedRange.to,
+        isSelectedSingleDay: [selectedRange.from],
       });
     });
 
