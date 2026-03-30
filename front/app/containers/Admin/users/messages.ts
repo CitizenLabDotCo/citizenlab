@@ -29,14 +29,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
-  setAsAdmin: {
-    id: 'app.containers.Admin.Users.setAsAdmin',
-    defaultMessage: 'Set as admin',
-  },
-  setAsNormalUser: {
-    id: 'app.containers.Admin.Users.setAsNormalUser',
-    defaultMessage: 'Set as normal user',
-  },
   role: {
     id: 'app.containers.Admin.Users.role',
     defaultMessage: 'Role',
