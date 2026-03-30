@@ -87,7 +87,7 @@ const SeatInfo = ({ seatType, mb }: Props) => {
       mb={mb}
     >
       <Box justifyContent="space-between" display="flex" alignItems="center">
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" data-cy="total-seats">
           {seatType === 'admin' && (
             <Icon
               name="shield-checkered"
@@ -100,7 +100,12 @@ const SeatInfo = ({ seatType, mb }: Props) => {
           {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
         </Box>
         <Box display="flex" alignItems="center">
-          <Box mr="20px" display="flex" alignItems="center">
+          <Box
+            mr="20px"
+            display="flex"
+            alignItems="center"
+            data-cy="assigned-seats"
+          >
             <Icon
               name="check-circle"
               mr="4px"
@@ -109,7 +114,7 @@ const SeatInfo = ({ seatType, mb }: Props) => {
             />
             {formatMessage(messages.assignedSeats, { assignedSeats })}
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" data-cy="available-seats">
             <Icon
               name="dotted-circle"
               mr="4px"
