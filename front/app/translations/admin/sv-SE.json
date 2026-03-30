@@ -1115,8 +1115,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Inget slutdatum",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Bläddra till vänster",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Bläddra till höger",
-
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Tryck på escape för att hoppa över karusellen",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Tryck på escape för att hoppa över karusellen",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projekt och mappar (äldre)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Projektets titel",
@@ -1210,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Få en visuell överblick över dina projekts tidslinjer i vår kalendervy. Identifiera snabbt vilka projekt och faser som snart startar eller avslutas och som kräver åtgärder.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Förstå vad som händer och när",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alla frågor visas i PDF-filen. Följande stöds dock inte för närvarande för import via FormSync: Bilder, Taggar och Filuppladdning.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alla frågor visas i PDF-filen. Följande stöds dock inte för närvarande för import via FormSync: kartfrågor (placera nål, rita rutt och rita område) och filuppladdningsfrågor.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Slut på formuläret",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Början av formuläret",

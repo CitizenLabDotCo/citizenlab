@@ -1115,7 +1115,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Beigu datums nav norādīts",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Ritiniet pa kreisi",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Ritiniet pa labi",
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Nospiediet Escape, lai izlaistu karuseli",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projekti un mapes (mantotie)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Projektu nosaukums",
@@ -1209,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Iegūstiet vizuālu pārskatu par savu projektu grafiku mūsu kalendāra skatā. Ātri noskaidrojiet, kuri projekti un posmi drīz sāksies vai beigsies un kam ir nepieciešama rīcība.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Izpratne par to, kas un kad notiek",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Visi jautājumi ir parādīti PDF formātā. Tomēr pašlaik nav iespējams importēt, izmantojot FormSync, šādus jautājumus: Attēli, birkas un failu augšupielāde.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Visi jautājumi tiek rādīti PDF failā. Tomēr šobrīd importēšanai, izmantojot FormSync, netiek atbalstīti šādi jautājumi: kartēšanas jautājumi (punkta atzīmēšana, maršruta zīmēšana un apgabala zīmēšana) un failu augšupielādes jautājumi.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Veidlapas beigas",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Veidlapas sākums",

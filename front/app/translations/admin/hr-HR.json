@@ -1115,8 +1115,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Nema datuma završetka",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Pomakni se lijevo",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Pomakni se desno",
-
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pritisnite Escape za preskakanje vrtuljka",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pritisnite Escape za preskakanje vrtuljka",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projekti i mape (nasljeđe)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Naziv projekta",
@@ -1210,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Dobijte vizualni pregled vremenskih okvira vaših projekata u našem kalendarskom prikazu. Brzo prepoznajte koji projekti i faze uskoro počinju ili završavaju i zahtijevaju djelovanje.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Razumjeti što se događa i kada",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSynca: slike, oznake i prijenos datoteka.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Sva su pitanja prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSync-a: pitanja s mapiranjem (postavljanje pribadače, crtanje rute i crtanje područja) i pitanja s učitavanjem datoteka.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Kraj obrasca",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Početak obrasca",

@@ -1115,7 +1115,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "کوئی اختتامی تاریخ نہیں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "بائیں سکرول کریں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "دائیں سکرول کریں۔",
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "کیروسل کو چھوڑنے کے لیے Escape دبائیں",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "پروجیکٹس اور فولڈرز (وراثت)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "پروجیکٹس کا عنوان",
@@ -1209,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "ہمارے کیلنڈر کے منظر میں اپنے پروجیکٹ کی ٹائم لائنز کا بصری جائزہ حاصل کریں۔ فوری طور پر شناخت کریں کہ کون سے منصوبے اور مراحل جلد شروع یا ختم ہو رہے ہیں اور کارروائی کی ضرورت ہے۔",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "سمجھیں کہ کیا ہو رہا ہے اور کب ہو رہا ہے۔",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: امیجز، ٹیگز اور فائل اپ لوڈ۔",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "تمام سوالات PDF پر دکھائے گئے ہیں۔ تاہم، درج ذیل فی الحال FormSync کے ذریعے امپورٹ کرنے کے لیے سپورٹڈ نہیں ہیں: میپنگ کے سوالات (پن ڈراپ کرنا، راستہ بنانا اور علاقہ بنانا) اور فائل اپ لوڈ کرنے کے سوالات۔",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "فارم کا اختتام",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "فارم کا آغاز",

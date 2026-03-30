@@ -1115,7 +1115,6 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Naaffissalerneqanngilaq",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Saamerpianut jukkit",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Talerpianut tiffaruk",
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Carousel-i qaangiinnarniarlugu Escape tooruk",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Suliassat mappillu (itsarnisat)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Suliniutit qulequtaat",
@@ -1209,7 +1208,6 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Ullorsiutit atorlugit suliniutitit piffissalersugaanerallu takukkit. Suliniutit immikkoortullu sorliit aallartilersut imaluunniit naajartulersut iliuuseqarfigineqartussallu piaartumik takukkit.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Paasiniaruk suna pinerusoq qangalu",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Apeqqutit tamarmik PDF-imi takuneqarsinnaapput. Kisianni makku FormSync atorlugu eqqunneqarsinnaanngillat: Assit, Nalunaaqutsersuutit kiisalu Fiilinik nassiussineq.",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Apeqqutit tamarmik PDF-imi takutinneqarput. Taamaattorli makku maannakkut FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingani apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik ilisivissat.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Immersugassap naggataa",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Immersugassap aallartinnera",
