@@ -633,6 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Ayarlar başarıyla güncellendi.",
   "app.containers.Admin.Moderation.type": "Tür",
   "app.containers.Admin.Moderation.unread": "Görülmedi",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Henüz hiç yönetici yok.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Yöneticiyi kaldır",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Bu sayfa aşağıdaki bölümlerden oluşur. Bunları açıp kapatabilir ve gerektiği gibi düzenleyebilirsiniz.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Bölümler",

@@ -633,6 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Ustawienia zostały pomyślnie zaktualizowane.",
   "app.containers.Admin.Moderation.type": "Typ",
   "app.containers.Admin.Moderation.unread": "Nieprzejrzane",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Nie ma jeszcze żadnych menedżerów.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Usuń menedżera",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Ta strona składa się z następujących sekcji. Możesz je włączyć/wyłączyć i edytować według potrzeb.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sekcje",
