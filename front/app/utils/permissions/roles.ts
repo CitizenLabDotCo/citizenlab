@@ -1,5 +1,10 @@
 import { IUser } from 'api/users/types';
 
+interface IAdminRole {
+  type: 'admin';
+  project_reviewer?: boolean;
+}
+
 export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
@@ -10,18 +15,16 @@ export interface IProjectFolderModeratorRole {
   project_folder_id: string;
 }
 
-interface IAdminRole {
-  type: 'admin';
-  project_reviewer?: boolean;
+interface ISpaceModeratorRole {
+  type: 'space_moderator';
+  space_id: string;
 }
 
-interface IRoleRegisty {
-  IAdminRole: IAdminRole;
-  IProjectModeratorRole: IProjectModeratorRole;
-  IProjectFolderModeratorRole: IProjectFolderModeratorRole;
-}
-
-export type TRole = IRoleRegisty[keyof IRoleRegisty];
+export type TRole =
+  | IAdminRole
+  | IProjectFolderModeratorRole
+  | IProjectModeratorRole
+  | ISpaceModeratorRole;
 
 export const userHasRole = (user: IUser, role: TRole['type']) => {
   const result = user.data.attributes.roles?.find((r) => r.type === role);
@@ -75,6 +78,16 @@ export const isProjectModerator = (
 
   const role = user.data.attributes.roles?.find(
     (r) => r.type === 'project_moderator' && r.project_id === projectId
+  );
+
+  return role !== undefined;
+};
+
+export const isSpaceModerator = (user: IUser | undefined) => {
+  if (!user) return false;
+
+  const role = user.data.attributes.roles?.find(
+    (r) => r.type === 'space_moderator'
   );
 
   return role !== undefined;

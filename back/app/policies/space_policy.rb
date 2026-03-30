@@ -9,13 +9,11 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def show?
-    # TODO: Include space admins/managers here once those roles are implemented
-    active_admin?
+    user && UserRoleService.new.can_moderate?(record, user)
   end
 
   def index?
-    # TODO: Include space admins/managers here once those roles are implemented
-    active_admin?
+    user && user.space_moderator?
   end
 
   def create?

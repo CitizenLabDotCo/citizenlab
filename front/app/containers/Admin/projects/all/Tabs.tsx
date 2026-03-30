@@ -63,6 +63,13 @@ const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
   );
 };
 
+const ROLES_THAT_CAN_SEE_SPACES = ['super_admin', 'admin', 'space_moderator'];
+
+const ROLES_THAT_CAN_SEE_FOLDERS = [
+  ...ROLES_THAT_CAN_SEE_SPACES,
+  'folder_moderator',
+];
+
 const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
@@ -74,6 +81,7 @@ const Tabs = () => {
   const userIsAdmin = isAdmin(user);
 
   const { highest_role } = user.data.attributes;
+  if (!highest_role) return null;
 
   return (
     <Box
@@ -97,7 +105,7 @@ const Tabs = () => {
           trackEventByName(tracks.setTab, { tab: 'projects' });
         }}
       />
-      {highest_role !== 'project_moderator' && (
+      {ROLES_THAT_CAN_SEE_FOLDERS.includes(highest_role) && (
         <Tab
           message={messages.folders}
           icon="folder-outline"
@@ -113,7 +121,7 @@ const Tabs = () => {
           }}
         />
       )}
-      {userIsAdmin && spacesEnabled && (
+      {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && spacesEnabled && (
         <Tab
           message={messages.spaces}
           icon="spaces"
