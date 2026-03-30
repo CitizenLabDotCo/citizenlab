@@ -8,7 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import spaceModeratorsKeys from './keys';
 import { SpaceModeratorsKeys } from './types';
 
-const fetchSpaceModerators = (spaceId: string) => {
+const fetchSpaceModerators = (spaceId?: string) => {
   return fetcher<IUsers>({
     path: `/spaces/${spaceId}/moderators`,
     action: 'get',
@@ -19,10 +19,11 @@ const fetchSpaceModerators = (spaceId: string) => {
   });
 };
 
-const useSpaceModerators = (spaceId: string) => {
+const useSpaceModerators = (spaceId?: string) => {
   return useQuery<IUsers, CLErrors, IUsers, SpaceModeratorsKeys>({
     queryKey: spaceModeratorsKeys.list({ spaceId }),
     queryFn: () => fetchSpaceModerators(spaceId),
+    enabled: !!spaceId,
   });
 };
 

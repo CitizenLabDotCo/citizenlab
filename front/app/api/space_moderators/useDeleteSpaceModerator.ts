@@ -8,7 +8,11 @@ import userCountKeys from 'api/users_count/keys';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import spaceModeratorsKeys from './keys';
-import { Params } from './types';
+
+type Params = {
+  spaceId: string;
+  userId: string;
+};
 
 const deleteSpaceModerator = ({ spaceId, userId }: Params) => {
   return fetcher({
