@@ -494,6 +494,31 @@
     "verified_at": "2026-03-18T15:41:17.432455Z",
     "verified_by": "Admin"
   },
+  "form_builder.pdf_export.logic_go_to_section": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.055501Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.055501Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_if_answered_go_to": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.055501Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.055501Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_section": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.055501Z",
+    "verified_by": "Jelena"
+  },
   "form_builder.pdf_export.matrix_print_description": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.432455Z",

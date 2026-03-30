@@ -1,0 +1,12 @@
+{
+  "app.containers.Admin.projects.all.includeLogic": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.114209Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.all.includeLogicExplanation": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:22:10.114209Z",
+    "verified_by": "Jelena"
+  }
+}

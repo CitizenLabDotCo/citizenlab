@@ -1,4 +1,4 @@
 {
-  "app.containers.Admin.projects.all.includeLogic": "Formularlogik einschließen",
+  "app.containers.Admin.projects.all.includeLogic": "Formularlogik einbinden",
   "app.containers.Admin.projects.all.includeLogicExplanation": "Diese Option fügt dem PDF Textanweisungen hinzu, die angeben, welche Abschnitte als Nächstes zu beantworten sind, basierend auf der konfigurierten Formularlogik."
 }
