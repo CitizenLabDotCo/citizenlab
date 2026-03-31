@@ -1,0 +1,13 @@
+{
+  "app.containers.AdminPage.widgets.fieldDestinationLink": "Ziellink",
+  "app.containers.AdminPage.widgets.fieldFolders": "Ordner",
+  "app.containers.AdminPage.widgets.fieldProjectsLimit": "Anzahl der Projekte",
+  "app.containers.AdminPage.widgets.projectSortEndingSoon": "Endet bald",
+  "app.containers.AdminPage.widgets.projectSortMostParticipants": "Meiste Teilnehmende",
+  "app.containers.AdminPage.widgets.projectSortNewest": "Neueste",
+  "app.containers.AdminPage.widgets.projectSortPlatformOrder": "Plattform-Reihenfolge",
+  "app.containers.AdminPage.widgets.tabIdeas": "Ideen",
+  "app.containers.AdminPage.widgets.tabProjects": "Projekte",
+  "app.containers.AdminPage.widgets.titleContent": "Inhalt",
+  "app.containers.AdminPage.widgets.titleHeaderAndButton": "Überschrift & Button"
+}
