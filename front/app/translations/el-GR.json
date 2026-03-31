@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Μέτριος",
   "app.components.PasswordInput.strength4Password": "Ισχυρός",
   "app.components.PasswordInput.strength5Password": "Πολύ ισχυρός",
-  "app.components.PostCardsComponents.feed": "Τροφοδοσία",
+  "app.components.PostCardsComponents.feed": "Προοπτική",
   "app.components.PostCardsComponents.list": "Λίστα",
   "app.components.PostCardsComponents.map": "Χάρτης",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Προσθέστε μια επίσημη ενημέρωση",
