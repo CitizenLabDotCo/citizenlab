@@ -377,6 +377,18 @@ export default defineMessages({
     id: 'app.components.form.controls.optionalParentheses',
     defaultMessage: '(optional)',
   },
+  submitConfirmation: {
+    id: 'app.components.CustomFieldsForm.submitConfirmation',
+    defaultMessage: 'Are you sure you want to submit your answers?',
+  },
+  continueEditing: {
+    id: 'app.components.CustomFieldsForm.continueEditing',
+    defaultMessage: 'Continue editing',
+  },
+  yesSubmit: {
+    id: 'app.components.CustomFieldsForm.yesSubmit',
+    defaultMessage: 'Yes, submit',
+  },
   birthyearTooHigh: {
     id: 'app.components.form.controls.birthyearTooHigh',
     defaultMessage: 'Birth year cannot be in the future',

@@ -1,6 +1,7 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { WeglotDataOrEmpty } from 'utils/weglot';
 
 import ideaOfficialFeedbackKeys from './keys';
 
@@ -38,6 +39,7 @@ export interface INewFeedback {
   author_multiloc: Multiloc;
   body_multiloc: Multiloc;
   ideaId: string;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export interface IParameters {

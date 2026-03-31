@@ -724,6 +724,11 @@
     "verified_at": "2026-03-18T11:49:32.583408Z",
     "verified_by": "Admin"
   },
+  "locales.de-AT": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:30:54.905667Z",
+    "verified_by": "Luuc"
+  },
   "locales.de-DE": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.583408Z",

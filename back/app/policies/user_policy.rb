@@ -27,6 +27,14 @@ class UserPolicy < ApplicationPolicy
     user&.active? && !user.normal_user?
   end
 
+  def billed_admins?
+    active_admin?
+  end
+
+  def billed_moderators?
+    active_admin?
+  end
+
   def index_xlsx?
     active_admin?
   end

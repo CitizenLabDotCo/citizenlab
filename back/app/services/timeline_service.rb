@@ -81,11 +81,12 @@ class TimelineService
 
   def timeline_active(project)
     today = tenant_timezone.at(Time.now).to_date
-    if project.phases.blank?
+    phases = project.phases.to_a
+    if phases.blank?
       nil
-    elsif today < project.phases.minimum(:start_at)
+    elsif today < phases.filter_map(&:start_at).min
       :future
-    elsif project.phases.last.end_at.present? && today > project.phases.maximum(:end_at)
+    elsif phases.last.end_at.present? && today > phases.filter_map(&:end_at).max
       :past
     else
       :present

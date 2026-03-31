@@ -312,7 +312,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             >
               <MenuLink
                 key={group.id}
-                to={`/admin/users/${group.id}`}
+                to={`/admin/users/groups/${group.id}`}
                 className={() =>
                   `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
                 }
@@ -338,6 +338,13 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         className="intercom-users-invite-users-button"
       >
         <FormattedMessage {...messages.inviteUsers} />
+      </ButtonWithLink>
+      <ButtonWithLink
+        linkTo="/admin/users/seats"
+        icon="shield-checkered"
+        mt="12px"
+      >
+        <FormattedMessage {...messages.seatsOverview} />
       </ButtonWithLink>
     </Container>
   );
