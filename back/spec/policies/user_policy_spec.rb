@@ -11,7 +11,6 @@ describe UserPolicy do
     let(:current_user) { nil }
     let(:subject_user) { create(:user) }
 
-    it { is_expected.to     permit(:show)    }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index) }
@@ -23,28 +22,20 @@ describe UserPolicy do
       expect(scope.resolve.size).to eq 0
     end
 
-    context 'when enhanced_user_profile_privacy is active' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
-        AppConfiguration.instance.update!(settings: settings)
-      end
+    context 'when subject user has no public contributions' do
+      it { is_expected.not_to permit(:show) }
+    end
 
-      context 'when subject user has no public contributions' do
-        it { is_expected.not_to permit(:show) }
-      end
+    context 'when subject user has a non-anonymous idea in an ideation phase' do
+      before { create(:idea, author: subject_user, anonymous: false) }
 
-      context 'when subject user has a non-anonymous idea in an ideation phase' do
-        before { create(:idea, author: subject_user, anonymous: false) }
+      it { is_expected.to permit(:show) }
+    end
 
-        it { is_expected.to permit(:show) }
-      end
+    context 'when subject user has comments' do
+      before { create(:comment, author: subject_user) }
 
-      context 'when subject user has comments' do
-        before { create(:comment, author: subject_user) }
-
-        it { is_expected.to permit(:show) }
-      end
+      it { is_expected.to permit(:show) }
     end
   end
 

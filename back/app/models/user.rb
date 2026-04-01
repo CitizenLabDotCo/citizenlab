@@ -296,23 +296,17 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
-  def self.enhanced_user_profile_privacy?
-    AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
-  end
-
-  # Find a user by slug or by id when the id is used as slug
+  # Find a user by id (used by profile URLs which use user IDs)
   def self.by_slug!(slug)
-    enhanced_user_profile_privacy? ? find(slug) : find_by!(slug:)
+    find(slug)
   end
 
+  # Profile URLs use the user ID instead of the name-based slug for privacy
   def slug
-    self.class.enhanced_user_profile_privacy? && id ? id : super
+    id || super
   end
 
   def show_public_profile?
-    return true unless self.class.enhanced_user_profile_privacy?
-
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods.
     # This is to avoid exposing personal data of users who have not actively used the platform.

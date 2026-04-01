@@ -1455,18 +1455,23 @@ resource 'Users' do
         let(:user) { create(:user) }
         let(:slug) { user.slug }
 
-        example_request 'Get one user by slug' do
+        example 'Get one user by slug when user has posted publicly', document: false do
+          create(:idea, author: user)
+          do_request
           expect(status).to eq 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :id)).to eq user.id
+          expect(json_response.dig(:data, :attributes, :slug)).to eq user.id
         end
 
         example '[error] Get an unexisting user by slug', document: false do
-          do_request slug: 'unexisting-user'
+          do_request slug: SecureRandom.uuid
           expect(status).to eq 404
         end
 
-        example_request 'Get a user by slug does not include user block data' do
+        example 'Get a user by slug does not include user block data' do
+          create(:idea, author: user)
+          do_request
           expect(status).to eq 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
@@ -1475,27 +1480,9 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
         end
 
-        context 'when enhanced_user_profile_privacy feature is active' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
-            AppConfiguration.instance.update!(settings: settings)
-          end
-
-          let(:slug) { user.id }
-
-          example 'Get one user by id when enhanced_user_profile_privacy is active and user has posted publicly', document: false do
-            create(:idea, author: user)
-            do_request
-            expect(status).to eq 200
-            expect(response_data[:id]).to eq user.id
-            expect(response_data.dig(:attributes, :slug)).to eq user.id
-          end
-
-          example 'Returns error when enhanced_user_profile_privacy is active and user has not posted', document: false do
-            do_request
-            expect(status).to eq 401
-          end
+        example 'Returns 401 when user has not posted publicly', document: false do
+          do_request
+          expect(status).to eq 401
         end
       end
 
