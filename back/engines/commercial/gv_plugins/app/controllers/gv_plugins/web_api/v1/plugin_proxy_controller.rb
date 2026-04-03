@@ -8,7 +8,6 @@ module GVPlugins
         skip_after_action :verify_authorized
 
         def handle
-          debugger
           plugin_name = params[:plugin_name]
           path = params[:path]
 
