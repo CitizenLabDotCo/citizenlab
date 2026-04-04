@@ -44,7 +44,6 @@ const mockUserData: IUserData = {
     first_name: 'Stewie',
     last_name: 'McKenzie',
     locale: 'en',
-    slug: 'stewie-mckenzie',
     highest_role: 'admin',
     bio_multiloc: {},
     roles: [{ type: 'admin' }],

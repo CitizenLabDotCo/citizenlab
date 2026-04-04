@@ -35,7 +35,6 @@ export type HighestRole =
 export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
-  slug: string;
   locale: SupportedLocale;
   highest_role?: HighestRole;
   bio_multiloc: Multiloc;
