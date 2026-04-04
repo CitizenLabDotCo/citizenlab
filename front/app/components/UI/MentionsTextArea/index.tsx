@@ -75,9 +75,6 @@ export interface Props {
   trigger?: string;
   showUniqueUsers?: boolean;
   onChangeMentions?: (mentions: MentionItem[]) => void;
-  // Determines whether we get back the user id or slug
-  // in mention of onChangeMentions
-  userReferenceType?: 'id';
 }
 
 const MentionsTextArea = ({
@@ -108,7 +105,6 @@ const MentionsTextArea = ({
   children,
   roles,
   trigger = '@',
-  userReferenceType = 'id',
   showUniqueUsers = false,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);

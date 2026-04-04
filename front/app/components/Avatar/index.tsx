@@ -216,9 +216,7 @@ const AvatarInner = ({
   }
 
   const { avatar, verified } = user.data.attributes;
-  const profileLink = `/profile/${userId}`;
-  const hasValidProfileLink = !!userId;
-  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+  const hasHoverEffect = (isLinkToProfile && !!userId) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
 
   return (

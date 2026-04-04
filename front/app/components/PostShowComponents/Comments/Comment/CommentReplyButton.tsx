@@ -66,7 +66,6 @@ const CommentReplyButton = ({
 
   const authorFirstName = author?.data.attributes.first_name;
   const authorLastName = author?.data.attributes.last_name;
-  const authorId = author?.data.id;
 
   const reply = () => {
     commentReplyButtonClicked({
