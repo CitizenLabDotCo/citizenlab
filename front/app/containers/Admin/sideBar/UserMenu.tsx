@@ -152,7 +152,7 @@ export const UserMenu = () => {
               </ItemMenu>
             )}
             <ItemMenu
-              linkTo={`/profile/${authUser.data.attributes.slug}`}
+              linkTo={`/profile/${authUser.data.id}`}
               buttonStyle="text"
             >
               <Box display="flex" justifyContent="space-between" w="100%">

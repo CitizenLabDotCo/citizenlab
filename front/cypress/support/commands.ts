@@ -41,7 +41,7 @@ declare global {
       getProjectBySlug: typeof getProjectBySlug;
       getProjectById: typeof getProjectById;
       getTopics: typeof getTopics;
-      getUserBySlug: typeof getUserBySlug;
+      getUserById: typeof getUserById;
       getAuthUser: typeof getAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
@@ -590,7 +590,7 @@ function getArea(areaId: string) {
   });
 }
 
-function getUserBySlug(userSlug: string) {
+function getUserById(userId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -600,7 +600,7 @@ function getUserBySlug(userSlug: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: `web_api/v1/users/by_slug/${userSlug}`,
+      url: `web_api/v1/users/${userId}`,
     });
   });
 }
@@ -2062,7 +2062,7 @@ function createProjectWithNativeSurveyPhase({
     })
     .then((project) => {
       const projectId = project.body.data.id;
-      const projectSlug = project.body.data.attributes.slug;
+      const projectSlug = project.body.data.id;
 
       return cy
         .apiCreateNativeSurveyPhase({
@@ -2122,7 +2122,7 @@ function createProjectWithIdeationPhase({
     })
     .then((project) => {
       const projectId = project.body.data.id;
-      const projectSlug = project.body.data.attributes.slug;
+      const projectSlug = project.body.data.id;
 
       return cy
         .apiCreatePhase({
@@ -2184,7 +2184,7 @@ Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
-Cypress.Commands.add('getUserBySlug', getUserBySlug);
+Cypress.Commands.add('getUserById', getUserById);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);

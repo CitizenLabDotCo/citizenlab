@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
 import PastEvents from 'containers/EventsPage/PastEvents';
@@ -23,8 +23,8 @@ const Container = styled.div`
 `;
 
 export const UserEvents = () => {
-  const { userSlug } = useParams() as { userSlug: string };
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams() as { userId: string };
+  const { data: user } = useUserById(userId);
   const { data: events } = useEventsByUserId(user?.data.id);
   const isPhoneOrSmaller = useBreakpoint('phone');
   const eventsCount = events?.data.length;

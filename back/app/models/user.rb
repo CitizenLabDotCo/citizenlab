@@ -64,6 +64,8 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
+  # NOTE: Apr 2026 - Slug is still generated but no longer used in URLs.
+  # This is just in case we want to add it back in the future.
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
   class << self
@@ -294,16 +296,6 @@ class User < ApplicationRecord
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  # Find a user by id (used by profile URLs which use user IDs)
-  def self.by_slug!(slug)
-    find(slug)
-  end
-
-  # Profile URLs use the user ID instead of the name-based slug for privacy
-  def slug
-    id || super
   end
 
   def show_public_profile?

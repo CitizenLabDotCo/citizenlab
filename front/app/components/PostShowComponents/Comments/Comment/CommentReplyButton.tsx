@@ -66,7 +66,7 @@ const CommentReplyButton = ({
 
   const authorFirstName = author?.data.attributes.first_name;
   const authorLastName = author?.data.attributes.last_name;
-  const authorSlug = author?.data.attributes.slug;
+  const authorId = author?.data.id;
 
   const reply = () => {
     commentReplyButtonClicked({
@@ -74,7 +74,7 @@ const CommentReplyButton = ({
       parentCommentId,
       authorFirstName,
       authorLastName,
-      authorSlug,
+      authorId,
     });
   };
 
@@ -86,7 +86,7 @@ const CommentReplyButton = ({
         parentCommentId,
         authorFirstName,
         authorLastName,
-        authorSlug,
+        authorId,
       },
     };
 

@@ -4,7 +4,7 @@ class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
 
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -115,12 +115,6 @@ class WebApi::V1::UsersController < ApplicationController
 
   def show
     render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-  end
-
-  def by_slug
-    @user = User.by_slug!(params[:slug])
-    authorize @user
-    show
   end
 
   def by_invite

@@ -20,7 +20,7 @@ describe('Follow idea', () => {
   let ideaSlug2: string;
   let projectId: string;
   let projectSlug: string;
-  let userSlug: string;
+  let userId: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -31,7 +31,7 @@ describe('Follow idea', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
+        projectSlug = project.body.data.id;
         return cy.apiCreatePhase({
           projectId,
           title: phaseTitle,
@@ -51,7 +51,7 @@ describe('Follow idea', () => {
           phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId1 = idea.body.data.id;
-          ideaSlug1 = idea.body.data.attributes.slug;
+          ideaSlug1 = idea.body.data.id;
         });
 
         cy.apiCreateIdea({
@@ -61,13 +61,13 @@ describe('Follow idea', () => {
           phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId2 = idea.body.data.id;
-          ideaSlug2 = idea.body.data.attributes.slug;
+          ideaSlug2 = idea.body.data.id;
         });
       });
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
+      userId = response.body.data.id;
     });
   });
 

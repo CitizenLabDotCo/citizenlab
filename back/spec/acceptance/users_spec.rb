@@ -1139,20 +1139,6 @@ resource 'Users' do
         end
       end
 
-      get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create(:user) }
-        let(:slug) { user.slug }
-
-        example_request 'Get one user by slug includes user block data' do
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
-        end
-      end
-
       get 'web_api/v1/users/:id' do
         let(:user) { create(:user) }
         let(:id) { user.id }
@@ -1451,40 +1437,6 @@ resource 'Users' do
         end
       end
 
-      get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create(:user) }
-        let(:slug) { user.slug }
-
-        example 'Get one user by slug when user has posted publicly', document: false do
-          create(:idea, author: user)
-          do_request
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :id)).to eq user.id
-          expect(json_response.dig(:data, :attributes, :slug)).to eq user.id
-        end
-
-        example '[error] Get an unexisting user by slug', document: false do
-          do_request slug: SecureRandom.uuid
-          expect(status).to eq 404
-        end
-
-        example 'Get a user by slug does not include user block data' do
-          create(:idea, author: user)
-          do_request
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
-        end
-
-        example 'Returns 401 when user has not posted publicly', document: false do
-          do_request
-          expect(status).to eq 401
-        end
-      end
 
       get 'web_api/v1/users/by_invite/:token' do
         let!(:invite) { create(:invite) }

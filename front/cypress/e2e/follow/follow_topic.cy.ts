@@ -6,12 +6,12 @@ describe('Follow topic', () => {
   const email = randomEmail();
   const password = randomString();
   let userId: string;
-  let userSlug: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
+      userId = response.body.data.id;
     });
   });
 
@@ -24,7 +24,7 @@ describe('Follow topic', () => {
   it('allows a user to follow and unfollow a topic', () => {
     cy.setLoginCookie(email, password);
 
-    cy.visit(`/profile/${userSlug}/following`);
+    cy.visit(`/profile/${userId}/following`);
 
     cy.get('#tab-Topics').click();
 

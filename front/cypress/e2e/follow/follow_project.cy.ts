@@ -9,7 +9,7 @@ describe('Follow project', () => {
   let userId: string;
   let projectId: string;
   let projectSlug: string;
-  let userSlug: string;
+  let userId: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -19,12 +19,12 @@ describe('Follow project', () => {
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
+      projectSlug = project.body.data.id;
     });
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
+      userId = response.body.data.id;
     });
   });
 

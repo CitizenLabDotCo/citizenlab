@@ -21,9 +21,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
 
   const officialFeedbackAuthorMultiloc =
     notification.attributes.official_feedback_author;
-  const deletedUser = isNilOrError(
-    notification.attributes.initiating_user_slug
-  );
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_id);
 
   return (
     <NotificationWrapper
@@ -39,7 +37,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
             <DeletedUser />
           ) : (
             <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              to={`/profile/${notification.attributes.initiating_user_id}`}
               onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />
