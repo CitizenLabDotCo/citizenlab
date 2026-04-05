@@ -71,12 +71,18 @@ describe UserPolicy do
     context 'on someone else' do
       let(:subject_user) { create(:user) }
 
-      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }
       it { is_expected.not_to permit(:participation_stats) }
+
+      context 'when subject user has public contributions' do
+        before { create(:idea, author: subject_user, anonymous: false) }
+
+        it { is_expected.to permit(:show) }
+      end
 
       it 'indexes the users through the scope' do
         subject_user.save!

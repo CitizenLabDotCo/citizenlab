@@ -69,6 +69,7 @@ resource 'Users' do
       context 'when confirmation is turned on' do
         before do
           @user = create(:user)
+          create(:idea, author: @user) # without participation the user cannot be seen
           SettingsService.new.activate_feature! 'user_confirmation'
           settings = AppConfiguration.instance.settings
           settings['password_login'] = {
@@ -1417,6 +1418,13 @@ resource 'Users' do
         let(:user) { create(:user) }
         let(:id) { user.id }
 
+        # without participation the user cannot be found by non-admins
+        before do
+          create(:idea, author: user)
+          @user.update!(roles: [{ type: 'admin' }])
+          @subject_user = create(:admin)
+        end
+
         example_request 'Get a user by id does not include user block data' do
           expect(status).to eq 200
           json_response = json_parse response_body
@@ -1436,7 +1444,6 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
         end
       end
-
 
       get 'web_api/v1/users/by_invite/:token' do
         let!(:invite) { create(:invite) }
@@ -1812,11 +1819,6 @@ resource 'Users' do
           When true, bans the user's email address from future registrations (default: false).
         DESC
         parameter :ban_reason, 'Reason for banning the email (optional, only used when ban_email is true)', required: false
-
-        before do
-          @user.update!(roles: [{ type: 'admin' }])
-          @subject_user = create(:admin)
-        end
 
         let(:id) { @subject_user.id }
 

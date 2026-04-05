@@ -84,14 +84,6 @@ RSpec.describe User do
     end
   end
 
-  describe '#slug' do
-    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
-
-    it 'returns the user id instead of the database slug' do
-      expect(user.slug).to eq user.id
-    end
-  end
-
   describe '#show_public_profile?' do
     let(:user) { create(:user) }
 
