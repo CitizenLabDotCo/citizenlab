@@ -30,16 +30,8 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def index_for_admin
-    project_folders = policy_scope(ProjectFolders::Folder)
+    project_folders = UserRoleService.new.moderatable_folders(current_user)
     authorize project_folders
-
-    # The authorize statement above ensures that we only allow
-    # admins, space managers or folder managers.
-    # If the current user is not an admin, but only a folder manager,
-    # we filter the folders to only those that the user moderates.
-    if !current_user.admin?
-      params[:managers] = [current_user.id]
-    end
 
     project_folders = FoldersFinderAdminService.execute(project_folders, params)
     project_folders = paginate project_folders
