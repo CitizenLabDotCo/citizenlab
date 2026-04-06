@@ -597,6 +597,81 @@ resource 'Campaigns' do
         })
       end
     end
+
+    get 'web_api/v1/campaigns/recipients_count' do
+      parameter :campaign_name, 'The campaign type name', required: true
+      parameter :project_id, 'The project ID (required for project-scoped campaigns like project_published)', required: false
+
+      context 'project_published campaign' do
+        let!(:campaign) { create(:project_published_campaign) }
+        let(:project) { create(:project) }
+        let(:topic) { create(:topic) }
+        let(:campaign_name) { 'project_published' }
+
+        before do
+          project.global_topics << topic
+        end
+
+        example 'Get recipients count for project_published with project_id' do
+          follower1 = create(:follower, followable: topic)
+          follower2 = create(:follower, followable: topic)
+
+          do_request(campaign_name: campaign_name, project_id: project.id)
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][:type]).to eq 'recipients_count'
+          expect(json_response[:data][:attributes][:count]).to eq 2
+        end
+
+        example 'Excludes users who declined consent' do
+          follower1 = create(:follower, followable: topic)
+          follower2 = create(:follower, followable: topic)
+          create(:consent, user: follower2.user, campaign_type: campaign.type, consented: false)
+
+          do_request(campaign_name: campaign_name, project_id: project.id)
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][:attributes][:count]).to eq 1
+        end
+
+        example 'Returns 0 when project has no topic followers' do
+          do_request(campaign_name: campaign_name, project_id: project.id)
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][:attributes][:count]).to eq 0
+        end
+
+        example '[error] Returns 422 when project_id is not provided' do
+          do_request(campaign_name: campaign_name)
+
+          assert_status 422
+        end
+      end
+
+      context 'manual campaign' do
+        let!(:campaign) { create(:manual_campaign) }
+        let(:campaign_name) { 'manual' }
+
+        example 'Get recipients count for a manual campaign' do
+          create_list(:user, 3)
+
+          do_request(campaign_name: campaign_name)
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][:attributes][:count]).to be >= 3
+        end
+      end
+
+      example '[error] Returns 404 for unknown campaign_name' do
+        do_request(campaign_name: 'nonexistent_campaign')
+
+        assert_status 404
+      end
+    end
   end
 
   context 'as a project moderator' do
@@ -754,6 +829,23 @@ resource 'Campaigns' do
       example 'Get the delivery statistics of a sent global campaign', document: false do
         do_request(id: @automated_campaigns.second.id)
         assert_status 200
+      end
+    end
+  end
+
+  context 'as a regular user' do
+    before do
+      header 'Content-Type', 'application/json'
+      user = create(:user)
+      EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+      header_token_for user
+    end
+
+    get 'web_api/v1/campaigns/recipients_count' do
+      example '[Unauthorized] Get recipients count as a regular user', document: false do
+        do_request(campaign_name: 'project_published', project_id: create(:project).id)
+
+        assert_status 401
       end
     end
   end

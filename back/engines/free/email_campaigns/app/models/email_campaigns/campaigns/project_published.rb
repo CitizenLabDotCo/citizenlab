@@ -45,6 +45,18 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def estimated_recipients(project: nil)
+      return nil unless project
+
+      followers = Follower.where(followable: project.global_topics)
+        .or(Follower.where(followable: project.areas))
+      followers = followers.or(Follower.where(followable: project.folder)) if project.in_folder?
+
+      users = ProjectPolicy::InverseScope.new(project, User.from_follows(followers)).resolve
+      users = filter_users_with_consent(users)
+      filter_users_in_groups(users)
+    end
+
     def mailer_class
       ProjectPublishedMailer
     end

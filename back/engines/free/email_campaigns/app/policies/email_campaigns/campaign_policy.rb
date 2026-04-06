@@ -54,6 +54,10 @@ module EmailCampaigns
       show?
     end
 
+    def recipients_count?
+      active_admin_or_moderator?
+    end
+
     def destroy?
       update?
     end

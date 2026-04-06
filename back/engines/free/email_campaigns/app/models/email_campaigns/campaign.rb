@@ -129,6 +129,10 @@ module EmailCampaigns
       users_scope
     end
 
+    def estimated_recipients(**_options)
+      apply_recipient_filters
+    end
+
     def run_filter_hooks(activity: nil, time: nil)
       result = true
       current_class = self.class
