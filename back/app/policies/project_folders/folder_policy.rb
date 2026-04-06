@@ -4,7 +4,7 @@ module ProjectFolders
   class FolderPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
+        if user&.admin? || user&.moderator?
           scope.all
         else
           published_folders
@@ -17,7 +17,7 @@ module ProjectFolders
     end
 
     def index_for_admin?
-      user&.admin? || user&.project_folder_moderator?
+      user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
     end
 
     def show?

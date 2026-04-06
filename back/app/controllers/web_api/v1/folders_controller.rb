@@ -31,11 +31,10 @@ class WebApi::V1::FoldersController < ApplicationController
 
   def index_for_admin
     project_folders = policy_scope(ProjectFolders::Folder)
-
     authorize project_folders
 
     # The authorize statement above ensures that we only allow
-    # admins or folder managers.
+    # admins, space managers or folder managers.
     # If the current user is not an admin, but only a folder manager,
     # we filter the folders to only those that the user moderates.
     if !current_user.admin?
