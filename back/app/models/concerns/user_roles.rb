@@ -200,7 +200,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   # Admins can always moderate all folders, so this method is only relevant for non-admins.
   def moderatable_folder_ids
     # Include folders the user moderates directly
-    moderated_directly_ids = moderated_project_folder_ids
+    moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
 
     # Include folders in spaces the user moderates
     moderated_space_folder_ids = ProjectFolders::Folder.where(space_id: moderated_space_ids).pluck(:id)
