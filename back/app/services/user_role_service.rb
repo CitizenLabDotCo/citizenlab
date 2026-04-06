@@ -75,6 +75,17 @@ class UserRoleService
     end
   end
 
+  def moderatable_folders(user, scope = ProjectFolders::Folder)
+    return scope.none unless user
+    return scope.all if user.admin?
+
+    if user.project_folder_moderator? || user.space_moderator?
+      scope.where(id: user.moderatable_folder_ids)
+    else
+      scope.none
+    end
+  end
+
   def moderates_something?(user)
     user.admin? || user.project_moderator? || user.project_folder_moderator? || user.space_moderator?
   end

@@ -307,6 +307,69 @@ describe UserRoleService do
     end
   end
 
+  describe 'moderatable_folders' do
+    it 'lists no folders for normal users' do
+      create_list(:project_folder, 2)
+
+      expect(service.moderatable_folders(create(:user)).ids).to eq []
+    end
+
+    it 'lists all folders in the given scope for admins' do
+      space = create(:space)
+      folders_in_space = create_list(:project_folder, 3, space: space)
+      create(:project_folder, space: nil)
+
+      expect(
+        service.moderatable_folders(create(:admin), ProjectFolders::Folder.where(space: space)).ids
+      ).to match_array folders_in_space.map(&:id)
+
+      expect(service.moderatable_folders(create(:admin)).ids).to match_array ProjectFolders::Folder.all.map(&:id)
+    end
+
+    it 'lists some folders for folder moderators' do
+      folders = create_list(:project_folder, 3)
+      other_folder = create(:project_folder)
+
+      moderator = create(:project_folder_moderator, project_folders: folders)
+      create(:project_folder_moderator, project_folders: [other_folder, folders.first])
+
+      expect(service.moderatable_folders(moderator).ids).to match_array folders.map(&:id)
+    end
+
+    it 'lists folders in moderated spaces for space moderators' do
+      space = create(:space)
+      folders_in_space = create_list(:project_folder, 2, space: space)
+      create(:project_folder) # folder not in space
+
+      moderator = create(:space_moderator, spaces: [space])
+
+      expect(service.moderatable_folders(moderator)).to match_array(folders_in_space)
+    end
+
+    context 'when the user is both folder moderator and admin' do
+      let(:folders) { create_list(:project_folder, 2) }
+      let(:user) { create(:project_folder_moderator, project_folders: folders.take(1)).add_role('admin') }
+
+      it 'lists all folders' do
+        expect(service.moderatable_folders(user)).to match_array(folders)
+      end
+    end
+
+    context 'when the user is both folder moderator and space moderator' do
+      it 'lists all moderatable folders in given scope' do
+        space = create(:space)
+        folders = create_list(:project_folder, 2)
+        folder_in_space = create(:project_folder, space: space)
+
+        user = create(:space_moderator, spaces: [space]).add_role('project_folder_moderator', project_folder_id: folders.last.id)
+
+        expect(service.moderatable_folders(user)).to contain_exactly(folders.last, folder_in_space)
+
+        expect(service.moderatable_folders(user, ProjectFolders::Folder.where(id: [folders.first.id, folder_in_space.id]))).to eq([folder_in_space])
+      end
+    end
+  end
+
   describe 'moderates_something?' do
     it 'permits admins' do
       expect(service.moderates_something?(create(:admin))).to be true
