@@ -37,15 +37,27 @@ const SpaceSelectSection = ({
 
   if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
 
+  const getTooltipMessage = () => {
+    if (isProjectInsideFolder) {
+      return messages.disabledTooltip;
+    }
+
+    if (userIsSpaceModerator) {
+      return undefined;
+    }
+
+    return messages.tooltip;
+  };
+
+  const tooltipMessage = getTooltipMessage();
+
   return (
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.spaceSelectTitle} />
-        <IconTooltip
-          content={formatMessage(
-            isProjectInsideFolder ? messages.disabledTooltip : messages.tooltip
-          )}
-        />
+        {tooltipMessage && (
+          <IconTooltip content={formatMessage(tooltipMessage)} />
+        )}
       </SubSectionTitle>
 
       <SpaceSelect
