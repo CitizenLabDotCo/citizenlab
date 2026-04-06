@@ -633,6 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "ਸੈਟਿੰਗਾਂ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਕੀਤੀਆਂ ਗਈਆਂ।",
   "app.containers.Admin.Moderation.type": "ਟਾਈਪ ਕਰੋ",
   "app.containers.Admin.Moderation.unread": "ਨਹੀਂ ਦੇਖਿਆ",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "ਅਜੇ ਤੱਕ ਕੋਈ ਪ੍ਰਬੰਧਕ ਨਹੀਂ ਹਨ।",
   "app.containers.Admin.ModeratorsTable.removeManager": "ਪ੍ਰਬੰਧਕ ਹਟਾਓ",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "ਇਸ ਪੰਨੇ ਵਿੱਚ ਹੇਠ ਲਿਖੇ ਭਾਗ ਹਨ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਚਾਲੂ/ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਲੋੜ ਅਨੁਸਾਰ ਉਹਨਾਂ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "ਸੈਕਸ਼ਨ",

@@ -3294,6 +3294,11 @@
     "verified_at": "2026-03-30T13:12:31.639803Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T15:20:15.916569Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.ModeratorsTable.removeManager": {
     "state": "verified",
     "verified_at": "2026-03-30T13:12:31.639803Z",
@@ -6239,7 +6244,6 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T08:47:05.725673Z",

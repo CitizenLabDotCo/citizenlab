@@ -633,6 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Impostazioni aggiornate con successo.",
   "app.containers.Admin.Moderation.type": "Tipo",
   "app.containers.Admin.Moderation.unread": "Non visto",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Non ci sono ancora manager.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Rimuovi gestore",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Questa pagina è composta dalle seguenti sezioni. Puoi attivarle/disattivarle e modificarle secondo le tue esigenze.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sezioni",

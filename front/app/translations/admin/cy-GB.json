@@ -633,6 +633,7 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Diweddarwyd y gosodiadau yn llwyddiannus.",
   "app.containers.Admin.Moderation.type": "Math",
   "app.containers.Admin.Moderation.unread": "Heb ei weld",
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Nid oes unrhyw reolwyr eto.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Tynnu rheolwr",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Mae'r dudalen hon yn cynnwys yr adrannau canlynol. Gallwch eu troi ymlaen / i ffwrdd a'u golygu yn ôl yr angen.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Adrannau",
