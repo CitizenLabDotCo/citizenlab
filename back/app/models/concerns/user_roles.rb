@@ -177,7 +177,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   # either directly, through a folder, or through a space.
   # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
-    moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
+    moderated_directly_ids = moderated_project_folder_ids
 
     # Include ids of projects in folders the user moderates
     moderated_folder_project_ids = AdminPublication
