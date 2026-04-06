@@ -1,17 +1,17 @@
 class SpacePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope = scope.includes(:folders, :projects)
+      @scope = scope.includes(:folders, :projects)
 
       if active_admin?
-        return scope.all
+        return @scope.all
       end
 
       if user.space_moderator?
-        return scope.where(id: user.moderated_space_ids)
+        return @scope.where(id: user.moderated_space_ids)
       end
 
-      scope.none
+      @scope.none
     end
   end
 
