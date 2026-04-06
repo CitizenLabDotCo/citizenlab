@@ -1415,15 +1415,12 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id' do
-        let(:user) { create(:user) }
-        let(:id) { user.id }
-
-        # without participation the user cannot be found by non-admins
-        before do
-          create(:idea, author: user)
-          @user.update!(roles: [{ type: 'admin' }])
-          @subject_user = create(:admin)
+        let(:user) do
+          user = create(:user)
+          create(:idea, author: user) # without participation the user cannot be found by non-admins
+          user
         end
+        let(:id) { user.id }
 
         example_request 'Get a user by id does not include user block data' do
           expect(status).to eq 200
@@ -1821,6 +1818,11 @@ resource 'Users' do
         parameter :ban_reason, 'Reason for banning the email (optional, only used when ban_email is true)', required: false
 
         let(:id) { @subject_user.id }
+
+        before do
+          @user.update!(roles: [{ type: 'admin' }])
+          @subject_user = create(:admin)
+        end
 
         example_request 'Delete a user' do
           expect(response_status).to eq 200
