@@ -43,7 +43,7 @@ const SpaceSelectSection = ({
         <FormattedMessage {...messages.spaceSelectTitle} />
         <IconTooltip
           content={formatMessage(
-            disabled ? messages.disabledTooltip : messages.tooltip
+            isProjectInsideFolder ? messages.disabledTooltip : messages.tooltip
           )}
         />
       </SubSectionTitle>
