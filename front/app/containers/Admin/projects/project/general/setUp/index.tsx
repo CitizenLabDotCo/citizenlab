@@ -709,7 +709,7 @@ const AdminProjectsProjectGeneral = () => {
 
           <SpaceSelectSection
             spaceId={projectAttrs.space_id ?? null}
-            disabled={!!projectAttrs.folder_id}
+            isProjectInsideFolder={!!projectAttrs.folder_id}
             onChange={handleSpaceSelectChange}
           />
 

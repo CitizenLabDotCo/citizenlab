@@ -11,23 +11,31 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
 interface Props {
   spaceId: string | null;
-  disabled?: boolean;
+  isProjectInsideFolder?: boolean;
   onChange: (spaceId: string | null) => void;
 }
 
-const SpaceSelectSection = ({ spaceId, disabled = false, onChange }: Props) => {
+const SpaceSelectSection = ({
+  spaceId,
+  isProjectInsideFolder = false,
+  onChange,
+}: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
-  if (!spaces || !spacesEnabled || !isAdmin(authUser)) return null;
+  const userIsAdmin = isAdmin(authUser);
+  const userIsSpaceModerator = isSpaceModerator(authUser);
+  const canSeeSpaceSelect = userIsAdmin || userIsSpaceModerator;
+
+  if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
 
   return (
     <SectionField>
@@ -42,7 +50,7 @@ const SpaceSelectSection = ({ spaceId, disabled = false, onChange }: Props) => {
 
       <SpaceSelect
         spaceId={spaceId}
-        disabled={disabled}
+        isProjectInsideFolder={isProjectInsideFolder}
         spaces={spaces.data}
         onChange={onChange}
       />

@@ -13,7 +13,7 @@ import messages from './messages';
 interface Props {
   spaceId: string | null;
   spaces: SpaceData[];
-  disabled?: boolean;
+  isProjectInsideFolder?: boolean;
   onChange: (spaceId: string | null) => void;
 }
 
@@ -25,14 +25,14 @@ const NO_SPACE_ID = '/';
 const SpaceSelect = ({
   spaceId,
   spaces,
-  disabled = false,
+  isProjectInsideFolder = false,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
   const noSpaceLabel = formatMessage(
-    disabled ? messages.sameSpaceAsFolder : messages.noSpaceLabel
+    isProjectInsideFolder ? messages.sameSpaceAsFolder : messages.noSpaceLabel
   );
   const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
@@ -54,7 +54,7 @@ const SpaceSelect = ({
         const { value } = option;
         onChange(value === '' ? null : value);
       }}
-      disabled={disabled}
+      disabled={isProjectInsideFolder}
     />
   );
 };
