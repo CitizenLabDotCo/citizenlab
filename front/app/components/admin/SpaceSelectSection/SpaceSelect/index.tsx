@@ -14,6 +14,7 @@ interface Props {
   spaceId: string | null;
   spaces: SpaceData[];
   isProjectInsideFolder?: boolean;
+  role: 'admin' | 'space_moderator';
   onChange: (spaceId: string | null) => void;
 }
 
@@ -26,14 +27,27 @@ const SpaceSelect = ({
   spaceId,
   spaces,
   isProjectInsideFolder = false,
+  role,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const noSpaceLabel = formatMessage(
-    isProjectInsideFolder ? messages.sameSpaceAsFolder : messages.noSpaceLabel
-  );
+  const getNoSpaceMessage = () => {
+    if (isProjectInsideFolder) {
+      return messages.sameSpaceAsFolder;
+    }
+
+    if (role === 'space_moderator') {
+      return messages.pleaseSelectASpace;
+    }
+
+    return messages.noSpaceLabel;
+  };
+
+  const noSpaceMessage = getNoSpaceMessage();
+
+  const noSpaceLabel = formatMessage(noSpaceMessage);
   const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
   const spaceOptions = [

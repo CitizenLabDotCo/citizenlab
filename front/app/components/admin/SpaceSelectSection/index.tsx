@@ -52,6 +52,7 @@ const SpaceSelectSection = ({
         spaceId={spaceId}
         isProjectInsideFolder={isProjectInsideFolder}
         spaces={spaces.data}
+        role={userIsAdmin ? 'admin' : 'space_moderator'}
         onChange={onChange}
       />
     </SectionField>
