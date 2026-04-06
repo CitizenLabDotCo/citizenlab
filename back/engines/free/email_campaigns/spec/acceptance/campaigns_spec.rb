@@ -613,8 +613,8 @@ resource 'Campaigns' do
         end
 
         example 'Get recipients count for project_published with project_id' do
-          follower1 = create(:follower, followable: topic)
-          follower2 = create(:follower, followable: topic)
+          create(:follower, followable: topic)
+          create(:follower, followable: topic)
 
           do_request(campaign_name: campaign_name, project_id: project.id)
 
@@ -625,7 +625,7 @@ resource 'Campaigns' do
         end
 
         example 'Excludes users who declined consent' do
-          follower1 = create(:follower, followable: topic)
+          create(:follower, followable: topic)
           follower2 = create(:follower, followable: topic)
           create(:consent, user: follower2.user, campaign_type: campaign.type, consented: false)
 

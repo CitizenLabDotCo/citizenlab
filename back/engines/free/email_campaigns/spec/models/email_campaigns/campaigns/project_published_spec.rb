@@ -54,7 +54,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPublished do
       create(:campaigns_group, campaign: campaign, group: group)
 
       follower1 = create(:follower, followable: topic)
-      follower2 = create(:follower, followable: topic)
+      create(:follower, followable: topic)
       create(:membership, group: group, user: follower1.user)
 
       result = campaign.estimated_recipients(project: project)
