@@ -39,4 +39,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving',
     defaultMessage: 'Saving...',
   },
+  draftDescriptionSaved: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved',
+    defaultMessage: 'Draft saved',
+  },
 });

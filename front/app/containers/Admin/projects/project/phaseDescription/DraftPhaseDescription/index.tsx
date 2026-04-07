@@ -7,6 +7,7 @@ import {
   IconTooltip,
   Spinner,
   StatusLabel,
+  Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -40,14 +41,12 @@ const DraftPhaseDescription = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updatePhase, isLoading } = useUpdatePhase();
+  const { mutate: updateDraftPhaseDescription, isLoading: isDraftLoading } =
+    useUpdatePhase();
 
   const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
   const [isEditing, setIsEditing] = useState(hasSavedDraft);
 
-  console.log({
-    hasSavedDraft,
-    isEditing,
-  });
   const methods = useForm<FormValues>({
     defaultValues: {
       draft_description_multiloc: hasSavedDraft
@@ -59,9 +58,12 @@ const DraftPhaseDescription = ({
   const debouncedSaveDraft = useMemo(
     () =>
       debounce((value: Multiloc) => {
-        updatePhase({ phaseId, draft_description_multiloc: value });
+        updateDraftPhaseDescription({
+          phaseId,
+          draft_description_multiloc: value,
+        });
       }, AUTOSAVE_DEBOUNCE_MS),
-    [updatePhase, phaseId]
+    [updateDraftPhaseDescription, phaseId]
   );
 
   methods.watch((data) => {
@@ -155,12 +157,19 @@ const DraftPhaseDescription = ({
             >
               {formatMessage(messages.draftDescriptionDiscardChanges)}
             </Button>
-            <Box display="flex" gap="8px" alignItems="center">
-              {isLoading && (
-                <Box display="flex" alignItems="center" gap="4px">
-                  <Spinner size="21px" />
+            <Box display="flex" gap="16px" alignItems="center">
+              {isDraftLoading ? (
+                <Box display="flex" alignItems="center" gap="8px">
+                  <Spinner size="20px" />
                   <Text m="0px" fontSize="s" color="textSecondary">
                     {formatMessage(messages.draftDescriptionSaving)}
+                  </Text>
+                </Box>
+              ) : (
+                <Box display="flex" alignItems="center" gap="8px">
+                  <Icon name="check" fill={colors.success} />
+                  <Text m="0px" fontSize="s" color="textSecondary">
+                    {formatMessage(messages.draftDescriptionSaved)}
                   </Text>
                 </Box>
               )}
