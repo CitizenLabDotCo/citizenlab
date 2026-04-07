@@ -2,10 +2,13 @@ import React, { useMemo, useState, useEffect } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
 import { isSameDay, differenceInHours, startOfDay } from 'date-fns';
+import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
@@ -209,6 +212,10 @@ const Calendar = ({
   onUpdateRange,
   className,
 }: Props) => {
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
+  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+
   const isPhaseDatetimeSetupEnabled = useFeatureFlag({
     name: 'phase_datetime_setup',
   });
@@ -457,7 +464,9 @@ const Calendar = ({
               {formatMessage(messages.sameDaySelection)}
             </Text>
             <Warning w="95%">
-              {formatMessage(messages.sameDaySelectionWarning)}
+              {formatMessage(messages.sameDaySelectionWarning, {
+                timezone: gmtOffset,
+              })}
             </Warning>
           </Box>
         ) : (
