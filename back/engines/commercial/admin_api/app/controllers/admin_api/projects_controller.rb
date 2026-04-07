@@ -11,7 +11,7 @@ module AdminApi
     end
 
     def widget_projects
-      base = ProjectPolicy::Scope.new(nil, Project).resolve
+      base = ProjectPolicy::Scope.new(nil, Project).resolve.not_hidden
 
       projects = if params[:projects].present?
         base.where(id: params[:projects])

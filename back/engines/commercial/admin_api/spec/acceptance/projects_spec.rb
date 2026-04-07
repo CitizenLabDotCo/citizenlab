@@ -52,6 +52,9 @@ resource 'Project', admin_api: true do
       @draft_active = create(:project,
         admin_publication_attributes: { publication_status: 'draft' })
       create(:phase, project: @draft_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @hidden_active = create(:project, visible_to: 'public', hidden: true)
+      create(:phase, project: @hidden_active, start_at: 1.week.ago, end_at: 1.week.from_now)
     end
 
     example 'Returns only publicly visible projects with active phases by default' do
@@ -63,6 +66,7 @@ resource 'Project', admin_api: true do
       expect(ids).to_not include(@public_no_phase.id)
       expect(ids).to_not include(@restricted_active.id)
       expect(ids).to_not include(@draft_active.id)
+      expect(ids).to_not include(@hidden_active.id)
     end
 
     example 'Returns specific projects filtered by visibility' do
