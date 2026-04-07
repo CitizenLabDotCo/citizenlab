@@ -66,7 +66,8 @@ const SpaceSelect = ({
       options={spaceOptions}
       onChange={(option) => {
         const { value } = option;
-        onChange(value === '' ? null : value);
+        const nilValue = value === '' || value === NO_SPACE_ID;
+        onChange(nilValue ? null : value);
       }}
       disabled={isProjectInsideFolder}
     />
