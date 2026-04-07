@@ -310,7 +310,11 @@ const generateFullOccupiedDayModifiers = (disabledRanges: DateRange[]) => {
     }
   }
 
-  return { isFullOccupiedDay: fullOccupiedDays };
+  return {
+    ...(fullOccupiedDays.length > 0
+      ? { isFullOccupiedDay: fullOccupiedDays }
+      : {}),
+  };
 };
 
 // if the phase start at 00:00 Or the end is at 11:59 ( there will be no more time available on that day)
@@ -342,5 +346,9 @@ const generateNoTimeAvailableModifiers = (disabledRanges: DateRange[]) => {
     }
   }
 
-  return { isNoTimeAvailable: noTimeAvailableDays };
+  return {
+    ...(noTimeAvailableDays.length > 0
+      ? { isNoTimeAvailableDay: noTimeAvailableDays }
+      : {}),
+  };
 };
