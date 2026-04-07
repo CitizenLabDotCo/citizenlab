@@ -59,8 +59,8 @@ resource 'Moderators' do
 
       example 'Add a space moderator role to a user' do
         do_request space_id: space.id, moderator: { user_id: user.id }
-        expect(response_status).to eq 200
-        expect(response_data[:attributes]).to eq({ status: 'role_added' })
+        assert_status 200
+        expect(response_data[:type]).to eq 'user'
         expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
         expect(LogActivityJob).to have_been_enqueued.with(user, 'space_moderation_rights_received', admin, kind_of(Integer), payload: { space_id: space.id })
       end
@@ -133,8 +133,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 200
-          expect(response_data[:attributes]).to eq({ status: 'role_added' })
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'space_moderation_rights_received', space_moderator, kind_of(Integer), payload: { space_id: space.id })
         end
 
