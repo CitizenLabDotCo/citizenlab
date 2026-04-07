@@ -104,6 +104,13 @@ const DayPickerStyles = styled.div`
     cursor: not-allowed;
   }
 
+  .is-full-occupied-day > button {
+    cursor: not-allowed;
+  }
+
+  .is-no-time-available > button {
+    cursor: not-allowed;
+  }
   .is-selected-gradient_one {
     background: linear-gradient(
       90deg,
@@ -201,6 +208,8 @@ const modifiersClassNames = {
   isBoundaryDisabledEndSelectedStart: 'is-boundary-disabled-end-selected-start',
   isBoundaryDisabledStartSelectedEnd: 'is-boundary-disabled-start-selected-end',
   isBoundaryDisabledEndDisabledStart: 'is-boundary-disabled-end-disabled-start',
+  isFullOccupiedDay: 'is-full-occupied-day',
+  isNoTimeAvailable: 'is-no-time-available',
 };
 
 const Calendar = ({
@@ -382,6 +391,23 @@ const Calendar = ({
           return;
         }
       }
+    }
+
+    // Block selection if there are max one start and one end on this day
+    let startCount = 0;
+    let endCount = 0;
+
+    for (const range of disabledRanges) {
+      if (isSameDay(range.from, day)) {
+        startCount += 1;
+      }
+      if (range.to && isSameDay(range.to, day)) {
+        endCount += 1;
+      }
+    }
+
+    if (startCount >= 1 && endCount >= 1) {
+      return;
     }
 
     const updatedRange = getUpdatedRange({

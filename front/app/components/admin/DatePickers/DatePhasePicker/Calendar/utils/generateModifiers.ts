@@ -3,6 +3,7 @@ import {
   addDays,
   isSameDay,
   differenceInHours,
+  startOfDay,
 } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
@@ -38,11 +39,18 @@ export const generateModifiers = ({
     selectedRange,
     disabledRanges,
   });
+  const fullOccupiedModifiers =
+    generateFullOccupiedDayModifiers(disabledRanges);
+
+  const noTimeAvailableModifires =
+    generateNoTimeAvailableModifiers(disabledRanges);
 
   return {
     ...selectedModifiers,
     ...disabledModifiers,
     ...boundaryModifiers,
+    ...fullOccupiedModifiers,
+    ...noTimeAvailableModifires,
   };
 };
 
@@ -275,4 +283,64 @@ const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
     ),
     isDisabledEnd: disabledRangesWithoutSingleDayRanges.map(({ to }) => to),
   };
+};
+
+// max 1 start and 1 end per day
+const generateFullOccupiedDayModifiers = (disabledRanges: DateRange[]) => {
+  const fullOccupiedDays: Date[] = [];
+  const allDays = new Set<number>();
+
+  for (const range of disabledRanges) {
+    allDays.add(startOfDay(range.from).getTime());
+    if (range.to) allDays.add(startOfDay(range.to).getTime());
+  }
+
+  for (const dayTs of allDays) {
+    let startCount = 0;
+    let endCount = 0;
+    const day = new Date(dayTs);
+
+    for (const range of disabledRanges) {
+      if (isSameDay(range.from, day)) startCount += 1;
+      if (range.to && isSameDay(range.to, day)) endCount += 1;
+    }
+
+    if (startCount >= 1 && endCount >= 1) {
+      fullOccupiedDays.push(day);
+    }
+  }
+
+  return { isFullOccupiedDay: fullOccupiedDays };
+};
+
+// if the phase start at 00:00 Or the end is at 11:59 ( there will be no more time available on that day)
+const generateNoTimeAvailableModifiers = (disabledRanges: DateRange[]) => {
+  const noTimeAvailableDays: Date[] = [];
+  const allDays = new Set<number>();
+
+  for (const range of disabledRanges) {
+    allDays.add(startOfDay(range.from).getTime());
+    if (range.to) allDays.add(startOfDay(range.to).getTime());
+  }
+
+  for (const dayTs of allDays) {
+    const day = new Date(dayTs);
+
+    const isNoTime = disabledRanges.some(
+      (range) =>
+        (isSameDay(range.from, day) &&
+          range.from.getHours() === 0 &&
+          range.from.getMinutes() === 0) ||
+        (range.to &&
+          isSameDay(range.to, day) &&
+          range.to.getHours() === 23 &&
+          range.to.getMinutes() === 59)
+    );
+
+    if (isNoTime) {
+      noTimeAvailableDays.push(day);
+    }
+  }
+
+  return { isNoTimeAvailable: noTimeAvailableDays };
 };
