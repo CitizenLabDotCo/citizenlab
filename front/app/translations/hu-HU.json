@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Közepes",
   "app.components.PasswordInput.strength4Password": "Erős",
   "app.components.PasswordInput.strength5Password": "Nagyon erős",
-  "app.components.PostCardsComponents.feed": "Takarmány",
+  "app.components.PostCardsComponents.feed": "Nézőpont",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Térkép",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Adjon hozzá egy hivatalos frissítést",

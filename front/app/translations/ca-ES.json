@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Mitjana",
   "app.components.PasswordInput.strength4Password": "Forta",
   "app.components.PasswordInput.strength5Password": "Molt forta",
-  "app.components.PostCardsComponents.feed": "Feed",
+  "app.components.PostCardsComponents.feed": "Perspectiva",
   "app.components.PostCardsComponents.list": "Llista",
   "app.components.PostCardsComponents.map": "Mapa",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Afegir una actualització oficial",
