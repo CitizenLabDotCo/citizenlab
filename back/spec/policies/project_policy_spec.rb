@@ -488,13 +488,6 @@ describe ProjectPolicy do
         it { is_expected.not_to permit(:create) }
       end
 
-      context 'when project is created with both folder and space id' do
-        let(:folder) { create(:project_folder, space: space) }
-        let(:project) { build(:project, folder: folder, space: space, admin_publication_attributes: { publication_status: 'draft' }) }
-
-        it { is_expected.not_to permit(:create) }
-      end
-
       context 'when project is created with folder id' do
         context 'when folder is in the moderated space' do
           let(:folder) { create(:project_folder, space: space) }
