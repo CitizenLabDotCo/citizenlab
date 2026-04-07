@@ -460,7 +460,7 @@ resource 'ProjectFolder' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        
+
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data].first[:id]).to eq folder_in_moderated_space.id
       end

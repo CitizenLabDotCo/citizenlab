@@ -1863,15 +1863,14 @@ resource 'Projects' do
 
     context 'when a space moderator' do
       let(:space) { create(:space) }
-      let(:other_space) { create(:space) }
-      let(:moderator) { create(:space_moderator, spaces: [space]) }
-
-      before { header_token_for moderator }
-
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
       let(:description_multiloc) { project_attrs[:description_multiloc] }
       let(:publication_status) { 'draft' }
+      let(:other_space) { create(:space) }
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      before { header_token_for moderator }
 
       context 'when space_id is provided' do
         context 'when user moderates that space' do
@@ -1931,7 +1930,7 @@ resource 'Projects' do
         context 'when folder has no space assigned but user is also folder moderator' do
           let(:folder) { create(:project_folder, space: nil) }
           let(:folder_id) { folder.id }
- 
+
           before do
             moderator.add_role('project_folder_moderator', project_folder_id: folder.id)
             moderator.save!

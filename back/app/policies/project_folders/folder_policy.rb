@@ -47,6 +47,7 @@ module ProjectFolders
 
     def update?
       return unless user&.active?
+
       create? || UserRoleService.new.can_moderate?(record, user)
     end
 
