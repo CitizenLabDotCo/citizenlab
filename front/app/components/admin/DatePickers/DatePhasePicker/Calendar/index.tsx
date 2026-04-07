@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import { isSameDay, differenceInHours, startOfDay } from 'date-fns';
+import { differenceInHours, startOfDay } from 'date-fns';
 import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
@@ -26,6 +26,7 @@ import { Props } from '../typings';
 import { generateModifiers } from './utils/generateModifiers';
 import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
 import { getUpdatedRange } from './utils/getUpdatedRange';
+import { isDayBlocked, adjustRangeTimes } from './utils/utils';
 
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
@@ -180,16 +181,6 @@ const TimeInputContainer = styled(Box)`
   border-top: 1px solid ${colors.grey300};
 `;
 
-const OpenEndTimeContainer = styled(Box)`
-  padding: 10px;
-  background-color: ${colors.grey100};
-  border: 1px solid ${colors.grey300};
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const modifiersClassNames = {
   isDisabledStart: 'is-disabled-start',
   isDisabledMiddle: 'is-disabled-middle',
@@ -229,23 +220,16 @@ const Calendar = ({
     name: 'phase_datetime_setup',
   });
   const { formatMessage } = useIntl();
-  const [selectedStartTime, setSelectedStartTime] = useState<Date>(() => {
-    if (selectedRange.from) {
-      return selectedRange.from;
-    }
-    const defaultTime = new Date();
-    defaultTime.setHours(0, 0, 0, 0);
-    return defaultTime;
-  });
 
-  const [selectedEndTime, setSelectedEndTime] = useState<Date>(() => {
-    if (selectedRange.to) {
-      return selectedRange.to;
-    }
-    const defaultTime = new Date();
-    defaultTime.setHours(23, 59, 0, 0);
-    return defaultTime;
-  });
+  const defaultStartTime = selectedRange.from
+    ? selectedRange.from
+    : new Date(new Date().setHours(0, 0, 0, 0));
+  const defaultEndTime = selectedRange.to
+    ? selectedRange.to
+    : new Date(new Date().setHours(23, 59, 0, 0));
+  const [selectedStartTime, setSelectedStartTime] =
+    useState<Date>(defaultStartTime);
+  const [selectedEndTime, setSelectedEndTime] = useState<Date>(defaultEndTime);
 
   const startMonth = getStartMonth({
     startMonth: _startMonth,
@@ -373,40 +357,7 @@ const Calendar = ({
       return;
     }
 
-    // Check if the day is fully occupied (no available time)
-    // if start at midnight or end at 23:59, then it's fully occupied and we shouldn't allow selecting it
-    for (const range of disabledRanges) {
-      if (isSameDay(range.from, day)) {
-        const startAtMidnight =
-          range.from.getHours() === 0 && range.from.getMinutes() === 0;
-        if (startAtMidnight) {
-          return;
-        }
-      }
-
-      if (range.to && isSameDay(range.to, day)) {
-        const endAtAlmostMidnight =
-          range.to.getHours() === 23 && range.to.getMinutes() === 59;
-        if (endAtAlmostMidnight) {
-          return;
-        }
-      }
-    }
-
-    // Block selection if there are max one start and one end on this day
-    let startCount = 0;
-    let endCount = 0;
-
-    for (const range of disabledRanges) {
-      if (isSameDay(range.from, day)) {
-        startCount += 1;
-      }
-      if (range.to && isSameDay(range.to, day)) {
-        endCount += 1;
-      }
-    }
-
-    if (startCount >= 1 && endCount >= 1) {
+    if (isDayBlocked(day, disabledRanges)) {
       return;
     }
 
@@ -416,48 +367,12 @@ const Calendar = ({
       clickedDate: day,
     });
 
-    const newFrom = updatedRange.from ? new Date(updatedRange.from) : undefined;
-    let newTo = updatedRange.to ? new Date(updatedRange.to) : undefined;
-
-    const isSameDaySelection = newFrom && newTo && isSameDay(newFrom, newTo);
-
-    if (newFrom) {
-      if (isSameDaySelection) {
-        newFrom.setHours(0, 0, 0, 0);
-      } else {
-        newFrom.setHours(
-          selectedStartTime.getHours(),
-          selectedStartTime.getMinutes(),
-          0,
-          0
-        );
-      }
-    }
-
-    if (newTo) {
-      //  if it's a same-day selection, Set end to next day at 00:00 (midnight)
-      if (isSameDaySelection) {
-        newTo = new Date(newFrom);
-        newTo.setDate(newTo.getDate() + 1);
-        newTo.setHours(0, 0, 0, 0);
-      } else {
-        // in case changed from same-day to different days, set again to default end time
-        if (
-          selectedEndTime.getHours() === 0 &&
-          selectedEndTime.getMinutes() === 0
-        ) {
-          newTo.setHours(23, 59, 0, 0);
-        } else {
-          newTo.setHours(
-            selectedEndTime.getHours(),
-            selectedEndTime.getMinutes(),
-            0,
-            0
-          );
-        }
-      }
-    }
-
+    const { from: newFrom, to: newTo } = adjustRangeTimes({
+      from: updatedRange.from,
+      to: updatedRange.to,
+      selectedStartTime,
+      selectedEndTime,
+    });
     onUpdateRange({ from: newFrom, to: newTo });
   };
 
@@ -516,11 +431,17 @@ const Calendar = ({
                   maxTime={endTimeMaxTime}
                 />
               ) : (
-                <OpenEndTimeContainer>
+                <Box
+                  p="10px"
+                  bgColor={colors.grey100}
+                  border={`1px solid ${colors.grey300}`}
+                  borderRadius="4px"
+                  display="flex"
+                >
                   <Text m="0" color="grey600">
                     {formatMessage(messages.openEnded)}
                   </Text>
-                </OpenEndTimeContainer>
+                </Box>
               )}
             </Box>
           </TimeInputContainer>
