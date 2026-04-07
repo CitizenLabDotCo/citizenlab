@@ -67,8 +67,7 @@ type IProjectFolderSubmitState =
 
 interface Props {
   mode: 'edit' | 'new';
-  // This is wrong. Can be undefined if mode is 'new'
-  projectFolderId: string;
+  projectFolderId?: string;
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
@@ -434,7 +433,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
               deleteProjectFolderImage({
-                folderId: projectFolderId,
+                folderId: projectFolder.data.id,
                 imageId: folderCardImageToRemove.id,
               });
 
@@ -449,7 +448,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             );
 
             const folderFilesPromise = await syncProjectFolderFiles({
-              projectFolderId,
+              projectFolderId: projectFolder.data.id,
               projectFolderFiles,
               filesToRemove: projectFolderFilesToRemove,
               fileOrdering: initialFileOrdering || {},
@@ -501,7 +500,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             ) {
               updateProjectFolder(
                 {
-                  projectFolderId,
+                  projectFolderId: projectFolder.data.id,
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,
