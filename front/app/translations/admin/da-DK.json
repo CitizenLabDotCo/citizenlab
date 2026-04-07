@@ -2798,7 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "UDGIVET",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Fasebeskrivelse",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dette er den nuværende udgivne beskrivelse, som er synlig for deltagere. Klik for at redigere.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Kladde gemt",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Udkast gemt",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Gemmer...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Rediger fase",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Slutdato",
