@@ -9,6 +9,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { HighestRole } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -63,11 +64,15 @@ const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
   );
 };
 
-const ROLES_THAT_CAN_SEE_SPACES = ['super_admin', 'admin', 'space_moderator'];
+const ROLES_THAT_CAN_SEE_SPACES: HighestRole[] = [
+  'super_admin',
+  'admin',
+  'space_moderator',
+];
 
-const ROLES_THAT_CAN_SEE_FOLDERS = [
+const ROLES_THAT_CAN_SEE_FOLDERS: HighestRole[] = [
   ...ROLES_THAT_CAN_SEE_SPACES,
-  'folder_moderator',
+  'project_folder_moderator',
 ];
 
 const Tabs = () => {
