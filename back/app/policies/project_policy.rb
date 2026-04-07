@@ -96,6 +96,10 @@ class ProjectPolicy < ApplicationPolicy
     return false unless active?
     return true if admin?
 
+    # If a project is in a folder, it will automatically inherit the space
+    # So we don't allow providing the space id in this case
+    return false if record.folder && record.space
+
     if record.folder
       UserRoleService.new.can_moderate?(record.folder, user)
     elsif record.space
