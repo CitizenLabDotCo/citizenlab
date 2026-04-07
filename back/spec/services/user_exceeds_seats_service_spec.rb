@@ -168,9 +168,15 @@ describe UserExceedsSeatsService do
     end
 
     context 'when user is already a super admin' do
-      before { user.add_role('super_admin') }
+      before do
+        user.add_role('admin')
+        user.email = 'superadmin@govocal.com'
+        user.save!
+      end
 
       it 'returns false (no extra seat needed)' do
+        expect(user.super_admin?).to be true
+
         result = described_class.new(params).execute
         expect(result).to be false
       end
