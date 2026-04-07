@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolders from 'api/project_folders/useProjectFolders';
+import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -16,10 +16,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
-import {
-  isProjectFolderModerator,
-  userModeratesFolder,
-} from 'utils/permissions/rules/projectFolderPermissions';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
 
@@ -41,18 +38,18 @@ const ProjectFolderSelect = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: projectFolders } = useProjectFolders({});
+  const { data: projectFolders } = useInfiniteProjectFoldersAdmin({}, 10000);
   const { data: authUser } = useAuthUser();
 
   const noFolderId = '/'; // This sentinel must not be a valid folder id.
   const noFolderLabel = formatMessage(messages.noFolderLabel);
   const noFolderOption = { value: noFolderId, label: noFolderLabel };
 
-  const folderOptions: IOption[] = projectFolders?.data
+  const flatFolders = projectFolders?.pages.flatMap((page) => page.data);
+  const folderOptions: IOption[] = flatFolders
     ? [
         noFolderOption,
-        ...projectFolders.data
-          .filter((folder) => userModeratesFolder(authUser, folder.id))
+        ...flatFolders
           .map((folder) => ({
             value: folder.id,
             label: localize(folder.attributes.title_multiloc),
