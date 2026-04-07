@@ -32,11 +32,9 @@ const useAddProjectModerator = () => {
   const queryClient = useQueryClient();
   return useMutation<IUser, CLErrors, ProjectModeratorAdd>({
     mutationFn: addModerator,
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: projectModeratorsKeys.list({
-          projectId: variables.projectId,
-        }),
+        queryKey: projectModeratorsKeys.all(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({

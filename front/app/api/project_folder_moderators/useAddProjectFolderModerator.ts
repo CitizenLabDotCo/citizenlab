@@ -32,11 +32,9 @@ const useAddProjectFolderModerator = () => {
   const queryClient = useQueryClient();
   return useMutation<IUsers, CLErrors, ProjectFolderModeratorAdd>({
     mutationFn: addModerator,
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: projectFolderModeratorsKeys.list({
-          projectFolderId: variables.projectFolderId,
-        }),
+        queryKey: projectFolderModeratorsKeys.all(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({
