@@ -72,12 +72,12 @@ const TimeInput = ({
 
     if (minTime) {
       const minInMinutes = minTime.getHours() * 60 + minTime.getMinutes();
-      if (timeInMinutes <= minInMinutes) return false;
+      if (timeInMinutes < minInMinutes) return false;
     }
 
     if (maxTime) {
       const maxInMinutes = maxTime.getHours() * 60 + maxTime.getMinutes();
-      if (timeInMinutes >= maxInMinutes) return false;
+      if (timeInMinutes > maxInMinutes) return false;
     }
 
     return true;

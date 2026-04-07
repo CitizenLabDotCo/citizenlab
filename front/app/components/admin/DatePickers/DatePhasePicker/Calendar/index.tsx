@@ -1,7 +1,7 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import { differenceInHours, startOfDay } from 'date-fns';
+import { differenceInHours } from 'date-fns';
 import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
@@ -26,7 +26,12 @@ import { Props } from '../typings';
 import { generateModifiers } from './utils/generateModifiers';
 import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
 import { getUpdatedRange } from './utils/getUpdatedRange';
-import { isDayBlocked, adjustRangeTimes } from './utils/utils';
+import {
+  isDayBlocked,
+  adjustRangeTimes,
+  getStartTimeMinTime,
+  getEndTimeMaxTime,
+} from './utils/utils';
 
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
@@ -251,61 +256,12 @@ const Calendar = ({
     differenceInHours(selectedRange.to, selectedRange.from) === 24;
 
   const locale = useLocale();
-  // Compute min/max time constraints from adjacent disabled ranges
-  const startTimeMinTime = useMemo(() => {
-    if (!selectedRange.from) return undefined;
-    const fromDay = startOfDay(selectedRange.from);
-    for (const range of disabledRanges) {
-      if (range.to && startOfDay(range.to).getTime() === fromDay.getTime()) {
-        return range.to;
-      }
-    }
-    return undefined;
-  }, [selectedRange.from, disabledRanges]);
 
-  const endTimeMaxTime = useMemo(() => {
-    if (!selectedRange.to) return undefined;
-    const toDay = startOfDay(selectedRange.to);
-    for (const range of disabledRanges) {
-      if (startOfDay(range.from).getTime() === toDay.getTime()) {
-        return range.from;
-      }
-    }
-    return undefined;
-  }, [selectedRange.to, disabledRanges]);
-
-  // Sync time states with selected range changes, applying constraints if two phases are on the same day
-  useEffect(() => {
-    if (selectedRange.from) {
-      if (startTimeMinTime) {
-        const adjustedTime = new Date(startTimeMinTime);
-        adjustedTime.setMinutes(adjustedTime.getMinutes());
-        setSelectedStartTime(adjustedTime);
-        onUpdateRange({
-          from: adjustedTime,
-          to: selectedRange.to,
-        });
-      } else {
-        setSelectedStartTime(selectedRange.from);
-        onUpdateRange({
-          from: selectedRange.from,
-          to: selectedRange.to,
-        });
-      }
-    }
-  }, [selectedRange.from, selectedRange.to, startTimeMinTime, onUpdateRange]);
-
-  useEffect(() => {
-    if (selectedRange.to) {
-      if (endTimeMaxTime) {
-        const adjustedTime = new Date(endTimeMaxTime);
-        adjustedTime.setMinutes(adjustedTime.getMinutes());
-        setSelectedEndTime(adjustedTime);
-      } else {
-        setSelectedEndTime(selectedRange.to);
-      }
-    }
-  }, [selectedRange.to, selectedRange.from, endTimeMaxTime]);
+  const startTimeMinTime = getStartTimeMinTime(
+    selectedRange.from,
+    disabledRanges
+  );
+  const endTimeMaxTime = getEndTimeMaxTime(selectedRange.to, disabledRanges);
 
   const modifiers = useMemo(
     () =>

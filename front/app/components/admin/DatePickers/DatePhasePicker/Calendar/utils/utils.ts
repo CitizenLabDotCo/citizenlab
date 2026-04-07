@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import { isSameDay, startOfDay } from 'date-fns';
 
 import { DateRange } from '../../../_shared/typings';
 import { ClosedDateRange } from '../../typings';
@@ -103,4 +103,32 @@ export function adjustRangeTimes({
   }
 
   return { from: newFrom, to: newTo };
+}
+
+export function getStartTimeMinTime(
+  selectedFrom: Date | undefined,
+  disabledRanges: DateRange[]
+) {
+  if (!selectedFrom) return undefined;
+  const fromDay = startOfDay(selectedFrom);
+  for (const range of disabledRanges) {
+    if (range.to && startOfDay(range.to).getTime() === fromDay.getTime()) {
+      return range.to;
+    }
+  }
+  return undefined;
+}
+
+export function getEndTimeMaxTime(
+  selectedTo: Date | undefined,
+  disabledRanges: DateRange[]
+) {
+  if (!selectedTo) return undefined;
+  const toDay = startOfDay(selectedTo);
+  for (const range of disabledRanges) {
+    if (startOfDay(range.from).getTime() === toDay.getTime()) {
+      return range.from;
+    }
+  }
+  return undefined;
 }
