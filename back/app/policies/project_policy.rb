@@ -96,10 +96,6 @@ class ProjectPolicy < ApplicationPolicy
     return false unless active?
     return true if admin?
 
-    # If a project is in a folder, it will automatically inherit the space
-    # So we don't allow providing the space id in this case
-    return false if record.folder && record.space
-
     if record.folder
       UserRoleService.new.can_moderate?(record.folder, user)
     elsif record.space
@@ -169,7 +165,7 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
-    shared << :space_id if user&.admin?
+    shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
