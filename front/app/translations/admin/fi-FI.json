@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "JULKAISTU",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Vaiheen kuvaus",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Tämä on tällä hetkellä julkaistu kuvaus, joka näkyy osallistujille. Klikkaa muokataksesi.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Luonnos tallennettu",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Tallennetaan...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Muokkaa vaihetta",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Päättymispäivä",

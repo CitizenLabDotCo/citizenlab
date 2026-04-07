@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "CYHOEDDWYD",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Disgrifiad o'r cyfnod",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Hwn yw'r disgrifiad cyhoeddedig presennol sy'n weladwy i gyfranogwyr. Cliciwch i olygu.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Drafft wedi'i gadw",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Yn cadw...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Golygu Cyfnod",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Dyddiad Gorffen",

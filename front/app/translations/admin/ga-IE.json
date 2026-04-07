@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "FOILSITHE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Cur síos ar an gcéim",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Seo é an cur síos foilsithe atá le feiceáil ag rannpháirtithe faoi láthair. Cliceáil chun é a chur in eagar.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Dréacht sábháilte",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Á shábháil...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Céim Eagarthóireachta",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Dáta deiridh",

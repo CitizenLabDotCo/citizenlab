@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "OPUBLIKOWANO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Opis etapu",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "To jest aktualnie opublikowany opis widoczny dla uczestników. Kliknij, aby edytować.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Zapisano wersję roboczą",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Zapisywanie...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Edytuj etap",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Data zakończenia",

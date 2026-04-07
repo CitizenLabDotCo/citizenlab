@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "VERËFFENTLECHT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Phasebeschreiwung",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dëst ass déi aktuell verëffentlecht Beschreiwung, déi fir d'Participante siichtbar ass. Klickt fir ze editéieren.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Entworf gespäichert",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Gëtt gespäichert...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Phas beaarbechten",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Enddatum",

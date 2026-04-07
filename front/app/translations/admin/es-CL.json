@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICADO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Descripción de la fase",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Esta es la descripción publicada actualmente y visible para los participantes. Haz clic para editar.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Borrador guardado",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Guardando...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Editar etapa",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Fecha de finalización",

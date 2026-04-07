@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "KÖZZÉTÉVE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Szakasz leírása",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Ez a jelenleg közzétett leírás, amely látható a résztvevők számára. Kattintson a szerkesztéshez.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Piszkozat mentve",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Mentés...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Szakasz szerkesztése",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Befejezés dátuma",

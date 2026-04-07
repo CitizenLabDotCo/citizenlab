@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICAT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Descripció de la fase",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Aquesta és la descripció publicada actualment i visible per als participants. Fes clic per editar-la.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Esborrany desat",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "S'està desant...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Edita la fase",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Data de finalització",

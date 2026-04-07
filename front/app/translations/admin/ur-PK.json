@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "شائع شدہ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "مرحلے کی تفصیل",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "یہ فی الحال شائع شدہ تفصیل ہے جو شرکاء کو نظر آ رہی ہے۔ ترمیم کرنے کے لیے کلک کریں۔",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "مسودہ محفوظ کر لیا گیا",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "محفوظ ہو رہا ہے...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "فیز میں ترمیم کریں۔",
   "app.containers.AdminPage.ProjectTimeline.endDate": "اختتامی تاریخ",

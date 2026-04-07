@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "SAQQUMMIUNNEQARPOQ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Immikkoortup nassuiaataa",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Una nassuiaat maanna saqqummiunneqarsimasoq peqataasunit takuneqarsinnaavoq. Toqqaruk aaqqissuunniarlugu.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Missingiut toqqorneqarpoq",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Toqqorterneqarpoq...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Immikkoortoq aaqqissuuguk",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Naaffissaa",

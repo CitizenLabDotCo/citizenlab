@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "OBJAVLJENO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Opis faze",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Ovo je trenutačno objavljeni opis vidljiv sudionicima. Kliknite za uređivanje.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Nacrt spremljen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Spremanje...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Uredi fazu",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Datum završetka",
