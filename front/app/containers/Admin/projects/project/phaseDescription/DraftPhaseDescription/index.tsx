@@ -44,6 +44,10 @@ const DraftPhaseDescription = ({
   const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
   const [isEditing, setIsEditing] = useState(hasSavedDraft);
 
+  console.log({
+    hasSavedDraft,
+    isEditing,
+  });
   const methods = useForm<FormValues>({
     defaultValues: {
       draft_description_multiloc: hasSavedDraft
