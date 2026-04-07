@@ -72,15 +72,21 @@ export const isRegularUser = (user: IUser | undefined) => {
 
 export const isProjectModerator = (
   user: IUser | undefined,
-  projectId: string
+  projectId?: string
 ) => {
   if (!user) return false;
 
-  const role = user.data.attributes.roles?.find(
-    (r) => r.type === 'project_moderator' && r.project_id === projectId
-  );
+  if (projectId) {
+    const role = user.data.attributes.roles?.find(
+      (r) => r.type === 'project_moderator' && r.project_id === projectId
+    );
 
-  return role !== undefined;
+    return role !== undefined;
+  } else {
+    return user.data.attributes.roles?.some(
+      (r) => r.type === 'project_moderator'
+    );
+  }
 };
 
 export const isSpaceModerator = (user: IUser | undefined) => {
