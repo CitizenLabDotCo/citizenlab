@@ -169,7 +169,7 @@
   "app.components.admin.DatePhasePicker.Input.endTime": "End time:",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Open ended",
   "app.components.admin.DatePhasePicker.Input.sameDaySelection": "Single day phase selected",
-  "app.components.admin.DatePhasePicker.Input.sameDaySelectionWarning": "Minimum phase duration is 24 hours (Automatically start at 12:00 AM and end at midnight).",
+  "app.components.admin.DatePhasePicker.Input.sameDaySelectionWarning2": "Minimum phase duration is 24 hours (Automatically start at 12:00 AM and end at midnight GMT {timezone}).",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Select date",
   "app.components.admin.DatePhasePicker.Input.startTime": "Start time:",
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Clear end date",
