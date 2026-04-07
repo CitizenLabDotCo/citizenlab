@@ -516,6 +516,12 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
+    const { space_id, folder_id } = projectAttributesDiff;
+
+    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
+      return false;
+    }
+
     return formIsValid;
   };
 
