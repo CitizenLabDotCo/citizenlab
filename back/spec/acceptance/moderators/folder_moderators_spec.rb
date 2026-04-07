@@ -66,8 +66,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 200
-          expect(response_data[:attributes]).to eq({ status: 'role_added' })
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
 
@@ -187,8 +187,8 @@ resource 'Moderators' do
 
           do_request
 
-          expect(response_status).to eq 200
-          expect(response_data[:attributes]).to eq({ status: 'role_added' })
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_folder_id: project_folder.id })
@@ -222,8 +222,7 @@ resource 'Moderators' do
             end.to change(InvitesImport, :count).by(1)
               .and have_enqueued_job(Invites::BulkCreateJob)
 
-            expect(response_status).to eq 200
-            expect(response_data[:attributes]).to eq({ status: 'invited' })
+            assert_status 202
 
             # Verify the invite has correct parameters
             import = InvitesImport.last

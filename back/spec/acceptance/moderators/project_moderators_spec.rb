@@ -60,8 +60,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 200
-          expect(response_data[:attributes]).to eq({ status: 'role_added' })
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_moderation_rights_received', moderator, kind_of(Integer), payload: { project_id: project.id })
         end
 
@@ -163,8 +163,8 @@ resource 'Moderators' do
       let(:user_id) { user.id }
 
       example_request 'Add a moderator role' do
-        expect(response_status).to eq 200
-        expect(response_data[:attributes]).to eq({ status: 'role_added' })
+        assert_status 200
+        expect(response_data[:type]).to eq 'user'
         expect(user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => project.id }])
         expect(LogActivityJob).to have_been_enqueued.with(user, 'project_moderation_rights_received', admin, kind_of(Integer), payload: { project_id: project.id })
       end

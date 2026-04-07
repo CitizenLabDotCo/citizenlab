@@ -18,20 +18,19 @@ module WebApi
         end
 
         def create
-          @user = find_or_invite_user
+          user = find_user_by_id_or_email
 
-          if @user.is_a?(InvitesImport)
-            # User doesn't exist, invite was sent
-            render json: raw_json({ status: 'invited' })
-          else
-            # User exists, add role
-            @user.add_role role_type, **role_id_params
-            if @user.save
-              ::SideFxUserService.new.after_update(@user, current_user)
-              render json: raw_json({ status: 'role_added' })
+          if user # User exists, add role
+            user.add_role role_type, **role_id_params
+            if user.save
+              ::SideFxUserService.new.after_update(user, current_user)
+              render json: ::WebApi::V1::UserSerializer.new(user, params: jsonapi_serializer_params).serializable_hash
             else
-              render json: { errors: @user.errors.details }, status: :unprocessable_entity
+              render json: { errors: user.errors.details }, status: :unprocessable_entity
             end
+          else # User doesn't exist, send invite
+            send_moderator_invite(create_moderator_params[:user_email])
+            head :accepted
           end
         end
 
@@ -64,15 +63,11 @@ module WebApi
           params.require(:moderator).permit(:user_id, :user_email)
         end
 
-        def find_or_invite_user
+        def find_user_by_id_or_email
           if create_moderator_params[:user_id].present?
             User.find(create_moderator_params[:user_id])
           elsif create_moderator_params[:user_email].present?
-            email = create_moderator_params[:user_email]
-            user = User.find_by(email: email)
-
-            # If user doesn't exist, send invite
-            user || send_moderator_invite(email)
+            User.find_by(email: create_moderator_params[:user_email])
           else
             raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
           end
@@ -98,8 +93,6 @@ module WebApi
             import.id,
             xlsx_import: false
           )
-
-          import
         end
       end
     end

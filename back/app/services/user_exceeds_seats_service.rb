@@ -37,7 +37,7 @@ class UserExceedsSeatsService
   def check_admin_seats
     # If user exists and is already admin, no extra seat is needed
     # If user does not exist, treat as new user needing a seat
-    return false if @user && (@user.admin? || @user.super_admin?)
+    return false if @user&.admin?
 
     max_admins = @core['maximum_admins_number']
 
