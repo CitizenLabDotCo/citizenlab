@@ -14134,6 +14134,11 @@
     "verified_at": "2026-03-30T13:17:43.288594Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": {
+    "state": "verified",
+    "verified_at": "2026-04-07T14:57:41.313313Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": {
     "state": "verified",
     "verified_at": "2026-03-30T13:17:43.288594Z",
