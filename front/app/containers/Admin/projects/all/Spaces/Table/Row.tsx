@@ -10,6 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
 
+import ManagerBubbles from '../../_shared/ManagerBubbles';
+
 import ActionsMenu from './ActionsMenu';
 
 const StyledTd = styled(Td)`
@@ -29,7 +31,12 @@ interface Props {
 const Row = ({ space, spaceModeratorsById }: Props) => {
   const localize = useLocalize();
 
-  console.log(spaceModeratorsById);
+  const moderatorIds = space.relationships.moderators.data.map(
+    (user) => user.id
+  );
+  const moderators = spaceModeratorsById
+    ? moderatorIds.map((id) => spaceModeratorsById[id])
+    : [];
 
   return (
     <Tr dataCy="projects-overview-folder-table-row">
@@ -48,6 +55,15 @@ const Row = ({ space, spaceModeratorsById }: Props) => {
           {localize(space.attributes.title_multiloc)}
         </Text>
       </StyledTd>
+      <Td background={colors.grey50} width="260px">
+        <ManagerBubbles
+          managers={moderators.map(({ attributes }) => ({
+            first_name: attributes.first_name ?? undefined,
+            last_name: attributes.last_name ?? undefined,
+            avatar: attributes.avatar,
+          }))}
+        />
+      </Td>
       <Td background={colors.grey50} width="40px">
         <Box mr="12px">
           <ActionsMenu space={space} />

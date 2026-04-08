@@ -30,10 +30,13 @@ export interface SpaceData {
     updated_at: string;
   };
   relationships: {
-    folders: {
+    folders?: {
       data: IRelationship[];
     };
-    projects: {
+    projects?: {
+      data: IRelationship[];
+    };
+    moderators: {
       data: IRelationship[];
     };
   };

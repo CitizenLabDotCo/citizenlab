@@ -43,6 +43,7 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.space)}</ColHeader>
+            <ColHeader>{formatMessage(messages.spaceManagers)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
