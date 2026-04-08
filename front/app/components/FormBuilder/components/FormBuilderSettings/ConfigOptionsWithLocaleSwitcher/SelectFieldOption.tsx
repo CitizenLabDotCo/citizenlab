@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -30,6 +30,11 @@ interface Props {
   locale: SupportedLocale;
   removeOption: (index: number) => void;
   onChoiceUpdate: (choice: IOptionsType, index: number) => void;
+  onTitleChange: (
+    value: string,
+    index: number,
+    locale: SupportedLocale
+  ) => void;
   onMultilinePaste?: (lines: string[], index: number) => void;
   optionImages: OptionImageType | undefined;
 }
@@ -43,11 +48,20 @@ const SelectFieldOption = memo(
     locale,
     removeOption,
     onChoiceUpdate,
+    onTitleChange,
     onMultilinePaste,
     optionImages,
   }: Props) => {
     const [isUploading, setIsUploading] = useState(false);
+    const [localTitle, setLocalTitle] = useState(
+      choice.title_multiloc[locale] || ''
+    );
     const { formatMessage } = useIntl();
+
+    // Sync from external changes (locale switch, drag reorder, etc.)
+    useEffect(() => {
+      setLocalTitle(choice.title_multiloc[locale] || '');
+    }, [choice.title_multiloc, locale]);
     const showImageSettings =
       inputType === 'multiselect_image' && !choice.other;
     const { mutateAsync: addCustomFieldOptionImage } =
@@ -115,11 +129,11 @@ const SelectFieldOption = memo(
             id={`e2e-option-input-${index}`}
             size="small"
             type="text"
-            value={choice.title_multiloc[locale]}
+            value={localTitle}
             onKeyDown={handleKeyDown}
             onChange={(value) => {
-              choice.title_multiloc[locale] = value;
-              onChoiceUpdate(choice, index);
+              setLocalTitle(value);
+              onTitleChange(value, index, locale);
             }}
             autoFocus={false}
             onMultilinePaste={

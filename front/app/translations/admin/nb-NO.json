@@ -1208,7 +1208,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Få en visuell oversikt over prosjektets tidslinjer i kalendervisningen vår. Identifiser raskt hvilke prosjekter og faser som snart starter eller avsluttes, og som krever handling.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Forstå hva som skjer og når det skjer",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle spørsmål vises i PDF-filen. Følgende støttes imidlertid ikke for import via FormSync for øyeblikket: Bilder, tagger og filopplasting.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle spørsmål vises i PDF-filen. Følgende støttes imidlertid ikke for import via FormSync for øyeblikket: Kartleggingsspørsmål (slippnål, tegne rute og tegne område), rangeringsspørsmål, matrisespørsmål og filopplastingsspørsmål.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle spørsmål vises i PDF-filen. Følgende støttes imidlertid ikke for import via FormSync for øyeblikket: Kartspørsmål (sett nål, tegn rute og tegn område) og filopplastingsspørsmål.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Slutten av skjemaet",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Begynnelsen av skjemaet",
   "app.containers.Admin.projects.all.components.archived": "Gjennomført",
