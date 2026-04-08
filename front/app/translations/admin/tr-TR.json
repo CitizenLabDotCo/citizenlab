@@ -1298,7 +1298,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Gizli",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Listelendi",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Daha fazla yükleme…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Müdür",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ay} one {{months} ay} other {{months} ay}} sol",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} ay} one {{months} ay} other {{months} ay}} başlamak için",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Sonraki aşama:",
