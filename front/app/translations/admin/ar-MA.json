@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "تعيين كمسؤول",
   "app.containers.Admin.Users.setAsNormalUser": "تعيين كمستخدم عادي",
   "app.containers.Admin.Users.setUserAsProjectModerator": "تعيين {name} كمدير للمشروع",
+  "app.containers.Admin.Users.spaceManager": "مسير الفضاء",
   "app.containers.Admin.Users.userBlockModal.allDone": "تم بنجاح",
   "app.containers.Admin.Users.userBlockModal.blockAction": "حظر المستخدم",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "لن يتم حذف محتوى هذا المستخدم من خلال هذا الإجراء. لا تنسَ الإشراف على محتواهم إذا لزم الأمر.",

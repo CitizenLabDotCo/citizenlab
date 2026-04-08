@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Ustawienie jako administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Ustawienie jako zwykły użytkownik",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Przydziel {name} jako kierownika projektu",
+  "app.containers.Admin.Users.spaceManager": "Menedżer przestrzeni",
   "app.containers.Admin.Users.userBlockModal.allDone": "Wszystko zrobione",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Zablokuj użytkownika",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Zawartość tego użytkownika nie zostanie usunięta przez tę akcję. Nie zapomnij o moderowaniu ich treści w razie potrzeby.",

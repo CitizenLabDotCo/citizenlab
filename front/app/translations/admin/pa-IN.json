@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਸੈੱਟ ਕਰੋ",
   "app.containers.Admin.Users.setAsNormalUser": "ਆਮ ਉਪਭੋਗਤਾ ਵਜੋਂ ਸੈੱਟ ਕਰੋ",
   "app.containers.Admin.Users.setUserAsProjectModerator": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ {name} ਨੂੰ ਜ਼ਿੰਮੇ ਲਗਾਓ",
+  "app.containers.Admin.Users.spaceManager": "ਸਪੇਸ ਪ੍ਰਬੰਧਕ",
   "app.containers.Admin.Users.userBlockModal.allDone": "ਸਭ ਕੀਤਾ",
   "app.containers.Admin.Users.userBlockModal.blockAction": "ਉਪਭੋਗਤਾ ਨੂੰ ਬਲਾਕ ਕਰੋ",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "ਇਸ ਵਰਤੋਂਕਾਰ ਦੀ ਸਮੱਗਰੀ ਨੂੰ ਇਸ ਕਾਰਵਾਈ ਰਾਹੀਂ ਨਹੀਂ ਹਟਾਇਆ ਜਾਵੇਗਾ। ਜੇਕਰ ਲੋੜ ਹੋਵੇ ਤਾਂ ਉਹਨਾਂ ਦੀ ਸਮੱਗਰੀ ਨੂੰ ਸੰਚਾਲਿਤ ਕਰਨਾ ਨਾ ਭੁੱਲੋ।",
