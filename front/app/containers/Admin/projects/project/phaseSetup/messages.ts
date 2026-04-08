@@ -37,10 +37,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel',
     defaultMessage: 'Take the survey',
   },
-  descriptionLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
-    defaultMessage: 'Description',
-  },
   datesLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.datesLabel',
     defaultMessage: 'Dates',

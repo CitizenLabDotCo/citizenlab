@@ -2,14 +2,18 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
+import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -24,6 +28,8 @@ interface Props {
 
 const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
   const { formatMessage } = useIntl();
+  const { projectId } = useParams() as { projectId: string };
+  const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
   const methods = useForm<FormValues>({
@@ -48,8 +54,17 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <Box>
           <Text fontWeight="bold" m="0px" mb="12px">
-            {formatMessage(messages.descriptionTitle)}
+            {formatMessage(messages.descriptionLabel)}
           </Text>
+          {phases &&
+            phases.data.length < 2 &&
+            isEmptyMultiloc(descriptionMultiloc) && (
+              <Box my="16px">
+                <Warning>
+                  {formatMessage(messages.emptyDescriptionWarning)}
+                </Warning>
+              </Box>
+            )}
           <QuillMultilocWithLocaleSwitcher
             name="description_multiloc"
             withCTAButton

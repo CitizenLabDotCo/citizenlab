@@ -27,9 +27,9 @@ export default defineMessages({
     defaultMessage:
       'You are editing a draft. Publish to make it visible to participants, or discard to revert.',
   },
-  descriptionTitle: {
-    id: 'app.containers.AdminPage.ProjectTimeline.descriptionTitle',
-    defaultMessage: 'Phase description',
+  descriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
+    defaultMessage: 'Description',
   },
   draftDescriptionSaving: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving',
@@ -38,5 +38,10 @@ export default defineMessages({
   draftDescriptionSaved: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved',
     defaultMessage: 'Draft saved',
+  },
+  emptyDescriptionWarning: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
+    defaultMessage:
+      'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
   },
 });

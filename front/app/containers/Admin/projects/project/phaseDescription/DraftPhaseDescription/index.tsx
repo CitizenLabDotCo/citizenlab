@@ -12,13 +12,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
+import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -40,12 +44,15 @@ const DraftPhaseDescription = ({
   draftDescriptionMultiloc: initialDraft,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { projectId } = useParams() as { projectId: string };
+  const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase, isLoading } = useUpdatePhase();
   const { mutate: updateDraftPhaseDescription, isLoading: isDraftLoading } =
     useUpdatePhase();
 
   const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
   const [isEditing, setIsEditing] = useState(hasSavedDraft);
+  const [hasPendingChanges, setHasPendingChanges] = useState(false);
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -58,6 +65,7 @@ const DraftPhaseDescription = ({
   const debouncedSaveDraft = useMemo(
     () =>
       debounce((value: Multiloc) => {
+        setHasPendingChanges(false);
         updateDraftPhaseDescription({
           phaseId,
           draft_description_multiloc: value,
@@ -68,6 +76,7 @@ const DraftPhaseDescription = ({
 
   methods.watch((data) => {
     if (isEditing && data.draft_description_multiloc) {
+      setHasPendingChanges(true);
       debouncedSaveDraft(data.draft_description_multiloc as Multiloc);
     }
   });
@@ -115,7 +124,7 @@ const DraftPhaseDescription = ({
       <Box>
         <Box display="flex" alignItems="center" gap="8px">
           <Text fontWeight="bold" m="0px">
-            {formatMessage(messages.descriptionTitle)}
+            {formatMessage(messages.descriptionLabel)}
           </Text>
           <IconTooltip
             content={formatMessage(
@@ -133,6 +142,15 @@ const DraftPhaseDescription = ({
             backgroundColor={isEditing ? colors.orange500 : colors.green500}
           />
         </Box>
+        {phases &&
+          phases.data.length < 2 &&
+          isEmptyMultiloc(descriptionMultiloc) && (
+            <Box my="16px">
+              <Warning>
+                {formatMessage(messages.emptyDescriptionWarning)}
+              </Warning>
+            </Box>
+          )}
         <QuillMultilocWithLocaleSwitcher
           name="draft_description_multiloc"
           withCTAButton
@@ -161,14 +179,14 @@ const DraftPhaseDescription = ({
                     {formatMessage(messages.draftDescriptionSaving)}
                   </Text>
                 </Box>
-              ) : (
+              ) : !hasPendingChanges ? (
                 <Box display="flex" alignItems="center" gap="8px">
                   <Icon name="check" fill={colors.success} />
                   <Text m="0px" fontSize="s" color="textSecondary">
                     {formatMessage(messages.draftDescriptionSaved)}
                   </Text>
                 </Box>
-              )}
+              ) : null}
               <Button
                 buttonStyle="admin-dark"
                 onClick={handlePublish}
