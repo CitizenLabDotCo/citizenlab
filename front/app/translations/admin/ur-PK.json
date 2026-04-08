@@ -2790,7 +2790,6 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "سروے",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "کیا آپ واقعی اس مرحلے کو حذف کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "مرحلے کی تفصیل",
-  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "مرحلے کی تفصیل",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "تبدیلیاں مسترد کریں",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ڈرافٹ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "آپ ایک ڈرافٹ میں ترمیم کر رہے ہیں۔ اسے شرکاء کو دکھانے کے لیے شائع کریں، یا واپس جانے کے لیے تبدیلیاں مسترد کریں۔",

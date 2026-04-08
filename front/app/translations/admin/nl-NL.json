@@ -2790,7 +2790,6 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Vragenlijst",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Weet u zeker dat u deze fase wilt verwijderen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Fasebeschrijving",
-  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Fasebeschrijving",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Wijzigingen verwijderen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "CONCEPT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Je bewerkt een concept. Publiceer om het zichtbaar te maken voor deelnemers, of verwijder de wijzigingen om terug te keren.",

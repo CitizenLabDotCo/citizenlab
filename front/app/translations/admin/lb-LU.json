@@ -2790,7 +2790,6 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Ëmfro",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Are you sure you want to delete this phase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phase description",
-  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Phasebeschreiwung",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Ännerunge verwerfen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ENTWURRF",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Dir editéiert en Entworf. Verëffentlecht en, fir en fir d'Participante siichtbar ze maachen, oder verwerft d'Ännerungen, fir se réckgängeg ze maachen.",

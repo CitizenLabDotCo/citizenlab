@@ -2790,7 +2790,6 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Undersøgelse",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Er du sikker på, at du ønsker at slette denne fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Beskrivelse af fase",
-  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Fasebeskrivelse",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Kassér ændringer",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "KLADDE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Du redigerer en kladde. Udgiv den for at gøre den synlig for deltagere, eller kassér ændringerne for at fortryde.",

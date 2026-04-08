@@ -2790,7 +2790,6 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Ankieta",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Czy na pewno usunąć ten etap?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Opis etapu",
-  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Opis fazy",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odrzuć zmiany",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "WERSJA ROBOCZA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Edytujesz wersję roboczą. Opublikuj ją, aby była widoczna dla uczestników, lub odrzuć zmiany, aby przywrócić poprzednią wersję.",
