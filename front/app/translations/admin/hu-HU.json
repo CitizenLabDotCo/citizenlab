@@ -1555,7 +1555,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Szkennelt űrlapok importálása (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Beszkennelt űrlapok importálása",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importált beküldések",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importálás. Ez a folyamat néhány percet vehet igénybe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Ez a bejegyzés névtelenül lett importálva.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} bejegyzést nem sikerült jóváhagyni. Kérjük, ellenőrizze az egyes bejegyzések érvényesítési hibáit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Területi beállítás:",

@@ -1555,7 +1555,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Εισαγωγή σαρωμένων φορμών (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Εισαγωγή σαρωμένων φορμών",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Εισηγμένες συνεισφορές",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Γίνεται εισαγωγή. Αυτή η διαδικασία ενδέχεται να διαρκέσει μερικά λεπτά.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Αυτή η καταχώριση εισήχθη ανώνυμα.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} καταχωρίσεις δεν μπόρεσαν να εγκριθούν. Παρακαλούμε ελέγξτε κάθε καταχώριση για σφάλματα επικύρωσης.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Τοπικές ρυθμίσεις:",

@@ -1523,7 +1523,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Import scanned forms (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Import scanned forms",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Imported inputs",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importing. This process may take a few minutes.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "This input was imported anonymously.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Locale:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nothing to review yet. Click \"{importFile}\" to import a PDF file containing scanned input forms or an Excel file containing inputs.",
