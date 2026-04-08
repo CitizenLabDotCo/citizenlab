@@ -1298,7 +1298,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Oculto",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Listado",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Cargando más…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Gestor",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "Quedan {months, plural, no {{months} meses} one {{months} mes} other {{months} meses}}",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} meses} one {{months} mes} other {{months} meses}} para empezar",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Siguiente fase:",

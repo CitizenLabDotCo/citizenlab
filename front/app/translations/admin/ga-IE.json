@@ -1298,7 +1298,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "I bhfolach",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Liostaithe",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Ag luchtú níos mó…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Bainisteoir",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} míonna} one {{months} mí} other {{months} míonna}} fágtha",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} míonna} one {{months} mí} other {{months} míonna}} le tosú",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "An chéad chéim eile:",

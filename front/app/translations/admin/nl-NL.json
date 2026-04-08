@@ -1298,7 +1298,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Verborgen",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Vindbaar",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Meer laden…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Beheerder",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} maanden} one {{months} maand} other {{months} maanden}} tot eind",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} maanden} one {{months} maand} other {{months} maanden}} tot begin",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Volgende fase:",

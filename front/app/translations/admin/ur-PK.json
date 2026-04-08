@@ -1298,7 +1298,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "پوشیدہ",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "درج",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "مزید…لوڈ ہو رہا ہے۔",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "مینیجر",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ماہ} one {{months} مہینہ} other {{months} مہینے}} باقی",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} مہینے} one {{months} مہینہ} other {{months} مہینے}}",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "اگلا مرحلہ:",
