@@ -13,8 +13,8 @@ import projectModeratorsKeys from './keys';
 import { ProjectModeratorAdd } from './types';
 
 const addModerator = async ({
-  moderatorId,
-  moderatorEmail,
+  user_id,
+  user_email,
   projectId,
 }: ProjectModeratorAdd) =>
   fetcher<IUsers>({
@@ -22,8 +22,8 @@ const addModerator = async ({
     action: 'post',
     body: {
       moderator: {
-        user_id: moderatorId,
-        user_email: moderatorEmail,
+        user_id,
+        user_email,
       },
     },
   });

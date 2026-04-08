@@ -829,6 +829,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.AddByEmail.invite": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -3279,6 +3289,21 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.ModeratorsTable.noManagers2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T16:30:27.484010Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -4097,6 +4122,11 @@
   "app.containers.Admin.Users.SeatsOverview.title": {
     "state": "verified",
     "verified_at": "2026-03-20T19:44:20.403938Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.Users.SeatsOverview.unknown": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
@@ -6174,7 +6204,6 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T12:58:57.270715Z",
@@ -12090,6 +12119,11 @@
     "verified_at": "2026-03-18T16:34:36.160245Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
     "state": "verified",
     "verified_at": "2026-03-19T12:42:32.629235Z",
@@ -13330,6 +13364,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:03:31.299504Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -14099,6 +14138,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
+    "state": "verified",
+    "verified_at": "2026-04-08T11:36:20.636811Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": {
     "state": "verified",

@@ -94,6 +94,7 @@ const SeatInfo = ({ seatType, mb }: Props) => {
               mr="4px"
               fill={colors.teal500}
               height="20px"
+              transform="translateX(-4px)"
             />
           )}
           {formatMessage(TOTAL_SEAT_MESSAGES[seatType], { totalSeats })}
