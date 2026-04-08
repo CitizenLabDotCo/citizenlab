@@ -61,7 +61,7 @@ module ProjectFolders
       attrs = [
         :header_bg,
         :slug,
-        { admin_publication_attributes: [:publication_status],
+        { admin_publication_attributes: %i[publication_status scheduled_status scheduled_at],
           description_multiloc: CL2_SUPPORTED_LOCALES,
           description_preview_multiloc: CL2_SUPPORTED_LOCALES,
           title_multiloc: CL2_SUPPORTED_LOCALES,
