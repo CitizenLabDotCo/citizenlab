@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Sondaggio",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Sei sicuro di voler eliminare questa fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descrizione della fase",
+  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Descrizione fase",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Scarta le modifiche",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "BOZZA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Stai modificando una bozza. Pubblica per renderla visibile ai partecipanti, oppure scarta per annullare le modifiche.",

@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Kérdőív",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Are you sure you want to delete this phase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phase description",
+  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Szakaszleírás",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Módosítások elvetése",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "PISZKOZAT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Egy piszkozatot szerkeszt. Tegye közzé, hogy láthatóvá váljon a résztvevők számára, vagy vesse el a módosításokat a visszaállításhoz.",

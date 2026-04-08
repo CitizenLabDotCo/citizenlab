@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Suirbhé",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "An bhfuil tú cinnte gur mian leat an chéim seo a scriosadh?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Cur síos ar an gcéim",
+  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Cur síos ar an gcéim",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Diúltaigh do na hathruithe",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRÉACHT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Tá dréacht á chur in eagar agat. Foilsigh é chun go mbeidh sé le feiceáil ag rannpháirtithe, nó diúltaigh do na hathruithe chun filleadh ar an mbunleagan.",

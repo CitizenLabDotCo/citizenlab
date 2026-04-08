@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Umfrage",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Sind Sie sicher, dass Sie diese Phase löschen wollen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phasenbeschreibung",
+  "app.containers.AdminPage.ProjectTimeline.descriptionTitle": "Phasenbeschreibung",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Änderungen verwerfen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ENTWURF",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Sie bearbeiten einen Entwurf. Veröffentlichen Sie ihn, um ihn für Teilnehmende sichtbar zu machen, oder verwerfen Sie ihn, um die Änderungen rückgängig zu machen.",
