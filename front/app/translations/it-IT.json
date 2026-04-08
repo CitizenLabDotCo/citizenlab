@@ -104,7 +104,7 @@
   "app.components.CommonGroundStatements.disagreeLabel": "Non concordo",
   "app.components.CommonGroundStatements.noMoreStatements": "Non ci sono dichiarazioni a cui rispondere in questo momento",
   "app.components.CommonGroundStatements.noResults": "Non ci sono ancora risultati da mostrare. Assicurati di aver partecipato alla fase Punto d'incontro e controlla di nuovo qui dopo.",
-  "app.components.CommonGroundStatements.unsureLabel": "Incerto",
+  "app.components.CommonGroundStatements.unsureLabel": "Non saprei",
   "app.components.CommonGroundTabs.resultsTabLabel": "Risultati",
   "app.components.CommonGroundTabs.statementsTabLabel": "Dichiarazioni",
   "app.components.CommunityMonitorModal.formError": "Si è verificato un errore.",
