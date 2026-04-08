@@ -6174,7 +6174,6 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T12:58:57.113809Z",
@@ -6269,6 +6268,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.includeLogic": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:04:23.691709Z",
+    "verified_by": "Amanda A"
+  },
+  "app.containers.Admin.projects.all.includeLogicExplanation": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:04:23.691709Z",
+    "verified_by": "Amanda A"
   },
   "app.containers.Admin.projects.all.itIsAlsoPossible1": {
     "state": "verified",
