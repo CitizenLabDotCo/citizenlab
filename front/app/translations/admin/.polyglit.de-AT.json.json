@@ -5579,6 +5579,12 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T15:34:37.201277Z",
+    "verified_by": "Edwin Kato"
+  },
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -6042,6 +6048,12 @@
   "app.containers.Admin.projects.all.clickExportToPDFSurvey6": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
+    "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
+    "state": "verified",
+    "verified_at": "2026-03-30T15:34:37.201277Z",
     "verified_by": "Edwin Kato"
   },
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": {
@@ -19248,7 +19260,7 @@
   },
 
   "app.containers.Admin.projects.all.includeLogicExplanation": {
-    "state": "verified",
+    "verified_by": "Jelena"
     "verified_at": "2026-03-30T13:22:10.114209Z",
     "verified_by": "Jelena"
   }

@@ -4,77 +4,73 @@ namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
-    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
+    data = CSV.parse(URI.open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     reporter = ScriptReporter.new
+
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      data.each do |row|
-        idea = Idea.find_by id: row['ID']
-        if !idea
-          reporter.add_error(
-            "Couldn't find idea",
-            context: { idea_id: row['ID'] }
-          )
-          next
-        end
+      statuses = IdeaStatus.all.to_a
+
+      validated_rows = data.map do |row|
+        idea = Idea.find_by(id: row['ID'])
+        raise "Couldn't find idea with ID '#{row['ID']}'" if !idea
+
+        user = User.find_by(email: row['Feedback Email'])
+        raise "Couldn't find feedback author with email '#{row['Feedback Email']}'" if !user
 
         status = if row['New Status'].present?
-          IdeaStatus.all.find do |some_idea|
-            some_idea.title_multiloc[args[:locale]].downcase.strip == row['New Status'].downcase.strip
-          end
+          statuses.find { |s| s.title_multiloc[args[:locale]]&.downcase&.strip == row['New Status'].downcase.strip }
         end
-        if !status
-          reporter.add_error(
-            "Couldn't find status",
-            context: { idea_id: idea.id, new_status: row['New Status'] }
-          )
-        end
+        raise "Couldn't find status '#{row['New Status']}'" if row['New Status'].present? && !status
 
-        name = row['Feedback Author Name']
-        text = row['Feedback']
-        first_name = idea.author&.first_name || row['First name'] || ''
-        text = text.gsub '{{first_name}}', first_name
-
-        user = User.find_by email: row['Feedback Email']
-        if !user
-          reporter.add_error(
-            "Couldn't find feedback author",
-            context: { idea_id: idea.id, email: row['Feedback Email'] }
-          )
-          next
-        end
-
-        if status && idea.idea_status != status
-          status_id_was = idea.idea_status_id
-          idea.update!(idea_status: status)
-          LogActivityJob.perform_later(
-            idea,
-            'changed_status',
-            user,
-            idea.updated_at.to_i,
-            payload: { change: idea.idea_status_id_previous_change }
-          )
-          reporter.add_change(
-            status_id_was,
-            status.id,
-            context: { idea_id: idea.id }
-          )
-        end
-
-        feedback_attributes = {
-          idea_id: idea.id,
-          body_multiloc: { args[:locale] => text },
-          author_multiloc: { args[:locale] => name },
-          user_id: user.id
-        }
-        feedback = OfficialFeedback.create!(feedback_attributes)
-        LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
-        reporter.add_create(
-          'OfficialFeedback',
-          feedback_attributes,
-          context: { idea_id: idea.id }
-        )
+        { idea: idea, user: user, status: status, row: row }
       end
+
+      jobs_to_enqueue = []
+
+      ApplicationRecord.transaction do
+        validated_rows.each do |r|
+          idea = r[:idea]
+          user = r[:user]
+          status = r[:status]
+          row = r[:row]
+
+          name = row['Feedback Author Name']
+          text = row['Feedback']
+          first_name = idea.author&.first_name || row['First name'] || ''
+          text = text.gsub('{{first_name}}', first_name)
+
+          if status && idea.idea_status != status
+            status_id_was = idea.idea_status_id
+            idea.update!(idea_status: status)
+            jobs_to_enqueue << lambda {
+              LogActivityJob.perform_later(
+                idea,
+                'changed_status',
+                user,
+                idea.updated_at.to_i,
+                payload: { change: idea.idea_status_id_previous_change }
+              )
+            }
+            reporter.add_change(status_id_was, status.id, context: { idea_id: idea.id })
+          end
+
+          feedback_attributes = {
+            idea_id: idea.id,
+            body_multiloc: { args[:locale] => text },
+            author_multiloc: { args[:locale] => name },
+            user_id: user.id
+          }
+          feedback = OfficialFeedback.create!(feedback_attributes)
+          jobs_to_enqueue << -> { LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i) }
+          reporter.add_create('OfficialFeedback', feedback_attributes, context: { idea_id: idea.id })
+        end
+      end
+
+      jobs_to_enqueue.each(&:call)
+    rescue StandardError => e
+      reporter.add_error(e.message)
     end
+
     reporter.report!('mass_official_feedback_report.json', verbose: true)
   end
 

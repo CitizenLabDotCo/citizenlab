@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Middel",
   "app.components.PasswordInput.strength4Password": "Stærkt",
   "app.components.PasswordInput.strength5Password": "Meget stærkt",
-  "app.components.PostCardsComponents.feed": "Feed",
+  "app.components.PostCardsComponents.feed": "Perspektiv",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Kort",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Tilføj en officiel opdatering",
