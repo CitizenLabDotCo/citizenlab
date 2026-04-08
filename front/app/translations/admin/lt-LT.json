@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PASKELBTA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Etapo aprašymas",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Tai šiuo metu paskelbtas aprašymas, matomas dalyviams. Spustelėkite, jei norite redaguoti.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Juodraštis išsaugotas",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Saugoma...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Redagavimo etapas",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Galutinė data",

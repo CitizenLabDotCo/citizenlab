@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "ਪ੍ਰਕਾਸ਼ਿਤ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "ਪੜਾਅ ਦਾ ਵੇਰਵਾ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "ਇਹ ਵਰਤਮਾਨ ਵਿੱਚ ਪ੍ਰਕਾਸ਼ਿਤ ਵੇਰਵਾ ਹੈ ਜੋ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ। ਸੰਪਾਦਿਤ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ।",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "ਡਰਾਫਟ ਸੰਭਾਲਿਆ ਗਿਆ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "ਸੇਵ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "ਪੜਾਅ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.AdminPage.ProjectTimeline.endDate": "ਸਮਾਪਤੀ ਮਿਤੀ",

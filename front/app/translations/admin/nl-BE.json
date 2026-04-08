@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "GEPUBLICEERD",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Fasebeschrijving",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dit is de momenteel gepubliceerde beschrijving die zichtbaar is voor deelnemers. Klik om te bewerken.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Concept opgeslagen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Opslaan...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Fase bewerken",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Einddatum",

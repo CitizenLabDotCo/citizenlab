@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICĒTS",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Fāzes apraksts",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Šis ir pašlaik publicētais apraksts, kas ir redzams dalībniekiem. Noklikšķiniet, lai rediģētu.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Melnraksts saglabāts",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Saglabā...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Rediģēšanas posms",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Beigu datums",

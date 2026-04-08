@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "YAYINLANDI",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Aşama açıklaması",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Bu, şu anda katılımcılar tarafından görülebilen yayınlanmış açıklamadır. Düzenlemek için tıklayın.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Taslak kaydedildi",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Kaydediliyor...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Aşamayı düzenleyin",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Bitiş tarihi",

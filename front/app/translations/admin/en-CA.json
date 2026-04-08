@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLISHED",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Phase description",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "This is the currently published description visible to participants. Click to edit.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Draft saved",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Saving...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Edit Phase",
   "app.containers.AdminPage.ProjectTimeline.endDate": "End date",

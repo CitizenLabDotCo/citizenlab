@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLISERT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "Fasebeskrivelse",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dette er den publiserte beskrivelsen som er synlig for deltakere. Klikk for å redigere.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Utkast lagret",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Lagrer...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Redigeringsfase",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Sluttdato",

@@ -2798,6 +2798,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "تم النشر",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": "وصف المرحلة",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "هذا هو الوصف المنشور حالياً والمرئي للمشاركين. انقر للتحرير.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "تم حفظ المسودة",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "جاري الحفظ...",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "عدّل المرحلة",
   "app.containers.AdminPage.ProjectTimeline.endDate": "تاريخ الانتهاء",
