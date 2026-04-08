@@ -17,7 +17,8 @@ interface Props {
 
 const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
   const { notification } = props;
-  const spacePath = `/admin/projects/spaces/${notification.attributes.space_id}`;
+  const spacePath =
+    `/admin/projects/spaces/${notification.attributes.space_id}` as const;
 
   return (
     <NotificationWrapper
