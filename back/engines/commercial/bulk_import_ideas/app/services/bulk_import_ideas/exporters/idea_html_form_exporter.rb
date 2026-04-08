@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlFormExporter < BaseFormExporter
-    def initialize(phase, locale, personal_data_enabled)
+    def initialize(phase, locale, personal_data_enabled, include_logic: false)
       super
       @personal_data_enabled = personal_data_enabled
     end
@@ -27,6 +27,10 @@ module BulkImportIdeas::Exporters
       @printable_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
     end
 
+    def all_fields
+      @all_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).all_fields
+    end
+
     def render_config
       {
         template: 'bulk_import_ideas/web_api/v1/export_form',
@@ -42,6 +46,7 @@ module BulkImportIdeas::Exporters
         fields: format_fields,
         header: form_header,
         footer: form_footer,
+        include_logic: @include_logic,
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
@@ -112,34 +117,36 @@ module BulkImportIdeas::Exporters
     end
 
     def format_fields
+      build_logic_maps if @include_logic
+
       question_num = 0
+      current_page_id = nil
       fields = printable_fields.filter_map do |field|
         next if field.title_multiloc[@locale].blank? && !field.page?
-        next if field.title_multiloc[@locale].blank? && field.description_multiloc[@locale].blank?
+        next if field.title_multiloc[@locale].blank? && field.description_multiloc[@locale].blank? && !@include_logic
+
+        current_page_id = field.id if field.page?
 
         {
           id: field.id,
-          title: field_print_title(field),
+          title: logic_field_title(field),
           description: field_print_description(field),
           question_number: field_has_question_number?(field) ? "#{question_num += 1}." : '',
+          question_number_int: field_has_question_number?(field) ? question_num : nil,
           additional_text_question: field.additional_text_question?,
           format: field_print_format(field),
           input_type: field.input_type,
           visibility_disclaimer: print_visibility_disclaimer(field),
           optional: !field.required?,
-          options: field.options.map do |option|
-            {
-              id: option.id,
-              title: option.title_multiloc[@locale],
-              image_url: option_image_url(field, option)
-            }
-          end,
+          options: logic_field_options(field),
           option_columns: field_option_columns?(field),
           matrix: field_matrix_details(field),
-          map_url: field_map_url(field)
+          map_url: field_map_url(field),
+          logic_instructions: nil
         }
       end
 
+      attach_logic_instructions(fields) if @include_logic
       group_fields(fields)
     end
 
@@ -147,6 +154,136 @@ module BulkImportIdeas::Exporters
       return nil unless field.supports_option_images? && option.image
 
       format_urls(option.image.image.versions[:large].url)
+    end
+
+    # Build lookup maps for logic: page_id → section label, option → index, logic fields per page
+    def build_logic_maps
+      @section_labels = {}
+      printable_fields.select(&:page?).each_with_index do |page, index|
+        @section_labels[page.id] = logic_t('logic_section', letter: index_to_letter(index))
+      end
+
+      @option_id_map = {}
+      printable_fields.each do |field|
+        field.options.each { |opt| @option_id_map[opt.id] = opt }
+      end
+
+      @logic_fields_per_page = Hash.new { |h, k| h[k] = [] }
+      current_page_id = nil
+      printable_fields.each do |field|
+        if field.page?
+          current_page_id = field.id
+          @logic_fields_per_page[current_page_id] << field if field.logic? && field.logic['next_page_id'].present?
+        elsif field.logic? && field.logic['rules'].present?
+          @logic_fields_per_page[current_page_id] << field
+        end
+      end
+    end
+
+    def index_to_letter(index)
+      ('A'..'Z').to_a[index] || (index + 1).to_s
+    end
+
+    # Returns the title with section label prefix for pages when logic is enabled
+    def logic_field_title(field)
+      title = field_print_title(field)
+      return title unless @include_logic && field.page? && @section_labels
+
+      section_label = @section_labels[field.id]
+      return title if section_label.blank?
+
+      raw_title = field.title_multiloc[@locale]
+      raw_title.present? ? "#{section_label}: #{raw_title}" : section_label
+    end
+
+    # Returns options with letter prefixes (A, B, C...) when logic is enabled and field supports selection
+    def logic_field_options(field)
+      field.options.each_with_index.map do |option, index|
+        title = option.title_multiloc[@locale]
+        if @include_logic && (field.supports_single_selection? || field.supports_multiple_selection?)
+          title = "#{index_to_letter(index)}) #{title}"
+        end
+        {
+          id: option.id,
+          title: title,
+          image_url: option_image_url(field, option)
+        }
+      end
+    end
+
+    # Attach logic instruction HTML to the last field before each page boundary
+    def attach_logic_instructions(fields)
+      page_groups = fields.slice_before { |f| f[:input_type] == 'page' }.to_a
+
+      page_groups.each do |group|
+        page_field = group.find { |f| f[:input_type] == 'page' }
+        next unless page_field
+
+        logic_fields = @logic_fields_per_page[page_field[:id]]
+        next if logic_fields.blank?
+
+        instructions_html = build_logic_instructions_html(logic_fields, fields)
+        next if instructions_html.blank?
+
+        # Attach to the last question, or to the page itself if there are no questions
+        target = group.reverse.find { |f| f[:input_type] != 'page' } || page_field
+        target[:logic_instructions] = instructions_html
+      end
+    end
+
+    def build_logic_instructions_html(logic_fields, field_hashes)
+      lines = logic_fields.flat_map do |field|
+        if field.page?
+          page_logic_instruction(field)
+        else
+          question_logic_instructions(field, field_hashes)
+        end
+      end
+
+      lines.compact.join('<br>')
+    end
+
+    def page_logic_instruction(field)
+      target_id = field.logic['next_page_id']
+      if end_page?(target_id)
+        "<em>#{logic_t('logic_no_further_questions')}</em>"
+      else
+        label = @section_labels[target_id]
+        "<em>#{logic_t('logic_go_to_section', section: label)}</em>" if label
+      end
+    end
+
+    def question_logic_instructions(field, field_hashes)
+      question_num = field_hashes.find { |f| f[:id] == field.id }&.dig(:question_number_int)
+      return [] unless question_num
+
+      sorted_rules = field.logic['rules']&.sort_by do |rule|
+        opt = @option_id_map[rule['if'].to_s]
+        opt ? field.options.index(opt) : Float::INFINITY
+      end
+
+      sorted_rules&.filter_map do |rule|
+        option = @option_id_map[rule['if'].to_s]
+        next unless option
+
+        letter = index_to_letter(field.options.index(option))
+        target_id = rule['goto_page_id']
+
+        if end_page?(target_id)
+          "<em>#{logic_t('logic_if_answered_end', option: letter, question: question_num)}</em>"
+        else
+          label = @section_labels[target_id]
+          "<em>#{logic_t('logic_if_answered_go_to', option: letter, question: question_num, section: label)}</em>" if label
+        end
+      end
+    end
+
+    def end_page?(page_id)
+      all_fields.find { |f| f.id == page_id }&.form_end_page?
+    end
+
+    def logic_t(key, **params)
+      I18n.with_locale(@locale) { I18n.t("form_builder.pdf_export.#{key}", **params) }
     end
 
     # Group fields together so that the first question of a page appears on the same printed page as the question
