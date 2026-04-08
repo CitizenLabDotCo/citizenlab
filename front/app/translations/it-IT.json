@@ -100,7 +100,7 @@
   "app.components.CommonGroundResults.statementsLabel1": "dichiarazioni",
   "app.components.CommonGroundResults.votesLabe": "voto",
   "app.components.CommonGroundResults.votesLabel1": "voti",
-  "app.components.CommonGroundStatements.agreeLabel": "Accetta",
+  "app.components.CommonGroundStatements.agreeLabel": "Concordo",
   "app.components.CommonGroundStatements.disagreeLabel": "Non sono d'accordo",
   "app.components.CommonGroundStatements.noMoreStatements": "Non ci sono dichiarazioni a cui rispondere in questo momento",
   "app.components.CommonGroundStatements.noResults": "Non ci sono ancora risultati da mostrare. Assicurati di aver partecipato alla fase Punto d'incontro e controlla di nuovo qui dopo.",
