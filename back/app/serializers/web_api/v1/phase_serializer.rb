@@ -47,7 +47,9 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
-  attribute :draft_description_multiloc do |object|
+  attribute :draft_description_multiloc, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  } do |object|
     TextImageService.new.render_data_images_multiloc object.draft_description_multiloc, field: :draft_description_multiloc, imageable: object
   end
 

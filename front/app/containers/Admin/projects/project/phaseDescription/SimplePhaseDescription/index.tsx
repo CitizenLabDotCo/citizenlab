@@ -48,7 +48,7 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <Box>
           <Text fontWeight="bold" m="0px" mb="12px">
-            {formatMessage(messages.draftDescriptionPublishedTitle)}
+            {formatMessage(messages.descriptionTitle)}
           </Text>
           <QuillMultilocWithLocaleSwitcher
             name="description_multiloc"

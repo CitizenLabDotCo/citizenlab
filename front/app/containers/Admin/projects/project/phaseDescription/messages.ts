@@ -27,12 +27,8 @@ export default defineMessages({
     defaultMessage:
       'You are editing a draft. Publish to make it visible to participants, or discard to revert.',
   },
-  draftDescriptionPublishedTitle: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle',
-    defaultMessage: 'Phase description',
-  },
-  draftDescriptionDraftTitle: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTitle',
+  descriptionTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.descriptionTitle',
     defaultMessage: 'Phase description',
   },
   draftDescriptionSaving: {

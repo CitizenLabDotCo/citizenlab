@@ -352,25 +352,13 @@ class Phase < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
+    self.description_multiloc = sanitize_html_multiloc(description_multiloc)
   end
 
   def sanitize_draft_description_multiloc
     return if draft_description_multiloc.blank?
 
-    service = SanitizationService.new
-    self.draft_description_multiloc = service.sanitize_multiloc(
-      draft_description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.draft_description_multiloc = service.remove_multiloc_empty_trailing_tags(draft_description_multiloc)
-    self.draft_description_multiloc = service.linkify_multiloc(draft_description_multiloc)
+    self.draft_description_multiloc = sanitize_html_multiloc(draft_description_multiloc)
   end
 
   def validate_end_at
@@ -477,6 +465,16 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def sanitize_html_multiloc(multiloc)
+    service = SanitizationService.new
+    multiloc = service.sanitize_multiloc(
+      multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    multiloc = service.remove_multiloc_empty_trailing_tags(multiloc)
+    service.linkify_multiloc(multiloc)
   end
 end
 

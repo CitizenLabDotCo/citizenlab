@@ -115,11 +115,7 @@ const DraftPhaseDescription = ({
       <Box>
         <Box display="flex" alignItems="center" gap="8px">
           <Text fontWeight="bold" m="0px">
-            {formatMessage(
-              isEditing
-                ? messages.draftDescriptionDraftTitle
-                : messages.draftDescriptionPublishedTitle
-            )}
+            {formatMessage(messages.descriptionTitle)}
           </Text>
           <IconTooltip
             content={formatMessage(
