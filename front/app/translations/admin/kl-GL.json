@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Misissuineq",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Ilumoortumik killiffik una peerniarpiuk?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Killiffimmut nassuiaat",
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Allannguutit taamaatiuk",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "MISSINGIUT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Missingiut aaqqissuatat. Saqqummiuguk peqataasunit takuneqarsinnaanngortillugu, imaluunniit taamaatiuk siornatigutut ilerseqqillugu.",

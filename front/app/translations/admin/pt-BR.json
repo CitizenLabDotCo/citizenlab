@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Pesquisa",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Tem certeza de que deseja excluir esta fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descrição da fase",
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Descartar alterações",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "RASCUNHO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Você está editando um rascunho. Publique para torná-lo visível para os participantes ou descarte para reverter.",

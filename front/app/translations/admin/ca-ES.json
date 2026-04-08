@@ -2790,6 +2790,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Enquesta",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Esteu segur que voleu eliminar aquesta fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descripció de la fase",
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Descarta els canvis",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ESBORRANY",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Estàs editant un esborrany. Publica'l perquè sigui visible per als participants, o descarta'l per revertir els canvis.",
