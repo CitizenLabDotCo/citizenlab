@@ -1,4 +1,4 @@
-nl:
+nl-NL:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 uur.
@@ -168,6 +168,11 @@ nl:
       last_name: Achternaam
       line_print_description: Teken een route op de kaart hieronder.
       linear_scale_print_description: Schrijf alleen een getal tussen %{min_label} en %{max_label}
+      logic_go_to_section: Ga vervolgens naar <strong>%{section}</strong>.
+      logic_if_answered_end: Als u <strong>%{option}</strong> heeft geantwoord op Vraag %{question}, hoeft u <strong>geen</strong> verdere vragen meer te beantwoorden.
+      logic_if_answered_go_to: Als u <strong>%{option}</strong> heeft geantwoord op Vraag %{question}, ga dan naar <strong>%{section}</strong>.
+      logic_no_further_questions: Op basis van uw antwoorden hoeft u <strong>geen</strong> verdere vragen meer te beantwoorden.
+      logic_section: Sectie %{letter}
       matrix_print_description: Kruis in elke rij een cirkel aan om je voorkeur aan te geven.
       optional: optioneel
       page: Pagina

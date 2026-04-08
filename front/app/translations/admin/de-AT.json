@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Dieses Projekt endgültig löschen?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Dadurch werden dieses Projekt und alle damit verbundenen Daten, wie Ideen, Kommentare, Abstimmungen und Umfrageantworten, endgültig gelöscht.",
   "app.containers.Admin.projects.all.exportAsPDF1": "PDF-Formular herunterladen",
+  "app.containers.Admin.projects.all.includeLogic": "Formularlogik einschließen",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Diese Option fügt dem PDF Textanweisungen hinzu, die angeben, welche Abschnitte als Nächstes zu beantworten sind, abhängig von der konfigurierten Formularlogik.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Sie können Online- und Offline-Antworten kombinieren. Um Offline-Antworten hochzuladen, gehen Sie in diesem Projekt auf die Registerkarte \"Beitragsmanager\" und klicken Sie auf \"Importieren\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Sie können Online- und Offline-Antworten kombinieren. Um Offline-Antworten hochzuladen, gehen Sie zur Registerkarte „Umfrage“ dieses Projekts und klicken Sie auf „Importieren“.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Die Logik der Umfrage wird in der heruntergeladenen PDF-Datei nicht berücksichtigt. Befragte sehen auf Papier alle Fragen der Umfrage.",

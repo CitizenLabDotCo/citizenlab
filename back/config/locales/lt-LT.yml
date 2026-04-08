@@ -1,4 +1,4 @@
-lt:
+lt-LT:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 valandos.
@@ -170,6 +170,11 @@ lt:
       last_name: Pavardė
       line_print_description: Žemiau pateiktame žemėlapyje nubraižykite maršrutą.
       linear_scale_print_description: Parašykite tik skaičių nuo %{min_label} iki %{max_label}
+      logic_go_to_section: Toliau eikite į skiltį <strong>%{section}</strong>.
+      logic_if_answered_end: Jei į %{question} klausimą atsakėte <strong>%{option}</strong>, jums <strong>nereikia</strong> atsakyti į jokius kitus klausimus.
+      logic_if_answered_go_to: Jei į %{question} klausimą atsakėte <strong>%{option}</strong>, toliau eikite į skiltį <strong>%{section}</strong>.
+      logic_no_further_questions: Atsižvelgiant į jūsų atsakymus, jums <strong>nereikia</strong> atsakyti į jokius kitus klausimus.
+      logic_section: Skiltis %{letter}
       matrix_print_description: Kiekvienoje eilutėje kryželiu pažymėkite po vieną apskritimą ir taip išreikškite savo pageidavimą.
       optional: pasirinktinai
       page: Puslapis
