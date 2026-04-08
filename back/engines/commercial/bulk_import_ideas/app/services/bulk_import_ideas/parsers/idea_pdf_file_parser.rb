@@ -23,21 +23,6 @@ module BulkImportIdeas::Parsers
       [idea_to_idea_row(form_parsed_idea, file)]
     end
 
-    # Asynchronous version of the parse_file method
-    # Sends 5 files containing 1 idea to each job
-    def parse_file_async(file_content)
-      files = create_files file_content
-      job_ids = []
-      job_first_idea_index = 1
-      files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
-        job_ids << job.job_id
-        job_first_idea_index += IDEAS_PER_JOB
-      end
-
-      job_ids
-    end
-
     def idea_to_idea_row(idea, file, index: 0)
       fields = idea[:fields]
       page_range = idea[:pdf_pages]
@@ -48,6 +33,12 @@ module BulkImportIdeas::Parsers
       idea_row = @row_mapper.process_user_details(structured_fields, idea_row)
       merged_fields = merge_idea_with_form_fields(structured_fields)
       @row_mapper.process_custom_form_fields(merged_fields, idea_row)
+    end
+
+    def create_files(file_content)
+      source_file = @row_mapper.upload_source_file(file_content)
+      splitter = Pdf::PdfFileSplitter.new(project: @project, pages_per_form: @pages_per_form)
+      splitter.split(source_file)
     end
 
     private
@@ -72,12 +63,6 @@ module BulkImportIdeas::Parsers
         idea_fields.delete_at(idea_fields.index { |f| f.equal?(idea_field) })
       end
       merged_fields
-    end
-
-    def create_files(file_content)
-      source_file = @row_mapper.upload_source_file(file_content)
-      splitter = Pdf::PdfFileSplitter.new(project: @project, pages_per_form: @pages_per_form)
-      splitter.split(source_file)
     end
 
     def template_data

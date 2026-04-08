@@ -30,22 +30,6 @@ module BulkImportIdeas::Parsers
       ideas_to_idea_rows(parse_xlsx_ideas(file), file)
     end
 
-    # Asynchronous version of the parse_file method
-    # Sends 1 XSLX file containing 50 ideas to each job
-    def parse_file_async(file_content)
-      files = create_files file_content
-
-      job_ids = []
-      job_first_idea_index = 2 # First row is the header
-      files.each do |file|
-        job = BulkImportIdeas::IdeaXlsxImportJob.perform_later([file], @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
-        job_ids << job.job_id
-        job_first_idea_index += MAX_ROWS_PER_XLSX
-      end
-
-      job_ids
-    end
-
     def ideas_to_idea_rows(ideas_array, file)
       ideas_array.each_with_index.filter_map { |idea, index| idea_to_idea_row(idea, file, index: index) }
     end
@@ -58,6 +42,25 @@ module BulkImportIdeas::Parsers
       idea_row = @row_mapper.process_user_details(structured_fields, idea_row)
       merged_fields = merge_idea_with_form_fields(structured_fields)
       @row_mapper.process_custom_form_fields(merged_fields, idea_row)
+    end
+
+    def create_files(file_content)
+      source_file = @row_mapper.upload_source_file(file_content)
+
+      # Split into multiple XLSX files with 50 ideas each
+      split_xlsx_files = XlsxService.new.split_xlsx(source_file.file.read, MAX_ROWS_PER_XLSX)
+      split_xlsx_files.map.with_index do |xlsx_file, index|
+        base64_xlsx_file = Base64.encode64(xlsx_file.string)
+        BulkImportIdeas::IdeaImportFile.create!(
+          import_type: 'xlsx',
+          project: @project,
+          parent: source_file,
+          file_by_content: {
+            name: "import_#{index}.xlsx",
+            content: "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base64_xlsx_file}"
+          }
+        )
+      end
     end
 
     private
@@ -122,25 +125,6 @@ module BulkImportIdeas::Parsers
         key = statement_keys[key]
         val = label_values[val]
         res[key] = val.to_i if key && val
-      end
-    end
-
-    def create_files(file_content)
-      source_file = @row_mapper.upload_source_file(file_content)
-
-      # Split into multiple XLSX files with 50 ideas each
-      split_xlsx_files = XlsxService.new.split_xlsx(source_file.file.read, MAX_ROWS_PER_XLSX)
-      split_xlsx_files.map.with_index do |xlsx_file, index|
-        base64_xlsx_file = Base64.encode64(xlsx_file.string)
-        BulkImportIdeas::IdeaImportFile.create!(
-          import_type: 'xlsx',
-          project: @project,
-          parent: source_file,
-          file_by_content: {
-            name: "import_#{index}.xlsx",
-            content: "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base64_xlsx_file}"
-          }
-        )
       end
     end
 
