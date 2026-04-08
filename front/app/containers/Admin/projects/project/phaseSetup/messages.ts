@@ -107,9 +107,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.startDate',
     defaultMessage: 'Start date',
   },
-  emptyDescriptionWarning: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
-    defaultMessage:
-      'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
-  },
 });
