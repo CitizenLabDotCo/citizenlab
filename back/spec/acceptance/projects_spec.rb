@@ -681,6 +681,89 @@ resource 'Projects' do
             .with(@project, 'published', anything, anything, anything)
         end
       end
+
+      context 'scheduled transitions', document: false do
+        let(:project) { create(:project) }
+
+        let(:id) { project.id }
+
+        example 'Schedule a status transition' do
+          scheduled_at = 1.day.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { project.reload.admin_publication.scheduled_status }.from(nil).to('draft')
+            .and change { project.reload.admin_publication.scheduled_at }.to(scheduled_at.in_time_zone)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: 'draft',
+            scheduled_at: scheduled_at
+          )
+        end
+
+        example 'Cancel a scheduled transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now
+          )
+
+          admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { project.reload.admin_publication.scheduled_status }.from('archived').to(nil)
+            .and change { project.reload.admin_publication.scheduled_at }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Reschedule a transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now
+          )
+
+          scheduled_at = 3.days.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { project.reload.admin_publication.scheduled_status }.from('archived').to('draft')
+            .and change { project.reload.admin_publication.scheduled_at }.to(scheduled_at.in_time_zone)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: 'draft',
+            scheduled_at: scheduled_at
+          )
+        end
+
+        example 'Immediate status change cancels schedule' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now
+          )
+
+          expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }
+            .to change { project.reload.admin_publication.publication_status }.from('published').to('draft')
+            .and change { project.reload.admin_publication.scheduled_status }.from('archived').to(nil)
+            .and change { project.reload.admin_publication.scheduled_at }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            publication_status: 'draft',
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+      end
     end
 
     delete 'web_api/v1/projects/:id' do
