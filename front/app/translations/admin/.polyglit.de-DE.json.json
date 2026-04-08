@@ -14184,6 +14184,51 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",

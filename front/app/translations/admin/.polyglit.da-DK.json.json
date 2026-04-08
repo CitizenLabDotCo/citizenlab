@@ -14139,6 +14139,56 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTitle": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": {
+    "state": "verified",
+    "verified_at": "2026-04-07T14:57:41.313313Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
