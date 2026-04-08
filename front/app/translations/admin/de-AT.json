@@ -1,39 +1,22 @@
 {
-
   "app.components.SeatInfo.assignedSeats": "Zugewiesene Zugänge: {assignedSeats}",
-
   "app.containers.Admin.Users.Seats.seatsOverview": "Übersicht der Zugänge",
   "app.containers.Admin.projects.all.includeLogic": "Formularlogik einbinden",
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Alle Beiträge genehmigen ({numIdeas})",
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} Beiträge konnten nicht genehmigt werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsfehler.",
-
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen",
-
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen"
   "app.containers.Admin.projects.all.includeLogicExplanation": "Diese Option fügt dem PDF Textanweisungen hinzu, die angeben, welche Abschnitte abhängig von der konfigurierten Formularlogik als Nächstes beantwortet werden sollen.",
-
   "app.containers.Admin.Users.SeatsOverview.managers": "Manager*innen",
-
   "app.components.SeatInfo.totalManagerSeats": "Manager*innen-Zugänge insgesamt ({totalSeats})",
-
   "app.containers.Admin.Users.SeatsOverview.name": "Name",
-
   "app.containers.Admin.Users.SeatsOverview.options": "Optionen",
-
   "app.components.SeatInfo.totalAdminSeats": "Admin-Zugänge insgesamt ({totalSeats})",
-
   "app.containers.Admin.Users.SeatsOverview.title": "Übersicht der Zugänge",
-
   "app.components.SeatInfo.goToSeatsOverview": "Übersicht der Zugänge",
-
   "app.components.SeatInfo.availableSeats": "Verfügbare Zugänge: {availableSeats}",
-
   "app.containers.Admin.Users.SeatsOverview.admins": "Admins",
-
   "app.containers.Admin.Users.SeatsOverview.role": "Rolle",
-
-  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Einladungsstatus"
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Einladungsstatus",
 }
 
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle Fragen werden auf dem PDF angezeigt. Die Folgenden werden jedoch derzeit nicht für den Import über Papier-Scans unterstützt: Kartenfragen (Punkt setzen, Route zeichnen und Fläche zeichnen) und Fragen zum Hochladen von Dateien.",

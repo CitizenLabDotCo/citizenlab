@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Nospiediet Escape, lai izlaistu karuseli",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Visi jautājumi tiek rādīti PDF failā. Tomēr šobrīd importēšanai, izmantojot FormSync, netiek atbalstīti šādi jautājumi: kartēšanas jautājumi (punkta atzīmēšana, maršruta zīmēšana un apgabala zīmēšana) un failu augšupielādes jautājumi.",
   "app.containers.Admin.projects.all.includeLogic": "Iekļaut veidlapas loģiku",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Šī opcija PDF failam pievienos teksta norādes, kas norādīs, kuras sadaļas jāaizpilda tālāk, atkarībā no konfigurētās veidlapas loģikas."
 }

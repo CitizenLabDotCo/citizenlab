@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "اضغط على Escape لتخطي شريط العرض",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "كاع الأسئلة كيبانو فـ PDF. ولكن، هاد الأنواع مازال ما كيدعمهمش FormSync فـ الاستيراد: أسئلة الخريطة (تثبيت نقطة، رسم مسار ورسم مساحة) وأسئلة تحميل الملفات.",
   "app.containers.Admin.projects.all.includeLogic": "تضمين منطق الاستمارة",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "سيضيف هذا الخيار تعليمات نصية إلى ملف PDF لتوضيح الأقسام التي يجب الإجابة عليها لاحقاً، بناءً على منطق الاستمارة الذي تمت تهيئته."
 }

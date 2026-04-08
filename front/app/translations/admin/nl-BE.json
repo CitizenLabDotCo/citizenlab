@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Druk op escape om de carrousel over te slaan",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Alle vragen worden weergegeven op de pdf. De volgende worden momenteel echter niet ondersteund voor import via FormSync: kaartvragen (speld plaatsen, route tekenen en gebied tekenen) en vragen voor het uploaden van bestanden.",
   "app.containers.Admin.projects.all.includeLogic": "Formulierlogica toevoegen",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Deze optie voegt tekstinstructies toe aan de PDF om aan te geven welke secties vervolgens beantwoord moeten worden, afhankelijk van de geconfigureerde formulierlogica."
 }

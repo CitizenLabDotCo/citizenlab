@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Dréckt op Escape fir d'Karussell ze iwwersprangen",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "All Froe ginn am PDF ugewisen. Déi folgend ginn awer de Moment net fir den Import iwwer FormSync ënnerstëtzt: Mapping-Froen (Pin setzen, Route zeechnen a Beräich zeechnen) an Dateiupload-Froen.",
   "app.containers.Admin.projects.all.includeLogic": "Formularlogik mat abezéien",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Dës Optioun füügt Textinstruktiounen zum PDF derbäi, fir unzeginn, wéi eng Sektiounen als Nächst geäntwert solle ginn, ofhängeg vun der konfiguréierter Formularlogik."
 }

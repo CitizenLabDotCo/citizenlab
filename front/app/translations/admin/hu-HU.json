@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Nyomja meg az Escape billentyűt a karusszel átugrásához",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Minden kérdés megjelenik a PDF-ben. Azonban a következők jelenleg nem támogatottak a FormSync-en keresztüli importáláshoz: térképes kérdések (gombostű letűzése, útvonal rajzolása és terület rajzolása) és fájlfeltöltési kérdések.",
   "app.containers.Admin.projects.all.includeLogic": "Űrlaplogika belefoglalása",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ez az opció szöveges utasításokat ad a PDF-hez, amelyek a beállított űrlaplogikától függően jelzik, mely szakaszokat kell legközelebb megválaszolni."
 }

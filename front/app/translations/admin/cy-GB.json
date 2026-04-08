@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pwyswch escape i neidio dros y carwsél",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Dangosir pob cwestiwn ar y PDF. Fodd bynnag, nid yw'r canlynol yn cael eu cefnogi ar hyn o bryd i'w mewnforio drwy FormSync: Cwestiynau mapio (gollwng pin, tynnu llwybr a thynnu ardal) a chwestiynau llwytho ffeiliau i fyny.",
   "app.containers.Admin.projects.all.includeLogic": "Cynnwys rhesymeg ffurflen",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Bydd yr opsiwn hwn yn ychwanegu cyfarwyddiadau testun i'r PDF i nodi pa adrannau i'w hateb nesaf, yn dibynnu ar y rhesymeg ffurflen a ffurfweddwyd."
 }

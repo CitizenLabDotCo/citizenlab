@@ -1,9 +1,6 @@
 {
-
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Paina Esc-näppäintä ohittaaksesi karusellin",
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Kaikki kysymykset näkyvät PDF-tiedostossa. Seuraavia ei kuitenkaan tällä hetkellä tueta FormSync-tuonnissa: karttakysymykset (pisteen merkitseminen, reitin piirtäminen ja alueen piirtäminen) sekä tiedoston latauskysymykset.",
   "app.containers.Admin.projects.all.includeLogic": "Sisällytä lomakkeen logiikka",
-
   "app.containers.Admin.projects.all.includeLogicExplanation": "Tämä valinta lisää PDF-tiedostoon tekstiohjeet, jotka osoittavat, mihin osioihin vastataan seuraavaksi määritetyn lomakkeen logiikan mukaisesti."
 }
