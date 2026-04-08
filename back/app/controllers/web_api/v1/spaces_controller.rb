@@ -5,13 +5,18 @@ class WebApi::V1::SpacesController < ApplicationController
     authorize :space, :index?
     @spaces = policy_scope(Space)
     @spaces = paginate @spaces
-    @spaces = @spaces.includes(:folders, :projects)
+
+    moderators_per_space = UserRoleService.new.moderators_per_space(
+      @spaces.pluck(:id)
+    )
 
     render json: linked_json(
       @spaces, 
       WebApi::V1::SpaceSerializer, 
-      params: jsonapi_serializer_params, 
-      include: %i[folders projects]
+      params: jsonapi_serializer_params(
+        moderators_per_space:
+      ),
+      include: %i[moderators]
     )
   end
 
