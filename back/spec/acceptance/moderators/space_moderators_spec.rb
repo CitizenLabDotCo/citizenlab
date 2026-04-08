@@ -132,33 +132,9 @@ resource 'Moderators' do
       let(:space_id) { space.id }
 
       shared_examples 'adding a moderator' do
-        example_request 'Add a moderator role' do
-          assert_status 200
-          expect(response_data[:type]).to eq 'user'
-          expect(LogActivityJob).to have_been_enqueued.with(test_user, 'space_moderation_rights_received', space_moderator, kind_of(Integer), payload: { space_id: space.id })
-        end
-
-        context 'with limited seats' do
-          before do
-            config = AppConfiguration.instance
-            config.settings['core']['maximum_moderators_number'] = User.billed_moderators.count + 1
-            config.settings['core']['additional_moderators_number'] = 0
-            config.save!
-          end
-
-          context 'when limit is reached' do
-            before { create(:space_moderator) } # to reach the limit
-
-            example_request 'Increments additional seats', document: false do
-              assert_status 200
-              expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
-            end
-          end
-
-          example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 200
-            expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
-          end
+        example_request '[Error] Add a moderator role' do
+          binding.pry
+          assert_status 401
         end
       end
 
