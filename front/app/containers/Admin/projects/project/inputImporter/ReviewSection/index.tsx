@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Title,
-  Text,
-  colors,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
-import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import useImportJobProgress from 'api/import_ideas/useImportJobProgress';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -26,14 +19,11 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
+import ImportStatus from './ImportStatus';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
 
-const ReviewSection = ({
-  importJobs,
-}: {
-  importJobs: IBackgroundJobData[];
-}) => {
+const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -48,14 +38,12 @@ const ReviewSection = ({
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
 
-  const {
-    active: importing,
-    failed: importFailed,
-    errors: importErrors,
-  } = useTrackBackgroundJobs({
-    jobs: importJobs,
-    onChange: refetchIdeas,
-  });
+  const { data: importJobData } = useImportJobProgress(phaseId);
+  const latestJob = importJobData?.data[0];
+  const importing = latestJob?.attributes.completed_at === null;
+  const importHasErrors = (latestJob?.attributes.error_count ?? 0) > 0;
+  const importProgress = latestJob?.attributes.progress ?? 0;
+  const importTotal = latestJob?.attributes.total ?? 0;
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
@@ -73,7 +61,7 @@ const ReviewSection = ({
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
-  if (importJobs.length === 0 && numIdeas === 0) {
+  if (!importing && !importHasErrors && numIdeas === 0) {
     return <EmptyState />;
   }
 
@@ -189,39 +177,12 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          {(importing || importFailed || isLoadingIdeas) && (
-            <Box
-              py="8px"
-              borderBottom={`1px ${colors.grey400} solid`}
-              position="relative"
-            >
-              {importErrors.length > 0 ? (
-                <>
-                  <Error
-                    text={formatMessage(messages.errorImporting)}
-                    showIcon={false}
-                  />
-                  {importErrors.map((error, index) => (
-                    <Error key={index} apiErrors={[error]} />
-                  ))}
-                </>
-              ) : (
-                <Box
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  display="flex"
-                >
-                  <Box mr="8px">
-                    <Spinner size="20px" />
-                  </Box>
-                  <Text m="0" color="black" fontSize="m">
-                    <FormattedMessage {...messages.importing} />
-                  </Text>
-                </Box>
-              )}
-            </Box>
+          {(importing || importHasErrors) && (
+            <ImportStatus
+              hasErrors={importHasErrors}
+              progress={importProgress}
+              total={importTotal}
+            />
           )}
           <IdeaList
             ideaId={ideaId}

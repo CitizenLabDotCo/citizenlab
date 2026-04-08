@@ -49,6 +49,7 @@ import LocaleSwitcher from './components/LocaleSwitcher';
 import MultiSelect, {
   Props as MultiSelectProps,
 } from './components/MultiSelect';
+import ProgressBar from './components/ProgressBar';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -211,6 +212,7 @@ export {
   Shimmer,
   Divider,
   Quote,
+  ProgressBar,
   InputContainer,
   ClickOutside,
 

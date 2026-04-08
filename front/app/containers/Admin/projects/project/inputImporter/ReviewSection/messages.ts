@@ -58,8 +58,12 @@ export default defineMessages({
     defaultMessage: 'This input was imported anonymously.',
   },
   importing: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing3',
     defaultMessage: 'Importing. This process may take a few minutes.',
+  },
+  importingProgress: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress',
+    defaultMessage: 'Importing ({progress}/{total})',
   },
   errorImporting: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
