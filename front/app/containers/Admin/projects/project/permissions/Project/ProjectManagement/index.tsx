@@ -8,9 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
-import UserSearch from 'components/admin/ModeratorUserSearch';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import useProjectModerators from 'api/project_moderators/useProjectModerators';
+
+import AddModerator from 'components/admin/AddModerator';
+import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { Section } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -33,6 +36,9 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: projectModerators } = useProjectModerators({ projectId });
+  const { mutateAsync: addProjectModerator } = useAddProjectModerator();
+  const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
 
   return (
     <ModeratorSubSection>
@@ -61,23 +67,30 @@ const ProjectManagement = ({ projectId }: Props) => {
           }
         />
       </Box>
-      <UserSearch
+      <Text
+        color="primary"
+        p="0px"
+        mb="32px"
+        style={{ fontWeight: '500', fontSize: '18px' }}
+      >
+        {formatMessage(messages.addProjectManagers)}
+      </Text>
+      <AddModerator
         projectId={projectId}
-        label={
-          <Text
-            color="primary"
-            p="0px"
-            mb="0px"
-            style={{ fontWeight: '500', fontSize: '18px' }}
-          >
-            {formatMessage(messages.moderatorSearchFieldLabel)}
-          </Text>
-        }
+        onAddModerator={async (params) => {
+          await addProjectModerator({ ...params, projectId });
+        }}
       />
-      <ModeratorList projectId={projectId} />
-      <Box width="516px">
-        <SeatInfo seatType="moderator" />
-      </Box>
+      {projectModerators && (
+        <Box mt="20px">
+          <ModeratorsTable
+            moderators={projectModerators.data}
+            onDeleteModerator={async (userId: string) => {
+              await deleteProjectModerator({ projectId, userId });
+            }}
+          />
+        </Box>
+      )}
     </ModeratorSubSection>
   );
 };

@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Moyen",
   "app.components.PasswordInput.strength4Password": "Élevé",
   "app.components.PasswordInput.strength5Password": "Très élevé",
-  "app.components.PostCardsComponents.feed": "Fil",
+  "app.components.PostCardsComponents.feed": "Perspective",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Carte",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Ajouter une mise à jour officielle",

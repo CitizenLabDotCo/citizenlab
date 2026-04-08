@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Keskikokoinen",
   "app.components.PasswordInput.strength4Password": "Vahva",
   "app.components.PasswordInput.strength5Password": "Erittäin vahva",
-  "app.components.PostCardsComponents.feed": "Syöte",
+  "app.components.PostCardsComponents.feed": "Näkökulma",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Kartta",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Lisää kommentti",

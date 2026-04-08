@@ -6,9 +6,9 @@ import { IUserData } from 'api/users/types';
 
 import InviteBadge from 'containers/Admin/invitations/all/InviteBadge';
 
-import ActionsMenu from '../_shared/UserManager/UsersTable/UsersTableRow/ActionsMenu';
-import NameAvatarEmail from '../_shared/UserManager/UsersTable/UsersTableRow/NameAvatarEmail';
-import UserRole from '../_shared/UserManager/UsersTable/UsersTableRow/UserRole';
+import ActionsMenu from './ActionsMenu';
+import NameAvatarEmail from './NameAvatarEmail';
+import UserRole from './UserRole';
 
 interface Props {
   user: IUserData;

@@ -422,7 +422,7 @@
   "app.components.PasswordInput.strength3Password": "Orta",
   "app.components.PasswordInput.strength4Password": "Güçlü",
   "app.components.PasswordInput.strength5Password": "Çok güçlü",
-  "app.components.PostCardsComponents.feed": "Besleme",
+  "app.components.PostCardsComponents.feed": "Bakış Açısı",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Harita",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Resmi bilgilendirme ekleyin",
