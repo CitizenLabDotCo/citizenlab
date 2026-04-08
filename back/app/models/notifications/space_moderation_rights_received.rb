@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: notifications
@@ -67,22 +65,22 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class AdminRightsReceived < Notification
-    ACTIVITY_TRIGGERS = { 'User' => { 'admin_rights_received' => true } }
-    EVENT_NAME = 'Admin rights received'
+  class SpaceModerationRightsReceived < Notification
+    belongs_to :space, class_name: 'Space', optional: true
+
+    validates :space, presence: true
+
+    ACTIVITY_TRIGGERS = { 'User' => { 'space_moderation_rights_received' => true } }.freeze
+    EVENT_NAME = 'Space moderation rights received'
 
     def self.make_notifications_on(activity)
-      recipient_id = activity.item_id
-      initiator_id = activity.user_id
+      recipient_id      = activity.item_id
+      initiator_id      = activity.user_id
+      space_id = activity.payload['space_id']
+      space    = Space.find(space_id)
+      return [] unless space && recipient_id
 
-      if recipient_id && (recipient_id != initiator_id)
-        [new(
-          recipient_id: recipient_id,
-          initiating_user_id: initiator_id
-        )]
-      else
-        []
-      end
+      [new(recipient_id: recipient_id, initiating_user_id: initiator_id, space: space)]
     end
   end
 end
