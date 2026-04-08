@@ -61,7 +61,7 @@ const IdeaCard = ({
   );
 
   const image =
-    !hideImage && ideaImage ? ideaImage.data.attributes.versions.medium : null;
+    !hideImage && ideaImage ? ideaImage.data.attributes.versions.card : null;
 
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
