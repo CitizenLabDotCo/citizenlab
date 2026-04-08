@@ -457,7 +457,7 @@ describe ProjectPolicy do
     end
   end
 
-  context 'in project folders' do
+  context 'when folder moderator' do
     let!(:project_folder) { create(:project_folder) }
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
@@ -476,7 +476,7 @@ describe ProjectPolicy do
     end
   end
 
-  context 'in spaces' do
+  context 'when space moderator' do
     let(:space) { create(:space) }
     let(:other_space) { create(:space) }
     let(:user) { create(:space_moderator, spaces: [space]) }

@@ -493,7 +493,6 @@ resource 'ProjectFolder' do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-          # expect(json_response.dig(:data, :relationships, :space, :data, :id)).to eq space.id
           id = json_response.dig(:data, :id)
           folder = ProjectFolders::Folder.find(id)
           expect(folder.space_id).to eq space.id

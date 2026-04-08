@@ -415,6 +415,7 @@ describe ProjectFolders::FolderPolicy do
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
     end
   end
 end
