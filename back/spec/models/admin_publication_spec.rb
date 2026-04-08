@@ -50,6 +50,146 @@ RSpec.describe AdminPublication do
     end
   end
 
+  describe 'scheduled transition validations' do
+    it 'is valid with both scheduled fields set' do
+
+      admin_publication.assign_attributes(scheduled_status: 'archived', scheduled_at: 1.hour.from_now)
+      expect(admin_publication).to be_valid
+    end
+
+    it 'is invalid when only one scheduled field is set' do
+
+      admin_publication.scheduled_status = 'archived'
+      expect(admin_publication).not_to be_valid
+      expect(admin_publication.errors[:scheduled_at]).to be_present
+
+      admin_publication.reload
+
+      admin_publication.scheduled_at = 1.hour.from_now
+      expect(admin_publication).not_to be_valid
+      expect(admin_publication.errors[:scheduled_status]).to be_present
+    end
+
+    it 'is invalid when scheduled_status equals current publication_status' do
+
+      admin_publication.assign_attributes(scheduled_status: 'published', scheduled_at: 1.hour.from_now)
+      expect(admin_publication).not_to be_valid
+      expect(admin_publication.errors[:scheduled_status]).to be_present
+    end
+
+    it 'is invalid with an unrecognized scheduled_status' do
+
+      admin_publication.assign_attributes(scheduled_status: 'bogus', scheduled_at: 1.hour.from_now)
+      expect(admin_publication).not_to be_valid
+    end
+
+    it 'is invalid when scheduled_at is in the past' do
+
+      admin_publication.assign_attributes(scheduled_status: 'archived', scheduled_at: 1.hour.ago)
+      expect(admin_publication).not_to be_valid
+      expect(admin_publication.errors[:scheduled_at]).to be_present
+    end
+  end
+
+  describe 'cancel schedule on manual status change' do
+    it 'clears scheduled fields when publication_status is changed directly' do
+
+      admin_publication.update!(scheduled_status: 'archived', scheduled_at: 1.hour.from_now)
+      admin_publication.update!(publication_status: 'draft')
+      expect(admin_publication.scheduled_status).to be_nil
+      expect(admin_publication.scheduled_at).to be_nil
+    end
+
+    it 'preserves scheduled fields when other attributes change' do
+
+      admin_publication.update!(scheduled_status: 'archived', scheduled_at: 1.hour.from_now)
+      admin_publication.update!(ordering: 5)
+      expect(admin_publication.scheduled_status).to eq('archived')
+    end
+  end
+
+  describe '#published?' do
+    it 'reflects effective status for a due schedule' do
+
+      admin_publication.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
+      admin_publication.reload
+      expect(admin_publication).to be_published
+    end
+
+    it 'ignores future schedule' do
+
+      admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.from_now)
+      admin_publication.reload
+      expect(admin_publication).to be_published
+    end
+  end
+
+  describe '#draft?' do
+    it 'reflects effective status for a due schedule' do
+
+      admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.ago)
+      admin_publication.reload
+      expect(admin_publication).to be_draft
+    end
+  end
+
+  describe '#archived?' do
+    it 'reflects effective status for a due schedule' do
+
+      admin_publication.update_columns(scheduled_status: 'archived', scheduled_at: 1.hour.ago)
+      admin_publication.reload
+      expect(admin_publication).to be_archived
+    end
+  end
+
+  describe '.published' do
+    it 'includes due schedule targeting published, excludes due schedule away from published' do
+
+      becoming_published = create(:admin_publication)
+      becoming_published.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
+
+      leaving_published = create(:admin_publication)
+      leaving_published.update_columns(publication_status: 'published', scheduled_status: 'draft', scheduled_at: 1.hour.ago)
+
+      expect(described_class.published).to include(becoming_published)
+      expect(described_class.published).not_to include(leaving_published)
+    end
+
+    it 'uses stored status when schedule is in the future' do
+
+      admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.from_now)
+      expect(described_class.published).to include(admin_publication)
+    end
+  end
+
+  describe '.draft' do
+    it 'includes due schedule targeting draft, excludes due schedule away from draft' do
+
+      becoming_draft = create(:admin_publication)
+      becoming_draft.update_columns(publication_status: 'published', scheduled_status: 'draft', scheduled_at: 1.hour.ago)
+
+      leaving_draft = create(:admin_publication)
+      leaving_draft.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
+
+      expect(described_class.draft).to include(becoming_draft)
+      expect(described_class.draft).not_to include(leaving_draft)
+    end
+  end
+
+  describe '.not_draft' do
+    it 'excludes due schedule targeting draft, includes due schedule away from draft' do
+
+      becoming_draft = create(:admin_publication)
+      becoming_draft.update_columns(publication_status: 'published', scheduled_status: 'draft', scheduled_at: 1.hour.ago)
+
+      leaving_draft = create(:admin_publication)
+      leaving_draft.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
+
+      expect(described_class.not_draft).not_to include(becoming_draft)
+      expect(described_class.not_draft).to include(leaving_draft)
+    end
+  end
+
   describe '.sorted_by_title_multiloc' do
     let(:user) { create(:user, locale: 'en') }
     let!(:project1) { create(:project, title_multiloc: { en: 'Bravo' }) }
