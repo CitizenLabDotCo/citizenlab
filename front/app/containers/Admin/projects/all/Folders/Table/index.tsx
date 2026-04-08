@@ -88,7 +88,7 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.folder)}</ColHeader>
-            <ColHeader>{formatMessage(messages.managers)}</ColHeader>
+            <ColHeader>{formatMessage(sharedMessages.managers)}</ColHeader>
             <ColHeader>{formatMessage(messages.status)}</ColHeader>
             <Th />
           </Tr>

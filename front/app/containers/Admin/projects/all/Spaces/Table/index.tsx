@@ -18,6 +18,7 @@ import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResour
 import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
+import sharedMessages from '../../_shared/messages';
 
 import messages from './messages';
 import Row from './Row';
@@ -43,7 +44,7 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.space)}</ColHeader>
-            <ColHeader>{formatMessage(messages.spaceManagers)}</ColHeader>
+            <ColHeader>{formatMessage(sharedMessages.managers)}</ColHeader>
             <Th />
           </Tr>
         </Thead>

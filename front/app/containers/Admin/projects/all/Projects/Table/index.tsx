@@ -113,7 +113,7 @@ const Table = () => {
               </Box>
             </Th>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
-            <ColHeader>{formatMessage(messages.manager)}</ColHeader>
+            <ColHeader>{formatMessage(sharedMessages.managers)}</ColHeader>
             <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             <ColHeader>{formatMessage(messages.start)}</ColHeader>
             <ColHeader>{formatMessage(messages.end)}</ColHeader>
