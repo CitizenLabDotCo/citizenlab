@@ -442,6 +442,30 @@ describe UserRoleService do
     end
   end
 
+  describe 'moderators_per_space' do
+    it 'returns moderators grouped by space ID' do
+      s1, s2, s3 = create_list(:space, 3)
+      m1 = create(:space_moderator, spaces: [s1, s2])
+      m2 = create(:space_moderator, spaces: [s2])
+      create(:space_moderator, spaces: [s3])
+      m4 = create(:space_moderator, spaces: [s3, s2])
+
+      result = service.moderators_per_space([s1.id, s2.id])
+      expect(result.keys).to contain_exactly(s1.id, s2.id)
+      expect(result[s1.id]).to contain_exactly(m1)
+      expect(result[s2.id]).to contain_exactly(m1, m2, m4)
+    end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_space([])).to eq({})
+    end
+
+    it 'does not crash if no moderators exist' do
+      s1 = create(:space)
+      expect(service.moderators_per_space([s1.id])).to eq({})
+    end
+  end
+
   describe 'not_citizenlab_member scope' do
     it 'includes only users that do not have Citizenlab or Govocal emails' do
       create(:user, email: 'someone@citizenlab.co')

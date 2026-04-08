@@ -7,7 +7,12 @@ class WebApi::V1::SpacesController < ApplicationController
     @spaces = paginate @spaces
     @spaces = @spaces.includes(:folders, :projects)
 
-    render json: linked_json(@spaces, WebApi::V1::SpaceSerializer, params: jsonapi_serializer_params, include: %i[folders projects])
+    render json: linked_json(
+      @spaces, 
+      WebApi::V1::SpaceSerializer, 
+      params: jsonapi_serializer_params, 
+      include: %i[folders projects]
+    )
   end
 
   def show
