@@ -140,16 +140,19 @@ class AdminPublication < ApplicationRecord
     update!(scheduled_status: nil, scheduled_at: nil)
   end
 
+  def effective_publication_status
+    due_status_transition? ? scheduled_status : publication_status
+  end
+
+  def due_status_transition?
+    scheduled_at.present? && scheduled_at <= Time.current
+  end
+
   def self.publication_types
     [Project, ProjectFolders::Folder]
   end
 
   private
-
-  def effective_publication_status
-    scheduled_and_due = scheduled_at.present? && scheduled_at <= Time.current
-    scheduled_and_due ? scheduled_status : publication_status
-  end
 
   def set_publication_status
     self.publication_status ||= 'published'
