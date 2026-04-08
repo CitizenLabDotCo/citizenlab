@@ -11,8 +11,8 @@ class WebApi::V1::SpacesController < ApplicationController
     )
 
     render json: linked_json(
-      @spaces, 
-      WebApi::V1::SpaceSerializer, 
+      @spaces,
+      WebApi::V1::SpaceSerializer,
       params: jsonapi_serializer_params(
         moderators_per_space:
       ),
