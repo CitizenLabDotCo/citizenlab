@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Socraigh mar riarthóir",
   "app.containers.Admin.Users.setAsNormalUser": "Socraigh mar ghnáthúsáideoir",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Sannadh {name} mar bhainisteoir tionscadail",
+  "app.containers.Admin.Users.spaceManager": "Bainisteoir spáis",
   "app.containers.Admin.Users.userBlockModal.allDone": "Gach rud déanta",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Úsáideoir blocáilte",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Ní bhainfear ábhar an úsáideora seo tríd an ngníomh seo. Ná déan dearmad a n-ábhar a mhodhnú más gá.",

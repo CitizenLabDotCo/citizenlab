@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Gosod fel gweinyddwr",
   "app.containers.Admin.Users.setAsNormalUser": "Gosod fel defnyddiwr arferol",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Neilltuo {name} fel rheolwr prosiect",
+  "app.containers.Admin.Users.spaceManager": "Rheolwr gofod",
   "app.containers.Admin.Users.userBlockModal.allDone": "Pawb wedi ei wneud",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloc defnyddiwr",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Ni fydd cynnwys y defnyddiwr hwn yn cael ei ddileu trwy'r weithred hon. Peidiwch ag anghofio cymedroli eu cynnwys os oes angen.",

@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Angi som administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Angi som vanlig bruker",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Tildel {name} som prosjektleder",
+  "app.containers.Admin.Users.spaceManager": "Områdeansvarlig",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alt er gjort",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokker bruker",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Innholdet til denne brukeren vil ikke bli fjernet gjennom denne handlingen. Ikke glem å moderere innholdet om nødvendig.",

@@ -4409,6 +4409,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.spaceManager": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:09.140114Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.Users.userBlockModal.allDone": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",

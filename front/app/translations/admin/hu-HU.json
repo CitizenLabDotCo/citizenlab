@@ -854,6 +854,7 @@
   "app.containers.Admin.Users.setAsAdmin": "Beállítás adminisztrátorként",
   "app.containers.Admin.Users.setAsNormalUser": "Beállítás normál felhasználóként",
   "app.containers.Admin.Users.setUserAsProjectModerator": "{name} kijelölése projektmenedzserként",
+  "app.containers.Admin.Users.spaceManager": "Térkezelő",
   "app.containers.Admin.Users.userBlockModal.allDone": "Minden kész",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Felhasználó letiltása",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "A művelet nem távolítja el a felhasználó tartalmát. Ne felejtse el moderálni a tartalmat, ha szükséges.",
