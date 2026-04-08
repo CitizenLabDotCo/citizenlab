@@ -82,11 +82,11 @@ export const isProjectModerator = (
     );
 
     return role !== undefined;
-  } else {
-    return user.data.attributes.roles?.some(
-      (r) => r.type === 'project_moderator'
-    );
   }
+
+  const roles = user.data.attributes.roles || [];
+
+  return roles.some((r) => r.type === 'project_moderator');
 };
 
 export const isSpaceModerator = (user: IUser | undefined) => {
