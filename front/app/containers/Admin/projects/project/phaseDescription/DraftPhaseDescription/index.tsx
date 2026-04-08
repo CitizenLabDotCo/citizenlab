@@ -50,7 +50,7 @@ const DraftPhaseDescription = ({
   const { mutate: updateDraftPhaseDescription, isLoading: isDraftLoading } =
     useUpdatePhase();
 
-  const hasSavedDraft = initialDraft && Object.keys(initialDraft).length > 0;
+  const hasSavedDraft = initialDraft && !isEmptyMultiloc(initialDraft);
   const [isEditing, setIsEditing] = useState(hasSavedDraft);
   const [hasPendingChanges, setHasPendingChanges] = useState(false);
 
@@ -113,6 +113,7 @@ const DraftPhaseDescription = ({
       {
         onSuccess: () => {
           methods.reset({ draft_description_multiloc: descriptionMultiloc });
+          debouncedSaveDraft.cancel();
           setIsEditing(false);
         },
       }
