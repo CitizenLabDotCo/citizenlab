@@ -56,7 +56,7 @@ type Included = (IUserData | IProjectData | IGroupData | IPhaseData)[];
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
   links: ILinks;
-  included: Included;
+  included?: Included;
 };
 
 export type ProjectMiniAdminData = {

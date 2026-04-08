@@ -61,7 +61,7 @@ const Table = () => {
   );
 
   const moderatorsById = useMemo(() => {
-    const included = data?.pages.flatMap((page) => page.included) ?? [];
+    const included = data?.pages.flatMap((page) => page.included ?? []) ?? [];
     const moderators = groupIncludedResources(included).user;
     const moderatorsById = moderators ? indexById(moderators) : undefined;
     return moderatorsById;
