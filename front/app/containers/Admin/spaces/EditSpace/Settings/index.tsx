@@ -4,6 +4,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
 import useDeleteSpaceModerator from 'api/space_moderators/useDeleteSpaceModerator';
 import useSpaceModerators from 'api/space_moderators/useSpaceModerators';
@@ -15,6 +16,7 @@ import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import SpaceNameForm from '../../_shared/SpaceNameForm';
 import messages from '../messages';
@@ -26,6 +28,7 @@ const Settings = () => {
   const { mutateAsync: addSpaceModerator } = useAddSpaceModerator();
   const { data: spaceModerators } = useSpaceModerators(spaceId);
   const { mutateAsync: deleteSpaceModerator } = useDeleteSpaceModerator();
+  const { data: authUser } = useAuthUser();
 
   if (!space || !spaceId) return null;
 
@@ -42,27 +45,29 @@ const Settings = () => {
         spaceName={space.data.attributes.title_multiloc}
         onSubmit={handleEditSpace}
       />
-      <Box mt="48px">
-        <SubSectionTitle>
-          <FormattedMessage {...messages.spaceManagers} />
-        </SubSectionTitle>
-        <AddModerator
-          spaceId={spaceId}
-          onAddModerator={async (params) => {
-            await addSpaceModerator({ spaceId, ...params });
-          }}
-        />
-        {spaceModerators && (
-          <Box mt="20px">
-            <ModeratorsTable
-              moderators={spaceModerators.data}
-              onDeleteModerator={async (userId: string) => {
-                await deleteSpaceModerator({ spaceId, userId });
-              }}
-            />
-          </Box>
-        )}
-      </Box>
+      {isAdmin(authUser) && (
+        <Box mt="48px">
+          <SubSectionTitle>
+            <FormattedMessage {...messages.spaceManagers} />
+          </SubSectionTitle>
+          <AddModerator
+            spaceId={spaceId}
+            onAddModerator={async (params) => {
+              await addSpaceModerator({ spaceId, ...params });
+            }}
+          />
+          {spaceModerators && (
+            <Box mt="20px">
+              <ModeratorsTable
+                moderators={spaceModerators.data}
+                onDeleteModerator={async (userId: string) => {
+                  await deleteSpaceModerator({ spaceId, userId });
+                }}
+              />
+            </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
