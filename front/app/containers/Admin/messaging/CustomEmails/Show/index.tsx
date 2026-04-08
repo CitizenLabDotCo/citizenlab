@@ -9,7 +9,9 @@ import {
   fontSizes,
   Text,
   Button,
+  Success,
 } from '@citizenlab/cl2-component-library';
+// import Success from 'component-library/components/Success';
 import { useParams, useSearchParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
@@ -29,7 +31,6 @@ import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import EmailScheduling from 'components/admin/Email/Scheduling';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -291,10 +292,13 @@ const Show = () => {
           )}
         </Box>
         {feedbackType && (
-          <SuccessFeedback
-            successMessage={formatMessage(feedbackMessages[feedbackType])}
-            closeSuccessMessage={() => setFeedbackType(null)}
-          />
+          <Box mb="8px">
+            <Success
+              text={formatMessage(feedbackMessages[feedbackType])}
+              showIcon
+              showBackground
+            />
+          </Box>
         )}
         {apiSendErrors && (
           <Box mb="8px">
