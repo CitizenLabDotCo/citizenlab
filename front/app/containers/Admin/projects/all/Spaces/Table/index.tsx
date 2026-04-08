@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -14,6 +14,8 @@ import {
 import useSpaces from 'api/spaces/useSpaces';
 
 import { useIntl } from 'utils/cl-intl';
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
+import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
 
@@ -23,6 +25,11 @@ import Row from './Row';
 const Table = () => {
   const { formatMessage } = useIntl();
   const { data: spaces } = useSpaces();
+
+  const spaceModeratorsById = useMemo(() => {
+    const moderators = groupIncludedResources(spaces?.included ?? []).user;
+    return moderators ? indexById(moderators) : undefined;
+  }, [spaces?.included]);
 
   if (!spaces) return null;
 
@@ -41,7 +48,11 @@ const Table = () => {
         </Thead>
         <Tbody>
           {spaces.data.map((space) => (
-            <Row key={space.id} space={space} />
+            <Row
+              key={space.id}
+              space={space}
+              spaceModeratorsById={spaceModeratorsById}
+            />
           ))}
         </Tbody>
       </TableComponent>
