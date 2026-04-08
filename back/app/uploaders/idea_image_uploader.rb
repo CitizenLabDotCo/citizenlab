@@ -9,6 +9,12 @@ class IdeaImageUploader < BaseImageUploader
     process resize_to_fill: [480, 217]
   end
 
+  # This is a temporary fix, to avoid double cropping of the idea card image
+  # because of a dimensions mismatch between the medium version and the frontend.
+  version :card do
+    process resize_to_fill: [320, 320]
+  end
+
   version :large do
     process resize_to_limit: [960, nil]
   end
