@@ -6,7 +6,7 @@ import {
   Button,
   IconTooltip,
   Spinner,
-  StatusLabel,
+  Badge,
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -133,14 +133,19 @@ const DraftPhaseDescription = ({
                 : messages.draftDescriptionPublishedTooltip
             )}
           />
-          <StatusLabel
-            text={formatMessage(
+          <Badge
+            color={isEditing ? colors.orange500 : colors.green500}
+            className="inverse"
+          >
+            {formatMessage(
               isEditing
                 ? messages.draftDescriptionDraftBadge
                 : messages.draftDescriptionPublishedBadge
             )}
-            backgroundColor={isEditing ? colors.orange500 : colors.green500}
-          />
+          </Badge>
+          <Badge color={colors.coolGrey600} className="inverse">
+            {formatMessage(messages.beta)}
+          </Badge>
         </Box>
         {phases &&
           phases.data.length < 2 &&

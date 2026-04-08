@@ -39,6 +39,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved',
     defaultMessage: 'Draft saved',
   },
+  beta: {
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescription.beta',
+    defaultMessage: 'BETA',
+  },
   emptyDescriptionWarning: {
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
     defaultMessage:
