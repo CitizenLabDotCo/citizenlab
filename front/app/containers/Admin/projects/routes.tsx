@@ -34,6 +34,7 @@ const AdminProjectsProjectAudience = lazy(
   () => import('../../../components/admin/participation')
 );
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
+const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
@@ -106,6 +107,7 @@ export enum projectsRoutes {
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
   projectPhaseSetup = ':phaseId/setup',
+  projectPhaseDescription = ':phaseId/description',
   projectPhase = ':phaseId',
   projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
@@ -153,6 +155,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/description`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-results`>
@@ -394,6 +397,14 @@ const createAdminProjectsRoutes = () => {
                     For example, from phase setup to creating a new phase.
                     */}
                     <AdminPhaseNewAndEdit key="setup" />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseDescription,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseDescription />
                   </PageLoading>
                 ),
               },
