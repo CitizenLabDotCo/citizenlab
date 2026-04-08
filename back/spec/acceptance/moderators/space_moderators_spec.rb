@@ -133,7 +133,6 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request '[Error] Add a moderator role' do
-          binding.pry
           assert_status 401
         end
       end
