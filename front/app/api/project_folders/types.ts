@@ -23,6 +23,8 @@ export interface INewProjectFolderDiff {
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   space_id?: string | null;
 }
@@ -77,6 +79,8 @@ export interface IUpdatedProjectFolder {
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   space_id?: string | null;
 }
