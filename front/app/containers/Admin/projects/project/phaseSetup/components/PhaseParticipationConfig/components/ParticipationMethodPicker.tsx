@@ -399,9 +399,8 @@ const ParticipationMethodPicker = ({
                         </Box>
                       </>
                     }
-                    maxWidth="300px"
-                    placement="bottom"
                     disabled={importPrintedFormsEnabled}
+                    placement="bottom"
                     theme="dark"
                   >
                     <Icon
