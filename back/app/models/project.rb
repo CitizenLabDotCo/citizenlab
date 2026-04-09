@@ -95,7 +95,7 @@ class Project < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
-  has_one :admin_publication, as: :publication, dependent: :destroy
+  has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
   after_destroy :remove_moderators
