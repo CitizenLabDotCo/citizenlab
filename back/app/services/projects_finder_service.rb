@@ -145,31 +145,25 @@ class ProjectsFinderService
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
+    result = @projects.none
     base_scope = @projects.joins(:admin_publication, :phases).not_in_draft_folder
 
-    include_finished = %w[finished finished_and_archived].include?(@filter_by)
-    include_archived = %w[archived finished_and_archived].include?(@filter_by)
-
-    if include_finished
+    if @filter_by.in? %w[finished finished_and_archived]
       published_scope = base_scope.merge(AdminPublication.published)
-      finished_scope = joins_last_phases_with_reports(published_scope)
-        .where(<<~SQL.squish, Time.zone.now)
+      finished_scope =
+        joins_last_phases_with_reports(published_scope).where(<<~SQL.squish, Time.zone.now)
           last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true)
         SQL
+      result = result.or(finished_scope)
     end
 
-    if include_archived
+    if @filter_by.in? %w[archived finished_and_archived]
       archived_scope = base_scope.merge(AdminPublication.archived)
       archived_scope = joins_last_phases_with_reports(archived_scope)
+      result = result.or(archived_scope)
     end
 
-    if include_finished && include_archived
-      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
-    end
-
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
-
-    order_by_created_at_and_id_with_distinct_on(archived_scope)
+    order_by_created_at_and_id_with_distinct_on(result)
   end
 
   private
