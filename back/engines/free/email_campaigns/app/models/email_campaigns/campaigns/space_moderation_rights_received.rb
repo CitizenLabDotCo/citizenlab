@@ -1,0 +1,87 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
+module EmailCampaigns
+  class Campaigns::SpaceModerationRightsReceived < Campaign
+    include ActivityTriggerable
+    include RecipientConfigurable
+    include Disableable
+    include Trackable
+    include ContentConfigurable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages only: %w[trial active]
+
+    recipient_filter :filter_notification_recipient
+
+    def mailer_class
+      SpaceModerationRightsReceivedMailer
+    end
+
+    def activity_triggers
+      { 'Notifications::SpaceModerationRightsReceived' => { 'created' => true } }
+    end
+
+    def filter_notification_recipient(users_scope, activity:, time: nil)
+      users_scope.where(id: activity.item.recipient.id)
+    end
+
+    def generate_commands(recipient:, activity:, time: nil)
+      notification = activity.item
+      [{
+        event_payload: {
+          space_id: notification.space.id,
+          space_title_multiloc: notification.space.title_multiloc,
+          space_projects_count: notification.space.projects.count,
+          space_url: Frontend::UrlService.new.admin_space_url(notification.space_id)
+        }
+      }]
+    end
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
+    end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_space_moderator_rights'
+    end
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.permissions'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.user_is_given_space_moderator_rights'
+    end
+  end
+end
