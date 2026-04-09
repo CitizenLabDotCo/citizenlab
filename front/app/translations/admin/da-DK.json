@@ -56,7 +56,7 @@
   "app.containers.Admin.project.emails.emailCreated": "E-mail er oprettet som kladde",
   "app.containers.Admin.project.emails.emailUpdated": "E-mail blev opdateret",
   "app.containers.Admin.project.emails.preview": "Forhåndsvisning",
-  "app.containers.Admin.reporting.contactToAccess": "Oprettelse af en tilpasset rapport er ikke en del af din nuværende licens. Kontakt din GovSuccess-projektleder for at få mere at vide.",
+  "app.containers.Admin.reporting.contactToAccess": "Oprettelse af en tilpasset rapport er ikke en del af din nuværende licens. Kontakt Søren Kielgast hos Go Vocal for at få mere at vide.",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Download rapportskabelon",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Et basisdatasæt er påkrævet for at måle repræsentationen af platformens brugere.",
   "app.containers.AdminPage.DashboardPage.continuousType": "Løbende",
