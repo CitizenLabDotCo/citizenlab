@@ -386,11 +386,30 @@ const ParticipationMethodPicker = ({
                   borderRadius={stylingConsts.borderRadius}
                   alignContent="center"
                 >
-                  <Icon
-                    name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
-                    fill={colors.teal700}
-                    width="20px"
-                  />
+                  <Tooltip
+                    content={
+                      <>
+                        <Box display="flex" flexDirection="column" gap="8px">
+                          <FormattedMessage
+                            {...messages2.formSyncLockedTooltip}
+                          />
+                          <FormattedMessage
+                            {...messages2.formSyncLockedTooltip2}
+                          />
+                        </Box>
+                      </>
+                    }
+                    maxWidth="300px"
+                    placement="bottom"
+                    disabled={importPrintedFormsEnabled}
+                    theme="dark"
+                  >
+                    <Icon
+                      name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                      fill={colors.teal700}
+                      width="20px"
+                    />
+                  </Tooltip>
                 </Box>
 
                 <Box flex="1">

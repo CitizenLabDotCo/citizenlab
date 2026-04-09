@@ -206,4 +206,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.phase.methodPicker.learnMore1',
     defaultMessage: 'Learn more',
   },
+  formSyncLockedTooltip: {
+    id: 'app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1',
+    defaultMessage:
+      'Scanning paper forms with Formsync is not included on your current plan.',
+  },
+  formSyncLockedTooltip2: {
+    id: 'app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2',
+    defaultMessage:
+      ' Talk to your Government Success Manager or admin to unlock it.',
+  },
 });
