@@ -46,4 +46,18 @@ export default defineMessages({
     id: 'app.components.FormSync.importFile1',
     defaultMessage: 'Import file',
   },
+  unlockScanning: {
+    id: 'app.components.FormSync.unlockScanning1',
+    defaultMessage: 'Unlock scanning',
+  },
+  unlockScanningTooltip1: {
+    id: 'app.components.FormSync.unlockScanningTooltip1',
+    defaultMessage:
+      'Scanning paper forms with FormSync is not included on your current plan.',
+  },
+  unlockScanningTooltip2: {
+    id: 'app.components.FormSync.unlockScanningTooltip2',
+    defaultMessage:
+      'Talk to your Government Success Manager or admin to unlock it.',
+  },
 });

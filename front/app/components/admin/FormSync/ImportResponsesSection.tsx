@@ -6,6 +6,7 @@ import {
   Text,
   Title,
   Button,
+  Tooltip,
   colors,
   stylingConsts,
   Divider,
@@ -20,7 +21,6 @@ import { API_PATH } from 'containers/App/constants';
 
 import { FormType } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
@@ -41,10 +41,6 @@ const ImportResponsesSection = ({ formType }: Props) => {
 
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
-  });
-  const inputImporterAllowed = useFeatureFlag({
-    name: 'input_importer',
-    onlyCheckAllowed: true,
   });
 
   const downloadExampleXlsxFile = async () => {
@@ -97,16 +93,29 @@ const ImportResponsesSection = ({ formType }: Props) => {
             >
               <FormattedMessage {...messages.downloadPDF} />
             </Button>
-            <UpsellTooltip disabled={printedFormsEnabled}>
+            {printedFormsEnabled ? (
               <ButtonWithLink
                 buttonStyle="admin-dark"
                 icon="form-sync"
-                linkTo={printedFormsEnabled ? importerPath : undefined}
-                disabled={!printedFormsEnabled}
+                linkTo={importerPath}
               >
                 <FormattedMessage {...messages.importScans} />
               </ButtonWithLink>
-            </UpsellTooltip>
+            ) : (
+              <Tooltip
+                content={
+                  <Box display="flex" flexDirection="column" gap="8px">
+                    <FormattedMessage {...messages.unlockScanningTooltip1} />
+                    <FormattedMessage {...messages.unlockScanningTooltip2} />
+                  </Box>
+                }
+                theme="dark"
+              >
+                <Button buttonStyle="admin-dark" icon="lock">
+                  <FormattedMessage {...messages.unlockScanning} />
+                </Button>
+              </Tooltip>
+            )}
           </Box>
         </Box>
 
@@ -136,26 +145,20 @@ const ImportResponsesSection = ({ formType }: Props) => {
             </Text>
           </Box>
           <Box display="flex" alignItems="center" gap="8px">
-            <UpsellTooltip disabled={inputImporterAllowed}>
-              <Button
-                buttonStyle="text"
-                icon="download"
-                onClick={downloadExampleXlsxFile}
-                disabled={!inputImporterAllowed}
-              >
-                <FormattedMessage {...messages.template} />
-              </Button>
-            </UpsellTooltip>
-            <UpsellTooltip disabled={inputImporterAllowed}>
-              <ButtonWithLink
-                buttonStyle="text"
-                icon="upload-file"
-                linkTo={inputImporterAllowed ? importerPath : undefined}
-                disabled={!inputImporterAllowed}
-              >
-                <FormattedMessage {...messages.importFile} />
-              </ButtonWithLink>
-            </UpsellTooltip>
+            <Button
+              buttonStyle="text"
+              icon="download"
+              onClick={downloadExampleXlsxFile}
+            >
+              <FormattedMessage {...messages.template} />
+            </Button>
+            <ButtonWithLink
+              buttonStyle="text"
+              icon="upload-file"
+              linkTo={importerPath}
+            >
+              <FormattedMessage {...messages.importFile} />
+            </ButtonWithLink>
           </Box>
         </Box>
       </Box>
