@@ -12,7 +12,7 @@ module PublicApi
 
       @scope
         .joins(:admin_publication)
-        .where(admin_publications: { publication_status: @publication_status })
+        .merge(AdminPublication.with_status(@publication_status))
     end
   end
 end

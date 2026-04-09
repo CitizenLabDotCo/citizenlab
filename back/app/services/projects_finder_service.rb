@@ -15,8 +15,8 @@ class ProjectsFinderService
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
   def participation_possible
     subquery = @projects
-      .not_in_draft_folder # This includes a LEFT OUTER JOIN with admin_publications
-      .where(admin_publications: { publication_status: 'published' })
+      .not_in_draft_folder
+      .joins(:admin_publication).merge(AdminPublication.published)
 
     # Projects with active participatory (not information) phase & include the phases.end_at column
     subquery = projects_with_active_phase(subquery)
@@ -145,26 +145,21 @@ class ProjectsFinderService
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
-    base_scope = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .joins('INNER JOIN phases ON phases.project_id = projects.id')
-      .not_in_draft_folder
+    base_scope = @projects.joins(:admin_publication, :phases).not_in_draft_folder
 
     include_finished = %w[finished finished_and_archived].include?(@filter_by)
     include_archived = %w[archived finished_and_archived].include?(@filter_by)
 
     if include_finished
-      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-      finished_scope = joins_last_phases_with_reports(finished_scope)
-        .where(
-          '(last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true))' \
-          "AND admin_publications.publication_status = 'published'",
-          Time.zone.now
-        )
+      published_scope = base_scope.merge(AdminPublication.published)
+      finished_scope = joins_last_phases_with_reports(published_scope)
+        .where(<<~SQL.squish, Time.zone.now)
+          last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true)
+        SQL
     end
 
     if include_archived
-      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = base_scope.merge(AdminPublication.archived)
       archived_scope = joins_last_phases_with_reports(archived_scope)
     end
 

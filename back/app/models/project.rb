@@ -141,16 +141,10 @@ class Project < ApplicationRecord
   }
 
   scope :draft, lambda {
-    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+    where(id: AdminPublication.draft.where(publication_type: 'Project').select(:publication_id))
   }
-
-  scope :not_draft, lambda {
-    where.not(id: draft)
-  }
-
-  scope :publicly_visible, lambda {
-    where(visible_to: 'public')
-  }
+  scope :not_draft, -> { where.not(id: draft) }
+  scope :publicly_visible, -> { where(visible_to: 'public') }
 
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
@@ -159,9 +153,10 @@ class Project < ApplicationRecord
   }
 
   scope :not_in_draft_folder, lambda {
-    joins(:admin_publication)
-      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
-      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+    scope = joins(:admin_publication)
+    top_level = scope.where(admin_publications: { parent_id: nil })
+    draft_folders = AdminPublication.draft.where(children_allowed: true)
+    top_level.or(scope.where.not(admin_publications: { parent_id: draft_folders }))
   }
 
   scope :with_participation_count, lambda {

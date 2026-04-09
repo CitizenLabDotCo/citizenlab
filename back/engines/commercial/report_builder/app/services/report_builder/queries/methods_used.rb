@@ -35,8 +35,8 @@ module ReportBuilder
         .where.not(id: non_overlapping_phase_ids)
 
       # Filter by publication status: specific statuses if provided, otherwise exclude drafts
-      publication_filter = publication_statuses.presence || %w[published archived]
-      query.where(admin_publication: { publication_status: publication_filter })
+      statuses = publication_statuses.presence || %w[published archived]
+      query.merge(AdminPublication.with_status(statuses))
         .group(:participation_method)
         .count
     end

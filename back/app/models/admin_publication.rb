@@ -75,19 +75,20 @@ class AdminPublication < ApplicationRecord
   before_save :cancel_schedule_on_manual_status_change
   before_save :set_first_published_at
 
-  # Returns publications with the given status, taking scheduled transitions into account.
-  scope :_effectively, lambda { |status|
-    no_schedule = where(publication_status: status, scheduled_status: nil)
-    future_schedule = where(publication_status: status, scheduled_at: Time.current..)
-    due_schedule = where(scheduled_status: status, scheduled_at: ..Time.current)
+  # Returns publications with the given status(es), taking scheduled transitions into account.
+  scope :with_status, lambda { |*statuses|
+    statuses = statuses.flatten
+    no_schedule = where(publication_status: statuses, scheduled_status: nil)
+    future_schedule = where(publication_status: statuses, scheduled_at: Time.current..)
+    due_schedule = where(scheduled_status: statuses, scheduled_at: ..Time.current)
 
     no_schedule.or(future_schedule).or(due_schedule)
   }
 
-  scope :published, -> { _effectively('published') }
-  scope :draft, -> { _effectively('draft') }
-  scope :not_draft, -> { where.not(id: draft) }
-  scope :archived, -> { _effectively('archived') }
+  scope :published, -> { with_status('published') }
+  scope :draft, -> { with_status('draft') }
+  scope :not_draft, -> { where.not(id: with_status('draft')) }
+  scope :archived, -> { with_status('archived') }
 
   # Sorts admin publications by the title_multiloc of their associated
   # publication (Project or ProjectFolders::Folder), in the specified direction.

@@ -45,10 +45,10 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
+      return scope.all if record.visible_to == 'public' && !record.admin_publication.draft?
 
       moderator_scope = UserRoleService.new.moderators_for_project record, scope
-      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
+      if record.visible_to == 'groups' && !record.admin_publication.draft?
         scope.in_any_group(record.groups).or(moderator_scope)
       else
         moderator_scope
@@ -231,13 +231,13 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def project_preview?
-    return false unless record.admin_publication.publication_status == 'draft'
+    return false unless record.admin_publication.draft?
 
     context[:project_preview_token] && context[:project_preview_token] == record.preview_token
   end
 
   def project_published_or_archived?
-    %w[published archived].include?(record.admin_publication.publication_status)
+    record.admin_publication.published? || record.admin_publication.archived?
   end
 end
 
