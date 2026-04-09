@@ -389,7 +389,7 @@ nl:
       no_projects: 'Nog geen projecten'
       preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist ruimtebeheerder gemaakt van de volgende ruimte'
       subject: 'Je bent nu ruimtebeheerder op het platform van %{organizationName}'
-      text_organize_projects_and_folders: 'Als ruimtebeheerder kan je gerelateerde participatieprojecten en mappen binnen jouw ruimte groeperen, zodat het werk van je team op één plek georganiseerd blijft.'
+      text_organize_projects_and_folders: 'Als ruimtebeheerder kan je projecten en mappen binnen jouw ruimte beheren, inclusief het toewijzen en intrekken van beheerrollen daarvoor.'
       text_manage_space_settings: 'Je kan de titel en beschrijving van de ruimte aanpassen zodat deelnemers en je collega-beheerders meteen begrijpen waar jouw ruimte over gaat en hoe ze past binnen je organisatie.'
       text_oversee_participation: 'Als ruimtebeheerder heb je projectbeheerdersrechten op elk project binnen jouw ruimte, zodat je de inkomende input kan opvolgen en projectbeheerders kan ondersteunen waar nodig.'
       title_organize_projects_and_folders: 'Organiseer projecten en mappen'

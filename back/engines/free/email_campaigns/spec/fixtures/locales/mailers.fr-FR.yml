@@ -390,7 +390,7 @@ fr:
       no_projects: 'Pas encore de projets'
       preheader: 'Un administrateur de la plateforme de %{organizationName} vous a nommé gestionnaire de l''espace suivant'
       subject: 'Vous êtes à présent gestionnaire d''espace sur la plateforme de %{organizationName}'
-      text_organize_projects_and_folders: 'En tant que gestionnaire d''espace, vous pouvez regrouper des projets de participation et des dossiers connexes au sein de votre espace, afin d''organiser le travail de votre équipe en un seul endroit.'
+      text_organize_projects_and_folders: 'En tant que gestionnaire d''espace, vous pouvez gérer les projets et les dossiers de votre espace, notamment attribuer et retirer les rôles de gestion qui leur sont associés.'
       text_manage_space_settings: 'Vous pouvez modifier le titre et la description de l''espace afin que les participants et vos collègues gestionnaires comprennent immédiatement de quoi votre espace traite et comment il s''inscrit dans votre organisation.'
       text_oversee_participation: 'En tant que gestionnaire d''espace, vous disposez des droits d''administrateur projet sur chaque projet de votre espace, ce qui vous permet de suivre les contributions et d''assister les administrateurs projet quand c''est nécessaire.'
       title_organize_projects_and_folders: 'Organiser les projets et les dossiers'

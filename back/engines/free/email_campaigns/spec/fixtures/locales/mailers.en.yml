@@ -386,7 +386,7 @@ en:
       no_projects: 'No projects yet'
       preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a space manager of the following space'
       subject: 'You became a space manager on the platform of %{organizationName}'
-      text_organize_projects_and_folders: 'As a space manager, you can group related participation projects and folders within your space, keeping the work of your team organised in one place.'
+      text_organize_projects_and_folders: 'As a space manager, you can manage projects and folders within your space, including assigning and removing management roles for them.'
       text_manage_space_settings: 'You can edit the space title and description so participants and your fellow managers immediately understand what your space is about and how it relates to your organization.'
       text_oversee_participation: 'As a space manager, you have project manager rights over every project that lives within your space, so you can keep an eye on incoming input and assist project managers when needed.'
       title_organize_projects_and_folders: 'Organize projects and folders'
