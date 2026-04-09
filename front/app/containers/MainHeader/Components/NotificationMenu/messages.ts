@@ -219,7 +219,7 @@ export default defineMessages({
   },
   spaceModerationRightsReceived: {
     id: 'app.containers.NotificationMenu.spaceModerationRightsReceived',
-    defaultMessage: "You're now a manager of the space: {spaceLink}",
+    defaultMessage: "You're now a space manager of {spaceLink}",
   },
   adminRightsReceived: {
     id: 'app.containers.NotificationMenu.adminRightsReceived',

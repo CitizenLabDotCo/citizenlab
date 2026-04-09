@@ -1933,7 +1933,7 @@
   "app.containers.NotificationMenu.projectPublished": "A new project was published",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} requested approval to publish the project \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} approved \"{projectTitle}\" for publication",
-  "app.containers.NotificationMenu.spaceModerationRightsReceived": "You're now a manager of the space: {spaceLink}",
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": "You're now a space manager of {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status has changed to {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} reached the voting threshold",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepted your invitation",
