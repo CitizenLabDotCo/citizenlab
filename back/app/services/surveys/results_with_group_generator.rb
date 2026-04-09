@@ -29,7 +29,7 @@ module Surveys
 
     def visit_select_base(field)
       query = inputs(field)
-      query = query.joins(:author) if group_mode == 'user_field'
+      query = query.left_joins(:author) if group_mode == 'user_field'
 
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
       raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
