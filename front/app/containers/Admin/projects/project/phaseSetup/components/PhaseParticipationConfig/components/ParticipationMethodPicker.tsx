@@ -411,7 +411,7 @@ const ParticipationMethodPicker = ({
                   </Tooltip>
                 </Box>
 
-                <Box flex="1">
+                <Box>
                   <Text m="0px" color="teal700" fontSize="s">
                     <b>
                       <FormattedMessage
@@ -433,8 +433,6 @@ const ParticipationMethodPicker = ({
                 <ButtonWithLink
                   linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
                   openLinkInNewTab
-                  rel="noopener noreferrer"
-                  style={{ whiteSpace: 'nowrap' }}
                   buttonStyle="text"
                   m="0px"
                   fontSize="s"
