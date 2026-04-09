@@ -376,26 +376,25 @@ const ParticipationMethodPicker = ({
                 gap="16px"
                 p="16px"
                 borderRadius="3px"
-                border={`1px solid ${colors.borderLight}`}
                 mt="24px"
                 w="750px"
+                background={colors.teal100}
               >
                 <Box
                   p="4px"
                   px="8px"
                   borderRadius={stylingConsts.borderRadius}
-                  background={colors.blue10}
                   alignContent="center"
                 >
                   <Icon
                     name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
-                    fill={colors.blue500}
+                    fill={colors.teal700}
                     width="20px"
                   />
                 </Box>
 
                 <Box flex="1">
-                  <Text m="0px" color="coolGrey600" fontSize="s">
+                  <Text m="0px" color="teal700" fontSize="s">
                     <b>
                       <FormattedMessage
                         {...messages2.collectResponsesOnPaper}
@@ -421,6 +420,7 @@ const ParticipationMethodPicker = ({
                   buttonStyle="text"
                   m="0px"
                   fontSize="s"
+                  textColor={colors.teal700}
                 >
                   <FormattedMessage {...messages2.learnMore} />
                 </ButtonWithLink>
