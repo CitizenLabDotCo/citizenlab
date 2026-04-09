@@ -714,12 +714,14 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
       male_user = create(:user, custom_field_values: { gender: 'male' })
       female_user = create(:user, custom_field_values: { gender: 'female' })
 
-      # Anonymous responses - author_id becomes NULL
+      # Anonymous responses - author_id becomes NULL, but demographic
+      # data is merged into idea custom_field_values with u_ prefix
+      # (simulating what the controller does via UserFieldsInFormService)
       create(
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'godzilla' },
+        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'male' },
         author: male_user,
         anonymous: true
       )
@@ -727,7 +729,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'godzilla' },
+        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'female' },
         author: female_user,
         anonymous: true
       )
@@ -735,7 +737,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'gremlin' },
+        custom_field_values: { favourite_animal_field.key => 'gremlin', 'u_gender' => 'female' },
         author: female_user,
         anonymous: true
       )
@@ -752,8 +754,13 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
       expect(result[:totalResponseCount]).to eq 3
       expect(result[:questionResponseCount]).to eq 3
       expect(result[:answers]).to match [
-        { answer: 'godzilla', count: 2, groups: [{ count: 2, group: nil }] },
-        { answer: 'gremlin', count: 1, groups: [{ count: 1, group: nil }] },
+        { answer: 'godzilla', count: 2, groups: [
+          { count: 1, group: 'male' },
+          { count: 1, group: 'female' }
+        ] },
+        { answer: 'gremlin', count: 1, groups: [
+          { count: 1, group: 'female' }
+        ] },
         { answer: 'unicorn', count: 0, groups: [] },
         { answer: nil, count: 0, groups: [] }
       ]
