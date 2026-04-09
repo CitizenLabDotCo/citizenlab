@@ -5,8 +5,10 @@ import {
   Box,
   Badge,
   Icon,
+  Text,
   colors,
   Tooltip,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
@@ -16,6 +18,7 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -84,6 +87,9 @@ const ParticipationMethodPicker = ({
   });
   const commonGroundEnabled = useFeatureFlag({
     name: 'common_ground',
+  });
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
   });
 
   useEffect(() => {
@@ -360,6 +366,66 @@ const ParticipationMethodPicker = ({
               </>
             )}
           </Box>
+          {selectedMethod &&
+            ['native_survey', 'ideation', 'proposals'].includes(
+              selectedMethod
+            ) && (
+              <Box
+                display="flex"
+                alignItems="center"
+                gap="16px"
+                p="16px"
+                borderRadius="3px"
+                border={`1px solid ${colors.borderLight}`}
+                mt="24px"
+                w="750px"
+              >
+                <Box
+                  p="4px"
+                  px="8px"
+                  borderRadius={stylingConsts.borderRadius}
+                  background={colors.blue10}
+                  alignContent="center"
+                >
+                  <Icon
+                    name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                    fill={colors.blue500}
+                    width="20px"
+                  />
+                </Box>
+
+                <Box flex="1">
+                  <Text m="0px" color="coolGrey600" fontSize="s">
+                    <b>
+                      <FormattedMessage
+                        {...messages2.collectResponsesOnPaper}
+                      />
+                    </b>{' '}
+                    <FormattedMessage
+                      {...messages2.collectResponsesOnPaperDescription}
+                    />{' '}
+                    {!importPrintedFormsEnabled && (
+                      <>
+                        <FormattedMessage
+                          {...messages2.notAvailableInYourPlan}
+                        />
+                      </>
+                    )}
+                  </Text>
+                </Box>
+                <ButtonWithLink
+                  linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
+                  openLinkInNewTab
+                  rel="noopener noreferrer"
+                  style={{ whiteSpace: 'nowrap' }}
+                  buttonStyle="text"
+                  m="0px"
+                  fontSize="s"
+                >
+                  <FormattedMessage {...messages2.learnMore} />
+                </ButtonWithLink>
+              </Box>
+            )}
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
       </SectionField>

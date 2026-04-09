@@ -68,6 +68,7 @@ export const themeColors = {
   blue700: '#022331',
   blue500: '#044D6C', // formerly adminTextColor, emailText
   blue400: '#00577C', // formerly clIconPrimary
+  blue10: '#E6EEF1', // 10% of blue500
   /**
    * Teal
    */

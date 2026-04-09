@@ -189,4 +189,21 @@ export default defineMessages({
     defaultMessage:
       'This controls how similar two descriptions must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
   },
+  collectResponsesOnPaper: {
+    id: 'app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaper1',
+    defaultMessage: 'Collect responses on paper:',
+  },
+  collectResponsesOnPaperDescription: {
+    id: 'app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaperDescription1',
+    defaultMessage:
+      'Print, distribute, and scan forms back. AI reads handwriting automatically.',
+  },
+  notAvailableInYourPlan: {
+    id: 'app.containers.AdminPage.phase.methodPicker.notAvailableInYourPlan1',
+    defaultMessage: 'Not available in your plan.',
+  },
+  learnMore: {
+    id: 'app.containers.AdminPage.phase.methodPicker.learnMore1',
+    defaultMessage: 'Learn more',
+  },
 });
