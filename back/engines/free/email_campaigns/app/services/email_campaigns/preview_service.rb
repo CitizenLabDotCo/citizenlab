@@ -8,6 +8,7 @@ module EmailCampaigns
     # Static content that can be used across all email previews.
     def preview_data(recipient)
       multiloc_service = MultilocService.new
+      space_preview_id = SecureRandom.uuid
       PreviewData.new(
         idea: PreviewContentItem.new(
           id: SecureRandom.uuid,
@@ -37,9 +38,9 @@ module EmailCampaigns
           url: "/#{recipient.locale}/folders/example-folder"
         ),
         space: PreviewContentItem.new(
-          id: SecureRandom.uuid,
+          id: space_preview_id,
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.space_title'),
-          url: "/#{recipient.locale}/admin/projects/spaces/example-space"
+          url: Frontend::UrlService.new.admin_space_url(space_preview_id)
         ),
         comment: PreviewContentItem.new(
           id: SecureRandom.uuid,

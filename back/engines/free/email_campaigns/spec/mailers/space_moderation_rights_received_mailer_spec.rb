@@ -74,7 +74,7 @@ RSpec.describe EmailCampaigns::SpaceModerationRightsReceivedMailer do
           with_text(/Organize projects and folders/)
         end
         with_tag 'p' do
-          with_text(/As a space manager, you can group related participation projects/)
+          with_text(/As a space manager, you can manage projects and folders within your space/)
         end
         with_tag 'h3' do
           with_text(/Manage space settings/)
