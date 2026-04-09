@@ -3191,6 +3191,8 @@
   "app.containers.AdminPage.phase.methodPicker.documentTitle1": "Collect feedback on a document",
   "app.containers.AdminPage.phase.methodPicker.embedSurvey1": "Embed a third-party survey",
   "app.containers.AdminPage.phase.methodPicker.externalSurvey1": "External survey",
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": "Scanning paper forms with Formsync is not included on your current plan.",
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": "Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": "Tap into your users' collective intelligence. Invite them to submit, discuss ideas, and/or provide feedback in a public forum.",
   "app.containers.AdminPage.phase.methodPicker.ideationTitle1": "Collect input and feedback in public",
   "app.containers.AdminPage.phase.methodPicker.informationTitle1": "Share information",
