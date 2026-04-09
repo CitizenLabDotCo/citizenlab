@@ -111,28 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "Cruthaíodh an tionscadal go rathúil!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Clóscríobh ainm an tionscadail",
   "app.components.ProjectTemplatePreview.useTemplate": "Úsáid an teimpléad seo",
-  "app.components.SeatInfo.additionalSeats": "Suíocháin bhreise",
-  "app.components.SeatInfo.additionalSeatsToolTip": "Taispeánann sé seo líon na suíochán breise atá ceannaithe agat sa bhreis ar 'Suíocháin san áireamh'.",
-  "app.components.SeatInfo.adminSeats": "Suíocháin riaracháin",
-  "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} suíocháin riaracháin san áireamh",
-  "app.components.SeatInfo.adminSeatsTooltip1": "Tá riarthóirí i gceannas ar an ardán agus tá cearta bainistíochta acu do na fillteáin agus na tionscadail uile. Is féidir leat {visitHelpCenter} a úsáid chun tuilleadh eolais a fháil faoi na róil éagsúla.",
-  "app.components.SeatInfo.currentAdminSeatsTitle": "Suíocháin riaracháin reatha",
-  "app.components.SeatInfo.currentManagerSeatsTitle": "Suíocháin bhainisteora reatha",
-  "app.components.SeatInfo.includedAdminToolTip": "Taispeánann sé seo líon na suíochán atá ar fáil do riarthóirí atá san áireamh sa chonradh bliantúil.",
-  "app.components.SeatInfo.includedManagerToolTip": "Taispeánann sé seo líon na suíochán atá ar fáil do bhainisteoirí atá san áireamh sa chonradh bliantúil.",
-  "app.components.SeatInfo.includedSeats": "Suíocháin san áireamh",
-  "app.components.SeatInfo.managerSeats": "Suíocháin bhainisteora",
-  "app.components.SeatInfo.managerSeatsTooltip": "Is féidir le bainisteoirí fillteán/tionscadal líon neamhtheoranta fillteán/tionscadal a bhainistiú. Is féidir leat {visitHelpCenter} a úsáid chun tuilleadh eolais a fháil faoi na róil éagsúla.",
-  "app.components.SeatInfo.managersIncludedText": "{managerSeats} suíocháin bhainisteora san áireamh",
-  "app.components.SeatInfo.remainingSeats": "Suíocháin atá fágtha",
-  "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.components.SeatInfo.totalSeats": "Suíocháin iomlána",
-  "app.components.SeatInfo.totalSeatsTooltip": "Taispeánann sé seo líon iomlán na suíochán laistigh de do phlean agus na suíocháin bhreise atá ceannaithe agat.",
-  "app.components.SeatInfo.usedSeats": "Suíocháin úsáidte",
-  "app.components.SeatInfo.view": "Amharc",
-  "app.components.SeatInfo.visitHelpCenter": "tabhair cuairt ar ár n-ionad cabhrach",
-  "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Tá {adminSeatsIncluded}ag do phlean. Nuair a bheidh na suíocháin go léir úsáidte agat, cuirfear suíocháin bhreise leis faoi 'Suíocháin bhreise'.",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Tá {managerSeatsIncluded}ag do phlean, atá incháilithe do bhainisteoirí fillteán agus bainisteoirí tionscadal. Nuair a bheidh na suíocháin go léir úsáidte agat, cuirfear suíocháin bhreise leis faoi 'Suíocháin bhreise'.",
+
+  "app.components.SeatInfo.assignedSeats": "Suíocháin sannta: {assignedSeats}",
   "app.components.UserSearch.addModerators": "Cuir leis",
   "app.components.UserSearch.searchUsers": "Clóscríobh chun úsáideoirí a chuardach...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Teachtaireacht earráide malartach",
@@ -160,6 +140,8 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Ní thacaítear le ceisteanna déimeagrafacha a chur mar an leathanach deireanach den fhoirm don ghníomh seo.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Ós rud é gur roghnaigh tú \"Anaithnideacht iomlán\" i \"Bailiú sonraí úsáideora\", NÍ STÓRÁLFAÍ na freagraí ar na ceisteanna déimeagrafacha a cuireadh roimh rannpháirtíocht sna Torthaí. Ní úsáidfear na freagraí ach chun próifíl an úsáideora a nuashonrú, ach níl an phróifíl seo nasctha leis an bhfreagra. Chun sonraí déimeagrafacha a bhailiú agus iad a stóráil sna torthaí roghnaigh rogha eile faoi \"Bailiú sonraí úsáideora\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Ní féidir a roghnú conas a chuirtear ceisteanna déimeagrafacha ar rannpháirtithe mar go bhfuil fíordheimhniú díchumasaithe agat agus anaithnideacht iomlán roghnaithe agat",
+
+  "app.components.admin.AddByEmail.invite": "Tabhair cuireadh",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Chun ábhar a chur leis an accordion, oscail an accordion trí bhrú ar an tsiombail \">\", ansin tarraing aon ghiuirléidí isteach ann.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Níl aon cheist roghnaithe. Roghnaigh ceist ar dtús le do thoil.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Gan freagra",
@@ -555,8 +537,6 @@
   "app.components.onboarding.askFollowPreferences": "Iarr ar úsáideoirí réimsí nó topaicí a leanúint",
   "app.components.onboarding.followHelperText": "Cuireann sé seo céim i ngníomh sa phróiseas clárúcháin ina mbeidh úsáideoirí in ann réimsí nó topaicí a roghnaíonn tú thíos a leanúint.",
   "app.components.onboarding.followPreferences": "Lean roghanna",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} laistigh den phlean, {noOfAdditionalSeats} breise",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Suíocháin laistigh den phlean",
   "app.containers.Admin.Campaigns.campaignFrom": "Ó:",
   "app.containers.Admin.Campaigns.campaignTo": "Chuig:",
   "app.containers.Admin.Campaigns.customEmails": "Ríomhphoist saincheaptha",
@@ -650,6 +630,8 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Nuashonraíodh na socruithe go rathúil.",
   "app.containers.Admin.Moderation.type": "Cineál",
   "app.containers.Admin.Moderation.unread": "Ní fhacthas",
+
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Níl aon bhainisteoirí ann fós.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Tá na rannóga seo a leanas ar an leathanach seo. Is féidir leat iad a chasadh air/as agus iad a chur in eagar de réir mar is gá.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Rannóga",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Féach ar an leathanach",
@@ -806,6 +788,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "Bainisteoirí tionscadail",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Míreanna sannta",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Faigh forbhreathnú ar na daoine agus na heagraíochtaí uile a chláraigh ar an ardán. Cuir rogha úsáideoirí le grúpaí Lámhleabhair nó le grúpaí Cliste.",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "Forbhreathnú na suíochán",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Cuireadh ar feitheamh",
   "app.containers.Admin.Users.admin": "Riarthóir",
   "app.containers.Admin.Users.assign": "Sannadh",
@@ -860,6 +844,8 @@
   "app.containers.Admin.Users.setAsAdmin": "Socraigh mar riarthóir",
   "app.containers.Admin.Users.setAsNormalUser": "Socraigh mar ghnáthúsáideoir",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Sannadh {name} mar bhainisteoir tionscadail",
+
+  "app.containers.Admin.Users.spaceManager": "Bainisteoir spáis",
   "app.containers.Admin.Users.userBlockModal.allDone": "Gach rud déanta",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Úsáideoir blocáilte",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Ní bhainfear ábhar an úsáideora seo tríd an ngníomh seo. Ná déan dearmad a n-ábhar a mhodhnú más gá.",
@@ -1126,7 +1112,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Gan dáta deiridh",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Scrollaigh ar chlé",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Scrollaigh ar dheis",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Brúigh Escape chun an carousel a scipeáil",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Brúigh Escape chun an carúsall a scipeáil.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Tionscadail agus fillteáin (oidhreacht)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Teideal na dtionscadal",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "Tá {orgName} ag obair faoi láthair ar",
@@ -1222,7 +1209,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Faigh forbhreathnú amhairc ar amlínte do thionscadail inár radharc féilire. Aithin go tapa cé na tionscadail agus na céimeanna atá ag tosú nó ag críochnú go luath agus a bhfuil gá le gníomh ina leith.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Tuig cad atá ag tarlú agus cathain",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Taispeántar na ceisteanna go léir ar an PDF. Mar sin féin, ní thacaítear leis na nithe seo a leanas faoi láthair le haghaidh allmhairithe trí FormSync: Íomhánna, Clibeanna agus Uaslódáil Comhad.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Taispeántar na ceisteanna uile ar an PDF. Mar sin féin, ní thacaítear leis na ceisteanna seo a leanas faoi láthair le haghaidh allmhairithe trí FormSync: ceisteanna mapála (biorán titim, bealach a tharraingt agus limistéar a tharraingt), ceisteanna rangú, ceisteanna maitrís agus ceisteanna uaslódála comhad.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Taispeántar gach ceist ar an PDF. Mar sin féin, ní thacaítear leis na cinn seo a leanas faoi láthair le haghaidh iompórtála trí FormSync: Ceisteanna mapála (biorán a ligean anuas, bealach a tharraingt agus limistéar a tharraingt) agus ceisteanna uaslódála comhad.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Deireadh na foirme",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Tús na foirme",
   "app.containers.Admin.projects.all.components.archived": "Cartlannaithe",
@@ -1558,7 +1546,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Tá cuntas ann cheana féin atá bainteach leis an seoladh ríomhphoist seo. Cuirfear an ionchur seo leis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Toiliú úsáideora (cuntas úsáideora a chruthú)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Ceadaigh",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Ceadaigh gach ionchur",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Ceadaigh gach ionchur ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Údar:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Íoslódáil PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Ríomhphost:",
@@ -1571,8 +1560,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Ionchuir allmhairithe",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Ag iompórtáil. D’fhéadfadh an próiseas seo cúpla nóiméad a thógáil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Iompórtáladh an ionchur seo go hanaithnid.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "Tá ionchuir {numIdeas} allmhairithe agus tá ceadú ag teastáil uathu.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "Níorbh fhéidir na hionchuir {numNotApproved} a cheadú. Seiceáil gach ionchur le haghaidh saincheisteanna bailíochtaithe agus deimhnigh ina n-aonar.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "Níorbh fhéidir {numNotApproved} ionchur a cheadú. Seiceáil gach ionchur le haghaidh fadhbanna bailíochtaithe, le do thoil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Logán:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Níl aon rud le hathbhreithniú go fóill. Cliceáil \"{importFile}\" chun comhad PDF ina bhfuil foirmeacha ionchuir scanta nó comhad Excel ina bhfuil ionchuir a allmhairiú.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Níl aon rud le hathbhreithniú go fóill. Cliceáil \"{importFile}\" chun comhad Excel ina bhfuil ionchuir a allmhairiú.",
@@ -1580,6 +1569,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Ní féidir an comhad allmhairithe a thaispeáint. Ní féidir comhaid allmhairithe a fheiceáil ach amháin le haghaidh allmhairí PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Céim:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Ní féidir ionchuir a bheith sa chéim roghnaithe. Roghnaigh ceann eile le do thoil.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Bain gach ionchur",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Níl aon chéimeanna sa tionscadal seo ina bhféadfadh smaointe a bheith ann.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Roghnaigh cén chéim ar mhaith leat na hionchuir seo a chur leis.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Allmhaireoir ionchuir",
@@ -2402,7 +2393,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Modh vótála",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "Cinneann an modh vótála na rialacha maidir le conas a vótálann úsáideoirí",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Cuir ionchur leis",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "Cuir modhnóirí tionscadail leis",
+
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": "Cuir bainisteoirí tionscadail leis",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "Is féidir leat do thionscadal a chur le fillteán anois, nó é sin a dhéanamh níos déanaí i socruithe an tionscadail.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Clibeanna tionscadail",
   "app.containers.AdminPage.ProjectEdit.altText": "Téacs malartach",
@@ -2521,7 +2513,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Íosmhéid",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Éiligh ar rannpháirtithe buiséad íosta a chomhlíonadh chun a gciseán a chur isteach (cuir isteach '0' mura mian leat íosmhéid a shocrú).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "tabhair cuairt ar ár nIonad Cabhrach",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Cé hiad na bainisteoirí tionscadail?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Tuilleadh sonraí",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "An bhfuil inspioráid uait? Déan iniúchadh ar thionscadail chomhchosúla ó chathracha eile sa {inspirationHubLink}",
@@ -2650,6 +2641,8 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Féach ar an tionscadal",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Obair Dheonach",
   "app.containers.AdminPage.ProjectEdit.voteTermError": "Ní mór téarmaí vótála a shonrú do gach logán",
+
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": "Cé hiad na bainisteoirí?",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# grúpa in ann féachaint} one {# grúpa in ann féachaint} other {# grúpa in ann féachaint}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Cuir imeacht leis",
   "app.containers.AdminPage.ProjectEvents.additionalInformation": "Faisnéis bhreise",
@@ -2804,6 +2797,8 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Suirbhé",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "An bhfuil tú cinnte gur mian leat an chéim seo a scriosadh?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Cur síos ar an gcéim",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Céim Eagarthóireachta",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Dáta deiridh",
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "Dáta Deiridh",
@@ -3135,12 +3130,10 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Roghanna freagraí",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Formáid freagraí",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Ní mór rogha amháin ar a laghad a sholáthar",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Déanann an t-úsáideoir seo modhnóireacht ar an bhfillteán ina bhfuil an tionscadal seo. Chun a gcearta modhnóra a bhaint den tionscadal seo, is féidir leat a gcearta fillteáin a chúlghairm nó an tionscadal a bhogadh go fillteán eile.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Cruthaigh ceist nua",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Cruthaigh ceist",
   "app.containers.AdminPage.groups.permissions.defaultQuestion": "Ceist réamhshocraithe",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Scrios",
-  "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Scrios",
   "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Cuir teideal ar fáil do gach rogha le do thoil",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Tá-níl (bosca seiceála)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Dáta",
@@ -3155,12 +3148,9 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Gan aon bhaill} one {1 bhall} other {{count} baill}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Líon isteach an cur síos i ngach teanga le do thoil",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Líon isteach an teideal i ngach teanga le do thoil",
-  "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "An bhfuil tú cinnte?",
-  "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Níor aimsíodh bainisteoirí tionscadail",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ní thaispeántar aon rud, mar nach bhfuil aon ghníomhartha is féidir leis an úsáideoir a dhéanamh sa tionscadal seo.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Ní féidir ach le riarthóirí ceist nua a chruthú.",
   "app.containers.AdminPage.groups.permissions.option1": "Rogha 1",
-  "app.containers.AdminPage.groups.permissions.pendingInvitation": "Cuireadh ar feitheamh",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Cé a fhéadann nótaí a chur leis an doiciméad?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Cé atá in ann clárú le freastal ar imeacht?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Mura bhfuil aon chéim ghníomhach ann nuair a dhéanann úsáideoir iarracht freastal ar imeacht, úsáidfidh an córas na ceadanna ón gcéim is déanaí a críochnaíodh.",
@@ -3863,3 +3853,47 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Chun tuilleadh eolais a fháil faoi réitigh íomhá molta, {supportPageLink}."
 }
+
+  "app.containers.Admin.Users.SeatsOverview.options": "Roghanna",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "Bainisteoirí",
+
+  "app.containers.Admin.ModeratorsTable.removeManager": "Bain bainisteoir",
+
+  "app.components.SeatInfo.totalAdminSeats": "Líon iomlán na suíochán riarthóra ({totalSeats})",
+
+  "app.components.SeatInfo.goToSeatsOverview": "Téigh chuig forbhreathnú na suíochán",
+
+  "app.containers.Admin.Users.SeatsOverview.role": "Ról",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "Forbhreathnú na Suíochán",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Á shábháil...",
+
+  "app.containers.Admin.Users.SeatsOverview.unknown": "Anaithnid",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRÉACHT",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Diúltaigh do na hathruithe",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Dréacht sábháilte",
+
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Clóscríobh ríomhphost chun cuireadh a thabhairt do bhainisteoir...",
+
+  "app.components.SeatInfo.totalManagerSeats": "Líon iomlán na suíochán bainisteora ({totalSeats})",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Seo é an cur síos foilsithe atá le feiceáil ag rannpháirtithe faoi láthair. Cliceáil chun é a chur in eagar.",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Tá dréacht á chur in eagar agat. Foilsigh é chun go mbeidh sé le feiceáil ag rannpháirtithe, nó diúltaigh do na hathruithe chun filleadh ar an mbunleagan.",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "Riarthóirí",
+
+  "app.components.SeatInfo.availableSeats": "Suíocháin ar fáil: {availableSeats}",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "FOILSITHE",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Stádas an chuiridh",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "Ainm",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Foilsigh",

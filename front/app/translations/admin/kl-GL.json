@@ -111,28 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "Suliniut pilersinneqartoq iluatsippoq!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Suliniutip suunera allaguk",
   "app.components.ProjectTemplatePreview.useTemplate": "Skabeloni una atoruk",
-  "app.components.SeatInfo.additionalSeats": "Inissat ilassutaasut",
-  "app.components.SeatInfo.additionalSeatsToolTip": "Uani takuneqarsinnaapput inissat 'Inissat ilanngunneqartut' saniatigut pisiavit amerlassusaat.",
-  "app.components.SeatInfo.adminSeats": "Aqutsisutut inissat",
-  "app.components.SeatInfo.adminSeatsIncludedText": "Admin-itut inissat {adminSeats} ilaapput",
-  "app.components.SeatInfo.adminSeatsTooltip1": "Aqutsisut nittartakkamik akisussaasuupput kiisalu toqqorsivinnut suliniutinullu tamanut aqutsisutut pisinnaatitaaffeqarlutik. Inissisimaffiit assigiinngitsut pillugit uani {visitHelpCenter} paasisaqarnerusinnaavutit.",
-  "app.components.SeatInfo.currentAdminSeatsTitle": "Maannakkut aqutsisutut inissat",
-  "app.components.SeatInfo.currentManagerSeatsTitle": "Maannakkut aqutsisutut inissat",
-  "app.components.SeatInfo.includedAdminToolTip": "Ukiumut isumaqatigiissummi aqutsisutut inissat atorneqarsinnaasut amerlassusaat uani takuneqarsinnaapput.",
-  "app.components.SeatInfo.includedManagerToolTip": "Ukiumut isumaqatigiissummi aqutsisut qassit inissaqartinneqarnerat uani takuneqarsinnaavoq.",
-  "app.components.SeatInfo.includedSeats": "Inissat ilaasut",
-  "app.components.SeatInfo.managerSeats": "Aqqutsisutut inissat",
-  "app.components.SeatInfo.managerSeatsTooltip": "Toqqorsivinnik/suliniutinik aqutsisut killeqanngitsunik toqqorsivinnik/suliniutinik aqutsisinnaapput. Inissisimaffiit assigiinngitsut pillugit {visitHelpCenter} annertunerusumik paasisaqarsinnaavutit.",
-  "app.components.SeatInfo.managersIncludedText": "{managerSeats} aqutsisunut inissat ilaapput",
-  "app.components.SeatInfo.remainingSeats": "Inissat sinneruttut",
-  "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.components.SeatInfo.totalSeats": "Issiaviit katillugit",
-  "app.components.SeatInfo.totalSeatsTooltip": "Uani takuneqarsinnaapput inissat pilersaarutinniittut aamma inissat ilassutitut pisiarisimasatit katillugit.",
-  "app.components.SeatInfo.usedSeats": "Inissat atorneqartut",
-  "app.components.SeatInfo.view": "Takujuk",
-  "app.components.SeatInfo.visitHelpCenter": "uani ikiorneqarnissamut saaffiginniffipput alakkaruk",
-  "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Pilersaarutit {adminSeatsIncluded}-nik inissaqarpoq. Inissat tamakkerukkit, inissat sinneri 'Inissat ilassutit' ataani ilanngunneqassapput.",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Pilersaarutit {managerSeatsIncluded}-nik inissaqarpoq, mappinik aqutsisunut suliniutinillu aqutsisunut atugassanik. Inissat tamakkerukkit, inissat sinneri 'Inissat ilassutit' ataani ilanngunneqassapput.",
+
+  "app.components.SeatInfo.assignedSeats": "Inissat tunniunneqartut: {assignedSeats}",
   "app.components.UserSearch.addModerators": "Ilannguguk",
   "app.components.UserSearch.searchUsers": "Atuisunik ujartuinerit allaguk...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Kukkunermut nalunaarut alla",
@@ -160,6 +140,8 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Inoqassutsikkut apeqqutinik immersugassap naggataatut apeqquteqarneq iliuusissamut uunga tapersersorneqanngilaq.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "\"Atuisut paasissutissaataannik katersineq\"-mi \"Kinaassuseq tamakkiisumik isertuunneqassaaq\" toqqarsimagakku, peqataannginnermi inoqassutsikkut apeqqutinut akissutit INERNERNI TOQQORNEQASSAANNGILLAT. Akissutit atuisup profilianik nutarterinermut taamaallaat atorneqassapput, profilli taanna akissummut atatitaanngilaq. Inoqassutsikkut paasissutissanik katersiniarlutit inernernilu toqqorsiniarlutit \"Atuisut paasissutissaataannik katersineq\"-p ataani toqqagassaq alla toqqaruk.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Inunnik nalunaarsuinermut apeqqutit qanoq apeqqutigineqarnissaannik toqqaaneq atorneqarsinnaanngilaq, kinaassutsimik uppernarsaanissaq atunnginnakku aammalu kinaassuseqanngivinnissaq toqqarsimagakku.",
+
+  "app.components.admin.AddByEmail.invite": "Qaaqqusigit",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Accordion-ip iluanut imarisaanik ilanngussiniarlutit, accordion-i ammaruk uunga \">\" toorsillutit, taavalu widgetit iluanut nusullugit.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Apeqqut toqqarneqarsimanngilaq. Apeqqut toqqaqqaaruk.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Akissuteqartoqanngilaq",
@@ -555,8 +537,6 @@
   "app.components.onboarding.askFollowPreferences": "Atuisut sumiiffinnik imaluunniit sammisanik malinnaaqquneqarlik",
   "app.components.onboarding.followHelperText": "Nalunaarsornermi immikkoortoq manna atorlugu atuisut sumiiffiit qulequttalluunniit ataani toqqakkavit malinnaaffiginissaat periarfissaqalissavaat",
   "app.components.onboarding.followPreferences": "Malinnaanermi tulluarsakkat",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} pilersaarummiipput, {noOfAdditionalSeats} ilassutaallutik",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Pilersaarummi issiaviit",
   "app.containers.Admin.Campaigns.campaignFrom": "Uannga:",
   "app.containers.Admin.Campaigns.campaignTo": "Uunga:",
   "app.containers.Admin.Campaigns.customEmails": "E-mailit nammineq aaqqitat",
@@ -650,6 +630,8 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Inissiissutit nutarterput.",
   "app.containers.Admin.Moderation.type": "Suussusaa",
   "app.containers.Admin.Moderation.unread": "Takuneqanngilaq",
+
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Suli aqutsisoqanngilaq.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Quppeneq una immikkoortunik tulliuttunik imaqarpoq. Pisariaqartitat naapertorlugu atuutsilersillugillu atorunnaarsissinnaavatit.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "View page",
@@ -806,6 +788,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "Suliniutinut aqutsisut",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Suliassat tunniunneqartut",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Inuit suliniaqatigiiffiillu quppernermi nalunaarsimasut tamakkiisumik takusinnaalikkit. Atuisut toqqakkat gruppinut nammineq aaqqissukkanut smart gruppinulluunniit ilanngukkit.",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "Inissat takussutissartaat",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Aqutsisoq",
   "app.containers.Admin.Users.assign": "Inissiguk",
@@ -860,6 +844,8 @@
   "app.containers.Admin.Users.setAsAdmin": "Admin-itut inissiguk",
   "app.containers.Admin.Users.setAsNormalUser": "Atuisutut nalinginnaasutut inissiguk",
   "app.containers.Admin.Users.setUserAsProjectModerator": "{name} suliniutip aqutsisutut inissiguk",
+
+  "app.containers.Admin.Users.spaceManager": "Inimik aqutsisoq",
   "app.containers.Admin.Users.userBlockModal.allDone": "All done",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Block user",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "The content of this user won't be removed through this action. Don't forget to moderate their content if needed.",
@@ -1126,7 +1112,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Naaffissalerneqanngilaq",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Saamerpianut jukkit",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Talerpianut tiffaruk",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Escape naqiguk carrouseli qarsunniarlugu",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Carousel-i qaangiinnarniarlugu Escape tooruk",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Suliassat mappillu (itsarnisat)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Suliniutit qulequtaat",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} maannakkut suliaqarpoq uuminnga",
@@ -1222,7 +1209,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Ullorsiutit atorlugit suliniutitit piffissalersugaanerallu takukkit. Suliniutit immikkoortullu sorliit aallartilersut imaluunniit naajartulersut iliuuseqarfigineqartussallu piaartumik takukkit.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Paasiniaruk suna pinerusoq qangalu",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Apeqqutit tamarmik PDF-imi takuneqarsinnaapput. Kisianni makku FormSync atorlugu eqqunneqarsinnaanngillat: Assit, Nalunaaqutsersuutit kiisalu Fiilinik nassiussineq.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Apeqqutit tamarmik PDF-imi takutinneqarput. Taamaattorli makku FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingani apeqqutit (sumiiffimmik nalunaaqutsiineq, aqqutissiorneq aamma sumiiffimmik titarnilersuineq), tulleriiaarinermi apeqqutit, matrix-imi apeqqutit aamma fiilinik ikkussinermi apeqqutit.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Apeqqutit tamarmik PDF-imi takutinneqarput. Taamaattorli makku maannakkut FormSync atorlugu eqqunneqarsinnaanngillat: Nunap assingani apeqqutit (sumiiffimmik nalunaarsuineq, aqqutissiamik titartaaneq aamma sumiiffimmik titartaaneq) kiisalu fiilinik ilisivissat.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Immersugassap naggataa",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Immersugassap aallartinnera",
   "app.containers.Admin.projects.all.components.archived": "Allagaasivimmut inissinneqarpoq",
@@ -1558,7 +1546,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "E-maili una atorlugu kontoqareerpoq. Akissut uunga ilanngunneqassaaq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Atuisup akuersissutaa (atuisutut kontomik pilersitsineq)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Akueriguk",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Siunnersuutit tamarmik akuerikkit",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Ilanngussat tamarmik akuerikkit ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Allattoq:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF aajuk",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-maili:",
@@ -1571,8 +1560,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Siunnersuutit eqqussat",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Eqqussineq. Tamanna minutsialunnik sivisussuseqarsinnaavoq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Una ilanngussaq kinaassuseq isertuullugu eqqunneqarpoq.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} ilanngunneqartut eqqunneqarput akuerineqartussaallutillu.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ilanngussat akuerineqarsinnaanngillat. Ilanngussat tamarmik kukkunersiorlugit misissukkit ataasiakkaarlugillu uppernarsarlugit.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} ilanngussat akuerineqarsinnaanngillat. Ilanngussat ataasiakkaarlugit kukkunersikkit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Oqaatsit:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Suli misissugassaqanngilaq. \"{importFile}\" tooruk PDF-fiilimik immersugassanik scan-ikkanik imalimmik imaluunniit Excel-fiilimik akissutinik imalimmik eqqussiniarlutit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Suli misissugassaqanngilaq. Excel-filimik ilanngussanik imalimmik eqqussiniaruit \"{importFile}\" toqqaruk.",
@@ -1580,6 +1569,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Fili eqqunneqartoq takutinneqarsinnaanngilaq. Filinik eqqussanik takunnissinnaaneq taamaallaat PDF-inut atuuppoq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Immikkoortoq:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Immikkoortoq toqqarneqartoq ilanngussanik imaqarsinnaanngilaq. Allamik toqqaagit.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ilanngussat tamarmik piiakkit",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Suliniummi uani immikkoortunik isumassarsianik imalinnik soqanngilaq.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Toqqaruk immikkoortoq sorleq immersukkat ilanngunniarneritit.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Isissutinik eqqussissut",
@@ -2402,7 +2393,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Taasinermi periuseq",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "Taaseriaaseq atorneqartoq malillugu atuisut qanoq taasassanersut aalajangerneqartarpoq",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "Suliniummut aqutsisussanik ilasigit",
+
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": "Suliniutinut aqutsisunik ilanngussigit",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "Suliniutit maanna toqqorsivimmut ilanngussinnaavat, imaluunniit kingusinnerusukkut suliniutip aaqqissuunnerani taamaaliorsinnaallutit.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Suliniutit tag-itai",
   "app.containers.AdminPage.ProjectEdit.altText": "Alt text",
@@ -2521,7 +2513,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minnerpaaffik",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Peqataasut koorimik nassiussissagunik missingiummik minnerpaaffimmik eqquutsitsinissaat piumasaqaatigiuk (minnerpaaffiliusserusunngikkuit '0' tooruk).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Kikkut suliniutip aqutsisoraat?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Immikkuualuttut amerlanerusut",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Isumassarsiorniarpit? Suliniutit assingusut illoqarfinni allaniittut uani paasisaqarfigikkit {inspirationHubLink}",
@@ -2650,6 +2641,8 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Suliniut nuisiguk",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Nammineq piumassutsimik sulineq",
   "app.containers.AdminPage.ProjectEdit.voteTermError": "Taasinerit piumasaqaataat oqaatsinut tamanut nalunaarneqassapput",
+
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": "Kikkut aqutsisuuppat?",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Pisussamik ilanngussigit",
   "app.containers.AdminPage.ProjectEvents.additionalInformation": "Paasissutissat allat",
@@ -2804,6 +2797,8 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Misissuineq",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Ilumoortumik killiffik una peerniarpiuk?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Killiffimmut nassuiaat",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Immikkoortoq aaqqissuuguk",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Naaffissaa",
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
@@ -3135,12 +3130,10 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Akissutissatut periarfissat",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Akissutip ilusissaa",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Ikinnerpaamik ataatsimik toqqagassaqassaaq",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Atuisup suliassap mappia nakkutigaa. Suliassamut uunga nakkutilliisuunera peerusukkukku, mappimut pisinnaatitaaffii peerneqarsinnaapput imaluunniit suliassaq mappimut allamut nuunneqarsinnaavoq.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Apeqqummik nutaamik pilersitsigit",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Apeqqut pilersiuk",
   "app.containers.AdminPage.groups.permissions.defaultQuestion": "Apeqqut nalinginnaasoq",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
-  "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Toqqagassanut tamanut qulequtsiigit",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Aap-Naamik (toqqagassaq)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Ulloq",
@@ -3155,12 +3148,9 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {No members} one {1 member} other {{count} members}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Oqaatsit tamat atorlugit nassuiaat immersuguk",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Oqaatsini tamani qulequtaa immersoruk",
-  "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
-  "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Suliniummi aqutsisut nassaarineqanngilat",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Atuisoq suliniummi uani iliuuseqarsinnaanngimmat nuisoqanngilaq.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Allaffissornermik suliaqartut kisimik apeqqummik nutaamik pilersitsisinnaapput.",
   "app.containers.AdminPage.groups.permissions.option1": "Toqqagassaq 1",
-  "app.containers.AdminPage.groups.permissions.pendingInvitation": "Qaaqqusissut utaqqisaq",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kikkut uppernarsaat oqaaseqarfigisinnaavaat?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Kikkut pisussamut nalunaarsinnaappat?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Atuisup pisussamut peqataaniarnerani ingerlatsivik ingerlasoqanngippat, systemip ingerlatsivimmit naammassineqaqqammersumit akuersissutit atussavai.",
@@ -3863,3 +3853,47 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
+
+  "app.containers.Admin.Users.SeatsOverview.unknown": "Ilisimaneqanngitsoq",
+
+  "app.containers.Admin.Users.SeatsOverview.options": "Periarfissat",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "Aqutsisut",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Missingiut toqqorneqarpoq",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Qaaqqusissutip inissisimanera",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Allannguutit taamaatiuk",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Saqqummiuguk",
+
+  "app.components.SeatInfo.goToSeatsOverview": "Inissat takussutissartaannut iqquigit",
+
+  "app.containers.Admin.ModeratorsTable.removeManager": "Aqutsisoq peeruk",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "SAQQUMMIUNNEQARPOQ",
+
+  "app.components.SeatInfo.totalAdminSeats": "Aqutsisut inissaat katillugit ({totalSeats})",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "Inissat takussutissartaat",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "Ateq",
+
+  "app.components.SeatInfo.availableSeats": "Inissat inoqanngitsut: {availableSeats}",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Missingiut aaqqissuatat. Saqqummiuguk peqataasunit takuneqarsinnaanngortillugu, imaluunniit taamaatiuk siornatigutut ilerseqqillugu.",
+
+  "app.components.SeatInfo.totalManagerSeats": "Managerit inissaat katillugit ({totalSeats})",
+
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Aqutsisussamik qaaqqusinissamut e-mailia allaguk...",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "MISSINGIUT",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Toqqorterneqarpoq...",
+
+  "app.containers.Admin.Users.SeatsOverview.role": "Inissisimaffik",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "Managerit",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Una nassuiaat maanna saqqummiunneqarsimasoq peqataasunit takuneqarsinnaavoq. Toqqaruk aaqqissuunniarlugu.",

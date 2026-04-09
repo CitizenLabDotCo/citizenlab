@@ -111,28 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "پروجیکٹ کامیابی کے ساتھ بنایا گیا!",
   "app.components.ProjectTemplatePreview.typeProjectName": "پروجیکٹ کا نام ٹائپ کریں۔",
   "app.components.ProjectTemplatePreview.useTemplate": "اس سانچے کو استعمال کریں۔",
-  "app.components.SeatInfo.additionalSeats": "اضافی نشستیں",
-  "app.components.SeatInfo.additionalSeatsToolTip": "یہ 'شامل نشستوں' کے اوپر آپ کی خریدی گئی اضافی نشستوں کی تعداد کو ظاہر کرتا ہے۔",
-  "app.components.SeatInfo.adminSeats": "ایڈمن کی نشستیں",
-  "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} منتظم نشستیں شامل ہیں۔",
-  "app.components.SeatInfo.adminSeatsTooltip1": "منتظمین پلیٹ فارم کے انچارج ہیں اور ان کے پاس تمام فولڈرز اور پروجیکٹس کے مینیجر کے حقوق ہیں۔ مختلف کرداروں کے بارے میں مزید جاننے کے لیے آپ {visitHelpCenter} کر سکتے ہیں۔",
-  "app.components.SeatInfo.currentAdminSeatsTitle": "موجودہ منتظم نشستیں",
-  "app.components.SeatInfo.currentManagerSeatsTitle": "موجودہ مینیجر کی نشستیں",
-  "app.components.SeatInfo.includedAdminToolTip": "یہ سالانہ معاہدے میں شامل منتظمین کے لیے دستیاب نشستوں کی تعداد کو ظاہر کرتا ہے۔",
-  "app.components.SeatInfo.includedManagerToolTip": "یہ سالانہ معاہدے میں شامل مینیجرز کے لیے دستیاب نشستوں کی تعداد کو ظاہر کرتا ہے۔",
-  "app.components.SeatInfo.includedSeats": "نشستیں شامل ہیں۔",
-  "app.components.SeatInfo.managerSeats": "مینیجر کی نشستیں",
-  "app.components.SeatInfo.managerSeatsTooltip": "فولڈر/پروجیکٹ مینیجر لامحدود تعداد میں فولڈرز/پروجیکٹس کا انتظام کر سکتے ہیں۔ مختلف کرداروں کے بارے میں مزید جاننے کے لیے آپ {visitHelpCenter} کر سکتے ہیں۔",
-  "app.components.SeatInfo.managersIncludedText": "{managerSeats} مینیجر سیٹیں شامل ہیں۔",
-  "app.components.SeatInfo.remainingSeats": "باقی نشستیں۔",
-  "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.components.SeatInfo.totalSeats": "کل سیٹیں۔",
-  "app.components.SeatInfo.totalSeatsTooltip": "یہ آپ کے پلان میں سیٹوں کی مجموعی تعداد اور آپ کی خریدی ہوئی اضافی سیٹوں کو دکھاتا ہے۔",
-  "app.components.SeatInfo.usedSeats": "استعمال شدہ نشستیں۔",
-  "app.components.SeatInfo.view": "دیکھیں",
-  "app.components.SeatInfo.visitHelpCenter": "ہمارے امدادی مرکز پر جائیں۔",
-  "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "آپ کے منصوبے میں {adminSeatsIncluded}ہے۔ ایک بار جب آپ تمام نشستیں استعمال کر لیں گے، اضافی نشستیں 'اضافی نشستیں' کے تحت شامل کی جائیں گی۔",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "آپ کے پلان میں {managerSeatsIncluded}ہے، جو فولڈر مینیجرز اور پروجیکٹ مینیجرز کے لیے اہل ہے۔ ایک بار جب آپ تمام نشستیں استعمال کر لیں گے، اضافی نشستیں 'اضافی نشستیں' کے تحت شامل کی جائیں گی۔",
+
+  "app.components.SeatInfo.assignedSeats": "تفویض کردہ نشستیں: {assignedSeats}",
   "app.components.UserSearch.addModerators": "شامل کریں۔",
   "app.components.UserSearch.searchUsers": "صارفین کو تلاش کرنے کے لیے ٹائپ کریں...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "متبادل غلطی کا پیغام",
@@ -160,6 +140,8 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "فارم کے آخری صفحہ کے طور پر آبادیاتی سوالات پوچھنا اس کارروائی کے لیے تعاون یافتہ نہیں ہے۔",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "چونکہ آپ نے \"صارف کے ڈیٹا اکٹھا کرنے\" میں \"مکمل گمنامی\" کا انتخاب کیا ہے، لہذا شرکت سے پہلے پوچھے گئے آبادیاتی سوالات کے جوابات کو نتائج میں محفوظ نہیں کیا جائے گا۔ جوابات صرف صارف کے پروفائل کو اپ ڈیٹ کرنے کے لیے استعمال کیے جائیں گے، لیکن یہ پروفائل جواب سے منسلک نہیں ہے۔ ڈیموگرافک ڈیٹا اکٹھا کرنے اور اسے نتائج میں ذخیرہ کرنے کے لیے براہ کرم \"صارف کا ڈیٹا اکٹھا کرنے\" کے تحت دوسرا آپشن منتخب کریں۔",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "شرکاء سے آبادیاتی سوالات کیسے پوچھے جائیں اس کا انتخاب کرنا قابل اطلاق نہیں ہے کیونکہ آپ نے تصدیق کو غیر فعال کر دیا ہے اور مکمل نام ظاہر نہ کرنے کا انتخاب کیا ہے۔",
+
+  "app.components.admin.AddByEmail.invite": "مدعو کریں",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "ایکارڈین کے اندر مواد شامل کرنے کے لیے، علامت \">\" کو دبا کر ایکارڈین کو کھولیں، پھر کسی بھی ویجٹ کو اندر گھسیٹیں۔",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "کوئی سوال منتخب نہیں کیا گیا۔ براہ کرم پہلے ایک سوال منتخب کریں۔",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "کوئی جواب نہیں۔",
@@ -555,8 +537,6 @@
   "app.components.onboarding.askFollowPreferences": "صارفین سے علاقوں یا عنوانات کی پیروی کرنے کو کہیں۔",
   "app.components.onboarding.followHelperText": "یہ رجسٹریشن کے عمل میں ایک قدم کو چالو کرتا ہے جہاں صارف ان علاقوں یا عنوانات کی پیروی کر سکیں گے جنہیں آپ نیچے منتخب کرتے ہیں۔",
   "app.components.onboarding.followPreferences": "ترجیحات پر عمل کریں۔",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} منصوبے کے اندر، {noOfAdditionalSeats} اضافی",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "منصوبہ بندی کے اندر نشستیں",
   "app.containers.Admin.Campaigns.campaignFrom": "منجانب:",
   "app.containers.Admin.Campaigns.campaignTo": "کو:",
   "app.containers.Admin.Campaigns.customEmails": "حسب ضرورت ای میلز",
@@ -650,6 +630,8 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "ترتیبات کامیابی کے ساتھ اپ ڈیٹ ہو گئیں۔",
   "app.containers.Admin.Moderation.type": "قسم",
   "app.containers.Admin.Moderation.unread": "نہیں دیکھا",
+
+  "app.containers.Admin.ModeratorsTable.noManagers2": "ابھی تک کوئی منتظمین نہیں ہیں۔",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "یہ صفحہ درج ذیل حصوں پر مشتمل ہے۔ آپ انہیں آن/آف کر سکتے ہیں اور ضرورت کے مطابق ان میں ترمیم کر سکتے ہیں۔",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "سیکشنز",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "صفحہ دیکھیں",
@@ -806,6 +788,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "پروجیکٹ مینیجرز",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "تفویض کردہ اشیاء",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "پلیٹ فارم پر رجسٹر ہونے والے تمام لوگوں اور تنظیموں کا ایک جائزہ حاصل کریں۔ مینوئل گروپس یا اسمارٹ گروپس میں صارفین کا انتخاب شامل کریں۔",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "نشستوں کا جائزہ",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "دعوت نامہ زیر التواء ہے۔",
   "app.containers.Admin.Users.admin": "ایڈمن",
   "app.containers.Admin.Users.assign": "تفویض کریں۔",
@@ -860,6 +844,8 @@
   "app.containers.Admin.Users.setAsAdmin": "ایڈمن کے طور پر سیٹ کریں۔",
   "app.containers.Admin.Users.setAsNormalUser": "عام صارف کے طور پر سیٹ کریں۔",
   "app.containers.Admin.Users.setUserAsProjectModerator": "پروجیکٹ مینیجر کے طور پر {name} کو تفویض کریں۔",
+
+  "app.containers.Admin.Users.spaceManager": "اسپیس مینیجر",
   "app.containers.Admin.Users.userBlockModal.allDone": "سب ہو گیا",
   "app.containers.Admin.Users.userBlockModal.blockAction": "صارف کو مسدود کریں۔",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "اس صارف کا مواد اس کارروائی کے ذریعے نہیں ہٹایا جائے گا۔ اگر ضرورت ہو تو ان کے مواد کو معتدل کرنا نہ بھولیں۔",
@@ -1126,7 +1112,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "کوئی اختتامی تاریخ نہیں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "بائیں سکرول کریں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "دائیں سکرول کریں۔",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "کیروسل کو چھوڑنے کے لیے escape دبائیں۔",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "کیروسل کو چھوڑنے کے لیے Escape دبائیں",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "پروجیکٹس اور فولڈرز (وراثت)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "پروجیکٹس کا عنوان",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} فی الحال کام کر رہا ہے۔",
@@ -1222,7 +1209,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "ہمارے کیلنڈر کے منظر میں اپنے پروجیکٹ کی ٹائم لائنز کا بصری جائزہ حاصل کریں۔ فوری طور پر شناخت کریں کہ کون سے منصوبے اور مراحل جلد شروع یا ختم ہو رہے ہیں اور کارروائی کی ضرورت ہے۔",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "سمجھیں کہ کیا ہو رہا ہے اور کب ہو رہا ہے۔",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: امیجز، ٹیگز اور فائل اپ لوڈ۔",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: نقشہ سازی کے سوالات (ڈراپ پن، ڈرا روٹ اور ڈرا ایریا)، درجہ بندی کے سوالات، میٹرکس کے سوالات اور فائل اپ لوڈ کے سوالات۔",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "تمام سوالات PDF پر دکھائے گئے ہیں۔ تاہم، درج ذیل فی الحال FormSync کے ذریعے امپورٹ کرنے کے لیے سپورٹڈ نہیں ہیں: میپنگ کے سوالات (پن ڈراپ کرنا، راستہ بنانا اور علاقہ بنانا) اور فائل اپ لوڈ کرنے کے سوالات۔",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "فارم کا اختتام",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "فارم کا آغاز",
   "app.containers.Admin.projects.all.components.archived": "محفوظ شدہ",
@@ -1558,7 +1546,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "اس ای میل کے ساتھ پہلے سے ہی ایک اکاؤنٹ وابستہ ہے۔ یہ ان پٹ اس میں شامل کیا جائے گا۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "صارف کی رضامندی (صارف کا اکاؤنٹ بنائیں)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "منظور کرو",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "تمام ان پٹس کو منظور کریں۔",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "تمام اندراجات منظور کریں ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مصنف:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "پی ڈی ایف ڈاؤن لوڈ کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "ای میل:",
@@ -1571,8 +1560,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "امپورٹڈ ان پٹس",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "درآمد کرنا۔ اس عمل میں چند منٹ لگ سکتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "یہ ان پٹ گمنام طور پر درآمد کیا گیا تھا۔",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} ان پٹ درآمد کیے گئے ہیں اور منظوری کی ضرورت ہے۔",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ان پٹس کو منظور نہیں کیا جا سکا۔ براہ کرم توثیق کے مسائل کے لیے ہر ان پٹ کو چیک کریں اور انفرادی طور پر تصدیق کریں۔",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} اندراجات منظور نہیں کیے جا سکے۔ براہ کرم تصدیقی مسائل کے لیے ہر اندراج کو چیک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "مقامی:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "ابھی تک جائزہ لینے کے لیے کچھ نہیں ہے۔ اسکین شدہ ان پٹ فارمز پر مشتمل پی ڈی ایف فائل یا ان پٹ پر مشتمل ایکسل فائل درآمد کرنے کے لیے \"{importFile}\" پر کلک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "ابھی تک جائزہ لینے کے لیے کچھ نہیں ہے۔ ان پٹ پر مشتمل ایکسل فائل درآمد کرنے کے لیے \"{importFile}\" پر کلک کریں۔",
@@ -1580,6 +1569,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "درآمد شدہ فائل کو ظاہر نہیں کیا جا سکتا۔ درآمد شدہ فائل دیکھنا صرف پی ڈی ایف کی درآمدات کے لیے دستیاب ہے۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "مرحلہ:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "منتخب شدہ مرحلے میں ان پٹ شامل نہیں ہو سکتے۔ براہ کرم کوئی اور منتخب کریں۔",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "تمام اندراجات ہٹائیں",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "اس منصوبے میں کوئی بھی مرحلہ نہیں ہے جس میں خیالات شامل ہوسکتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "براہ کرم منتخب کریں کہ آپ ان پٹ کو کس مرحلے میں شامل کرنا چاہتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "ان پٹ درآمد کنندہ",
@@ -2402,7 +2393,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "ووٹنگ کا طریقہ",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "ووٹنگ کا طریقہ صارفین کے ووٹ دینے کے اصولوں کا تعین کرتا ہے۔",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "ایک ان پٹ شامل کریں۔",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "پروجیکٹ ماڈریٹرز شامل کریں۔",
+
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": "پروجیکٹ مینیجرز شامل کریں",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "آپ اپنے پروجیکٹ کو ابھی ایک فولڈر میں شامل کر سکتے ہیں، یا اسے بعد میں پروجیکٹ کی ترتیبات میں کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "پروجیکٹ ٹیگز",
   "app.containers.AdminPage.ProjectEdit.altText": "Alt متن",
@@ -2521,7 +2513,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "کم از کم",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "شرکاء سے مطالبہ کریں کہ وہ اپنی ٹوکری جمع کرانے کے لیے کم از کم بجٹ کو پورا کریں (اگر آپ کم از کم سیٹ نہیں کرنا چاہتے تو '0' درج کریں)۔",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ہمارا امدادی مرکز ملاحظہ کریں۔",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "پروجیکٹ مینیجرز کون ہیں؟",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "مزید تفصیلات",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "پریرتا کی ضرورت ہے؟ {inspirationHubLink}میں دوسرے شہروں سے ملتے جلتے پروجیکٹس دریافت کریں۔",
@@ -2650,6 +2641,8 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "پروجیکٹ دیکھیں",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "رضاکارانہ",
   "app.containers.AdminPage.ProjectEdit.voteTermError": "تمام لوکلز کے لیے ووٹ کی شرائط کا تعین ہونا چاہیے۔",
+
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": "منتظمین کون ہیں؟",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# گروپ دیکھ سکتے ہیں} one {# گروپ دیکھ سکتے ہیں} other {# گروپ دیکھ سکتے ہیں}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "ایک واقعہ شامل کریں۔",
   "app.containers.AdminPage.ProjectEvents.additionalInformation": "اضافی معلومات",
@@ -2804,6 +2797,8 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "سروے",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "کیا آپ واقعی اس مرحلے کو حذف کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "مرحلے کی تفصیل",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "بیٹا",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "فیز میں ترمیم کریں۔",
   "app.containers.AdminPage.ProjectTimeline.endDate": "اختتامی تاریخ",
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "اختتامی تاریخ",
@@ -3135,12 +3130,10 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "انتخاب کے جوابات دیں۔",
   "app.containers.AdminPage.groups.permissions.answerFormat": "جواب کی شکل",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "کم از کم ایک انتخاب فراہم کرنا ضروری ہے۔",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "یہ صارف اس پروجیکٹ پر مشتمل فولڈر کو ماڈریٹ کرتا ہے۔ اس پروجیکٹ کے لیے ان کے ماڈریٹر کے حقوق کو ہٹانے کے لیے، آپ یا تو ان کے فولڈر کے حقوق منسوخ کر سکتے ہیں یا پروجیکٹ کو کسی دوسرے فولڈر میں منتقل کر سکتے ہیں۔",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "ایک نیا سوال بنائیں",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "ایک سوال بنائیں",
   "app.containers.AdminPage.groups.permissions.defaultQuestion": "پہلے سے طے شدہ سوال",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "حذف کریں۔",
-  "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "حذف کریں۔",
   "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "براہ کرم تمام انتخاب کے لیے ایک عنوان فراہم کریں۔",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "ہاں-نہیں (چیک باکس)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "تاریخ",
@@ -3155,12 +3148,9 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {کوئی ممبر نہیں} one {1 ممبر} other {{count} ممبران}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "براہ کرم تمام زبانوں میں تفصیل پُر کریں۔",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "براہ کرم تمام زبانوں میں عنوان بھریں۔",
-  "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "کیا آپ کو یقین ہے؟",
-  "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "پروجیکٹ مینیجر نہیں ملے",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "کچھ بھی نہیں دکھایا گیا ہے، کیوں کہ صارف اس پروجیکٹ میں کوئی کارروائی نہیں کر سکتا۔",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "صرف ایڈمن ہی نیا سوال بنا سکتے ہیں۔",
   "app.containers.AdminPage.groups.permissions.option1": "آپشن 1",
-  "app.containers.AdminPage.groups.permissions.pendingInvitation": "زیر التواء دعوت",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "کون دستاویز کی تشریح کر سکتا ہے؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "ایک تقریب میں شرکت کے لیے کون سائن اپ کر سکتا ہے؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "اگر کوئی فعال مرحلہ نہیں ہے جب کوئی صارف کسی تقریب میں شرکت کرنے کی کوشش کرتا ہے، تو سسٹم حال ہی میں مکمل ہونے والے مرحلے سے اجازتیں استعمال کرے گا۔",
@@ -3863,3 +3853,47 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔"
 }
+
+  "app.containers.Admin.Users.SeatsOverview.role": "کردار",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "ایڈمنز",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "نام",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "شائع کریں",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "یہ فی الحال شائع شدہ تفصیل ہے جو شرکاء کو نظر آ رہی ہے۔ ترمیم کرنے کے لیے کلک کریں۔",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "نشستوں کا جائزہ",
+
+  "app.containers.Admin.Users.SeatsOverview.unknown": "نامعلوم",
+
+  "app.containers.Admin.ModeratorsTable.removeManager": "مینیجر کو ہٹائیں",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "تبدیلیاں مسترد کریں",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "ڈرافٹ محفوظ کر لیا گیا",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "آپ ایک ڈرافٹ میں ترمیم کر رہے ہیں۔ اسے شرکاء کو دکھانے کے لیے شائع کریں، یا واپس جانے کے لیے تبدیلیاں مسترد کریں۔",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ڈرافٹ",
+
+  "app.components.SeatInfo.totalAdminSeats": "کل ایڈمن نشستیں ({totalSeats})",
+
+  "app.components.SeatInfo.availableSeats": "دستیاب نشستیں: {availableSeats}",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "مینیجرز",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "دعوت کی صورتحال",
+
+  "app.containers.Admin.Users.SeatsOverview.options": "اختیارات",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "شائع شدہ",
+
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "منتظم کو مدعو کرنے کے لیے ای میل ٹائپ کریں...",
+
+  "app.components.SeatInfo.goToSeatsOverview": "نشستوں کے جائزے پر جائیں",
+
+  "app.components.SeatInfo.totalManagerSeats": "کل مینیجر نشستیں ({totalSeats})",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "محفوظ ہو رہا ہے...",

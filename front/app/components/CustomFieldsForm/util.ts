@@ -36,14 +36,22 @@ export const convertCustomFieldsToNestedPages = (
   return nestedPagesData;
 };
 
-const isNillish = (value: any) => {
+export const isNillish = (value: any) => {
   if (!value) return true;
   if (Array.isArray(value) && value.length === 0) return true;
   if (value.constructor === Object) {
     if (Object.keys(value).length === 0) return true;
-    if (isEmptyMultiloc(value)) return true;
+    const isMultiloc = Object.values(value).every((v) => typeof v === 'string');
+    if (isMultiloc && isEmptyMultiloc(value)) return true;
   }
   return false;
+};
+
+export const hasUnansweredQuestions = (
+  pageQuestions: IFlatCustomField[],
+  formValues: Record<string, any>
+): boolean => {
+  return pageQuestions.some((q) => isNillish(formValues[q.key]));
 };
 
 type GetFormCompletionPercentageParams = {

@@ -111,28 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "El projecte s'ha creat amb èxit!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Escriviu el nom del projecte",
   "app.components.ProjectTemplatePreview.useTemplate": "Utilitzeu aquesta plantilla",
-  "app.components.SeatInfo.additionalSeats": "Additional seats",
-  "app.components.SeatInfo.additionalSeatsToolTip": "This shows the number of additional seats you have purchased on top of 'Included seats'.",
-  "app.components.SeatInfo.adminSeats": "Admin seats",
-  "app.components.SeatInfo.adminSeatsIncludedText": "{adminSeats} admin seats included",
-  "app.components.SeatInfo.adminSeatsTooltip1": "Administrators are in charge of the platform and they have manager rights for all folders and projects. You can {visitHelpCenter} to learn more about the different roles.",
-  "app.components.SeatInfo.currentAdminSeatsTitle": "Current admin seats",
-  "app.components.SeatInfo.currentManagerSeatsTitle": "Current manager seats",
-  "app.components.SeatInfo.includedAdminToolTip": "This shows the number of available seats for admins included in the yearly contract.",
-  "app.components.SeatInfo.includedManagerToolTip": "This shows the number of available seats for managers included in the yearly contract.",
-  "app.components.SeatInfo.includedSeats": "Included seats",
-  "app.components.SeatInfo.managerSeats": "Manager seats",
-  "app.components.SeatInfo.managerSeatsTooltip": "Folder/project managers can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.",
-  "app.components.SeatInfo.managersIncludedText": "{managerSeats} manager seats included",
-  "app.components.SeatInfo.remainingSeats": "Remaining seats",
-  "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.components.SeatInfo.totalSeats": "Total seats",
-  "app.components.SeatInfo.totalSeatsTooltip": "This shows the summed number of seats within your plan and additional seats you have purchased.",
-  "app.components.SeatInfo.usedSeats": "Used seats",
-  "app.components.SeatInfo.view": "View",
-  "app.components.SeatInfo.visitHelpCenter": "visit our help center",
-  "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Your plan has {managerSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
+
+  "app.components.SeatInfo.assignedSeats": "Seients assignats: {assignedSeats}",
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.searchUsers": "Escriviu per cercar usuaris...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Missatge d'error alternatiu",
@@ -160,6 +140,8 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "No es permet fer preguntes demogràfiques a l'última pàgina del formulari per a aquesta acció.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Com que has seleccionat \"Anonimat total\" a \"Recollida de dades d'usuari\", les respostes a les preguntes demogràfiques fetes abans de la participació NO ES DESARAN ALS RESULTATS. Les respostes només s'utilitzaran per actualitzar el perfil de l'usuari, però aquest perfil no està enllaçat a la resposta. Per recollir dades demogràfiques i desar-les als resultats, tria una altra opció a \"Recollida de dades d'usuari\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "La tria de com es plantegen les preguntes demogràfiques als participants no és aplicable, ja que heu desactivat l'autenticació i heu seleccionat l'anonimat total.",
+
+  "app.components.admin.AddByEmail.invite": "Convidar",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Per afegir contingut dins de l'acordió, obriu l'acordió prement el símbol \">\" i, a continuació, arrossegueu-hi ginys a l'interior.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No s'ha seleccionat cap pregunta. Seleccioneu una pregunta primer.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Sense resposta",
@@ -555,8 +537,6 @@
   "app.components.onboarding.askFollowPreferences": "Demana als usuaris que segueixin àrees o temes",
   "app.components.onboarding.followHelperText": "Això activa un pas en el procés de registre on els usuaris podran seguir àrees o temes que seleccionis a continuació",
   "app.components.onboarding.followPreferences": "Preferències de seguiment",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} within plan, {noOfAdditionalSeats} additional",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Seats within plan",
   "app.containers.Admin.Campaigns.campaignFrom": "De:",
   "app.containers.Admin.Campaigns.campaignTo": "A:",
   "app.containers.Admin.Campaigns.customEmails": "Correus electrònics personalitzats",
@@ -650,6 +630,8 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "La configuració s'ha actualitzat correctament.",
   "app.containers.Admin.Moderation.type": "Tipus",
   "app.containers.Admin.Moderation.unread": "No vist",
+
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Encara no hi ha cap gestor.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Aquesta pàgina consta de les seccions següents. Podeu activar-los/desactivar-los i editar-los segons calgui.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "View page",
@@ -806,6 +788,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "Gestors del projecte",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Elements assignats",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Obteniu una visió general de totes les persones i organitzacions que s'han registrat a la plataforma. Afegiu una selecció d'usuaris a grups manuals o grups intel·ligents.",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "Vista general de seients",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.assign": "Assignar",
@@ -860,6 +844,8 @@
   "app.containers.Admin.Users.setAsAdmin": "Estableix com a administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Estableix com a usuari normal",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Assigna {name} com a gestor del projecte",
+
+  "app.containers.Admin.Users.spaceManager": "Gestor d'espai",
   "app.containers.Admin.Users.userBlockModal.allDone": "Tot fet",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloquejar usuari",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "El contingut d'aquest usuari no s'eliminarà mitjançant aquesta acció. No us oblideu de moderar el seu contingut si cal.",
@@ -1126,7 +1112,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Sense data de finalització",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Desplaça a l'esquerra",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Desplaça a la dreta",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Prem la tecla d'escapament per ometre el carrusel",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Premeu Esc per ometre el carrusel",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projectes i carpetes (heretat)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Títol dels projectes",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} està treballant actualment en",
@@ -1222,7 +1209,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Obteniu una visió general visual dels cronogrames dels projectes a la vista de calendari. Identifiqueu ràpidament quins projectes i fases comencen o acaben aviat i requereixen acció.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Enteneu què passa i quan",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Totes les preguntes es mostren al PDF. Tanmateix, actualment no es poden importar els elements següents mitjançant FormSync: imatges, etiquetes i pujada de fitxers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Totes les preguntes es mostren al PDF. Tanmateix, actualment les següents no són compatibles amb la importació mitjançant FormSync: preguntes de mapatge (marcador, dibuixar ruta i dibuixar àrea), preguntes de rànquing, preguntes de matriu i preguntes de pujada de fitxers.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Totes les preguntes es mostren al PDF. Tanmateix, les següents no són compatibles actualment per a la importació mitjançant FormSync: preguntes de mapatge (marcador, traçar ruta i dibuixar àrea) i preguntes de càrrega de fitxers.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Final del formulari",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Inici del formulari",
   "app.containers.Admin.projects.all.components.archived": "Archived",
@@ -1558,7 +1546,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Ja hi ha un compte associat a aquest correu electrònic. Aquesta aportació s'hi afegirà.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Consentiment de l'usuari (crear compte d'usuari)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Aprova",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Aprova totes les aportacions",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Aprovar totes les entrades ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Baixa el PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Correu electrònic:",
@@ -1571,8 +1560,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Aportacions importades",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "S'està important. Aquest procés pot trigar uns minuts.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Aquesta aportació s'ha importat de manera anònima.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "S'han importat {numIdeas} aportacions i requereixen aprovació.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "No s'han pogut aprovar {numNotApproved} aportacions. Comprova si hi ha problemes de validació a cada aportació i confirma-les individualment.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} entrades no s'han pogut aprovar. Reviseu si hi ha errors de validació a cada entrada.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Idioma:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Encara no hi ha res per revisar. Feu clic a \"{importFile}\" per importar un fitxer PDF que contingui formularis d'aportacions escanejats o un fitxer Excel amb aportacions.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Encara no hi ha res per revisar. Fes clic a \"{importFile}\" per importar un fitxer Excel que contingui aportacions.",
@@ -1580,6 +1569,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "No es pot mostrar el fitxer importat. La visualització de fitxers importats només està disponible per a importacions en PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La fase seleccionada no pot contenir aportacions. Selecciona'n una altra.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Eliminar totes les entrades",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Aquest projecte no conté cap fase que pugui incloure idees.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Seleccioneu a quina fase voleu afegir aquestes aportacions.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importador d'entrades",
@@ -2402,7 +2393,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Mètode de votació",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "El mètode de votació determina les regles de com voten els usuaris",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Afegir una entrada",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "Afegeix moderadors del projecte",
+
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": "Afegeix gestors de projecte",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "Pots afegir el teu projecte a una carpeta ara, o fer-ho més tard a la configuració del projecte",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Etiquetes del projecte",
   "app.containers.AdminPage.ProjectEdit.altText": "Text alternatiu",
@@ -2521,7 +2513,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínim",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exigir als participants que compleixin un pressupost mínim per enviar la seva cistella (introduïu \"0\" si no voleu establir un mínim).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Qui són els gestors del projecte?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Més detalls",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Necessites inspiració? Explora projectes similars d'altres ciutats a l'{inspirationHubLink}",
@@ -2650,6 +2641,8 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Veure projecte",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Volunteering",
   "app.containers.AdminPage.ProjectEdit.voteTermError": "Els termes de votació s'han d'especificar per a totes les localitzacions",
+
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": "Qui són els gestors?",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# grups poden veure} one {# grup pot veure} other {# grups poden veure}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Afegir un esdeveniment",
   "app.containers.AdminPage.ProjectEvents.additionalInformation": "Informació addicional",
@@ -2804,6 +2797,8 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Enquesta",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Esteu segur que voleu eliminar aquesta fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descripció de la fase",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Edita la fase",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Data de finalització",
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
@@ -3135,12 +3130,10 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Opcions de resposta",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Format de la resposta",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Cal proporcionar almenys una opció",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Aquest usuari modera la carpeta que conté aquest projecte. Per eliminar els seus drets de moderació per a aquest projecte, pots revocar els seus drets de carpeta o moure el projecte a una carpeta diferent.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Crea una pregunta nova",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Crea una pregunta",
   "app.containers.AdminPage.groups.permissions.defaultQuestion": "Pregunta per defecte",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
-  "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Proporcioneu un títol per a totes les opcions",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Sí-no (casella de selecció)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Data",
@@ -3155,12 +3148,9 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Sense membres} one {1 membre} other {{count} membres}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Emplena la descripció en tots els idiomes",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Emplena el títol en tots els idiomes",
-  "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
-  "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "No s'han trobat caps de projecte",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "No es mostra res, perquè no hi ha accions que l'usuari pugui dur a terme en aquest projecte.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Només els administradors poden crear una pregunta nova.",
   "app.containers.AdminPage.groups.permissions.option1": "opció 1",
-  "app.containers.AdminPage.groups.permissions.pendingInvitation": "Invitació pendent",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Qui pot anotar el document?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Qui pot inscriure's per assistir a un esdeveniment?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Si no hi ha cap fase activa quan un usuari intenta assistir a un esdeveniment, el sistema utilitzarà els permisos de la fase completada més recentment.",
@@ -3863,3 +3853,47 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
+
+  "app.components.SeatInfo.availableSeats": "Seients disponibles: {availableSeats}",
+
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Escriu el correu electrònic per convidar un gestor...",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ESBORRANY",
+
+  "app.containers.Admin.Users.SeatsOverview.unknown": "Desconegut",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Descarta els canvis",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "Vista general de seients",
+
+  "app.containers.Admin.Users.SeatsOverview.role": "Rol",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICAT",
+
+  "app.containers.Admin.ModeratorsTable.removeManager": "Elimina el gestor",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Estat de la invitació",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "S'està desant...",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "Nom",
+
+  "app.containers.Admin.Users.SeatsOverview.options": "Opcions",
+
+  "app.components.SeatInfo.totalManagerSeats": "Total de seients de gestor ({totalSeats})",
+
+  "app.components.SeatInfo.goToSeatsOverview": "Ves a la vista general de seients",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Estàs editant un esborrany. Publica'l perquè sigui visible per als participants, o descarta'l per revertir els canvis.",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "Gestors",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Publica",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Aquesta és la descripció publicada actualment i visible per als participants. Fes clic per editar-la.",
+
+  "app.components.SeatInfo.totalAdminSeats": "Total de seients d'administrador ({totalSeats})",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "Administradors",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Esborrany desat",

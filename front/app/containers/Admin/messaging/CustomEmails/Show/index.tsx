@@ -165,7 +165,7 @@ const Show = () => {
     (groupId?: string) => (event: React.FormEvent<any>) => {
       event.preventDefault();
       if (groupId) {
-        clHistory.push(`/admin/users/${groupId}`);
+        clHistory.push(`/admin/users/groups/${groupId}`);
       } else {
         clHistory.push('/admin/users');
       }

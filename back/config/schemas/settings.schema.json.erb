@@ -1607,6 +1607,18 @@
         }
       },
 
+      "draft_phase_description": {
+        "type": "object",
+        "title": "Draft phase description",
+        "description": "Enables a draft/publish workflow for phase descriptions.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "spaces": {
         "type": "object",
         "title": "Spaces (In development - do not enable)",

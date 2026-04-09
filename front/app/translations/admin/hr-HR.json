@@ -111,28 +111,8 @@
   "app.components.ProjectTemplatePreview.successMessage": "Projekt je uspješno kreiran!",
   "app.components.ProjectTemplatePreview.typeProjectName": "Unesite naziv projekta",
   "app.components.ProjectTemplatePreview.useTemplate": "Iskoristite ovaj predložak",
-  "app.components.SeatInfo.additionalSeats": "Dodatna sjedala",
-  "app.components.SeatInfo.additionalSeatsToolTip": "Ovo pokazuje broj dodatnih mjesta koja ste kupili povrh 'Uključenih mjesta'.",
-  "app.components.SeatInfo.adminSeats": "Administratorska mjesta",
-  "app.components.SeatInfo.adminSeatsIncludedText": "Uključeno je {adminSeats} administratorskih mjesta",
-  "app.components.SeatInfo.adminSeatsTooltip1": "Administratori su zaduženi za platformu i imaju menadžerska prava za sve mape i projekte. Možete {visitHelpCenter} saznati više o različitim ulogama.",
-  "app.components.SeatInfo.currentAdminSeatsTitle": "Trenutna administrativna mjesta",
-  "app.components.SeatInfo.currentManagerSeatsTitle": "Trenutna menadžerska mjesta",
-  "app.components.SeatInfo.includedAdminToolTip": "Ovo pokazuje broj dostupnih mjesta za administratore uključenih u godišnji ugovor.",
-  "app.components.SeatInfo.includedManagerToolTip": "Ovo pokazuje broj raspoloživih mjesta za menadžere koji su uključeni u godišnji ugovor.",
-  "app.components.SeatInfo.includedSeats": "Uključena sjedala",
-  "app.components.SeatInfo.managerSeats": "Menadžerska mjesta",
-  "app.components.SeatInfo.managerSeatsTooltip": "Upravitelji mapa/projekata mogu upravljati neograničenim brojem mapa/projekata. Možete {visitHelpCenter} saznati više o različitim ulogama.",
-  "app.components.SeatInfo.managersIncludedText": "Uključeno je {managerSeats} menadžerskih mjesta",
-  "app.components.SeatInfo.remainingSeats": "Preostala mjesta",
-  "app.components.SeatInfo.rolesSupportPage2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.components.SeatInfo.totalSeats": "Ukupno mjesta",
-  "app.components.SeatInfo.totalSeatsTooltip": "Ovo pokazuje zbroj mjesta unutar vašeg plana i dodatnih mjesta koja ste kupili.",
-  "app.components.SeatInfo.usedSeats": "Rabljena sjedala",
-  "app.components.SeatInfo.view": "Pogled",
-  "app.components.SeatInfo.visitHelpCenter": "posjetite naš centar za pomoć",
-  "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Vaš plan ima {adminSeatsIncluded}. Nakon što iskoristite sva sjedala, dodatna sjedala bit će dodana pod 'Dodatna sjedala'.",
-  "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Vaš plan ima {managerSeatsIncluded}, prihvatljiv za upravitelje mapa i voditelje projekata. Nakon što iskoristite sva sjedala, dodatna sjedala bit će dodana pod 'Dodatna sjedala'.",
+
+  "app.components.SeatInfo.assignedSeats": "Dodijeljena mjesta: {assignedSeats}",
   "app.components.UserSearch.addModerators": "Dodaj",
   "app.components.UserSearch.searchUsers": "Unesite za pretraživanje korisnika...",
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Alternativna poruka o pogrešci",
@@ -160,6 +140,8 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Postavljanje demografskih pitanja na posljednjoj stranici obrasca nije podržano za ovu radnju.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4": "Budući da ste u \"Prikupljanju korisničkih podataka\" odabrali \"Potpuna anonimnost\", odgovori na demografska pitanja postavljena prije sudjelovanja NEĆE BITI POHRANJENI U REZULTATIMA. Odgovori će se koristiti samo za ažuriranje korisničkog profila, ali taj profil nije povezan s odgovorom. Za prikupljanje demografskih podataka i njihovo pohranjivanje u rezultatima odaberite drugu opciju pod \"Prikupljanje korisničkih podataka\".",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Odabir načina postavljanja demografskih pitanja sudionicima nije primjenjiv jer ste onemogućili autentifikaciju i odabrali potpunu anonimnost",
+
+  "app.components.admin.AddByEmail.invite": "Pozovi",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Za dodavanje sadržaja unutar harmonike, otvorite harmoniku pritiskom na simbol \">\", a zatim povucite sve widgete unutra.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nije odabrano nijedno pitanje. Prvo odaberite pitanje.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nema odgovora",
@@ -555,8 +537,6 @@
   "app.components.onboarding.askFollowPreferences": "Zamolite korisnike da prate područja ili teme",
   "app.components.onboarding.followHelperText": "Ovo aktivira korak u procesu registracije gdje će korisnici moći pratiti područja ili teme koje odaberete u nastavku",
   "app.components.onboarding.followPreferences": "Slijedite postavke",
-  "app.components.seatsWithinPlan.seatsExceededPlanText": "{noOfSeatsInPlan} u planu, {noOfAdditionalSeats} dop",
-  "app.components.seatsWithinPlan.seatsWithinPlanText": "Sjedala u planu",
   "app.containers.Admin.Campaigns.campaignFrom": "Od:",
   "app.containers.Admin.Campaigns.campaignTo": "Za:",
   "app.containers.Admin.Campaigns.customEmails": "Prilagođene e-pošte",
@@ -650,6 +630,8 @@
   "app.containers.Admin.Moderation.successfulUpdateSettings": "Postavke su uspješno ažurirane.",
   "app.containers.Admin.Moderation.type": "Tip",
   "app.containers.Admin.Moderation.unread": "Nije pregledano",
+
+  "app.containers.Admin.ModeratorsTable.noManagers2": "Još nema voditelja.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Stranica se sastoji od sljedećih odjeljaka. Možete ih uključiti/isključiti i urediti prema potrebi.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Odjeljci",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Prikaz stranice",
@@ -806,6 +788,8 @@
   "app.containers.Admin.Users.GroupsPanel.managers": "Voditelji projekata",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Dodijeljene stavke",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Dobijte pregled svih ljudi i organizacija koje su se registrirale na platformi. Dodajte odabrane korisnike u ručne ili pametne grupe.",
+
+  "app.containers.Admin.Users.Seats.seatsOverview": "Pregled mjesta",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Pozivnica na čekanju",
   "app.containers.Admin.Users.admin": "Administrator",
   "app.containers.Admin.Users.assign": "Dodijeliti",
@@ -860,6 +844,8 @@
   "app.containers.Admin.Users.setAsAdmin": "Postavi kao administratora",
   "app.containers.Admin.Users.setAsNormalUser": "Postavi kao normalnog korisnika",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Dodijeli {name} kao voditelja projekta",
+
+  "app.containers.Admin.Users.spaceManager": "Voditelj prostora",
   "app.containers.Admin.Users.userBlockModal.allDone": "Gotovo",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokirati korisnika",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Sadržaj ovog korisnika neće biti uklonjen ovom radnjom. Ne zaboravite moderirati njihov sadržaj ako je potrebno.",
@@ -1126,7 +1112,9 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Nema datuma završetka",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Pomakni se lijevo",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Pomakni se desno",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Pritisnite Escape za preskakanje vrtuljka",
+
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pritisnite Escape za preskakanje vrtuljka",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel2": "Pritisnite Escape za preskakanje vrtuljka",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projekti i mape (nasljeđe)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Naziv projekta",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} trenutno se radi",
@@ -1222,7 +1210,8 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Dobijte vizualni pregled vremenskih okvira vaših projekata u našem kalendarskom prikazu. Brzo prepoznajte koji projekti i faze uskoro počinju ili završavaju i zahtijevaju djelovanje.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Razumjeti što se događa i kada",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSynca: slike, oznake i prijenos datoteka.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeća pitanja trenutno nisu podržana za uvoz putem FormSynca: pitanja o mapiranju (ispuštanje pribadače, crtanje rute i crtanje područja), pitanja o rangiranju, matrična pitanja i pitanja o prijenosu datoteka.",
+
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey8": "Sva su pitanja prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSync-a: pitanja s mapiranjem (postavljanje pribadače, crtanje rute i crtanje područja) i pitanja s učitavanjem datoteka.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Kraj obrasca",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Početak obrasca",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
@@ -1558,7 +1547,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Već postoji račun povezan s ovom e-poštom. Ovaj unos će mu biti dodan.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Pristanak korisnika (kreiranje korisničkog računa)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Odobriti",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Odobrite sve unose",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Odobri sve unose ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Preuzmi PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
@@ -1571,8 +1561,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Uvezeni ulazi",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Uvoz. Ovaj proces može potrajati nekoliko minuta.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Ovaj unos uvezen je anonimno.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} unosi su uvezeni i zahtijevaju odobrenje.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} unosi nisu mogli biti odobreni. Provjerite svaki unos ima li problema s provjerom valjanosti i potvrdite pojedinačno.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} unosa nije bilo moguće odobriti. Provjerite svaki unos zbog problema s validacijom.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lokalitet:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Još ništa za recenziju. Kliknite \"{importFile}\" za uvoz PDF datoteke koja sadrži skenirane obrasce za unos ili Excel datoteke koja sadrži unose.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Još ništa za recenziju. Kliknite \"{importFile}\" za uvoz Excel datoteke koja sadrži unose.",
@@ -1580,6 +1570,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nije moguće prikazati uvezenu datoteku. Pregled uvezenih datoteka dostupan je samo za uvoze PDF-a.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Odabrana faza ne može sadržavati ulaze. Odaberite drugu.",
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ukloni sve unose",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ovaj projekt ne sadrži nijednu fazu koja može sadržavati ideje.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Odaberite u koju fazu želite dodati ove ulaze.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Uvoznik unosa",
@@ -2402,7 +2394,8 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Način glasovanja",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "Metoda glasovanja određuje pravila kako korisnici glasaju",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Dodajte unos",
-  "app.containers.AdminPage.ProjectEdit.addProjectModerators": "Dodajte moderatore projekta",
+
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": "Dodaj voditelje projekta",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip2": "Svoj projekt možete dodati u mapu sada ili to učiniti kasnije u postavkama projekta",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Oznake projekta",
   "app.containers.AdminPage.ProjectEdit.altText": "Alternativni tekst",
@@ -2521,7 +2514,6 @@
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Zatražite od sudionika da ispune minimalni proračun prilikom slanja košarice (unesite „0“ ako ne želite da postavite minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "posjetite naš Centar za podršku",
-  "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Tko su voditelji projekta?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Više pojedinosti",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.needInspiration": "Trebate inspiraciju? Istražite slične projekte iz drugih gradova u {inspirationHubLink}",
@@ -2650,6 +2642,8 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Prikaz projekta",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Volontiranje",
   "app.containers.AdminPage.ProjectEdit.voteTermError": "Uvjeti glasanja moraju biti navedeni za sve jezike",
+
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": "Tko su voditelji?",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# može vidjeti grupa} one {# može vidjeti grupu} other {# može vidjeti grupa}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Dodaj događaj",
   "app.containers.AdminPage.ProjectEvents.additionalInformation": "Dodatne informacije",
@@ -2804,6 +2798,8 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Pregled",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Jeste li sigurni da želite izbrisati ovu fazu?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Opis faze",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": "Uredi fazu",
   "app.containers.AdminPage.ProjectTimeline.endDate": "Datum završetka",
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "Datum završetka",
@@ -3135,12 +3131,10 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Izbori odgovora",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Format odgovora",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Mora se dati barem jedan izbor",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Ovaj korisnik moderira mapu koja sadrži ovaj projekt. Da biste uklonili njihova prava moderatora za ovaj projekt, možete opozvati njihova prava mape ili premjestiti projekt u drugu mapu.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Napravi novo pitanje",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Napravite pitanje",
   "app.containers.AdminPage.groups.permissions.defaultQuestion": "Zadano pitanje",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Izbriši",
-  "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Izbriši",
   "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Navedite naslov za sve opcije",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Da-ne (potvrdni okvir)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datum",
@@ -3155,12 +3149,9 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {nema članova} one {1 član} other {{count} članova}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Molimo ispunite opis na svim jezicima",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Molimo ispunite naslov na svim jezicima",
-  "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Jeste li sigurni?",
-  "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nisu pronađeni voditelji projekata",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ništa nije prikazano jer nema radnji koje korisnici mogu obaviti u ovom projektu.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Samo administratori mogu kreirati novo pitanje.",
   "app.containers.AdminPage.groups.permissions.option1": "opcija 1",
-  "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pozivnica na čekanju",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Tko može označiti dokument?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Tko se može prijaviti za sudjelovanje na događaju?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Ako nema aktivne faze kada korisnik pokuša prisustvovati događaju, sustav će koristiti dozvole iz najnovije završene faze.",
@@ -3863,3 +3854,47 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}."
 }
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Ovo je trenutačno objavljeni opis vidljiv sudionicima. Kliknite za uređivanje.",
+
+  "app.components.SeatInfo.goToSeatsOverview": "Idi na pregled mjesta",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Objavi",
+
+  "app.containers.Admin.Users.SeatsOverview.title": "Pregled mjesta",
+
+  "app.components.SeatInfo.availableSeats": "Dostupna mjesta: {availableSeats}",
+
+  "app.components.SeatInfo.totalManagerSeats": "Ukupno voditeljskih mjesta ({totalSeats})",
+
+  "app.containers.Admin.ModeratorsTable.removeManager": "Ukloni voditelja",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Nacrt je spremljen",
+
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": "Unesite e-poštu za pozivanje voditelja...",
+
+  "app.containers.Admin.Users.SeatsOverview.name": "Ime",
+
+  "app.containers.Admin.Users.SeatsOverview.unknown": "Nepoznato",
+
+  "app.containers.Admin.Users.SeatsOverview.admins": "Administratori",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "OBJAVLJENO",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "NACRT",
+
+  "app.containers.Admin.Users.SeatsOverview.role": "Uloga",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": "Spremanje...",
+
+  "app.containers.Admin.Users.SeatsOverview.inviteStatus": "Status pozivnice",
+
+  "app.containers.Admin.Users.SeatsOverview.managers": "Voditelji",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Uređujete nacrt. Objavite ga kako bi bio vidljiv sudionicima ili ga odbacite za povratak na prethodno stanje.",
+
+  "app.containers.Admin.Users.SeatsOverview.options": "Opcije",
+
+  "app.components.SeatInfo.totalAdminSeats": "Ukupno administratorskih mjesta ({totalSeats})",
+
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odbaci promjene",
