@@ -375,41 +375,34 @@ const ParticipationMethodPicker = ({
                 alignItems="center"
                 gap="16px"
                 p="16px"
-                borderRadius="3px"
+                borderRadius={stylingConsts.borderRadius}
                 mt="24px"
                 w="750px"
                 background={colors.teal100}
               >
-                <Box
-                  p="4px"
-                  px="8px"
-                  borderRadius={stylingConsts.borderRadius}
-                  alignContent="center"
+                <Tooltip
+                  content={
+                    <>
+                      <Box display="flex" flexDirection="column" gap="8px">
+                        <FormattedMessage
+                          {...messages2.formSyncLockedTooltip}
+                        />
+                        <FormattedMessage
+                          {...messages2.formSyncLockedTooltip2}
+                        />
+                      </Box>
+                    </>
+                  }
+                  disabled={importPrintedFormsEnabled}
+                  placement="bottom"
+                  theme="dark"
                 >
-                  <Tooltip
-                    content={
-                      <>
-                        <Box display="flex" flexDirection="column" gap="8px">
-                          <FormattedMessage
-                            {...messages2.formSyncLockedTooltip}
-                          />
-                          <FormattedMessage
-                            {...messages2.formSyncLockedTooltip2}
-                          />
-                        </Box>
-                      </>
-                    }
-                    disabled={importPrintedFormsEnabled}
-                    placement="bottom"
-                    theme="dark"
-                  >
-                    <Icon
-                      name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
-                      fill={colors.teal700}
-                      width="20px"
-                    />
-                  </Tooltip>
-                </Box>
+                  <Icon
+                    name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                    fill={colors.teal700}
+                    width="20px"
+                  />
+                </Tooltip>
 
                 <Box>
                   <Text m="0px" color="teal700" fontSize="s">
