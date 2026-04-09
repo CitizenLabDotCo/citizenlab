@@ -92,6 +92,28 @@ describe SideFxProjectService do
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
+
+    it 'enqueues the transition job when a schedule is set' do
+      scheduled_at = 1.day.from_now
+      project.assign_attributes(
+        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at }
+      )
+      service.before_update(project, user)
+      project.save!
+
+      expect { service.after_update(project, user) }
+        .to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
+        .with(project.admin_publication.id, user.id)
+    end
+
+    it 'does not enqueue the transition job when no schedule is set' do
+      project.assign_attributes(title_multiloc: { en: 'changed' })
+      service.before_update(project, user)
+      project.save!
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
+    end
   end
 
   describe 'after_destroy' do

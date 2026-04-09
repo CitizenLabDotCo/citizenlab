@@ -38,6 +38,7 @@ module ProjectFolders
       payload[:change] = sanitize_change(change) if change.present?
 
       LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i, payload: payload)
+      enqueue_scheduled_transition(folder.admin_publication, user)
     end
 
     def after_destroy(frozen_folder, user)
@@ -50,6 +51,17 @@ module ProjectFolders
         user, Time.now.to_i,
         payload: { project_folder: serialized_folder }
       )
+    end
+
+    private
+
+    def enqueue_scheduled_transition(admin_pub, user)
+      return unless admin_pub.saved_change_to_scheduled_at?
+      return unless admin_pub.scheduled_at.present?
+
+      ProcessScheduledPublicationTransitionJob
+        .set(wait_until: admin_pub.scheduled_at)
+        .perform_later(admin_pub.id, user&.id)
     end
   end
 end

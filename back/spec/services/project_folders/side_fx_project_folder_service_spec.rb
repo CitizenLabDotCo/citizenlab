@@ -40,6 +40,25 @@ describe ProjectFolders::SideFxProjectFolderService do
           }
         ).exactly(1).times
     end
+
+    it 'enqueues the transition job when a schedule is set' do
+      scheduled_at = 1.day.from_now
+      project_folder.assign_attributes(
+        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at }
+      )
+      project_folder.save!
+
+      expect { service.after_update(project_folder, user) }
+        .to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
+        .with(project_folder.admin_publication.id, user.id)
+    end
+
+    it 'does not enqueue the transition job when no schedule is set' do
+      project_folder.update!(title_multiloc: { en: 'changed' })
+
+      expect { service.after_update(project_folder, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
+    end
   end
 
   describe 'after_destroy' do

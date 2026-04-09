@@ -74,6 +74,7 @@ class SideFxProjectService
     after_folder_changed project, user if @folder_id_was != project.folder_id
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
     after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
+    enqueue_scheduled_transition(project.admin_publication, user)
   end
 
   def before_destroy(project, user); end
@@ -126,6 +127,15 @@ class SideFxProjectService
 
   def after_publish(project, user)
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
+  end
+
+  def enqueue_scheduled_transition(admin_pub, user)
+    return unless admin_pub.saved_change_to_scheduled_at?
+    return unless admin_pub.scheduled_at.present?
+
+    ProcessScheduledPublicationTransitionJob
+      .set(wait_until: admin_pub.scheduled_at)
+      .perform_later(admin_pub.id, user&.id)
   end
 
   def after_folder_changed(project, current_user)
