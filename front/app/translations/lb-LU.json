@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Schécken",
   "app.modules.id_oostende_rrn.takenFormError": "Är Sozialversécherungsnummer gouf scho benotzt, fir en anere Kont ze verifizéieren",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Gebrauch vun der Matricule verifizéieren",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Dir hutt Administrateursrechter iwwer den \"{folderName}\"-Classeur kritt.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Deelen",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Projeten bei {folderUrl} ukucken, fir datt Är Stëmm gehéiert gëtt!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | vun der participativer Plattform vum {orgName}",

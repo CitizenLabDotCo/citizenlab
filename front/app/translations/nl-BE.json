@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Verzenden",
   "app.modules.id_oostende_rrn.takenFormError": "Dit rijksregisternummer is al eens gebruikt door een ander account",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verifieer je identiteit met je rijksregisternummer.",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Je hebt admin rechten gekregen over de \"{folderName}\" map.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Deel",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Bekijk de projecten op {folderUrl} om je mening te laten horen!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | van het participatieplatform van {orgName}",

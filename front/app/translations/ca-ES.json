@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Presentar",
   "app.modules.id_oostende_rrn.takenFormError": "El vostre número de seguretat social ja s'ha utilitzat per verificar un altre compte",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verifiqueu amb el número de la seguretat social",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Heu rebut drets d'administrador sobre la carpeta \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Compartir",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Consulta els projectes a {folderUrl} per fer sentir la vostra veu!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | de la plataforma de participació de {orgName}",

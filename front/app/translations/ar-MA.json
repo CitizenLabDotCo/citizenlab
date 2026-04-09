@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "إرسال",
   "app.modules.id_oostende_rrn.takenFormError": "تم استخدام رقم تأمينك الاجتماعي فعلاً للتحقق من حساب آخر",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "التحقق باستخدام رقم التأمين الاجتماعي",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "لقد تلقيت حقوق مسؤول للوصول إلى المجلد \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "مشاركة",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "اعرض المشاريع عبر {folderUrl} ليصبح صوتك مسموعًا!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{اسم المشروع} | من منصة المشاركة لـ {اسم المنظمة}",

@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Gönder",
   "app.modules.id_oostende_rrn.takenFormError": "Sosyal güvenlik numaranız başka bir hesabı doğrulamak için kullanılmış",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Sosyal güvenlik numarasını kullanarak doğrulayın",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "\"{folderName}\" klasörü için yönetici hakları aldınız.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Paylaş",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Sesinizi duyurmak için {folderUrl} adresindeki projeleri inceleyin!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | {orgName} katılım platformundan",

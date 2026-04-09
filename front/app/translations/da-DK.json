@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Indsend",
   "app.modules.id_oostende_rrn.takenFormError": "Din personnummer er allerede blevet brugt til at verificere en anden konto",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Bekræftelse ved hjælp af socialsikringsnummer",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Du har fået administratorrettigheder til mappen \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Del",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Se projekterne på {folderUrl} for at gøre din stemme hørt!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | fra borgerinddragelsesplatformen hos {orgName}",

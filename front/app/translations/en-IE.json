@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Submit",
   "app.modules.id_oostende_rrn.takenFormError": "Your social security number has already been used to verify another account",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verify using social security number",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "View the projects at {folderUrl} to make your voice heard!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | from the participation platform of {orgName}",

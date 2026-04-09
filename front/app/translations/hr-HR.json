@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Pošalji",
   "app.modules.id_oostende_rrn.takenFormError": "Vaš broj socijalnog osiguranja već je korišten za potvrđivanje drugog računa",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Potvrdi putem broja socijalnog osiguranja",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Dodijeljena su vam administratorska prava nad mapom „{folderName}“.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podijeli",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Prikažite projekte na {folderUrl} kako bi se čuo vaš glas!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | s platforme za sudjelovanje organizacije {orgName}",

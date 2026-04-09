@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Iesniegt",
   "app.modules.id_oostende_rrn.takenFormError": "Jūsu sociālā nodrošinājuma numurs jau ir izmantots cita konta pārbaudei",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Pārbaudiet, izmantojot sociālā nodrošinājuma numuru",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Jūs esat saņēmis administratora tiesības mapei \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Koplietot",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Apskatiet projektus {folderUrl}, lai jūsu viedoklis tiktu sadzirdēts!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | no {orgName} līdzdalības platformas",

@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Enviar",
   "app.modules.id_oostende_rrn.takenFormError": "O seu número de CPF já foi utilizado para verificar outra conta",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verificar a utilização do número de Cpf",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Você recebeu direitos de administrador sobre a pasta \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Compartilhar",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Veja os projetos em {folderUrl} para fazer ouvir a sua voz!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | da plataforma de participação de {orgName}",

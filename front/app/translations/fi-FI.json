@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Lähetä",
   "app.modules.id_oostende_rrn.takenFormError": "Sosiaaliturvatunnustasi on jo käytetty toisen tilin vahvistamiseen",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Vahvista käyttämällä sosiaaliturvatunnusta",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Sait järjestelmänvalvojan oikeudet kansioon \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Jaa",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Katso projektit osoitteessa {folderUrl} saadaksesi äänesi kuuluviin!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | {orgName}osallistumisalustalta",

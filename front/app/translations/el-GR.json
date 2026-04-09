@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Υποβολή",
   "app.modules.id_oostende_rrn.takenFormError": "Ο αριθμός κοινωνικής ασφάλισής σας έχει ήδη χρησιμοποιηθεί για την επαλήθευση άλλου λογαριασμού",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Επαλήθευση με τον αριθμό κοινωνικής ασφάλισης",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Λάβατε δικαιώματα διαχειριστή του φακέλου \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Κοινοποίηση",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Δείτε τα έργα στη διεύθυνση {folderUrl} για να κάνετε τη φωνή σας να ακουστεί!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | από την πλατφόρμα συμμετοχής του {orgName}",

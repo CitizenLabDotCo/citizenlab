@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Skicka",
   "app.modules.id_oostende_rrn.takenFormError": "Ditt personnummer har redan använts för att verifiera ett annat konto",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verifiera med personnummer",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Du fick administratörsrättigheter för mappen {folderName}.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Dela",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Se projekten på {folderUrl} för att göra din röst hörd!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | från plattformen för deltagande för {orgName}",

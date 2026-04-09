@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Beküld",
   "app.modules.id_oostende_rrn.takenFormError": "Társadalombiztosítási számát már felhasználták egy másik fiók ellenőrzésére",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Igazoljon társadalombiztosítási számmal",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Adminisztrátori jogokat kapott a \"{folderName}\" mappához.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Részesedés",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Tekintse meg a projekteket a {folderUrl} címen, hogy hallhassa hangját!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | a {orgName}részvételi platformjáról",

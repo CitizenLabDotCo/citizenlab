@@ -2501,7 +2501,6 @@
   "app.modules.id_oostende_rrn.submit": "Invia",
   "app.modules.id_oostende_rrn.takenFormError": "Il suo numero di previdenza sociale è già stato utilizzato per verificare un altro conto",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verificare utilizzando il numero di previdenza sociale",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Hai ricevuto i diritti di amministratore sulla cartella \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Condividi",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Visualizza i progetti su {folderUrl} per far sentire la tua voce!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | dalla piattaforma di partecipazione di {orgName}",
