@@ -73,7 +73,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_space_moderator_rights'
+      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_space_manager_rights'
     end
 
     def self.content_type_multiloc_key
@@ -81,7 +81,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_is_given_space_moderator_rights'
+      'email_campaigns.admin_labels.trigger.user_is_given_space_manager_rights'
     end
   end
 end
