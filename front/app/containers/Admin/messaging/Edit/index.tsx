@@ -8,6 +8,7 @@ import {
   StatusLabel,
   Title,
   Text,
+  Success,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -23,7 +24,6 @@ import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/Campaign
 import messages from 'containers/Admin/messaging/messages';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -122,10 +122,13 @@ const Edit = ({ campaignType }: EditProps) => {
       )}
       <Box>
         {feedbackType && (
-          <SuccessFeedback
-            successMessage={formatMessage(feedbackMessages[feedbackType])}
-            closeSuccessMessage={() => setFeedbackType(null)}
-          />
+          <Box mb="8px">
+            <Success
+              text={formatMessage(feedbackMessages[feedbackType])}
+              showIcon
+              showBackground
+            />
+          </Box>
         )}
       </Box>
       <Box display="flex">

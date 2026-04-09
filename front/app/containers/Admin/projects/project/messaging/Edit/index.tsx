@@ -5,6 +5,7 @@ import {
   Button,
   IconTooltip,
   colors,
+  Success,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +14,6 @@ import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -76,10 +76,13 @@ const Edit = () => {
         </PageTitle>
         <Box>
           {feedbackType && (
-            <SuccessFeedback
-              successMessage={formatMessage(feedbackMessages[feedbackType])}
-              closeSuccessMessage={() => setFeedbackType(null)}
-            />
+            <Box mb="8px">
+              <Success
+                text={formatMessage(feedbackMessages[feedbackType])}
+                showIcon
+                showBackground
+              />
+            </Box>
           )}
         </Box>
         <Box display="flex">
