@@ -2,7 +2,7 @@
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "De geselecteerde kleur heeft niet genoeg contrast (ten opzichte van een witte achtergrond) om te voldoen aan de {wcagLink} toegankelijkheidsstandaard. {lineBreak} {lineBreak} Het niet halen van deze verhouding kan de gebruikerservaring van gebruikers met een visuele beperking verslechteren, of het gebruik van het platform zelfs onmogelijk maken. {lineBreak} {lineBreak} Een verhouding van ten minste 4,5 tot 1 is vereist om te voldoen. Huidige verhouding: {contrastRatio} tot 1. Kies een donkerdere kleur om de verhouding te verhogen.",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Voeg een link toe aan de navigatiebalk om alle projectevenementen te bekijken",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Maak een project aan op basis van de template '{templateTitle}'",
-  "app.components.admin.PostManager.allTopics": "Alle onderwerpen",
+  "app.components.admin.PostManager.allTopics": "Alle tags",
   "app.components.admin.PostManager.deleteAllSelectedInputs": "Verwijder {count} bijdragen",
   "app.components.admin.PostManager.exportAllInputs": "Alle bijdragen exporteren (.xlsx)",
   "app.components.admin.PostManager.exportInputsProjects": "Bijdragen voor dit project exporteren (.xlsx)",
