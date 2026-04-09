@@ -21,7 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import MissingData from '../../_shared/MissingData';
 
 import MapQuestion from './MapQuestions';
-import { getLegendColors, getLegendLabels } from './utils';
+import { legendColors, getLegendLabels } from './utils';
 
 interface Props {
   projectId: string;
@@ -112,7 +112,7 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={getLegendColors(
+                  colors={legendColors(
                     attributes.legend,
                     DEFAULT_CATEGORICAL_COLORS
                   )}
@@ -135,7 +135,7 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={getLegendColors(
+                  colors={legendColors(
                     attributes.legend,
                     DEFAULT_CATEGORICAL_COLORS
                   )}

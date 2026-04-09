@@ -1,12 +1,14 @@
-import { colors } from '@citizenlab/cl2-component-library';
-
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import { Localize } from 'hooks/useLocalize';
 
 import { roundPercentage } from 'utils/math';
 
+import { EMPTY_COLOR, legendColorMap } from '../legendColors';
+
 import { BarType, Answer } from './typings';
+
+export { EMPTY_COLOR } from '../legendColors';
 
 export const parseQuestionResult = (
   result: ResultUngrouped | ResultGrouped,
@@ -17,7 +19,7 @@ export const parseQuestionResult = (
   if (result.grouped) {
     const { multilocs, answers, totalPickCount } = result;
 
-    const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
+    const colorSchemeMap = legendColorMap(result.legend, colorScheme);
 
     return answers.map(({ answer, count, groups }) => {
       const label =
@@ -111,23 +113,6 @@ export const parseQuestionResult = (
       };
     }) || []
   );
-};
-
-export const EMPTY_COLOR = colors.coolGrey300;
-
-const constructColorSchemeMap = (
-  legend: (string | null)[],
-  colorScheme: string[]
-) => {
-  return legend.reduce((acc, value, i) => {
-    if (value === null) {
-      acc.set(null, EMPTY_COLOR);
-    } else {
-      acc.set(value, colorScheme[i % colorScheme.length]);
-    }
-
-    return acc;
-  }, new Map<string | null, string>());
 };
 
 export const getType = (index: number, length: number) => {
