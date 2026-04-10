@@ -66,7 +66,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
           alignItems="center"
           gap="16px"
           p="12px"
-          borderRadius="3px"
+          borderRadius={stylingConsts.borderRadius}
           border={`1px solid ${colors.grey300}`}
           background={colors.white}
         >
@@ -111,6 +111,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
                 }
                 theme="dark"
               >
+                {/* Empty button used to match designs, as this is admin-only it is fine */}
                 <Button buttonStyle="admin-dark" icon="lock">
                   <FormattedMessage {...messages.unlockScanning} />
                 </Button>
@@ -125,7 +126,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
           alignItems="center"
           gap="16px"
           p="12px"
-          borderRadius="3px"
+          borderRadius={stylingConsts.borderRadius}
           border={`1px solid ${colors.grey300}`}
           background={colors.grey50}
         >

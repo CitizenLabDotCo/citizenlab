@@ -178,6 +178,8 @@ const Button = styled.button`
 
 For small customizations, we use a few components with styling props, most notably <Box>.
 
+For border radius adjustments, we use the value as specified by `stylingConsts.borderRadius.`
+
 ## Testing
 
 ### Unit & Integration Tests
