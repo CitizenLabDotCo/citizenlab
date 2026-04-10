@@ -6174,7 +6174,6 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T20:18:35.938393Z",
@@ -17205,6 +17204,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.fieldFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-10T09:35:45.426183Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.widgets.fieldFont": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -17254,6 +17258,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.fieldProjectsLimit": {
+    "state": "verified",
+    "verified_at": "2026-04-10T09:35:45.426183Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.widgets.fieldRelativeLink": {
     "state": "verified",
@@ -17344,6 +17353,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.tabIdeas": {
+    "state": "verified",
+    "verified_at": "2026-04-10T09:35:45.426183Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.widgets.tabProjects": {
+    "state": "verified",
+    "verified_at": "2026-04-10T09:35:45.426183Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.widgets.title": {
     "state": "verified",
