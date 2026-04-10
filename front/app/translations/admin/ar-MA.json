@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "بمجرد إضافة مقاعد إضافية، ستزداد فاتورتك. تواصل مع مدير نجاحك الحكومي (GovSuccess Manager) لمعرفة المزيد حول ذلك.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "شكراً لك على إكمال الاستطلاع! يمكنك المشاركة فيه مرة أخرى في الربع القادم.",
-  "app.components.FormSync.downloadExcelTemplate": "تحميل نموذج Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "نماذج Excel ما غاديش تشمل أسئلة تحميل الملفات ولا أي أسئلة ديال الخرائط (تحديد نقطة، رسم مسار، رسم منطقة، تحميل ملف ESRI) حيت هاد الأنواع ما كيدعمهمش الاستيراد الجماعي فـ هاد الوقت.",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "إنشاء مشروع بناءً على النموذج ''{templateTitle}''",

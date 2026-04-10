@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Gràcies per completar l'enquesta! Pots tornar-la a fer el trimestre vinent.",
-  "app.components.FormSync.downloadExcelTemplate": "Descarrega una plantilla d'Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Les plantilles d'Excel no inclouran les preguntes de pujada de fitxers ni cap pregunta d'entrada de mapes (Fixar marcador, Dibuixar ruta, Dibuixar àrea, pujada de fitxers ESRI), ja que actualment no es permet la importació massiva d'aquests elements.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Crear projecte",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un projecte basat en la plantilla ''{templateTitle}''",

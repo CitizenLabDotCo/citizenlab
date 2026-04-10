@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Σας ευχαριστούμε που ολοκληρώσατε την έρευνα! Μπορείτε να τη συμπληρώσετε ξανά το επόμενο τρίμηνο.",
-  "app.components.FormSync.downloadExcelTemplate": "Λήψη προτύπου Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Τα πρότυπα Excel δεν θα περιλαμβάνουν ερωτήσεις μεταφόρτωσης αρχείων και τυχόν ερωτήσεις εισαγωγής χαρτογράφησης (Τοποθέτηση πινέζας, Σχεδίαση διαδρομής, Σχεδίαση περιοχής, μεταφόρτωση αρχείου ESRI), καθώς αυτά δεν υποστηρίζονται για μαζική εισαγωγή αυτήν τη στιγμή.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Δημιουργία έργου με βάση το πρότυπο ''{templateTitle}''",
