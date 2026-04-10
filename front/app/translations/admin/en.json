@@ -88,6 +88,7 @@
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Download PDF",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel templates will not include File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",
   "app.components.FormSync.importFile1": "Import file",
   "app.components.FormSync.importScans1": "Import scans",
   "app.components.FormSync.paperFormsOCR1": "Paper forms OCR",
