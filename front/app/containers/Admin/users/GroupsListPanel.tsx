@@ -231,7 +231,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </GroupName>
           {usersCount && (
             <MembersCount data-cy="e2e-space-moderator-count">
-              {usersCount.data.attributes.folder_moderators_count}
+              {usersCount.data.attributes.space_moderators_count}
             </MembersCount>
           )}
         </MenuLink>
