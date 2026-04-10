@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Er zijn fouten opgetreden tijdens het importeren en sommige bijdragen zijn niet geïmporteerd. Corrigeer de fouten en importeer de ontbrekende bijdragen opnieuw.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ongeldige formuliergegevens. Controleer het formulier hierboven op fouten.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importeer Excel-bestand (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importeren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importeer gescande formulieren (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importeer gescande formulieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Geïmporteerde bijdragen",

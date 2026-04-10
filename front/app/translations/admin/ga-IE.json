@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Tharla earráidí le linn an allmhairithe agus níor allmhairíodh roinnt ionchur. Ceartaigh na hearráidí agus ath-allmhairigh aon ionchur atá ar iarraidh.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Sonraí foirme neamhbhailí. Seiceáil an fhoirm thuas le haghaidh earráidí.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Iompórtáil comhad Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Iompórtáil",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Iompórtáil foirmeacha scanta (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Iompórtáil foirmeacha scanta",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Ionchuir allmhairithe",

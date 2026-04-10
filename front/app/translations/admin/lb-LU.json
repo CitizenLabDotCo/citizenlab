@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Feeler sinn beim Import opgetrueden an e puer Bäiträg goufen net importéiert. Korrigéiert wgl. d'Feeler an importéiert déi feelend Bäiträg nei.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ongëlteg Formulardaten. Iwwerpréift de Formular uewendriwwer op Feeler.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Excel-Datei importéieren (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importéieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Scannéiert Formulairen importéieren (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Scannéiert Formulairen importéieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importéiert Bäiträg",

@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "درآمد کے دوران غلطیاں ہوئیں اور کچھ ان پٹ درآمد نہیں ہوئے ہیں۔ براہ کرم غلطیوں کو درست کریں اور کوئی گمشدہ ان پٹ دوبارہ درآمد کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "غلط فارم ڈیٹا۔ غلطیوں کے لیے اوپر کا فارم چیک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "ایکسل فائل درآمد کریں (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "درآمد کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "اسکین شدہ فارمز درآمد کریں (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "اسکین شدہ فارمز درآمد کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "امپورٹڈ ان پٹس",

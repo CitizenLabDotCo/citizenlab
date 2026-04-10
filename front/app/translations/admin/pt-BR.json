@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Ocorreram erros durante a importação e alguns insumos não foram importados. Corrija os erros e importe novamente os insumos ausentes.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Dados de formulário inválidos. Verifique se há erros no formulário acima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importar arquivo do Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importar",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importar formulários digitalizados (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importar formulários digitalizados",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Entradas importadas",
