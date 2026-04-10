@@ -53,7 +53,7 @@
   "app.components.Admin.Campaigns.statsButton": "Statistiques",
   "app.components.Admin.Campaigns.subject": "Sujet",
   "app.components.Admin.Campaigns.to": "À",
-  "app.components.Admin.Email.scheduling.cancelSchedule": "Annuler l'envoie",
+  "app.components.Admin.Email.scheduling.cancelSchedule": "Annuler l'envoi",
   "app.components.Admin.Email.scheduling.cancelScheduleDescription": "Êtes-vous sûr de vouloir annuler la programmation de cette campagne ? La campagne ne sera plus programmée pour l'envoi, mais vous pourrez toujours l'envoyer manuellement ou la reprogrammer.",
   "app.components.Admin.Email.scheduling.cancelScheduleTitle": "Annuler l'envoi programmé",
   "app.components.Admin.Email.scheduling.confirmCancelSchedule": "Oui, annuler l'envoi",
