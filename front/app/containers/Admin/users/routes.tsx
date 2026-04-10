@@ -5,13 +5,13 @@ import PageLoading from 'components/UI/PageLoading';
 import { AdminRoute } from '../routes';
 
 const AdminUsersIndex = lazy(() => import('.'));
-const AdminAllUsers = lazy(() => import('./AllUsers'));
-const AdminAdmins = lazy(() => import('./Admins'));
-const AdminFolderModerators = lazy(() => import('./FolderModerators'));
-const AdminProjectModerators = lazy(() => import('./ProjectModerators'));
+const AdminAllUsers = lazy(() => import('./tabs/AllUsers'));
+const AdminAdmins = lazy(() => import('./tabs/Admins'));
+const AdminFolderModerators = lazy(() => import('./tabs/FolderModerators'));
+const AdminProjectModerators = lazy(() => import('./tabs/ProjectModerators'));
+const AdminBlockedUsers = lazy(() => import('./tabs/BlockedUsers'));
+const AdminBannedEmails = lazy(() => import('./tabs/BannedEmails'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
-const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
-const AdminBannedEmails = lazy(() => import('./BannedEmails'));
 const AdminSeatsOverview = lazy(() => import('./SeatsOverview'));
 
 export enum usersRoutes {
