@@ -1555,7 +1555,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "اسکین شدہ فارمز درآمد کریں (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "اسکین شدہ فارمز درآمد کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "امپورٹڈ ان پٹس",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "درآمد کرنا۔ اس عمل میں چند منٹ لگ سکتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "یہ ان پٹ گمنام طور پر درآمد کیا گیا تھا۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} اندراجات منظور نہیں کیے جا سکے۔ براہ کرم تصدیقی مسائل کے لیے ہر اندراج کو چیک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "مقامی:",
