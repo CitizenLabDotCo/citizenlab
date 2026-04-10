@@ -109,8 +109,8 @@ resource 'Moderators' do
 
       example "Delete the moderator role of a user for the moderator's project" do
         n_roles_before = same_project_moderators.first.reload.roles.size
-
         do_request project_id: project.id, user_id: same_project_moderators.first.id
+
         expect(response_status).to eq 200
         expect(same_project_moderators.first.reload.roles.size).to eq(n_roles_before - 1)
         expect(LogActivityJob).to have_been_enqueued.with(same_project_moderators.first, 'project_moderation_rights_removed', moderator, kind_of(Integer), payload: { project_id: project.id })
@@ -118,8 +118,8 @@ resource 'Moderators' do
 
       example "Delete the moderator role of a user for a project that is NOT the moderator's project" do
         n_roles_before = other_project_moderators.first.reload.roles.size
-
         do_request project_id: other_project.id, user_id: other_project_moderators.first.id
+
         expect(response_status).to eq 401
         expect(other_project_moderators.first.reload.roles.size).to eq(n_roles_before)
       end

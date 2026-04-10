@@ -23,9 +23,5 @@ module Moderators
 
       UserRoleService.new.can_moderate?(record, user)
     end
-
-    def role_higher_than_folder_moderator?
-      user&.admin? || user&.project_folder_moderator? || user&.space_moderator?
-    end
   end
 end

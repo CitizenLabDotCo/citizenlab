@@ -113,12 +113,26 @@ resource 'Moderators' do
     delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:project_folder_id) { project_folder.id }
-      let(:user_id) { moderator.id }
-      let!(:child_projects) { create_list(:project, 3) }
+      let(:moderator_of_same_folder) { create(:project_folder_moderator, project_folders: [project_folder]) }
 
-      example_request '[error] Delete a moderator of a project_folder' do
+      let(:other_project_folder) { create(:project_folder) }
+      let(:moderator_of_other_folder) { create(:project_folder_moderator, project_folders: [other_project_folder]) }
+
+      example 'Delete a moderator of moderated project_folder' do
+        n_roles_before = moderator_of_same_folder.reload.roles.size
+        do_request project_folder_id: project_folder.id, user_id: moderator_of_same_folder.id
+
+        expect(response_status).to eq 200
+        expect(moderator_of_same_folder.reload.roles.size).to eq(n_roles_before - 1)
+        expect(LogActivityJob).to have_been_enqueued.with(moderator_of_same_folder, 'project_folder_moderation_rights_removed', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
+      end
+
+      example '[Unauthorized] Delete a moderator of unmoderated project_folder' do
+        n_roles_before = moderator_of_other_folder.reload.roles.size
+        do_request project_folder_id: other_project_folder.id, user_id: moderator_of_other_folder.id
+
         expect(response_status).to eq 401
+        expect(moderator_of_other_folder.reload.roles.size).to eq(n_roles_before)
       end
     end
   end
