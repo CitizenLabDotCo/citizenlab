@@ -3192,7 +3192,7 @@
   "app.containers.AdminPage.phase.methodPicker.embedSurvey1": "Sluit een enquête van een derde partij in",
   "app.containers.AdminPage.phase.methodPicker.externalSurvey1": "Externe enquête",
   "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": "Papieren formulieren scannen met Formsync is niet inbegrepen in je huidige abonnement.",
-  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": "Neem contact op met je Government Success Manager of beheerder om dit te ontgrendelen.",
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": "Neem contact op met je Government Success Manager of platformbeheerder om dit te ontgrendelen.",
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": "Maak gebruik van de collectieve intelligentie van je gebruikers. Nodig ze uit om ideeën in te sturen, te bespreken en/of feedback te geven in een openbaar forum.",
   "app.containers.AdminPage.phase.methodPicker.ideationTitle1": "Verzamel input en feedback in het openbaar",
   "app.containers.AdminPage.phase.methodPicker.informationTitle1": "Informatie delen",
