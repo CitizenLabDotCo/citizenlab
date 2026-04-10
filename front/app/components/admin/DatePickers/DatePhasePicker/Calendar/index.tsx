@@ -32,7 +32,6 @@ import {
   getStartTimeMinTime,
   getEndTimeMaxTime,
 } from './utils/utils';
-
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
 const disabledBackground3 = transparentize(0.66, disabledBackground);
@@ -226,16 +225,6 @@ const Calendar = ({
   });
   const { formatMessage } = useIntl();
 
-  const defaultStartTime = selectedRange.from
-    ? selectedRange.from
-    : new Date(new Date().setHours(0, 0, 0, 0));
-  const defaultEndTime = selectedRange.to
-    ? selectedRange.to
-    : new Date(new Date().setHours(23, 59, 0, 0));
-  const [selectedStartTime, setSelectedStartTime] =
-    useState<Date>(defaultStartTime);
-  const [selectedEndTime, setSelectedEndTime] = useState<Date>(defaultEndTime);
-
   const startMonth = getStartMonth({
     startMonth: _startMonth,
     selectedRange,
@@ -262,6 +251,21 @@ const Calendar = ({
     disabledRanges
   );
   const endTimeMaxTime = getEndTimeMaxTime(selectedRange.to, disabledRanges);
+
+  const [selectedStartTime, setSelectedStartTime] = useState<Date | null>(null);
+  const [selectedEndTime, setSelectedEndTime] = useState<Date | null>(null);
+
+  const displayStartTime =
+    selectedStartTime ||
+    startTimeMinTime ||
+    selectedRange.from ||
+    new Date(new Date().setHours(0, 0, 0, 0));
+
+  const displayEndTime =
+    selectedEndTime ||
+    endTimeMaxTime ||
+    selectedRange.to ||
+    new Date(new Date().setHours(23, 59, 0, 0));
 
   const modifiers = useMemo(
     () =>
@@ -309,11 +313,11 @@ const Calendar = ({
     day,
     { isDisabledMiddle, isDisabledSingle }
   ) => {
-    if (isDisabledMiddle || isDisabledSingle) {
-      return;
-    }
-
-    if (isDayBlocked(day, disabledRanges)) {
+    if (
+      isDisabledMiddle ||
+      isDisabledSingle ||
+      isDayBlocked(day, disabledRanges)
+    ) {
       return;
     }
 
@@ -326,10 +330,30 @@ const Calendar = ({
     const { from: newFrom, to: newTo } = adjustRangeTimes({
       from: updatedRange.from,
       to: updatedRange.to,
-      selectedStartTime,
-      selectedEndTime,
+      selectedStartTime: displayStartTime,
+      selectedEndTime: displayEndTime,
     });
-    onUpdateRange({ from: newFrom, to: newTo });
+
+    const finalFrom = newFrom ? new Date(newFrom) : null;
+    const finalTo = newTo ? new Date(newTo) : null;
+
+    if (finalFrom) {
+      const minTime = getStartTimeMinTime(finalFrom, disabledRanges);
+      if (minTime) {
+        finalFrom.setHours(minTime.getHours(), minTime.getMinutes());
+        setSelectedStartTime(minTime);
+      }
+    }
+
+    if (finalTo) {
+      const maxTime = getEndTimeMaxTime(finalTo, disabledRanges);
+      if (maxTime) {
+        finalTo.setHours(maxTime.getHours(), maxTime.getMinutes());
+        setSelectedEndTime(maxTime);
+      }
+    }
+
+    onUpdateRange({ from: finalFrom || undefined, to: finalTo || undefined });
   };
 
   return (
@@ -371,7 +395,7 @@ const Calendar = ({
             <Box display="flex" gap="8px" alignItems="center">
               <Text m="0">{formatMessage(messages.startTime)}</Text>
               <TimeInput
-                selectedTime={selectedStartTime}
+                selectedTime={displayStartTime}
                 onChange={handleStartTimeChange}
                 minTime={startTimeMinTime}
               />
@@ -382,7 +406,7 @@ const Calendar = ({
               </Text>
               {selectedRange.to ? (
                 <TimeInput
-                  selectedTime={selectedEndTime}
+                  selectedTime={displayEndTime}
                   onChange={handleEndTimeChange}
                   maxTime={endTimeMaxTime}
                 />
