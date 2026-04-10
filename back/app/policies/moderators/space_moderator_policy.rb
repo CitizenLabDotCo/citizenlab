@@ -9,11 +9,11 @@ module Moderators
     end
 
     def create?
-      active_admin?
+      active_and_can_moderate?
     end
 
     def destroy?
-      active_admin? # Only admins can remove space moderators
+      active_admin? # Only admins can remove space moderators, but we should also allow SM to remove peers.
     end
 
     private

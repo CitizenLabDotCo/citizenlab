@@ -9,11 +9,11 @@ module Moderators
     end
 
     def create?
-      active_and_can_moderate? # TODO: Confirm this is not too permissive.
+      active_and_can_moderate?
     end
 
     def destroy?
-      return false unless role_higher_than_folder_moderator? # Currently, we don't allow FM to remove other FMS
+      return false unless role_higher_than_folder_moderator? # Currently, we don't allow FM to remove other FMS, but we should.
 
       active_and_can_moderate?
     end
