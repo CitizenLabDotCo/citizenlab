@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Divider, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import ImportResponsesSection from 'components/admin/FormSync/ImportResponsesSection';
+import ImportResponsesSection from 'components/admin/FormSync/ImportInputsSection';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

@@ -30,7 +30,7 @@ interface Props {
   onClickExcelImport?: () => void;
 }
 
-const ImportResponsesSection = ({
+const ImportInputsSection = ({
   formType,
   onClickPDFImport,
   onClickExcelImport,
@@ -186,4 +186,4 @@ const ImportResponsesSection = ({
   );
 };
 
-export default ImportResponsesSection;
+export default ImportInputsSection;

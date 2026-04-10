@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
-import ImportResponsesSection from 'components/admin/FormSync/ImportResponsesSection';
+import ImportResponsesSection from 'components/admin/FormSync/ImportInputsSection';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

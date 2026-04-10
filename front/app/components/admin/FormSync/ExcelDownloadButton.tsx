@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -9,7 +9,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
@@ -19,6 +19,7 @@ interface Props {
 }
 
 const ExcelDownloadButton = ({ phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
@@ -33,16 +34,24 @@ const ExcelDownloadButton = ({ phaseId }: Props) => {
   };
 
   return (
-    <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
-      <Button
-        buttonStyle="text"
-        icon="download"
-        onClick={downloadExampleXlsxFile}
-        disabled={!inputImporterAllowed}
-      >
-        <FormattedMessage {...messages.template} />
-      </Button>
-    </UpsellTooltip>
+    <Box display="flex" alignItems="center">
+      <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
+        <Button
+          buttonStyle="text"
+          icon="download"
+          onClick={downloadExampleXlsxFile}
+          disabled={!inputImporterAllowed}
+          px="4px"
+        >
+          <FormattedMessage {...messages.template} />
+        </Button>
+      </UpsellTooltip>
+      {inputImporterAllowed && (
+        <IconTooltip
+          content={formatMessage(messages.downloadExcelTemplateTooltip)}
+        />
+      )}
+    </Box>
   );
 };
 

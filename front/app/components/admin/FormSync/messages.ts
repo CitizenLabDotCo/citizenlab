@@ -25,6 +25,11 @@ export default defineMessages({
     id: 'app.components.FormSync.spreadsheetDescription1',
     defaultMessage: 'Import response data from Excel or CSV',
   },
+  downloadExcelTemplateTooltip: {
+    id: 'app.components.FormSync.downloadExcelTemplateTooltip3',
+    defaultMessage:
+      'Excel templates will not include File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.',
+  },
   template: {
     id: 'app.components.FormSync.template1',
     defaultMessage: 'Template',
