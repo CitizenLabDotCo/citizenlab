@@ -50,7 +50,6 @@ const Separator = styled.hr`
   background: ${colors.divider};
   border: none;
   height: 1px;
-  margin: 1rem 0 3rem 0;
 `;
 
 const MenuTitle = styled.div`
@@ -351,13 +350,6 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         className="intercom-users-invite-users-button"
       >
         <FormattedMessage {...messages.inviteUsers} />
-      </ButtonWithLink>
-      <ButtonWithLink
-        linkTo="/admin/users/seats"
-        icon="shield-checkered"
-        mt="12px"
-      >
-        <FormattedMessage {...messages.seatsOverview} />
       </ButtonWithLink>
     </Container>
   );
