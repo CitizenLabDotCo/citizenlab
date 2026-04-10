@@ -4,12 +4,10 @@ import {
   Box,
   Icon,
   Text,
-  Title,
   Button,
   Tooltip,
   colors,
   stylingConsts,
-  Divider,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
@@ -22,21 +20,26 @@ import { API_PATH } from 'containers/App/constants';
 import { FormType } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
 interface Props {
   formType: FormType;
+  onClickPDFImport?: () => void;
+  onClickExcelImport?: () => void;
 }
 
-const ImportResponsesSection = ({ formType }: Props) => {
+const ImportResponsesSection = ({
+  formType,
+  onClickPDFImport,
+  onClickExcelImport,
+}: Props) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
-  const { formatMessage } = useIntl();
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const printedFormsEnabled = useFeatureFlag({
@@ -54,11 +57,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
   const importerPath = `/admin/projects/${projectId}/phases/${phaseId}/input-importer`;
 
   return (
-    <Box mt="28px">
-      <Divider mb="28px" />
-      <Title variant="h5" color="coolGrey600" fontWeight="semi-bold" mb="28px">
-        {formatMessage(messages.importResponses).toUpperCase()}
-      </Title>
+    <Box>
       <Box display="flex" flexDirection="column" gap="16px">
         {/* Paper forms OCR card */}
         <Box
@@ -94,13 +93,23 @@ const ImportResponsesSection = ({ formType }: Props) => {
               <FormattedMessage {...messages.downloadPDF} />
             </Button>
             {printedFormsEnabled ? (
-              <ButtonWithLink
-                buttonStyle="admin-dark"
-                icon="form-sync"
-                linkTo={importerPath}
-              >
-                <FormattedMessage {...messages.importScans} />
-              </ButtonWithLink>
+              onClickPDFImport ? (
+                <Button
+                  buttonStyle="admin-dark"
+                  icon="form-sync"
+                  onClick={onClickPDFImport}
+                >
+                  <FormattedMessage {...messages.importScans} />
+                </Button>
+              ) : (
+                <ButtonWithLink
+                  buttonStyle="admin-dark"
+                  icon="form-sync"
+                  linkTo={importerPath}
+                >
+                  <FormattedMessage {...messages.importScans} />
+                </ButtonWithLink>
+              )
             ) : (
               <Tooltip
                 content={
@@ -153,13 +162,23 @@ const ImportResponsesSection = ({ formType }: Props) => {
             >
               <FormattedMessage {...messages.template} />
             </Button>
-            <ButtonWithLink
-              buttonStyle="text"
-              icon="upload-file"
-              linkTo={importerPath}
-            >
-              <FormattedMessage {...messages.importFile} />
-            </ButtonWithLink>
+            {onClickExcelImport ? (
+              <Button
+                buttonStyle="text"
+                icon="upload-file"
+                onClick={onClickExcelImport}
+              >
+                <FormattedMessage {...messages.importFile} />
+              </Button>
+            ) : (
+              <ButtonWithLink
+                buttonStyle="text"
+                icon="upload-file"
+                linkTo={importerPath}
+              >
+                <FormattedMessage {...messages.importFile} />
+              </ButtonWithLink>
+            )}
           </Box>
         </Box>
       </Box>

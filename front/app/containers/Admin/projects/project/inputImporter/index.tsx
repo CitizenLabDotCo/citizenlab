@@ -43,7 +43,11 @@ const InputImporter = () => {
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
-            <ReviewSection importJobs={importJobs} />
+            <ReviewSection
+              importJobs={importJobs}
+              onClickPDFImport={openImportPdfModal}
+              onClickExcelImport={openImportExcelModal}
+            />
           </Box>
         </FocusOn>
       </Box>

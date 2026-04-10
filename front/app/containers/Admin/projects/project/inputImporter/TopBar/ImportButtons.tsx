@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  Button,
-  Dropdown,
-  DropdownListItem,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import UpsellTooltip from 'components/UpsellTooltip';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
+import formSyncMessages from 'components/admin/FormSync/messages';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -21,58 +14,42 @@ interface Props {
 }
 
 const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
-  const [dropdownOpened, setDropdownOpened] = useState(false);
-  const printedFormsAllowed = useFeatureFlag({
+  const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
-  });
-  const inputImporterAllowed = useFeatureFlag({
-    name: 'input_importer',
-    onlyCheckAllowed: true,
   });
 
   return (
-    <Box>
+    <Box display="flex" gap="8px">
       <Button
-        buttonStyle="secondary-outlined"
-        onClick={() => setDropdownOpened((opened) => !opened)}
-        icon="page"
+        buttonStyle="text"
+        icon="upload-file"
+        onClick={onClickExcelImport}
       >
-        <FormattedMessage {...messages.importFile} />
+        <FormattedMessage {...formSyncMessages.importFile} />
       </Button>
-      <Dropdown
-        width="100%"
-        right="25px"
-        opened={dropdownOpened}
-        onClickOutside={() => setDropdownOpened(false)}
-        content={
-          <>
-            <UpsellTooltip
-              disabled={inputImporterAllowed}
-              // Needed to ensure DropdownListItem takes up the full width of the dropdown
-              width="100%"
-            >
-              <DropdownListItem
-                onClick={onClickExcelImport}
-                disabled={!inputImporterAllowed}
-              >
-                <FormattedMessage {...messages.importExcelFile} />
-              </DropdownListItem>
-            </UpsellTooltip>
-            <UpsellTooltip
-              disabled={printedFormsAllowed}
-              // Needed to ensure DropdownListItem takes up the full width of the dropdown
-              width="100%"
-            >
-              <DropdownListItem
-                onClick={onClickPDFImport}
-                disabled={!printedFormsAllowed}
-              >
-                <FormattedMessage {...messages.importPDFFile} />
-              </DropdownListItem>
-            </UpsellTooltip>
-          </>
-        }
-      />
+      {printedFormsEnabled ? (
+        <Button
+          buttonStyle="admin-dark"
+          icon="form-sync"
+          onClick={onClickPDFImport}
+        >
+          <FormattedMessage {...formSyncMessages.importScans} />
+        </Button>
+      ) : (
+        <Tooltip
+          content={
+            <Box display="flex" flexDirection="column" gap="8px">
+              <FormattedMessage {...formSyncMessages.unlockScanningTooltip1} />
+              <FormattedMessage {...formSyncMessages.unlockScanningTooltip2} />
+            </Box>
+          }
+          theme="dark"
+        >
+          <Button buttonStyle="admin-dark" icon="lock">
+            <FormattedMessage {...formSyncMessages.unlockScanning} />
+          </Button>
+        </Tooltip>
+      )}
     </Box>
   );
 };

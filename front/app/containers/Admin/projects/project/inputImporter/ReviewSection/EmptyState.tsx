@@ -11,24 +11,29 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
-import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
-import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
+import ImportResponsesSection from 'components/admin/FormSync/ImportResponsesSection';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
 import messages from './messages';
-import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
+import { isPDFUploadSupported } from './utils';
 
-const EmptyState = () => {
+interface Props {
+  onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
+}
+
+const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const { phaseId } = useParams() as {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
-
+  const formType =
+    participationMethod === 'native_survey' ? 'survey' : 'input_form';
   const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   return (
@@ -42,7 +47,7 @@ const EmptyState = () => {
     >
       <Box
         w="100%"
-        maxWidth="700px"
+        maxWidth="1000px"
         bgColor={colors.white}
         borderRadius={stylingConsts.borderRadius}
         boxShadow={`0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)`}
@@ -62,19 +67,12 @@ const EmptyState = () => {
             }}
           />
         </Text>
-        <Box display="flex">
-          {pdfImportSupported && (
-            <DownloadPDFButtonWithModal
-              formType={
-                supportsNativeSurvey(participationMethod)
-                  ? 'survey'
-                  : 'input_form'
-              }
-              mr="8px"
-              phaseId={phaseId}
-            />
-          )}
-          <ExcelDownloadButton phaseId={phaseId} />
+        <Box mt="24px">
+          <ImportResponsesSection
+            formType={formType}
+            onClickPDFImport={onClickPDFImport}
+            onClickExcelImport={onClickExcelImport}
+          />
         </Box>
       </Box>
     </Box>

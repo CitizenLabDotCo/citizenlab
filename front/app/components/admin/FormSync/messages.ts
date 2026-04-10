@@ -14,10 +14,6 @@ export default defineMessages({
     defaultMessage:
       'Excel templates will not include File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.',
   },
-  importResponses: {
-    id: 'app.components.FormSync.importResponses1',
-    defaultMessage: 'Import responses',
-  },
   paperFormsOCR: {
     id: 'app.components.FormSync.paperFormsOCR1',
     defaultMessage: 'Paper forms OCR',
