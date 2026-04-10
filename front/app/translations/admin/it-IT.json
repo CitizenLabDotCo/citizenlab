@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Una volta aggiunti ulteriori posti, la fatturazione verrà aumentata. Raggiungi al tuo GovSuccess Manager per saperne di più.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Grazie per aver completato il sondaggio! Potrai compilarne uno nuovo il prossimo trimestre.",
-  "app.components.FormSync.downloadExcelTemplate": "Scarica un modello Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "I modelli Excel non includeranno le domande di caricamento dei file e le domande di mappatura (Segnaposto, Percorso, Area, upload di file ESRI) perché al momento non sono supportate per l'importazione massiva.",
   "app.components.ProjectTemplatePreview.close": "Chiudi",
   "app.components.ProjectTemplatePreview.createProject": "Crea progetto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un progetto basato sul modello ''{templateTitle}''",

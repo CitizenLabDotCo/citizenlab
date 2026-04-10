@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Nuair a chuirfear suíocháin bhreise leis, méadófar do bhilleáil. Téigh i dteagmháil le do Bhainisteoir GovSuccess chun tuilleadh eolais a fháil faoi.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Go raibh maith agat as an suirbhé a chomhlánú! Tá fáilte romhat é a dhéanamh arís an ráithe seo chugainn.",
-  "app.components.FormSync.downloadExcelTemplate": "Íoslódáil teimpléad Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Ní bheidh ceisteanna uaslódála comhaid ná aon cheisteanna ionchuir mapála (Biorán Buailte, Bealach Tarraingthe, Limistéar Tarraingthe, uaslódáil comhaid ESRI) san áireamh i dteimpléid Excel mar nach dtacaítear leo seo le haghaidh allmhairithe mórchóir faoi láthair.",
   "app.components.ProjectTemplatePreview.close": "Dún",
   "app.components.ProjectTemplatePreview.createProject": "Cruthaigh tionscadal",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Cruthaigh tionscadal bunaithe ar an teimpléad ''{templateTitle}''",

@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Inissat amerlanerusut ilanngunneqarpata akiligassat qaffassapput. GovSuccess Manager-it attavigiuk paasisaqarnerorusukkuit.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Misissuinermut peqataagavit qujanaq! Ukiup sisamararterutaani tullermi peqataaqqissinnaavutit.",
-  "app.components.FormSync.downloadExcelTemplate": "Excel-imut ilisserut aajuk",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-imut ilisserutit fiilinik ilisivissatut apeqqutinik aamma nunap assinganut tunngasunik apeqqutinik (Drop Pin, Draw Route, Draw Area, ESRI file upload) ilaqassanngillat, taakku maannakkut ataatsikkut ikkussuinermi tapersersorneqanngimmata.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Suliassaq pilersiguk",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Pilersaarut immersugassaq ''{templateTitle}'' tunngavigalugu pilersiguk",

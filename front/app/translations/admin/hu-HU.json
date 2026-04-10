@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "További helyek hozzáadása után a számlázási összeg növekedni fog. További információért forduljon GovSuccess menedzseréhez.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Köszönjük, hogy kitöltötte a felmérést! A következő negyedévben ismét kitöltheti.",
-  "app.components.FormSync.downloadExcelTemplate": "Excel-sablon letöltése",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Az Excel-sablonok nem tartalmazzák a fájlfeltöltési kérdéseket és a térképes beviteli kérdéseket (Gombostű elhelyezése, Útvonal rajzolása, Terület rajzolása, ESRI-fájl feltöltése), mivel ezek jelenleg nem támogatottak a tömeges importálásnál.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Projekt létrehozása a(z) „{templateTitle}” sablon alapján",

@@ -87,8 +87,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Zodra er extra accounts worden toegevoegd, wordt jullie factuur verhoogd. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Bedankt voor het invullen van de vragenlijst! Je bent van harte welkom om hem volgend kwartaal weer in te vullen.",
-  "app.components.FormSync.downloadExcelTemplate": "Download een Excel-sjabloon",
-  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-sjablonen bevatten geen bestand upload vragen en kaartinvoer-vragen (pin prikken, route tekenen, gebied-tekenen, ESRI-bestand uploaden), omdat deze op dit moment nog niet worden ondersteund voor bulkimport.",
   "app.components.ProjectTemplatePreview.close": "Sluiten",
   "app.components.ProjectTemplatePreview.createProject": "Maak een project aan",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Maak een project aan op basis van het sjabloon ''{templateTitle}''.",
