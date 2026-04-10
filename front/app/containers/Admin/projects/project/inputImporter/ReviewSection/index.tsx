@@ -182,6 +182,7 @@ const ReviewSection = () => {
               hasErrors={importHasErrors}
               progress={importProgress}
               total={importTotal}
+              errorCount={latestJob?.attributes.error_count ?? 0}
             />
           )}
           <IdeaList

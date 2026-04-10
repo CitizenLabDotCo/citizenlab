@@ -68,7 +68,12 @@ export default defineMessages({
   errorImporting: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
     defaultMessage:
-      'Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.',
+      'Errors occurred during the import and some inputs have not imported.',
+  },
+  errorImportingWithCounts: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts',
+    defaultMessage:
+      'Imported {succeeded} of {total} inputs. {failed} could not be imported due to errors.',
   },
   inputsNotApproved: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3',

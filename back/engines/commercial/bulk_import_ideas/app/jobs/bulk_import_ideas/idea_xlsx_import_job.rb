@@ -24,7 +24,7 @@ module BulkImportIdeas
     rescue StandardError => e
       e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
       SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'xlsx', e.to_s)
-      track_progress_and_complete!
+      track_progress_and_complete!(1, 1)
       raise e
     end
 

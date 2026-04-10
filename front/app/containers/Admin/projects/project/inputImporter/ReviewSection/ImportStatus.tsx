@@ -18,16 +18,22 @@ interface Props {
   hasErrors: boolean;
   progress: number;
   total: number;
+  errorCount: number;
 }
 
-const ImportStatus = ({ hasErrors, progress, total }: Props) => {
+const ImportStatus = ({ hasErrors, progress, total, errorCount }: Props) => {
   const { formatMessage } = useIntl();
 
   if (hasErrors) {
+    const succeeded = progress - errorCount;
     return (
       <Container>
         <Error
-          text={formatMessage(messages.errorImporting)}
+          text={formatMessage(messages.errorImportingWithCounts, {
+            succeeded,
+            total,
+            failed: errorCount,
+          })}
           showIcon={true}
           showBackground={false}
           scrollIntoView={false}
