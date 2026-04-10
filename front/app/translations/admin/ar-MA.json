@@ -1555,7 +1555,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "استيراد النماذج الممسوحة ضوئياً (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "استيراد النماذج الممسوحة ضوئيًا",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "المساهمات المستوردة",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "جاري الاستيراد. هاد العملية تقدر تاخد بضع دقائق.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "تم استيراد هذه المساهمة بشكل مجهول.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "تعذر قبول {numNotApproved} من المدخلات. يرجى التحقق من كل مدخل بحثاً عن مشاكل في التحقق.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "اللغة:",
