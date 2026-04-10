@@ -1514,7 +1514,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Неважећи подаци обрасца. Проверите да ли постоје грешке у формулару изнад.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Import Excel file (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Увоз",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Import scanned forms (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Import scanned forms",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Увезени улази",

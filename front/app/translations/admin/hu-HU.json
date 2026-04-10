@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Hiba történt az importálás során, és néhány adat nem lett importálva. Kérjük, javítsa a hibákat, és importálja újra a hiányzó adatokat.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Érvénytelen űrlapadatok. Ellenőrizze a fenti űrlapot a hibákért.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Excel-fájl importálása (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importálás",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Szkennelt űrlapok importálása (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Beszkennelt űrlapok importálása",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importált beküldések",

@@ -1565,7 +1565,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Invalid form data. Check the form above for errors.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Import Excel file (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile3": "Import scans",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Import scanned forms (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Import scanned forms",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Imported inputs",

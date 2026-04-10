@@ -1554,7 +1554,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Παρουσιάστηκαν σφάλματα κατά την εισαγωγή και ορισμένα δεδομένα δεν εισήχθησαν. Παρακαλούμε διορθώστε τα σφάλματα και εισαγάγετε ξανά τυχόν δεδομένα που λείπουν.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Μη έγκυρα δεδομένα φόρμας. Ελέγξτε την παραπάνω φόρμα για σφάλματα.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Εισαγωγή αρχείου Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Εισαγωγή",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Εισαγωγή σαρωμένων φορμών (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Εισαγωγή σαρωμένων φορμών",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Εισηγμένες συνεισφορές",
