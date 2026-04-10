@@ -13,8 +13,6 @@ module Moderators
     end
 
     def destroy?
-      return false unless role_higher_than_folder_moderator? # Currently, we don't allow PM to remove other PMs, but we should.
-
       active_and_can_moderate?
     end
 
