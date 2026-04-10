@@ -17,6 +17,7 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import formSyncMessages from 'components/admin/FormSync/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -382,16 +383,14 @@ const ParticipationMethodPicker = ({
               >
                 <Tooltip
                   content={
-                    <>
-                      <Box display="flex" flexDirection="column" gap="8px">
-                        <FormattedMessage
-                          {...messages2.formSyncLockedTooltip}
-                        />
-                        <FormattedMessage
-                          {...messages2.formSyncLockedTooltip2}
-                        />
-                      </Box>
-                    </>
+                    <Box display="flex" flexDirection="column" gap="8px">
+                      <FormattedMessage
+                        {...formSyncMessages.unlockScanningTooltip1}
+                      />
+                      <FormattedMessage
+                        {...formSyncMessages.unlockScanningTooltip2}
+                      />
+                    </Box>
                   }
                   disabled={importPrintedFormsEnabled}
                   placement="bottom"
