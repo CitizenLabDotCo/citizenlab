@@ -17,6 +17,7 @@ import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal'
 
 import { FormType } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -42,6 +43,10 @@ const ImportResponsesSection = ({
 
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
+  });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
   });
 
   const importerPath = `/admin/projects/${projectId}/phases/${phaseId}/input-importer`;
@@ -146,23 +151,27 @@ const ImportResponsesSection = ({
           </Box>
           <Box display="flex" alignItems="center" gap="8px">
             <ExcelDownloadButton phaseId={phaseId} />
-            {onClickExcelImport ? (
-              <Button
-                buttonStyle="text"
-                icon="upload-file"
-                onClick={onClickExcelImport}
-              >
-                <FormattedMessage {...messages.importFile} />
-              </Button>
-            ) : (
-              <ButtonWithLink
-                buttonStyle="text"
-                icon="upload-file"
-                linkTo={importerPath}
-              >
-                <FormattedMessage {...messages.importFile} />
-              </ButtonWithLink>
-            )}
+            <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
+              {onClickExcelImport ? (
+                <Button
+                  buttonStyle="text"
+                  icon="upload-file"
+                  onClick={onClickExcelImport}
+                  disabled={!inputImporterAllowed}
+                >
+                  <FormattedMessage {...messages.importFile} />
+                </Button>
+              ) : (
+                <ButtonWithLink
+                  buttonStyle="text"
+                  icon="upload-file"
+                  linkTo={inputImporterAllowed ? importerPath : undefined}
+                  disabled={!inputImporterAllowed}
+                >
+                  <FormattedMessage {...messages.importFile} />
+                </ButtonWithLink>
+              )}
+            </UpsellTooltip>
           </Box>
         </Box>
       </Box>

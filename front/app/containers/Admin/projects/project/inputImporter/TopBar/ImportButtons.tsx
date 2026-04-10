@@ -4,6 +4,8 @@ import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import UpsellTooltip from 'components/UpsellTooltip';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import formSyncMessages from 'components/admin/FormSync/messages';
@@ -17,16 +19,23 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
 
   return (
     <Box display="flex" gap="8px">
-      <Button
-        buttonStyle="text"
-        icon="upload-file"
-        onClick={onClickExcelImport}
-      >
-        <FormattedMessage {...formSyncMessages.importFile} />
-      </Button>
+      <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
+        <Button
+          buttonStyle="text"
+          icon="upload-file"
+          onClick={onClickExcelImport}
+          disabled={!inputImporterAllowed}
+        >
+          <FormattedMessage {...formSyncMessages.importFile} />
+        </Button>
+      </UpsellTooltip>
       {printedFormsEnabled ? (
         <Button
           buttonStyle="admin-dark"

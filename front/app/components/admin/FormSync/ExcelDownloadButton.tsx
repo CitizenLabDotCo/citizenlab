@@ -33,7 +33,7 @@ const ExcelDownloadButton = ({ phaseId }: Props) => {
   };
 
   return (
-    <UpsellTooltip disabled={inputImporterAllowed}>
+    <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
       <Button
         buttonStyle="text"
         icon="download"

@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Input importer',
   },
   importFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2',
-    defaultMessage: 'Import',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile3',
+    defaultMessage: 'Import scans',
   },
   importExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile',
