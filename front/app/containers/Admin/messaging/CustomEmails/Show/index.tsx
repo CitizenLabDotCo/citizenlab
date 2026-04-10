@@ -10,6 +10,7 @@ import {
   fontSizes,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { FormattedDate, FormattedTime } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
@@ -236,11 +237,22 @@ const Show = () => {
                   text={<FormattedMessage {...messages.scheduled} />}
                 />
                 <Text fontSize="base" whiteSpace="nowrap">
-                  {formatDateInTimezone({
-                    date: campaign.data.attributes.scheduled_at,
-                    timeZone,
-                  })}
+                  <FormattedDate
+                    value={campaign.data.attributes.scheduled_at}
+                  />
+                  &nbsp;
+                  <FormattedTime
+                    value={campaign.data.attributes.scheduled_at}
+                  />
                 </Text>
+                <Box mx="4px" background="yellow">
+                  <Text fontSize="base" whiteSpace="nowrap">
+                    {formatDateInTimezone({
+                      date: campaign.data.attributes.scheduled_at,
+                      timeZone,
+                    })}
+                  </Text>
+                </Box>
               </>
             )}
           </Box>

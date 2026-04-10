@@ -7,6 +7,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { FormattedDate, FormattedTime } from 'react-intl';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -52,12 +53,21 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
         <Box display="flex" alignItems="center" gap="12px">
           {campaign.attributes.scheduled_at && (
             <>
-              <Text fontSize="base">
-                {formatDateInTimezone({
-                  date: campaign.attributes.scheduled_at,
-                  timeZone,
-                })}
-              </Text>
+              <Box display="flex" alignItems="center">
+                <Text fontSize="base" m="0px">
+                  <FormattedDate value={campaign.attributes.scheduled_at} />
+                  &nbsp;
+                  <FormattedTime value={campaign.attributes.scheduled_at} />
+                </Text>
+                <Box mx="4px" background="yellow">
+                  <Text whiteSpace="nowrap" m="0px">
+                    {formatDateInTimezone({
+                      date: campaign.attributes.scheduled_at,
+                      timeZone,
+                    })}
+                  </Text>
+                </Box>
+              </Box>
               <StatusLabel
                 backgroundColor={colors.teal500}
                 text={<FormattedMessage {...messages.scheduled} />}

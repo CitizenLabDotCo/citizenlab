@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import isSameDay from 'date-fns/isSameDay';
-import moment from 'moment-timezone';
+import { formatInTimeZone, fromZonedTime, toZonedTime } from 'date-fns-tz';
+// import moment from 'moment-timezone';
 import styled from 'styled-components';
 
 import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
@@ -37,17 +38,25 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  // const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
+  // const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const tenantTimeNow = timeZone
+    ? toZonedTime(new Date(), timeZone)
+    : new Date();
+  const gmtOffset = timeZone
+    ? formatInTimeZone(new Date(), timeZone, 'XXX')
+    : '';
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
-        .tz(timeZone)
-        .toDate();
+      const scheduledDate = toZonedTime(
+        new Date(campaign.data.attributes.scheduled_at),
+        timeZone
+      );
+      console.log('Scheduled date in tenant timezone:', scheduledDate);
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -70,9 +79,15 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     e.preventDefault();
     if (!selectedDate || !timeZone) return;
 
-    const combined = new Date(selectedDate);
-    combined.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-    const scheduledAt = moment.tz(combined, timeZone).toISOString();
+    const scheduledDateTime = new Date(selectedDate);
+    console.log('Selected date:', scheduledDateTime);
+    scheduledDateTime.setHours(selectedTime.getHours());
+    scheduledDateTime.setMinutes(selectedTime.getMinutes());
+    scheduledDateTime.setSeconds(0);
+    // store time in UTC ( YYY-MM-DDTHH:mm:ssZ )
+    const utcDateTime = fromZonedTime(scheduledDateTime, timeZone);
+    const scheduledAt = utcDateTime.toISOString();
+    console.log('Scheduled at:', scheduledAt);
     updateCampaign(
       {
         id: campaign.data.id,
@@ -120,7 +135,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
               <Text fontSize="l">GMT{gmtOffset}</Text>
             </Box>
             <Warning mb="12px">
-              <Text fontSize="m">
+              <Text fontSize="m" m="0px">
                 <FormattedMessage {...messages.scheduleSendWarning} />
               </Text>
             </Warning>
