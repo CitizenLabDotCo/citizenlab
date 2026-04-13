@@ -168,6 +168,7 @@ class User < ApplicationRecord
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
+  has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify

@@ -144,6 +144,7 @@ ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
+ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS fk_rails_2de8e52eff;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -461,6 +462,7 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
+DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_by_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -1133,7 +1135,8 @@ CREATE TABLE public.admin_publications (
     children_count integer DEFAULT 0 NOT NULL,
     first_published_at timestamp(6) without time zone,
     scheduled_status character varying,
-    scheduled_at timestamp(6) without time zone
+    scheduled_at timestamp(6) without time zone,
+    scheduled_by_id uuid
 );
 
 
@@ -5196,6 +5199,13 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_admin_publications_on_scheduled_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_scheduled_by_id ON public.admin_publications USING btree (scheduled_by_id);
+
+
+--
 -- Name: index_admin_publications_on_scheduled_transition; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7431,6 +7441,14 @@ ALTER TABLE ONLY public.phases
 
 ALTER TABLE ONLY public.cosponsorships
     ADD CONSTRAINT fk_rails_2d026b99a2 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: admin_publications fk_rails_2de8e52eff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_publications
+    ADD CONSTRAINT fk_rails_2de8e52eff FOREIGN KEY (scheduled_by_id) REFERENCES public.users(id);
 
 
 --

@@ -42,6 +42,7 @@
 #  first_published_at :datetime
 #  scheduled_status   :string
 #  scheduled_at       :datetime
+#  scheduled_by_id    :uuid
 #
 # Indexes
 #
@@ -52,12 +53,18 @@
 #  index_admin_publications_on_publication_status                   (publication_status)
 #  index_admin_publications_on_publication_type_and_publication_id  (publication_type,publication_id)
 #  index_admin_publications_on_rgt                                  (rgt)
+#  index_admin_publications_on_scheduled_by_id                      (scheduled_by_id)
 #  index_admin_publications_on_scheduled_transition                 (scheduled_at,scheduled_status) WHERE (scheduled_status IS NOT NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (scheduled_by_id => users.id)
 #
 class AdminPublication < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft published archived]
 
   belongs_to :publication, polymorphic: true, touch: true
+  belongs_to :scheduled_by, class_name: 'User', optional: true
 
   acts_as_nested_set dependent: :destroy, order_column: :ordering, counter_cache: :children_count
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
@@ -66,13 +73,13 @@ class AdminPublication < ApplicationRecord
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
   validates :scheduled_status, inclusion: { in: PUBLICATION_STATUSES }, allow_nil: true
   validate :parent_allowed_to_have_children
-  validate :validate_scheduled_fields_both_or_neither
+  validate :validate_scheduling_fields
   validate :validate_scheduled_status_differs_from_current, if: :will_save_change_to_scheduled_status?
   validate :validate_scheduled_at_in_future, if: :will_save_change_to_scheduled_at?
 
   before_validation :set_publication_status, on: :create
   before_validation :set_default_children_allowed, on: :create
-  before_save :cancel_schedule_on_manual_status_change
+  before_save :cancel_scheduled_transition, if: :will_save_change_to_publication_status?
   before_save :set_first_published_at
 
   # Returns publications with the given status(es), taking scheduled transitions into account.
@@ -133,13 +140,15 @@ class AdminPublication < ApplicationRecord
     !ever_published?
   end
 
-  def scheduled_transition_pending?
-    scheduled_status.present?
+  def cancel_scheduled_transition
+    self.scheduled_status = nil
+    self.scheduled_at = nil
+    self.scheduled_by = nil
+
+    self
   end
 
-  def cancel_scheduled_transition!
-    update!(scheduled_status: nil, scheduled_at: nil)
-  end
+  def cancel_scheduled_transition! = cancel_scheduled_transition.save!
 
   def effective_publication_status
     due_status_transition? ? scheduled_status : publication_status
@@ -169,31 +178,25 @@ class AdminPublication < ApplicationRecord
     self.children_allowed = false if publication_type == 'Project'
   end
 
-  def cancel_schedule_on_manual_status_change
-    return unless publication_status_changed? && scheduled_status.present?
-
-    self.scheduled_status = nil
-    self.scheduled_at = nil
-  end
-
   def set_first_published_at
     return unless first_published_at.nil?
-    return unless read_attribute(:publication_status) == 'published'
+    return unless self[:publication_status] == 'published'
 
     self.updated_at = Time.zone.now
     self.created_at ||= updated_at
     self.first_published_at = updated_at
   end
 
-  def validate_scheduled_fields_both_or_neither
-    return if scheduled_status.blank? && scheduled_at.blank?
-    return if scheduled_status.present? && scheduled_at.present?
+  def validate_scheduling_fields
+    # Skips validation when only +scheduled_by+ changes to allow it to be nullified.
+    return unless will_save_change_to_scheduled_status? || will_save_change_to_scheduled_at?
 
-    if scheduled_status.blank?
-      errors.add(:scheduled_status, message: 'must be provided when scheduled_at is set')
-    else
-      errors.add(:scheduled_at, message: 'must be provided when scheduled_status is set')
-    end
+    fields = [scheduled_status, scheduled_at, scheduled_by]
+    return if fields.all?(&:present?) || fields.all?(&:blank?)
+
+    errors.add(:scheduled_status, message: 'must be provided when scheduling publication') unless scheduled_status
+    errors.add(:scheduled_at, message: 'must be provided when scheduling publication') unless scheduled_at
+    errors.add(:scheduled_by, message: 'must be provided when scheduling publication') unless scheduled_by
   end
 
   def validate_scheduled_status_differs_from_current

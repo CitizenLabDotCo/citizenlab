@@ -3,7 +3,7 @@
 class ProcessScheduledPublicationTransitionJob < ApplicationJob
   queue_as :default
 
-  def run(admin_publication_id, user_id)
+  def run(admin_publication_id)
     admin_pub = AdminPublication.find_by(id: admin_publication_id)
     return unless admin_pub
     # We check if the transition is due twice. The important check happens inside the lock.
@@ -22,12 +22,11 @@ class ProcessScheduledPublicationTransitionJob < ApplicationJob
       # a bit indirect, but this mirrors the controller update flow.
       publication = admin_pub.publication
       publication.assign_attributes(admin_publication_attributes: { publication_status: target })
-      user = User.find_by(id: user_id)
 
       sidefx = sidefx_service(publication)
-      sidefx.before_update(publication, user)
+      sidefx.before_update(publication, admin_pub.scheduled_by)
       publication.save!
-      sidefx.after_update(publication, user)
+      sidefx.after_update(publication, admin_pub.scheduled_by)
     end
   end
 

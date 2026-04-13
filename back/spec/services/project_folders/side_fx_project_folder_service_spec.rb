@@ -50,7 +50,7 @@ describe ProjectFolders::SideFxProjectFolderService do
 
       expect { service.after_update(project_folder, user) }
         .to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
-        .with(project_folder.admin_publication.id, user.id)
+        .with(project_folder.admin_publication.id)
     end
 
     it 'does not enqueue the transition job when no schedule is set' do

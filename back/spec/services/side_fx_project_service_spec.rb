@@ -103,7 +103,7 @@ describe SideFxProjectService do
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
-        .with(project.admin_publication.id, user.id)
+        .with(project.admin_publication.id)
     end
 
     it 'does not enqueue the transition job when no schedule is set' do

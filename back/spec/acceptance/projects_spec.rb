@@ -706,7 +706,8 @@ resource 'Projects' do
         example 'Cancel a scheduled transition' do
           project.admin_publication.update!(
             scheduled_status: 'archived',
-            scheduled_at: 1.day.from_now
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
           )
 
           admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
@@ -726,7 +727,8 @@ resource 'Projects' do
         example 'Reschedule a transition' do
           project.admin_publication.update!(
             scheduled_status: 'archived',
-            scheduled_at: 1.day.from_now
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
           )
 
           scheduled_at = 3.days.from_now.iso8601(3)
@@ -747,7 +749,8 @@ resource 'Projects' do
         example 'Immediate status change cancels schedule' do
           project.admin_publication.update!(
             scheduled_status: 'archived',
-            scheduled_at: 1.day.from_now
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
           )
 
           expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }

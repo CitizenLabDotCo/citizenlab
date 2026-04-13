@@ -390,7 +390,7 @@ resource 'AdminPublication' do
 
       example 'Get an admin publication with scheduled transition fields', document: false do
         scheduled_at = 1.day.from_now
-        projects.first.admin_publication.update!(scheduled_status: 'archived', scheduled_at:)
+        projects.first.admin_publication.update!(scheduled_status: 'archived', scheduled_at:, scheduled_by: @admin)
 
         do_request
 

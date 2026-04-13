@@ -4,6 +4,7 @@ class AddSchedulingFieldsToAdminPublications < ActiveRecord::Migration[7.2]
     add_column :admin_publications, :scheduled_at, :datetime, null: true
 
     safety_assured do
+      add_reference :admin_publications, :scheduled_by, type: :uuid, foreign_key: { to_table: :users }, null: true
       add_index :admin_publications, %i[scheduled_at scheduled_status],
         where: 'scheduled_status IS NOT NULL',
         name: 'index_admin_publications_on_scheduled_transition'
