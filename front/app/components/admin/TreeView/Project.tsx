@@ -15,8 +15,8 @@ import Row from './_shared/Row';
 interface Props {
   node: ProjectNode;
   lockedProjectTooltip?: MessageDescriptor;
-  removeButtonMessage: MessageDescriptor;
-  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  removeButtonMessage?: MessageDescriptor;
+  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const Project = ({
@@ -29,6 +29,7 @@ const Project = ({
   const localize = useLocalize();
 
   const handleRemoveProject = async () => {
+    if (!onRemove) return;
     setIsRemoving(true);
     await onRemove(node.id, 'project');
     setIsRemoving(false);
@@ -70,7 +71,7 @@ const Project = ({
           </Tooltip>
         )}
       </Box>
-      {!lockedProjectTooltip && (
+      {!lockedProjectTooltip && removeButtonMessage && onRemove && (
         <RemoveButton
           processing={isRemoving}
           message={removeButtonMessage}

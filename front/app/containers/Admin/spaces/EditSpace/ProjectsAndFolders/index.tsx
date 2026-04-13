@@ -3,13 +3,15 @@ import React from 'react';
 import { Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useTreeView from 'api/admin_publications/useTreeView';
+import useAuthUser from 'api/me/useAuthUser';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useUpdateProject from 'api/projects/useUpdateProject';
-import useTreeView from 'api/admin_publications/useTreeView';
 
 import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -18,6 +20,9 @@ const ProjectsAndFolders = () => {
   const { data: treeView } = useTreeView(spaceId);
   const { mutate: updateFolder } = useUpdateProjectFolder();
   const { mutate: updateProject } = useUpdateProject();
+  const { data: authUser } = useAuthUser();
+
+  const userIsSpaceModerator = isSpaceModerator(authUser);
 
   if (!treeView) return null;
 
@@ -42,9 +47,13 @@ const ProjectsAndFolders = () => {
       {nodes.length > 0 ? (
         <TreeView
           nodes={treeView.data.attributes.nodes}
-          lockedProjectTooltip={messages.lockedProject}
-          removeButtonMessage={messages.removeFromSpace}
-          onRemove={handleRemove}
+          lockedProjectTooltip={
+            userIsSpaceModerator ? undefined : messages.lockedProject
+          }
+          removeButtonMessage={
+            userIsSpaceModerator ? undefined : messages.removeFromSpace
+          }
+          onRemove={userIsSpaceModerator ? undefined : handleRemove}
         />
       ) : (
         <Text>

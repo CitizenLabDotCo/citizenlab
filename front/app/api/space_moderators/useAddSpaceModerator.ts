@@ -9,16 +9,17 @@ import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import projectModeratorsKeys from './keys';
-import { ProjectModeratorAdd } from './types';
+import spaceModeratorsKeys from './keys';
 
-const addModerator = async ({
-  user_id,
-  user_email,
-  projectId,
-}: ProjectModeratorAdd) =>
-  fetcher<IUser>({
-    path: `/projects/${projectId}/moderators`,
+interface Params {
+  user_id?: string;
+  user_email?: string;
+  spaceId: string;
+}
+
+const addSpaceModerator = ({ spaceId, user_email, user_id }: Params) => {
+  return fetcher<IUser>({
+    path: `/spaces/${spaceId}/moderators`,
     action: 'post',
     body: {
       moderator: {
@@ -27,14 +28,15 @@ const addModerator = async ({
       },
     },
   });
+};
 
-const useAddProjectModerator = () => {
+const useAddSpaceModerator = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUser, CLErrors, ProjectModeratorAdd>({
-    mutationFn: addModerator,
+  return useMutation<IUser, CLErrors, Params>({
+    mutationFn: addSpaceModerator,
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: projectModeratorsKeys.all(),
+        queryKey: spaceModeratorsKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({
@@ -48,4 +50,4 @@ const useAddProjectModerator = () => {
   });
 };
 
-export default useAddProjectModerator;
+export default useAddSpaceModerator;

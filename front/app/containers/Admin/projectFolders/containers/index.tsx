@@ -16,7 +16,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -51,7 +51,7 @@ const AdminProjectFolderEdition = () => {
     ],
   };
 
-  if (isAdmin(authUser)) {
+  if (isAdmin(authUser) || isSpaceModerator(authUser)) {
     tabbedProps = {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({

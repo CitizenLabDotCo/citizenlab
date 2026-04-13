@@ -1,1 +1,11 @@
 {}
+
+  "app.containers.AdminPage.SideBar.spaceManager": "Space-Manager*innen",
+
+  "app.containers.EditSpace.spaceManagers": "Space-Manager*innen",
+
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateSpaces": "Nur Administrator*innen können Spaces erstellen.",
+
+  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": "Nur Administrator*innen und Space-Manager*innen können Projektordner erstellen.",
+
+  "app.components.admin.SpaceSelect.pleaseSelectASpace": "— Bitte wählen Sie einen Space aus —",

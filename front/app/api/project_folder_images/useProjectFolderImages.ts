@@ -25,6 +25,7 @@ const useProjectFolderImages = ({ folderId }: IQueryParameters) => {
   >({
     queryKey: projectFolderImagesKeys.list({ folderId }),
     queryFn: () => fetchProjectFolderImages({ folderId }),
+    enabled: !!folderId,
   });
 };
 
