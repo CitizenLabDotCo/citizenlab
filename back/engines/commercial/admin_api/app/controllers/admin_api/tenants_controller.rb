@@ -17,7 +17,9 @@ module AdminApi
 
     def by_host
       tenant = Tenant.find_by!(host: params[:host])
-      render json: AdminApi::TenantSerializer.new(tenant).to_json
+      tenant.switch do
+        render json: AdminApi::TenantSerializer.new(tenant).to_json
+      end
     end
 
     def show

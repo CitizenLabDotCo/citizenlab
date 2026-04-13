@@ -2,6 +2,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 import { IProjectFolderData } from 'api/project_folders/types';
 import { IProjectData } from 'api/projects/types';
+import { IUserData } from 'api/users/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -16,7 +17,7 @@ export interface Space {
 
 export interface Spaces {
   data: SpaceData[];
-  included?: (IProjectFolderData | IProjectData)[];
+  included?: IUserData[];
 }
 
 export interface SpaceData {
@@ -29,10 +30,13 @@ export interface SpaceData {
     updated_at: string;
   };
   relationships: {
-    folders: {
+    folders?: {
       data: IRelationship[];
     };
-    projects: {
+    projects?: {
+      data: IRelationship[];
+    };
+    moderators: {
       data: IRelationship[];
     };
   };

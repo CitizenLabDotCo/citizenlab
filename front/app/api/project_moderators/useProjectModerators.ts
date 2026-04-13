@@ -6,19 +6,20 @@ import { IUsers } from 'api/users/types';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectModeratorsKeys from './keys';
-import { ProjectModeratorsKeys, ProjectForderParams } from './types';
+import { ProjectModeratorsKeys, ProjectModeratorParams } from './types';
 
-const fetchProjectModerators = ({ projectId }: ProjectForderParams) => {
+const fetchProjectModerators = ({ projectId }: ProjectModeratorParams) => {
   return fetcher<IUsers>({
     path: `/projects/${projectId}/moderators`,
     action: 'get',
   });
 };
 
-const useProjectModerators = ({ projectId }: ProjectForderParams) => {
+const useProjectModerators = ({ projectId }: ProjectModeratorParams) => {
   return useQuery<IUsers, CLErrors, IUsers, ProjectModeratorsKeys>({
     queryKey: projectModeratorsKeys.list({ projectId }),
     queryFn: () => fetchProjectModerators({ projectId }),
+    enabled: !!projectId,
   });
 };
 

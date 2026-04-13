@@ -6,7 +6,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import Table from './Table';
 
@@ -14,13 +14,17 @@ const Spaces = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: user } = useAuthUser();
 
-  if (!spacesEnabled || !isAdmin(user)) return null;
+  if (!spacesEnabled) return null;
 
-  return (
-    <Box>
-      <Table />
-    </Box>
-  );
+  if (isAdmin(user) || isSpaceModerator(user)) {
+    return (
+      <Box>
+        <Table />
+      </Box>
+    );
+  }
+
+  return null;
 };
 
 export default Spaces;

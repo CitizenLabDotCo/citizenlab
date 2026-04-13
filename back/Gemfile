@@ -22,6 +22,7 @@ group :development, :test do
   gem 'ricecream', '~> 0.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', require: false
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
@@ -80,7 +81,7 @@ gem 'pundit', '~> 2.5.0'
 gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.9.2'
-gem 'que', '~> 2.3.0'
+gem 'que', '~> 2.4.1'
 
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'

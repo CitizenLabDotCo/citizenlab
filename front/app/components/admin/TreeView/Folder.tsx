@@ -16,8 +16,8 @@ import Project from './Project';
 interface Props {
   node: FolderNode;
   lockedProjectTooltip?: MessageDescriptor;
-  removeButtonMessage: MessageDescriptor;
-  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  removeButtonMessage?: MessageDescriptor;
+  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const Folder = ({
@@ -31,6 +31,7 @@ const Folder = ({
   const [isRemoving, setIsRemoving] = useState(false);
 
   const handleRemoveFolder = async () => {
+    if (!onRemove) return;
     setIsRemoving(true);
     await onRemove(node.id, 'folder');
     setIsRemoving(false);
@@ -55,11 +56,13 @@ const Folder = ({
             {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveButton
-          processing={isRemoving}
-          message={removeButtonMessage}
-          onClick={handleRemoveFolder}
-        />
+        {removeButtonMessage && onRemove && (
+          <RemoveButton
+            processing={isRemoving}
+            message={removeButtonMessage}
+            onClick={handleRemoveFolder}
+          />
+        )}
       </Row>
       <Box pl="31px">
         {expanded && (

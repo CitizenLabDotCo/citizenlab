@@ -13,8 +13,8 @@ import projectFolderModeratorsKeys from './keys';
 import { ProjectFolderModeratorAdd } from './types';
 
 const addModerator = async ({
-  moderatorId,
-  moderatorEmail,
+  user_id,
+  user_email,
   projectFolderId,
 }: ProjectFolderModeratorAdd) =>
   fetcher<IUsers>({
@@ -22,8 +22,8 @@ const addModerator = async ({
     action: 'post',
     body: {
       moderator: {
-        user_id: moderatorId,
-        user_email: moderatorEmail,
+        user_id,
+        user_email,
       },
     },
   });
@@ -32,11 +32,9 @@ const useAddProjectFolderModerator = () => {
   const queryClient = useQueryClient();
   return useMutation<IUsers, CLErrors, ProjectFolderModeratorAdd>({
     mutationFn: addModerator,
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: projectFolderModeratorsKeys.list({
-          projectFolderId: variables.projectFolderId,
-        }),
+        queryKey: projectFolderModeratorsKeys.all(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({
