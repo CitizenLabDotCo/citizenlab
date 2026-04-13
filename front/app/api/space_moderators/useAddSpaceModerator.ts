@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+import spacesKeys from 'api/spaces/keys';
 import usersKeys from 'api/users/keys';
 import { IUser } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
@@ -37,6 +38,9 @@ const useAddSpaceModerator = () => {
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({
         queryKey: spaceModeratorsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: spacesKeys.all(),
       });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({

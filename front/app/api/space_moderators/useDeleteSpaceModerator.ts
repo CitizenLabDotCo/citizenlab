@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+import spacesKeys from 'api/spaces/keys';
 import usersKeys from 'api/users/keys';
 import userCountKeys from 'api/users_count/keys';
 
@@ -32,7 +33,9 @@ const useDeleteSpaceModerator = () => {
           spaceId: variables.spaceId,
         }),
       });
-
+      queryClient.invalidateQueries({
+        queryKey: spacesKeys.all(),
+      });
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
