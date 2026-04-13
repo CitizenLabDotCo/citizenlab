@@ -301,23 +301,21 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
     end
   end
 
-  # Guard test: dynamically discovers all input types where supports_pdf_import? is true,
-  # creates a field for each, and verifies they all appear in the key_mapping (i.e. they are
-  # handled by add_field_property and not falling through to add_unsupported_property).
-  # If a new field type is added and marked as pdf-importable, this test will fail automatically.
-  describe 'all pdf-importable field types generate non-null schema properties' do
-    it 'does not generate null type for any pdf-importable field' do
-      # Dynamically find all input types that are both pdf-importable and submittable
-      importable_types = CustomField::INPUT_TYPES.select do |input_type|
+  # Guard tests: create one field per printable+submittable input type (i.e. every
+  # type that can reach add_field_property) and assert invariants on the built schema.
+  describe 'input type classification in add_field_property' do
+    let(:printable_types) do
+      CustomField::INPUT_TYPES.select do |input_type|
         probe = CustomField.new(input_type: input_type, enabled: true, include_in_printed_form: true)
-        probe.supports_pdf_import? && probe.supports_submission?
+        probe.supports_printing? && probe.supports_submission?
       end
+    end
 
-      # Create one field per importable type with the minimum required attributes
-      importable_types.each_with_index do |input_type, i|
+    before do
+      printable_types.each_with_index do |input_type, i|
         attrs = {
           resource: custom_form,
-          key: "importable_#{i}",
+          key: "probe_#{i}",
           input_type: input_type,
           title_multiloc: { 'en' => "Question #{input_type}" },
           enabled: true,
@@ -336,15 +334,28 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
           field.update!(linear_scale_label_1_multiloc: { 'en' => 'Low' })
         end
       end
+    end
 
-      # Fields handled by add_field_property are added to the key_mapping.
-      # Unsupported fields are not. So any importable field missing from the
-      # mapping indicates it fell through to add_unsupported_property.
+    # Unclassified types hit the else-branch in add_field_property and raise.
+    # Adding a new input type to CustomField::INPUT_TYPES without classifying it
+    # (supported vs. known-unsupported) will fail this test.
+    it 'classifies every printable input type (no raise)' do
+      expect { builder.output_schema }.not_to raise_error
+    end
+
+    # Pdf-importable types must be actually handled, not silently routed to
+    # add_unsupported_property — handled fields end up in key_mapping. Catches
+    # the case where a pdf-importable type is mis-classified as known-unsupported.
+    it 'handles every pdf-importable input type in key_mapping' do
       mapped_field_keys = builder.key_mapping.values.map { |v| v[:field_key] }
-      unhandled_types = importable_types.select.with_index { |_, i| mapped_field_keys.exclude?("importable_#{i}") }
+      unhandled = printable_types.each_with_index.filter_map do |input_type, i|
+        next unless CustomField.new(input_type: input_type).supports_pdf_import?
 
-      expect(unhandled_types).to be_empty,
-        "These pdf-importable field types are not handled by add_field_property: #{unhandled_types.join(', ')}"
+        input_type if mapped_field_keys.exclude?("probe_#{i}")
+      end
+
+      expect(unhandled).to be_empty,
+        "These pdf-importable field types are not handled by add_field_property: #{unhandled.join(', ')}"
     end
   end
 end

@@ -87,6 +87,14 @@ module BulkImportIdeas::Parsers::Pdf
       @key_mapping['consent'] = { type: :personal_data, personal_field: :consent, label: consent_label }
     end
 
+    # Input types that can be present in a printable form but cannot be extracted
+    # from a scanned PDF (map geometries, file uploads, topic pickers, etc.).
+    KNOWN_UNSUPPORTED_INPUT_TYPES = %w[
+      point line polygon shapefile_upload
+      file_upload files image_files
+      topic_ids
+    ].freeze
+
     def add_field_property(field, question_key, question_num, properties, required)
       case field.input_type
       when 'text', 'multiline_text', 'date', 'html_multiloc', 'text_multiloc'
@@ -103,8 +111,11 @@ module BulkImportIdeas::Parsers::Pdf
         add_matrix_property(field, question_key, question_num, properties, required)
       when 'checkbox'
         add_checkbox_property(field, question_key, question_num, properties, required)
-      else
+      when *KNOWN_UNSUPPORTED_INPUT_TYPES
         add_unsupported_property(field, question_key, question_num, properties, required)
+      else
+        raise "FormSyncSchemaBuilder: unhandled input_type '#{field.input_type}'. " \
+              'Add it to the supported branches above or to KNOWN_UNSUPPORTED_INPUT_TYPES.'
       end
     end
 
