@@ -14,11 +14,12 @@ import useLocalize from 'hooks/useLocalize';
 import SeatLimitReachedModal from 'components/admin/SeatBasedBilling/SeatLimitReachedModal';
 import Modal from 'components/UI/Modal';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   opened: boolean;
@@ -40,12 +41,28 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
   );
   const localize = useLocalize();
   const { data: adminPublications } = useAdminPublications({});
+  const [currentTab, setCurrentTab] = useState('projects');
 
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );
 
   if (!flatAdminPublications) return null;
+
+  const tabs: ITabItem[] = [
+    {
+      name: 'projects',
+      label: formatMessage(messages.projects),
+    },
+    {
+      name: 'folders',
+      label: formatMessage(messages.folders),
+    },
+    {
+      name: 'spaces',
+      label: formatMessage(messages.spaces),
+    },
+  ];
 
   const options = flatAdminPublications.map((publication) => ({
     value: publication.id,
@@ -110,6 +127,13 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
             values={{ name: getFullName(user) }}
           />
         </Title>
+        <Box>
+          <Tabs
+            items={tabs}
+            selectedValue={currentTab}
+            onClick={setCurrentTab}
+          />
+        </Box>
         <MultipleSelect
           value={selectedPublications}
           options={options}

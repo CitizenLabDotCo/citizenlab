@@ -21,4 +21,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.assign',
     defaultMessage: 'Assign',
   },
+  projects: {
+    id: 'app.containers.Admin.Users.projects',
+    defaultMessage: 'Projects',
+  },
+  folders: {
+    id: 'app.containers.Admin.Users.folders',
+    defaultMessage: 'Folders',
+  },
+  spaces: {
+    id: 'app.containers.Admin.Users.spaces',
+    defaultMessage: 'Spaces',
+  },
 });
