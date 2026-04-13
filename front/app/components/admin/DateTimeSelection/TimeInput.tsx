@@ -123,6 +123,7 @@ const TimeInput = ({
           setVisible(true);
         }}
         textColor={colors.black}
+        height="48px"
       >
         {format(selectedTime, 'p', { locale: getLocale(locale) })}
       </Button>
