@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Mewnforio ffurflenni wedi'u sganio (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Mewnforio ffurflenni wedi'u sganio",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Mewnbynnau wedi'u mewnforio",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Mewnforio. Gall y broses hon gymryd ychydig funudau.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Mewnforiwyd y mewnbwn hwn yn ddienw.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "Ni ellid cymeradwyo {numNotApproved} mewnbwn. Gwiriwch bob mewnbwn am faterion dilysu.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lleoliad:",

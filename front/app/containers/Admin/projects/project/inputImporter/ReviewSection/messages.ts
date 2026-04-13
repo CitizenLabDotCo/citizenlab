@@ -58,7 +58,7 @@ export default defineMessages({
     defaultMessage: 'This input was imported anonymously.',
   },
   importing: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing3',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2',
     defaultMessage: 'Importing. This process may take a few minutes.',
   },
   importingProgress: {

@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Immersugassat scannikkat (.pdf) aakkit",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Immersugassat skannerneqarsimasut aakkit",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Siunnersuutit eqqussat",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Eqqussineq. Tamanna minutsialunnik sivisussuseqarsinnaavoq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Una ilanngussaq kinaassuseq isertuullugu eqqunneqarpoq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} ilanngussat akuerineqarsinnaanngillat. Ilanngussat ataasiakkaarlugit kukkunersikkit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Oqaatsit:",

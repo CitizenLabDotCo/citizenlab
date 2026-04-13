@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importar formularios escaneados (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importar formularios escaneados",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Entradas importadas",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importar. Este proceso puede tardar unos minutos.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Esta aportación se importó de forma anónima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} aportaciones no se han podido aprobar. Por favor, comprueba si hay errores de validación en cada una.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Localidad:",

@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Taranmış formları içe aktarma (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Taranmış formları içe aktarma",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "İçe aktarılan girdiler",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "İçe aktarma. Bu işlem birkaç dakika sürebilir.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Bu girdi anonim olarak aktarılmıştır.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} giriş onaylanamadı. Lütfen her bir girişi doğrulama sorunları için kontrol edin.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Yerel:",
