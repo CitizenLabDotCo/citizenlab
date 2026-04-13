@@ -61,7 +61,7 @@ export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
-function fetcher<TResponseData extends BaseResponseData>(
+function fetcher<TResponseData extends BaseResponseData | null>(
   args: FetcherArgs
 ): FetcherArgs['action'] extends 'delete' ? null : Promise<TResponseData>;
 
@@ -134,7 +134,7 @@ async function fetcher({
       action === 'post' &&
       (response.status === 201 || response.status === 200)
     ) {
-      return; // TODO temporary workaround
+      return null; // TODO temporary workaround
     }
 
     if (response.status === 504) {
