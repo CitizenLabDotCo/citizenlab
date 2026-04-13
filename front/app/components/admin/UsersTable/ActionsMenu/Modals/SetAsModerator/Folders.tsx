@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
-import useProjects from 'api/projects/useProjects';
+import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 import { IUser, IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,29 +19,27 @@ interface Props {
   onClose: () => void;
 }
 
-const Projects = ({ user, onClose }: Props) => {
-  const { mutateAsync: addProjectModerator } = useAddProjectModerator();
+const Folders = ({ user, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: projects } = useProjects({
-    publicationStatuses: ['published', 'archived', 'draft'],
-  });
+  const { data: folders } = useProjectFolders({});
+  const { mutateAsync: addFolderModerator } = useAddProjectFolderModerator();
 
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
 
   const options =
-    projects?.data.map((project) => ({
-      value: project.id,
-      label: localize(project.attributes.title_multiloc),
+    folders?.data.map((folders) => ({
+      value: folders.id,
+      label: localize(folders.attributes.title_multiloc),
     })) ?? [];
 
-  const assignPMs = async () => {
+  const assignFMs = async () => {
     const promises: Promise<IUser>[] = [];
 
-    for (const projectId of selectedProjects) {
+    for (const folderId of selectedFolders) {
       promises.push(
-        addProjectModerator({
-          projectId,
+        addFolderModerator({
+          projectFolderId: folderId,
           user_id: user.id,
         })
       );
@@ -53,22 +51,22 @@ const Projects = ({ user, onClose }: Props) => {
   return (
     <>
       <MultipleSelect
-        value={selectedProjects}
+        value={selectedFolders}
         options={options}
         onChange={(selectedOptions) => {
-          setSelectedProjects(selectedOptions.map((option) => option.value));
+          setSelectedFolders(selectedOptions.map((option) => option.value));
         }}
         label={formatMessage(messages.selectProjects)}
         placeholder={formatMessage(messages.selectPlaceholder)}
       />
       <AssignButton
-        disabled={selectedProjects.length === 0}
+        disabled={selectedFolders.length === 0}
         user={user}
         onClose={onClose}
-        onAssign={assignPMs}
+        onAssign={assignFMs}
       />
     </>
   );
 };
 
-export default Projects;
+export default Folders;
