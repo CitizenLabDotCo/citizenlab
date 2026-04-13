@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.selectProjects',
     defaultMessage: 'Select projects',
   },
+  selectFolders: {
+    id: 'app.containers.Admin.Users.selectFolders',
+    defaultMessage: 'Select folders',
+  },
   selectPlaceholder: {
     id: 'app.containers.Admin.Users.selectPlaceholder',
     defaultMessage: 'Type to search',

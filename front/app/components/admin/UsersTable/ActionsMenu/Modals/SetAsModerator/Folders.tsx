@@ -56,7 +56,7 @@ const Folders = ({ user, onClose }: Props) => {
         onChange={(selectedOptions) => {
           setSelectedFolders(selectedOptions.map((option) => option.value));
         }}
-        label={formatMessage(messages.selectProjects)}
+        label={formatMessage(messages.selectFolders)}
         placeholder={formatMessage(messages.selectPlaceholder)}
       />
       <AssignButton

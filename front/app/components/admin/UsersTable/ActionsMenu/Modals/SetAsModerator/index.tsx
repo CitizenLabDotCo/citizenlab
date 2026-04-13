@@ -12,6 +12,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 
+import Folders from './Folders';
 import Projects from './Projects';
 
 interface Props {
@@ -62,6 +63,9 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         <Box mt="32px">
           {currentTab === 'projects' && (
             <Projects user={user} onClose={onClose} />
+          )}
+          {currentTab === 'folders' && (
+            <Folders user={user} onClose={onClose} />
           )}
         </Box>
       </Modal>
