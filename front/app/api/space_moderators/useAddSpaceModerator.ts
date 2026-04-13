@@ -37,7 +37,7 @@ const useAddSpaceModerator = () => {
     mutationFn: addSpaceModerator,
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: spaceModeratorsKeys.lists(),
+        queryKey: spaceModeratorsKeys.all(),
       });
       queryClient.invalidateQueries({
         queryKey: spacesKeys.all(),

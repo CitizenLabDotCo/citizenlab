@@ -36,7 +36,7 @@ const useAddProjectModerator = () => {
       queryClient.invalidateQueries({
         queryKey: projectModeratorsKeys.all(),
       });
-      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: usersKeys.all() });
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });
