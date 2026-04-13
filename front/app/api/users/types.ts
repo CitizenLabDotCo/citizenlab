@@ -146,4 +146,5 @@ export interface IQueryParameters {
 
   project_moderators_only?: boolean;
   folder_moderators_only?: boolean;
+  space_moderators_only?: boolean;
 }
