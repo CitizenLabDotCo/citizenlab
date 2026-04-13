@@ -14199,6 +14199,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:34:03.287493Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": {
     "state": "verified",
     "verified_at": "2026-03-31T07:23:46.906710Z",
