@@ -1,7 +1,6 @@
 {
   "app.containers.Admin.project.emails.emailCreated": "E-Mail erfolgreich als Entwurf erstellt",
-  "app.containers.Admin.project.emails.emailUpdated": "E-Mail erfolgreich aktualisiert"
-}
+  "app.containers.Admin.project.emails.emailUpdated": "E-Mail erfolgreich aktualisiert",
 
   "UI.FormComponents.required": "Erforderlich",
 
@@ -831,7 +830,7 @@
 
   "app.containers.Admin.tools.powerBITemplates.supportLinkUrl2": "https://support.govocal.com/de/articles/527578-govocal-daten-in-powerbi-verwenden",
 
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}.",
 
   "app.containers.ContentBuilder.homepage.phoneHeightPx": "Telefonhöhe (px)",
 
@@ -7727,4 +7726,5 @@
 
   "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Anzeige des Nutzer*innennamens (nur für Nutzer*innen mit bestätigter E-Mail)",
 
-  "app.containers.AdminPage.widgets.fieldHeaderText": "Überschrift Titel",
+  "app.containers.AdminPage.widgets.fieldHeaderText": "Überschrift Titel"
+}
