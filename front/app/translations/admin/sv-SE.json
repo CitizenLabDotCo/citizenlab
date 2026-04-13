@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektledare",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Tilldelade objekt",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Ytansvariga",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Få en översikt över alla personer och organisationer som registrerat sig på plattformen. Lägg till ett urval av användare i Manuella grupper eller Smarta grupper.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Platsöversikt",
   "app.containers.Admin.Users.SeatsOverview.admins": "Administratörer",

@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupos",
   "app.containers.Admin.Users.GroupsPanel.managers": "Jefes de proyecto",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Elementos asignados",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Gestores de espacios",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Administrar todos los usuarios inscritos en su plataforma. Crear grupos normales o inteligentes para segmentarlos.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Resumen de asientos",
   "app.containers.Admin.Users.SeatsOverview.admins": "Administradores",

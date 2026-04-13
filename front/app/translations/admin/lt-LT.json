@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupės",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektų vadovai",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Priskirti elementai",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Erdvės valdytojai",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Apžvelkite visus platformoje užsiregistravusius asmenis ir organizacijas. Įtraukite pasirinktus naudotojus į rankines grupes arba išmaniąsias grupes.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Vietų apžvalga",
   "app.containers.Admin.Users.SeatsOverview.admins": "Administratoriai",

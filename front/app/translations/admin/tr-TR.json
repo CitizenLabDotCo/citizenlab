@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruplar",
   "app.containers.Admin.Users.GroupsPanel.managers": "Proje yöneticileri",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Atanmış öğeler",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Alan yöneticileri",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Platforma kaydolan tüm kişi ve kuruluşları genel hatlarıyla görün. Seçilen kullanıcıları Manuel gruplara veya Akıllı gruplara ekleyin.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Koltuk genel bakışı",
   "app.containers.Admin.Users.SeatsOverview.admins": "Yöneticiler",

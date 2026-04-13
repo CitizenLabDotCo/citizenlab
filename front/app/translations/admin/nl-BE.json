@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projectbeheerders",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Toegewezen items",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Ruimtebeheerders",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Beheer alle gebruikers op je platform. Maak manuele of slimme groepen aan om hen te segmenteren.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Overzicht accounts",
   "app.containers.Admin.Users.SeatsOverview.admins": "Platformbeheerders",

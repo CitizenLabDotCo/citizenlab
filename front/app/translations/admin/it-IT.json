@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppi",
   "app.containers.Admin.Users.GroupsPanel.managers": "Project manager",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Elementi assegnati",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Gestori degli spazi",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Ottieni una panoramica di tutte le persone e organizzazioni che si sono registrate sulla piattaforma. Aggiungi una selezione di utenti ai gruppi manuali o ai gruppi Smart.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Panoramica dei posti",
   "app.containers.Admin.Users.SeatsOverview.admins": "Amministratori",

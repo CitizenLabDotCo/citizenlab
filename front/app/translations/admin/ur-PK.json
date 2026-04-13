@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "گروپس",
   "app.containers.Admin.Users.GroupsPanel.managers": "پروجیکٹ مینیجرز",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "تفویض کردہ اشیاء",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "اسپیس کے منتظمین",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "پلیٹ فارم پر رجسٹر ہونے والے تمام لوگوں اور تنظیموں کا ایک جائزہ حاصل کریں۔ مینوئل گروپس یا اسمارٹ گروپس میں صارفین کا انتخاب شامل کریں۔",
   "app.containers.Admin.Users.Seats.seatsOverview": "نشستوں کا جائزہ",
   "app.containers.Admin.Users.SeatsOverview.admins": "ایڈمنز",

@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupas",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektu vadītāji",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Piešķirtie priekšmeti",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Telpu pārvaldnieki",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Gūt pārskatu par visām platformā reģistrētajām personām un organizācijām. Pievienot atlasītus lietotājus Manuālajām grupām vai Viedajām grupām.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Vietu pārskats",
   "app.containers.Admin.Users.SeatsOverview.admins": "Administratori",

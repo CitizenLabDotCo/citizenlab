@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grúpaí",
   "app.containers.Admin.Users.GroupsPanel.managers": "Bainisteoirí tionscadail",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Míreanna sannta",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Bainisteoirí spáis",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Faigh forbhreathnú ar na daoine agus na heagraíochtaí uile a chláraigh ar an ardán. Cuir rogha úsáideoirí le grúpaí Lámhleabhair nó le grúpaí Cliste.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Forbhreathnú na suíochán",
   "app.containers.Admin.Users.SeatsOverview.admins": "Riarthóirí",

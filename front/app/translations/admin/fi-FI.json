@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Ryhmät",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektipäälliköt",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Määritetyt kohteet",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Tilan ylläpitäjät",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Saat yleiskatsauksen kaikista alustalle rekisteröityneistä ihmisistä ja organisaatioista. Lisää joukko käyttäjiä manuaalisiin ryhmiin tai älykkäisiin ryhmiin.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Paikkojen yleisnäkymä",
   "app.containers.Admin.Users.SeatsOverview.admins": "Järjestelmänvalvojat",

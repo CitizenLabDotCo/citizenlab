@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "ਸਮੂਹ",
   "app.containers.Admin.Users.GroupsPanel.managers": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "ਨਿਰਧਾਰਤ ਆਈਟਮਾਂ",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "ਸਪੇਸ ਪ੍ਰਬੰਧਕ",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "ਪਲੇਟਫਾਰਮ 'ਤੇ ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ ਸਾਰੇ ਲੋਕਾਂ ਅਤੇ ਸੰਸਥਾਵਾਂ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ। ਮੈਨੁਅਲ ਗਰੁੱਪਾਂ ਜਾਂ ਸਮਾਰਟ ਗਰੁੱਪਾਂ ਵਿੱਚ ਵਰਤੋਂਕਾਰਾਂ ਦੀ ਇੱਕ ਚੋਣ ਸ਼ਾਮਲ ਕਰੋ।",
   "app.containers.Admin.Users.Seats.seatsOverview": "ਸੀਟਾਂ ਦਾ ਸੰਖੇਪ ਵੇਰਵਾ",
   "app.containers.Admin.Users.SeatsOverview.admins": "ਐਡਮਿਨ",

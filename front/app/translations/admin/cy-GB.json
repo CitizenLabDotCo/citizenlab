@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grwpiau",
   "app.containers.Admin.Users.GroupsPanel.managers": "Rheolwyr prosiect",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Eitemau a neilltuwyd",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Rheolwyr gofod",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Mynnwch drosolwg o'r holl bobl a sefydliadau a gofrestrodd ar y platfform. Ychwanegu detholiad o ddefnyddwyr at grwpiau Llawlyfr neu grwpiau Smart.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Trosolwg o seddi",
   "app.containers.Admin.Users.SeatsOverview.admins": "Gweinyddwyr",

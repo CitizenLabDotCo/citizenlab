@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Ομάδες",
   "app.containers.Admin.Users.GroupsPanel.managers": "Διαχειριστές έργου",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Ανατεθειμένα στοιχεία",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Διαχειριστές χώρων",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Αποκτήστε μια επισκόπηση όλων των ατόμων και των οργανισμών που έχουν εγγραφεί στην πλατφόρμα. Προσθέστε μια επιλογή χρηστών σε μη αυτόματες ομάδες ή έξυπνες ομάδες.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Επισκόπηση θέσεων",
   "app.containers.Admin.Users.SeatsOverview.admins": "Διαχειριστές",

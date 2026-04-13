@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppit",
   "app.containers.Admin.Users.GroupsPanel.managers": "Suliniutinut aqutsisut",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Suliassat tunniunneqartut",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Ininik aqutsisut",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Inuit suliniaqatigiiffiillu quppernermi nalunaarsimasut tamakkiisumik takusinnaalikkit. Atuisut toqqakkat gruppinut nammineq aaqqissukkanut smart gruppinulluunniit ilanngukkit.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Inissat takussutissartaat",
   "app.containers.Admin.Users.SeatsOverview.admins": "Aqutsisut",

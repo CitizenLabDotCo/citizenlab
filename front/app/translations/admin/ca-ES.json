@@ -791,6 +791,7 @@
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grups",
   "app.containers.Admin.Users.GroupsPanel.managers": "Gestors del projecte",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Elements assignats",
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": "Gestors d'espais",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Obteniu una visió general de totes les persones i organitzacions que s'han registrat a la plataforma. Afegiu una selecció d'usuaris a grups manuals o grups intel·ligents.",
   "app.containers.Admin.Users.Seats.seatsOverview": "Vista general de seients",
   "app.containers.Admin.Users.SeatsOverview.admins": "Administradors",
