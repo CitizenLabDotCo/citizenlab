@@ -10,6 +10,7 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
+import { IProjectModeratorRole } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -30,7 +31,10 @@ const getOptions = (
 
   const projectsUserModerates = new Set(
     roles
-      .filter((role) => role.type === 'project_moderator')
+      .filter(
+        (role): role is IProjectModeratorRole =>
+          role.type === 'project_moderator'
+      )
       .map((role) => role.project_id)
   );
 

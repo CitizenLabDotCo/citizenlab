@@ -10,6 +10,7 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
+import { IProjectFolderModeratorRole } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -30,7 +31,10 @@ const getOptions = (
 
   const foldersUserModerates = new Set(
     roles
-      .filter((role) => role.type === 'project_folder_moderator')
+      .filter(
+        (role): role is IProjectFolderModeratorRole =>
+          role.type === 'project_folder_moderator'
+      )
       .map((role) => role.project_folder_id)
   );
 

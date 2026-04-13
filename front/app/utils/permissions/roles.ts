@@ -15,7 +15,7 @@ export interface IProjectFolderModeratorRole {
   project_folder_id: string;
 }
 
-interface ISpaceModeratorRole {
+export interface ISpaceModeratorRole {
   type: 'space_moderator';
   space_id: string;
 }

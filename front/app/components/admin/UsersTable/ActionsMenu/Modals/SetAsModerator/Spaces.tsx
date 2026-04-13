@@ -10,6 +10,7 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
+import { ISpaceModeratorRole } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -30,7 +31,9 @@ const getOptions = (
 
   const spacesUserModerates = new Set(
     roles
-      .filter((role) => role.type === 'space_moderator')
+      .filter(
+        (role): role is ISpaceModeratorRole => role.type === 'space_moderator'
+      )
       .map((role) => role.space_id)
   );
 
