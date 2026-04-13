@@ -12,18 +12,12 @@ import AreaForm, { FormValues } from '../AreaForm';
 import messages from '../messages';
 
 const New = () => {
-  const { mutate: addArea } = useAddArea();
+  const { mutateAsync: addArea } = useAddArea();
   const handleSubmit = async (values: FormValues) => {
-    addArea(
-      {
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/areas');
-        },
-      }
-    );
+    await addArea({
+      ...values,
+    });
+    clHistory.push('/admin/settings/areas');
   };
 
   const goBack = () => {
