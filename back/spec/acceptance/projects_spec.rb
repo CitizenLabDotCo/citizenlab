@@ -1905,6 +1905,18 @@ resource 'Projects' do
         assert_status 401
         expect(Project.where(id: id)).to exist
       end
+
+      example '[Unauthorized] Delete a project with a due scheduled publish', document: false do
+        project.admin_publication.update_columns(
+          scheduled_status: 'published', scheduled_at: 1.hour.ago,
+          scheduled_by_id: moderator.id
+        )
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
     end
   end
 

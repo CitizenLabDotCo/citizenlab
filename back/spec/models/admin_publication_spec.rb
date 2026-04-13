@@ -159,6 +159,29 @@ RSpec.describe AdminPublication do
     end
   end
 
+  describe '#ever_published?' do
+    it 'returns true when first_published_at is set' do
+      admin_publication.update_columns(first_published_at: 1.day.ago)
+      admin_publication.reload
+      expect(admin_publication).to be_ever_published
+    end
+
+    it 'returns true when effectively published via due schedule' do
+      admin_publication.update_columns(
+        publication_status: 'draft', scheduled_status: 'published',
+        scheduled_at: 1.hour.ago, first_published_at: nil
+      )
+      admin_publication.reload
+      expect(admin_publication).to be_ever_published
+    end
+
+    it 'returns false for a draft with no schedule' do
+      admin_publication.update_columns(publication_status: 'draft', first_published_at: nil)
+      admin_publication.reload
+      expect(admin_publication).not_to be_ever_published
+    end
+  end
+
   describe '.published' do
     it 'includes due schedule targeting published, excludes due schedule away from published' do
 

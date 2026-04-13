@@ -133,7 +133,8 @@ class AdminPublication < ApplicationRecord
   def draft? = effective_publication_status == 'draft'
 
   def ever_published?
-    first_published_at.present?
+    # `published?` allows for a due schedule to count as published.
+    first_published_at.present? || published?
   end
 
   def never_published?
