@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import isSameDay from 'date-fns/isSameDay';
-import { formatInTimeZone, fromZonedTime, toZonedTime } from 'date-fns-tz';
 import moment from 'moment-timezone';
 import styled from 'styled-components';
 
@@ -38,14 +37,16 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  // const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
-  // const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
   const tenantTimeNow = timeZone
-    ? toZonedTime(new Date(), timeZone)
+    ? new Date(
+        moment().tz(timeZone).year(),
+        moment().tz(timeZone).month(),
+        moment().tz(timeZone).date(),
+        moment().tz(timeZone).hour(),
+        moment().tz(timeZone).minute()
+      )
     : new Date();
-  const gmtOffset = timeZone
-    ? formatInTimeZone(new Date(), timeZone, 'XXX')
-    : '';
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
@@ -84,14 +85,24 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     if (!selectedDate || !timeZone) return;
 
     const scheduledDateTime = new Date(selectedDate);
-    console.log('Selected date:', scheduledDateTime);
     scheduledDateTime.setHours(selectedTime.getHours());
     scheduledDateTime.setMinutes(selectedTime.getMinutes());
     scheduledDateTime.setSeconds(0);
-    // store time in UTC ( YYY-MM-DDTHH:mm:ssZ )
-    const utcDateTime = fromZonedTime(scheduledDateTime, timeZone);
-    const scheduledAt = utcDateTime.toISOString();
-    console.log('Scheduled at:', scheduledAt);
+    const scheduledAt = moment
+      .tz(
+        {
+          year: scheduledDateTime.getFullYear(),
+          month: scheduledDateTime.getMonth(),
+          day: scheduledDateTime.getDate(),
+          hour: scheduledDateTime.getHours(),
+          minute: scheduledDateTime.getMinutes(),
+          second: 0,
+        },
+        timeZone
+      )
+      .utc()
+      .toISOString();
+
     updateCampaign(
       {
         id: campaign.data.id,
