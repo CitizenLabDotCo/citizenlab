@@ -766,6 +766,23 @@ resource 'Projects' do
             scheduled_at: nil
           )
         end
+
+        example 'Status change after scheduled_at passed materializes the transition first' do
+          project.admin_publication.update_columns(
+            publication_status: 'draft',
+            scheduled_status: 'published',
+            scheduled_at: 1.hour.ago,
+            scheduled_by_id: @user.id
+          )
+
+          do_request(project: { admin_publication_attributes: { publication_status: 'archived' } })
+
+          assert_status 200
+          admin_pub = project.reload.admin_publication
+          expect(admin_pub.publication_status).to eq('archived')
+          expect(admin_pub.scheduled_status).to be_nil
+          expect(admin_pub.first_published_at).to be_present
+        end
       end
     end
 

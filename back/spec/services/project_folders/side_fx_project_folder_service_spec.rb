@@ -46,6 +46,7 @@ describe ProjectFolders::SideFxProjectFolderService do
       project_folder.assign_attributes(
         admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at }
       )
+      service.before_update(project_folder, user)
       project_folder.save!
 
       expect { service.after_update(project_folder, user) }

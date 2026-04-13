@@ -18,15 +18,22 @@ class ProcessScheduledPublicationTransitionJob < ApplicationJob
       current = admin_pub.read_attribute(:publication_status)
       next admin_pub.cancel_scheduled_transition! if current == target
 
+      user = admin_pub.scheduled_by
+
       # Going through the publication instead of directly updating the admin_publication is
       # a bit indirect, but this mirrors the controller update flow.
       publication = admin_pub.publication
-      publication.assign_attributes(admin_publication_attributes: { publication_status: target })
+      publication.assign_attributes(admin_publication_attributes: {
+        publication_status: target,
+        scheduled_status: nil,
+        scheduled_at: nil,
+        scheduled_by_id: nil
+      })
 
       sidefx = sidefx_service(publication)
-      sidefx.before_update(publication, admin_pub.scheduled_by)
+      sidefx.before_update(publication, user)
       publication.save!
-      sidefx.after_update(publication, admin_pub.scheduled_by)
+      sidefx.after_update(publication, user)
     end
   end
 

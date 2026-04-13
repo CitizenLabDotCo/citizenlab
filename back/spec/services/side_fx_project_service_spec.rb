@@ -114,6 +114,37 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
     end
+
+    it 'materializes a due transition before the update without infinite loop' do
+      project.admin_publication.update_columns(
+        publication_status: 'draft', scheduled_status: 'published',
+        scheduled_at: 1.hour.ago, scheduled_by_id: user.id
+      )
+      project.admin_publication.reload
+      project.assign_attributes(title_multiloc: { en: 'changed' })
+
+      service.before_update(project, user)
+
+      project.admin_publication.reload
+      expect(project.admin_publication.read_attribute(:publication_status)).to eq('published')
+      expect(project.admin_publication.scheduled_status).to be_nil
+    end
+  end
+
+  describe 'before_destroy' do
+    it 'materializes a due transition before destroy' do
+      project.admin_publication.update_columns(
+        publication_status: 'draft', scheduled_status: 'published',
+        scheduled_at: 1.hour.ago, scheduled_by_id: user.id
+      )
+      project.admin_publication.reload
+
+      service.before_destroy(project, user)
+
+      project.admin_publication.reload
+      expect(project.admin_publication.read_attribute(:publication_status)).to eq('published')
+      expect(project.admin_publication.first_published_at).to be_present
+    end
   end
 
   describe 'after_destroy' do
