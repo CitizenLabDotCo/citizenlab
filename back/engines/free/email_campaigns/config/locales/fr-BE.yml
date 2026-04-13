@@ -526,7 +526,7 @@ fr-BE:
       project_description_preview: Ce contenu est juste un exemple et sert à prévisualiser le rendu des e-mails. Il ne s'agit pas de contenu réel.
       project_title: Exemple de projet
       proposal_title: Exemple de proposition
-      space_title: Espace d'exemple
+      space_title: Exemple d'espace
     project_folder_moderation_rights_received:
       cta_button: Voir ce dossier
       event_description: 'Vous avez reçu les droits de gestionnaire de dossier sur la plateforme de participation de %{organizationName} pour le dossier suivant :'
