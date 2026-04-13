@@ -19,7 +19,7 @@ const authUserStreamQueryObserver = new QueryObserver<
   MeKeys
 >(queryClient, {
   queryKey: meKeys.all(),
-  queryFn: fetchMe,
+  queryFn: fetchMe as () => Promise<IUser>,
   retry: false,
 });
 
