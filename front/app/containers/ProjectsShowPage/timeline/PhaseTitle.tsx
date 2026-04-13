@@ -9,7 +9,7 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import { FormattedTime } from 'react-intl';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
