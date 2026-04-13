@@ -328,7 +328,13 @@ describe ProjectFolders::FolderPolicy do
       end
     end
 
-    # TODO: Insert test for space manager (moderator) once that role is implemented
+    context 'for a space moderator' do
+      let(:user) { create(:space_moderator) }
+
+      it 'includes space_id' do
+        expect(policy.permitted_attributes.flatten).to include(:space_id)
+      end
+    end
 
     context 'for a project moderator' do
       let(:user) { create(:project_moderator) }
@@ -340,6 +346,76 @@ describe ProjectFolders::FolderPolicy do
       let(:user) { create(:project_folder_moderator) }
 
       it_behaves_like 'does not permit space_id'
+    end
+  end
+
+  context 'when space moderator' do
+    let(:space) { create(:space) }
+    let(:other_space) { create(:space) }
+    let(:user) { create(:space_moderator, spaces: [space]) }
+
+    context 'for create' do
+      context 'when space_id is provided and user moderates that space' do
+        let(:subject_folder) { build(:project_folder, space: space) }
+
+        it { is_expected.to permit(:create) }
+      end
+
+      context 'when space_id is provided but user moderates a different space' do
+        let(:subject_folder) { build(:project_folder, space: other_space) }
+
+        it { is_expected.not_to permit(:create) }
+      end
+
+      context 'when space_id is not provided' do
+        let(:subject_folder) { build(:project_folder, space: nil) }
+
+        it { is_expected.not_to permit(:create) }
+      end
+    end
+
+    context 'for show, update, and destroy' do
+      context 'when folder belongs to the moderated space' do
+        let(:subject_folder) { create(:project_folder, space: space) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:destroy) }
+
+        it 'returns folders in the moderated space' do
+          expect(scope.resolve).to include subject_folder
+        end
+      end
+
+      context 'when folder belongs to a different space' do
+        let(:subject_folder) { create(:project_folder, space: other_space) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'returns folders in other spaces' do
+          expect(scope.resolve).to include subject_folder
+        end
+      end
+
+      context 'when folder has no space assigned' do
+        let(:subject_folder) { create(:project_folder, space: nil) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
+    end
+
+    context 'when folder is draft in moderated space' do
+      let(:subject_folder) { create(:project_folder, space: space) }
+
+      before { subject_folder.admin_publication.update! publication_status: 'draft' }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
     end
   end
 end
