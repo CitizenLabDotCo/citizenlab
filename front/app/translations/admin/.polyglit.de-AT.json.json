@@ -8,8 +8,7 @@
     "state": "verified",
     "verified_at": "2026-03-30T13:26:03.978269Z",
     "verified_by": "Jelena"
-  }
-}
+  },
 
   "UI.FormComponents.required": {
     "state": "verified",
@@ -16923,7 +16922,7 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
-  }
+  },
 
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiline_text": {
     "state": "verified",
@@ -23163,4 +23162,5 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
-  },
+  }
+}
