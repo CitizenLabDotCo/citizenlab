@@ -4,6 +4,8 @@ import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Modal from 'components/UI/Modal';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
@@ -25,6 +27,7 @@ interface Props {
 const SetAsModerator = ({ opened, user, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const [currentTab, setCurrentTab] = useState('projects');
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const tabs: ITabItem[] = [
     {
@@ -35,11 +38,14 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
       name: 'folders',
       label: formatMessage(messages.folders),
     },
-    {
+  ];
+
+  if (spacesEnabled) {
+    tabs.push({
       name: 'spaces',
       label: formatMessage(messages.spaces),
-    },
-  ];
+    });
+  }
 
   return (
     <div>
