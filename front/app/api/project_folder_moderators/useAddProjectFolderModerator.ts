@@ -13,17 +13,17 @@ import projectFolderModeratorsKeys from './keys';
 import { ProjectFolderModeratorAdd } from './types';
 
 const addModerator = async ({
-  moderatorId,
-  moderatorEmail,
+  user_id,
+  user_email,
   projectFolderId,
 }: ProjectFolderModeratorAdd) =>
   fetcher<IUsers>({
     path: `/project_folders/${projectFolderId}/moderators`,
     action: 'post',
     body: {
-      project_folder_moderator: {
-        user_id: moderatorId,
-        user_email: moderatorEmail,
+      moderator: {
+        user_id,
+        user_email,
       },
     },
   });

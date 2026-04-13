@@ -168,7 +168,7 @@ const createAdminRoutes = () => {
         element: <Navigate to="dashboard/overview" />,
       },
       createDashboardRoutes(),
-      createAdminUsersRoutes(),
+      ...createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
       settingsRoutes(),
       pagesAndMenuRoutes(),

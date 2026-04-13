@@ -37,6 +37,7 @@ export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  draft_description_multiloc: Multiloc;
   start_at: string;
   end_at: string | null;
   input_term: InputTerm;
@@ -98,6 +99,7 @@ export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  draft_description_multiloc?: Multiloc;
   input_term?: InputTerm;
   start_at?: string;
   end_at?: string | null;

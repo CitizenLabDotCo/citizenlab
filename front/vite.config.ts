@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
       allowedHosts: true,
       watch: {
         ignored: ['**/public/twemoji/**'],
+        usePolling: true,
       },
       proxy: {
         '/web_api/': {

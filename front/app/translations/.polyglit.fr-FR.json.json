@@ -854,6 +854,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.continueEditing": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:21:30.107106Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.CustomFieldsForm.descriptionMaxLength": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -949,6 +954,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.submitConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:21:30.107106Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.CustomFieldsForm.tagsRequired": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1033,6 +1043,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.yesSubmit": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:21:30.107106Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
@@ -2095,11 +2110,6 @@
     "verified_by": "Admin"
   },
   "app.components.PasswordInput.strength5Password": {
-    "state": "verified",
-    "verified_at": "2026-03-18T11:50:36.510849Z",
-    "verified_by": "Admin"
-  },
-  "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
@@ -3619,6 +3629,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:20:13.318931Z",
+    "verified_by": "Simon"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3679,6 +3694,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T16:01:33.153410Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3693,6 +3713,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:08.891235Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
@@ -3754,6 +3779,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T17:20:13.318931Z",
+    "verified_by": "Simon"
+  },
   "app.components.admin.UserFilterConditions.predicate_not_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3764,10 +3794,20 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-26T16:01:33.153410Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.UserFilterConditions.predicate_not_is_project_moderator": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:08.891235Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",
