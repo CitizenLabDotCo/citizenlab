@@ -5,16 +5,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.folder',
     defaultMessage: 'Folder',
   },
-  setUserAsProjectModerator: {
-    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
-    defaultMessage: 'Assign {name} as project manager',
+  setUserAsManager: {
+    id: 'app.containers.Admin.Users.setUserAsManager',
+    defaultMessage: 'Assign {name} as manager',
   },
-  selectPublications: {
-    id: 'app.containers.Admin.Users.selectPublications',
-    defaultMessage: 'Select projects or folders',
+  selectProjects: {
+    id: 'app.containers.Admin.Users.selectProjects',
+    defaultMessage: 'Select projects',
   },
-  selectPublicationsPlaceholder: {
-    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
+  selectPlaceholder: {
+    id: 'app.containers.Admin.Users.selectPlaceholder',
     defaultMessage: 'Type to search',
   },
   assign: {
