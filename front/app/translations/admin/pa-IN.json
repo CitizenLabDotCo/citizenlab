@@ -1303,7 +1303,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "ਲੁਕਿਆ ਹੋਇਆ",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "ਸੂਚੀਬੱਧ",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "ਹੋਰ ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ…",
-  "app.containers.Admin.Users.SeatsOverview.managers": "ਮੈਨੇਜਰ",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ਮਹੀਨੇ} one {{months} ਮਹੀਨਾ} other {{months} ਮਹੀਨੇ}} ਬਾਕੀ",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} ਮਹੀਨੇ} one {{months} ਮਹੀਨਾ} other {{months} ਮਹੀਨੇ}} ਸ਼ੁਰੂ ਕਰਨ ਲਈ",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "ਅਗਲਾ ਪੜਾਅ:",
