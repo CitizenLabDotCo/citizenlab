@@ -804,6 +804,7 @@
   "app.containers.Admin.Users.SeatsOverview.unknown": "Unknown",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Admin",
+  "app.containers.Admin.Users.alreadyManager": "Already manager",
   "app.containers.Admin.Users.assign": "Assign",
   "app.containers.Admin.Users.assignAsManager": "Assign as manager",
   "app.containers.Admin.Users.assignedItems": "Assigned items for {name}",
