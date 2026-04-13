@@ -32,7 +32,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { formatDateInTimezone } from 'utils/dateUtils';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
@@ -118,14 +117,6 @@ const Edit = ({ campaignType }: EditProps) => {
                   timeStyle="short"
                 />
               </Text>
-              <Box mx="4px" background="yellow">
-                <Text fontSize="base" whiteSpace="nowrap">
-                  {formatDateInTimezone({
-                    date: campaign.data.attributes.scheduled_at,
-                    timeZone,
-                  })}
-                </Text>
-              </Box>
             </>
           )}
         </Box>

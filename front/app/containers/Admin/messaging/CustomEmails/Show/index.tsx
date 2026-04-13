@@ -39,7 +39,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import { formatDateInTimezone } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -244,14 +243,6 @@ const Show = () => {
                     timeStyle="short"
                   />
                 </Text>
-                <Box mx="4px" background="yellow">
-                  <Text fontSize="base" whiteSpace="nowrap">
-                    {formatDateInTimezone({
-                      date: campaign.data.attributes.scheduled_at,
-                      timeZone,
-                    })}
-                  </Text>
-                </Box>
               </>
             )}
           </Box>

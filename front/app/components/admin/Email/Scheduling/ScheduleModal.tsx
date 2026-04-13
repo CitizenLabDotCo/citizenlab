@@ -70,9 +70,15 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
 
-    // if the selected date is today, disable past hours & auto select the next hour as the default time to start with
+    // if the selected date is today, check if selected time is in the past
     if (isSameDay(date, tenantTimeNow)) {
-      setSelectedTime(getNextHourTime(tenantTimeNow));
+      const selectedDateTime = new Date(date);
+      selectedDateTime.setHours(selectedTime.getHours());
+      selectedDateTime.setMinutes(selectedTime.getMinutes());
+      selectedDateTime.setSeconds(0);
+      if (selectedDateTime <= tenantTimeNow) {
+        setSelectedTime(getNextHourTime(tenantTimeNow));
+      }
     }
   };
 
