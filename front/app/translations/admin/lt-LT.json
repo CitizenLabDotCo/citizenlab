@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importuokite nuskaitytas formas (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importuoti nuskaitytas formas",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importuoti įėjimai",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importavimas. Šis procesas gali užtrukti kelias minutes.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Šie duomenys buvo importuoti anonimiškai.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} įrašų nepavyko patvirtinti. Patikrinkite, ar kiekviename įraše nėra validavimo problemų.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Vietovė:",

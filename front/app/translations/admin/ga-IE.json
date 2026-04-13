@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Iompórtáil foirmeacha scanta (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Iompórtáil foirmeacha scanta",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Ionchuir allmhairithe",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Ag iompórtáil. D’fhéadfadh an próiseas seo cúpla nóiméad a thógáil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Iompórtáladh an ionchur seo go hanaithnid.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "Níorbh fhéidir {numNotApproved} ionchur a cheadú. Seiceáil gach ionchur le haghaidh fadhbanna bailíochtaithe, le do thoil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Logán:",

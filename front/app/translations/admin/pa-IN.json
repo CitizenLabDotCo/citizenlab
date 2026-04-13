@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "ਸਕੈਨ ਕੀਤੇ ਫਾਰਮ (.pdf) ਆਯਾਤ ਕਰੋ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "ਸਕੈਨ ਕੀਤੇ ਫਾਰਮਾਂ ਨੂੰ ਆਯਾਤ ਕਰੋ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "ਆਯਾਤ ਇਨਪੁਟਸ",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "ਆਯਾਤ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ। ਇਸ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਕੁਝ ਮਿੰਟ ਲੱਗ ਸਕਦੇ ਹਨ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "ਇਹ ਇਨਪੁਟ ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਆਯਾਤ ਕੀਤਾ ਗਿਆ ਸੀ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} ਇਨਪੁੱਟ ਮਨਜ਼ੂਰ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ। ਕਿਰਪਾ ਕਰਕੇ ਹਰੇਕ ਇਨਪੁੱਟ ਦੀ ਪੁਸ਼ਟੀਕਰਨ ਸੰਬੰਧੀ ਸਮੱਸਿਆਵਾਂ ਲਈ ਜਾਂਚ ਕਰੋ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "ਸਥਾਨ:",

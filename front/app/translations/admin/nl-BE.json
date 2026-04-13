@@ -1555,6 +1555,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importeer gescande formulieren (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importeer gescande formulieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Geïmporteerde bijdragen",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2": "Importeren. Dit proces kan een paar minuten duren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Deze input is anoniem geïmporteerd.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} bijdragen konden niet worden goedgekeurd. Controleer elke bijdrage op validatiefouten.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Taal:",
