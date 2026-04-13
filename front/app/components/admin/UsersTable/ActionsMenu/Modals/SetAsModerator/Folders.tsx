@@ -28,9 +28,9 @@ const Folders = ({ user, onClose }: Props) => {
   const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
 
   const options =
-    folders?.data.map((folders) => ({
-      value: folders.id,
-      label: localize(folders.attributes.title_multiloc),
+    folders?.data.map((folder) => ({
+      value: folder.id,
+      label: localize(folder.attributes.title_multiloc),
     })) ?? [];
 
   const assignFMs = async () => {

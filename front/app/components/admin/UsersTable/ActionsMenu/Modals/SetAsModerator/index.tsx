@@ -14,6 +14,7 @@ import messages from '../messages';
 
 import Folders from './Folders';
 import Projects from './Projects';
+import Spaces from './Spaces';
 
 interface Props {
   opened: boolean;
@@ -47,7 +48,7 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         close={onClose}
         ariaLabelledBy="set-moderator-modal-title"
       >
-        <Title id="set-moderator-modal-title" mb="28px">
+        <Title id="set-moderator-modal-title" mb="24px">
           <FormattedMessage
             {...messages.setUserAsManager}
             values={{ name: getFullName(user) }}
@@ -60,13 +61,14 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
             onClick={setCurrentTab}
           />
         </Box>
-        <Box mt="32px">
+        <Box mt="40px">
           {currentTab === 'projects' && (
             <Projects user={user} onClose={onClose} />
           )}
           {currentTab === 'folders' && (
             <Folders user={user} onClose={onClose} />
           )}
+          {currentTab === 'spaces' && <Spaces user={user} onClose={onClose} />}
         </Box>
       </Modal>
     </div>

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.selectFolders',
     defaultMessage: 'Select folders',
   },
+  selectSpaces: {
+    id: 'app.containers.Admin.Users.selectSpaces',
+    defaultMessage: 'Select spaces',
+  },
   selectPlaceholder: {
     id: 'app.containers.Admin.Users.selectPlaceholder',
     defaultMessage: 'Type to search',
