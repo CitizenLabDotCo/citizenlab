@@ -1,701 +1,725 @@
-ga:
+ga-IE:
   email_campaigns:
-    campaign_type_description:
-      "manual": Teachtaireachtaí oifigiúla
-      "manual_project_participants": Teachtaireachtaí oifigiúla chuig rannpháirtithe tionscadail
-      "admin_rights_received": Cearta riarthóra faighte
-      "comment_deleted_by_admin": Scriosadh mo thrácht
-      "comment_marked_as_spam": Tuairisc turscair tráchta
-      "comment_on_your_comment": Freagra ar mo thrácht
-      "comment_on_idea_you_follow": Trácht ar smaoineamh a leanann tú
-      "community_monitor_report": Tuarascáil monatóireachta pobail
-      "cosponsor_of_your_idea": Glacann úsáideoir le mo chuireadh chun mo thogra a chomhurrú
-      "event_registration_confirmation": Deimhniú clárúcháin imeachta
-      "idea_marked_as_spam": Tuairisc ar thurscar smaointe
-      "idea_published": Foilsiú mo chuid ionchuir
-      "invitation_to_cosponsor_idea": Cuireadh chun comhurraíocht a dhéanamh ar thogra
-      "invite_received": Cuireadh
-      "invite_reminder": Meabhrúchán cuireadh
-      "internal_comment_on_idea_assigned_to_you": Trácht inmheánach ar ionchur sannta dom
-      "internal_comment_on_idea_you_commented_internally_on": Trácht inmheánach ar ionchur Rinne mé trácht inmheánach air
-      "internal_comment_on_idea_you_moderate": Trácht inmheánach ar ionchur i dtionscadal nó i bhfillteán a bhainistím
-      "internal_comment_on_unassigned_unmoderated_idea": Trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe
-      "internal_comment_on_your_internal_comment": Trácht inmheánach ar mo thrácht inmheánach
-      "mention_in_official_feedback": Luaigh i nuashonrú
-      "mention_in_internal_comment": Luaigh i dtrácht inmheánach
-      "new_comment_for_admin": Trácht nua i dtionscadal a dhéanaim modhnóireacht air
-      "new_idea_for_admin_published": Ionchur nuafhoilsithe i dtionscadal a ndéanaim modhnóireacht air
-      "new_idea_for_admin_prescreening": Ionchur nua a bhfuil gá le ceadú i dtionscadal a dhéanaim modhnóireacht air
-      "official_feedback_on_idea_you_follow": Nuashonrú ar ionchur a leanann tú
-      "password_reset": Athshocrú pasfhocail
-      "project_moderation_rights_received": Cearta modhnóireachta tionscadail faighte
-      "project_folder_moderation_rights_received": Fuarthas cearta bainisteoir fillteán
-      "project_phase_started": Céim nua tionscadail
-      "project_phase_upcoming": Céim nua tionscadail atá le teacht
-      "project_published": Tionscadal foilsithe
-      "project_review_request": Iarratas ar athbhreithniú tionscadail
-      "project_review_state_change": Tionscadal ceadaithe
-      "status_change_on_idea_you_follow": Athrú stádais ionchuir a leanann tú
-      "survey_submitted": Suirbhé curtha isteach
-      "threshold_reached_for_admin": Shroich an togra an tairseach vótála
-      "welcome": Tar éis clárúcháin
-      "admin_digest": Forbhreathnú seachtainiúil do riarthóirí
-      "moderator_digest": Forbhreathnú seachtainiúil do bhainisteoirí tionscadal
-      "assignee_digest": Forbhreathnú seachtainiúil ar smaointe sannta
-      "user_digest": Forbhreathnú seachtainiúil
-      "voting_basket_submitted": Deimhniú vótála
-      "native_survey_not_submitted": Níor cuireadh isteach an suirbhé
-      "voting_basket_not_submitted": Vótaí nár cuireadh isteach
-      "voting_last_chance": An deis dheireanach chun vótáil
-      "voting_phase_started": Céim nua tionscadail le vótáil
-      "voting_results": Torthaí vótála
-      "your_input_in_screening": Tá mo ionchur ag fanacht le scagadh
-      "screening_digest": Meabhrúchán scagthástála seachtainiúil
-    general:
-      by_author: 'ag %{authorName}'
-      author_wrote: 'Scríobh %{authorName}:'
-      cta_goto_idea: 'Téigh chuig an smaoineamh seo'
-      cta_goto_input: 'Téigh chuig an ionchur seo'
-      cta_goto:
-        idea: 'Téigh chuig an smaoineamh seo'
-        question: 'Téigh go dtí an cheist seo'
-        contribution: 'Téigh chuig an ranníocaíocht seo'
-        project: 'Téigh chuig an tionscadal seo'
-        issue: 'Téigh chuig an tsaincheist seo'
-        option: 'Téigh go dtí an rogha seo'
-        proposal: 'Téigh chuig an togra seo'
-        initiative: 'Téigh chuig an tionscnamh seo'
-        petition: 'Téigh chuig an achainí seo'
-        comment: 'Téigh go dtí an trácht seo'
-        response: 'Téigh go dtí an freagra seo'
-        suggestion: 'Téigh chuig an moladh seo'
-        topic: 'Téigh go dtí an topaic seo'
-        post: 'Téigh go dtí an post seo'
-        story: 'Téigh go dtí an scéal seo'
-      cta_goto_your:
-        idea: 'Téigh chuig do smaoineamh'
-        question: 'Téigh chuig do cheist'
-        contribution: 'Téigh chuig do ranníocaíocht'
-        project: 'Téigh chuig do thionscadal'
-        issue: 'Téigh chuig do cheist'
-        option: 'Téigh chuig do rogha'
-        proposal: 'Téigh chuig do thogra'
-        initiative: 'Téigh chuig do thionscnamh'
-        petition: 'Téigh chuig d’achainí'
-        comment: 'Téigh chuig do thrácht'
-        response: 'Téigh chuig do fhreagra'
-        suggestion: 'Téigh chuig do mholadh'
-        topic: 'Téigh chuig do thopaic'
-        post: 'Téigh chuig do phost'
-        story: 'Téigh chuig do scéal'
-      cta_goto_proposal: 'Téigh chuig an togra seo'
-      cta_goto_project: 'Téigh chuig an tionscadal seo'
-    schedules:
-      weekly:
-        "0": "Gach seachtain, ar an Domhnach ag %{hourOfDay}"
-        "1": "Gach seachtain, ar an Luan ag %{hourOfDay}"
-        "2": "Gach seachtain, ar an Máirt ag %{hourOfDay}"
-        "3": "Gach seachtain, ar an gCéadaoin ag %{hourOfDay}"
-        "4": "Gach seachtain, ar an Déardaoin ag %{hourOfDay}"
-        "5": "Gach seachtain, ar an Aoine ag %{hourOfDay}"
-        "6": "Gach seachtain, ar an Satharn ag %{hourOfDay}"
-      quarterly: "Ráithiúil, ar an gcéad lá den ráithe"
-    preview_data:
-      author_first_name: 'Jane'
-      author_last_name: 'Ealaín'
-      author_display_name: 'Jane Doe'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
-      project_title: 'Tionscadal samplach'
-      project_description_preview: 'Seo sampla d''ábhar céime a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.'
-      phase_title: 'Céim shamplach'
-      folder_title: 'Fillteán samplach'
-      comment_body: 'Seo sampla tráchta a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.'
-      comment_deleted_reason: 'Measadh gur míchuí a bhí do thrácht samplach.'
-      idea_title: 'Smaoineamh Samplach'
-      idea_body: 'Seo roinnt samplaí d''ábhar smaointe a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.'
-      event_title: 'Imeacht Samplach'
-      event_address1: '10 Sráid an tSampla, Exampleton, Exampleshire'
-      event_address2: 'Seomra 3a, Thuas staighre'
-      proposal_title: 'Togra Samplach'
-      input_status_title: 'Stádas Samplach'
-      input_status_description: 'Sampla de stádas ionchuir (m.sh. glactha, diúltaithe, curtha i bhfeidhm...)'
-      official_feedback_body: 'Aiseolas oifigiúil samplach'
-    footer:
-      "link_privacy_policy": "Polasaí Príobháideachais"
-      "link_terms_conditions": "Téarmaí & Coinníollacha"
-      "link_unsubscribe": "Díliostáil"
-      "powered_by": "Cumhachtaithe ag"
-      "recipient_statement": "Sheol Go Vocal an ríomhphost seo chugat thar ceann %{organizationName}, mar is úsáideoir cláraithe de %{organizationLink} thú."
-      "unsubscribe_statement": "Is féidir leat %{unsubscribeLink} a úsáid mura mian leat na ríomhphoist seo a fháil amach anseo."
-      "unsubscribe_text": "díliostáil"
-    follow:
-      "unfollow_here": "Fuair tú an fógra seo mar gheall ar mhír a leanann tú. <a href=\"%{unfollow_url}\">Is féidir leat é a dhíleanúint anseo.</a>"
-    manual:
-      preheader: 'Tá ríomhphost agat ó %{organizationName}'
-    manual_project_participants:
-      preheader: 'Tá ríomhphost agat ó %{organizationName}'
-    comment_deleted_by_admin:
-      subject: 'Scriosadh do thrácht ó ardán %{organizationName}'
-      preheader: 'Scriosadh do thrácht'
-      title: 'Scrios %{organizationName} do thrácht'
-      event_description: 'Scrios %{organizationName} an trácht a scríobh tú ar smaoineamh.'
-      cta_button: 'Féach ar an smaoineamh seo'
-      reason: 'An chúis gur scriosadh do thrácht:'
-      other_reason: '%{otherReason}'
-      inappropriate_reason: 'Measadh go raibh do thrácht míchuí'
-      irrelevant_reason: 'Measadh nach raibh do thrácht ábhartha don chomhthéacs sin'
-      no_reason: 'Níor sonraíodh aon chúis'
     admin_digest:
-      subject: 'Do thuairisc riaracháin sheachtainiúil de %{time}'
-      preheader: 'Díolaim riaracháin %{organizationName}'
+      cta_button: Tabhair cuairt ar do ardán
+      event_description: Tá an t-ionchur a ghin an ghníomhaíocht is mó le seachtain anuas curtha le chéile againn duit. Faigh amach cad atá ag tarlú ar d'ardán!
+      new_comments: Tráchtanna nua
+      new_inputs: Ionchuir nua
+      new_users: Úsáideoirí nua
+      preheader: Díolaim riaracháin %{organizationName}
+      reached_threshold: Shroich an tairseach
+      subject: Do thuairisc riaracháin sheachtainiúil de %{time}
       title: '%{firstName}, do thuairisc sheachtainiúil'
-      event_description: 'Tá an t-ionchur a ghin an ghníomhaíocht is mó le seachtain anuas curtha le chéile againn duit. Faigh amach cad atá ag tarlú ar d''ardán!'
-      cta_button: 'Tabhair cuairt ar do ardán'
-      new_users: 'Úsáideoirí nua'
-      new_inputs: 'Ionchuir nua'
-      new_comments: 'Tráchtanna nua'
-      title_activity_past_week: 'Gníomhaíocht na seachtaine seo caite'
-      title_no_activity_past_week: 'Ní raibh aon ghníomhaíocht ann le seachtain anuas'
-      reached_threshold: 'Shroich an tairseach'
-      yesterday_by_author: 'Inné le %{author}'
-      today_by_author: 'Inniu le %{author}'
+      title_activity_past_week: Gníomhaíocht na seachtaine seo caite
+      title_no_activity_past_week: Ní raibh aon ghníomhaíocht ann le seachtain anuas
+      today_by_author: Inniu le %{author}
       x_days_ago_by_author: '%{x} lá ó shin ag %{author}'
+      yesterday_by_author: Inné le %{author}
+    admin_labels:
+      content_type:
+        comments: Tráchtanna
+        content_moderation: Modhnóireacht ábhair
+        events: Imeachtaí
+        general: Ginearálta
+        inputs: Ionchuir
+        internal_comments: Tráchtanna inmheánacha
+        permissions: Ceadanna
+        projects: Tionscadail
+        proposals: Tograí
+        reactions: Imoibrithe
+        surveys: Suirbhéanna
+        voting: Vótáil
+      recipient_role:
+        admins: Chuig riarthóirí
+        admins_and_managers: Chuig riarthóirí agus bainisteoirí
+        managers: Do bhainisteoirí
+        project_participants: Do rannpháirtithe an tionscadail
+        registered_users: Do úsáideoirí cláraithe
+      recipient_segment:
+        admins: Riarthóirí
+        admins_and_managers: Riarthóirí & bainisteoirí
+        admins_and_managers_assigned_to_the_input: Riarthóirí & bainisteoirí atá sannta don ionchur
+        admins_and_managers_managing_the_project: Riarthóirí & bainisteoirí a bhainistíonn an tionscadal
+        admins_assigned_to_a_proposal: Riarthóirí sannta do thogra
+        all_users: Gach úsáideoir
+        all_users_who_uploaded_proposals: Gach úsáideoir a d’uaslódáil moltaí
+        managers: Bainisteoirí
+        managers_managing_the_project: Bainisteoirí a bhainistíonn an tionscadal
+        new_attendee: Úsáideoir nua-chláraithe
+        project_review_requester: Úsáideoir a d'iarr athbhreithniú an tionscadail
+        project_reviewers: Athbhreithneoirí tionscadail agus bainisteoirí fillteán
+        user_who_commented: Úsáideoir a rinne trácht
+        user_who_is_invited_to_cosponsor_a_proposal: Úsáideoir a bhfuil cuireadh tugtha dó togra a chomhurrú
+        user_who_is_mentioned: Úsáideoir a luaitear
+        user_who_is_receiving_admin_rights: Úsáideoir atá ag fáil cearta riarthóra
+        user_who_is_receiving_folder_manager_rights: Úsáideoir atá ag fáil cearta bainisteora fillteáin
+        user_who_is_receiving_folder_moderator_rights: Úsáideoir atá ag fáil cearta modhnóra fillteáin
+        user_who_is_receiving_project_manager_rights: Úsáideoir atá ag fáil cearta bainisteora tionscadail
+        user_who_is_receiving_project_moderator_rights: Úsáideoir a bhfuil cearta modhnóra tionscadail á bhfáil aige
+        user_who_is_receiving_space_manager_rights: Úsáideoir atá ag fáil cearta bainisteora spáis
+        user_who_published_the_input: Úsáideoir a d’fhoilsigh an ionchur
+        user_who_published_the_proposal: Úsáideoir a d’fhoilsigh an togra
+        user_who_registers: Úsáideoir a chláraíonn
+        user_who_submitted_the_input: An t-úsáideoir a chuir an ionchur isteach
+        user_who_voted: Úsáideoir a vótáil
+        user_who_was_invited: Úsáideoir a tugadh cuireadh dó
+        user_with_unsubmitted_survey: Úsáideoir a thosaigh a suirbhé ach nár chuir isteach é
+        user_with_unsubmitted_votes: Úsáideoir nár chuir a vótaí isteach
+        users_who_engaged_but_not_voted: Úsáideoirí a bhí páirteach sa tionscadal ach nár vótáil
+        users_who_engaged_with_the_project: Úsáideoirí a bhí páirteach sa tionscadal
+        users_who_follow_the_input: Úsáideoirí a leanann an t-ionchur
+        users_who_follow_the_project: Úsáideoirí a leanann an tionscadal
+        users_who_follow_the_proposal: Úsáideoirí a leanann an togra
+      trigger:
+        7_days_after_invite_is_sent: 7 lá tar éis an cuireadh a sheoladh
+        7_days_before_the_project_changes_phase: 7 lá sula n-athraíonn an tionscadal céim
+        comment_is_deleted: Scriosadh an trácht
+        comment_is_flagged_as_spam: Tá an trácht marcáilte mar thurscar
+        content_gets_flagged_as_innapropiate: Déantar bratach ar ábhar mar ábhar neamhoiriúnach
+        initiative_resubmitted_for_review: Togra curtha isteach arís lena athbhreithniú
+        input_is_assigned: Tá ionchur sannta
+        input_is_flagged_as_spam: Tá an ionchur marcáilte mar thurscar
+        input_is_published: Tá an t-ionchur foilsithe
+        input_is_updated: Faigheann ionchur aiseolas oifigiúil
+        input_status_changes: Athruithe stádais ionchuir
+        internal_comment_is_posted_on_idea_assigned_to_user: Postáiltear trácht inmheánach ar ionchur sannta don úsáideoir
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Postáiltear trácht inmheánach ar ionchur i mbainistíocht úsáideoirí tionscadail nó fillteáin
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Postáiltear trácht inmheánach ar ionchur a rinne an t-úsáideoir trácht inmheánach air
+        internal_comment_is_posted_on_idea_user_moderates: Postáiltear trácht inmheánach ar mhodhnóirí ionchuir úsáideora
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Postáiltear trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe
+        new_input_awaits_screening: Tá ionchur nua ag fanacht le scagadh
+        new_input_is_published: Tá ionchur nua foilsithe
+        new_proposal_is_posted: Tá togra nua foilsithe
+        project_phase_changes: Athruithe céime tionscadail
+        project_published: Tionscadal foilsithe
+        project_review_request: D'iarr an modhnóir athbhreithniú tionscadail
+        project_review_state_change: D'fhormheas an t-athbhreithneoir an tionscadal
+        proposal_gets_reported_as_spam: Tuairiscítear an togra mar thurscar
+        proposal_is_assigned_to_admin: Tá an togra sannta don riarthóir
+        proposal_is_published: Tá an togra foilsithe
+        proposal_is_updated: Fuair an togra aiseolas oifigiúil
+        proposal_is_upvoted_above_threshold: Tá an togra vótáilte suas os cionn na tairsí
+        proposal_status_changes: Athruithe ar stádas an togra
+        registration_to_event: Clárú chuig imeacht
+        survey_1_day_after_draft_saved: 1 lá tar éis don úsáideoir an suirbhé a shábháil i ndréacht go deireanach
+        user_accepts_invitation_to_cosponsor_a_proposal: Glacann an t-úsáideoir le cuireadh chun comhurraíocht a dhéanamh ar thogra
+        user_comments: Tuairimí úsáideoirí
+        user_comments_on_input: Tuairimí úsáideoirí ar ionchur
+        user_comments_on_proposal: Tuairimí úsáideoirí ar an togra
+        user_is_given_admin_rights: Tugtar cearta riarthóra don úsáideoir
+        user_is_given_folder_manager_rights: Tugtar cearta bainisteora fillteáin don úsáideoir
+        user_is_given_folder_moderator_rights: Tugtar cearta modhnóra fillteáin don úsáideoir
+        user_is_given_project_manager_rights: Tugtar cearta bainisteora tionscadail don úsáideoir
+        user_is_given_project_moderator_rights: Tugtar cearta modhnóra tionscadail don úsáideoir
+        user_is_given_space_manager_rights: Tugtar cearta bainisteora spáis don úsáideoir
+        user_is_invited_to_cosponsor_a_proposal: Tugtar cuireadh don úsáideoir comhurraíocht a dhéanamh ar thogra
+        user_is_invited_to_platform: Tugadh cuireadh don úsáideoir chuig an ardán
+        user_is_mentioned: Luaitear an t-úsáideoir
+        user_is_mentioned_in_internal_comment: Luaitear an t-úsáideoir i dtrácht inmheánach
+        user_registers_for_the_first_time: Cláraíonn úsáideoir den chéad uair
+        user_replies_to_comment: Freagraíonn úsáideoirí ar thrácht
+        user_replies_to_internal_comment: Freagraí úsáideora ar thrácht inmheánach
+        voting_1_day_after_last_votes: 1 lá tar éis don úsáideoir vótáil go deireanach
+        voting_2_days_before_phase_closes: 2 lá roimh dheireadh na céime vótála
+        voting_basket_submitted: Tá vótaí curtha isteach
+        voting_phase_ended: Críochnaíodh an chéim vótála
     admin_rights_received:
-      subject: 'Rinneadh riarthóir díot ar ardán %{organizationName}'
-      preheader: 'Bronnadh cearta riarthóra ort don ardán rannpháirtíochta %{organizationName}'
-      title: 'Rinneadh riarthóir díot'
-      event_description: 'Bronnadh cearta riarthóra ort don ardán rannpháirtíochta %{organizationName}.'
-      cta_button: 'Bainistigh d''ardán'
-      text_create_participatory_process: 'Mar riarthóir, is féidir leat tionscadail rannpháirtíochta nua a chruthú agus a chumrú. Is féidir leat céimeanna nua a chur leis ag baint úsáide as an amlíne. Féadfaidh iompar féin a bheith ag gach ceann de na céimeanna seo maidir le postáil smaointe, trácht a dhéanamh agus vótáil.'
-      text_moderate_analyse_input: 'Nuair a sheolfar tionscadail, tiocfaidh na chéad smaointe isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí go léir ionas go mbeidh tú ar an eolas faoi chúrsaí. Cabhróidh an forbhreathnú ar smaointe leat an t-ionchur a mhodhnú agus comhoibriú chun é a phróiseáil.'
-      text_platform_setup: 'Mar riarthóir is féidir leat d’ardán rannpháirtíochta a bhunú. Roghnaigh lógó, íomhánna agus dathanna, scríobh teachtaireacht phearsanta ar do leathanach baile, cuirí a sheoladh amach, sainmhínigh cad ba mhaith leat a fháil amach faoi d’úsáideoirí, ...'
-      title_create_participatory_process: 'Dearadh an phróisis rannpháirtíochta'
-      title_moderate_analyse_input: 'Déan an t-ionchur a mhodhnú agus a anailísiú'
-      title_platform_setup: 'Socraigh do ardán'
-      title_what_can_you_do_administrator: 'Cad is féidir leat a dhéanamh mar riarthóir?'
-    comment_marked_as_spam:
-      subject: '%{organizationName}: %{firstName} %{lastName} thuairiscigh an trácht seo mar thurscar'
-      preheader: 'Gníomhaigh ar an trácht seo a tuairiscíodh mar thurscar'
-      title: '%{firstName} %{lastName} thuairiscigh an trácht seo mar thurscar'
-      cta_button: 'Trácht athbhreithnithe'
-      by_author: 'ag %{authorName}'
-      commented: '%{authorName} a dúirt:'
-      days_ago: '%{numberOfDays} lá ó shin'
-      event_description: 'Tuairiscíodh an trácht seo a leanas a postáladh ar <strong>''%{post}''</strong>:'
-      inappropriate_content: 'Tá an trácht míchuí nó maslach.'
-      reported_this_because: 'Thuairiscigh %{reporterFirstName} é seo mar gheall ar:'
-      today: Inniu
-      wrong_content: 'Níl an trácht ábhartha.'
-      yesterday: Inné
-    community_monitor_report:
-      subject: 'Tá tuarascáil nua monatóireachta pobail ar fáil'
-      preheader: 'Tá tuarascáil nua monatóireachta pobail ar fáil'
-      title: 'Tá tuarascáil nua monatóireachta pobail ar fáil'
-      event_description: 'Tá tuarascáil monatóireachta pobail cruthaithe don ráithe roimhe sin. Is féidir leat rochtain a fháil uirthi trí chliceáil ar an gcnaipe thíos agus logáil isteach.'
-      cta_button: 'Féach ar an tuarascáil'
-      report_name: 'Tuarascáil monatóireachta pobail'
-    cosponsor_of_your_idea:
-      subject: 'Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra'
-      preheader: 'Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra'
-      title: 'Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra'
-      event_description: 'Comhghairdeas! Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra.'
-      cta_button: 'Féach ar do thogra'
+      cta_button: Bainistigh d'ardán
+      event_description: Bronnadh cearta riarthóra ort don ardán rannpháirtíochta %{organizationName}.
+      preheader: Bronnadh cearta riarthóra ort don ardán rannpháirtíochta %{organizationName}
+      subject: Rinneadh riarthóir díot ar ardán %{organizationName}
+      text_create_participatory_process: Mar riarthóir, is féidir leat tionscadail rannpháirtíochta nua a chruthú agus a chumrú. Is féidir leat céimeanna nua a chur leis ag baint úsáide as an amlíne. Féadfaidh iompar féin a bheith ag gach ceann de na céimeanna seo maidir le postáil smaointe, trácht a dhéanamh agus vótáil.
+      text_moderate_analyse_input: Nuair a sheolfar tionscadail, tiocfaidh na chéad smaointe isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí go léir ionas go mbeidh tú ar an eolas faoi chúrsaí. Cabhróidh an forbhreathnú ar smaointe leat an t-ionchur a mhodhnú agus comhoibriú chun é a phróiseáil.
+      text_platform_setup: Mar riarthóir is féidir leat d’ardán rannpháirtíochta a bhunú. Roghnaigh lógó, íomhánna agus dathanna, scríobh teachtaireacht phearsanta ar do leathanach baile, cuirí a sheoladh amach, sainmhínigh cad ba mhaith leat a fháil amach faoi d’úsáideoirí, ...
+      title: Rinneadh riarthóir díot
+      title_create_participatory_process: Dearadh an phróisis rannpháirtíochta
+      title_moderate_analyse_input: Déan an t-ionchur a mhodhnú agus a anailísiú
+      title_platform_setup: Socraigh do ardán
+      title_what_can_you_do_administrator: Cad is féidir leat a dhéanamh mar riarthóir?
     assignee_digest:
-      subject: 'Ionchuir a bhfuil d''aiseolas ag teastáil uathu: %{numberIdeas}'
-      preheader: 'Díolaim sannaí de %{organizationName}'
+      cta_button: Bainistigh d’ionchur
+      preheader: Díolaim sannaí de %{organizationName}
+      subject: "Ionchuir a bhfuil d'aiseolas ag teastáil uathu: %{numberIdeas}"
       title: '%{firstName}, tá aiseolas na saoránach ag fanacht leat'
-      cta_button: 'Bainistigh d’ionchur'
-      x_inputs_need_your_feedback: 'tá d''aiseolas ag teastáil ó ionchuir'
-      title_assignment_past_week: 'na hionchuir is déanaí a sannadh duit'
-      title_no_assignment_past_week: 'Níor sannadh aon ionchur nua duit an tseachtain seo caite'
-      yesterday_by_author: 'Inné le %{author}'
-      today_by_author: 'Inniu le %{author}'
+      title_assignment_past_week: na hionchuir is déanaí a sannadh duit
+      title_no_assignment_past_week: Níor sannadh aon ionchur nua duit an tseachtain seo caite
+      title_successful_past_week: Sannadh duit a shroich an tairseach
+      today_by_author: Inniu le %{author}
       x_days_ago_by_author: '%{x} lá ó shin ag %{author}'
-      title_successful_past_week: 'Sannadh duit a shroich an tairseach'
-    idea_marked_as_spam:
-      subject: 'Tá tuairisc turscair agat ar ardán %{organizationName}'
-      preheader: 'Gníomhaigh ar an tuairisc turscair seo'
-      title: 'Tuairiscíodh turscar %{firstName} %{lastName}'
-      cta_button: 'Athbhreithniú'
-      report_inappropriate_offensive_content: 'Is dóigh liom go bhfuil an t-ábhar seo míchuí nó maslach.'
-      report_not_an_idea: 'Níl an t-ábhar seo ábhartha agus ní bhaineann sé anseo.'
-      reported_this_because: 'Thuairiscigh %{reporterFirstName} é seo mar gheall ar:'
-    invitation_to_cosponsor_idea:
-      subject: 'Tugadh cuireadh duit comhurraíocht a dhéanamh ar thogra'
-      preheader: 'Tá cuireadh tugtha duit comhurraíocht a dhéanamh ar thogra %{authorName}'
-      title: 'Tugadh cuireadh duit comhurraíocht a dhéanamh ar thogra'
-      event_description: 'Tá togra nua cruthaithe ag %{authorName} agus ba mhaith leis go ndéanfá comhurraíocht air.'
-      event_description_cosponsoring: 'Ciallaíonn comhurraíocht togra go <strong>taispeánfar d''ainm</strong> in éineacht le hainmneacha chomhurraitheoirí eile an togra.'
-      event_description_before_action: 'Chun an togra a fheiceáil agus glacadh leis an gcuireadh, ní mór duit a bheith logáilte isteach i do chuntas.'
-      event_description_action: 'Cliceáil thíos chun an togra a léamh.'
-      cta_button: 'Comhurraí an togra seo'
-    invite_reminder:
-      subject: 'Cuireadh ar feitheamh don ardán rannpháirtíochta de %{organizationName}'
-      preheader: 'Chuir %{organizationName} cuireadh chugat chun páirt a ghlacadh ina n-ardán rannpháirtíochta cúpla lá ó shin.'
-      title: 'Tá do chuireadh ar feitheamh'
-      cta_button: 'Glac le do chuireadh'
-      invitation_expiry_message: 'Rachaidh an cuireadh seo in éag i gceann thart ar %{expiryDaysRemaining} lá.'
-    invite_received:
-      preheader: 'Chuir %{organizationName} cuireadh chugat chun páirt a ghlacadh ina n-ardán rannpháirtíochta.'
-      subject: 'Tá cuireadh agat páirt a ghlacadh san ardán %{organizationName}'
-      title: 'Tá cuireadh agat!'
-      event_description: 'Thug %{organizationName} cuireadh duit chuig a n-ardán rannpháirtíochta.'
-      cta_button: 'Glac le do chuireadh'
-      added_a_message: 'Scríobh %{organizationName} an teachtaireacht seo a leanas:'
-      invitation_expiry_message: 'Rachaidh an cuireadh seo in éag i gceann %{expiryDays} lá.'
-    mention_in_comment:
-      cta_reply_to: 'Freagra chuig %{commentAuthor}'
-      event_description: 'Tá trácht déanta ag %{commentAuthorFull} ort ina thrácht ar an smaoineamh ''%{post}''. Cliceáil an nasc thíos chun dul isteach sa chomhrá le %{commentAuthor}'
-      main_header: 'Tá daoine ag caint fút'
-      subject: 'Luaigh duine éigin thú ar ardán %{organizationName}'
-      preheader: 'Luaigh %{commentAuthor} thú i dtrácht'
-    mention_in_internal_comment:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Luaigh %{authorNameFull} thú i dtrácht inmheánach.'
-      subject: 'Luaigh %{firstName} thú i dtrácht inmheánach.'
-      title: 'Luaigh %{firstName} thú i dtrácht inmheánach.'
-      preheader: 'Luaigh %{authorNameFull} thú i dtrácht inmheánach.'
-    moderator_digest:
-      subject: 'Tuarascáil bhainisteora sheachtainiúil ar "%{project_title}"'
-      preheader: 'Díriú bainisteora tionscadail ar %{organizationName}'
-      title: '%{firstName}, do thuairisc sheachtainiúil'
-      event_description: 'Tá an ionchur a ghin an ghníomhaíocht is mó le seachtain anuas curtha le chéile againn duit. Faigh amach cad atá ag tarlú le do thionscadal!'
-      cta_button: 'Bainistigh do thionscadal'
-      new_users: 'Úsáideoirí nua'
-      new_ideas: 'Smaointe nua'
-      new_comments: 'Tráchtanna nua'
-      title_inputs_past_week: 'Ionchuir nua le seachtain anuas'
-      title_no_inputs_past_week: 'Gan aon ionchur nua le seachtain anuas'
-      title_threshold_reached: Tairseach bainte amach sa tseachtain seo caite
-      yesterday_by_author: 'Inné le %{author}'
-      today_by_author: 'Inniu le %{author}'
-      x_days_ago_by_author: '%{x} lá ó shin ag %{author}'
-    new_comment_for_admin:
-      commented: '%{authorFirstName} a dúirt:'
-      anonymous_user: Úsáideoir gan ainm
-      cta_button: 'Féach ar thrácht %{authorFirstName}'
+      x_inputs_need_your_feedback: tá d'aiseolas ag teastáil ó ionchuir
+      yesterday_by_author: Inné le %{author}
+    campaign_type_description:
+      admin_digest: Forbhreathnú seachtainiúil do riarthóirí
+      admin_rights_received: Cearta riarthóra faighte
+      assignee_digest: Forbhreathnú seachtainiúil ar smaointe sannta
+      comment_deleted_by_admin: Scriosadh mo thrácht
+      comment_marked_as_spam: Tuairisc turscair tráchta
+      comment_on_idea_you_follow: Trácht ar smaoineamh a leanann tú
+      comment_on_your_comment: Freagra ar mo thrácht
+      community_monitor_report: Tuarascáil monatóireachta pobail
+      cosponsor_of_your_idea: Glacann úsáideoir le mo chuireadh chun mo thogra a chomhurrú
+      event_registration_confirmation: Deimhniú clárúcháin imeachta
+      idea_marked_as_spam: Tuairisc ar thurscar smaointe
+      idea_published: Foilsiú mo chuid ionchuir
+      internal_comment_on_idea_assigned_to_you: Trácht inmheánach ar ionchur sannta dom
+      internal_comment_on_idea_you_commented_internally_on: Trácht inmheánach ar ionchur Rinne mé trácht inmheánach air
+      internal_comment_on_idea_you_moderate: Trácht inmheánach ar ionchur i dtionscadal nó i bhfillteán a bhainistím
+      internal_comment_on_unassigned_unmoderated_idea: Trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe
+      internal_comment_on_your_internal_comment: Trácht inmheánach ar mo thrácht inmheánach
+      invitation_to_cosponsor_idea: Cuireadh chun comhurraíocht a dhéanamh ar thogra
+      invite_received: Cuireadh
+      invite_reminder: Meabhrúchán cuireadh
+      manual: Teachtaireachtaí oifigiúla
+      manual_project_participants: Teachtaireachtaí oifigiúla chuig rannpháirtithe tionscadail
+      mention_in_internal_comment: Luaigh i dtrácht inmheánach
+      mention_in_official_feedback: Luaigh i nuashonrú
+      moderator_digest: Forbhreathnú seachtainiúil do bhainisteoirí tionscadal
+      native_survey_not_submitted: Níor cuireadh isteach an suirbhé
+      new_comment_for_admin: Trácht nua i dtionscadal a dhéanaim modhnóireacht air
+      new_idea_for_admin_prescreening: Ionchur nua a bhfuil gá le ceadú i dtionscadal a dhéanaim modhnóireacht air
+      new_idea_for_admin_published: Ionchur nuafhoilsithe i dtionscadal a ndéanaim modhnóireacht air
+      official_feedback_on_idea_you_follow: Nuashonrú ar ionchur a leanann tú
+      password_reset: Athshocrú pasfhocail
+      project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
+      project_manager_rights_received: Cearta bainisteora tionscadail faighte
+      project_moderation_rights_received: Cearta modhnóireachta tionscadail faighte
+      project_phase_started: Céim nua tionscadail
+      project_phase_upcoming: Céim nua tionscadail atá le teacht
+      project_published: Tionscadal foilsithe
+      project_review_request: Iarratas ar athbhreithniú tionscadail
+      project_review_state_change: Tionscadal ceadaithe
+      screening_digest: Meabhrúchán scagthástála seachtainiúil
+      space_moderation_rights_received: Cearta bainisteora spáis faighte
+      status_change_on_idea_you_follow: Athrú stádais ionchuir a leanann tú
+      survey_submitted: Suirbhé curtha isteach
+      threshold_reached_for_admin: Shroich an togra an tairseach vótála
+      user_digest: Forbhreathnú seachtainiúil
+      voting_basket_not_submitted: Vótaí nár cuireadh isteach
+      voting_basket_submitted: Deimhniú vótála
+      voting_last_chance: An deis dheireanach chun vótáil
+      voting_phase_started: Céim nua tionscadail le vótáil
+      voting_results: Torthaí vótála
+      welcome: Tar éis clárúcháin
+      your_input_in_screening: Tá mo ionchur ag fanacht le scagadh
+    comment_deleted_by_admin:
+      cta_button: Féach ar an smaoineamh seo
+      event_description: Scrios %{organizationName} an trácht a scríobh tú ar smaoineamh.
+      inappropriate_reason: Measadh go raibh do thrácht míchuí
+      irrelevant_reason: Measadh nach raibh do thrácht ábhartha don chomhthéacs sin
+      no_reason: Níor sonraíodh aon chúis
+      other_reason: '%{otherReason}'
+      preheader: Scriosadh do thrácht
+      reason: 'An chúis gur scriosadh do thrácht:'
+      subject: Scriosadh do thrácht ó ardán %{organizationName}
+      title: Scrios %{organizationName} do thrácht
+    comment_marked_as_spam:
+      by_author: ag %{authorName}
+      commented: '%{authorName} a dúirt:'
+      cta_button: Trácht athbhreithnithe
       days_ago: '%{numberOfDays} lá ó shin'
-      event_description: 'Chuir %{authorName} trácht nua leis ar d''ardán.'
-      title: '%{firstName}, tá trácht nua curtha suas ar d’ardán'
-      subject: 'Tá trácht nua curtha suas ar ardán %{organizationName}'
-      preheader: 'D''fhág %{authorName} trácht'
+      event_description: "Tuairiscíodh an trácht seo a leanas a postáladh ar <strong>'%{post}'</strong>:"
+      inappropriate_content: Tá an trácht míchuí nó maslach.
+      preheader: Gníomhaigh ar an trácht seo a tuairiscíodh mar thurscar
+      reported_this_because: 'Thuairiscigh %{reporterFirstName} é seo mar gheall ar:'
+      subject: '%{organizationName}: %{firstName} %{lastName} thuairiscigh an trácht seo mar thurscar'
+      title: '%{firstName} %{lastName} thuairiscigh an trácht seo mar thurscar'
       today: Inniu
+      wrong_content: Níl an trácht ábhartha.
       yesterday: Inné
     comment_on_idea_you_follow:
-      subject: 'Tá trácht nua ar "%{input_title}"'
-      preheader: 'D’fhág %{authorName} trácht ar smaoineamh do %{organizationName}'
-      title: 'Rinne %{authorName} trácht ar ionchur a leanann tú'
-      event_description: 'Chuir %{authorNameFull} imoibriú ar ''%{inputTitle}''. Cliceáil an cnaipe thíos chun leanúint leis an gcomhrá le %{authorName}.'
-      cta_button: 'Freagra chuig %{commentAuthor}'
+      cta_button: Freagra chuig %{commentAuthor}
+      event_description: "Chuir %{authorNameFull} imoibriú ar '%{inputTitle}'. Cliceáil an cnaipe thíos chun leanúint leis an gcomhrá le %{authorName}."
       main_header:
-        idea: 'Rinne %{authorName} trácht ar smaoineamh a leanann tú'
-        question: 'Rinne %{authorName} trácht ar cheist a leanann tú'
-        contribution: 'Rinne %{authorName} trácht ar ranníocaíocht a leanann tú'
-        project: 'Rinne %{authorName} trácht ar thionscadal a leanann tú'
-        issue: 'Rinne %{authorName} trácht ar cheist a leanann tú'
-        option: 'Rinne %{authorName} trácht ar rogha a leanann tú'
-        proposal: 'Rinne %{authorName} trácht ar thogra a leanann tú'
-        initiative: 'Rinne %{authorName} trácht ar thionscnamh a leanann tú'
-        petition: 'Rinne %{authorName} trácht ar achainí a leanann tú'
-        comment: 'Rinne %{authorName} trácht ar thrácht a leanann tú'
-        response: 'Rinne %{authorName} trácht ar fhreagra a leanann tú'
-        suggestion: 'Rinne %{authorName} trácht ar mholadh a leanann tú'
-        topic: 'Rinne %{authorName} trácht ar ábhar a leanann tú'
-        post: 'Rinne %{authorName} trácht ar phost a leanann tú'
-        story: 'Rinne %{authorName} trácht ar scéal a leanann tú'
-    new_idea_for_admin_published:
-      subject: 'Tá ionchur nua foilsithe ar d''ardán'
-      preheader: 'D''fhoilsigh %{authorName} ionchur nua ar do ardán'
-      title: 'Tá ionchur nua foilsithe ar d''ardán'
-      event_description: 'Tá ionchur nua curtha isteach ag %{authorName} ar d''ardán. Faigh amach anois é, tabhair aiseolas nó athraigh a stádas!'
-      cta_button: 'Tabhair aiseolas do %{authorName}'
+        comment: Rinne %{authorName} trácht ar thrácht a leanann tú
+        contribution: Rinne %{authorName} trácht ar ranníocaíocht a leanann tú
+        idea: Rinne %{authorName} trácht ar smaoineamh a leanann tú
+        initiative: Rinne %{authorName} trácht ar thionscnamh a leanann tú
+        issue: Rinne %{authorName} trácht ar cheist a leanann tú
+        option: Rinne %{authorName} trácht ar rogha a leanann tú
+        petition: Rinne %{authorName} trácht ar achainí a leanann tú
+        post: Rinne %{authorName} trácht ar phost a leanann tú
+        project: Rinne %{authorName} trácht ar thionscadal a leanann tú
+        proposal: Rinne %{authorName} trácht ar thogra a leanann tú
+        question: Rinne %{authorName} trácht ar cheist a leanann tú
+        response: Rinne %{authorName} trácht ar fhreagra a leanann tú
+        story: Rinne %{authorName} trácht ar scéal a leanann tú
+        suggestion: Rinne %{authorName} trácht ar mholadh a leanann tú
+        topic: Rinne %{authorName} trácht ar ábhar a leanann tú
+      preheader: D’fhág %{authorName} trácht ar smaoineamh do %{organizationName}
+      subject: Tá trácht nua ar "%{input_title}"
+      title: Rinne %{authorName} trácht ar ionchur a leanann tú
+    comment_on_your_comment:
+      cta_button: Freagra chuig %{authorFirstName}
+      event_description: "Scríobh %{authorName} freagra ar do thrácht ar '%{post}' ar an ardán rannpháirtíochta. Cliceáil an cnaipe thíos chun leanúint leis an gcomhrá le %{authorFirstName}."
+      preheader: D'fhreagair %{authorName} do thrácht ar ardán %{organizationName}
+      replied: 'D’fhreagair %{authorFirstName}:'
+      subject: Tá freagra faighte agat ar do thrácht ar ardán %{organizationName}
+      title: D'fhreagair %{authorName} do thrácht
+    community_monitor_report:
+      cta_button: Féach ar an tuarascáil
+      event_description: Tá tuarascáil monatóireachta pobail cruthaithe don ráithe roimhe sin. Is féidir leat rochtain a fháil uirthi trí chliceáil ar an gcnaipe thíos agus logáil isteach.
+      preheader: Tá tuarascáil nua monatóireachta pobail ar fáil
+      report_name: Tuarascáil monatóireachta pobail
+      subject: Tá tuarascáil nua monatóireachta pobail ar fáil
+      title: Tá tuarascáil nua monatóireachta pobail ar fáil
+    cosponsor_of_your_idea:
+      cta_button: Féach ar do thogra
+      event_description: Comhghairdeas! Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra.
+      preheader: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
+      subject: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
+      title: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
+    event_registration_confirmation:
+      cta_add_to_calendar: Cuir le do fhéilire
+      cta_button: Féach ar an imeacht
+      event_details:
+        labels:
+          date: Dáta
+          description: Cur síos
+          location: Suíomh
+          online_link: Nasc ar líne
+          project: Tionscadal
+      preheader: '%{firstName}, go raibh maith agat as clárú le haghaidh %{eventTitle}'
+      subject: Tá tú istigh! Tá do chlárú le haghaidh "%{eventTitle}" deimhnithe.
+      title: '%{firstName}, go raibh maith agat as clárú le haghaidh'
+    follow:
+      unfollow_here: Fuair tú an fógra seo mar gheall ar mhír a leanann tú. <a href="%{unfollow_url}">Is féidir leat é a dhíleanúint anseo.</a>
+    footer:
+      link_privacy_policy: Polasaí Príobháideachais
+      link_terms_conditions: Téarmaí & Coinníollacha
+      link_unsubscribe: Díliostáil
+      powered_by: Cumhachtaithe ag
+      recipient_statement: Sheol Go Vocal an ríomhphost seo chugat thar ceann %{organizationName}, mar is úsáideoir cláraithe de %{organizationLink} thú.
+      unsubscribe_statement: Is féidir leat %{unsubscribeLink} a úsáid mura mian leat na ríomhphoist seo a fháil amach anseo.
+      unsubscribe_text: díliostáil
+    general:
+      author_wrote: 'Scríobh %{authorName}:'
+      by_author: ag %{authorName}
+      cta_goto:
+        comment: Téigh go dtí an trácht seo
+        contribution: Téigh chuig an ranníocaíocht seo
+        idea: Téigh chuig an smaoineamh seo
+        initiative: Téigh chuig an tionscnamh seo
+        issue: Téigh chuig an tsaincheist seo
+        option: Téigh go dtí an rogha seo
+        petition: Téigh chuig an achainí seo
+        post: Téigh go dtí an post seo
+        project: Téigh chuig an tionscadal seo
+        proposal: Téigh chuig an togra seo
+        question: Téigh go dtí an cheist seo
+        response: Téigh go dtí an freagra seo
+        story: Téigh go dtí an scéal seo
+        suggestion: Téigh chuig an moladh seo
+        topic: Téigh go dtí an topaic seo
+      cta_goto_idea: Téigh chuig an smaoineamh seo
+      cta_goto_input: Téigh chuig an ionchur seo
+      cta_goto_project: Téigh chuig an tionscadal seo
+      cta_goto_proposal: Téigh chuig an togra seo
+      cta_goto_your:
+        comment: Téigh chuig do thrácht
+        contribution: Téigh chuig do ranníocaíocht
+        idea: Téigh chuig do smaoineamh
+        initiative: Téigh chuig do thionscnamh
+        issue: Téigh chuig do cheist
+        option: Téigh chuig do rogha
+        petition: Téigh chuig d’achainí
+        post: Téigh chuig do phost
+        project: Téigh chuig do thionscadal
+        proposal: Téigh chuig do thogra
+        question: Téigh chuig do cheist
+        response: Téigh chuig do fhreagra
+        story: Téigh chuig do scéal
+        suggestion: Téigh chuig do mholadh
+        topic: Téigh chuig do thopaic
+    idea_marked_as_spam:
+      cta_button: Athbhreithniú
+      preheader: Gníomhaigh ar an tuairisc turscair seo
+      report_inappropriate_offensive_content: Is dóigh liom go bhfuil an t-ábhar seo míchuí nó maslach.
+      report_not_an_idea: Níl an t-ábhar seo ábhartha agus ní bhaineann sé anseo.
+      reported_this_because: 'Thuairiscigh %{reporterFirstName} é seo mar gheall ar:'
+      subject: Tá tuairisc turscair agat ar ardán %{organizationName}
+      title: Tuairiscíodh turscar %{firstName} %{lastName}
+    idea_published:
+      action_add_image: '%{addImageLink} chun infheictheacht a mhéadú'
+      action_published_idea: Foilsithe
+      action_send_email: Seol %{sendEmailLink} chuig do theagmhálaithe
+      action_share_fb: Cuir do chairde ar an eolas ar %{fbLink}
+      action_share_link: Comhroinn é trí aon chainéal tríd an %{link} a chóipeáil
+      action_share_twitter: Cuir do leanúna ar an eolas ar %{twitterLink}
+      add_image: Cuir íomhá leis
+      header_message: Déanaimis cinnte go léifear é.
+      input_type_subject:
+        comment: Tá do thrácht foilsithe
+        contribution: Tá do ranníocaíocht foilsithe
+        idea: Tá do smaoineamh foilsithe
+        initiative: Tá do thionscnamh foilsithe
+        issue: Tá do cheist foilsithe
+        option: Tá do rogha foilsithe
+        petition: Tá d’achainí foilsithe
+        post: Tá do phost foilsithe
+        project: Tá do thionscadal foilsithe
+        proposal: Tá do thogra foilsithe
+        question: Tá do cheist foilsithe
+        response: Tá do fhreagra foilsithe
+        story: Tá do scéal foilsithe
+        suggestion: Tá do mholadh foilsithe
+        topic: Tá do thopaic foilsithe
+      link: nasc
+      message_get_votes: Níos mó daoine a bhaint amach
+      preheader: '%{firstName}, comhghairdeas leat as do chuid ionchuir a phostáil ar ardán %{organizationName}. Anois, faigh tacaíocht.'
+      send_email: ríomhphost
+      subject: Tá do smaoineamh foilsithe
+      title: Chuir tú "%{input_title} " suas
+    internal_comment_on_idea_assigned_to_you:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Rinne %{authorNameFull} trácht inmheánach ar ionchur a sannadh duit.
+      preheader: "Trácht inmheánach nua ar '%{post}'"
+      subject: "Trácht inmheánach nua ar '%{post}'"
+      title: "Trácht inmheánach nua ar '%{post}'"
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Rinne %{authorNameFull} trácht inmheánach ar ionchur ar thug tú trácht inmheánach air.
+      preheader: "Trácht inmheánach nua ar '%{post}'"
+      subject: "Trácht inmheánach nua ar '%{post}'"
+      title: "Trácht inmheánach nua ar '%{post}'"
+    internal_comment_on_idea_you_moderate:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Rinne %{authorNameFull} trácht inmheánach ar ionchur i dtionscadal nó i bhfillteán a bhainistíonn tú.
+      preheader: "Trácht inmheánach nua ar '%{post}'"
+      subject: "Trácht inmheánach nua ar '%{post}'"
+      title: "Trácht inmheánach nua ar '%{post}'"
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Rinne %{authorNameFull} trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe.
+      preheader: "Trácht inmheánach nua ar '%{post}'"
+      subject: "Trácht inmheánach nua ar '%{post}'"
+      title: "Trácht inmheánach nua ar '%{post}'"
+    internal_comment_on_your_internal_comment:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Rinne %{authorNameFull} trácht ar do thrácht inmheánach.
+      preheader: "D’fhreagair %{authorNameFull} do thrácht inmheánach ar '%{post}'"
+      subject: "Tá trácht faighte agat ar do thrácht inmheánach ar '%{post}'"
+      title: "Tá trácht faighte agat ar do thrácht inmheánach ar '%{post}'"
+    invitation_to_cosponsor_idea:
+      cta_button: Comhurraí an togra seo
+      event_description: Tá togra nua cruthaithe ag %{authorName} agus ba mhaith leis go ndéanfá comhurraíocht air.
+      event_description_action: Cliceáil thíos chun an togra a léamh.
+      event_description_before_action: Chun an togra a fheiceáil agus glacadh leis an gcuireadh, ní mór duit a bheith logáilte isteach i do chuntas.
+      event_description_cosponsoring: Ciallaíonn comhurraíocht togra go <strong>taispeánfar d'ainm</strong> in éineacht le hainmneacha chomhurraitheoirí eile an togra.
+      preheader: Tá cuireadh tugtha duit comhurraíocht a dhéanamh ar thogra %{authorName}
+      subject: Tugadh cuireadh duit comhurraíocht a dhéanamh ar thogra
+      title: Tugadh cuireadh duit comhurraíocht a dhéanamh ar thogra
+    invite_received:
+      added_a_message: 'Scríobh %{organizationName} an teachtaireacht seo a leanas:'
+      cta_button: Glac le do chuireadh
+      event_description: Thug %{organizationName} cuireadh duit chuig a n-ardán rannpháirtíochta.
+      invitation_expiry_message: Rachaidh an cuireadh seo in éag i gceann %{expiryDays} lá.
+      preheader: Chuir %{organizationName} cuireadh chugat chun páirt a ghlacadh ina n-ardán rannpháirtíochta.
+      subject: Tá cuireadh agat páirt a ghlacadh san ardán %{organizationName}
+      title: Tá cuireadh agat!
+    invite_reminder:
+      cta_button: Glac le do chuireadh
+      invitation_expiry_message: Rachaidh an cuireadh seo in éag i gceann thart ar %{expiryDaysRemaining} lá.
+      preheader: Chuir %{organizationName} cuireadh chugat chun páirt a ghlacadh ina n-ardán rannpháirtíochta cúpla lá ó shin.
+      subject: Cuireadh ar feitheamh don ardán rannpháirtíochta de %{organizationName}
+      title: Tá do chuireadh ar feitheamh
+    manual:
+      preheader: Tá ríomhphost agat ó %{organizationName}
+    manual_project_participants:
+      preheader: Tá ríomhphost agat ó %{organizationName}
+    mention_in_comment:
+      cta_reply_to: Freagra chuig %{commentAuthor}
+      event_description: "Tá trácht déanta ag %{commentAuthorFull} ort ina thrácht ar an smaoineamh '%{post}'. Cliceáil an nasc thíos chun dul isteach sa chomhrá le %{commentAuthor}"
+      main_header: Tá daoine ag caint fút
+      preheader: Luaigh %{commentAuthor} thú i dtrácht
+      subject: Luaigh duine éigin thú ar ardán %{organizationName}
+    mention_in_internal_comment:
+      cta_button: Féach trácht ó %{firstName}
+      event_description: Luaigh %{authorNameFull} thú i dtrácht inmheánach.
+      preheader: Luaigh %{authorNameFull} thú i dtrácht inmheánach.
+      subject: Luaigh %{firstName} thú i dtrácht inmheánach.
+      title: Luaigh %{firstName} thú i dtrácht inmheánach.
+    mention_in_official_feedback:
+      cta_button: Freagra chuig %{organizationName}
+      event_description: "Luaigh %{organizationName} thú ina n-aiseolas ar an smaoineamh '%{post}'. Cliceáil an nasc thíos chun dul isteach sa chomhrá le %{organizationName}"
+      preheader: Luaigh %{organizationName} thú san aiseolas
+      subject: Luaigh %{organizationName} thú ina n-aiseolas
+      title: Tá tú luaite
+    moderator_digest:
+      cta_button: Bainistigh do thionscadal
+      event_description: Tá an ionchur a ghin an ghníomhaíocht is mó le seachtain anuas curtha le chéile againn duit. Faigh amach cad atá ag tarlú le do thionscadal!
+      new_comments: Tráchtanna nua
+      new_ideas: Smaointe nua
+      new_users: Úsáideoirí nua
+      preheader: Díriú bainisteora tionscadail ar %{organizationName}
+      subject: Tuarascáil bhainisteora sheachtainiúil ar "%{project_title}"
+      title: '%{firstName}, do thuairisc sheachtainiúil'
+      title_inputs_past_week: Ionchuir nua le seachtain anuas
+      title_no_inputs_past_week: Gan aon ionchur nua le seachtain anuas
+      title_threshold_reached: Tairseach bainte amach sa tseachtain seo caite
+      today_by_author: Inniu le %{author}
+      x_days_ago_by_author: '%{x} lá ó shin ag %{author}'
+      yesterday_by_author: Inné le %{author}
+    native_survey_not_submitted:
+      cta_button: Lean ar aghaidh le do fhreagra suirbhé
+      event_description: Thosaigh tú ag roinnt do chuid freagraí ar %{phaseTitle} ach níor chuir tú isteach iad. Cliceáil ar an gcnaipe thíos chun leanúint ar aghaidh ón áit ar fhág tú.
+      preheader: Níor chríochnaigh tú d’fhreagra suirbhé ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: Beagnach ann! Cuir isteach do chuid freagraí'
+      submissions_close: Dúnfar na haighneachtaí ar %{phaseEndDate}.
+      title: Beagnach ann! Cuir isteach do chuid freagraí
+    new_comment_for_admin:
+      anonymous_user: Úsáideoir gan ainm
+      commented: '%{authorFirstName} a dúirt:'
+      cta_button: Féach ar thrácht %{authorFirstName}
       days_ago: '%{numberOfDays} lá ó shin'
+      event_description: Chuir %{authorName} trácht nua leis ar d'ardán.
+      preheader: D'fhág %{authorName} trácht
+      subject: Tá trácht nua curtha suas ar ardán %{organizationName}
+      title: '%{firstName}, tá trácht nua curtha suas ar d’ardán'
       today: Inniu
       yesterday: Inné
     new_idea_for_admin_prescreening:
-      subject: 'Éilíonn ionchur d''athbhreithniú'
-      preheader: 'D''fhoilsigh %{authorName} ionchur nua ar do ardán'
-      title: 'Éilíonn ionchur d''athbhreithniú'
-      cta_button: 'Athbhreithnigh an t-ionchur'
-      event_description: 'Chuir %{authorName} ionchur nua isteach ar d''ardán.'
-      input_not_visible: '<b>Ní bheidh an t-ionchur le feiceáil</b> go dtí go n-athróidh tú a stádas.'
+      cta_button: Athbhreithnigh an t-ionchur
       days_ago: '%{numberOfDays} lá ó shin'
+      event_description: Chuir %{authorName} ionchur nua isteach ar d'ardán.
+      input_not_visible: <b>Ní bheidh an t-ionchur le feiceáil</b> go dtí go n-athróidh tú a stádas.
+      preheader: D'fhoilsigh %{authorName} ionchur nua ar do ardán
+      subject: Éilíonn ionchur d'athbhreithniú
+      title: Éilíonn ionchur d'athbhreithniú
       today: Inniu
       yesterday: Inné
-    comment_on_your_comment:
-      subject: 'Tá freagra faighte agat ar do thrácht ar ardán %{organizationName}'
-      preheader: 'D''fhreagair %{authorName} do thrácht ar ardán %{organizationName}'
-      title: 'D''fhreagair %{authorName} do thrácht'
-      event_description: 'Scríobh %{authorName} freagra ar do thrácht ar ''%{post}'' ar an ardán rannpháirtíochta. Cliceáil an cnaipe thíos chun leanúint leis an gcomhrá le %{authorFirstName}.'
-      cta_button: 'Freagra chuig %{authorFirstName}'
-      replied: 'D’fhreagair %{authorFirstName}:'
-    internal_comment_on_your_internal_comment:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Rinne %{authorNameFull} trácht ar do thrácht inmheánach.'
-      subject: 'Tá trácht faighte agat ar do thrácht inmheánach ar ''%{post}'''
-      title: 'Tá trácht faighte agat ar do thrácht inmheánach ar ''%{post}'''
-      preheader: 'D’fhreagair %{authorNameFull} do thrácht inmheánach ar ''%{post}'''
-    internal_comment_on_idea_assigned_to_you:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Rinne %{authorNameFull} trácht inmheánach ar ionchur a sannadh duit.'
-      subject: 'Trácht inmheánach nua ar ''%{post}'''
-      title: 'Trácht inmheánach nua ar ''%{post}'''
-      preheader: 'Trácht inmheánach nua ar ''%{post}'''
-    internal_comment_on_idea_you_commented_internally_on:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Rinne %{authorNameFull} trácht inmheánach ar ionchur ar thug tú trácht inmheánach air.'
-      subject: 'Trácht inmheánach nua ar ''%{post}'''
-      title: 'Trácht inmheánach nua ar ''%{post}'''
-      preheader: 'Trácht inmheánach nua ar ''%{post}'''
-    internal_comment_on_idea_you_moderate:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Rinne %{authorNameFull} trácht inmheánach ar ionchur i dtionscadal nó i bhfillteán a bhainistíonn tú.'
-      subject: 'Trácht inmheánach nua ar ''%{post}'''
-      title: 'Trácht inmheánach nua ar ''%{post}'''
-      preheader: 'Trácht inmheánach nua ar ''%{post}'''
-    internal_comment_on_unassigned_unmoderated_idea:
-      cta_button: 'Féach trácht ó %{firstName}'
-      event_description: 'Rinne %{authorNameFull} trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe.'
-      subject: 'Trácht inmheánach nua ar ''%{post}'''
-      title: 'Trácht inmheánach nua ar ''%{post}'''
-      preheader: 'Trácht inmheánach nua ar ''%{post}'''
+    new_idea_for_admin_published:
+      cta_button: Tabhair aiseolas do %{authorName}
+      days_ago: '%{numberOfDays} lá ó shin'
+      event_description: Tá ionchur nua curtha isteach ag %{authorName} ar d'ardán. Faigh amach anois é, tabhair aiseolas nó athraigh a stádas!
+      preheader: D'fhoilsigh %{authorName} ionchur nua ar do ardán
+      subject: Tá ionchur nua foilsithe ar d'ardán
+      title: Tá ionchur nua foilsithe ar d'ardán
+      today: Inniu
+      yesterday: Inné
     official_feedback_on_idea_you_follow:
-      event_description: 'Thug %{feedback_author_name} nuashonrú ar ''%{input_title}''.'
-      title: 'Tá nuashonrú ar "%{input_title}"'
-      subject: 'Postáladh aiseolas oifigiúil ar "%{input_title}"'
-      preheader: 'Tá nuashonrú ann maidir le hionchur a leanann tú'
       cta_button: Téigh chuig an ionchur seo
-    mention_in_official_feedback:
-      cta_button: 'Freagra chuig %{organizationName}'
-      event_description: 'Luaigh %{organizationName} thú ina n-aiseolas ar an smaoineamh ''%{post}''. Cliceáil an nasc thíos chun dul isteach sa chomhrá le %{organizationName}'
-      title: 'Tá tú luaite'
-      subject: 'Luaigh %{organizationName} thú ina n-aiseolas'
-      preheader: 'Luaigh %{organizationName} thú san aiseolas'
-    project_moderation_rights_received:
-      cta_button: 'Bainistigh an tionscadal seo'
-      event_description: 'Rinne riarthóir ar ardán rannpháirtíochta %{organizationName} bainisteoir tionscadail thú ar an tionscadal seo a leanas:'
-      no_ideas: 'Gan aon smaointe fós'
-      preheader: 'Rinne riarthóir ar ardán rannpháirtíochta %{organizationName} bainisteoir tionscadail den tionscadal seo a leanas díot díreach anois.'
-      subject: 'Rinneadh bainisteoir tionscadail díot ar ardán %{organizationName}'
-      text_design_participatory_process: 'Mar bhainisteoir tionscadail, is féidir leat a chumrú conas a idirghníomhaíonn úsáideoirí laistigh de do thionscadal. Is féidir leat céimeanna nua a chur leis ag baint úsáide as an amlíne. Féadfaidh iompar féin a bheith ag gach ceann de na céimeanna seo maidir le postáil smaointe, trácht a dhéanamh agus vótáil.'
-      text_moderate_analyse_input: 'Nuair a bheidh an tionscadal seolta, tiocfaidh na chéad smaointe isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí go léir ionas go mbeidh tú ar an eolas faoi chúrsaí. Cabhróidh an forbhreathnú ar na smaointe i radharc do bhainisteora tionscadail leat tuiscint a fháil ar na smaointe a thaitin agus nach dtaitníonn leis an gcuid is mó.'
-      text_share_project_information: 'Chun feabhas a chur ar cháilíocht na smaointe atá á bhfáil agat, tá sé ríthábhachtach go leor eolais a roinnt: cuir cur síos ar an tionscadal leis, ceangail íomhánna (lena n-áirítear sceitsí agus pleananna), agus cuir in iúl na himeachtaí gaolmhara go léir atá ar siúl. Cuimhnigh: tagann dea-eolas roimh rannpháirtíocht mhaith!'
-      title_design_participatory_process: 'Dearadh an phróisis rannpháirtíochta'
-      title_moderate_analyse_input: 'Déan an t-ionchur a mhodhnú agus a anailísiú'
-      title_share_project_information: 'Faisnéis tionscadail a sholáthar'
-      title_what_can_you_do_moderator: 'Cad is féidir leat a dhéanamh mar bhainisteoir tionscadail?'
-      title: 'Rinneadh bainisteoir tionscadail díot'
-      x_ideas: '%{numberOfIdeas} ideas'
+      event_description: "Thug %{feedback_author_name} nuashonrú ar '%{input_title}'."
+      preheader: Tá nuashonrú ann maidir le hionchur a leanann tú
+      subject: Postáladh aiseolas oifigiúil ar "%{input_title}"
+      title: Tá nuashonrú ar "%{input_title}"
+    preview_data:
+      author_display_name: Jane Doe
+      author_first_name: Jane
+      author_last_name: Ealaín
+      comment_body: Seo sampla tráchta a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
+      comment_deleted_reason: Measadh gur míchuí a bhí do thrácht samplach.
+      event_address1: 10 Sráid an tSampla, Exampleton, Exampleshire
+      event_address2: Seomra 3a, Thuas staighre
+      event_title: Imeacht Samplach
+      folder_title: Fillteán samplach
+      idea_body: Seo roinnt samplaí d'ábhar smaointe a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
+      idea_title: Smaoineamh Samplach
+      initiator_display_name: Bob Smith
+      initiator_first_name: Bob
+      initiator_last_name: Smith
+      input_status_description: Sampla de stádas ionchuir (m.sh. glactha, diúltaithe, curtha i bhfeidhm...)
+      input_status_title: Stádas Samplach
+      official_feedback_body: Aiseolas oifigiúil samplach
+      phase_title: Céim shamplach
+      project_description_preview: Seo sampla d'ábhar céime a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
+      project_title: Tionscadal samplach
+      proposal_title: Togra Samplach
+      space_title: Spás samplach
     project_folder_moderation_rights_received:
-      cta_button: 'Féach ar an bhfillteán seo'
+      cta_button: Féach ar an bhfillteán seo
       event_description: 'Tugadh cearta bainisteora fillteán duit ar ardán rannpháirtíochta %{organizationName}don fhillteán seo a leanas:'
-      no_projects: 'Gan aon tionscadail fós'
-      preheader: 'Rinne riarthóir ardán rannpháirtíochta %{organizationName} bainisteoir den fhillteán seo a leanas díot díreach anois.'
-      subject: 'Rinneadh bainisteoir fillteán tionscadail díot ar ardán rannpháirtíochta %{organizationName}'
-      text_manage_folder: 'Is bealach é fillteán chun roinnt tionscadal rannpháirtíochta a eagrú le chéile. Mar bhainisteoir fillteán, is féidir leat an fillteán agus cur síos an fhillteáin a chur in eagar agus tionscadail nua a chruthú (chun tionscadail a scriosadh, déan teagmháil le riarthóir d’ardáin). Beidh cearta bainistíochta tionscadail agat freisin thar na tionscadail uile laistigh den fhillteán, rud a ligfidh duit na tionscadail a chur in eagar, na hionchuir a bhainistiú agus ríomhphost a sheoladh chuig rannpháirtithe.'
-      text_moderate_analyse_input: 'Nuair a bheidh na tionscadail seolta, tosóidh na chéad ionchur ag teacht isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí ionas gur féidir leat fanacht ar bharr a bhfuil ag tarlú. Ligeann an Bainisteoir Ionchuir i do phainéal ''Bainistigh Ardán'' duit an t-ionchur a fheiceáil agus a bhainistiú, lena n-áirítear stádais a shannadh agus freagairt a thabhairt ar phoist agus ar thráchtanna.'
-      text_design_participatory_process: 'Is féidir leat na tionscadail rannpháirtíochta éagsúla a bhainistiú laistigh de do fhillteán - an modh rannpháirtíochta a chumrú, cur síos tionscadail a chur leis, íomhánna a cheangal, agus imeachtaí gaolmhara a chur in iúl. Is féidir leat a bhainistiú freisin conas a idirghníomhaíonn rannpháirtithe le do thionscadail, lena n-áirítear cearta rochtana a shocrú agus na socruithe postála, vótála agus tráchta a chumrú.'
-      title_design_participatory_process: 'Dearadh an phróisis rannpháirtíochta'
-      title_moderate_analyse_input: 'Déan an t-ionchur a mhodhnú agus a anailísiú'
-      title_manage_folder: 'Bainistigh socruithe an fhillteáin agus cruthaigh tionscadail nua.'
-      title_what_can_you_do_folderadmin: 'Cad is féidir leat a dhéanamh mar bhainisteoir fillteán?'
-      title: 'Cuireadh leis thú mar bhainisteoir fillteán'
-      x_projects: 'tionscadail %{numberOfProjects}'
+      no_projects: Gan aon tionscadail fós
+      preheader: Rinne riarthóir ardán rannpháirtíochta %{organizationName} bainisteoir den fhillteán seo a leanas díot díreach anois.
+      subject: Rinneadh bainisteoir fillteán tionscadail díot ar ardán rannpháirtíochta %{organizationName}
+      text_design_participatory_process: Is féidir leat na tionscadail rannpháirtíochta éagsúla a bhainistiú laistigh de do fhillteán - an modh rannpháirtíochta a chumrú, cur síos tionscadail a chur leis, íomhánna a cheangal, agus imeachtaí gaolmhara a chur in iúl. Is féidir leat a bhainistiú freisin conas a idirghníomhaíonn rannpháirtithe le do thionscadail, lena n-áirítear cearta rochtana a shocrú agus na socruithe postála, vótála agus tráchta a chumrú.
+      text_manage_folder: Is bealach é fillteán chun roinnt tionscadal rannpháirtíochta a eagrú le chéile. Mar bhainisteoir fillteán, is féidir leat an fillteán agus cur síos an fhillteáin a chur in eagar agus tionscadail nua a chruthú (chun tionscadail a scriosadh, déan teagmháil le riarthóir d’ardáin). Beidh cearta bainistíochta tionscadail agat freisin thar na tionscadail uile laistigh den fhillteán, rud a ligfidh duit na tionscadail a chur in eagar, na hionchuir a bhainistiú agus ríomhphost a sheoladh chuig rannpháirtithe.
+      text_moderate_analyse_input: "Nuair a bheidh na tionscadail seolta, tosóidh na chéad ionchur ag teacht isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí ionas gur féidir leat fanacht ar bharr a bhfuil ag tarlú. Ligeann an Bainisteoir Ionchuir i do phainéal 'Bainistigh Ardán' duit an t-ionchur a fheiceáil agus a bhainistiú, lena n-áirítear stádais a shannadh agus freagairt a thabhairt ar phoist agus ar thráchtanna."
+      title: Cuireadh leis thú mar bhainisteoir fillteán
+      title_design_participatory_process: Dearadh an phróisis rannpháirtíochta
+      title_manage_folder: Bainistigh socruithe an fhillteáin agus cruthaigh tionscadail nua.
+      title_moderate_analyse_input: Déan an t-ionchur a mhodhnú agus a anailísiú
+      title_what_can_you_do_folderadmin: Cad is féidir leat a dhéanamh mar bhainisteoir fillteán?
+      x_projects: tionscadail %{numberOfProjects}
+    project_moderation_rights_received:
+      cta_button: Bainistigh an tionscadal seo
+      event_description: 'Rinne riarthóir ar ardán rannpháirtíochta %{organizationName} bainisteoir tionscadail thú ar an tionscadal seo a leanas:'
+      no_ideas: Gan aon smaointe fós
+      preheader: Rinne riarthóir ar ardán rannpháirtíochta %{organizationName} bainisteoir tionscadail den tionscadal seo a leanas díot díreach anois.
+      subject: Rinneadh bainisteoir tionscadail díot ar ardán %{organizationName}
+      text_design_participatory_process: Mar bhainisteoir tionscadail, is féidir leat a chumrú conas a idirghníomhaíonn úsáideoirí laistigh de do thionscadal. Is féidir leat céimeanna nua a chur leis ag baint úsáide as an amlíne. Féadfaidh iompar féin a bheith ag gach ceann de na céimeanna seo maidir le postáil smaointe, trácht a dhéanamh agus vótáil.
+      text_moderate_analyse_input: Nuair a bheidh an tionscadal seolta, tiocfaidh na chéad smaointe isteach. Gheobhaidh tú tuarascálacha seachtainiúla leis na príomhghníomhaíochtaí go léir ionas go mbeidh tú ar an eolas faoi chúrsaí. Cabhróidh an forbhreathnú ar na smaointe i radharc do bhainisteora tionscadail leat tuiscint a fháil ar na smaointe a thaitin agus nach dtaitníonn leis an gcuid is mó.
+      text_share_project_information: 'Chun feabhas a chur ar cháilíocht na smaointe atá á bhfáil agat, tá sé ríthábhachtach go leor eolais a roinnt: cuir cur síos ar an tionscadal leis, ceangail íomhánna (lena n-áirítear sceitsí agus pleananna), agus cuir in iúl na himeachtaí gaolmhara go léir atá ar siúl. Cuimhnigh: tagann dea-eolas roimh rannpháirtíocht mhaith!'
+      title: Rinneadh bainisteoir tionscadail díot
+      title_design_participatory_process: Dearadh an phróisis rannpháirtíochta
+      title_moderate_analyse_input: Déan an t-ionchur a mhodhnú agus a anailísiú
+      title_share_project_information: Faisnéis tionscadail a sholáthar
+      title_what_can_you_do_moderator: Cad is féidir leat a dhéanamh mar bhainisteoir tionscadail?
+      x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: 'Faigh amach an chéim nua seo'
-      event_description: 'Chuaigh an tionscadal seo isteach i gcéim nua ar ardán %{organizationName}. Cliceáil ar an nasc thíos le tuilleadh eolais a fháil!'
-      title: 'Céim nua tosaithe don tionscadal ''%{projectName}'''
-      subtitle: 'Maidir le ''%{projectName}'''
-      new_phase: 'Chuaigh an tionscadal seo isteach sa chéim ''%{phaseTitle}'''
-      subject: 'Chuaigh %{projectName} isteach i gcéim nua'
-      preheader: 'Tá céim nua tosaithe do %{projectName}'
+      cta_button: Faigh amach an chéim nua seo
+      event_description: Chuaigh an tionscadal seo isteach i gcéim nua ar ardán %{organizationName}. Cliceáil ar an nasc thíos le tuilleadh eolais a fháil!
+      new_phase: "Chuaigh an tionscadal seo isteach sa chéim '%{phaseTitle}'"
+      preheader: Tá céim nua tosaithe do %{projectName}
+      subject: Chuaigh %{projectName} isteach i gcéim nua
+      subtitle: "Maidir le '%{projectName}'"
+      title: "Céim nua tosaithe don tionscadal '%{projectName}'"
     project_phase_upcoming:
-      cta_button: 'Socraigh an chéim nua seo'
-      event_description: 'Beidh an tionscadal ''%{projectName}'' ag dul isteach i gcéim nua go luath. Déan cinnte go bhfuil gach rud socraithe don chéim seo: An bhfuil cur síos leordhóthanach ann? An aistrítear smaointe roghnaithe chuig an gcéim seo? Ar mhaith leat do shaoránaigh a chur ar an eolas faoi shonraí na céime seo trí fheachtas ríomhphoist saincheaptha?'
+      cta_button: Socraigh an chéim nua seo
+      event_description: "Beidh an tionscadal '%{projectName}' ag dul isteach i gcéim nua go luath. Déan cinnte go bhfuil gach rud socraithe don chéim seo: An bhfuil cur síos leordhóthanach ann? An aistrítear smaointe roghnaithe chuig an gcéim seo? Ar mhaith leat do shaoránaigh a chur ar an eolas faoi shonraí na céime seo trí fheachtas ríomhphoist saincheaptha?"
+      new_phase: "Rachaidh an tionscadal isteach sa chéim '%{phaseTitle}'"
+      preheader: Tosóidh céim nua go luath do %{projectName}
+      subject: Faigh gach rud réidh don chéim nua de %{projectName}
+      subtitle: "Maidir le '%{projectName}'"
       title: '%{firstName}, rachaidh tionscadal isteach i gcéim nua go luath'
-      subtitle: 'Maidir le ''%{projectName}'''
-      new_phase: 'Rachaidh an tionscadal isteach sa chéim ''%{phaseTitle}'''
-      subject: 'Faigh gach rud réidh don chéim nua de %{projectName}'
-      preheader: 'Tosóidh céim nua go luath do %{projectName}'
     project_published:
-      subject: 'Foilsíodh tionscadal nua ar ardán %{organizationName}'
-      title: 'Foilsíodh tionscadal nua'
+      cta_button: Téigh chuig an tionscadal seo
       event_description: 'D’fhoilsigh ardán rannpháirtíochta %{organizationName} an tionscadal seo a leanas díreach:'
-      preheader: 'Foilsíodh tionscadal nua'
-      cta_button: 'Téigh chuig an tionscadal seo'
+      preheader: Foilsíodh tionscadal nua
+      subject: Foilsíodh tionscadal nua ar ardán %{organizationName}
+      title: Foilsíodh tionscadal nua
     project_review_request:
+      cta_button: Athbhreithnigh an tionscadal
+      event_description: Faoi láthair, tá an tionscadal i mód dréachta agus níl sé le feiceáil ag úsáideoirí. Nuair a bheidh sé athbhreithnithe agus ceadaithe agat, beidh an modhnóir in ann é a fhoilsiú.
+      preheader: Tá cuireadh tugtha ag %{requesterName} duit athbhreithniú a dhéanamh ar an tionscadal "%{projectTitle}"
       subject: 'Iarratas athbhreithnithe: Tá tionscadal ag fanacht le formheas.'
-      title: 'Tá cuireadh tugtha ag %{requesterName} duit athbhreithniú a dhéanamh ar an tionscadal "%{projectTitle}"'
-      event_description: "Faoi láthair, tá an tionscadal i mód dréachta agus níl sé le feiceáil ag úsáideoirí. Nuair a bheidh sé athbhreithnithe agus ceadaithe agat, beidh an modhnóir in ann é a fhoilsiú."
-      cta_button: "Athbhreithnigh an tionscadal"
-      preheader: 'Tá cuireadh tugtha ag %{requesterName} duit athbhreithniú a dhéanamh ar an tionscadal "%{projectTitle}"'
+      title: Tá cuireadh tugtha ag %{requesterName} duit athbhreithniú a dhéanamh ar an tionscadal "%{projectTitle}"
     project_review_state_change:
-      subject: 'Tá "%{projectTitle}" ceadaithe'
-      title: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
-      event_description: "Tá an tionscadal réidh le cur i bhfeidhm anois. Is féidir leat é a fhoilsiú aon uair a bheidh tú réidh!"
-      cta_button: "Téigh chuig socruithe tionscadail"
+      cta_button: Téigh chuig socruithe tionscadail
+      event_description: Tá an tionscadal réidh le cur i bhfeidhm anois. Is féidir leat é a fhoilsiú aon uair a bheidh tú réidh!
       preheader: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
-    status_change_on_idea_you_follow:
-      status_change: 'Is é stádas nua an ionchuir seo ná ''%{status}'''
-      event_description: 'Nuashonraigh %{organizationName} stádas an ionchuir ''%{input_title}'' ar a n-ardán rannpháirtíochta digiteach.'
-      title: 'Tá stádas nua ag ionchur a leanann tú'
-      subject: 'Tá stádas "%{input_title}" athraithe'
-      preheader: 'Tá stádas nua ag ionchur a leanann tú'
-      cta_button: Téigh chuig an ionchur seo
-    user_digest:
-      subject: "An tseachtain seo ar ardán rannpháirtíochta %{organizationName}"
-      commented: "%{authorFirstName} a dúirt:"
-      preheader: "Forbhreathnú seachtainiúil ar %{organizationName}"
-      title: "Faigh amach cad a tharla an tseachtain seo caite"
-      event_description: "Seo achoimre ar a tharla ar ardán rannpháirtíochta %{organizationName}."
-      cta_button: "Téigh go dtí an t-ardán"
-      title_no_activity_past_week: "Gan aon ghníomhaíocht le seachtain anuas"
-      successful_proposals_title: "Shroich an tairseach"
-      successful_proposals_text: "Le seachtain anuas, tá dóthain tacaíochta faighte acu seo chun bogadh ar aghaidh go dtí an chéad chéim eile."
-      today_by_author: "Inniu le %{author}"
-      yesterday_by_author: "Inné le %{author}"
-      x_days_ago_by_author: "%{x} lá ó shin ag %{author}"
-      trending_title: "Ag treochtáil"
-      trending_text: "Suim agat sa mhéid atá ag tarlú ar an ardán? Seo iad na trí ranníocaíocht is mó a bhfuil tóir orthu agus a bhfuil daoine ag rá fúthu."
-      no_notifications: "Gan aon fhógraí"
-      one_notification: "1 fhógra"
-      multiple_notifications: "fógraí %{notifCount}"
-      no_unread_notifications: "Níl aon fhógraí neamhléite agat."
-      unread_notifications: "Tá fógraí neamhléite agat. Tabhair cuairt ar an ardán le fáil amach cad atá ag tarlú!"
-    threshold_reached_for_admin:
-      cta_button: 'Tabhair an togra seo chuig na chéad chéimeanna eile'
-      title: 'Shroich togra an tairseach vótála!'
-      subject: 'Shroich "%{input_title}" an tairseach vótála'
-      preheader: 'Bí cinnte na chéad chéimeanna eile a ghlacadh'
-    welcome:
-      cta_button: 'Faigh amach an t-ardán'
-      subject: 'Fáilte go dtí ardán %{organizationName}'
-      title: Fáilte!
-      event_description: 'Comhghairdeas, tá tú cláraithe go rathúil ar ardán rannpháirtíochta %{organizationName}. Is féidir leat an t-ardán a aimsiú anois agus do ghlór a chur in iúl. Is féidir leat pictiúr próifíle agus cur síos gairid a chur leis freisin chun a chur in iúl do dhaoine eile cé tú féin.'
-      preheader: 'Seo an méid is féidir leat a dhéanamh ar ardán %{organizationName}'
-    idea_published:
-      subject: 'Tá do smaoineamh foilsithe'
-      preheader: '%{firstName}, comhghairdeas leat as do chuid ionchuir a phostáil ar ardán %{organizationName}. Anois, faigh tacaíocht.'
-      title: 'Chuir tú "%{input_title} " suas'
-      input_type_subject:
-        idea: 'Tá do smaoineamh foilsithe'
-        question: 'Tá do cheist foilsithe'
-        contribution: 'Tá do ranníocaíocht foilsithe'
-        project: 'Tá do thionscadal foilsithe'
-        issue: 'Tá do cheist foilsithe'
-        option: 'Tá do rogha foilsithe'
-        proposal: 'Tá do thogra foilsithe'
-        initiative: 'Tá do thionscnamh foilsithe'
-        petition: 'Tá d’achainí foilsithe'
-        comment: 'Tá do thrácht foilsithe'
-        response: 'Tá do fhreagra foilsithe'
-        suggestion: 'Tá do mholadh foilsithe'
-        topic: 'Tá do thopaic foilsithe'
-        post: 'Tá do phost foilsithe'
-        story: 'Tá do scéal foilsithe'
-      header_message: 'Déanaimis cinnte go léifear é.'
-      message_get_votes: 'Níos mó daoine a bhaint amach'
-      action_published_idea: 'Foilsithe'
-      action_add_image: '%{addImageLink} chun infheictheacht a mhéadú'
-      add_image: 'Cuir íomhá leis'
-      action_share_fb: 'Cuir do chairde ar an eolas ar %{fbLink}'
-      action_share_twitter: 'Cuir do leanúna ar an eolas ar %{twitterLink}'
-      action_send_email: 'Seol %{sendEmailLink} chuig do theagmhálaithe'
-      send_email: ríomhphost
-      action_share_link: 'Comhroinn é trí aon chainéal tríd an %{link} a chóipeáil'
-      link: nasc
-    your_input_in_screening:
-      main_header:
-        idea: 'Tá do smaoineamh i "%{prescreening_status_title}"'
-        question: 'Tá do cheist i "%{prescreening_status_title}"'
-        contribution: 'Tá do ranníocaíocht i "%{prescreening_status_title}"'
-        project: 'Tá do thionscadal i "%{prescreening_status_title}"'
-        issue: 'Tá do cheist i "%{prescreening_status_title}"'
-        option: 'Tá do rogha i "%{prescreening_status_title}"'
-        proposal: 'Tá do thogra i "%{prescreening_status_title}"'
-        initiative: 'Tá do thionscnamh i "%{prescreening_status_title}"'
-        petition: 'Tá d’achainí i "%{prescreening_status_title}"'
-        comment: 'Tá do thrácht i "%{prescreening_status_title}"'
-        response: 'Tá do fhreagra i "%{prescreening_status_title}"'
-        suggestion: 'Tá do mholadh i "%{prescreening_status_title}"'
-        topic: 'Tá do thopaic i "%{prescreening_status_title}"'
-        post: 'Tá do phost i "%{prescreening_status_title}"'
-        story: 'Tá do scéal i "%{prescreening_status_title}"'
-      event_description: 'Beidh "%{input_title}" le feiceáil ag daoine eile a luaithe a bheidh sé athbhreithnithe agus ceadaithe.'
-      subject: 'Tá "%{input_title}" beagnach foilsithe'
-      preheader: 'Tá sé i %{prescreening_status_title} faoi láthair'
+      subject: Tá "%{projectTitle}" ceadaithe
+      title: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
+    schedules:
+      quarterly: Ráithiúil, ar an gcéad lá den ráithe
+      weekly:
+        '0': Gach seachtain, ar an Domhnach ag %{hourOfDay}
+        '1': Gach seachtain, ar an Luan ag %{hourOfDay}
+        '2': Gach seachtain, ar an Máirt ag %{hourOfDay}
+        '3': Gach seachtain, ar an gCéadaoin ag %{hourOfDay}
+        '4': Gach seachtain, ar an Déardaoin ag %{hourOfDay}
+        '5': Gach seachtain, ar an Aoine ag %{hourOfDay}
+        '6': Gach seachtain, ar an Satharn ag %{hourOfDay}
     screening_digest:
+      cta_button: Athbhreithnigh ionchuir
+      event_description: Ní mór na hionchuir seo a cheadú sula mbeidh siad le feiceáil ag an bpobal. Is féidir leat athbhreithniú a dhéanamh orthu sa Bhainisteoir Ionchuir ar fud an ardáin nó laistigh de Bhainisteoir Ionchuir gach céime.
+      inputs_awaiting_screening: ionchuir le hathbhreithniú
+      preheader: Athbhreithnigh ionchuir le haghaidh %{organizationName}
       subject: '%{count} ionchur ag fanacht le hathbhreithniú'
-      preheader: 'Athbhreithnigh ionchuir le haghaidh %{organizationName}'
       title: '%{firstName}, tá na hionchuir ag fanacht le hathbhreithniú'
-      event_description: "Ní mór na hionchuir seo a cheadú sula mbeidh siad le feiceáil ag an bpobal. Is féidir leat athbhreithniú a dhéanamh orthu sa Bhainisteoir Ionchuir ar fud an ardáin nó laistigh de Bhainisteoir Ionchuir gach céime."
-      cta_button: 'Athbhreithnigh ionchuir'
-      inputs_awaiting_screening: 'ionchuir le hathbhreithniú'
-    voting_basket_submitted:
-      subject: '%{organizationName}: Vótáil tú go rathúil'
-      preheader: 'Vótáil tú go rathúil ar ardán rannpháirtíochta %{organizationName}'
-      title: 'D’éirigh leat vótáil'
-      event_description: 'Go raibh maith agat as páirt a ghlacadh. Tá do vótaí taifeadta. Tabhair cuairt ar ardán %{organizationName} chun do vótaí a fheiceáil agus a bhainistiú.'
-      cta_button: 'Féach vótaí a cuireadh isteach'
-      cta_message: 'Cliceáil an cnaipe thíos le páirt a ghlacadh'
-    native_survey_not_submitted:
-      subject: '%{organizationName}: Beagnach ann! Cuir isteach do chuid freagraí'
-      preheader: 'Níor chríochnaigh tú d’fhreagra suirbhé ar ardán rannpháirtíochta %{organizationName}'
-      title: 'Beagnach ann! Cuir isteach do chuid freagraí'
-      event_description: 'Thosaigh tú ag roinnt do chuid freagraí ar %{phaseTitle} ach níor chuir tú isteach iad. Cliceáil ar an gcnaipe thíos chun leanúint ar aghaidh ón áit ar fhág tú.'
-      cta_button: 'Lean ar aghaidh le do fhreagra suirbhé'
-      submissions_close: 'Dúnfar na haighneachtaí ar %{phaseEndDate}.'
-    voting_basket_not_submitted:
-      subject: '%{organizationName}: Níor chuir tú do vótaí isteach'
-      preheader: 'Níor chuir tú do vótaí isteach ar ardán rannpháirtíochta %{organizationName}'
-      title: 'Níor chuir tú isteach do vótaí'
-      event_description: 'Roghnaigh tú cúpla rogha le haghaidh %{contextTitle} ach níor chuir tú isteach do rogha.'
-      cta_button: 'Féach ar na roghanna agus vótáil'
-      cta_message: 'Cliceáil an cnaipe thíos chun do roghanna roghnaithe a chur isteach'
-    voting_last_chance:
-      subject: '%{organizationName}: An deis dheireanach chun vótáil ar son %{phaseTitle}'
-      preheader: 'An deis dheireanach chun vótáil ar son %{phaseTitle} ar ardán rannpháirtíochta %{organizationName}'
-      title: 'An deis dheireanach chun vótáil ar son %{phaseTitle}'
-      event_description: '<p>Beidh deireadh leis an gcéim vótála don tionscadal %{projectTitle} amárach, ag meán oíche.</p><p>Tá an t-am ag rith amach, agus thugamar faoi deara nár chaith tú do vóta fós! Gníomhaigh anois trí chliceáil ar an gcnaipe thíos chun páirt a ghlacadh.</p><p>Trí sin a dhéanamh, gheobhaidh tú rochtain ar réimse roghanna agus beidh an deis agat do thuairim a thabhairt, rud atá ríthábhachtach agus todhchaí an tionscadail seo á cinneadh.</p>'
-      cta_button: 'Vótaigh'
-    voting_results:
-      subject: '%{organizationName}: %{phaseTitle} torthaí vóta nochta!'
-      preheader: 'Nochtadh torthaí vóta %{phaseTitle} ar ardán rannpháirtíochta %{organizationName}'
-      title: 'Nochtadh torthaí vótála %{phaseTitle}!'
-      body_1: 'Tá na torthaí istigh!'
-      body_2: 'Tá torthaí an vóta %{phaseTitle} san ardán %{organizationName} foilsithe!'
-      body_3: 'Molaimid duit na torthaí a athbhreithniú agus fanacht tiúnta le haghaidh tuilleadh nuashonruithe ar na chéad chéimeanna eile.'
-      cta_button: 'Féach torthaí ar an ardán'
-    event_registration_confirmation:
-      subject: "Tá tú istigh! Tá do chlárú le haghaidh \"%{eventTitle}\" deimhnithe."
-      preheader: "%{firstName}, go raibh maith agat as clárú le haghaidh %{eventTitle}"
-      title: "%{firstName}, go raibh maith agat as clárú le haghaidh"
-      event_details:
-        labels:
-          date: 'Dáta'
-          location: 'Suíomh'
-          online_link: 'Nasc ar líne'
-          description: 'Cur síos'
-          project: 'Tionscadal'
-      cta_button: 'Féach ar an imeacht'
-      cta_add_to_calendar: 'Cuir le do fhéilire'
-    voting_phase_started:
-      subject: '%{organizationName}: Cuireadh tús leis an gcéim vótála do %{projectName}'
-      preheader: 'Cuireadh tús leis an gcéim vótála do %{projectName} ar ardán rannpháirtíochta %{organizationName}'
-      title: '%{projectName}'
-      event_description: 'Tá an tionscadal "%{projectName}" ag iarraidh ort vótáil idir roghanna %{numIdeas}:'
-      cta_message: 'Cliceáil an cnaipe thíos le páirt a ghlacadh'
-      cta_button: 'Téigh chuig an ardán le vótáil'
+    space_moderation_rights_received:
+      cta_button: Bainistigh an spás seo
+      event_description: 'Tá riarthóir ar ardán rannpháirtíochta %{organizationName} díreach tar éis bainisteoir spáis a dhéanamh díot don spás seo a leanas:'
+      no_projects: Níl aon tionscadal ann fós
+      preheader: Tá riarthóir ar ardán rannpháirtíochta %{organizationName} díreach tar éis bainisteoir spáis a dhéanamh díot don spás seo a leanas
+      subject: Rinneadh bainisteoir spáis díot ar ardán %{organizationName}
+      text_manage_space_settings: Is féidir leat teideal agus cur síos an spáis a chur in eagar ionas go dtuigfidh rannpháirtithe agus do chomhbhainisteoirí láithreach cad faoi atá do spás agus conas a bhaineann sé le d'eagraíocht.
+      text_organize_projects_and_folders: Mar bhainisteoir spáis, is féidir leat tionscadail agus fillteáin laistigh de do spás a bhainistiú, lena n-áirítear róil bhainistíochta a shannadh dóibh agus a bhaint díobh.
+      text_oversee_participation: Mar bhainisteoir spáis, tá cearta bainisteora tionscadail agat ar gach tionscadal atá laistigh de do spás, ionas gur féidir leat súil a choinneáil ar ionchur nua agus cabhrú le bainisteoirí tionscadail nuair is gá.
+      title: Rinneadh bainisteoir spáis díot
+      title_manage_space_settings: Bainistigh socruithe spáis
+      title_organize_projects_and_folders: Eagraigh tionscadail agus fillteáin
+      title_oversee_participation: Déan maoirseacht ar rannpháirtíocht
+      title_what_can_you_do_space_manager: Cad is féidir leat a dhéanamh mar bhainisteoir spáis?
+      x_projects: '%{numberOfProjects} tionscadal'
+    status_change_on_idea_you_follow:
+      cta_button: Téigh chuig an ionchur seo
+      event_description: "Nuashonraigh %{organizationName} stádas an ionchuir '%{input_title}' ar a n-ardán rannpháirtíochta digiteach."
+      preheader: Tá stádas nua ag ionchur a leanann tú
+      status_change: "Is é stádas nua an ionchuir seo ná '%{status}'"
+      subject: Tá stádas "%{input_title}" athraithe
+      title: Tá stádas nua ag ionchur a leanann tú
     survey_submitted:
+      cta_button: Íoslódáil do chuid freagraí
+      event_description: Tá d'ionchur le haghaidh "%{projectName}" curtha isteach go rathúil.
+      if_you_would_like_to_review: Más mian leat athbhreithniú a dhéanamh ar d’aighneacht, is féidir leat do chuid freagraí a íoslódáil thíos.
+      preheader: Seo sonraí d’aighneachta.
       subject: '%{organizationName}: Go raibh maith agat as do fhreagra! 🎉'
-      preheader: 'Seo sonraí d’aighneachta.'
-      title: 'Go raibh maith agat as do chuid smaointe a roinnt ar "%{projectName}"!'
-      event_description: 'Tá d''ionchur le haghaidh "%{projectName}" curtha isteach go rathúil.'
-      if_you_would_like_to_review: 'Más mian leat athbhreithniú a dhéanamh ar d’aighneacht, is féidir leat do chuid freagraí a íoslódáil thíos.'
+      title: Go raibh maith agat as do chuid smaointe a roinnt ar "%{projectName}"!
+      you_can_use_this_id: Is féidir leat an t-aitheantóir seo a úsáid chun teagmháil a dhéanamh le riarthóirí an ardáin i gcás gur mian leat go mbainfí d’aighneacht.
       your_submission_has_id: 'Tá an t-aitheantóir uathúil seo a leanas ag do chur isteach:'
-      you_can_use_this_id: 'Is féidir leat an t-aitheantóir seo a úsáid chun teagmháil a dhéanamh le riarthóirí an ardáin i gcás gur mian leat go mbainfí d’aighneacht.'
-      cta_button: 'Íoslódáil do chuid freagraí'
-    admin_labels:
-      recipient_role:
-        admins: 'Chuig riarthóirí'
-        admins_and_managers: 'Chuig riarthóirí agus bainisteoirí'
-        managers: 'Do bhainisteoirí'
-        project_participants: 'Do rannpháirtithe an tionscadail'
-        registered_users: 'Do úsáideoirí cláraithe'
-      recipient_segment:
-        admins: 'Riarthóirí'
-        admins_and_managers: 'Riarthóirí & bainisteoirí'
-        admins_and_managers_assigned_to_the_input: 'Riarthóirí & bainisteoirí atá sannta don ionchur'
-        admins_and_managers_managing_the_project: 'Riarthóirí & bainisteoirí a bhainistíonn an tionscadal'
-        admins_assigned_to_a_proposal: 'Riarthóirí sannta do thogra'
-        all_users: 'Gach úsáideoir'
-        all_users_who_uploaded_proposals: 'Gach úsáideoir a d’uaslódáil moltaí'
-        managers: 'Bainisteoirí'
-        managers_managing_the_project: 'Bainisteoirí a bhainistíonn an tionscadal'
-        new_attendee: 'Úsáideoir nua-chláraithe'
-        project_reviewers: 'Athbhreithneoirí tionscadail agus bainisteoirí fillteán'
-        project_review_requester: 'Úsáideoir a d''iarr athbhreithniú an tionscadail'
-        user_who_commented: 'Úsáideoir a rinne trácht'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Úsáideoir a bhfuil cuireadh tugtha dó togra a chomhurrú'
-        user_who_is_mentioned: 'Úsáideoir a luaitear'
-        user_who_is_receiving_admin_rights: 'Úsáideoir atá ag fáil cearta riarthóra'
-        user_who_is_receiving_folder_moderator_rights: 'Úsáideoir atá ag fáil cearta modhnóra fillteáin'
-        user_who_is_receiving_project_moderator_rights: 'Úsáideoir a bhfuil cearta modhnóra tionscadail á bhfáil aige'
-        user_who_published_the_input: 'Úsáideoir a d’fhoilsigh an ionchur'
-        user_who_published_the_proposal: 'Úsáideoir a d’fhoilsigh an togra'
-        user_who_registers: 'Úsáideoir a chláraíonn'
-        user_who_submitted_the_input: 'An t-úsáideoir a chuir an ionchur isteach'
-        user_who_voted: 'Úsáideoir a vótáil'
-        user_who_was_invited: 'Úsáideoir a tugadh cuireadh dó'
-        user_with_unsubmitted_survey: 'Úsáideoir a thosaigh a suirbhé ach nár chuir isteach é'
-        user_with_unsubmitted_votes: 'Úsáideoir nár chuir a vótaí isteach'
-        users_who_engaged_but_not_voted: 'Úsáideoirí a bhí páirteach sa tionscadal ach nár vótáil'
-        users_who_engaged_with_the_project: 'Úsáideoirí a bhí páirteach sa tionscadal'
-        users_who_follow_the_input: 'Úsáideoirí a leanann an t-ionchur'
-        users_who_follow_the_project: 'Úsáideoirí a leanann an tionscadal'
-        users_who_follow_the_proposal: 'Úsáideoirí a leanann an togra'
-      content_type:
-        comments: 'Tráchtanna'
-        content_moderation: 'Modhnóireacht ábhair'
-        events: 'Imeachtaí'
-        general: 'Ginearálta'
-        inputs: 'Ionchuir'
-        internal_comments: 'Tráchtanna inmheánacha'
-        permissions: 'Ceadanna'
-        projects: 'Tionscadail'
-        proposals: 'Tograí'
-        reactions: 'Imoibrithe'
-        voting: 'Vótáil'
-        surveys: 'Suirbhéanna'
-      trigger:
-        7_days_after_invite_is_sent: '7 lá tar éis an cuireadh a sheoladh'
-        7_days_before_the_project_changes_phase: '7 lá sula n-athraíonn an tionscadal céim'
-        comment_is_deleted: 'Scriosadh an trácht'
-        comment_is_flagged_as_spam: 'Tá an trácht marcáilte mar thurscar'
-        content_gets_flagged_as_innapropiate: 'Déantar bratach ar ábhar mar ábhar neamhoiriúnach'
-        initiative_resubmitted_for_review: 'Togra curtha isteach arís lena athbhreithniú'
-        input_is_assigned: 'Tá ionchur sannta'
-        input_is_flagged_as_spam: 'Tá an ionchur marcáilte mar thurscar'
-        input_is_published: 'Tá an t-ionchur foilsithe'
-        input_is_updated: 'Faigheann ionchur aiseolas oifigiúil'
-        input_status_changes: 'Athruithe stádais ionchuir'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Postáiltear trácht inmheánach ar ionchur sannta don úsáideoir'
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Postáiltear trácht inmheánach ar ionchur i mbainistíocht úsáideoirí tionscadail nó fillteáin'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Postáiltear trácht inmheánach ar ionchur a rinne an t-úsáideoir trácht inmheánach air'
-        internal_comment_is_posted_on_idea_user_moderates: 'Postáiltear trácht inmheánach ar mhodhnóirí ionchuir úsáideora'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Postáiltear trácht inmheánach ar ionchur neamhshannta i dtionscadal neamhbhainistithe'
-        project_review_request: 'D''iarr an modhnóir athbhreithniú tionscadail'
-        project_review_state_change: 'D''fhormheas an t-athbhreithneoir an tionscadal'
-        new_input_awaits_screening: 'Tá ionchur nua ag fanacht le scagadh'
-        new_input_is_published: 'Tá ionchur nua foilsithe'
-        new_proposal_is_posted: 'Tá togra nua foilsithe'
-        project_phase_changes: 'Athruithe céime tionscadail'
-        project_published: 'Tionscadal foilsithe'
-        proposal_gets_reported_as_spam: 'Tuairiscítear an togra mar thurscar'
-        proposal_is_assigned_to_admin: 'Tá an togra sannta don riarthóir'
-        proposal_is_published: 'Tá an togra foilsithe'
-        proposal_is_updated: 'Fuair an togra aiseolas oifigiúil'
-        proposal_is_upvoted_above_threshold: 'Tá an togra vótáilte suas os cionn na tairsí'
-        proposal_status_changes: 'Athruithe ar stádas an togra'
-        registration_to_event: 'Clárú chuig imeacht'
-        survey_1_day_after_draft_saved: '1 lá tar éis don úsáideoir an suirbhé a shábháil i ndréacht go deireanach'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'Glacann an t-úsáideoir le cuireadh chun comhurraíocht a dhéanamh ar thogra'
-        user_comments: 'Tuairimí úsáideoirí'
-        user_comments_on_input: 'Tuairimí úsáideoirí ar ionchur'
-        user_comments_on_proposal: 'Tuairimí úsáideoirí ar an togra'
-        user_is_given_admin_rights: 'Tugtar cearta riarthóra don úsáideoir'
-        user_is_given_folder_moderator_rights: 'Tugtar cearta modhnóra fillteáin don úsáideoir'
-        user_is_given_project_moderator_rights: 'Tugtar cearta modhnóra tionscadail don úsáideoir'
-        user_is_invited_to_platform: 'Tugadh cuireadh don úsáideoir chuig an ardán'
-        user_is_invited_to_cosponsor_a_proposal: 'Tugtar cuireadh don úsáideoir comhurraíocht a dhéanamh ar thogra'
-        user_is_mentioned: 'Luaitear an t-úsáideoir'
-        user_is_mentioned_in_internal_comment: 'Luaitear an t-úsáideoir i dtrácht inmheánach'
-        user_registers_for_the_first_time: 'Cláraíonn úsáideoir den chéad uair'
-        user_replies_to_comment: 'Freagraíonn úsáideoirí ar thrácht'
-        user_replies_to_internal_comment: 'Freagraí úsáideora ar thrácht inmheánach'
-        voting_1_day_after_last_votes: '1 lá tar éis don úsáideoir vótáil go deireanach'
-        voting_2_days_before_phase_closes: '2 lá roimh dheireadh na céime vótála'
-        voting_basket_submitted: 'Tá vótaí curtha isteach'
-        voting_phase_ended: 'Críochnaíodh an chéim vótála'
+    threshold_reached_for_admin:
+      cta_button: Tabhair an togra seo chuig na chéad chéimeanna eile
+      preheader: Bí cinnte na chéad chéimeanna eile a ghlacadh
+      subject: Shroich "%{input_title}" an tairseach vótála
+      title: Shroich togra an tairseach vótála!
+    user_digest:
+      commented: '%{authorFirstName} a dúirt:'
+      cta_button: Téigh go dtí an t-ardán
+      event_description: Seo achoimre ar a tharla ar ardán rannpháirtíochta %{organizationName}.
+      multiple_notifications: fógraí %{notifCount}
+      no_notifications: Gan aon fhógraí
+      no_unread_notifications: Níl aon fhógraí neamhléite agat.
+      one_notification: 1 fhógra
+      preheader: Forbhreathnú seachtainiúil ar %{organizationName}
+      subject: An tseachtain seo ar ardán rannpháirtíochta %{organizationName}
+      successful_proposals_text: Le seachtain anuas, tá dóthain tacaíochta faighte acu seo chun bogadh ar aghaidh go dtí an chéad chéim eile.
+      successful_proposals_title: Shroich an tairseach
+      title: Faigh amach cad a tharla an tseachtain seo caite
+      title_no_activity_past_week: Gan aon ghníomhaíocht le seachtain anuas
+      today_by_author: Inniu le %{author}
+      trending_text: Suim agat sa mhéid atá ag tarlú ar an ardán? Seo iad na trí ranníocaíocht is mó a bhfuil tóir orthu agus a bhfuil daoine ag rá fúthu.
+      trending_title: Ag treochtáil
+      unread_notifications: Tá fógraí neamhléite agat. Tabhair cuairt ar an ardán le fáil amach cad atá ag tarlú!
+      x_days_ago_by_author: '%{x} lá ó shin ag %{author}'
+      yesterday_by_author: Inné le %{author}
+    voting_basket_not_submitted:
+      cta_button: Féach ar na roghanna agus vótáil
+      cta_message: Cliceáil an cnaipe thíos chun do roghanna roghnaithe a chur isteach
+      event_description: Roghnaigh tú cúpla rogha le haghaidh %{contextTitle} ach níor chuir tú isteach do rogha.
+      preheader: Níor chuir tú do vótaí isteach ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: Níor chuir tú do vótaí isteach'
+      title: Níor chuir tú isteach do vótaí
+    voting_basket_submitted:
+      cta_button: Féach vótaí a cuireadh isteach
+      cta_message: Cliceáil an cnaipe thíos le páirt a ghlacadh
+      event_description: Go raibh maith agat as páirt a ghlacadh. Tá do vótaí taifeadta. Tabhair cuairt ar ardán %{organizationName} chun do vótaí a fheiceáil agus a bhainistiú.
+      preheader: Vótáil tú go rathúil ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: Vótáil tú go rathúil'
+      title: D’éirigh leat vótáil
+    voting_last_chance:
+      cta_button: Vótaigh
+      event_description: <p>Beidh deireadh leis an gcéim vótála don tionscadal %{projectTitle} amárach, ag meán oíche.</p><p>Tá an t-am ag rith amach, agus thugamar faoi deara nár chaith tú do vóta fós! Gníomhaigh anois trí chliceáil ar an gcnaipe thíos chun páirt a ghlacadh.</p><p>Trí sin a dhéanamh, gheobhaidh tú rochtain ar réimse roghanna agus beidh an deis agat do thuairim a thabhairt, rud atá ríthábhachtach agus todhchaí an tionscadail seo á cinneadh.</p>
+      preheader: An deis dheireanach chun vótáil ar son %{phaseTitle} ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: An deis dheireanach chun vótáil ar son %{phaseTitle}'
+      title: An deis dheireanach chun vótáil ar son %{phaseTitle}
+    voting_phase_started:
+      cta_button: Téigh chuig an ardán le vótáil
+      cta_message: Cliceáil an cnaipe thíos le páirt a ghlacadh
+      event_description: 'Tá an tionscadal "%{projectName}" ag iarraidh ort vótáil idir roghanna %{numIdeas}:'
+      preheader: Cuireadh tús leis an gcéim vótála do %{projectName} ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: Cuireadh tús leis an gcéim vótála do %{projectName}'
+      title: '%{projectName}'
+    voting_results:
+      body_1: Tá na torthaí istigh!
+      body_2: Tá torthaí an vóta %{phaseTitle} san ardán %{organizationName} foilsithe!
+      body_3: Molaimid duit na torthaí a athbhreithniú agus fanacht tiúnta le haghaidh tuilleadh nuashonruithe ar na chéad chéimeanna eile.
+      cta_button: Féach torthaí ar an ardán
+      preheader: Nochtadh torthaí vóta %{phaseTitle} ar ardán rannpháirtíochta %{organizationName}
+      subject: '%{organizationName}: %{phaseTitle} torthaí vóta nochta!'
+      title: Nochtadh torthaí vótála %{phaseTitle}!
+    welcome:
+      cta_button: Faigh amach an t-ardán
+      event_description: Comhghairdeas, tá tú cláraithe go rathúil ar ardán rannpháirtíochta %{organizationName}. Is féidir leat an t-ardán a aimsiú anois agus do ghlór a chur in iúl. Is féidir leat pictiúr próifíle agus cur síos gairid a chur leis freisin chun a chur in iúl do dhaoine eile cé tú féin.
+      preheader: Seo an méid is féidir leat a dhéanamh ar ardán %{organizationName}
+      subject: Fáilte go dtí ardán %{organizationName}
+      title: Fáilte!
+    your_input_in_screening:
+      event_description: Beidh "%{input_title}" le feiceáil ag daoine eile a luaithe a bheidh sé athbhreithnithe agus ceadaithe.
+      main_header:
+        comment: Tá do thrácht i "%{prescreening_status_title}"
+        contribution: Tá do ranníocaíocht i "%{prescreening_status_title}"
+        idea: Tá do smaoineamh i "%{prescreening_status_title}"
+        initiative: Tá do thionscnamh i "%{prescreening_status_title}"
+        issue: Tá do cheist i "%{prescreening_status_title}"
+        option: Tá do rogha i "%{prescreening_status_title}"
+        petition: Tá d’achainí i "%{prescreening_status_title}"
+        post: Tá do phost i "%{prescreening_status_title}"
+        project: Tá do thionscadal i "%{prescreening_status_title}"
+        proposal: Tá do thogra i "%{prescreening_status_title}"
+        question: Tá do cheist i "%{prescreening_status_title}"
+        response: Tá do fhreagra i "%{prescreening_status_title}"
+        story: Tá do scéal i "%{prescreening_status_title}"
+        suggestion: Tá do mholadh i "%{prescreening_status_title}"
+        topic: Tá do thopaic i "%{prescreening_status_title}"
+      preheader: Tá sé i %{prescreening_status_title} faoi láthair
+      subject: Tá "%{input_title}" beagnach foilsithe
