@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import isSameDay from 'date-fns/isSameDay';
 import { formatInTimeZone, fromZonedTime, toZonedTime } from 'date-fns-tz';
-// import moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import styled from 'styled-components';
 
 import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
@@ -52,11 +52,15 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = toZonedTime(
-        new Date(campaign.data.attributes.scheduled_at),
-        timeZone
+      const m = moment(campaign.data.attributes.scheduled_at).tz(timeZone);
+      // We don't use m.toDate() because it changes the time to the browser timezone.
+      const scheduledDate = new Date(
+        m.year(),
+        m.month(),
+        m.date(),
+        m.hour(),
+        m.minute()
       );
-      console.log('Scheduled date in tenant timezone:', scheduledDate);
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -65,7 +69,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
 
-    // if the selected date is today, set the default time to the next hour in tenant timezone
+    // if the selected date is today, disable past hours & auto select the next hour as the default time to start with
     if (isSameDay(date, tenantTimeNow)) {
       setSelectedTime(getNextHourTime(tenantTimeNow));
     }

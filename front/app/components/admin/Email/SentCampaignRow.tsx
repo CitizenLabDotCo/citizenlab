@@ -7,9 +7,10 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 import { RouteType } from 'routes';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -39,6 +40,8 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
       : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
   return (
     <Row id={campaign.id}>
@@ -48,9 +51,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
           <Text m="0px" fontSize="s">
-            <FormattedDate value={campaign.attributes.updated_at} />
-            &nbsp;
-            <FormattedTime value={campaign.attributes.updated_at} />
+            <FormattedDate
+              value={campaign.attributes.updated_at}
+              timeZone={timeZone}
+              dateStyle="short"
+              timeStyle="short"
+            />
           </Text>
           <StatusLabel
             backgroundColor={colors.success}

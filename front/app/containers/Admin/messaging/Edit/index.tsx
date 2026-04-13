@@ -10,7 +10,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -111,9 +111,12 @@ const Edit = ({ campaignType }: EditProps) => {
                 text={<FormattedMessage {...messages.scheduled} />}
               />
               <Text fontSize="base" whiteSpace="nowrap">
-                <FormattedDate value={campaign.data.attributes.scheduled_at} />
-                &nbsp;
-                <FormattedTime value={campaign.data.attributes.scheduled_at} />
+                <FormattedDate
+                  value={campaign.data.attributes.scheduled_at}
+                  timeZone={timeZone}
+                  dateStyle="short"
+                  timeStyle="short"
+                />
               </Text>
               <Box mx="4px" background="yellow">
                 <Text fontSize="base" whiteSpace="nowrap">

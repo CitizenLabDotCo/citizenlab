@@ -10,7 +10,7 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -36,7 +36,6 @@ import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { formatDateInTimezone } from 'utils/dateUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -141,7 +140,6 @@ const Show = () => {
     name: 'email_scheduling',
   });
   const timeZone = tenant?.data.attributes.settings.core.timezone;
-  console.log('scheduled_at', campaign?.data.attributes.scheduled_at);
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
@@ -177,20 +175,11 @@ const Show = () => {
                   <Text fontSize="base" whiteSpace="nowrap">
                     <FormattedDate
                       value={campaign.data.attributes.scheduled_at}
-                    />
-                    &nbsp;
-                    <FormattedTime
-                      value={campaign.data.attributes.scheduled_at}
+                      timeZone={timeZone}
+                      dateStyle="short"
+                      timeStyle="short"
                     />
                   </Text>
-                  <Box mx="4px" background="yellow">
-                    <Text fontSize="base" whiteSpace="nowrap">
-                      {formatDateInTimezone({
-                        date: campaign.data.attributes.scheduled_at,
-                        timeZone,
-                      })}
-                    </Text>
-                  </Box>
                 </>
               )}
             </Box>
