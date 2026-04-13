@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Σε απόκρυψη",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Καταχωρημένο",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Φόρτωση περισσότερων…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Διαχειριστής",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} μήνες} one {{months} μήνας} other {{months} μήνες}} απομένουν",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} μήνες} one {{months} μήνας} other {{months} μήνες}} για την έναρξη",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Επόμενη φάση:",

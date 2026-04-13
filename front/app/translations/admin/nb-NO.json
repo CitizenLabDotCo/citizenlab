@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Skjult",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Oppført",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Laster inn mer…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Leder",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ~ måneder} one {{months} ~ måned} other {{months} måneder}} venstre",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} ~ måneder} one {{months} ~ måned} other {{months} måneder}} til å begynne med",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Neste fase:",

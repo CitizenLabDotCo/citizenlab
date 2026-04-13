@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "مختفي",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "مُدرج",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "جاري تحميل المزيد…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "مدير",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} أشهر} one {{months} شهر} other {{months} أشهر}} متبقية",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} أشهر} one {{months} شهر} other {{months} أشهر}} للبدء",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "المرحلة التالية:",

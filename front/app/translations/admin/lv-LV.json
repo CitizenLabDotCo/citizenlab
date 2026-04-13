@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Slēptais",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Sarakstā",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Iekraujot vairāk…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Vadītājs",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} mēneši} one {{months} mēnesis} other {~{months} mēneši}} kreisi",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mēneši} one {{months} mēnesis} other {~{months} mēneši}} sākt",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nākamais posms:",

@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Skriven",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Navedeno",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Učitavanje više…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Menadžer",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} mjeseci} one {{months} mjesec} other {{months} mjeseci}} preostalo",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mjeseci} one {{months} mjesec} other {{months} mjeseci}} za početak",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Sljedeća faza:",

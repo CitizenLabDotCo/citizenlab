@@ -25,10 +25,16 @@ export type UserParams = {
 interface Props {
   projectId?: string;
   folderId?: string;
+  spaceId?: string;
   onAddModerator: (params: UserParams) => Promise<void>;
 }
 
-const AddModerator = ({ projectId, folderId, onAddModerator }: Props) => {
+const AddModerator = ({
+  projectId,
+  folderId,
+  spaceId,
+  onAddModerator,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [showSeatLimitModal, setShowSeatLimitModal] =
     useState<UserParams | null>(null);
@@ -42,6 +48,7 @@ const AddModerator = ({ projectId, folderId, onAddModerator }: Props) => {
       <ModeratorUserSearch
         projectId={projectId}
         folderId={folderId}
+        spaceId={spaceId}
         onAddModerator={async (user_id: string) => {
           const shouldOpenModal = await checkIfUserExceedsSeats({
             user_id,
@@ -80,7 +87,7 @@ const AddModerator = ({ projectId, folderId, onAddModerator }: Props) => {
         <Text
           color="primary"
           p="0px"
-          mb="32px"
+          mb="20px"
           style={{ fontWeight: '500', fontSize: '18px' }}
         >
           {formatMessage(messages.whoAreTheManagers)}

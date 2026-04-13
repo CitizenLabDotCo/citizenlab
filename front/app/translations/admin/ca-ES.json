@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Ocult",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Llistat",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Carregant més…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Gestor",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "Falten {months, plural, no {{months} mesos} one {{months} mes} other {{months} mesos}}",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mesos} one {{months} mes} other {{months} mesos}} per començar",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Fase següent:",

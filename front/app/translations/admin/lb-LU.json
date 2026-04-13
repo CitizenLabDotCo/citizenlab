@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Verstoppt",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Opgelëscht",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Méi lueden…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Manager",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "nach {months, plural, no {{months} Méint} one {{months} Mount} other {{months} Méint}}",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} Méint} one {{months} Mount} other {{months} Méint}} bis zum Start",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nächst Phas:",

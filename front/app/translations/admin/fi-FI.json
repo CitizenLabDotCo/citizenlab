@@ -1299,7 +1299,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.hidden": "Piilotettu",
   "app.containers.Admin.projects.all.new.Projects.Table.listed": "Listattu",
   "app.containers.Admin.projects.all.new.Projects.Table.loadingMore": "Ladataan lisää…",
-  "app.containers.Admin.projects.all.new.Projects.Table.manager": "Johtaja",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} kuukautta} one {{months} kuukausi} other {{months} kuukautta}} jäljellä",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} kuukautta} one {{months} kuukausi} other {{months} kuukautta}} aloittaa",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Seuraava vaihe:",
