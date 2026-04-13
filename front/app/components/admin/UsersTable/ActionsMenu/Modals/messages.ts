@@ -41,4 +41,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.spaces',
     defaultMessage: 'Spaces',
   },
+  alreadyManager: {
+    id: 'app.containers.Admin.Users.alreadyManager',
+    defaultMessage: 'Already manager',
+  },
 });

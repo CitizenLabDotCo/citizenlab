@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
+import { SpaceData } from 'api/spaces/types';
 import useSpaces from 'api/spaces/useSpaces';
 import { IUser, IUserData } from 'api/users/types';
 
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -19,6 +20,37 @@ interface Props {
   onClose: () => void;
 }
 
+const getOptions = (
+  localize: Localize,
+  alreadyModeratorString: string,
+  spaces?: SpaceData[],
+  roles?: IUserData['attributes']['roles']
+) => {
+  if (!spaces || !roles) return undefined;
+
+  const spacesUserModerates = new Set(
+    roles
+      .filter((role) => role.type === 'space_moderator')
+      .map((role) => role.space_id)
+  );
+
+  const options = spaces.map((space) => {
+    const userIsModerator = spacesUserModerates.has(space.id);
+    const spaceName = localize(space.attributes.title_multiloc);
+    const label = userIsModerator
+      ? `${spaceName} (${alreadyModeratorString})`
+      : spaceName;
+
+    return {
+      value: space.id,
+      label,
+      disabled: userIsModerator,
+    };
+  });
+
+  return options;
+};
+
 const Spaces = ({ user, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -28,11 +60,12 @@ const Spaces = ({ user, onClose }: Props) => {
   const [selectedSpaces, setSelectedSpaces] = useState<string[]>([]);
 
   const options =
-    spaces?.data.map((space) => ({
-      value: space.id,
-      label: localize(space.attributes.title_multiloc),
-    })) ?? [];
-
+    getOptions(
+      localize,
+      formatMessage(messages.alreadyManager),
+      spaces?.data,
+      user.attributes.roles
+    ) || [];
   const assignSMs = async () => {
     const promises: Promise<IUser>[] = [];
 

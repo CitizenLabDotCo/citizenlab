@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import { IProjectData } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 import { IUser, IUserData } from 'api/users/types';
 
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -19,6 +20,37 @@ interface Props {
   onClose: () => void;
 }
 
+const getOptions = (
+  localize: Localize,
+  alreadyModeratorString: string,
+  projects?: IProjectData[],
+  roles?: IUserData['attributes']['roles']
+) => {
+  if (!projects || !roles) return undefined;
+
+  const projectsUserModerates = new Set(
+    roles
+      .filter((role) => role.type === 'project_moderator')
+      .map((role) => role.project_id)
+  );
+
+  const options = projects.map((project) => {
+    const userIsModerator = projectsUserModerates.has(project.id);
+    const projectName = localize(project.attributes.title_multiloc);
+    const label = userIsModerator
+      ? `${projectName} (${alreadyModeratorString})`
+      : projectName;
+
+    return {
+      value: project.id,
+      label,
+      disabled: userIsModerator,
+    };
+  });
+
+  return options;
+};
+
 const Projects = ({ user, onClose }: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { formatMessage } = useIntl();
@@ -30,10 +62,12 @@ const Projects = ({ user, onClose }: Props) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const options =
-    projects?.data.map((project) => ({
-      value: project.id,
-      label: localize(project.attributes.title_multiloc),
-    })) ?? [];
+    getOptions(
+      localize,
+      formatMessage(messages.alreadyManager),
+      projects?.data,
+      user.attributes.roles
+    ) || [];
 
   const assignPMs = async () => {
     const promises: Promise<IUser>[] = [];
