@@ -534,7 +534,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :anonymous)
+    simple_attributes.push(:publication_status, :project_id, :anonymous, { weglot_data: %i[locale body] })
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end

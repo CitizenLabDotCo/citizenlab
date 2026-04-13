@@ -62,7 +62,7 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
           with_text(/Wiki Roulette/)
         end
         with_tag 'p' do
-          with_text(/14 days ago/)
+          with_text(/1[34] days ago/) # Depending on the exact time the test is run, it can be either 13 or 14 days ago
           with_text(/by Bob/)
         end
       end

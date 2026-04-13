@@ -20,6 +20,7 @@
 #  children_count     :integer          default(0), not null
 #  author_hash        :string
 #  anonymous          :boolean          default(FALSE), not null
+#  weglot_data        :jsonb            not null
 #
 # Indexes
 #
