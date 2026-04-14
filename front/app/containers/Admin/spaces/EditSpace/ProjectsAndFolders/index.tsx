@@ -51,7 +51,7 @@ const ProjectsAndFolders = () => {
       </Title>
       {nodesInSpace.length > 0 ? (
         <TreeView
-          nodes={treeView.data.attributes.nodes}
+          nodes={nodesInSpace}
           lockedProjectTooltip={
             userIsSpaceModerator ? undefined : messages.lockedProject
           }
