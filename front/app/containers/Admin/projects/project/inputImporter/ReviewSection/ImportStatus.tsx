@@ -58,7 +58,7 @@ const ImportStatus = ({ hasErrors, progress, total }: Props) => {
       </Text>
       <ProgressBar
         progress={progress / total}
-        color={theme.colors.tenantPrimary}
+        color={theme.colors.primary}
         bgColor={colors.grey200}
       />
     </Container>
