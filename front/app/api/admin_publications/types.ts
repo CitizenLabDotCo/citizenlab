@@ -82,7 +82,7 @@ export interface IAdminPublication {
   data: IAdminPublicationData;
 }
 
-type SpaceNode = {
+export type SpaceNode = {
   id: string;
   type: 'space';
   title_multiloc: Multiloc;
