@@ -26,7 +26,7 @@ module EmailCampaigns
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
       # sort campaigns by status and then by date within each status:
-      # 1- Draft 
+      # 1- Draft
       # 2- Scheduled (from nearest to farthest)
       # 3- Sent (from most recent to oldest)
       sorted_campaigns = @campaigns.to_a.sort_by do |campaign|
