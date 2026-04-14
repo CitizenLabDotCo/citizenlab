@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Inga objekt har tilldelats den här användaren.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projekt som användaren hanterar",
   "app.containers.Admin.users.UserAssignedItems.remove": "Ta bort",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Den här användaren kan hantera följande mappar, inklusive projekten i dem:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "totalt antal användare på plattformen",
   "app.containers.AdminPage.DashboardPage._blank": "okänd",
   "app.containers.AdminPage.DashboardPage.allGroups": "Alla grupper",

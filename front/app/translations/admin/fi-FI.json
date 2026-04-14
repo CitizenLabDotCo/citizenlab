@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Tälle käyttäjälle ei ole määritetty kohteita.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Käyttäjän hallinnoimat projektit",
   "app.containers.Admin.users.UserAssignedItems.remove": "Poistaa",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Tämä käyttäjä voi hallita seuraavia kansioita, mukaan lukien niiden sisältämiä projekteja:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "alustan käyttäjiä yhteensä",
   "app.containers.AdminPage.DashboardPage._blank": "tuntematon",
   "app.containers.AdminPage.DashboardPage.allGroups": "Kaikki ryhmät",

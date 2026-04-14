@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Šiam naudotojui nepriskirta jokių elementų.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Naudotojo valdomi projektai",
   "app.containers.Admin.users.UserAssignedItems.remove": "Pašalinti",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Šis naudotojas gali tvarkyti šiuos aplankus ir juose esančius projektus:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "bendras platformos naudotojų skaičius",
   "app.containers.AdminPage.DashboardPage._blank": "nežinomas",
   "app.containers.AdminPage.DashboardPage.allGroups": "Visos grupės",

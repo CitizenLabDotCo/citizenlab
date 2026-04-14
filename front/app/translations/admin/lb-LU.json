@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Dësem Benotzer si keng Elementer zougewisen.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projeten, déi de Benotzer geréiert",
   "app.containers.Admin.users.UserAssignedItems.remove": "Ewechhuelen",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Dëse Benotzer kann déi folgend Ordneren an d'Projeten doran verwalten:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total users on the platform",
   "app.containers.AdminPage.DashboardPage._blank": "unknown",
   "app.containers.AdminPage.DashboardPage.allGroups": "All Groups",

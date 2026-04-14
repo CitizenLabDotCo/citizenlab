@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Atuisumut uunga suliassanik tunniussisoqarsimanngilaq.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Suliniutit atuisup aqutai",
   "app.containers.Admin.users.UserAssignedItems.remove": "Peeruk",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Atuisup uuma toqqorsiviit tulliuttut, pilersaarutillu taakkunaniittut, aqussinnaavai:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "quppernermi atuisut amerlassusaat",
   "app.containers.AdminPage.DashboardPage._blank": "ilisimaneqanngilaq",
   "app.containers.AdminPage.DashboardPage.allGroups": "Gruppit tamarmik",

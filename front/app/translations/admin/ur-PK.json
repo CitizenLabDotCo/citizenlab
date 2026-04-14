@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "اس صارف کو کوئی آئٹم تفویض نہیں کیا گیا ہے۔",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "پروجیکٹس صارف کا انتظام کرتا ہے۔",
   "app.containers.Admin.users.UserAssignedItems.remove": "ہٹا دیں۔",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "یہ صارف درج ذیل فولڈرز کا نظم کر سکتا ہے، بشمول ان کے اندر کے پروجیکٹس:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "پلیٹ فارم پر کل صارفین",
   "app.containers.AdminPage.DashboardPage._blank": "نامعلوم",
   "app.containers.AdminPage.DashboardPage.allGroups": "تمام گروپس",

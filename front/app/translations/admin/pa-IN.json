@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਕੋਈ ਆਈਟਮ ਨਿਰਧਾਰਤ ਨਹੀਂ ਕੀਤੀ ਗਈ।",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "ਪ੍ਰੋਜੈਕਟ ਉਪਭੋਗਤਾ ਪ੍ਰਬੰਧਿਤ ਕਰਦੇ ਹਨ",
   "app.containers.Admin.users.UserAssignedItems.remove": "ਹਟਾਓ",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "ਇਹ ਵਰਤੋਂਕਾਰ ਹੇਠਾਂ ਦਿੱਤੇ ਫੋਲਡਰਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ ਉਹਨਾਂ ਦੇ ਅੰਦਰਲੇ ਪ੍ਰੋਜੈਕਟ ਵੀ ਸ਼ਾਮਲ ਹਨ:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "ਪਲੇਟਫਾਰਮ 'ਤੇ ਕੁੱਲ ਉਪਭੋਗਤਾ",
   "app.containers.AdminPage.DashboardPage._blank": "ਅਗਿਆਤ",
   "app.containers.AdminPage.DashboardPage.allGroups": "ਸਾਰੇ ਸਮੂਹ",
