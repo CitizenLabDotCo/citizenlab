@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Aramak için yazın",
   "app.containers.Admin.Users.selectProjects": "Projeleri seçin",
   "app.containers.Admin.Users.selectSpaces": "Alanları seçin",
-  "app.containers.Admin.Users.selectPlaceholder": "Aramak için yazın",
   "app.containers.Admin.Users.setAsAdmin": "Yönetici olarak ayarla",
   "app.containers.Admin.Users.setAsNormalUser": "Normal kullanıcı olarak ayarla",
   "app.containers.Admin.Users.setUserAsManager": "{name} kişisini yönetici olarak ata",

@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Tippen fir ze sichen",
   "app.containers.Admin.Users.selectProjects": "Projeten auswielen",
   "app.containers.Admin.Users.selectSpaces": "Beräicher auswielen",
-  "app.containers.Admin.Users.selectPlaceholder": "Tippen fir ze sichen",
   "app.containers.Admin.Users.setAsAdmin": "Als Admin festleeën",
   "app.containers.Admin.Users.setAsNormalUser": "Als normale Benotzer festleeën",
   "app.containers.Admin.Users.setUserAsManager": "{name} als Manager zouweisen",

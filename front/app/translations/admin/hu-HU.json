@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Gépeljen a kereséshez",
   "app.containers.Admin.Users.selectProjects": "Projektek kiválasztása",
   "app.containers.Admin.Users.selectSpaces": "Terek kiválasztása",
-  "app.containers.Admin.Users.selectPlaceholder": "Gépeljen a kereséshez",
   "app.containers.Admin.Users.setAsAdmin": "Beállítás adminisztrátorként",
   "app.containers.Admin.Users.setAsNormalUser": "Beállítás normál felhasználóként",
   "app.containers.Admin.Users.setUserAsManager": "{name} kinevezése kezelőnek",
