@@ -57,6 +57,31 @@ module GVPlugins
       { wasm_url: plugin[:wasm_url], handler: route[:handler] }
     end
 
+    def event_handlers
+      plugin_urls = AppConfiguration.instance.settings.dig('plugins', 'active_plugins') || []
+
+      plugin_urls.flat_map do |plugin|
+        manifest = fetch_manifest(plugin['url'])
+        next [] unless manifest&.dig('back', 'events')
+
+        wasm_url = resolve_url(plugin['url'], manifest['back']['entry'])
+        manifest['back']['events'].map do |event|
+          { event_name: event['name'], wasm_url: wasm_url, handler: event['handler'] }
+        end
+      end
+    end
+
+    def find_event_handlers(event_name)
+      event_handlers.select { |h| h[:event_name] == event_name }
+    end
+
+    # Cheap check used to skip plugin work when no plugins could possibly run.
+    def plugins_configured?
+      settings = AppConfiguration.instance.settings
+      settings.dig('plugins', 'enabled') &&
+        (settings.dig('plugins', 'active_plugins') || []).any?
+    end
+
     private
 
     def fetch_manifest(manifest_url)
