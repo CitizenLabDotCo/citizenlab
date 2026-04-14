@@ -301,6 +301,66 @@ describe XlsxService do
       expect(xlsx_hash_array[0]['Duplicate field']).to eq 'Duplicate field value 1'
       expect(xlsx_hash_array[0]['Duplicate field__2']).to eq 'Duplicate field value 2'
     end
+
+    context 'with rich_text_columns' do
+      let(:rich_xlsx) do
+        package = Axlsx::Package.new
+        package.workbook.add_worksheet do |sheet|
+          sheet.add_row %w[Description Other]
+          description_rich = Axlsx::RichText.new
+          description_rich.add_run 'hello ', b: true
+          description_rich.add_run 'world', i: true
+          other_rich = Axlsx::RichText.new
+          other_rich.add_run 'stay ', b: true
+          other_rich.add_run 'plain'
+          sheet.add_row [description_rich, other_rich]
+        end
+        package.to_stream.string
+      end
+
+      it 'returns HTML for cells in rich_text_columns when runs are present' do
+        result = service.xlsx_to_hash_array(rich_xlsx, rich_text_columns: ['Description'])
+        expect(result.first['Description']).to eq '<strong>hello </strong><em>world</em>'
+      end
+
+      it 'leaves columns outside rich_text_columns as plain text even if formatted' do
+        result = service.xlsx_to_hash_array(rich_xlsx, rich_text_columns: ['Description'])
+        expect(result.first['Other']).to eq 'stay plain'
+      end
+
+      it 'returns plain text when rich_text_columns is not passed (backwards compatible)' do
+        result = service.xlsx_to_hash_array(rich_xlsx)
+        expect(result.first['Description']).to eq 'hello world'
+        expect(result.first['Other']).to eq 'stay plain'
+      end
+
+      it 'falls back to plain text when the cell already contains HTML tags' do
+        package = Axlsx::Package.new
+        package.workbook.add_worksheet do |sheet|
+          sheet.add_row ['Description']
+          rich = Axlsx::RichText.new
+          rich.add_run '<p>already ', b: true
+          rich.add_run 'html</p>', i: true
+          sheet.add_row [rich]
+        end
+        xlsx = package.to_stream.string
+        result = service.xlsx_to_hash_array(xlsx, rich_text_columns: ['Description'])
+        expect(result.first['Description']).to eq '<p>already html</p>'
+      end
+
+      it 'escapes HTML entities in the rich-text source' do
+        package = Axlsx::Package.new
+        package.workbook.add_worksheet do |sheet|
+          sheet.add_row ['Description']
+          rich = Axlsx::RichText.new
+          rich.add_run 'A & B', b: true
+          sheet.add_row [rich]
+        end
+        xlsx = package.to_stream.string
+        result = service.xlsx_to_hash_array(xlsx, rich_text_columns: ['Description'])
+        expect(result.first['Description']).to eq '<strong>A &amp; B</strong>'
+      end
+    end
   end
 
   describe '#xlsx_from_rows' do

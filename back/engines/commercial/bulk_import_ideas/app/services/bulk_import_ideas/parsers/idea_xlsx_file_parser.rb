@@ -128,7 +128,18 @@ module BulkImportIdeas::Parsers
 
     def parse_xlsx_ideas(file)
       # Empty cells are included so we get all form fields per idea - this is important for 'other' fields that have the same header
-      XlsxService.new.xlsx_to_hash_array(file.file.read, include_empty_cells: true)
+      XlsxService.new.xlsx_to_hash_array(
+        file.file.read,
+        include_empty_cells: true,
+        rich_text_columns: rich_text_column_headers
+      )
+    end
+
+    # The description cell can contain formatting (bold/italic/etc) that we want
+    # to preserve as HTML — body_multiloc stores HTML downstream.
+    def rich_text_column_headers
+      description_field = template_data[:fields].find { |f| f[:code] == 'body_multiloc' }
+      description_field ? [description_field[:name]] : []
     end
 
     def template_data
