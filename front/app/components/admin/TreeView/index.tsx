@@ -12,8 +12,8 @@ import Project from './Project';
 interface Props {
   nodes: TreeNode[];
   lockedProjectTooltip?: MessageDescriptor;
-  removeButtonMessage: MessageDescriptor;
-  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  removeButtonMessage?: MessageDescriptor;
+  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const TreeView = ({

@@ -43,7 +43,7 @@ describe SideFxUserService do
         .to have_enqueued_job(TrackUserJob).with(user)
     end
 
-    it 'logs a UpdateMemberCountJob' do
+    it 'logs an UpdateMemberCountJob' do
       expect { service.after_create(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
     end
 
@@ -61,6 +61,17 @@ describe SideFxUserService do
       end.to change(Follower, :count).from(0).to(1)
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly area.id
+    end
+
+    context 'when user is an invitee' do
+      before { SettingsService.new.activate_feature!('user_confirmation') }
+
+      let(:invitee) { create(:user_with_confirmation, invite_status: 'pending') }
+
+      it 'does not send a confirmation code email' do
+        expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
+        service.after_create(invitee, current_user)
+      end
     end
 
     describe 'claim_tokens' do
@@ -112,10 +123,90 @@ describe SideFxUserService do
         .to have_enqueued_job(LogActivityJob).with(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
 
-    it "logs a 'admin_rights_given' action job when user has been made admin" do
-      user.update(roles: [{ 'type' => 'admin' }])
+    it "logs an 'admin_rights_received' action job when user has been made admin" do
+      user.update!(roles: [{ 'type' => 'admin' }])
       expect { service.after_update(user, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_given', current_user, user.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_received', current_user, anything, payload: {})
+    end
+
+    it "logs an 'admin_rights_removed' action job when user has been removed from admin" do
+      user.update!(roles: [{ 'type' => 'admin' }])
+      user.update!(roles: [])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_removed', current_user, anything, payload: {})
+    end
+
+    it "logs a 'space_moderation_rights_received' action job when user has been made space moderator" do
+      space = create(:space)
+      user.update!(roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_received', current_user, anything, payload: { space_id: space.id })
+    end
+
+    it "logs a 'space_moderation_rights_removed' action job when user has been removed from space moderator" do
+      space = create(:space)
+      user.update!(roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      user.update!(roles: [])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'space_moderation_rights_removed', current_user, anything, payload: { space_id: space.id })
+    end
+
+    it "logs a 'project_folder_moderation_rights_received' action job when user has been made project folder moderator" do
+      folder = create(:project_folder)
+      user.update!(roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_received', current_user, anything, payload: { project_folder_id: folder.id })
+    end
+
+    it "logs a 'project_folder_moderation_rights_removed' action job when user has been removed from project folder moderator" do
+      folder = create(:project_folder)
+      user.update!(roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
+      user.update!(roles: [])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_folder_moderation_rights_removed', current_user, anything, payload: { project_folder_id: folder.id })
+    end
+
+    it "logs a 'project_moderation_rights_received' action job when user has been made project moderator" do
+      project = create(:project)
+      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_received', current_user, anything, payload: { project_id: project.id })
+    end
+
+    it "logs a 'project_moderation_rights_removed' action job when user has been removed from project moderator" do
+      project = create(:project)
+      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
+      user.update!(roles: [])
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'project_moderation_rights_removed', current_user, anything, payload: { project_id: project.id })
+    end
+
+    it 'logs the appropriate action job when multiple user roles are removed' do
+      space = create(:space)
+      folder = create(:project_folder)
+      project_a = create(:project)
+      project_b = create(:project)
+      user.update!(roles: [
+        { 'type' => 'admin' },
+        { 'type' => 'space_moderator', 'space_id' => space.id },
+        { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id },
+        { 'type' => 'project_moderator', 'project_id' => project_a.id },
+        { 'type' => 'project_moderator', 'project_id' => project_b.id }
+      ])
+      user.update!(roles: [
+        { 'type' => 'admin' },
+        { 'type' => 'project_moderator', 'project_id' => project_b.id }
+      ])
+
+      expect { service.after_update(user, current_user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(user, 'space_moderation_rights_removed', current_user, anything, payload: { space_id: space.id })
+        .and have_enqueued_job(LogActivityJob)
+        .with(user, 'project_folder_moderation_rights_removed', current_user, anything, payload: { project_folder_id: folder.id })
+        .and have_enqueued_job(LogActivityJob)
+        .with(user, 'project_moderation_rights_removed', current_user, anything, payload: { project_id: project_a.id })
+
+      expect(user.reload.roles).to eq([{ 'type' => 'admin' }, { 'type' => 'project_moderator', 'project_id' => project_b.id }])
     end
 
     it 'logs a UpdateMemberCountJob' do
@@ -143,7 +234,7 @@ describe SideFxUserService do
       end
     end
 
-    it 'enqueues a UpdateMemberCountJob by default' do
+    it 'enqueues an UpdateMemberCountJob by default' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
     end
 

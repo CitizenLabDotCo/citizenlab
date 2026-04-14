@@ -29,38 +29,37 @@ module IdFedera
       custom_field_values = {}
 
       # Handle birthyear
-      birthdate = auth.extra.raw_info['dateOfBirth']
+      birthdate = auth.extra.raw_info['dataNascita']
       if birthdate.present? && CustomField.find_by(key: 'birthyear')
         custom_field_values['birthyear'] = Date.parse(birthdate).year
       end
 
       # Handle municipality_code
-      municipality_code = auth.extra.raw_info['domicileMunicipality']
-      if municipality_code.present? && CustomField.find_by(key: 'domicile_municipality')
-        custom_field_values['domicile_municipality'] = municipality_code
+      municipality_code = auth.extra.raw_info['comuneDomicilio']
+      if municipality_code.present? && CustomField.find_by(key: 'municipality_code')
+        custom_field_values['municipality_code'] = municipality_code
       end
 
       {
-        first_name: attrs['name'],
-        last_name: attrs['familyName'],
-        email: attrs['email'],
+        first_name: attrs['nome'],
+        last_name: attrs['cognome'],
+        email: attrs['emailAddressPersonale'],
         custom_field_values: custom_field_values
       }.compact
     end
 
     def profile_to_uid(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
-      attrs['spidCode'] || attrs['fiscalNumber']
+      attrs['codiceIdentificativoSPID'] || attrs['codiceFiscale']
     end
 
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('federa_login')
 
-      environment = config['environment'] || 'test'
-      spid_level = config['spid_level'] || '1'
+      environment = config[:environment] || 'test'
+      spid_level = config[:spid_level] || '1'
 
-      # TODO: signing of URLs requires this private key
-      # private_key = config['private_key'] || ''
+      private_key = config[:private_key]
 
       metadata_file = ENVIRONMENTS.dig(environment, :metadata_xml_file)
 
@@ -80,22 +79,19 @@ module IdFedera
       options = idp_metadata.merge(
         issuer: "#{configuration.base_backend_uri}/auth/federa/metadata",
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
-        request_attributes: [
-          { name: 'email' },
-          { name: 'name' },
-          { name: 'familyName' },
-          { name: 'dateOfBirth' },
-          { name: 'domicileMunicipality' }
-        ],
         idp_sso_service_url_runtime_params: { RelayState: :RelayState },
-        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1'])
-        # TODO: signing of URLs as requires a private key
-        # private_key: private_key,
-        # security: {
-        #   authn_requests_signed: true,
-        #   signature_method: XMLSecurity::Document::RSA_SHA256
-        # }
+        idp_sso_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1']),
+        request_attributes: []
       )
+
+      if private_key.present?
+        options[:private_key] = private_key
+        options[:security] = {
+          authn_requests_signed: true,
+          signature_method: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
+        }
+      end
 
       env['omniauth.strategy'].options.merge!(options)
     end

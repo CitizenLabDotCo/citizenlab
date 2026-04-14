@@ -1,11 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import {
-  Box,
-  Title,
-  IconTooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
@@ -33,7 +28,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import {
   FormattedMessage,
@@ -148,10 +142,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     updateFormData({ title_multiloc });
-  };
-
-  const handleEditorOnChange = (description_multiloc: Multiloc) => {
-    updateFormData({ description_multiloc });
   };
 
   const handlePhaseFileOnAttach = (file: IFileData) => {
@@ -421,27 +411,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
           />
-          <SectionField className="fullWidth intercom-phase-description-text-input">
-            <Box display="flex" alignItems="center">
-              <SubSectionTitle>
-                <FormattedMessage {...messages.descriptionLabel} />
-              </SubSectionTitle>
-              {phases && phases.data.length < 2 && (
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.emptyDescriptionWarning} />
-                  }
-                />
-              )}
-            </Box>
-            <QuillMultilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={formData.description_multiloc}
-              onChange={handleEditorOnChange}
-              withCTAButton
-            />
-            <Error apiErrors={errors && errors.description_multiloc} />
-          </SectionField>
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />

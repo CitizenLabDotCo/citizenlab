@@ -20,6 +20,8 @@ import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfinitePro
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
+import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
 import sharedMessages from '../../_shared/messages';
@@ -57,6 +59,13 @@ const Table = () => {
     () => data?.pages.flatMap((page) => page.data) ?? [],
     [data?.pages]
   );
+
+  const moderatorsById = useMemo(() => {
+    const included = data?.pages.flatMap((page) => page.included ?? []) ?? [];
+    const moderators = groupIncludedResources(included).user;
+    const moderatorsById = moderators ? indexById(moderators) : undefined;
+    return moderatorsById;
+  }, [data?.pages]);
 
   const projectIds = projects.map((project) => project.id);
   const participantsCounts = useParticipantCounts(projectIds);
@@ -104,7 +113,7 @@ const Table = () => {
               </Box>
             </Th>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
-            <ColHeader>{formatMessage(messages.manager)}</ColHeader>
+            <ColHeader>{formatMessage(sharedMessages.managers)}</ColHeader>
             <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             <ColHeader>{formatMessage(messages.start)}</ColHeader>
             <ColHeader>{formatMessage(messages.end)}</ColHeader>
@@ -125,6 +134,7 @@ const Table = () => {
               project={project}
               participantsCount={participantsCounts[project.id]}
               firstRow={i === 0}
+              moderatorsById={moderatorsById}
             />
           ))}
         </Tbody>
