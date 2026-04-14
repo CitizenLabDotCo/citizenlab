@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Skriv for at søge",
   "app.containers.Admin.Users.selectProjects": "Vælg projekter",
   "app.containers.Admin.Users.selectSpaces": "Vælg områder",
-  "app.containers.Admin.Users.selectPlaceholder": "Skriv for at søge",
   "app.containers.Admin.Users.setAsAdmin": "Indstilles som admin",
   "app.containers.Admin.Users.setAsNormalUser": "Indstil som normal bruger",
   "app.containers.Admin.Users.setUserAsManager": "Tildel {name} som projektleder",

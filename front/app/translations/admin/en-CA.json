@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Type to search",
   "app.containers.Admin.Users.selectProjects": "Select projects",
   "app.containers.Admin.Users.selectSpaces": "Select spaces",
-  "app.containers.Admin.Users.selectPlaceholder": "Type to search",
   "app.containers.Admin.Users.setAsAdmin": "Set as admin",
   "app.containers.Admin.Users.setAsNormalUser": "Set as normal user",
   "app.containers.Admin.Users.setUserAsManager": "Assign {name} as manager",

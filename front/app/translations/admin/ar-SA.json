@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "اكتب للبحث",
   "app.containers.Admin.Users.selectProjects": "تحديد المشاريع",
   "app.containers.Admin.Users.selectSpaces": "تحديد المساحات",
-  "app.containers.Admin.Users.selectPlaceholder": "اكتب للبحث",
   "app.containers.Admin.Users.setAsAdmin": "تعيين كمسؤول",
   "app.containers.Admin.Users.setAsNormalUser": "تعيين كمستخدم عادي",
   "app.containers.Admin.Users.setUserAsManager": "تعيين {name} كمدير",

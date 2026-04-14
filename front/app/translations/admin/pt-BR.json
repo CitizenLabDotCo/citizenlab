@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Digite para pesquisar",
   "app.containers.Admin.Users.selectProjects": "Selecionar projetos",
   "app.containers.Admin.Users.selectSpaces": "Selecionar espaços",
-  "app.containers.Admin.Users.selectPlaceholder": "Digite para pesquisar",
   "app.containers.Admin.Users.setAsAdmin": "Definir como administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Definir como utilizador normal",
   "app.containers.Admin.Users.setUserAsManager": "Atribuir {name} como gerente",

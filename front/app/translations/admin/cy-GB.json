@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Teipiwch i chwilio",
   "app.containers.Admin.Users.selectProjects": "Dewis prosiectau",
   "app.containers.Admin.Users.selectSpaces": "Dewis gofodau",
-  "app.containers.Admin.Users.selectPlaceholder": "Teipiwch i chwilio",
   "app.containers.Admin.Users.setAsAdmin": "Gosod fel gweinyddwr",
   "app.containers.Admin.Users.setAsNormalUser": "Gosod fel defnyddiwr arferol",
   "app.containers.Admin.Users.setUserAsManager": "Dyrannu {name} fel rheolwr",

@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Hae kirjoittamalla",
   "app.containers.Admin.Users.selectProjects": "Valitse projektit",
   "app.containers.Admin.Users.selectSpaces": "Valitse tilat",
-  "app.containers.Admin.Users.selectPlaceholder": "Hae kirjoittamalla",
   "app.containers.Admin.Users.setAsAdmin": "Aseta järjestelmänvalvojaksi",
   "app.containers.Admin.Users.setAsNormalUser": "Aseta tavalliseksi käyttäjäksi",
   "app.containers.Admin.Users.setUserAsManager": "Määritä {name} hallinnoijaksi",

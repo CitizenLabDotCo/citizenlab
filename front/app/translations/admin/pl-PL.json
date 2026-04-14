@@ -858,7 +858,6 @@
   "app.containers.Admin.Users.selectPlaceholder": "Wpisz, aby wyszukać",
   "app.containers.Admin.Users.selectProjects": "Wybierz projekty",
   "app.containers.Admin.Users.selectSpaces": "Wybierz przestrzenie",
-  "app.containers.Admin.Users.selectPlaceholder": "Wpisz, aby wyszukać",
   "app.containers.Admin.Users.setAsAdmin": "Ustawienie jako administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Ustawienie jako zwykły użytkownik",
   "app.containers.Admin.Users.setUserAsManager": "Przypisz {name} jako menedżera",
