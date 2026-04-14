@@ -65,11 +65,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress',
     defaultMessage: 'Importing ({progress}/{total})',
   },
-  errorImporting: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
-    defaultMessage:
-      'Errors occurred during the import and some inputs have not imported.',
-  },
   errorImportingWithCounts: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts',
     defaultMessage:
