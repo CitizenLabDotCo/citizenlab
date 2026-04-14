@@ -6,23 +6,21 @@
 # - Projects
 class TreeViewService
   def generate_tree
-    tree = []
-    
     # Add all spaces with their children
-    spaces.each do |space|
-      tree << build_space_node(space)
+    tree = spaces.map do |space|
+      build_space_node(space)
     end
-    
+
     # Add root-level folders (not in any space)
     root_folders.each do |folder|
       tree << build_folder_node(folder)
     end
-    
+
     # Add root-level projects (not in any space or folder)
     root_projects.each do |project|
       tree << build_project_node(project)
     end
-    
+
     tree
   end
 
@@ -64,18 +62,16 @@ class TreeViewService
   end
 
   def build_space_node(space)
-    children = []
-    
     # Add folders in this space
-    folders_in_space(space.id).each do |folder|
-      children << build_folder_node(folder)
+    children = folders_in_space(space.id).map do |folder|
+      build_folder_node(folder)
     end
-    
+
     # Add projects directly in this space (not in a folder)
     projects_in_space(space.id).each do |project|
       children << build_project_node(project)
     end
-    
+
     {
       id: space.id,
       type: 'space',
@@ -88,7 +84,7 @@ class TreeViewService
     children = projects_in_folder(folder).map do |project|
       build_project_node(project)
     end
-    
+
     {
       id: folder.id,
       type: 'folder',

@@ -191,7 +191,7 @@ describe TreeViewService do
       space1_node = result.find { |node| node[:id] == space1.id }
       expect(space1_node[:children].size).to eq(2)
       expect(space1_node[:children].map { |c| c[:id] }).to contain_exactly(project_in_space1.id, folder_in_space1.id)
-      
+
       folder1_node = space1_node[:children].find { |c| c[:type] == 'folder' }
       expect(folder1_node[:children].size).to eq(1)
       expect(folder1_node[:children].first[:id]).to eq(project_in_folder_in_space1.id)
@@ -199,7 +199,7 @@ describe TreeViewService do
       # Check space 2 structure
       space2_node = result.find { |node| node[:id] == space2.id }
       expect(space2_node[:children].size).to eq(1)
-      
+
       folder2_node = space2_node[:children].first
       expect(folder2_node[:children].size).to eq(1)
       expect(folder2_node[:children].first[:id]).to eq(project_in_folder_in_space2.id)
