@@ -1,10 +1,20 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  lockedProject: {
+  lockedProjectInFolder: {
     id: 'app.containers.Admin.users.UserAssignedItems.lockedProject',
     defaultMessage:
       'This project is in a folder that the user can manage. Therefore, the user can also manage this project.',
+  },
+  lockedProjectInSpace: {
+    id: 'app.containers.Admin.users.UserAssignedItems.lockedProjectInSpace',
+    defaultMessage:
+      'This project is in a space that the user can manage. Therefore, the user can also manage this project.',
+  },
+  lockedFolderInSpace: {
+    id: 'app.containers.Admin.users.UserAssignedItems.lockedFolderInSpace',
+    defaultMessage:
+      'This folder is in a space that the user can manage. Therefore, the user can also manage this folder.',
   },
   remove: {
     id: 'app.containers.Admin.users.UserAssignedItems.remove',
@@ -19,8 +29,8 @@ export default defineMessages({
     id: 'app.containers.Admin.users.UserAssignedItems.foldersUserManages',
     defaultMessage: 'Folders user manages',
   },
-  thisUserCanManage: {
-    id: 'app.containers.Admin.users.UserAssignedItems.thisUserCanManage',
+  thisUserCanManageFolders: {
+    id: 'app.containers.Admin.users.UserAssignedItems.thisUserCanManageFolders',
     defaultMessage:
       'This user can manage the following folders, including the projects inside of them:',
   },
@@ -31,5 +41,14 @@ export default defineMessages({
   noItemsAssigned: {
     id: 'app.containers.Admin.users.UserAssignedItems.noItemsAssigned',
     defaultMessage: 'No items assigned to this user.',
+  },
+  spacesUserManages: {
+    id: 'app.containers.Admin.users.UserAssignedItems.spacesUserManages',
+    defaultMessage: 'Spaces user manages',
+  },
+  thisUserCanManageSpaces: {
+    id: 'app.containers.Admin.users.UserAssignedItems.thisUserCanManageSpaces',
+    defaultMessage:
+      'This user can manage the following spaces, including the folders and projects inside of them:',
   },
 });

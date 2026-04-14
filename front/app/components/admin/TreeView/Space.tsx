@@ -2,32 +2,32 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  IconButton,
   Icon,
-  Tooltip,
+  IconButton,
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { FolderNode } from 'api/admin_publications/types';
+import { NodeType, SpaceNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
 import RemoveButton from './_shared/RemoveButton';
 import Row from './_shared/Row';
+import Folder from './Folder';
 import Project from './Project';
 
 interface Props {
-  node: FolderNode;
+  node: SpaceNode;
   lockedProjectTooltip?: MessageDescriptor;
   lockedFolderTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
-  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  onRemove?: (nodeId: string, nodeType: NodeType) => Promise<void>;
 }
 
-const Folder = ({
+const Space = ({
   node,
   lockedProjectTooltip,
   lockedFolderTooltip,
@@ -38,10 +38,10 @@ const Folder = ({
   const [expanded, setExpanded] = useState(true);
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const handleRemoveFolder = async () => {
+  const handleRemoveSpace = async () => {
     if (!onRemove) return;
     setIsRemoving(true);
-    await onRemove(node.id, 'folder');
+    await onRemove(node.id, 'space');
     setIsRemoving(false);
   };
 
@@ -50,37 +50,16 @@ const Folder = ({
       <Row>
         <Box display="flex" alignItems="flex-start">
           <Icon
-            name="folder-outline"
+            name="spaces"
             mr="12px"
             width="20px"
             height="20px"
             transform="translateY(-1px)"
-            fill={lockedFolderTooltip ? colors.grey600 : colors.black}
+            fill={colors.black}
           />
-          <Link
-            to={`/admin/projects/folders/${node.id}`}
-            color={lockedFolderTooltip ? colors.grey600 : colors.black}
-          >
+          <Link to={`/admin/projects/spaces/${node.id}`} color={colors.black}>
             {localize(node.title_multiloc)}
           </Link>
-          {lockedFolderTooltip && (
-            <Tooltip
-              content={
-                <Box>
-                  <FormattedMessage {...lockedFolderTooltip} />
-                </Box>
-              }
-            >
-              <Icon
-                name="lock"
-                ml="8px"
-                width="20px"
-                height="20px"
-                transform="translateY(-1px)"
-                fill={colors.grey600}
-              />
-            </Tooltip>
-          )}
           <IconButton
             ml="4px"
             iconName={expanded ? 'chevron-down' : 'chevron-right'}
@@ -92,26 +71,37 @@ const Folder = ({
             a11y_buttonActionMessage=""
           />
         </Box>
-        {!lockedFolderTooltip && removeButtonMessage && onRemove && (
+        {removeButtonMessage && onRemove && (
           <RemoveButton
             processing={isRemoving}
             message={removeButtonMessage}
-            onClick={handleRemoveFolder}
+            onClick={handleRemoveSpace}
           />
         )}
       </Row>
       <Box pl="31px">
         {expanded && (
           <>
-            {node.children.map((child) => (
-              <Project
-                key={child.id}
-                node={child}
-                lockedProjectTooltip={lockedProjectTooltip}
-                removeButtonMessage={removeButtonMessage}
-                onRemove={onRemove}
-              />
-            ))}
+            {node.children.map((child) =>
+              child.type === 'project' ? (
+                <Project
+                  key={child.id}
+                  node={child}
+                  lockedProjectTooltip={lockedProjectTooltip}
+                  removeButtonMessage={removeButtonMessage}
+                  onRemove={onRemove}
+                />
+              ) : (
+                <Folder
+                  key={child.id}
+                  node={child}
+                  lockedProjectTooltip={lockedProjectTooltip}
+                  lockedFolderTooltip={lockedFolderTooltip}
+                  removeButtonMessage={removeButtonMessage}
+                  onRemove={onRemove}
+                />
+              )
+            )}
           </>
         )}
       </Box>
@@ -119,4 +109,4 @@ const Folder = ({
   );
 };
 
-export default Folder;
+export default Space;
