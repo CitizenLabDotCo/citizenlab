@@ -16,7 +16,7 @@ interface Props {
   node: ProjectNode;
   lockedProjectTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
-  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  onRemove?: (nodeId: string, nodeType: 'project') => Promise<void>;
 }
 
 const Project = ({

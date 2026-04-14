@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { SpaceNode } from 'api/admin_publications/types';
+import { NodeType, SpaceNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -24,10 +24,7 @@ interface Props {
   lockedProjectTooltip?: MessageDescriptor;
   lockedFolderTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
-  onRemove?: (
-    nodeId: string,
-    nodeType: 'project' | 'folder' | 'space'
-  ) => Promise<void>;
+  onRemove?: (nodeId: string, nodeType: NodeType) => Promise<void>;
 }
 
 const Space = ({

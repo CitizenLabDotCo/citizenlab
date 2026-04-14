@@ -104,6 +104,8 @@ export type ProjectNode = {
 
 export type TreeNode = SpaceNode | FolderNode | ProjectNode;
 
+export type NodeType = TreeNode['type'];
+
 export type TreeView = {
   data: {
     type: 'tree_view';

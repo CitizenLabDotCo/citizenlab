@@ -2,9 +2,11 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import { NodeType } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import useDeleteSpaceModerator from 'api/space_moderators/useDeleteSpaceModerator';
 import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';
@@ -25,6 +27,7 @@ const UserAssignedItems = ({ user }: Props) => {
   const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
   const { mutateAsync: deleteFolderModerator } =
     useDeleteProjectFolderModerator();
+  const { mutateAsync: deleteSpaceModerator } = useDeleteSpaceModerator();
 
   if (!treeView) return null;
 
@@ -43,14 +46,13 @@ const UserAssignedItems = ({ user }: Props) => {
     );
   }
 
-  const handleRemove = async (
-    nodeId: string,
-    nodeType: 'project' | 'folder'
-  ) => {
+  const handleRemove = async (nodeId: string, nodeType: NodeType) => {
     if (nodeType === 'project') {
       await deleteProjectModerator({ projectId: nodeId, userId: user.id });
-    } else {
+    } else if (nodeType === 'folder') {
       await deleteFolderModerator({ projectFolderId: nodeId, userId: user.id });
+    } else {
+      await deleteSpaceModerator({ spaceId: nodeId, userId: user.id });
     }
   };
 

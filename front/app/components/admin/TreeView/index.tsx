@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { TreeNode } from 'api/admin_publications/types';
+import { TreeNode, NodeType } from 'api/admin_publications/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -15,7 +15,7 @@ interface Props {
   lockedProjectTooltip?: MessageDescriptor;
   lockedFolderTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
-  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  onRemove?: (nodeId: string, nodeType: NodeType) => Promise<void>;
 }
 
 const TreeView = ({
