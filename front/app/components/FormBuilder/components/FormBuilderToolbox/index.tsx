@@ -30,17 +30,11 @@ interface FormBuilderToolboxProps {
 }
 
 const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
-  const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
-    name: 'input_form_custom_fields',
-  });
-
   const isFormMappingEnabled = useFeatureFlag({
     name: 'form_mapping',
   });
 
-  const isCustomFieldsDisabled =
-    !isInputFormCustomFieldsFlagEnabled &&
-    !builderConfig.alwaysShowCustomFields;
+  const isCustomFieldsDisabled = !builderConfig.alwaysShowCustomFields;
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
