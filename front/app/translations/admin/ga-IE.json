@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Níl aon mhíreanna sannta don úsáideoir seo.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Tionscadail a bhainistíonn úsáideoirí",
   "app.containers.Admin.users.UserAssignedItems.remove": "Bain",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Is féidir leis an úsáideoir seo na fillteáin seo a leanas a bhainistiú, lena n-áirítear na tionscadail atá iontu:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "líon iomlán úsáideoirí ar an ardán",
   "app.containers.AdminPage.DashboardPage._blank": "anaithnid",
   "app.containers.AdminPage.DashboardPage.allGroups": "Gach Grúpa",

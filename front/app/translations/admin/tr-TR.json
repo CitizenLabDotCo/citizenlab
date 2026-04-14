@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Bu kullanıcıya atanmış öğe yok.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Kullanıcının yönettiği projeler",
   "app.containers.Admin.users.UserAssignedItems.remove": "Kaldırmak",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Bu kullanıcı, içlerindeki projeler de dahil olmak üzere aşağıdaki klasörleri yönetebilir:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "platformdaki toplam kullanıcı sayısı",
   "app.containers.AdminPage.DashboardPage._blank": "bilinmiyor",
   "app.containers.AdminPage.DashboardPage.allGroups": "Tüm Gruplar",

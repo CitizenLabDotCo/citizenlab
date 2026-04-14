@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "ما كاين حتى شي عنصر مخصص لهاد المستخدم.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "المشاريع اللي كيسيرها المستخدم",
   "app.containers.Admin.users.UserAssignedItems.remove": "إزالة",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "يمكن لهذا المستخدم إدارة المجلدات التالية، بما في ذلك المشاريع الموجودة بداخلها:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "الإجمالي على المنصة",
   "app.containers.AdminPage.DashboardPage._blank": "غير معروف",
   "app.containers.AdminPage.DashboardPage.allGroups": "كل المجموعات",

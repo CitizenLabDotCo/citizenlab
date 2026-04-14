@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Nessun elemento assegnato a questo utente.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Progetti che l'utente gestisce",
   "app.containers.Admin.users.UserAssignedItems.remove": "Rimuovi",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Questo utente può gestire le seguenti cartelle, compresi i progetti al loro interno:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "utenti totali della piattaforma",
   "app.containers.AdminPage.DashboardPage._blank": "sconosciuto",
   "app.containers.AdminPage.DashboardPage.allGroups": "Tutti i gruppi",

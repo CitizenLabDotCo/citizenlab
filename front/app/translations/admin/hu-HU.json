@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Nincsenek ehhez a felhasználóhoz rendelt elemek.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "A felhasználó által kezelt projektek",
   "app.containers.Admin.users.UserAssignedItems.remove": "Eltávolítás",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Ez a felhasználó a következő mappákat kezelheti, beleértve a bennük lévő projekteket is:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total users on the platform",
   "app.containers.AdminPage.DashboardPage._blank": "unknown",
   "app.containers.AdminPage.DashboardPage.allGroups": "All Groups",
