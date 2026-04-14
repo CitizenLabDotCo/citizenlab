@@ -22,6 +22,7 @@ import Project from './Project';
 interface Props {
   node: SpaceNode;
   lockedProjectTooltip?: MessageDescriptor;
+  lockedFolderTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
   onRemove?: (
     nodeId: string,
@@ -32,6 +33,7 @@ interface Props {
 const Space = ({
   node,
   lockedProjectTooltip,
+  lockedFolderTooltip,
   removeButtonMessage,
   onRemove,
 }: Props) => {
@@ -97,6 +99,7 @@ const Space = ({
                   key={child.id}
                   node={child}
                   lockedProjectTooltip={lockedProjectTooltip}
+                  lockedFolderTooltip={lockedFolderTooltip}
                   removeButtonMessage={removeButtonMessage}
                   onRemove={onRemove}
                 />

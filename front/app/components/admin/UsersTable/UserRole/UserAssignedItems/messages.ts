@@ -1,10 +1,20 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  lockedProject: {
+  lockedProjectInFolder: {
     id: 'app.containers.Admin.users.UserAssignedItems.lockedProject',
     defaultMessage:
       'This project is in a folder that the user can manage. Therefore, the user can also manage this project.',
+  },
+  lockedProjectInSpace: {
+    id: 'app.containers.Admin.users.UserAssignedItems.lockedProjectInSpace',
+    defaultMessage:
+      'This project is in a space that the user can manage. Therefore, the user can also manage this project.',
+  },
+  lockedFolderInSpace: {
+    id: 'app.containers.Admin.users.UserAssignedItems.lockedFolderInSpace',
+    defaultMessage:
+      'This folder is in a space that the user can manage. Therefore, the user can also manage this folder.',
   },
   remove: {
     id: 'app.containers.Admin.users.UserAssignedItems.remove',

@@ -73,7 +73,8 @@ const UserAssignedItems = ({ user }: Props) => {
           </Text>
           <TreeView
             nodes={spacesUserModerates}
-            lockedProjectTooltip={messages.lockedProject}
+            lockedProjectTooltip={messages.lockedProjectInSpace}
+            lockedFolderTooltip={messages.lockedFolderInSpace}
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />
@@ -89,7 +90,7 @@ const UserAssignedItems = ({ user }: Props) => {
           </Text>
           <TreeView
             nodes={foldersUserModerates}
-            lockedProjectTooltip={messages.lockedProject}
+            lockedProjectTooltip={messages.lockedProjectInFolder}
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />

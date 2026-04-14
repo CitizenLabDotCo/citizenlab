@@ -13,6 +13,7 @@ import Space from './Space';
 interface Props {
   nodes: TreeNode[];
   lockedProjectTooltip?: MessageDescriptor;
+  lockedFolderTooltip?: MessageDescriptor;
   removeButtonMessage?: MessageDescriptor;
   onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
@@ -20,6 +21,7 @@ interface Props {
 const TreeView = ({
   nodes,
   lockedProjectTooltip,
+  lockedFolderTooltip,
   removeButtonMessage,
   onRemove,
 }: Props) => {
@@ -31,6 +33,7 @@ const TreeView = ({
             <Space
               node={node}
               lockedProjectTooltip={lockedProjectTooltip}
+              lockedFolderTooltip={lockedFolderTooltip}
               removeButtonMessage={removeButtonMessage}
               onRemove={onRemove}
             />
