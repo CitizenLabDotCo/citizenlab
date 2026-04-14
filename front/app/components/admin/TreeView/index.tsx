@@ -8,6 +8,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 import Folder from './Folder';
 import Project from './Project';
+import Space from './Space';
 
 interface Props {
   nodes: TreeNode[];
@@ -26,9 +27,10 @@ const TreeView = ({
     <Box maxWidth="800px">
       {nodes.map((node) => (
         <Box key={node.id}>
-          {node.type === 'project' && (
-            <Project
+          {node.type === 'space' && (
+            <Space
               node={node}
+              lockedProjectTooltip={lockedProjectTooltip}
               removeButtonMessage={removeButtonMessage}
               onRemove={onRemove}
             />
@@ -37,6 +39,13 @@ const TreeView = ({
             <Folder
               node={node}
               lockedProjectTooltip={lockedProjectTooltip}
+              removeButtonMessage={removeButtonMessage}
+              onRemove={onRemove}
+            />
+          )}
+          {node.type === 'project' && (
+            <Project
+              node={node}
               removeButtonMessage={removeButtonMessage}
               onRemove={onRemove}
             />
