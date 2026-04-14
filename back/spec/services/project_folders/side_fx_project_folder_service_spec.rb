@@ -50,15 +50,14 @@ describe ProjectFolders::SideFxProjectFolderService do
       project_folder.save!
 
       expect { service.after_update(project_folder, user) }
-        .to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
-        .with(project_folder.admin_publication.id)
+        .to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
 
     it 'does not enqueue the transition job when no schedule is set' do
       project_folder.update!(title_multiloc: { en: 'changed' })
 
       expect { service.after_update(project_folder, user) }
-        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionJob)
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
   end
 

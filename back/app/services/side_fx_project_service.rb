@@ -49,7 +49,6 @@ class SideFxProjectService
   end
 
   def before_update(project, user)
-    process_due_transition(project.admin_publication)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
     set_scheduled_by(project.admin_publication, user)
@@ -79,9 +78,7 @@ class SideFxProjectService
     enqueue_scheduled_transition(project.admin_publication)
   end
 
-  def before_destroy(project, _user)
-    process_due_transition(project.admin_publication)
-  end
+  def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
     ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_project)
@@ -133,12 +130,6 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
-  def process_due_transition(admin_pub)
-    return unless admin_pub.scheduled_at&.<=(Time.current)
-
-    ProcessScheduledPublicationTransitionJob.new.run(admin_pub.id)
-  end
-
   def set_scheduled_by(admin_pub, user)
     return unless admin_pub.will_save_change_to_scheduled_status?
 
@@ -149,9 +140,9 @@ class SideFxProjectService
     return unless admin_pub.saved_change_to_scheduled_at?
     return unless admin_pub.scheduled_at.present?
 
-    ProcessScheduledPublicationTransitionJob
+    ProcessScheduledPublicationTransitionsJob
       .set(wait_until: admin_pub.scheduled_at)
-      .perform_later(admin_pub.id)
+      .perform_later
   end
 
   def after_folder_changed(project, current_user)

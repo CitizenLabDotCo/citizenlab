@@ -15,7 +15,6 @@ module ProjectFolders
     end
 
     def before_update(folder, user)
-      process_due_transition(folder.admin_publication)
       set_scheduled_by(folder.admin_publication, user)
     end
 
@@ -58,12 +57,6 @@ module ProjectFolders
 
     private
 
-    def process_due_transition(admin_pub)
-      return unless admin_pub.scheduled_at&.<=(Time.current)
-
-      ProcessScheduledPublicationTransitionJob.new.run(admin_pub.id)
-    end
-
     def set_scheduled_by(admin_pub, user)
       return unless admin_pub.will_save_change_to_scheduled_status?
 
@@ -74,9 +67,9 @@ module ProjectFolders
       return unless admin_pub.saved_change_to_scheduled_at?
       return unless admin_pub.scheduled_at.present?
 
-      ProcessScheduledPublicationTransitionJob
+      ProcessScheduledPublicationTransitionsJob
         .set(wait_until: admin_pub.scheduled_at)
-        .perform_later(admin_pub.id)
+        .perform_later
     end
   end
 end
