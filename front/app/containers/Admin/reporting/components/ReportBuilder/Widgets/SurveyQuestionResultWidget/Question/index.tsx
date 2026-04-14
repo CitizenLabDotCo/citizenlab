@@ -12,6 +12,7 @@ import MatrixQuestion from 'components/admin/FormResults/FormResultsQuestion/Mat
 import RankingQuestion from 'components/admin/FormResults/FormResultsQuestion/RankingQuestion';
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 import Legend from 'components/admin/Graphs/Legend';
+import { legendColors } from 'components/admin/Graphs/legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
@@ -21,7 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 import MissingData from '../../_shared/MissingData';
 
 import MapQuestion from './MapQuestions';
-import { legendColors, getLegendLabels } from './utils';
+import { getLegendLabels } from './utils';
 
 interface Props {
   projectId: string;

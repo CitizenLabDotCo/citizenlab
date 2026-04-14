@@ -8,8 +8,6 @@ import { EMPTY_COLOR, legendColorMap } from '../legendColors';
 
 import { BarType, Answer } from './typings';
 
-export { EMPTY_COLOR } from '../legendColors';
-
 export const parseQuestionResult = (
   result: ResultUngrouped | ResultGrouped,
   colorScheme: string[],

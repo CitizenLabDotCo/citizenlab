@@ -6,8 +6,6 @@ import { Localize } from 'hooks/useLocalize';
 
 import messages from 'components/admin/Graphs/SurveyBars/messages';
 
-export { legendColors } from 'components/admin/Graphs/legendColors';
-
 export const getLegendLabels = (
   attributes: ResultGrouped,
   localize: Localize,
