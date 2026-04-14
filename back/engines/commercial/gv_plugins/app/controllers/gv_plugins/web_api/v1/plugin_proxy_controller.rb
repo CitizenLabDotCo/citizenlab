@@ -32,7 +32,9 @@ module GVPlugins
           result = PluginRunnerService.new.call(
             wasm_url: match[:wasm_url],
             handler: match[:handler],
-            request_data: input_data
+            request_data: input_data,
+            plugin_name: match[:plugin_name],
+            provision_public_api_token: match[:provision_public_api_token]
           )
 
           status = result['status'] || 200

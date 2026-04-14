@@ -41,7 +41,12 @@ module GVPlugins
           { method: route['method'].upcase, path: route['path'], handler: route['handler'] }
         end
 
-        { name: manifest['name'], wasm_url: wasm_url, routes: routes }
+        {
+          name: manifest['name'],
+          wasm_url: wasm_url,
+          routes: routes,
+          provision_public_api_token: back['provision_public_api_token'] == true
+        }
       end
     end
 
@@ -54,7 +59,12 @@ module GVPlugins
       end
       return nil unless route
 
-      { wasm_url: plugin[:wasm_url], handler: route[:handler] }
+      {
+        plugin_name: plugin[:name],
+        wasm_url: plugin[:wasm_url],
+        handler: route[:handler],
+        provision_public_api_token: plugin[:provision_public_api_token]
+      }
     end
 
     def event_handlers
@@ -64,9 +74,17 @@ module GVPlugins
         manifest = fetch_manifest(plugin['url'])
         next [] unless manifest&.dig('back', 'events')
 
-        wasm_url = resolve_url(plugin['url'], manifest['back']['entry'])
-        manifest['back']['events'].map do |event|
-          { event_name: event['name'], wasm_url: wasm_url, handler: event['handler'] }
+        back = manifest['back']
+        wasm_url = resolve_url(plugin['url'], back['entry'])
+        provision = back['provision_public_api_token'] == true
+        back['events'].map do |event|
+          {
+            plugin_name: manifest['name'],
+            event_name: event['name'],
+            wasm_url: wasm_url,
+            handler: event['handler'],
+            provision_public_api_token: provision
+          }
         end
       end
     end

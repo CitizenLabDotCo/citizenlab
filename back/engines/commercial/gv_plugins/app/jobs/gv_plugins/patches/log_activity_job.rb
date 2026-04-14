@@ -34,7 +34,13 @@ module GVPlugins
         }
 
         handlers.each do |h|
-          GVPlugins::ActivityJob.perform_later(h[:wasm_url], h[:handler], activity_data)
+          GVPlugins::ActivityJob.perform_later(
+            h[:wasm_url],
+            h[:handler],
+            activity_data,
+            h[:plugin_name],
+            h[:provision_public_api_token]
+          )
         end
 
         result

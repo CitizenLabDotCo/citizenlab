@@ -12,6 +12,10 @@
 #  secret_digest  :string           not null
 #  secret_postfix :string           not null
 #
+# Indexes
+#
+#  index_public_api_api_clients_on_name  (name) UNIQUE WHERE (name IS NOT NULL)
+#
 module PublicApi
   class ApiClient < ApplicationRecord
     validates :secret, presence: true, length: { minimum: 20 }
