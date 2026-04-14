@@ -31,19 +31,17 @@ const UserAssignedItems = ({ user }: Props) => {
   const { projectsUserModerates, foldersUserModerates, spacesUserModerates } =
     getModeratedItems(user, treeView);
 
-  if (
-    projectsUserModerates.length === 0 &&
-    foldersUserModerates.length === 0 &&
-    spacesUserModerates.length === 0
-  ) {
+  const hasProjects = projectsUserModerates.length > 0;
+  const hasFolders = foldersUserModerates.length > 0;
+  const hasSpaces = spacesUserModerates.length > 0;
+
+  if (!hasProjects && !hasFolders && !hasSpaces) {
     return (
       <Text>
         <FormattedMessage {...messages.noItemsAssigned} />
       </Text>
     );
   }
-
-  const hasFolders = foldersUserModerates.length > 0;
 
   const handleRemove = async (
     nodeId: string,
@@ -61,17 +59,33 @@ const UserAssignedItems = ({ user }: Props) => {
   return (
     <Box>
       {userIsAdmin && (
-        <Text>
+        <Text mb="40px">
           <FormattedMessage {...messages.asAnAdmin} />
         </Text>
       )}
+      {hasSpaces && (
+        <Box mb="40px">
+          <Title variant="h3" m="0px">
+            <FormattedMessage {...messages.spacesUserManages} />
+          </Title>
+          <Text>
+            <FormattedMessage {...messages.thisUserCanManageSpaces} />
+          </Text>
+          <TreeView
+            nodes={spacesUserModerates}
+            lockedProjectTooltip={messages.lockedProject}
+            removeButtonMessage={messages.remove}
+            onRemove={handleRemove}
+          />
+        </Box>
+      )}
       {hasFolders && (
-        <>
-          <Title variant="h3" mt={userIsAdmin ? '40px' : '0px'}>
+        <Box mb="40px">
+          <Title variant="h3" m="0px">
             <FormattedMessage {...messages.foldersUserManages} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.thisUserCanManage} />
+            <FormattedMessage {...messages.thisUserCanManageFolders} />
           </Text>
           <TreeView
             nodes={foldersUserModerates}
@@ -79,11 +93,11 @@ const UserAssignedItems = ({ user }: Props) => {
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />
-        </>
+        </Box>
       )}
-      {projectsUserModerates.length > 0 && (
-        <>
-          <Title variant="h3" mt={hasFolders ? '40px' : '0px'}>
+      {hasProjects && (
+        <Box mb="40px">
+          <Title variant="h3" mb="16px" mt="0px">
             <FormattedMessage {...messages.projectsUserManages} />
           </Title>
           <TreeView
@@ -91,7 +105,7 @@ const UserAssignedItems = ({ user }: Props) => {
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />
-        </>
+        </Box>
       )}
     </Box>
   );
