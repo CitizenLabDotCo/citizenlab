@@ -52,20 +52,19 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
         <Box display="flex" alignItems="center" gap="12px">
           {campaign.attributes.scheduled_at && (
             <>
-              <Box display="flex" alignItems="center">
-                <Text fontSize="base" m="0px">
-                  <FormattedDate
-                    value={campaign.attributes.scheduled_at}
-                    timeZone={timeZone}
-                    dateStyle="short"
-                    timeStyle="short"
-                  />
-                </Text>
-              </Box>
               <StatusLabel
                 backgroundColor={colors.teal500}
                 text={<FormattedMessage {...messages.scheduled} />}
               />
+
+              <Text as="span" fontSize="base" m="0px" color="textSecondary">
+                <FormattedDate
+                  value={campaign.attributes.scheduled_at}
+                  timeZone={timeZone}
+                  dateStyle="short"
+                  timeStyle="short"
+                />
+              </Text>
             </>
           )}
           {isDraft(campaign) && (
