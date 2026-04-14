@@ -135,11 +135,13 @@ module BulkImportIdeas::Parsers
       )
     end
 
-    # The description cell can contain formatting (bold/italic/etc) that we want
-    # to preserve as HTML — body_multiloc stores HTML downstream.
+    # Cells for fields whose input_type stores HTML (e.g. body_multiloc) can
+    # contain formatting (bold/italic/etc) that we want to preserve.
     def rich_text_column_headers
-      description_field = template_data[:fields].find { |f| f[:code] == 'body_multiloc' }
-      description_field ? [description_field[:name]] : []
+      html_input_types = %w[html html_multiloc]
+      template_data[:fields]
+        .select { |f| html_input_types.include?(f[:input_type]) }
+        .pluck(:name)
     end
 
     def template_data
