@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "No hi ha cap element assignat a aquest usuari.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projectes que gestiona l'usuari",
   "app.containers.Admin.users.UserAssignedItems.remove": "Elimina",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Aquest usuari pot gestionar les carpetes següents, inclosos els projectes que contenen:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total d'usuaris de la plataforma",
   "app.containers.AdminPage.DashboardPage._blank": "desconegut",
   "app.containers.AdminPage.DashboardPage.allGroups": "Tots els grups",

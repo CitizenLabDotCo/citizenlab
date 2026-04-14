@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Geen items toegewezen aan deze gebruiker.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projecten die de gebruiker beheert",
   "app.containers.Admin.users.UserAssignedItems.remove": "Verwijder",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Deze gebruiker kan de volgende mappen beheren, inclusief de projecten daarin:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "totaal aantal op het platform",
   "app.containers.AdminPage.DashboardPage._blank": "onbekend",
   "app.containers.AdminPage.DashboardPage.allGroups": "Alle groepen",

@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Nenhum item atribuído a esse usuário.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projetos que o usuário gerencia",
   "app.containers.Admin.users.UserAssignedItems.remove": "Remover",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Esse usuário pode gerenciar as seguintes pastas, incluindo os projetos dentro delas:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total na plataforma",
   "app.containers.AdminPage.DashboardPage._blank": "desconhecido",
   "app.containers.AdminPage.DashboardPage.allGroups": "Todos os grupos",

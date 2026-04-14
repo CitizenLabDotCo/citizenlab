@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Ingen elementer er tildelt denne bruger.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projekter, som brugeren administrerer",
   "app.containers.Admin.users.UserAssignedItems.remove": "Fjern",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Denne bruger kan administrere følgende mapper, inklusive projekterne i dem:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "antal brugere på platformen i alt",
   "app.containers.AdminPage.DashboardPage._blank": "ukendt",
   "app.containers.AdminPage.DashboardPage.allGroups": "Alle grupper",

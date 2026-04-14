@@ -2020,7 +2020,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "Šim lietotājam nav piešķirts neviens vienums.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projektu lietotājs pārvalda",
   "app.containers.Admin.users.UserAssignedItems.remove": "Noņemt",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "Šis lietotājs var pārvaldīt šādas mapes, tostarp tajās esošos projektus:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "kopējais lietotāju skaits platformā",
   "app.containers.AdminPage.DashboardPage._blank": "nav zināms",
   "app.containers.AdminPage.DashboardPage.allGroups": "Visas grupas",
