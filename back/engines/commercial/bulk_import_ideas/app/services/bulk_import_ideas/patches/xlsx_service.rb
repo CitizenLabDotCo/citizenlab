@@ -12,11 +12,14 @@ module BulkImportIdeas
       # per chunk and delete the rows outside it, so all cell fidelity
       # (rich text, styles, hyperlinks, formulas) is preserved.
       def split_xlsx(xlsx, max_rows)
-        # RubyXL::Parser.parse_buffer consumes its input, so dup per parse.
-        data_row_count = [RubyXL::Parser.parse_buffer(xlsx.dup)[0].sheet_data.rows.size - 1, 0].max
+        # Normalize to a byte string — callers pass either a String or a
+        # StringIO (e.g. from Axlsx#to_stream), and RubyXL::Parser.parse_buffer
+        # consumes its input, so we dup per parse.
+        xlsx_bytes = xlsx.respond_to?(:string) ? xlsx.string : xlsx.to_s
+        data_row_count = [RubyXL::Parser.parse_buffer(xlsx_bytes.dup)[0].sheet_data.rows.size - 1, 0].max
 
         (0...data_row_count).each_slice(max_rows).map do |chunk_indices|
-          chunk_workbook = RubyXL::Parser.parse_buffer(xlsx.dup)
+          chunk_workbook = RubyXL::Parser.parse_buffer(xlsx_bytes.dup)
           rows = chunk_workbook[0].sheet_data.rows
           first = chunk_indices.first + 1
           last = chunk_indices.last + 1
