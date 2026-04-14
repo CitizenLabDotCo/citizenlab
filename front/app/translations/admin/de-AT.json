@@ -1,7 +1,7 @@
 {
   "app.containers.Admin.project.emails.emailCreated": "E-Mail erfolgreich als Entwurf erstellt",
-  "app.containers.Admin.project.emails.emailUpdated": "E-Mail erfolgreich aktualisiert"
-}
+  
+  "app.containers.Admin.project.emails.emailUpdated": "E-Mail erfolgreich aktualisiert",
 
   "UI.FormComponents.required": "Erforderlich",
 
@@ -1721,7 +1721,7 @@
 
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel": "Titel",
 
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}.",
 
   "app.components.admin.PostManager.petitionFormTitle": "Petition bearbeiten",
 
@@ -7741,4 +7741,5 @@
 
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
 
-  "app.containers.AdminPage.ProjectFiles.maxFilesError": "Sie können nur maximal {maxFiles} Dateien auf einmal hochladen.",
+  "app.containers.AdminPage.ProjectFiles.maxFilesError": "Sie können nur maximal {maxFiles} Dateien auf einmal hochladen."
+}
