@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-import { getLists as getModeratedItems } from './utils';
+import { getModeratedItems } from './utils';
 
 interface Props {
   user: IUserData;
@@ -28,12 +28,14 @@ const UserAssignedItems = ({ user }: Props) => {
 
   if (!treeView) return null;
 
-  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
-    user,
-    treeView
-  );
+  const { projectsUserModerates, foldersUserModerates, spacesUserModerates } =
+    getModeratedItems(user, treeView);
 
-  if (projectsUserModerates.length === 0 && foldersUserModerates.length === 0) {
+  if (
+    projectsUserModerates.length === 0 &&
+    foldersUserModerates.length === 0 &&
+    spacesUserModerates.length === 0
+  ) {
     return (
       <Text>
         <FormattedMessage {...messages.noItemsAssigned} />

@@ -6,7 +6,7 @@ import {
 } from 'api/admin_publications/types';
 import { IUserData } from 'api/users/types';
 
-export const getLists = (user: IUserData, treeView: TreeView) => {
+export const getModeratedItems = (user: IUserData, treeView: TreeView) => {
   const folderIds = user.attributes.roles
     ?.filter(
       (

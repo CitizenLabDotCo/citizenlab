@@ -1,6 +1,6 @@
-import { getLists } from './utils';
+import { getModeratedItems } from './utils';
 
-describe('getLists', () => {
+describe('getModeratedItems', () => {
   describe('without spaces', () => {
     const treeView = {
       data: {
@@ -113,7 +113,9 @@ describe('getLists', () => {
         spacesUserModerates: [],
       };
 
-      expect(getLists(user as any, treeView as any)).toEqual(expectedOutcome);
+      expect(getModeratedItems(user as any, treeView as any)).toEqual(
+        expectedOutcome
+      );
     });
 
     it('works if user is PM of nested project', () => {
@@ -144,7 +146,9 @@ describe('getLists', () => {
         spacesUserModerates: [],
       };
 
-      expect(getLists(user as any, treeView as any)).toEqual(expectedOutcome);
+      expect(getModeratedItems(user as any, treeView as any)).toEqual(
+        expectedOutcome
+      );
     });
   });
 
@@ -252,7 +256,9 @@ describe('getLists', () => {
         spacesUserModerates: [treeView.data.attributes.nodes[0]],
       };
 
-      expect(getLists(user as any, treeView as any)).toEqual(expectedOutcome);
+      expect(getModeratedItems(user as any, treeView as any)).toEqual(
+        expectedOutcome
+      );
     });
   });
 });
