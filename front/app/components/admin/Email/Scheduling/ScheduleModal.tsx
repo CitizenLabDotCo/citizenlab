@@ -49,7 +49,6 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     : new Date();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
-  const [datePickerKey, setDatePickerKey] = useState(0);
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
@@ -81,8 +80,6 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
         setSelectedTime(getNextHourTime(tenantTimeNow));
       }
     }
-    // Force close date picker by changing key (similar to click outside behavior)
-    setDatePickerKey((prev) => prev + 1);
   };
 
   const handleTimeChange = (time: Date) => {
@@ -144,7 +141,6 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
           <StyledForm onSubmit={handleScheduleFormSubmit}>
             <Box display="flex" gap="16px" alignItems="center" mb="12px">
               <DateSinglePicker
-                key={datePickerKey}
                 onChange={handleDateChange}
                 selectedDate={selectedDate}
                 startMonth={new Date()}
