@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconButton,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { SpaceNode } from 'api/admin_publications/types';
 
@@ -45,9 +50,19 @@ const Space = ({
     <Box>
       <Row>
         <Box display="flex" alignItems="flex-start">
+          <Icon
+            name="spaces"
+            mr="12px"
+            width="20px"
+            height="20px"
+            transform="translateY(-1px)"
+            fill={colors.black}
+          />
+          <Link to={`/admin/projects/spaces/${node.id}`} color={colors.black}>
+            {localize(node.title_multiloc)}
+          </Link>
           <IconButton
-            mr="8px"
-            ml="-7px"
+            ml="4px"
             iconName={expanded ? 'chevron-down' : 'chevron-right'}
             iconWidth="20px"
             iconHeight="20px"
@@ -56,9 +71,6 @@ const Space = ({
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
-          <Link to={`/admin/projects/spaces/${node.id}`} color={colors.black}>
-            {localize(node.title_multiloc)}
-          </Link>
         </Box>
         {removeButtonMessage && onRemove && (
           <RemoveButton

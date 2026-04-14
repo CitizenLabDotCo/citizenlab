@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Icon,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { FolderNode } from 'api/admin_publications/types';
 
@@ -41,9 +46,19 @@ const Folder = ({
     <Box>
       <Row>
         <Box display="flex" alignItems="flex-start">
+          <Icon
+            name="folder-outline"
+            mr="12px"
+            width="20px"
+            height="20px"
+            transform="translateY(-1px)"
+            fill={colors.black}
+          />
+          <Link to={`/admin/projects/folders/${node.id}`} color={colors.black}>
+            {localize(node.title_multiloc)}
+          </Link>
           <IconButton
-            mr="8px"
-            ml="-7px"
+            ml="4px"
             iconName={expanded ? 'chevron-down' : 'chevron-right'}
             iconWidth="20px"
             iconHeight="20px"
@@ -52,9 +67,6 @@ const Folder = ({
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
-          <Link to={`/admin/projects/folders/${node.id}`} color={colors.black}>
-            {localize(node.title_multiloc)}
-          </Link>
         </Box>
         {removeButtonMessage && onRemove && (
           <RemoveButton
