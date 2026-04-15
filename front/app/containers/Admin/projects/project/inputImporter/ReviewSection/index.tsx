@@ -38,8 +38,13 @@ const ReviewSection = () => {
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
 
-  const { importing, importHasErrors, importProgress, importTotal } =
-    useTrackImportJobProgress(phaseId);
+  const {
+    importing,
+    importHasErrors,
+    importProgress,
+    importTotal,
+    errorCount,
+  } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
@@ -178,7 +183,7 @@ const ReviewSection = () => {
               hasErrors={importHasErrors}
               progress={importProgress}
               total={importTotal}
-              errorCount={latestJob?.attributes.error_count ?? 0}
+              errorCount={errorCount}
             />
           )}
           <IdeaList

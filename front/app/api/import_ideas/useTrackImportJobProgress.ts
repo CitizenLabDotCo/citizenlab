@@ -10,6 +10,7 @@ const useTrackImportJobProgress = (phaseId: string) => {
     importHasErrors: (latestJob?.attributes.error_count ?? 0) > 0,
     importProgress: latestJob?.attributes.progress ?? 0,
     importTotal: latestJob?.attributes.total ?? 0,
+    errorCount: latestJob?.attributes.error_count ?? 0,
   };
 };
 
