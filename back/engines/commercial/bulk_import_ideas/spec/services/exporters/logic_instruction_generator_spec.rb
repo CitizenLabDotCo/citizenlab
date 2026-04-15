@@ -122,6 +122,43 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
       end
     end
 
+    context 'multiple questions with logic on the same page' do
+      let!(:second_select_field) do
+        field = create(:custom_field_select, resource: custom_form, key: 'second_select', title_multiloc: { 'en' => 'Favourite animal' })
+        field.options.create!(key: 'cat', title_multiloc: { 'en' => 'Cat' })
+        field.options.create!(key: 'dog', title_multiloc: { 'en' => 'Dog' })
+        # Move it between select_field and page2
+        field.insert_at(select_field.ordering + 1)
+        field
+      end
+
+      before do
+        select_field.update!(logic: {
+          'rules' => [
+            { 'if' => select_field.options.first.id, 'goto_page_id' => page2.id }
+          ]
+        })
+        second_select_field.update!(logic: {
+          'rules' => [
+            { 'if' => second_select_field.options.second.id, 'goto_page_id' => end_page.id }
+          ]
+        })
+      end
+
+      it 'combines instructions from both questions on the last field of the page' do
+        pf = IdeaCustomFieldsService.new(custom_form).printable_fields
+        af = IdeaCustomFieldsService.new(custom_form).all_fields
+        gen = described_class.new(pf, af, 'en')
+        fields = build_field_hashes_from(pf)
+        gen.attach_logic_instructions(fields)
+
+        last_field_on_page1 = fields.find { |f| f[:id] == second_select_field.id }
+        instructions = last_field_on_page1[:logic_instructions]
+        expect(instructions).to include 'If you answered <strong>A</strong> for Question 1, go to <strong>Section B</strong> next.'
+        expect(instructions).to include 'If you answered <strong>B</strong> for Question 2, you <strong>do not</strong> need to answer any further questions.'
+      end
+    end
+
     context 'no logic on the form' do
       it 'does not attach any instructions' do
         fields = build_field_hashes
@@ -137,8 +174,12 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
   private
 
   def build_field_hashes
+    build_field_hashes_from(printable_fields)
+  end
+
+  def build_field_hashes_from(fields)
     question_num = 0
-    printable_fields.filter_map do |field|
+    fields.filter_map do |field|
       next if field.title_multiloc['en'].blank? && !field.page?
 
       {
