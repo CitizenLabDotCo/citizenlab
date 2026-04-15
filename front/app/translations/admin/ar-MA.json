@@ -1548,7 +1548,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "الكاتب:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "تحميل PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "البريد الإلكتروني:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "حدثت أخطاء أثناء الاستيراد ولم يتم استيراد بعض المدخلات. المرجو تصحيح الأخطاء وإعادة استيراد أي مدخلات مفقودة.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "بيانات النموذج غير صالحة. تحقق من النموذج أعلاه بحثاً عن أخطاء.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "استيراد ملف إكسيل (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "استيراد",

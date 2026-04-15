@@ -1548,7 +1548,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autore:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Scarica il PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Si sono verificati degli errori durante l'importazione e alcuni contributi non sono stati importati. Correggi gli errori e reimposta i contributi mancanti.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Dati del modulo non validi. Controlla che il modulo di cui sopra non contenga errori.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importa un file Excel (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importa",
