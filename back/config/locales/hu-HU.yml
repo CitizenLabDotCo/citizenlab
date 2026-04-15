@@ -1,4 +1,4 @@
-hu:
+hu-HU:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 óra.
@@ -168,6 +168,11 @@ hu:
       last_name: Vezetéknév
       line_print_description: Kérlek, rajzolj egy útvonalat az alábbi térképen.
       linear_scale_print_description: Kérjük, csak %{min_label} és %{max_label} közötti számot írjon be
+      logic_go_to_section: Folytassa a(z) <strong>%{section}</strong> szakasszal.
+      logic_if_answered_end: Ha a(z) %{question}. kérdésre a(z) <strong>%{option}</strong> választ adta, <strong>nem kell</strong> további kérdésekre válaszolnia.
+      logic_if_answered_go_to: Ha a(z) %{question}. kérdésre a(z) <strong>%{option}</strong> választ adta, folytassa a(z) <strong>%{section}</strong> szakasszal.
+      logic_no_further_questions: A válaszai alapján <strong>nem kell</strong> további kérdésekre válaszolnia.
+      logic_section: '%{letter}. szakasz'
       matrix_print_description: Minden sorban jelöljön meg egy kört egy kereszttel a preferenciája jelzésére.
       optional: választható
       page: oldal

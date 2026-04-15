@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "هل تريد حذف هذا المشروع نهائياً؟",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "سيؤدي هذا إلى حذف هذا المشروع وجميع البيانات المرتبطة به نهائياً، مثل الأفكار والتعليقات والأصوات وردود الاستبيان.",
   "app.containers.Admin.projects.all.exportAsPDF1": "تحميل استمارة PDF",
+  "app.containers.Admin.projects.all.includeLogic": "تضمين منطق الاستمارة",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "هاد الخيار غادي يضيف تعليمات نصية لملف PDF باش يوضح الأقسام اللي خاص تجاوب عليها من بعد، على حساب المنطق اللي تم الإعداد ديالو ف الاستمارة.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "يمكن ليك تجمع بين الردود اللي عبر الإنترنت والردود الميدانية. باش تحمل الردود الميدانية، دخل لعلامة التبويب \"مدير المدخلات\" فهاد المشروع، وضغط على \"استيراد\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "تقدر تدمج بين الردود اللي عبر الإنترنت واللي خارج الإنترنت. باش ترفع الردود اللي خارج الإنترنت، دخل لتبويب 'استطلاع' فهاد المشروع، وكليكي على 'استيراد'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "لن يظهر منطق الاستطلاع في ملف PDF المحمل. سيظهر للمشاركين عبر الورق جميع أسئلة الاستطلاع.",

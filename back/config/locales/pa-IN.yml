@@ -1,4 +1,4 @@
-pa:
+pa-IN:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ਘੰਟੇ.
@@ -168,6 +168,11 @@ pa:
       last_name: ਆਖਰੀ ਨਾਂਮ
       line_print_description: ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ 'ਤੇ ਇੱਕ ਰਸਤਾ ਬਣਾਓ।
       linear_scale_print_description: ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ %{min_label} ਅਤੇ %{max_label} ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖੋ
+      logic_go_to_section: ਅੱਗੇ <strong>%{section}</strong> 'ਤੇ ਜਾਓ।
+      logic_if_answered_end: ਜੇਕਰ ਤੁਸੀਂ ਸਵਾਲ %{question} ਲਈ <strong>%{option}</strong> ਜਵਾਬ ਦਿੱਤਾ ਹੈ, ਤਾਂ ਤੁਹਾਨੂੰ ਅੱਗੇ ਕਿਸੇ ਹੋਰ ਸਵਾਲ ਦਾ ਜਵਾਬ ਦੇਣ ਦੀ <strong>ਲੋੜ ਨਹੀਂ</strong> ਹੈ।
+      logic_if_answered_go_to: ਜੇਕਰ ਤੁਸੀਂ ਸਵਾਲ %{question} ਲਈ <strong>%{option}</strong> ਜਵਾਬ ਦਿੱਤਾ ਹੈ, ਤਾਂ ਅੱਗੇ <strong>%{section}</strong> 'ਤੇ ਜਾਓ।
+      logic_no_further_questions: ਤੁਹਾਡੇ ਜਵਾਬਾਂ ਦੇ ਅਧਾਰ 'ਤੇ, ਤੁਹਾਨੂੰ ਅੱਗੇ ਕਿਸੇ ਹੋਰ ਸਵਾਲ ਦਾ ਜਵਾਬ ਦੇਣ ਦੀ <strong>ਲੋੜ ਨਹੀਂ</strong> ਹੈ।
+      logic_section: ਸੈਕਸ਼ਨ %{letter}
       matrix_print_description: ਹਰੇਕ ਕਤਾਰ ਲਈ, ਆਪਣੀ ਪਸੰਦ ਨੂੰ ਦਰਸਾਉਣ ਲਈ ਇੱਕ ਚੱਕਰ ਨੂੰ ਕਰਾਸ ਨਾਲ ਚਿੰਨ੍ਹਿਤ ਕਰੋ।
       optional: ਵਿਕਲਪਿਕ
       page: ਪੰਨਾ

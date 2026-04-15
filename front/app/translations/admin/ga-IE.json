@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "Scrios an tionscadal seo go buan?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "Scriosfaidh sé seo an tionscadal seo agus na sonraí go léir a bhaineann leis, amhail smaointe, tuairimí, vótaí agus freagraí suirbhé, go buan.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Íoslódáil foirm PDF",
+  "app.containers.Admin.projects.all.includeLogic": "Cuir loighic na foirme san áireamh",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "Cuirfidh an rogha seo treoracha téacs leis an PDF chun a léiriú cé na rannáin ar chóir freagra a thabhairt orthu amach anseo, ag brath ar loighic na foirme atá cumraithe.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Is féidir leat freagraí ar líne agus as líne a chomhcheangal. Chun freagraí as líne a uaslódáil, téigh go dtí an cluaisín 'Bainisteoir ionchuir' den tionscadal seo, agus cliceáil 'Iompórtáil'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Is féidir leat freagraí ar líne agus as líne a chomhcheangal. Chun freagraí as líne a uaslódáil, téigh go dtí an cluaisín 'Suirbhé' den tionscadal seo, agus cliceáil 'Iompórtáil'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Ní léireofar loighic an tsuirbhé sa PDF a íoslódáileadh. Feicfidh freagróirí páipéir na ceisteanna suirbhé go léir.",

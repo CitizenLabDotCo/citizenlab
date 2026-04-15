@@ -1227,6 +1227,8 @@
   "app.containers.Admin.projects.all.deleteProjectModalTitle": "ਕੀ ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪੱਕੇ ਤੌਰ 'ਤੇ ਮਿਟਾਉਣਾ ਹੈ?",
   "app.containers.Admin.projects.all.deleteProjectModalWarning1": "ਇਸ ਨਾਲ ਇਹ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਇਸ ਨਾਲ ਸੰਬੰਧਿਤ ਸਾਰਾ ਡਾਟਾ, ਜਿਵੇਂ ਕਿ ਵਿਚਾਰ, ਟਿੱਪਣੀਆਂ, ਵੋਟਾਂ ਅਤੇ ਸਰਵੇਖਣ ਜਵਾਬ, ਸਥਾਈ ਤੌਰ 'ਤੇ ਮਿਟਾ ਦਿੱਤੇ ਜਾਣਗੇ।",
   "app.containers.Admin.projects.all.exportAsPDF1": "PDF ਫਾਰਮ ਡਾਊਨਲੋਡ ਕਰੋ",
+  "app.containers.Admin.projects.all.includeLogic": "ਫਾਰਮ ਲੋਜਿਕ ਸ਼ਾਮਲ ਕਰੋ",
+  "app.containers.Admin.projects.all.includeLogicExplanation": "ਇਹ ਵਿਕਲਪ PDF ਵਿੱਚ ਟੈਕਸਟ ਹਦਾਇਤਾਂ ਜੋੜੇਗਾ ਜੋ ਇਹ ਦੱਸਣਗੀਆਂ ਕਿ ਕੌਂਫਿਗਰ ਕੀਤੇ ਫਾਰਮ ਲੋਜਿਕ ਦੇ ਅਧਾਰ 'ਤੇ ਅੱਗੇ ਕਿਹੜੇ ਭਾਗਾਂ ਦਾ ਜਵਾਬ ਦੇਣਾ ਹੈ।",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "ਤੁਸੀਂ ਔਨਲਾਈਨ ਅਤੇ ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ। ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਅੱਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ 'ਇਨਪੁਟ ਮੈਨੇਜਰ' ਟੈਬ 'ਤੇ ਜਾਓ, ਅਤੇ 'ਆਯਾਤ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "ਤੁਸੀਂ ਔਨਲਾਈਨ ਅਤੇ ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ। ਔਫਲਾਈਨ ਜਵਾਬ ਅੱਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ 'ਸਰਵੇਖਣ' ਟੈਬ 'ਤੇ ਜਾਓ, ਅਤੇ 'ਆਯਾਤ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.logicNotInPDF": "ਸਰਵੇਖਣ ਤਰਕ ਡਾਊਨਲੋਡ ਕੀਤੀ PDF ਵਿੱਚ ਪ੍ਰਤੀਬਿੰਬਿਤ ਨਹੀਂ ਹੋਵੇਗਾ। ਪੇਪਰ ਉੱਤਰਦਾਤਾ ਸਾਰੇ ਸਰਵੇਖਣ ਸਵਾਲਾਂ ਨੂੰ ਦੇਖਣਗੇ।",

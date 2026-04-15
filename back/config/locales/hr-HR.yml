@@ -1,4 +1,4 @@
-hr:
+hr-HR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 sata.
@@ -169,6 +169,11 @@ hr:
       last_name: Prezime
       line_print_description: Molimo vas da nacrtate rutu na karti ispod.
       linear_scale_print_description: Napišite samo broj između %{min_label} i %{max_label}
+      logic_go_to_section: Sljedeće idite na <strong>%{section}</strong>.
+      logic_if_answered_end: Ako ste odgovorili <strong>%{option}</strong> na pitanje %{question}, <strong>ne trebate</strong> odgovarati na daljnja pitanja.
+      logic_if_answered_go_to: Ako ste odgovorili <strong>%{option}</strong> na pitanje %{question}, sljedeće idite na <strong>%{section}</strong>.
+      logic_no_further_questions: Na temelju vaših odgovora, <strong>ne trebate</strong> odgovarati na daljnja pitanja.
+      logic_section: Odjeljak %{letter}
       matrix_print_description: Za svaki red označite jedan krug križićem kako biste naznačili svoju preferenciju.
       optional: neobavezan
       page: Stranica

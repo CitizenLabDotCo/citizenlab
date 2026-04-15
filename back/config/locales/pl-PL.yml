@@ -1,4 +1,4 @@
-pl:
+pl-PL:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 godziny.
@@ -170,6 +170,11 @@ pl:
       last_name: Nazwisko
       line_print_description: Narysuj trasę na poniższej mapie.
       linear_scale_print_description: Wpisz tylko numer z przedziału od %{min_label} do %{max_label} .
+      logic_go_to_section: Przejdź następnie do <strong>%{section}</strong>.
+      logic_if_answered_end: Jeśli Twoja odpowiedź na pytanie %{question} to <strong>%{option}</strong>, <strong>nie musisz</strong> odpowiadać na dalsze pytania.
+      logic_if_answered_go_to: Jeśli Twoja odpowiedź na pytanie %{question} to <strong>%{option}</strong>, przejdź następnie do <strong>%{section}</strong>.
+      logic_no_further_questions: Na podstawie Twoich odpowiedzi <strong>nie musisz</strong> odpowiadać na dalsze pytania.
+      logic_section: Sekcja %{letter}
       matrix_print_description: Dla każdego rzędu zaznacz jedno kółko krzyżykiem, aby wskazać swoje preferencje.
       optional: opcjonalny
       page: Strona
