@@ -1190,6 +1190,7 @@
   "app.containers.Admin.project.emails.message": "Nachricht",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Sie können sich mit den Variablen {firstName} {lastName} direkt an die Bürger*innen wenden. Zum Beispiel: \"Sehr geehrte(r) {firstName} {lastName}, ...\"",
   "app.containers.Admin.project.emails.participants": "Teilnehmende",
+  "app.containers.Admin.project.emails.preview": "Vorschau",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Eine Vorschau-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
   "app.containers.Admin.project.emails.previewTitle": "Vorschau",
   "app.containers.Admin.project.emails.projectParticipants": "Projektteilnehmende",
