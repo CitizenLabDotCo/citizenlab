@@ -21,10 +21,11 @@ import messages from './messages';
 
 interface Props {
   moderator: IUserData;
+  authUserIsAdmin: boolean;
   onDeleteModerator?: (userId: string) => Promise<void>;
 }
 
-const Row = ({ moderator, onDeleteModerator }: Props) => {
+const Row = ({ moderator, authUserIsAdmin, onDeleteModerator }: Props) => {
   const [deleting, setDeleting] = useState(false);
 
   const handleDeleteModerator = onDeleteModerator
@@ -40,9 +41,11 @@ const Row = ({ moderator, onDeleteModerator }: Props) => {
       <Td>
         <NameAvatarEmail user={moderator} />
       </Td>
-      <Td>
-        <UserRole user={moderator} />
-      </Td>
+      {authUserIsAdmin && (
+        <Td>
+          <UserRole user={moderator} />
+        </Td>
+      )}
       <Td>
         <InviteBadge user={moderator} />
       </Td>
