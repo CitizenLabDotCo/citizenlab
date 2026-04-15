@@ -50,7 +50,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <Text m="0px" fontSize="s">
+          <StatusLabel
+            backgroundColor={colors.success}
+            text={<FormattedMessage {...messages.sent} />}
+          />
+
+          <Text as="span" fontSize="base" mb="0px" color="textSecondary">
             <FormattedDate
               value={campaign.attributes.updated_at}
               timeZone={timeZone}
@@ -58,18 +63,18 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
               timeStyle="short"
             />
           </Text>
-          <StatusLabel
-            backgroundColor={colors.success}
-            text={<FormattedMessage {...messages.sent} />}
-          />
+
           {/* Only display project name in the global messaging tab */}
           {context === 'global' && project && (
-            <Text m="0px" fontSize="s">
-              {formatMessage(messages.project)}:{' '}
-              {/* TODO: Fix this the next time the file is edited. */}
-              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-              {localize(project?.data.attributes.title_multiloc)}
-            </Text>
+            <>
+              <Text as="span" mb="0px" color="textSecondary">
+                &bull;
+              </Text>
+              <Text as="span" fontSize="base" mb="0px" color="textSecondary">
+                {formatMessage(messages.project)}:{' '}
+                {localize(project.data.attributes.title_multiloc)}
+              </Text>
+            </>
           )}
         </Box>
       </Box>
