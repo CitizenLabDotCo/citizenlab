@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Elimina",
   "app.components.formBuilder.description": "Descrizione",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "È già stato aggiunto nel modulo. Il contenuto predefinito può essere utilizzato una sola volta.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "L'aggiunta di contenuti personalizzati non fa parte della tua licenza attuale. Contatta il tuo GovSuccess Manager per saperne di più.",
   "app.components.formBuilder.disagree": "Non sono d'accordo",
   "app.components.formBuilder.displayAsDropdown": "Mostra come discesa",
   "app.components.formBuilder.displayAsDropdownTooltip": "Mostra le opzioni in un menu a discesa. Se hai molte opzioni, questa soluzione è consigliata.",
