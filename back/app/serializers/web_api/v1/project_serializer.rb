@@ -32,7 +32,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     if params.key?(:publication_email_available)
       params[:publication_email_available]
     else
-      EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context_id: nil).enabled != false
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
     end
   end
 

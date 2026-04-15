@@ -65,7 +65,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       visible_children_count_by_parent_id: {}, # projects don't have children
       user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
       publication_email_enabled: publication_email_enabled,
-      publication_email_available: EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context_id: nil).enabled != false
+      publication_email_available: EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
     }
 
     render json: linked_json(
