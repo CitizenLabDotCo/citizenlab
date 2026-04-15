@@ -2526,7 +2526,6 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besök vårt hjälpcenter",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mer detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.containers.AdminPage.ProjectEdit.needInspiration": "Behöver du inspiration? Utforska liknande projekt från andra städer på {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Lägg till en kommentar",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Lägg till ett bidrag",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Ny idé",

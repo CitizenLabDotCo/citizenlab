@@ -2526,7 +2526,6 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "زُر مركز المساعدة الخاص بنا",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "المزيد من التفاصيل",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.containers.AdminPage.ProjectEdit.needInspiration": "محتاج إلهام؟ اكتشف مشاريع مشابهة من مدن أخرى في {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "إضافة تعليق",
   "app.containers.AdminPage.ProjectEdit.newContribution": "إضافة مساهمة",
   "app.containers.AdminPage.ProjectEdit.newIdea": "فكرة جديدة",
