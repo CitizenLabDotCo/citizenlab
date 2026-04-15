@@ -16,7 +16,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { isProjectModerator, isRegularUser } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -28,12 +28,13 @@ const AdminProjectFolderEdition = () => {
   const { formatMessage } = useIntl();
 
   if (!authUser || !projectFolder || !projectFolderId) return null;
+  if (isProjectModerator(authUser) || isRegularUser(authUser)) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps: Omit<TabbedResourceProps, 'children'> = {
+  const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
@@ -48,19 +49,13 @@ const AdminProjectFolderEdition = () => {
         url: `/admin/projects/folders/${projectFolderId}/settings`,
         name: 'settings',
       },
-    ],
-  };
-
-  if (isAdmin(authUser) || isSpaceModerator(authUser)) {
-    tabbedProps = {
-      ...tabbedProps,
-      tabs: tabbedProps.tabs.concat({
+      {
         label: formatMessage(messages.projectFolderPermissionsTab),
         url: `/admin/projects/folders/${projectFolderId}/permissions`,
         name: 'permissions',
-      }),
-    };
-  }
+      },
+    ],
+  };
 
   return (
     <>
