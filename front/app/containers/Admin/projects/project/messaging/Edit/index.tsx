@@ -22,14 +22,6 @@ import clHistory from 'utils/cl-router/history';
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
-type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
-const feedbackMessages = {
-  sent: messages.previewSentConfirmation,
-  updated: messages.emailUpdated,
-  created: messages.emailCreated,
-};
-
 const Edit = () => {
   const { projectId, campaignId } = useParams() as {
     projectId: string;
@@ -43,7 +35,7 @@ const Edit = () => {
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>(null);
+  const [previewSent, setPreviewSent] = useState(false);
   const goBack = () => {
     clHistory.push(
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
@@ -56,7 +48,7 @@ const Edit = () => {
   const handleSendTestEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        setFeedbackType('sent');
+        setPreviewSent(true);
       },
     });
   };
@@ -75,10 +67,10 @@ const Edit = () => {
           <FormattedMessage {...messages.editCampaignTitle} />
         </PageTitle>
         <Box>
-          {feedbackType && (
+          {previewSent && (
             <Box mb="8px">
               <Success
-                text={formatMessage(feedbackMessages[feedbackType])}
+                text={formatMessage(messages.previewSentConfirmation)}
                 showIcon
                 showBackground
               />

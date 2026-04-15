@@ -11,7 +11,6 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-// import Success from 'component-library/components/Success';
 import { useParams, useSearchParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';

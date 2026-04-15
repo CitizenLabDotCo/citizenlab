@@ -35,14 +35,6 @@ type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 
-type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
-const feedbackMessages = {
-  sent: messages.previewSentConfirmation,
-  updated: messages.emailUpdated,
-  created: messages.emailCreated,
-};
-
 const Edit = ({ campaignType }: EditProps) => {
   const { campaignId } = useParams() as {
     campaignId: string;
@@ -51,7 +43,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>(null);
+  const [previewSent, setPreviewSent] = useState(false);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
@@ -60,7 +52,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        setFeedbackType('sent');
+        setPreviewSent(true);
       },
     });
   };
@@ -71,7 +63,6 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: CampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    setFeedbackType('updated');
     if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
@@ -121,10 +112,10 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
-        {feedbackType && (
+        {previewSent && (
           <Box mb="8px">
             <Success
-              text={formatMessage(feedbackMessages[feedbackType])}
+              text={formatMessage(messages.previewSentConfirmation)}
               showIcon
               showBackground
             />
