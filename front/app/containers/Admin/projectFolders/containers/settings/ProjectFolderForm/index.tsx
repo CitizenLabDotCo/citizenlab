@@ -5,6 +5,7 @@ import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
@@ -47,6 +48,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
+import { isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -65,8 +67,7 @@ type IProjectFolderSubmitState =
 
 interface Props {
   mode: 'edit' | 'new';
-  // This is wrong. Can be undefined if mode is 'new'
-  projectFolderId: string;
+  projectFolderId?: string;
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
@@ -107,6 +108,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useFeatureFlag({
       name: 'project_description_builder',
     }) && projectFolder; // description builder cannot be used when creating a folder
+
+  const { data: authUser } = useAuthUser();
 
   /*
     ==============
@@ -309,6 +312,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const validate = useCallback(() => {
     let valid = false;
+
     if (!isNilOrError(tenantLocales)) {
       // check that all fields have content for all tenant locales
       valid = tenantLocales.every(
@@ -318,6 +322,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           !isEmpty(shortDescriptionMultiloc?.[locale])
       );
     }
+
+    if (isSpaceModerator(authUser) && !spaceId) {
+      valid = false;
+    }
+
     if (!valid) {
       setSubmitState('error');
     }
@@ -328,6 +337,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     titleMultiloc,
     descriptionMultiloc,
     shortDescriptionMultiloc,
+    authUser,
+    spaceId,
   ]);
 
   const saveForm = async () => {
@@ -422,7 +433,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
               deleteProjectFolderImage({
-                folderId: projectFolderId,
+                folderId: projectFolder.data.id,
                 imageId: folderCardImageToRemove.id,
               });
 
@@ -437,7 +448,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             );
 
             const folderFilesPromise = await syncProjectFolderFiles({
-              projectFolderId,
+              projectFolderId: projectFolder.data.id,
               projectFolderFiles,
               filesToRemove: projectFolderFilesToRemove,
               fileOrdering: initialFileOrdering || {},
@@ -489,7 +500,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             ) {
               updateProjectFolder(
                 {
-                  projectFolderId,
+                  projectFolderId: projectFolder.data.id,
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,

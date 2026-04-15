@@ -3699,6 +3699,11 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:41:22.143317Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.752652Z",
@@ -3783,6 +3788,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:41:22.143317Z",
+    "verified_by": "Rob"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",

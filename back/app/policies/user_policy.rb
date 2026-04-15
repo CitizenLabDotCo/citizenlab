@@ -126,6 +126,10 @@ class UserPolicy < ApplicationPolicy
     attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
   end
 
+  def check_if_exceeds_seats?
+    user&.active? && !user.normal_user?
+  end
+
   private
 
   def allowed_custom_field_keys

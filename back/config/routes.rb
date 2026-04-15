@@ -124,6 +124,7 @@ Rails.application.routes.draw do
 
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
+          get :check_if_exceeds_seats
         end
 
         member do

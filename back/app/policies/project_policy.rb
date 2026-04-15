@@ -98,7 +98,11 @@ class ProjectPolicy < ApplicationPolicy
 
     if record.folder
       UserRoleService.new.can_moderate?(record.folder, user)
+    elsif record.space
+      UserRoleService.new.can_moderate?(record.space, user)
     else
+      # PMs and FMs can create projects, which then need to be approved.
+      # SMs can't for now.
       record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
     end
   end
@@ -161,7 +165,7 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
-    shared << :space_id if user&.admin?
+    shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]

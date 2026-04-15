@@ -12,7 +12,7 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
+import { HighestRole, IUserData } from 'api/users/types';
 
 import Avatar from 'components/Avatar';
 
@@ -44,21 +44,21 @@ export const UserMenu = () => {
     }
   };
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
 
-  const getRole = (user: IUserData): MessageDescriptor => {
-    const highestRole = user.attributes.highest_role ?? 'user';
-    const roleMessage = {
-      admin: messages.administrator,
-      super_admin: messages.administrator,
-      project_folder_moderator: messages.folderManager,
-      project_moderator: messages.projectManager,
-    };
+  const getRoleMessage = (user: IUserData): MessageDescriptor | null => {
+    const highestRole = user.attributes.highest_role;
 
-    return roleMessage[highestRole];
+    if (!highestRole || highestRole === 'user') {
+      return null;
+    }
+
+    return ROLE_MESSAGES[highestRole];
   };
+
+  const roleMessage = getRoleMessage(authUser.data);
 
   return (
     <StyledBox
@@ -119,7 +119,7 @@ export const UserMenu = () => {
                 w="100%"
                 textAlign="left"
               >
-                {formatMessage({ ...getRole(authUser.data) })}
+                {roleMessage ? formatMessage(roleMessage) : ''}
               </Text>
             </Box>
           </Box>
@@ -181,4 +181,12 @@ export const UserMenu = () => {
       />
     </StyledBox>
   );
+};
+
+const ROLE_MESSAGES: Record<Exclude<HighestRole, 'user'>, MessageDescriptor> = {
+  super_admin: messages.administrator,
+  admin: messages.administrator,
+  space_moderator: messages.spaceManager,
+  project_folder_moderator: messages.folderManager,
+  project_moderator: messages.projectManager,
 };
