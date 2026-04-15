@@ -66,8 +66,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 201
-          expect(response_data[:id]).to eq test_user.id
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
         end
 
@@ -83,13 +83,13 @@ resource 'Moderators' do
             before { create(:project_folder_moderator) } # to reach the limit
 
             example_request 'Increments additional seats', document: false do
-              assert_status 201
+              assert_status 200
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
           end
 
           example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 201
+            assert_status 200
             expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
@@ -113,12 +113,26 @@ resource 'Moderators' do
     delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:project_folder_id) { project_folder.id }
-      let(:user_id) { moderator.id }
-      let!(:child_projects) { create_list(:project, 3) }
+      let(:moderator_of_same_folder) { create(:project_folder_moderator, project_folders: [project_folder]) }
 
-      example_request '[error] Delete a moderator of a project_folder' do
+      let(:other_project_folder) { create(:project_folder) }
+      let(:moderator_of_other_folder) { create(:project_folder_moderator, project_folders: [other_project_folder]) }
+
+      example 'Delete a moderator of moderated project_folder' do
+        n_roles_before = moderator_of_same_folder.reload.roles.size
+        do_request project_folder_id: project_folder.id, user_id: moderator_of_same_folder.id
+
+        expect(response_status).to eq 200
+        expect(moderator_of_same_folder.reload.roles.size).to eq(n_roles_before - 1)
+        expect(LogActivityJob).to have_been_enqueued.with(moderator_of_same_folder, 'project_folder_moderation_rights_removed', moderator, kind_of(Integer), payload: { project_folder_id: project_folder.id })
+      end
+
+      example '[Unauthorized] Delete a moderator of unmoderated project_folder' do
+        n_roles_before = moderator_of_other_folder.reload.roles.size
+        do_request project_folder_id: other_project_folder.id, user_id: moderator_of_other_folder.id
+
         expect(response_status).to eq 401
+        expect(moderator_of_other_folder.reload.roles.size).to eq(n_roles_before)
       end
     end
   end
@@ -187,8 +201,8 @@ resource 'Moderators' do
 
           do_request
 
-          expect(response_status).to eq 201
-          expect(response_data[:id]).to eq test_user.id
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(test_user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
           expect(test_user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_folder_moderation_rights_received', admin, kind_of(Integer), payload: { project_folder_id: project_folder.id })
@@ -200,6 +214,11 @@ resource 'Moderators' do
         let(:user_id) { test_user.id }
 
         include_examples 'adding a folder moderator'
+
+        example '[error] Returns error when user_id does not match any user' do
+          do_request(moderator: { user_id: 'non-existent-id' })
+          expect(response_status).to eq 404
+        end
       end
 
       context 'with user_email' do
@@ -207,6 +226,38 @@ resource 'Moderators' do
         let(:user_email) { test_user.email }
 
         include_examples 'adding a folder moderator'
+
+        context 'when email does not match any user' do
+          let(:user_email) { 'newuser@example.com' }
+
+          example 'Sends an invite to the email address' do
+            expect do
+              do_request
+            end.to change(InvitesImport, :count).by(1)
+              .and have_enqueued_job(Invites::BulkCreateJob)
+
+            assert_status 202
+
+            # Verify the invite has correct parameters
+            import = InvitesImport.last
+            expect(import.job_type).to eq 'bulk_create'
+            expect(import.importer).to eq admin
+          end
+
+          example 'Creates invite with correct role and project_folder' do
+            do_request
+
+            expect(Invites::BulkCreateJob).to have_been_enqueued.with(
+              admin,
+              hash_including(
+                emails: [user_email],
+                roles: [{ type: 'project_folder_moderator', project_folder_id: project_folder_id }]
+              ),
+              kind_of(String), # import.id
+              xlsx_import: false
+            )
+          end
+        end
       end
     end
 

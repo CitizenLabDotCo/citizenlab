@@ -80,6 +80,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     scope :moderator, -> { where(id: project_moderator).or(where(id: project_folder_moderator)).or(where(id: space_moderator)) }
+    scope :not_moderator, -> { where.not(id: moderator) }
     scope :admin_or_moderator, -> { admin.or(moderator) }
 
     scope :can_moderate, lambda { |project_id = nil|
@@ -176,7 +177,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   # either directly, through a folder, or through a space.
   # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
-    moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
+    moderated_directly_ids = moderated_project_ids
 
     # Include ids of projects in folders the user moderates
     moderated_folder_project_ids = AdminPublication
@@ -192,6 +193,23 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     moderated_space_project_ids = Project.where(space_id: moderated_space_ids).pluck(:id)
 
     (moderated_directly_ids + moderated_folder_project_ids + moderated_space_project_ids).uniq
+  end
+
+  # Returns an array of folder IDs that the user, other than an admin, moderates,
+  # either directly or through a space.
+  # Admins can always moderate all folders, so this method is only relevant for non-admins.
+  def moderatable_folder_ids
+    # Include folders the user moderates directly
+    moderated_directly_ids = moderated_project_folder_ids
+
+    # Include folders in spaces the user moderates
+    moderated_space_folder_ids = ProjectFolders::Folder.where(space_id: moderated_space_ids).pluck(:id)
+
+    (moderated_directly_ids + moderated_space_folder_ids).uniq
+  end
+
+  def moderated_project_ids
+    roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
   end
 
   def moderated_project_folder_ids

@@ -9,6 +9,7 @@ import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IFileData } from 'api/files/types';
 import useAddFile from 'api/files/useAddFile';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -59,7 +60,7 @@ import {
   isUploadFile,
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { usePermission } from 'utils/permissions';
+import { isSpaceModerator, isAdmin } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -89,6 +90,7 @@ const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -154,10 +156,8 @@ const AdminProjectsProjectGeneral = () => {
     useState<Multiloc | null>(null);
 
   const showProjectFolderSelect =
-    usePermission({
-      item: 'project_folder',
-      action: 'create_project_in_folder',
-    }) && isProjectFoldersEnabled;
+    (isAdmin(authUser) || isSpaceModerator(authUser)) &&
+    isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {
@@ -516,6 +516,12 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
+    const { space_id, folder_id } = projectAttributesDiff;
+
+    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
+      return false;
+    }
+
     return formIsValid;
   };
 
@@ -709,7 +715,7 @@ const AdminProjectsProjectGeneral = () => {
 
           <SpaceSelectSection
             spaceId={projectAttrs.space_id ?? null}
-            disabled={!!projectAttrs.folder_id}
+            isProjectInsideFolder={!!projectAttrs.folder_id}
             onChange={handleSpaceSelectChange}
           />
 

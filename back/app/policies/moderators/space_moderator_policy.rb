@@ -9,11 +9,11 @@ module Moderators
     end
 
     def create?
-      active_and_can_moderate? # TODO: Confirm this is not too permissive.
+      active_and_can_moderate?
     end
 
     def destroy?
-      active_admin? # Only admins can remove space moderators
+      active_and_can_moderate?
     end
 
     private

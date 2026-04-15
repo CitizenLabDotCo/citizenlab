@@ -2099,11 +2099,6 @@
     "verified_at": "2026-03-18T16:35:46.942352Z",
     "verified_by": "Admin"
   },
-  "app.components.PostCardsComponents.feed": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:27.895615Z",
-    "verified_by": "Admin"
-  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
@@ -3619,6 +3614,12 @@
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
   },
+
+  "app.components.admin.UserFilterConditions.predicate_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T10:22:38.815746Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
@@ -3679,6 +3680,12 @@
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
   },
+
+  "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T10:22:38.815746Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
@@ -3693,6 +3700,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:41:22.468532Z",
+    "verified_by": "Rob"
   },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
@@ -3754,6 +3767,12 @@
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
   },
+
+  "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T10:22:38.815746Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.UserFilterConditions.predicate_not_is_normal_user": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
@@ -3764,10 +3783,22 @@
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
   },
+
+  "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-23T10:22:38.815746Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.UserFilterConditions.predicate_not_is_project_moderator": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.895615Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:41:22.468532Z",
+    "verified_by": "Rob"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",
