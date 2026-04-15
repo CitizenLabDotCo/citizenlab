@@ -16109,6 +16109,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaper1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaperDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.phase.methodPicker.commonGroundDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -16139,6 +16149,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -16164,6 +16184,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.learnMore1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.phase.methodPicker.linkWithReportBuilder1": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -16178,6 +16203,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.phase.methodPicker.notAvailableInYourPlan1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T08:26:49.656878Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.AdminPage.phase.methodPicker.proposalsDescription": {
     "state": "verified",

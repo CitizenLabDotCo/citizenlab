@@ -16169,6 +16169,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaper1": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaperDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.phase.methodPicker.commonGroundDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -16199,6 +16209,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -16224,6 +16244,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.learnMore1": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.phase.methodPicker.linkWithReportBuilder1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -16238,6 +16263,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.phase.methodPicker.notAvailableInYourPlan1": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:02:27.724541Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.phase.methodPicker.proposalsDescription": {
     "state": "verified",
