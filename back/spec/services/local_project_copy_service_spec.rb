@@ -320,11 +320,16 @@ describe LocalProjectCopyService do
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
+      # Make sure to use a timeline that doesn't cross a DST boundary for this test.
       freeze_time do
-        phase1_start = timeline_project.phases.first.start_at
-        phase2_end = timeline_project.phases.second.end_at
+        project = create(:project)
+        create(:phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
+        create(:phase, project: project, participation_method: 'information', start_at: 5.days.ago, end_at: 5.days.from_now)
 
-        copied_project = service.copy(timeline_project)
+        phase1_start = project.phases.first.start_at
+        phase2_end = project.phases.second.end_at
+
+        copied_project = service.copy(project)
         copied_phase1_start = copied_project.phases.first.start_at
         copied_phase2_end = copied_project.phases.second.end_at
 

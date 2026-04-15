@@ -9,7 +9,7 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
     before_all do
       # A timezone with a zero or negative offset is required for the compare-dates
       # regression test below.
-      AppConfiguration.instance.settings['core']['timezone'] = 'UTC'
+      AppConfiguration.instance.settings['core']['timezone'] = 'Atlantic/Reykjavik'
       AppConfiguration.instance.save!
 
       project = create(:project)
