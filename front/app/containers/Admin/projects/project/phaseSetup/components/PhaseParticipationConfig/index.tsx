@@ -28,8 +28,8 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Callout from 'components/UI/Callout';
 import Error from 'components/UI/Error';
-import InfoBar from 'components/UI/InfoBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -496,7 +496,7 @@ const PhaseParticipationConfig = ({
         />
         {project_library_enabled && (
           <Box mb="20px" width="750px">
-            <InfoBar
+            <Callout
               icon="info-solid"
               primaryText={
                 <FormattedMessage {...projectMessages.needInspiration} />

@@ -22,7 +22,7 @@ interface Props {
   tooltipDisabled?: boolean;
 }
 
-const InfoBar = ({
+const Callout = ({
   icon,
   primaryText,
   secondaryText,
@@ -79,4 +79,4 @@ const InfoBar = ({
   );
 };
 
-export default InfoBar;
+export default Callout;

@@ -16,8 +16,8 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Callout from 'components/UI/Callout';
 import Error from 'components/UI/Error';
-import InfoBar from 'components/UI/InfoBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -369,7 +369,7 @@ const ParticipationMethodPicker = ({
               selectedMethod
             ) && (
               <Box mt="24px" width="750px">
-                <InfoBar
+                <Callout
                   icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
                   tooltipContent={
                     <Box display="flex" flexDirection="column" gap="8px">
