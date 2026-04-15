@@ -56,12 +56,8 @@ describe TimelineService do
       t = '2019-09-09T23:00:00'
 
       set_timezone('Europe/Brussels')
-      # t = '2019-09-09T23:00:00+02:00'
-      # utc => 2019-09-09T21:00:00Z
       expect(service.current_phase(project.reload, t)).to eq(phase)
 
-      # t = '2019-09-09T23:00:00-03:00'
-      # utc => 2019-09-10T02:00:00Z
       set_timezone('America/Santiago')
       expect(service.current_phase(project.reload, t)).to be_nil
     end
