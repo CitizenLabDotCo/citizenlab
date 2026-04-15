@@ -5,10 +5,8 @@ import {
   Box,
   Badge,
   Icon,
-  Text,
   colors,
   Tooltip,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
@@ -18,8 +16,8 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import InfoBar from 'components/UI/InfoBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -370,69 +368,34 @@ const ParticipationMethodPicker = ({
             ['native_survey', 'ideation', 'proposals'].includes(
               selectedMethod
             ) && (
-              <Box
-                display="flex"
-                alignItems="center"
-                gap="16px"
-                p="16px"
-                borderRadius={stylingConsts.borderRadius}
-                mt="24px"
-                w="750px"
-                background={colors.teal100}
-              >
-                <Tooltip
-                  content={
-                    <>
-                      <Box display="flex" flexDirection="column" gap="8px">
-                        <FormattedMessage
-                          {...messages2.formSyncLockedTooltip}
-                        />
-                        <FormattedMessage
-                          {...messages2.formSyncLockedTooltip2}
-                        />
-                      </Box>
-                    </>
+              <Box mt="24px" width="750px">
+                <InfoBar
+                  icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                  tooltipContent={
+                    <Box display="flex" flexDirection="column" gap="8px">
+                      <FormattedMessage {...messages2.formSyncLockedTooltip} />
+                      <FormattedMessage {...messages2.formSyncLockedTooltip2} />
+                    </Box>
                   }
-                  disabled={importPrintedFormsEnabled}
-                  placement="bottom"
-                  theme="dark"
-                >
-                  <Icon
-                    name={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
-                    fill={colors.teal700}
-                    width="20px"
-                  />
-                </Tooltip>
-
-                <Box>
-                  <Text m="0px" color="teal700" fontSize="s">
-                    <b>
+                  tooltipDisabled={importPrintedFormsEnabled}
+                  linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
+                  linkText={<FormattedMessage {...messages2.learnMore} />}
+                  primaryText={
+                    <FormattedMessage {...messages2.collectResponsesOnPaper} />
+                  }
+                  secondaryText={
+                    <>
                       <FormattedMessage
-                        {...messages2.collectResponsesOnPaper}
-                      />
-                    </b>{' '}
-                    <FormattedMessage
-                      {...messages2.collectResponsesOnPaperDescription}
-                    />{' '}
-                    {!importPrintedFormsEnabled && (
-                      <>
+                        {...messages2.collectResponsesOnPaperDescription}
+                      />{' '}
+                      {!importPrintedFormsEnabled && (
                         <FormattedMessage
                           {...messages2.notAvailableInYourPlan}
                         />
-                      </>
-                    )}
-                  </Text>
-                </Box>
-                <ButtonWithLink
-                  linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
-                  openLinkInNewTab
-                  buttonStyle="text"
-                  m="0px"
-                  fontSize="s"
-                  textColor={colors.teal700}
-                >
-                  <FormattedMessage {...messages2.learnMore} />
-                </ButtonWithLink>
+                      )}
+                    </>
+                  }
+                />
               </Box>
             )}
           <Error apiErrors={apiErrors && apiErrors.participation_method} />

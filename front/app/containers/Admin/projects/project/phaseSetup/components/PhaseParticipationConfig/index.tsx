@@ -29,7 +29,7 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
+import InfoBar from 'components/UI/InfoBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -495,19 +495,25 @@ const PhaseParticipationConfig = ({
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
         {project_library_enabled && (
-          <Box mb="20px">
-            <Warning>
-              <FormattedMessage
-                {...projectMessages.needInspiration}
-                values={{
-                  inspirationHubLink: (
-                    <Link to="/admin/inspiration-hub" target="_blank">
-                      <FormattedMessage {...projectMessages.inspirationHub} />
-                    </Link>
-                  ),
-                }}
-              />
-            </Warning>
+          <Box mb="20px" width="750px">
+            <InfoBar
+              icon="info-solid"
+              primaryText={
+                <FormattedMessage {...projectMessages.needInspiration} />
+              }
+              secondaryText={
+                <FormattedMessage
+                  {...projectMessages.needInspirationDescription}
+                  values={{
+                    inspirationHubLink: (
+                      <Link to="/admin/inspiration-hub" target="_blank">
+                        <FormattedMessage {...projectMessages.inspirationHub} />
+                      </Link>
+                    ),
+                  }}
+                />
+              }
+            />
           </Box>
         )}
         {participation_method === 'common_ground' && (
