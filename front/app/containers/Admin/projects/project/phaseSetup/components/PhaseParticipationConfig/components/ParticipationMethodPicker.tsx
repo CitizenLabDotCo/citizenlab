@@ -380,10 +380,10 @@ const ParticipationMethodPicker = ({
                   tooltipDisabled={importPrintedFormsEnabled}
                   linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
                   linkText={<FormattedMessage {...messages2.learnMore} />}
-                  primaryText={
+                  title={
                     <FormattedMessage {...messages2.collectResponsesOnPaper} />
                   }
-                  secondaryText={
+                  description={
                     <>
                       <FormattedMessage
                         {...messages2.collectResponsesOnPaperDescription}

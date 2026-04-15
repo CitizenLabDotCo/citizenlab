@@ -498,10 +498,8 @@ const PhaseParticipationConfig = ({
           <Box mb="20px" width="750px">
             <Callout
               icon="info-solid"
-              primaryText={
-                <FormattedMessage {...projectMessages.needInspiration} />
-              }
-              secondaryText={
+              title={<FormattedMessage {...projectMessages.needInspiration} />}
+              description={
                 <FormattedMessage
                   {...projectMessages.needInspirationDescription}
                   values={{

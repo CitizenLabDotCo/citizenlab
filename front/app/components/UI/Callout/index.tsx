@@ -14,8 +14,8 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 interface Props {
   icon: IconNames;
-  primaryText: ReactNode;
-  secondaryText?: ReactNode;
+  title: ReactNode;
+  description: ReactNode;
   linkText?: ReactNode;
   linkTo?: string;
   tooltipContent?: ReactNode;
@@ -24,8 +24,8 @@ interface Props {
 
 const Callout = ({
   icon,
-  primaryText,
-  secondaryText,
+  title,
+  description,
   linkText,
   linkTo,
   tooltipContent,
@@ -58,8 +58,8 @@ const Callout = ({
 
       <Box>
         <Text m="0px" color="teal700" fontSize="s">
-          <b>{primaryText}</b>
-          {secondaryText && <> {secondaryText}</>}
+          <b>{title}</b>
+          <> {description}</>
         </Text>
       </Box>
 
