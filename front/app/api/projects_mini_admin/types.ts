@@ -7,8 +7,14 @@ import {
 } from 'typings';
 
 import { ReviewState } from 'api/admin_publications/types';
-import { ParticipationMethod } from 'api/phases/types';
-import { PublicationStatus, Visibility } from 'api/projects/types';
+import { IGroupData } from 'api/groups/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import {
+  IProjectData,
+  PublicationStatus,
+  Visibility,
+} from 'api/projects/types';
+import { IUserData } from 'api/users/types';
 
 export type ProjectSortableParam =
   | 'recently_viewed'
@@ -45,9 +51,12 @@ export type ParticipationState =
 
 export type Discoverability = 'listed' | 'unlisted';
 
+type Included = (IUserData | IProjectData | IGroupData | IPhaseData)[];
+
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
   links: ILinks;
+  included?: Included;
 };
 
 export type ProjectMiniAdminData = {

@@ -21,6 +21,7 @@ const AddButton = styled(ButtonWithLink)`
 interface Props {
   projectId?: string;
   folderId?: string;
+  spaceId?: string;
   label?: JSX.Element | string;
   onAddModerator: (id: string) => Promise<void>;
 }
@@ -28,6 +29,7 @@ interface Props {
 const ModeratorUserSearch = ({
   projectId,
   folderId,
+  spaceId,
   label,
   onAddModerator,
 }: Props) => {
@@ -67,6 +69,7 @@ const ModeratorUserSearch = ({
             placeholder={formatMessage(messages.searchUsers)}
             isNotProjectModeratorOfProjectId={projectId}
             isNotFolderModeratorOfFolderId={folderId}
+            isNotSpaceModeratorOfFolderId={spaceId}
           />
         </Box>
 
