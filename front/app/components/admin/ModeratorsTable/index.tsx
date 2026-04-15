@@ -58,7 +58,6 @@ const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
           <Row
             key={moderator.id}
             moderator={moderator}
-            authUserIsAdmin={authUserIsAdmin}
             onDeleteModerator={onDeleteModerator}
           />
         ))}
