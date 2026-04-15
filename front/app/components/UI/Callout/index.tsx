@@ -18,17 +18,17 @@ interface Props {
   description: ReactNode;
   linkText?: ReactNode;
   linkTo?: string;
-  tooltipContent?: ReactNode;
+  disabledTooltipContent?: ReactNode;
   tooltipDisabled?: boolean;
 }
 
-const Callout = ({
+const FeatureCallout = ({
   icon,
   title,
   description,
   linkText,
   linkTo,
-  tooltipContent,
+  disabledTooltipContent,
   tooltipDisabled,
 }: Props) => {
   const iconElement = <Icon name={icon} fill={colors.teal700} width="20px" />;
@@ -43,9 +43,9 @@ const Callout = ({
       borderRadius={stylingConsts.borderRadius}
       background={colors.teal100}
     >
-      {tooltipContent ? (
+      {disabledTooltipContent ? (
         <Tooltip
-          content={tooltipContent}
+          content={disabledTooltipContent}
           disabled={tooltipDisabled}
           placement="bottom"
           theme="dark"
@@ -79,4 +79,4 @@ const Callout = ({
   );
 };
 
-export default Callout;
+export default FeatureCallout;

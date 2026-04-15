@@ -16,7 +16,7 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Callout from 'components/UI/Callout';
+import FeatureCallout from 'components/UI/Callout';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -369,9 +369,9 @@ const ParticipationMethodPicker = ({
               selectedMethod
             ) && (
               <Box mt="24px" width="750px">
-                <Callout
+                <FeatureCallout
                   icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
-                  tooltipContent={
+                  disabledTooltipContent={
                     <Box display="flex" flexDirection="column" gap="8px">
                       <FormattedMessage {...messages2.formSyncLockedTooltip} />
                       <FormattedMessage {...messages2.formSyncLockedTooltip2} />
