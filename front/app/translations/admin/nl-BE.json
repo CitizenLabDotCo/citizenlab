@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "in ons Helpcentrum",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Meer details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "Inspiratie nodig?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Ontdek vergelijkbare projecten van andere steden in de {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Voeg een reageer toe",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Voeg een bijdrage toe",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Nieuw idee",

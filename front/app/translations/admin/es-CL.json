@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visitar nuestro Centro de Ayuda",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Más detalles",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/es/articles/527642-cuales-son-los-diferentes-roles-en-la-plataforma",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "¿Necesitas inspiración?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Explora proyectos similares de otras ciudades en el {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Agregar un comentario",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Enviar una propuesta",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Nueva idea",
