@@ -24,7 +24,7 @@ import Row from './Row';
 
 interface Props {
   moderators: IUserData[];
-  onDeleteModerator?: (userId: string) => Promise<void>;
+  onDeleteModerator: (userId: string) => Promise<void>;
 }
 
 const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
