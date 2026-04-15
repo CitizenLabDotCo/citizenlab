@@ -52,6 +52,7 @@ const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
         width="auto"
         icon="edit"
         data-cy="e2e-edit-survey-form"
+        buttonStyle="admin-dark"
       >
         <FormattedMessage {...messages.editSurveyForm} />
       </ButtonWithLink>
