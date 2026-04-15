@@ -13,11 +13,16 @@ resource 'Analytics - FactParticipations' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      # Date dimensions
-      dates = [Date.new(2022, 9, 2), Date.new(2022, 9, 15), Date.new(2022, 10, 2), Date.new(2022, 10, 15)]
-      dates.each do |date|
-        create(:dimension_date, date: date)
-      end
+      # Using UTC explicitly, because (unfortunately) the fact_participations view uses UTC when
+      # converting created_at to dates instead of tenant timezone.
+      times = [
+        Time.utc(2022, 9, 2),
+        Time.utc(2022, 9, 15),
+        Time.utc(2022, 10, 2),
+        Time.utc(2022, 10, 15)
+      ]
+
+      times.each { |time| create(:dimension_date, date: time) }
 
       # Type dimensions
       [
@@ -33,9 +38,9 @@ resource 'Analytics - FactParticipations' do
       _unspecified = create(:user, gender: 'unspecified')
 
       # Create participations (3 by citizens, 1 by admin)
-      idea = create(:idea, created_at: dates[0], author: male)
-      create(:comment, created_at: dates[2], idea: idea, author: female)
-      create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
+      idea = create(:idea, created_at: times[0], author: male)
+      create(:comment, created_at: times[2], idea: idea, author: female)
+      create(:reaction, created_at: times[3], user: create(:admin, gender: 'female'), reactable: idea)
     end
 
     example 'group participations by month' do

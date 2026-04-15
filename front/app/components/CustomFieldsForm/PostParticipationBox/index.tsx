@@ -50,6 +50,7 @@ const PostParticipationBox = ({
         />
       </Box>
       <Button
+        type="button"
         onClick={onCreateAccount}
         mt="16px"
         dataCy="post-participation-signup"

@@ -22,8 +22,6 @@ export interface IQueryParameters {
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
   review_state?: ReviewState;
-  filter_is_moderator_of?: boolean;
-  filter_user_is_moderator_of?: string;
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
@@ -83,3 +81,36 @@ export interface IAdminPublications {
 export interface IAdminPublication {
   data: IAdminPublicationData;
 }
+
+export type SpaceNode = {
+  id: string;
+  type: 'space';
+  title_multiloc: Multiloc;
+  children: (FolderNode | ProjectNode)[];
+};
+
+export type FolderNode = {
+  id: string;
+  type: 'folder';
+  title_multiloc: Multiloc;
+  children: ProjectNode[];
+};
+
+export type ProjectNode = {
+  id: string;
+  type: 'project';
+  title_multiloc: Multiloc;
+};
+
+export type TreeNode = SpaceNode | FolderNode | ProjectNode;
+
+export type NodeType = TreeNode['type'];
+
+export type TreeView = {
+  data: {
+    type: 'tree_view';
+    attributes: {
+      nodes: TreeNode[];
+    };
+  };
+};

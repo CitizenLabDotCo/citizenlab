@@ -74,7 +74,8 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
   def official_feedback_params
     params.require(:official_feedback).permit(
       body_multiloc: CL2_SUPPORTED_LOCALES,
-      author_multiloc: CL2_SUPPORTED_LOCALES
+      author_multiloc: CL2_SUPPORTED_LOCALES,
+      weglot_data: %i[locale body]
     )
   end
 end

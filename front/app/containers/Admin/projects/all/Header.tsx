@@ -9,15 +9,19 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
 const Header = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: authUser } = useAuthUser();
-  const userIsAdmin = isAdmin(authUser);
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+
+  const userIsAdmin = isAdmin(authUser);
+  const userIsSpaceModerator = isSpaceModerator(authUser);
+
+  const userCanAddFolders = userIsAdmin || userIsSpaceModerator;
 
   return (
     <Box display="flex" justifyContent="space-between">
@@ -34,25 +38,37 @@ const Header = () => {
         className="intercom-admin-projects-new-project-folder-buttons"
       >
         {spacesEnabled && (
-          <Box>
-            <Button
-              data-cy="e2e-new-space-button"
-              className="intercom-admin-projects-new-space-button"
-              linkTo={'/admin/projects/spaces/new'}
-              buttonStyle="secondary-outlined"
-              icon="spaces"
-              iconSize="20px"
-            >
-              <FormattedMessage {...messages.newSpace} />
-            </Button>
-          </Box>
+          <Tooltip
+            content={
+              <FormattedMessage {...messages.onlyAdminsCanCreateSpaces} />
+            }
+            disabled={userIsAdmin}
+          >
+            <Box>
+              <Button
+                data-cy="e2e-new-space-button"
+                className="intercom-admin-projects-new-space-button"
+                linkTo={'/admin/projects/spaces/new'}
+                buttonStyle="secondary-outlined"
+                icon="spaces"
+                iconSize="20px"
+                disabled={!userIsAdmin}
+              >
+                <FormattedMessage {...messages.newSpace} />
+              </Button>
+            </Box>
+          </Tooltip>
         )}
         {isProjectFoldersEnabled && (
           <Tooltip
             content={
-              <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
+              <FormattedMessage
+                {...(spacesEnabled
+                  ? messages.onlyAdminsAndSpaceManagersCanCreateFolders
+                  : messages.onlyAdminsCanCreateFolders)}
+              />
             }
-            disabled={userIsAdmin}
+            disabled={userCanAddFolders}
           >
             <Box>
               <Button
@@ -60,7 +76,7 @@ const Header = () => {
                 linkTo={'/admin/projects/folders/new'}
                 buttonStyle="secondary-outlined"
                 icon="folder-add"
-                disabled={!userIsAdmin}
+                disabled={!userCanAddFolders}
               >
                 <FormattedMessage {...messages.createProjectFolder} />
               </Button>

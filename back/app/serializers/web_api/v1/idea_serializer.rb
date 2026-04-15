@@ -21,7 +21,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :proposed_budget,
     :manual_votes_amount,
     :anonymous,
-    :author_hash
+    :author_hash,
+    :weglot_data
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))

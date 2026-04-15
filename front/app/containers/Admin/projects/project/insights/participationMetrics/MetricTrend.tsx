@@ -68,14 +68,15 @@ const MetricTrend = ({ change }: Props) => {
     );
   }
 
-  const isPositive = change > 0;
-  const isNeutral = change === 0;
+  const roundedChange = Math.round(change);
+  const isPositive = roundedChange > 0;
+  const isNeutral = roundedChange === 0;
   const trendIcon = isPositive
     ? 'arrow-up'
     : isNeutral
     ? undefined
     : 'arrow-down';
-  const formattedPercentage = formatNumber(Math.round(change) / 100, {
+  const formattedPercentage = formatNumber(roundedChange / 100, {
     style: 'percent',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,

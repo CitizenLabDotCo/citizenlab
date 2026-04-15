@@ -171,7 +171,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(:phases, :admin_publication, :project_images, :groups)
+    projects = projects.includes(phases: %i[report custom_form permissions], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -183,7 +183,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_project: moderators_per_project
+        moderators_per_project:
       ),
       include: %i[phases project_images groups moderators]
     )
@@ -381,6 +381,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def participant_counts
     projects = policy_scope(Project)
       .where(id: params[:project_ids])
+      .includes(:phases)
 
     authorize projects, :participant_counts?
 

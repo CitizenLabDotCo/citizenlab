@@ -100,9 +100,9 @@ FactoryBot.define do
       action { 'comment_liked' }
     end
 
-    factory :admin_rights_given_activity do
+    factory :admin_rights_received_activity do
       association :item, factory: :admin
-      action { 'admin_rights_given' }
+      action { 'admin_rights_received' }
     end
 
     factory :project_created_activity do

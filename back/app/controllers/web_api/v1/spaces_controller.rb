@@ -1,13 +1,23 @@
 class WebApi::V1::SpacesController < ApplicationController
-  before_action :set_space, only: %i[show update destroy tree_view]
+  before_action :set_space, only: %i[show update destroy]
 
   def index
     authorize :space, :index?
     @spaces = policy_scope(Space)
     @spaces = paginate @spaces
-    @spaces = @spaces.includes(:folders, :projects)
 
-    render json: linked_json(@spaces, WebApi::V1::SpaceSerializer, params: jsonapi_serializer_params, include: %i[folders projects])
+    moderators_per_space = UserRoleService.new.moderators_per_space(
+      @spaces.pluck(:id)
+    )
+
+    render json: linked_json(
+      @spaces,
+      WebApi::V1::SpaceSerializer,
+      params: jsonapi_serializer_params(
+        moderators_per_space:
+      ),
+      include: %i[moderators]
+    )
   end
 
   def show
@@ -51,11 +61,6 @@ class WebApi::V1::SpacesController < ApplicationController
     else
       render json: { errors: @space.errors.details }, status: :unprocessable_entity
     end
-  end
-
-  def tree_view
-    nodes = TreeViewService.new(space_id: @space.id).generate_tree
-    render json: raw_json({ nodes: })
   end
 
   private

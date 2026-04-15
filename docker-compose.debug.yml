@@ -1,0 +1,12 @@
+services:
+  web:
+    command: bundle exec rdbg -O -n --host 0.0.0.0 --port 12345 -c -- bundle exec puma -C config/puma.rb
+    environment:
+      - WEB_CONCURRENCY=0
+    ports:
+      - "12345:12345"
+      - "12347:12347"
+  que:
+    command: bundle exec rdbg -O -n --host 0.0.0.0 --port 12346 -c -- bundle exec que
+    ports:
+      - "12346:12346"

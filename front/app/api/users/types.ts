@@ -28,6 +28,7 @@ export type OnboardingType = {
 export type HighestRole =
   | 'super_admin'
   | 'admin'
+  | 'space_moderator'
   | 'project_folder_moderator'
   | 'project_moderator'
   | 'user';
@@ -128,16 +129,16 @@ export interface IQueryParameters {
   group?: string;
   can_moderate_project?: string;
   can_moderate?: true;
-  can_admin?: boolean;
+  admins_only?: boolean;
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
-  // Pass project id to exclude all users who can moderate
-  // the project
+  // Pass project/folder/space id to exclude all users who are
+  // project moderators of the project/folder/space
   is_not_project_moderator?: string;
-  // Pass folder id to exclude all users who can moderate
-  // the folder
   is_not_folder_moderator?: string;
+  is_not_space_moderator?: string;
+
   // Admin users that can approve project review requests
   project_reviewer?: boolean;
   // Pass project id to filter users who participated in the project
@@ -145,4 +146,5 @@ export interface IQueryParameters {
 
   project_moderators_only?: boolean;
   folder_moderators_only?: boolean;
+  space_moderators_only?: boolean;
 }

@@ -99,6 +99,7 @@ export interface IProjectAttributes {
   live_auto_input_topics_enabled: boolean;
   publication_email_enabled: boolean;
   publication_email_available: boolean;
+  space_id?: string | null;
 }
 
 export type ActionDescriptors = {

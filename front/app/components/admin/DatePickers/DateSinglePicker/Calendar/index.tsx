@@ -38,6 +38,7 @@ const Calendar = ({
   endMonth: _endMonth,
   defaultMonth,
   onChange,
+  disabledPast = undefined,
 }: CalendarProps) => {
   const locale = useLocale();
   const startMonth = _startMonth ?? new Date(1900, 0);
@@ -56,6 +57,7 @@ const Calendar = ({
         selected={selectedDate}
         onSelect={onChange}
         timeZone={userTimezone}
+        disabled={disabledPast}
       />
     </DayPickerStyles>
   );

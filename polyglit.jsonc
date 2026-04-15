@@ -1,0 +1,120 @@
+{
+  // Repository and branch configuration
+  "baseBranch": "master", // Temporary, just for the rollout
+  "githubLabel": "waiting for translations",
+
+  // Locale definitions
+  "locales": {
+    "source": "en",
+    "l1": [
+      "da-DK",
+      { "nl-NL": ["nl-BE"] },
+      { "fr-FR": ["fr-BE"] },
+      { "de-DE": ["de-AT"] }
+    ],
+    "l2": [
+      { "es-ES": ["es-CL"] },
+      "ar-SA",
+      "hr-HR",
+      "en-CA",
+      "en-IE",
+      "en-GB",
+      "fi-FI",
+      "ga-IE",
+      "it-IT",
+      "lv-LV",
+      "lt-LT",
+      "nb-NO",
+      "pl-PL",
+      "pt-BR",
+      "pa-IN",
+      "sv-SE",
+      "tr-TR",
+      "ur-PK",
+      "cy-GB"
+    ],
+    "l3": ["ca-ES", "el-GR", "kl-GL", "hu-HU", "lb-LU", "ar-MA"]
+  },
+
+  // Level configuration — defines what's required per tier for merge readiness
+  // l1: tier-1 languages — full translation and proofreading required
+  // l2: tier-2 languages — translation required, proofreading optional
+  // l3: tier-3 languages — translation supported, except for back office, proofreading not supported
+  "level_config": {
+    "l1": {
+      "support_translation": ["**|**"],
+      "support_proofreading": ["**|**"],
+      "require_translation": ["**|**"],
+      "require_proofreading": ["**|**"]
+    },
+    "l2": {
+      "support_translation": ["**|**"],
+      "support_proofreading": ["**|**"],
+      "require_translation": ["**|**"],
+      "require_proofreading": []
+    },
+    "l3": {
+      "support_translation": ["**|**", "-front/app/translations/admin/en.json"],
+      "support_proofreading": [],
+      "require_translation": ["**|**", "-front/app/translations/admin/en.json"],
+      "require_proofreading": []
+    }
+  },
+
+  // Translation file definitions
+  "files": [
+    {
+      "source": "front/app/translations/en.json",
+      "pattern": "front/app/translations/{locale}.json",
+      "format": "json"
+    },
+    {
+      "source": "front/app/translations/admin/en.json",
+      "pattern": "front/app/translations/admin/{locale}.json",
+      "format": "json"
+    },
+    {
+      "source": "back/config/locales/en.yml",
+      "pattern": "back/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/free/email_campaigns/config/locales/en.yml",
+      "pattern": "back/engines/free/email_campaigns/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/free/user_confirmation/config/locales/en.yml",
+      "pattern": "back/engines/free/user_confirmation/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/free/smart_groups/config/locales/en.yml",
+      "pattern": "back/engines/free/smart_groups/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/commercial/idea_assignment/config/locales/en.yml",
+      "pattern": "back/engines/commercial/idea_assignment/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/commercial/flag_inappropriate_content/config/locales/en.yml",
+      "pattern": "back/engines/commercial/flag_inappropriate_content/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/commercial/analysis/config/locales/en.yml",
+      "pattern": "back/engines/commercial/analysis/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
+      "source": "back/engines/commercial/multi_tenancy/config/locales/en.yml",
+      "pattern": "back/engines/commercial/multi_tenancy/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    }
+  ],
+
+  // Passed to the machine translation
+  "llmProjectContext": "The translations are UI elements in a civic engagement platform called Go Vocal. The platform allows residents, mostly of local governments, to engage in various ways. Government administrators can set up participation projects, which include ideation, surveys, participatory budgeting, voting and polls. Residents can than visit the platform and take part in these projects."
+}
