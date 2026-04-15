@@ -1967,7 +1967,6 @@
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": "No items assigned to this user.",
   "app.containers.Admin.users.UserAssignedItems.projectsUserManages": "Projects user manages",
   "app.containers.Admin.users.UserAssignedItems.remove": "Remove",
-  "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": "This user can manage the following folders, including the projects inside of them:",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "укупно корисника на платформи",
   "app.containers.AdminPage.DashboardPage._blank": "непознат",
   "app.containers.AdminPage.DashboardPage.allGroups": "Све групе",
