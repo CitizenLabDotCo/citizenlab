@@ -14,6 +14,9 @@
   "Government Success Manager": {
     "de-DE": "Kundenbetreuerin"
   },
+  "admin": {
+    "de-DE": "Admin"
+  },
   "email": {
     "da-DK": "e-mail",
     "es-ES": "correo"
