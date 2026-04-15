@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Poistaa",
   "app.components.formBuilder.description": "Kuvaus",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Tämä on jo lisätty lomakkeeseen. Oletussisältöä saa käyttää vain kerran.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Mukautetun sisällön lisääminen ei ole osa nykyistä lisenssiäsi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.formBuilder.disagree": "eri mieltä",
   "app.components.formBuilder.displayAsDropdown": "Näytä pudotusvalikkona",
   "app.components.formBuilder.displayAsDropdownTooltip": "Näytä vaihtoehdot avattavassa valikossa. Jos sinulla on monia vaihtoehtoja, tämä on suositeltavaa.",

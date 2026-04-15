@@ -60,7 +60,7 @@ import {
   isUploadFile,
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isSpaceModerator, isAdmin } from 'utils/permissions/roles';
+import { isSpaceModerator, TRole } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -85,6 +85,12 @@ export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,
   submitState?: ISubmitState
 ) => void;
+
+const FOLDER_SELECT_ALLOWED_ROLES: (string | undefined)[] = [
+  'admin',
+  'space_moderator',
+  'project_folder_moderator',
+] satisfies TRole['type'][];
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
@@ -156,8 +162,9 @@ const AdminProjectsProjectGeneral = () => {
     useState<Multiloc | null>(null);
 
   const showProjectFolderSelect =
-    (isAdmin(authUser) || isSpaceModerator(authUser)) &&
-    isProjectFoldersEnabled;
+    FOLDER_SELECT_ALLOWED_ROLES.includes(
+      authUser?.data.attributes.highest_role
+    ) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {

@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Verwijderen",
   "app.components.formBuilder.description": "Beschrijving",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dit is al toegevoegd in het formulier. Standaard inhoud mag maar één keer gebruikt worden.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Het toevoegen van aangepaste inhoud maakt geen deel uit van je huidige licentie. Neem contact op met je GovSuccess Manager voor meer informatie.",
   "app.components.formBuilder.disagree": "Oneens",
   "app.components.formBuilder.displayAsDropdown": "Weergeven als dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Geef de opties weer in een dropdown. Als je veel opties hebt, is dit aan te raden.",
