@@ -37,23 +37,37 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const now = timeZone ? moment().tz(timeZone) : moment();
   const tenantTimeNow = timeZone
-    ? new Date(
-        moment().tz(timeZone).year(),
-        moment().tz(timeZone).month(),
-        moment().tz(timeZone).date(),
-        moment().tz(timeZone).hour(),
-        moment().tz(timeZone).minute()
-      )
+    ? new Date(now.year(), now.month(), now.date(), now.hour(), now.minute())
     : new Date();
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
+
+  // Calculate GMT offset based on selected date (or current date if none selected)
+  const getGmtOffset = () => {
+    if (!timeZone) return '';
+
+    const dateToCheck = selectedDate || tenantTimeNow;
+    const momentDate = moment.tz(
+      {
+        year: dateToCheck.getFullYear(),
+        month: dateToCheck.getMonth(),
+        day: dateToCheck.getDate(),
+      },
+      timeZone
+    );
+
+    return momentDate.format('Z');
+  };
+
+  const gmtOffset = getGmtOffset();
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const m = moment(campaign.data.attributes.scheduled_at).tz(timeZone);
+      const m = moment.tz(campaign.data.attributes.scheduled_at, timeZone);
       // We don't use m.toDate() because it changes the time to the browser timezone.
       const scheduledDate = new Date(
         m.year(),
