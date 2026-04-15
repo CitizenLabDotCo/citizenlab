@@ -285,14 +285,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
     project_params = permitted_attributes(@project)
-    
+
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
-    
+
     sidefx.before_update(@project, current_user)
-    
+
     publication_email_enabled = params.dig(:project, :publication_email_enabled)
-   
+
     if save_project(@project)
       sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(
