@@ -9,7 +9,7 @@ import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
-import useImportJobProgress from 'api/import_ideas/useImportJobProgress';
+import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgress';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -38,12 +38,8 @@ const ReviewSection = () => {
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
 
-  const { data: importJobData } = useImportJobProgress(phaseId);
-  const latestJob = importJobData?.data[0];
-  const importing = latestJob?.attributes.completed_at === null;
-  const importHasErrors = (latestJob?.attributes.error_count ?? 0) > 0;
-  const importProgress = latestJob?.attributes.progress ?? 0;
-  const importTotal = latestJob?.attributes.total ?? 0;
+  const { importing, importHasErrors, importProgress, importTotal } =
+    useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =

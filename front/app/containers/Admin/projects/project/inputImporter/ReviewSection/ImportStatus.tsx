@@ -1,14 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  Spinner,
-  ProgressBar,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import Error from 'components/UI/Error';
+import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -22,6 +18,7 @@ interface Props {
 }
 
 const ImportStatus = ({ hasErrors, progress, total, errorCount }: Props) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
 
   if (hasErrors) {
@@ -65,7 +62,11 @@ const ImportStatus = ({ hasErrors, progress, total, errorCount }: Props) => {
           values={{ progress, total }}
         />
       </Text>
-      <ProgressBar progress={(progress / total) * 100} />
+      <ProgressBar
+        progress={progress / total}
+        color={theme.colors.primary}
+        bgColor={colors.grey200}
+      />
     </Container>
   );
 };
