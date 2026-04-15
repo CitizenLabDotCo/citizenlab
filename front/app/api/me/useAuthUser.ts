@@ -40,9 +40,9 @@ export const fetchMe = async () => {
 };
 
 const useAuthUser = () => {
-  return useQuery<IUser, CLErrors, IUser, MeKeys>({
+  return useQuery<IUser | null, CLErrors, IUser, MeKeys>({
     queryKey: meKeys.all(),
-    queryFn: fetchMe as () => Promise<IUser>,
+    queryFn: () => fetchMe(),
   });
 };
 

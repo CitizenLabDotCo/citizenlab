@@ -134,7 +134,7 @@ async function fetcher({
       action === 'post' &&
       (response.status === 201 || response.status === 200)
     ) {
-      return null; // TODO temporary workaround
+      return null;
     }
 
     if (response.status === 504) {

@@ -13,13 +13,13 @@ import { fetchMe } from './useAuthUser';
 const authUserStream = new BehaviorSubject<IUser | undefined>(undefined);
 
 const authUserStreamQueryObserver = new QueryObserver<
-  IUser,
+  IUser | null,
   CLErrors,
   IUser,
   MeKeys
 >(queryClient, {
   queryKey: meKeys.all(),
-  queryFn: fetchMe as () => Promise<IUser>,
+  queryFn: () => fetchMe(),
   retry: false,
 });
 
