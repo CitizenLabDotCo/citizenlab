@@ -3,8 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useSpace from 'api/spaces/useSpace';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import TabbedResource, {
@@ -13,6 +15,7 @@ import TabbedResource, {
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -21,8 +24,14 @@ const EditSpace = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: space } = useSpace(spaceId);
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const { data: authUser } = useAuthUser();
 
-  if (!space) return null;
+  if (!space || !spacesEnabled || !authUser) return null;
+
+  if (!isAdmin(authUser) && !isSpaceModerator(authUser, spaceId)) {
+    return null;
+  }
 
   const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
