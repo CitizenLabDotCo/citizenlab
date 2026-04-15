@@ -39,8 +39,8 @@ class XlsxService
       xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value || include_empty_cells
-          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
-          raw_column_header = xlsx_utils.remove_duplicate_column_name_suffix(column_header)
+          raw_column_header = worksheet[0][cell.column]&.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(raw_column_header)
           value = if rich_text_column_set.include?(raw_column_header)
             rich_text_cell_html(cell, workbook) || cell.value
           else
@@ -312,23 +312,23 @@ class XlsxService
   end
 
   # Returns an HTML string if the cell is backed by a shared string with
-  # formatting runs (bold/italic/underline/strike). Returns nil for plain cells
-  # so the caller can fall back to the plain `cell.value`.
+  # formatting runs (bold/italic/underline/strike). Returns nil for plain text cells.
+  # NOTE: A run is the standard xlsx terminology for a formatted text segment inside a cell - containing <r> elements
   def rich_text_cell_html(cell, workbook)
-    entry =
-      case cell.datatype
-      when RubyXL::DataType::SHARED_STRING
-        workbook.shared_strings_container&.[](cell.raw_value.to_i)
-      when 'inlineStr'
-        cell.respond_to?(:is) ? cell.is : nil
-      end
+    entry = case cell.datatype
+    when RubyXL::DataType::SHARED_STRING
+      workbook.shared_strings_container&.[](cell.raw_value.to_i)
+    when 'inlineStr'
+      cell.respond_to?(:is) ? cell.is : nil
+    end
+
     return nil unless entry
 
     runs = entry.respond_to?(:r) ? entry.r : nil
     return nil if runs.blank?
 
-    # If the author has already written HTML into the cell, skip rich-text
-    # conversion so we don't double-encode their tags — fall back to plain text.
+    # If there are HTML tags in the cell, skip rich-text conversion
+    # so we don't double-encode their tags — fall back to plain text.
     return nil if contains_html_tags?(entry.to_s)
 
     runs.map { |run| rich_text_run_to_html(run) }.join.presence
@@ -338,7 +338,6 @@ class XlsxService
     text.to_s.match?(%r{</?[a-zA-Z][^>]*>})
   end
 
-  # NOTE: run is the standard xlsx terminology for a formatted text segment inside a cell - containing <r> elements
   def rich_text_run_to_html(run)
     text_node = run.respond_to?(:t) ? run.t : nil
     raw_text = text_node.respond_to?(:value) ? text_node.value.to_s : text_node.to_s
