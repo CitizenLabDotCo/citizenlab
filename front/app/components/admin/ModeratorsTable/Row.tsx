@@ -21,17 +21,19 @@ import messages from './messages';
 
 interface Props {
   moderator: IUserData;
-  onDeleteModerator: (userId: string) => Promise<void>;
+  onDeleteModerator?: (userId: string) => Promise<void>;
 }
 
 const Row = ({ moderator, onDeleteModerator }: Props) => {
   const [deleting, setDeleting] = useState(false);
 
-  const handleDeleteModerator = async () => {
-    setDeleting(true);
-    await onDeleteModerator(moderator.id);
-    setDeleting(false);
-  };
+  const handleDeleteModerator = onDeleteModerator
+    ? async () => {
+        setDeleting(true);
+        await onDeleteModerator(moderator.id);
+        setDeleting(false);
+      }
+    : undefined;
 
   return (
     <Tr>
@@ -45,20 +47,22 @@ const Row = ({ moderator, onDeleteModerator }: Props) => {
         <InviteBadge user={moderator} />
       </Td>
       <Td>
-        <Box w="100%" display="flex" justifyContent="flex-start">
-          <Button
-            buttonStyle="delete"
-            processing={deleting}
-            onClick={handleDeleteModerator}
-            width="auto"
-            fontSize="s"
-            icon="delete"
-            iconSize={`${fontSizes.base}px`}
-            p="4px 8px"
-          >
-            <FormattedMessage {...messages.removeManager} />
-          </Button>
-        </Box>
+        {handleDeleteModerator && (
+          <Box w="100%" display="flex" justifyContent="flex-start">
+            <Button
+              buttonStyle="delete"
+              processing={deleting}
+              onClick={handleDeleteModerator}
+              width="auto"
+              fontSize="s"
+              icon="delete"
+              iconSize={`${fontSizes.base}px`}
+              p="4px 8px"
+            >
+              <FormattedMessage {...messages.removeManager} />
+            </Button>
+          </Box>
+        )}
       </Td>
     </Tr>
   );

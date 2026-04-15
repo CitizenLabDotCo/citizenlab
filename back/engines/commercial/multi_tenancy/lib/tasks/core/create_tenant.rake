@@ -254,10 +254,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        input_form_custom_fields: {
-          enabled: true,
-          allowed: true
-        },
         form_mapping: {
           enabled: true,
           allowed: true

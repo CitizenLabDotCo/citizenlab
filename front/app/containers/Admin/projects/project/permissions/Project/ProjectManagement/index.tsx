@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
 import useProjectModerators from 'api/project_moderators/useProjectModerators';
@@ -17,6 +18,7 @@ import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { Section } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isProjectModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -39,6 +41,14 @@ const ProjectManagement = ({ projectId }: Props) => {
   const { data: projectModerators } = useProjectModerators({ projectId });
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
+  const { data: authUser } = useAuthUser();
+  const userIsProjectModerator = isProjectModerator(authUser);
+
+  const handleDeleteModerator = userIsProjectModerator
+    ? undefined
+    : async (userId: string) => {
+        await deleteProjectModerator({ projectId, userId });
+      };
 
   return (
     <ModeratorSubSection>
@@ -85,9 +95,7 @@ const ProjectManagement = ({ projectId }: Props) => {
         <Box mt="20px">
           <ModeratorsTable
             moderators={projectModerators.data}
-            onDeleteModerator={async (userId: string) => {
-              await deleteProjectModerator({ projectId, userId });
-            }}
+            onDeleteModerator={handleDeleteModerator}
           />
         </Box>
       )}

@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Töröl",
   "app.components.formBuilder.description": "Leírás",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Ez már felkerült az űrlapra. Az alapértelmezett tartalom csak egyszer használható fel.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Egyéni tartalom hozzáadása nem része a jelenlegi licencének. Forduljon GovSuccess menedzseréhez, ha többet szeretne megtudni erről.",
   "app.components.formBuilder.disagree": "Nem ért egyet",
   "app.components.formBuilder.displayAsDropdown": "Megjelenítés legördülő menüként",
   "app.components.formBuilder.displayAsDropdownTooltip": "Jelenítse meg a lehetőségeket egy legördülő menüben. Ha sok lehetőséged van, ez ajánlott.",

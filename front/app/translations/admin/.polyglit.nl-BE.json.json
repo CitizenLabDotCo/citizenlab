@@ -16114,6 +16114,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaper1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.phase.methodPicker.collectResponsesOnPaperDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.phase.methodPicker.commonGroundDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -16144,6 +16154,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -16169,6 +16189,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.phase.methodPicker.learnMore1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.phase.methodPicker.linkWithReportBuilder1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -16183,6 +16208,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.phase.methodPicker.notAvailableInYourPlan1": {
+    "state": "verified",
+    "verified_at": "2026-04-10T16:35:38.135674Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.phase.methodPicker.proposalsDescription": {
     "state": "verified",

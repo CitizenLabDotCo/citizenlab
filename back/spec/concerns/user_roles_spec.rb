@@ -619,6 +619,79 @@ RSpec.describe UserRoles do
     end
   end
 
+  describe '#moderatable_folder_ids' do
+    let!(:space) { create(:space) }
+    let!(:folder_a) { create(:project_folder) }
+    let!(:folder_b) { create(:project_folder) }
+    let!(:folder_c) { create(:project_folder, space: space) }
+
+    it 'returns folder ids of folders a user can moderate' do
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id },
+          { 'type' => 'space_moderator', 'space_id' => space.id }
+        ]
+      )
+
+      expect(user.moderatable_folder_ids).to contain_exactly(folder_a.id, folder_c.id)
+    end
+
+    it 'includes folders the user moderates directly' do
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id },
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_b.id }
+        ]
+      )
+
+      expect(user.moderatable_folder_ids).to contain_exactly(folder_a.id, folder_b.id)
+    end
+
+    it 'includes folders in moderated spaces' do
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'space_moderator', 'space_id' => space.id }
+        ]
+      )
+
+      expect(user.moderatable_folder_ids).to contain_exactly(folder_c.id)
+    end
+
+    it 'returns empty array for normal user' do
+      user = build(:user, roles: [])
+
+      expect(user.moderatable_folder_ids).to be_empty
+    end
+
+    it 'returns empty array for project moderator only' do
+      project = create(:project)
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'project_moderator', 'project_id' => project.id }
+        ]
+      )
+
+      expect(user.moderatable_folder_ids).to be_empty
+    end
+
+    it 'does not include duplicate folder ids' do
+      # Create a folder in a space, and give user both direct and space moderation
+      user = build(
+        :user,
+        roles: [
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder_c.id },
+          { 'type' => 'space_moderator', 'space_id' => space.id }
+        ]
+      )
+
+      expect(user.moderatable_folder_ids).to contain_exactly(folder_c.id)
+    end
+  end
+
   describe '#moderated_project_folder_ids' do
     it 'returns folder ids of folders a user can moderate' do
       user = build(

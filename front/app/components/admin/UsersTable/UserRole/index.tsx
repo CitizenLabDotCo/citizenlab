@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
+import { HighestRole, IUserData } from 'api/users/types';
 
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import Modal from 'components/UI/Modal';
@@ -14,18 +14,20 @@ import { isAdmin } from 'utils/permissions/roles';
 import messages from './messages';
 import UserAssignedItems from './UserAssignedItems';
 
+const ROLE_MESSAGES: Record<HighestRole, MessageDescriptor> = {
+  admin: messages.platformAdmin,
+  super_admin: messages.platformAdmin,
+  space_moderator: messages.spaceManager,
+  project_folder_moderator: messages.folderManager,
+  project_moderator: messages.projectManager,
+  user: messages.registeredUser,
+};
+
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role ?? 'user';
-  const roleMessage = {
-    admin: messages.platformAdmin,
-    super_admin: messages.platformAdmin,
-    project_folder_moderator: messages.folderManager,
-    project_moderator: messages.projectManager,
-    user: messages.registeredUser,
-  };
 
-  return roleMessage[highestRole];
+  return ROLE_MESSAGES[highestRole];
 };
 
 interface Props {
