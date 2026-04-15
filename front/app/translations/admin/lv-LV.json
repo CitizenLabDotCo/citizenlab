@@ -2526,7 +2526,6 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "vērsieties mūsu palīdzības centrā",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Sīkāka informācija",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.containers.AdminPage.ProjectEdit.needInspiration": "Nepieciešama iedvesma? Izpētiet līdzīgus projektus citās pilsētās vietnē {inspirationHubLink}.",
   "app.containers.AdminPage.ProjectEdit.newComment": "Pievienot komentāru",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Pievienot ieguldījumu",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Jauna ideja",

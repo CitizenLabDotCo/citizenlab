@@ -2467,7 +2467,6 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "посетите наш центар за помоћ",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Детаљније",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
-  "app.containers.AdminPage.ProjectEdit.needInspiration": "Need inspiration? Explore similar projects from other cities in the {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Add a comment",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Додајте допринос",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Нова идеја",
