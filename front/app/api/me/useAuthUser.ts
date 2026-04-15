@@ -33,6 +33,8 @@ export const fetchMe = async () => {
         signOut();
         return null;
       }
+    } else {
+      return null;
     }
   }
 
