@@ -28,7 +28,7 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import FeatureCallout from 'components/UI/Callout';
+import FeatureCallout from 'components/UI/FeatureCallout';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
