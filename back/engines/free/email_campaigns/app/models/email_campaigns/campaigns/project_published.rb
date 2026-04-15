@@ -44,8 +44,6 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
-    validates :context_type, inclusion: { in: ['Project'], allow_blank: true }
-
     recipient_filter :filter_notification_recipient
 
     def mailer_class
@@ -57,9 +55,7 @@ module EmailCampaigns
     end
 
     def activity_context(activity)
-      return nil unless activity.item.is_a?(::Notification)
-
-      activity.item.project
+      activity.item.project if activity.item.is_a?(Notifications::ProjectPublished)
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)

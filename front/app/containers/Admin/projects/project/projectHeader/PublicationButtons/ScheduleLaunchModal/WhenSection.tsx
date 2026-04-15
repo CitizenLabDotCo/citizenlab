@@ -5,10 +5,10 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
-import TimeInput from 'containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
 
 interface Props {
   selectedDate: Date;
@@ -43,6 +43,7 @@ const WhenSection = ({
             date.setMinutes(m);
             onDateChange(date);
           }}
+          placement="right"
         />
         <TimeInput selectedTime={selectedTime} onChange={onTimeChange} />
         {timezone && (

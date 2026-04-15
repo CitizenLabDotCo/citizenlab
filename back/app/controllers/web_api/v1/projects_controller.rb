@@ -53,11 +53,19 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_followers ||= {}
 
+    project_ids = @projects.map(&:id)
+    publication_email_enabled = EmailCampaigns::Campaigns::ProjectPublished
+      .where(context_id: project_ids)
+      .pluck(:context_id, :enabled)
+      .to_h
+
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      publication_email_enabled: publication_email_enabled,
+      publication_email_available: EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context_id: nil).enabled != false
     }
 
     render json: linked_json(
@@ -276,14 +284,15 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
-    publication_email_enabled = params[:project].delete(:publication_email_enabled)
     project_params = permitted_attributes(@project)
-
+    
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
-
+    
     sidefx.before_update(@project, current_user)
-
+    
+    publication_email_enabled = params.dig(:project, :publication_email_enabled)
+   
     if save_project(@project)
       sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(

@@ -20,13 +20,20 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :space_id
   )
 
-  attribute :publication_email_enabled do |project|
-    !EmailCampaigns::Campaigns::ProjectPublished.exists?(context: project, enabled: false)
+  attribute :publication_email_enabled do |project, params|
+    if params[:publication_email_enabled]
+      params.dig(:publication_email_enabled, project.id) != false
+    else
+      !EmailCampaigns::Campaigns::ProjectPublished.exists?(context: project, enabled: false)
+    end
   end
 
-  attribute :publication_email_available do |_project|
-    global_campaign = EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)
-    global_campaign.nil? || global_campaign.enabled != false
+  attribute :publication_email_available do |_project, params|
+    if params.key?(:publication_email_available)
+      params[:publication_email_available]
+    else
+      EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context_id: nil).enabled != false
+    end
   end
 
   attribute :folder_id do |project|

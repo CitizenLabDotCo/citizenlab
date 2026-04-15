@@ -54,7 +54,7 @@ class SideFxProjectService
   end
 
   def after_update(project, user, publication_email_enabled: nil)
-    sync_publication_email_campaign(project, publication_email_enabled) unless publication_email_enabled.nil?
+    sync_publication_email_campaign(project, publication_email_enabled)
 
     change = project.saved_changes
     if project.admin_publication.publication_status != @publication_status_was
@@ -131,12 +131,13 @@ class SideFxProjectService
   end
 
   def sync_publication_email_campaign(project, publication_email_enabled)
-    if publication_email_enabled == false
-      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
-      campaign.enabled = false
-      campaign.save!
-    else
+    return if publication_email_enabled.nil?
+
+    if publication_email_enabled
       EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    else
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.update!(enabled: false)
     end
   end
 

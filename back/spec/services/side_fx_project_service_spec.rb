@@ -84,25 +84,18 @@ describe SideFxProjectService do
 
     context 'when publication_email_enabled is set to false' do
       it 'creates a disabled project-scoped ProjectPublished campaign' do
-        project.admin_publication.update!(publication_status: 'draft')
-        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
-        service.before_update(project, user)
-        project.save!
-        service.after_update(project, user, publication_email_enabled: false)
+        expect { service.after_update(project, user, publication_email_enabled: false) }
+          .to change(EmailCampaigns::Campaigns::ProjectPublished, :count).by(1)
 
-        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)
-        expect(campaign).to be_present
+        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context: project)
         expect(campaign.enabled).to be false
       end
 
       it 'updates an existing project-scoped campaign to disabled' do
         create(:project_published_campaign, context: project, enabled: true)
-        service.before_update(project, user)
-        project.save!
         service.after_update(project, user, publication_email_enabled: false)
 
-        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)
-        expect(campaign).to be_present
+        campaign = EmailCampaigns::Campaigns::ProjectPublished.find_sole_by(context: project)
         expect(campaign.enabled).to be false
       end
     end
@@ -110,8 +103,6 @@ describe SideFxProjectService do
     context 'when publication_email_enabled is set to true' do
       it 'destroys any disabled project-scoped ProjectPublished campaign' do
         create(:project_published_campaign, context: project, enabled: false)
-        service.before_update(project, user)
-        project.save!
         service.after_update(project, user, publication_email_enabled: true)
 
         expect(EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)).to be_nil
@@ -119,10 +110,7 @@ describe SideFxProjectService do
     end
 
     context 'when publication_email_enabled is nil (not set)' do
-      it 'does not modify any campaigns' do
-        service.before_update(project, user)
-        project.save!
-
+      it 'does not modify the campaigns count' do
         expect { service.after_update(project, user) }
           .not_to change(EmailCampaigns::Campaigns::ProjectPublished, :count)
       end
