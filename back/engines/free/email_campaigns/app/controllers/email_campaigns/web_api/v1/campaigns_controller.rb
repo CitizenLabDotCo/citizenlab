@@ -8,6 +8,7 @@ module EmailCampaigns
     def index
       @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
         .resolve
+        .order(created_at: :desc)
       # Necessary because we instantiate the scope directly instead of using Pundit's
       # `policy_scope` method.
       skip_policy_scope
@@ -25,21 +26,7 @@ module EmailCampaigns
 
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
-      # sort campaigns by status and then by date within each status:
-      # 1- Draft
-      # 2- Scheduled (from nearest to farthest)
-      # 3- Sent (from most recent to oldest)
-      sorted_campaigns = @campaigns.to_a.sort_by do |campaign|
-        if campaign.deliveries_count == 0 && campaign.scheduled_at.nil?
-          [0, -campaign.updated_at.to_i]
-        elsif campaign.scheduled_at.present?
-          [1, campaign.scheduled_at.to_i]
-        else
-          [2, -campaign.updated_at.to_i]
-        end
-      end
-
-      @campaigns = paginate Kaminari.paginate_array(sorted_campaigns)
+      @campaigns = paginate @campaigns
 
       render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
     end
