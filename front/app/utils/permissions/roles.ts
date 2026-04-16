@@ -1,5 +1,10 @@
 import { IUser } from 'api/users/types';
 
+interface IAdminRole {
+  type: 'admin' | 'super_admin';
+  project_reviewer?: boolean;
+}
+
 export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
@@ -10,18 +15,16 @@ export interface IProjectFolderModeratorRole {
   project_folder_id: string;
 }
 
-interface IAdminRole {
-  type: 'admin';
-  project_reviewer?: boolean;
+export interface ISpaceModeratorRole {
+  type: 'space_moderator';
+  space_id: string;
 }
 
-interface IRoleRegisty {
-  IAdminRole: IAdminRole;
-  IProjectModeratorRole: IProjectModeratorRole;
-  IProjectFolderModeratorRole: IProjectFolderModeratorRole;
-}
-
-export type TRole = IRoleRegisty[keyof IRoleRegisty];
+export type TRole =
+  | IAdminRole
+  | IProjectFolderModeratorRole
+  | IProjectModeratorRole
+  | ISpaceModeratorRole;
 
 export const userHasRole = (user: IUser, role: TRole['type']) => {
   const result = user.data.attributes.roles?.find((r) => r.type === role);
@@ -35,12 +38,16 @@ export const isAdmin = (user: IUser | undefined) => {
   return userHasRole(user, 'admin');
 };
 
+const MODERATOR_TYPES = [
+  'project_moderator',
+  'project_folder_moderator',
+  'space_moderator',
+];
+
 export const isModerator = (user: IUser | undefined) => {
   if (!user) return false;
 
-  return ['project_moderator', 'project_folder_moderator'].includes(
-    user.data.attributes.highest_role as any
-  );
+  return MODERATOR_TYPES.includes(user.data.attributes.highest_role ?? 'user');
 };
 
 /*
@@ -65,13 +72,31 @@ export const isRegularUser = (user: IUser | undefined) => {
 
 export const isProjectModerator = (
   user: IUser | undefined,
-  projectId: string
+  projectId?: string
 ) => {
   if (!user) return false;
 
-  const role = user.data.attributes.roles?.find(
-    (r) => r.type === 'project_moderator' && r.project_id === projectId
-  );
+  const roles = user.data.attributes.roles || [];
 
-  return role !== undefined;
+  if (projectId) {
+    return roles.some(
+      (r) => r.type === 'project_moderator' && r.project_id === projectId
+    );
+  }
+
+  return roles.some((r) => r.type === 'project_moderator');
+};
+
+export const isSpaceModerator = (user: IUser | undefined, spaceId?: string) => {
+  if (!user) return false;
+
+  const roles = user.data.attributes.roles || [];
+
+  if (spaceId) {
+    return roles.some(
+      (r) => r.type === 'space_moderator' && r.space_id === spaceId
+    );
+  }
+
+  return roles.some((r) => r.type === 'space_moderator');
 };

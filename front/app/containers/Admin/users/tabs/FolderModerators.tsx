@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
-import UserManager from './_shared/UserManager';
-import UsersHeader from './_shared/UsersHeader';
-import messages from './messages';
+import UserManager from '../_shared/UserManager';
+import UsersHeader from '../_shared/UsersHeader';
+import messages from '../messages';
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -15,14 +15,14 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const ProjectModerators = () => (
+const FolderModerators = () => (
   <>
-    <UsersHeader title={messages.projectManagers} />
-    <UserManager projectModeratorsOnly notCitizenlabMember includeInactive />
+    <UsersHeader title={messages.folderManagers} />
+    <UserManager folderModeratorsOnly notCitizenlabMember includeInactive />
     <StyledBox mt="20px">
       <SeatInfo seatType="moderator" />
     </StyledBox>
   </>
 );
 
-export default ProjectModerators;
+export default FolderModerators;

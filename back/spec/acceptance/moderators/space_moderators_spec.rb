@@ -180,13 +180,24 @@ resource 'Moderators' do
     delete 'web_api/v1/spaces/:space_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:moderator) { create(:space_moderator, spaces: [space]) }
+      let(:moderator_of_same_space) { create(:space_moderator, spaces: [space]) }
+      let(:moderator_of_other_space) { create(:space_moderator, spaces: [other_space]) }
 
-      example '[error] Remove a space moderator role from a user' do
-        do_request space_id: space.id, user_id: moderator.id
+      example "Remove a space moderator role from a user in the moderator's space" do
+        n_roles_before = moderator_of_same_space.roles.size
+        do_request space_id: space.id, user_id: moderator_of_same_space.id
+
+        expect(response_status).to eq 200
+        expect(moderator_of_same_space.reload.roles.size).to eq(n_roles_before - 1)
+        expect(LogActivityJob).to have_been_enqueued.with(moderator_of_same_space, 'space_moderation_rights_removed', space_moderator, kind_of(Integer), payload: { space_id: space.id })
+      end
+
+      example '[Unauthorized] Remove a space moderator role from a user in a space not moderated by the user' do
+        n_roles_before = moderator_of_other_space.roles.size
+        do_request space_id: other_space.id, user_id: moderator_of_other_space.id
+
         expect(response_status).to eq 401
-
-        expect(moderator.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
+        expect(moderator_of_other_space.reload.roles.size).to eq(n_roles_before)
       end
     end
   end

@@ -114,7 +114,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
   def tree_view
     authorize :admin_publication, :tree_view
-    nodes = TreeViewService.new(space_id: params[:space_id]).generate_tree
+    nodes = TreeViewService.new.generate_tree
     render json: raw_json({ nodes: })
   end
 

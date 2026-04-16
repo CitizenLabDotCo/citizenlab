@@ -1,4 +1,7 @@
 {
+  "Beta": {
+    "fr-FR": "Bêta"
+  },
   "Common Ground": {
     "de-DE": "ZusammenFinden"
   },
@@ -7,6 +10,12 @@
   },
   "GovSuccess Manager": {
     "fr-FR": "Spécialiste en participation Go Vocal"
+  },
+  "Government Success Manager": {
+    "de-DE": "Kundenbetreuerin"
+  },
+  "admin": {
+    "de-DE": "Admin"
   },
   "email": {
     "da-DK": "e-mail",
