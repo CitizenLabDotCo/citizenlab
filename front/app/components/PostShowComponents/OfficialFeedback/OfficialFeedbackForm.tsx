@@ -32,6 +32,7 @@ import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 
 import messages from './messages';
 import tracks from './tracks';
+import { formatEditableCommentContent } from 'components/PostShowComponents/utils';
 
 const Container = styled.div``;
 
@@ -141,9 +142,8 @@ const OfficialFeedbackForm = ({
 
       if (feedback) {
         forOwn(feedback.attributes.body_multiloc, (bodyText, locale) => {
-          formValues.bodyMultiloc[locale] = (bodyText || '').replace(
-            /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-            '@[$3]($2)'
+          formValues.bodyMultiloc[locale] = formatEditableCommentContent(
+            bodyText || ''
           );
         });
       }
