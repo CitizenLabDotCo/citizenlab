@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "More details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "Braucht Dir Inspiratioun?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Entdeckt ähnlech Projeten aus anere Stied am {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "E Kommentar bäifügen",
   "app.containers.AdminPage.ProjectEdit.newContribution": "E Bäitrag derbäisetzen",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Nei Iddi",

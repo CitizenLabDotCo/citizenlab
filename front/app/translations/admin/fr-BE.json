@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visiter notre centre d'aide",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Plus de détails",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/fr/articles/527642-differents-roles-et-autorisations-sur-la-plateforme",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "Besoin d'inspiration ?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Explorez des projets similaires d'autres villes dans l'{inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Nouveau commentaire",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Ajouter une contribution",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Nouvelle idée",

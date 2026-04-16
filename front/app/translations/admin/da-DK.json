@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besøg vores Hjælp-center",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Flere detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform}}",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "Brug for inspiration?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Udforsk lignende projekter fra andre byer i {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Tilføj kommentar",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Kom med dit bidrag",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Ny idé",

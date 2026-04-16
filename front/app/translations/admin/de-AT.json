@@ -2526,6 +2526,8 @@
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "Besuchen Sie unsere Wissensdatenbank",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mehr Eigenschaften",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2": "https://support.govocal.com/de/articles/527642-was-sind-die-verschiedenen-rollen-auf-der-plattform",
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": "Brauchen Sie Inspiration?",
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": "Entdecken Sie ähnliche Projekte aus anderen Städten in der {inspirationHubLink}",
   "app.containers.AdminPage.ProjectEdit.newComment": "Kommentar hinzufügen",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Beitrag hinzufügen",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Neuer Beitrag",
