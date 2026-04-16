@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status and votes",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "mins",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "More info",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "This input has met the required support threshold! It is still open to receive votes. Share it to build even more support.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vote",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Voted",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "You'll get notified when this initiative goes to the next step. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
