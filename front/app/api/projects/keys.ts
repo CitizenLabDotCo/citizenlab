@@ -20,13 +20,6 @@ const projectsKeys = {
       parameters: { id, slug },
     },
   ],
-  publicationRecipientCount: ({ id }: { id: string }) => [
-    {
-      ...baseKey,
-      operation: 'publicationRecipientCount',
-      parameters: { id },
-    },
-  ],
 } satisfies QueryKeys;
 
 export default projectsKeys;
