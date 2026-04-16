@@ -1022,7 +1022,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1049,7 +1050,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         }, {
@@ -1061,7 +1063,8 @@ resource 'Projects' do
             'Author email',
             'Author ID',
             'Submitted at',
-            'Project'
+            'Project',
+            'Imported'
           ],
           rows: [
             [
@@ -1071,7 +1074,8 @@ resource 'Projects' do
               survey_response.author.email,
               survey_response.author_id,
               an_instance_of(DateTime), # created_at
-              project.title_multiloc['en']
+              project.title_multiloc['en'],
+              'false'
             ]
           ]
         }, {
@@ -1099,7 +1103,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1125,7 +1130,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         })
