@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "ਸਥਿਤੀ ਅਤੇ ਵੋਟਾਂ",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "ਮਿੰਟ",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "ਹੋਰ ਜਾਣਕਾਰੀ",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "ਇਸ ਸੁਝਾਅ ਨੇ ਸਮਰਥਨ ਦੀ ਲੋੜੀਂਦੀ ਹੱਦ ਪੂਰੀ ਕਰ ਲਈ ਹੈ! ਵੋਟਾਂ ਪਾਉਣ ਲਈ ਇਹ ਅਜੇ ਵੀ ਖੁੱਲ੍ਹਾ ਹੈ। ਹੋਰ ਵੀ ਜ਼ਿਆਦਾ ਸਮਰਥਨ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਇਸਨੂੰ ਸਾਂਝਾ ਕਰੋ।",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "ਵੋਟ ਕਰੋ",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "ਵੋਟ ਪਾਈ",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "ਜਦੋਂ ਇਹ ਪਹਿਲ ਅਗਲੇ ਪੜਾਅ 'ਤੇ ਜਾਂਦੀ ਹੈ ਤਾਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕੀਤਾ ਜਾਵੇਗਾ। {x, plural, =0 {ਇੱਥੇ {xDays} ਬਾਕੀ ਹੈ।} one {{xDays} ਬਾਕੀ ਹੈ।} other {{xDays} ਬਾਕੀ ਹਨ।}}",

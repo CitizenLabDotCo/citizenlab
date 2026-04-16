@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status und Stimmen",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "Minuten",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mehr Informationen",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Dieser Beitrag hat die erforderliche Unterstützungsschwelle erreicht! Er ist weiterhin für Stimmen offen. Teile ihn, um noch mehr Unterstützung zu gewinnen.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Auswählen",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Ausgewählt",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Sie werden benachrichtigt, wenn dieser Vorschlag zum nächsten Schritt übergeht. {x, plural, =0 {Es sind noch {xDays} übrig.} one {Es sind noch {xDays} übrig.} other {Es sind noch {xDays} übrig.}}",

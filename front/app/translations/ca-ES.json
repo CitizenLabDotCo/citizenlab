@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Estat i vots",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "minuts",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Més informació",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Aquesta proposta ha assolit el llindar de suport necessari! Encara està oberta a rebre vots. Comparteix-la per aconseguir encara més suport.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vota",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Votat",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Rebràs una notificació quan aquesta iniciativa passi al pas següent. {x, plural, =0 {Queden {xDays} .} one {Queda {xDays} .} other {Queden {xDays} .}}",

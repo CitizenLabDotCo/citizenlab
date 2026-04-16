@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status og avstemninger",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "Minutter",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mer informasjon",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Dette innspillet har nådd det nødvendige kravet til støtte! Det er fortsatt åpent for å motta stemmer. Del det for å samle enda mer støtte.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stemme",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Stemte",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Du vil bli informert når forslaget går til neste fase. {x, plural, =0 {Det er {xDays} igjen.} one {Det er {xDays} igjen.} other {Det er {xDays} igjen.}}",

@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Estado y votos",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "mínimos",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Más información",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "¡Esta propuesta ha alcanzado el umbral de apoyo necesario! Sigue abierta para recibir votos. Compártela para conseguir aún más apoyo.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Voto",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Votado",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Se le notificará cuando esta propuesta pase al siguiente paso. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",

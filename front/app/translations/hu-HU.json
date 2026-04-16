@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Státusz és szavazatok",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "perc",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "További információ",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Ez a javaslat elérte a szükséges támogatási küszöböt! Továbbra is lehet rá szavazni. Oszd meg, hogy még több támogatást gyűjtsön!",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Szavazás",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Szavazott",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Értesítést kap, amikor ez a kezdeményezés a következő lépésre lép. {x, plural, =0 {{xDays} maradt.} one {{xDays} maradt.} other {{xDays} maradt.}}",

@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "الحالة والأصوات",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "دقيقة",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "مزيد من المعلومات",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "لقد استوفى هذا المقترح الحد الأدنى المطلوب من الدعم! لا يزال باب التصويت مفتوحاً. شاركه لحشد المزيد من الدعم.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "تصويت",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "تم التصويت",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "سيتم إعلامك عندما تنتقل هذه المبادرة إلى الخطوة التالية. {x, plural, =0 {هناك {xDays} متبقية.} one {هناك {xDays} متبقية.} other {هناك {xDays} متبقية.}}",

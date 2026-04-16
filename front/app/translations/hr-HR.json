@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status i glasovi",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Više informacija",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Ovaj je unos dosegnuo potreban prag podrške! I dalje je otvoren za primanje glasova. Podijelite ga kako biste prikupili još više podrške.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Glasanje",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Glasovao",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Dobit ćete obavijest kada ova inicijativa prijeđe na sljedeći korak. {x, plural, =0 {Ostalo je {xDays} .} one {Ostalo je {xDays} .} other {Ostalo je {xDays} .}}",

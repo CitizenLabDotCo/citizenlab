@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status ja äänet",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Lisätietoja",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Tämä ehdotus on saavuttanut vaaditun kannatuskynnyksen! Sitä voi edelleen äänestää. Jaa se ja kasvata kannatusta entisestään.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Äänestys",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Äänestetty",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Saat ilmoituksen, kun tämä aloite siirtyy seuraavaan vaiheeseen. {x, plural, =0 {{xDays} jäljellä.} one {{xDays} jäljellä.} other {{xDays} jäljellä.}}",

@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Statuss un balsojumi",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "minūtes",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Vairāk informācijas",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Šis ierosinājums ir sasniedzis nepieciešamo atbalsta slieksni! Par to joprojām var balsot. Dalies ar to, lai gūtu vēl lielāku atbalstu.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Balsojums",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Balsots",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Jūs saņemsiet paziņojumu, kad šī iniciatīva tiks virzīta uz nākamo posmu. {x, plural, =0 {Vēl ir {xDays} atlicis.} one {Vēl ir {xDays} atlicis.} other {Ir {xDays} atlicis.}}",

@@ -1808,6 +1808,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status och omröstningar",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mer information",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Detta förslag har uppnått det nödvändiga tröskelvärdet för stöd! Det är fortfarande öppet för röster. Dela det för att samla ännu mer stöd.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Omröstning",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Röstade",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Du kommer att få ett meddelande när detta initiativ går till nästa steg. {x, plural, =0 {There's {xDays} left.} one {Det finns {xDays} kvar.} other {Det finns {xDays} kvar.}}",
