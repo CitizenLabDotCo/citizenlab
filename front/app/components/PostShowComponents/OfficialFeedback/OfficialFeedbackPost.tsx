@@ -16,6 +16,7 @@ import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteI
 
 import useLocalize from 'hooks/useLocalize';
 
+import { formatCommentContent } from 'components/PostShowComponents/utils';
 import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -25,7 +26,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import OfficialFeedbackForm from './OfficialFeedbackForm';
-import { formatCommentContent } from 'components/PostShowComponents/utils';
 
 const Container = styled.div`
   display: flex;

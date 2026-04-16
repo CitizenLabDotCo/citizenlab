@@ -21,6 +21,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { Section } from 'components/admin/Section';
+import { formatEditableCommentContent } from 'components/PostShowComponents/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -32,7 +33,6 @@ import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 
 import messages from './messages';
 import tracks from './tracks';
-import { formatEditableCommentContent } from 'components/PostShowComponents/utils';
 
 const Container = styled.div``;
 

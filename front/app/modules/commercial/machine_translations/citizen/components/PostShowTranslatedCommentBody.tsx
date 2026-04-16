@@ -3,9 +3,9 @@ import React from 'react';
 import useLocale from 'hooks/useLocale';
 
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
+import { formatCommentContent } from 'components/PostShowComponents/utils';
 
 import useTranslation from '../../hooks/useTranslation';
-import { formatCommentContent } from 'components/PostShowComponents/utils';
 
 interface Props {
   translateButtonClicked: boolean;
