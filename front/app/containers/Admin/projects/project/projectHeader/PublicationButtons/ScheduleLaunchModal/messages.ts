@@ -61,6 +61,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow',
     defaultMessage: 'Publish now',
   },
+  projectUnlisted: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted',
+    defaultMessage:
+      'The project is {underlinedUnlisted} so no emails will be sent',
+  },
+  unlisted: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted',
+    defaultMessage: 'unlisted',
+  },
+  makeProjectVisibleTooltip: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.makeProjectVisibleTooltip',
+    defaultMessage: 'Make the project visible first by listing it.',
+  },
+  recipientsTooltip: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.recipientsTooltip',
+    defaultMessage:
+      'Not all platform users will be notified. Only those who follow the areas, folders, or tags assigned to this project. Edit those to adjust recipients.',
+  },
   emailNotificationsDisabledGlobally: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally',
     defaultMessage:

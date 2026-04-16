@@ -40,8 +40,6 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     project.attributes.publication_email_enabled
   );
 
-  const emailAvailable = project.attributes.publication_email_available;
-
   const handleSaveSchedule = () => {
     const scheduledDate = new Date(selectedDate);
     scheduledDate.setHours(selectedTime.getHours());
@@ -145,9 +143,9 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
 
         <VisibilitySection project={project} onClose={onClose} />
         <EmailNotificationsSection
-          checked={sendEmail}
-          onChange={setSendEmail}
-          disabled={!emailAvailable}
+          sendEmailEnabled={sendEmail}
+          onSendEmailToggle={setSendEmail}
+          onCloseModal={onClose}
         />
       </Box>
     </Modal>

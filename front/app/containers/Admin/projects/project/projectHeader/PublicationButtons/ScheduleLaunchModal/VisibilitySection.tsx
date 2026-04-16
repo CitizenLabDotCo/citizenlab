@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import useGroups from 'api/groups/useGroups';
 import useProjectGroups from 'api/project_groups/useProjectGroups';
@@ -10,9 +9,9 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 interface Props {
   project: IProjectData;
@@ -50,34 +49,28 @@ const VisibilitySection = ({ project, onClose }: Props) => {
     return formatMessage(messages.everyone);
   };
 
-  const handleEditClick = () => {
-    clHistory.push(
-      `/admin/projects/${projectId}/general/access-rights` as RouteType
-    );
-    onClose();
-  };
-
   return (
     <Box mb="8px">
       <Text fontWeight="bold" mb="4px">
         {formatMessage(messages.whoCanFindProject)}
       </Text>
-      <Box display="flex" alignItems="center" gap="8px">
-        <Text color="grey700" fontSize="s">
+      <Box display="flex" alignItems="center" gap="4px">
+        <Text color="textSecondary" fontSize="s" m="0px">
           {getVisibilityLabel()}
         </Text>
-        <Text color="grey700" fontSize="s">
+        <Text color="textSecondary" fontSize="s" m="0px">
           &middot;
         </Text>
-        <Text
-          color="grey700"
-          fontSize="s"
+        <ButtonWithLink
+          buttonStyle="text"
+          linkTo={`/admin/projects/${projectId}/general/access-rights`}
+          onClick={() => onClose()}
+          padding="0"
+          fontSize="14px"
           textDecoration="underline"
-          style={{ cursor: 'pointer' }}
-          onClick={handleEditClick}
         >
           {formatMessage(messages.edit)}
-        </Text>
+        </ButtonWithLink>
       </Box>
     </Box>
   );
