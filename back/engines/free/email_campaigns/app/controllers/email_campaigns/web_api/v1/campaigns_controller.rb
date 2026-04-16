@@ -148,25 +148,6 @@ module EmailCampaigns
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
     end
 
-    def recipients_count
-      authorize Campaign, :recipients_count?
-
-      campaign_class = DeliveryService.new.campaign_classes.find do |claz|
-        claz.campaign_name == params[:campaign_name]
-      end
-      head :not_found and return unless campaign_class
-
-      campaign = campaign_class.first || campaign_class.new
-      project = Project.find(params[:project_id]) if params[:project_id]
-      recipients = campaign.estimated_recipients(project: project)
-
-      if recipients.nil?
-        render json: { errors: { base: [{ error: 'recipients_count_not_available' }] } }, status: :unprocessable_entity
-      else
-        render json: raw_json({ count: recipients.count })
-      end
-    end
-
     def supported_campaign_names
       campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
         claz.supports_context?(campaign_context)
