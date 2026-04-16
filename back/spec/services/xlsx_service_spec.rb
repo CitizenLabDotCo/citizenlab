@@ -309,7 +309,7 @@ describe XlsxService do
           sheet.add_row %w[Description Other]
           description_rich = Axlsx::RichText.new
           description_rich.add_run 'hello ', b: true
-          description_rich.add_run 'world', i: true
+          description_rich.add_run 'world & people', i: true
           other_rich = Axlsx::RichText.new
           other_rich.add_run 'stay ', b: true
           other_rich.add_run 'plain'
@@ -320,7 +320,7 @@ describe XlsxService do
 
       it 'returns HTML for cells in rich_text_columns when runs are present' do
         result = service.xlsx_to_hash_array(rich_xlsx, rich_text_columns: ['Description'])
-        expect(result.first['Description']).to eq '<strong>hello </strong><em>world</em>'
+        expect(result.first['Description']).to eq '<strong>hello </strong><em>world &amp; people</em>'
       end
 
       it 'leaves columns outside rich_text_columns as plain text even if formatted' do
@@ -328,9 +328,9 @@ describe XlsxService do
         expect(result.first['Other']).to eq 'stay plain'
       end
 
-      it 'returns plain text when rich_text_columns is not passed (backwards compatible)' do
+      it 'returns plain text when rich_text_columns is not passed' do
         result = service.xlsx_to_hash_array(rich_xlsx)
-        expect(result.first['Description']).to eq 'hello world'
+        expect(result.first['Description']).to eq 'hello world & people'
         expect(result.first['Other']).to eq 'stay plain'
       end
 
@@ -346,19 +346,6 @@ describe XlsxService do
         xlsx = package.to_stream.string
         result = service.xlsx_to_hash_array(xlsx, rich_text_columns: ['Description'])
         expect(result.first['Description']).to eq '<p>already html</p>'
-      end
-
-      it 'escapes HTML entities in the rich-text source' do
-        package = Axlsx::Package.new
-        package.workbook.add_worksheet do |sheet|
-          sheet.add_row ['Description']
-          rich = Axlsx::RichText.new
-          rich.add_run 'A & B', b: true
-          sheet.add_row [rich]
-        end
-        xlsx = package.to_stream.string
-        result = service.xlsx_to_hash_array(xlsx, rich_text_columns: ['Description'])
-        expect(result.first['Description']).to eq '<strong>A &amp; B</strong>'
       end
     end
   end
