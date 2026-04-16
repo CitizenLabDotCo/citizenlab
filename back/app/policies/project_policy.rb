@@ -143,6 +143,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def publication_recipient_count?
+    active_moderator?
+  end
+
   def participant_counts?
     user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
   end

@@ -1165,6 +1165,46 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/publication_recipient_count' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:topic) { create(:global_topic) }
+      let(:project) { create(:project, global_topics: [topic]) }
+      let(:id) { project.id }
+
+      example 'Returns the count of publication recipients' do
+        create_list(:follower, 2, followable: topic)
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :count)).to eq 2
+      end
+
+      example 'Excludes users who opted out of the campaign' do
+        follower = create(:follower, followable: topic)
+        create(:follower, followable: topic)
+        create(:consent, user: follower.user, campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
+      end
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Get publication recipient count', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
