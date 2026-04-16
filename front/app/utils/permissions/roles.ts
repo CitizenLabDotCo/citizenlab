@@ -1,7 +1,7 @@
 import { IUser } from 'api/users/types';
 
 interface IAdminRole {
-  type: 'admin';
+  type: 'admin' | 'super_admin';
   project_reviewer?: boolean;
 }
 

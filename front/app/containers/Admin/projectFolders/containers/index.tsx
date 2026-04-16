@@ -21,6 +21,7 @@ import { TRole } from 'utils/permissions/roles';
 import messages from './messages';
 
 const ALLOWED_ROLES: (string | undefined)[] = [
+  'super_admin',
   'admin',
   'space_moderator',
   'project_folder_moderator',
