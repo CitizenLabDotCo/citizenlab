@@ -7,7 +7,7 @@ RSpec.describe Notifications::ProjectPublished do
     it 'returns followers of the project topics, areas and folder' do
       topic = create(:global_topic)
       area = create(:area)
-      project = create(:project, global_topics: [topic], areas: [area])
+      project = create(:project, global_topics: [topic], areas: [area], admin_publication_attributes: { publication_status: 'draft' })
       folder = create(:project_folder, projects: [project])
       project.reload
       topic_follower = create(:follower, followable: topic)
@@ -19,17 +19,33 @@ RSpec.describe Notifications::ProjectPublished do
       expect(recipients).to contain_exactly(topic_follower.user, area_follower.user, folder_follower.user)
     end
 
-    it 'returns no recipients for unlisted projects' do
+    it 'returns recipients for draft projects' do
       topic = create(:global_topic)
       project = create(:project, global_topics: [topic], admin_publication_attributes: { publication_status: 'draft' })
-      create(:follower, followable: topic)
+      follower = create(:follower, followable: topic)
+      expect(described_class.recipients(project)).to contain_exactly(follower.user)
+    end
 
+    it 'returns no recipients for unlisted projects' do
+      topic = create(:global_topic)
+      project = create(:project, global_topics: [topic], listed: false)
+      create(:follower, followable: topic)
       expect(described_class.recipients(project)).to be_empty
+    end
+
+    it 'excludes followers who opted out of the project published campaign' do
+      topic = create(:global_topic)
+      project = create(:project, global_topics: [topic], admin_publication_attributes: { publication_status: 'draft' })
+      opted_in_follower = create(:follower, followable: topic)
+      opted_out_follower = create(:follower, followable: topic)
+      create(:consent, user: opted_out_follower.user, campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+
+      expect(described_class.recipients(project)).to contain_exactly(opted_in_follower.user)
     end
 
     it 'excludes followers who do not have access to the project' do
       area = create(:area)
-      project = create(:project, areas: [area], visible_to: 'groups', groups: [create(:group)])
+      project = create(:project, areas: [area], visible_to: 'groups', groups: [create(:group)], admin_publication_attributes: { publication_status: 'draft' })
       create(:follower, followable: area)
 
       expect(described_class.recipients(project)).to be_empty

@@ -76,15 +76,20 @@ module Notifications
       topic_followers = Follower.where(followable: project.global_topics)
       area_followers = Follower.where(followable: project.areas)
       folder_followers = project.in_folder? ? Follower.where(followable: project.folder) : Follower.none
-
       followers = topic_followers.or(area_followers).or(folder_followers)
-      ProjectPolicy::InverseScope.new(project, User.from_follows(followers)).resolve
+      # Ignore publication status so we can preview recipient counts for draft projects before publishing
+      users = ProjectPolicy::InverseScope.new(project, User.from_follows(followers), ignore_publication_status: true).resolve
+      # Exclude users who opted out of the project published campaign
+      opted_out_user_ids = EmailCampaigns::Consent.where(
+        campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished',
+        consented: false
+      ).pluck(:user_id)
+      users.where.not(id: opted_out_user_ids)
     end
 
     def self.make_notifications_on(activity)
       initiator_id = activity.user_id
       project = activity.item
-
       recipients(project).where.not(id: initiator_id).map do |recipient|
         new(
           recipient_id: recipient.id,
