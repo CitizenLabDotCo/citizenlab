@@ -8,7 +8,6 @@ module EmailCampaigns
     def index
       @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
         .resolve
-        .order(created_at: :desc)
       # Necessary because we instantiate the scope directly instead of using Pundit's
       # `policy_scope` method.
       skip_policy_scope
@@ -22,9 +21,15 @@ module EmailCampaigns
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
         @campaigns = @campaigns.where(id: supported_ids)
+        @campaigns = manual_order(@campaigns.manual)
+      else
+        @campaigns = case parse_bool(params[:manual])
+        when true then manual_order(@campaigns.manual)
+        when false then @campaigns.automatic.order(created_at: :desc)
+        else
+          @campaigns.order(created_at: :desc)
+        end
       end
-
-      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
       @campaigns = paginate @campaigns
 
@@ -202,6 +207,22 @@ module EmailCampaigns
         intro_multiloc: I18n.available_locales,
         button_text_multiloc: I18n.available_locales
       )
+    end
+
+    # Sort campaigns by status group (draft → scheduled → sent),
+    # then by date within each group (most recent first).
+    def manual_order(scope)
+      scope.order(Arel.sql(<<~SQL))
+        CASE
+          WHEN deliveries_count = 0 AND (schedule IS NULL OR schedule = '{}') THEN 0 -- draft
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN 1 -- scheduled
+          ELSE 2 -- sent
+        END ASC,
+        CASE
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN (schedule->'rtimes'->0->>'time')::timestamp
+          ELSE updated_at
+        END DESC
+      SQL
     end
   end
 end
