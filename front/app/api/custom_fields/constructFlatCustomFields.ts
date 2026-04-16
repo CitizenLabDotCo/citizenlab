@@ -3,6 +3,7 @@ import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 
 import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
+import { indexById } from 'utils/cl-react-query/indexById';
 
 import {
   IFlatCustomField,
@@ -29,7 +30,7 @@ export const constructFlatCustomFields = (rawCustomFields: ICustomFields) => {
     rawCustomFields
   );
 
-  const imagesById = groupImagesById(images);
+  const imagesById = indexById(images);
 
   const flatCustomFields: IFlatCustomField[] | undefined =
     rawCustomFields.data.map((customField) => {
@@ -111,19 +112,9 @@ const groupStatementsByCustomFieldId = (
   return statementsByCustomFieldId;
 };
 
-type ImagesById = Record<string, ICustomFieldOptionImage['data']>;
-
-const groupImagesById = (images: ICustomFieldOptionImage['data'][]) => {
-  return images.reduce((acc, image) => {
-    const id = image.id;
-    acc[id] = image;
-    return acc;
-  }, {} as ImagesById);
-};
-
 const convertOptions = (
   options: ICustomFieldOptionData[],
-  imagesById: ImagesById
+  imagesById: Record<string, ICustomFieldOptionImage['data']>
 ): IOptionsType[] => {
   return options.map((option) => {
     const image_id = option.relationships.image?.data?.id;

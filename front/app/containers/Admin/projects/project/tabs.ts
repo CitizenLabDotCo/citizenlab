@@ -34,6 +34,12 @@ export const getTabs = (
       name: 'setup',
       className: 'intercom-phase-setup-tab',
     },
+    {
+      label: formatMessage(messages.descriptionTab),
+      url: 'description',
+      name: 'description',
+      className: 'intercom-phase-description-tab',
+    },
     getMethodConfig(phase.attributes.participation_method).showInputManager && {
       label: formatMessage(messages.inputManagerTab),
       url: getMethodConfig(phase.attributes.participation_method)
