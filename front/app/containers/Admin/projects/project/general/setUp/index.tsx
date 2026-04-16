@@ -19,11 +19,7 @@ import useProjectImages, {
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
-import {
-  IUpdatedProjectProperties,
-  IProjectData,
-  IProject,
-} from 'api/projects/types';
+import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import { HighestRole } from 'api/users/types';
@@ -32,6 +28,8 @@ import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -65,6 +63,7 @@ import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
+import { TOnProjectAttributesDiffChangeFunction } from '..';
 import { fragmentId } from '../../projectHeader';
 import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
 import GeographicAreaInputs from '../components/GeographicAreaInputs';
@@ -81,11 +80,6 @@ import {
 import TopicInputs from '../components/TopicInputs';
 import messages from '../messages';
 import validateTitle from '../utils/validateTitle';
-
-export type TOnProjectAttributesDiffChangeFunction = (
-  projectAttributesDiff: IUpdatedProjectProperties,
-  submitState?: ISubmitState
-) => void;
 
 const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'super_admin',
@@ -800,18 +794,3 @@ const AdminProjectsProjectGeneralWrapper = () => {
 };
 
 export default AdminProjectsProjectGeneralWrapper;
-
-function getSelectedTopicIds(
-  projectAttributesDiff: IUpdatedProjectProperties,
-  project: IProjectData | null
-) {
-  if (projectAttributesDiff.global_topic_ids) {
-    return projectAttributesDiff.global_topic_ids;
-  }
-
-  if (project) {
-    return project.relationships.global_topics.data.map((topic) => topic.id);
-  }
-
-  return [];
-}

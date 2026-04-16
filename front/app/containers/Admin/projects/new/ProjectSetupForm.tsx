@@ -16,7 +16,7 @@ import {
 } from 'api/project_images/useProjectImages';
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
-import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
+import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import { HighestRole } from 'api/users/types';
 
@@ -25,6 +25,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 import GeographicAreaInputs from 'containers/Admin/projects/project/general/components/GeographicAreaInputs';
 import ProjectCardImageDropzone from 'containers/Admin/projects/project/general/components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from 'containers/Admin/projects/project/general/components/ProjectCardImageTooltip';
@@ -64,10 +65,7 @@ import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { isSpaceModerator } from 'utils/permissions/roles';
 
-export type TOnProjectAttributesDiffChangeFunction = (
-  projectAttributesDiff: IUpdatedProjectProperties,
-  submitState?: ISubmitState
-) => void;
+import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 
 const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'super_admin',
@@ -591,18 +589,3 @@ const ProjectSetupForm = () => {
 };
 
 export default ProjectSetupForm;
-
-function getSelectedTopicIds(
-  projectAttributesDiff: IUpdatedProjectProperties,
-  project: IProjectData | null
-) {
-  if (projectAttributesDiff.global_topic_ids) {
-    return projectAttributesDiff.global_topic_ids;
-  }
-
-  if (project) {
-    return project.relationships.global_topics.data.map((topic) => topic.id);
-  }
-
-  return [];
-}
