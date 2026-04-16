@@ -584,11 +584,13 @@
     "verified_at": "2026-03-18T16:43:22.096404Z",
     "verified_by": "Admin"
   },
+
   "app.components.SeatInfo.assignedSeats": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.components.SeatInfo.availableSeats": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
@@ -604,6 +606,7 @@
     "verified_at": "2026-03-18T16:43:22.096404Z",
     "verified_by": "Admin"
   },
+
   "app.components.SeatInfo.goToSeatsOverview": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
@@ -649,11 +652,13 @@
     "verified_at": "2026-03-18T16:43:22.096404Z",
     "verified_by": "Admin"
   },
+
   "app.components.SeatInfo.totalAdminSeats": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.components.SeatInfo.totalManagerSeats": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
@@ -4059,41 +4064,49 @@
     "verified_at": "2026-03-18T16:43:22.096404Z",
     "verified_by": "Admin"
   },
+
   "app.containers.Admin.Users.Seats.seatsOverview": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.admins": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.inviteStatus": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.managers": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.name": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.options": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.role": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
     "verified_by": "Amanda A"
   },
+
   "app.containers.Admin.Users.SeatsOverview.title": {
     "state": "verified",
     "verified_at": "2026-03-23T08:18:07.652454Z",
@@ -6028,6 +6041,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:43:22.096404Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.project.emails.preview": {
+    "state": "verified",
+    "verified_at": "2026-03-26T07:16:23.727965Z",
+    "verified_by": "Amanda A"
   },
   "app.containers.Admin.project.emails.previewSentConfirmation": {
     "state": "verified",
