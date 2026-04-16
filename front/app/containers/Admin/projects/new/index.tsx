@@ -8,8 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { InsertConfigurationOptions } from 'typings';
 
-import AdminProjectsProjectGeneralSetUp from 'containers/Admin/projects/project/general/setUp';
-
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -19,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
+import ProjectSetupForm from './ProjectSetupForm';
 import tracks from './tracks';
 
 export interface INewProjectCreatedEvent {
@@ -86,7 +85,7 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}
         />
-        {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneralSetUp />}
+        {selectedTabValue === 'scratch' && <ProjectSetupForm />}
       </Box>
     </Box>
   );

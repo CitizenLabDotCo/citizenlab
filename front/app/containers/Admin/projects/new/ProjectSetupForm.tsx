@@ -16,10 +16,8 @@ import {
 } from 'api/project_images/useProjectImages';
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
-import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
-import useUpdateProject from 'api/projects/useUpdateProject';
 import { HighestRole } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
@@ -78,19 +76,18 @@ const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'project_folder_moderator',
 ] satisfies HighestRole[];
 
-const AdminProjectsProjectGeneral = () => {
+const ProjectSetupForm = () => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
-  const { width, containerRef } = useContainerWidthAndHeight();
+  const { containerRef } = useContainerWidthAndHeight();
 
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
-  const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
   const syncProjectFiles = useSyncFiles();
@@ -192,7 +189,6 @@ const AdminProjectsProjectGeneral = () => {
     addFile(
       {
         content: fileToAdd.base64,
-        project: projectId,
         name: fileToAdd.name,
         category: 'other', // Default to 'other' when added from phase setup
         ai_processing_allowed: false, // Default to false when added from phase setup
@@ -202,7 +198,7 @@ const AdminProjectsProjectGeneral = () => {
           // Create a temporary file attachment to add to the state, so the user sees it in the list.
           const temporaryFileAttachment = generateTemporaryFileAttachment({
             fileId: newFile.data.id,
-            attachableId: projectId,
+            attachableId: undefined,
             attachableType: 'Project',
             position: projectFileAttachments
               ? projectFileAttachments.length
@@ -252,7 +248,7 @@ const AdminProjectsProjectGeneral = () => {
   const handleProjectFileOnAttach = (fileToAttach: IFileData) => {
     const temporaryFileAttachment = generateTemporaryFileAttachment({
       fileId: fileToAttach.id,
-      attachableId: projectId,
+      attachableId: undefined,
       attachableType: 'Project',
       position: projectFileAttachments ? projectFileAttachments.length : 0,
     });
@@ -272,148 +268,94 @@ const AdminProjectsProjectGeneral = () => {
     }));
   };
 
-  const handleDescriptionChange = (description_multiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setDescriptionMultiloc(description_multiloc);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      description_multiloc,
-    }));
-  };
-
-  const handleDescriptionPreviewChange = (
-    description_preview_multiloc: Multiloc
-  ) => {
-    setSubmitState('enabled');
-    setDescriptionPreviewMultiloc(description_preview_multiloc);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      description_preview_multiloc,
-    }));
-  };
-
   async function saveForm() {
-    // Should be split. Same func for existing/new project
-    // Makes things unnecessarily complicated (e.g. projectId below).
-    let isNewProject = false;
-    let latestProjectId = projectId;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
       setSubmitState('error');
+      return;
     }
 
-    if (isFormValid && !processing) {
-      const nextProjectAttributesDiff: IUpdatedProjectProperties = {
-        admin_publication_attributes: {
-          publication_status:
-            project?.data.attributes.publication_status || 'draft',
-        },
-        ...projectAttributesDiff,
-      };
+    if (processing) return;
 
-      try {
-        setProcessing(true);
-        if (!isEmpty(nextProjectAttributesDiff)) {
-          if (latestProjectId) {
-            await updateProject({
-              projectId: latestProjectId,
-              ...nextProjectAttributesDiff,
-            });
-          } else {
-            const response = await addProject(nextProjectAttributesDiff);
-            latestProjectId = response.data.id;
-            isNewProject = true;
-          }
-        }
+    const nextProjectAttributesDiff: IUpdatedProjectProperties = {
+      admin_publication_attributes: {
+        publication_status: 'draft',
+      },
+      ...projectAttributesDiff,
+    };
 
-        const cardImageToAddPromise =
-          croppedProjectCardBase64 && latestProjectId
-            ? addProjectImage({
-                projectId: latestProjectId,
-                image: {
-                  image: croppedProjectCardBase64,
-                  ...(projectCardImageAltText
-                    ? { alt_text_multiloc: projectCardImageAltText }
-                    : {}),
-                },
-              })
-            : null;
+    try {
+      setProcessing(true);
+      const response = await addProject(nextProjectAttributesDiff);
+      const projectId = response.data.id;
 
-        const cardImageToUpdatePromise =
-          projectCardImage &&
-          projectCardImage.id &&
-          projectCardImageAltText &&
-          latestProjectId
-            ? updateProjectImage({
-                projectId: latestProjectId,
-                imageId: projectCardImage.id,
-                image: {
-                  image: projectCardImage.base64,
-                  alt_text_multiloc: projectCardImageAltText,
-                },
-              })
-            : null;
+      const cardImageToAddPromise = croppedProjectCardBase64
+        ? addProjectImage({
+            projectId,
+            image: {
+              image: croppedProjectCardBase64,
+              ...(projectCardImageAltText
+                ? { alt_text_multiloc: projectCardImageAltText }
+                : {}),
+            },
+          })
+        : null;
 
-        const cardImageToRemovePromise =
-          projectCardImageToRemove?.id && latestProjectId
-            ? deleteProjectImage({
-                projectId: latestProjectId,
-                imageId: projectCardImageToRemove.id,
-              })
-            : null;
+      const cardImageToUpdatePromise =
+        projectCardImage && projectCardImage.id && projectCardImageAltText
+          ? updateProjectImage({
+              projectId,
+              imageId: projectCardImage.id,
+              image: {
+                image: projectCardImage.base64,
+                alt_text_multiloc: projectCardImageAltText,
+              },
+            })
+          : null;
 
-        const initialFileAttachmentOrdering: Record<
-          string,
-          number | undefined
-        > = Object.fromEntries(
-          remoteProjectFileAttachments?.data
-            .filter((file) => file.id)
-            .map((file) => [file.id!, file.attributes.position]) ?? []
-        );
+      const cardImageToRemovePromise = projectCardImageToRemove?.id
+        ? deleteProjectImage({
+            projectId,
+            imageId: projectCardImageToRemove.id,
+          })
+        : null;
 
-        const projectFilesPromise =
-          latestProjectId && projectFileAttachments
-            ? syncProjectFiles({
-                attachableId: latestProjectId,
-                attachableType: 'Project',
-                fileAttachments: projectFileAttachments,
-                fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-                fileAttachmentOrdering: initialFileAttachmentOrdering,
-              })
-            : undefined;
+      const projectFilesPromise = projectFileAttachments
+        ? syncProjectFiles({
+            attachableId: projectId,
+            attachableType: 'Project',
+            fileAttachments: projectFileAttachments,
+            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+            fileAttachmentOrdering: {},
+          })
+        : undefined;
 
-        await Promise.all([
-          cardImageToAddPromise,
-          cardImageToUpdatePromise,
-          cardImageToRemovePromise,
-          projectFilesPromise,
-        ] as Promise<any>[]);
+      await Promise.all([
+        cardImageToAddPromise,
+        cardImageToUpdatePromise,
+        cardImageToRemovePromise,
+        projectFilesPromise,
+      ] as Promise<any>[]);
 
-        setSubmitState('success');
-        setProjectCardImageToRemove(null);
-        setProjectFileAttachmentsToRemove([]);
-        setProcessing(false);
+      setSubmitState('success');
+      setProjectCardImageToRemove(null);
+      setProjectFileAttachmentsToRemove([]);
+      setProcessing(false);
 
-        if (isNewProject && latestProjectId !== undefined) {
-          const _projectId = latestProjectId;
-          setTimeout(() => {
-            clHistory.push({
-              pathname: `${adminProjectsProjectPath(_projectId)}/general`,
-            });
-          }, 1000);
-        }
-        queryClient.invalidateQueries({
-          queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
+      setTimeout(() => {
+        clHistory.push({
+          pathname: `${adminProjectsProjectPath(projectId)}/general`,
         });
-        queryClient.invalidateQueries({
-          queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
-        });
-      } catch (errors) {
-        setSubmitState('error');
-        setApiErrors(errors.errors);
-        setProcessing(false);
-      }
+      }, 1000);
+
+      queryClient.invalidateQueries({
+        queryKey: projectPermissionKeys.list({ projectId }),
+      });
+    } catch (errors) {
+      setSubmitState('error');
+      setApiErrors(errors.errors);
+      setProcessing(false);
     }
   }
 
@@ -648,7 +590,7 @@ const AdminProjectsProjectGeneral = () => {
   );
 };
 
-export default AdminProjectsProjectGeneral;
+export default ProjectSetupForm;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
