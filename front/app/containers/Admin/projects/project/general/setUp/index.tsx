@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -19,8 +19,11 @@ import useProjectImages, {
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
-import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
-import useAddProject from 'api/projects/useAddProject';
+import {
+  IUpdatedProjectProperties,
+  IProjectData,
+  IProject,
+} from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import { HighestRole } from 'api/users/types';
@@ -29,8 +32,6 @@ import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -53,7 +54,6 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import {
   convertUrlToUploadFile,
@@ -94,11 +94,14 @@ const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'project_folder_moderator',
 ] satisfies HighestRole[];
 
-const AdminProjectsProjectGeneral = () => {
+interface Props {
+  project: IProject;
+}
+
+const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams();
-  const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
+  const projectId = project.data.id;
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -109,12 +112,11 @@ const AdminProjectsProjectGeneral = () => {
     `/admin/projects/${projectId}/general`
   );
 
-  const { data: remoteProjectImages } = useProjectImages(projectId || null);
+  const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
-  const { mutateAsync: addProject } = useAddProject();
 
   const syncProjectFiles = useSyncFiles();
 
@@ -154,31 +156,22 @@ const AdminProjectsProjectGeneral = () => {
     string | null
   >(null);
 
-  const [slug, setSlug] = useState<string | null>(null);
+  const [slug, setSlug] = useState<string>(project.data.attributes.slug);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
   // Description state
-  const [descriptionMultiloc, setDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc>(
+    project.data.attributes.description_multiloc
+  );
   const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
-    useState<Multiloc | null>(null);
+    useState<Multiloc | null>(
+      project.data.attributes.description_preview_multiloc
+    );
 
   const showProjectFolderSelect =
     FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
       authUser?.data.attributes.highest_role
     ) && isProjectFoldersEnabled;
-
-  useEffect(() => {
-    (async () => {
-      if (project) {
-        setSlug(project.data.attributes.slug);
-        setDescriptionMultiloc(project.data.attributes.description_multiloc);
-        setDescriptionPreviewMultiloc(
-          project.data.attributes.description_preview_multiloc
-        );
-      }
-    })();
-  }, [project]);
 
   useEffect(() => {
     if (remoteProjectFileAttachments) {
@@ -188,7 +181,7 @@ const AdminProjectsProjectGeneral = () => {
 
   useEffect(() => {
     (async () => {
-      if (!isNilOrError(remoteProjectImages)) {
+      if (remoteProjectImages) {
         for (const projectImage of remoteProjectImages.data) {
           const url = projectImage.attributes.versions.large;
           const altTextValue = projectImage.attributes.alt_text_multiloc;
@@ -371,127 +364,94 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   async function saveForm() {
-    // Should be split. Same func for existing/new project
-    // Makes things unnecessarily complicated (e.g. projectId below).
-    let isNewProject = false;
-    let latestProjectId = projectId;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
       setSubmitState('error');
+      return;
     }
 
-    if (isFormValid && !processing) {
-      const nextProjectAttributesDiff: IUpdatedProjectProperties = {
-        admin_publication_attributes: {
-          publication_status:
-            project?.data.attributes.publication_status || 'draft',
-        },
-        ...projectAttributesDiff,
-      };
+    if (processing) return;
 
-      try {
-        setProcessing(true);
-        if (!isEmpty(nextProjectAttributesDiff)) {
-          if (latestProjectId) {
-            await updateProject({
-              projectId: latestProjectId,
-              ...nextProjectAttributesDiff,
-            });
-          } else {
-            const response = await addProject(nextProjectAttributesDiff);
-            latestProjectId = response.data.id;
-            isNewProject = true;
-          }
-        }
+    try {
+      setProcessing(true);
+      if (!isEmpty(projectAttributesDiff)) {
+        await updateProject({
+          projectId,
+          ...projectAttributesDiff,
+        });
+      }
 
-        const cardImageToAddPromise =
-          croppedProjectCardBase64 && latestProjectId
-            ? addProjectImage({
-                projectId: latestProjectId,
-                image: {
-                  image: croppedProjectCardBase64,
-                  ...(projectCardImageAltText
-                    ? { alt_text_multiloc: projectCardImageAltText }
-                    : {}),
-                },
-              })
-            : null;
+      const cardImageToAddPromise = croppedProjectCardBase64
+        ? addProjectImage({
+            projectId,
+            image: {
+              image: croppedProjectCardBase64,
+              ...(projectCardImageAltText
+                ? { alt_text_multiloc: projectCardImageAltText }
+                : {}),
+            },
+          })
+        : null;
 
-        const cardImageToUpdatePromise =
-          projectCardImage &&
-          projectCardImage.id &&
-          projectCardImageAltText &&
-          latestProjectId
-            ? updateProjectImage({
-                projectId: latestProjectId,
-                imageId: projectCardImage.id,
-                image: {
-                  image: projectCardImage.base64,
-                  alt_text_multiloc: projectCardImageAltText,
-                },
-              })
-            : null;
+      const cardImageToUpdatePromise =
+        projectCardImage && projectCardImage.id && projectCardImageAltText
+          ? updateProjectImage({
+              projectId,
+              imageId: projectCardImage.id,
+              image: {
+                image: projectCardImage.base64,
+                alt_text_multiloc: projectCardImageAltText,
+              },
+            })
+          : null;
 
-        const cardImageToRemovePromise =
-          projectCardImageToRemove?.id && latestProjectId
-            ? deleteProjectImage({
-                projectId: latestProjectId,
-                imageId: projectCardImageToRemove.id,
-              })
-            : null;
+      const cardImageToRemovePromise = projectCardImageToRemove?.id
+        ? deleteProjectImage({
+            projectId,
+            imageId: projectCardImageToRemove.id,
+          })
+        : null;
 
-        const initialFileAttachmentOrdering: Record<
-          string,
-          number | undefined
-        > = Object.fromEntries(
+      const initialFileAttachmentOrdering: Record<string, number | undefined> =
+        Object.fromEntries(
           remoteProjectFileAttachments?.data
             .filter((file) => file.id)
             .map((file) => [file.id!, file.attributes.position]) ?? []
         );
 
-        const projectFilesPromise =
-          latestProjectId && projectFileAttachments
-            ? syncProjectFiles({
-                attachableId: latestProjectId,
-                attachableType: 'Project',
-                fileAttachments: projectFileAttachments,
-                fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-                fileAttachmentOrdering: initialFileAttachmentOrdering,
-              })
-            : undefined;
+      const projectFilesPromise = projectFileAttachments
+        ? syncProjectFiles({
+            attachableId: projectId,
+            attachableType: 'Project',
+            fileAttachments: projectFileAttachments,
+            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+            fileAttachmentOrdering: initialFileAttachmentOrdering,
+          })
+        : undefined;
 
-        await Promise.all([
-          cardImageToAddPromise,
-          cardImageToUpdatePromise,
-          cardImageToRemovePromise,
-          projectFilesPromise,
-        ] as Promise<any>[]);
+      await Promise.all([
+        cardImageToAddPromise,
+        cardImageToUpdatePromise,
+        cardImageToRemovePromise,
+        projectFilesPromise,
+      ] as Promise<any>[]);
 
-        setSubmitState('success');
-        setProjectCardImageToRemove(null);
-        setProjectFileAttachmentsToRemove([]);
-        setProcessing(false);
+      setSubmitState('success');
+      setProjectCardImageToRemove(null);
+      setProjectFileAttachmentsToRemove([]);
+      setProcessing(false);
 
-        if (isNewProject && latestProjectId !== undefined) {
-          const _projectId = latestProjectId;
-          setTimeout(() => {
-            clHistory.push({
-              pathname: `${adminProjectsProjectPath(_projectId)}/general`,
-            });
-          }, 1000);
-        }
-        queryClient.invalidateQueries({
-          queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),
-        });
-        queryClient.invalidateQueries({
-          queryKey: projectsKeys.item({ slug: project?.data.attributes.slug }),
-        });
-      } catch (errors) {
-        setSubmitState('error');
-        setApiErrors(errors.errors);
-        setProcessing(false);
-      }
+      queryClient.invalidateQueries({
+        queryKey: projectPermissionKeys.list({ projectId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
+      });
+    } catch (errors) {
+      setSubmitState('error');
+      setApiErrors(errors.errors);
+      setProcessing(false);
     }
   }
 
@@ -570,14 +530,12 @@ const AdminProjectsProjectGeneral = () => {
 
   const selectedTopicIds = getSelectedTopicIds(
     projectAttributesDiff,
-    project?.data ?? null
+    project.data
   );
 
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
-
-  const isNewProject = !projectId;
 
   return (
     <Box ref={containerRef}>
@@ -606,57 +564,52 @@ const AdminProjectsProjectGeneral = () => {
               handleTitleMultilocOnChange={handleTitleMultilocOnChange}
             />
           </Highlighter>
-          {!isNewProject && (
-            <>
-              {/* Project Description Section */}
-              <Section>
-                <SubSectionTitle>
-                  <FormattedMessage
-                    {...messages.projectDescriptionSectionTitle}
-                  />
-                </SubSectionTitle>
-                <SectionDescription>
-                  <FormattedMessage
-                    {...messages.projectDescriptionSectionDescription}
-                  />
-                </SectionDescription>
-              </Section>
 
-              {/* Main Description */}
-              <SectionField>
-                <Highlighter fragmentId="description-multiloc">
-                  <DescriptionBuilderToggle
-                    valueMultiloc={descriptionMultiloc}
-                    onChange={handleDescriptionChange}
-                    label={formatMessage(messages.descriptionLabel)}
-                    contentBuildableType="project"
-                  />
-                </Highlighter>
-                <Error
-                  fieldName="description_multiloc"
-                  apiErrors={apiErrors.description_multiloc}
-                />
-              </SectionField>
+          {/* Project Description Section */}
+          <Section>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.projectDescriptionSectionTitle} />
+            </SubSectionTitle>
+            <SectionDescription>
+              <FormattedMessage
+                {...messages.projectDescriptionSectionDescription}
+              />
+            </SectionDescription>
+          </Section>
 
-              {/* Homepage Description */}
-              <SectionField>
-                <Highlighter fragmentId="description-preview-multiloc">
-                  <TextAreaMultilocWithLocaleSwitcher
-                    valueMultiloc={descriptionPreviewMultiloc}
-                    onChange={handleDescriptionPreviewChange}
-                    label={formatMessage(messages.homepageDescriptionLabel)}
-                    labelTooltipText={formatMessage(
-                      messages.homepageDescriptionTooltip
-                    )}
-                  />
-                </Highlighter>
-                <Error
-                  fieldName="description_preview_multiloc"
-                  apiErrors={apiErrors.description_preview_multiloc}
-                />
-              </SectionField>
-            </>
-          )}
+          {/* Main Description */}
+          <SectionField>
+            <Highlighter fragmentId="description-multiloc">
+              <DescriptionBuilderToggle
+                valueMultiloc={descriptionMultiloc}
+                onChange={handleDescriptionChange}
+                label={formatMessage(messages.descriptionLabel)}
+                contentBuildableType="project"
+              />
+            </Highlighter>
+            <Error
+              fieldName="description_multiloc"
+              apiErrors={apiErrors.description_multiloc}
+            />
+          </SectionField>
+
+          {/* Homepage Description */}
+          <SectionField>
+            <Highlighter fragmentId="description-preview-multiloc">
+              <TextAreaMultilocWithLocaleSwitcher
+                valueMultiloc={descriptionPreviewMultiloc}
+                onChange={handleDescriptionPreviewChange}
+                label={formatMessage(messages.homepageDescriptionLabel)}
+                labelTooltipText={formatMessage(
+                  messages.homepageDescriptionTooltip
+                )}
+              />
+            </Highlighter>
+            <Error
+              fieldName="description_preview_multiloc"
+              apiErrors={apiErrors.description_preview_multiloc}
+            />
+          </SectionField>
 
           {isProjectLibraryEnabled && (
             <Box mb="20px">
@@ -675,23 +628,20 @@ const AdminProjectsProjectGeneral = () => {
             </Box>
           )}
 
-          {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-          {!isNilOrError(project) && slug && (
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.url} />
-              </SubSectionTitle>
-              <SlugInput
-                intercomLabelClassname="intercom-product-tour-project-slug-label"
-                slug={slug}
-                pathnameWithoutSlug={'projects'}
-                apiErrors={apiErrors}
-                showSlugErrorMessage={showSlugErrorMessage}
-                onSlugChange={handleSlugOnChange}
-                showSlugChangedWarning={slug !== project.data.attributes.slug}
-              />
-            </StyledSectionField>
-          )}
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.url} />
+            </SubSectionTitle>
+            <SlugInput
+              intercomLabelClassname="intercom-product-tour-project-slug-label"
+              slug={slug}
+              pathnameWithoutSlug={'projects'}
+              apiErrors={apiErrors}
+              showSlugErrorMessage={showSlugErrorMessage}
+              onSlugChange={handleSlugOnChange}
+              showSlugChangedWarning={slug !== project.data.attributes.slug}
+            />
+          </StyledSectionField>
 
           <TopicInputs
             selectedTopicIds={selectedTopicIds}
@@ -720,7 +670,7 @@ const AdminProjectsProjectGeneral = () => {
                     handleProjectAttributeDiffOnChange(change, submitState);
                   }
                 }}
-                isNewProject={isNewProject}
+                isNewProject={false}
               />
             </Highlighter>
           )}
@@ -737,7 +687,7 @@ const AdminProjectsProjectGeneral = () => {
               <ProjectHeaderImageTooltip />
             </SubSectionTitle>
             <HeaderBgUploader
-              imageUrl={project?.data.attributes.header_bg.large}
+              imageUrl={project.data.attributes.header_bg.large}
               headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
               onImageChange={handleHeaderBgChange}
               onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
@@ -841,7 +791,15 @@ const AdminProjectsProjectGeneral = () => {
   );
 };
 
-export default AdminProjectsProjectGeneral;
+const AdminProjectsProjectGeneralWrapper = () => {
+  const { projectId } = useParams();
+  const { data: project } = useProjectById(projectId);
+  if (!project) return null;
+
+  return <AdminProjectsProjectGeneral project={project} />;
+};
+
+export default AdminProjectsProjectGeneralWrapper;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
