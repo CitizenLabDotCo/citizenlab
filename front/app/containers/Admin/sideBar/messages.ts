@@ -121,6 +121,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.administrator',
     defaultMessage: 'Administrator',
   },
+  spaceManager: {
+    id: 'app.containers.AdminPage.SideBar.spaceManager',
+    defaultMessage: 'Space manager',
+  },
   folderManager: {
     id: 'app.containers.AdminPage.SideBar.folderManager',
     defaultMessage: 'Folder manager',

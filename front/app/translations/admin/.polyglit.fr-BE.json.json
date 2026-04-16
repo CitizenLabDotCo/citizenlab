@@ -829,6 +829,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.AddByEmail.invite": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -3279,6 +3289,31 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.439189Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.noManagers2": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:27:40.612892Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.noModerators": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.439189Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.ModeratorsTable.removeModerator": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -4099,6 +4134,11 @@
     "verified_at": "2026-03-24T09:12:03.726389Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.Users.SeatsOverview.unknown": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -4368,6 +4408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.spaceManager": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:09.140114Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.Users.userBlockModal.allDone": {
     "state": "verified",
@@ -6174,7 +6219,6 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T20:18:35.938393Z",
@@ -12090,6 +12134,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T15:28:02.439189Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
     "state": "verified",
     "verified_at": "2026-03-23T11:07:11.932849Z",
@@ -13330,6 +13379,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-27T14:58:57.794806Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -14100,6 +14154,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:34:03.453107Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": {
     "state": "verified",
     "verified_at": "2026-03-31T07:23:47.091246Z",
@@ -14139,6 +14198,11 @@
     "state": "verified",
     "verified_at": "2026-03-31T07:23:47.091246Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": {
+    "state": "verified",
+    "verified_at": "2026-04-13T08:28:24.076840Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaving": {
     "state": "verified",

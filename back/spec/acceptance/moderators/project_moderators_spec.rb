@@ -60,8 +60,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 201
-          expect(response_data[:id]).to eq test_user.id
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'project_moderation_rights_received', moderator, kind_of(Integer), payload: { project_id: project.id })
         end
 
@@ -77,13 +77,13 @@ resource 'Moderators' do
             before { create(:project_moderator) } # to reach the limit
 
             example_request 'Increments additional seats', document: false do
-              assert_status 201
+              assert_status 200
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
           end
 
           example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 201
+            assert_status 200
             expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
@@ -107,15 +107,21 @@ resource 'Moderators' do
     delete 'web_api/v1/projects/:project_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:project_id) { project.id }
-      let(:user_id) { same_project_moderators.first.id }
-
-      example 'Delete the moderator role of a user for a project' do
+      example "Delete the moderator role of a user for the moderator's project" do
         n_roles_before = same_project_moderators.first.reload.roles.size
-        do_request
+        do_request project_id: project.id, user_id: same_project_moderators.first.id
+
+        expect(response_status).to eq 200
+        expect(same_project_moderators.first.reload.roles.size).to eq(n_roles_before - 1)
+        expect(LogActivityJob).to have_been_enqueued.with(same_project_moderators.first, 'project_moderation_rights_removed', moderator, kind_of(Integer), payload: { project_id: project.id })
+      end
+
+      example "Delete the moderator role of a user for a project that is NOT the moderator's project" do
+        n_roles_before = other_project_moderators.first.reload.roles.size
+        do_request project_id: other_project.id, user_id: other_project_moderators.first.id
 
         expect(response_status).to eq 401
-        expect(same_project_moderators.first.reload.roles.size).to eq(n_roles_before)
+        expect(other_project_moderators.first.reload.roles.size).to eq(n_roles_before)
       end
     end
   end
@@ -163,9 +169,8 @@ resource 'Moderators' do
       let(:user_id) { user.id }
 
       example_request 'Add a moderator role' do
-        expect(response_status).to eq 201
-
-        expect(response_data[:id]).to eq user.id
+        assert_status 200
+        expect(response_data[:type]).to eq 'user'
         expect(user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => project.id }])
         expect(LogActivityJob).to have_been_enqueued.with(user, 'project_moderation_rights_received', admin, kind_of(Integer), payload: { project_id: project.id })
       end

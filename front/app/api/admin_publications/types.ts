@@ -82,10 +82,11 @@ export interface IAdminPublication {
   data: IAdminPublicationData;
 }
 
-export type ProjectNode = {
+export type SpaceNode = {
   id: string;
-  type: 'project';
+  type: 'space';
   title_multiloc: Multiloc;
+  children: (FolderNode | ProjectNode)[];
 };
 
 export type FolderNode = {
@@ -95,7 +96,15 @@ export type FolderNode = {
   children: ProjectNode[];
 };
 
-export type TreeNode = FolderNode | ProjectNode;
+export type ProjectNode = {
+  id: string;
+  type: 'project';
+  title_multiloc: Multiloc;
+};
+
+export type TreeNode = SpaceNode | FolderNode | ProjectNode;
+
+export type NodeType = TreeNode['type'];
 
 export type TreeView = {
   data: {

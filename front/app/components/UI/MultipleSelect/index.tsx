@@ -1,6 +1,11 @@
 import React, { KeyboardEvent } from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Label,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
@@ -85,6 +90,7 @@ const MultipleSelect = ({
         value={findFullOptionValues()}
         placeholder={placeholder || ''}
         options={options || []}
+        isOptionDisabled={(option) => option.disabled}
         onChange={handleOnChange}
         isDisabled={disabled}
         styles={{
@@ -94,6 +100,18 @@ const MultipleSelect = ({
             // zIndex needed so dropdown is not overlapped by
             // subsequent dropdown questions (see TAN-4671).
             zIndex: 1001,
+          }),
+          option: (base, state) => ({
+            ...base,
+            cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+            opacity: state.isDisabled ? 0.8 : 1,
+            fontSize: `${fontSizes.base}px`,
+            color: state.isFocused ? colors.textPrimary : colors.textSecondary,
+            backgroundColor: state.isFocused
+              ? colors.grey300
+              : state.isDisabled
+              ? colors.grey100
+              : '#fff',
           }),
         }}
         menuPosition="fixed"

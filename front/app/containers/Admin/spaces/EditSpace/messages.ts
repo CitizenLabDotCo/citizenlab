@@ -34,4 +34,8 @@ export default defineMessages({
     id: 'app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace',
     defaultMessage: 'Remove from space',
   },
+  spaceManagers: {
+    id: 'app.containers.EditSpace.spaceManagers',
+    defaultMessage: 'Space managers',
+  },
 });
