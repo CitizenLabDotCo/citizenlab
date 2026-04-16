@@ -378,6 +378,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def publication_recipient_count
+    # Temporarily pretend the project is published (in-memory only) to compute the list
+    # of recipients, even for draft projects.
+    @project.admin_publication.publication_status = 'published'
     notification_recipients = Notifications::ProjectPublished.recipients(@project)
     opt_outs = EmailCampaigns::Consent.where(campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
     recipients = notification_recipients.where.not(id: opt_outs.select(:user_id))

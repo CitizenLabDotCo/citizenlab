@@ -39,19 +39,16 @@ class ProjectPolicy < ApplicationPolicy
   class InverseScope
     attr_reader :record, :scope
 
-    def initialize(record, scope, ignore_publication_status: false)
+    def initialize(record, scope)
       @record = record
       @scope = scope
-      @ignore_publication_status = ignore_publication_status
     end
 
     def resolve
-      not_draft = @ignore_publication_status || record.admin_publication.publication_status != 'draft'
-
-      return scope.all if record.visible_to == 'public' && not_draft
+      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
 
       moderator_scope = UserRoleService.new.moderators_for_project record, scope
-      if record.visible_to == 'groups' && not_draft
+      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
         scope.in_any_group(record.groups).or(moderator_scope)
       else
         moderator_scope
