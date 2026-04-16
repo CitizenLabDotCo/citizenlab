@@ -54,7 +54,7 @@ nl-NL:
         quality_of_life: Kwaliteit van leven
         service_delivery: Dienstverlening
         governance_and_trust: Bestuur en vertrouwen
-        other: Ander
+        other: Overig
       form_end:
         button_text: Terug naar home
   custom_forms:
