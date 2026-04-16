@@ -39,7 +39,7 @@ class MentionService
   def process_mentions(text)
     users_mentioned_before = extract_expanded_mention_users(text)
     cleaned_text = remove_expanded_mentions(text)
-    mention_candidates = extract_mentions(cleaned_text)
+    mention_candidates = extract_mention_ids(cleaned_text)
 
     return [text, []] if mention_candidates.empty?
 
@@ -86,7 +86,6 @@ class MentionService
     expanded_mentions = doc.css('span.cl-mention-user')
     expanded_mentions.each do |el|
       user = User.find_by(id: el.attributes['data-user-id'].inner_html)
-      binding.pry
       if user
         el.replace(user_to_mention(user))
       else
@@ -98,8 +97,8 @@ class MentionService
 
   # @param [String] text
   # @return [Array<String>] list of ids
-  def extract_mentions(text)
-    full_mentions = text.scan(/(@\w+-[\w-]+)/).flatten
+  def extract_mention_ids(text)
+    full_mentions = text.scan(/(@[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i).flatten
     full_mentions.map do |fm|
       mention_to_id(fm)
     end
