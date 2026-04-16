@@ -45,8 +45,10 @@ RSpec.describe Notifications::ProjectPublished do
 
     it 'excludes followers who do not have access to the project' do
       area = create(:area)
-      project = create(:project, areas: [area], visible_to: 'groups', groups: [create(:group)], admin_publication_attributes: { publication_status: 'draft' })
-      create(:follower, followable: area)
+      group = create(:group)
+      project = create(:project, areas: [area], visible_to: 'groups', groups: [group], admin_publication_attributes: { publication_status: 'draft' })
+      follower = create(:follower, followable: area)
+      create(:membership, group: create(:group), user: follower.user)
 
       expect(described_class.recipients(project)).to be_empty
     end

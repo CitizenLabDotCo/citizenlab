@@ -1167,22 +1167,18 @@ resource 'Projects' do
 
   get 'web_api/v1/projects/:id/publication_recipient_count' do
     context 'when admin' do
-      before do
-        @admin = create(:admin)
-        header_token_for(@admin)
-      end
+      before { admin_header_token }
 
       let(:topic) { create(:global_topic) }
       let(:project) { create(:project, global_topics: [topic]) }
       let(:id) { project.id }
 
       example 'Returns the count of publication recipients' do
-        create(:follower, followable: topic)
-        create(:follower, followable: topic)
+        create_list(:follower, 2, followable: topic)
 
         do_request
         assert_status 200
-        expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        expect(response_data.dig(:attributes, :count)).to eq 2
       end
 
       example 'Excludes users who opted out of the campaign' do
@@ -1197,10 +1193,7 @@ resource 'Projects' do
     end
 
     context 'when regular user' do
-      before do
-        @user = create(:user)
-        header_token_for(@user)
-      end
+      before { resident_header_token }
 
       let(:project) { create(:project) }
       let(:id) { project.id }
