@@ -149,7 +149,7 @@ export interface ImageSizes {
   medium: string | null;
   large: string | null;
   fb?: string | null;
-  card?: string | null;
+  square_medium?: string | null;
 }
 
 export interface CRUDParams {

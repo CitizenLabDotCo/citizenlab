@@ -60,13 +60,15 @@ const IdeaCard = ({
     idea.data.relationships.idea_images.data?.[0]?.id
   );
 
-  const image =
-    !hideImage && ideaImage
-      ? ideaImage.data.attributes.versions.card ?? null
-      : null;
-
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
+
+  const image =
+    !hideImage && ideaImage
+      ? smallerThanTablet
+        ? ideaImage.data.attributes.versions.medium
+        : ideaImage.data.attributes.versions.square_medium ?? null
+      : null;
 
   const localize = useLocalize();
 
