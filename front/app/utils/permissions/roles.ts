@@ -1,7 +1,7 @@
 import { IUser } from 'api/users/types';
 
 interface IAdminRole {
-  type: 'admin' | 'super_admin';
+  type: 'admin';
   project_reviewer?: boolean;
 }
 
@@ -20,6 +20,8 @@ export interface ISpaceModeratorRole {
   space_id: string;
 }
 
+// NOTE: TRole['type'] is NOT the same as HighestRole (front/app/api/users/types.ts)!
+// highest role also includes super_admin.
 export type TRole =
   | IAdminRole
   | IProjectFolderModeratorRole

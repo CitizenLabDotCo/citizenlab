@@ -5,6 +5,7 @@ import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import { HighestRole } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,16 +17,15 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { TRole } from 'utils/permissions/roles';
 
 import messages from './messages';
 
-const ALLOWED_ROLES: (string | undefined)[] = [
+const ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'super_admin',
   'admin',
   'space_moderator',
   'project_folder_moderator',
-] satisfies TRole['type'][];
+] satisfies HighestRole[];
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams();
@@ -36,7 +36,7 @@ const AdminProjectFolderEdition = () => {
 
   if (!authUser || !projectFolder || !projectFolderId) return null;
   const { highest_role } = authUser.data.attributes;
-  if (!ALLOWED_ROLES.includes(highest_role)) return null;
+  if (!ALLOWED_HIGHEST_ROLES.includes(highest_role)) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
