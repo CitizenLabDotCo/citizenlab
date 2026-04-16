@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 
 import {
   StatusLabel,
@@ -11,6 +12,7 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+import { useParams, useSearchParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
@@ -38,12 +40,11 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
-
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
