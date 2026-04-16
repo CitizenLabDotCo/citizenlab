@@ -23,6 +23,7 @@ import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import { HighestRole } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -60,7 +61,7 @@ import {
   isUploadFile,
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isSpaceModerator, TRole } from 'utils/permissions/roles';
+import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -86,11 +87,12 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
-const FOLDER_SELECT_ALLOWED_ROLES: (string | undefined)[] = [
+const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
+  'super_admin',
   'admin',
   'space_moderator',
   'project_folder_moderator',
-] satisfies TRole['type'][];
+] satisfies HighestRole[];
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
@@ -162,7 +164,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<Multiloc | null>(null);
 
   const showProjectFolderSelect =
-    FOLDER_SELECT_ALLOWED_ROLES.includes(
+    FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
       authUser?.data.attributes.highest_role
     ) && isProjectFoldersEnabled;
 
