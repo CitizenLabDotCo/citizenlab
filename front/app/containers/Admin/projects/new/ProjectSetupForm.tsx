@@ -500,7 +500,7 @@ const ProjectSetupForm = () => {
             </SubSectionTitle>
             <HeaderBgUploader
               imageUrl={undefined}
-              headerImageAltText={undefined}
+              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
               onImageChange={handleHeaderBgChange}
               onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
             />
