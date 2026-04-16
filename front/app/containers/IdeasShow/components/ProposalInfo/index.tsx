@@ -48,7 +48,10 @@ const ProposalInfo = ({ idea, compact }: Props) => {
 
   // All the codes checked for here are ProposalsStatusCode types (see front/app/api/idea_statuses/types.ts)
   const showCountDown =
-    code === 'proposed' || code === 'expired' || code === 'custom';
+    code === 'proposed' ||
+    code === 'threshold_reached' ||
+    code === 'expired' ||
+    code === 'custom';
   const showProgressBar =
     code === 'proposed' ||
     code === 'threshold_reached' ||
