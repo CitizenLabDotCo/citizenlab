@@ -338,6 +338,18 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     end
   end
 
+  describe 'rich_text_column_headers' do
+    it 'returns the localized title of the body_multiloc field' do
+      expect(service.send(:rich_text_column_headers)).to eq ['Description']
+    end
+
+    it 'returns an empty array when the form has no html or html_multiloc fields' do
+      survey_phase = create(:native_survey_phase)
+      survey_service = described_class.new(create(:admin), 'en', survey_phase.id, false)
+      expect(survey_service.send(:rich_text_column_headers)).to eq []
+    end
+  end
+
   describe 'format_date' do
     it 'formats date strings in dd-mm-yyyy format' do
       date_string = '15-08-2023'
