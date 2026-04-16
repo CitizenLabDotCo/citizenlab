@@ -1592,7 +1592,8 @@ resource 'Projects' do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: [
                 [
@@ -1618,7 +1619,8 @@ resource 'Projects' do
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
                   nil,
-                  nil
+                  nil,
+                  'false'
                 ]
               ]
             }
