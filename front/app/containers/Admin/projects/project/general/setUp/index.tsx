@@ -30,7 +30,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/new';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -53,8 +53,8 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
 import {
   convertUrlToUploadFile,
   generateTemporaryFileAttachment,
@@ -473,10 +473,13 @@ const AdminProjectsProjectGeneral = () => {
         setProjectFileAttachmentsToRemove([]);
         setProcessing(false);
 
-        if (isNewProject && latestProjectId) {
-          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
-            projectId: latestProjectId,
-          });
+        if (isNewProject && latestProjectId !== undefined) {
+          const _projectId = latestProjectId;
+          setTimeout(() => {
+            clHistory.push({
+              pathname: `${adminProjectsProjectPath(_projectId)}/general`,
+            });
+          }, 1000);
         }
         queryClient.invalidateQueries({
           queryKey: projectPermissionKeys.list({ projectId: latestProjectId }),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Title,
@@ -9,7 +9,6 @@ import {
 import { InsertConfigurationOptions } from 'typings';
 
 import AdminProjectsProjectGeneralSetUp from 'containers/Admin/projects/project/general/setUp';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -17,8 +16,6 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
@@ -45,26 +42,6 @@ const CreateProject = () => {
   ]);
 
   const [selectedTabValue, setSelectedTabValue] = useState<TTabName>('scratch');
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
-      .subscribe(({ eventValue }) => {
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        const projectId = eventValue?.projectId;
-
-        if (projectId) {
-          setTimeout(() => {
-            clHistory.push({
-              pathname: `${adminProjectsProjectPath(projectId)}/general`,
-            });
-          }, 1000);
-        }
-      });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleTabOnClick = (newSelectedTabValue: TTabName) => {
     trackEventByName(tracks.createdProject, {
