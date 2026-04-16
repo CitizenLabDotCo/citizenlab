@@ -597,7 +597,6 @@ resource 'Campaigns' do
         })
       end
     end
-
   end
 
   context 'as a project moderator' do
@@ -758,5 +757,4 @@ resource 'Campaigns' do
       end
     end
   end
-
 end
