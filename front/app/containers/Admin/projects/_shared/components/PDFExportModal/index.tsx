@@ -19,16 +19,16 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
 
+import { saveIdeaFormAsPDF } from 'containers/Admin/projects/project/inputForm/saveIdeaFormAsPDF';
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+import { saveSurveyAsPDF } from 'containers/Admin/projects/project/nativeSurvey/saveSurveyAsPDF';
+
 import { FormType } from 'components/FormBuilder/utils';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
-import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
-import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
 import FormActions from './FormActions';
 import messages from './messages';

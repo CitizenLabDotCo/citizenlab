@@ -25,19 +25,19 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
-import GeographicAreaInputs from 'containers/Admin/projects/project/general/components/GeographicAreaInputs';
-import ProjectCardImageDropzone from 'containers/Admin/projects/project/general/components/ProjectCardImageDropzone';
-import ProjectCardImageTooltip from 'containers/Admin/projects/project/general/components/ProjectCardImageTooltip';
-import ProjectFolderSelect from 'containers/Admin/projects/project/general/components/ProjectFolderSelect';
-import ProjectHeaderImageTooltip from 'containers/Admin/projects/project/general/components/ProjectHeaderImageTooltip';
-import ProjectNameInput from 'containers/Admin/projects/project/general/components/ProjectNameInput';
+import GeographicAreaInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/GeographicAreaInputs';
+import ProjectCardImageDropzone from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
+import ProjectCardImageTooltip from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
+import ProjectFolderSelect from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectFolderSelect';
+import ProjectHeaderImageTooltip from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
+import ProjectNameInput from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
   StyledForm,
   StyledInputMultiloc,
   StyledSectionField,
-} from 'containers/Admin/projects/project/general/components/styling';
-import TopicInputs from 'containers/Admin/projects/project/general/components/TopicInputs';
+} from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
+import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
+import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 import messages from 'containers/Admin/projects/project/general/messages';
 import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 import { fragmentId } from 'containers/Admin/projects/project/projectHeader';

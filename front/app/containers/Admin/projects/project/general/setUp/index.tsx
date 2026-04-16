@@ -64,20 +64,20 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
 import { TOnProjectAttributesDiffChangeFunction } from '..';
-import { fragmentId } from '../../projectHeader';
-import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
-import GeographicAreaInputs from '../components/GeographicAreaInputs';
-import ProjectCardImageDropzone from '../components/ProjectCardImageDropzone';
-import ProjectCardImageTooltip from '../components/ProjectCardImageTooltip';
-import ProjectFolderSelect from '../components/ProjectFolderSelect';
-import ProjectHeaderImageTooltip from '../components/ProjectHeaderImageTooltip';
-import ProjectNameInput from '../components/ProjectNameInput';
+import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
+import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
+import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
+import ProjectFolderSelect from '../../../_shared/components/ProjectSetupForm/ProjectFolderSelect';
+import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
+import ProjectNameInput from '../../../_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
   StyledForm,
   StyledInputMultiloc,
   StyledSectionField,
-} from '../components/styling';
-import TopicInputs from '../components/TopicInputs';
+} from '../../../_shared/components/ProjectSetupForm/styling';
+import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
+import { fragmentId } from '../../projectHeader';
+import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
 import messages from '../messages';
 import validateTitle from '../utils/validateTitle';
 

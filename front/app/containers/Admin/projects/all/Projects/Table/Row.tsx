@@ -17,7 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import ProjectMoreActionsMenu, {
   ActionType,
-} from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+} from 'containers/Admin/projects/_shared/components/ProjectRow/ProjectMoreActionsMenu';
 
 import Error from 'components/UI/Error';
 

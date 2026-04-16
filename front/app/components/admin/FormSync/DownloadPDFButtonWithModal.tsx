@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal from 'containers/Admin/projects/_shared/components/PDFExportModal';
 
 import { FormType } from 'components/FormBuilder/utils';
 

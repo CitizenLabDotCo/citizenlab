@@ -13,7 +13,7 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from '../../../project/general/messages';
 
 import TopicInputsTooltipExtraCopy from './TopicInputsTooltipExtraCopy';
 
