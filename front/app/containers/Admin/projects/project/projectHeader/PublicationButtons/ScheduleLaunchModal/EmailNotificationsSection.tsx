@@ -63,7 +63,7 @@ const EmailNotificationsSection = ({
       </Box>
       {isUnlisted ? (
         <Box display="flex" alignItems="center" gap="4px" mt="4px">
-          <Text color="textSecondary" fontSize="s" mb="0px">
+          <Text color="textSecondary" fontSize="s" m="0px">
             <FormattedMessage
               {...messages.projectUnlisted}
               values={{
@@ -77,7 +77,7 @@ const EmailNotificationsSection = ({
           <Box display="flex" alignItems="center" gap="4px" mt="4px">
             <Text color="textSecondary" fontSize="s" m="0px">
               {formatMessage(messages.approximateRecipients, {
-                count: count.toLocaleString(),
+                count,
               })}
             </Text>
             <IconTooltip content={formatMessage(messages.recipientsTooltip)} />

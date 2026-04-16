@@ -42,8 +42,8 @@ export default defineMessages({
     defaultMessage: 'Send project published email',
   },
   approximateRecipients: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients',
-    defaultMessage: '≈ {count} recipients',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2',
+    defaultMessage: '≈ {count, plural, one {# recipient} other {# recipients}}',
   },
   editRecipients: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients',
@@ -64,7 +64,7 @@ export default defineMessages({
   projectUnlisted: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted',
     defaultMessage:
-      'The project is {underlinedUnlisted} so no emails will be sent',
+      'The project is {underlinedUnlisted}. No emails will be sent.',
   },
   unlisted: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted',
