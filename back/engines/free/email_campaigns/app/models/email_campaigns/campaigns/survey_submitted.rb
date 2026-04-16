@@ -96,7 +96,7 @@ module EmailCampaigns
         event_payload: {
           idea_id: idea.id,
           project_title_multiloc: project.title_multiloc,
-          profile_url: Frontend::UrlService.new.profile_surveys_url(recipient.slug),
+          profile_url: Frontend::UrlService.new.profile_surveys_url(recipient.id),
           has_password: !recipient.no_password?
         }
       }]
