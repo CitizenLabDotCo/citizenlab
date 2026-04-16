@@ -227,7 +227,6 @@ export interface IAppConfigurationSettings {
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
-  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;

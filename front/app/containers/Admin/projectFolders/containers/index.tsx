@@ -16,9 +16,16 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { TRole } from 'utils/permissions/roles';
 
 import messages from './messages';
+
+const ALLOWED_ROLES: (string | undefined)[] = [
+  'super_admin',
+  'admin',
+  'space_moderator',
+  'project_folder_moderator',
+] satisfies TRole['type'][];
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams();
@@ -28,12 +35,14 @@ const AdminProjectFolderEdition = () => {
   const { formatMessage } = useIntl();
 
   if (!authUser || !projectFolder || !projectFolderId) return null;
+  const { highest_role } = authUser.data.attributes;
+  if (!ALLOWED_ROLES.includes(highest_role)) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps: Omit<TabbedResourceProps, 'children'> = {
+  const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
@@ -48,19 +57,13 @@ const AdminProjectFolderEdition = () => {
         url: `/admin/projects/folders/${projectFolderId}/settings`,
         name: 'settings',
       },
-    ],
-  };
-
-  if (isAdmin(authUser) || isSpaceModerator(authUser)) {
-    tabbedProps = {
-      ...tabbedProps,
-      tabs: tabbedProps.tabs.concat({
+      {
         label: formatMessage(messages.projectFolderPermissionsTab),
         url: `/admin/projects/folders/${projectFolderId}/permissions`,
         name: 'permissions',
-      }),
-    };
-  }
+      },
+    ],
+  };
 
   return (
     <>

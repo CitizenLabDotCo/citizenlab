@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Scrios",
   "app.components.formBuilder.description": "Cur síos",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Tá sé seo curtha leis an bhfoirm cheana féin. Ní féidir an t-ábhar réamhshocraithe a úsáid ach uair amháin.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Ní cuid de do cheadúnas reatha ábhar saincheaptha a chur leis. Téigh i dteagmháil le do Bhainisteoir GovSuccess le tuilleadh eolais a fháil faoi.",
   "app.components.formBuilder.disagree": "Ní aontaím",
   "app.components.formBuilder.displayAsDropdown": "Taispeáin mar anuas",
   "app.components.formBuilder.displayAsDropdownTooltip": "Taispeáin na roghanna i roghchlár anuas. Moltar é seo má tá go leor roghanna agat.",

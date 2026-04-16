@@ -59,7 +59,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   builtInFields: [],
   showStatusBadge: true,
   isLogicEnabled: true,
-  alwaysShowCustomFields: true,
+  isParticipationPublic: false,
   isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (

@@ -854,7 +854,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Läschen",
   "app.components.formBuilder.description": "Beschreiwung",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dëst gouf schonn an de Formulaire agedroen. Standardinhalter kënnen nëmmen eng Kéier benotzt ginn.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Benotzerdefinéiert Inhalt bäizefügen ass net Deel vun Ärer aktueller Lizenz. Kontaktéiert Äre GovSuccess Manager fir méi doriwwer ze léieren.",
   "app.components.formBuilder.disagree": "Desaccord",
   "app.components.formBuilder.displayAsDropdown": "Weist als Dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Weist d'Optiounen an engem Dropdown-Menü. Wann Dir vill Méiglechkeeten hutt, ass dëst recommandéiert.",
