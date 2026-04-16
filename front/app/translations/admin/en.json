@@ -1721,7 +1721,7 @@
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "We have changed the way we collect and display visitor data. As a result, visitor data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Visitors timeline",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": "Admins only",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients": "≈ {count} recipients",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2": "≈ {count, plural, one {# recipient} other {# recipients}}",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": "Cancel schedule",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit": "Edit",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients": "Edit recipients",
