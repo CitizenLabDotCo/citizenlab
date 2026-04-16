@@ -31,7 +31,9 @@ const FeatureCallout = ({
   disabledTooltipContent,
   tooltipDisabled,
 }: Props) => {
-  const iconElement = <Icon name={icon} fill={colors.teal700} width="20px" />;
+  const iconElement = (
+    <Icon name={icon} fill={colors.teal700} height="20px" mt="2px" />
+  );
 
   return (
     <Box
