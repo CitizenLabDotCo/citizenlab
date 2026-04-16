@@ -32,6 +32,7 @@ interface Props {
   projectId?: string;
   projectModeratorsOnly?: boolean;
   folderModeratorsOnly?: boolean;
+  spaceModeratorsOnly?: boolean;
 }
 
 type error = {
@@ -53,6 +54,7 @@ const UserManager = ({
   projectId,
   projectModeratorsOnly,
   folderModeratorsOnly,
+  spaceModeratorsOnly,
 }: Props) => {
   const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
   const [pageNumber, setPageNumber] =
@@ -77,6 +79,7 @@ const UserManager = ({
     project: projectId,
     project_moderators_only: projectModeratorsOnly,
     folder_moderators_only: folderModeratorsOnly,
+    space_moderators_only: spaceModeratorsOnly,
   });
 
   useEffect(() => {

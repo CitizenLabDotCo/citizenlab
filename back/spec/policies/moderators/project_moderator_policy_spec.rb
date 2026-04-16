@@ -63,7 +63,7 @@ describe Moderators::ProjectModeratorPolicy do
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.to permit(:destroy) }
   end
 
   context 'for a project moderator of another project' do

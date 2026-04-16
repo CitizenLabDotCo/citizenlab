@@ -26,8 +26,7 @@ resource 'ProjectFolder' do
 
     example_request 'List all folders' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      expect(response_data.size).to eq 2
     end
 
     example 'List only folders with specified IDs' do
@@ -36,9 +35,8 @@ resource 'ProjectFolder' do
       do_request(filter_ids: filter_ids)
 
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data].pluck(:id)).to match_array filter_ids
+      expect(response_data.size).to eq 1
+      expect(response_data.pluck(:id)).to match_array filter_ids
     end
   end
 
@@ -51,8 +49,7 @@ resource 'ProjectFolder' do
 
     example_request 'Get one folder by id' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @folders.first.id
+      expect(response_data[:id]).to eq @folders.first.id
     end
 
     example 'Get a folder includes the participants_count and avatars_count', document: false do
@@ -61,10 +58,9 @@ resource 'ProjectFolder' do
       do_request id: folder.id
 
       assert_status 200
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
-      expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-      expect(json_response.dig(:data, :relationships, :avatars)).to eq({ data: [{ id: idea.author_id, type: 'avatar' }] })
+      expect(response_data.dig(:attributes, :participants_count)).to eq 1
+      expect(response_data.dig(:attributes, :avatars_count)).to eq 1
+      expect(response_data.dig(:relationships, :avatars)).to eq({ data: [{ id: idea.author_id, type: 'avatar' }] })
     end
 
     example 'Get a folder includes ideas_count, comments_count and followers_count', document: false do
@@ -79,10 +75,9 @@ resource 'ProjectFolder' do
       do_request id: folder.id
 
       assert_status 200
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 2
-      expect(json_response.dig(:data, :attributes, :comments_count)).to eq 1
-      expect(json_response.dig(:data, :attributes, :followers_count)).to eq 1
+      expect(response_data.dig(:attributes, :ideas_count)).to eq 2
+      expect(response_data.dig(:attributes, :comments_count)).to eq 1
+      expect(response_data.dig(:attributes, :followers_count)).to eq 1
     end
   end
 
@@ -91,8 +86,7 @@ resource 'ProjectFolder' do
 
     example_request 'Get one folder by slug' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @folders.first.id
+      expect(response_data[:id]).to eq @folders.first.id
     end
 
     describe do
@@ -123,8 +117,7 @@ resource 'ProjectFolder' do
         do_request
 
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
+        expect(response_data.filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
       end
     end
 
@@ -145,9 +138,8 @@ resource 'ProjectFolder' do
         do_request
 
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
-        expect(json_response[:included].select { |inc| inc[:type] == 'user' }.pluck(:id)).to eq [user.id]
+        expect(response_data.first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
+        expect(json_response_body[:included].select { |inc| inc[:type] == 'user' }.pluck(:id)).to eq [user.id]
       end
     end
 
@@ -170,13 +162,12 @@ resource 'ProjectFolder' do
 
       example_request 'Create a folder' do
         expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
+        expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(response_data.dig(:attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
       context 'when the folder description contains images' do
@@ -213,10 +204,9 @@ resource 'ProjectFolder' do
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
       end
 
       context 'when description_multiloc contains images' do
@@ -441,6 +431,166 @@ resource 'ProjectFolder' do
     end
   end
 
+  context 'when space moderator' do
+    let(:space) { create(:space) }
+    let(:other_space) { create(:space) }
+    let!(:user) { create(:space_moderator, spaces: [space]) }
+
+    before do
+      header_token_for(user)
+    end
+
+    get 'web_api/v1/project_folders/for_admin' do
+      let!(:folder_in_moderated_space) { create(:project_folder, space: space) }
+      let!(:folder_in_other_space) { create(:project_folder, space: other_space) }
+      let!(:folder_without_space) { create(:project_folder, space: nil) }
+
+      example 'Returns only folders in spaces the user moderates' do
+        do_request
+
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.first[:id]).to eq folder_in_moderated_space.id
+      end
+    end
+
+    post 'web_api/v1/project_folders' do
+      with_options scope: :project_folder do
+        parameter :title_multiloc, 'The title of the folder', required: true
+        parameter :description_multiloc, 'HTML info about the folder', required: false
+        parameter :description_preview_multiloc, 'Text info about the folder', required: false
+        parameter :header_bg, 'Base64 encoded header image', required: false
+        parameter :space_id, 'The space the folder belongs to', required: false
+      end
+
+      with_options scope: %i[project_folder admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
+      end
+
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
+
+      let(:title_multiloc) { { 'en' => 'Folder title' } }
+      let(:description_multiloc) { { 'en' => 'Folder desc' } }
+      let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
+      let(:publication_status) { 'draft' }
+
+      context 'when space_id is provided and user moderates that space' do
+        let(:space_id) { space.id }
+
+        example_request 'Create a folder in moderated space' do
+          expect(response_status).to eq 201
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          id = response_data[:id]
+          folder = ProjectFolders::Folder.find(id)
+          expect(folder.space_id).to eq space.id
+        end
+      end
+
+      context 'when space_id is provided but user moderates a different space' do
+        let(:space_id) { other_space.id }
+
+        example_request 'Cannot create a folder in non-moderated space' do
+          expect(response_status).to eq 401
+        end
+      end
+
+      context 'when space_id is not provided' do
+        example_request 'Cannot create a folder without space' do
+          expect(response_status).to eq 401
+        end
+      end
+    end
+
+    patch 'web_api/v1/project_folders/:id' do
+      with_options scope: :project_folder do
+        parameter :title_multiloc, 'The title of the folder'
+        parameter :description_multiloc, 'HTML info about the folder'
+        parameter :description_preview_multiloc, 'Text info about the folder'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :space_id, 'The space the folder belongs to'
+      end
+
+      with_options scope: %i[project_folder admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+      end
+
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
+
+      let(:title_multiloc) { { 'en' => 'Updated folder title' } }
+      let(:description_multiloc) { { 'en' => 'Updated folder desc' } }
+      let(:publication_status) { 'published' }
+
+      context 'when folder belongs to the moderated space' do
+        let!(:folder_in_space) { create(:project_folder, space: space) }
+        let(:id) { folder_in_space.id }
+
+        example 'Update a folder in moderated space' do
+          old_publication_ids = AdminPublication.ids
+          do_request
+
+          expect(response_status).to eq 200
+          expect(AdminPublication.ids).to match_array old_publication_ids
+
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        end
+      end
+
+      context 'when folder belongs to a different space' do
+        let!(:folder_in_other_space) { create(:project_folder, space: other_space) }
+        let(:id) { folder_in_other_space.id }
+
+        example_request 'Cannot update a folder in non-moderated space' do
+          expect(response_status).to eq 401
+        end
+      end
+
+      context 'when folder has no space assigned' do
+        let!(:folder_without_space) { create(:project_folder, space: nil) }
+        let(:id) { folder_without_space.id }
+
+        example_request 'Cannot update a folder without space' do
+          expect(response_status).to eq 401
+        end
+      end
+    end
+
+    delete 'web_api/v1/project_folders/:id' do
+      context 'when folder belongs to the moderated space' do
+        let!(:folder_in_space) { create(:project_folder, space: space) }
+        let(:id) { folder_in_space.id }
+
+        example 'Delete a folder in moderated space' do
+          old_count = ProjectFolders::Folder.count
+
+          do_request
+
+          expect(response_status).to eq 200
+          expect { ProjectFolders::Folder.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(ProjectFolders::Folder.count).to eq(old_count - 1)
+        end
+      end
+
+      context 'when folder belongs to a different space' do
+        let!(:folder_in_other_space) { create(:project_folder, space: other_space) }
+        let(:id) { folder_in_other_space.id }
+
+        example_request 'Cannot delete a folder in non-moderated space' do
+          expect(response_status).to eq 401
+        end
+      end
+
+      context 'when folder has no space assigned' do
+        let!(:folder_without_space) { create(:project_folder, space: nil) }
+        let(:id) { folder_without_space.id }
+
+        example_request 'Cannot delete a folder without space' do
+          expect(response_status).to eq 401
+        end
+      end
+    end
+  end
+
   context 'when project folder moderator' do
     let(:moderated_folder) { create(:project_folder) }
     let!(:user) { create(:project_folder_moderator, project_folders: [moderated_folder]) }
@@ -500,9 +650,8 @@ resource 'ProjectFolder' do
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
 
-        json_response = json_parse(response_body)
-        response_admin_publication = json_response[:included].find { |inc| inc[:type] == 'admin_publication' }
-        attributes = json_response.dig(:data, :attributes)
+        response_admin_publication = json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }
+        attributes = response_data[:attributes]
 
         expect(attributes[:title_multiloc].stringify_keys).to match title_multiloc
         expect(attributes[:description_multiloc].stringify_keys).to match description_multiloc
@@ -526,10 +675,9 @@ resource 'ProjectFolder' do
       example 'it only returns folders the user moderates' do
         do_request
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first[:id]).to eq moderated_folder.id
-        expect(json_response[:data].first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
+        expect(response_data.size).to eq 1
+        expect(response_data.first[:id]).to eq moderated_folder.id
+        expect(response_data.first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
       end
     end
   end
