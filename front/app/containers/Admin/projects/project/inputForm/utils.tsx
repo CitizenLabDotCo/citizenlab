@@ -51,7 +51,7 @@ export const ideationConfig: FormBuilderConfig = {
 
   showStatusBadge: false,
   isLogicEnabled: false,
-  alwaysShowCustomFields: false,
+  isParticipationPublic: true,
   isFormPhaseSpecific: false,
   getWarningNotice: () => {
     return (
@@ -106,7 +106,7 @@ export const proposalsConfig: FormBuilderConfig = {
 
   showStatusBadge: false,
   isLogicEnabled: false,
-  alwaysShowCustomFields: false,
+  isParticipationPublic: true,
   isFormPhaseSpecific: true,
 
   getWarningNotice: () => {

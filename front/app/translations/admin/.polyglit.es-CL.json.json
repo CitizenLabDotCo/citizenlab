@@ -829,6 +829,16 @@
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.AddByEmail.invite": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
+  "app.components.admin.AddByEmail.typeEmailToInviteManager": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
@@ -3279,6 +3289,21 @@
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.ModeratorsTable.noManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.Admin.ModeratorsTable.noManagers2": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:37:30.403098Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.Admin.ModeratorsTable.removeManager": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
@@ -4099,6 +4124,11 @@
     "verified_at": "2026-03-20T11:18:28.508384Z",
     "verified_by": "Rob"
   },
+  "app.containers.Admin.Users.SeatsOverview.unknown": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
@@ -4368,6 +4398,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.spaceManager": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:41:22.534602Z",
+    "verified_by": "Rob"
   },
   "app.containers.Admin.Users.userBlockModal.allDone": {
     "state": "verified",
@@ -12099,6 +12134,11 @@
     "verified_at": "2026-03-18T16:35:46.998688Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.addProjectManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
+  },
   "app.containers.AdminPage.ProjectEdit.addProjectModerators": {
     "state": "verified",
     "verified_at": "2026-03-23T10:55:29.425650Z",
@@ -13338,6 +13378,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.940909Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.whoAreTheManagers": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:39:34.181592Z",
+    "verified_by": "Rob"
   },
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": {
     "state": "verified",

@@ -305,6 +305,12 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
+  def check_if_exceeds_seats
+    authorize :user, :check_if_exceeds_seats?
+    result = UserExceedsSeatsService.new(user_exceeds_seats_params).execute
+    render json: raw_json({ value: result })
+  end
+
   private
 
   def set_user
@@ -374,5 +380,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def params_service
     @params_service ||= CustomFieldParamsService.new
+  end
+
+  def user_exceeds_seats_params
+    params.permit(:seat_type, :user_id, :user_email)
   end
 end

@@ -227,7 +227,6 @@ export interface IAppConfigurationSettings {
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
-  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
@@ -279,6 +278,7 @@ export interface IAppConfigurationSettings {
   phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
+  draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
 }
 

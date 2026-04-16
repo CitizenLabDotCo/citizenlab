@@ -12,8 +12,7 @@ import styled from 'styled-components';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
-import { IUser } from 'api/users/types';
-import useUsersWithIds from 'api/users/useUsersWithIds';
+import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -43,9 +42,10 @@ const StyledTd = styled(Td)`
 
 interface Props {
   folder: MiniProjectFolder;
+  moderatorsById?: Record<string, IUserData>;
 }
 
-const Row = ({ folder }: Props) => {
+const Row = ({ folder, moderatorsById }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
@@ -59,10 +59,9 @@ const Row = ({ folder }: Props) => {
   const moderatorIds = folder.relationships.moderators.data.map(
     (user) => user.id
   );
-  const moderatorsData = useUsersWithIds(moderatorIds);
-  const moderators = moderatorsData
-    .map((result) => result.data)
-    .filter((user): user is IUser => !!user);
+  const moderators = moderatorsById
+    ? moderatorIds.map((id) => moderatorsById[id])
+    : [];
 
   const { publication_status } = folder.attributes;
 
@@ -108,7 +107,7 @@ const Row = ({ folder }: Props) => {
       </StyledTd>
       <Td background={colors.grey50} width="260px">
         <ManagerBubbles
-          managers={moderators.map(({ data: { attributes } }) => ({
+          managers={moderators.map(({ attributes }) => ({
             first_name: attributes.first_name ?? undefined,
             last_name: attributes.last_name ?? undefined,
             avatar: attributes.avatar,

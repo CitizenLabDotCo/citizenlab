@@ -83,3 +83,19 @@ export const replaceIdsWithNewUuids = (
 
   return fields.map(replaceIds);
 };
+
+// Sometimes we need to replace UUIDs in partially copied JSON snippets
+// that are not parsable as JSON.
+const UUID_REGEX =
+  /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+
+export const replaceUuidsInText = (text: string): string => {
+  const mapping: Record<string, string> = {};
+  return text.replace(UUID_REGEX, (match) => {
+    const key = match.toLowerCase();
+    if (!mapping[key]) {
+      mapping[key] = uuidv4();
+    }
+    return mapping[key];
+  });
+};
