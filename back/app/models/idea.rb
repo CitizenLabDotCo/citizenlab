@@ -377,7 +377,7 @@ class Idea < ApplicationRecord
   end
 
   def expires_at
-    return if !published_at || !creation_phase&.expire_days_limit
+    return if !published? || !creation_phase&.expire_days_limit
 
     published_at + creation_phase.expire_days_limit.days
   end
