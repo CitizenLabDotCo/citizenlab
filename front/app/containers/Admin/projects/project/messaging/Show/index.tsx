@@ -191,7 +191,7 @@ const Show = () => {
                     <FormattedDate
                       value={campaign.data.attributes.scheduled_at}
                       timeZone={timeZone}
-                      dateStyle="short"
+                      dateStyle="long"
                       timeStyle="short"
                     />
                   </Text>

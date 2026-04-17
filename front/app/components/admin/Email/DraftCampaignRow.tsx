@@ -61,7 +61,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
                 <FormattedDate
                   value={campaign.attributes.scheduled_at}
                   timeZone={timeZone}
-                  dateStyle="short"
+                  dateStyle="long"
                   timeStyle="short"
                 />
               </Text>

@@ -59,7 +59,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedDate
               value={campaign.attributes.updated_at}
               timeZone={timeZone}
-              dateStyle="short"
+              dateStyle="long"
               timeStyle="short"
             />
           </Text>
