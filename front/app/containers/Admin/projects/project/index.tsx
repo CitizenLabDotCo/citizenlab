@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import {
@@ -6,14 +6,17 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
+import Outlet from 'components/Outlet';
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 import ProjectHeader from './projectHeader';
@@ -23,10 +26,15 @@ const AdminProjectsProjectIndex = () => {
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
   const { data: appConfiguration } = useAppConfiguration();
+  const [extraTabs, setExtraTabs] = useState<ITab[]>([]);
 
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
       .private_attributes_in_export !== false;
+
+  const handleTabData = (data: InsertConfigurationOptions<ITab>) => {
+    setExtraTabs((tabs) => insertConfiguration(data)(tabs));
+  };
 
   return (
     <Box
@@ -36,6 +44,12 @@ const AdminProjectsProjectIndex = () => {
       flexGrow={1}
     >
       <ProjectHeader projectId={projectId} />
+      <Outlet
+        id="app.containers.Admin.projects.project.tabs"
+        projectId={projectId}
+        formatMessage={formatMessage}
+        onData={handleTabData}
+      />
       <NavigationTabs
         position="relative"
         className="intercom-admin-project-level-settings"
@@ -86,6 +100,14 @@ const AdminProjectsProjectIndex = () => {
           url={`/admin/projects/${projectId}/files`}
           active={pathname.includes(`/admin/projects/${projectId}/files`)}
         />
+        {extraTabs.map(({ url, label, name }) => (
+          <Tab
+            key={name ?? url}
+            label={label}
+            url={url}
+            active={pathname.startsWith(url)}
+          />
+        ))}
       </NavigationTabs>
       <RouterOutlet />
     </Box>

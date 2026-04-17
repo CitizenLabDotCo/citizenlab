@@ -229,6 +229,7 @@ const createAdminProjectsRoutes = (
             path: '',
             element: <Navigate to="phases/setup" replace />,
           },
+          ...moduleConfiguration.routes['admin.projects.byId'],
           {
             path: projectsRoutes.projectGeneral,
             element: (

@@ -44,6 +44,7 @@ declare global {
     __GO_VOCAL_PLUGINS__: {
       React: any;
       Link: any;
+      useParams: any;
       register: (configuration: any) => void;
     };
   }

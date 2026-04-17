@@ -44,6 +44,11 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
   };
+  'app.containers.Admin.projects.project.tabs': {
+    projectId: string;
+    formatMessage: IntlFormatters['formatMessage'];
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+  };
   'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
@@ -200,6 +205,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
+  'admin.projects.byId': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
@@ -327,6 +333,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.projects'],
+        RouteTypes.ADMIN
+      ),
+      'admin.projects.byId': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        mergedRoutes?.['admin.projects.byId'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(

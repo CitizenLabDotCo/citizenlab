@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { castArray, mergeWith } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 
 import usePluginFrontEntries from 'api/plugins/usePluginFrontEntries';
 import staticModuleConfiguration from 'modules';
@@ -35,6 +36,7 @@ const EMPTY_CONFIG: ParsedModuleConfiguration = {
     'admin.pages-menu': [],
     'admin.dashboards': [],
     'admin.projects': [],
+    'admin.projects.byId': [],
     'admin.project_templates': [],
     'admin.settings': [],
     'admin.tools': [],
@@ -84,6 +86,7 @@ const PluginsProvider = ({ children }: Props) => {
     window.__GO_VOCAL_PLUGINS__ = {
       React,
       Link,
+      useParams,
       register: (configuration: ModuleConfiguration) => {
         const parsed = loadModules([{ configuration }]);
         setDynamicConfigs((prev) => [...prev, parsed]);
