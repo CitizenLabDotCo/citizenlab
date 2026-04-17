@@ -1,9 +1,10 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import { AdminRoute } from '../routes';
 
@@ -98,7 +99,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
   | registrationRouteTypes;
 
-export default () => ({
+export default (moduleConfiguration: ParsedModuleConfiguration) => ({
   path: settingsRoutes.settings,
   element: (
     <PageLoading>

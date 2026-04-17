@@ -43,6 +43,7 @@ declare global {
     Cypress?: any;
     __GO_VOCAL_PLUGINS__: {
       React: any;
+      Link: any;
       register: (configuration: any) => void;
     };
   }

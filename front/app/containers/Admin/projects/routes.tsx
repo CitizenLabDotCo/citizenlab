@@ -1,10 +1,11 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import { AdminRoute } from '../routes';
 
@@ -177,7 +178,9 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
-const createAdminProjectsRoutes = () => {
+const createAdminProjectsRoutes = (
+  moduleConfiguration: ParsedModuleConfiguration
+) => {
   return {
     path: projectsRoutes.projects,
     element: (

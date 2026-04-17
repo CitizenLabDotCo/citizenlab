@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import { AdminRoute } from '../routes';
 
@@ -18,7 +18,7 @@ export type ideaRouteTypes =
   | AdminRoute<ideaRoutes.ideas>
   | AdminRoute<`${ideaRoutes.ideas}/${string}`>;
 
-export default () => ({
+export default (moduleConfiguration: ParsedModuleConfiguration) => ({
   path: ideaRoutes.ideas,
   element: (
     <PageLoading>

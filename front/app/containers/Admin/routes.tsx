@@ -1,7 +1,8 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
 import { Navigate, useLocation } from 'react-router-dom';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -156,7 +157,7 @@ export enum descriptionBuilderRoutes {
   folderPreview = `${descriptionBuilder}/folders/:folderId/preview`,
 }
 
-const createAdminRoutes = () => {
+const createAdminRoutes = (moduleConfiguration: ParsedModuleConfiguration) => {
   return {
     path: 'admin',
     element: <IndexElement />,
@@ -169,16 +170,16 @@ const createAdminRoutes = () => {
       },
       createDashboardRoutes(),
       ...createAdminUsersRoutes(),
-      createAdminProjectsRoutes(),
-      settingsRoutes(),
+      createAdminProjectsRoutes(moduleConfiguration),
+      settingsRoutes(moduleConfiguration),
       pagesAndMenuRoutes(),
       invitationsRoutes(),
       createAdminMessagingRoutes(),
-      ideasRoutes(),
+      ideasRoutes(moduleConfiguration),
       projectFoldersRoutes(),
       spacesRoutes(),
       ...reportingRoutes(),
-      toolsRoutes(),
+      toolsRoutes(moduleConfiguration),
       communityMonitorsRoutes(),
       inspirationHubRoutes(),
       // This path is only reachable via URL.

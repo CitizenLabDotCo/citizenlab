@@ -1,6 +1,8 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration, { moduleRouteTypes } from 'modules';
+import { moduleRouteTypes } from 'modules';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
 import userProfileRoutes, {
@@ -141,7 +143,9 @@ type citizenRouteTypes =
   | `/${citizenRoutes.disabledAccount}?${string}`
   | `/admin/reporting/report-builder/${string}/print`;
 
-export default function createRoutes() {
+export default function createRoutes(
+  moduleConfiguration: ParsedModuleConfiguration
+) {
   return [
     {
       path: citizenRoutes.locale,
@@ -281,7 +285,7 @@ export default function createRoutes() {
           ],
         },
 
-        createAdminRoutes(),
+        createAdminRoutes(moduleConfiguration),
         {
           path: citizenRoutes.projects,
           element: (

@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect } from 'react';
+import React, { StrictMode, useContext, useEffect, useMemo } from 'react';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
@@ -24,6 +24,9 @@ import {
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
+import PluginsProvider, { PluginsContext } from 'containers/PluginsProvider';
+
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -49,14 +52,18 @@ Sentry.init({
 });
 
 const useSentryRoutes = wrapUseRoutesV6(useRoutes);
-const routes = createRoutes();
 
 function Routes() {
+  const { merged, ready } = useContext(PluginsContext);
+  const routes = useMemo(() => createRoutes(merged), [merged]);
+
   useEffect(() => {
     modules.afterMountApplication();
   }, []);
 
-  return useSentryRoutes(routes);
+  const element = useSentryRoutes(routes);
+  if (!ready) return <FullPageSpinner />;
+  return element;
 }
 
 const Root = () => {
@@ -66,17 +73,19 @@ const Root = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <OutletsProvider>
-        <HelmetProvider>
-          <LanguageProvider>
-            <HistoryRouter history={history}>
-              <App>
-                <Routes />
-              </App>
-            </HistoryRouter>
-          </LanguageProvider>
-        </HelmetProvider>
-      </OutletsProvider>
+      <PluginsProvider>
+        <OutletsProvider>
+          <HelmetProvider>
+            <LanguageProvider>
+              <HistoryRouter history={history}>
+                <App>
+                  <Routes />
+                </App>
+              </HistoryRouter>
+            </LanguageProvider>
+          </HelmetProvider>
+        </OutletsProvider>
+      </PluginsProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

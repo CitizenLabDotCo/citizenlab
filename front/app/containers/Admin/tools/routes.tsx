@@ -1,10 +1,11 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
+
+import { ParsedModuleConfiguration } from 'utils/moduleUtils';
 
 import { AdminRoute } from '../routes';
 
@@ -33,7 +34,7 @@ export type toolRouteTypes =
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.webhooks}`>;
 
-const toolsRoutes = () => {
+const toolsRoutes = (moduleConfiguration: ParsedModuleConfiguration) => {
   return {
     path: toolRoutes.tools,
     element: (

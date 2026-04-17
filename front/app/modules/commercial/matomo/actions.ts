@@ -2,6 +2,8 @@ import createRoutes from 'routes';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 
+import staticModuleConfiguration from 'modules';
+
 import { tenantInfo, IEvent } from 'utils/analytics';
 import { getUrlLocale } from 'utils/getUrlLocale';
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,7 +38,9 @@ export const trackPageChange = async (path: string) => {
   if (!window._paq) return;
 
   if (allAppPaths === undefined) {
-    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+    allAppPaths = getAllPathsFromRoutes(
+      createRoutes(staticModuleConfiguration)[0]
+    );
   }
 
   // Update locale custom dimension if URL contains locale

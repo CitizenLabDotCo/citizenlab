@@ -1,5 +1,7 @@
 import createRoutes from 'routes';
 
+import staticModuleConfiguration from 'modules';
+
 import authUserStream from 'api/me/authUserStream';
 
 import { API_PATH, locales } from 'containers/App/constants';
@@ -61,7 +63,9 @@ const upgradeSession = () => {
 
 const trackPageView = async (path: string) => {
   if (allAppPaths === undefined) {
-    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+    allAppPaths = getAllPathsFromRoutes(
+      createRoutes(staticModuleConfiguration)[0]
+    );
   }
 
   // For some reason, sometimes the page view event is triggered twice
