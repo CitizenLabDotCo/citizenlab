@@ -4,13 +4,14 @@ module GVPlugins
   class ActivityJob < ApplicationJob
     queue_as :default
 
-    def run(wasm_url, handler, activity_data, plugin_name, provision_public_api_token)
+    def run(wasm_url, handler, activity_data, plugin_name, provision_public_api_token, allowed_hosts = [])
       PluginRunnerService.new.invoke(
         wasm_url: wasm_url,
         handler: handler,
         input: { activity: activity_data },
         plugin_name: plugin_name,
-        provision_public_api_token: provision_public_api_token
+        provision_public_api_token: provision_public_api_token,
+        allowed_hosts: allowed_hosts
       )
     end
   end

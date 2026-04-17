@@ -39,7 +39,8 @@ module GVPlugins
             h[:handler],
             activity_data,
             h[:plugin_name],
-            h[:provision_public_api_token]
+            h[:provision_public_api_token],
+            h[:allowed_hosts]
           )
         end
 

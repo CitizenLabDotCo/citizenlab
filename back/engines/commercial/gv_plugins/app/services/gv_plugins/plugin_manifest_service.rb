@@ -45,7 +45,8 @@ module GVPlugins
           name: manifest['name'],
           wasm_url: wasm_url,
           routes: routes,
-          provision_public_api_token: back['provision_public_api_token'] == true
+          provision_public_api_token: back['provision_public_api_token'] == true,
+          allowed_hosts: Array(back['allowed_hosts'])
         }
       end
     end
@@ -63,7 +64,8 @@ module GVPlugins
         plugin_name: plugin[:name],
         wasm_url: plugin[:wasm_url],
         handler: route[:handler],
-        provision_public_api_token: plugin[:provision_public_api_token]
+        provision_public_api_token: plugin[:provision_public_api_token],
+        allowed_hosts: plugin[:allowed_hosts]
       }
     end
 
@@ -77,13 +79,15 @@ module GVPlugins
         back = manifest['back']
         wasm_url = resolve_url(plugin['url'], back['entry'])
         provision = back['provision_public_api_token'] == true
+        allowed_hosts = Array(back['allowed_hosts'])
         back['events'].map do |event|
           {
             plugin_name: manifest['name'],
             event_name: event['name'],
             wasm_url: wasm_url,
             handler: event['handler'],
-            provision_public_api_token: provision
+            provision_public_api_token: provision,
+            allowed_hosts: allowed_hosts
           }
         end
       end

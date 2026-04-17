@@ -59,6 +59,21 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     # `postgres` service in `docker-compose.yml`.
     && apt-get update && apt-get install -y postgresql-client-16
 
+# Install Extism shared library (required by the `extism` gem loaded by the gv_plugins engine)
+ARG EXTISM_VERSION=v1.21.0
+RUN arch="$(dpkg --print-architecture)" \
+    && case "$arch" in \
+         amd64) extism_arch="x86_64-unknown-linux-gnu" ;; \
+         arm64) extism_arch="aarch64-unknown-linux-gnu" ;; \
+         *) echo "Unsupported architecture: $arch" && exit 1 ;; \
+       esac \
+    && curl -sSL "https://github.com/extism/extism/releases/download/${EXTISM_VERSION}/libextism-${extism_arch}-${EXTISM_VERSION}.tar.gz" \
+       | tar -xz -C /tmp \
+    && cp /tmp/libextism.so /usr/lib/ \
+    && cp /tmp/extism.h /usr/include/ \
+    && ldconfig \
+    && rm -f /tmp/libextism.so /tmp/extism.h /tmp/extism.pc.in /tmp/extism-static.pc.in /tmp/libextism.a
+
 WORKDIR /citizenlab/back
 
 COPY --from=dependency_files /app .

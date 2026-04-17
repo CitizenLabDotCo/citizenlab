@@ -7,10 +7,12 @@ module GVPlugins
         skip_before_action :authenticate_user
         skip_after_action :verify_authorized
 
+        FrontEntry = Struct.new(:id, :url, keyword_init: true)
+
         def front_entries
           service = PluginManifestService.new
           entries = service.front_entries.map do |entry|
-            OpenStruct.new(
+            FrontEntry.new(
               id: entry[:id],
               url: gv_plugins.web_api_v1_plugin_front_entry_path(entry[:id])
             )
