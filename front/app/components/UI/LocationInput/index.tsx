@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -98,32 +98,20 @@ const LocationInput = (props: LocationInputProps) => {
     [locale]
   );
 
-  // Using debounce limit the number of calls to the location API
-  // by waiting X seconds after the last key press
-  const debouncedFetchRef = useRef(
-    debounce(
-      (inputValue: string, resolve: (options: Option[]) => void) => {
+  const loadOptions = useMemo(
+    () =>
+      debounce((inputValue: string, resolve: (options: Option[]) => void) => {
         fetchOptions(inputValue).then(resolve);
-      },
-      500 // 0.5 seconds
-    )
+      }, 500),
+    [fetchOptions]
   );
-
-  useEffect(() => {
-    debouncedFetchRef.current = debounce(
-      (inputValue: string, resolve: (options: Option[]) => void) => {
-        fetchOptions(inputValue).then(resolve);
-      },
-      500
-    );
-  }, [fetchOptions]);
 
   const promiseOptions = useCallback(
     (inputValue: string) =>
       new Promise<Option[]>((resolve) => {
-        debouncedFetchRef.current(inputValue, resolve);
+        loadOptions(inputValue, resolve);
       }),
-    []
+    [loadOptions]
   );
 
   return (
