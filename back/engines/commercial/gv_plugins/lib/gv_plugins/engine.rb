@@ -8,7 +8,7 @@ module GVPlugins
       require 'gv_plugins/feature_specification'
       AppConfiguration::Settings.add_feature(GVPlugins::FeatureSpecification)
 
-      ::LogActivityJob.prepend(GVPlugins::Patches::LogActivityJob)
+      ::LogActivityJob.include(GVPlugins::Patches::LogActivityJob)
     end
   end
 end
