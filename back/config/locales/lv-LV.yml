@@ -169,6 +169,11 @@ lv-LV:
       last_name: Uzvārds
       line_print_description: Lūdzu, uzzīmējiet maršrutu zemāk redzamajā kartē.
       linear_scale_print_description: Lūdzu, ierakstiet tikai skaitli no %{min_label} līdz %{max_label} .
+      logic_go_to_section: Tālāk dodieties uz sadaļu <strong>%{section}</strong>.
+      logic_if_answered_end: Ja uz jautājumu %{question} atbildējāt <strong>%{option}</strong>, jums <strong>nav</strong> jāatbild uz turpmākajiem jautājumiem.
+      logic_if_answered_go_to: Ja uz jautājumu %{question} atbildējāt <strong>%{option}</strong>, tālāk dodieties uz sadaļu <strong>%{section}</strong>.
+      logic_no_further_questions: Pamatojoties uz jūsu atbildēm, jums <strong>nav</strong> jāatbild uz turpmākajiem jautājumiem.
+      logic_section: Sadaļa %{letter}
       matrix_print_description: Katrā rindā ar krustiņu atzīmējiet vienu apli, lai norādītu savu izvēli.
       optional: izvēles
       page: Lapa

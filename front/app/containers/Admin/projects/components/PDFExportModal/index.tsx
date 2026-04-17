@@ -12,6 +12,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useCustomForm from 'api/custom_form/useCustomForm';
 import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
 import { IPhaseData } from 'api/phases/types';
@@ -31,6 +32,7 @@ import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/
 import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
 import FormActions from './FormActions';
+import LogicCheckbox from './LogicCheckbox';
 import messages from './messages';
 import MultilocFieldCollapsible from './MultilocFieldCollapsible';
 import PersonalDataCheckbox from './PersonalDataCheckbox';
@@ -39,6 +41,7 @@ export interface FormPDFExportFormValues {
   print_start_multiloc?: Multiloc;
   print_end_multiloc?: Multiloc;
   print_personal_data_fields: boolean;
+  include_logic: boolean;
 }
 
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
@@ -67,12 +70,20 @@ const PDFExportModal = ({
   const locale = useLocale();
   const { data: customForm } = useCustomForm(phase);
   const { mutateAsync: updateCustomForm } = useUpdateCustomForm(phase);
+  const { data: customFields } = useCustomFields({ phaseId: phase.id });
   const phaseId = phase.id;
+
+  const formHasLogic = customFields?.some(
+    (field) =>
+      (field.logic.rules && field.logic.rules.length > 0) ||
+      field.logic.next_page_id
+  );
 
   const schema = object({
     print_start_multiloc: object(),
     print_end_multiloc: object(),
     print_personal_data_fields: boolean().required(),
+    include_logic: boolean().required(),
   });
 
   const methods = useForm({
@@ -81,6 +92,7 @@ const PDFExportModal = ({
       print_start_multiloc: {},
       print_end_multiloc: {},
       print_personal_data_fields: false,
+      include_logic: false,
     },
     resolver: yupResolver(schema),
   });
@@ -92,21 +104,29 @@ const PDFExportModal = ({
         print_end_multiloc: customForm.data.attributes.print_end_multiloc,
         print_personal_data_fields:
           customForm.data.attributes.print_personal_data_fields,
+        include_logic: !!formHasLogic,
       });
     }
-  }, [customForm, methods]);
+  }, [customForm, methods, formHasLogic]);
 
   const onExport = async ({
     print_personal_data_fields: personal_data,
+    include_logic,
   }: FormPDFExportFormValues) => {
     if (supportsNativeSurvey(phase.attributes.participation_method)) {
       await saveSurveyAsPDF({
         phaseId,
         locale,
         personal_data,
+        include_logic,
       });
     } else {
-      await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
+      await saveIdeaFormAsPDF({
+        phaseId,
+        locale,
+        personal_data,
+        include_logic,
+      });
     }
   };
 
@@ -167,11 +187,6 @@ const PDFExportModal = ({
             <Text as="li">
               <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
-            {formType === 'survey' && (
-              <Text as="li">
-                <FormattedMessage {...messages.logicNotInPDF} />
-              </Text>
-            )}
             <Text as="li" mb="0">
               <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
             </Text>
@@ -195,6 +210,7 @@ const PDFExportModal = ({
                 mb="0"
               />
             </Box>
+            {formHasLogic && <LogicCheckbox />}
             <PersonalDataCheckbox />
             <FormActions loading={loading} />
           </form>

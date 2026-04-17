@@ -143,7 +143,7 @@ RSpec.describe Surveys::AverageGenerator do
               'quality_of_life' => { 'en' => 'Quality of life', 'fr-FR' => 'Qualité de vie', 'nl-NL' => 'Kwaliteit van leven' },
               'service_delivery' => { 'en' => 'Service delivery', 'fr-FR' => 'Prestation de services', 'nl-NL' => 'Dienstverlening' },
               'governance_and_trust' => { 'en' => 'Governance and trust', 'fr-FR' => 'Gouvernance et confiance', 'nl-NL' => 'Bestuur en vertrouwen' },
-              'other' => { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
+              'other' => { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Overig' }
             }
           }
         })
@@ -168,7 +168,7 @@ RSpec.describe Surveys::AverageGenerator do
               'quality_of_life' => { 'en' => 'Quality of life', 'fr-FR' => 'Qualité de vie', 'nl-NL' => 'Kwaliteit van leven' },
               'service_delivery' => { 'en' => 'Service delivery', 'fr-FR' => 'Prestation de services', 'nl-NL' => 'Dienstverlening' },
               'governance_and_trust' => { 'en' => 'Governance and trust', 'fr-FR' => 'Gouvernance et confiance', 'nl-NL' => 'Bestuur en vertrouwen' },
-              'other' => { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
+              'other' => { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Overig' }
             }
           }
         })

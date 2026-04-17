@@ -171,6 +171,11 @@ ga-IE:
       last_name: Sloinne
       line_print_description: Tarraing bealach ar an léarscáil thíos le do thoil.
       linear_scale_print_description: Scríobh uimhir idir %{min_label} agus %{max_label} amháin le do thoil
+      logic_go_to_section: Téigh go dtí <strong>%{section}</strong> anois.
+      logic_if_answered_end: Má thug tú <strong>%{option}</strong> mar fhreagra ar Cheist %{question}, <strong>ní gá</strong> duit aon cheisteanna eile a fhreagairt.
+      logic_if_answered_go_to: Má thug tú <strong>%{option}</strong> mar fhreagra ar Cheist %{question}, téigh go dtí <strong>%{section}</strong> anois.
+      logic_no_further_questions: Bunaithe ar do chuid freagraí, <strong>ní gá</strong> duit aon cheisteanna eile a fhreagairt.
+      logic_section: Rannán %{letter}
       matrix_print_description: I ngach sraith, marcáil ciorcal amháin le cros chun do rogha a léiriú.
       optional: roghnach
       page: Leathanach

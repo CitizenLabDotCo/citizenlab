@@ -168,6 +168,11 @@ sv-SE:
       last_name: Efternamn
       line_print_description: Rita en rutt på kartan nedan.
       linear_scale_print_description: Ange endast ett nummer mellan %{min_label} och %{max_label}
+      logic_go_to_section: Gå vidare till <strong>%{section}</strong>.
+      logic_if_answered_end: Om du svarade <strong>%{option}</strong> på fråga %{question} behöver du <strong>inte</strong> besvara fler frågor.
+      logic_if_answered_go_to: Om du svarade <strong>%{option}</strong> på fråga %{question}, gå vidare till <strong>%{section}</strong>.
+      logic_no_further_questions: Baserat på dina svar behöver du <strong>inte</strong> besvara fler frågor.
+      logic_section: Avsnitt %{letter}
       matrix_print_description: För varje rad markerar du en cirkel med ett kryss för att ange din preferens.
       optional: valfri
       page: Sida

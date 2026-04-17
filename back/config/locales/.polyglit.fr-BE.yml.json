@@ -623,7 +623,7 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.765055Z",
     "verified_by": "Admin"
-  }
+  },
 
   "user_blocked_mailer.send_user_blocked_email.preheader": {
     "state": "verified",

@@ -168,6 +168,11 @@ pt-BR:
       last_name: Sobrenome
       line_print_description: Por favor, desenhe uma rota no mapa abaixo.
       linear_scale_print_description: Por favor, escreva um número entre %{min_label} e %{max_label} apenas
+      logic_go_to_section: Vá para a <strong>%{section}</strong> a seguir.
+      logic_if_answered_end: Se você respondeu <strong>%{option}</strong> na Pergunta %{question}, você <strong>não</strong> precisa responder a mais nenhuma pergunta.
+      logic_if_answered_go_to: Se você respondeu <strong>%{option}</strong> na Pergunta %{question}, vá para a <strong>%{section}</strong> a seguir.
+      logic_no_further_questions: Com base em suas respostas, você <strong>não</strong> precisa responder a mais nenhuma pergunta.
+      logic_section: Seção %{letter}
       matrix_print_description: Para cada linha, marque um círculo com uma cruz para indicar sua preferência.
       optional: opcional
       page: Página

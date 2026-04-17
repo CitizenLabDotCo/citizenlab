@@ -168,6 +168,11 @@ tr-TR:
       last_name: Soyadı
       line_print_description: Lütfen aşağıdaki harita üzerinde bir rota çizin.
       linear_scale_print_description: Lütfen sadece %{min_label} ve %{max_label} arasında bir sayı yazın
+      logic_go_to_section: Bir sonraki adımda <strong>%{section}</strong> bölümüne gidin.
+      logic_if_answered_end: '%{question}. Soru için <strong>%{option}</strong> yanıtını verdiyseniz, başka bir soru yanıtlamanıza <strong>gerek yoktur</strong>.'
+      logic_if_answered_go_to: '%{question}. Soru için <strong>%{option}</strong> yanıtını verdiyseniz, bir sonraki adımda <strong>%{section}</strong> bölümüne gidin.'
+      logic_no_further_questions: Yanıtlarınıza bağlı olarak, başka bir soru yanıtlamanıza <strong>gerek yoktur</strong>.
+      logic_section: Bölüm %{letter}
       matrix_print_description: Her sıra için, tercihinizi belirtmek üzere bir daireyi çarpı ile işaretleyin.
       optional: isteğe bağlı
       page: Sayfa

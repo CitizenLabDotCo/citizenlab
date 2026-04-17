@@ -33,11 +33,6 @@ export default defineMessages({
     defaultMessage:
       "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
   },
-  logicNotInPDF: {
-    id: 'app.containers.Admin.projects.all.logicNotInPDF',
-    defaultMessage:
-      'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
-  },
   personalDataExplanation5: {
     id: 'app.containers.Admin.projects.all.personalDataExplanation5',
     defaultMessage:
@@ -58,5 +53,14 @@ export default defineMessages({
   customiseEnd: {
     id: 'app.containers.Admin.projects.all.customiseEnd',
     defaultMessage: 'Customise the end of the form.',
+  },
+  includeLogic: {
+    id: 'app.containers.Admin.projects.all.includeLogic',
+    defaultMessage: 'Include form logic',
+  },
+  includeLogicExplanation: {
+    id: 'app.containers.Admin.projects.all.includeLogicExplanation',
+    defaultMessage:
+      'This option will add text instructions to the PDF to indicate which sections to answer next, depending on the form logic configured.',
   },
 });

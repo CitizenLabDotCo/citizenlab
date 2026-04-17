@@ -168,6 +168,11 @@ en-GB:
       last_name: Last name
       line_print_description: Please draw a route on the map below.
       linear_scale_print_description: Please write a number between %{min_label} and %{max_label} only
+      logic_go_to_section: Go to <strong>%{section}</strong> next.
+      logic_if_answered_end: If you answered <strong>%{option}</strong> for Question %{question}, you <strong>do not</strong> need to answer any further questions.
+      logic_if_answered_go_to: If you answered <strong>%{option}</strong> for Question %{question}, go to <strong>%{section}</strong> next.
+      logic_no_further_questions: Based on your responses, you <strong>do not</strong> need to answer any further questions.
+      logic_section: Section %{letter}
       matrix_print_description: For each row, mark one circle with a cross to indicate your preference.
       optional: optional
       page: Page
