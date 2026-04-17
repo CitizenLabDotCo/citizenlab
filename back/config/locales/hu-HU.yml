@@ -1,4 +1,4 @@
-hu:
+hu-HU:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 óra.
@@ -390,6 +390,7 @@ hu:
       email: Email
       first_name: Keresztnev(ek)
       image_url: Kép URL-je
+      imported: Importálva
       input_id: ID
       input_url: URL
       last_name: Vezetéknév

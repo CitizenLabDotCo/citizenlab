@@ -1,4 +1,4 @@
-fi:
+fi-FI:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 tuntia.
@@ -390,6 +390,7 @@ fi:
       email: Sähköposti
       first_name: Etunimet)
       image_url: Kuvan URL-osoite
+      imported: Tuotu
       input_id: ID
       input_url: URL-osoite
       last_name: Sukunimi

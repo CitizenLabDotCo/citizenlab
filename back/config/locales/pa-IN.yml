@@ -1,4 +1,4 @@
-pa:
+pa-IN:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ਘੰਟੇ.
@@ -390,6 +390,7 @@ pa:
       email: ਈਮੇਲ
       first_name: ਪਹਿਲਾ ਨਾਂ(ਨਾਂ)
       image_url: ਚਿੱਤਰ URL
+      imported: ਇੰਪੋਰਟ ਕੀਤਾ ਹੋਇਆ
       input_id: ਆਈ.ਡੀ
       input_url: URL
       last_name: ਆਖਰੀ ਨਾਂਮ

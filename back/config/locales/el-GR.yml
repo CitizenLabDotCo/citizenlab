@@ -1,4 +1,4 @@
-el:
+el-GR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ώρες.
@@ -390,6 +390,7 @@ el:
       email: Ηλεκτρονικό ταχυδρομείο
       first_name: Όνομα(-α)
       image_url: URL εικόνας
+      imported: Εισήχθησαν
       input_id: Ταυτότητα
       input_url: ΔΙΕΎΘΥΝΣΗ URL
       last_name: Επώνυμο

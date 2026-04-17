@@ -1,4 +1,4 @@
-ca:
+ca-ES:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 hores.
@@ -390,6 +390,7 @@ ca:
       email: Correu electrònic
       first_name: Primers noms)
       image_url: URL de la imatge
+      imported: Importat
       input_id: ID
       input_url: URL
       last_name: Cognom

@@ -1,4 +1,4 @@
-da:
+da-DK:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timer.
@@ -377,6 +377,7 @@ da:
       email: E-mail
       first_name: Fornavn(e)
       image_url: Billed-URL
+      imported: Importeret
       input_id: ID
       input_url: URL
       last_name: Efternavn

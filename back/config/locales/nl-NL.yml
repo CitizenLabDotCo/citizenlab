@@ -1,4 +1,4 @@
-nl:
+nl-NL:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 uur.
@@ -390,6 +390,7 @@ nl:
       email: E-mail
       first_name: Voorna(a)m(en)
       image_url: Afbeelding URL
+      imported: Geïmporteerd
       input_id: ID
       input_url: URL
       last_name: Achternaam

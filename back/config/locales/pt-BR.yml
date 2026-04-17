@@ -1,4 +1,4 @@
-pt:
+pt-BR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 horas.
@@ -390,6 +390,7 @@ pt:
       email: E-mail
       first_name: Nome(s) próprio(s)
       image_url: imagem URL
+      imported: Importado
       input_id: ID
       input_url: URL
       last_name: Sobrenome

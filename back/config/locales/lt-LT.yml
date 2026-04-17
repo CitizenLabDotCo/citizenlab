@@ -1,4 +1,4 @@
-lt:
+lt-LT:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 valandos.
@@ -392,6 +392,7 @@ lt:
       email: El. paštas
       first_name: Vardas (-ai)
       image_url: Paveikslėlio URL
+      imported: Importuota
       input_id: ID
       input_url: URL
       last_name: Pavardė

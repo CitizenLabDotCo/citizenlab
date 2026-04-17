@@ -1,4 +1,4 @@
-hr:
+hr-HR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 sata.
@@ -391,6 +391,7 @@ hr:
       email: E-mail
       first_name: Imena)
       image_url: URL slike
+      imported: Uvezeno
       input_id: ID
       input_url: URL
       last_name: Prezime

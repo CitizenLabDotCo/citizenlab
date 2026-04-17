@@ -1,4 +1,4 @@
-cy:
+cy-GB:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 awr.
@@ -394,6 +394,7 @@ cy:
       email: Ebost
       first_name: Enw(au) cyntaf
       image_url: URL delwedd
+      imported: Wedi'i fewnforio
       input_id: ID
       input_url: URL
       last_name: Enw olaf

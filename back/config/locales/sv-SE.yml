@@ -1,4 +1,4 @@
-sv:
+sv-SE:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timmar.
@@ -390,6 +390,7 @@ sv:
       email: E-post
       first_name: Förnamn(en)
       image_url: URL för bild
+      imported: Importerad
       input_id: ID
       input_url: Webbadress
       last_name: Efternamn

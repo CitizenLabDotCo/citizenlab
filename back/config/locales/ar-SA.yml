@@ -1,4 +1,4 @@
-ar:
+ar-SA:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ساعة.
@@ -443,6 +443,7 @@ ar:
       email: بريد إلكتروني
       first_name: الأسماء الأولى)
       image_url: رابط الصورة
+      imported: تم الاستيراد
       input_id: المعرِّف
       input_url: URL
       last_name: اسم العائلة

@@ -1,4 +1,4 @@
-lv:
+lv-LV:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 stundas.
@@ -391,6 +391,7 @@ lv:
       email: E-pasts
       first_name: Vārds(-i)
       image_url: Attēla URL
+      imported: Importēts
       input_id: ID
       input_url: URL
       last_name: Uzvārds

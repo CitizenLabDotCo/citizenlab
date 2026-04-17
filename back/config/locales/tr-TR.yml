@@ -1,4 +1,4 @@
-tr:
+tr-TR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 saat.
@@ -390,6 +390,7 @@ tr:
       email: E-posta
       first_name: İlk isim(ler)
       image_url: Resim URL'si
+      imported: İçe aktarıldı
       input_id: KIMLIK
       input_url: URL
       last_name: Soyadı

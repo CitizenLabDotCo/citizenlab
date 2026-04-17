@@ -377,6 +377,7 @@ es-CL:
       email: Correo
       first_name: Nombre(s)
       image_url: URL de la imagen
+      imported: Importado
       input_id: ID
       input_url: URL
       last_name: Apellido

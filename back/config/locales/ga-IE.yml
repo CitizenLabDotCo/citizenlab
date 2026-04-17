@@ -1,4 +1,4 @@
-ga:
+ga-IE:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 uair an chloig.
@@ -393,6 +393,7 @@ ga:
       email: Ríomhphost
       first_name: Céadainm(neacha)
       image_url: URL na híomhá
+      imported: Iompórtáilte
       input_id: Aitheantas
       input_url: URL
       last_name: Sloinne
