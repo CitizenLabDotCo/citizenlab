@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Bydd yr opsiwn hwn yn ychwanegu cyfarwyddiadau testun i'r PDF i nodi pa adrannau i'w hateb nesaf, yn dibynnu ar y rhesymeg ffurflen a ffurfweddwyd.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Gallwch gyfuno ymatebion ar-lein ac all-lein. I uwchlwytho ymatebion all-lein, ewch i dab 'Rheolwr Mewnbwn' y prosiect hwn, a chliciwch ar 'Mewnforio'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Gallwch gyfuno ymatebion ar-lein ac all-lein. I uwchlwytho ymatebion all-lein, ewch i dab 'Arolwg' y prosiect hwn, a chliciwch ar 'Mewnforio'.",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Ni fydd rhesymeg yr arolwg yn cael ei hadlewyrchu yn y PDF a lawrlwythwyd. Bydd ymatebwyr papur yn gweld holl gwestiynau’r arolwg.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Chwilio ffolderi",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Mae pob ffolder wedi'i llwytho",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Ffolder",

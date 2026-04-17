@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ova opcija dodat će tekstualne upute u PDF kako bi se naznačilo na koje odjeljke treba sljedeće odgovoriti, ovisno o konfiguriranoj logici obrasca.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Možete kombinirati online i offline odgovore. Za prijenos izvanmrežnih odgovora idite na karticu \"Upravitelj unosa\" ovog projekta i kliknite \"Uvezi\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Možete kombinirati online i offline odgovore. Za prijenos izvanmrežnih odgovora idite na karticu \"Anketa\" ovog projekta i kliknite \"Uvezi\".",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankete neće se odraziti na preuzeti PDF. Papirnati ispitanici će vidjeti sva anketna pitanja.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Pretraži mape",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Sve mape su učitane",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Mapa",

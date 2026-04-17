@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Tämä asetus lisää PDF-tiedostoon tekstiohjeet, jotka kertovat, mihin osioihin tulee vastata seuraavaksi määritetyn lomakelogiikan mukaisesti.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Voit yhdistää online- ja offline-vastauksia. Jos haluat ladata offline-vastauksia, siirry tämän projektin Syötteiden hallinta -välilehteen ja napsauta Tuo.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Voit yhdistää online- ja offline-vastauksia. Voit ladata offline-vastauksia siirtymällä tämän projektin Kysely-välilehdelle ja napsauttamalla Tuo.",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Kyselylogiikka ei näy ladatussa PDF-tiedostossa. Paperivastaajat näkevät kaikki kyselyn kysymykset.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Hae kansioista",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Kaikki kansiot on ladattu",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Kansio",

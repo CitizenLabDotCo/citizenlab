@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Dës Optioun füügt Textinstruktiounen am PDF bäi, fir unzeginn, wéi eng Sektiounen als nächst geäntwert solle ginn, jee no der konfiguréierter Formularlogik.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Dir kënnt Online- an Offline-Äntwerte kombinéieren. Fir Offline-Äntwerten eropzelueden, gitt op den Tab 'Input-Manager' vun dësem Projet a klickt op 'Importéieren'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Dir kënnt Online- an Offline-Äntwerte kombinéieren. Fir Offline-Äntwerten eropzelueden, gitt op den Tab 'Ëmfro' vun dësem Projet a klickt op 'Importéieren'.",
-  "app.containers.Admin.projects.all.logicNotInPDF": "D'Ëmfro-Logik gëtt am erofgeluedene PDF net berücksichtegt. Participanten op Pabeier gesinn all d'Froe vun der Ëmfro.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Dossiere sichen",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "All Ordner goufe gelueden",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Dossier",

@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Šī opcija PDF failam pievienos teksta norādes, lai norādītu, kuras sadaļas aizpildīt tālāk atkarībā no konfigurētās veidlapas loģikas.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Varat apvienot tiešsaistes un bezsaistes atbildes. Lai augšupielādētu bezsaistes atbildes, dodieties uz šā projekta cilni \"Ievades pārvaldnieks\" un noklikšķiniet uz \"Importēt\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Varat apvienot tiešsaistes un bezsaistes atbildes. Lai augšupielādētu bezsaistes atbildes, dodieties uz šī projekta cilni \"Aptauja\" un noklikšķiniet uz \"Importēt\".",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Aptaujas loģika netiks atspoguļota lejupielādētajā PDF failā. Papīra formātā respondenti redzēs visus aptaujas jautājumus.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Meklēšanas mapes",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Visas mapes ir ielādētas",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Mapes",

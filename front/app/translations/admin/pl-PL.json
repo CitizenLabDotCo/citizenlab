@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Ta opcja doda do pliku PDF instrukcje tekstowe wskazujące, które sekcje należy wypełnić w następnej kolejności, w zależności od skonfigurowanej logiki formularza.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Menedżer danych wejściowych\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Ankieta\" tego projektu i kliknij \"Importuj\".",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankiety nie zostanie odzwierciedlona w pobranym pliku PDF. Respondenci papierowi zobaczą wszystkie pytania ankiety.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Wyszukaj foldery",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Wszystkie foldery zostały załadowane",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Folder",

@@ -1248,7 +1248,6 @@
   "app.containers.Admin.projects.all.includeLogicExplanation": "Cuirfidh an rogha seo treoracha téacs leis an PDF chun a léiriú cé na rannáin ar chóir freagra a thabhairt orthu amach anseo, ag brath ar loighic na foirme atá cumraithe.",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Is féidir leat freagraí ar líne agus as líne a chomhcheangal. Chun freagraí as líne a uaslódáil, téigh go dtí an cluaisín 'Bainisteoir ionchuir' den tionscadal seo, agus cliceáil 'Iompórtáil'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Is féidir leat freagraí ar líne agus as líne a chomhcheangal. Chun freagraí as líne a uaslódáil, téigh go dtí an cluaisín 'Suirbhé' den tionscadal seo, agus cliceáil 'Iompórtáil'.",
-  "app.containers.Admin.projects.all.logicNotInPDF": "Ní léireofar loighic an tsuirbhé sa PDF a íoslódáileadh. Feicfidh freagróirí páipéir na ceisteanna suirbhé go léir.",
   "app.containers.Admin.projects.all.new.Folders.Filters.searchFolders": "Cuardaigh fillteáin",
   "app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded": "Tá na fillteáin uile luchtaithe",
   "app.containers.Admin.projects.all.new.Folders.Table.folder": "Fillteán",
