@@ -190,6 +190,7 @@ DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
+DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
@@ -1535,7 +1536,8 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    token_expiry_key character varying
 );
 
 
@@ -7074,6 +7076,13 @@ CREATE UNIQUE INDEX index_users_on_slug ON public.users USING btree (slug);
 
 
 --
+-- Name: index_users_on_token_expiry_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_token_expiry_key ON public.users USING btree (token_expiry_key);
+
+
+--
 -- Name: index_users_on_unique_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8508,6 +8517,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260311100002'),
 ('20260311100001'),
 ('20260311100000'),
+('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),
