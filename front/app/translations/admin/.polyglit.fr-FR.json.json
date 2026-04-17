@@ -444,6 +444,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.476708Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormSync.downloadExcelTemplate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -464,6 +469,11 @@
     "verified_at": "2026-04-17T14:15:58.905743Z",
     "verified_by": "Adrien"
   },
+  "app.components.FormSync.paperFormsOCRDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.476708Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormSync.spreadsheet1": {
     "state": "verified",
     "verified_at": "2026-04-17T14:03:22.830328Z",
@@ -472,6 +482,11 @@
   "app.components.FormSync.spreadsheetDescription1": {
     "state": "verified",
     "verified_at": "2026-04-17T14:20:48.701160Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.template1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.476708Z",
     "verified_by": "Adrien"
   },
   "app.components.ProjectTemplatePreview.close": {
