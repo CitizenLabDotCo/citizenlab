@@ -32,8 +32,6 @@ class SideFxUserService
     end
     after_roles_changed current_user, user if user.roles_previously_changed?
 
-    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
-
     UpdateMemberCountJob.perform_later
   end
 
@@ -67,6 +65,7 @@ class SideFxUserService
       }
     )
     UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
+    user.expire_token! # Stop any active sessions of the blocked user
   end
 
   def after_unblock(user, current_user)
@@ -93,6 +92,8 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
+    expire_token_on_role_change!(user)
   end
 
   def role_created_side_fx(role, user, current_user)
@@ -139,6 +140,14 @@ class SideFxUserService
   def gained_roles(user)
     old_roles, new_roles = user.roles_previous_change
     new_roles.to_a - old_roles.to_a
+  end
+
+  # Expire the user's token when they first get roles or all roles are removed.
+  # NOTE: Must be called after all other side effects that depend on previous_changes,
+  # since expire_token! calls update! which resets previous_changes.
+  def expire_token_on_role_change!(user)
+    old_roles, new_roles = user.roles_previous_change
+    user.expire_token! if old_roles.blank? || new_roles.blank?
   end
 
   def create_followers(user)
