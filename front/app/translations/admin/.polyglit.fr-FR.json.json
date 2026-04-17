@@ -12799,6 +12799,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.218315Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.218315Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectEdit.newComment": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
