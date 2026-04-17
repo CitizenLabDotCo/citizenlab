@@ -408,11 +408,6 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project(project)
-    # Update folder_id only if it is provided in the request (even if it's nil)
-    if params[:project].key?(:folder_id)
-      project.folder_id = params.dig(:project, :folder_id)
-    end
-
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved

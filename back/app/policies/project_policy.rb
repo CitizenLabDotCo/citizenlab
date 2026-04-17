@@ -169,6 +169,7 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
+    shared << :folder_id if user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
     shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
@@ -215,14 +216,10 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    admin_like? || record.ever_published? || record.review&.approved?
+    admin? || can_moderate_folder? || record.ever_published? || record.review&.approved?
   end
 
-  def admin_like?
-    admin? || folder_moderator?
-  end
-
-  def folder_moderator?
+  def can_moderate_folder?
     record.folder && UserRoleService.new.can_moderate?(record.folder, user)
   end
 
