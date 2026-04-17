@@ -1884,7 +1884,7 @@
   "app.containers.Admin.surveyFormTab.downloads": "Téléchargements",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Dupliquer une autre enquête",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Modifier le formulaire",
-  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Précisez les informations à fournir pour guider les réponses des participants.",
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Configurez les questions et la structure de votre enquête.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Formulaire de l'enquête",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Créer un nouveau jeton",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Annuler",
