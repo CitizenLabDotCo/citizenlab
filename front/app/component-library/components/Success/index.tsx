@@ -4,8 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import CloseIconButton from 'components/UI/CloseIconButton';
-
 import { fontSizes, colors } from '../../utils/styleUtils';
 import Icon from '../Icon';
 
@@ -118,7 +116,16 @@ export default class Success extends PureComponent<Props, State> {
               {showIcon && <CheckmarkIcon name="check" />}
               <SuccessMessageText>{text}</SuccessMessageText>
             </Box>
-            {onClose && <CloseIconButton onClick={onClose} />}
+            {onClose && (
+              <Box onClick={onClose} cursor="pointer">
+                <Icon
+                  name="close"
+                  width="16px"
+                  height="16px"
+                  fill={colors.success}
+                />
+              </Box>
+            )}
           </StyledSuccessMessageInner>
         </Container>
       </CSSTransition>
