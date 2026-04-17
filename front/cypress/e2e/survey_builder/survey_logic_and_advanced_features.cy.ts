@@ -69,6 +69,11 @@ describe('Survey Builder - Logic and Advanced Features', () => {
     cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
+    // Save the survey and reload the page before adding logic (bug with adding logic)
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+    cy.reload();
+
     // Add logic to the multiple choice question
     cy.contains(multipleChoiceChooseOneTitle).should('exist');
     cy.contains(multipleChoiceChooseOneTitle).click();

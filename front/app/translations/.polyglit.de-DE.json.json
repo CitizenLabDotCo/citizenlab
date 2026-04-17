@@ -854,6 +854,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.continueEditing": {
     "state": "verified",
     "verified_at": "2026-03-30T15:27:05.682075Z",
@@ -954,6 +955,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.submitConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-30T15:27:05.682075Z",
@@ -1044,6 +1046,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.yesSubmit": {
     "state": "verified",
     "verified_at": "2026-03-30T15:27:05.682075Z",
@@ -3629,6 +3632,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T11:19:05.302338Z",
@@ -3694,6 +3698,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T11:19:05.302338Z",
@@ -3714,6 +3719,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-30T15:24:54.987482Z",
@@ -3779,6 +3785,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T11:19:05.302338Z",
@@ -3794,6 +3801,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T11:19:05.302338Z",
@@ -3804,6 +3812,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-30T15:24:54.987482Z",
@@ -6369,6 +6378,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:07:13.125400Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6443,6 +6457,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:07:13.125400Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
@@ -12013,6 +12032,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:11:30.081146Z",
+    "verified_by": "Jelena"
   },
   "app.errors.email_taken": {
     "state": "verified",

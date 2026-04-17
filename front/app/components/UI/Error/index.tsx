@@ -17,7 +17,9 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -184,7 +186,7 @@ export interface TFieldNameMap {
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
 
-export const findErrorMessage = (
+export const findErrorMessageDescriptor = (
   fieldName: TFieldName | undefined,
   error: string
 ) => {
@@ -195,8 +197,7 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as MessageDescriptor;
   }
-  // Return a empty error message
-  return '';
+  return;
 };
 
 // Get the variables to use inside API error messages
@@ -220,9 +221,27 @@ export const getApiErrorValues = (
   return payload ? { ...payload, ...values } : values;
 };
 
+// Allow custom error messages from app configuration for specific API errors
+const findErrorFromAppConfig = (
+  error: string,
+  appConfiguration: IAppConfiguration,
+  localize: Localize
+) => {
+  if (error === 'sso_enforced_for_domain') {
+    const customMultiloc =
+      appConfiguration.data.attributes.settings.azure_ad_login
+        ?.enforced_email_domain_error_multiloc;
+
+    return customMultiloc ? localize(customMultiloc) : undefined;
+  }
+  return;
+};
+
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const {
     text,
@@ -296,48 +315,34 @@ const Error = (props: ErrorProps) => {
                     {dedupApiErrors.map((error, index) => {
                       // If we have multiple possible errors for a certain input field,
                       // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findErrorMessage for details
-                      const errorMessage = findErrorMessage(
+                      // Check the implementation of findErrorMessageDescriptor for details
+                      const errorMessageDescriptor = findErrorMessageDescriptor(
                         fieldName,
                         error.error
                       );
+                      const values = getApiErrorValues(error, appConfiguration);
 
-                      if (errorMessage) {
-                        // Variables for inside messages.js
-                        const values = getApiErrorValues(
-                          error,
-                          appConfiguration
-                        );
+                      const customErrorMessage = findErrorFromAppConfig(
+                        error.error,
+                        appConfiguration,
+                        localize
+                      );
 
-                        if (values.value || values.row || values.rows) {
-                          return (
-                            <ErrorListItem key={index}>
-                              {dedupApiErrors.length > 1 && (
-                                <Bullet aria-hidden>•</Bullet>
-                              )}
+                      const errorMessage = customErrorMessage
+                        ? customErrorMessage
+                        : errorMessageDescriptor &&
+                          formatMessage(errorMessageDescriptor, values);
 
-                              <FormattedMessage
-                                {...errorMessage}
-                                values={values}
-                              />
-                            </ErrorListItem>
-                          );
-                        }
+                      if (!errorMessage) return null;
 
-                        return (
-                          <ErrorListItem key={index}>
-                            {dedupApiErrors.length > 1 && (
-                              <Bullet aria-hidden>•</Bullet>
-                            )}
-                            <FormattedMessage
-                              {...errorMessage}
-                              values={values}
-                            />
-                          </ErrorListItem>
-                        );
-                      }
-
-                      return null;
+                      return (
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
+                          {errorMessage}
+                        </ErrorListItem>
+                      );
                     })}
                   </ErrorList>
                 )}
