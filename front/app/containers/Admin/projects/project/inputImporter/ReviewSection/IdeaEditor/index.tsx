@@ -49,6 +49,10 @@ type FormValues = Record<string, any>;
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
+  const [lastApprovedIdeaId, setLastApprovedIdeaId] = useState<string | null>(
+    null
+  );
+  const [undoLoading, setUndoLoading] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
   const { projectId, phaseId } = useParams() as {
@@ -197,6 +201,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         },
       });
 
+      setLastApprovedIdeaId(ideaId);
+
       setUserFormStatePerIdea((userFormState) => {
         const clone = { ...userFormState };
         delete clone[ideaId];
@@ -214,6 +220,24 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     } catch (error) {
       setError.current &&
         handleHookFormSubmissionError(error, setError.current);
+    }
+  };
+
+  const onUndoApproval = async () => {
+    if (!lastApprovedIdeaId) return;
+    setUndoLoading(true);
+    try {
+      await updateIdea({
+        id: lastApprovedIdeaId,
+        requestBody: { publication_status: 'draft' },
+      });
+      setIdeaId(lastApprovedIdeaId);
+      setLastApprovedIdeaId(null);
+    } catch (error) {
+      setError.current &&
+        handleHookFormSubmissionError(error, setError.current);
+    } finally {
+      setUndoLoading(false);
     }
   };
 
@@ -262,8 +286,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         pb="4px"
         w="100%"
         display="flex"
-        flexDirection="column"
-        justifyContent="flex-end"
+        alignItems="center"
+        justifyContent="flex-start"
+        gap="8px"
       >
         {ideaId && (
           <Tooltip
@@ -275,7 +300,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               <Button
                 bgColor={colors.primary}
                 icon="check"
-                w="100%"
                 processing={loadingApproveIdea}
                 disabled={!userFormDataValid || !ideaFormDataValid}
                 onClick={onApproveIdea}
@@ -284,6 +308,16 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               </Button>
             </div>
           </Tooltip>
+        )}
+        {lastApprovedIdeaId && (
+          <Button
+            buttonStyle="admin-dark-outlined"
+            icon="undo"
+            processing={undoLoading}
+            onClick={onUndoApproval}
+          >
+            <FormattedMessage {...messages.undoLastApproval} />
+          </Button>
         )}
       </Box>
     </>

@@ -83,4 +83,33 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
     defaultMessage: 'Download PDF',
   },
+  undoLastApproval: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval',
+    defaultMessage: 'Undo last approval',
+  },
+  confirmApproveAll: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll',
+    defaultMessage: 'Approve all inputs?',
+  },
+  confirmApproveAllExplanation: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported inputs at once. You can still find them in the input manager afterwards.',
+  },
+  confirmRemoveAll: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll',
+    defaultMessage: 'Remove all inputs?',
+  },
+  confirmRemoveAllExplanation: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation',
+    defaultMessage: 'This action cannot be undone.',
+  },
+  cancel: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.cancel',
+    defaultMessage: 'Cancel',
+  },
+  confirm: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirm',
+    defaultMessage: 'Confirm',
+  },
 });

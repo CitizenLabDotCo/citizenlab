@@ -20,6 +20,7 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -41,6 +42,9 @@ const ReviewSection = ({
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
+  const [confirmAction, setConfirmAction] = useState<
+    'approveAll' | 'removeAll' | null
+  >(null);
 
   const {
     data: ideas,
@@ -98,6 +102,7 @@ const ReviewSection = ({
       onSuccess: (data) => {
         setApprovals(data.data.attributes);
         setIdeaId(null);
+        setConfirmAction(null);
         refetchIdeas();
       },
     });
@@ -107,6 +112,7 @@ const ReviewSection = ({
     deleteAllIdeas(phaseId, {
       onSuccess: () => {
         setIdeaId(null);
+        setConfirmAction(null);
         refetchIdeas();
       },
     });
@@ -143,7 +149,7 @@ const ReviewSection = ({
                 icon="check"
                 processing={isApproving}
                 disabled={isApproving || isDeleting || importing}
-                onClick={handleApproveAll}
+                onClick={() => setConfirmAction('approveAll')}
               >
                 <FormattedMessage
                   {...messages.approveAllInputs}
@@ -157,7 +163,7 @@ const ReviewSection = ({
                 icon="delete"
                 processing={isDeleting}
                 disabled={isApproving || isDeleting || importing}
-                onClick={handleDeleteAll}
+                onClick={() => setConfirmAction('removeAll')}
               >
                 <FormattedMessage {...messages.removeAllInputs} />
               </ButtonWithLink>
@@ -256,6 +262,26 @@ const ReviewSection = ({
           )}
         </Box>
       </Box>
+      <WarningModal
+        open={confirmAction !== null}
+        isLoading={isApproving || isDeleting}
+        title={
+          confirmAction === 'approveAll'
+            ? formatMessage(messages.confirmApproveAll)
+            : formatMessage(messages.confirmRemoveAll)
+        }
+        explanation={
+          confirmAction === 'approveAll'
+            ? formatMessage(messages.confirmApproveAllExplanation, {
+                numIdeas,
+              })
+            : formatMessage(messages.confirmRemoveAllExplanation)
+        }
+        onClose={() => setConfirmAction(null)}
+        onConfirm={
+          confirmAction === 'approveAll' ? handleApproveAll : handleDeleteAll
+        }
+      />
     </Box>
   );
 };
