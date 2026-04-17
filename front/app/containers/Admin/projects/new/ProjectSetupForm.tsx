@@ -123,12 +123,23 @@ const ProjectSetupForm = () => {
       authUser?.data.attributes.highest_role
     ) && isProjectFoldersEnabled;
 
+  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
+    (
+      projectAttributesDiff: IUpdatedProjectProperties,
+      submitState: ISubmitState = 'enabled'
+    ) => {
+      setProjectAttributesDiff((currentProjectAttributesDiff) => {
+        return {
+          ...currentProjectAttributesDiff,
+          ...projectAttributesDiff,
+        };
+      });
+
+      setSubmitState(submitState);
+    };
+
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      title_multiloc: titleMultiloc,
-    }));
+    handleProjectAttributeDiffOnChange({ title_multiloc: titleMultiloc });
     setTitleError(null);
   };
 
@@ -138,19 +149,13 @@ const ProjectSetupForm = () => {
   };
 
   const handleHeaderBgChange = (newImageBase64: string | null) => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      header_bg: newImageBase64,
-    }));
-    setSubmitState('enabled');
+    handleProjectAttributeDiffOnChange({ header_bg: newImageBase64 });
   };
 
   const handleHeaderBgAltTextChange = (altText: Multiloc) => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
+    handleProjectAttributeDiffOnChange({
       header_bg_alt_text_multiloc: altText,
-    }));
-    setSubmitState('enabled');
+    });
   };
 
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
@@ -179,11 +184,7 @@ const ProjectSetupForm = () => {
   };
 
   const handleTopicsChange = (topicIds: string[]) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      global_topic_ids: topicIds,
-    }));
+    handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
   };
 
   async function saveForm() {
@@ -303,30 +304,8 @@ const ProjectSetupForm = () => {
     return formIsValid;
   };
 
-  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
-    (
-      projectAttributesDiff: IUpdatedProjectProperties,
-      submitState: ISubmitState = 'enabled'
-    ) => {
-      setProjectAttributesDiff((currentProjectAttributesDiff) => {
-        return {
-          ...currentProjectAttributesDiff,
-          ...projectAttributesDiff,
-        };
-      });
-
-      setSubmitState(submitState);
-    };
-
   const handleSpaceSelectChange = (spaceId: string | null) => {
-    setProjectAttributesDiff((projectAttributesDiff) => {
-      return {
-        ...projectAttributesDiff,
-        space_id: spaceId,
-      };
-    });
-
-    setSubmitState('enabled');
+    handleProjectAttributeDiffOnChange({ space_id: spaceId });
   };
 
   const projectAttrs = {

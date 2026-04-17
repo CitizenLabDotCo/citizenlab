@@ -190,12 +190,23 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     })();
   }, [remoteProjectImages]);
 
+  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
+    (
+      projectAttributesDiff: IUpdatedProjectProperties,
+      submitState: ISubmitState = 'enabled'
+    ) => {
+      setProjectAttributesDiff((currentProjectAttributesDiff) => {
+        return {
+          ...currentProjectAttributesDiff,
+          ...projectAttributesDiff,
+        };
+      });
+
+      setSubmitState(submitState);
+    };
+
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      title_multiloc: titleMultiloc,
-    }));
+    handleProjectAttributeDiffOnChange({ title_multiloc: titleMultiloc });
     setTitleError(null);
   };
 
@@ -205,19 +216,13 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const handleHeaderBgChange = (newImageBase64: string | null) => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      header_bg: newImageBase64,
-    }));
-    setSubmitState('enabled');
+    handleProjectAttributeDiffOnChange({ header_bg: newImageBase64 });
   };
 
   const handleHeaderBgAltTextChange = (altText: Multiloc) => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
+    handleProjectAttributeDiffOnChange({
       header_bg_alt_text_multiloc: altText,
-    }));
-    setSubmitState('enabled');
+    });
   };
 
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
@@ -246,31 +251,19 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const handleTopicsChange = (topicIds: string[]) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      global_topic_ids: topicIds,
-    }));
+    handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
   };
 
   const handleDescriptionChange = (description_multiloc: Multiloc) => {
-    setSubmitState('enabled');
     setDescriptionMultiloc(description_multiloc);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      description_multiloc,
-    }));
+    handleProjectAttributeDiffOnChange({ description_multiloc });
   };
 
   const handleDescriptionPreviewChange = (
     description_preview_multiloc: Multiloc
   ) => {
-    setSubmitState('enabled');
     setDescriptionPreviewMultiloc(description_preview_multiloc);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      description_preview_multiloc,
-    }));
+    handleProjectAttributeDiffOnChange({ description_preview_multiloc });
   };
 
   async function saveForm() {
@@ -407,30 +400,8 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     return formIsValid;
   };
 
-  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
-    (
-      projectAttributesDiff: IUpdatedProjectProperties,
-      submitState: ISubmitState = 'enabled'
-    ) => {
-      setProjectAttributesDiff((currentProjectAttributesDiff) => {
-        return {
-          ...currentProjectAttributesDiff,
-          ...projectAttributesDiff,
-        };
-      });
-
-      setSubmitState(submitState);
-    };
-
   const handleSpaceSelectChange = (spaceId: string | null) => {
-    setProjectAttributesDiff((projectAttributesDiff) => {
-      return {
-        ...projectAttributesDiff,
-        space_id: spaceId,
-      };
-    });
-
-    setSubmitState('enabled');
+    handleProjectAttributeDiffOnChange({ space_id: spaceId });
   };
 
   const projectAttrs = {
