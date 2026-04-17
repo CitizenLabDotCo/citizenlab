@@ -22,6 +22,7 @@ import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { isDraft } from 'api/campaigns/util';
+import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -34,6 +35,7 @@ import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -74,6 +76,7 @@ const Show = () => {
 
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
+  const { data: project } = useProjectById(projectId);
 
   const {
     mutate: sendCampaign,
@@ -147,6 +150,11 @@ const Show = () => {
     name: 'email_scheduling',
   });
   const timeZone = tenant?.data.attributes.settings.core.timezone;
+
+  const hasNoParticipants =
+    project?.data.attributes.participants_count === 0 &&
+    campaign?.data.attributes.scheduled_at;
+
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
@@ -234,6 +242,11 @@ const Show = () => {
                 showIcon
                 showBackground
               />
+            </Box>
+          )}
+          {!apiSendErrors && hasNoParticipants && (
+            <Box mb="8px">
+              <Error text={formatMessage(errorMessages.no_recipients)} />
             </Box>
           )}
           {apiSendErrors && (
