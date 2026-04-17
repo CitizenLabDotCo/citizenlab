@@ -8,13 +8,10 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddProjectImage from 'api/project_images/useAddProjectImage';
-import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
@@ -28,6 +25,7 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
+import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -101,12 +99,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   );
 
   const { data: remoteProjectImages } = useProjectImages(projectId);
-  const { mutateAsync: addProjectImage } = useAddProjectImage();
-  const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
-  const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
 
   const syncProjectFiles = useSyncFiles();
+  const syncProjectImages = useSyncProjectImages();
 
   // File Attachments
   const { data: remoteProjectFileAttachments } = useFileAttachments({
@@ -285,36 +281,13 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         });
       }
 
-      const cardImageToAddPromise = croppedProjectCardBase64
-        ? addProjectImage({
-            projectId,
-            image: {
-              image: croppedProjectCardBase64,
-              ...(projectCardImageAltText
-                ? { alt_text_multiloc: projectCardImageAltText }
-                : {}),
-            },
-          })
-        : null;
-
-      const cardImageToUpdatePromise =
-        projectCardImage && projectCardImage.id && projectCardImageAltText
-          ? updateProjectImage({
-              projectId,
-              imageId: projectCardImage.id,
-              image: {
-                image: projectCardImage.base64,
-                alt_text_multiloc: projectCardImageAltText,
-              },
-            })
-          : null;
-
-      const cardImageToRemovePromise = projectCardImageToRemove?.id
-        ? deleteProjectImage({
-            projectId,
-            imageId: projectCardImageToRemove.id,
-          })
-        : null;
+      const projectImagesPromise = syncProjectImages({
+        croppedProjectCardBase64,
+        projectCardImageAltText,
+        projectCardImageToUpdate: projectCardImage,
+        projectCardImageToRemove,
+        projectId,
+      });
 
       const initialFileAttachmentOrdering: Record<string, number | undefined> =
         Object.fromEntries(
@@ -334,9 +307,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         : undefined;
 
       await Promise.all([
-        cardImageToAddPromise,
-        cardImageToUpdatePromise,
-        cardImageToRemovePromise,
+        projectImagesPromise,
         projectFilesPromise,
       ] as Promise<any>[]);
 

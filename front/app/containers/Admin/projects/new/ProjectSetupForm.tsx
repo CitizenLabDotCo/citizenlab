@@ -6,13 +6,10 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useAuthUser from 'api/me/useAuthUser';
-import useAddProjectImage from 'api/project_images/useAddProjectImage';
-import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
@@ -63,6 +60,7 @@ import { isSpaceModerator } from 'utils/permissions/roles';
 
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
+import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
 const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
   'super_admin',
@@ -80,12 +78,10 @@ const ProjectSetupForm = () => {
   const appConfigLocales = useAppConfigurationLocales();
   const { containerRef } = useContainerWidthAndHeight();
 
-  const { mutateAsync: addProjectImage } = useAddProjectImage();
-  const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
-  const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: addProject } = useAddProject();
 
   const syncProjectFiles = useSyncFiles();
+  const syncProjectImages = useSyncProjectImages();
 
   // File Attachments
   const [projectFileAttachments, setProjectFileAttachments] = useState<
@@ -209,36 +205,13 @@ const ProjectSetupForm = () => {
       const response = await addProject(nextProjectAttributesDiff);
       const projectId = response.data.id;
 
-      const cardImageToAddPromise = croppedProjectCardBase64
-        ? addProjectImage({
-            projectId,
-            image: {
-              image: croppedProjectCardBase64,
-              ...(projectCardImageAltText
-                ? { alt_text_multiloc: projectCardImageAltText }
-                : {}),
-            },
-          })
-        : null;
-
-      const cardImageToUpdatePromise =
-        projectCardImage && projectCardImage.id && projectCardImageAltText
-          ? updateProjectImage({
-              projectId,
-              imageId: projectCardImage.id,
-              image: {
-                image: projectCardImage.base64,
-                alt_text_multiloc: projectCardImageAltText,
-              },
-            })
-          : null;
-
-      const cardImageToRemovePromise = projectCardImageToRemove?.id
-        ? deleteProjectImage({
-            projectId,
-            imageId: projectCardImageToRemove.id,
-          })
-        : null;
+      const projectImagesPromise = syncProjectImages({
+        croppedProjectCardBase64,
+        projectCardImageAltText,
+        projectCardImageToUpdate: projectCardImage,
+        projectCardImageToRemove,
+        projectId,
+      });
 
       const projectFilesPromise = projectFileAttachments
         ? syncProjectFiles({
@@ -251,9 +224,7 @@ const ProjectSetupForm = () => {
         : undefined;
 
       await Promise.all([
-        cardImageToAddPromise,
-        cardImageToUpdatePromise,
-        cardImageToRemovePromise,
+        projectImagesPromise,
         projectFilesPromise,
       ] as Promise<any>[]);
 
