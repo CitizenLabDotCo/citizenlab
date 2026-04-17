@@ -1096,7 +1096,8 @@ resource 'Phases' do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -1106,7 +1107,8 @@ resource 'Phases' do
                     survey_response1.author.email,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -1115,7 +1117,8 @@ resource 'Phases' do
                     survey_response2.author.email,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
