@@ -2404,6 +2404,7 @@
   "app.errors.email_blank": "یہ خالی نہیں ہو سکتا",
   "app.errors.email_domain_blacklisted": "رجسٹر کرنے کے لیے براہ کرم ایک مختلف ای میل ڈومین استعمال کریں۔",
   "app.errors.email_invalid": "براہ کرم ایک درست ای میل ایڈریس استعمال کریں۔",
+  "app.errors.email_sso_enforced_for_domain": "اس ای میل ڈومین کے لیے آپ کو سنگل سائن آن (SSO) کے ذریعے سائن ان کرنا ہوگا۔",
   "app.errors.email_taken": "اس ای میل کے ساتھ ایک اکاؤنٹ پہلے سے موجود ہے۔ اس کے بجائے آپ لاگ ان کر سکتے ہیں۔",
   "app.errors.email_taken_by_invite": "{value} پہلے ہی زیر التواء دعوت کے ذریعہ لیا گیا ہے۔ اپنا سپیم فولڈر چیک کریں یا {supportEmail} سے رابطہ کریں اگر آپ اسے نہیں ڈھونڈ سکتے ہیں۔",
   "app.errors.emails_duplicate": "ای میل ایڈریس {value} کے لیے ایک یا زیادہ ڈپلیکیٹ قدریں درج ذیل قطاروں میں پائی گئیں: {rows}",

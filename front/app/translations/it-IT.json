@@ -2404,6 +2404,7 @@
   "app.errors.email_blank": "Questo campo non può essere vuoto",
   "app.errors.email_domain_blacklisted": "Si prega di utilizzare un dominio e-mail diverso per la registrazione.",
   "app.errors.email_invalid": "Si prega di utilizzare un indirizzo e-mail valido.",
+  "app.errors.email_sso_enforced_for_domain": "È necessario accedere tramite single sign-on (SSO) per questo dominio email.",
   "app.errors.email_taken": "Esiste già un account con questa email. Puoi accedere al suo posto.",
   "app.errors.email_taken_by_invite": "{value} è già occupato da un invito in sospeso. Controlla la tua cartella spam o contatta {supportEmail} se non riesci a trovarlo.",
   "app.errors.emails_duplicate": "Uno o più valori duplicati per l'indirizzo e-mail {value} sono stati trovati nelle seguenti righe: {rows}",

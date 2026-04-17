@@ -2404,6 +2404,7 @@
   "app.errors.email_blank": "Dette kan ikke være tomt",
   "app.errors.email_domain_blacklisted": "Brug et andet e-mail-domæne for at registrere dig.",
   "app.errors.email_invalid": "Indtast venligst en gyldig e-mailadresse.",
+  "app.errors.email_sso_enforced_for_domain": "Du skal logge ind med single sign-on (SSO) for dette e-maildomæne.",
   "app.errors.email_taken": "En konto med denne e-mail eksisterer allerede. Du kan logge på i stedet. ",
   "app.errors.email_taken_by_invite": "{value} er allerede taget af en afventende invitation. Tjek din spam-indbakke, eller kontakt os på {supportEmail}, hvis du ikke kan finde den.",
   "app.errors.emails_duplicate": "En eller flere duplikatværdier for e-mailadressen {value} blev fundet i følgende række(r): {rows}",

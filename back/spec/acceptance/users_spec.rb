@@ -268,6 +268,26 @@ resource 'Users' do
           assert_status 200
         end
       end
+
+      context 'when the email domain has SSO enforced' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+          settings = AppConfiguration.instance.settings
+          settings['azure_ad_login'] = {
+            'allowed' => true, 'enabled' => true,
+            'enforced_email_domains' => 'example.com'
+          }
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        let(:email) { 'user@example.com' }
+
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+        end
+      end
     end
 
     post 'web_api/v1/users' do
@@ -282,6 +302,27 @@ resource 'Users' do
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
+
+      context 'when the email domain has SSO enforced' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+          settings = AppConfiguration.instance.settings
+          settings['azure_ad_login'] = {
+            'allowed' => true, 'enabled' => true,
+            'enforced_email_domains' => 'example.com'
+          }
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        let(:email) { 'newuser@example.com' }
+        let(:locale) { 'en' }
+
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+        end
+      end
 
       context 'when confirmation is turned on' do
         before do

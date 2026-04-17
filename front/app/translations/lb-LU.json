@@ -2404,6 +2404,7 @@
   "app.errors.email_blank": "Dëst dierf net eidel sinn",
   "app.errors.email_domain_blacklisted": "Benotzt wgl. eng aner E-Mail-Domain, fir Iech anzeschreiwen.",
   "app.errors.email_invalid": "Benotzt wgl. eng gëlteg E-Mail-Adress.",
+  "app.errors.email_sso_enforced_for_domain": "Dir musst Iech fir dës E-Mail-Domain iwwer Single Sign-on (SSO) umellen.",
   "app.errors.email_taken": "E Kont mat där E-Mail-Adress existéiert schonn. Mellt Iech wgl domat un.",
   "app.errors.email_taken_by_invite": "{value} gëtt schonn vun enger ausstoender Invitatioun benotzt. Wann Dir de Mail net fannt kontaktéiert wgl.  {supportEmail} ",
   "app.errors.emails_duplicate": "Een oder méi duebel Wäerter fir d’E-Mail-Adress {value} goufen an de(r) folgende(r) Rei(e) fonnt: {rows}",

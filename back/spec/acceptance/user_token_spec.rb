@@ -20,6 +20,27 @@ resource 'User Token' do
       DESC
     end
 
+    context 'when the email domain has SSO enforced' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        settings = AppConfiguration.instance.settings
+        settings['azure_ad_login'] = {
+          'allowed' => true, 'enabled' => true,
+          'enforced_email_domains' => 'example.com'
+        }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      let(:email) { 'user@example.com' }
+      let(:password) { '12345678' }
+      let!(:user) { create(:user, email: email, password: password) }
+
+      example_request 'Returns 422 with sso_enforced_for_domain error' do
+        assert_status 422
+        expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+      end
+    end
+
     context 'when user_confirmation is enabled' do
       before do
         SettingsService.new.activate_feature! 'user_confirmation'
