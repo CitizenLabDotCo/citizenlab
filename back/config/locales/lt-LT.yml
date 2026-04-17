@@ -397,6 +397,7 @@ lt-LT:
       email: El. paštas
       first_name: Vardas (-ai)
       image_url: Paveikslėlio URL
+      imported: Importuota
       input_id: ID
       input_url: URL
       last_name: Pavardė

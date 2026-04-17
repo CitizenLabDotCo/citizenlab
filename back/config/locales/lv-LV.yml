@@ -396,6 +396,7 @@ lv-LV:
       email: E-pasts
       first_name: Vārds(-i)
       image_url: Attēla URL
+      imported: Importēts
       input_id: ID
       input_url: URL
       last_name: Uzvārds

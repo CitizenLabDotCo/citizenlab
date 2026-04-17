@@ -434,6 +434,7 @@ de-AT:
       email: E-Mail
       first_name: Vorname(n)
       image_url: Bild-URL
+      imported: Importiert
       input_id: ID
       input_url: URL
       last_name: Familienname

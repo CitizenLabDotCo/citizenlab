@@ -395,6 +395,7 @@ nb-NO:
       email: E-post
       first_name: Fornavn(er)
       image_url: Bilde-URL
+      imported: Importert
       input_id: ID
       input_url: URL
       last_name: Etternavn

@@ -395,6 +395,7 @@ en-CA:
       email: Email
       first_name: First name(s)
       image_url: Image URL
+      imported: Imported
       input_id: ID
       input_url: URL
       last_name: Last name

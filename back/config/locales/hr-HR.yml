@@ -396,6 +396,7 @@ hr-HR:
       email: E-mail
       first_name: Imena)
       image_url: URL slike
+      imported: Uvezeno
       input_id: ID
       input_url: URL
       last_name: Prezime

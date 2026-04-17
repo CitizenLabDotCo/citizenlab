@@ -395,6 +395,7 @@ sv-SE:
       email: E-post
       first_name: Förnamn(en)
       image_url: URL för bild
+      imported: Importerad
       input_id: ID
       input_url: Webbadress
       last_name: Efternamn

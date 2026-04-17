@@ -395,6 +395,7 @@ tr-TR:
       email: E-posta
       first_name: İlk isim(ler)
       image_url: Resim URL'si
+      imported: İçe aktarıldı
       input_id: KIMLIK
       input_url: URL
       last_name: Soyadı

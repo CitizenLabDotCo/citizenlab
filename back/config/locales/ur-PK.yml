@@ -395,6 +395,7 @@ ur-PK:
       email: ای میل
       first_name: پہلا نام
       image_url: تصویری URL
+      imported: درآمد شدہ
       input_id: ID
       input_url: URL
       last_name: آخری نام

@@ -395,6 +395,7 @@ fr-FR:
       email: Adresse e-mail
       first_name: Prénom(s)
       image_url: URL de l'image
+      imported: Importé
       input_id: ID
       input_url: URL
       last_name: Nom

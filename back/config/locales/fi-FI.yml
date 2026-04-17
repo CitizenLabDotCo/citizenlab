@@ -395,6 +395,7 @@ fi-FI:
       email: Sähköposti
       first_name: Etunimet)
       image_url: Kuvan URL-osoite
+      imported: Tuotu
       input_id: ID
       input_url: URL-osoite
       last_name: Sukunimi

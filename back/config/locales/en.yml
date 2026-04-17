@@ -299,6 +299,7 @@ en:
       tags: 'Tags'
       title: 'Title'
       user_data: 'User data'
+      imported: 'Imported'
       votes_count: 'Votes'
   form_builder:
     default_select_field:
