@@ -187,11 +187,6 @@ const PDFExportModal = ({
             <Text as="li">
               <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
-            {formType === 'survey' && (
-              <Text as="li">
-                <FormattedMessage {...messages.logicNotInPDF} />
-              </Text>
-            )}
             <Text as="li" mb="0">
               <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
             </Text>
