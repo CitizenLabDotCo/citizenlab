@@ -63,15 +63,12 @@ en-GB:
       ask_follow_up_field:
         title: Tell us why
       attachments:
-        description: ''
         title: Other files
       author_id:
         title: Author
       body:
-        description: ''
         title: Description
       body_page:
-        description: ''
         title: Tell us more
       budget:
         title: Budget
@@ -79,30 +76,21 @@ en-GB:
         description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
         title: Co-sponsors
       details_page:
-        description: ''
         title: Details
       images:
-        description: ''
         title: Images
       location:
-        description: ''
         title: Location
       other_input_field:
         print_title: "If '%{other_option}', please specify"
         title: Type your answer
       proposed_budget:
-        description: ''
         title: Proposed Budget
       title:
-        description: ''
         title: Title
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tags
       uploads_page:
-        description: ''
         title: Images and attachments
     users:
       birthyear:
@@ -146,9 +134,9 @@ en-GB:
           title: What is your topic?
   errors:
     messages:
+      in_the_past: must be in the future
       max_must_be_greater_than_min_characters: The maximum must be greater than the minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: The maximum must be greater than or equal to the minimum.
-      sso_enforced_for_domain: You must sign in using single sign-on (SSO) for this email domain.
   events:
     council_meeting_description: |
       <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
@@ -229,6 +217,7 @@ en-GB:
     ca-ES: Catalan
     cy-GB: Welsh
     da-DK: Danish
+    de-AT: German (Austria)
     de-DE: German
     el-GR: Greek
     en: English

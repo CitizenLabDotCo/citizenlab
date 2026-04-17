@@ -1,4 +1,4 @@
-sv-SE:
+sv:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timmar.
@@ -63,15 +63,12 @@ sv-SE:
       ask_follow_up_field:
         title: Berätta för oss varför
       attachments:
-        description: ''
         title: Bilagor
       author_id:
         title: Deltagare
       body:
-        description: ''
         title: Beskrivning
       body_page:
-        description: ''
         title: Berätta mer för oss
       budget:
         title: Budget
@@ -79,30 +76,21 @@ sv-SE:
         description: Bjud in medsponsorer genom att fylla i fältet nedan. Den eller de inbjudna medsponsorerna kommer att få ett e-postmeddelande.
         title: Medförslagsställare
       details_page:
-        description: ''
         title: Detaljer
       images:
-        description: ''
         title: Bilder
       location:
-        description: ''
         title: Plats
       other_input_field:
         print_title: "Om '%{other_option}', vänligen specificera"
         title: Skriv in ditt svar
       proposed_budget:
-        description: ''
         title: Budgetförslag
       title:
-        description: ''
         title: Titel
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Topics
       uploads_page:
-        description: ''
         title: Bilder och bilagor
     users:
       birthyear:
@@ -146,9 +134,9 @@ sv-SE:
           title: Vad är ditt ämne?
   errors:
     messages:
+      in_the_past: måste ligga i framtiden
       max_must_be_greater_than_min_characters: Maxvärdet måste vara större än minvärdet.
       max_must_be_greater_than_or_equal_to_min_select_count: Maxvärdet måste vara större än eller lika med minimivärdet.
-      sso_enforced_for_domain: Du måste logga in med enkel inloggning (SSO) för den här e-postdomänen.
   events:
     council_meeting_description: |
       <p>Under det här rådsmötet presenteras medborgarinitiativen som fick 100 röster på mindre än 3 månader.</p><p>Rådet delar sedan med sig av sin syn på respektive idé.</p>
@@ -217,7 +205,7 @@ sv-SE:
     proposed_description: Den här idén har föreslagits till staden
     rejected: avvisad
     rejected_description: Den här idén har avvisats
-    threshold_reached: tröskelvärdet uppnått
+    threshold_reached: Väntar svar från nämnd
     threshold_reached_description: tröskelvärdet uppnått
     under_consideration: under övervägande
     under_consideration_description: Den här idén övervägs av staden
@@ -229,6 +217,7 @@ sv-SE:
     ca-ES: Katalanska
     cy-GB: Welsh
     da-DK: Dansk
+    de-AT: Tyska (Österrike)
     de-DE: Tysk
     el-GR: Grekiska
     en: Engelska

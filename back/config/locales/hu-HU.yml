@@ -1,4 +1,4 @@
-hu-HU:
+hu:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 óra.
@@ -63,15 +63,12 @@ hu-HU:
       ask_follow_up_field:
         title: Mondd el, miért
       attachments:
-        description: ''
         title: Mellékletek
       author_id:
         title: Szerző
       body:
-        description: ''
         title: Leírás
       body_page:
-        description: ''
         title: Mesélj többet
       budget:
         title: Költségvetés
@@ -79,30 +76,21 @@ hu-HU:
         description: Hívja meg társszponzorait az alábbi mezőn keresztül. A meghívott társszponzor(ok) e-mailt kapnak.
         title: Társszponzorok
       details_page:
-        description: ''
         title: Részletek
       images:
-        description: ''
         title: Képek
       location:
-        description: ''
         title: Elhelyezkedés
       other_input_field:
         print_title: "Ha '%{other_option}', kérjük, pontosítsa"
         title: Írja be a választ
       proposed_budget:
-        description: ''
         title: Költségvetési javaslat
       title:
-        description: ''
         title: Cím
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Címkék
       uploads_page:
-        description: ''
         title: Képek és mellékletek
     users:
       birthyear:
@@ -146,9 +134,9 @@ hu-HU:
           title: Mi a témád?
   errors:
     messages:
+      in_the_past: a jövőben kell lennie
       max_must_be_greater_than_min_characters: A maximumnak nagyobbnak kell lennie a minimumnál.
       max_must_be_greater_than_or_equal_to_min_select_count: A maximumnak nagyobbnak vagy egyenlőnek kell lennie a minimummal.
-      sso_enforced_for_domain: Ehhez az e-mail tartományhoz egyszeri bejelentkezéssel (SSO) kell bejelentkeznie.
   events:
     council_meeting_description: |
       <p>Ezen a tanácsülésen bemutatásra kerülnek azok az állampolgári kezdeményezések, amelyek kevesebb mint 3 hónap alatt 100 szavazatot szereztek.</p><p>A tanács ezután megosztja véleményét az egyes ötletekről.</p>
@@ -229,6 +217,7 @@ hu-HU:
     ca-ES: katalán
     cy-GB: walesi
     da-DK: dán
+    de-AT: Német (Ausztria)
     de-DE: német
     el-GR: görög
     en: angol

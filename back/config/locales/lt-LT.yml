@@ -1,4 +1,4 @@
-lt-LT:
+lt:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 valandos.
@@ -63,15 +63,12 @@ lt-LT:
       ask_follow_up_field:
         title: Papasakokite mums, kodėl
       attachments:
-        description: ''
         title: Priedai
       author_id:
         title: Autorius
       body:
-        description: ''
         title: Aprašymas
       body_page:
-        description: ''
         title: Papasakokite mums daugiau
       budget:
         title: Biudžetas
@@ -79,30 +76,21 @@ lt-LT:
         description: Kvieskite bendrus rėmėjus toliau esančiame laukelyje. Pakviestas (-i) bendras (-iai) rėmėjas (-ai) gaus el. laišką.
         title: Bendraautoriai
       details_page:
-        description: ''
         title: Išsami informacija
       images:
-        description: ''
         title: Vaizdai
       location:
-        description: ''
         title: Vieta
       other_input_field:
         print_title: Jei "%{other_option}", nurodykite
         title: Įveskite atsakymą
       proposed_budget:
-        description: ''
         title: Siūlomas biudžetas
       title:
-        description: ''
         title: Pavadinimas
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Žymos
       uploads_page:
-        description: ''
         title: Vaizdai ir priedai
     users:
       birthyear:
@@ -146,9 +134,9 @@ lt-LT:
           title: Kokia jūsų tema?
   errors:
     messages:
+      in_the_past: turi būti ateityje
       max_must_be_greater_than_min_characters: Didžiausia reikšmė turi būti didesnė už mažiausią.
       max_must_be_greater_than_or_equal_to_min_select_count: Didžiausia reikšmė turi būti didesnė arba lygi mažiausiai reikšmei.
-      sso_enforced_for_domain: Šiam el. pašto domenui privalote prisijungti naudodami vienkartinį prisijungimą (SSO).
   events:
     council_meeting_description: |
       <p>Šiame tarybos posėdyje bus pristatytos piliečių iniciatyvos, kurios per mažiau nei 3 mėnesius surinko 100 balsų.</p><p>Tada taryba pasidalys savo nuomone apie kiekvieną idėją.</p>
@@ -231,6 +219,7 @@ lt-LT:
     ca-ES: Katalonų kalba
     cy-GB: Velso
     da-DK: Danų
+    de-AT: Vokiečių (Austrija)
     de-DE: Vokiečių kalba
     el-GR: Graikų kalba
     en: Anglų kalba

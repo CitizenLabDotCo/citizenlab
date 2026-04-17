@@ -5,7 +5,6 @@ import {
   Title,
   Text,
   colors,
-  stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -14,7 +13,8 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
+import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
+import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
@@ -59,7 +59,9 @@ const ReviewSection = ({
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
-    useApproveOfflineIdeas();
+    useApproveImportedIdeas();
+  const { mutate: deleteAllIdeas, isLoading: isDeleting } =
+    useDeleteAllDraftImportedIdeas();
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
@@ -101,6 +103,15 @@ const ReviewSection = ({
     });
   };
 
+  const handleDeleteAll = () => {
+    deleteAllIdeas(phaseId, {
+      onSuccess: () => {
+        setIdeaId(null);
+        refetchIdeas();
+      },
+    });
+  };
+
   return (
     <Box
       mt="40px"
@@ -123,49 +134,51 @@ const ReviewSection = ({
         </Title>
       </Box>
 
-      <Box
-        px="25px"
-        borderBottom={`5px ${colors.grey200} solid`}
-        display="flex"
-      >
-        <Box w="100%" display="flex" alignItems="center">
-          {approvals.not_approved === 0 ? (
-            <>
-              <Box px="15px" py="10px">
-                <ButtonWithLink
-                  bgColor={colors.primary}
-                  icon="check"
-                  processing={isApproving}
-                  disabled={isApproving || importing}
-                  onClick={handleApproveAll}
-                >
-                  <FormattedMessage {...messages.approveAllInputs} />
-                </ButtonWithLink>
-              </Box>
-              <Box>
-                <Text>
-                  <FormattedMessage
-                    {...messages.inputsImported}
-                    values={{ numIdeas }}
-                  />
-                </Text>
-              </Box>
-            </>
-          ) : (
-            <Error
-              text={formatMessage(messages.inputsNotApproved, {
-                numNotApproved: approvals.not_approved,
-              })}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
-            />
-          )}
+      <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        <Box display="flex">
+          <Box w="100%" display="flex" alignItems="center">
+            <Box pl="15px" py="10px">
+              <ButtonWithLink
+                bgColor={colors.primary}
+                icon="check"
+                processing={isApproving}
+                disabled={isApproving || isDeleting || importing}
+                onClick={handleApproveAll}
+              >
+                <FormattedMessage
+                  {...messages.approveAllInputs}
+                  values={{ numIdeas }}
+                />
+              </ButtonWithLink>
+            </Box>
+            <Box px="12px" py="10px">
+              <ButtonWithLink
+                buttonStyle="admin-dark-outlined"
+                icon="delete"
+                processing={isDeleting}
+                disabled={isApproving || isDeleting || importing}
+                onClick={handleDeleteAll}
+              >
+                <FormattedMessage {...messages.removeAllInputs} />
+              </ButtonWithLink>
+            </Box>
+          </Box>
         </Box>
+        {approvals.not_approved > 0 && (
+          <Error
+            text={formatMessage(messages.inputsNotApproved, {
+              numNotApproved: approvals.not_approved,
+            })}
+            marginTop="0px"
+            showBackground={false}
+            showIcon={true}
+          />
+        )}
       </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
+        flex="1"
+        minHeight="0"
         display="flex"
         px="40px"
         justifyContent="space-between"

@@ -28,7 +28,7 @@ resource 'Users' do
       parameter :group, 'Filter by group_id', required: false
       parameter :project, 'Filter by users who participated in the project (by project id)', required: false
       parameter :project_reviewer, 'When true, return only project reviewers. When false, exclude project reviewers.', required: false
-      parameter :can_admin, 'Return only admins', required: false
+      parameter :admins_only, 'Return only admins', required: false
       parameter :can_moderate, 'Return only admins and moderators', required: false
 
       parameter :can_moderate_project, <<~DESC, required: false
@@ -38,8 +38,7 @@ resource 'Users' do
       DESC
 
       parameter :is_not_project_moderator, <<~DESC, required: false
-        Users who are not project moderators of project, nor folder moderator of folder containing project (by project
-        id), OR Users who do not have project moderator role (if no project ID provided).
+        Users who are not project moderators of project, OR Users who do not have project moderator role (if no project ID provided).
       DESC
 
       parameter :is_not_folder_moderator, <<~DESC, required: false
@@ -416,7 +415,6 @@ resource 'Users' do
     context 'when admin' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
-        %w[Bednar Cole Hagenes MacGyver Oberbrunner].map { |l| create(:user, last_name: l) }
       end
 
       get 'web_api/v1/users' do
@@ -430,11 +428,13 @@ resource 'Users' do
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
-        parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
+        parameter :admins_only, 'Return only admins', required: false
         parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
-        example_request 'List all users' do
+        example 'List all users' do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
+          do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
@@ -451,6 +451,7 @@ resource 'Users' do
         end
 
         example 'Get all users on the second page with fixed page size' do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           do_request({ 'page[number]' => 2, 'page[size]' => 2 })
           expect(status).to eq 200
           json_response = json_parse(response_body)
@@ -482,6 +483,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by last_name' do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           do_request sort: 'last_name'
 
           assert_status 200
@@ -492,6 +494,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by last_active_at' do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           User.all.each_with_index do |user, i|
             user.update!(last_active_at: Time.now - i.days)
           end
@@ -506,6 +509,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by last_active_at lists nil values first', document: false do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           User.all.each_with_index do |user, i|
             user.update!(last_active_at: Time.now - i.days)
           end
@@ -522,6 +526,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by -last_active_at' do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           User.all.each_with_index do |user, i|
             user.update!(last_active_at: Time.now - i.days)
           end
@@ -536,6 +541,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by -last_active_at lists nil values last', document: false do
+          %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
           User.all.each_with_index do |user, i|
             user.update!(last_active_at: Time.now - i.days)
           end
@@ -767,129 +773,188 @@ resource 'Users' do
           end
         end
 
-        describe 'Not moderator filters' do
-          before do
-            @user                       = create(:user)
-            @admin                      = create(:admin)
-            @project                    = create(:project)
-            @project_folder             = create(:project_folder, projects: [@project])
-            @project_moderator          = create(:project_moderator, projects: [@project])
-            @moderator_of_other_project = create(:project_moderator, projects: [create(:project)])
-            @project_folder_moderator   = create(:project_folder_moderator, project_folders: [@project_folder])
-            @moderator_of_other_folder  = create(:project_folder_moderator, project_folders: [create(:project_folder)])
-          end
+        describe 'Filters' do
+          let!(:space_a) { create(:space) }
+          let!(:project_a) { create(:project, space: space_a) }
+          let!(:folder_a) { create(:project_folder, projects: [project_a], space: space_a) }
 
-          example 'List only users who cannot moderate a specific project' do
-            do_request is_not_project_moderator: @project.id
+          let!(:space_b) { create(:space) }
+
+          let!(:project_b) { create(:project, space: space_b) }
+          let!(:folder_b) { create(:project_folder, projects: [project_b], space: space_b) }
+
+          let!(:admin) { create(:admin) }
+          let!(:admin_reviewer) { create(:admin, roles: [{ 'type' => 'admin', 'project_reviewer' => true }]) }
+          let!(:space_moderator_a) { create(:space_moderator, spaces: [space_a]) }
+          let!(:space_moderator_b) { create(:space_moderator) } # For random space
+          let!(:folder_moderator_a) { create(:project_folder_moderator, project_folders: [folder_a]) }
+          let!(:folder_moderator_b) { create(:project_folder_moderator) } # For random folder
+          let!(:project_moderator_a) { create(:project_moderator, projects: [project_a]) }
+          let!(:project_moderator_b) { create(:project_moderator) } # For random project
+          let!(:normal_user) { create(:user) }
+
+          example 'List only users who can moderate a project' do
+            do_request can_moderate_project: project_a.id
             expect(status).to eq 200
 
             user_ids = json_parse(response_body)[:data].pluck(:id)
-            expect(user_ids).to include(@user.id, @moderator_of_other_project.id, @moderator_of_other_folder.id)
-            expect(user_ids).not_to include(@project_moderator.id, @project_folder_moderator.id)
-          end
 
-          example 'List only users who cannot moderate a specific folder' do
-            do_request is_not_folder_moderator: @project_folder.id
-            expect(status).to eq 200
-
-            user_ids = json_parse(response_body)[:data].pluck(:id)
-            expect(user_ids).to include(
-              @user.id, @project_moderator.id, @moderator_of_other_project.id, @moderator_of_other_folder.id
+            expect(user_ids).to contain_exactly(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_a.id,
+              folder_moderator_a.id,
+              project_moderator_a.id
             )
-            expect(user_ids).not_to include(@project_folder_moderator.id)
           end
-        end
 
-        example 'List all users who can moderate a project' do
-          p = create(:project)
-          a = create(:admin)
-          m1 = create(:project_moderator, projects: [p])
+          example 'List only users who can moderate anything' do
+            do_request can_moderate: true
+            expect(status).to eq 200
 
-          create(:project_moderator)
-          create(:user)
-          create(:idea, project: p) # a participant, just in case
+            user_ids = json_parse(response_body)[:data].pluck(:id)
 
-          do_request(can_moderate_project: p.id)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, @user.id)
-        end
+            expect(user_ids).to contain_exactly(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_a.id,
+              space_moderator_b.id,
+              folder_moderator_a.id,
+              folder_moderator_b.id,
+              project_moderator_a.id,
+              project_moderator_b.id
+            )
+          end
 
-        example 'List all users who can moderate' do
-          p = create(:project)
-          a = create(:admin)
-          m1 = create(:project_moderator, projects: [p])
-          m2 = create(:project_moderator)
-          create(:user)
+          example 'List only project moderators' do
+            do_request project_moderators_only: true
+            expect(status).to eq 200
 
-          do_request(can_moderate: true)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, @user.id)
-        end
+            user_ids = json_parse(response_body)[:data].pluck(:id)
 
-        example 'List all moderators who are not admins' do
-          p = create(:project)
-          m1 = create(:project_moderator, projects: [p])
-          m2 = create(:project_moderator)
-          f = create(:project_folder_moderator, project_folders: [create(:project_folder)])
-          create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: p.id }])
-          create(:user)
+            expect(user_ids).to contain_exactly(project_moderator_a.id, project_moderator_b.id)
+          end
 
-          do_request(can_moderate: true, can_admin: false)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(m1.id, m2.id, f.id)
-        end
+          example 'List only users who are not project moderators of a specific project' do
+            do_request is_not_project_moderator: project_a.id
+            expect(status).to eq 200
 
-        example 'List all admins' do
-          p = create(:project)
-          a = create(:admin)
-          create(:user)
-          create(:project_moderator, projects: [p])
-          create(:project_moderator)
+            user_ids = json_parse(response_body)[:data].pluck(:id)
 
-          do_request(can_admin: true)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, @user.id)
-        end
+            expect(user_ids).not_to include(project_moderator_a.id)
+            expect(user_ids).to include(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_a.id,
+              space_moderator_b.id,
+              folder_moderator_a.id,
+              folder_moderator_b.id,
+              project_moderator_b.id,
+              normal_user.id
+            )
+          end
 
-        example 'List all project reviewers' do
-          create(:user)
-          create(:admin)
-          project_reviewer = create(:admin, :project_reviewer)
+          example 'List only users who are folder moderators' do
+            do_request folder_moderators_only: true
+            expect(status).to eq 200
 
-          do_request(project_reviewer: true)
+            user_ids = json_parse(response_body)[:data].pluck(:id)
 
-          assert_status 200
-          expect(response_ids).to contain_exactly(project_reviewer.id)
-        end
+            expect(user_ids).to contain_exactly(folder_moderator_a.id, folder_moderator_b.id)
+          end
 
-        example 'List only project moderators' do
-          p1 = create(:project)
-          p2 = create(:project)
-          create(:admin)
-          create(:user)
-          pm1 = create(:project_moderator, projects: [p1, p2])
-          pm2 = create(:project_moderator, projects: [p1])
-          f = create(:project_folder)
-          create(:project_folder_moderator, project_folders: [f])
+          example 'List only users who are not folder moderators of a specific folder' do
+            do_request is_not_folder_moderator: folder_a.id
+            expect(status).to eq 200
 
-          do_request(project_moderators_only: true)
-          assert_status 200
-          expect(response_ids).to contain_exactly(pm1.id, pm2.id)
-        end
+            user_ids = json_parse(response_body)[:data].pluck(:id)
 
-        example 'List only folder moderators' do
-          f1 = create(:project_folder)
-          f2 = create(:project_folder)
-          create(:admin)
-          create(:user)
-          fm1 = create(:project_folder_moderator, project_folders: [f1, f2])
-          fm2 = create(:project_folder_moderator, project_folders: [f1])
-          p = create(:project)
-          create(:project_moderator, projects: [p])
+            expect(user_ids).not_to include(folder_moderator_a.id)
+            expect(user_ids).to include(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_a.id,
+              space_moderator_b.id,
+              folder_moderator_b.id,
+              project_moderator_a.id,
+              project_moderator_b.id,
+              normal_user.id
+            )
+          end
 
-          do_request(folder_moderators_only: true)
-          assert_status 200
-          expect(response_ids).to contain_exactly(fm1.id, fm2.id)
+          example 'List only space moderators' do
+            do_request space_moderators_only: true
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+
+            expect(user_ids).to contain_exactly(space_moderator_a.id, space_moderator_b.id)
+          end
+
+          example 'List only users who are not space moderators of a specific space' do
+            do_request is_not_space_moderator: space_a.id
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+
+            expect(user_ids).not_to include(space_moderator_a.id)
+            expect(user_ids).to include(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_b.id,
+              folder_moderator_a.id,
+              folder_moderator_b.id,
+              project_moderator_a.id,
+              project_moderator_b.id,
+              normal_user.id
+            )
+          end
+
+          example 'List only admins' do
+            do_request admins_only: true
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+
+            expect(user_ids).to contain_exactly(@user.id, admin.id, admin_reviewer.id)
+          end
+
+          example 'List only project reviewers' do
+            do_request project_reviewer: true
+            expect(status).to eq 200
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+
+            expect(user_ids).to contain_exactly(admin_reviewer.id)
+          end
+
+          example 'List only users who do not have citizenlab or Govocal email' do
+            user_cl = create(:user, email: 'user@citizenlab.co')
+            user_gv = create(:user, email: 'user@govocal.com')
+
+            do_request not_citizenlab_member: true
+
+            user_ids = json_parse(response_body)[:data].pluck(:id)
+
+            expect(user_ids).not_to include(user_cl.id, user_gv.id)
+            expect(user_ids).to contain_exactly(
+              @user.id,
+              admin.id,
+              admin_reviewer.id,
+              space_moderator_a.id,
+              space_moderator_b.id,
+              folder_moderator_a.id,
+              folder_moderator_b.id,
+              project_moderator_a.id,
+              project_moderator_b.id,
+              normal_user.id
+            )
+          end
         end
       end
 
@@ -910,6 +975,26 @@ resource 'Users' do
           attributes = response_data[:attributes]
           expect(attributes[:admins_number]).to eq @admins.size
           expect(attributes[:moderators_number]).to eq @moderators.size
+        end
+      end
+
+      get 'web_api/v1/users/billed_admins' do
+        example 'Get list of admins that are billed' do
+          create(:super_admin) # super admin are not included in admins
+          @admins = [@user, *create_list(:admin, 3)]
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to match_array(@admins.map(&:id))
+        end
+      end
+
+      get 'web_api/v1/users/billed_moderators' do
+        example 'Get list of moderators that are billed' do
+          create(:super_admin) # super admin are not included in moderators
+          @moderators = create_list(:project_moderator, 3)
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to match_array(@moderators.map(&:id))
         end
       end
 
@@ -1350,6 +1435,19 @@ resource 'Users' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
+        end
+      end
+
+      get 'web_api/v1/users/check_if_exceeds_seats' do
+        let(:user_id) { create(:user).id }
+        let(:seat_type) { 'moderator' }
+
+        example 'Check if user exceeds seat limits' do
+          do_request(user_id:, seat_type:)
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :value)).to be(false)
         end
       end
     end

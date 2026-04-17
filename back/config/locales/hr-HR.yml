@@ -1,4 +1,4 @@
-hr-HR:
+hr:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 sata.
@@ -63,15 +63,12 @@ hr-HR:
       ask_follow_up_field:
         title: Reci nam zašto
       attachments:
-        description: ''
         title: Privici
       author_id:
         title: Autor
       body:
-        description: ''
         title: Opis
       body_page:
-        description: ''
         title: Recite nam više
       budget:
         title: Proračun
@@ -79,30 +76,21 @@ hr-HR:
         description: Pozovite susponzore putem donjeg polja. Pozvani susponzor(i) primit će e-poruku.
         title: Supokrovitelji
       details_page:
-        description: ''
         title: pojedinosti
       images:
-        description: ''
         title: Slike
       location:
-        description: ''
         title: Lokacija
       other_input_field:
         print_title: "Ako je '%{other_option}', molimo navedite"
         title: Upišite svoj odgovor
       proposed_budget:
-        description: ''
         title: Predloženi proračun
       title:
-        description: ''
         title: Naslov
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Oznake
       uploads_page:
-        description: ''
         title: Slike i prilozi
     users:
       birthyear:
@@ -146,9 +134,9 @@ hr-HR:
           title: Koja je tvoja tema?
   errors:
     messages:
+      in_the_past: mora biti u budućnosti
       max_must_be_greater_than_min_characters: Maksimalna vrijednost mora biti veća od minimalne.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimalna vrijednost mora biti veća ili jednaka minimalnoj vrijednosti.
-      sso_enforced_for_domain: Morate se prijaviti putem sustava jednokratne prijave (SSO) za ovu domenu e-pošte.
   events:
     council_meeting_description: |
       <p>Tijekom ovog sastanka vijeća bit će predstavljene one inicijative građana koje su dobile 100 glasova u manje od 3 mjeseca.</p><p>Vijeće će zatim podijeliti svoje mišljenje o svakoj ideji.</p>
@@ -230,6 +218,7 @@ hr-HR:
     ca-ES: katalonski
     cy-GB: velški
     da-DK: danski
+    de-AT: Njemački (Austrija)
     de-DE: njemački
     el-GR: grčki
     en: Engleski

@@ -63,15 +63,12 @@ fr-BE:
       ask_follow_up_field:
         title: Dites-nous pourquoi
       attachments:
-        description: ''
         title: Pièces jointes
       author_id:
         title: Auteur
       body:
-        description: ''
         title: Description complète
       body_page:
-        description: ''
         title: Dites-nous en plus
       budget:
         title: Budget
@@ -79,30 +76,21 @@ fr-BE:
         description: Invitez des soutiens via le champ ci-dessous. Les personnes invitées recevront un e-mail.
         title: Coparrainants
       details_page:
-        description: ''
         title: Détails
       images:
-        description: ''
         title: Images
       location:
-        description: ''
         title: Adresse
       other_input_field:
         print_title: Si "%{other_option}", veuillez préciser
         title: Saisissez votre réponse
       proposed_budget:
-        description: ''
         title: Proposition de budget
       title:
-        description: ''
         title: Titre
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Étiquettes
       uploads_page:
-        description: ''
         title: Images et pièces jointes
     users:
       birthyear:
@@ -146,9 +134,9 @@ fr-BE:
           title: Quel est votre thème ?
   errors:
     messages:
+      in_the_past: doit être dans le futur
       max_must_be_greater_than_min_characters: Le maximum doit être supérieur au minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Le maximum doit être supérieur ou égal au minimum.
-      sso_enforced_for_domain: Vous devez vous connecter via l'authentification unique (SSO) pour ce domaine de messagerie.
   events:
     council_meeting_description: |
       <p>Durant le conseil communal, les citoyens qui auront obtenu 100 votes en mois de 3 mois seront représenté.</p><p>Le conseil évaluera ensuite, chaque idée individuellement.</p>
@@ -229,6 +217,7 @@ fr-BE:
     ca-ES: Catalan
     cy-GB: Gallois
     da-DK: Danois
+    de-AT: Allemand (Autriche)
     de-DE: Allemand
     el-GR: Grec
     en: Anglais

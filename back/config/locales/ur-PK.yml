@@ -1,4 +1,4 @@
-ur-PK:
+ur:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 گھنٹے
@@ -63,15 +63,12 @@ ur-PK:
       ask_follow_up_field:
         title: ہمیں بتائیں کیوں؟
       attachments:
-        description: ''
         title: منسلکات
       author_id:
         title: مصنف
       body:
-        description: ''
         title: تفصیل
       body_page:
-        description: ''
         title: ہمیں مزید بتائیں
       budget:
         title: بجٹ
@@ -79,30 +76,21 @@ ur-PK:
         description: ذیل میں فیلڈ کے ذریعے شریک سپانسرز کو مدعو کریں۔ مدعو شریک کفیل (زبانیں) ایک ای میل موصول کریں گے۔
         title: شریک سپانسرز
       details_page:
-        description: ''
         title: تفصیلات
       images:
-        description: ''
         title: امیجز
       location:
-        description: ''
         title: مقام
       other_input_field:
         print_title: "اگر '%{other_option}'، تو براہ کرم وضاحت کریں۔"
         title: اپنا جواب ٹائپ کریں۔
       proposed_budget:
-        description: ''
         title: مجوزہ بجٹ
       title:
-        description: ''
         title: عنوان
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: ٹیگز
       uploads_page:
-        description: ''
         title: تصاویر اور منسلکات
     users:
       birthyear:
@@ -146,9 +134,9 @@ ur-PK:
           title: آپ کا موضوع کیا ہے؟
   errors:
     messages:
+      in_the_past: مستقبل میں ہونا چاہئے
       max_must_be_greater_than_min_characters: زیادہ سے زیادہ کم از کم سے زیادہ ہونا چاہیے۔
       max_must_be_greater_than_or_equal_to_min_select_count: زیادہ سے زیادہ کم سے کم سے زیادہ یا اس کے برابر ہونا چاہیے۔
-      sso_enforced_for_domain: اس ای میل ڈومین کے لیے آپ کو سنگل سائن آن (SSO) کے ذریعے سائن ان کرنا ہوگا۔
   events:
     council_meeting_description: |
       <p>اس کونسل کے اجلاس کے دوران، وہ شہری اقدامات پیش کیے جائیں گے جنہوں نے 3 ماہ سے بھی کم عرصے میں 100 ووٹ حاصل کیے تھے۔</p><p>اس کے بعد کونسل ہر آئیڈیا پر اپنا نظریہ بتائے گی۔</p>
@@ -229,6 +217,7 @@ ur-PK:
     ca-ES: کاتالان
     cy-GB: ویلش
     da-DK: ڈینش
+    de-AT: جرمن (آسٹریا)
     de-DE: جرمن
     el-GR: یونانی
     en: انگریزی

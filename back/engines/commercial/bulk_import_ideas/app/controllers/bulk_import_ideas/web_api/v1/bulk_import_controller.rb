@@ -3,7 +3,7 @@
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     skip_before_action :authenticate_user, only: %i[export_form]
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all delete_all]
 
     CONSTANTIZER = {
       'idea' => {
@@ -64,7 +64,18 @@ module BulkImportIdeas
       approved = 0
       not_approved = 0
       side_fx_idea_service = SideFxIdeaService.new
+      custom_form = @phase.pmethod.custom_form
+      required_custom_fields = IdeaCustomFieldsService.new(custom_form).fields_to_validate_on_import
+
       records.each do |record|
+        # Validate required custom fields have values before approving
+        missing = required_custom_fields.any? { |f| record.custom_field_values[f.key].blank? }
+        if missing
+          not_approved += 1
+          next
+        end
+
+        # Built-in field validation is handled by model validations (which run when not draft)
         if record.update(publication_status: 'published')
           approved += 1
           side_fx_idea_service.after_import(record, current_user)
@@ -74,6 +85,14 @@ module BulkImportIdeas
       end
 
       render json: raw_json({ approved:, not_approved: })
+    end
+
+    def delete_all
+      send_not_found unless supported_model?
+
+      imported_draft_records.destroy_all
+
+      head :ok
     end
 
     def draft_records
@@ -111,7 +130,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data])
+        .permit(%i[file locale personal_data pages_per_form])
     end
 
     def authorize_bulk_import_ideas
@@ -131,10 +150,12 @@ module BulkImportIdeas
     def file_parser_service
       locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
+      pages_per_form = params[:import] ? bulk_create_params[:pages_per_form]&.to_i : nil
+      pages_per_form = nil if pages_per_form&.zero?
       phase_id = params[:id]
 
       service = find_class(:parser_class)
-      @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled)
+      @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled, pages_per_form: pages_per_form)
     end
 
     def form_exporter_service

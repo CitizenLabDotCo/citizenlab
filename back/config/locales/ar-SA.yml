@@ -1,4 +1,4 @@
-ar-SA:
+ar:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ساعة.
@@ -63,15 +63,12 @@ ar-SA:
       ask_follow_up_field:
         title: أخبرنا لماذا
       attachments:
-        description: ''
         title: المُرفقات
       author_id:
         title: المؤلف
       body:
-        description: ''
         title: الوصف
       body_page:
-        description: ''
         title: أخبرنا المزيد
       budget:
         title: الميزانية
@@ -79,30 +76,21 @@ ar-SA:
         description: قم بدعوة الرعاة المشاركين من خلال الحقل أدناه. سيتلقى الرعاة المشاركون المدعوون رسالة بريد إلكتروني.
         title: الرعاة المشاركون
       details_page:
-        description: ''
         title: تفاصيل
       images:
-        description: ''
         title: الصور
       location:
-        description: ''
         title: الموقع
       other_input_field:
         print_title: "إذا كان '%{other_option}'، يرجى التحديد"
         title: اكتب إجابتك
       proposed_budget:
-        description: ''
         title: الميزانية المُقترحة
       title:
-        description: ''
         title: العنوان
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: الموضوعات
       uploads_page:
-        description: ''
         title: الصور والمرفقات
     users:
       birthyear:
@@ -146,9 +134,9 @@ ar-SA:
           title: ما هو موضوعك؟
   errors:
     messages:
+      in_the_past: يجب أن يكون ذلك في المستقبل
       max_must_be_greater_than_min_characters: يجب أن يكون الحد الأقصى أكبر من الحد الأدنى.
       max_must_be_greater_than_or_equal_to_min_select_count: يجب أن يكون الحد الأقصى أكبر من أو يساوي الحد الأدنى.
-      sso_enforced_for_domain: يجب عليك تسجيل الدخول باستخدام خاصية تسجيل الدخول الموحد (SSO) لنطاق البريد الإلكتروني هذا.
   events:
     council_meeting_description: |
       <p> في اجتماع المجلس هذا، سيتم تقديم مبادرات المواطنين التي حصلت على 100 صوت في أقل من 3 أشهر. </p><p>سيتبادل أعضاء المجلس وجهات النظر حول كل فكرة.</p>
@@ -233,6 +221,7 @@ ar-SA:
     ca-ES: الكاتالونية
     cy-GB: تهرب من دفع الرهان
     da-DK: دانماركي
+    de-AT: الألمانية (النمسا)
     de-DE: ألمانية
     el-GR: اليونانية
     en: إنجليزي

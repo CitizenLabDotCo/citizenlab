@@ -1,4 +1,4 @@
-cy-GB:
+cy:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 awr.
@@ -6,13 +6,13 @@ cy-GB:
       confirm_email_address: Cadarnhewch eich cyfeiriad e-bost
       copy_paste_the_link_below: Copïwch a gludwch y cod isod i'r ffurflen gofrestru ar y platfform.
       did_you_receive_this_email_in_error: A wnaethoch chi dderbyn yr e-bost hwn mewn camgymeriad? <a href="%{link}">Rhowch wybod i ni</a>.
-      expire_code: 'Bydd y cod hwn yn dod i ben yn '
+      expire_code: 'Bydd y côd hwn yn dod i ben mewn '
       header: Eich Cod Cadarnhau
       header_message: Helo %{firstName}!
-      ignore_email: Os na wnaethoch ofyn am god, gallwch anwybyddu'r e-bost hwn yn ddiogel.
+      ignore_email: Os na wnaethoch ofyn am gôd, gallwch anwybyddu'r e-bost hwn yn ddiogel.
       preheader: Cadarnhewch eich cyfeiriad e-bost ar gyfer %{organizationName}
       subject: Cadarnhewch eich cyfeiriad e-bost ar gyfer llwyfan cyfranogiad %{organizationName}
-      thanks_for_signing_up1: 'Diolch am gymryd rhan. Rhowch y cod cadarnhau hwn yn y ffenestr ar lwyfan %{organizationName}:'
+      thanks_for_signing_up1: 'Diolch am gymryd rhan. Rhowch y côd cadarnhau hwn yn y ffenestr ar lwyfan cyfranogi %{organizationName}:'
       the_link_is_valid_for: "Mae'r ddolen hon yn ddilys am 24 awr. Os yw'r ddolen wedi dod i ben, gallwch <a href=\"%{link}\">ofyn am god newydd</a>."
   custom_field_options:
     domicile:
@@ -63,15 +63,12 @@ cy-GB:
       ask_follow_up_field:
         title: Dywedwch wrthym pam
       attachments:
-        description: ''
         title: Ymlyniadau
       author_id:
         title: Awdur
       body:
-        description: ''
         title: Disgrifiad
       body_page:
-        description: ''
         title: Dywedwch fwy wrthym
       budget:
         title: Cyllideb
@@ -79,30 +76,21 @@ cy-GB:
         description: Gwahoddwch gyd-noddwyr drwy'r maes isod. Bydd y cyd-noddwyr gwadd yn derbyn e-bost.
         title: Cyd-noddwyr
       details_page:
-        description: ''
         title: Manylion
       images:
-        description: ''
         title: Delweddau
       location:
-        description: ''
         title: Lleoliad
       other_input_field:
         print_title: "Os '%{other_option}', nodwch"
         title: Teipiwch eich ateb
       proposed_budget:
-        description: ''
         title: Cyllideb Arfaethedig
       title:
-        description: ''
         title: Teitl
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tagiau
       uploads_page:
-        description: ''
         title: Delweddau ac atodiadau
     users:
       birthyear:
@@ -146,9 +134,9 @@ cy-GB:
           title: Beth yw eich pwnc?
   errors:
     messages:
+      in_the_past: rhaid bod yn y dyfodol
       max_must_be_greater_than_min_characters: "Rhaid i'r uchafswm fod yn fwy na'r isafswm."
       max_must_be_greater_than_or_equal_to_min_select_count: "Rhaid i'r uchafswm fod yn fwy na neu'n hafal i'r isafswm."
-      sso_enforced_for_domain: Rhaid i chi fewngofnodi gan ddefnyddio mewngofnodi sengl (SSO) ar gyfer y parth e-bost hwn.
   events:
     council_meeting_description: |
       <p>Yn ystod cyfarfod y cyngor hwn, bydd y mentrau dinasyddion hynny a enillodd 100 o bleidleisiau mewn llai na 3 mis, yn cael eu cyflwyno.</p><p>Bydd y cyngor wedyn yn rhannu eu barn ar bob syniad.</p>
@@ -233,6 +221,7 @@ cy-GB:
     ca-ES: Catalaneg
     cy-GB: Cymraeg
     da-DK: Daneg
+    de-AT: Almaeneg (Awstria)
     de-DE: Almaeneg
     el-GR: Groeg
     en: Saesneg

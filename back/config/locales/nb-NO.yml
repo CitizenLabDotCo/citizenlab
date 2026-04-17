@@ -1,4 +1,4 @@
-nb-NO:
+nb:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timer.
@@ -63,15 +63,12 @@ nb-NO:
       ask_follow_up_field:
         title: Fortell oss hvorfor
       attachments:
-        description: ''
         title: Vedlegg
       author_id:
         title: Forfatter
       body:
-        description: ''
         title: Beskrivelse
       body_page:
-        description: ''
         title: Fortell oss mer
       budget:
         title: Budsjett
@@ -79,30 +76,21 @@ nb-NO:
         description: Inviter medsponsorer via feltet nedenfor. De inviterte medsponsorene vil motta en e-post.
         title: Medsponsorer
       details_page:
-        description: ''
         title: Detaljer
       images:
-        description: ''
         title: Bilder
       location:
-        description: ''
         title: Beliggenhet
       other_input_field:
         print_title: "Hvis '%{other_option}', vennligst spesifiser"
         title: Skriv inn svaret ditt
       proposed_budget:
-        description: ''
         title: Forslag til budsjett
       title:
-        description: ''
         title: Tittel
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tagger
       uploads_page:
-        description: ''
         title: Bilder og vedlegg
     users:
       birthyear:
@@ -146,9 +134,9 @@ nb-NO:
           title: Hva er temaet ditt?
   errors:
     messages:
+      in_the_past: må ligge i fremtiden
       max_must_be_greater_than_min_characters: Maksimum må være større enn minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum må være større enn eller lik minimum.
-      sso_enforced_for_domain: Du må logge inn med enkel pålogging (SSO) for dette e-postdomenet.
   events:
     council_meeting_description: |
       <p>Under dette rådsmøtet vil de innbyggerinitiativene som har fått 100 stemmer på mindre enn tre måneder, bli presentert.</p><p>Rådet vil deretter dele sitt syn på hver enkelt idé.</p>
@@ -229,6 +217,7 @@ nb-NO:
     ca-ES: Katalansk
     cy-GB: Walisisk
     da-DK: Dansk
+    de-AT: Tysk (Østerrike)
     de-DE: Tysk
     el-GR: Gresk
     en: Engelsk

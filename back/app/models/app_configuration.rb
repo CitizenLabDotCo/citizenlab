@@ -35,6 +35,7 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
+  after_save :update_time_zone, if: :timezone_changed?
 
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
@@ -115,6 +116,8 @@ class AppConfiguration < ApplicationRecord
 
     def timezone
       timezone_str = instance.settings.dig('core', 'timezone')
+      return nil unless timezone_str
+
       ActiveSupport::TimeZone[timezone_str] or raise KeyError, timezone_str
     end
   end
@@ -207,6 +210,17 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
+
+  def timezone_changed?
+    saved_change_to_settings? &&
+      settings.dig('core', 'timezone') != settings_before_last_save&.dig('core', 'timezone')
+  end
+
+  def update_time_zone
+    Time.zone = self.class.timezone # if nil, Time.zone is set to UTC.
+  rescue StandardError
+    Time.zone = ActiveSupport::TimeZone['UTC']
+  end
 
   def base_uri(development_uri)
     return development_uri if Rails.env.development?

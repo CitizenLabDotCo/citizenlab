@@ -1,4 +1,4 @@
-pl-PL:
+pl:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 godziny.
@@ -63,15 +63,12 @@ pl-PL:
       ask_follow_up_field:
         title: Powiedz nam dlaczego
       attachments:
-        description: ''
         title: Załączniki
       author_id:
         title: Autor
       body:
-        description: ''
         title: Opis
       body_page:
-        description: ''
         title: Powiedz nam więcej
       budget:
         title: Budżet
@@ -79,30 +76,21 @@ pl-PL:
         description: Zaproś współsponsorów za pomocą poniższego pola. Zaproszeni współsponsorzy otrzymają wiadomość e-mail.
         title: Współsponsorzy
       details_page:
-        description: ''
         title: Szczegóły
       images:
-        description: ''
         title: Zdjęcia
       location:
-        description: ''
         title: Lokalizacja
       other_input_field:
         print_title: Jeśli "%{other_option}", proszę określ
         title: Wpisz swoją odpowiedź
       proposed_budget:
-        description: ''
         title: Proponowany budżet
       title:
-        description: ''
         title: Tytuł
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tematy
       uploads_page:
-        description: ''
         title: Obrazy i załączniki
     users:
       birthyear:
@@ -146,9 +134,9 @@ pl-PL:
           title: Jaki jest twój temat?
   errors:
     messages:
+      in_the_past: musi być w przyszłości
       max_must_be_greater_than_min_characters: Maksimum musi być większe niż minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum musi być większe lub równe minimum.
-      sso_enforced_for_domain: Musisz zalogować się za pomocą logowania jednokrotnego (SSO) dla tej domeny e-mail.
   events:
     council_meeting_description: |
       <p>Podczas tego posiedzenia Rady zostaną przedstawione inicjatywy obywatelskie, które uzyskały 100 głosów w okresie krótszym niż 3 miesiące.</p><p>Rada wyrazi następnie swoje opinie o każdym z pomysłów.</p>
@@ -231,6 +219,7 @@ pl-PL:
     ca-ES: Kataloński
     cy-GB: Walijczyk
     da-DK: Duński
+    de-AT: Niemiecki (Austria)
     de-DE: Niemiecki
     el-GR: Grecki
     en: Angielski

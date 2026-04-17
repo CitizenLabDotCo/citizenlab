@@ -1,4 +1,4 @@
-lv-LV:
+lv:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 stundas.
@@ -63,15 +63,12 @@ lv-LV:
       ask_follow_up_field:
         title: Pastāstiet mums, kāpēc
       attachments:
-        description: ''
         title: Pielikumi
       author_id:
         title: Autors
       body:
-        description: ''
         title: Apraksts
       body_page:
-        description: ''
         title: Pastāstiet mums vairāk
       budget:
         title: Budžets
@@ -79,30 +76,21 @@ lv-LV:
         description: Uzaiciniet līdzfinansētājus, izmantojot tālāk norādīto lauku. Uzaicinātais(-ie) līdzsponsors(-i) saņems e-pastu.
         title: Līdzfinansētāji
       details_page:
-        description: ''
         title: Sīkāka informācija
       images:
-        description: ''
         title: Attēli
       location:
-        description: ''
         title: Atrašanās vieta
       other_input_field:
         print_title: Ja "%{other_option}", lūdzu, norādiet
         title: Ierakstiet savu atbildi
       proposed_budget:
-        description: ''
         title: Ierosinātais budžets
       title:
-        description: ''
         title: Nosaukums
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tagi
       uploads_page:
-        description: ''
         title: Attēli un pielikumi
     users:
       birthyear:
@@ -146,9 +134,9 @@ lv-LV:
           title: Kāda ir jūsu tēma?
   errors:
     messages:
+      in_the_past: jābūt nākotnē
       max_must_be_greater_than_min_characters: Maksimālajai vērtībai jābūt lielākai par minimālo.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimālajam lielumam jābūt lielākam vai vienādam ar minimālo lielumu.
-      sso_enforced_for_domain: Jums ir jāpiesakās, izmantojot vienoto pieteikšanos (SSO) šim e-pasta domēnam.
   events:
     council_meeting_description: |
       <p>Šajā padomes sēdē tiks prezentētas tās iedzīvotāju iniciatīvas, kas mazāk nekā 3 mēnešu laikā ieguvušas 100 balsis.</p><p>Pēc tam padomes pārstāvji paudīs savu viedokli par katru ideju.</p>
@@ -230,6 +218,7 @@ lv-LV:
     ca-ES: Kataloniski
     cy-GB: Velsiešu
     da-DK: Dānijas
+    de-AT: Vācu (Austrija)
     de-DE: Vācu
     el-GR: Grieķu
     en: Angļu valodā

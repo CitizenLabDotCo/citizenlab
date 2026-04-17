@@ -1,4 +1,4 @@
-el-GR:
+el:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ώρες.
@@ -63,15 +63,12 @@ el-GR:
       ask_follow_up_field:
         title: Πείτε μας γιατί
       attachments:
-        description: ''
         title: Συνημμένα αρχεία
       author_id:
         title: Συντάκτης
       body:
-        description: ''
         title: Περιγραφή
       body_page:
-        description: ''
         title: Πείτε μας περισσότερα
       budget:
         title: Προϋπολογισμός
@@ -79,30 +76,21 @@ el-GR:
         description: Προσκαλέστε συν-υποστηρικτές μέσω του παρακάτω πεδίου. Ο/οι προσκεκλημένος/οι συν-υποστηρικτής/ες θα λάβει/ουν ένα μήνυμα ηλεκτρονικού ταχυδρομείου.
         title: Συν-υποστηρικτές
       details_page:
-        description: ''
         title: Λεπτομέρειες
       images:
-        description: ''
         title: Εικόνες
       location:
-        description: ''
         title: Τοποθεσία
       other_input_field:
         print_title: Εάν "%{other_option}", διευκρινίστε
         title: Πληκτρολογήστε την απάντησή σας
       proposed_budget:
-        description: ''
         title: Προτεινόμενος προϋπολογισμός
       title:
-        description: ''
         title: Τίτλος
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Ετικέτες
       uploads_page:
-        description: ''
         title: Εικόνες και συνημμένα
     users:
       birthyear:
@@ -146,9 +134,9 @@ el-GR:
           title: Ποιο είναι το θέμα σας;
   errors:
     messages:
+      in_the_past: πρέπει να είναι στο μέλλον
       max_must_be_greater_than_min_characters: Το μέγιστο πρέπει να είναι μεγαλύτερο από το ελάχιστο.
       max_must_be_greater_than_or_equal_to_min_select_count: Το μέγιστο πρέπει να είναι μεγαλύτερο ή ίσο με το ελάχιστο.
-      sso_enforced_for_domain: Πρέπει να συνδεθείτε μέσω της ενιαίας σύνδεσης (SSO) για αυτόν τον τομέα email.
   events:
     council_meeting_description: |
       <p>Κατά τη διάρκεια αυτής της συνεδρίασης του Συμβουλίου, θα παρουσιαστούν οι πρωτοβουλίες των πολιτών που συγκέντρωσαν 100 ψήφους σε λιγότερο από 3 μήνες.</p><p>Στη συνέχεια, το συμβούλιο θα μοιραστεί την άποψή του για κάθε ιδέα.</p>
@@ -229,6 +217,7 @@ el-GR:
     ca-ES: Καταλανικά
     cy-GB: Ουαλικά
     da-DK: Δανικά
+    de-AT: Γερμανικά (Αυστρία)
     de-DE: Γερμανικά
     el-GR: Ελληνική
     en: Αγγλικά

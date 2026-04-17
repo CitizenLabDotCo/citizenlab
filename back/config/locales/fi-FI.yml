@@ -1,4 +1,4 @@
-fi-FI:
+fi:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 tuntia.
@@ -63,15 +63,12 @@ fi-FI:
       ask_follow_up_field:
         title: Kerro meille miksi
       attachments:
-        description: ''
         title: Liitteet
       author_id:
         title: Tekijä
       body:
-        description: ''
         title: Kuvaus
       body_page:
-        description: ''
         title: Kerro meille lisää
       budget:
         title: Budjetti
@@ -79,30 +76,21 @@ fi-FI:
         description: Kutsu sponsoreita alla olevan kentän kautta. Kutsutut tukisponsorit saavat sähköpostin.
         title: Yhteissponsorit
       details_page:
-        description: ''
         title: Yksityiskohdat
       images:
-        description: ''
         title: Kuvat
       location:
-        description: ''
         title: Sijainti
       other_input_field:
         print_title: "Jos '%{other_option}', tarkenna"
         title: Kirjoita vastauksesi
       proposed_budget:
-        description: ''
         title: Ehdotettu budjetti
       title:
-        description: ''
         title: Otsikko
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tunnisteet
       uploads_page:
-        description: ''
         title: Kuvat ja liitteet
     users:
       birthyear:
@@ -146,9 +134,9 @@ fi-FI:
           title: Mikä on aiheesi?
   errors:
     messages:
+      in_the_past: täytyy olla tulevaisuudessa
       max_must_be_greater_than_min_characters: Maksimin on oltava suurempi kuin minimin.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimin on oltava suurempi tai yhtä suuri kuin minimi.
-      sso_enforced_for_domain: Sinun on kirjauduttava kertakirjautumisella (SSO) tällä sähköpostitoimialueella.
   events:
     council_meeting_description: |
       <p>Tässä valtuuston kokouksessa esitellään alle 3 kuukaudessa 100 ääntä saaneet kansalaisaloitteet.</p><p>Neuvosto jakaa sitten näkemyksensä kustakin ideasta.</p>
@@ -229,6 +217,7 @@ fi-FI:
     ca-ES: katalaani
     cy-GB: Walesin
     da-DK: Tanskan kieli
+    de-AT: saksa (Itävalta)
     de-DE: Saksan kieli
     el-GR: kreikkalainen
     en: Englanti

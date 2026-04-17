@@ -164,6 +164,11 @@ export default defineMessages({
     defaultMessage:
       'The participation method you selected does not support this type of input. Please edit your selection and try again.',
   },
+  has_inputs: {
+    id: 'app.errors.has_inputs',
+    defaultMessage:
+      'You cannot change the participation method because this phase already has inputs. Please remove all inputs first.',
+  },
   slug_taken: {
     id: 'app.errors.slug_taken',
     defaultMessage:
@@ -300,6 +305,11 @@ export default defineMessages({
     id: 'app.errors.bulk_import_not_enough_pdf_pages',
     defaultMessage:
       'The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.',
+  },
+  bulk_import_pdf_pages_not_divisible: {
+    id: 'app.errors.bulk_import_pdf_pages_not_divisible',
+    defaultMessage:
+      'The total number of pages in the PDF must be evenly divisible by the specified number of pages per form.',
   },
   uncaught_error: {
     id: 'app.errors.uncaught_error',

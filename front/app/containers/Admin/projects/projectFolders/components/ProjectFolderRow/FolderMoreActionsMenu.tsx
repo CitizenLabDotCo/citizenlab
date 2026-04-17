@@ -10,8 +10,7 @@ import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationM
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -38,13 +37,14 @@ const FolderMoreActionsMenu = ({
   const { data: authUser } = useAuthUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  if (isNilOrError(authUser)) return null;
-  const userCanDeleteProject = isAdmin(authUser);
+  if (!authUser) return null;
+
+  const userCanDeleteFolder = isAdmin(authUser) || isSpaceModerator(authUser);
 
   const createActions = () => {
     const actions: IAction[] = [];
 
-    if (userCanDeleteProject) {
+    if (userCanDeleteFolder) {
       actions.push({
         handler: async () => {
           setShowDeleteModal(true);

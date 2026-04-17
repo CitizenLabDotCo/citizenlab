@@ -2,12 +2,13 @@
 
 module BulkImportIdeas::Parsers
   class IdeaRowMapper
-    def initialize(phase:, project:, locale:, personal_data_enabled:, strategy:)
+    def initialize(phase:, project:, locale:, personal_data_enabled:, strategy:, pages_per_form: nil)
       @phase = phase
       @project = project
       @locale = locale
       @personal_data_enabled = personal_data_enabled
       @strategy = strategy
+      @pages_per_form = pages_per_form
     end
 
     def ideas_to_idea_rows(ideas_array, file)
@@ -89,6 +90,8 @@ module BulkImportIdeas::Parsers
     private
 
     def idea_blank?(idea)
+      return true if idea.nil?
+
       idea.each_value do |value|
         return false if value.present?
       end

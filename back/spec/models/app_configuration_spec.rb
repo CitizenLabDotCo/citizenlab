@@ -40,4 +40,14 @@ RSpec.describe AppConfiguration do
       end
     end
   end
+
+  describe 'after_save timezone update' do
+    it 'updates Time.zone when the timezone setting changes' do
+      config = described_class.instance
+      config.settings['core']['timezone'] = 'America/New_York'
+
+      expect { config.save! }.to change(Time, :zone)
+        .to(Time.find_zone('America/New_York'))
+    end
+  end
 end

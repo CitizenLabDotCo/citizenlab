@@ -1,4 +1,4 @@
-lb-LU:
+lb:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 Stonnen.
@@ -63,15 +63,12 @@ lb-LU:
       ask_follow_up_field:
         title: Sot eis firwat
       attachments:
-        description: ''
         title: Annexen
       author_id:
         title: Auteur
       body:
-        description: ''
         title: Beschreiwung
       body_page:
-        description: ''
         title: Sot eis méi
       budget:
         title: Budget
@@ -79,30 +76,21 @@ lb-LU:
         description: Invitéiert Co-Sponsoren duerch d'Feld hei drënner. Den invitéierte Co-Sponsor (en) kritt eng E-Mail.
         title: Co-Sponsoren
       details_page:
-        description: ''
         title: Detailer
       images:
-        description: ''
         title: Biller
       location:
-        description: ''
         title: Standuert
       other_input_field:
         print_title: "Wann '%{other_option}', gitt w.e.g. un"
         title: Typ Är Äntwert
       proposed_budget:
-        description: ''
         title: Proposéierte Budget
       title:
-        description: ''
         title: Titel
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Sujeten
       uploads_page:
-        description: ''
         title: Biller an Uschlëss
     users:
       birthyear:
@@ -146,9 +134,9 @@ lb-LU:
           title: Wat ass däin Thema?
   errors:
     messages:
+      in_the_past: muss an der Zukunft sinn
       max_must_be_greater_than_min_characters: De Maximum muss méi grouss wéi de Minimum sinn.
       max_must_be_greater_than_or_equal_to_min_select_count: De Maximum muss méi grouss oder gläich dem Minimum sinn.
-      sso_enforced_for_domain: Dir musst Iech fir dës E-Mail-Domain iwwer Single Sign-on (SSO) umellen.
   events:
     council_meeting_description: |
       <p>Bei dëser Conseilssëtzung wäerten déi Biergerinitiativen dobäi sinn, déi 100 Stëmmen a manner wéi 3 Méint kruten. </p><p>De Conseil wäert da seng Usiichten zu all Iddi matdeelen.</p>
@@ -229,6 +217,7 @@ lb-LU:
     ca-ES: katalanesch
     cy-GB: Waliser
     da-DK: Dänesch
+    de-AT: Däitsch (Éisträich)
     de-DE: Däitsch
     el-GR: Griichesch
     en: Englesch

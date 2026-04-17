@@ -9,7 +9,7 @@ module PublicApi
       )
 
       if params[:deleted_at]
-        deleted_items = deleted_items.where(date_filter_where_clause('acted_at', params[:deleted_at]))
+        deleted_items = deleted_items.where(acted_at: parse_date_range(params[:deleted_at]))
       end
 
       list_items(deleted_items, V2::DeletedItemSerializer, root_key: :deleted_items)

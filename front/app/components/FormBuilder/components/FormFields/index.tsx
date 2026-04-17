@@ -21,6 +21,7 @@ import { getFieldNumbers } from '../utils';
 
 import { fieldAreaDNDType } from './constants';
 import { FormField } from './FormField';
+import { FieldArrayOperations } from './types';
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
@@ -31,6 +32,7 @@ interface FormFieldsProps {
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
   closeSettings: (triggerAutosave?: boolean) => void;
+  fieldArrayOperations: FieldArrayOperations;
 }
 
 const FormFields = ({
@@ -38,6 +40,7 @@ const FormFields = ({
   selectedFieldId,
   builderConfig,
   closeSettings,
+  fieldArrayOperations,
 }: FormFieldsProps) => {
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -85,6 +88,7 @@ const FormFields = ({
                   fieldNumbers={fieldNumbers}
                   closeSettings={closeSettings}
                   conflicts={conflictsByPage[grouping.groupElement.id]}
+                  fieldArrayOperations={fieldArrayOperations}
                 />
                 <Drop
                   key={grouping.id}
@@ -111,6 +115,7 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                                 fieldNumbers={fieldNumbers}
                                 closeSettings={closeSettings}
+                                fieldArrayOperations={fieldArrayOperations}
                               />
                             </Drag>
                           ) : (
@@ -139,6 +144,7 @@ const FormFields = ({
                 builderConfig={builderConfig}
                 fieldNumbers={fieldNumbers}
                 closeSettings={closeSettings}
+                fieldArrayOperations={fieldArrayOperations}
               />
             </Box>
           </>

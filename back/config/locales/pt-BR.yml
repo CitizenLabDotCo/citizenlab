@@ -1,4 +1,4 @@
-pt-BR:
+pt:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 horas.
@@ -63,15 +63,12 @@ pt-BR:
       ask_follow_up_field:
         title: Diga-nos por quê
       attachments:
-        description: ''
         title: Anexos
       author_id:
         title: Autor
       body:
-        description: ''
         title: Descrição
       body_page:
-        description: ''
         title: Conte-nos mais
       budget:
         title: Orçamento
@@ -79,30 +76,21 @@ pt-BR:
         description: Convide co-patrocinadores por meio do campo abaixo. Você receberá um e-mail do(s) copatrocinador(es) convidado(s).
         title: Co-patrocinadores
       details_page:
-        description: ''
         title: Detalhes
       images:
-        description: ''
         title: Imagens
       location:
-        description: ''
         title: Localização
       other_input_field:
         print_title: "Se for '%{other_option}', especifique"
         title: Digite sua resposta
       proposed_budget:
-        description: ''
         title: Orçamento proposto
       title:
-        description: ''
         title: Assunto
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Tópicos
       uploads_page:
-        description: ''
         title: Imagens e anexos
     users:
       birthyear:
@@ -146,9 +134,9 @@ pt-BR:
           title: Qual é o seu tópico?
   errors:
     messages:
+      in_the_past: deve estar no futuro
       max_must_be_greater_than_min_characters: O máximo deve ser maior que o mínimo.
       max_must_be_greater_than_or_equal_to_min_select_count: O máximo deve ser maior ou igual ao mínimo.
-      sso_enforced_for_domain: Você deve entrar usando o logon único (SSO) para este domínio de e-mail.
   events:
     council_meeting_description: |
       <p>Durante esta reunião do conselho, serão apresentadas as iniciativas cidadãs que obtiveram 100 votos em menos de 3 meses.</p>><p>O conselho partilhará então a sua opinião sobre cada ideia.</p>
@@ -229,6 +217,7 @@ pt-BR:
     ca-ES: Catalão
     cy-GB: Galês
     da-DK: Dinamarquês
+    de-AT: Alemão (Áustria)
     de-DE: Alemão
     el-GR: Grego
     en: Inglês

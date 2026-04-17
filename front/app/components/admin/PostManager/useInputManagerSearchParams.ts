@@ -41,11 +41,13 @@ const useInputManagerSearchParams = (context: {
       ? Math.max(1, parseInt(pageRaw, 10)) || undefined // avoid NaNs
       : undefined;
 
+    const phaseParam = getParam('phase');
+
     return {
       projects,
       input_topics: inputTopics,
       feedback_needed: boolean(getParam('feedback_needed')),
-      phase: getParam('phase') || context.phaseId,
+      phase: phaseParam === 'all' ? undefined : phaseParam || context.phaseId,
       sort: (getParam('sort') || 'new') as Sort,
       tab: getParam('tab') as TFilterMenu | undefined,
       search: getParam('search'),
@@ -118,8 +120,12 @@ const useInputManagerSearchParams = (context: {
       }
 
       if ('phase' in newParams) {
-        if (newParams.phase && newParams.phase !== context.phaseId) {
-          toUpdate.phase = newParams.phase;
+        const phase = newParams.phase;
+        if (!phase) {
+          // "All phases" selected
+          toUpdate.phase = 'all';
+        } else if (phase !== context.phaseId) {
+          toUpdate.phase = phase;
         } else {
           toRemove.push('phase');
         }

@@ -6,7 +6,7 @@ module BulkImportIdeas::Parsers
 
     attr_reader :row_mapper
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
+    def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
@@ -128,7 +128,20 @@ module BulkImportIdeas::Parsers
 
     def parse_xlsx_ideas(file)
       # Empty cells are included so we get all form fields per idea - this is important for 'other' fields that have the same header
-      XlsxService.new.xlsx_to_hash_array(file.file.read, include_empty_cells: true)
+      XlsxService.new.xlsx_to_hash_array(
+        file.file.read,
+        include_empty_cells: true,
+        rich_text_columns: rich_text_column_headers
+      )
+    end
+
+    # Cells for fields whose input_type stores HTML (e.g. body_multiloc) can
+    # contain formatting (bold/italic/etc) that we want to preserve.
+    def rich_text_column_headers
+      html_input_types = %w[html html_multiloc]
+      template_data[:fields]
+        .select { |f| html_input_types.include?(f[:input_type]) }
+        .pluck(:name)
     end
 
     def template_data

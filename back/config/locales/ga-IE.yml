@@ -1,4 +1,4 @@
-ga-IE:
+ga:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 uair an chloig.
@@ -63,15 +63,12 @@ ga-IE:
       ask_follow_up_field:
         title: Inis dúinn cén fáth
       attachments:
-        description: ''
         title: Ceangaltáin
       author_id:
         title: Údar
       body:
-        description: ''
         title: Cur síos
       body_page:
-        description: ''
         title: Inis dúinn tuilleadh
       budget:
         title: Buiséad
@@ -79,30 +76,21 @@ ga-IE:
         description: Cuir cuireadh chuig comhurraitheoirí tríd an réimse thíos. Gheobhaidh an comhurraitheoir/na comhurraitheoirí a bhfuil cuireadh tugtha dóibh ríomhphost.
         title: Comhurraitheoirí
       details_page:
-        description: ''
         title: Sonraí
       images:
-        description: ''
         title: Íomhánna
       location:
-        description: ''
         title: Suíomh
       other_input_field:
         print_title: "Más '%{other_option}', sonraigh le do thoil"
         title: Clóscríobh do fhreagra
       proposed_budget:
-        description: ''
         title: Buiséad Beartaithe
       title:
-        description: ''
         title: Teideal
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Clibeanna
       uploads_page:
-        description: ''
         title: Íomhánna agus ceangaltáin
     users:
       birthyear:
@@ -146,9 +134,9 @@ ga-IE:
           title: Cad é do thopaic?
   errors:
     messages:
+      in_the_past: caithfidh sé a bheith sa todhchaí
       max_must_be_greater_than_min_characters: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid.
       max_must_be_greater_than_or_equal_to_min_select_count: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis.
-      sso_enforced_for_domain: Ní mór duit síniú isteach le sínithe isteach aonair (SSO) don fhearann ríomhphoist seo.
   events:
     council_meeting_description: |
       <p>Le linn chruinniú na comhairle seo, cuirfear i láthair na tionscnaimh saoránach sin a fuair 100 vóta i níos lú ná 3 mhí.</p><p>Ansin, roinnfidh an chomhairle a dtuairimí ar gach smaoineamh.</p>
@@ -232,6 +220,7 @@ ga-IE:
     ca-ES: Catalóinis
     cy-GB: Breatnais
     da-DK: Danmhairgis
+    de-AT: Gearmáinis (an Ostair)
     de-DE: Gearmáinis
     el-GR: Gréigis
     en: Béarla

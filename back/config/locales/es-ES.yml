@@ -1,4 +1,4 @@
-es-ES:
+es:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 horas.
@@ -63,15 +63,12 @@ es-ES:
       ask_follow_up_field:
         title: Dinos por qué
       attachments:
-        description: ''
         title: Archivos adjuntos
       author_id:
         title: Autor
       body:
-        description: ''
         title: Descripción
       body_page:
-        description: ''
         title: Cuéntanos más
       budget:
         title: Presupuesto
@@ -79,30 +76,21 @@ es-ES:
         description: Invita a copatrocinadores a través del campo de abajo. Los copatrocinadores invitados recibirán un correo electrónico.
         title: Copatrocinadores
       details_page:
-        description: ''
         title: Detalles
       images:
-        description: ''
         title: Imágenes
       location:
-        description: ''
         title: Ubicación
       other_input_field:
         print_title: "Si es '%{other_option}', especifica"
         title: Escribe tu respuesta
       proposed_budget:
-        description: ''
         title: Proyecto de presupuesto
       title:
-        description: ''
         title: Título
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Temas
       uploads_page:
-        description: ''
         title: Imágenes y archivos adjuntos
     users:
       birthyear:
@@ -146,9 +134,9 @@ es-ES:
           title: ¿Cuál es tu tema?
   errors:
     messages:
+      in_the_past: debe estar en el futuro
       max_must_be_greater_than_min_characters: El máximo debe ser mayor que el mínimo.
       max_must_be_greater_than_or_equal_to_min_select_count: El máximo debe ser mayor o igual que el mínimo.
-      sso_enforced_for_domain: Debes iniciar sesión mediante el inicio de sesión único (SSO) para este dominio de correo electrónico.
   events:
     council_meeting_description: |
       <p>Durante esta reunión del concejo, se presentarán aquellas propuestas ciudadanas que obtuvieron sobre 100 votos en menos de 3 meses.</p><p>El concejo entonces entregará su visión sobre cada idea.</p>
@@ -229,6 +217,7 @@ es-ES:
     ca-ES: Catalán
     cy-GB: Galés
     da-DK: Danés
+    de-AT: Alemán (Austria)
     de-DE: Alemán
     el-GR: Griego
     en: Inglés

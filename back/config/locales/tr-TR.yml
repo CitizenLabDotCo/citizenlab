@@ -1,4 +1,4 @@
-tr-TR:
+tr:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 saat.
@@ -63,15 +63,12 @@ tr-TR:
       ask_follow_up_field:
         title: Bize nedenini söyleyin
       attachments:
-        description: ''
         title: Ekler
       author_id:
         title: Yazan
       body:
-        description: ''
         title: Açıklama
       body_page:
-        description: ''
         title: Bize daha fazlasını anlatın
       budget:
         title: Bütçe
@@ -79,30 +76,21 @@ tr-TR:
         description: Aşağıdaki alan aracılığıyla eş sponsorları davet edin. Davet edilen eş sponsor(lar) bir e-posta alacaktır.
         title: Eş sponsorlar
       details_page:
-        description: ''
         title: Detaylar
       images:
-        description: ''
         title: Görseller
       location:
-        description: ''
         title: Konum
       other_input_field:
         print_title: "Eğer '%{other_option}' ise, lütfen belirtiniz"
         title: Cevabınızı yazın
       proposed_budget:
-        description: ''
         title: Öngörülen Bütçe
       title:
-        description: ''
         title: Başlık
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Etiketler
       uploads_page:
-        description: ''
         title: Resimler ve ekler
     users:
       birthyear:
@@ -146,9 +134,9 @@ tr-TR:
           title: Konunuz nedir?
   errors:
     messages:
+      in_the_past: gelecekte olmalı
       max_must_be_greater_than_min_characters: Maksimum değer minimum değerden büyük olmalıdır.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum değer minimum değerden büyük veya eşit olmalıdır.
-      sso_enforced_for_domain: Bu e-posta alanı için tekli oturum açma (SSO) kullanarak oturum açmanız gerekir.
   events:
     council_meeting_description: |
       <p>Bu kurul toplantısında, 3 aydan kısa bir süre içinde 100 oy alan vatandaş girişimleri sunulacaktır.</p><p>Kurul daha sonra her bir fikir hakkındaki görüşlerini paylaşacaktır.</p>
@@ -229,6 +217,7 @@ tr-TR:
     ca-ES: Katalanca
     cy-GB: Welsh
     da-DK: Danimarka
+    de-AT: Almanca (Avusturya)
     de-DE: Alman
     el-GR: Yunan
     en: İngilizce

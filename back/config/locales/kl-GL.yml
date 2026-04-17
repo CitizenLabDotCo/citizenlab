@@ -1,13 +1,20 @@
 kl-GL:
   confirmations_mailer:
     send_confirmation_code:
+      24_hours: 24 tiimit.
+      best_regards: Inuulluaqqusilluta,
+      confirm_email_address: Emailit uppernarsaruk
       copy_paste_the_link_below: Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk.
       did_you_receive_this_email_in_error: Ajornartoornermi una emaili pissarsiaraajuk? <a href="%{link}">.
+      expire_code: 'Kodia uani atorunnaassaaq:'
       header: Uppernarsaaninnut isissutissat
       header_message: Aluu %{firstName}!
+      ignore_email: Kodimik piumasimanngikkuit, e-maili manna sumiginnarsinnaavat.
       please_confirm_your_email_address: Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk.
+      preheader: '%{organizationName}-imut e-mailit uppernarsaruk'
       subject: '%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk'
       thanks_for_signing_up: Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit.
+      thanks_for_signing_up1: 'Peqataaninnut qujanaq. Uppernarsaat una %{organizationName}-ip peqataatitsiviani igalaamut ikkuguk:'
       the_link_is_valid_for: Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href="%{link}"> qaangiuppat isissutissamik nutaamik qinusinnaavutit.
   custom_field_options:
     domicile:
@@ -25,7 +32,46 @@ kl-GL:
       male: Angut
       unspecified: Allassimanngilaq
   custom_fields:
+    community_monitor:
+      form_end:
+        button_text: Saqqamut uteriit
+      labels:
+        label_1: Ajorluinnartoq
+        label_2: Ajorpoq
+        label_3: Akunnattoq
+        label_4: Ajunngitsoq
+        label_5: Pitsaalluinnartoq
+      question_categories:
+        governance_and_trust: Aqutsineq tatiginninnerlu
+        other: Allat
+        quality_of_life: Inunnikkut atugarissaarneq
+        service_delivery: Sullissineq
+      questions:
+        access_to_parks:
+          title: Pinngortitamut, qorsuunernut sunngiffimmilu periarfissanut isersinnaaneq
+        affordable_housing:
+          title: Inissianik akisuunngitsunik pissarsisinnaaneq
+        cleanliness_and_maintenance:
+          title: Aqqusernit inuillu ornittagaasa eqqiluitsuunnerat aserfallatsaaliorneqarnerallu tamakkiisoq
+        employment_opportunities:
+          title: Suliffissaqarnermut aningaasaqarnikkullu ineriartornissamut periarfissat
+        overall_value:
+          title: Illoqarfimmi akileraarutitit akiliutitillu pillugit tamakkiisumik pissarsiatit
+        place_to_live:
+          title: Illoqarfik inigissallugu
+        quality_of_services:
+          title: Illoqarfiup kiffartuussinerata pitsaassusia tamakkiisoq
+        responsiveness_of_officials:
+          title: Qinikkat inuiaqatigiit ernumassutaannut qisuariartarnerat
+        sense_of_safety:
+          title: Toqqissisimaneq tamakkiisoq
+        transparency_of_money_spent:
+          title: Kommunip akileraarutinit isertitaanit atuinera pillugu ammaneq
+        trust_in_government:
+          title: Kommunimut tatiginninneq
     ideas:
+      ask_follow_up_field:
+        title: Sooq taamaannersoq uagutsinnut oqaluttuariuk
       attachments:
         description: ''
         title: Filit ilanngussat
@@ -34,14 +80,24 @@ kl-GL:
       body:
         description: ''
         title: Nassuiaat
+      body_page:
+        title: Annertunerusumik oqaluttuunniartigut
       budget:
         title: Budget
+      consponsor_ids:
+        description: Ataani inissaq atorlugu suleqataasussat qaaqqukit. Suleqataasussatut qaaqqusat e-mailimik nassinneqassapput.
+        title: Suleqatitut tapersersuisut
+      details_page:
+        title: Sukumiinerusut
       images:
         description: ''
         title: Assit
       location:
         description: ''
         title: Sumi
+      other_input_field:
+        print_title: "'%{other_option}' toqqarukku, erseqqissaagit"
+        title: Akissutit allaguk
       proposed_budget:
         description: ''
         title: Proposed Budget
@@ -59,6 +115,8 @@ kl-GL:
       topic_ids:
         description: ''
         title: Pineqartut
+      uploads_page:
+        title: Assit ilanngussallu
     users:
       birthyear:
         title: Ukioq inunngorfik
@@ -71,24 +129,44 @@ kl-GL:
   custom_forms:
     categories:
       main_content:
+        comment:
+          title: Suut oqaaseqaatigaagit?
         contribution:
           title: Suna ilanngussaraajuk?
         idea:
           title: Suna isumassarsiaraajuk?
+        initiative:
+          title: Suna suliniutigaajuk?
         issue:
           title: Suna ajornartorsiutaava?
         option:
           title: Suna toqqagassaraajuk?
+        petition:
+          title: Suna piumasaqaatigaajuk?
+        post:
+          title: Suna saqqummiuppiuk?
         project:
           title: Suna suliniutigaajuk?
+        proposal:
+          title: Siunnersuutit suua?
         question:
           title: Suna apeqqutissaraajuk?
+        response:
+          title: Suna akissutigaajuk?
+        story:
+          title: Oqaluttuat sunaava?
+        suggestion:
+          title: Siunnersuutit suua?
+        topic:
+          title: Suna sammivisiuk?
   errors:
     messages:
-      sso_enforced_for_domain: E-mailip domæneanut uunga single sign-on (SSO) atorlugu isertariaqarputit.
+      in_the_past: siunissamiittariaqarpoq
+      max_must_be_greater_than_min_characters: Annerpaaffissaa minnerpaaffissaaniit annerusariaqarpoq.
+      max_must_be_greater_than_or_equal_to_min_select_count: Annerpaaffissaa minnerpaaffissaanut nallersuuttariaqarpoq imaluunniit annerusariaqarluni.
   events:
     council_meeting_description: |
-      Siunnersuisooqatigiit ataatsimiinneranni uani innuttaasut siunnersuutaat qaammatit pingasut qaangiutinngitsut 100-nik taasisoqareersimasut saqqummiunneqassapput. Tamanna pereerpat siunnersuisooqatigiit isumassarsiat ataasiakkaarlugit erseqqissaateqarfigissavaat.  
+      Siunnersuisooqatigiit ataatsimiinneranni uani innuttaasut siunnersuutaat qaammatit pingasut qaangiutinngitsut 100-nik taasisoqareersimasut saqqummiunneqassapput. Tamanna pereerpat siunnersuisooqatigiit isumassarsiat ataasiakkaarlugit erseqqissaateqarfigissavaat.
     council_meeting_title: Siunnersuisooqatigiit ataatsimiinnerat
   form_builder:
     default_select_field:
@@ -97,16 +175,67 @@ kl-GL:
       title: Your question
     form_end_page:
       description: "Please submit your answers by selecting 'Submit survey' below."
+      description_text_3: Siunnersuutit nassiunneqarluarpoq.
       title: Survey end
+      title_text_3: Siunnersuuteqarninnut qujanaq!
+    form_user_page:
+      title_text: Illit pillutit
+    pdf_export:
+      by_checking_this_box: Uani kryssiliinikkut akuersissutigaara uanga paasissutissakka %{organizationName}-p peqataatitsiviani atuisutut kontoliortoqarnissaanut atorneqassasut.
+      choose_as_many: Kissaatitit tamaasa toqqarsinnaavatit
+      choose_at_least: Ikinnerpaamik %{count}-nik toqqaagit
+      choose_at_most: Amerlanerpaamik %{count}-nik toqqaagit
+      choose_between: '%{min} aamma %{max} akornanni qinigassat toqqakkit'
+      choose_exactly:
+        one: '%{count}-nik toqqaagit'
+        other: '%{count} eqqorlugit toqqaagit'
+      date_print_description: Ulloq uunga immersuguk YYYY-MM-DD.
+      date_published: Saqqummerfissaa (uu-mm-uuuu)
+      email_address: E-mail adressia
+      first_name: Ateq (atit)
+      instructions: Ilitsersuutit
+      last_name: Kinguliaq
+      line_print_description: Nunap assingani ataaniittumi aqqut titartaruk.
+      linear_scale_print_description: Kisitsit %{min_label}-ip aamma %{max_label}-ip akornanniittoq taamaallaat allaguk
+      matrix_print_description: Sanileriiaani tamani ammalortoq ataaseq sanningasuleruk tulluunnerpaatut isigisat nalunaarlugu.
+      optional: piumasaqaataanngitsoq
+      page: Qupperneq
+      permission: Akuersissut
+      personal_data: Inunnut paasissutissat
+      personal_data_explanation_private: Allatat %{organizationName}-ip internetikkut peqataatitsivianut nassiutissavarput. Allatannut tunngasunik e-mailikkut nutaarsiassaqartalerusukkuit, quppernermi uani immersugassat immersukkit, taava kontomik pilersitsivigissavatsigit. Paasissutissatit tamanut saqqumitinneqassanngillat taamaallaallu %{organizationName}-imit atorneqassallutik. Inunnut paasissutissatit taama atorneqarnissaat kissaatiginngikkukku, immersugassat inoqatinnarsinnaavatit.
+      personal_data_explanation_public: Isummat %{organizationName}-p nittartagaanut peqataatitsivianut nassiutissavarput. Atit saqqummiunneqarnissaa kissaatigigukku aamma isummat pillugu nutaarsiassanik e-mailikkut tigorusukkuit, quppernermi matumani immersugassat immersukkit, taava atuisunngortissavatsigit. E-mailit tamanut saqqummiunneqassanngilaq aamma taamaallaat %{organizationName}-mit atorneqassalluni. Kinaassutsit isertorusukkukku, imaluunniit paasissutissatit taama atorneqarnissaat akuerinngikkukku, immersugassat inoqatiginnarsinnaavatit.
+      point_print_description: Nunap assingani ataaniittumi sumiiffik X-ileruk imaluunniit najugaq allaguk.
+      polygon_print_description: Nunap assingani ataaniittumi ilusilersuigit.
+      ranking_print_description: Boksi tamatigut normuleruk 1-imiit (nuannarinerpaasaq) %{max_rank}-imut (nuannarinnginnerpaasaq). Normu ataaseq ataasiarlugu atoruk.
+      rating_print_description: Naliliigit kisitsit 1 (ajornersoq) aamma %{max_stars} (pitsaanersoq) akornanniittoq allallugu.
+      select_print_description: Ataasiinnarmik toqqiguk.
+      sentiment_linear_scale_print_description: Kisitsit 1-ip 5-illu akornanniittoq allaguk.
+      sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
+      this_answer: Akissut una aqutsisunut taamaallaat takutinneqassaaq, tamanut saqqummiunneqassanngilaq.
+      unsupported_field: Immersugassaq una pappialami immersorneqarsinnaanngilaq. Taarsiullugu immersugassap nittartakkamiittua atoruk.
+      write_as_clearly: Sapinngisamik <b>ersarissumik</b> allagit – immersugassat skannerneqarsinnaapput
+      write_in_language: Akissutitit immersugassatut oqaatsit atorneqartut atorlugit allakkit.
+  ics_calendar_event:
+    event_details: Pisussap paasissutissartai
   idea_statuses:
     accepted: akuerineqareerpoq
     accepted_description: Isumassarsiaq una akuerineqareerpoq aammalu illoqarfimmit atuutilersinneqassaaq
+    answered: akineqartut
+    answered_description: Pilersaarummut aqutsisup siunnersuummut uunga pisortatigoortumik akissuteqaat saqqummiuppaa.
+    expired: atorunnaarpoq
+    expired_description: Siunnersuut manna atorunnaarpoq piffissaliussarluunniit pissutigalugu matuneqarluni.
     implemented: atuutilersinneqareerpoq
     implemented_description: Isumassarsiaq una illoqarfimmit atuutilersinneqareerpoq
+    ineligible: peqataasinnaanngitsoq
+    ineligible_description: Allatat misissorneqareerpoq, ajoraluartumillu itigartinneqarluni. Paasissutissat sukumiinerusut pisortatigoortumik nalunaarutigineqarput.
+    prescreening: misissuineq
+    prescreening_description: Siunnersuut maannakkut suliniutip aqutsisuanit misissorneqarpoq, suli tamanut takuneqarsinnaanngilaq.
     proposed: siunnersuutigineqareerpoq
     proposed_description: Isumassarsiaq una illoqarfimmut siunnersuutaareerpoq
     rejected: itigartinneqarpoq
     rejected_description: Isumassarsiaq una itigartinneqarpoq
+    threshold_reached: killiffissaq anguneqarpoq
+    threshold_reached_description: Siunnersuut tapersersorneqarnissaminut killiffik anguaa, maannalu suliarineqarnissaa isumaliutigineqalissalluni.
     under_consideration: isumaliutersuutigineqarpoq
     under_consideration_description: Isumassarsiaq una illoqarfimmit eqqarsaatigineqareerpoq
     viewed: takuneqareerpoq
@@ -116,6 +245,42 @@ kl-GL:
       Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
     default_threshold_reached_message: |
       <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
+  locales:
+    ar-MA: Arabiamiutut (Marokko)
+    ar-SA: Arabiamiutut (Saudi Arabia)
+    ca-ES: Katalanimiutut
+    cy-GB: Walesimiutut
+    da-DK: Qallunaatut
+    de-AT: Tyskisut (Østrigi)
+    de-DE: Tyskisut
+    el-GR: Grækerisut
+    en: Tuluttut
+    en-CA: Tuluttut (Canada)
+    en-GB: Tuluttut (UK)
+    en-IE: Tuluttut (Irland)
+    es-CL: Spanskisut (Chile)
+    es-ES: Spanskisut (Spania)
+    fi-FI: Finlandimiusut
+    fr-BE: Franskisut (Belgia)
+    fr-FR: Franskitut
+    ga-IE: Irlannimiutut
+    hr-HR: Kroatiamiusut
+    hu-HU: Ungarnimiutut
+    it-IT: Italiamiusut
+    kl-GL: Kalaallisut
+    lb-LU: Luxembourgisut
+    lv-LV: Letlandimiutut
+    mi: Maoritut
+    nb-NO: Norskisut (Bokmål)
+    nl-BE: Hollandimiutut (Belgia)
+    nl-NL: Hollandimiutut
+    pl-PL: Poloniamiutut
+    pt-BR: Portugisut (Brasilien)
+    ro-RO: Românisut
+    sr-Latn: Serbisut (latinisut)
+    sr-SP: Serbisut (kyrillisk)
+    sv-SE: Svenskimiutut
+    tr-TR: Tyrkisut
   nav_bar_items:
     about:
       title: Una pillugu
@@ -131,6 +296,11 @@ kl-GL:
       title: Suliniutit tamarmik
     proposals:
       title: Proposals
+  phases:
+    community_monitor_title: Inoqatigiinni nakkutilliisoq
+    native_survey_button: Misissuinermi peqataagit
+    native_survey_title: Misissuineq
+    open_idea_phase_title: Maannakkut immikkoortoq
   project_copy:
     title_suffix: Copy
   projects:
@@ -138,21 +308,23 @@ kl-GL:
       <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
     open_idea_project_description_preview: Immaqa isumassarsiaqarput suli suliniutigineqaleriinngitsunik? Uunga nassiuguk, tapersersortissannik katersigit, taamaalillutillu politikkikkut oqallisitigiguk!
     open_idea_project_title: Isumassarsiaq? Siunnersuisoqatigiinnut apuutiguk!
+    published_projects: Suliniutit saqqummiunneqartut
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: Kode isissutit allanngortiguk
       message_you_reset_your_password: Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.
+      preheader: '%{organizationName}-mut isissutissat nutarteruk'
       subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
       title_reset_your_password: Kode isissutissat nutaaq allaguk
   static_pages:
-    faq_body: |-
+    faq_body: |
       <h2 class="ql-align-justify">Hvad er denne platform til?</h2><p class="ql-align-justify">Denne platform er udformet som et centralt knudepunkt for udveksling af oplysninger og for at få input og feedback. Borgerinddragelsesprojekter, der i øjeblikket er aktive, vises på hjemmesiden - hvert enkelt projekt kan have forskellige former for inddragelse, hvad enten det drejer sig om at tilføje en idé, kommentere et forslag, stemme om og prioritere ideer eller deltage i en undersøgelse.</p><h2 class="ql-align-justify">Hvordan kan jeg deltage? </h2><p class="ql-align-justify">Du kan altid gennemse offentlige projekter, men du skal registrere dig på platformen for at kunne foretage en handling. Dette er med til at bevare fællesskabsfølelsen og sikre legitimitet af ideer og kommentarer, f.eks. så én person ikke stemmer flere gange. </p><h2 class="ql-align-justify">Hvilke oplysninger kan folk se om mig?</h2><p class="ql-align-justify">Dit navn, foto og de data som du selv har tilføjet en sådan, er synlige. Du kan altid ændre disse i dine indstillinger.</p><h2 class="ql-align-justify">Hvorfor kan jeg ikke sende mit input eller indsende en kommentar?</h2><p class="ql-align-justify">Idéer, kommentarer og afstemninger er aktiveret på bestemte tidspunkter eller i bestemte faser af et projekt. I nogle tilfælde kan et projekt kun være åbent for bidrag fra en bestemt interessentgruppe.</p><p class="ql-align-justify">Hvis idéer/input er aktiveret for et projekt, vises en knap, der opfordrer dig til at indsende en idé. Alternativt kan du gennemse andre aktive projekter for at finde yderligere muligheder for engagement.</p><h2 class="ql-align-justify">Hvordan redigerer eller sletter jeg mit bidrag?</h2><p class="ql-align-justify">Hvis du har indsendt din idé eller input, men ønsker at redigere eller slette det, kan du finde denne mulighed ved at klikke på de tre små prikker øverst til højre i indlægget. </p><h2 class="ql-align-justify">Hvad er retningslinjerne for platformen?</h2><p class="ql-align-justify">Vores retningslinjer for platformen er til for at hjælpe med at sikre, at platformen er et sikkert sted, hvor alle kan deltage. Du bedes sikre, at dine indlæg er fri for:</p><ul>
-          <li class="ql-align-justify">Personlige angreb, fornærmelser, krænkende eller diskriminerende kommentarer</li>
-          <li class="ql-align-justify">Anstødeligt sprog, herunder blasfemi</li>
-          <li class="ql-align-justify">Markedsførings- eller reklamemateriale</li>
-          <li class="ql-align-justify">Personlige oplysninger om andre personer</li>
-          <li class="ql-align-justify">Ophavsretligt beskyttet materiale som f.eks. billeder</li>
-          </ul><p class="ql-align-justify">Alle indlæg eller kommentarer, der ikke overholder disse retningslinjer, kan blive redigeret eller slettet eller i særlige tilfælde forhindres i at blive offentliggjort. Læs venligst vores vilkår og betingelser for at få flere oplysninger. </p><h2 class="ql-align-justify">Hvordan rapporterer jeg et stødende indlæg?</h2><p class="ql-align-justify">Klik på de tre små prikker øverst til højre på indlægget for at rapportere det. Angiv venligst grunden til, at du anmelder indholdet - dette vil sende en meddelelse om, at indlægget skal gennemgås.</p><h2 class="ql-align-justify">Hvorfor har jeg problemer med at tilmelde mig eller logge ind?</h2><p class="ql-align-justify">Hvis du ikke kan tilmelde dig, kan det skyldes, at du allerede har registreret dig med den samme e-mailadresse eller tidligere har modtaget en invitation til at tilmelde dig platformen. Hvis du får vist en meddelelse om, at din e-mailadresse er optaget af en igangværende invitation, skal du tjekke din e-mail og følge linket i invitationen for at registrere din konto. Hvis du ikke kan finde invitationen, kan du prøve at kigge i din spam-boks eller anmode om en ny invitation. </p><h2 class="ql-align-justify">Hvordan nulstiller jeg min adgangskode?</h2><p class="ql-align-justify">Du kan altid anmode om at få nulstillet din adgangskode fra log ind-siden. Hvis du nulstiller din adgangskode, sendes der et link til din e-mailadresse - følg instruktionerne for at ændre din adgangskode. Af sikkerhedsmæssige årsager er linket gyldigt i en time. Hvis linket er udløbet, kan du blot klikke på "Glemt adgangskode?" på log ind-siden igen for at generere et nyt nulstillingslink.</p><p class="ql-align-justify">Hvis du ikke har modtaget e-mailen, skal du kontrollere, at den ikke er i din spam folder, og at du sender linket til den samme e-mailadresse, som du har tilmeldt dig med.</p><h2 class="ql-align-justify">Hvad vil I gøre med mine data?</h2><p class="ql-align-justify">Læs vores privatlivspolitik for at få flere oplysninger om indsamling og brug af data. Kort sagt vil vi aldrig bruge dine data til reklamer, markedsføring eller andre former for spam.</p><h2 class="ql-align-justify">Hvilke e-mails vil jeg modtage?</h2><p class="ql-align-justify">Du kan modtage e-mails i forbindelse med din konto og din aktivitet på platformen, f.eks. når nogen reagerer på et af dine indlæg. Du kan styre, hvilke e-mails du modtager, i dine indstillinger. Der er et afsnit kaldet "Notifikationer", hvor du kan slå e-mail-meddelelser til og fra.</p><h2 class="ql-align-justify">Hvordan sletter jeg min konto?</h2><p class="ql-align-justify">I dine indstillinger er der mulighed for at slette din konto. Input, som du har postet, vil fortsat blive offentliggjort, men dit navn vil blive fjernet fra indlægget og erstattet af "ukendt forfatter". Hvis du gerne vil slette alle dine indlæg, skal du gøre det, inden du sletter din konto.</p>
+      <li class="ql-align-justify">Personlige angreb, fornærmelser, krænkende eller diskriminerende kommentarer</li>
+      <li class="ql-align-justify">Anstødeligt sprog, herunder blasfemi</li>
+      <li class="ql-align-justify">Markedsførings- eller reklamemateriale</li>
+      <li class="ql-align-justify">Personlige oplysninger om andre personer</li>
+      <li class="ql-align-justify">Ophavsretligt beskyttet materiale som f.eks. billeder</li>
+      </ul><p class="ql-align-justify">Alle indlæg eller kommentarer, der ikke overholder disse retningslinjer, kan blive redigeret eller slettet eller i særlige tilfælde forhindres i at blive offentliggjort. Læs venligst vores vilkår og betingelser for at få flere oplysninger. </p><h2 class="ql-align-justify">Hvordan rapporterer jeg et stødende indlæg?</h2><p class="ql-align-justify">Klik på de tre små prikker øverst til højre på indlægget for at rapportere det. Angiv venligst grunden til, at du anmelder indholdet - dette vil sende en meddelelse om, at indlægget skal gennemgås.</p><h2 class="ql-align-justify">Hvorfor har jeg problemer med at tilmelde mig eller logge ind?</h2><p class="ql-align-justify">Hvis du ikke kan tilmelde dig, kan det skyldes, at du allerede har registreret dig med den samme e-mailadresse eller tidligere har modtaget en invitation til at tilmelde dig platformen. Hvis du får vist en meddelelse om, at din e-mailadresse er optaget af en igangværende invitation, skal du tjekke din e-mail og følge linket i invitationen for at registrere din konto. Hvis du ikke kan finde invitationen, kan du prøve at kigge i din spam-boks eller anmode om en ny invitation. </p><h2 class="ql-align-justify">Hvordan nulstiller jeg min adgangskode?</h2><p class="ql-align-justify">Du kan altid anmode om at få nulstillet din adgangskode fra log ind-siden. Hvis du nulstiller din adgangskode, sendes der et link til din e-mailadresse - følg instruktionerne for at ændre din adgangskode. Af sikkerhedsmæssige årsager er linket gyldigt i en time. Hvis linket er udløbet, kan du blot klikke på "Glemt adgangskode?" på log ind-siden igen for at generere et nyt nulstillingslink.</p><p class="ql-align-justify">Hvis du ikke har modtaget e-mailen, skal du kontrollere, at den ikke er i din spam folder, og at du sender linket til den samme e-mailadresse, som du har tilmeldt dig med.</p><h2 class="ql-align-justify">Hvad vil I gøre med mine data?</h2><p class="ql-align-justify">Læs vores privatlivspolitik for at få flere oplysninger om indsamling og brug af data. Kort sagt vil vi aldrig bruge dine data til reklamer, markedsføring eller andre former for spam.</p><h2 class="ql-align-justify">Hvilke e-mails vil jeg modtage?</h2><p class="ql-align-justify">Du kan modtage e-mails i forbindelse med din konto og din aktivitet på platformen, f.eks. når nogen reagerer på et af dine indlæg. Du kan styre, hvilke e-mails du modtager, i dine indstillinger. Der er et afsnit kaldet "Notifikationer", hvor du kan slå e-mail-meddelelser til og fra.</p><h2 class="ql-align-justify">Hvordan sletter jeg min konto?</h2><p class="ql-align-justify">I dine indstillinger er der mulighed for at slette din konto. Input, som du har postet, vil fortsat blive offentliggjort, men dit navn vil blive fjernet fra indlægget og erstattet af "ukendt forfatter". Hvis du gerne vil slette alle dine indlæg, skal du gøre det, inden du sletter din konto.</p>
     faq_title: Apeqqutit akulikitsumik apeqqutigineqartartut
     infopage_body: Oplev mere information relateret til platformen.
     infopage_title: Qupperneq paasissutissiivik
@@ -164,6 +336,11 @@ kl-GL:
     terms_and_conditions_title: Atugassarititaasut aamma Piumasaqaatit
   symbols:
     outside: allami
+  time:
+    am: ullaakkut
+    formats:
+      hour_of_day: '%l %p'
+    pm: pm
   topics:
     community: Najukkamik ineriartortitsineq
     community_description: Najukkamik ineriartortitsineq
@@ -173,6 +350,7 @@ kl-GL:
     economy_description: Sulineq, aningaasaqarneq takornariaqarnerlu
     education: Ilinniartitaaneq inuusuttullu
     education_description: Ilinniartitaaneq inuusuttullu
+    governance_and_trust: Aqutsineq tatiginninnerlu
     health: Peqqinnissaq atugarissaarnerlu
     health_description: Peqqinnissaq atugarissaarnerlu
     housing: Inissiat
@@ -187,8 +365,10 @@ kl-GL:
     other_description: Allat
     public_space: Tamanit ornigarneqartut illullu
     public_space_description: Tamanit ornigarneqartut illullu
+    quality_of_life: Inuunermi pitsaassuseq
     safety: Isumannaallisaaneq
     safety_description: Isumannaallisaaneq
+    service_delivery: Sullissineq
     services: Pisortat kiffartuussinerat
     services_description: Pisortat kiffartuussinerat
     sustainability: Piujuartitsinermik tunngaveqarluni ineriartortitsineq
@@ -197,22 +377,59 @@ kl-GL:
     technology_description: Nukissiuutit aamma teknologi
     waste: Avatangiiseq eqqagassallu
     waste_description: Avatangiiseq eqqagassallu
+  user:
+    anon_first_name: Atuisoq
+    anon_scheme:
+      animals: alligatori,krokodille,alpaka,ippernaq,antilope,abia,armadillo,babooni,badgeri,iminguaq,nanoq,bæveri,igutsaq,beetle,buffalo,pakkaluaq,kameli,imermi buffalo,tuttorsuaq,qitsuk,ussi,cheetah,chimpanzee,chinchilla,cicada,uiloq,cockroach,saarullik,coyote,assagiarsuk,cricketi,tulugaq,tulugaq,tuttu,dinosauri,qimmeq,arfivik,niisa,qatsaluk,nattoralik,nimeruaq,elefanti,elki,ferreti,aalisagaq,niviugaq,terianniaq,naraseq,naraseq,gerbili,giraffi,gnatti,gnu,wildebeesti,savaaraq,goldfishi,nerleq,gorilla,grasshopperi,guinea piggi,hamsteri,ukaleq,hedgehoggi,ammassassuaq,hippo,horneti,hiista,houndi,hyæna,impala,jackali,jellyfishi,kænguru,wallaby,koala,leopardi,løve,paasortoq,llama,locusti,kumak,macawi,qatsaluk,mammuti,manatee,marten,minki,minnow,mole,moose,ippernaq,teriaq,teriaq,mule,muskrati,pamiuuttoq,ussi,uiloq,panda,puuluki,platypusi,porcupine,prairie doggi,puggi,ukaleq,raccooni,tuttu,næshorni,kapisilik,sardini,scorpioni,puisi,puisi,servali,eqalussuaq,sava,skunki,siuteroq,pulateriaq,nittusaat,sissuarmiu,qatsimaneq,termiti,tigeri,eqaluk,saqqittooq,saqqittooq,aaveq,waspi,arfeq,amaroq,wombatti,woodchucki,quperloq,yaki,yellowjacketi,zebra
+  user_blocked_mailer:
+    send_user_blocked_email:
+      for_more_information: Tamanna pillugu paasisaqarnerorusukkuit %{termsAndConditionsPage} takuuk
+      paragraph_1_with_reason: '%{organizationName}-ip peqataatitsiviani kontot pissutaasumik uuminnga utaqqiisaasumik matuneqarallarpoq:'
+      paragraph_1_without_reason: '%{organizationName}-p peqataatitsiviani atuisutut kontot malittarisassanik unioqqutitsineq pissutigalugu utaqqiisaasumik matuneqarallarpoq.'
+      preheader: '%{organizationName}-ip peqataatitsiviani kontot utaqqiisaasumik matuneqarallarpoq'
+      subject: Kontut piffissami killilikkami atorunnaarsinneqarallarpoq
+      title_user_blocked: Kontut piffissami killilikkami matuneqarallarpoq
+      you_can_sign_in_again_from: '%{date}-miit iseqqissinnaavutit.'
+  voting_method:
+    default_voting_term_plural: taasinerit
+    default_voting_term_singular: taasiarit
   xlsx_export:
+    anonymous: Kinaassuseq isertuullugu
     column_headers:
       assignee_email: Assignee email
       assignee_fullname: Assignee
+      attachments: Kakkiussat
       author_email: Author email
       author_fullname: Author name
       author_id: Author ID
       budget: Budget
       comments_count: Comments
+      cost: Akia
       created_at: Submitted at
+      description: Nassuiaat
+      dislikes_count: Nuannarinngisat
       downvotes_count: Downvotes
+      email: Email
+      first_name: Ateq (atit)
+      image_url: Assip URL-ia
       input_id: ID
       input_url: URL
+      last_name: Kinguliaqut
       latitude: Latitude
+      likes_count: Nuannarisat
+      location: Sumiiffik
       longitude: Longitude
+      manual_votes: Offline-mik taasinerit
+      neutral_reactions_count: Nalornivunga
+      participants: Peqataasut
+      picks: Toqqakkat
       project: Project
       published_at: Published at
+      registration_completed_at: Nalunaarsorneq naammassineqarpoq uani
       status: Status
+      submitted_at: Tunniunneqarpoq uani
+      tags: Nalunaaqutsersuutit
+      title: Qulequtaq
       upvotes_count: Upvotes
+      user_data: Atuisup paasissutissartai
+      votes_count: Taasinerit

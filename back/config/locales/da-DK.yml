@@ -1,4 +1,4 @@
-da-DK:
+da:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timer.
@@ -63,15 +63,12 @@ da-DK:
       ask_follow_up_field:
         title: Fortæl os hvorfor
       attachments:
-        description: ''
         title: Vedhæftede filer
       author_id:
         title: Forfatter
       body:
-        description: ''
         title: Beskrivelse
       body_page:
-        description: ''
         title: Fortæl os mere
       budget:
         title: Budsjett
@@ -79,30 +76,21 @@ da-DK:
         description: Inviter Medstillere via feltet nedenfor. De inviterede medstillere vil modtage en e-mail.
         title: Medstillere
       details_page:
-        description: ''
         title: Detaljer
       images:
-        description: ''
         title: Billeder
       location:
-        description: ''
         title: Beliggenhed
       other_input_field:
         print_title: "Hvis '%{other_option}', angiv venligst"
         title: Skriv dit svar
       proposed_budget:
-        description: ''
         title: Estimeret Budget
       title:
-        description: ''
         title: Titel
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Emner
       uploads_page:
-        description: ''
         title: Billeder og vedhæftede filer
     users:
       birthyear:
@@ -146,9 +134,9 @@ da-DK:
           title: Hvad er dit emne?
   errors:
     messages:
+      in_the_past: må være i fremtiden
       max_must_be_greater_than_min_characters: Maksimum skal være større end minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum skal være større end eller lig med minimum.
-      sso_enforced_for_domain: Du skal logge ind med single sign-on (SSO) for dette e-maildomæne.
   events:
     council_meeting_description: |
       <p>Under dette rådsmøde vil de forslag, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
@@ -229,6 +217,7 @@ da-DK:
     ca-ES: Catalansk
     cy-GB: Walisisk
     da-DK: Dansk
+    de-AT: Tysk (Østrig)
     de-DE: Tysk
     el-GR: Græsk
     en: Engelsk

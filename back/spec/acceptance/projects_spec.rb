@@ -84,7 +84,6 @@ resource 'Projects' do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
@@ -173,20 +172,6 @@ resource 'Projects' do
         do_request filter_can_moderate: true, publication_statuses: ['published']
         assert_status 200
         expect(json_response[:data].size).to eq 4
-      end
-
-      example 'List projects a specific user can moderate', document: false do
-        moderator = create(
-          :user,
-          roles: [
-            { type: 'project_moderator', project_id: @projects[0].id },
-            { type: 'project_moderator', project_id: @projects[1].id }
-          ]
-        )
-
-        do_request filter_user_is_moderator_of: moderator.id
-        assert_status 200
-        expect(json_response[:data].pluck(:id)).to contain_exactly(@projects[0].id, @projects[1].id)
       end
     end
 
@@ -636,10 +621,8 @@ resource 'Projects' do
         end
 
         example 'Move a project from one folder to another' do
-          old_folder = create(:project_folder, projects: [@project])
+          create(:project_folder, projects: [@project])
           new_folder = create(:project_folder)
-          old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
-          new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
 
           do_request(project: { folder_id: new_folder.id })
           @project.reload
@@ -647,10 +630,6 @@ resource 'Projects' do
           assert_status 200
           expect(@project.folder_id).to eq new_folder.id
           expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
-
-          project_moderators = User.project_moderator(@project.id)
-          expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
-          expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
         end
 
         example '[error] Put a project in a non-existing folder' do
@@ -1186,6 +1165,46 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/publication_recipient_count' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:topic) { create(:global_topic) }
+      let(:project) { create(:project, global_topics: [topic]) }
+      let(:id) { project.id }
+
+      example 'Returns the count of publication recipients' do
+        create_list(:follower, 2, followable: topic)
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :count)).to eq 2
+      end
+
+      example 'Excludes users who opted out of the campaign' do
+        follower = create(:follower, followable: topic)
+        create(:follower, followable: topic)
+        create(:consent, user: follower.user, campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
+      end
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Get publication recipient count', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -1281,7 +1300,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
-        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        french_column_headers = fixtures['fr-FR']['xlsx_export']['column_headers']
         @admin.update!(locale: 'fr-FR')
 
         do_request
@@ -1679,15 +1698,14 @@ resource 'Projects' do
             expect(admin_publication_parent).to eq project_folder.admin_publication
           end
 
-          example_request 'Adds all folder moderators as moderators of the project' do
+          example_request 'Does not add folder moderators as moderators of the project' do
             assert_status 201
 
             json_response              = json_parse(response_body)
             response_resource_id       = json_response.dig(:data, :id)
             project_moderators         = User.project_moderator(response_resource_id)
-            folder_moderators          = User.project_folder_moderator(project_folder.id)
 
-            expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+            expect(project_moderators.pluck(:id)).to eq []
           end
         end
 
@@ -1736,16 +1754,16 @@ resource 'Projects' do
 
           copied_project = Project.find(json_response.dig(:data, :id))
           expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
+          expect(copied_project.folder_id).to eq(project_in_folder_user_moderates.folder_id)
         end
 
-        example_request 'Adds all folder moderators as moderators of the project' do
+        example_request 'Does not add folder moderators as moderators of the project' do
           assert_status 201
 
           response_resource_id = json_response.dig(:data, :id)
           project_moderators = User.project_moderator(response_resource_id)
-          folder_moderators = User.project_folder_moderator(project_folder.id)
 
-          expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+          expect(project_moderators.pluck(:id)).to eq []
         end
       end
 
@@ -1880,6 +1898,115 @@ resource 'Projects' do
       example '[Unauthorized] Create a project in a folder', document: false do
         do_request(project: { folder_id: create(:project_folder).id })
         assert_status 401
+      end
+    end
+
+    context 'when a space moderator' do
+      let(:space) { create(:space) }
+      let(:project_attrs) { attributes_for(:project) }
+      let(:title_multiloc) { project_attrs[:title_multiloc] }
+      let(:description_multiloc) { project_attrs[:description_multiloc] }
+      let(:publication_status) { 'draft' }
+      let(:other_space) { create(:space) }
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      before { header_token_for moderator }
+
+      context 'when space_id is provided' do
+        context 'when user moderates that space' do
+          let(:space_id) { space.id }
+
+          example 'Create a project in the moderated space' do
+            expect do
+              do_request(project: { space_id: space_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.space_id).to eq space.id
+            expect(created_project.folder_id).to be_nil
+          end
+        end
+
+        context 'when user moderates a different space' do
+          let(:space_id) { other_space.id }
+
+          example '[Unauthorized] Create a project in non-moderated space', document: false do
+            do_request(project: { space_id: space_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+      end
+
+      context 'when folder_id is provided' do
+        context 'when folder is in the moderated space' do
+          let(:folder) { create(:project_folder, space: space) }
+          let(:folder_id) { folder.id }
+
+          example 'Create a project in a folder within the moderated space' do
+            expect do
+              do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.folder_id).to eq folder.id
+            expect(created_project.space_id).to eq space.id
+          end
+        end
+
+        context 'when folder is in a different space' do
+          let(:folder) { create(:project_folder, space: other_space) }
+          let(:folder_id) { folder.id }
+
+          example '[Unauthorized] Create a project in folder in non-moderated space', document: false do
+            do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+
+        context 'when folder has no space assigned but user is also folder moderator' do
+          let(:folder) { create(:project_folder, space: nil) }
+          let(:folder_id) { folder.id }
+
+          before do
+            moderator.add_role('project_folder_moderator', project_folder_id: folder.id)
+            moderator.save!
+            # Re-authenticate with the updated moderator that now has the folder role
+            header_token_for moderator
+          end
+
+          example 'Create a project in folder without space' do
+            expect do
+              do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.folder_id).to eq folder.id
+            expect(created_project.space_id).to be_nil
+          end
+        end
+
+        context 'when folder has no space assigned and user is not folder moderator' do
+          let(:folder) { create(:project_folder, space: nil) }
+          let(:folder_id) { folder.id }
+
+          example '[Unauthorized] Create a project in folder without space', document: false do
+            do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+      end
+
+      context 'when neither space_id nor folder_id is provided' do
+        example '[Unauthorized] Cannot create project without space_id or folder_id', document: false do
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 401
+        end
       end
     end
   end

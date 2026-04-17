@@ -7,15 +7,22 @@ import { render, screen, within } from 'utils/testUtils/rtl';
 import ProjectFolderSelect from './';
 
 const projectFolders = {
-  data: [
-    { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
-    { id: 'folder2', attributes: { title_multiloc: { en: 'Folder 2' } } },
+  pages: [
+    {
+      data: [
+        { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
+        { id: 'folder2', attributes: { title_multiloc: { en: 'Folder 2' } } },
+      ],
+    },
   ],
 };
 
-jest.mock('api/project_folders/useProjectFolders', () => () => {
-  return { data: projectFolders };
-});
+jest.mock(
+  'api/project_folders_mini/useInfiniteProjectFoldersAdmin',
+  () => () => {
+    return { data: projectFolders };
+  }
+);
 
 const mockUserData = makeUser({
   roles: [{ type: 'admin' }],
@@ -146,27 +153,6 @@ describe('ProjectFolderSelect', () => {
       const folderSelect = screen.getByTestId('projectFolderSelect');
       const selectElement = within(folderSelect).getByRole('combobox');
       expect(selectElement).toBeDisabled();
-    });
-
-    it('displays only the folders that the user moderates', () => {
-      render(
-        <ProjectFolderSelect
-          projectAttrs={{}}
-          onProjectAttributesDiffChange={jest.fn()}
-          isNewProject={true}
-        />
-      );
-
-      const folderSelect = screen.getByTestId('projectFolderSelect');
-      const visibleOptions = within(folderSelect)
-        .getAllByRole('option')
-        .filter((option) => !option.hidden);
-
-      expect(visibleOptions.length).toBe(2);
-
-      const labels = visibleOptions.map((option) => option.textContent);
-      const expectedLabels = ['— No folder —', 'Folder 1'];
-      expect(labels).toEqual(expectedLabels);
     });
   });
 });

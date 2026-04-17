@@ -1,4 +1,4 @@
-it-IT:
+it:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ore.
@@ -63,15 +63,12 @@ it-IT:
       ask_follow_up_field:
         title: Raccontaci perché
       attachments:
-        description: ''
         title: Allegati
       author_id:
         title: Autore
       body:
-        description: ''
         title: Descrizione
       body_page:
-        description: ''
         title: Raccontaci di più
       budget:
         title: Bilancio
@@ -79,30 +76,21 @@ it-IT:
         description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
         title: Co-sponsor
       details_page:
-        description: ''
         title: Dettagli
       images:
-        description: ''
         title: Immagini
       location:
-        description: ''
         title: Posizione
       other_input_field:
         print_title: "Se la risposta è '%{other_option}', si prega di specificare"
         title: Scrivi la tua risposta
       proposed_budget:
-        description: ''
         title: Budget Proposto
       title:
-        description: ''
         title: Titolo
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: Argomenti
       uploads_page:
-        description: ''
         title: Immagini e allegati
     users:
       birthyear:
@@ -146,9 +134,9 @@ it-IT:
           title: Qual è il tuo argomento?
   errors:
     messages:
+      in_the_past: deve essere nel futuro
       max_must_be_greater_than_min_characters: Il massimo deve essere maggiore del minimo.
       max_must_be_greater_than_or_equal_to_min_select_count: Il massimo deve essere maggiore o uguale al minimo.
-      sso_enforced_for_domain: È necessario accedere tramite single sign-on (SSO) per questo dominio email.
   events:
     council_meeting_description: |
       <p>Durante questa riunione del consiglio, saranno presentate le iniziative dei cittadini che hanno ottenuto 100 voti in meno di 3 mesi.</p><p>Il consiglio condividerà poi la sua opinione su ogni idea.</p>
@@ -229,6 +217,7 @@ it-IT:
     ca-ES: Catalano
     cy-GB: Gallese
     da-DK: Danese
+    de-AT: Tedesco (Austria)
     de-DE: Tedesco
     el-GR: Greco
     en: Inglese

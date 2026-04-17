@@ -1,4 +1,4 @@
-pa-IN:
+pa:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ਘੰਟੇ.
@@ -63,15 +63,12 @@ pa-IN:
       ask_follow_up_field:
         title: ਸਾਨੂੰ ਦੱਸੋ ਕਿਉਂ
       attachments:
-        description: ''
         title: ਅਟੈਚਮੈਂਟਸ
       author_id:
         title: ਲੇਖਕ
       body:
-        description: ''
         title: ਵਰਣਨ
       body_page:
-        description: ''
         title: ਸਾਨੂੰ ਹੋਰ ਦੱਸੋ
       budget:
         title: ਬਜਟ
@@ -79,30 +76,21 @@ pa-IN:
         description: ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰ ਰਾਹੀਂ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ। ਸੱਦੇ ਗਏ ਸਹਿ-ਪ੍ਰਯੋਜਕ(ਆਂ) ਨੂੰ ਇੱਕ ਈਮੇਲ ਪ੍ਰਾਪਤ ਹੋਵੇਗੀ।
         title: ਸਹਿ-ਪ੍ਰਾਯੋਜਕ
       details_page:
-        description: ''
         title: ਵੇਰਵੇ
       images:
-        description: ''
         title: ਚਿੱਤਰ
       location:
-        description: ''
         title: ਟਿਕਾਣਾ
       other_input_field:
         print_title: "ਜੇਕਰ '%{other_option}' ਹੈ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਦੱਸੋ"
         title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
       proposed_budget:
-        description: ''
         title: ਪ੍ਰਸਤਾਵਿਤ ਬਜਟ
       title:
-        description: ''
         title: ਸਿਰਲੇਖ
-      title_page:
-        description: ''
       topic_ids:
-        description: ''
         title: ਟੈਗਸ
       uploads_page:
-        description: ''
         title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟਾਂ
     users:
       birthyear:
@@ -146,9 +134,9 @@ pa-IN:
           title: ਤੁਹਾਡਾ ਵਿਸ਼ਾ ਕੀ ਹੈ?
   errors:
     messages:
+      in_the_past: ਭਵਿੱਖ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
       max_must_be_greater_than_min_characters: ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਡਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।
       max_must_be_greater_than_or_equal_to_min_select_count: ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਧ ਜਾਂ ਇਸਦੇ ਬਰਾਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।
-      sso_enforced_for_domain: ਤੁਹਾਨੂੰ ਇਸ ਈਮੇਲ ਡੋਮੇਨ ਲਈ ਸਿੰਗਲ ਸਾਈਨ-ਆਨ (SSO) ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਸਾਈਨ ਇਨ ਕਰਨਾ ਪਵੇਗਾ।
   events:
     council_meeting_description: |
       <p>ਇਸ ਕੌਂਸਲ ਮੀਟਿੰਗ ਦੌਰਾਨ, ਉਨ੍ਹਾਂ ਨਾਗਰਿਕ ਪਹਿਲਕਦਮੀਆਂ ਨੂੰ ਪੇਸ਼ ਕੀਤਾ ਜਾਵੇਗਾ ਜਿਨ੍ਹਾਂ ਨੇ 3 ਮਹੀਨਿਆਂ ਤੋਂ ਵੀ ਘੱਟ ਸਮੇਂ ਵਿੱਚ 100 ਵੋਟਾਂ ਹਾਸਲ ਕੀਤੀਆਂ ਹਨ।</p><p>ਫਿਰ ਕੌਂਸਲ ਹਰੇਕ ਵਿਚਾਰ 'ਤੇ ਆਪਣਾ ਵਿਚਾਰ ਸਾਂਝਾ ਕਰੇਗੀ।</p>
@@ -229,6 +217,7 @@ pa-IN:
     ca-ES: ਕੈਟਲਨ
     cy-GB: ਵੈਲਸ਼
     da-DK: ਡੈਨਿਸ਼
+    de-AT: ਜਰਮਨ (ਆਸਟਰੀਆ)
     de-DE: ਜਰਮਨ
     el-GR: ਯੂਨਾਨੀ
     en: ਅੰਗਰੇਜ਼ੀ

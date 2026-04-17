@@ -55,6 +55,14 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options.select(&:supports_xlsx_import?)
   end
 
+  def fields_to_validate_on_import
+    # Currently we do not handle forms with logic, since we cannot validate required
+    # fields as the logic may hide required fields based on previous answers.
+    return [] if form_has_logic?
+
+    enabled_fields.select { |f| f.required? && !f.built_in? && f.supports_submission? }
+  end
+
   def enabled_fields
     fields = all_fields.select(&:enabled?)
     UserFieldsInFormService.add_user_fields_to_form(fields, participation_method, custom_form)
@@ -112,6 +120,7 @@ class IdeaCustomFieldsService
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = {}
+    logic_catch_all_values = %w[any_other_answer no_answer]
     copied_fields = fields.map do |field|
       # Duplicate fields to return with a new id
       copied_field = field.dup
@@ -157,7 +166,7 @@ class IdeaCustomFieldsService
     copied_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
-          rule['if'] = logic_id_map[rule['if']]
+          rule['if'] = logic_id_map[rule['if']] unless logic_catch_all_values.include?(rule['if'])
           rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
           rule
         end
@@ -169,6 +178,10 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  def form_has_logic?
+    all_fields.any? { |field| field.logic.present? && field.logic != { 'rules' => [] } }
+  end
 
   # @param fields [Enumerable<CustomField>]
   # @return [Array<CustomField>]
