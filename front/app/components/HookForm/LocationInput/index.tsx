@@ -86,28 +86,22 @@ const LocationInput = ({
 
       fetchLocationDescription();
     }
-  }, [
-    latitude,
-    longitude,
-    locale,
-    name,
-    setValue,
-    locationDescription,
-    getLocationDescription,
-    touchedFields,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latitude, longitude, locale, name, setValue, getLocationDescription]);
 
   useEffect(() => {
     // If the location input is changed but no lat/lng have been provided in the URL params,
     // we geocode the location description to get the geojson.
-    if (locationDescription && !latitude && !longitude) {
+    // Only geocode when the user has actually changed the field (touchedFields)
+    // to avoid unnecessary calls when loading an existing idea for editing.
+    if (locationDescription && !latitude && !longitude && touchedFields[name]) {
       getLocationGeojson(locationDescription).then((location_point_geojson) => {
         setValue('location_point_geojson', {
           ...location_point_geojson,
         });
       });
     }
-  }, [latitude, locationDescription, longitude, setValue]);
+  }, [latitude, locationDescription, longitude, name, setValue, touchedFields]);
 
   const value = locationDescription
     ? {

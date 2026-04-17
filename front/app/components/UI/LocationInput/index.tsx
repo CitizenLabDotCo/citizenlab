@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -36,36 +36,11 @@ export type LocationInputProps = React.ComponentProps<typeof AsyncSelect> & {
 const LocationInput = (props: LocationInputProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [defaultOptions, setDefaultOptions] = useState<Option[]>([]);
   const theme = useTheme();
 
-  useEffect(() => {
-    const fetchDefaultOptions = async () => {
-      try {
-        const response = await fetcher<TextSearchResponse>({
-          path: '/location/autocomplete',
-          action: 'get',
-          queryParams: {
-            input: props.value?.value,
-            language: locale,
-          },
-        });
-
-        return setDefaultOptions(
-          response.data.attributes.results?.map((item) => ({
-            label: item,
-            value: item,
-          })) || []
-        );
-      } catch (error) {
-        return setDefaultOptions([]);
-      }
-    };
-
-    if (props.value?.value) {
-      fetchDefaultOptions();
-    }
-  }, [locale, props.value?.value]);
+  const defaultOptions = props.value
+    ? [{ label: props.value.value, value: props.value.value }]
+    : [];
 
   const fetchOptions = useCallback(
     async (inputValue: string) => {
