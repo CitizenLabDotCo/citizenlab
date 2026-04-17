@@ -35,7 +35,7 @@ export interface UpdateProjectFolderFileObject {
 }
 
 export interface IQueryParameters {
-  projectFolderId: string;
+  projectFolderId?: string;
 }
 
 export interface IProjectFolderFile {

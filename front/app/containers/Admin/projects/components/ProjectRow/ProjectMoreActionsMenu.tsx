@@ -11,7 +11,7 @@ import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationM
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { canModerateProjectByIds } from 'utils/permissions/rules/projectPermissions';
 
@@ -52,7 +52,10 @@ const ProjectMoreActionsMenu = ({
     return null;
   }
 
-  const userCanDeleteProject = isAdmin(authUser) || !firstPublishedAt;
+  const userIsSpaceModerator = isSpaceModerator(authUser);
+
+  const userCanDeleteProject =
+    isAdmin(authUser) || userIsSpaceModerator || !firstPublishedAt;
 
   const userCanModerateProject = canModerateProjectByIds({
     projectId,
@@ -62,6 +65,7 @@ const ProjectMoreActionsMenu = ({
 
   const userCanCopyProject =
     isAdmin(authUser) ||
+    userIsSpaceModerator ||
     // If the user is a moderator of the project
     userCanModerateProject ||
     // If the user is a moderator of the folder

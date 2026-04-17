@@ -17,6 +17,8 @@ import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfinite
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
+import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
 import sharedMessages from '../../_shared/messages';
@@ -44,6 +46,13 @@ const Table = () => {
     () => data?.pages.flatMap((page) => page.data) ?? [],
     [data?.pages]
   );
+
+  const moderatorsById = useMemo(() => {
+    const included = data?.pages.flatMap((page) => page.included ?? []) ?? [];
+    const moderators = groupIncludedResources(included).user;
+    const moderatorsById = moderators ? indexById(moderators) : undefined;
+    return moderatorsById;
+  }, [data?.pages]);
 
   const { loadMoreRef } = useInfiniteScroll({
     isLoading: isFetchingNextPage,
@@ -79,14 +88,18 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.folder)}</ColHeader>
-            <ColHeader>{formatMessage(messages.managers)}</ColHeader>
+            <ColHeader>{formatMessage(sharedMessages.managers)}</ColHeader>
             <ColHeader>{formatMessage(messages.status)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
         <Tbody>
           {folders.map((folder) => (
-            <Row key={folder.id} folder={folder} />
+            <Row
+              key={folder.id}
+              folder={folder}
+              moderatorsById={moderatorsById}
+            />
           ))}
         </Tbody>
       </TableComponent>

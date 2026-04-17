@@ -53,6 +53,6 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def tree_view
-    active_admin?
+    active_admin? || user&.space_moderator?
   end
 end

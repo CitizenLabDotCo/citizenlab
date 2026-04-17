@@ -867,5 +867,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
     end
+
+    it 'excludes empty string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}domicile" => '', "#{prefix}gender" => '', "#{prefix}postcode" => '2324km' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'postcode' => '2324km' })
+    end
+
+    it 'excludes empty string values when merging item and user custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '' })
+      user = create(:user, custom_field_values: { 'key1' => 'value1', 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'excludes whitespace-only string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '  ', "#{prefix}key2" => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
   end
 end

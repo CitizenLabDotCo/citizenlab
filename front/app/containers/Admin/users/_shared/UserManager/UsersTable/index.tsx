@@ -4,7 +4,6 @@ import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import { includes, isArray } from 'lodash-es';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import { IQueryParameters, IUserData } from 'api/users/types';
 
 import Pagination from 'components/Pagination';
@@ -68,12 +67,6 @@ const UsersTable = ({
   onChangeSorting,
   notCitizenlabMember,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
-
-  if (!authUser) {
-    return null;
-  }
-
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
     trackEventByName(tracks.sortChange, {
       sort,
@@ -172,7 +165,6 @@ const UsersTable = ({
                 selected={
                   selectedUsers === 'all' || includes(selectedUsers, user.id)
                 }
-                authUser={authUser.data}
                 toggleSelect={handleUserToggle(user.id)}
               />
             ))}

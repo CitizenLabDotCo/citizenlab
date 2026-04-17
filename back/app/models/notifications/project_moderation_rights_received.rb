@@ -67,7 +67,7 @@ module Notifications
   class ProjectModerationRightsReceived < Notification
     validates :project, presence: true
 
-    ACTIVITY_TRIGGERS = { 'User' => { 'project_moderation_rights_given' => true } }
+    ACTIVITY_TRIGGERS = { 'User' => { 'project_moderation_rights_received' => true } }
     EVENT_NAME = 'Project moderation rights received'
 
     def self.make_notifications_on(activity)

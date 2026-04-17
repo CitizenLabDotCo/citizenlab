@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { SpaceData } from 'api/spaces/types';
 import useDeleteSpace from 'api/spaces/useDeleteSpace';
 
@@ -12,6 +13,7 @@ import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationM
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -24,6 +26,11 @@ const ActionsMenu = ({ space }: Props) => {
   const localize = useLocalize();
   const { mutate: deleteSpace, isLoading } = useDeleteSpace();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { data: authUser } = useAuthUser();
+
+  if (!isAdmin(authUser)) {
+    return null;
+  }
 
   const actions: IAction[] = [
     {
