@@ -100,8 +100,7 @@ const LocationInput = ({
   useEffect(() => {
     // If the location input is changed but no lat/lng have been provided in the URL params,
     // we geocode the location description to get the geojson.
-    // Only geocode when the user has actually changed the field (touchedFields)
-    // to avoid unnecessary calls when loading an existing idea for editing.
+    // To avoid unnecessary calls, only geocode when the user has actually changed the field.
     if (locationDescription && !latitude && !longitude && isTouched) {
       getLocationGeojson(locationDescription).then((location_point_geojson) => {
         setValue('location_point_geojson', {
