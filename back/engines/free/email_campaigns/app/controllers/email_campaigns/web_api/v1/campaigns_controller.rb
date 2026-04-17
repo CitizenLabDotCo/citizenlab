@@ -21,14 +21,13 @@ module EmailCampaigns
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
         @campaigns = @campaigns.where(id: supported_ids)
-        @campaigns = manual_order(@campaigns.manual)
-      else
-        @campaigns = case parse_bool(params[:manual])
-        when true then manual_order(@campaigns.manual)
-        when false then @campaigns.automatic.order(created_at: :desc)
-        else
-          @campaigns.order(created_at: :desc)
-        end
+      end
+
+      @campaigns = case parse_bool(params[:manual])
+      when true then manual_order(@campaigns.manual)
+      when false then @campaigns.automatic.order(created_at: :desc)
+      else # NOTE: parse_bool(nil) -> nil
+        @campaigns.order(created_at: :desc)
       end
 
       @campaigns = paginate @campaigns
