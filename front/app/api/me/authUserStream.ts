@@ -13,7 +13,7 @@ import { fetchMe } from './useAuthUser';
 const authUserStream = new BehaviorSubject<IUser | undefined>(undefined);
 
 const authUserStreamQueryObserver = new QueryObserver<
-  IUser,
+  IUser | null,
   CLErrors,
   IUser,
   MeKeys

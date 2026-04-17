@@ -4299,6 +4299,11 @@
     "verified_at": "2026-03-18T16:35:09.151932Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.folders": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:22:02.929297Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.helmetDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -4358,6 +4363,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.151932Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.projects": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:22:02.929297Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.Users.registeredUser": {
     "state": "verified",
@@ -5919,6 +5929,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.emailCreated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:18:06.726674Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.project.emails.emailUpdated": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:18:06.726674Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.project.emails.emptyCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -6043,6 +6063,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.project.emails.preview": {
+    "state": "verified",
+    "verified_at": "2026-03-26T20:16:41.703121Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.project.emails.previewSentConfirmation": {
     "state": "verified",
@@ -12753,6 +12778,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.381821Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.381821Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEdit.newComment": {
     "state": "verified",
