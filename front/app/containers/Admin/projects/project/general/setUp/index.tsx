@@ -7,8 +7,6 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
@@ -29,6 +27,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -46,18 +45,13 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
-import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
-import {
-  convertUrlToUploadFile,
-  generateTemporaryFileAttachment,
-  isUploadFile,
-} from 'utils/fileUtils';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
@@ -115,7 +109,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const syncProjectFiles = useSyncFiles();
 
   // File Attachments
-  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
   const { data: remoteProjectFileAttachments } = useFileAttachments({
     attachable_id: projectId,
     attachable_type: 'Project',
@@ -250,83 +243,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const handleProjectCardImageOnCompleteCropping = (base64: string) => {
     setSubmitState('enabled');
     setCroppedProjectCardBase64(base64);
-  };
-
-  const handleProjectFileOnAdd = (fileToAdd: UploadFile) => {
-    // Upload the file to the Data Repository, so we can make the attachment later.
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other', // Default to 'other' when added from phase setup
-        ai_processing_allowed: false, // Default to false when added from phase setup
-      },
-      {
-        onSuccess: (newFile) => {
-          // Create a temporary file attachment to add to the state, so the user sees it in the list.
-          const temporaryFileAttachment = generateTemporaryFileAttachment({
-            fileId: newFile.data.id,
-            attachableId: projectId,
-            attachableType: 'Project',
-            position: projectFileAttachments
-              ? projectFileAttachments.length
-              : 0,
-          });
-
-          const isDuplicate = projectFileAttachments?.some((fileAttachment) => {
-            return (
-              fileAttachment.relationships.file.data.id ===
-              temporaryFileAttachment.relationships.file.data.id
-            );
-          });
-
-          setProjectFileAttachments(
-            isDuplicate
-              ? projectFileAttachments
-              : [...(projectFileAttachments || []), temporaryFileAttachment]
-          );
-
-          setSubmitState(isDuplicate ? submitState : 'enabled');
-        },
-      }
-    );
-  };
-
-  const handleProjectFileOnRemove = (
-    projectFileToRemove: IFileAttachmentData
-  ) => {
-    setProjectFileAttachments((projectFileAttachments) =>
-      projectFileAttachments?.filter(
-        (fileAttachment) => fileAttachment.id !== projectFileToRemove.id
-      )
-    );
-    setProjectFileAttachmentsToRemove((projectFileAttachmentsToRemove) => [
-      ...projectFileAttachmentsToRemove,
-      projectFileToRemove,
-    ]);
-
-    setSubmitState('enabled');
-  };
-
-  const handleFilesReorder = (updatedFiles: IFileAttachmentData[]) => {
-    setProjectFileAttachments(updatedFiles);
-    setSubmitState('enabled');
-  };
-
-  const handleProjectFileOnAttach = (fileToAttach: IFileData) => {
-    const temporaryFileAttachment = generateTemporaryFileAttachment({
-      fileId: fileToAttach.id,
-      attachableId: projectId,
-      attachableType: 'Project',
-      position: projectFileAttachments ? projectFileAttachments.length : 0,
-    });
-
-    setProjectFileAttachments((projectFileAttachments) => [
-      ...(projectFileAttachments || []),
-      temporaryFileAttachment,
-    ]);
-    setSubmitState('enabled');
   };
 
   const handleTopicsChange = (topicIds: string[]) => {
@@ -740,17 +656,18 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
                 }
               />
             </SubSectionTitle>
-            <FileRepositorySelectAndUpload
-              id="project-edit-form-file-uploader"
-              onFileAdd={handleProjectFileOnAdd}
-              onFileRemove={handleProjectFileOnRemove}
-              onFileReorder={handleFilesReorder}
-              onFileAttach={handleProjectFileOnAttach}
-              fileAttachments={projectFileAttachments}
-              enableDragAndDrop
+            <FileUploader
+              projectId={projectId}
+              projectFileAttachments={projectFileAttachments}
+              setProjectFileAttachments={(...args) => {
+                setSubmitState('enabled');
+                setProjectFileAttachments(...args);
+              }}
+              setProjectFileAttachmentsToRemove={(...args) => {
+                setSubmitState('enabled');
+                setProjectFileAttachmentsToRemove(...args);
+              }}
               apiErrors={apiErrors}
-              maxSizeMb={50}
-              isUploadingFile={isAddingFile}
             />
           </StyledSectionField>
         </Section>
