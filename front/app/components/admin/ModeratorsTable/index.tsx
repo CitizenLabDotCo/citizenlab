@@ -10,22 +10,27 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import HeaderCell from 'components/admin/UsersTable/HeaderCell';
 import userTableMessages from 'components/admin/UsersTable/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import Row from './Row';
 
 interface Props {
   moderators: IUserData[];
-  onDeleteModerator?: (userId: string) => Promise<void>;
+  onDeleteModerator: (userId: string) => Promise<void>;
 }
 
 const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const authUserIsAdmin = isAdmin(authUser);
+
   if (moderators.length === 0) {
     return (
       <Text>
@@ -43,7 +48,7 @@ const ModeratorsTable = ({ moderators, onDeleteModerator }: Props) => {
       <Thead>
         <Tr background={colors.grey50}>
           <HeaderCell message={userTableMessages.name} />
-          <HeaderCell message={userTableMessages.role} />
+          {authUserIsAdmin && <HeaderCell message={userTableMessages.role} />}
           <HeaderCell message={userTableMessages.inviteStatus} />
           <HeaderCell message={userTableMessages.options} />
         </Tr>

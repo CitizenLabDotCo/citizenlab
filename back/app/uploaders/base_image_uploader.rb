@@ -18,7 +18,7 @@ class BaseImageUploader < BaseUploader
 
   # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
   def filename
-    "#{secure_token}.#{file.extension}" if original_filename.present?
+    "#{secure_token}.#{file.extension}"
   end
 
   def content_type_allowlist

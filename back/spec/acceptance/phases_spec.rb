@@ -967,7 +967,7 @@ resource 'Phases' do
               quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
               service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
               governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
-              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Overig' }
             }
           }
         })
@@ -1096,7 +1096,8 @@ resource 'Phases' do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -1106,7 +1107,8 @@ resource 'Phases' do
                     survey_response1.author.email,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -1115,7 +1117,8 @@ resource 'Phases' do
                     survey_response2.author.email,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
@@ -1232,7 +1235,8 @@ resource 'Phases' do
               'Author email',
               'Author ID',
               'Submitted at',
-              'Project'
+              'Project',
+              'Imported'
             ],
             rows: [
               [
@@ -1242,7 +1246,8 @@ resource 'Phases' do
                 survey_response.author.email,
                 survey_response.author_id,
                 an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
+                project.title_multiloc['en'],
+                'false'
               ]
             ]
           }
