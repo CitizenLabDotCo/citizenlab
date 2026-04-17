@@ -96,7 +96,7 @@
   "app.components.FormSync.paperFormsOCR1": "Formulaires papier (OCR)",
   "app.components.FormSync.paperFormsOCRDescription1": "Imprimez le formulaire, collectez les réponses sur papier, puis scannez les réponses.",
   "app.components.FormSync.spreadsheet1": "Feuille de calcul",
-  "app.components.FormSync.spreadsheetDescription1": "Importer les données de réponse à partir d'un fichier Excel ou CSV",
+  "app.components.FormSync.spreadsheetDescription1": "Importez des réponses depuis un fichier Excel ou CSV.",
   "app.components.FormSync.template1": "Modèle",
   "app.components.FormSync.unlockScanning1": "Débloquer la numérisation",
   "app.components.FormSync.unlockScanningTooltip1": "La numérisation de formulaires papier avec FormSync n'est pas incluse dans votre abonnement actuel.",
