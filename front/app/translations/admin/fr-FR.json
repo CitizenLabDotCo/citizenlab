@@ -91,7 +91,7 @@
   "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Les modèles Excel n'incluront pas les questions relatives au téléchargement de fichiers ni les questions relatives aux données cartographiques (Épingler, Dessiner un chemin, Zone de dessin, charger un fichier ESRI), car elles ne sont pas encore prises en charge pour l'importation en masse.",
   "app.components.FormSync.importFile1": "Importer le fichier",
-  "app.components.FormSync.importResponses1": "Importer les réponses",
+  "app.components.FormSync.importResponses1": "Importer des réponses",
   "app.components.FormSync.importScans1": "Importer les scans",
   "app.components.FormSync.paperFormsOCR1": "OCR pour formulaires papier",
   "app.components.FormSync.paperFormsOCRDescription1": "Imprimez le formulaire, collectez les réponses sur papier, puis scannez les réponses.",
