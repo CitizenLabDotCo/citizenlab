@@ -62,10 +62,10 @@ const mergeParsedConfigs = (
     outlets: mergeWith({}, ...configs.map((c) => c.outlets), concatArrays),
     routes: mergeWith({}, ...configs.map((c) => c.routes), concatArrays),
     beforeMountApplication: () =>
-      configs.forEach((c) => c.beforeMountApplication?.()),
+      configs.forEach((c) => c.beforeMountApplication()),
     afterMountApplication: () =>
-      configs.forEach((c) => c.afterMountApplication?.()),
-    streamsToReset: configs.flatMap((c) => c.streamsToReset ?? []),
+      configs.forEach((c) => c.afterMountApplication()),
+    streamsToReset: configs.flatMap((c) => c.streamsToReset),
   };
 };
 

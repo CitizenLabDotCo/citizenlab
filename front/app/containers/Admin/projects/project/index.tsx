@@ -102,7 +102,7 @@ const AdminProjectsProjectIndex = () => {
         />
         {extraTabs.map(({ url, label, name }) => (
           <Tab
-            key={name ?? url}
+            key={name}
             label={label}
             url={url}
             active={pathname.startsWith(url)}
