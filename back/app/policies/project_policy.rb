@@ -216,7 +216,7 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    admin? || can_moderate_folder? || record.ever_published? || record.review&.approved?
+    can_moderate_folder? || record.ever_published? || record.review&.approved?
   end
 
   def can_moderate_folder?
