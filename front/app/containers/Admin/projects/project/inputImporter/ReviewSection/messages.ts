@@ -104,12 +104,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation',
     defaultMessage: 'This action cannot be undone.',
   },
-  cancel: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.cancel',
-    defaultMessage: 'Cancel',
-  },
-  confirm: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirm',
-    defaultMessage: 'Confirm',
-  },
 });
