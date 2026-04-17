@@ -93,7 +93,7 @@
   "app.components.FormSync.importFile1": "Importer le fichier",
   "app.components.FormSync.importResponses1": "Importer des réponses",
   "app.components.FormSync.importScans1": "Importer les scans",
-  "app.components.FormSync.paperFormsOCR1": "OCR pour formulaires papier",
+  "app.components.FormSync.paperFormsOCR1": "Formulaires papier (OCR)",
   "app.components.FormSync.paperFormsOCRDescription1": "Imprimez le formulaire, collectez les réponses sur papier, puis scannez les réponses.",
   "app.components.FormSync.spreadsheet1": "Feuille de calcul",
   "app.components.FormSync.spreadsheetDescription1": "Importer les données de réponse à partir d'un fichier Excel ou CSV",
