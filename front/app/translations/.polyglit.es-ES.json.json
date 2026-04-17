@@ -3614,6 +3614,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:22:38.705921Z",
@@ -3679,6 +3680,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:22:38.705921Z",
@@ -3699,6 +3701,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-04-08T09:41:22.143317Z",
@@ -3764,6 +3767,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:22:38.705921Z",
@@ -3779,6 +3783,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:22:38.705921Z",
@@ -3789,6 +3794,7 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-04-08T09:41:22.143317Z",
@@ -6354,6 +6360,11 @@
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:27:16.106498Z",
+    "verified_by": "Rob"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.752652Z",
@@ -6428,6 +6439,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.752652Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T08:27:16.106498Z",
+    "verified_by": "Rob"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",

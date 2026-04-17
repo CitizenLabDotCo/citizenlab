@@ -1809,6 +1809,10 @@ resource 'Users' do
             @user.reload
             expect(response_status).to eq 200
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+
+            # Resets the JWT cookie by setting a new token expiry key, so that old tokens are invalidated after password change
+            expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
+            expect(@user.token_expiry_key).not_to be_nil
           end
         end
 
