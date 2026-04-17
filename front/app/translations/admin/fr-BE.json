@@ -100,7 +100,7 @@
   "app.components.FormSync.template1": "Modèle XLSX",
   "app.components.FormSync.unlockScanning1": "Débloquer FormSync",
   "app.components.FormSync.unlockScanningTooltip1": "L'importation de réponses de formulaires numérisés à l'aide de l FormSync n'est pas incluse dans votre plan actuel.",
-  "app.components.FormSync.unlockScanningTooltip2": "Contactez votre gestionnaire Government Success ou votre administrateur pour débloquer cette fonctionnalité.",
+  "app.components.FormSync.unlockScanningTooltip2": "Contactez votre Spécialiste en participation Go Vocal ou votre administrateur pour la débloquer.",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Créer un projet basé sur le modèle ''{templateTitle}''.",

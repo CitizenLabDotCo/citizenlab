@@ -494,6 +494,11 @@
     "verified_at": "2026-04-17T14:49:05.074810Z",
     "verified_by": "Adrien"
   },
+  "app.components.FormSync.unlockScanningTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:58:06.941111Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectTemplatePreview.close": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
