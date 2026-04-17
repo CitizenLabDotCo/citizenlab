@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { fontSizes, colors } from '../../utils/styleUtils';
 import Icon from '../Icon';
@@ -25,6 +28,7 @@ const StyledSuccessMessageInner = styled.div<{ showBackground?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) =>
     props.showBackground ? colors.successLight : 'transparent'};
@@ -66,6 +70,7 @@ interface Props {
   showBackground?: boolean;
   animate: boolean;
   className?: string;
+  onClose?: () => void;
 }
 
 interface State {
@@ -93,7 +98,8 @@ export default class Success extends PureComponent<Props, State> {
   }
 
   render() {
-    const { text, className, animate, showIcon, showBackground } = this.props;
+    const { text, className, animate, showIcon, showBackground, onClose } =
+      this.props;
     const { mounted } = this.state;
 
     return (
@@ -108,8 +114,11 @@ export default class Success extends PureComponent<Props, State> {
       >
         <Container className={`e2e-success-message ${className}`}>
           <StyledSuccessMessageInner showBackground={showBackground}>
-            {showIcon && <CheckmarkIcon name="check" />}
-            <SuccessMessageText>{text}</SuccessMessageText>
+            <Box display="flex" alignItems="center">
+              {showIcon && <CheckmarkIcon name="check" />}
+              <SuccessMessageText>{text}</SuccessMessageText>
+            </Box>
+            {onClose && <CloseIconButton onClick={onClose} />}
           </StyledSuccessMessageInner>
         </Container>
       </CSSTransition>

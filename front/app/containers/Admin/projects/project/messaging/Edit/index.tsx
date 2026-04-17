@@ -73,6 +73,7 @@ const Edit = () => {
                 text={formatMessage(messages.previewSentConfirmation)}
                 showIcon
                 showBackground
+                onClose={() => setPreviewSent(false)}
               />
             </Box>
           )}
