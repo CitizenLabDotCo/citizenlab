@@ -29,12 +29,6 @@ module BulkImportIdeas
 
       SideFxBulkImportService.new.after_success(import_user, phase, 'idea', 'pdf', all_ideas, import_service.imported_users) if all_ideas.any?
       complete_if_done!
-    rescue StandardError => e
-      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', e.to_s)
-      remaining = idea_import_files.count - files_processed
-      track_progress(remaining, remaining)
-      complete_if_done!
-      raise e
     end
 
     def handle_error(error)
@@ -43,10 +37,12 @@ module BulkImportIdeas
         return super if error_count <= maximum_retry_count
       end
 
+      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', error.to_s)
+
       remaining = unprocessed_files_count
       track_progress(remaining, remaining) if remaining > 0
       complete_if_done!
-      ErrorReporter.report(error, extra: { phase_id: arguments[3]&.id })
+      ErrorReporter.report(error, extra: { phase_id: phase&.id })
       expire
     end
 
@@ -56,8 +52,17 @@ module BulkImportIdeas
       arguments[0].count { |file| !IdeaImport.exists?(file_id: file.id) } # arguments[0] is idea_import_files
     end
 
+    def import_user
+      arguments[1]
+    end
+
+    def phase
+      arguments[3]
+    end
+
+    # Required by Jobs::TrackableJob
     def job_tracking_context
-      arguments[3] # phase
+      phase
     end
   end
 end
