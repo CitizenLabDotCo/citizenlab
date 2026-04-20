@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import {
   Box,
   Table as TableComponent,
+  Text,
   Thead,
   Tr,
   Th,
@@ -60,6 +61,16 @@ const Table = () => {
           ))}
         </Tbody>
       </TableComponent>
+      {spaces.data.length === 0 && (
+        <Box
+          mt="12px"
+          display="flex"
+          justifyContent="center"
+          color={colors.textPrimary}
+        >
+          <Text>{formatMessage(messages.noSpacesFound)}</Text>
+        </Box>
+      )}
     </Box>
   );
 };
