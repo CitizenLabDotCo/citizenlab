@@ -127,14 +127,12 @@ RSpec.describe AdminPublication do
 
   describe '#published?' do
     it 'reflects effective status for a due schedule' do
-
       admin_publication.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
       admin_publication.reload
       expect(admin_publication).to be_published
     end
 
     it 'ignores future schedule' do
-
       admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.from_now)
       admin_publication.reload
       expect(admin_publication).to be_published
@@ -143,7 +141,6 @@ RSpec.describe AdminPublication do
 
   describe '#draft?' do
     it 'reflects effective status for a due schedule' do
-
       admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.ago)
       admin_publication.reload
       expect(admin_publication).to be_draft
@@ -152,7 +149,6 @@ RSpec.describe AdminPublication do
 
   describe '#archived?' do
     it 'reflects effective status for a due schedule' do
-
       admin_publication.update_columns(scheduled_status: 'archived', scheduled_at: 1.hour.ago)
       admin_publication.reload
       expect(admin_publication).to be_archived
@@ -184,7 +180,6 @@ RSpec.describe AdminPublication do
 
   describe '.published' do
     it 'includes due schedule targeting published, excludes due schedule away from published' do
-
       becoming_published = create(:admin_publication)
       becoming_published.update_columns(publication_status: 'draft', scheduled_status: 'published', scheduled_at: 1.hour.ago)
 
@@ -196,7 +191,6 @@ RSpec.describe AdminPublication do
     end
 
     it 'uses stored status when schedule is in the future' do
-
       admin_publication.update_columns(scheduled_status: 'draft', scheduled_at: 1.hour.from_now)
       expect(described_class.published).to include(admin_publication)
     end
@@ -204,7 +198,6 @@ RSpec.describe AdminPublication do
 
   describe '.draft' do
     it 'includes due schedule targeting draft, excludes due schedule away from draft' do
-
       becoming_draft = create(:admin_publication)
       becoming_draft.update_columns(publication_status: 'published', scheduled_status: 'draft', scheduled_at: 1.hour.ago)
 
@@ -218,7 +211,6 @@ RSpec.describe AdminPublication do
 
   describe '.not_draft' do
     it 'excludes due schedule targeting draft, includes due schedule away from draft' do
-
       becoming_draft = create(:admin_publication)
       becoming_draft.update_columns(publication_status: 'published', scheduled_status: 'draft', scheduled_at: 1.hour.ago)
 

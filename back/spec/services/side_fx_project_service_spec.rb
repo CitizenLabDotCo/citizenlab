@@ -113,7 +113,6 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
-
   end
 
   describe 'after_destroy' do

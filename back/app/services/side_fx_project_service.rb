@@ -138,7 +138,7 @@ class SideFxProjectService
 
   def enqueue_scheduled_transition(admin_pub)
     return unless admin_pub.saved_change_to_scheduled_at?
-    return unless admin_pub.scheduled_at.present?
+    return if admin_pub.scheduled_at.blank?
 
     ProcessScheduledPublicationTransitionsJob
       .set(wait_until: admin_pub.scheduled_at)
