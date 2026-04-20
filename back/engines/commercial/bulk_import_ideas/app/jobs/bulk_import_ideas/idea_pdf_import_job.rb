@@ -35,21 +35,18 @@ module BulkImportIdeas
     end
 
     def handle_error(error)
-      if retryable?(error) && error_count <= resolve_que_setting(:maximum_retry_count)
-        super
-      else
-        remaining = unprocessed_files_count
-        track_progress_and_complete!(remaining, remaining) if remaining > 0
-        ErrorReporter.report(error, extra: { phase_id: arguments[3]&.id })
-        expire
+      case error
+      when *RETRYABLE_ERRORS
+        return super if error_count <= maximum_retry_count
       end
+
+      remaining = unprocessed_files_count
+      track_progress_and_complete!(remaining, remaining) if remaining > 0
+      ErrorReporter.report(error, extra: { phase_id: arguments[3]&.id })
+      expire
     end
 
     private
-
-    def retryable?(error)
-      RETRYABLE_ERRORS.any? { |klass| error.is_a?(klass) }
-    end
 
     def unprocessed_files_count
       arguments[0].count { |file| !IdeaImport.exists?(file_id: file.id) }
