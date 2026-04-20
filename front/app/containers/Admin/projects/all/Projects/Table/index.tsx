@@ -133,22 +133,23 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {isLoadingData && (
+          {isLoadingNewData && (
             <>
               <EmptyRow />
               <EmptyRow />
               <EmptyRow />
             </>
           )}
-          {projects.map((project, i) => (
-            <Row
-              key={project.id}
-              project={project}
-              participantsCount={participantsCounts[project.id]}
-              firstRow={i === 0}
-              moderatorsById={moderatorsById}
-            />
-          ))}
+          {!isLoadingNewData &&
+            projects.map((project, i) => (
+              <Row
+                key={project.id}
+                project={project}
+                participantsCount={participantsCounts[project.id]}
+                firstRow={i === 0}
+                moderatorsById={moderatorsById}
+              />
+            ))}
         </Tbody>
       </TableComponent>
 
