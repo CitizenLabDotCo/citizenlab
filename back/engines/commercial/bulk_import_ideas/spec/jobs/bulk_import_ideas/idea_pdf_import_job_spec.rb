@@ -65,18 +65,6 @@ RSpec.describe BulkImportIdeas::IdeaPdfImportJob do
         expect { job.run(files, admin, 'en', phase, false, 1) }
           .to raise_error(RubyLLM::RateLimitError)
       end
-
-      it 'calls after_failure before re-raising' do
-        sidefx = instance_double(BulkImportIdeas::SideFxBulkImportService)
-        allow(BulkImportIdeas::SideFxBulkImportService).to receive(:new).and_return(sidefx)
-        allow(sidefx).to receive(:after_failure)
-
-        job = described_class.new
-        expect { job.run(files, admin, 'en', phase, false, 1) }
-          .to raise_error(RubyLLM::RateLimitError)
-
-        expect(sidefx).to have_received(:after_failure).with(admin, phase, 'idea', 'pdf', anything)
-      end
     end
 
     context 'when a permanent error occurs' do
@@ -113,43 +101,47 @@ RSpec.describe BulkImportIdeas::IdeaPdfImportJob do
 
   describe '#handle_error' do
     let(:job) { described_class.perform_later(files, admin, 'en', phase, false, 1) }
+    let(:sidefx) { instance_double(BulkImportIdeas::SideFxBulkImportService, after_failure: nil) }
+
+    before do
+      allow(BulkImportIdeas::SideFxBulkImportService).to receive(:new).and_return(sidefx)
+      allow(job).to receive(:maximum_retry_count).and_return(max_retry_count)
+      allow(ErrorReporter).to receive(:report)
+    end
 
     context 'with a retryable error and retries remaining' do
-      it 'retries without reporting to Sentry' do
+      it 'retries without reporting to Sentry or calling after_failure' do
         allow(job).to receive_messages(error_count: 1, expire: nil)
-        allow(job).to receive(:resolve_que_setting).with(:maximum_retry_count).and_return(max_retry_count)
         allow(job).to receive(:retry_in_default_interval)
-        allow(ErrorReporter).to receive(:report)
 
         job.handle_error(RubyLLM::RateLimitError.new(nil, 'rate limited'))
 
         expect(job).not_to have_received(:expire)
         expect(ErrorReporter).not_to have_received(:report)
+        expect(sidefx).not_to have_received(:after_failure)
       end
     end
 
     context 'with a retryable error and retries exhausted' do
-      it 'reports to Sentry and expires' do
+      it 'reports to Sentry, calls after_failure and expires' do
         allow(job).to receive_messages(error_count: max_retry_count + 1, expire: nil)
-        allow(job).to receive(:resolve_que_setting).with(:maximum_retry_count).and_return(max_retry_count)
-        allow(ErrorReporter).to receive(:report)
 
         job.handle_error(RubyLLM::RateLimitError.new(nil, 'rate limited'))
 
         expect(ErrorReporter).to have_received(:report)
+        expect(sidefx).to have_received(:after_failure).with(admin, phase, 'idea', 'pdf', anything)
         expect(job).to have_received(:expire)
       end
     end
 
     context 'with a permanent error' do
-      it 'reports to Sentry and expires immediately' do
+      it 'reports to Sentry, calls after_failure and expires immediately' do
         allow(job).to receive_messages(error_count: 1, expire: nil)
-        allow(job).to receive(:resolve_que_setting).with(:maximum_retry_count).and_return(max_retry_count)
-        allow(ErrorReporter).to receive(:report)
 
         job.handle_error(BulkImportIdeas::Error.new('bulk_import_idea_not_valid', value: 'bad'))
 
         expect(ErrorReporter).to have_received(:report)
+        expect(sidefx).to have_received(:after_failure).with(admin, phase, 'idea', 'pdf', anything)
         expect(job).to have_received(:expire)
       end
     end
