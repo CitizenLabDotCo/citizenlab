@@ -26,7 +26,7 @@ import TextArea from 'components/UI/TextArea';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { replaceIdsWithNewUuids } from './utils';
+import { replaceIdsWithNewUuids, replaceUuidsInText } from './utils';
 
 const CodeTextArea = styled(TextArea)`
   .TextArea textarea {
@@ -88,6 +88,22 @@ const EditSchemaButtonWithModal = ({
     } catch (e) {
       setError(formatMessage(messages.schemaParseError));
     }
+  };
+
+  // Native copy also needs to be handed to ensure that we can never directly
+  // copy & paste the same IDs to different platforms - causes metabase issues
+  const handleNativeCopy = (e: React.ClipboardEvent) => {
+    const selection = window.getSelection()?.toString();
+    if (!selection) return;
+    e.preventDefault();
+    let rewritten: string;
+    try {
+      const parsed = JSON.parse(selection) as IFlatCustomField[];
+      rewritten = JSON.stringify(replaceIdsWithNewUuids(parsed), null, 2);
+    } catch {
+      rewritten = replaceUuidsInText(selection);
+    }
+    e.clipboardData.setData('text/plain', rewritten);
   };
 
   const handleSave = async () => {
@@ -155,11 +171,13 @@ const EditSchemaButtonWithModal = ({
             <FormattedMessage {...messages.schemaEdit} />
           </Title>
 
-          <CodeTextArea
-            value={jsonText}
-            onChange={(value) => setJsonText(value)}
-            maxRows={20}
-          />
+          <Box onCopy={handleNativeCopy}>
+            <CodeTextArea
+              value={jsonText}
+              onChange={(value) => setJsonText(value)}
+              maxRows={20}
+            />
+          </Box>
 
           {error && <Error text={error} marginTop="8px" marginBottom="0" />}
 

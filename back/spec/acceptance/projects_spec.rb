@@ -1022,7 +1022,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1049,7 +1050,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         }, {
@@ -1061,7 +1063,8 @@ resource 'Projects' do
             'Author email',
             'Author ID',
             'Submitted at',
-            'Project'
+            'Project',
+            'Imported'
           ],
           rows: [
             [
@@ -1071,7 +1074,8 @@ resource 'Projects' do
               survey_response.author.email,
               survey_response.author_id,
               an_instance_of(DateTime), # created_at
-              project.title_multiloc['en']
+              project.title_multiloc['en'],
+              'false'
             ]
           ]
         }, {
@@ -1099,7 +1103,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1125,7 +1130,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         })
@@ -1165,6 +1171,46 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/publication_recipient_count' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:topic) { create(:global_topic) }
+      let(:project) { create(:project, global_topics: [topic]) }
+      let(:id) { project.id }
+
+      example 'Returns the count of publication recipients' do
+        create_list(:follower, 2, followable: topic)
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :count)).to eq 2
+      end
+
+      example 'Excludes users who opted out of the campaign' do
+        follower = create(:follower, followable: topic)
+        create(:follower, followable: topic)
+        create(:consent, user: follower.user, campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
+      end
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Get publication recipient count', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -1194,7 +1240,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
-        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
+        dutch_column_headers = fixtures['nl-NL']['xlsx_export']['column_headers']
         @admin.update!(locale: 'nl-NL')
 
         do_request
@@ -1592,7 +1638,8 @@ resource 'Projects' do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: [
                 [
@@ -1618,7 +1665,8 @@ resource 'Projects' do
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
                   nil,
-                  nil
+                  nil,
+                  'false'
                 ]
               ]
             }

@@ -39,7 +39,7 @@ export const emailFlow = (
 
       SUBMIT_EMAIL: async (email: string) => {
         updateState({ email });
-        handleSubmitEmail(
+        await handleSubmitEmail(
           email,
           getAuthenticationData,
           getRequirements,

@@ -15,11 +15,13 @@ export interface IProjectFolderModeratorRole {
   project_folder_id: string;
 }
 
-interface ISpaceModeratorRole {
+export interface ISpaceModeratorRole {
   type: 'space_moderator';
   space_id: string;
 }
 
+// NOTE: TRole['type'] is NOT the same as HighestRole (front/app/api/users/types.ts)!
+// highest role also includes super_admin.
 export type TRole =
   | IAdminRole
   | IProjectFolderModeratorRole
@@ -76,25 +78,27 @@ export const isProjectModerator = (
 ) => {
   if (!user) return false;
 
+  const roles = user.data.attributes.roles || [];
+
   if (projectId) {
-    const role = user.data.attributes.roles?.find(
+    return roles.some(
       (r) => r.type === 'project_moderator' && r.project_id === projectId
     );
-
-    return role !== undefined;
   }
-
-  const roles = user.data.attributes.roles || [];
 
   return roles.some((r) => r.type === 'project_moderator');
 };
 
-export const isSpaceModerator = (user: IUser | undefined) => {
+export const isSpaceModerator = (user: IUser | undefined, spaceId?: string) => {
   if (!user) return false;
 
-  const role = user.data.attributes.roles?.find(
-    (r) => r.type === 'space_moderator'
-  );
+  const roles = user.data.attributes.roles || [];
 
-  return role !== undefined;
+  if (spaceId) {
+    return roles.some(
+      (r) => r.type === 'space_moderator' && r.space_id === spaceId
+    );
+  }
+
+  return roles.some((r) => r.type === 'space_moderator');
 };

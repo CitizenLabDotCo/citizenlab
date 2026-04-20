@@ -854,6 +854,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.continueEditing": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.107106Z",
@@ -954,6 +955,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.submitConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.107106Z",
@@ -1044,6 +1046,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.CustomFieldsForm.yesSubmit": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.107106Z",
@@ -3629,6 +3632,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T17:20:13.318931Z",
@@ -3694,6 +3698,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T16:01:33.153410Z",
@@ -3713,6 +3718,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:08.891235Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
@@ -3774,6 +3785,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T17:20:13.318931Z",
@@ -3789,6 +3801,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T16:01:33.153410Z",
@@ -3798,6 +3811,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-31T07:26:08.891235Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",
@@ -6359,6 +6378,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:17:31.872152Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -6433,6 +6457,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:17:31.872152Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
@@ -9028,6 +9057,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:33:28.446428Z",
+    "verified_by": "Adrien"
   },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
@@ -12008,6 +12042,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:18:47.694626Z",
+    "verified_by": "Cindy EB"
   },
   "app.errors.email_taken": {
     "state": "verified",

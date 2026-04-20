@@ -8,6 +8,7 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import InviteBadge from 'containers/Admin/invitations/all/InviteBadge';
@@ -16,38 +17,49 @@ import NameAvatarEmail from 'components/admin/UsersTable/NameAvatarEmail';
 import UserRole from 'components/admin/UsersTable/UserRole';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
 interface Props {
   moderator: IUserData;
-  onDeleteModerator?: (userId: string) => Promise<void>;
+  onDeleteModerator: (userId: string) => Promise<void>;
 }
 
 const Row = ({ moderator, onDeleteModerator }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const authUserIsAdmin = isAdmin(authUser);
   const [deleting, setDeleting] = useState(false);
 
-  const handleDeleteModerator = onDeleteModerator
-    ? async () => {
-        setDeleting(true);
-        await onDeleteModerator(moderator.id);
-        setDeleting(false);
-      }
-    : undefined;
+  if (!authUser) return null;
+
+  const handleDeleteModerator = async () => {
+    setDeleting(true);
+    await onDeleteModerator(moderator.id);
+    setDeleting(false);
+  };
+
+  const authUserIsNotModerator = authUser.data.id !== moderator.id;
+
+  // If you are an admin, you can delete yourself as moderator.
+  // Otherwise, you can't.
+  const showDeleteButton = authUserIsNotModerator || authUserIsAdmin;
 
   return (
     <Tr>
       <Td>
         <NameAvatarEmail user={moderator} />
       </Td>
-      <Td>
-        <UserRole user={moderator} />
-      </Td>
+      {authUserIsAdmin && (
+        <Td>
+          <UserRole user={moderator} />
+        </Td>
+      )}
       <Td>
         <InviteBadge user={moderator} />
       </Td>
       <Td>
-        {handleDeleteModerator && (
+        {showDeleteButton && (
           <Box w="100%" display="flex" justifyContent="flex-start">
             <Button
               buttonStyle="delete"

@@ -23,7 +23,7 @@ const New = () => {
       ...values,
     });
     clHistory.push(
-      `/admin/messaging/emails/custom/${response.data.id}/edit?created=true`
+      `/admin/messaging/emails/custom/${response.data.id}?created=true`
     );
   };
 
