@@ -9058,6 +9058,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T06:16:14.705157Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Κατάσταση και ψήφοι",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "λεπτά",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Περισσότερες πληροφορίες",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Αυτή η πρόταση έχει φτάσει το απαιτούμενο όριο υποστήριξης! Παραμένει ανοιχτή για τη συγκέντρωση ψήφων. Μοιραστείτε τη για να συγκεντρώσετε ακόμα μεγαλύτερη υποστήριξη.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Ψηφίστε",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Ψηφίστηκε",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Θα λάβετε ειδοποίηση όταν η πρόταση αυτή περάσει στο επόμενο βήμα. {x, plural, =0 {Απομένει {xDays}.} one {Απομένουν {xDays}.} other {Απομένουν {xDays}.}}",

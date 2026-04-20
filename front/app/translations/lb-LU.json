@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status a Stëmmen",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Méi Infoen",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Dëse Bäitrag huet de néidege Schwellenwäert un Ënnerstëtzung erreecht! En ass nach ëmmer op fir weider Stëmmen. Deelt en, fir nach méi Ënnerstëtzung ze sammelen.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stëmmen",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "gestëmmt",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Dir kritt Notifikatioun wann dës Initiativ op de nächste Schrëtt geet. {x, plural, =0 {Et gëtt {xDays} lénks.} one {Et gëtt {xDays} lénks.} other {Et sinn {xDays} lénks.}}",

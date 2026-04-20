@@ -9063,6 +9063,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T16:14:15.147660Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
