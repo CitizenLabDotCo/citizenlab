@@ -25,7 +25,6 @@ const StyledSuccessMessageInner = styled.div<{ showBackground?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) =>
     props.showBackground ? colors.successLight : 'transparent'};
