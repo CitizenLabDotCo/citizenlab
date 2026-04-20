@@ -1315,6 +1315,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pre-launch",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Project",
   "app.containers.Admin.projects.all.new.Projects.Table.published": "Published",
+  "app.containers.Admin.projects.all.new.Projects.Table.scheduled": "Scheduled",
   "app.containers.Admin.projects.all.new.Projects.Table.scrollDownToLoadMore": "Scroll down to load more",
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
