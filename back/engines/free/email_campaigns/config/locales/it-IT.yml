@@ -52,11 +52,11 @@ it-IT:
         user_who_is_invited_to_cosponsor_a_proposal: Utente che viene invitato a co-sponsorizzare una proposta
         user_who_is_mentioned: Utente che viene menzionato
         user_who_is_receiving_admin_rights: Utente che riceve i diritti di amministratore
-        user_who_is_receiving_folder_manager_rights: Utente che riceve i permessi di responsabile della cartella
+        user_who_is_receiving_folder_manager_rights: Utente che riceve i permessi di manager della cartella
         user_who_is_receiving_folder_moderator_rights: Utente che riceve i diritti di moderatore della cartella
-        user_who_is_receiving_project_manager_rights: Utente che riceve i permessi di responsabile del progetto
+        user_who_is_receiving_project_manager_rights: Utente che riceve i permessi di project manager
         user_who_is_receiving_project_moderator_rights: Utente che riceve i diritti di moderatore del progetto
-        user_who_is_receiving_space_manager_rights: Utente che riceve i permessi di responsabile dello spazio
+        user_who_is_receiving_space_manager_rights: Utente che riceve i permessi di manager d'area
         user_who_published_the_input: Utente che ha pubblicato il contributo
         user_who_published_the_proposal: Utente che ha pubblicato la proposta
         user_who_registers: Utente che si registra
@@ -107,11 +107,11 @@ it-IT:
         user_comments_on_input: Commenti degli utenti sull'input
         user_comments_on_proposal: Commenti degli utenti sulla proposta
         user_is_given_admin_rights: All'utente vengono concessi i diritti di amministratore
-        user_is_given_folder_manager_rights: All'utente vengono assegnati i permessi di responsabile della cartella
+        user_is_given_folder_manager_rights: All'utente vengono assegnati i permessi di manager della cartella
         user_is_given_folder_moderator_rights: All'utente vengono concessi i diritti di moderatore della cartella
-        user_is_given_project_manager_rights: All'utente vengono assegnati i permessi di responsabile del progetto
+        user_is_given_project_manager_rights: All'utente vengono assegnati i permessi di project manager
         user_is_given_project_moderator_rights: All'utente vengono concessi i diritti di moderatore del progetto
-        user_is_given_space_manager_rights: All'utente vengono assegnati i permessi di responsabile dello spazio
+        user_is_given_space_manager_rights: "All'utente vengono assegnati i permessi di manager d'area"
         user_is_invited_to_cosponsor_a_proposal: L'utente è invitato a co-sponsorizzare una proposta
         user_is_invited_to_platform: L'utente è invitato alla piattaforma
         user_is_mentioned: L'utente è menzionato
@@ -181,7 +181,7 @@ it-IT:
       official_feedback_on_idea_you_follow: Aggiornamento su un contributo che seguo
       password_reset: Ripristino della password
       project_folder_moderation_rights_received: Diritti di gestione delle cartelle ricevuti
-      project_manager_rights_received: Permessi di responsabile del progetto ricevuti
+      project_manager_rights_received: Permessi di project manager ricevuti
       project_moderation_rights_received: Diritti di moderazione del progetto ricevuti
       project_phase_started: Nuova fase del progetto
       project_phase_upcoming: Nuova fase del progetto in arrivo
@@ -189,7 +189,7 @@ it-IT:
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
       screening_digest: Promemoria settimanale per lo screening
-      space_moderation_rights_received: Permessi di responsabile dello spazio ricevuti
+      space_moderation_rights_received: Permessi di manager d'area ricevuti
       status_change_on_idea_you_follow: Cambiamento di status di un contributo che seguo
       survey_submitted: Sondaggio inviato
       threshold_reached_for_admin: La proposta ha raggiunto la soglia di voto
@@ -524,7 +524,7 @@ it-IT:
       project_description_preview: Questo è un esempio di contenuto di una fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.
       project_title: Esempio di progetto
       proposal_title: Esempio di proposta
-      space_title: Spazio di esempio
+      space_title: Esempio di area
     project_folder_moderation_rights_received:
       cta_button: Visualizza cartella
       event_description: 'Ti sono stati concessi i diritti di manager di cartelle sulla piattaforma partecipativa di %{organizationName} per la seguente cartella:'
@@ -607,19 +607,19 @@ it-IT:
       subject: '%{count} input in attesa di revisione'
       title: '%{firstName}, i contributi sono in attesa di essere esaminati'
     space_moderation_rights_received:
-      cta_button: Gestisci questo spazio
-      event_description: 'Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato responsabile dello spazio per il seguente spazio:'
+      cta_button: Gestisci quest'area
+      event_description: "Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager d'area per la seguente area:"
       no_projects: Ancora nessun progetto
-      preheader: Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato responsabile dello spazio per il seguente spazio
-      subject: Sei diventato un responsabile dello spazio sulla piattaforma di %{organizationName}
-      text_manage_space_settings: Puoi modificare il titolo e la descrizione dello spazio, in modo che i partecipanti e gli altri responsabili comprendano immediatamente di cosa tratta lo spazio e come si relaziona con la tua organizzazione.
-      text_organize_projects_and_folders: "In qualità di responsabile dello spazio, puoi gestire i progetti e le cartelle all'interno del tuo spazio, inclusa l'assegnazione e la rimozione dei ruoli di gestione."
-      text_oversee_participation: In qualità di responsabile dello spazio, hai i permessi di responsabile del progetto per ogni progetto all'interno del tuo spazio; in questo modo puoi monitorare i contributi in arrivo e assistere i responsabili dei progetti quando necessario.
-      title: Sei diventato un responsabile dello spazio
-      title_manage_space_settings: Gestisci le impostazioni dello spazio
+      preheader: Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager d'area per la seguente area
+      subject: Sei diventato un manager d'area sulla piattaforma di %{organizationName}
+      text_manage_space_settings: "Puoi modificare il titolo e la descrizione dell'area, in modo che i partecipanti e gli altri manager comprendano immediatamente di cosa tratta l'area e come si relaziona con la tua organizzazione."
+      text_organize_projects_and_folders: "In qualità di manager d'area, puoi gestire i progetti e le cartelle all'interno della tua area, inclusa l'assegnazione e la rimozione dei ruoli di gestione."
+      text_oversee_participation: "In qualità di manager d'area, hai i permessi di project manager per ogni progetto all'interno della tua area; in questo modo puoi monitorare i contributi in arrivo e assistere i project manager quando necessario."
+      title: Sei diventato un manager d'area
+      title_manage_space_settings: Gestisci le impostazioni dell'area
       title_organize_projects_and_folders: Organizza progetti e cartelle
       title_oversee_participation: Supervisiona la partecipazione
-      title_what_can_you_do_space_manager: Cosa puoi fare come responsabile dello spazio?
+      title_what_can_you_do_space_manager: Cosa puoi fare come manager d'area?
       x_projects: '%{numberOfProjects} progetti'
     status_change_on_idea_you_follow:
       cta_button: Guarda il contributo
