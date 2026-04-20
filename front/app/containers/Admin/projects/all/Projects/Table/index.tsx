@@ -164,18 +164,6 @@ const Table = () => {
         </Box>
       )}
 
-      {isFetchingNextPage && (
-        <Box
-          w="100%"
-          p="4px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner />
-        </Box>
-      )}
-
       {isLoadingNewData && (
         <Box
           position="absolute"
@@ -188,6 +176,18 @@ const Table = () => {
           pt="80px"
           bgColor={colors.white}
           opacity={0.5}
+        >
+          <Spinner />
+        </Box>
+      )}
+
+      {isFetchingNextPage && (
+        <Box
+          w="100%"
+          p="4px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
         >
           <Spinner />
         </Box>
