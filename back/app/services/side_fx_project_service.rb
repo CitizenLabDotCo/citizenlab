@@ -132,6 +132,18 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
+  def sync_publication_email_campaign(project, publication_email_enabled)
+    return if publication_email_enabled.nil?
+
+    if publication_email_enabled == false
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.enabled = false
+      campaign.save!
+    else
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    end
+  end
+
   def set_scheduled_by(admin_pub, user)
     return unless admin_pub.will_save_change_to_scheduled_status?
 

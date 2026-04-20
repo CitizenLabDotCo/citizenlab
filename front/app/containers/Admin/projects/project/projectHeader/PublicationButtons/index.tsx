@@ -23,6 +23,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
+  const reviewState = projectReview?.data.attributes.state;
 
   const { mutate: updateProject, isLoading: isUpdatingProjectLoading } =
     useUpdateProject();
@@ -30,8 +31,10 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const canPublish = usePermission({
     item: project,
     action: 'publish',
-    context: projectReview?.data.attributes.state === 'approved',
+    context: reviewState === 'approved',
   });
+  const canReview = usePermission({ item: project, action: 'review' });
+  const canModerate = usePermission({ item: project, action: 'moderate' });
 
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const publishProject = () => {
@@ -55,6 +58,52 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     return null;
   }
 
+  // When both flags are on, the Schedule Launch Modal owns the review flow
+  // end-to-end and replaces the standalone ReviewFlow buttons.
+  const reviewInModal = isProjectReviewEnabled && isProjectSchedulingEnabled;
+  const hasSchedule = !!project.attributes.scheduled_at;
+
+  if (reviewInModal) {
+    if (!canModerate) return null;
+
+    const isPending = reviewState === 'pending';
+
+    let entryText = messages.publish;
+    let entryIcon: 'send' | 'unlock' | 'clock' | 'lock' = 'send';
+    if (isPending && canReview) {
+      entryText = messages.approveAndSchedule;
+      entryIcon = 'unlock';
+    } else if (isPending) {
+      entryText = messages.approvalRequested;
+      entryIcon = 'lock';
+    } else if (hasSchedule) {
+      entryText = messages.scheduled;
+      entryIcon = 'clock';
+    }
+
+    return (
+      <Box display="flex" gap="8px">
+        <Button
+          buttonStyle="admin-dark"
+          icon={entryIcon}
+          onClick={() => setScheduleModalOpen(true)}
+          processing={isUpdatingProjectLoading}
+          size="s"
+          padding="4px 8px"
+          iconSize="20px"
+          id="e2e-publish"
+        >
+          {formatMessage(entryText)}
+        </Button>
+        <ScheduleLaunchModal
+          opened={scheduleModalOpen}
+          project={project}
+          onClose={() => setScheduleModalOpen(false)}
+        />
+      </Box>
+    );
+  }
+
   const showPublishButton = !isProjectReviewEnabled || canPublish;
 
   return (
@@ -70,7 +119,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
         >
           <Button
             buttonStyle="admin-dark"
-            icon="send"
+            icon={hasSchedule ? 'clock' : 'send'}
             onClick={handlePublishClick}
             processing={isUpdatingProjectLoading}
             size="s"
@@ -79,20 +128,18 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
             disabled={!canPublish && !isProjectSchedulingEnabled}
             id="e2e-publish"
           >
-            {formatMessage(messages.publish)}
+            {formatMessage(hasSchedule ? messages.scheduled : messages.publish)}
           </Button>
         </Tooltip>
       )}
 
       {isProjectReviewEnabled && <ReviewFlow project={project} />}
 
-      {isProjectSchedulingEnabled && (
-        <ScheduleLaunchModal
-          opened={scheduleModalOpen}
-          project={project}
-          onClose={() => setScheduleModalOpen(false)}
-        />
-      )}
+      <ScheduleLaunchModal
+        opened={scheduleModalOpen}
+        project={project}
+        onClose={() => setScheduleModalOpen(false)}
+      />
     </Box>
   );
 };

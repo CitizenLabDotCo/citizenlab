@@ -3,12 +3,18 @@ import React, { useState } from 'react';
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
 
+import useApproveProjectReview from 'api/project_reviews/useApproveProject';
+import useProjectReview from 'api/project_reviews/useProjectReview';
+import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 
 import EmailNotificationsSection from './EmailNotificationsSection';
 import messages from './messages';
@@ -26,7 +32,17 @@ interface Props {
 
 const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject, isLoading } = useUpdateProject();
+  const { mutate: updateProject, isLoading: isUpdatingProject } =
+    useUpdateProject();
+  const { mutate: approveProjectReview, isLoading: isApproving } =
+    useApproveProjectReview();
+  const { mutate: requestProjectReview, isLoading: isRequesting } =
+    useRequestProjectReview();
+
+  const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+  const { data: projectReview } = useProjectReview(project.id);
+  const reviewState = projectReview?.data.attributes.state;
+  const canReview = usePermission({ item: project, action: 'review' });
 
   const defaultDate = addDays(
     roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -40,40 +56,105 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     project.attributes.publication_email_enabled
   );
 
-  const handleSaveSchedule = () => {
+  const isLoading = isUpdatingProject || isApproving || isRequesting;
+
+  const buildScheduledAt = () => {
     const scheduledDate = new Date(selectedDate);
     scheduledDate.setHours(selectedTime.getHours());
     scheduledDate.setMinutes(selectedTime.getMinutes());
     scheduledDate.setSeconds(0);
+    return scheduledDate.toISOString();
+  };
 
+  const saveSchedule = (onSuccess: () => void) => {
     updateProject(
       {
         projectId: project.id,
-        scheduled_at: scheduledDate.toISOString(),
+        admin_publication_attributes: {
+          scheduled_at: buildScheduledAt(),
+          scheduled_status: 'published',
+        },
         publication_email_enabled: sendEmail,
       },
-      {
-        onSuccess: () => {
-          onClose();
-        },
-      }
+      { onSuccess }
     );
   };
 
-  const handlePublishNow = () => {
+  const publishNow = (onSuccess: () => void) => {
     updateProject(
       {
         projectId: project.id,
         publication_email_enabled: sendEmail,
         admin_publication_attributes: { publication_status: 'published' },
       },
-      {
-        onSuccess: () => {
-          onClose();
-        },
-      }
+      { onSuccess }
     );
   };
+
+  const handleSaveSchedule = () => saveSchedule(onClose);
+  const handlePublishNow = () => publishNow(onClose);
+
+  const handleApproveAndSchedule = () => {
+    approveProjectReview(project.id, {
+      onSuccess: () => saveSchedule(onClose),
+    });
+  };
+
+  const handleApproveAndPublish = () => {
+    approveProjectReview(project.id, {
+      onSuccess: () => publishNow(onClose),
+    });
+  };
+
+  const handleRequestApproval = () => {
+    const request = () =>
+      requestProjectReview(project.id, { onSuccess: onClose });
+    if (mode === 'schedule') {
+      saveSchedule(request);
+    } else {
+      request();
+    }
+  };
+
+  // Determine the primary action button for the footer.
+  // When project_review is off, behavior is unchanged.
+  // When on, the action depends on review state + whether the user can review.
+  const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
+
+  let primaryLabel =
+    mode === 'schedule' ? messages.saveChanges : messages.publishNow;
+  let primaryIcon: 'check' | 'send' | 'unlock' | 'lock' =
+    mode === 'schedule' ? 'check' : 'send';
+  let primaryOnClick: () => void =
+    mode === 'schedule' ? handleSaveSchedule : handlePublishNow;
+  let primaryDisabled = false;
+
+  if (reviewGated) {
+    if (reviewState === 'pending' && canReview) {
+      primaryLabel =
+        mode === 'schedule'
+          ? messages.approveAndSchedule
+          : messages.approveAndPublish;
+      primaryIcon = 'unlock';
+      primaryOnClick =
+        mode === 'schedule'
+          ? handleApproveAndSchedule
+          : handleApproveAndPublish;
+    } else if (reviewState === 'pending') {
+      // PM waiting on admin approval — request already sent, so the button
+      // is a disabled "Approval requested" indicator.
+      primaryLabel = messages.approvalRequested;
+      primaryIcon = 'lock';
+      primaryDisabled = true;
+    } else if (!canReview) {
+      // No review yet, user is a PM — they need to request approval.
+      primaryLabel = messages.requestApproval;
+      primaryIcon = 'send';
+      primaryOnClick = handleRequestApproval;
+    }
+    // If no review yet and user canReview: fall through to defaults (direct
+    // save/publish). Admins implicitly skip the review step.
+  }
 
   return (
     <Modal
@@ -107,22 +188,24 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
               </Button>
               <Button
                 buttonStyle="admin-dark"
-                icon="check"
-                onClick={handleSaveSchedule}
+                icon={primaryIcon}
+                onClick={primaryOnClick}
                 processing={isLoading}
+                disabled={primaryDisabled}
               >
-                {formatMessage(messages.saveChanges)}
+                {formatMessage(primaryLabel)}
               </Button>
             </>
           ) : (
             <Box w="100%" display="flex" justifyContent="flex-end">
               <Button
                 buttonStyle="admin-dark"
-                icon="send"
-                onClick={handlePublishNow}
+                icon={primaryIcon}
+                onClick={primaryOnClick}
                 processing={isLoading}
+                disabled={primaryDisabled}
               >
-                {formatMessage(messages.publishNow)}
+                {formatMessage(primaryLabel)}
               </Button>
             </Box>
           )}
