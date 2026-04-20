@@ -126,6 +126,14 @@ module Jobs
       reload
     end
 
+    def job_errors
+      QueJob
+        .where('id = :id OR data @> :data', id: root_job_id, data: { root_job_id: root_job_id }.to_json)
+        .where(finished_at: nil) # Filter out jobs that are not finished yet since they might be retried and the error might be resolved in a retry.
+        .where.not(last_error_message: nil)
+        .filter_map(&:last_error)
+    end
+
     def increment_progress(progress = 1, error_count = 0)
       if error_count > progress
         raise ArgumentError, 'error_count must be less than or equal to progress'

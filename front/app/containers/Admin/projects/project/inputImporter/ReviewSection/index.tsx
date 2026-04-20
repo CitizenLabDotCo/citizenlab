@@ -44,6 +44,7 @@ const ReviewSection = () => {
     importProgress,
     importTotal,
     errorCount,
+    importErrors,
   } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
@@ -184,6 +185,7 @@ const ReviewSection = () => {
               progress={importProgress}
               total={importTotal}
               errorCount={errorCount}
+              errors={importErrors}
             />
           )}
           <IdeaList

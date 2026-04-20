@@ -111,7 +111,8 @@ resource 'Jobs' do
             total: 150,
             completed_at: nil,
             created_at: job.created_at.iso8601(3),
-            updated_at: job.updated_at.iso8601(3)
+            updated_at: job.updated_at.iso8601(3),
+            errors: []
           },
           relationships: {
             owner: { data: { id: job.owner_id, type: 'user' } },
