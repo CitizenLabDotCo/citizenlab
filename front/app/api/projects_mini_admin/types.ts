@@ -71,6 +71,7 @@ export type ProjectMiniAdminData = {
     last_phase_end_date: string | null;
     listed: boolean;
     publication_status: PublicationStatus;
+    scheduled_at: string | null;
     title_multiloc: Multiloc;
     visible_to: Visibility;
   };

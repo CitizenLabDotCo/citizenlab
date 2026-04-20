@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.archived',
     defaultMessage: 'Archived',
   },
+  scheduled: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.scheduled',
+    defaultMessage: 'Scheduled',
+  },
   loadingMore: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.loadingMore',
     defaultMessage: 'Loading more…',
