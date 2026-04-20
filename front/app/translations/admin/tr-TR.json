@@ -1739,7 +1739,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": "Proje yayınlandı e-postası gönder",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": "liste dışı",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "Ne zaman",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": "Projeyi kimler bulabilir",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": "Projeyi kimler bulabilir?",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Aşama raporu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Aşama hakkında biraz metin ekleyin",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Bu bir metin içeriğidir. Sağdaki panelde bulunan düzenleyiciyi kullanarak düzenleyebilir ve biçimlendirebilirsiniz.",
