@@ -582,10 +582,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            phase_insights: {
-              enabled: true,
-              allowed: true
-            },
             participation_location_tracking: {
               enabled: false,
               allowed: false
