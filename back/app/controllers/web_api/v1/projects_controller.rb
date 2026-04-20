@@ -284,6 +284,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
+    process_due_transition(@project)
+
     project_params = permitted_attributes(@project)
 
     @project.assign_attributes project_params
@@ -306,6 +308,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def destroy
+    process_due_transition(@project)
     sidefx.before_destroy(@project, current_user)
     if @project.destroy
       sidefx.after_destroy(@project, current_user)
@@ -439,6 +442,13 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
+  end
+
+  def process_due_transition(publication)
+    admin_pub = publication.admin_publication
+    return unless admin_pub.scheduled_at&.<=(Time.current)
+
+    ProcessScheduledPublicationTransitionsJob.new.run(admin_pub)
   end
 
   def base_render_mini_index

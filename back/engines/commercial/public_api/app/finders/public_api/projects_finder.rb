@@ -42,7 +42,7 @@ module PublicApi
 
       scope
         .joins(:admin_publication)
-        .where(admin_publication: { publication_status: @publication_status })
+        .merge(AdminPublication.with_status(@publication_status))
     end
 
     # Select only the projects that have all the specified topics.

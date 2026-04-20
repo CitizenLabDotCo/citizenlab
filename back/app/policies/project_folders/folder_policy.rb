@@ -12,7 +12,7 @@ module ProjectFolders
       end
 
       def published_folders
-        scope.includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+        scope.joins(:admin_publication).merge(AdminPublication.not_draft)
       end
     end
 
@@ -22,7 +22,7 @@ module ProjectFolders
 
     def show?
       return true if user && UserRoleService.new.can_moderate?(record, user)
-      return false if record.admin_publication.publication_status == 'draft'
+      return false if record.admin_publication.draft?
       return true if record.projects.empty?
 
       # We check if the user has access to at least one of the projects in the folder
@@ -61,7 +61,7 @@ module ProjectFolders
       attrs = [
         :header_bg,
         :slug,
-        { admin_publication_attributes: [:publication_status],
+        { admin_publication_attributes: %i[publication_status scheduled_status scheduled_at],
           description_multiloc: CL2_SUPPORTED_LOCALES,
           description_preview_multiloc: CL2_SUPPORTED_LOCALES,
           title_multiloc: CL2_SUPPORTED_LOCALES,

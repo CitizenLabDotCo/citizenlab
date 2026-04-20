@@ -387,6 +387,18 @@ resource 'AdminPublication' do
         expect(response_data.dig(:relationships, :publication, :data, :id)).to eq projects.first.id
         expect(response_data.dig(:attributes, :publication_slug)).to eq projects.first.slug
       end
+
+      example 'Get an admin publication with scheduled transition fields', document: false do
+        scheduled_at = 1.day.from_now
+        projects.first.admin_publication.update!(scheduled_status: 'archived', scheduled_at:, scheduled_by: @admin)
+
+        do_request
+
+        expect(response_data[:attributes]).to include(
+          scheduled_status: 'archived',
+          scheduled_at: scheduled_at.iso8601(3)
+        )
+      end
     end
 
     get 'web_api/v1/admin_publications/status_counts' do

@@ -390,17 +390,19 @@ describe ProjectPolicy do
 
         it { is_expected.to permit(:destroy) }
 
-        it 'does not permit project status update' do
+        it 'does not permit project status update or scheduling' do
           nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
-          expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
+          expect(nested_permitted_attrs[:admin_publication_attributes].to_a)
+            .not_to include(:publication_status, :scheduled_status, :scheduled_at)
         end
 
         context 'and the project is approved' do
           before { create(:project_review, :approved, project: project) }
 
-          it 'permits project status update' do
+          it 'permits project status update and scheduling' do
             nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
-            expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+            expect(nested_permitted_attrs[:admin_publication_attributes])
+              .to include(:publication_status, :scheduled_status, :scheduled_at)
           end
         end
       end
@@ -412,9 +414,10 @@ describe ProjectPolicy do
 
         it { is_expected.not_to permit(:destroy) }
 
-        it 'permits project status update' do
+        it 'permits project status update and scheduling' do
           nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
-          expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+          expect(nested_permitted_attrs[:admin_publication_attributes])
+            .to include(:publication_status, :scheduled_status, :scheduled_at)
         end
       end
 

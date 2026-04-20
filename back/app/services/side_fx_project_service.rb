@@ -48,9 +48,10 @@ class SideFxProjectService
     )
   end
 
-  def before_update(project, _user)
+  def before_update(project, user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
+    set_scheduled_by(project.admin_publication, user)
   end
 
   def after_update(project, user, publication_email_enabled: nil)
@@ -76,6 +77,7 @@ class SideFxProjectService
     after_folder_changed project, user if @folder_id_was != project.folder_id
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
     after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
+    enqueue_scheduled_transition(project.admin_publication)
   end
 
   def before_destroy(project, user); end
@@ -130,15 +132,19 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
-  def sync_publication_email_campaign(project, publication_email_enabled)
-    return if publication_email_enabled.nil?
+  def set_scheduled_by(admin_pub, user)
+    return unless admin_pub.will_save_change_to_scheduled_status?
 
-    if publication_email_enabled
-      EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
-    else
-      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
-      campaign.update!(enabled: false)
-    end
+    admin_pub.scheduled_by = admin_pub.scheduled_status.present? ? user : nil
+  end
+
+  def enqueue_scheduled_transition(admin_pub)
+    return unless admin_pub.saved_change_to_scheduled_at?
+    return if admin_pub.scheduled_at.blank?
+
+    ProcessScheduledPublicationTransitionsJob
+      .set(wait_until: admin_pub.scheduled_at)
+      .perform_later
   end
 
   def after_folder_changed(project, current_user)
