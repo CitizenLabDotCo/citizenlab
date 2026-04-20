@@ -31,6 +31,9 @@ module BulkImportIdeas
       complete_if_done!
     rescue StandardError => e
       SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', e.to_s)
+      remaining = idea_import_files.count - files_processed
+      track_progress(remaining, remaining)
+      complete_if_done!
       raise e
     end
 
@@ -41,7 +44,8 @@ module BulkImportIdeas
       end
 
       remaining = unprocessed_files_count
-      track_progress_and_complete!(remaining, remaining) if remaining > 0
+      track_progress(remaining, remaining) if remaining > 0
+      complete_if_done!
       ErrorReporter.report(error, extra: { phase_id: arguments[3]&.id })
       expire
     end
