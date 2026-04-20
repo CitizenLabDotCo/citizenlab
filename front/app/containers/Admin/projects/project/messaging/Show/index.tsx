@@ -11,7 +11,7 @@ import {
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate } from 'react-intl';
+import moment from 'moment';
 import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -158,7 +158,6 @@ const Show = () => {
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
-
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
@@ -188,12 +187,9 @@ const Show = () => {
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   <Text fontSize="base" whiteSpace="nowrap">
-                    <FormattedDate
-                      value={campaign.data.attributes.scheduled_at}
-                      timeZone={timeZone}
-                      dateStyle="long"
-                      timeStyle="short"
-                    />
+                    {moment(campaign.data.attributes.scheduled_at)
+                      .tz(timeZone)
+                      .format('LLL')}
                   </Text>
                 </>
               )}

@@ -7,7 +7,7 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate } from 'react-intl';
+import moment from 'moment';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -56,12 +56,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           />
 
           <Text as="span" fontSize="base" mb="0px" color="textSecondary">
-            <FormattedDate
-              value={campaign.attributes.updated_at}
-              timeZone={timeZone}
-              dateStyle="long"
-              timeStyle="short"
-            />
+            {moment(campaign.attributes.updated_at).tz(timeZone).format('LLL')}
           </Text>
 
           {/* Only display project name in the global messaging tab */}

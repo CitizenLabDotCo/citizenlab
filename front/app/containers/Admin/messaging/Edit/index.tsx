@@ -10,7 +10,7 @@ import {
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate } from 'react-intl';
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -97,12 +97,9 @@ const Edit = ({ campaignType }: EditProps) => {
                 text={<FormattedMessage {...messages.scheduled} />}
               />
               <Text fontSize="base" whiteSpace="nowrap">
-                <FormattedDate
-                  value={campaign.data.attributes.scheduled_at}
-                  timeZone={timeZone}
-                  dateStyle="long"
-                  timeStyle="short"
-                />
+                {moment(campaign.data.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
               </Text>
             </>
           )}

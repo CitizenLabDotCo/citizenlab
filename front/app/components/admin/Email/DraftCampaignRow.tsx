@@ -7,7 +7,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate } from 'react-intl';
+import moment from 'moment';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -58,12 +58,9 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
               />
 
               <Text as="span" fontSize="base" m="0px" color="textSecondary">
-                <FormattedDate
-                  value={campaign.attributes.scheduled_at}
-                  timeZone={timeZone}
-                  dateStyle="long"
-                  timeStyle="short"
-                />
+                {moment(campaign.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
               </Text>
             </>
           )}
