@@ -12038,6 +12038,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-27T12:40:39.543659Z",
+    "verified_by": "Luuc"
+  },
   "app.errors.email_taken": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",

@@ -14,6 +14,16 @@ class AuthenticationService
     def add_method(name, authentication_method)
       @all_methods[name.to_s] = authentication_method
     end
+
+    # Returns true if SSO is enforced for this email's domain, false otherwise.
+    def sso_enforced_for_email?(email)
+      return false if email.blank?
+
+      domain = email.split('@').last&.strip&.downcase
+      return false if domain.blank?
+
+      all_methods.any? { |_, method| method.enforced_email_domains.include?(domain) }
+    end
   end
 
   def all_methods

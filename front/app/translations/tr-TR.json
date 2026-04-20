@@ -2404,6 +2404,7 @@
   "app.errors.email_blank": "Bu boş olamaz",
   "app.errors.email_domain_blacklisted": "Lütfen kayıt olmak için farklı bir e-posta alan adı kullanın.",
   "app.errors.email_invalid": "Lütfen geçerli bir e-posta adresi kullanın.",
+  "app.errors.email_sso_enforced_for_domain": "Bu e-posta alanı için tekli oturum açma (SSO) kullanarak oturum açmanız gerekir.",
   "app.errors.email_taken": "Bu e-postaya sahip bir hesap zaten var. Oturum açmayı deneyin.",
   "app.errors.email_taken_by_invite": "{value} bekleyen bir davet tarafından alınmış. Spam klasörünüzü kontrol edin veya bulamazsanız {supportEmail} ile iletişime geçin.",
   "app.errors.emails_duplicate": "Aşağıdaki satırlarda {value} e-posta adresi için bir veya daha fazla yinelenen değer bulundu: {rows}",
