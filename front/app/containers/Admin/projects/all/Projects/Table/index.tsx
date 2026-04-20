@@ -4,13 +4,11 @@ import {
   Box,
   Table as TableComponent,
   Thead,
-  Text,
   Tr,
   Th,
   Tbody,
   colors,
   stylingConsts,
-  Spinner,
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
@@ -25,6 +23,7 @@ import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResour
 import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
+import LoadingComponents from '../../_shared/LoadingComponents';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
 import { getParticipationMethods } from '../../_shared/utils';
@@ -81,7 +80,6 @@ const Table = () => {
   // True when loading the initial data,
   // or when loading new (i.e. a new combination of filters) data
   const isLoadingNewData = isLoading || (isFetching && !isFetchingNextPage);
-
   const isLoadingData = isLoadingNewData || isFetchingNextPage;
 
   const getSentinelMessage = () => {
@@ -153,46 +151,12 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      {sentinelMessage && (
-        <Box
-          ref={loadMoreRef}
-          mt="12px"
-          display="flex"
-          justifyContent="center"
-          color={colors.textPrimary}
-        >
-          <Text>{formatMessage(sentinelMessage)}</Text>
-        </Box>
-      )}
-
-      {isLoadingNewData && (
-        <Box
-          position="absolute"
-          left="0"
-          top="0"
-          w="100%"
-          h="100%"
-          display="flex"
-          justifyContent="center"
-          pt="80px"
-          bgColor={colors.white}
-          opacity={0.5}
-        >
-          <Spinner />
-        </Box>
-      )}
-
-      {isFetchingNextPage && (
-        <Box
-          w="100%"
-          p="4px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner />
-        </Box>
-      )}
+      <LoadingComponents
+        sentinel={sentinelMessage ? formatMessage(sentinelMessage) : undefined}
+        loadMoreRef={loadMoreRef}
+        isLoadingNewData={isLoadingNewData}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </Box>
   );
 };
