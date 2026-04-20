@@ -444,6 +444,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FormSync.downloadExcelTemplate": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -453,6 +458,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.FormSync.importFile1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.importResponses1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.importScans1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.paperFormsOCR1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.paperFormsOCRDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.spreadsheet1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.spreadsheetDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.template1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.unlockScanning1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.unlockScanningTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.unlockScanningTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectTemplatePreview.close": {
     "state": "verified",
@@ -6381,6 +6441,16 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.includeLogic": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:01:51.092088Z",
+    "verified_by": "Amanda A"
+  },
+  "app.containers.Admin.projects.all.includeLogicExplanation": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:01:51.092088Z",
+    "verified_by": "Amanda A"
+  },
   "app.containers.Admin.projects.all.itIsAlsoPossible1": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -9573,6 +9643,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.surveyFormTab.surveyForm": {
     "state": "verified",
@@ -12829,6 +12904,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:50:16.193243Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:50:16.193243Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.ProjectEdit.newComment": {
     "state": "verified",

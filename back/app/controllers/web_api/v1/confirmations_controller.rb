@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ConfirmationsController < ApplicationController
+  include UserCookies
+
   skip_before_action :authenticate_user, only: %i[confirm_code_unauthenticated]
   skip_after_action :verify_authorized
 
@@ -38,6 +40,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
 
+      reset_jwt_cookie
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity

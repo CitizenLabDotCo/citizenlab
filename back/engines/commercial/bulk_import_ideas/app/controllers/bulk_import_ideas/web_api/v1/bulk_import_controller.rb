@@ -45,8 +45,9 @@ module BulkImportIdeas
 
       locale = params[:locale] || current_user.locale || Locale.default
       personal_data_enabled = params[:personal_data] == 'true'
+      include_logic = params[:include_logic] == 'true'
 
-      service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+      service = form_exporter_service.new(@phase, locale, personal_data_enabled, include_logic:)
       file = service.export # This service is failing
 
       send_not_found and return unless file

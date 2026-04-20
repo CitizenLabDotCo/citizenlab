@@ -9,6 +9,7 @@
     "de-DE": "Papier-Scans"
   },
   "GovSuccess Manager": {
+    "de-DE": "Kundenbetreuerin",
     "fr-FR": "Spécialiste en participation Go Vocal"
   },
   "Government Success Manager": {
@@ -16,6 +17,9 @@
   },
   "admin": {
     "de-DE": "Admin"
+  },
+  "approve": {
+    "de-DE": "freigeben"
   },
   "email": {
     "da-DK": "e-mail",
@@ -36,6 +40,9 @@
     "es-ES": "gestor",
     "fr-FR": "gestionnaire"
   },
+  "recipients": {
+    "de-DE": "Empfänger*innen"
+  },
   "save": {
     "da-DK": "gem",
     "fr-FR": "enregistrer"
@@ -52,5 +59,8 @@
   },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
+  },
+  "users": {
+    "de-DE": "Nutzende"
   }
 }

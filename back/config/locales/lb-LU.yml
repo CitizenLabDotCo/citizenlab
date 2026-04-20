@@ -1,4 +1,4 @@
-lb:
+lb-LU:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 Stonnen.
@@ -168,6 +168,11 @@ lb:
       last_name: Familljennumm
       line_print_description: Zeechent w.e.g. eng Streck op der Kaart hei ënnendrënner.
       linear_scale_print_description: Schreift w.e.g. nëmmen eng Zuel tëscht %{min_label} an %{max_label}
+      logic_go_to_section: Gitt als nächst bei <strong>%{section}</strong>.
+      logic_if_answered_end: Wann Dir <strong>%{option}</strong> op d'Fro %{question} geäntwert hutt, braucht Dir <strong>keng</strong> weider Froen ze beäntweren.
+      logic_if_answered_go_to: Wann Dir <strong>%{option}</strong> op d'Fro %{question} geäntwert hutt, gitt als nächst bei <strong>%{section}</strong>.
+      logic_no_further_questions: Baséierend op Ären Äntwerten braucht Dir <strong>keng</strong> weider Froen ze beäntweren.
+      logic_section: Sektioun %{letter}
       matrix_print_description: Fir all Zeil, markéiert ee Krees mat engem Kräiz fir Är Preferenz unzeweisen.
       optional: fakultativ
       page: Säit
@@ -390,6 +395,7 @@ lb:
       email: E-Mail
       first_name: Virnumm (en)
       image_url: Bild URL
+      imported: Importéiert
       input_id: ID
       input_url: URL
       last_name: Familljennumm
