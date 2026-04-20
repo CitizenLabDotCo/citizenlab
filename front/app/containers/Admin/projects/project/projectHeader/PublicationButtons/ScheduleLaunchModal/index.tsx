@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
+import { MessageDescriptor } from 'react-intl';
 
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
 import useProjectReview from 'api/project_reviews/useProjectReview';
@@ -23,6 +24,14 @@ import VisibilitySection from './VisibilitySection';
 import WhenSection from './WhenSection';
 
 type Mode = 'schedule' | 'now';
+type PrimaryIcon = 'check' | 'send' | 'unlock' | 'lock';
+
+interface PrimaryAction {
+  label: MessageDescriptor;
+  icon: PrimaryIcon;
+  onClick: () => void;
+  disabled?: boolean;
+}
 
 interface Props {
   opened: boolean;
@@ -66,95 +75,106 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     return scheduledDate.toISOString();
   };
 
-  const saveSchedule = (onSuccess: () => void) => {
-    updateProject(
-      {
-        projectId: project.id,
-        admin_publication_attributes: {
-          scheduled_at: buildScheduledAt(),
-          scheduled_status: 'published',
-        },
-        publication_email_enabled: sendEmail,
-      },
-      { onSuccess }
-    );
+  const schedulePayload = () => ({
+    projectId: project.id,
+    admin_publication_attributes: {
+      scheduled_at: buildScheduledAt(),
+      scheduled_status: 'published' as const,
+    },
+    publication_email_enabled: sendEmail,
+  });
+
+  const publishPayload = () => ({
+    projectId: project.id,
+    admin_publication_attributes: { publication_status: 'published' as const },
+    publication_email_enabled: sendEmail,
+  });
+
+  const handleSaveSchedule = () => {
+    updateProject(schedulePayload(), { onSuccess: onClose });
   };
 
-  const publishNow = (onSuccess: () => void) => {
-    updateProject(
-      {
-        projectId: project.id,
-        publication_email_enabled: sendEmail,
-        admin_publication_attributes: { publication_status: 'published' },
-      },
-      { onSuccess }
-    );
+  const handlePublishNow = () => {
+    updateProject(publishPayload(), { onSuccess: onClose });
   };
-
-  const handleSaveSchedule = () => saveSchedule(onClose);
-  const handlePublishNow = () => publishNow(onClose);
 
   const handleApproveAndSchedule = () => {
     approveProjectReview(project.id, {
-      onSuccess: () => saveSchedule(onClose),
+      onSuccess: () => {
+        updateProject(schedulePayload(), { onSuccess: onClose });
+      },
     });
   };
 
   const handleApproveAndPublish = () => {
     approveProjectReview(project.id, {
-      onSuccess: () => publishNow(onClose),
+      onSuccess: () => {
+        updateProject(publishPayload(), { onSuccess: onClose });
+      },
     });
   };
 
   const handleRequestApproval = () => {
-    const request = () =>
-      requestProjectReview(project.id, { onSuccess: onClose });
     if (mode === 'schedule') {
-      saveSchedule(request);
+      updateProject(schedulePayload(), {
+        onSuccess: () => {
+          requestProjectReview(project.id, { onSuccess: onClose });
+        },
+      });
     } else {
-      request();
+      requestProjectReview(project.id, { onSuccess: onClose });
     }
   };
 
-  // Determine the primary action button for the footer.
-  // When project_review is off, behavior is unchanged.
-  // When on, the action depends on review state + whether the user can review.
-  const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
-
-  let primaryLabel =
-    mode === 'schedule' ? messages.saveChanges : messages.publishNow;
-  let primaryIcon: 'check' | 'send' | 'unlock' | 'lock' =
-    mode === 'schedule' ? 'check' : 'send';
-  let primaryOnClick: () => void =
-    mode === 'schedule' ? handleSaveSchedule : handlePublishNow;
-  let primaryDisabled = false;
-
-  if (reviewGated) {
-    if (reviewState === 'pending' && canReview) {
-      primaryLabel =
-        mode === 'schedule'
-          ? messages.approveAndSchedule
-          : messages.approveAndPublish;
-      primaryIcon = 'unlock';
-      primaryOnClick =
-        mode === 'schedule'
-          ? handleApproveAndSchedule
-          : handleApproveAndPublish;
-    } else if (reviewState === 'pending') {
-      // PM waiting on admin approval — request already sent, so the button
-      // is a disabled "Approval requested" indicator.
-      primaryLabel = messages.approvalRequested;
-      primaryIcon = 'lock';
-      primaryDisabled = true;
-    } else if (!canReview) {
-      // No review yet, user is a PM — they need to request approval.
-      primaryLabel = messages.requestApproval;
-      primaryIcon = 'send';
-      primaryOnClick = handleRequestApproval;
+  const primary: PrimaryAction = (() => {
+    const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
+    if (!reviewGated) {
+      return mode === 'schedule'
+        ? {
+            label: messages.saveChanges,
+            icon: 'check',
+            onClick: handleSaveSchedule,
+          }
+        : {
+            label: messages.publishNow,
+            icon: 'send',
+            onClick: handlePublishNow,
+          };
     }
-    // If no review yet and user canReview: fall through to defaults (direct
-    // save/publish). Admins implicitly skip the review step.
-  }
+
+    // Admin/folder manager can approve — one click resolves the review and
+    // saves the schedule or publishes.
+    if (reviewState === 'pending' && canReview) {
+      return mode === 'schedule'
+        ? {
+            label: messages.approveAndSchedule,
+            icon: 'unlock',
+            onClick: handleApproveAndSchedule,
+          }
+        : {
+            label: messages.approveAndPublish,
+            icon: 'unlock',
+            onClick: handleApproveAndPublish,
+          };
+    }
+
+    // PM waiting on an existing request — disabled indicator.
+    if (reviewState === 'pending') {
+      return {
+        label: messages.approvalRequested,
+        icon: 'lock',
+        onClick: () => {},
+        disabled: true,
+      };
+    }
+
+    // PM with no review yet — request approval (saves schedule alongside).
+    return {
+      label: messages.requestApproval,
+      icon: 'send',
+      onClick: handleRequestApproval,
+    };
+  })();
 
   return (
     <Modal
@@ -171,23 +191,16 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
         </Box>
       }
       footer={
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          w="100%"
-        >
-          <Box w="100%" display="flex" justifyContent="flex-end">
-            <Button
-              buttonStyle="admin-dark"
-              icon={primaryIcon}
-              onClick={primaryOnClick}
-              processing={isLoading}
-              disabled={primaryDisabled}
-            >
-              {formatMessage(primaryLabel)}
-            </Button>
-          </Box>
+        <Box display="flex" justifyContent="flex-end" w="100%">
+          <Button
+            buttonStyle="admin-dark"
+            icon={primary.icon}
+            onClick={primary.onClick}
+            processing={isLoading}
+            disabled={primary.disabled}
+          >
+            {formatMessage(primary.label)}
+          </Button>
         </Box>
       }
     >
