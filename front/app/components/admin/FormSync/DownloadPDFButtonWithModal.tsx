@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 
 import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
-
 import { FormType } from 'components/FormBuilder/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import PDFExportModal from './PDFExportModal';
 
 interface Props extends ButtonProps {
   formType: FormType;

@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "بمجرد إضافة مقاعد إضافية ، ستتم زيادة فواتيرك. تواصل مع مدير GovSuccess لمعرفة المزيد عنها.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "شكرًا لك على إكمال الاستبيان! نرحب بك للمشاركة فيه مجددًا في الربع القادم.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "تحميل بصيغة pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "تنزيل ملف PDF",
   "app.components.FormSync.downloadExcelTemplate": "تنزيل قالب Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "لن تتضمن قوالب Excel أسئلة تحميل الملفات وأي أسئلة إدخال تعيين (دبوس الإسقاط، مسار الرسم، منطقة الرسم، تحميل ملف ESRI) حيث لا يتم دعمها للاستيراد بالجملة في هذا الوقت.",
+
+  "app.components.FormSync.importFile1": "استيراد ملف",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "إنشاء مشروع بناءً على القالب ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "التنزيلات",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "تكرار استطلاع آخر",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "تعديل نموذج الاستبيان",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "حدد المعلومات التي يجب تقديمها، وأضف أوصافًا أو تعليمات قصيرة لتوجيه استجابات المشاركين، وحدد ما إذا كان كل حقل اختياريًا أو مطلوبًا.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "حدد المعلومات التي يجب تقديمها لتوجيه ردود المشاركين.",
   "app.containers.Admin.surveyFormTab.surveyForm": "نموذج الاستبيان",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "إنشاء رمز جديد",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "يلغي",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}."
 }
+
+  "app.components.FormSync.unlockScanning1": "فتح ميزة المسح الضوئي",
+
+  "app.components.FormSync.spreadsheet1": "جدول بيانات",
+
+  "app.components.FormSync.importResponses1": "استيراد الردود",
+
+  "app.components.FormSync.spreadsheetDescription1": "استيراد بيانات الردود من ملف Excel أو CSV",
+
+  "app.components.FormSync.template1": "قالب",
+
+  "app.components.FormSync.importScans1": "استيراد المسوحات الضوئية",
+
+  "app.components.FormSync.paperFormsOCR1": "التعرف الضوئي على الحروف (OCR) للنماذج الورقية",
+
+  "app.components.FormSync.unlockScanningTooltip1": "مسح النماذج الورقية ضوئياً باستخدام FormSync غير مدرج في خطتك الحالية.",
+
+  "app.components.FormSync.unlockScanningTooltip2": "تحدث إلى مدير نجاح العملاء الحكوميين أو المسؤول لفتح هذه الميزة.",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "اطبع النموذج، واجمعه ورقياً، ثم امسح الردود ضوئياً لإعادتها للنظام",

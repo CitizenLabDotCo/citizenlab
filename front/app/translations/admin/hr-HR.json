@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Nakon što se dodaju dodatna mjesta, vaša naplata će se povećati. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Hvala što ste ispunili anketu! Slobodno ga ponovite sljedećeg kvartala.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Preuzmi kao pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Preuzmi PDF",
   "app.components.FormSync.downloadExcelTemplate": "Preuzmite Excel predložak",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel predlošci neće uključivati pitanja za prijenos datoteka i bilo koja pitanja za unos mapiranja (Ispuštanje pribadače, Crtanje rute, Crtanje područja, Prijenos ESRI datoteke) jer trenutno nisu podržani za skupni uvoz.",
+
+  "app.components.FormSync.importFile1": "Uvezi datoteku",
   "app.components.ProjectTemplatePreview.close": "Zatvori",
   "app.components.ProjectTemplatePreview.createProject": "Kreiraj projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Izradite projekt na temelju predloška ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Preuzimanja",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Dupliciraj još jednu anketu",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Uredi obrazac za anketu",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Navedite koje informacije treba navesti, dodajte kratke opise ili upute za usmjeravanje odgovora sudionika i navedite je li svako polje neobavezno ili obavezno.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Navedite koje informacije treba pružiti kako biste usmjerili odgovore sudionika.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Obrazac za anketu",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Stvorite novi token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Otkazati",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}."
 }
+
+  "app.components.FormSync.unlockScanning1": "Otključaj skeniranje",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Ispišite obrazac, prikupite na papiru, skenirajte odgovore natrag",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR papirnatih obrazaca",
+
+  "app.components.FormSync.spreadsheet1": "Proračunska tablica",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Skeniranje papirnatih obrazaca putem FormSynca nije uključeno u vaš trenutni paket.",
+
+  "app.components.FormSync.template1": "Predložak",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Obratite se svom Government Success Manageru ili administratoru kako biste to otključali.",
+
+  "app.components.FormSync.importScans1": "Uvezi skenirane dokumente",
+
+  "app.components.FormSync.spreadsheetDescription1": "Uvezite podatke o odgovorima iz Excel ili CSV datoteke",
+
+  "app.components.FormSync.importResponses1": "Uvezi odgovore",

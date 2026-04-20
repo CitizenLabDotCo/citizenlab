@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Nuair a chuirfear suíocháin bhreise leis, méadófar do bhilleáil. Téigh i dteagmháil le do Bhainisteoir GovSuccess chun tuilleadh eolais a fháil faoi.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Go raibh maith agat as an suirbhé a chomhlánú! Tá fáilte romhat é a dhéanamh arís an ráithe seo chugainn.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Íoslódáil mar pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Íoslódáil PDF",
   "app.components.FormSync.downloadExcelTemplate": "Íoslódáil teimpléad Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Ní bheidh ceisteanna uaslódála comhaid ná aon cheisteanna ionchuir mapála (Biorán Buailte, Bealach Tarraingthe, Limistéar Tarraingthe, uaslódáil comhaid ESRI) san áireamh i dteimpléid Excel mar nach dtacaítear leo seo le haghaidh allmhairithe mórchóir faoi láthair.",
+
+  "app.components.FormSync.importFile1": "Iompórtáil comhad",
   "app.components.ProjectTemplatePreview.close": "Dún",
   "app.components.ProjectTemplatePreview.createProject": "Cruthaigh tionscadal",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Cruthaigh tionscadal bunaithe ar an teimpléad ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Íoslódálacha",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Déan suirbhé eile a dhúbláil",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Cuir an fhoirm suirbhé in eagar",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Sonraigh cén fhaisnéis ba chóir a sholáthar, cuir tuairiscí nó treoracha gearra leis chun treoir a thabhairt do fhreagraí na rannpháirtithe agus sonraigh an bhfuil gach réimse roghnach nó riachtanach.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Sonraigh cén t-eolas ba chóir a sholáthar chun treoir a thabhairt do fhreagraí na rannpháirtithe.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Foirm suirbhé",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Cruthaigh comhartha nua",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Cealaigh",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Chun tuilleadh eolais a fháil faoi réitigh íomhá molta, {supportPageLink}."
 }
+
+  "app.components.FormSync.importScans1": "Iompórtáil scananna",
+
+  "app.components.FormSync.spreadsheet1": "Scarbhileog",
+
+  "app.components.FormSync.spreadsheetDescription1": "Iompórtáil sonraí freagartha ó Excel nó CSV",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Labhair le do Bhainisteoir Rathúlachta Rialtais nó le do riarthóir chun é a dhíghlasáil.",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR foirmeacha páipéir",
+
+  "app.components.FormSync.unlockScanning1": "Díghlasáil scanadh",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Priontáil an fhoirm, bailigh ar pháipéar í, scan na freagraí ar ais",
+
+  "app.components.FormSync.template1": "Teimpléad",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Níl scanadh foirmeacha páipéir le FormSync san áireamh i do phlean reatha.",
+
+  "app.components.FormSync.importResponses1": "Iompórtáil freagraí",

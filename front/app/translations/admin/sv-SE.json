@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "När ytterligare platser läggs till kommer din fakturering att öka. Kontakta din GovSuccess Manager för att få veta mer om detta.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tack för att du besvarade enkäten! Du är välkommen att besvara den igen nästa kvartal.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Ladda ner som pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Ladda ner PDF",
   "app.components.FormSync.downloadExcelTemplate": "Ladda ner en Excel-mall",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-mallarna kommer inte att innehålla frågor om filuppladdning och frågor om inmatning av kartor (Drop Pin, Draw Route, Draw Area, ESRI-filuppladdning) eftersom dessa inte stöds för bulkimport i nuläget.",
+
+  "app.components.FormSync.importFile1": "Importera fil",
   "app.components.ProjectTemplatePreview.close": "Stäng",
   "app.components.ProjectTemplatePreview.createProject": "Skapa projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Skapa ett projekt baserat på mallen ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Nedladdningar",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Duplicera en annan undersökning",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Redigera enkätformulär",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Ange vilken information som ska lämnas, lägg till korta beskrivningar eller instruktioner för att vägleda deltagarnas svar och ange om varje fält är valfritt eller obligatoriskt.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Ange vilken information som ska tillhandahållas för att vägleda deltagarnas svar.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Enkätformulär",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Skapa ny token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Avbryt",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}."
 }
+
+  "app.components.FormSync.spreadsheetDescription1": "Importera svarsdata från Excel eller CSV",
+
+  "app.components.FormSync.unlockScanning1": "Lås upp skanning",
+
+  "app.components.FormSync.importResponses1": "Importera svar",
+
+  "app.components.FormSync.importScans1": "Importera skanningar",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Kontakta din Government Success Manager eller administratör för att låsa upp det.",
+
+  "app.components.FormSync.spreadsheet1": "Kalkylblad",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Skriv ut formulär, samla in på papper, skanna in svaren",
+
+  "app.components.FormSync.template1": "Mall",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR för pappersformulär",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Skanning av pappersformulär med FormSync ingår inte i ditt nuvarande abonnemang.",

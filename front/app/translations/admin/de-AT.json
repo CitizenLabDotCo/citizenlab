@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/de/articles/527583-anonyme-beteiligung-aktivieren",
   "app.components.BillingWarning.billingWarning": "Wenn Sie zusätzliche Zugänge hinzufügen, bekommen Sie eine separate Rechnung bzw. wird Ihre Jahresabrechnung erhöht. Wenden Sie sich an Ihre Kundenbetreuerin für mehr Informationen.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Vielen Dank für die Teilnahme an der Umfrage! Gerne können Sie im nächsten Quartal erneut teilnehmen.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "PDF herunterladen",
   "app.components.FormSync.downloadExcelTemplate": "Download einer Excel-Vorlage",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-Vorlagen enthalten keine Fragen zum Datei-Upload und keine Karteneingabefragen (Pin setzen, Route zeichnen, Bereich zeichnen, ESRI-Datei-Upload), da diese derzeit nicht für den Massenimport unterstützt werden.",
+
+  "app.components.FormSync.importFile1": "Datei importieren",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Erstellen Sie ein Projekt auf der Grundlage der Vorlage ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Eine andere Umfrage duplizieren",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Umfrageformular bearbeiten",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Legen Sie fest, welche Informationen angegeben werden sollen, fügen Sie kurze Beschreibungen oder Anweisungen hinzu, um die Teilnehmenden bei der Beantwortung zu unterstützen, und geben Sie an, ob jedes Feld optional oder erforderlich ist.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Legen Sie fest, welche Informationen bereitgestellt werden sollen, um die Teilnehmenden bei der Beantwortung zu unterstützen.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Umfrageformular",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Neues Token erstellen",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Abbrechen",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/de/articles/527652-was-sind-die-empfohlenen-abmessungen-und-grossen-der-plattformbilder",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."
 }
+
+  "app.components.FormSync.importScans1": "Scans importieren",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Formular ausdrucken, auf Papier sammeln, Antworten zurückscannen",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Wenden Sie sich an Ihre Kundenbetreuerin oder Admin, um dies freizuschalten.",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR für Papierformulare",
+
+  "app.components.FormSync.spreadsheet1": "Tabelle",
+
+  "app.components.FormSync.importResponses1": "Antworten importieren",
+
+  "app.components.FormSync.spreadsheetDescription1": "Antwortdaten aus Excel oder CSV importieren",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Das Scannen von Papierformularen mit Papier-Scans ist in Ihrem aktuellen Paket nicht enthalten.",
+
+  "app.components.FormSync.template1": "Vorlage",
+
+  "app.components.FormSync.unlockScanning1": "Scannen freischalten",

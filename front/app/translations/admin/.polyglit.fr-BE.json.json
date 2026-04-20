@@ -444,6 +444,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormSync.downloadExcelTemplate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -453,6 +458,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.components.FormSync.importFile1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T15:04:33.309996Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.importResponses1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:03:22.997135Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.importScans1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T15:04:33.309996Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.paperFormsOCR1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:15:59.071403Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.paperFormsOCRDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.spreadsheet1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:03:22.997135Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.spreadsheetDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:20:48.864877Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.template1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanning1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:49:05.074810Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanningTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:58:44.600513Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanningTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:58:06.941111Z",
+    "verified_by": "Adrien"
   },
   "app.components.ProjectTemplatePreview.close": {
     "state": "verified",
@@ -9533,6 +9593,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:36:46.420431Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.surveyFormTab.surveyForm": {
     "state": "verified",

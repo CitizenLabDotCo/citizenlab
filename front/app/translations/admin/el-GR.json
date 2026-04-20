@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Σας ευχαριστούμε που ολοκληρώσατε την έρευνα! Μπορείτε να τη συμπληρώσετε ξανά το επόμενο τρίμηνο.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Λήψη ως pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Λήψη PDF",
   "app.components.FormSync.downloadExcelTemplate": "Λήψη προτύπου Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Τα πρότυπα Excel δεν θα περιλαμβάνουν ερωτήσεις μεταφόρτωσης αρχείων και τυχόν ερωτήσεις εισαγωγής χαρτογράφησης (Τοποθέτηση πινέζας, Σχεδίαση διαδρομής, Σχεδίαση περιοχής, μεταφόρτωση αρχείου ESRI), καθώς αυτά δεν υποστηρίζονται για μαζική εισαγωγή αυτήν τη στιγμή.",
+
+  "app.components.FormSync.importFile1": "Εισαγωγή αρχείου",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Δημιουργία έργου με βάση το πρότυπο ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Λήψεις",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Αντιγραφή άλλης έρευνας",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Επεξεργασία φόρμας έρευνας",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Προσδιορίστε ποιες πληροφορίες πρέπει να παρέχονται, προσθέστε σύντομες περιγραφές ή οδηγίες για να καθοδηγήσετε τις απαντήσεις των συμμετεχόντων και καθορίστε εάν κάθε πεδίο είναι προαιρετικό ή υποχρεωτικό.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Καθορίστε ποιες πληροφορίες πρέπει να παρέχονται για την καθοδήγηση των απαντήσεων των συμμετεχόντων.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Φόρμα έρευνας",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Δημιουργία νέου token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Ακύρωση",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
+
+  "app.components.FormSync.template1": "Πρότυπο",
+
+  "app.components.FormSync.importScans1": "Εισαγωγή σαρώσεων",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR έντυπων φορμών",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Επικοινωνήστε με τον Government Success Manager ή τον διαχειριστή σας για να το ξεκλειδώσετε.",
+
+  "app.components.FormSync.unlockScanning1": "Ξεκλείδωμα σάρωσης",
+
+  "app.components.FormSync.importResponses1": "Εισαγωγή απαντήσεων",
+
+  "app.components.FormSync.spreadsheetDescription1": "Εισαγωγή δεδομένων απαντήσεων από Excel ή CSV",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Η σάρωση έντυπων φορμών με το FormSync δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας.",
+
+  "app.components.FormSync.spreadsheet1": "Υπολογιστικό φύλλο",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Εκτυπώστε τη φόρμα, συλλέξτε τις απαντήσεις σε χαρτί, σαρώστε τις απαντήσεις",

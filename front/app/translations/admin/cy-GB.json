@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Unwaith y bydd seddi ychwanegol yn cael eu hychwanegu, bydd eich biliau yn cynyddu. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Diolch am gwblhau'r arolwg! Mae croeso i chi fynd ag e eto'r chwarter nesaf.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwytho fel pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Lawrlwytho PDF",
   "app.components.FormSync.downloadExcelTemplate": "Lawrlwythwch dempled Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Ni fydd templedi Excel yn cynnwys cwestiynau lanlwytho ffeiliau nac unrhyw gwestiynau mewnbwn mapio (Gollwng Pin, Lluniadu Llwybr, Lluniadu Ardal, lanlwytho ffeiliau ESRI) gan nad yw'r rhain yn cael eu cefnogi ar gyfer mewnforio swmp ar hyn o bryd.",
+
+  "app.components.FormSync.importFile1": "Mewnforio ffeil",
   "app.components.ProjectTemplatePreview.close": "Cau",
   "app.components.ProjectTemplatePreview.createProject": "Creu prosiect",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Creu prosiect yn seiliedig ar y templed ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Lawrlwythiadau",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Dyblygu arolwg arall",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Golygu ffurflen arolwg",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Nodwch pa wybodaeth y dylid ei darparu, ychwanegwch ddisgrifiadau byr neu gyfarwyddiadau i arwain ymatebion cyfranogwyr a nodwch a yw pob maes yn ddewisol neu'n ofynnol.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Nodwch pa wybodaeth y dylid ei darparu i arwain ymatebion y cyfranogwyr.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Ffurflen arolwg",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Creu tocyn newydd",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Canslo",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}."
 }
+
+  "app.components.FormSync.importScans1": "Mewnforio sganiau",
+
+  "app.components.FormSync.importResponses1": "Mewnforio ymatebion",
+
+  "app.components.FormSync.unlockScanningTooltip2": "Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu'ch gweinyddwr i'w ddatgloi.",
+
+  "app.components.FormSync.unlockScanning1": "Datgloi sganio",
+
+  "app.components.FormSync.spreadsheet1": "Taenlen",
+
+  "app.components.FormSync.spreadsheetDescription1": "Mewnforio data ymateb o Excel neu CSV",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Nid yw sganio ffurflenni papur gyda FormSync wedi'i gynnwys yn eich cynllun presennol.",
+
+  "app.components.FormSync.template1": "Templed",
+
+  "app.components.FormSync.paperFormsOCR1": "OCR ffurflenni papur",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Argraffu ffurflen, casglu ar bapur, sganio ymatebion yn ôl",

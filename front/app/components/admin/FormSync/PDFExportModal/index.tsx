@@ -27,8 +27,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
-import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
 import { saveSurveyAsPDF } from '../../project/surveyFormAssets/saveSurveyAsPDF';
 
 import FormActions from './FormActions';
@@ -36,6 +34,10 @@ import LogicCheckbox from './LogicCheckbox';
 import messages from './messages';
 import MultilocFieldCollapsible from './MultilocFieldCollapsible';
 import PersonalDataCheckbox from './PersonalDataCheckbox';
+
+import { saveIdeaFormAsPDF } from 'containers/Admin/projects/project/inputForm/saveIdeaFormAsPDF';
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+import { saveSurveyAsPDF } from 'containers/Admin/projects/project/nativeSurvey/saveSurveyAsPDF';
 
 export interface FormPDFExportFormValues {
   print_start_multiloc?: Multiloc;

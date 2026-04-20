@@ -87,9 +87,12 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Kad tiks pievienotas papildu sēdvietas, jūsu rēķins tiks palielināts. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Paldies, ka aizpildījāt aptauju! Esiet laipni aicināti to darīt arī nākamajā ceturksnī.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lejupielādēt kā pdf",
+
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Lejupielādēt PDF",
   "app.components.FormSync.downloadExcelTemplate": "Lejupielādēt Excel veidni",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel veidnēs netiks iekļauti failu augšupielādes jautājumi un kartēšanas ievades jautājumi (Drop Pin, Draw Route, Draw Area, ESRI failu augšupielāde), jo pašlaik tie netiek atbalstīti masveida importēšanai.",
+
+  "app.components.FormSync.importFile1": "Importēt failu",
   "app.components.ProjectTemplatePreview.close": "Aizvērt",
   "app.components.ProjectTemplatePreview.createProject": "Izveidot projektu",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Izveidojiet projektu, pamatojoties uz veidni ''{templateTitle}''",
@@ -1874,7 +1877,8 @@
   "app.containers.Admin.surveyFormTab.downloads": "Lejupielādes",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Dublēt citu apsekojumu",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Aptaujas veidlapas rediģēšana",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Norādiet, kāda informācija ir jāsniedz, pievienojiet īsus aprakstus vai norādījumus, lai palīdzētu dalībniekiem sniegt atbildes, un norādiet, vai katrs lauks ir izvēles vai obligāts.",
+
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": "Norādiet, kāda informācija jāsniedz, lai vadītu dalībnieku atbildes.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Aptaujas veidlapa",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Izveidot jaunu žetonu",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Atcelt",
@@ -3881,3 +3885,23 @@
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Plašāku informāciju par ieteicamo attēlu izšķirtspēju skatiet vietnē {supportPageLink}."
 }
+
+  "app.components.FormSync.unlockScanningTooltip2": "Sazinieties ar savu pašvaldības sadarbības vadītāju vai administratoru, lai to atbloķētu.",
+
+  "app.components.FormSync.importScans1": "Importēt skenējumus",
+
+  "app.components.FormSync.importResponses1": "Importēt atbildes",
+
+  "app.components.FormSync.paperFormsOCRDescription1": "Izdrukājiet veidlapu, apkopojiet atbildes papīra formātā, ieskenējiet tās atpakaļ",
+
+  "app.components.FormSync.template1": "Veidne",
+
+  "app.components.FormSync.unlockScanningTooltip1": "Papīra veidlapu skenēšana ar FormSync nav iekļauta jūsu pašreizējā plānā.",
+
+  "app.components.FormSync.spreadsheetDescription1": "Importēt atbilžu datus no Excel vai CSV",
+
+  "app.components.FormSync.paperFormsOCR1": "Papīra veidlapu OCR",
+
+  "app.components.FormSync.spreadsheet1": "Izklājlapa",
+
+  "app.components.FormSync.unlockScanning1": "Atbloķēt skenēšanu",
