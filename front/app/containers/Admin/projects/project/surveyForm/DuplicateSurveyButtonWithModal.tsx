@@ -8,7 +8,7 @@ import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import CopySurveyModal from '../nativeSurvey/CopySurveyModal';
+import CopySurveyModal from '../surveyFormAssets/CopySurveyModal';
 
 import messages from './messages';
 
