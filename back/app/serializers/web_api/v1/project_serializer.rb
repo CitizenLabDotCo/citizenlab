@@ -28,12 +28,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.effective_publication_status
   end
 
-  attribute :scheduled_status do |object|
+  attribute :scheduled_status, if: proc { |object, params| can_moderate?(object, params) } do |object|
     admin_pub = object.admin_publication
     admin_pub.scheduled_status unless admin_pub.due_status_transition?
   end
 
-  attribute :scheduled_at do |object|
+  attribute :scheduled_at, if: proc { |object, params| can_moderate?(object, params) } do |object|
     admin_pub = object.admin_publication
     admin_pub.scheduled_at unless admin_pub.due_status_transition?
   end
