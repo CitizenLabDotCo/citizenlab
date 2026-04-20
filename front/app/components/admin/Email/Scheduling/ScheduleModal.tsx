@@ -16,6 +16,7 @@ import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getGmtOffset } from 'utils/dateUtils';
 
 import messages from './messages';
 import { getDefaultTime, getNextHourTime } from './utils';
@@ -45,24 +46,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
-  // Calculate GMT offset based on selected date (or current date if none selected)
-  const getGmtOffset = () => {
-    if (!timeZone) return '';
-
-    const dateToCheck = selectedDate || tenantTimeNow;
-    const momentDate = moment.tz(
-      {
-        year: dateToCheck.getFullYear(),
-        month: dateToCheck.getMonth(),
-        day: dateToCheck.getDate(),
-      },
-      timeZone
-    );
-
-    return momentDate.format('Z');
-  };
-
-  const gmtOffset = getGmtOffset();
+  const gmtOffset = getGmtOffset(timeZone, tenantTimeNow, selectedDate);
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
