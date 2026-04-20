@@ -17,6 +17,9 @@
   "admin": {
     "de-DE": "Admin"
   },
+  "approve": {
+    "de-DE": "freigeben"
+  },
   "email": {
     "da-DK": "e-mail",
     "es-ES": "correo"
