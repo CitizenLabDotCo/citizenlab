@@ -286,7 +286,7 @@ it-IT:
       message_you_reset_your_password: Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.
       preheader: Reimposta la tua password per %{organizationName}
       subject: '%{organizationName}: Resetta la tua password'
-      title_reset_your_password: Scegliere una nuova password
+      title_reset_your_password: Seleziona una nuova password
   static_pages:
     faq_body: |-
       <h2 class="ql-align-justify">A cosa serve questa piattaforma?</h2><p class="ql-align-justify">Questa piattaforma è progettata come un hub centrale per condividere informazioni e ottenere input e feedback. I progetti di partecipazione che sono attualmente attivi sono mostrati sulla homepage - ogni progetto di partecipazione può avere una diversa modalità di coinvolgimento, sia che si tratti di aggiungere un'idea, commentare una proposta, votare e dare priorità ai progetti, o fare un sondaggio.</p><h2 class="ql-align-justify">Come posso partecipare?</h2><p class="ql-align-justify">È sempre possibile sfogliare i progetti pubblici, ma è necessario iscriversi per intraprendere un'azione. Questo aiuta a mantenere una sensazione di comunità e a garantire la legittimità degli input.</p><h2 class="ql-align-justify">Quali informazioni possono vedere le persone su di me?</h2><p class="ql-align-justify">Il tuo nome, foto e biografia, se ne hai aggiunta una, sono visibili. Puoi sempre cambiarli nelle tue Impostazioni.</p><h2 class="ql-align-justify">Perché non posso pubblicare il mio contributo o inviare un commento?</h2><p class="ql-align-justify">Postare, commentare e votare può essere abilitato solo durante certi momenti o fasi di un progetto. In alcuni casi, un progetto può essere aperto solo ai contributi di un certo gruppo di stakeholder.</p><p class="ql-align-justify">Se la pubblicazione è attualmente abilitata per un progetto, vedrai un pulsante che ti chiede di inviare un messaggio. In alternativa, è possibile sfogliare altri progetti attivi per ulteriori opportunità di impegno.</p><h2 class="ql-align-justify">Come posso modificare o eliminare il mio contributo?</h2><p class="ql-align-justify">Se hai pubblicato il tuo contributo ma vuoi modificarlo o cancellarlo, puoi trovare questa opzione cliccando sui tre piccoli punti in alto a destra del post.</p><h2 class="ql-align-justify">Quali sono le linee guida della comunità e le politiche di moderazione?</h2><p class="ql-align-justify">Le nostre linee guida della comunità sono qui per aiutare a garantire che la piattaforma sia uno spazio sicuro per tutti. Per favore assicuratevi che i vostri post siano privi di:</p><ul>
@@ -321,13 +321,13 @@ it-IT:
   symbols:
     outside: da qualche altra parte
   time:
-    am: sono
+    am: am
     formats:
       hour_of_day: '%H:%M'
     pm: pm
   topics:
-    community: Sviluppo comunitario
-    community_description: Sviluppo comunitario
+    community: Sviluppo della comunità
+    community_description: Sviluppo della comunità
     culture: Cultura, sport ed eventi
     culture_description: Cultura, sport ed eventi
     economy: Lavoro, economia e turismo
@@ -367,20 +367,20 @@ it-IT:
       animals: "alligatore, coccodrillo, alpaca, formica, antilope, scimmia, armadillo, babbuino, tasso, pipistrello, orso, castoro, ape, scarabeo, bufalo, farfalla, cammello, bufalo d'acqua, caribù, gatto, bovino, ghepardo, scimpanzé, cincillà, cicala, vongola, scarafaggio, merluzzo, coyote, granchio, grillo, corvo,cervo, dinosauro, cane, delfino, focena, anatra, aquila, anguilla, elefante, alce, furetto, pesce, mosca, volpe, rana, rospo, gerbillo, giraffa, moscerino, gnu, gnu, capra, pesce rosso, oca, gorilla, cavalletta, porcellino d'India, criceto, lepre, riccio, aringa, ippopotamo, calabrone, cavallo, segugio,iena, impala, sciacallo, medusa, canguro, wallaby, koala, leopardo, leone, lucertola, lama, locusta, pidocchio, ara, germano reale, mammut, lamantino, martora, visone, minnow, talpa, alce, zanzara, topo, ratto, mulo, topo muschiato, lontra, bue, ostrica, panda, maiale, ornitorinco, istrice, cane della prateria,carlino, coniglio, procione, renna, rinoceronte, salmone, sardina, scorpione, foca, leone marino, serval, squalo, pecora, puzzola, lumaca, serpente, ragno, scoiattolo, cigno, termite, tigre, trota, tartaruga, testuggine, tricheco, vespa, balena, lupo, vombato, marmotta, verme, yak, giuggiola, zebra"
   user_blocked_mailer:
     send_user_blocked_email:
-      for_more_information: Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}.
-      paragraph_1_with_reason: 'Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
-      paragraph_1_without_reason: Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità.
-      preheader: Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato.
-      subject: Il suo account è stato temporaneamente disabilitato
-      title_user_blocked: Il suo account è stato temporaneamente disabilitato
-      you_can_sign_in_again_from: È possibile accedere nuovamente a %{date}
+      for_more_information: Per ulteriori informazioni, è possibile consultare la pagina %{termsAndConditionsPage}.
+      paragraph_1_with_reason: 'Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
+      paragraph_1_without_reason: Il tuo account sulla piattaforma partecipativa %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità.
+      preheader: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato.
+      subject: Il tuo account è stato temporaneamente disabilitato
+      title_user_blocked: Il tuo account è stato temporaneamente disabilitato
+      you_can_sign_in_again_from: Potrai accedere nuovamente il %{date}
   voting_method:
     default_voting_term_plural: voti
     default_voting_term_singular: voto
   xlsx_export:
     anonymous: Anonimo
     column_headers:
-      assignee_email: Email del destinatario
+      assignee_email: Email assegnatario
       assignee_fullname: Assegnatario
       attachments: Allegati
       author_email: Email autore
