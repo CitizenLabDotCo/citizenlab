@@ -100,4 +100,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndPublish',
     defaultMessage: 'Approve & publish',
   },
+  schedulingNotIncludedTooltip: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip',
+    defaultMessage:
+      'Scheduling is not included on your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });

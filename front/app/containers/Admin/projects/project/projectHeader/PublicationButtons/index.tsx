@@ -1,139 +1,66 @@
 import React, { useState } from 'react';
 
-import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
+import { Button, Box } from '@citizenlab/cl2-component-library';
 
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
-import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
-import ReviewFlow from './ReviewFlow';
 import ScheduleLaunchModal from './ScheduleLaunchModal';
+import tracks from './tracks';
+
+type EntryIcon = 'send' | 'unlock' | 'clock' | 'lock';
 
 const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-  const isProjectSchedulingEnabled = useFeatureFlag({
-    name: 'project_scheduling',
-  });
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
   const reviewState = projectReview?.data.attributes.state;
 
-  const { mutate: updateProject, isLoading: isUpdatingProjectLoading } =
-    useUpdateProject();
-
-  const canPublish = usePermission({
-    item: project,
-    action: 'publish',
-    context: reviewState === 'approved',
-  });
   const canReview = usePermission({ item: project, action: 'review' });
   const canModerate = usePermission({ item: project, action: 'moderate' });
 
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-  const publishProject = () => {
-    updateProject({
-      projectId: project.id,
-      admin_publication_attributes: {
-        publication_status: 'published',
-      },
-    });
-  };
-  const handlePublishClick = () => {
-    if (isProjectSchedulingEnabled) {
-      setScheduleModalOpen(true);
-    } else {
-      publishProject();
-    }
-  };
 
-  // Only display the component if the project has not been published yet
-  if (project.attributes.first_published_at) {
-    return null;
-  }
+  if (project.attributes.first_published_at) return null;
+  if (!canModerate) return null;
 
-  // When both flags are on, the Schedule Launch Modal owns the review flow
-  // end-to-end and replaces the standalone ReviewFlow buttons.
-  const reviewInModal = isProjectReviewEnabled && isProjectSchedulingEnabled;
   const hasSchedule = !!project.attributes.scheduled_at;
+  const isPending = isProjectReviewEnabled && reviewState === 'pending';
 
-  if (reviewInModal) {
-    if (!canModerate) return null;
-
-    const isPending = reviewState === 'pending';
-
-    let entryText = messages.publish;
-    let entryIcon: 'send' | 'unlock' | 'clock' | 'lock' = 'send';
-    if (isPending && canReview) {
-      entryText = messages.approveAndSchedule;
-      entryIcon = 'unlock';
-    } else if (isPending) {
-      entryText = messages.approvalRequested;
-      entryIcon = 'lock';
-    } else if (hasSchedule) {
-      entryText = messages.scheduled;
-      entryIcon = 'clock';
-    }
-
-    return (
-      <Box display="flex" gap="8px">
-        <Button
-          buttonStyle="admin-dark"
-          icon={entryIcon}
-          onClick={() => setScheduleModalOpen(true)}
-          processing={isUpdatingProjectLoading}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
-          id="e2e-publish"
-        >
-          {formatMessage(entryText)}
-        </Button>
-        <ScheduleLaunchModal
-          opened={scheduleModalOpen}
-          project={project}
-          onClose={() => setScheduleModalOpen(false)}
-        />
-      </Box>
-    );
+  let entryText = hasSchedule ? messages.scheduled : messages.publish;
+  let entryIcon: EntryIcon = hasSchedule ? 'clock' : 'send';
+  if (isPending && canReview) {
+    entryText = messages.approveAndSchedule;
+    entryIcon = 'unlock';
+  } else if (isPending) {
+    entryText = messages.approvalRequested;
+    entryIcon = 'lock';
   }
-
-  const showPublishButton = !isProjectReviewEnabled || canPublish;
 
   return (
     <Box display="flex" gap="8px">
-      {showPublishButton && (
-        <Tooltip
-          content={formatMessage(
-            messages.onlyAdminsAndFolderManagersCanPublish,
-            { inFolder: !!project.attributes.folder_id }
-          )}
-          placement="bottom"
-          disabled={canPublish}
-        >
-          <Button
-            buttonStyle="admin-dark"
-            icon={hasSchedule ? 'clock' : 'send'}
-            onClick={handlePublishClick}
-            processing={isUpdatingProjectLoading}
-            size="s"
-            padding="4px 8px"
-            iconSize="20px"
-            disabled={!canPublish && !isProjectSchedulingEnabled}
-            id="e2e-publish"
-          >
-            {formatMessage(hasSchedule ? messages.scheduled : messages.publish)}
-          </Button>
-        </Tooltip>
-      )}
-
-      {isProjectReviewEnabled && <ReviewFlow project={project} />}
+      <Button
+        buttonStyle="admin-dark"
+        icon={entryIcon}
+        onClick={() => {
+          trackEventByName(tracks.scheduleLaunchModalOpened);
+          setScheduleModalOpen(true);
+        }}
+        size="s"
+        padding="4px 8px"
+        iconSize="20px"
+        id="e2e-publish"
+      >
+        {formatMessage(entryText)}
+      </Button>
 
       <ScheduleLaunchModal
         opened={scheduleModalOpen}

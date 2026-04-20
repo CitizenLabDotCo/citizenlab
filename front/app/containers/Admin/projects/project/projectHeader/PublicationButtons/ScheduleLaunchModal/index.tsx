@@ -14,8 +14,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Modal from 'components/UI/Modal';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
+
+import tracks from '../tracks';
 
 import EmailNotificationsSection from './EmailNotificationsSection';
 import messages from './messages';
@@ -49,6 +52,9 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     useRequestProjectReview();
 
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+  const isProjectSchedulingEnabled = useFeatureFlag({
+    name: 'project_scheduling',
+  });
   const { data: projectReview } = useProjectReview(project.id);
   const reviewState = projectReview?.data.attributes.state;
   const canReview = usePermission({ item: project, action: 'review' });
@@ -58,7 +64,9 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     1
   );
 
-  const [mode, setMode] = useState<Mode>('schedule');
+  const [mode, setMode] = useState<Mode>(
+    isProjectSchedulingEnabled ? 'schedule' : 'now'
+  );
   const [selectedDate, setSelectedDate] = useState<Date>(defaultDate);
   const [selectedTime, setSelectedTime] = useState<Date>(defaultDate);
   const [sendEmail, setSendEmail] = useState(
@@ -91,14 +99,17 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   });
 
   const handleSaveSchedule = () => {
+    trackEventByName(tracks.projectScheduled);
     updateProject(schedulePayload(), { onSuccess: onClose });
   };
 
   const handlePublishNow = () => {
+    trackEventByName(tracks.projectPublishedNow);
     updateProject(publishPayload(), { onSuccess: onClose });
   };
 
   const handleApproveAndSchedule = () => {
+    trackEventByName(tracks.projectApprovedAndScheduled);
     approveProjectReview(project.id, {
       onSuccess: () => {
         updateProject(schedulePayload(), { onSuccess: onClose });
@@ -107,6 +118,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   };
 
   const handleApproveAndPublish = () => {
+    trackEventByName(tracks.projectApprovedAndPublished);
     approveProjectReview(project.id, {
       onSuccess: () => {
         updateProject(publishPayload(), { onSuccess: onClose });
@@ -115,6 +127,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   };
 
   const handleRequestApproval = () => {
+    trackEventByName(tracks.reviewRequested);
     if (mode === 'schedule') {
       updateProject(schedulePayload(), {
         onSuccess: () => {
@@ -205,7 +218,11 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
       }
     >
       <Box p="28px">
-        <ModeToggle mode={mode} onChange={setMode} />
+        <ModeToggle
+          mode={mode}
+          onChange={setMode}
+          schedulingEnabled={isProjectSchedulingEnabled}
+        />
 
         {mode === 'schedule' && (
           <WhenSection
