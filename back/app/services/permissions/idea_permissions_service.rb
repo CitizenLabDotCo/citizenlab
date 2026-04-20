@@ -5,8 +5,10 @@ module Permissions
       votes_exist: 'votes_exist',
       published_after_screening: 'published_after_screening',
       not_author: 'not_author',
-      not_reactable_status_code: 'not_reactable_status_code'
+      reacting_not_allowed: 'reacting_not_allowed'
     }.freeze
+
+    REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
 
     def initialize(idea, user, user_requirements_service: nil)
       super(idea.project, user, user_requirements_service: user_requirements_service)
@@ -35,8 +37,8 @@ module Permissions
         # Check for idea status reason first, to avoid situations where FE presents user
         # with what looks like a possible action, (i.e. reacting), redirects user to signin flow,
         # and then once signed in, the user finds the action is not possible.
-        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
-          return IDEA_DENIED_REASONS[:not_reactable_status_code]
+        if action == 'reacting_idea' && (idea.voting_expired? || REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code))
+          return IDEA_DENIED_REASONS[:reacting_not_allowed]
         end
 
         reason = super

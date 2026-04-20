@@ -3,19 +3,24 @@ class SpacePolicy < ApplicationPolicy
     def resolve
       @scope = scope.includes(:folders, :projects)
 
-      # TODO: Include space admins/managers here once those roles are implemented
-      active_admin? ? scope.all : scope.none
+      if active_admin?
+        return @scope.all
+      end
+
+      if user.space_moderator?
+        return @scope.where(id: user.moderated_space_ids)
+      end
+
+      @scope.none
     end
   end
 
   def show?
-    # TODO: Include space admins/managers here once those roles are implemented
-    active_admin?
+    user && UserRoleService.new.can_moderate?(record, user)
   end
 
   def index?
-    # TODO: Include space admins/managers here once those roles are implemented
-    active_admin?
+    active_admin? || user&.space_moderator?
   end
 
   def create?

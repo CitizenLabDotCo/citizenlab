@@ -40,6 +40,10 @@ const ProjectManagement = ({ projectId }: Props) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
 
+  const handleDeleteModerator = async (userId: string) => {
+    await deleteProjectModerator({ projectId, userId });
+  };
+
   return (
     <ModeratorSubSection>
       <Box display="flex" mb="16px">
@@ -85,9 +89,7 @@ const ProjectManagement = ({ projectId }: Props) => {
         <Box mt="20px">
           <ModeratorsTable
             moderators={projectModerators.data}
-            onDeleteModerator={async (userId: string) => {
-              await deleteProjectModerator({ projectId, userId });
-            }}
+            onDeleteModerator={handleDeleteModerator}
           />
         </Box>
       )}

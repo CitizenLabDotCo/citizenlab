@@ -5,20 +5,44 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.folder',
     defaultMessage: 'Folder',
   },
-  setUserAsProjectModerator: {
-    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
-    defaultMessage: 'Assign {name} as project manager',
+  setUserAsManager: {
+    id: 'app.containers.Admin.Users.setUserAsManager',
+    defaultMessage: 'Assign {name} as manager',
   },
-  selectPublications: {
-    id: 'app.containers.Admin.Users.selectPublications',
-    defaultMessage: 'Select projects or folders',
+  selectProjects: {
+    id: 'app.containers.Admin.Users.selectProjects',
+    defaultMessage: 'Select projects',
   },
-  selectPublicationsPlaceholder: {
-    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
+  selectFolders: {
+    id: 'app.containers.Admin.Users.selectFolders',
+    defaultMessage: 'Select folders',
+  },
+  selectSpaces: {
+    id: 'app.containers.Admin.Users.selectSpaces',
+    defaultMessage: 'Select spaces',
+  },
+  selectPlaceholder: {
+    id: 'app.containers.Admin.Users.selectPlaceholder',
     defaultMessage: 'Type to search',
   },
   assign: {
     id: 'app.containers.Admin.Users.assign',
     defaultMessage: 'Assign',
+  },
+  projects: {
+    id: 'app.containers.Admin.Users.projects',
+    defaultMessage: 'Projects',
+  },
+  folders: {
+    id: 'app.containers.Admin.Users.folders',
+    defaultMessage: 'Folders',
+  },
+  spaces: {
+    id: 'app.containers.Admin.Users.spaces',
+    defaultMessage: 'Spaces',
+  },
+  alreadyManager: {
+    id: 'app.containers.Admin.Users.alreadyManager',
+    defaultMessage: 'Already manager',
   },
 });

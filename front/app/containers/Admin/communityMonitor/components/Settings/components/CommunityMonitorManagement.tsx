@@ -24,6 +24,10 @@ const CommunityMonitorManagement = () => {
 
   if (!projectId) return null;
 
+  const handleDeleteModerator = async (userId: string) => {
+    await deleteProjectModerator({ projectId, userId });
+  };
+
   return (
     <Box mt="40px">
       <Box display="flex">
@@ -46,9 +50,7 @@ const CommunityMonitorManagement = () => {
         <Box mt="20px">
           <ModeratorsTable
             moderators={projectModerators.data}
-            onDeleteModerator={async (userId: string) => {
-              await deleteProjectModerator({ projectId, userId });
-            }}
+            onDeleteModerator={handleDeleteModerator}
           />
         </Box>
       )}

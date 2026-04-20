@@ -514,6 +514,16 @@
             "enum": ["show", "link", "hide"],
             "default": "show",
             "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
+          },
+          "enforced_email_domains": {
+            "title": "Enforced Domains",
+            "type": "string",
+            "description": "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via Azure AD."
+          },
+          "enforced_email_domain_error_multiloc": {
+            "title": "Enforce Email Domain Error Message",
+            "$ref": "#/definitions/multiloc_string",
+            "description": "Custom error message shown to users who must sign in via Azure AD due to their email domain."
           }
         }
       },
@@ -1089,18 +1099,6 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "input_form_custom_fields": {
-        "type": "object",
-        "title": "Input form builder custom fields",
-        "description": "Enables the ability to create custom fields within the ideation form builder.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
       },

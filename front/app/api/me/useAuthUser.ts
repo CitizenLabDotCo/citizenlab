@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import signOut from 'api/authentication/sign_in_out/signOut';
 import { IUser } from 'api/users/types';
 
 import { getJwt, decode } from 'utils/auth/jwt';
@@ -8,10 +9,9 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import meKeys from './keys';
 import { MeKeys } from './types';
-import signOut from 'api/authentication/sign_in_out/signOut';
 
 export const fetchMe = async () => {
-  const data = await fetcher<IUser>({
+  const data = await fetcher<IUser | null>({
     path: `/users/me`,
     action: 'get',
   });
@@ -33,6 +33,8 @@ export const fetchMe = async () => {
         signOut();
         return null;
       }
+    } else {
+      return null;
     }
   }
 
@@ -40,9 +42,9 @@ export const fetchMe = async () => {
 };
 
 const useAuthUser = () => {
-  return useQuery<IUser, CLErrors, IUser, MeKeys>({
+  return useQuery<IUser | null, CLErrors, IUser, MeKeys>({
     queryKey: meKeys.all(),
-    queryFn: fetchMe as () => Promise<IUser>,
+    queryFn: () => fetchMe(),
   });
 };
 

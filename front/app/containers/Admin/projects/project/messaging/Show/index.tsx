@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   StatusLabel,
@@ -9,8 +9,9 @@ import {
   fontSizes,
   Button,
   Text,
+  Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -35,6 +36,7 @@ import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { formatDateInTimezone } from 'utils/dateUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -56,12 +58,6 @@ const FromToHeader = styled.span`
   font-weight: bold;
 `;
 
-const SendTestEmailButton = styled.button`
-  text-decoration: underline;
-  font-size: ${fontSizes.base}px;
-  cursor: pointer;
-`;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -70,6 +66,7 @@ const Buttons = styled.div`
   }
   align-items: center;
 `;
+type FeedbackType = 'sent' | 'updated' | 'created' | null;
 
 const Show = () => {
   const { projectId, campaignId } = useParams() as {
@@ -96,6 +93,21 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
+  const [searchParams] = useSearchParams();
+  const created = searchParams.get('created');
+  const updated = searchParams.get('updated');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
+    created ? 'created' : updated ? 'updated' : null
+  );
+  useEffect(() => {
+    if (created) removeSearchParams(['created']);
+    if (updated) removeSearchParams(['updated']);
+  }, [created, updated]);
+  const feedbackMessages = {
+    sent: messages.previewSentConfirmation,
+    updated: messages.emailUpdated,
+    created: messages.emailCreated,
+  };
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -113,10 +125,7 @@ const Show = () => {
   const handleSendTestEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        const previewSentConfirmation = formatMessage(
-          messages.previewSentConfirmation
-        );
-        window.alert(previewSentConfirmation);
+        setFeedbackType('sent');
       },
     });
   };
@@ -219,6 +228,15 @@ const Show = () => {
               </Buttons>
             )}
           </Box>
+          {feedbackType && (
+            <Box mb="8px">
+              <Success
+                text={formatMessage(feedbackMessages[feedbackType])}
+                showIcon
+                showBackground
+              />
+            </Box>
+          )}
           {apiSendErrors && (
             <Box mb="8px">
               <Error apiErrors={apiSendErrors.errors['base']} />
@@ -252,16 +270,23 @@ const Show = () => {
             </FromTo>
             {(isDraft(campaign.data) ||
               campaign.data.attributes.scheduled_at) && (
-              <Box mb="30px" display="flex" alignItems="center">
-                <SendTestEmailButton onClick={handleSendTestEmail}>
-                  <FormattedMessage {...messages.sendTestEmailButton} />
-                </SendTestEmailButton>
-                &nbsp;
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.sendTestEmailTooltip} />
-                  }
-                />
+              <Box>
+                <Button
+                  icon="send"
+                  buttonStyle="secondary-outlined"
+                  onClick={handleSendTestEmail}
+                >
+                  <Box display="inline-flex">
+                    <FormattedMessage {...messages.sendTestEmailButton} />
+                    <IconTooltip
+                      mt="3px"
+                      ml="4px"
+                      content={
+                        <FormattedMessage {...messages.sendTestEmailTooltip} />
+                      }
+                    />
+                  </Box>
+                </Button>
               </Box>
             )}
           </Box>

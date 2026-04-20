@@ -2,9 +2,11 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import { NodeType } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import useDeleteSpaceModerator from 'api/space_moderators/useDeleteSpaceModerator';
 import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';
@@ -13,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-import { getLists as getModeratedItems } from './utils';
+import { getModeratedItems } from './utils';
 
 interface Props {
   user: IUserData;
@@ -25,15 +27,18 @@ const UserAssignedItems = ({ user }: Props) => {
   const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
   const { mutateAsync: deleteFolderModerator } =
     useDeleteProjectFolderModerator();
+  const { mutateAsync: deleteSpaceModerator } = useDeleteSpaceModerator();
 
   if (!treeView) return null;
 
-  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
-    user,
-    treeView
-  );
+  const { projectsUserModerates, foldersUserModerates, spacesUserModerates } =
+    getModeratedItems(user, treeView);
 
-  if (projectsUserModerates.length === 0 && foldersUserModerates.length === 0) {
+  const hasProjects = projectsUserModerates.length > 0;
+  const hasFolders = foldersUserModerates.length > 0;
+  const hasSpaces = spacesUserModerates.length > 0;
+
+  if (!hasProjects && !hasFolders && !hasSpaces) {
     return (
       <Text>
         <FormattedMessage {...messages.noItemsAssigned} />
@@ -41,16 +46,13 @@ const UserAssignedItems = ({ user }: Props) => {
     );
   }
 
-  const hasFolders = foldersUserModerates.length > 0;
-
-  const handleRemove = async (
-    nodeId: string,
-    nodeType: 'project' | 'folder'
-  ) => {
+  const handleRemove = async (nodeId: string, nodeType: NodeType) => {
     if (nodeType === 'project') {
       await deleteProjectModerator({ projectId: nodeId, userId: user.id });
-    } else {
+    } else if (nodeType === 'folder') {
       await deleteFolderModerator({ projectFolderId: nodeId, userId: user.id });
+    } else {
+      await deleteSpaceModerator({ spaceId: nodeId, userId: user.id });
     }
   };
 
@@ -59,29 +61,46 @@ const UserAssignedItems = ({ user }: Props) => {
   return (
     <Box>
       {userIsAdmin && (
-        <Text>
+        <Text mb="40px">
           <FormattedMessage {...messages.asAnAdmin} />
         </Text>
       )}
-      {hasFolders && (
-        <>
-          <Title variant="h3" mt={userIsAdmin ? '40px' : '0px'}>
-            <FormattedMessage {...messages.foldersUserManages} />
+      {hasSpaces && (
+        <Box mb="40px">
+          <Title variant="h3" m="0px">
+            <FormattedMessage {...messages.spacesUserManages} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.thisUserCanManage} />
+            <FormattedMessage {...messages.thisUserCanManageSpaces} />
           </Text>
           <TreeView
-            nodes={foldersUserModerates}
-            lockedProjectTooltip={messages.lockedProject}
+            nodes={spacesUserModerates}
+            lockedProjectTooltip={messages.lockedProjectInSpace}
+            lockedFolderTooltip={messages.lockedFolderInSpace}
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />
-        </>
+        </Box>
       )}
-      {projectsUserModerates.length > 0 && (
-        <>
-          <Title variant="h3" mt={hasFolders ? '40px' : '0px'}>
+      {hasFolders && (
+        <Box mb="40px">
+          <Title variant="h3" m="0px">
+            <FormattedMessage {...messages.foldersUserManages} />
+          </Title>
+          <Text>
+            <FormattedMessage {...messages.thisUserCanManageFolders} />
+          </Text>
+          <TreeView
+            nodes={foldersUserModerates}
+            lockedProjectTooltip={messages.lockedProjectInFolder}
+            removeButtonMessage={messages.remove}
+            onRemove={handleRemove}
+          />
+        </Box>
+      )}
+      {hasProjects && (
+        <Box mb="40px">
+          <Title variant="h3" mb="16px" mt="0px">
             <FormattedMessage {...messages.projectsUserManages} />
           </Title>
           <TreeView
@@ -89,7 +108,7 @@ const UserAssignedItems = ({ user }: Props) => {
             removeButtonMessage={messages.remove}
             onRemove={handleRemove}
           />
-        </>
+        </Box>
       )}
     </Box>
   );

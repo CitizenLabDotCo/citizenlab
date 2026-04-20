@@ -16,16 +16,17 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to     permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
-      it { is_expected.not_to permit(:copy)                  }
-      it { is_expected.not_to permit(:update)                }
-      it { is_expected.not_to permit(:reorder)               }
-      it { is_expected.not_to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)               }
-      it { is_expected.not_to permit(:index_xlsx)            }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+      it { is_expected.to     permit(:show)                          }
+      it { is_expected.not_to permit(:create)                        }
+      it { is_expected.not_to permit(:copy)                          }
+      it { is_expected.not_to permit(:update)                        }
+      it { is_expected.not_to permit(:reorder)                       }
+      it { is_expected.not_to permit(:refresh_preview_token)         }
+      it { is_expected.not_to permit(:destroy)                       }
+      it { is_expected.not_to permit(:index_xlsx)                    }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)           }
+      it { is_expected.not_to permit(:publication_recipient_count)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -35,16 +36,17 @@ describe ProjectPolicy do
     context 'for a resident' do
       let(:user) { create(:user) }
 
-      it { is_expected.to     permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
-      it { is_expected.not_to permit(:copy)                  }
-      it { is_expected.not_to permit(:update)                }
-      it { is_expected.not_to permit(:reorder)               }
-      it { is_expected.not_to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)               }
-      it { is_expected.not_to permit(:index_xlsx)            }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+      it { is_expected.to     permit(:show)                          }
+      it { is_expected.not_to permit(:create)                        }
+      it { is_expected.not_to permit(:copy)                          }
+      it { is_expected.not_to permit(:update)                        }
+      it { is_expected.not_to permit(:reorder)                       }
+      it { is_expected.not_to permit(:refresh_preview_token)         }
+      it { is_expected.not_to permit(:destroy)                       }
+      it { is_expected.not_to permit(:index_xlsx)                    }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)           }
+      it { is_expected.not_to permit(:publication_recipient_count)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -58,16 +60,17 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)                  }
-      it { is_expected.to permit(:create)                }
-      it { is_expected.to permit(:copy)                  }
-      it { is_expected.to permit(:update)                }
-      it { is_expected.to permit(:reorder)               }
-      it { is_expected.to permit(:refresh_preview_token) }
-      it { is_expected.to permit(:destroy)               }
-      it { is_expected.to permit(:index_xlsx)            }
-      it { is_expected.to permit(:votes_by_user_xlsx)    }
-      it { is_expected.to permit(:votes_by_input_xlsx)   }
+      it { is_expected.to permit(:show)                          }
+      it { is_expected.to permit(:create)                        }
+      it { is_expected.to permit(:copy)                          }
+      it { is_expected.to permit(:update)                        }
+      it { is_expected.to permit(:reorder)                       }
+      it { is_expected.to permit(:refresh_preview_token)         }
+      it { is_expected.to permit(:destroy)                       }
+      it { is_expected.to permit(:index_xlsx)                    }
+      it { is_expected.to permit(:votes_by_user_xlsx)            }
+      it { is_expected.to permit(:votes_by_input_xlsx)           }
+      it { is_expected.to permit(:publication_recipient_count)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -81,16 +84,17 @@ describe ProjectPolicy do
     context 'for a moderator of the project' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)                  }
-      it { is_expected.not_to permit(:create)            }
-      it { is_expected.to permit(:copy)                  }
-      it { is_expected.to permit(:update)                }
-      it { is_expected.to permit(:reorder)               }
-      it { is_expected.to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)           }
-      it { is_expected.to permit(:index_xlsx)            }
-      it { is_expected.to permit(:votes_by_user_xlsx)    }
-      it { is_expected.to permit(:votes_by_input_xlsx)   }
+      it { is_expected.to permit(:show)                          }
+      it { is_expected.not_to permit(:create)                    }
+      it { is_expected.to permit(:copy)                          }
+      it { is_expected.to permit(:update)                        }
+      it { is_expected.to permit(:reorder)                       }
+      it { is_expected.to permit(:refresh_preview_token)         }
+      it { is_expected.not_to permit(:destroy)                   }
+      it { is_expected.to permit(:index_xlsx)                    }
+      it { is_expected.to permit(:votes_by_user_xlsx)            }
+      it { is_expected.to permit(:votes_by_input_xlsx)           }
+      it { is_expected.to permit(:publication_recipient_count)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -104,16 +108,17 @@ describe ProjectPolicy do
     context 'for a moderator of another project' do
       let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
-      it { is_expected.to permit(:show)                      }
-      it { is_expected.not_to permit(:create)                }
-      it { is_expected.not_to permit(:copy)                  }
-      it { is_expected.not_to permit(:update)                }
-      it { is_expected.not_to permit(:reorder)               }
-      it { is_expected.not_to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)               }
-      it { is_expected.not_to permit(:index_xlsx)            }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+      it { is_expected.to permit(:show)                              }
+      it { is_expected.not_to permit(:create)                        }
+      it { is_expected.not_to permit(:copy)                          }
+      it { is_expected.not_to permit(:update)                        }
+      it { is_expected.not_to permit(:reorder)                       }
+      it { is_expected.not_to permit(:refresh_preview_token)         }
+      it { is_expected.not_to permit(:destroy)                       }
+      it { is_expected.not_to permit(:index_xlsx)                    }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)           }
+      it { is_expected.not_to permit(:publication_recipient_count)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
@@ -457,7 +462,7 @@ describe ProjectPolicy do
     end
   end
 
-  context 'in project folders' do
+  context 'when folder moderator' do
     let!(:project_folder) { create(:project_folder) }
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
@@ -473,6 +478,119 @@ describe ProjectPolicy do
 
       it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:copy)   }
+    end
+  end
+
+  context 'when space moderator' do
+    let(:space) { create(:space) }
+    let(:other_space) { create(:space) }
+    let(:user) { create(:space_moderator, spaces: [space]) }
+
+    context 'for create' do
+      context 'when project is created without folder or space id' do
+        let(:project) { build(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        it { is_expected.not_to permit(:create) }
+      end
+
+      context 'when project is created with folder id' do
+        context 'when folder is in the moderated space' do
+          let(:folder) { create(:project_folder, space: space) }
+          let(:project) { build(:project, folder: folder, space: nil, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when folder is in a different space' do
+          let(:folder) { create(:project_folder, space: other_space) }
+          let(:project) { build(:project, folder: folder, space: nil, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+
+        context 'when folder is in a different space but user is also a folder moderator of that folder' do
+          let(:folder) { create(:project_folder, space: other_space) }
+          let(:user) { create(:space_moderator, spaces: [space]).tap { |u| u.add_role('project_folder_moderator', project_folder_id: folder.id) } }
+          let(:project) { build(:project, folder: folder, space: nil, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when folder has no space assigned' do
+          let(:folder) { create(:project_folder, space: nil) }
+          let(:project) { build(:project, folder: folder, space: nil, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+      end
+
+      context 'when project is created with space id' do
+        context 'when user moderates that space' do
+          let(:project) { build(:project, space: space, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when user moderates a different space' do
+          let(:project) { build(:project, space: other_space, admin_publication_attributes: { publication_status: 'draft' }) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+      end
+    end
+
+    context 'for show, update, and destroy' do
+      context 'when project is in the moderated space' do
+        let(:project) { create(:project, space: space) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:copy) }
+
+        context 'when project has never been published' do
+          before do
+            project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
+          end
+
+          it { is_expected.to permit(:destroy) }
+        end
+
+        context 'when project has been published' do
+          before do
+            project.admin_publication.update!(first_published_at: Time.current)
+          end
+
+          it { is_expected.not_to permit(:destroy) }
+        end
+      end
+
+      context 'when project is in a space the user cannot moderate' do
+        let(:project) { create(:project, space: other_space) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:copy) }
+        it { is_expected.not_to permit(:destroy) }
+      end
+
+      context 'when project is in a folder within the moderated space' do
+        let(:folder) { create(:project_folder, space: space) }
+        let(:project) { create(:project, space: space, admin_publication_attributes: { parent_id: folder.admin_publication.id }) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:copy) }
+      end
+
+      context 'when project is in a folder in a space user cannot moderate' do
+        let(:folder) { create(:project_folder, space: other_space) }
+        let(:project) { create(:project, space: other_space, admin_publication_attributes: { parent_id: folder.admin_publication.id }) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:copy) }
+        it { is_expected.not_to permit(:destroy) }
+      end
     end
   end
 end
