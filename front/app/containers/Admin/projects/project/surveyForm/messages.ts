@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Survey form',
   },
   inputFormDescription: {
-    id: 'app.containers.Admin.surveyFormTab.inputFormDescription',
+    id: 'app.containers.Admin.surveyFormTab.inputFormDescription2',
     defaultMessage:
-      'Specify what information should be provided, add short descriptions or instructions to guide participant responses and specify whether each field is optional or required.',
+      'Specify what information should be provided to guide participant responses.',
   },
   editSurveyForm: {
     id: 'app.containers.Admin.surveyFormTab.editSurveyForm',

@@ -13,7 +13,12 @@ interface Props {
 const FormActions = ({ loading }: Props) => {
   return (
     <Box display="flex" justifyContent="flex-start">
-      <Button type="submit" processing={loading} icon="download">
+      <Button
+        type="submit"
+        processing={loading}
+        icon="download"
+        buttonStyle="admin-dark"
+      >
         <FormattedMessage {...messages.exportAsPDF} />
       </Button>
     </Box>
