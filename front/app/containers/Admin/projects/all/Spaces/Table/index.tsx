@@ -19,13 +19,15 @@ import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
 import sharedMessages from '../../_shared/messages';
+import { useParams } from '../../_shared/params';
 
 import messages from './messages';
 import Row from './Row';
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const { data: spaces } = useSpaces();
+  const params = useParams();
+  const { data: spaces } = useSpaces(params);
 
   const spaceModeratorsById = useMemo(() => {
     const moderators = groupIncludedResources(spaces?.included ?? []).user;
