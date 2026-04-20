@@ -17379,6 +17379,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.projectSortEndingSoon": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:10:23.773755Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.widgets.projectSortMostParticipants": {
     "state": "verified",
     "verified_at": "2026-04-07T15:09:21.721877Z",
