@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
     defaultMessage: 'Phase',
   },
-  manager: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.manager',
-    defaultMessage: 'Manager',
-  },
   start: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.start',
     defaultMessage: 'Start',
