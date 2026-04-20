@@ -150,7 +150,7 @@ class ProjectsFinderAdminService
     statuses = params[:status] || []
     return scope if statuses.blank?
 
-    scope.joins(:admin_publication).merge(AdminPublication.with_status(statuses))
+    scope.where(admin_publication: AdminPublication.with_status(statuses))
   end
 
   def self.filter_review_state(scope, params = {})
@@ -232,9 +232,7 @@ class ProjectsFinderAdminService
       .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
       .select(:id)
 
-    scope.where(
-      admin_publication: { parent_id: [nil] }
-    ).or(
+    scope.where(admin_publication: { parent_id: [nil] }).or(
       scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
     )
   end
