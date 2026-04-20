@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} أشهر} one {{months} شهر} other {{months} أشهر}} متبقية",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} أشهر} one {{months} شهر} other {{months} أشهر}} للبدء",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "المرحلة التالية:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "لم يتم العثور على مشاريع",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "غير مخصص",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "مرحلة",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "ما قبل الإطلاق",

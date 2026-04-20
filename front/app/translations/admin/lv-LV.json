@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} mēneši} one {{months} mēnesis} other {~{months} mēneši}} kreisi",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mēneši} one {{months} mēnesis} other {~{months} mēneši}} sākt",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nākamais posms:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Projekti nav atrasti",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nav piešķirts",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fāze",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pirms palaišanas",

@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ay} one {{months} ay} other {{months} ay}} sol",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} ay} one {{months} ay} other {{months} ay}} başlamak için",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Sonraki aşama:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Proje bulunamadı",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Görevlendirilmedi",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Aşama",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Lansman öncesi",

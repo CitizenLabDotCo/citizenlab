@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} μήνες} one {{months} μήνας} other {{months} μήνες}} απομένουν",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} μήνες} one {{months} μήνας} other {{months} μήνες}} για την έναρξη",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Επόμενη φάση:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Δεν βρέθηκαν έργα",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Δεν έχει ανατεθεί",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Φάση",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Προ-έναρξη",

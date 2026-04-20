@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "nach {months, plural, no {{months} Méint} one {{months} Mount} other {{months} Méint}}",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} Méint} one {{months} Mount} other {{months} Méint}} bis zum Start",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nächst Phas:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Keng Projete fonnt",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Net zougewisen",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Phas",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pre-Launch",

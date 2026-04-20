@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} kuukautta} one {{months} kuukausi} other {{months} kuukautta}} jäljellä",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} kuukautta} one {{months} kuukausi} other {{months} kuukautta}} aloittaa",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Seuraava vaihe:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Projekteja ei löytynyt",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Ei määritetty",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Vaihe",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Julkaisua edeltävä",

@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} mėnesiai} one {{months} mėnuo} other {~{months} mėnesiai}} kairė",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mėnesių} one {{months} mėnesių} other {~{months} mėnesių}} pradėti",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Kitas etapas:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Projektų nerasta",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nepriskirta",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fazė",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Prieš paleidimą",

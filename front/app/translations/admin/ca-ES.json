@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "Falten {months, plural, no {{months} mesos} one {{months} mes} other {{months} mesos}}",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} mesos} one {{months} mes} other {{months} mesos}} per començar",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Fase següent:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "No s'ha trobat cap projecte",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "No assignat",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Prellançament",

@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} ~ måneder} one {{months} ~ måned} other {{months} måneder}} venstre",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} ~ måneder} one {{months} ~ måned} other {{months} måneder}} til å begynne med",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Neste fase:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Fant ingen prosjekter",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Ikke tildelt",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Før lansering",

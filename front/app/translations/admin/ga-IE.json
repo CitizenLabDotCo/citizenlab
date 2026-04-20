@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} míonna} one {{months} mí} other {{months} míonna}} fágtha",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} míonna} one {{months} mí} other {{months} míonna}} le tosú",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "An chéad chéim eile:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "Níor aimsíodh aon tionscadal",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Gan sannadh",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Céim",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Réamhlainseáil",
