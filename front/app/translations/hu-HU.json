@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 szavazat} one {1 szavazat} other {# szavazatok}}",
   "app.utils.votingMethodUtils.results": "Eredmények",
   "app.utils.votingMethodUtils.singleVotingEnded": "A szavazást <b>{endDate}napon zártuk.</b> A résztvevők <b>szavazhattak a {maxVotes} opciókra.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Válassza ki a kívánt opciókat a „Szavazás” gomb megérintésével",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Válassza ki a kívánt opciókat a „Kiválasztás” gombra koppintva.",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "<b>{totalVotes}</b> szavazatod van, amelyeket hozzárendelhetsz az opciókhoz.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Ha elkészült, kattintson a „Küldés” gombra a szavazás leadásához.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "A szavazást <b>{endDate}napon zártuk.</b> A résztvevők <b>1 lehetőségre szavazhattak.</b>",

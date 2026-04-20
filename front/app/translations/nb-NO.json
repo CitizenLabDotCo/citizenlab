@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 stemmer} one {1 stemme} other {# stemmer}}",
   "app.utils.votingMethodUtils.results": "Resultater",
   "app.utils.votingMethodUtils.singleVotingEnded": "Avstemningen ble avsluttet på <b>{endDate}.</b> Deltakerne kunne <b>stemme på {maxVotes} alternativer.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Velg dine foretrukne alternativer ved å trykke på \"Vote\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Velg dine foretrukne alternativer ved å trykke på «Velg»",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Du har <b>{totalVotes} stemmer</b> som du kan tildele alternativene.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Når du er ferdig, klikker du på \"Send\" for å avgi din stemme.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Avstemningen ble avsluttet på <b>{endDate}.</b> Deltakerne kunne <b>stemme på 1 alternativ.</b>",

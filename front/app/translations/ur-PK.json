@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 ووٹ} one {1 ووٹ} other {# ووٹ}}",
   "app.utils.votingMethodUtils.results": "نتائج",
   "app.utils.votingMethodUtils.singleVotingEnded": "ووٹنگ <b>{endDate}پر بند ہو گئی۔</b> شرکاء <b> {maxVotes} اختیارات کے لیے ووٹ دے سکتے ہیں۔</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "\"ووٹ\" پر ٹیپ کرکے اپنے پسندیدہ اختیارات منتخب کریں۔",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "\"منتخب کریں\" پر ٹیپ کر کے اپنے پسندیدہ اختیارات منتخب کریں۔",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "آپ کے پاس <b>{totalVotes} ووٹ</b> ہیں جنہیں آپ اختیارات کو تفویض کر سکتے ہیں۔",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "ایک بار جب آپ کام کر لیں، اپنا ووٹ ڈالنے کے لیے \"جمع کروائیں\" پر کلک کریں۔",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "ووٹنگ <b>{endDate}پر بند ہو گئی۔</b> شرکاء <b>1 آپشن کو ووٹ دے سکتے ہیں۔</b>",
