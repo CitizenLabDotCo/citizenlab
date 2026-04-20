@@ -218,10 +218,6 @@ namespace :cl2_back do
             }
           ]
         },
-        project_folders: {
-          enabled: true,
-          allowed: true
-        },
         project_preview_link: {
           enabled: true,
           allowed: true
