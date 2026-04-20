@@ -29,7 +29,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
-import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
+import { saveSurveyAsPDF } from '../../project/surveyFormAssets/saveSurveyAsPDF';
 
 import FormActions from './FormActions';
 import LogicCheckbox from './LogicCheckbox';
