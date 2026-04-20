@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
 
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
@@ -177,38 +177,17 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           alignItems="center"
           w="100%"
         >
-          {mode === 'schedule' ? (
-            <>
-              <Button
-                buttonStyle="text"
-                onClick={onClose}
-                textColor={colors.black}
-              >
-                {formatMessage(messages.cancelSchedule)}
-              </Button>
-              <Button
-                buttonStyle="admin-dark"
-                icon={primaryIcon}
-                onClick={primaryOnClick}
-                processing={isLoading}
-                disabled={primaryDisabled}
-              >
-                {formatMessage(primaryLabel)}
-              </Button>
-            </>
-          ) : (
-            <Box w="100%" display="flex" justifyContent="flex-end">
-              <Button
-                buttonStyle="admin-dark"
-                icon={primaryIcon}
-                onClick={primaryOnClick}
-                processing={isLoading}
-                disabled={primaryDisabled}
-              >
-                {formatMessage(primaryLabel)}
-              </Button>
-            </Box>
-          )}
+          <Box w="100%" display="flex" justifyContent="flex-end">
+            <Button
+              buttonStyle="admin-dark"
+              icon={primaryIcon}
+              onClick={primaryOnClick}
+              processing={isLoading}
+              disabled={primaryDisabled}
+            >
+              {formatMessage(primaryLabel)}
+            </Button>
+          </Box>
         </Box>
       }
     >
