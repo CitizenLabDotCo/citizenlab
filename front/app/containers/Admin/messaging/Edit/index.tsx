@@ -116,7 +116,6 @@ const Edit = ({ campaignType }: EditProps) => {
               text={formatMessage(messages.previewSentConfirmation)}
               showIcon
               showBackground
-              onClose={() => setPreviewSent(false)}
             />
           </Box>
         )}

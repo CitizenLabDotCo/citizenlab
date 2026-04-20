@@ -237,7 +237,6 @@ const Show = () => {
                 text={formatMessage(feedbackMessages[feedbackType])}
                 showIcon
                 showBackground
-                onClose={() => setFeedbackType(null)}
               />
             </Box>
           )}

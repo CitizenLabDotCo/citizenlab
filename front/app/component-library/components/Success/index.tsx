@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
@@ -68,7 +67,6 @@ interface Props {
   showBackground?: boolean;
   animate: boolean;
   className?: string;
-  onClose?: () => void;
 }
 
 interface State {
@@ -96,8 +94,7 @@ export default class Success extends PureComponent<Props, State> {
   }
 
   render() {
-    const { text, className, animate, showIcon, showBackground, onClose } =
-      this.props;
+    const { text, className, animate, showIcon, showBackground } = this.props;
     const { mounted } = this.state;
 
     return (
@@ -112,20 +109,8 @@ export default class Success extends PureComponent<Props, State> {
       >
         <Container className={`e2e-success-message ${className}`}>
           <StyledSuccessMessageInner showBackground={showBackground}>
-            <Box display="flex" alignItems="center">
-              {showIcon && <CheckmarkIcon name="check" />}
-              <SuccessMessageText>{text}</SuccessMessageText>
-            </Box>
-            {onClose && (
-              <Box onClick={onClose} cursor="pointer">
-                <Icon
-                  name="close"
-                  width="16px"
-                  height="16px"
-                  fill={colors.success}
-                />
-              </Box>
-            )}
+            {showIcon && <CheckmarkIcon name="check" />}
+            <SuccessMessageText>{text}</SuccessMessageText>
           </StyledSuccessMessageInner>
         </Container>
       </CSSTransition>
