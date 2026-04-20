@@ -16,7 +16,6 @@ import { useParams } from 'react-router-dom';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
 import { API_PATH } from 'containers/App/constants';
 
 import { FormType } from 'components/FormBuilder/utils';
@@ -26,6 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
+import PDFExportModal from './PDFExportModal';
 
 interface Props {
   formType: FormType;
