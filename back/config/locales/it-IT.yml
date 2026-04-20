@@ -4,15 +4,15 @@ it-IT:
       24_hours: 24 ore.
       best_regards: Cordiali saluti,
       confirm_email_address: Conferma l'indirizzo e-mail
-      copy_paste_the_link_below: Copia e incolla il codice qui sotto nel tuo modulo di registrazione.
-      did_you_receive_this_email_in_error: Hai ricevuto questa e-mail per errore? <a href="%{link}">Facci sapere</a>.
+      copy_paste_the_link_below: Copia e incolla il codice qui sotto nel tuo modulo di registrazione alla piattaforma.
+      did_you_receive_this_email_in_error: Hai ricevuto questa e-mail per errore? <a href="%{link}">Faccelo sapere</a>.
       expire_code: 'Questo codice scadrà tra '
       header: Il tuo codice di conferma
       header_message: Ciao %{firstName}!
-      ignore_email: Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail.
+      ignore_email: Se non hai richiesto un codice, puoi tranquillamente ignorare questa e-mail.
       preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
-      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
-      thanks_for_signing_up1: 'Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma di partecipazione %{organizationName}:'
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
+      thanks_for_signing_up1: 'Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma partecipativa di %{organizationName}:'
       the_link_is_valid_for: Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href="%{link}">richiedere un nuovo codice</a>.
   custom_field_options:
     domicile:
@@ -24,7 +24,7 @@ it-IT:
   custom_fields:
     community_monitor:
       form_end:
-        button_text: Torna alla home page
+        button_text: Torna alla homepage
       labels:
         label_1: Molto negativo
         label_2: Negativo
@@ -105,13 +105,13 @@ it-IT:
         comment:
           title: Qual è il tuo commento?
         contribution:
-          title: Qual è il suo contributo?
+          title: Qual è il tuo contributo?
         idea:
           title: Qual è la tua idea?
         initiative:
           title: Qual è la tua iniziativa?
         issue:
-          title: Qual è il suo commento?
+          title: Qual è il tuo commento?
         option:
           title: Qual è la tua opzione?
         petition:
@@ -119,11 +119,11 @@ it-IT:
         post:
           title: Qual è il tuo post?
         project:
-          title: Qual è il suo progetto?
+          title: Qual è il tuo progetto?
         proposal:
           title: Qual è la tua proposta?
         question:
-          title: Qual è il suo domanda?
+          title: Qual è la tua domanda?
         response:
           title: Qual è la tua risposta?
         story:
@@ -158,7 +158,7 @@ it-IT:
       choose_at_most: Scegli al massimo %{count} opzioni
       choose_between: Scegli tra le opzioni %{min} e %{max}
       choose_exactly:
-        one: Scegli esattamente l'opzione %{count}
+        one: Scegli esattamente %{count} opzione
         other: Scegli esattamente %{count} opzioni
       date_print_description: Scrivi una data nel formato AAAA-MM-GG.
       date_published: Data di pubblicazione (gg-mm-aaaa)
@@ -182,14 +182,14 @@ it-IT:
       personal_data_explanation_public: Invieremo il tuo contributo alla piattaforma partecipativa di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti ad esso relativi, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non vuoi che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti.
       point_print_description: Per indicare la posizione, traccia una X sulla mappa sottostante oppure scrivi l'indirizzo.
       polygon_print_description: Disegna una forma sulla mappa sottostante.
-      ranking_print_description: Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero esattamente una volta.
+      ranking_print_description: Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero solo una volta.
       rating_print_description: Dai una valutazione scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).
       select_print_description: Scegli una sola opzione.
       sentiment_linear_scale_print_description: Scrivi un numero compreso tra 1 e 5.
       sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
-      this_answer: Questa risposta sarà condivisa solo dai moderatori e non dal pubblico.
+      this_answer: Questa risposta sarà condivisa solo con i moderatori e non con il pubblico.
       unsupported_field: Questo campo non può essere completato su carta. Si prega di utilizzare la versione online di questo modulo.
-      write_as_clearly: Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.
+      write_as_clearly: Scrivi <b>il più chiaramente</b> possibile - questi moduli potrebbero essere scannerizzati.
       write_in_language: Scrivi le tue risposte nella stessa lingua di questo modulo
   ics_calendar_event:
     event_details: Dettagli dell'evento
@@ -282,9 +282,9 @@ it-IT:
     published_projects: Progetti pubblicati
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: Ripristina la tua password
-      message_you_reset_your_password: Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.
-      preheader: Reimposta la tua password per %{organizationName}
+      cta_reset_password: Resetta la tua password
+      message_you_reset_your_password: Hai richiesto un reset della password per la piattaforma partecipativa di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.
+      preheader: Resetta la tua password per %{organizationName}
       subject: '%{organizationName}: Resetta la tua password'
       title_reset_your_password: Seleziona una nuova password
   static_pages:
