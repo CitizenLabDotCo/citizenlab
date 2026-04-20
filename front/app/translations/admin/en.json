@@ -1325,6 +1325,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2": "{months, plural, no {{months} months} one {{months} month} other {{months} months}} left",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2": "{months, plural, no {{months} months} one {{months} month} other {{months} months}} to start",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Next phase:",
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": "No projects found",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Not assigned",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Phase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pre-launch",
