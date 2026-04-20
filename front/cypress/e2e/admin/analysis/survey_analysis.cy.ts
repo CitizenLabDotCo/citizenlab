@@ -74,7 +74,7 @@ describe('Admin: survey analysis', () => {
 
   it('shows and hides summaries on the survey results page', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.intercept('GET', '**/insights', {
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_survey.json',
     });
 
@@ -88,7 +88,7 @@ describe('Admin: survey analysis', () => {
 
   it('adds and removes questions from the analysis', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.intercept('GET', '**/insights', {
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_survey.json',
     });
 

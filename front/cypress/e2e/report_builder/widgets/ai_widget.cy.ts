@@ -172,7 +172,7 @@ describe('Report builder: AI widget', () => {
 
   it('should make AI analysis insights in an ideation project possible to include in a report', () => {
     cy.intercept('POST', '**/analyses').as('createAnalysis');
-    cy.intercept('GET', '**/insights', {
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_ideation.json',
     });
 
