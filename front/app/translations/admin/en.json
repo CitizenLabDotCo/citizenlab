@@ -490,6 +490,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateNo": "Cancel",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Yes, refresh link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduled": "Scheduled",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduledStatus": "Scheduled",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Share",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copy link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link copied",
