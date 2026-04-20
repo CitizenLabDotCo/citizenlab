@@ -1563,7 +1563,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Godkend alle input ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Godkend alle input?",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Dette vil godkende og offentliggøre alle {numIdeas} importerede input på én gang. Du kan stadig finde dem i input-projektlederen bagefter.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Dette vil godkende og offentliggøre alle {numIdeas} importerede input på én gang. Du kan stadig finde dem i input-manageren bagefter.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Fjern alle input?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Denne handling kan ikke fortrydes.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Download PDF",
