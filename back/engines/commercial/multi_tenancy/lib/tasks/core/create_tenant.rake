@@ -324,8 +324,8 @@ namespace :cl2_back do
           allowed: true
         },
         project_scheduling: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         },
         platform_templates: {
           enabled: false,
