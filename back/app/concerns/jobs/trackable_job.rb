@@ -23,7 +23,7 @@ module Jobs
     def complete_if_done!
       return unless tracked?
 
-      tracker.complete! if !tracker.completed? && tracker.progress >= tracker.total
+      tracker.complete! if tracker.progress >= tracker.total
     end
 
     private

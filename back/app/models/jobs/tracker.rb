@@ -115,6 +115,8 @@ module Jobs
     end
 
     def complete!
+      return if completed?
+
       Tracker
         .where(id: id, completed_at: nil)
         .update_all(
