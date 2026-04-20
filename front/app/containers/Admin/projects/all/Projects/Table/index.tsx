@@ -4,6 +4,7 @@ import {
   Box,
   Table as TableComponent,
   Thead,
+  Text,
   Tr,
   Th,
   Tbody,
@@ -77,6 +78,12 @@ const Table = () => {
     rootMargin: '0px 0px 100px 0px',
   });
 
+  // True when loading the initial data,
+  // or when loading new (i.e. a new combination of filters) data
+  const isLoadingNewData = isLoading || (isFetching && !isFetchingNextPage);
+
+  const isLoadingData = isLoadingNewData || isFetchingNextPage;
+
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
       return sharedMessages.loadingMore;
@@ -86,12 +93,17 @@ const Table = () => {
       return sharedMessages.scrollDownToLoadMore;
     }
 
+    if (projects.length === 0 && !isLoadingData) {
+      return messages.noProjectsFound;
+    }
+
     if (status === 'success') {
       return sharedMessages.allProjectsHaveLoaded;
     }
 
     return null;
   };
+
   const sentinelMessage = getSentinelMessage();
 
   return (
@@ -121,7 +133,7 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {projects.length === 0 && (
+          {isLoadingData && (
             <>
               <EmptyRow />
               <EmptyRow />
@@ -140,15 +152,17 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      <Box
-        ref={loadMoreRef}
-        mt="12px"
-        display="flex"
-        justifyContent="center"
-        color={colors.textPrimary}
-      >
-        {sentinelMessage && formatMessage(sentinelMessage)}
-      </Box>
+      {sentinelMessage && (
+        <Box
+          ref={loadMoreRef}
+          mt="12px"
+          display="flex"
+          justifyContent="center"
+          color={colors.textPrimary}
+        >
+          <Text>{formatMessage(sentinelMessage)}</Text>
+        </Box>
+      )}
 
       {isFetchingNextPage && (
         <Box
@@ -162,7 +176,7 @@ const Table = () => {
         </Box>
       )}
 
-      {(isLoading || (isFetching && !isFetchingNextPage)) && (
+      {isLoadingNewData && (
         <Box
           position="absolute"
           left="0"
