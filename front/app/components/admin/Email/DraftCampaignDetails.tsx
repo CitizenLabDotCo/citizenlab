@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,7 +8,7 @@ import { ICampaignData } from 'api/campaigns/types';
 import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -30,33 +31,59 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
   const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 
   const handleDelete = () => {
-    const deleteMessage = formatMessage(messages.campaignDeletionConfirmation);
-    if (window.confirm(deleteMessage)) {
-      deleteCampaign(campaign.id, {
-        onSuccess: () => {
-          if (projectId) {
-            clHistory.push(`/admin/projects/${projectId}/messaging`);
-          } else {
-            clHistory.push('/admin/messaging/emails/custom');
-          }
-        },
-      });
-    }
+    deleteCampaign(campaign.id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        if (projectId) {
+          clHistory.push(`/admin/projects/${projectId}/messaging`);
+        } else {
+          clHistory.push('/admin/messaging/emails/custom');
+        }
+      },
+    });
   };
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
     <>
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
-        <ButtonWithLink
+        <Button
           buttonStyle="delete"
           icon="delete"
-          onClick={handleDelete}
+          onClick={() => setIsDeleteModalOpen(true)}
           processing={isLoading}
         >
           {formatMessage(messages.deleteCampaignButton)}
-        </ButtonWithLink>
+        </Button>
       </ButtonWrapper>
+      <Modal
+        opened={isDeleteModalOpen}
+        close={() => setIsDeleteModalOpen(false)}
+        header={formatMessage(messages.campaignDeleteConfirmation)}
+      >
+        <Box p="32px">
+          <Text color="textSecondary" mt="0">
+            {formatMessage(messages.campaignDeleteWarning)}
+          </Text>
+          <Box display="flex" gap="16px" justifyContent="flex-end">
+            <Button
+              buttonStyle="secondary"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              {formatMessage(messages.cancel)}
+            </Button>
+            <Button
+              buttonStyle="delete"
+              icon="delete"
+              onClick={handleDelete}
+              processing={isLoading}
+            >
+              {formatMessage(messages.deleteCampaignButton)}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };

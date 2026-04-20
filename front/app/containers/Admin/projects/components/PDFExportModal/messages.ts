@@ -19,9 +19,9 @@ export default defineMessages({
       'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey6',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey8',
     defaultMessage:
-      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area) and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',
@@ -32,11 +32,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1',
     defaultMessage:
       "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
-  },
-  logicNotInPDF: {
-    id: 'app.containers.Admin.projects.all.logicNotInPDF',
-    defaultMessage:
-      'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
   },
   personalDataExplanation5: {
     id: 'app.containers.Admin.projects.all.personalDataExplanation5',
@@ -58,5 +53,14 @@ export default defineMessages({
   customiseEnd: {
     id: 'app.containers.Admin.projects.all.customiseEnd',
     defaultMessage: 'Customise the end of the form.',
+  },
+  includeLogic: {
+    id: 'app.containers.Admin.projects.all.includeLogic',
+    defaultMessage: 'Include form logic',
+  },
+  includeLogicExplanation: {
+    id: 'app.containers.Admin.projects.all.includeLogicExplanation',
+    defaultMessage:
+      'This option will add text instructions to the PDF to indicate which sections to answer next, depending on the form logic configured.',
   },
 });

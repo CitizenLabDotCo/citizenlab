@@ -58,7 +58,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      @phase.ideas.each(&:destroy!) unless @phase.pmethod.transitive?
+      @phase.ideas.each(&:destroy!) if @phase.pmethod.destroy_ideas_on_phase_destroy?
 
       @phase.destroy
     end
@@ -187,6 +187,7 @@ class WebApi::V1::PhasesController < ApplicationController
         available_views: [],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
+        draft_description_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }

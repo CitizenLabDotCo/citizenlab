@@ -31,15 +31,22 @@ class XlsxService
   # | John  |      | 35  |
   # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  def xlsx_to_hash_array(xlsx, include_empty_cells: false)
+  def xlsx_to_hash_array(xlsx, include_empty_cells: false, rich_text_columns: [])
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
+    rich_text_column_set = rich_text_columns.to_set
     worksheet.drop(1).map do |row|
       xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value || include_empty_cells
-          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
-          [column_header, cell.value]
+          raw_column_header = worksheet[0][cell.column]&.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(raw_column_header)
+          value = if rich_text_column_set.include?(raw_column_header)
+            rich_text_cell_html(cell, workbook) || cell.value
+          else
+            cell.value
+          end
+          [column_header, value]
         end
       end.to_h
     end
@@ -302,6 +309,58 @@ class XlsxService
 
   def utils
     @utils ||= Export::Xlsx::Utils.new
+  end
+
+  # Returns an HTML string if the cell is backed by a shared string with
+  # formatting runs (bold/italic/underline/strike). Returns nil for plain text cells.
+  # NOTE: A run is the standard xlsx terminology for a formatted text segment inside a cell - containing <r> elements
+  def rich_text_cell_html(cell, workbook)
+    entry = case cell.datatype
+    when RubyXL::DataType::SHARED_STRING
+      workbook.shared_strings_container&.[](cell.raw_value.to_i)
+    when 'inlineStr'
+      cell.respond_to?(:is) ? cell.is : nil
+    end
+
+    return nil unless entry
+
+    runs = entry.respond_to?(:r) ? entry.r : nil
+    return nil if runs.blank?
+
+    # If there are HTML tags in the cell, skip rich-text conversion
+    # so we don't double-encode their tags — fall back to plain text.
+    return nil if contains_html_tags?(entry.to_s)
+
+    runs.map { |run| rich_text_run_to_html(run) }.join.presence
+  end
+
+  def contains_html_tags?(text)
+    text.to_s.match?(%r{</?[a-zA-Z][^>]*>})
+  end
+
+  def rich_text_run_to_html(run)
+    text_node = run.respond_to?(:t) ? run.t : nil
+    raw_text = text_node.respond_to?(:value) ? text_node.value.to_s : text_node.to_s
+    html = CGI.escapeHTML(raw_text).gsub("\n", '<br>')
+
+    rpr = %i[r_pr rpr run_properties].filter_map { |m| run.send(m) if run.respond_to?(m) }.first
+    return html unless rpr
+
+    html = "<s>#{html}</s>" if rich_text_flag?(rpr, :strike)
+    html = "<u>#{html}</u>" if rich_text_flag?(rpr, :u)
+    html = "<em>#{html}</em>" if rich_text_flag?(rpr, :i)
+    html = "<strong>#{html}</strong>" if rich_text_flag?(rpr, :b)
+    html
+  end
+
+  def rich_text_flag?(rpr, name)
+    return false unless rpr.respond_to?(name)
+
+    value = rpr.public_send(name)
+    return false if value.nil?
+    return value.val != false if value.respond_to?(:val)
+
+    !!value
   end
 end
 

@@ -2099,11 +2099,6 @@
     "verified_at": "2026-03-18T16:43:22.062093Z",
     "verified_by": "Admin"
   },
-  "app.components.PostCardsComponents.feed": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:43:22.062093Z",
-    "verified_by": "Admin"
-  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T16:43:22.062093Z",
@@ -13230,11 +13225,6 @@
     "verified_by": "Admin"
   },
   "app.utils.votingMethodUtils.singleVotingEnded": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:43:22.062093Z",
-    "verified_by": "Admin"
-  },
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
     "verified_at": "2026-03-18T16:43:22.062093Z",
     "verified_by": "Admin"

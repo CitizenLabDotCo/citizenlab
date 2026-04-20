@@ -38,6 +38,7 @@
 #  manual_votes_last_updated_by_id :uuid
 #  manual_votes_last_updated_at    :datetime
 #  neutral_reactions_count         :integer          default(0), not null
+#  weglot_data                     :jsonb            not null
 #
 # Indexes
 #
@@ -373,6 +374,16 @@ class Idea < ApplicationRecord
     self.manual_votes_amount = amount
     self.manual_votes_last_updated_by = user if user
     self.manual_votes_last_updated_at = Time.now
+  end
+
+  def expires_at
+    return if !published? || !creation_phase&.expire_days_limit
+
+    published_at + creation_phase.expire_days_limit.days
+  end
+
+  def voting_expired?
+    expires_at.present? && expires_at < Time.zone.now
   end
 
   def draft?

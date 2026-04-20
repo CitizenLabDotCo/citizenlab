@@ -29,7 +29,7 @@ const ProjectReview = () => {
   const [selectedUsers, setSelectedUsers] = useState<IOption[]>([]);
   const { mutate: updateUser, isLoading } = useUpdateUser();
   const { data: adminUsers } = useUsers({
-    can_admin: true,
+    admins_only: true,
   });
   const { data: projectReviewers } = useUsers({
     project_reviewer: true,

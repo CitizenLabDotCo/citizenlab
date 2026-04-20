@@ -248,7 +248,7 @@ resource 'Phases' do
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
-        parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
+        parameter :title_multiloc, 'The title of the phase in multiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens submit inputs in this phase? Defaults to true', required: false
@@ -751,6 +751,19 @@ resource 'Phases' do
           expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
         end
       end
+
+      # Edge case: Historic code means a phase with ideas could be changed to an information phase
+      context 'on an information phase' do
+        let(:phase) { create(:phase, participation_method: 'information', project: @project) }
+
+        example 'Deleting a phase does not delete the ideas', document: false do
+          idea = create(:idea, project: @project, phases: [phase])
+
+          do_request
+
+          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
     end
 
     get 'web_api/v1/phases/:id/survey_results' do
@@ -954,7 +967,7 @@ resource 'Phases' do
               quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
               service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
               governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
-              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Overig' }
             }
           }
         })
@@ -1083,7 +1096,8 @@ resource 'Phases' do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -1093,7 +1107,8 @@ resource 'Phases' do
                     survey_response1.author.email,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -1102,7 +1117,8 @@ resource 'Phases' do
                     survey_response2.author.email,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
@@ -1219,7 +1235,8 @@ resource 'Phases' do
               'Author email',
               'Author ID',
               'Submitted at',
-              'Project'
+              'Project',
+              'Imported'
             ],
             rows: [
               [
@@ -1229,7 +1246,8 @@ resource 'Phases' do
                 survey_response.author.email,
                 survey_response.author_id,
                 an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
+                project.title_multiloc['en'],
+                'false'
               ]
             ]
           }

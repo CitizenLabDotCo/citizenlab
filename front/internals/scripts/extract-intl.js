@@ -50,12 +50,11 @@ const generateLocaleMappings = (
         oldLocaleMappings[locale][messageKey] = messages[messageKey];
       }
     } catch (error) {
-      if (error.code !== 'ENOENT') {
-        process.stderr.write(
-          `There was an error loading this translation file: ${translationFileName}
-        \n${error}`
-        );
-      }
+      if (error.code === 'ENOENT') continue;
+      process.stderr.write(
+        `There was an error loading this translation file: ${translationFileName}\n${error}\n`
+      );
+      process.exit(1);
     }
   }
   return { oldLocaleMappings, localeMappings };

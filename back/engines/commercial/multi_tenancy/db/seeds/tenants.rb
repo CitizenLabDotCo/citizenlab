@@ -426,10 +426,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            input_form_custom_fields: {
-              enabled: true,
-              allowed: true
-            },
             posthog_integration: {
               enabled: false,
               allowed: true
@@ -597,6 +593,10 @@ module MultiTenancy
             spaces: {
               enabled: false,
               allowed: false
+            },
+            email_scheduling: {
+              enabled: true,
+              allowed: true
             }
           })
         )
