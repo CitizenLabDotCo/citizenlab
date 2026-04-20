@@ -8,6 +8,7 @@ module BulkImportIdeas
     perform_retries false
 
     def run(idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
+      error_count = 0
       file_parser = Parsers::IdeaXlsxFileParser.new(import_user, locale, phase.id, personal_data_enabled)
       import_service = Importers::IdeaImporter.new(import_user, locale)
 
@@ -20,12 +21,14 @@ module BulkImportIdeas
       users = import_service.imported_users
 
       SideFxBulkImportService.new.after_success(import_user, phase, 'idea', 'xlsx', ideas, users)
-      track_progress_and_complete!
     rescue StandardError => e
+      error_count = 1
       e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
       SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'xlsx', e.to_s)
-      track_progress_and_complete!
       raise e
+    ensure
+      track_progress(1, error_count)
+      complete_if_done!
     end
 
     private

@@ -20,13 +20,6 @@ module Jobs
       end
     end
 
-    def track_progress_and_complete!(progress = 1, error_count = 0)
-      return unless tracked?
-
-      track_progress(progress, error_count)
-      complete_if_done!
-    end
-
     def complete_if_done!
       return unless tracked?
 

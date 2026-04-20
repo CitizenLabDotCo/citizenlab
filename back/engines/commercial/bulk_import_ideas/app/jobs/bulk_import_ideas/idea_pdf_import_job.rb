@@ -26,7 +26,8 @@ module BulkImportIdeas
       e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
       SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', e.to_s)
       remaining = idea_import_files.count - files_processed
-      track_progress_and_complete!(remaining, remaining)
+      track_progress(remaining, remaining)
+      complete_if_done!
       raise e
     end
 
