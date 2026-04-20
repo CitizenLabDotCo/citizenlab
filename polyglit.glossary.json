@@ -39,6 +39,9 @@
     "es-ES": "gestor",
     "fr-FR": "gestionnaire"
   },
+  "recipients": {
+    "de-DE": "Empfänger*innen"
+  },
   "save": {
     "da-DK": "gem",
     "fr-FR": "enregistrer"
