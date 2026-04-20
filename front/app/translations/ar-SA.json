@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 أصوات} one {1 صوت} other {# أصوات}}",
   "app.utils.votingMethodUtils.results": "نتائج",
   "app.utils.votingMethodUtils.singleVotingEnded": "أغلق التصويت يوم <b>{endDate}.</b> يمكن للمشاركين <b>لـ {maxVotes} خيارات.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "حدد خياراتك المفضلة من خلال النقر على \"تصويت\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "حدد خياراتك المفضلة من خلال النقر على \"تحديد\"",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "لديك <b>{totalVotes} أصوات</b> يمكنك تخصيصها للخيارات.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "بمجرد الانتهاء ، انقر فوق \"إرسال\" للإدلاء بصوتك.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "أغلق التصويت يوم <b>{endDate}.</b> يمكن للمشاركين التصويت لـ <b>خيار واحد.</b>",

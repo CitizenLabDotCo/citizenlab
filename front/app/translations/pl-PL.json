@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 głosów} one {1 głos} other {# głosów}}",
   "app.utils.votingMethodUtils.results": "Wyniki",
   "app.utils.votingMethodUtils.singleVotingEnded": "Głosowanie zostało zamknięte na stronie <b>{endDate}.</b> Uczestnicy mogli <b>głosować na opcje {maxVotes} .</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Wybierz preferowane opcje, dotykając przycisku \"Głosuj\".",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Wybierz preferowane opcje, klikając „Wybierz”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Masz <b>{totalVotes} głosów</b> , które możesz przypisać do opcji.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Po zakończeniu kliknij przycisk \"Wyślij\", aby oddać głos.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Głosowanie zostało zamknięte na stronie <b>{endDate}.</b> Uczestnicy mogli <b>głosować na 1 opcję.</b>",

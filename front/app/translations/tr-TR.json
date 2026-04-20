@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 oy} one {1 oy} other {# oy}}",
   "app.utils.votingMethodUtils.results": "Sonuçlar",
   "app.utils.votingMethodUtils.singleVotingEnded": "Oylama <b>{endDate}tarihinde kapanmıştır.</b> Katılımcılar <b>adresinden {maxVotes} seçeneklerine oy verebilirler.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "\"Oy Ver\" seçeneğine dokunarak tercih ettiğiniz seçenekleri seçin",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Tercih ettiğiniz seçenekleri “Seç”e dokunarak seçin.",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Seçeneklere atayabileceğiniz <b>{totalVotes}</b> oylarınız vardır.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "İşiniz bittiğinde, oyunuzu kullanmak için \"Gönder \"e tıklayın.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Oylama <b>{endDate}adresinde kapanmıştır.</b> Katılımcılar <b>adresinden 1 seçenek için oy kullanabilir.</b>",

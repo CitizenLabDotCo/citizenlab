@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 vóta} one {1 vóta} other {# vótaí}}",
   "app.utils.votingMethodUtils.results": "Torthaí",
   "app.utils.votingMethodUtils.singleVotingEnded": "Dúnadh an vótáil ar <b>{endDate}.</b> D’fhéadfadh rannpháirtithe <b>vótáil ar son {maxVotes} roghanna.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Roghnaigh do roghanna is fearr leat trí thapáil ar “Vótaigh”",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Roghnaigh na roghanna is fearr leat trí thapáil ar “Roghnaigh”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Tá vótaí <b>{totalVotes}</b> agat ar féidir leat a shannadh do na roghanna.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Nuair a bheidh tú críochnaithe, cliceáil “Cuir isteach” chun do vóta a chaitheamh.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Dúnadh an vótáil ar <b>{endDate}.</b> D’fhéadfadh rannpháirtithe <b>vótáil ar son rogha amháin.</b>",

@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 ਵੋਟਾਂ} one {1 ਵੋਟ} other {# ਵੋਟਾਂ}}",
   "app.utils.votingMethodUtils.results": "ਨਤੀਜੇ",
   "app.utils.votingMethodUtils.singleVotingEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰ <b> {maxVotes} ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਦੇ ਸਕਦੇ ਹਨ।</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "\"ਵੋਟ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਦੀ ਚੋਣ ਕਰੋ",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "“ਚੁਣੋ” 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪ ਚੁਣੋ",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "ਤੁਹਾਡੇ ਕੋਲ <b>{totalVotes} ਵੋਟਾਂ ਹਨ</b> ਜੋ ਤੁਸੀਂ ਵਿਕਲਪਾਂ ਨੂੰ ਨਿਰਧਾਰਤ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਪੂਰਾ ਕਰ ਲੈਂਦੇ ਹੋ, ਤਾਂ ਆਪਣੀ ਵੋਟ ਪਾਉਣ ਲਈ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰ 1 ਵਿਕਲਪ ਲਈ <b>ਵੋਟ ਦੇ ਸਕਦੇ ਹਨ।</b>",

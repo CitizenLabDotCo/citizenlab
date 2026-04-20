@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 pleidlais} one {1 pleidlais} other {# pleidleisiau}}",
   "app.utils.votingMethodUtils.results": "Canlyniadau",
   "app.utils.votingMethodUtils.singleVotingEnded": "Daeth y pleidleisio i ben ar <b>{endDate}.</b> Gallai cyfranogwyr <b>bleidleisio dros {maxVotes} opsiynau.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Dewiswch yr opsiynau sydd orau gennych trwy dapio ar “Vote”",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Dewiswch eich hoff opsiynau drwy dapio ar “Dewis”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Mae gennych chi <b>{totalVotes} pleidleisiau</b> y gallwch eu neilltuo i'r opsiynau.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Unwaith y byddwch wedi gorffen, cliciwch “Cyflwyno” i fwrw eich pleidlais.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Daeth y pleidleisio i ben ar <b>{endDate}.</b> Gallai cyfranogwyr <b>bleidleisio dros 1 opsiwn.</b>",

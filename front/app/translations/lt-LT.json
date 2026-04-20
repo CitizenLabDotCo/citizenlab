@@ -2658,7 +2658,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 balsų} one {1 balsas} other {# balsų}}",
   "app.utils.votingMethodUtils.results": "Rezultatai",
   "app.utils.votingMethodUtils.singleVotingEnded": "Balsavimas baigtas <b>{endDate}.</b> Dalyviai galėjo <b>balsuoti už {maxVotes} variantus</b>.",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Pasirinkite pageidaujamas parinktis bakstelėdami \"Balsuoti\".",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Pasirinkite pageidaujamus variantus bakstelėdami „Pasirinkti“",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Turite <b>{totalVotes} balsų, kuriuos</b> galite priskirti parinktims.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Baigę spauskite \"Pateikti\", kad atiduotumėte savo balsą.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Balsavimas baigtas <b>{endDate}.</b> Dalyviai galėjo <b>balsuoti už 1 variantą</b>.",
