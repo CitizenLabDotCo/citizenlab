@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Durum ve oylar",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "mins",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Daha fazla bilgi",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Bu öneri gerekli destek eşiğine ulaştı! Hâlâ oy kullanımına açık. Daha fazla destek toplamak için paylaşın.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Oylama",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Oylandı",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Bu girişim bir sonraki adıma geçtiğinde bilgilendirileceksiniz. {x, plural, =0 {{xDays} kaldı.} one {{xDays} kaldı.} other {Var {xDays} kaldı.}}",

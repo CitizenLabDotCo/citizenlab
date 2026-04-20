@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status en stemmen",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Meer informatie",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Deze bijdrage heeft de vereiste drempel bereikt! Er kan nog steeds op gestemd worden. Deel het om nog meer steun te verzamelen.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stem",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Gestemd",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Je wordt op de hoogte gebracht wanneer dit initiatief naar de volgende stap gaat. {x, plural, =0 {Er zijn {xDays} over.} one {Er is nog {xDays} over.} other {Er zijn nog {xDays} over.}}",

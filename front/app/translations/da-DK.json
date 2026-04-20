@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status og stemmer\n",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mere info",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Dette forslag har nået det påkrævede antal stemmer! Det er fortsat muligt at stemme, for at skabe endnu mere opbakning.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stem",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Stemt",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Du vil blive underrettet når dette borgerforslag når til næste trin. {x, plural, =0 {Der er {xDage} tilbage.} one {Der er {xDage} tilbage.} other {Der er {xDage} tilbage.}}",

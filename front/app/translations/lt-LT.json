@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Statusas ir balsai",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "minučių",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Daugiau informacijos",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Šis pasiūlymas pasiekė reikiamą palaikymo ribą! Už jį vis dar galima balsuoti. Pasidalykite juo, kad sulauktumėte dar daugiau palaikymo.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Balsuoti",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Balsavo",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Jums bus pranešta, kai ši iniciatyva pereis į kitą etapą. {x, plural, =0 {Liko {xDays} .} one {Liko {xDays} .} other {Yra {xDays} palikta.}}",

@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Statut et votes",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Plus d'informations",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Cette proposition a atteint le seuil de soutien requis ! Les votes restent ouverts. Continuez de la partager pour obtenir encore plus de soutien.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vote",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Voté",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Vous serez informé lorsque cette proposition passera à l'étape suivante. Il reste {x, plural, =0 {moins d'un jour} one {{xDays} jour} other {{xDays} jours}}.",

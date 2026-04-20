@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "حیثیت اور ووٹ",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "منٹ",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "مزید معلومات",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "اس تجویز نے مطلوبہ حمایتی حد مکمل کر لی ہے! یہ اب بھی ووٹ حاصل کرنے کے لیے کھلا ہے۔ مزید حمایت حاصل کرنے کے لیے اسے شیئر کریں۔",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "ووٹ",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "ووٹ دیا۔",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "جب یہ اقدام اگلے مرحلے پر جائے گا تو آپ کو مطلع کیا جائے گا۔ {x, plural, =0 {{xDays} باقی ہے۔} one {{xDays} باقی ہے۔} other {{xDays} باقی ہیں۔}}",

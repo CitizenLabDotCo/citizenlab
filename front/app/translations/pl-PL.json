@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Status i głosy",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "miny",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Więcej informacji",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Ten pomysł osiągnął wymagany próg poparcia! Nadal można na niego głosować. Udostępnij go, aby zdobyć jeszcze większe poparcie.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Głosuj",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Zagłosowano",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Otrzymasz powiadomienie, gdy ta inicjatywa przejdzie do następnego etapu. {x, plural, =0 {Zostało {xDays} .} one {Zostało {xDays} .} other {There are {xDays} left.}}",

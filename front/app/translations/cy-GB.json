@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Statws a phleidleisiau",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "munyd",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mwy o wybodaeth",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Mae'r mewnbwn hwn wedi cyrraedd y trothwy cefnogaeth gofynnol! Mae'n dal ar agor i dderbyn pleidleisiau. Rhannwch ef i feithrin hyd yn oed mwy o gefnogaeth.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Pleidlais",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Wedi pleidleisio",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Byddwch yn cael gwybod pan fydd y fenter hon yn mynd i'r cam nesaf. {x, plural, =0 {Mae {xDays} ar ôl.} one {Mae {xDays} ar ôl.} other {Mae {xDays} ar ôl.}}",

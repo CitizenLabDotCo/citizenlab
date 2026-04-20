@@ -1809,6 +1809,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.invisibleTitle": "Stato e voti",
   "app.containers.IdeasShow.proposals.VoteControl.minutes": "min",
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Ulteriori informazioni",
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": "Questa proposta ha raggiunto la soglia di sostegno richiesta! È ancora possibile votare. Condividila per raccogliere ancora più sostegno.",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vota",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Votato",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Riceverai una notifica quando questa proposta passerà alla fase successiva. {x, plural, =0 {Ci sono {xDays} rimasti.} one {C'è {xDays} rimasto.} other {Ci sono {xDays} rimasti.}}",
