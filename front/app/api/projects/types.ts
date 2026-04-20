@@ -174,6 +174,7 @@ export interface IUpdatedProjectProperties {
   // This oddity needs to be dealt with
   projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
