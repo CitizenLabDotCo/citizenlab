@@ -53,7 +53,7 @@ module BulkImportIdeas
     private
 
     def unprocessed_files_count
-      arguments[0].count { |file| !IdeaImport.exists?(file_id: file.id) }
+      arguments[0].count { |file| !IdeaImport.exists?(file_id: file.id) } # arguments[0] is idea_import_files
     end
 
     def job_tracking_context
