@@ -60,6 +60,7 @@ ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
@@ -253,6 +254,7 @@ DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
+DROP INDEX IF EXISTS public.index_notifications_on_space_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
@@ -3239,7 +3241,8 @@ CREATE TABLE public.notifications (
     internal_comment_id uuid,
     basket_id uuid,
     cosponsorship_id uuid,
-    project_review_id uuid
+    project_review_id uuid,
+    space_id uuid
 );
 
 
@@ -6642,6 +6645,13 @@ CREATE INDEX index_notifications_on_recipient_id_and_read_at ON public.notificat
 
 
 --
+-- Name: index_notifications_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_space_id ON public.notifications USING btree (space_id);
+
+
+--
 -- Name: index_notifications_on_spam_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8096,6 +8106,14 @@ ALTER TABLE ONLY public.official_feedbacks
 
 
 --
+-- Name: notifications fk_rails_b82ab32ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_b82ab32ac2 FOREIGN KEY (space_id) REFERENCES public.spaces(id);
+
+
+--
 -- Name: notifications fk_rails_b894d506a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8510,6 +8528,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260421105121'),
+('20260408161034'),
 ('20260323120000'),
 ('20260313160000'),
 ('20260313120000'),

@@ -52,8 +52,11 @@ fr-FR:
         user_who_is_invited_to_cosponsor_a_proposal: L'utilisateur invité à soutenir la proposition
         user_who_is_mentioned: Utilisateur mentionné
         user_who_is_receiving_admin_rights: "L'utilisateur qui reçoit les droits d'administrateur"
+        user_who_is_receiving_folder_manager_rights: Utilisateur recevant les droits de gestionnaire de dossier
         user_who_is_receiving_folder_moderator_rights: L'utilisateur qui reçoit les droits de gestionnaire de dossier
+        user_who_is_receiving_project_manager_rights: Utilisateur recevant les droits de gestionnaire de projet
         user_who_is_receiving_project_moderator_rights: L'utilisateur qui reçoit les droits de gestionnaire de projet
+        user_who_is_receiving_space_manager_rights: Utilisateur recevant les droits de gestionnaire d'espace
         user_who_published_the_input: L'utilisateur qui a posté la contribution
         user_who_published_the_proposal: L'utilisateur qui a posté la proposition
         user_who_registers: Utilisateur qui s'inscrit
@@ -104,8 +107,11 @@ fr-FR:
         user_comments_on_input: L'utilisateur commente une contribution
         user_comments_on_proposal: Commentaires sur une proposition
         user_is_given_admin_rights: "L'utilisateur reçoit des droits d'administrateur"
+        user_is_given_folder_manager_rights: L'utilisateur reçoit des droits de gestionnaire de dossier
         user_is_given_folder_moderator_rights: L'utilisateur se voit attribuer des droits de gestionnaire de dossier
+        user_is_given_project_manager_rights: L'utilisateur reçoit des droits de gestionnaire de projet
         user_is_given_project_moderator_rights: L'utilisateur se voit attribuer des droits de gestionnaire de projet
+        user_is_given_space_manager_rights: "L'utilisateur reçoit des droits de gestionnaire d'espace"
         user_is_invited_to_cosponsor_a_proposal: Un utilisateur est invité à soutenir une proposition
         user_is_invited_to_platform: L'utilisateur est invité à se rendre sur la plateforme
         user_is_mentioned: L'utilisateur est mentionné
@@ -178,6 +184,7 @@ fr-FR:
       official_feedback_on_idea_you_follow: Mise à jour d'une idée que vous suivez
       password_reset: Réinitialisation du mot de passe
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
+      project_manager_rights_received: Droits de gestionnaire de projet reçus
       project_moderation_rights_received: Droits de modération de projet reçus
       project_phase_started: Nouvelle phase de projet
       project_phase_upcoming: Nouvelle phase de projet à venir
@@ -185,6 +192,7 @@ fr-FR:
       project_review_request: Demande de révision d'un projet
       project_review_state_change: Projet approuvé
       screening_digest: Rappel hebdomadaire de modération
+      space_moderation_rights_received: Droits de gestionnaire d'espace reçus
       status_change_on_idea_you_follow: Changement de statut d'une idée que vous suivez
       survey_submitted: Enquête soumise
       threshold_reached_for_admin: La proposition a atteint le seuil de vote
@@ -521,6 +529,7 @@ fr-FR:
       project_description_preview: Ce contenu est juste un exemple et sert à prévisualiser le rendu des e-mails. Il ne s'agit pas de contenu réel.
       project_title: Exemple de projet
       proposal_title: Exemple de proposition
+      space_title: Exemple d'espace
     project_folder_moderation_rights_received:
       cta_button: Voir ce dossier
       event_description: 'Vous avez reçu les droits de gestionnaire de dossier sur la plateforme de participation de %{organizationName} pour le dossier suivant :'
@@ -602,6 +611,21 @@ fr-FR:
       preheader: Action requise sur la plateforme "%{organizationName}"
       subject: '%{count} contributions en attente de modération'
       title: '%{firstName}, des contributions sont en attente de modération'
+    space_moderation_rights_received:
+      cta_button: Gérer cet espace
+      event_description: "Un administrateur de la plateforme de participation de %{organizationName} vient de vous nommer gestionnaire de l'espace suivant :"
+      no_projects: Pas encore de projets
+      preheader: Un administrateur de la plateforme de participation de %{organizationName} vient de vous nommer gestionnaire de l'espace suivant
+      subject: Vous êtes devenu gestionnaire d'espace sur la plateforme de %{organizationName}
+      text_manage_space_settings: "Vous pouvez modifier le titre et la description de l'espace afin que les participants et vos collègues gestionnaires comprennent immédiatement l'objet de votre espace et son lien avec votre organisation."
+      text_organize_projects_and_folders: "En tant que gestionnaire d'espace, vous pouvez gérer les projets et les dossiers au sein de votre espace, y compris l'attribution et la suppression des rôles de gestion pour ceux-ci."
+      text_oversee_participation: "En tant que gestionnaire d'espace, vous disposez de droits de gestionnaire de projet sur chaque projet de votre espace, ce qui vous permet de garder un œil sur les contributions entrantes et d'aider les gestionnaires de projet si nécessaire."
+      title: Vous êtes devenu gestionnaire d'espace
+      title_manage_space_settings: Gérer les paramètres de l'espace
+      title_organize_projects_and_folders: Organiser les projets et les dossiers
+      title_oversee_participation: Superviser la participation
+      title_what_can_you_do_space_manager: Que pouvez-vous faire en tant que gestionnaire d'espace ?
+      x_projects: '%{numberOfProjects} projets'
     status_change_on_idea_you_follow:
       cta_button: Voir la contribution
       event_description: '%{organizationName} a mis à jour le statut de la contribution « %{input_title} » sur leur plateforme de participation.'

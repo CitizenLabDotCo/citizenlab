@@ -52,8 +52,11 @@ ur-PK:
         user_who_is_invited_to_cosponsor_a_proposal: وہ صارف جسے کسی تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔
         user_who_is_mentioned: صارف جس کا ذکر کیا گیا ہے۔
         user_who_is_receiving_admin_rights: وہ صارف جو منتظم کے حقوق حاصل کر رہا ہے۔
+        user_who_is_receiving_folder_manager_rights: وہ صارف جسے فولڈر مینیجر کے اختیارات مل رہے ہیں
         user_who_is_receiving_folder_moderator_rights: وہ صارف جو فولڈر ماڈریٹر کے حقوق حاصل کر رہا ہے۔
+        user_who_is_receiving_project_manager_rights: وہ صارف جسے پروجیکٹ مینیجر کے اختیارات مل رہے ہیں
         user_who_is_receiving_project_moderator_rights: صارف جو پروجیکٹ ماڈریٹر کے حقوق حاصل کر رہا ہے۔
+        user_who_is_receiving_space_manager_rights: وہ صارف جسے اسپیس مینیجر کے اختیارات مل رہے ہیں
         user_who_published_the_input: صارف جس نے ان پٹ شائع کیا۔
         user_who_published_the_proposal: تجویز شائع کرنے والا صارف
         user_who_registers: رجسٹر کرنے والا صارف
@@ -104,8 +107,11 @@ ur-PK:
         user_comments_on_input: ان پٹ پر صارف کے تبصرے۔
         user_comments_on_proposal: تجویز پر صارف کے تبصرے۔
         user_is_given_admin_rights: صارف کو منتظم کے حقوق دیے جاتے ہیں۔
+        user_is_given_folder_manager_rights: صارف کو فولڈر مینیجر کے اختیارات دے دیے گئے ہیں
         user_is_given_folder_moderator_rights: صارف کو فولڈر ماڈریٹر کے حقوق دیئے گئے ہیں۔
+        user_is_given_project_manager_rights: صارف کو پروجیکٹ مینیجر کے اختیارات دے دیے گئے ہیں
         user_is_given_project_moderator_rights: صارف کو پروجیکٹ ماڈریٹر کے حقوق دیئے گئے ہیں۔
+        user_is_given_space_manager_rights: صارف کو اسپیس مینیجر کے اختیارات دے دیے گئے ہیں
         user_is_invited_to_cosponsor_a_proposal: صارف کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا جاتا ہے۔
         user_is_invited_to_platform: صارف کو پلیٹ فارم پر مدعو کیا جاتا ہے۔
         user_is_mentioned: صارف کا ذکر ہے۔
@@ -175,6 +181,7 @@ ur-PK:
       official_feedback_on_idea_you_follow: ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
       password_reset: پاس ورڈ ری سیٹ
       project_folder_moderation_rights_received: فولڈر مینیجر کے حقوق موصول ہوئے۔
+      project_manager_rights_received: پروجیکٹ مینیجر کے اختیارات موصول ہو گئے
       project_moderation_rights_received: پروجیکٹ کے اعتدال کے حقوق موصول ہوئے۔
       project_phase_started: پراجیکٹ کا نیا مرحلہ
       project_phase_upcoming: آنے والا نیا پروجیکٹ مرحلہ
@@ -182,6 +189,7 @@ ur-PK:
       project_review_request: پروجیکٹ کا جائزہ لینے کی درخواست
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
       screening_digest: ہفتہ وار اسکریننگ کی یاد دہانی
+      space_moderation_rights_received: اسپیس مینیجر کے اختیارات موصول ہو گئے
       status_change_on_idea_you_follow: کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
       survey_submitted: سروے جمع کرایا
       threshold_reached_for_admin: تجویز ووٹنگ کی حد تک پہنچ گئی۔
@@ -518,6 +526,7 @@ ur-PK:
       project_description_preview: ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہونے والا یہ کچھ مثالی فیز مواد ہے۔ یہ حقیقی مواد نہیں ہے۔
       project_title: مثال پروجیکٹ
       proposal_title: مثال کی تجویز
+      space_title: مثالی اسپیس
     project_folder_moderation_rights_received:
       cta_button: اس فولڈر کو دیکھیں
       event_description: 'آپ کو درج ذیل فولڈر کے لیے %{organizationName}کے شرکت کے پلیٹ فارم پر فولڈر مینیجر کے حقوق دیے گئے ہیں:'
@@ -599,6 +608,21 @@ ur-PK:
       preheader: '%{organizationName}کے لیے ان پٹس کا جائزہ لیں۔'
       subject: '%{count} ان پٹس جائزہ کے منتظر ہیں۔'
       title: '%{firstName}، ان پٹس کا جائزہ لینے کا انتظار ہے۔'
+    space_moderation_rights_received:
+      cta_button: اس اسپیس کا انتظام سنبھالیں
+      event_description: '%{organizationName} کے شراکتی پلیٹ فارم کے ایک ایڈمنسٹریٹر نے ابھی آپ کو درج ذیل اسپیس کا اسپیس مینیجر بنایا ہے:'
+      no_projects: ابھی تک کوئی پروجیکٹ نہیں ہے
+      preheader: '%{organizationName} کے شراکتی پلیٹ فارم کے ایک ایڈمنسٹریٹر نے ابھی آپ کو درج ذیل اسپیس کا اسپیس مینیجر بنایا ہے'
+      subject: آپ %{organizationName} کے پلیٹ فارم پر اسپیس مینیجر بن گئے ہیں
+      text_manage_space_settings: آپ اسپیس کا عنوان اور تفصیل ایڈٹ کر سکتے ہیں تاکہ شرکاء اور آپ کے ساتھی مینیجرز فوری طور پر سمجھ سکیں کہ آپ کی اسپیس کس بارے میں ہے اور یہ آپ کے ادارے سے کیسے تعلق رکھتی ہے۔
+      text_organize_projects_and_folders: بطور اسپیس مینیجر، آپ اپنی اسپیس کے اندر پروجیکٹس اور فولڈرز کا انتظام کر سکتے ہیں، بشمول ان کے لیے انتظامی کردار تفویض کرنا اور ختم کرنا۔
+      text_oversee_participation: بطور اسپیس مینیجر، آپ کے پاس اپنی اسپیس میں موجود ہر پروجیکٹ کے لیے پروجیکٹ مینیجر کے اختیارات ہیں، تاکہ آپ آنے والی آراء پر نظر رکھ سکیں اور ضرورت پڑنے پر پروجیکٹ مینیجرز کی مدد کر سکیں۔
+      title: آپ اسپیس مینیجر بن گئے ہیں
+      title_manage_space_settings: اسپیس کی سیٹنگز کا انتظام کریں
+      title_organize_projects_and_folders: پروجیکٹس اور فولڈرز کو منظم کریں
+      title_oversee_participation: شرکت کی نگرانی کریں
+      title_what_can_you_do_space_manager: بطور اسپیس مینیجر آپ کیا کر سکتے ہیں؟
+      x_projects: '%{numberOfProjects} پروجیکٹس'
     status_change_on_idea_you_follow:
       cta_button: اس ان پٹ پر جائیں۔
       event_description: "%{organizationName} نے اپنے ڈیجیٹل شرکت کے پلیٹ فارم پر ان پٹ '%{input_title}' کی حیثیت کو اپ ڈیٹ کیا۔"

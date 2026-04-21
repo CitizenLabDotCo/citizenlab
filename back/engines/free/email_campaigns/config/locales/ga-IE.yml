@@ -52,8 +52,11 @@ ga-IE:
         user_who_is_invited_to_cosponsor_a_proposal: Úsáideoir a bhfuil cuireadh tugtha dó togra a chomhurrú
         user_who_is_mentioned: Úsáideoir a luaitear
         user_who_is_receiving_admin_rights: Úsáideoir atá ag fáil cearta riarthóra
+        user_who_is_receiving_folder_manager_rights: Úsáideoir atá ag fáil cearta bainisteora fillteáin
         user_who_is_receiving_folder_moderator_rights: Úsáideoir atá ag fáil cearta modhnóra fillteáin
+        user_who_is_receiving_project_manager_rights: Úsáideoir atá ag fáil cearta bainisteora tionscadail
         user_who_is_receiving_project_moderator_rights: Úsáideoir a bhfuil cearta modhnóra tionscadail á bhfáil aige
+        user_who_is_receiving_space_manager_rights: Úsáideoir atá ag fáil cearta bainisteora spáis
         user_who_published_the_input: Úsáideoir a d’fhoilsigh an ionchur
         user_who_published_the_proposal: Úsáideoir a d’fhoilsigh an togra
         user_who_registers: Úsáideoir a chláraíonn
@@ -104,8 +107,11 @@ ga-IE:
         user_comments_on_input: Tuairimí úsáideoirí ar ionchur
         user_comments_on_proposal: Tuairimí úsáideoirí ar an togra
         user_is_given_admin_rights: Tugtar cearta riarthóra don úsáideoir
+        user_is_given_folder_manager_rights: Tugtar cearta bainisteora fillteáin don úsáideoir
         user_is_given_folder_moderator_rights: Tugtar cearta modhnóra fillteáin don úsáideoir
+        user_is_given_project_manager_rights: Tugtar cearta bainisteora tionscadail don úsáideoir
         user_is_given_project_moderator_rights: Tugtar cearta modhnóra tionscadail don úsáideoir
+        user_is_given_space_manager_rights: Tugtar cearta bainisteora spáis don úsáideoir
         user_is_invited_to_cosponsor_a_proposal: Tugtar cuireadh don úsáideoir comhurraíocht a dhéanamh ar thogra
         user_is_invited_to_platform: Tugadh cuireadh don úsáideoir chuig an ardán
         user_is_mentioned: Luaitear an t-úsáideoir
@@ -175,6 +181,7 @@ ga-IE:
       official_feedback_on_idea_you_follow: Nuashonrú ar ionchur a leanann tú
       password_reset: Athshocrú pasfhocail
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
+      project_manager_rights_received: Cearta bainisteora tionscadail faighte
       project_moderation_rights_received: Cearta modhnóireachta tionscadail faighte
       project_phase_started: Céim nua tionscadail
       project_phase_upcoming: Céim nua tionscadail atá le teacht
@@ -182,6 +189,7 @@ ga-IE:
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
       screening_digest: Meabhrúchán scagthástála seachtainiúil
+      space_moderation_rights_received: Cearta bainisteora spáis faighte
       status_change_on_idea_you_follow: Athrú stádais ionchuir a leanann tú
       survey_submitted: Suirbhé curtha isteach
       threshold_reached_for_admin: Shroich an togra an tairseach vótála
@@ -518,6 +526,7 @@ ga-IE:
       project_description_preview: Seo sampla d'ábhar céime a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
       project_title: Tionscadal samplach
       proposal_title: Togra Samplach
+      space_title: Spás samplach
     project_folder_moderation_rights_received:
       cta_button: Féach ar an bhfillteán seo
       event_description: 'Tugadh cearta bainisteora fillteán duit ar ardán rannpháirtíochta %{organizationName}don fhillteán seo a leanas:'
@@ -599,6 +608,21 @@ ga-IE:
       preheader: Athbhreithnigh ionchuir le haghaidh %{organizationName}
       subject: '%{count} ionchur ag fanacht le hathbhreithniú'
       title: '%{firstName}, tá na hionchuir ag fanacht le hathbhreithniú'
+    space_moderation_rights_received:
+      cta_button: Bainistigh an spás seo
+      event_description: 'Tá riarthóir ar ardán rannpháirtíochta %{organizationName} díreach tar éis bainisteoir spáis a dhéanamh díot don spás seo a leanas:'
+      no_projects: Níl aon tionscadal ann fós
+      preheader: Tá riarthóir ar ardán rannpháirtíochta %{organizationName} díreach tar éis bainisteoir spáis a dhéanamh díot don spás seo a leanas
+      subject: Rinneadh bainisteoir spáis díot ar ardán %{organizationName}
+      text_manage_space_settings: Is féidir leat teideal agus cur síos an spáis a chur in eagar ionas go dtuigfidh rannpháirtithe agus do chomhbhainisteoirí láithreach cad faoi atá do spás agus conas a bhaineann sé le d'eagraíocht.
+      text_organize_projects_and_folders: Mar bhainisteoir spáis, is féidir leat tionscadail agus fillteáin laistigh de do spás a bhainistiú, lena n-áirítear róil bhainistíochta a shannadh dóibh agus a bhaint díobh.
+      text_oversee_participation: Mar bhainisteoir spáis, tá cearta bainisteora tionscadail agat ar gach tionscadal atá laistigh de do spás, ionas gur féidir leat súil a choinneáil ar ionchur nua agus cabhrú le bainisteoirí tionscadail nuair is gá.
+      title: Rinneadh bainisteoir spáis díot
+      title_manage_space_settings: Bainistigh socruithe spáis
+      title_organize_projects_and_folders: Eagraigh tionscadail agus fillteáin
+      title_oversee_participation: Déan maoirseacht ar rannpháirtíocht
+      title_what_can_you_do_space_manager: Cad is féidir leat a dhéanamh mar bhainisteoir spáis?
+      x_projects: '%{numberOfProjects} tionscadal'
     status_change_on_idea_you_follow:
       cta_button: Téigh chuig an ionchur seo
       event_description: "Nuashonraigh %{organizationName} stádas an ionchuir '%{input_title}' ar a n-ardán rannpháirtíochta digiteach."

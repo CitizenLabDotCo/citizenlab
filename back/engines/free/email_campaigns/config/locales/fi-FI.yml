@@ -52,8 +52,11 @@ fi-FI:
         user_who_is_invited_to_cosponsor_a_proposal: Käyttäjä, joka on kutsuttu sponsoroimaan ehdotusta
         user_who_is_mentioned: Mainittu käyttäjä
         user_who_is_receiving_admin_rights: Käyttäjä, joka saa järjestelmänvalvojan oikeudet
+        user_who_is_receiving_folder_manager_rights: Käyttäjä, jolle myönnetään kansion hallinnointioikeudet
         user_who_is_receiving_folder_moderator_rights: Käyttäjä, joka saa kansion valvojan oikeudet
+        user_who_is_receiving_project_manager_rights: Käyttäjä, jolle myönnetään projektipäällikön oikeudet
         user_who_is_receiving_project_moderator_rights: Käyttäjä, joka saa projektin valvojan oikeudet
+        user_who_is_receiving_space_manager_rights: Käyttäjä, jolle myönnetään tilan hallinnointioikeudet
         user_who_published_the_input: Käyttäjä, joka julkaisi syötteen
         user_who_published_the_proposal: Käyttäjä, joka julkaisi ehdotuksen
         user_who_registers: Käyttäjä, joka rekisteröityy
@@ -104,8 +107,11 @@ fi-FI:
         user_comments_on_input: Käyttäjän kommentit syötteeseen
         user_comments_on_proposal: Käyttäjien kommentit ehdotukseen
         user_is_given_admin_rights: Käyttäjälle annetaan järjestelmänvalvojan oikeudet
+        user_is_given_folder_manager_rights: Käyttäjälle annetaan kansion hallinnointioikeudet
         user_is_given_folder_moderator_rights: Käyttäjälle annetaan kansion valvojan oikeudet
+        user_is_given_project_manager_rights: Käyttäjälle annetaan projektipäällikön oikeudet
         user_is_given_project_moderator_rights: Käyttäjä saa projektin moderaattorin oikeudet
+        user_is_given_space_manager_rights: Käyttäjälle annetaan tilan hallinnointioikeudet
         user_is_invited_to_cosponsor_a_proposal: Käyttäjää pyydetään tukemaan ehdotusta
         user_is_invited_to_platform: Käyttäjä on kutsuttu alustalle
         user_is_mentioned: Käyttäjä mainitaan
@@ -175,6 +181,7 @@ fi-FI:
       official_feedback_on_idea_you_follow: Päivitä ajatus, jota seuraat
       password_reset: Salasanan nollaus
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
+      project_manager_rights_received: Projektipäällikön oikeudet vastaanotettu
       project_moderation_rights_received: Projektin moderointioikeudet saatu
       project_phase_started: Uusi projektivaihe
       project_phase_upcoming: Tuleva uusi projektivaihe
@@ -182,6 +189,7 @@ fi-FI:
       project_review_request: Hankearviointipyyntö
       project_review_state_change: Projekti hyväksytty
       screening_digest: Viikoittainen seulontamuistutus
+      space_moderation_rights_received: Tilan hallinnointioikeudet vastaanotettu
       status_change_on_idea_you_follow: Seuraamasi idean tilanmuutos
       survey_submitted: Kysely lähetetty
       threshold_reached_for_admin: Ehdotus saavutti äänestyskynnyksen
@@ -518,6 +526,7 @@ fi-FI:
       project_description_preview: Tämä on esimerkki sähköpostien sisällön esikatseluun käytettävästä vaihesisällöstä. Tämä ei ole oikeaa sisältöä.
       project_title: Esimerkkiprojekti
       proposal_title: Esimerkkiehdotus
+      space_title: Esimerkkitila
     project_folder_moderation_rights_received:
       cta_button: Näytä tämä kansio
       event_description: 'Sinulle on annettu kansion hallintaoikeudet %{organizationName}:n osallistumisalustalla seuraavaan kansioon:'
@@ -599,6 +608,21 @@ fi-FI:
       preheader: Tarkista syötteet kohteelle %{organizationName}
       subject: '%{count} syötettä odottaa tarkistusta'
       title: '%{firstName}, syötteet odottavat tarkistusta'
+    space_moderation_rights_received:
+      cta_button: Hallinnoi tätä tilaa
+      event_description: 'Organisaation %{organizationName} osallistumisalustan ylläpitäjä on juuri nimennyt sinut seuraavan tilan hallinnoijaksi:'
+      no_projects: Ei vielä projekteja
+      preheader: Organisaation %{organizationName} osallistumisalustan ylläpitäjä on juuri nimennyt sinut seuraavan tilan hallinnoijaksi
+      subject: Sinusta tuli tilan hallinnoija organisaation %{organizationName} alustalla
+      text_manage_space_settings: Voit muokata tilan nimeä ja kuvausta, jotta osallistujat ja muut hallinnoijat ymmärtävät heti, mistä tilassa on kyse ja miten se liittyy organisaatioosi.
+      text_organize_projects_and_folders: Tilan hallinnoijana voit hallinnoida tilasi projekteja ja kansioita sekä myöntää ja poistaa niihin liittyviä hallinnointirooleja.
+      text_oversee_participation: Tilan hallinnoijana sinulla on projektipäällikön oikeudet kaikkiin tilassasi oleviin projekteihin, joten voit seurata saapuvaa palautetta ja auttaa projektipäälliköitä tarvittaessa.
+      title: Sinusta tuli tilan hallinnoija
+      title_manage_space_settings: Hallinnoi tilan asetuksia
+      title_organize_projects_and_folders: Järjestä projekteja ja kansioita
+      title_oversee_participation: Valvo osallistumista
+      title_what_can_you_do_space_manager: Mitä voit tehdä tilan hallinnoijana?
+      x_projects: '%{numberOfProjects} projektia'
     status_change_on_idea_you_follow:
       cta_button: Siirry tähän syötteeseen
       event_description: "%{organizationName} päivitti syötteen '%{input_title}' tilan digitaalisella osallistumisalustallaan."

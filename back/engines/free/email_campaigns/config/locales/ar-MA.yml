@@ -52,8 +52,11 @@ ar-MA:
         user_who_is_invited_to_cosponsor_a_proposal: المستخدم الذي تمت دعوته للمشاركة في رعاية اقتراح
         user_who_is_mentioned: المستخدم الذي تم ذكره
         user_who_is_receiving_admin_rights: المستخدم الذي يتلقى حقوق المسؤول
+        user_who_is_receiving_folder_manager_rights: المستخدم اللي كيتلقى صلاحيات مسير مجلد
         user_who_is_receiving_folder_moderator_rights: المستخدم الذي يتلقى حقوق وسيط المجلد
+        user_who_is_receiving_project_manager_rights: المستخدم اللي كيتلقى صلاحيات مسير مشروع
         user_who_is_receiving_project_moderator_rights: المستخدم الذي يتلقى حقوق مشرف المشروع
+        user_who_is_receiving_space_manager_rights: المستخدم اللي كيتلقى صلاحيات مسير فضاء
         user_who_published_the_input: المستخدم الذي نشر المدخلات
         user_who_published_the_proposal: المستخدم الذي نشر الاقتراح
         user_who_registers: المستخدم الذي يقوم بالتسجيل
@@ -104,8 +107,11 @@ ar-MA:
         user_comments_on_input: تعليقات المستخدم على المدخلات
         user_comments_on_proposal: تعليقات المستخدم على الاقتراح
         user_is_given_admin_rights: يتم منح المستخدم حقوق المسؤول
+        user_is_given_folder_manager_rights: تم منح المستخدم صلاحيات مسير مجلد
         user_is_given_folder_moderator_rights: يتم منح المستخدم حقوق وسيط المجلد
+        user_is_given_project_manager_rights: تم منح المستخدم صلاحيات مسير مشروع
         user_is_given_project_moderator_rights: يتم منح المستخدم حقوق مشرف المشروع
+        user_is_given_space_manager_rights: تم منح المستخدم صلاحيات مسير فضاء
         user_is_invited_to_cosponsor_a_proposal: المستخدم مدعو للمشاركة في رعاية اقتراح
         user_is_invited_to_platform: تمت دعوة المستخدم إلى المنصة
         user_is_mentioned: المستخدم مذكور
@@ -175,6 +181,7 @@ ar-MA:
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
       password_reset: تمت إعادة تعيين كلمة المرور
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
+      project_manager_rights_received: تم استلام صلاحيات مسير مشروع
       project_moderation_rights_received: تم استلام حقوق الإشراف على المشروع
       project_phase_started: مرحلة مشروع جديدة
       project_phase_upcoming: مرحلة مشروع جديدة قادمة
@@ -182,6 +189,7 @@ ar-MA:
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
       screening_digest: تذكير بالفحص الأسبوعي
+      space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
       survey_submitted: تم تقديم الاستطلاع
       threshold_reached_for_admin: بلغ المُقترح حد التصويت المطلوب
@@ -518,6 +526,7 @@ ar-MA:
       project_description_preview: هذا مثال على محتوى المرحلة المستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.
       project_title: مشروع مثال
       proposal_title: مثال على الاقتراح
+      space_title: فضاء تجريبي
     project_folder_moderation_rights_received:
       cta_button: عرض هذا المجلد
       event_description: 'لقد تم منحك حقوق مدير المجلد على منصة المشاركة %{organizationName}للمجلد التالي:'
@@ -599,6 +608,21 @@ ar-MA:
       preheader: مراجعة المدخلات لـ %{organizationName}
       subject: '%{count} المدخلات قيد المراجعة'
       title: '%{firstName}، المدخلات بانتظار المراجعة'
+    space_moderation_rights_received:
+      cta_button: سير هاد الفضاء
+      event_description: 'واحد من مسؤولي منصة المشاركة ديال %{organizationName} عينك مسير للفضاء التالي:'
+      no_projects: ما كاين حتى مشروع دابا
+      preheader: واحد من مسؤولي منصة المشاركة ديال %{organizationName} عينك مسير للفضاء التالي
+      subject: وليتي مسير فضاء فمنصة %{organizationName}
+      text_manage_space_settings: تقدر تعدل عنوان ووصف الفضاء باش المشاركين وزملائك المسيرين يفهموا مباشرة علاش كيهضر الفضاء ديالك وكيفاش كيرتبط بالمؤسسة ديالك.
+      text_organize_projects_and_folders: بصفتك مسير فضاء، تقدر تسير المشاريع والمجلدات اللي فالفضاء ديالك، بما في ذلك تعيين وإزالة أدوار التسيير ديالهم.
+      text_oversee_participation: بصفتك مسير فضاء، عندك صلاحيات مسير مشروع على كاع المشاريع اللي كاينين فالفضاء ديالك، باش تقدر تتبع المساهمات وتساعد مسيري المشاريع فاش كتحتاج الضرورة.
+      title: وليتي مسير فضاء
+      title_manage_space_settings: تسيير إعدادات الفضاء
+      title_organize_projects_and_folders: تنظيم المشاريع والمجلدات
+      title_oversee_participation: الإشراف على المشاركة
+      title_what_can_you_do_space_manager: شنو تقدر دير بصفتك مسير فضاء؟
+      x_projects: '%{numberOfProjects} مشاريع'
     status_change_on_idea_you_follow:
       cta_button: انتقل إلى هذا الإدخال
       event_description: "قام %{organizationName} بتحديث حالة الإدخال '%{input_title}' على منصة المشاركة الرقمية الخاصة بهم."

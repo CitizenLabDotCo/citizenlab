@@ -52,8 +52,11 @@ pa-IN:
         user_who_is_invited_to_cosponsor_a_proposal: ਉਪਭੋਗਤਾ ਜਿਸਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ
         user_who_is_mentioned: ਉਪਭੋਗਤਾ ਜਿਸਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ
         user_who_is_receiving_admin_rights: ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ
+        user_who_is_receiving_folder_manager_rights: ਉਹ ਵਰਤੋਂਕਾਰ ਜਿਸ ਨੂੰ ਫੋਲਡਰ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਮਿਲ ਰਹੇ ਹਨ
         user_who_is_receiving_folder_moderator_rights: ਉਪਭੋਗਤਾ ਜੋ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ
+        user_who_is_receiving_project_manager_rights: ਉਹ ਵਰਤੋਂਕਾਰ ਜਿਸ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਮਿਲ ਰਹੇ ਹਨ
         user_who_is_receiving_project_moderator_rights: ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ
+        user_who_is_receiving_space_manager_rights: ਉਹ ਵਰਤੋਂਕਾਰ ਜਿਸ ਨੂੰ ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਮਿਲ ਰਹੇ ਹਨ
         user_who_published_the_input: ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ
         user_who_published_the_proposal: ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਵਾਲਾ ਉਪਭੋਗਤਾ
         user_who_registers: ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
@@ -104,8 +107,11 @@ pa-IN:
         user_comments_on_input: ਇੰਪੁੱਟ 'ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ
         user_comments_on_proposal: ਪ੍ਰਸਤਾਵ 'ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ
         user_is_given_admin_rights: ਉਪਭੋਗਤਾ ਨੂੰ ਐਡਮਿਨ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
+        user_is_given_folder_manager_rights: ਵਰਤੋਂਕਾਰ ਨੂੰ ਫੋਲਡਰ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
         user_is_given_folder_moderator_rights: ਉਪਭੋਗਤਾ ਨੂੰ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
+        user_is_given_project_manager_rights: ਵਰਤੋਂਕਾਰ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
         user_is_given_project_moderator_rights: ਉਪਭੋਗਤਾ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
+        user_is_given_space_manager_rights: ਵਰਤੋਂਕਾਰ ਨੂੰ ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
         user_is_invited_to_cosponsor_a_proposal: ਉਪਭੋਗਤਾ ਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ
         user_is_invited_to_platform: ਉਪਭੋਗਤਾ ਨੂੰ ਪਲੇਟਫਾਰਮ 'ਤੇ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।
         user_is_mentioned: ਉਪਭੋਗਤਾ ਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ
@@ -175,6 +181,7 @@ pa-IN:
       official_feedback_on_idea_you_follow: ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       password_reset: ਪਾਸਵਰਡ ਰੀਸੈੱਟ
       project_folder_moderation_rights_received: ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
+      project_manager_rights_received: ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_moderation_rights_received: ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_phase_started: ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
       project_phase_upcoming: ਆਗਾਮੀ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
@@ -182,6 +189,7 @@ pa-IN:
       project_review_request: ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਬੇਨਤੀ
       project_review_state_change: ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
       screening_digest: ਹਫ਼ਤਾਵਾਰੀ ਸਕ੍ਰੀਨਿੰਗ ਰੀਮਾਈਂਡਰ
+      space_moderation_rights_received: ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       status_change_on_idea_you_follow: ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
       survey_submitted: ਸਰਵੇਖਣ ਪੇਸ਼ ਕੀਤਾ
       threshold_reached_for_admin: ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਿਆ
@@ -518,6 +526,7 @@ pa-IN:
       project_description_preview: ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਪੜਾਅ ਸਮੱਗਰੀ ਦੀ ਕੁਝ ਉਦਾਹਰਣ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।
       project_title: ਉਦਾਹਰਣ ਪ੍ਰੋਜੈਕਟ
       proposal_title: ਉਦਾਹਰਨ ਪ੍ਰਸਤਾਵ
+      space_title: ਉਦਾਹਰਨ ਸਪੇਸ
     project_folder_moderation_rights_received:
       cta_button: ਇਸ ਫੋਲਡਰ ਨੂੰ ਵੇਖੋ
       event_description: "ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਹੇਠ ਲਿਖੇ ਫੋਲਡਰ ਲਈ ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ:"
@@ -599,6 +608,21 @@ pa-IN:
       preheader: '%{organizationName}ਲਈ ਇਨਪੁੱਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
       subject: '%{count} ਇਨਪੁੱਟ ਸਮੀਖਿਆ ਦੀ ਉਡੀਕ ਵਿੱਚ ਹਨ'
       title: '%{firstName}, ਇਨਪੁੱਟ ਸਮੀਖਿਆ ਦੀ ਉਡੀਕ ਕਰ ਰਹੇ ਹਨ'
+    space_moderation_rights_received:
+      cta_button: ਇਸ ਸਪੇਸ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ
+      event_description: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਇੱਕ ਐਡਮਿਨਿਸਟ੍ਰੇਟਰ ਨੇ ਹੁਣੇ ਹੀ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੀ ਸਪੇਸ ਦਾ ਸਪੇਸ ਮੈਨੇਜਰ ਬਣਾਇਆ ਹੈ:'
+      no_projects: ਅਜੇ ਤੱਕ ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਹੈ
+      preheader: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਇੱਕ ਐਡਮਿਨਿਸਟ੍ਰੇਟਰ ਨੇ ਹੁਣੇ ਹੀ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੀ ਸਪੇਸ ਦਾ ਸਪੇਸ ਮੈਨੇਜਰ ਬਣਾਇਆ ਹੈ'
+      subject: ਤੁਸੀਂ %{organizationName} ਦੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਸਪੇਸ ਮੈਨੇਜਰ ਬਣ ਗਏ ਹੋ
+      text_manage_space_settings: ਤੁਸੀਂ ਸਪੇਸ ਦੇ ਸਿਰਲੇਖ ਅਤੇ ਵੇਰਵੇ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰ ਸਕਦੇ ਹੋ ਤਾਂ ਜੋ ਭਾਗੀਦਾਰ ਅਤੇ ਤੁਹਾਡੇ ਸਾਥੀ ਮੈਨੇਜਰ ਤੁਰੰਤ ਸਮਝ ਸਕਣ ਕਿ ਤੁਹਾਡੀ ਸਪੇਸ ਕਿਸ ਬਾਰੇ ਹੈ ਅਤੇ ਇਹ ਤੁਹਾਡੀ ਸੰਸਥਾ ਨਾਲ ਕਿਵੇਂ ਸਬੰਧਤ ਹੈ।
+      text_organize_projects_and_folders: ਇੱਕ ਸਪੇਸ ਮੈਨੇਜਰ ਵਜੋਂ, ਤੁਸੀਂ ਆਪਣੀ ਸਪੇਸ ਦੇ ਅੰਦਰ ਪ੍ਰੋਜੈਕਟਾਂ ਅਤੇ ਫੋਲਡਰਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹੋ, ਜਿਸ ਵਿੱਚ ਉਹਨਾਂ ਲਈ ਪ੍ਰਬੰਧਨ ਭੂਮਿਕਾਵਾਂ ਨਿਰਧਾਰਤ ਕਰਨਾ ਅਤੇ ਹਟਾਉਣਾ ਸ਼ਾਮਲ ਹੈ।
+      text_oversee_participation: "ਇੱਕ ਸਪੇਸ ਮੈਨੇਜਰ ਵਜੋਂ, ਤੁਹਾਡੇ ਕੋਲ ਤੁਹਾਡੀ ਸਪੇਸ ਦੇ ਅੰਦਰ ਹਰੇਕ ਪ੍ਰੋਜੈਕਟ ਉੱਤੇ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਹਨ, ਤਾਂ ਜੋ ਤੁਸੀਂ ਆਉਣ ਵਾਲੇ ਇਨਪੁਟ 'ਤੇ ਨਜ਼ਰ ਰੱਖ ਸਕੋ ਅਤੇ ਲੋੜ ਪੈਣ 'ਤੇ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਦੀ ਸਹਾਇਤਾ ਕਰ ਸਕੋ।"
+      title: ਤੁਸੀਂ ਸਪੇਸ ਮੈਨੇਜਰ ਬਣ ਗਏ ਹੋ
+      title_manage_space_settings: ਸਪੇਸ ਸੈਟਿੰਗਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ
+      title_organize_projects_and_folders: ਪ੍ਰੋਜੈਕਟਾਂ ਅਤੇ ਫੋਲਡਰਾਂ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ
+      title_oversee_participation: ਭਾਗੀਦਾਰੀ ਦੀ ਨਿਗਰਾਨੀ ਕਰੋ
+      title_what_can_you_do_space_manager: ਇੱਕ ਸਪੇਸ ਮੈਨੇਜਰ ਵਜੋਂ ਤੁਸੀਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?
+      x_projects: '%{numberOfProjects} ਪ੍ਰੋਜੈਕਟ'
     status_change_on_idea_you_follow:
       cta_button: ਇਸ ਇਨਪੁੱਟ 'ਤੇ ਜਾਓ
       event_description: "%{organizationName} ਨੇ ਆਪਣੇ ਡਿਜੀਟਲ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ '%{input_title}' ਇਨਪੁਟ ਦੀ ਸਥਿਤੀ ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ।"

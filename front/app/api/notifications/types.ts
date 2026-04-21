@@ -311,6 +311,17 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
+export interface ISpaceModerationRightsReceivedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'space_moderation_rights_received';
+    read_at: string | null;
+    created_at: string;
+    space_id: string;
+    space_title_multiloc: Multiloc;
+  };
+}
+
 export interface IProjectFolderModerationRightsReceivedNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -401,6 +412,7 @@ export interface INotificationDataMap {
   IProjectReviewStateChangeNotificationData: IProjectReviewStateChangeNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
+  ISpaceModerationRightsReceivedNotificationData: ISpaceModerationRightsReceivedNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
   INativeSurveyNotSubmittedNotificationData: INativeSurveyNotSubmittedNotificationData;
