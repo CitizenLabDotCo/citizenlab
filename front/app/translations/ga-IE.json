@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Ní féidir é seo a bheith folamh",
   "app.errors.password_invalid": "Seiceáil do phasfhocal reatha arís le do thoil.",
   "app.errors.password_too_short": "Ní mór don phasfhocal a bheith 8 gcarachtar ar a laghad ar fhad",
+  "app.errors.phase_too_short": "Tá an chéim róghairid. Caithfidh sí a bheith 24 uair an chloig ar a laghad.",
   "app.errors.resending_code_failed": "Tharla fadhb agus an cód deimhnithe á sheoladh amach.",
   "app.errors.slug_taken": "Tá an URL tionscadail seo ann cheana féin. Athraigh an slug tionscadail go rud éigin eile le do thoil.",
   "app.errors.something_went_wrong": "Chuaigh rud éigin mícheart. Téigh i dteagmháil linn má leanann an fhadhb ar aghaidh.",

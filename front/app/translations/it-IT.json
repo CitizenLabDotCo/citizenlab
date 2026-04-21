@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Questo campo non può essere vuoto",
   "app.errors.password_invalid": "Si prega di ricontrollare la password attuale.",
   "app.errors.password_too_short": "La password deve essere lunga almeno 8 caratteri",
+  "app.errors.phase_too_short": "La fase è troppo breve. Deve durare almeno 24 ore.",
   "app.errors.resending_code_failed": "Qualcosa è andato storto durante l'invio del codice di conferma.",
   "app.errors.slug_taken": "Questo URL del progetto esiste già. Cambia lo slug del progetto in qualcos'altro.",
   "app.errors.something_went_wrong": "Si è verificato un problema. Se il problema persiste, contattaci.",

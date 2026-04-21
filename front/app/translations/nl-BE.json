@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Dit mag niet leeg zijn",
   "app.errors.password_invalid": "Controleer uw huidige wachtwoord opnieuw.",
   "app.errors.password_too_short": "Het wachtwoord moet minstens 8 tekens lang zijn",
+  "app.errors.phase_too_short": "De fase is te kort. Deze moet minstens 24 uur duren.",
   "app.errors.resending_code_failed": "Er is iets misgegaan bij het verzenden van de bevestigingscode.",
   "app.errors.slug_taken": "Deze project-URL bestaat al. Verander de slug in iets anders.",
   "app.errors.something_went_wrong": "Er is iets misgegaan. Neem contact met ons op als het probleem zich blijft voordoen.",

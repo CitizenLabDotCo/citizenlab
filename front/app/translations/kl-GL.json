@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Una allassimasoqassaaq",
   "app.errors.password_invalid": "Please check your current password again.",
   "app.errors.password_too_short": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
+  "app.errors.phase_too_short": "Immikkoortoq naappallaarpoq. Ikinnerpaamik tiimit 24-t sivisussuseqassaaq.",
   "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "URL taanna atorneqareerpoq. Inussiarnersumik suliniutip slugia allanngortiguk.",
   "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",

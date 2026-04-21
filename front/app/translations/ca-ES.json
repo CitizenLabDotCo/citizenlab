@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Això no pot estar buit",
   "app.errors.password_invalid": "Si us plau, torneu a comprovar la vostra contrasenya actual.",
   "app.errors.password_too_short": "La contrasenya ha de tenir almenys 8 caràcters",
+  "app.errors.phase_too_short": "La fase és massa curta. Ha de durar almenys 24 hores.",
   "app.errors.resending_code_failed": "S'ha produït un error en enviar el codi de confirmació.",
   "app.errors.slug_taken": "Aquest URL del projecte ja existeix. Si us plau, canvieu el Identificador d’URL del projecte per una altra cosa.",
   "app.errors.something_went_wrong": "Alguna cosa ha anat malament. Si el problema persisteix, poseu-vos en contacte amb nosaltres.",

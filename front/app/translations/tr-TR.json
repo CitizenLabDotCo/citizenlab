@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "Bu boş olamaz",
   "app.errors.password_invalid": "Lütfen mevcut şifrenizi tekrar kontrol edin.",
   "app.errors.password_too_short": "Parola en az 8 karakter uzunluğunda olmalıdır",
+  "app.errors.phase_too_short": "Aşama çok kısa. En az 24 saat olmalıdır.",
   "app.errors.resending_code_failed": "Onay kodu gönderilirken bir şeyler ters gitti.",
   "app.errors.slug_taken": "Bu proje URL'si zaten var. Lütfen proje adres kısa adını değiştirin.",
   "app.errors.something_went_wrong": "Bir şeyler ters gitti. Sorun devam ederse lütfen bizimle iletişime geçin.",

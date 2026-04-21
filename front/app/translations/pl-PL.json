@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "To pole nie może być puste",
   "app.errors.password_invalid": "Proszę sprawdzić ponownie swoje aktualne hasło.",
   "app.errors.password_too_short": "Hasło musi mieć długość co najmniej 8 znaków",
+  "app.errors.phase_too_short": "Etap jest za krótki. Musi trwać co najmniej 24 godziny.",
   "app.errors.resending_code_failed": "Coś poszło nie tak podczas wysyłania kodu potwierdzającego.",
   "app.errors.slug_taken": "Ten adres URL projektu już istnieje. Proszę zmienić URL.",
   "app.errors.something_went_wrong": "Coś poszło nie tak. Skontaktuj się z nami, jeśli problem będzie się powtarzał.",

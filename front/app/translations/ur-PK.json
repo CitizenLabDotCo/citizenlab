@@ -2437,6 +2437,7 @@
   "app.errors.password_blank": "یہ خالی نہیں ہو سکتا",
   "app.errors.password_invalid": "براہ کرم اپنا موجودہ پاس ورڈ دوبارہ چیک کریں۔",
   "app.errors.password_too_short": "پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے۔",
+  "app.errors.phase_too_short": "مرحلہ بہت مختصر ہے۔ یہ کم از کم 24 گھنٹے کا ہونا چاہیے۔",
   "app.errors.resending_code_failed": "تصدیقی کوڈ بھیجتے وقت کچھ غلط ہو گیا۔",
   "app.errors.slug_taken": "یہ پروجیکٹ URL پہلے سے موجود ہے۔ براہ کرم پروجیکٹ سلگ کو کسی اور چیز میں تبدیل کریں۔",
   "app.errors.something_went_wrong": "کچھ غلط ہو گیا۔ اگر مسئلہ برقرار رہتا ہے تو براہ کرم ہم سے رابطہ کریں۔",
