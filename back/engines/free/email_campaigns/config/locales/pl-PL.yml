@@ -52,8 +52,11 @@ pl-PL:
         user_who_is_invited_to_cosponsor_a_proposal: Użytkownik zaproszony do współsponsorowania propozycji
         user_who_is_mentioned: Użytkownik, który został wymieniony
         user_who_is_receiving_admin_rights: Użytkownik, który otrzymuje uprawnienia administratora
+        user_who_is_receiving_folder_manager_rights: Użytkownik otrzymujący uprawnienia menedżera folderu
         user_who_is_receiving_folder_moderator_rights: Użytkownik, który otrzymuje uprawnienia moderatora folderu
+        user_who_is_receiving_project_manager_rights: Użytkownik otrzymujący uprawnienia menedżera projektu
         user_who_is_receiving_project_moderator_rights: Użytkownik, który otrzymuje uprawnienia moderatora projektu
+        user_who_is_receiving_space_manager_rights: Użytkownik otrzymujący uprawnienia menedżera obszaru
         user_who_published_the_input: Użytkownik, który opublikował dane wejściowe
         user_who_published_the_proposal: Użytkownik, który opublikował propozycję
         user_who_registers: Użytkownik, który się rejestruje
@@ -104,8 +107,11 @@ pl-PL:
         user_comments_on_input: Komentarze użytkowników na temat wprowadzania danych
         user_comments_on_proposal: Komentarze użytkowników na temat propozycji
         user_is_given_admin_rights: Użytkownik otrzymuje prawa administratora
+        user_is_given_folder_manager_rights: Użytkownik otrzymuje uprawnienia menedżera folderu
         user_is_given_folder_moderator_rights: Użytkownik otrzymuje prawa moderatora folderu
+        user_is_given_project_manager_rights: Użytkownik otrzymuje uprawnienia menedżera projektu
         user_is_given_project_moderator_rights: Użytkownik otrzymuje uprawnienia moderatora projektu
+        user_is_given_space_manager_rights: Użytkownik otrzymuje uprawnienia menedżera obszaru
         user_is_invited_to_cosponsor_a_proposal: Użytkownik jest zaproszony do współsponsorowania propozycji
         user_is_invited_to_platform: Użytkownik jest zapraszany na platformę
         user_is_mentioned: Użytkownik jest wymieniony
@@ -175,6 +181,7 @@ pl-PL:
       official_feedback_on_idea_you_follow: Zaktualizuj pomysł, który śledzisz
       password_reset: Zmiana hasła
       project_folder_moderation_rights_received: Przydzielono uprawnienia menedżera folderów
+      project_manager_rights_received: Otrzymano uprawnienia menedżera projektu
       project_moderation_rights_received: Przyznanie prawa do moderacji projektu
       project_phase_started: Nowy etap projektu
       project_phase_upcoming: Nadchodzący nowy etap projektu
@@ -182,6 +189,7 @@ pl-PL:
       project_review_request: Żądanie przeglądu projektu
       project_review_state_change: Projekt zatwierdzony
       screening_digest: Cotygodniowe przypomnienie o badaniu przesiewowym
+      space_moderation_rights_received: Otrzymano uprawnienia menedżera obszaru
       status_change_on_idea_you_follow: Zmiana statusu pomysłu, za którym podążasz
       survey_submitted: Przesłana ankieta
       threshold_reached_for_admin: Propozycja osiągnęła próg poparcia w głosowaniu
@@ -518,6 +526,7 @@ pl-PL:
       project_description_preview: Jest to przykładowa zawartość fazowa używana do podglądu treści wiadomości e-mail. Nie jest to prawdziwa treść.
       project_title: Przykładowy projekt
       proposal_title: Przykładowa propozycja
+      space_title: Przykładowy obszar
     project_folder_moderation_rights_received:
       cta_button: Wyświetl ten folder
       event_description: 'Otrzymałeś uprawnienia menedżera folderów na platformie uczestnictwa %{organizationName}dla następującego folderu:'
@@ -599,6 +608,21 @@ pl-PL:
       preheader: Przejrzyj dane wejściowe dla %{organizationName}
       subject: '%{count} dane wejściowe oczekujące na przegląd'
       title: '%{firstName}dane wejściowe czekają na weryfikację'
+    space_moderation_rights_received:
+      cta_button: Zarządzaj tym obszarem
+      event_description: 'Administrator platformy partycypacyjnej %{organizationName} właśnie mianował Cię menedżerem następującego obszaru:'
+      no_projects: Brak projektów
+      preheader: Administrator platformy partycypacyjnej %{organizationName} właśnie mianował Cię menedżerem następującego obszaru
+      subject: Zostałeś menedżerem obszaru na platformie %{organizationName}
+      text_manage_space_settings: Możesz edytować tytuł i opis obszaru, aby uczestnicy i inni menedżerowie od razu wiedzieli, czego dotyczy Twój obszar i jak wiąże się z Twoją organizacją.
+      text_organize_projects_and_folders: Jako menedżer obszaru możesz zarządzać projektami i folderami w swoim obszarze, w tym przypisywać i odbierać role zarządcze.
+      text_oversee_participation: Jako menedżer obszaru masz uprawnienia menedżera projektu do każdego projektu w Twoim obszarze, dzięki czemu możesz monitorować napływające zgłoszenia i wspierać menedżerów projektów w razie potrzeby.
+      title: Zostałeś menedżerem obszaru
+      title_manage_space_settings: Zarządzaj ustawieniami obszaru
+      title_organize_projects_and_folders: Organizuj projekty i foldery
+      title_oversee_participation: Nadzoruj partycypację
+      title_what_can_you_do_space_manager: Co możesz robić jako menedżer obszaru?
+      x_projects: '%{numberOfProjects} projektów'
     status_change_on_idea_you_follow:
       cta_button: Przejdź do tego wejścia
       event_description: '%{organizationName} zaktualizował status danych wejściowych "%{input_title}" na swojej cyfrowej platformie uczestnictwa.'
