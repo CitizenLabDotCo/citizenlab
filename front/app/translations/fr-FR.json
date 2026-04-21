@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Affirmation",
   "app.components.form.controls.noRankSelected": "Aucun classement attribué",
   "app.components.form.controls.optionalParentheses": "(facultatif)",
+  "app.components.form.controls.rankingDragHandleLabel": "Faire glisser pour réorganiser {label}",
   "app.components.form.controls.rankingInstructions": "Glissez-déposez les options pour les classer.",
   "app.components.form.controls.valueOutOfTotal": "{value} sur {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} sur {total}, {label}",

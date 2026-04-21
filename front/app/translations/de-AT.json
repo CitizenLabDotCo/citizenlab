@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Aussage",
   "app.components.form.controls.noRankSelected": "Keine Reihenfolge ausgewählt",
   "app.components.form.controls.optionalParentheses": "(optional)",
+  "app.components.form.controls.rankingDragHandleLabel": "Ziehen, um {label} neu anzuordnen",
   "app.components.form.controls.rankingInstructions": "Optionen per Drag & Drop priorisieren.",
   "app.components.form.controls.valueOutOfTotal": "{value} von {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} von {total}, {label}",

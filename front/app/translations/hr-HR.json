@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Izjava",
   "app.components.form.controls.noRankSelected": "Nije odabran rang",
   "app.components.form.controls.optionalParentheses": "(neobavezno)",
+  "app.components.form.controls.rankingDragHandleLabel": "Povucite za promjenu redoslijeda stavke {label}",
   "app.components.form.controls.rankingInstructions": "Povucite i ispustite za opcije rangiranja.",
   "app.components.form.controls.valueOutOfTotal": "{value} od {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} od {total}, {label}",

@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Nyilatkozat",
   "app.components.form.controls.noRankSelected": "Nincs kiválasztva rang",
   "app.components.form.controls.optionalParentheses": "(választható)",
+  "app.components.form.controls.rankingDragHandleLabel": "Húzza a(z) {label} átrendezéséhez",
   "app.components.form.controls.rankingInstructions": "Húzással rangsorolhatja a lehetőségeket.",
   "app.components.form.controls.valueOutOfTotal": "{value} / {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} / {total}, {label}",

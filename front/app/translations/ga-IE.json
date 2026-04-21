@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Ráiteas",
   "app.components.form.controls.noRankSelected": "Níor roghnaíodh aon rang",
   "app.components.form.controls.optionalParentheses": "(roghnach)",
+  "app.components.form.controls.rankingDragHandleLabel": "Tarraing chun {label} a athordú",
   "app.components.form.controls.rankingInstructions": "Tarraing agus scaoil chun roghanna a rangú.",
   "app.components.form.controls.valueOutOfTotal": "{value} as {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} as {total}, {label}",

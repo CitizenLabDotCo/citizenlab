@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Verklaring",
   "app.components.form.controls.noRankSelected": "Geen rang geselecteerd",
   "app.components.form.controls.optionalParentheses": "(optioneel)",
+  "app.components.form.controls.rankingDragHandleLabel": "Sleep om {label} opnieuw te ordenen",
   "app.components.form.controls.rankingInstructions": "Sleep om opties te rangschikken.",
   "app.components.form.controls.valueOutOfTotal": "{value} van de {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} van de {total}, {label}",

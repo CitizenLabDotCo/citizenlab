@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Declaração",
   "app.components.form.controls.noRankSelected": "Nenhuma classificação selecionada",
   "app.components.form.controls.optionalParentheses": "(opcional)",
+  "app.components.form.controls.rankingDragHandleLabel": "Arraste para reordenar {label}",
   "app.components.form.controls.rankingInstructions": "Arraste e solte para classificar as opções.",
   "app.components.form.controls.valueOutOfTotal": "{value} em {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} fora do site {total}, {label}",

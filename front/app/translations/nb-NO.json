@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Uttalelse",
   "app.components.form.controls.noRankSelected": "Ingen rang valgt",
   "app.components.form.controls.optionalParentheses": "(valgfritt)",
+  "app.components.form.controls.rankingDragHandleLabel": "Dra for å endre rekkefølgen på {label}",
   "app.components.form.controls.rankingInstructions": "Dra og slipp for å rangere alternativer.",
   "app.components.form.controls.valueOutOfTotal": "{value} ut av {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} ut av {total}, {label}",

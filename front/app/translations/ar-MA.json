@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "إفادة",
   "app.components.form.controls.noRankSelected": "لم يتم تحديد رتبة",
   "app.components.form.controls.optionalParentheses": "(خياري)",
+  "app.components.form.controls.rankingDragHandleLabel": "اسحب لإعادة ترتيب {label}",
   "app.components.form.controls.rankingInstructions": "اسحب وأفلِت لترتيب الخيارات.",
   "app.components.form.controls.valueOutOfTotal": "{value} من {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} من {total}، {label}",

@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Açıklama",
   "app.components.form.controls.noRankSelected": "Rütbe seçilmedi",
   "app.components.form.controls.optionalParentheses": "(isteğe bağlı)",
+  "app.components.form.controls.rankingDragHandleLabel": "{label} öğesini yeniden sıralamak için sürükleyin",
   "app.components.form.controls.rankingInstructions": "Seçenekleri sıralamak için sürükleyip bırakın.",
   "app.components.form.controls.valueOutOfTotal": "{value} {total}dışında",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} {total}dışında , {label}",

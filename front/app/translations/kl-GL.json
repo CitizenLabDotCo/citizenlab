@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Statement",
   "app.components.form.controls.noRankSelected": "No rank selected",
   "app.components.form.controls.optionalParentheses": "(optional)",
+  "app.components.form.controls.rankingDragHandleLabel": "{label} tulleriiaaqqinniarlugu nuuguk",
   "app.components.form.controls.rankingInstructions": "Drag and drop to rank options.",
   "app.components.form.controls.valueOutOfTotal": "{value} out of {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} out of {total}, {label}",
