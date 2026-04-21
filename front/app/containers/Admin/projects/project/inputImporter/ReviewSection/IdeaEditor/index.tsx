@@ -198,10 +198,7 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
         },
       });
 
-      const approvedTitle =
-        (locale && ideaFormData.title_multiloc?.[locale]) ||
-        localize(idea?.data.attributes.title_multiloc) ||
-        '';
+      const approvedTitle = localize(idea?.data.attributes.title_multiloc);
       onIdeaApproved({ id: ideaId, title: approvedTitle });
 
       setUserFormStatePerIdea((userFormState) => {
