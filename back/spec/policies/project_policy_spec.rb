@@ -459,6 +459,67 @@ describe ProjectPolicy do
 
       it { expect(scope.resolve).not_to include(project) }
       it { expect(inverse_scope.resolve).not_to include(user) }
+
+      it 'does not permit project status update of project outside of moderated folder' do
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
+      end
+    end
+
+    context 'for a space moderator' do
+      let(:user) { create(:space_moderator) }
+
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it { expect(scope.resolve).not_to include(project) }
+      it { expect(inverse_scope.resolve).not_to include(user) }
+
+      it 'does not permit project status update of project outside of moderated space' do
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
+      end
+    end
+
+    context "for a moderator of the project's folder" do
+      let!(:project_folder) { create(:project_folder) }
+      let!(:project) do
+        create(
+          :project,
+          admin_publication_attributes: { publication_status: 'draft', parent_id: project_folder.admin_publication.id }
+        )
+      end
+      let(:user) { create(:project_folder_moderator, project_folders: [project_folder]) }
+
+      it 'permits project status update even when never published and not approved' do
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+      end
+    end
+
+    context "for a space moderator whose space contains the project's folder" do
+      let!(:space) { create(:space) }
+      let!(:project_folder) { create(:project_folder, space: space) }
+      let!(:project) do
+        create(
+          :project,
+          space: space,
+          admin_publication_attributes: { publication_status: 'draft', parent_id: project_folder.admin_publication.id }
+        )
+      end
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it 'permits project status update even when never published and not approved' do
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+      end
     end
   end
 
