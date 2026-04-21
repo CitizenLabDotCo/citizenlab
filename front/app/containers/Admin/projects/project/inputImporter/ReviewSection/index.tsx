@@ -13,6 +13,7 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
@@ -29,6 +30,7 @@ import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
+import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
 const ReviewSection = ({
   importJobs,
@@ -45,6 +47,10 @@ const ReviewSection = ({
   const [confirmAction, setConfirmAction] = useState<
     'approveAll' | 'removeAll' | null
   >(null);
+  const [approvedThisSession, setApprovedThisSession] = useState<
+    ApprovedIdea[]
+  >([]);
+  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   const {
     data: ideas,
@@ -62,6 +68,7 @@ const ReviewSection = ({
   });
 
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
     useApproveImportedIdeas();
   const { mutate: deleteAllIdeas, isLoading: isDeleting } =
@@ -116,6 +123,23 @@ const ReviewSection = ({
         refetchIdeas();
       },
     });
+  };
+
+  const handleIdeaApproved = (approved: ApprovedIdea) => {
+    setApprovedThisSession((prev) => [approved, ...prev]);
+  };
+
+  const handleUndoApproval = async (id: string) => {
+    setUndoingId(id);
+    try {
+      await updateIdea({
+        id,
+        requestBody: { publication_status: 'draft' },
+      });
+      setApprovedThisSession((prev) => prev.filter((i) => i.id !== id));
+    } finally {
+      setUndoingId(null);
+    }
   };
 
   return (
@@ -235,6 +259,11 @@ const ReviewSection = ({
             onSelectIdea={handleSelectIdea}
             onDeleteIdea={handleDeleteIdea}
           />
+          <RecentlyApprovedList
+            ideas={approvedThisSession}
+            onUndo={handleUndoApproval}
+            undoingId={undoingId}
+          />
         </Box>
         <Box
           w="35%"
@@ -244,7 +273,11 @@ const ReviewSection = ({
           alignItems="center"
           h="100%"
         >
-          <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
+          <IdeaEditor
+            ideaId={ideaId}
+            setIdeaId={setIdeaId}
+            onIdeaApproved={handleIdeaApproved}
+          />
         </Box>
         <Box w="40%">
           {ideaMetadata && ideaId && importType === 'pdf' && (
