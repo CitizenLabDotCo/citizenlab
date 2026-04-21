@@ -7939,6 +7939,26 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -8044,9 +8064,19 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": {
     "state": "verified",
     "verified_at": "2026-03-27T13:20:26.758283Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": {
