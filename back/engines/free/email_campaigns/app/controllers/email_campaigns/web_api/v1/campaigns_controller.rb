@@ -98,9 +98,7 @@ module EmailCampaigns
     end
 
     def do_send
-      if !@campaign.valid?(:send)
-        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
-      elsif SendManualCampaignService.new.call(@campaign, current_user)
+      if @campaign.valid?(:send) && SendManualCampaignService.new.call(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: jsonapi_serializer_params
