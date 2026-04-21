@@ -31,8 +31,12 @@ import PDFViewer from './PDFViewer';
 
 const ReviewSection = ({
   importJobs,
+  onClickPDFImport,
+  onClickExcelImport,
 }: {
   importJobs: IBackgroundJobData[];
+  onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
 }) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -74,7 +78,12 @@ const ReviewSection = ({
 
   const numIdeas = ideas.data.length;
   if (importJobs.length === 0 && numIdeas === 0) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        onClickPDFImport={onClickPDFImport}
+        onClickExcelImport={onClickExcelImport}
+      />
+    );
   }
 
   const handleSelectIdea = (ideaId: string) => {
