@@ -98,13 +98,9 @@ module EmailCampaigns
     end
 
     def do_send
-      if @campaign.valid?(:send)
-        SideFxCampaignService.new.before_send(@campaign, current_user)
-        @campaign.with_lock do
-          @campaign.clear_scheduled_at!
-          EmailCampaigns::DeliveryService.new.send_now(@campaign)
-        end
-        SideFxCampaignService.new.after_send(@campaign, current_user)
+      if !@campaign.valid?(:send)
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+      elsif SendManualCampaignService.new.call(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: jsonapi_serializer_params
