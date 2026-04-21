@@ -247,4 +247,9 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.emailCreated',
     defaultMessage: 'Email successfully created in draft',
   },
+  no_recipients: {
+    id: 'app.errors.no_recipients',
+    defaultMessage:
+      "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
+  },
 });

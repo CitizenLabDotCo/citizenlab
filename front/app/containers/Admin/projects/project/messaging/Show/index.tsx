@@ -35,7 +35,6 @@ import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
-import errorMessages from 'components/UI/Error/messages';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -242,7 +241,7 @@ const Show = () => {
           )}
           {!apiSendErrors && hasNoParticipants && (
             <Box mb="8px">
-              <Error text={formatMessage(errorMessages.no_recipients)} />
+              <Error text={formatMessage(messages.no_recipients)} />
             </Box>
           )}
           {apiSendErrors && (
