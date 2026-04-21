@@ -150,14 +150,19 @@ const MultiSelectDropdown = ({
           return;
         }
         event.preventDefault();
-        // navigate to next item (circular 0,1,2,3,...,0)
-        tabsRef.current[(index + 1) % totalItems]?.focus();
+        // From the trigger (no data-index), jump into the list at item 0.
+        // From a list item, navigate to next (circular 0,1,2,3,...,0).
+        tabsRef.current[isNaN(index) ? 0 : (index + 1) % totalItems]?.focus();
         break;
 
       case 'ArrowUp':
+        if (!opened) return;
         event.preventDefault();
-        // navigate to previous item (circular ...,3,2,1,0,4)
-        tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
+        // From the trigger, jump to the last item.
+        // From a list item, navigate to previous (circular ...,3,2,1,0,3).
+        tabsRef.current[
+          isNaN(index) ? totalItems - 1 : (index - 1 + totalItems) % totalItems
+        ]?.focus();
         break;
 
       case 'Enter':
