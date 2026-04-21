@@ -52,8 +52,11 @@ pt-BR:
         user_who_is_invited_to_cosponsor_a_proposal: Utilizador que é convidado a co-patrocinar uma proposta
         user_who_is_mentioned: Usuário mencionado
         user_who_is_receiving_admin_rights: Usuário que está recebendo direitos de administrador
+        user_who_is_receiving_folder_manager_rights: Usuário que está recebendo direitos de gerente de pasta
         user_who_is_receiving_folder_moderator_rights: Usuário que está recebendo direitos de moderador de pasta
+        user_who_is_receiving_project_manager_rights: Usuário que está recebendo direitos de gerente de projeto
         user_who_is_receiving_project_moderator_rights: Usuário que está recebendo direitos de moderador de projeto
+        user_who_is_receiving_space_manager_rights: Usuário que está recebendo direitos de gerente de espaço
         user_who_published_the_input: Usuário que publicou a ideia
         user_who_published_the_proposal: Usuário que publicou a proposta
         user_who_registers: Usuário que se cadastra
@@ -104,8 +107,11 @@ pt-BR:
         user_comments_on_input: Comentários dos usuários na entrada
         user_comments_on_proposal: Comentários do usuário sobre a proposta
         user_is_given_admin_rights: Usuário recebendo direitos de administrador
+        user_is_given_folder_manager_rights: O usuário recebeu direitos de gerente de pasta
         user_is_given_folder_moderator_rights: Usuário recebendo direitos de moderador de pasta
+        user_is_given_project_manager_rights: O usuário recebeu direitos de gerente de projeto
         user_is_given_project_moderator_rights: Usuário recebendo direitos de moderador de projeto
+        user_is_given_space_manager_rights: O usuário recebeu direitos de gerente de espaço
         user_is_invited_to_cosponsor_a_proposal: O usuário é convidado a co-patrocinar uma proposta
         user_is_invited_to_platform: O usuário é convidado para a plataforma
         user_is_mentioned: Usuário mencionado
@@ -175,6 +181,7 @@ pt-BR:
       official_feedback_on_idea_you_follow: Atualizar uma ideia que você segue
       password_reset: Redefinir a senha
       project_folder_moderation_rights_received: Direitos de moderação da pasta de projetos recebidos
+      project_manager_rights_received: Direitos de gerente de projeto recebidos
       project_moderation_rights_received: Direitos de moderação de projetos recebidos
       project_phase_started: Nova fase do projeto
       project_phase_upcoming: Próxima nova fase do projeto
@@ -182,6 +189,7 @@ pt-BR:
       project_review_request: Solicitação de revisão do projeto
       project_review_state_change: Projeto aprovado
       screening_digest: Lembrete semanal de triagem
+      space_moderation_rights_received: Direitos de gerente de espaço recebidos
       status_change_on_idea_you_follow: Mudança de status de uma ideia que você segue
       survey_submitted: Pesquisa enviada
       threshold_reached_for_admin: Proposta atingiu o limite de votação
@@ -518,6 +526,7 @@ pt-BR:
       project_description_preview: Este é um exemplo de conteúdo de fase usado para visualizar o conteúdo de e-mails. Não se trata de conteúdo real.
       project_title: Exemplo de projeto
       proposal_title: Exemplo de proposta
+      space_title: Espaço de exemplo
     project_folder_moderation_rights_received:
       cta_button: Exibir esta pasta
       event_description: 'Você recebeu direitos de gerenciador de pastas na plataforma de participação %{organizationName}para a seguinte pasta:'
@@ -599,6 +608,21 @@ pt-BR:
       preheader: Analise as entradas para %{organizationName}
       subject: '%{count} entradas aguardando revisão'
       title: '%{firstName}Você está aguardando a revisão das entradas'
+    space_moderation_rights_received:
+      cta_button: Gerenciar este espaço
+      event_description: 'Um administrador da plataforma de participação de %{organizationName} acabou de tornar você gerente de espaço do seguinte espaço:'
+      no_projects: Nenhum projeto ainda
+      preheader: Um administrador da plataforma de participação de %{organizationName} acabou de tornar você gerente de espaço do seguinte espaço
+      subject: Você se tornou gerente de espaço na plataforma de %{organizationName}
+      text_manage_space_settings: Você pode editar o título e a descrição do espaço para que os participantes e seus colegas gerentes entendam imediatamente do que se trata o seu espaço e como ele se relaciona com a sua organização.
+      text_organize_projects_and_folders: Como gerente de espaço, você pode gerenciar projetos e pastas dentro do seu espaço, incluindo atribuir e remover funções de gerenciamento para eles.
+      text_oversee_participation: Como gerente de espaço, você tem direitos de gerente de projeto sobre todos os projetos contidos no seu espaço, para que possa acompanhar as contribuições recebidas e auxiliar os gerentes de projeto quando necessário.
+      title: Você se tornou gerente de espaço
+      title_manage_space_settings: Gerenciar configurações do espaço
+      title_organize_projects_and_folders: Organizar projetos e pastas
+      title_oversee_participation: Supervisionar a participação
+      title_what_can_you_do_space_manager: O que você pode fazer como gerente de espaço?
+      x_projects: '%{numberOfProjects} projetos'
     status_change_on_idea_you_follow:
       cta_button: Ir para esta entrada
       event_description: "%{organizationName} atualizou o status da entrada '%{input_title}' em sua plataforma de participação digital."

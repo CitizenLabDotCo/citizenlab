@@ -52,8 +52,11 @@ ca-ES:
         user_who_is_invited_to_cosponsor_a_proposal: Usuari que està convidat a copatrocinar una proposta
         user_who_is_mentioned: Usuari que s'esmenta
         user_who_is_receiving_admin_rights: Usuari que està rebent drets d'administrador
+        user_who_is_receiving_folder_manager_rights: Usuari que rep drets de gestor de carpetes
         user_who_is_receiving_folder_moderator_rights: Usuari que està rebent drets de moderador de carpetes
+        user_who_is_receiving_project_manager_rights: Usuari que rep drets de gestor de projectes
         user_who_is_receiving_project_moderator_rights: Usuari que està rebent drets de moderador del projecte
+        user_who_is_receiving_space_manager_rights: Usuari que rep drets de gestor d'espai
         user_who_published_the_input: Usuari que ha publicat l'entrada
         user_who_published_the_proposal: Usuari que ha publicat la proposta
         user_who_registers: Usuari que es registra
@@ -104,8 +107,11 @@ ca-ES:
         user_comments_on_input: Comentaris dels usuaris sobre l'entrada
         user_comments_on_proposal: Comentaris dels usuaris sobre la proposta
         user_is_given_admin_rights: "L'usuari té drets d'administrador"
+        user_is_given_folder_manager_rights: "S'atorguen drets de gestor de carpetes a l'usuari"
         user_is_given_folder_moderator_rights: L'usuari té drets de moderador de carpetes
+        user_is_given_project_manager_rights: "S'atorguen drets de gestor de projectes a l'usuari"
         user_is_given_project_moderator_rights: L'usuari té drets de moderador del projecte
+        user_is_given_space_manager_rights: "S'atorguen drets de gestor d'espai a l'usuari"
         user_is_invited_to_cosponsor_a_proposal: Es convida l'usuari a copatrocinar una proposta
         user_is_invited_to_platform: L'usuari està convidat a la plataforma
         user_is_mentioned: "S'esmenta l'usuari"
@@ -175,6 +181,7 @@ ca-ES:
       official_feedback_on_idea_you_follow: Actualitzeu una idea que seguiu
       password_reset: Restabliu la contrasenya
       project_folder_moderation_rights_received: S'han rebut els drets del gestor de carpetes
+      project_manager_rights_received: Drets de gestor de projectes rebuts
       project_moderation_rights_received: S'han rebut els drets de moderació del projecte
       project_phase_started: Nova fase del projecte
       project_phase_upcoming: Pròxima nova fase del projecte
@@ -182,6 +189,7 @@ ca-ES:
       project_review_request: Sol·licitud de revisió del projecte
       project_review_state_change: Projecte aprovat
       screening_digest: Recordatori de cribratge setmanal
+      space_moderation_rights_received: Drets de gestor d'espai rebuts
       status_change_on_idea_you_follow: "Canvi d'estat d'una idea que segueixes"
       survey_submitted: Enquesta enviada
       threshold_reached_for_admin: La proposta ha arribat al llindar de votació
@@ -518,6 +526,7 @@ ca-ES:
       project_description_preview: Aquest és un exemple de contingut de fase utilitzat per previsualitzar el contingut dels correus electrònics. Això no és contingut real.
       project_title: Projecte d'exemple
       proposal_title: Proposta d'exemple
+      space_title: Espai d'exemple
     project_folder_moderation_rights_received:
       cta_button: Veure aquesta carpeta
       event_description: 'Se us han donat drets de gestor de carpetes a la plataforma de participació de %{organizationName}per a la carpeta següent:'
@@ -599,6 +608,21 @@ ca-ES:
       preheader: Revisa les entrades per a %{organizationName}
       subject: '%{count} entrades pendents de revisió'
       title: '%{firstName}, les entrades estan pendents de ser revisades'
+    space_moderation_rights_received:
+      cta_button: Gestiona aquest espai
+      event_description: "Un administrador de la plataforma de participació de %{organizationName} t'acaba de nomenar gestor d'espai de l'espai següent:"
+      no_projects: Encara no hi ha projectes
+      preheader: "Un administrador de la plataforma de participació de %{organizationName} t'acaba de nomenar gestor d'espai de l'espai següent"
+      subject: "T'has convertit en gestor d'espai a la plataforma de %{organizationName}"
+      text_manage_space_settings: "Pots editar el títol i la descripció de l'espai perquè els participants i els altres gestors entenguin immediatament de què tracta l'espai i com es relaciona amb la teva organització."
+      text_organize_projects_and_folders: "Com a gestor d'espai, pots gestionar projectes i carpetes dins del teu espai, incloent-hi l'assignació i l'eliminació de rols de gestió."
+      text_oversee_participation: Com a gestor d'espai, tens drets de gestor de projectes sobre cada projecte que hi hagi al teu espai, de manera que pots supervisar les aportacions i ajudar els gestors de projectes quan calgui.
+      title: "T'has convertit en gestor d'espai"
+      title_manage_space_settings: Gestiona la configuració de l'espai
+      title_organize_projects_and_folders: Organitza projectes i carpetes
+      title_oversee_participation: Supervisa la participació
+      title_what_can_you_do_space_manager: Què pots fer com a gestor d'espai?
+      x_projects: '%{numberOfProjects} projectes'
     status_change_on_idea_you_follow:
       cta_button: Ves a aquesta entrada
       event_description: "%{organizationName} ha actualitzat l'estat de l'entrada '%{input_title}' a la seva plataforma de participació digital."

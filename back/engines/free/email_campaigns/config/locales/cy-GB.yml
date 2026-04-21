@@ -52,8 +52,11 @@ cy-GB:
         user_who_is_invited_to_cosponsor_a_proposal: Defnyddiwr sy'n cael ei wahodd i gyd-noddi cynnig
         user_who_is_mentioned: Defnyddiwr sy'n cael ei grybwyll
         user_who_is_receiving_admin_rights: Defnyddiwr sy'n derbyn hawliau gweinyddol
+        user_who_is_receiving_folder_manager_rights: Defnyddiwr sy'n derbyn hawliau rheolwr ffolder
         user_who_is_receiving_folder_moderator_rights: Defnyddiwr sy'n derbyn hawliau safonwr ffolder
+        user_who_is_receiving_project_manager_rights: Defnyddiwr sy'n derbyn hawliau rheolwr prosiect
         user_who_is_receiving_project_moderator_rights: Defnyddiwr sy'n derbyn hawliau safonwr prosiect
+        user_who_is_receiving_space_manager_rights: Defnyddiwr sy'n derbyn hawliau rheolwr gofod
         user_who_published_the_input: Defnyddiwr a gyhoeddodd y mewnbwn
         user_who_published_the_proposal: Defnyddiwr a gyhoeddodd y cynnig
         user_who_registers: Defnyddiwr sy'n cofrestru
@@ -104,8 +107,11 @@ cy-GB:
         user_comments_on_input: Sylwadau defnyddwyr ar fewnbwn
         user_comments_on_proposal: Sylwadau defnyddwyr ar y cynnig
         user_is_given_admin_rights: Rhoddir hawliau gweinyddol i'r defnyddiwr
+        user_is_given_folder_manager_rights: Rhoddir hawliau rheolwr ffolder i'r defnyddiwr
         user_is_given_folder_moderator_rights: Rhoddir hawliau cymedrolwr ffolder i'r defnyddiwr
+        user_is_given_project_manager_rights: Rhoddir hawliau rheolwr prosiect i'r defnyddiwr
         user_is_given_project_moderator_rights: Rhoddir hawliau cymedrolwr prosiect i'r defnyddiwr
+        user_is_given_space_manager_rights: Rhoddir hawliau rheolwr gofod i'r defnyddiwr
         user_is_invited_to_cosponsor_a_proposal: Gwahoddir defnyddiwr i gyd-noddi cynnig
         user_is_invited_to_platform: "Mae'r defnyddiwr wedi'i wahodd i'r platfform"
         user_is_mentioned: Sonnir am y defnyddiwr
@@ -175,6 +181,7 @@ cy-GB:
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
       password_reset: Ailosod cyfrinair
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
+      project_manager_rights_received: Hawliau rheolwr prosiect wedi'u derbyn
       project_moderation_rights_received: Hawliau cymedroli prosiect wedi'u derbyn
       project_phase_started: Cyfnod prosiect newydd
       project_phase_upcoming: Cyfnod prosiect newydd sydd ar ddod
@@ -182,6 +189,7 @@ cy-GB:
       project_review_request: Cais am adolygiad prosiect
       project_review_state_change: Prosiect wedi'i gymeradwyo
       screening_digest: Nodyn atgoffa sgrinio wythnosol
+      space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
       survey_submitted: Arolwg wedi'i gyflwyno
       threshold_reached_for_admin: Cyrhaeddodd y cynnig y trothwy pleidleisio
@@ -518,6 +526,7 @@ cy-GB:
       project_description_preview: Dyma rai enghreifftiau o gynnwys cyfnod a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.
       project_title: Prosiect enghreifftiol
       proposal_title: Cynnig Enghraifft
+      space_title: Gofod enghreifftiol
     project_folder_moderation_rights_received:
       cta_button: Gweld y ffolder hon
       event_description: 'Rydych chi wedi cael hawliau rheolwr ffolderi ar blatfform cyfranogi %{organizationName}ar gyfer y ffolder ganlynol:'
@@ -599,6 +608,21 @@ cy-GB:
       preheader: Adolygu mewnbynnau ar gyfer %{organizationName}
       subject: '%{count} mewnbynnau yn aros am adolygiad'
       title: "%{firstName}, mae mewnbynnau'n aros i gael eu hadolygu"
+    space_moderation_rights_received:
+      cta_button: Rheoli'r gofod hwn
+      event_description: "Mae gweinyddwr llwyfan cyfranogi %{organizationName} newydd eich gwneud chi'n rheolwr gofod ar y gofod canlynol:"
+      no_projects: Dim prosiectau eto
+      preheader: Mae gweinyddwr llwyfan cyfranogi %{organizationName} newydd eich gwneud chi'n rheolwr gofod ar y gofod canlynol
+      subject: Rydych chi wedi dod yn rheolwr gofod ar lwyfan %{organizationName}
+      text_manage_space_settings: "Gallwch olygu teitl a disgrifiad y gofod fel bod cyfranogwyr a'ch cyd-reolwyr yn deall ar unwaith beth yw pwrpas eich gofod a sut mae'n berthnasol i'ch sefydliad."
+      text_organize_projects_and_folders: Fel rheolwr gofod, gallwch reoli prosiectau a ffolderi o fewn eich gofod, gan gynnwys neilltuo a thynnu rolau rheoli ar eu cyfer.
+      text_oversee_participation: Fel rheolwr gofod, mae gennych hawliau rheolwr prosiect dros bob prosiect sydd o fewn eich gofod, felly gallwch gadw llygad ar fewnbwn sy'n dod i mewn a chynorthwyo rheolwyr prosiect pan fo angen.
+      title: Rydych chi wedi dod yn rheolwr gofod
+      title_manage_space_settings: Rheoli gosodiadau gofod
+      title_organize_projects_and_folders: Trefnu prosiectau a ffolderi
+      title_oversee_participation: Goruchwylio cyfranogiad
+      title_what_can_you_do_space_manager: Beth allwch chi ei wneud fel rheolwr gofod?
+      x_projects: '%{numberOfProjects} o brosiectau'
     status_change_on_idea_you_follow:
       cta_button: Ewch i'r mewnbwn hwn
       event_description: "Diweddarodd %{organizationName} statws y mewnbwn '%{input_title}' ar eu platfform cyfranogiad digidol."

@@ -52,8 +52,11 @@ lb-LU:
         user_who_is_invited_to_cosponsor_a_proposal: Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren
         user_who_is_mentioned: Benotzer deen ernimmt gëtt
         user_who_is_receiving_admin_rights: Benotzer deen Admin Rechter kritt
+        user_who_is_receiving_folder_manager_rights: Benotzer, deen d'Rechter vum Dossier-Manager kritt
         user_who_is_receiving_folder_moderator_rights: Benotzer deen Dossier Moderator Rechter kritt
+        user_who_is_receiving_project_manager_rights: Benotzer, deen d'Rechter vum Projet-Manager kritt
         user_who_is_receiving_project_moderator_rights: Benotzer deen Projet Moderator Rechter kritt
+        user_who_is_receiving_space_manager_rights: Benotzer, deen d'Rechter vum Space-Manager kritt
         user_who_published_the_input: Benotzer deen den Input publizéiert huet
         user_who_published_the_proposal: Benotzer deen d'Propositioun publizéiert huet
         user_who_registers: Benotzer deen registréiert
@@ -104,8 +107,11 @@ lb-LU:
         user_comments_on_input: Benotzer Kommentaren op Input
         user_comments_on_proposal: Benotzer Kommentaren op Propositioun
         user_is_given_admin_rights: De Benotzer gëtt Admin Rechter
+        user_is_given_folder_manager_rights: Dem Benotzer ginn Dossier-Manager-Rechter ginn
         user_is_given_folder_moderator_rights: Benotzer gëtt Dossier Moderator Rechter
+        user_is_given_project_manager_rights: Dem Benotzer gi Projet-Manager-Rechter ginn
         user_is_given_project_moderator_rights: Benotzer gëtt Projet Moderator Rechter ginn
+        user_is_given_space_manager_rights: Dem Benotzer gi Space-Manager-Rechter ginn
         user_is_invited_to_cosponsor_a_proposal: De Benotzer ass invitéiert fir eng Propositioun ze sponseren
         user_is_invited_to_platform: Benotzer ass op d'Plattform invitéiert
         user_is_mentioned: Benotzer gëtt ernimmt
@@ -177,6 +183,7 @@ lb-LU:
       official_feedback_on_idea_you_follow: Update op eng Iddi déi Dir verfollegt
       password_reset: Passwuert zerécksetzen
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
+      project_manager_rights_received: Projet-Manager-Rechter kritt
       project_moderation_rights_received: Moderatiounsrechter fir Projete kritt
       project_phase_started: Nei Projetsphas
       project_phase_upcoming: Bevirstoend nei Projetsphas
@@ -184,6 +191,7 @@ lb-LU:
       project_review_request: Projet review Ufro
       project_review_state_change: Projet guttgeheescht
       screening_digest: Wëchentlech Screening-Erënnerung
+      space_moderation_rights_received: Space-Manager-Rechter kritt
       status_change_on_idea_you_follow: Status Ännerung vun enger Iddi déi Dir verfollegt
       survey_submitted: Ëmfro presentéiert
       threshold_reached_for_admin: "Virschlag huet d'Schwell vun de Stëmmen erreecht.\_"
@@ -520,6 +528,7 @@ lb-LU:
       project_description_preview: Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
       project_title: Beispillprojet
       proposal_title: Beispillvirschlag
+      space_title: Beispill-Space
     project_folder_moderation_rights_received:
       cta_button: Dësen Dossier ukucken
       event_description: "Dir hutt Rechter fir d'Ordnerverwaltung op der Participatiounsplattform vun %{organizationName}fir de folgende Ordner kritt:"
@@ -603,6 +612,21 @@ lb-LU:
       preheader: Iwwerpréift d'Entréeën fir %{organizationName}
       subject: '%{count} Entréeën waarden op Iwwerpréiwung'
       title: "%{firstName}, d'Entréeën waarden drop, iwwerpréift ze ginn"
+    space_moderation_rights_received:
+      cta_button: Dëse Space verwalten
+      event_description: 'En Administrateur vun der Participatiounsplattform vun %{organizationName} huet Iech grad zum Space-Manager vum folgende Space gemaach:'
+      no_projects: Nach keng Projeten
+      preheader: En Administrateur vun der Participatiounsplattform vun %{organizationName} huet Iech grad zum Space-Manager vum folgende Space gemaach
+      subject: Dir sidd elo Space-Manager op der Plattform vun %{organizationName}
+      text_manage_space_settings: "Dir kënnt den Titel an d'Beschreiwung vum Space beaarbechten, sou datt d'Participanten an Är Manager-Kolleegen direkt verstinn, ëm wat et an Ärem Space geet a wéi en mat Ärer Organisatioun zesummenhänkt."
+      text_organize_projects_and_folders: Als Space-Manager kënnt Dir Projeten an Dossieren an Ärem Space verwalten, an och Management-Rollen dofir zouweisen oder ewechhuelen.
+      text_oversee_participation: Als Space-Manager hutt Dir Projet-Manager-Rechter fir all Projet an Ärem Space, sou datt Dir den Input am A behale kënnt an de Projet-Manageren hëllefe kënnt, wann et néideg ass.
+      title: Dir sidd elo Space-Manager
+      title_manage_space_settings: Space-Astellungen verwalten
+      title_organize_projects_and_folders: Projeten an Dossieren organiséieren
+      title_oversee_participation: D'Participatioun iwwerwaachen
+      title_what_can_you_do_space_manager: Wat kënnt Dir als Space-Manager maachen?
+      x_projects: '%{numberOfProjects} Projeten'
     status_change_on_idea_you_follow:
       cta_button: Gitt op dësen Input
       event_description: "%{organizationName} huet de Status vum Input '%{input_title}' op hirer digitaler Participatiounsplattform aktualiséiert."
