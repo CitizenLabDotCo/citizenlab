@@ -17,5 +17,9 @@ FactoryBot.define do
     trait :folder do
       association :publication, factory: :project_folder
     end
+
+    trait :draft do
+      publication_status { 'draft' }
+    end
   end
 end
