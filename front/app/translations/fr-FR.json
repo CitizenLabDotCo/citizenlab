@@ -1938,7 +1938,6 @@
   "app.containers.NotificationMenu.projectPublished": "Un nouveau projet a été publié",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} a demandé l'approbation pour publier le projet « {projectTitle} »",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} a approuvé « {projectTitle} »",
-
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "Vous êtes désormais gestionnaire de l'espace {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "Le statut de « {ideaTitle} » est passé à « {status} »",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} a atteint le nombre de voix requis",
@@ -2509,7 +2508,6 @@
   "app.modules.id_oostende_rrn.submit": "Envoyer",
   "app.modules.id_oostende_rrn.takenFormError": "Votre numéro de sécurité sociale a déjà été utilisé pour vérifier un autre compte",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Vérifier à l'aide du numéro de sécurité sociale",
-
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "Vous êtes désormais gestionnaire du dossier {folderLink}",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Partager",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Consultez les projets sur {folderUrl} pour faire entendre votre voix !",

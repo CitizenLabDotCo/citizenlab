@@ -1938,7 +1938,6 @@
   "app.containers.NotificationMenu.projectPublished": "A new project was published",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} requested approval to publish the project \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} approved \"{projectTitle}\" for publication",
-
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "You're now a space manager of {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status has changed to {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} reached the voting threshold",
@@ -2509,7 +2508,6 @@
   "app.modules.id_oostende_rrn.submit": "Submit",
   "app.modules.id_oostende_rrn.takenFormError": "Your social security number has already been used to verify another account",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verify using social security number",
-
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "You're now a folder manager of {folderLink}",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "View the projects at {folderUrl} to make your voice heard!",

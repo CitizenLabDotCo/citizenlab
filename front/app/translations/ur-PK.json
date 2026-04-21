@@ -1938,7 +1938,6 @@
   "app.containers.NotificationMenu.projectPublished": "ایک نیا پروجیکٹ شائع ہوا۔",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} نے پروجیکٹ \"{projectTitle}\" کو شائع کرنے کی منظوری کی درخواست کی",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} نے اشاعت کے لیے \"{projectTitle}\" کو منظوری دے دی۔",
-
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "اب آپ {spaceLink} کے اسپیس مینیجر ہیں۔",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} اسٹیٹس {status}میں تبدیل ہو گیا ہے۔",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ووٹنگ کی حد تک پہنچ گیا۔",
@@ -2509,7 +2508,6 @@
   "app.modules.id_oostende_rrn.submit": "جمع کروائیں۔",
   "app.modules.id_oostende_rrn.takenFormError": "آپ کا سوشل سیکورٹی نمبر پہلے ہی دوسرے اکاؤنٹ کی تصدیق کے لیے استعمال ہو چکا ہے۔",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "سوشل سیکیورٹی نمبر استعمال کرکے تصدیق کریں۔",
-
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "اب آپ {folderLink} کے فولڈر مینیجر ہیں۔",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "شیئر کریں۔",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "اپنی آواز سننے کے لیے پروجیکٹس کو {folderUrl} پر دیکھیں!",
