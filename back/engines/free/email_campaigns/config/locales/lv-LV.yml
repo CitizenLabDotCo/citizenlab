@@ -52,8 +52,11 @@ lv-LV:
         user_who_is_invited_to_cosponsor_a_proposal: Lietotājs, kurš ir uzaicināts līdzfinansēt priekšlikumu
         user_who_is_mentioned: Lietotājs, kurš ir minēts
         user_who_is_receiving_admin_rights: Lietotājs, kurš saņem administratora tiesības
+        user_who_is_receiving_folder_manager_rights: Lietotājs, kurš saņem mapes pārvaldnieka tiesības
         user_who_is_receiving_folder_moderator_rights: Lietotājs, kurš saņem mapes moderatora tiesības
+        user_who_is_receiving_project_manager_rights: Lietotājs, kurš saņem projekta pārvaldnieka tiesības
         user_who_is_receiving_project_moderator_rights: Lietotājs, kurš saņem projekta moderatora tiesības
+        user_who_is_receiving_space_manager_rights: Lietotājs, kurš saņem telpas pārvaldnieka tiesības
         user_who_published_the_input: Lietotājs, kas publicējis ievades datus
         user_who_published_the_proposal: Lietotājs, kurš publicēja priekšlikumu
         user_who_registers: Lietotājs, kas reģistrējas
@@ -104,8 +107,11 @@ lv-LV:
         user_comments_on_input: Lietotāju komentāri par ievades datiem
         user_comments_on_proposal: Lietotāju komentāri par priekšlikumu
         user_is_given_admin_rights: Lietotājam tiek piešķirtas administratora tiesības
+        user_is_given_folder_manager_rights: Lietotājam tiek piešķirtas mapes pārvaldnieka tiesības
         user_is_given_folder_moderator_rights: Lietotājam tiek piešķirtas mapes moderatora tiesības
+        user_is_given_project_manager_rights: Lietotājam tiek piešķirtas projekta pārvaldnieka tiesības
         user_is_given_project_moderator_rights: Lietotājam tiek piešķirtas projekta moderatora tiesības
+        user_is_given_space_manager_rights: Lietotājam tiek piešķirtas telpas pārvaldnieka tiesības
         user_is_invited_to_cosponsor_a_proposal: Lietotājs ir aicināts līdzfinansēt priekšlikumu.
         user_is_invited_to_platform: Lietotājs tiek aicināts uz platformu
         user_is_mentioned: Lietotājs ir minēts
@@ -175,6 +181,7 @@ lv-LV:
       official_feedback_on_idea_you_follow: Atjaunināt ideju, kurai sekojat
       password_reset: Paroles atiestatīšana
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
+      project_manager_rights_received: Saņemtas projekta pārvaldnieka tiesības
       project_moderation_rights_received: Saņemtās projekta moderēšanas tiesības
       project_phase_started: Jauns projekta posms
       project_phase_upcoming: Gaidāmais jaunais projekta posms
@@ -182,6 +189,7 @@ lv-LV:
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
       screening_digest: Iknedēļas skrīninga atgādinājums
+      space_moderation_rights_received: Saņemtas telpas pārvaldnieka tiesības
       status_change_on_idea_you_follow: Idejas statusa maiņa, kurai jūs sekojat
       survey_submitted: Iesniegtais apsekojums
       threshold_reached_for_admin: Priekšlikums sasniedzis balsošanas slieksni
@@ -518,6 +526,7 @@ lv-LV:
       project_description_preview: Šis ir daži fāzes satura piemēri, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.
       project_title: Projekta piemērs
       proposal_title: Priekšlikuma piemērs
+      space_title: Piemēra telpa
     project_folder_moderation_rights_received:
       cta_button: Apskatīt šo mapi
       event_description: "Jums ir piešķirtas mapju pārvaldnieka tiesības %{organizationName}'s līdzdalības platformā attiecībā uz šādu mapi:"
@@ -599,6 +608,21 @@ lv-LV:
       preheader: Pārskatīt ievades datus %{organizationName}
       subject: '%{count} ieguldījumi, kas gaida pārskatīšanu'
       title: '%{firstName}, tiek gaidīts, kad tiks pārskatīti ievadītie dati'
+    space_moderation_rights_received:
+      cta_button: Pārvaldīt šo telpu
+      event_description: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par telpas pārvaldnieku šādai telpai:'
+      no_projects: Vēl nav neviena projekta
+      preheader: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par telpas pārvaldnieku šādai telpai'
+      subject: Jūs kļuvāt par telpas pārvaldnieku %{organizationName} platformā
+      text_manage_space_settings: Jūs varat rediģēt telpas nosaukumu un aprakstu, lai dalībnieki un jūsu kolēģi pārvaldnieki uzreiz saprastu, par ko ir jūsu telpa un kā tā ir saistīta ar jūsu organizāciju.
+      text_organize_projects_and_folders: Kā telpas pārvaldnieks jūs varat pārvaldīt projektus un mapes savā telpā, tostarp piešķirt un noņemt tiem pārvaldības lomas.
+      text_oversee_participation: Kā telpas pārvaldniekam jums ir projekta pārvaldnieka tiesības visos jūsu telpā esošajos projektos, tāpēc varat pārraudzīt ienākošo informāciju un vajadzības gadījumā palīdzēt projektu pārvaldniekiem.
+      title: Jūs kļuvāt par telpas pārvaldnieku
+      title_manage_space_settings: Pārvaldīt telpas iestatījumus
+      title_organize_projects_and_folders: Organizēt projektus un mapes
+      title_oversee_participation: Pārraudzīt līdzdalību
+      title_what_can_you_do_space_manager: Ko jūs varat darīt kā telpas pārvaldnieks?
+      x_projects: '%{numberOfProjects} projekti'
     status_change_on_idea_you_follow:
       cta_button: Dodieties uz šo ievades
       event_description: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'

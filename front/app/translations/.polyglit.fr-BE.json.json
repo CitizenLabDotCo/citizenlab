@@ -9689,6 +9689,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
+    "state": "verified",
+    "verified_at": "2026-04-13T14:12:08.871163Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -12538,6 +12543,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
+    "state": "verified",
+    "verified_at": "2026-04-13T14:12:08.871163Z",
+    "verified_by": "Cindy EB"
   },
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": {
     "state": "verified",

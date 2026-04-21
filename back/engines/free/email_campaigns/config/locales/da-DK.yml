@@ -52,8 +52,11 @@ da-DK:
         user_who_is_invited_to_cosponsor_a_proposal: Bruger der er inviteret til at være medstiller på et forslag
         user_who_is_mentioned: Bruger der er nævnt
         user_who_is_receiving_admin_rights: Bruger der får administratorrettigheder
+        user_who_is_receiving_folder_manager_rights: Bruger, der modtager rettigheder som mappeprojektleder
         user_who_is_receiving_folder_moderator_rights: Bruger der får rettigheder som mappemoderator
+        user_who_is_receiving_project_manager_rights: Bruger, der modtager projektlederrettigheder
         user_who_is_receiving_project_moderator_rights: Bruger der får rettigheder som projektleder
+        user_who_is_receiving_space_manager_rights: Bruger, der modtager rettigheder som områdeprojektleder
         user_who_published_the_input: Bruger, der har offentliggjort et input
         user_who_published_the_proposal: Bruger, der har offentliggjort forslaget
         user_who_registers: Bruger der registrerer sig
@@ -104,8 +107,11 @@ da-DK:
         user_comments_on_input: Brugerkommentarer til input
         user_comments_on_proposal: Brugernes kommentarer til forslaget
         user_is_given_admin_rights: Brugeren får administratorrettigheder
+        user_is_given_folder_manager_rights: Brugeren tildeles rettigheder som mappeprojektleder
         user_is_given_folder_moderator_rights: Brugeren får rettigheder som mappemoderator
+        user_is_given_project_manager_rights: Brugeren tildeles projektlederrettigheder
         user_is_given_project_moderator_rights: Brugeren har fået rettigheder som projektmoderator
+        user_is_given_space_manager_rights: Brugeren tildeles rettigheder som områdeprojektleder
         user_is_invited_to_cosponsor_a_proposal: Brugeren inviteres til at være medstiller på et forslag
         user_is_invited_to_platform: Brugeren er inviteret til platformen
         user_is_mentioned: Brugeren er nævnt
@@ -175,6 +181,7 @@ da-DK:
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
       password_reset: Nulstilling af adgangskode
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
+      project_manager_rights_received: Projektlederrettigheder modtaget
       project_moderation_rights_received: Rettigheder til projektmoderering modtaget
       project_phase_started: Ny projektfase
       project_phase_upcoming: Kommende ny projektfase
@@ -182,6 +189,7 @@ da-DK:
       project_review_request: Anmodning om projektgennemgang
       project_review_state_change: Projekt godkendt
       screening_digest: Ugentlig påmindelse om screening
+      space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
       survey_submitted: Undersøgelse indsendt
       threshold_reached_for_admin: Forslag har nået stemmegrænsen
@@ -518,6 +526,7 @@ da-DK:
       project_description_preview: Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.
       project_title: Eksempel på projekt
       proposal_title: Eksempel på forslag
+      space_title: Eksempelområde
     project_folder_moderation_rights_received:
       cta_button: Se på denne mappe
       event_description: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s inddragelsesplatform for følgende mappe:'
@@ -599,6 +608,21 @@ da-DK:
       preheader: Gennemgå input til %{organizationName}
       subject: '%{count} input, der afventer gennemgang'
       title: '%{firstName}, input venter på at blive gennemgået'
+    space_moderation_rights_received:
+      cta_button: Administrer dette område
+      event_description: 'En administrator af borgerinddragelsesplatformen for %{organizationName} har netop gjort dig til områdeprojektleder for følgende område:'
+      no_projects: Ingen projekter endnu
+      preheader: En administrator af borgerinddragelsesplatformen for %{organizationName} har netop gjort dig til områdeprojektleder for følgende område
+      subject: Du er blevet områdeprojektleder på platformen for %{organizationName}
+      text_manage_space_settings: Du kan redigere områdets titel og beskrivelse, så deltagere og dine med-projektledere straks forstår, hvad dit område handler om, og hvordan det relaterer sig til din organisation.
+      text_organize_projects_and_folders: Som områdeprojektleder kan du administrere projekter og mapper i dit område, herunder tildele og fjerne projektlederroller for dem.
+      text_oversee_participation: Som områdeprojektleder har du projektlederrettigheder over alle projekter i dit område, så du kan holde øje med indkomne input og assistere projektledere efter behov.
+      title: Du er blevet områdeprojektleder
+      title_manage_space_settings: Administrer områdeindstillinger
+      title_organize_projects_and_folders: Organiser projekter og mapper
+      title_oversee_participation: Hav overblik over deltagelsen
+      title_what_can_you_do_space_manager: Hvad kan du gøre som områdeprojektleder?
+      x_projects: '%{numberOfProjects} projekter'
     status_change_on_idea_you_follow:
       cta_button: Gå til dette input
       event_description: "%{organizationName} opdaterede status for input '%{input_title}' på deres digitale platform."

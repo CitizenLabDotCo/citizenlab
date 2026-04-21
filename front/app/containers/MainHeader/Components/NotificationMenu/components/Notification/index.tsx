@@ -22,6 +22,7 @@ import {
   IProjectReviewRequestNotificationData,
   IProjectReviewStateChangeNotificationData,
   IStatusChangeOnIdeaYouFollowNotificationData,
+  ISpaceModerationRightsReceivedNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
   INativeSurveyNotSubmittedNotificationData,
@@ -50,6 +51,7 @@ import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
 import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
+import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
@@ -174,6 +176,14 @@ const Notification = ({ notification }: Props) => {
         <ProjectModerationRightsReceivedNotification
           notification={
             notification as IProjectModerationRightsReceivedNotificationData
+          }
+        />
+      );
+    case 'space_moderation_rights_received':
+      return (
+        <SpaceModerationRightsReceivedNotification
+          notification={
+            notification as ISpaceModerationRightsReceivedNotificationData
           }
         />
       );
