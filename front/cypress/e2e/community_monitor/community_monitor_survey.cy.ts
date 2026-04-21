@@ -1,3 +1,6 @@
+import { ICustomFieldResponse } from '../../../app/api/custom_fields/types';
+import { randomString } from '../../support/commands';
+
 describe('Submit community monitor survey', () => {
   let communityMonitorProjectId: string;
   let communityMonitorPhaseId: string;
@@ -140,27 +143,29 @@ describe('Edit community monitor survey', () => {
   });
 
   it('can add new questions to existing categories', () => {
-    cy.visit(communityMonitorEditSurveyUrl);
+    const uniqueTitle = `New custom question ${randomString(6)}`;
 
-    // Add a sentiment question
-    cy.addItemToFormBuilder('#toolbox_sentiment_linear_scale');
+    cy.visit(communityMonitorEditSurveyUrl);
+    cy.dataCy('e2e-sentiment');
     cy.wait(2000);
 
-    cy.get('#e2e-title-multiloc').type('New custom question', { force: true });
+    cy.dragToolboxItemTo(
+      '#toolbox_sentiment_linear_scale',
+      '[data-cy="e2e-page-drop-page_governance_and_trust"]'
+    );
+    cy.wait(2000);
+
+    cy.get('#e2e-title-multiloc').type(uniqueTitle, { force: true });
 
     cy.intercept('PATCH', '**/custom_fields/update_all').as('updateAll');
-
-    // Save the survey
     cy.get('form').submit();
     cy.wait('@updateAll').then((interception) => {
-      // Get the custom fields from the response
-      const customFields = interception.response?.body.data;
-
-      // Get the newly added question
-      const newCustomField = customFields[customFields.length - 2]; // Gets last question before the "form_end" page
-
-      // Check that the new question is in the correct category
-      expect(newCustomField.attributes).to.have.property(
+      const customFields: ICustomFieldResponse[] =
+        interception.response?.body.data;
+      const newField = customFields.find(
+        (f) => f.attributes.title_multiloc?.en === uniqueTitle
+      );
+      expect(newField?.attributes).to.have.property(
         'question_category',
         'governance_and_trust'
       );
