@@ -94,6 +94,11 @@ const FormFields = ({
                   key={grouping.id}
                   id={grouping.id}
                   type={fieldAreaDNDType}
+                  data-cy={
+                    grouping.groupElement.key
+                      ? `e2e-page-drop-${grouping.groupElement.key}`
+                      : undefined
+                  }
                 >
                   <Box height="100%">
                     {grouping.questions.length === 0 ? (
