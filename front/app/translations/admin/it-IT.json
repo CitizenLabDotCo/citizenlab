@@ -2428,7 +2428,7 @@
   "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Se abilitato, è impossibile vedere chi ha votato cosa. Gli utenti devono comunque avere un account e possono votare solo una volta.",
   "app.containers.AdminPage.ProjectEdit.archivedExplanationText": "I progetti archiviati sono ancora visibili, ma non consentono un'ulteriore partecipazione",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archiviato",
-  "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Non è possibile eliminare questa area perché viene utilizzata per visualizzare i progetti nelle seguenti pagine personalizzate. È necessario scollegare l'area dalla pagina o eliminare la pagina prima di eliminare l'area.",
+  "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Non è possibile eliminare questa area perché viene utilizzata per visualizzare i progetti nelle pagine personalizzate elencate qui di seguito. È necessario scollegare l'area dalla pagina o eliminare la pagina prima di eliminare l'area.",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Tutte le aree",
   "app.containers.AdminPage.ProjectEdit.areasAllLabelDescription": "Il progetto verrà visualizzato in tutti i filtri delle aree.",
   "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Filtro area",
