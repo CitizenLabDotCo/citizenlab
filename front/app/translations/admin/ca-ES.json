@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Des de la pestanya de Missatgeria del projecte només podeu enviar correus electrònics a tots els participants del projecte. Els administradors poden enviar correus electrònics a altres participants o subconjunts d'usuaris mitjançant la pestanya de Missatgeria de la plataforma.",
   "app.containers.Admin.project.emails.message": "Missatge",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Podeu adreçar-vos directament als ciutadans mitjançant les variables {firstName} {lastName}. P. ex. \"Benvolgut/da {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "La campanya no es pot enviar perquè no hi ha destinataris. El grup al qual l'estàs enviant està buit o ningú ha donat el seu consentiment per rebre correus electrònics.",
   "app.containers.Admin.project.emails.participants": "participants",
   "app.containers.Admin.project.emails.preview": "Previsualització",
   "app.containers.Admin.project.emails.previewSentConfirmation": "S'ha enviat un correu electrònic de vista prèvia a la vostra adreça electrònica",

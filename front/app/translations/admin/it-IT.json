@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Dalla scheda Messaggi del progetto puoi inviare email solo a tutti i partecipanti al progetto. Gli amministratori possono inviare e-mail ad altri partecipanti o a sottoinsiemi di utenti tramite la scheda Messaggi della piattaforma.",
   "app.containers.Admin.project.emails.message": "Messaggio",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Puoi rivolgerti direttamente ai cittadini utilizzando le variabili {firstName} {lastName}. Ad esempio: \"Gentile {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Non è possibile inviare la campagna perché non ci sono destinatari. Il gruppo a cui stai inviando è vuoto oppure nessuno ha acconsentito a ricevere e-mail.",
   "app.containers.Admin.project.emails.participants": "partecipanti",
   "app.containers.Admin.project.emails.preview": "Anteprima",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Un'email di anteprima è stata inviata al tuo indirizzo email",

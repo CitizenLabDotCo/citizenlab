@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Na kartici Project Messaging možete poslati e-poštu samo svim sudionicima projekta. Administratori mogu slati e-poštu drugim sudionicima ili podskupovima korisnika putem kartice Platform Messaging.",
   "app.containers.Admin.project.emails.message": "Poruka",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Možete se obratiti izravno građanima koristeći varijable {firstName} {lastName}. Npr. \"Dragi {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Kampanja se ne može poslati jer nema primatelja. Grupa kojoj šaljete je ili prazna ili nitko nije dao privolu za primanje e-pošte.",
   "app.containers.Admin.project.emails.participants": "sudionika",
   "app.containers.Admin.project.emails.preview": "Pretpregled",
   "app.containers.Admin.project.emails.previewSentConfirmation": "E-pošta za pregled poslana je na vašu adresu e-pošte",

@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "من علامة تبويب \"رسائل المشروع\"، يمكنك فقط إرسال بريد إلكتروني إلى جميع المشاركين في المشروع. يمكن للمسؤولين إرسال رسائل بريد إلكتروني إلى مشاركين آخرين أو مجموعات فرعية من المستخدمين عبر علامة تبويب \"رسائل المنصة\".",
   "app.containers.Admin.project.emails.message": "رسالة",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "يمكنك التحدث مباشرة إلى المواطنين باستخدام المتغيرات {firstName} {lastName}. مثلاً: \"عزيزي(ة) {firstName} {lastName}، ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "ما يمكنش يتم إرسال هاد الحملة حيت ما كاين حتى شي مستلم. لمجموعة اللي كتصيفط ليها يا إما خاوية، ولا حتى شي واحد ما وافق على التوصل بالرسائل الإلكترونية.",
   "app.containers.Admin.project.emails.participants": "المشاركون",
   "app.containers.Admin.project.emails.preview": "معاينة",
   "app.containers.Admin.project.emails.previewSentConfirmation": "تم إرسال بريد إلكتروني للمعاينة إلى عنوان بريدكم الإلكتروني",

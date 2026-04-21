@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Z karty Wiadomości projektu możesz wysyłać wiadomości e-mail tylko do wszystkich uczestników projektu. Administratorzy mogą wysyłać wiadomości e-mail do innych uczestników lub podzbiorów użytkowników za pośrednictwem karty Wiadomości platformy.",
   "app.containers.Admin.project.emails.message": "Wiadomość",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Możesz zwracać się bezpośrednio do obywateli za pomocą zmiennych {firstName} {lastName}. Np. \"Drogi {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Nie można wysłać kampanii, ponieważ nie ma żadnych odbiorców. Grupa, do której wysyłasz, jest pusta lub nikt nie wyraził zgody na otrzymywanie wiadomości e-mail.",
   "app.containers.Admin.project.emails.participants": "uczestnicy",
   "app.containers.Admin.project.emails.preview": "Podgląd",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Wiadomość z podglądem została wysłana na Twój adres e-mail",

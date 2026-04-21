@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Fra fanen Prosjektmeldinger kan du bare sende e-post til alle prosjektdeltakere. Administratorer kan sende e-post til andre deltakere eller undergrupper av brukere via fanen Platform Messaging.",
   "app.containers.Admin.project.emails.message": "Melding",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Du kan henvende deg direkte til innbyggerne ved hjelp av variablene {firstName} {lastName}. For eksempel: \"Kjære {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Kampanjen kan ikke sendes ut fordi det ikke er noen mottakere. Gruppen du sender til er enten tom, eller så har ingen samtykket til å motta e-poster.",
   "app.containers.Admin.project.emails.participants": "deltakere",
   "app.containers.Admin.project.emails.preview": "Forhåndsvisning",
   "app.containers.Admin.project.emails.previewSentConfirmation": "En e-post med forhåndsvisning er sendt til e-postadressen din",

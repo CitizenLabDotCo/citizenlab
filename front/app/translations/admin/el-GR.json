@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Από την καρτέλα Μηνύματα Έργου μπορείτε να στείλετε email μόνο σε όλους τους συμμετέχοντες στο έργο. Οι διαχειριστές μπορούν να στείλουν email σε άλλους συμμετέχοντες ή υποσύνολα χρηστών μέσω της καρτέλας Μηνύματα Πλατφόρμας.",
   "app.containers.Admin.project.emails.message": "Μήνυμα",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Μπορείτε να απευθυνθείτε απευθείας στους πολίτες χρησιμοποιώντας τις μεταβλητές {firstName} {lastName}. Π.χ. \"Αγαπητέ/ή {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Η εκστρατεία δεν μπορεί να αποσταλεί επειδή δεν υπάρχουν παραλήπτες. Η ομάδα στην οποία στέλνετε είναι είτε κενή είτε κανείς δεν έχει δώσει τη συγκατάθεσή του για τη λήψη email.",
   "app.containers.Admin.project.emails.participants": "συμμετέχοντες",
   "app.containers.Admin.project.emails.preview": "Προεπισκόπηση",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Ένα δοκιμαστικό email έχει σταλεί στη διεύθυνση email σας",

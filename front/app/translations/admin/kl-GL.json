@@ -1189,6 +1189,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Suliniutip nassiussivianiit suliniummi peqataasut tamaasa taamaallaat e-mailersinnaavatit. Aqutsisut peqataasunut allanut imaluunniit atuisut ilaannaanut nassiussisinnaapput Platformip nassiussivia atorlugu.",
   "app.containers.Admin.project.emails.message": "Nalunaarut",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Innuttaasut toqqaannartumik oqaloqatigisinnaavatit oqaatsit {firstName} {lastName} atorlugit. Ass. \"Asasara {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Nassiussassaq nassiunneqarsinnaanngilaq tigusisussaqanngimmat. Eqimattaq nassiuffiginiakkat imaqanngilaq, imaluunniit kinaluunniit e-mailinik tigusinissamut akuersisimanngilaq.",
   "app.containers.Admin.project.emails.participants": "peqataasut",
   "app.containers.Admin.project.emails.preview": "Isiginnaaqqaarneq",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Isikkussaanik takutitsissut e-mailinnut nassiunneqarpoq",
