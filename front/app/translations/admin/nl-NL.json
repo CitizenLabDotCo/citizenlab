@@ -3248,7 +3248,7 @@
   "app.containers.AdminPage.projects.all.homepageWarning1": "Gebruik deze pagina om de volgorde van projecten in te stellen in het \"Alle projecten\" menu-item in de navigatiebalk. Als je de widgets \"Gepubliceerde projecten en mappen\" of \"Projecten en mappen (legacy)\" op je startpagina gebruikt, wordt de volgorde van de projecten in deze widgets ook bepaald door de volgorde die je hier instelt.",
   "app.containers.AdminPage.projects.all.newSpace": "Nieuwe ruimte",
   "app.containers.AdminPage.projects.all.noProjects": "Geen projecten gevonden.",
-  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": "Alleen beheerders en ruimtebeheerders kunnen projectmappen aanmaken.",
+  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": "Alleen platformbeheerders en ruimtebeheerders kunnen projectmappen aanmaken.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Alleen platformbeheerders kunnen projectmappen aanmaken.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateSpaces": "Alleen beheerders kunnen ruimtes aanmaken.",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",

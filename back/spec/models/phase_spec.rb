@@ -40,9 +40,16 @@ RSpec.describe Phase do
   end
 
   describe 'timing model validation' do
-    it 'succeeds when start_at and end_at are equal' do
+    it 'fails when the duration is less than 1 day' do
       phase = build(:phase)
-      phase.end_at = phase.start_at
+      phase.end_at = phase.start_at + 1.day - 1.second
+      expect(phase).to be_invalid
+      expect(phase.errors.details[:base]).to include(error: :duration_too_short)
+    end
+
+    it 'succeeds when the duration is exactly 1 day' do
+      phase = build(:phase)
+      phase.end_at = phase.start_at + 1.day
       expect(phase).to be_valid
     end
 
@@ -54,14 +61,15 @@ RSpec.describe Phase do
   end
 
   describe 'timing database validation' do
-    it 'succeeds when start_at and end_at are equal' do
-      phase = create(:phase)
-      expect { phase.update_columns(end_at: phase.start_at) }.not_to raise_error
+    let_it_be(:phase) { create(:phase) }
+
+    it 'succeeds if `start_at` is before `end_at`' do
+      expect { phase.update_columns(end_at: phase.start_at + 1.second) }.not_to raise_error
     end
 
-    it 'fails when end_at is before start_at' do
-      phase = build(:phase)
-      expect { phase.update_columns(end_at: (phase.start_at - 1.day)) }.to raise_error(ActiveRecord::ActiveRecordError)
+    it 'fails if `start_at` is equal or after `end_at`' do
+      expect { phase.update_columns(end_at: phase.start_at) }.to raise_error(ActiveRecord::StatementInvalid)
+      expect { phase.update_columns(end_at: phase.start_at - 1.second) }.to raise_error(ActiveRecord::StatementInvalid)
     end
   end
 
@@ -207,38 +215,44 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'project validation' do
-    it 'succeeds when the associated project is a timeline project' do
-      phase = build(:phase, project: build(:project))
+  describe '#validate_no_other_overlapping_phases' do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:p) { create(:phase, project:, start_at: 5.days.ago, end_at: 5.days.from_now) }
+
+    it 'rejects a phase overlapping on the left' do
+      phase = build(:phase, project:, start_at: 10.days.ago, end_at: p.start_at + 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase overlapping on the right' do
+      phase = build(:phase, project:, start_at: p.end_at - 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase contained inside' do
+      phase = build(:phase, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase that contains the existing one' do
+      phase = build(:phase, project:, start_at: p.start_at - 1.second, end_at: p.end_at + 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'accepts a contiguous phase on the left' do
+      phase = build(:phase, project:, start_at: 10.days.ago, end_at: p.start_at)
       expect(phase).to be_valid
     end
 
-    it 'fails when the associated project has overlapping phases' do
-      project = create(:project)
-      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
-      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
-      expect(phase_left_overlap).to be_invalid
-      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 5.days))
-      expect(phase_left_overlap).to be_invalid # also not same day
-      phase_right_overlap = build(:phase, project: project.reload, start_at: (Time.now + 5.days), end_at: (Time.now + 10.days))
-      expect(phase_right_overlap).to be_invalid # also not same day
-      phase_inside = build(:phase, project: project.reload, start_at: (Time.now - 3.days), end_at: (Time.now + 3.days))
-      expect(phase_inside).to be_invalid
-      phase_outside = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now + 10.days))
-      expect(phase_outside).to be_invalid
-      phase_equal = build(:phase, project: project.reload, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
-      expect(phase_equal).to be_invalid
-      phase_left = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 6.days))
-      expect(phase_left).to be_valid
-      phase_right = build(:phase, project: project.reload, start_at: (Time.now + 6.days), end_at: (Time.now + 10.days))
-      expect(phase_right).to be_valid
+    it 'accepts a contiguous phase on the right' do
+      phase = build(:phase, project:, start_at: p.end_at, end_at: 10.days.from_now)
+      expect(phase).to be_valid
     end
 
-    it 'fails when inserting a phase in-between two phases, where then next phase has no end date' do
-      project = create(:project)
-      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now - 2.days))
-      create(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
-      phase = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+    it 'fails when inserting a phase in-between two phases, where then new phase has no end date' do
+      create(:phase, project:, start_at: 5.days.after(p.end_at), end_at: nil)
+
+      phase = build(:phase, project:, start_at: 2.days.after(p.end_at), end_at: nil)
       expect(phase).not_to be_valid
     end
   end
@@ -296,96 +310,115 @@ RSpec.describe Phase do
   end
 
   describe '#ends_before?' do
-    let(:start_date) { Time.zone.today }
-    let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
+    let(:phase) { create(:phase) }
 
-    it 'returns false if passing today\'s date' do
-      expect(phase.ends_before?(start_date)).to be false
+    it 'returns false if passing a time before phase.end_at' do
+      expect(phase.ends_before?(phase.end_at - 1.second)).to be false
     end
 
-    it 'returns true if passing tomorrow\'s date' do
-      expect(phase.ends_before?(start_date + 2.days)).to be true
+    it 'returns true if passing a time after phase.end_at' do
+      expect(phase.ends_before?(phase.end_at + 1.second)).to be true
+    end
+
+    it 'returns true if passing a time equal to phase.end_at' do
+      expect(phase.ends_before?(phase.end_at)).to be true
     end
 
     it 'returns false if the phase has no end date' do
-      phase_without_end_date = create(:phase, start_at: start_date, end_at: nil)
-      expect(phase_without_end_date.ends_before?(start_date + 2.days)).to be false
+      phase.update!(end_at: nil)
+      expect(phase.ends_before?(phase.start_at + 10.years)).to be false
     end
   end
 
-  # too lazy to split the tests at this stage
-  describe '::published' do
-    let(:start_date) { Time.zone.today }
-    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+  describe '#start_date' do
+    it 'returns the date when start_at is set' do
+      phase = build(:phase, start_at: '2025-03-15 14:30:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
+    end
 
-    context 'when there are 3 phases that belong to published publications' do
-      before do
-        phases.first(2).each do |phase|
-          draft = create(:project, admin_publication_attributes: { publication_status: 'draft' })
-          phase.project.admin_publication.update(parent: draft.admin_publication)
-        end
-
-        phases[2].project.admin_publication.update(publication_status: 'draft')
-      end
-
-      it 'returns only the phases that belong to published publications' do
-        expect(described_class.published.length).to eq 3
-      end
+    it 'returns the same day even if start_at is midnight' do
+      phase = build(:phase, start_at: '2025-03-15 00:00:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
     end
   end
 
-  describe '::starting_on' do
-    let(:start_date) { Time.zone.today }
-    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+  describe '#end_date' do
+    it 'returns the previous day if end_at is midnight (exclusive end)' do
+      phase = build(:phase, end_at: '2025-03-15 00:00:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 14)
+    end
 
-    context 'when there are 3 phases that belong to published publications' do
-      it 'returns only the phases that belong to published publications' do
-        expect(described_class.starting_on(start_date).length).to eq phases.length
-      end
+    it 'returns the same day if end_at is non-midnight' do
+      phase = build(:phase, end_at: '2025-03-15 14:30:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 15)
+    end
 
-      it 'returns no phases if the date is tomorrow' do
-        expect(described_class.starting_on(start_date + 1.day).length).to eq 0
-      end
+    it 'returns nil if end_at is nil' do
+      phase = build(:phase, end_at: nil)
+      expect(phase.end_date).to be_nil
     end
   end
 
-  describe '::current' do
+  describe '.published' do
+    let(:published_phase) { create(:phase) }
+
+    before do
+      # Phase in a draft project
+      create(:phase, project: create(:project, :draft))
+
+      # Phase in a published project, but in a draft folder
+      create(:phase).tap do |phase|
+        admin_publication_folder = create(:admin_publication, :folder, :draft)
+        phase.project.admin_publication.update(parent: admin_publication_folder)
+      end
+    end
+
+    it 'returns only the phases that belong to published publications' do
+      expect(described_class.published).to contain_exactly(published_phase)
+    end
+  end
+
+  describe '.current' do
     let(:timeline_service) { TimelineService.new }
 
-    it 'returns phases that have started and not yet ended' do
-      phase = create(:phase, start_at: 5.days.ago, end_at: 5.days.from_now)
+    it 'includes phases that have started and not yet ended' do
+      phase = create(:phase, start_at: 1.day.ago, end_at: 1.day.from_now)
       expect(described_class.current).to include(phase)
       expect(timeline_service.current_phase(phase.project)).to eq(phase)
     end
 
-    it 'returns phases starting today' do
-      phase = create(:phase, start_at: Time.zone.today, end_at: 5.days.from_now)
-      expect(described_class.current).to include(phase)
-      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    it 'includes phases starting now' do
+      freeze_time do
+        phase = create(:phase, start_at: Time.current)
+        expect(described_class.current).to include(phase)
+        expect(timeline_service.current_phase(phase.project)).to eq(phase)
+      end
     end
 
-    it 'returns phases ending today' do
-      phase = create(:phase, start_at: 5.days.ago, end_at: Time.zone.today)
-      expect(described_class.current).to include(phase)
-      expect(timeline_service.current_phase(phase.project)).to eq(phase)
-    end
-
-    it 'returns phases with no end date that have started' do
-      phase = create(:phase, start_at: 5.days.ago, end_at: nil)
+    it 'includes phases with no end date that have started' do
+      phase = create(:phase, start_at: 1.day.ago, end_at: nil)
       expect(described_class.current).to include(phase)
       expect(timeline_service.current_phase(phase.project)).to eq(phase)
     end
 
     it 'excludes phases that have not started yet' do
-      phase = create(:phase, start_at: 1.day.from_now, end_at: 5.days.from_now)
+      phase = create(:phase, start_at: 1.day.from_now)
       expect(described_class.current).not_to include(phase)
       expect(timeline_service.current_phase(phase.project)).to be_nil
     end
 
-    it 'excludes phases that have already ended' do
+    it 'excludes phases that have ended' do
       phase = create(:phase, start_at: 10.days.ago, end_at: 1.day.ago)
       expect(described_class.current).not_to include(phase)
       expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+
+    it 'excludes phases whose end_at is now (exclusive end)' do
+      freeze_time do
+        phase = create(:phase, start_at: 1.day.ago, end_at: Time.current)
+        expect(described_class.current).not_to include(phase)
+        expect(timeline_service.current_phase(phase.project)).to be_nil
+      end
     end
   end
 
@@ -455,90 +488,66 @@ RSpec.describe Phase do
     end
 
     it 'allows decreasing the start date of a phase with no end date' do
-      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
+      phase = create(:phase, end_at: nil)
       phase.start_at -= 1.day
       expect(phase).to be_valid
     end
   end
 
-  describe '#validate_no_other_overlapping_phases' do
-    let(:project) { create(:project) }
-
-    before do
-      project.phases << create(:phase, project: project, start_at: '2022-10-01', end_at: '2022-10-08')
+  context 'when the project has an open-ended last phase' do
+    let_it_be(:project) do
+      create(:project).tap do |p|
+        p.phases << create(:phase, start_at: 5.days.ago, end_at: 5.days.from_now)
+        p.phases << create(:phase, start_at: 10.days.from_now, end_at: nil)
+      end
     end
 
-    it 'validates when phases do not overlap' do
-      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: '2022-10-15')
-      expect(phase).to be_valid
-    end
+    let(:last_phase) { project.phases.last }
 
-    it 'is not valid when phases overlap' do
-      expect { create(:phase, project: project, start_at: '2022-10-07', end_at: '2022-10-10') }.to raise_error ActiveRecord::RecordInvalid
-    end
+    context 'and an open-ended phase is added' do
+      it 'after the last phase, it closes the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: nil)
 
-    it 'is valid when there is no end date for the last phase' do
-      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: nil)
-      expect(phase).to be_valid
-    end
-  end
-
-  describe '#validate_previous_blank_end_at' do
-    let(:project) { create(:project_with_phases) }
-    let(:old_last_phase) { project.phases.last }
-
-    before { old_last_phase.update!(end_at: nil) }
-
-    context 'phase with no end_at date is added' do
-      it 'adds an end date to a previous phase with no end date when a later phase is added' do
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
-
-        new_phase_start = old_last_phase.start_at + 5.days
-        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: nil)
-        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
-        expect(project.phases.count).to eq 6
       end
 
-      it 'returns an error if the new phase start date is too close to the old phase start date' do
-        new_phase_start = old_last_phase.start_at + 1.day
-        expect { create(:phase, project: project, start_at: new_phase_start, end_at: nil) }.to raise_error ActiveRecord::RecordInvalid
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
+      it 'too early after the last phase, it is invalid' do
+        new_phase_start = last_phase.start_at + 23.hours
+        new_phase = build(:phase, project:, start_at: new_phase_start, end_at: nil)
+
+        expect(new_phase).not_to be_valid
+        expect(new_phase.errors[:previous_phase]).to include('must be at least 24.0 hours')
+      end
+
+      it 'before the last phase, it is invalid' do
+        new_phase = build(:phase, project:, start_at: last_phase.start_at - 1.day, end_at: nil)
+
+        expect(new_phase).not_to be_valid
+        expect(new_phase.errors[:end_at]).to include('cannot be blank unless it is the last phase')
       end
     end
 
-    context 'phase with end_at date is added' do
-      it 'adds an end_at date to a previous phase with no end date when a later phase is added' do
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
+    context 'and a bounded phase is added' do
+      it 'after the last phase, it closes the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
 
-        new_phase_start = old_last_phase.start_at + 5.days
-        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days)
-        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
-        expect(project.phases.count).to eq 6
-      end
-
-      it 'returns an error if the new phase start date is too close to the old phase start date' do
-        new_phase_start = old_last_phase.start_at + 1.day
-        expect { create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days) }.to raise_error ActiveRecord::RecordInvalid
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
       end
     end
 
-    it 'allows increasing the start date of a phase with no end date' do
-      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
-      phase.start_at += 1.day
-      expect(phase).to be_valid
+    it 'allows increasing the start_at of the open-ended phase' do
+      last_phase.start_at += 1.day
+      expect(last_phase).to be_valid
     end
   end
 
   describe '#validate_community_monitor_phase' do
     let(:project) { create(:project) }
-    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Time.zone.today, end_at: nil) }
+    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Date.current, end_at: nil) }
 
     context 'survey is not a community monitor survey' do
       it 'is valid when the phase is not a community monitor native survey' do
@@ -562,7 +571,7 @@ RSpec.describe Phase do
       end
 
       it 'is not valid when the phase has an end date' do
-        survey_phase.end_at = Time.zone.today + 1.day
+        survey_phase.end_at = survey_phase.start_at + 2.days
         expect(survey_phase).not_to be_valid
       end
 
@@ -604,18 +613,18 @@ RSpec.describe Phase do
 
       describe 'on create' do
         where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
-          :phase           | nil            | false | false | true
-          :phase           | 'all'          | false | false | false
-          :phase           | 'all'          | true  | false | true
-          :phase           | 'flagged_only' | true  | false | false
-          :phase           | 'flagged_only' | true  | true  | true
-          :phase           | 'invalid'      | true  | true  | false
-          :proposals_phase | nil            | false | false | true
-          :proposals_phase | 'all'          | false | false | false
-          :proposals_phase | 'all'          | true  | false | true
-          :proposals_phase | 'flagged_only' | true  | false | false
-          :proposals_phase | 'flagged_only' | true  | true  | true
-          :proposals_phase | 'invalid'      | true  | true  | false
+          :phase | nil | false | false | true
+          :phase | 'all' | false | false | false
+          :phase | 'all' | true | false | true
+          :phase | 'flagged_only' | true | false | false
+          :phase | 'flagged_only' | true | true | true
+          :phase | 'invalid' | true | true | false
+          :proposals_phase | nil | false | false | true
+          :proposals_phase | 'all' | false | false | false
+          :proposals_phase | 'all' | true | false | true
+          :proposals_phase | 'flagged_only' | true | false | false
+          :proposals_phase | 'flagged_only' | true | true | true
+          :proposals_phase | 'invalid' | true | true | false
         end
 
         with_them do
@@ -650,9 +659,9 @@ RSpec.describe Phase do
 
     describe 'helper methods' do
       where(:mode, :enabled, :flagged_only, :all) do
-        nil            | false | false | false
-        'flagged_only' | true  | true  | false
-        'all'          | true  | false | true
+        nil | false | false | false
+        'flagged_only' | true | true | false
+        'all' | true | false | true
       end
 
       with_them do
