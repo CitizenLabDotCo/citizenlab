@@ -816,7 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Paziņojums",
   "app.components.form.controls.noRankSelected": "Nav izvēlēts rangs",
   "app.components.form.controls.optionalParentheses": "(pēc izvēles)",
-  "app.components.form.controls.rankingDragHandleLabel": "Velciet, lai pārkārtotu {label}",
+  "app.components.form.controls.rankingDragHandleLabel": "Velciet, lai mainītu {label} secību",
   "app.components.form.controls.rankingInstructions": "Velciet un nometiet, lai ierindotu opcijas.",
   "app.components.form.controls.valueOutOfTotal": "{value} no {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} no {total}, {label}",

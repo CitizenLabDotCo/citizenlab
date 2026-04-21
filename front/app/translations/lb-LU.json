@@ -816,7 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Ausso",
   "app.components.form.controls.noRankSelected": "Kee Rang ausgewielt",
   "app.components.form.controls.optionalParentheses": "(optional)",
-  "app.components.form.controls.rankingDragHandleLabel": "Zitt fir d'Reiefolleg vun {label} z'änneren",
+  "app.components.form.controls.rankingDragHandleLabel": "Zéien, fir d'Reiefolleg vun {label} z'änneren",
   "app.components.form.controls.rankingInstructions": "Drag and drop to Ranking Optiounen.",
   "app.components.form.controls.valueOutOfTotal": "{value} aus {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} aus {total}, {label}",

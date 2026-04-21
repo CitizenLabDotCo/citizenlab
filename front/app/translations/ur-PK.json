@@ -816,7 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "بیان",
   "app.components.form.controls.noRankSelected": "کوئی درجہ منتخب نہیں کیا گیا۔",
   "app.components.form.controls.optionalParentheses": "(اختیاری)",
-  "app.components.form.controls.rankingDragHandleLabel": "{label} کو دوبارہ ترتیب دینے کے لیے گھسیٹیں",
+  "app.components.form.controls.rankingDragHandleLabel": "{label} کی ترتیب دوبارہ دینے کے لیے گھسیٹیں",
   "app.components.form.controls.rankingInstructions": "رینک کے اختیارات کے لیے گھسیٹیں اور چھوڑیں۔",
   "app.components.form.controls.valueOutOfTotal": "{total}میں سے {value}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} سے باہر {total}, {label}",

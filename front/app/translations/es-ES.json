@@ -816,7 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Opinión",
   "app.components.form.controls.noRankSelected": "Sin rango seleccionado",
   "app.components.form.controls.optionalParentheses": "(opcional)",
-  "app.components.form.controls.rankingDragHandleLabel": "Arrastra para reordenar {label}",
+  "app.components.form.controls.rankingDragHandleLabel": "Arrastrar para reordenar {label}",
   "app.components.form.controls.rankingInstructions": "Arrastra y suelta para clasificar las opciones.",
   "app.components.form.controls.valueOutOfTotal": "{value} de {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} fuera de {total}, {label}",

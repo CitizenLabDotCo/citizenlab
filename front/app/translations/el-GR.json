@@ -816,7 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Δήλωση",
   "app.components.form.controls.noRankSelected": "Δεν έχει επιλεγεί κατάταξη",
   "app.components.form.controls.optionalParentheses": "(προαιρετικά)",
-  "app.components.form.controls.rankingDragHandleLabel": "Σύρετε για να αναδιατάξετε το {label}",
+  "app.components.form.controls.rankingDragHandleLabel": "Σύρετε για αναδιάταξη του {label}",
   "app.components.form.controls.rankingInstructions": "Σύρετε και αφήστε τις επιλογές κατάταξης.",
   "app.components.form.controls.valueOutOfTotal": "{value} από το {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} εκτός {total}, {label}",
