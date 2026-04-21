@@ -1938,6 +1938,8 @@
   "app.containers.NotificationMenu.projectPublished": "Nowy projekt został opublikowany",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} zwrócił się o zgodę na opublikowanie projektu \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} zatwierdzony \"{projectTitle}\" do publikacji",
+
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": "Jesteś teraz menedżerem obszaru {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status został zmieniony na {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} osiągnął próg poparcia w głosowaniu",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} przyjął Twoje zaproszenie",
@@ -2507,7 +2509,8 @@
   "app.modules.id_oostende_rrn.submit": "Prześlij",
   "app.modules.id_oostende_rrn.takenFormError": "Twój numer PESEL został już użyty do weryfikacji innego konta",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Weryfikacja przy użyciu numeru ubezpieczenia społecznego",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Otrzymałeś prawa administratora do folderu \"{folderName}\".",
+
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "Jesteś teraz menedżerem folderu {folderLink}",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podziel się",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Zapoznaj się z projektami na stronie {folderUrl}, aby Twój głos został usłyszany!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | z platformy partycypacyjnej {orgName}",

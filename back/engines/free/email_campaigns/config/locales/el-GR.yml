@@ -52,8 +52,11 @@ el-GR:
         user_who_is_invited_to_cosponsor_a_proposal: Χρήστης που καλείται να συνυποστηρίξει μια πρόταση
         user_who_is_mentioned: Χρήστης που αναφέρεται
         user_who_is_receiving_admin_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή
+        user_who_is_receiving_folder_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή φακέλου
         user_who_is_receiving_folder_moderator_rights: Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου
+        user_who_is_receiving_project_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή έργου
         user_who_is_receiving_project_moderator_rights: Χρήστης που λαμβάνει δικαιώματα συντονιστή έργου
+        user_who_is_receiving_space_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή χώρου
         user_who_published_the_input: Χρήστης που δημοσίευσε την είσοδο
         user_who_published_the_proposal: Χρήστης που δημοσίευσε την πρόταση
         user_who_registers: Χρήστης που εγγράφεται
@@ -104,8 +107,11 @@ el-GR:
         user_comments_on_input: Σχόλια χρηστών σχετικά με την είσοδο
         user_comments_on_proposal: Σχόλια χρηστών σχετικά με την πρόταση
         user_is_given_admin_rights: Ο χρήστης αποκτά δικαιώματα διαχειριστή
+        user_is_given_folder_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή φακέλου
         user_is_given_folder_moderator_rights: Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου
+        user_is_given_project_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή έργου
         user_is_given_project_moderator_rights: Ο χρήστης αποκτά δικαιώματα συντονιστή έργου
+        user_is_given_space_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή χώρου
         user_is_invited_to_cosponsor_a_proposal: Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση
         user_is_invited_to_platform: Ο χρήστης καλείται στην πλατφόρμα
         user_is_mentioned: Αναφέρεται ο χρήστης
@@ -175,6 +181,7 @@ el-GR:
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
       password_reset: Επαναφορά κωδικού πρόσβασης
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
+      project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
       project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
       project_phase_started: Νέα φάση του έργου
       project_phase_upcoming: Επόμενη νέα φάση έργου
@@ -182,6 +189,7 @@ el-GR:
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
+      space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       survey_submitted: Υποβληθείσα έρευνα
       threshold_reached_for_admin: Η πρόταση έφθασε το κατώτατο όριο ψήφου
@@ -518,6 +526,7 @@ el-GR:
       project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
       project_title: Παράδειγμα έργου
       proposal_title: Παράδειγμα πρότασης
+      space_title: Παράδειγμα χώρου
     project_folder_moderation_rights_received:
       cta_button: Προβολή αυτού του φακέλου
       event_description: 'Σας έχουν δοθεί δικαιώματα διαχειριστή φακέλων στην πλατφόρμα συμμετοχής %{organizationName}για τον ακόλουθο φάκελο:'
@@ -599,6 +608,21 @@ el-GR:
       preheader: Επανεξέταση των εισροών για το %{organizationName}
       subject: '%{count} εισροές που αναμένουν επανεξέταση'
       title: '%{firstName}, οι εισροές περιμένουν να επανεξεταστούν'
+    space_moderation_rights_received:
+      cta_button: Διαχείριση αυτού του χώρου
+      event_description: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του οργανισμού %{organizationName} μόλις σας όρισε διαχειριστή του παρακάτω χώρου:'
+      no_projects: Δεν υπάρχουν έργα ακόμα
+      preheader: Ένας διαχειριστής της πλατφόρμας συμμετοχής του οργανισμού %{organizationName} μόλις σας όρισε διαχειριστή του παρακάτω χώρου
+      subject: Γίνατε διαχειριστής χώρου στην πλατφόρμα του οργανισμού %{organizationName}
+      text_manage_space_settings: Μπορείτε να επεξεργαστείτε τον τίτλο και την περιγραφή του χώρου, ώστε οι συμμετέχοντες και οι υπόλοιποι διαχειριστές να κατανοήσουν αμέσως το θέμα του χώρου και πώς σχετίζεται με τον οργανισμό σας.
+      text_organize_projects_and_folders: Ως διαχειριστής χώρου, μπορείτε να διαχειρίζεστε έργα και φακέλους εντός του χώρου σας, συμπεριλαμβανομένης της ανάθεσης και της αφαίρεσης ρόλων διαχείρισης για αυτά.
+      text_oversee_participation: Ως διαχειριστής χώρου, έχετε δικαιώματα διαχειριστή έργου για κάθε έργο που βρίσκεται εντός του χώρου σας, ώστε να μπορείτε να παρακολουθείτε τη δραστηριότητα και να βοηθάτε τους διαχειριστές έργων όταν χρειάζεται.
+      title: Γίνατε διαχειριστής χώρου
+      title_manage_space_settings: Διαχείριση ρυθμίσεων χώρου
+      title_organize_projects_and_folders: Οργάνωση έργων και φακέλων
+      title_oversee_participation: Επίβλεψη συμμετοχής
+      title_what_can_you_do_space_manager: Τι μπορείτε να κάνετε ως διαχειριστής χώρου;
+      x_projects: '%{numberOfProjects} έργα'
     status_change_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{organizationName} ενημέρωσε την κατάσταση της εισόδου '%{input_title}' στην πλατφόρμα ψηφιακής συμμετοχής τους."

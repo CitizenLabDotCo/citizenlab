@@ -1938,6 +1938,8 @@
   "app.containers.NotificationMenu.projectPublished": "Uusi projekti julkaistiin",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} pyysi lupaa julkaista projektin \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} hyväksyi \"{projectTitle}\" julkaistavaksi",
+
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": "Olet nyt tilan {spaceLink} hallinnoija",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} tila on muuttunut arvoon {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} saavutti äänestyskynnyksen",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} hyväksyi kutsusi",
@@ -2507,7 +2509,8 @@
   "app.modules.id_oostende_rrn.submit": "Lähetä",
   "app.modules.id_oostende_rrn.takenFormError": "Sosiaaliturvatunnustasi on jo käytetty toisen tilin vahvistamiseen",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Vahvista käyttämällä sosiaaliturvatunnusta",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Sait järjestelmänvalvojan oikeudet kansioon \"{folderName}\".",
+
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "Olet nyt kansion {folderLink} hallinnoija",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Jaa",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Katso projektit osoitteessa {folderUrl} saadaksesi äänesi kuuluviin!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | {orgName}osallistumisalustalta",

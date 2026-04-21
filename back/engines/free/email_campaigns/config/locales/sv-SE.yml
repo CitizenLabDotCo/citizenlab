@@ -52,8 +52,11 @@ sv-SE:
         user_who_is_invited_to_cosponsor_a_proposal: Användare som bjuds in att stödja ett förslag
         user_who_is_mentioned: Användare som nämns
         user_who_is_receiving_admin_rights: Användare som får administratörsrättigheter
+        user_who_is_receiving_folder_manager_rights: Användare som får rättigheter som mappansvarig
         user_who_is_receiving_folder_moderator_rights: Användare som får rättigheter som mappmoderator
+        user_who_is_receiving_project_manager_rights: Användare som får projektledarrättigheter
         user_who_is_receiving_project_moderator_rights: Användare som får rättigheter som projektmoderator
+        user_who_is_receiving_space_manager_rights: Användare som får rättigheter som space-ansvarig
         user_who_published_the_input: Användare som publicerade bidraget
         user_who_published_the_proposal: Användare som publicerade förslaget
         user_who_registers: Användare som registrerar sig
@@ -104,8 +107,11 @@ sv-SE:
         user_comments_on_input: Användarkommentarer om inmatning
         user_comments_on_proposal: Användarkommentarer om förslaget
         user_is_given_admin_rights: Användaren får administratörsrättigheter
+        user_is_given_folder_manager_rights: Användaren tilldelas rättigheter som mappansvarig
         user_is_given_folder_moderator_rights: Användaren har fått rättigheter som mappmoderator
+        user_is_given_project_manager_rights: Användaren tilldelas projektledarrättigheter
         user_is_given_project_moderator_rights: Användaren har fått rättigheter som projektledare
+        user_is_given_space_manager_rights: Användaren tilldelas rättigheter som space-ansvarig
         user_is_invited_to_cosponsor_a_proposal: Användaren inbjuds att vara medsponsor för ett förslag
         user_is_invited_to_platform: Användaren bjuds in till plattformen
         user_is_mentioned: Användaren nämns
@@ -175,6 +181,7 @@ sv-SE:
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
       password_reset: Återställning av lösenord
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
+      project_manager_rights_received: Rättigheter som projektledare mottagna
       project_moderation_rights_received: Rättigheter för projektmoderering har erhållits
       project_phase_started: Ny projektfas
       project_phase_upcoming: Kommande ny projektfas
@@ -182,6 +189,7 @@ sv-SE:
       project_review_request: Begäran om projektgranskning
       project_review_state_change: Projekt godkänt
       screening_digest: Påminnelse om screening varje vecka
+      space_moderation_rights_received: Rättigheter som space-ansvarig mottagna
       status_change_on_idea_you_follow: Statusförändring av en idé som du följer
       survey_submitted: Undersökning inlämnad
       threshold_reached_for_admin: Förslaget nådde rösttröskeln
@@ -518,6 +526,7 @@ sv-SE:
       project_description_preview: Det här är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Det här är inte riktigt innehåll.
       project_title: Exempel på projekt
       proposal_title: Exempel på förslag
+      space_title: Exempel-space
     project_folder_moderation_rights_received:
       cta_button: Visa denna mapp
       event_description: 'Du har fått mapphanteringsrättigheter på %{organizationName}:s deltagandeplattform för följande mapp:'
@@ -599,6 +608,21 @@ sv-SE:
       preheader: Granska ingångar för %{organizationName}
       subject: '%{count} ingångar som väntar på granskning'
       title: '%{firstName}, indata väntar på att granskas'
+    space_moderation_rights_received:
+      cta_button: Hantera detta space
+      event_description: 'En administratör för %{organizationName}s deltagarplattform har just gjort dig till space-ansvarig för följande space:'
+      no_projects: Inga projekt ännu
+      preheader: En administratör för %{organizationName}s deltagarplattform har just gjort dig till space-ansvarig för följande space
+      subject: Du har blivit space-ansvarig på plattformen för %{organizationName}
+      text_manage_space_settings: Du kan redigera titel och beskrivning för ditt space så att deltagare och andra ansvariga direkt förstår vad ditt space handlar om och hur det relaterar till din organisation.
+      text_organize_projects_and_folders: Som space-ansvarig kan du hantera projekt och mappar i ditt space, inklusive att tilldela och ta bort ansvariga roller för dem.
+      text_oversee_participation: Som space-ansvarig har du projektledarrättigheter för alla projekt i ditt space, så att du kan hålla koll på inkomna bidrag och hjälpa projektledare vid behov.
+      title: Du har blivit space-ansvarig
+      title_manage_space_settings: Hantera inställningar för space
+      title_organize_projects_and_folders: Organisera projekt och mappar
+      title_oversee_participation: Ha översikt över deltagandet
+      title_what_can_you_do_space_manager: Vad kan du göra som space-ansvarig?
+      x_projects: '%{numberOfProjects} projekt'
     status_change_on_idea_you_follow:
       cta_button: Gå till denna ingång
       event_description: "%{organizationName} uppdaterade statusen för inmatningen '%{input_title}' på sin plattform för digitalt deltagande."

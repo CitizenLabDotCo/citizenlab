@@ -1938,6 +1938,8 @@
   "app.containers.NotificationMenu.projectPublished": "Foilsíodh tionscadal nua",
   "app.containers.NotificationMenu.projectReviewRequest": "D'iarr {name} cead chun an tionscadal \"{projectTitle} \" a fhoilsiú",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} ceadaithe \"{projectTitle}\" le foilsiú",
+
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": "Is bainisteoir spáis thú anois ar {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "Tá stádas {ideaTitle} athraithe go {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "Shroich {post} an tairseach vótála",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "Ghlac {name} le do chuireadh",
@@ -2507,7 +2509,8 @@
   "app.modules.id_oostende_rrn.submit": "Cuir isteach",
   "app.modules.id_oostende_rrn.takenFormError": "Úsáideadh d'uimhir slándála sóisialta cheana féin chun cuntas eile a fhíorú",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Fíoraigh ag baint úsáide as uimhir slándála sóisialta",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Fuair tú cearta riarthóra ar an bhfillteán \"{folderName}\".",
+
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "Is bainisteoir fillteáin thú anois ar {folderLink}",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Comhroinn",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Féach ar na tionscadail ag {folderUrl} le go gcloisfear do ghlór!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | ón ardán rannpháirtíochta de {orgName}",

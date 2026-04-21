@@ -5,3 +5,9 @@
     "verified_by": "kielgast@govocal.com"
   }
 }
+
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
+    "state": "verified",
+    "verified_at": "2026-04-21T10:05:00.205740Z",
+    "verified_by": "Simon"
+  }

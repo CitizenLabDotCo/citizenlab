@@ -1938,6 +1938,8 @@
   "app.containers.NotificationMenu.projectPublished": "En neie Projet gouf publizéiert",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} huet Genehmegung gefrot fir de Projet ze publizéieren \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} guttgeheescht \"{projectTitle}\" fir Publikatioun",
+
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": "Dir sidd elo Space-Manager vun {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} Status ass op {status}geännert",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} huet di néideg Unzuel u Stëmmen erreecht",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} huet Är Invitatioun ugeholl",
@@ -2507,7 +2509,8 @@
   "app.modules.id_oostende_rrn.submit": "Schécken",
   "app.modules.id_oostende_rrn.takenFormError": "Är Sozialversécherungsnummer gouf scho benotzt, fir en anere Kont ze verifizéieren",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Gebrauch vun der Matricule verifizéieren",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Dir hutt Administrateursrechter iwwer den \"{folderName}\"-Classeur kritt.",
+
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": "Dir sidd elo Dossier-Manager vun {folderLink}",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Deelen",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Projeten bei {folderUrl} ukucken, fir datt Är Stëmm gehéiert gëtt!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | vun der participativer Plattform vum {orgName}",
