@@ -83,6 +83,7 @@ export interface SelectorProps {
   filterSelectorStyle?: 'button' | 'text';
   minWidth?: string;
   toggleValuesList: () => void;
+  closeExpanded: () => void;
   textColor?: string;
   currentTitle: string | JSX.Element;
   handleKeyDown?: (event: KeyboardEvent) => void;
@@ -116,13 +117,19 @@ const MultiSelectDropdown = ({
   filterSelectorStyle,
   minWidth,
   toggleValuesList,
+  closeExpanded,
   textColor,
   currentTitle,
   handleKeyDown,
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
+
+  const focusTrigger = () => {
+    triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
+  };
 
   const handleOnToggleCheckbox =
     (entry: IFilterSelectorValue) => (_event: React.ChangeEvent) => {
@@ -161,9 +168,17 @@ const MultiSelectDropdown = ({
         }
         break;
 
+      case 'Escape':
+        if (opened) {
+          event.preventDefault();
+          closeExpanded();
+          focusTrigger();
+        }
+        break;
+
       case 'Tab':
         if (opened) {
-          toggleValuesList();
+          closeExpanded();
         }
         break;
     }
@@ -175,7 +190,7 @@ const MultiSelectDropdown = ({
 
   return (
     <Box>
-      <Box id={selectorId}>
+      <Box id={selectorId} ref={triggerRef}>
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}
