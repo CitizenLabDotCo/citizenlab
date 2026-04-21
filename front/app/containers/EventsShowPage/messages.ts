@@ -27,19 +27,19 @@ export default defineMessages({
     defaultMessage: 'Link to online event',
   },
   eventDateTimeIcon: {
-    id: 'app.containers.EventsShow.eventDateTimeIcon',
+    id: 'app.containers.EventsShowPage.eventDateTimeIcon',
     defaultMessage: 'Event date and time',
   },
   locationIconAltText: {
-    id: 'app.containers.EventsShow.locationIconAltText',
+    id: 'app.containers.EventsShowPage.locationIconAltText',
     defaultMessage: 'Location',
   },
   onlineLinkIconAltText: {
-    id: 'app.containers.EventsShow.onlineLinkIconAltText',
+    id: 'app.containers.EventsShowPage.onlineLinkIconAltText',
     defaultMessage: 'Online meeting link',
   },
   registrantsIconAltText: {
-    id: 'app.containers.EventsShow.registrantsIconAltText',
+    id: 'app.containers.EventsShowPage.registrantsIconAltText',
     defaultMessage: 'Registrants',
   },
   goBack: {
