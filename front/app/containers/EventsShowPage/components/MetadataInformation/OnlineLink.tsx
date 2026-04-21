@@ -17,7 +17,11 @@ const OnlineLink = ({ link }: Props) => {
 
   return (
     <Container id="e2e-event-online-link">
-      <StyledIcon name="link" ariaHidden />
+      <StyledIcon
+        name="link"
+        title={formatMessage(messages.onlineLinkIconAltText)}
+        ariaHidden={false}
+      />
       <Content>
         <Box display="flex">
           <Button
