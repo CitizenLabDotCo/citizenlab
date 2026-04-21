@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Didžiausias registruotojų skaičius turi būti didesnis nei 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Didžiausias registruotojų skaičius turi būti didesnis arba lygus dabartiniam registruotojų skaičiui.",
   "app.errors.no_invites_specified": "Nepavyko rasti jokio el. pašto adreso.",
-  "app.errors.no_recipients": "Kampanijos negalima išsiųsti, nes nėra gavėjų. Grupė, kuriai siunčiate, yra arba tuščia, arba niekas nesutiko gauti el. laiškų.",
   "app.errors.number_invalid": "Įveskite galiojantį numerį.",
   "app.errors.password_blank": "Ši reikšmė negali būti tuščia",
   "app.errors.password_invalid": "Dar kartą patikrinkite dabartinį slaptažodį.",

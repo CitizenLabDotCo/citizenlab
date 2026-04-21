@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Le nombre maximum d'inscrits doit être supérieur à 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "La valeur doit être supérieure ou égale au nombre de personnes déjà inscrites.\n",
   "app.errors.no_invites_specified": "Aucune adresse e-mail n'a été trouvée.",
-  "app.errors.no_recipients": "La campagne ne peut pas être envoyée car il n'y a pas de destinataires. Le groupe auquel vous envoyez la campagne est soit vide, soit personne n'a consenti à recevoir des courriels.",
   "app.errors.number_invalid": "Veuillez saisir un nombre valide.",
   "app.errors.password_blank": "Cela ne peut pas être vide",
   "app.errors.password_invalid": "Veuillez vérifier à nouveau votre mot de passe actuel.",

@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "El número máximo de inscritos debe ser superior a 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "El número máximo de inscritos debe ser mayor o igual que el número actual de inscritos.",
   "app.errors.no_invites_specified": "No se ha podido encontrar ninguna dirección de correo.",
-  "app.errors.no_recipients": "La campaña no puede enviarse porque no hay destinatarios. El grupo al que estás enviando está vacío o nadie ha dado su consentimiento para recibir correos electrónicos.",
   "app.errors.number_invalid": "Introduce un número válido.",
   "app.errors.password_blank": "Esto no puede estar vacío",
   "app.errors.password_invalid": "Compruebe de nuevo su contraseña actual.",

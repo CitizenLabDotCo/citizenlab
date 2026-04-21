@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Rhaid i'r nifer uchaf o gofrestrwyr fod yn fwy na 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Rhaid i'r nifer uchaf o gofrestreion fod yn fwy na neu'n hafal i'r nifer presennol o gofrestreion.",
   "app.errors.no_invites_specified": "Methu dod o hyd i unrhyw gyfeiriad e-bost.",
-  "app.errors.no_recipients": "Ni ellir anfon yr ymgyrch oherwydd nad oes unrhyw dderbynwyr. Mae'r grŵp rydych yn anfon ato naill ai'n wag, neu nid oes neb wedi cydsynio i dderbyn e-byst.",
   "app.errors.number_invalid": "Rhowch rif dilys.",
   "app.errors.password_blank": "Ni all hwn fod yn wag",
   "app.errors.password_invalid": "Gwiriwch eich cyfrinair cyfredol eto.",

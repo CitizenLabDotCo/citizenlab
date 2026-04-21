@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Maksimālajam reģistrēto personu skaitam jābūt lielākam par 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Maksimālajam reģistrētāju skaitam jābūt lielākam vai vienādam ar pašreizējo reģistrētāju skaitu.",
   "app.errors.no_invites_specified": "Nevarēja atrast nevienu e-pasta adresi.",
-  "app.errors.no_recipients": "Kampaņu nevar nosūtīt, jo nav saņēmēju. Grupa, kurai sūtāt, ir vai nu tukša, vai arī neviens nav piekritis saņemt e-pasta vēstules.",
   "app.errors.number_invalid": "Lūdzu, ievadiet derīgu numuru.",
   "app.errors.password_blank": "Tas nevar būt tukšs",
   "app.errors.password_invalid": "Lūdzu, vēlreiz pārbaudiet savu pašreizējo paroli.",

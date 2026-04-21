@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Déi maximal Zuel vun den Umeldungen däerf méi wéi 0 sinn.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Déi maximal Zuel vun den Umeldungen muss méi grouss oder gläich wéi déi aktuell Zuel vun den Umeldungen sinn.",
   "app.errors.no_invites_specified": "Keng E-Mail-Adress fonnt.",
-  "app.errors.no_recipients": "D'Campagne kann net verschéckt ginn well et keng Empfänger sinn. De Grupp un deen Dir schéckt ass entweder eidel, oder keen huet zoustëmmen E-Mailen ze kréien.",
   "app.errors.number_invalid": "Gitt weg eng valabel Zuel.",
   "app.errors.password_blank": "Dëst dierf net eidel sinn",
   "app.errors.password_invalid": "Wgl. iwwerpréift Äert neit Passwuert nach eng Kéier.",

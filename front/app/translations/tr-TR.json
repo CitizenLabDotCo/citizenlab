@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Maksimum kayıtlı kişi sayısı 0'dan büyük olmalıdır.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Azami kayıtlı kişi sayısı mevcut kayıtlı kişi sayısına eşit veya daha fazla olmalıdır.",
   "app.errors.no_invites_specified": "Herhangi bir e-posta adresi bulunamadı.",
-  "app.errors.no_recipients": "Alıcı olmadığı için kampanya gönderilemiyor. Gönderdiğiniz grup ya boştur ya da hiç kimse e-posta almaya onay vermemiştir.",
   "app.errors.number_invalid": "Lütfen geçerli bir numara girin.",
   "app.errors.password_blank": "Bu boş olamaz",
   "app.errors.password_invalid": "Lütfen mevcut şifrenizi tekrar kontrol edin.",

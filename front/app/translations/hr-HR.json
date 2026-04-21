@@ -2428,7 +2428,6 @@
   "app.errors.maximum_attendees_greater_than1": "Maksimalan broj registriranih mora biti veći od 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Maksimalni broj prijavljenih mora biti veći ili jednak trenutnom broju prijavljenih.",
   "app.errors.no_invites_specified": "Nismo uspjeli pronaći bilo koju adresu e-pošte.",
-  "app.errors.no_recipients": "Kampanja se ne može poslati jer nema primatelja. Grupa kojoj šaljete je prazna ili nitko nije pristao na primanje e-pošte.",
   "app.errors.number_invalid": "Unesite važeći broj.",
   "app.errors.password_blank": "Ovo ne može biti prazno",
   "app.errors.password_invalid": "Ponovno provjerite svoju trenutačnu lozinku.",
