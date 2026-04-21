@@ -654,4 +654,74 @@ describe ProjectPolicy do
       end
     end
   end
+
+  describe '#shared_permitted_attributes' do
+    let(:project) { create(:project) }
+
+    shared_examples 'permits folder_id' do
+      it 'includes folder_id' do
+        expect(policy.shared_permitted_attributes.flatten).to include(:folder_id)
+      end
+    end
+
+    shared_examples 'does not permit folder_id' do
+      it 'does not include folder_id' do
+        expect(policy.shared_permitted_attributes.flatten).not_to include(:folder_id)
+      end
+    end
+
+    shared_examples 'permits space_id' do
+      it 'includes space_id' do
+        expect(policy.shared_permitted_attributes.flatten).to include(:space_id)
+      end
+    end
+
+    shared_examples 'does not permit space_id' do
+      it 'does not include space_id' do
+        expect(policy.shared_permitted_attributes.flatten).not_to include(:space_id)
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it_behaves_like 'permits folder_id'
+      it_behaves_like 'permits space_id'
+    end
+
+    context 'for a space moderator' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'permits folder_id'
+      it_behaves_like 'permits space_id'
+    end
+
+    context 'for a project folder moderator' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'permits folder_id'
+      it_behaves_like 'does not permit space_id'
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'does not permit folder_id'
+      it_behaves_like 'does not permit space_id'
+    end
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it_behaves_like 'does not permit folder_id'
+      it_behaves_like 'does not permit space_id'
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it_behaves_like 'does not permit folder_id'
+      it_behaves_like 'does not permit space_id'
+    end
+  end
 end
