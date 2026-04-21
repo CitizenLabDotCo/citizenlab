@@ -129,6 +129,11 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "custom_fields.community_monitor.question_categories.service_delivery": {
+    "state": "verified",
+    "verified_at": "2026-04-21T11:39:51.197772Z",
+    "verified_by": "Roger"
+  },
   "custom_fields.community_monitor.questions.access_to_parks.title": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
