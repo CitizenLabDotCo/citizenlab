@@ -1224,7 +1224,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visita il nostro centro assistenza",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Elimina lo spazio",
-  "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nessuno spazio trovato",
+  "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nessuna area trovata",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Spazio",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Gestori dello spazio",
   "app.containers.Admin.projects.all.Spaces.deleteSpaceModalTitle": "Cancellare questo spazio in modo permanente?",
