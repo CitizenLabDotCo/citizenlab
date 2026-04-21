@@ -457,6 +457,8 @@ de-DE:
       preheader: Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       submissions_close: Einsendeschluss ist %{phaseEndDate}.
+      submissions_close_at_time: Einreichungen enden am %{datetime}.
+      submissions_close_on_date: Einreichungen enden am Ende des %{date}.
       title: Fast fertig! Antwort einsenden nicht vergessen
     new_comment_for_admin:
       anonymous_user: Anonymer Teilnehmer

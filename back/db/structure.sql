@@ -1753,8 +1753,8 @@ CREATE TABLE public.phases (
     project_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    start_at date,
-    end_at date,
+    start_at timestamp(6) without time zone,
+    end_at timestamp(6) without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     participation_method character varying DEFAULT 'ideation'::character varying NOT NULL,
@@ -2017,7 +2017,7 @@ CREATE VIEW public.analytics_fact_posts AS
 CREATE VIEW public.analytics_fact_project_statuses AS
  WITH finished_statuses_for_timeline_projects AS (
          SELECT phases.project_id,
-            ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+            max(phases.end_at) AS "timestamp"
            FROM public.phases
           GROUP BY phases.project_id
          HAVING (max(phases.end_at) < now())
@@ -4698,7 +4698,7 @@ ALTER TABLE ONLY public.phases
 --
 
 ALTER TABLE public.phases
-    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at <= end_at))) NOT VALID;
+    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at < end_at))) NOT VALID;
 
 
 --
@@ -8517,6 +8517,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260311100002'),
 ('20260311100001'),
 ('20260311100000'),
+('20260309120000'),
 ('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),
