@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Son onaylananlar ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Tüm girişleri kaldır",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Onayı geri al",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Son onayı geri al",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Bu proje fikir içerebilecek herhangi bir aşama içermemektedir.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Lütfen bu girişleri hangi faza eklemek istediğinizi seçin.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Girdi ithalatçısı",

@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Kürzlich freigegeben ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Freigabe rückgängig machen",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Letzte Freigabe rückgängig machen",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dieses Projekt enthält keine Phasen, die Beitrage enthalten können.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Bitte wählen Sie aus, zu welcher Phase Sie diese Beiträge hinzufügen möchten.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Eingabe-Importeur",

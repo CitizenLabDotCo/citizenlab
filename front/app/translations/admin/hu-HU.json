@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Legutóbb jóváhagyva ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Összes bejegyzés eltávolítása",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Jóváhagyás visszavonása",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Utolsó jóváhagyás visszavonása",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ez a projekt nem tartalmaz olyan szakaszokat, amelyek ötleteket tartalmazhatnának.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Kérjük, válassza ki, melyik szakaszhoz szeretné hozzáadni ezeket a bejegyzéseket.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Bejegyzés-importáló",

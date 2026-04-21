@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Äskettäin hyväksytyt ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Poista kaikki syötteet",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Kumoa hyväksyntä",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Kumoa edellinen hyväksyntä",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Tämä projekti ei sisällä vaiheita, jotka voivat sisältää ideoita.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Valitse, mihin vaiheeseen haluat lisätä nämä tulot.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Syötteiden maahantuoja",

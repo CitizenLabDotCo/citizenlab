@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "ਹਾਲ ਹੀ ਵਿੱਚ ਮਨਜ਼ੂਰ ਕੀਤੇ ਗਏ ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "ਸਾਰੇ ਇਨਪੁੱਟ ਹਟਾਓ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "ਮਨਜ਼ੂਰੀ ਵਾਪਸ ਲਓ",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "ਪਿਛਲੀ ਮਨਜ਼ੂਰੀ ਵਾਪਸ ਲਓ",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਕੋਈ ਵੀ ਪੜਾਅ ਸ਼ਾਮਲ ਨਹੀਂ ਹਨ ਜਿਸ ਵਿੱਚ ਵਿਚਾਰ ਸ਼ਾਮਲ ਹੋ ਸਕਦੇ ਹਨ।",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "ਕਿਰਪਾ ਕਰਕੇ ਚੁਣੋ ਕਿ ਤੁਸੀਂ ਇਹਨਾਂ ਇਨਪੁਟਸ ਨੂੰ ਕਿਸ ਪੜਾਅ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "ਇੰਪੁੱਟ ਆਯਾਤਕ",

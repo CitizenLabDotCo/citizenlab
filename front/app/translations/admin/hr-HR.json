@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nedavno odobreno ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ukloni sve unose",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Poništi odobrenje",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Poništi zadnje odobrenje",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ovaj projekt ne sadrži nijednu fazu koja može sadržavati ideje.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Odaberite u koju fazu želite dodati ove ulaze.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Uvoznik unosa",

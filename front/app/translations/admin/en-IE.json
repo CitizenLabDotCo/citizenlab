@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Recently approved ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Remove all inputs",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Undo approval",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Undo last approval",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "This project does not contain any phases that can contain ideas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Please select to which phase you want to add these inputs.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input importer",

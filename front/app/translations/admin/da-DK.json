@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nyligt godkendt ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Fjern alle input",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Fortryd godkendelse",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Fortryd sidste godkendelse",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dette projekt indeholder ikke nogen faser, der kan indeholde ideer.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Vælg venligst hvilken fase du vil tilføje disse input til.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Import af input",

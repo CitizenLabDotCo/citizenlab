@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Εγκρίθηκαν πρόσφατα ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Αφαίρεση όλων των καταχωρίσεων",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Αναίρεση έγκρισης",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Αναίρεση τελευταίας έγκρισης",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Αυτό το έργο δεν περιλαμβάνει φάσεις που να μπορούν να περιέχουν ιδέες.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Παρακαλούμε επιλέξτε σε ποια φάση θέλετε να προσθέσετε αυτές τις εισαγωγές.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Εισαγωγέας δεδομένων",

@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nylig godkjente ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Fjern alle innspill",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Angre godkjenning",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Angre siste godkjenning",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dette prosjektet inneholder ingen faser som kan inneholde ideer.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Velg hvilken fase du ønsker å legge til disse inngangene.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Inndataimportør",

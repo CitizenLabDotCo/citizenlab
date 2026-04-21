@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Approvate di recente ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Rimuovi tutti i contributi",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Annulla approvazione",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Annulla l'ultima approvazione",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Questo progetto non contiene fasi che possano contenere idee.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Seleziona la fase a cui vuoi aggiungere questi contributi.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importa i contributi",

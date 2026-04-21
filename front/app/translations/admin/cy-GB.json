@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Wedi'u cymeradwyo'n ddiweddar ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Tynnu pob mewnbwn",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Dadwneud cymeradwyaeth",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Dadwneud y cymeradwyad diwethaf",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Nid yw'r prosiect hwn yn cynnwys unrhyw gamau a all gynnwys syniadau.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Dewiswch i ba gyfnod yr hoffech ychwanegu'r mewnbynnau hyn.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Mewnforiwr mewnbwn",

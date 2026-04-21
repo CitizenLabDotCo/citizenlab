@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Viru kuerzem guttgeheescht ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "All Inputen ewechhuelen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Approbatioun réckgängeg maachen",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Lescht Approbatioun réckgängeg maachen",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dëse Projet enthält keng Phasen, déi Iddien enthalen kënnen.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Wielt wgl. aus, zu wéi enger Phas Dir dës Inpute bäisetze wëllt.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input-Importer",

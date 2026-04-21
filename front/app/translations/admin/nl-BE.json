@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Onlangs goedgekeurd ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle bijdragen verwijderen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Goedkeuring ongedaan maken",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Laatste goedkeuring ongedaan maken",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dit project bevat geen fases die ideeën kunnen bevatten.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Selecteer aan welke fase je deze bijdragen wilt toevoegen.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input Importeur",

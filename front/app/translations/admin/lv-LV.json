@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nesen apstiprinātie ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Noņemt visus ierakstus",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Atsaukt apstiprināšanu",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Atsaukt pēdējo apstiprinājumu",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Šajā projektā nav fāžu, kurās var būt idejas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Lūdzu, izvēlieties, kurai fāzei vēlaties pievienot šos ievades datus.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Ievades importētājs",

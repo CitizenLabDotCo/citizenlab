@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Qanittukkut akuerineqartut ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ilanngussat tamarmik piiakkit",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Akuerineqarnera taamaatiguk",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Akuersissut kingulleq utertiguk",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Suliniummi uani immikkoortunik isumassarsianik imalinnik soqanngilaq.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Toqqaruk immikkoortoq sorleq immersukkat ilanngunniarneritit.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Isissutinik eqqussissut",

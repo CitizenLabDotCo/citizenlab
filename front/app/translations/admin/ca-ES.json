@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Aprovades recentment ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Eliminar totes les entrades",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Desfer l'aprovació",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Desfer l'última aprovació",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Aquest projecte no conté cap fase que pugui incloure idees.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Seleccioneu a quina fase voleu afegir aquestes aportacions.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importador d'entrades",

@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Neseniai patvirtinta ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Pašalinti visus įrašus",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Atšaukti patvirtinimą",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Atšaukti paskutinį patvirtinimą",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Šiame projekte nėra jokių etapų, kuriuose gali būti idėjų.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Pasirinkite, prie kurio etapo norite pridėti šiuos įėjimus.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Įvesties importuotojas",

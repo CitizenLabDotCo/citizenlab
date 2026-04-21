@@ -1588,7 +1588,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nyligen godkända ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ta bort alla bidrag",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Ångra godkännande",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": "Ångra senaste godkännandet",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Detta projekt innehåller inga faser som kan innehålla idéer.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Välj till vilken fas du vill lägga till dessa ingångar.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importör av indata",
