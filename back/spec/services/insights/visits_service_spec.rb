@@ -43,7 +43,7 @@ describe Insights::VisitsService do
     end
 
     describe 'edge cases for phase date boundaries' do
-      let(:phase2) { create(:single_voting_phase, start_at: '2025-10-15', end_at: '2025-11-02') }
+      let(:phase2) { create(:single_voting_phase, start_at: '2025-10-15', end_at: '2025-11-03') }
       let(:session) { create(:session, user_id: user1.id) }
       let(:service) { described_class.new(phase2.project_id, start_at: phase2.start_at, end_at: phase2.end_at) }
 
@@ -70,7 +70,7 @@ describe Insights::VisitsService do
       end
 
       it 'excludes a visit after the phase end date' do
-        create(:pageview, session:, created_at: '2025-11-03 00:00:00', project_id: phase2.project.id) # after phase end
+        create(:pageview, session:, created_at: '2025-11-04 00:00:00', project_id: phase2.project.id) # after phase end
         expect(service.total_visits).to eq({ visits: 0, visitors: 0 })
         expect(service.visits_by_date('month')).to eq []
       end

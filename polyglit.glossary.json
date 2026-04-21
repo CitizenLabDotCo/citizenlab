@@ -1,19 +1,72 @@
 {
+  "Beta": {
+    "fr-FR": "Bêta"
+  },
+  "Common Ground": {
+    "de-DE": "ZusammenFinden"
+  },
   "FormSync": {
     "de-DE": "Papier-Scans"
   },
+  "GovSuccess Manager": {
+    "de-DE": "Kundenbetreuerin",
+    "fr-FR": "Spécialiste en participation Go Vocal"
+  },
+  "Government Success Manager": {
+    "de-DE": "Kundenbetreuerin"
+  },
+  "Space (i.e. The container for folders and projects)": {
+    "da-DK": "Rum"
+  },
+  "Space Manager": {
+    "da-DK": "Rumadministrator"
+  },
+  "admin": {
+    "de-DE": "Admin"
+  },
+  "approve": {
+    "de-DE": "freigeben"
+  },
+  "email": {
+    "da-DK": "e-mail",
+    "es-ES": "correo"
+  },
+  "input": {
+    "de-DE": "Beitrag",
+    "fr-FR": "contribution"
+  },
+  "inputs": {
+    "da-DK": "input",
+    "de-DE": "Beiträge",
+    "fr-FR": "contributions"
+  },
   "manager": {
+    "da-DK": "projektleder",
     "de-DE": "Manager*innen",
-    "es-ES": "gestor"
+    "es-ES": "gestor",
+    "fr-FR": "gestionnaire"
+  },
+  "recipients": {
+    "de-DE": "Empfänger*innen"
+  },
+  "save": {
+    "da-DK": "gem",
+    "fr-FR": "enregistrer"
   },
   "seat": {
+    "da-DK": "plads",
     "de-DE": "Zugang",
     "es-ES": "asiento"
   },
   "seats": {
+    "da-DK": "pladser",
+    "de-DE": "Zugänge",
     "es-ES": "asientos"
   },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
+  },
+  "users": {
+    "de-DE": "Nutzende"
   }
 }

@@ -44,6 +44,7 @@ RSpec.describe Phase do
       phase = build(:phase)
       phase.end_at = phase.start_at + 1.day - 1.second
       expect(phase).to be_invalid
+      expect(phase.errors.details[:base]).to include(error: :duration_too_short)
     end
 
     it 'succeeds when the duration is exactly 1 day' do
@@ -326,6 +327,35 @@ RSpec.describe Phase do
     it 'returns false if the phase has no end date' do
       phase.update!(end_at: nil)
       expect(phase.ends_before?(phase.start_at + 10.years)).to be false
+    end
+  end
+
+  describe '#start_date' do
+    it 'returns the date when start_at is set' do
+      phase = build(:phase, start_at: '2025-03-15 14:30:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
+    end
+
+    it 'returns the same day even if start_at is midnight' do
+      phase = build(:phase, start_at: '2025-03-15 00:00:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
+    end
+  end
+
+  describe '#end_date' do
+    it 'returns the previous day if end_at is midnight (exclusive end)' do
+      phase = build(:phase, end_at: '2025-03-15 00:00:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 14)
+    end
+
+    it 'returns the same day if end_at is non-midnight' do
+      phase = build(:phase, end_at: '2025-03-15 14:30:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 15)
+    end
+
+    it 'returns nil if end_at is nil' do
+      phase = build(:phase, end_at: nil)
+      expect(phase.end_date).to be_nil
     end
   end
 

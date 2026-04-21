@@ -190,6 +190,7 @@ DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
+DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
@@ -1311,7 +1312,8 @@ CREATE TABLE public.official_feedbacks (
     user_id uuid,
     idea_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1534,7 +1536,8 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    token_expiry_key character varying
 );
 
 
@@ -1680,7 +1683,8 @@ CREATE TABLE public.comments (
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
     author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL
+    anonymous boolean DEFAULT false NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1735,7 +1739,8 @@ CREATE TABLE public.ideas (
     manual_votes_amount integer,
     manual_votes_last_updated_by_id uuid,
     manual_votes_last_updated_at timestamp(6) without time zone,
-    neutral_reactions_count integer DEFAULT 0 NOT NULL
+    neutral_reactions_count integer DEFAULT 0 NOT NULL,
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1795,7 +1800,8 @@ CREATE TABLE public.phases (
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
     prescreening_mode character varying,
-    available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL
+    available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL,
+    draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7070,6 +7076,13 @@ CREATE UNIQUE INDEX index_users_on_slug ON public.users USING btree (slug);
 
 
 --
+-- Name: index_users_on_token_expiry_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_token_expiry_key ON public.users USING btree (token_expiry_key);
+
+
+--
 -- Name: index_users_on_unique_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8497,11 +8510,16 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260421105121'),
+('20260323120000'),
+('20260313160000'),
+('20260313120000'),
 ('20260312142054'),
 ('20260311100002'),
 ('20260311100001'),
 ('20260311100000'),
 ('20260309120000'),
+('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),

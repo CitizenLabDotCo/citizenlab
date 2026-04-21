@@ -19,6 +19,10 @@ module BulkImportIdeas
         active_moderator?
       end
 
+      def delete_all?
+        active_moderator?
+      end
+
       def show_idea_import_file?
         active_moderator?
       end

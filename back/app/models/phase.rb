@@ -83,6 +83,8 @@ class Phase < ApplicationRecord
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images
 
+  has_many_text_images from: :draft_description_multiloc, as: :draft_description_text_images
+
   belongs_to :project
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
@@ -97,6 +99,7 @@ class Phase < ApplicationRecord
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
+  before_validation :sanitize_draft_description_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
@@ -108,6 +111,7 @@ class Phase < ApplicationRecord
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :draft_description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
   validate :validate_end_at
   validate :validate_duration
@@ -265,7 +269,10 @@ class Phase < ApplicationRecord
   end
 
   def end_date
-    end_at && (end_at.to_date - 1.day)
+    return unless end_at
+
+    date = end_at.to_date
+    end_at.seconds_since_midnight.zero? ? date - 1.day : date
   end
 
   # Used for validations (which are hard to delegate through the participation method)
@@ -354,13 +361,13 @@ class Phase < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
+    self.description_multiloc = sanitize_html_multiloc(description_multiloc)
+  end
+
+  def sanitize_draft_description_multiloc
+    return if draft_description_multiloc.blank?
+
+    self.draft_description_multiloc = sanitize_html_multiloc(draft_description_multiloc)
   end
 
   def validate_end_at
@@ -372,7 +379,7 @@ class Phase < ApplicationRecord
   def validate_duration
     return unless start_at.present? && end_at.present? && (end_at - start_at) < MIN_DURATION
 
-    errors.add(:base, :phase_too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
+    errors.add(:base, :duration_too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
   end
 
   def validate_no_other_overlapping_phases
@@ -475,6 +482,16 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def sanitize_html_multiloc(multiloc)
+    service = SanitizationService.new
+    multiloc = service.sanitize_multiloc(
+      multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    multiloc = service.remove_multiloc_empty_trailing_tags(multiloc)
+    service.linkify_multiloc(multiloc)
   end
 end
 

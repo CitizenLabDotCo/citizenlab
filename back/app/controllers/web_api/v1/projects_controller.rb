@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data]
+  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -171,7 +171,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(:phases, :admin_publication, :project_images, :groups)
+    projects = projects.includes(phases: %i[report custom_form permissions], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -183,7 +183,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_project: moderators_per_project
+        moderators_per_project:
       ),
       include: %i[phases project_images groups moderators]
     )
@@ -377,9 +377,21 @@ class WebApi::V1::ProjectsController < ApplicationController
     ).serializable_hash
   end
 
+  def publication_recipient_count
+    # Temporarily pretend the project is published (in-memory only) to compute the list
+    # of recipients, even for draft projects.
+    @project.admin_publication.publication_status = 'published'
+    notification_recipients = Notifications::ProjectPublished.recipients(@project)
+    opt_outs = EmailCampaigns::Consent.where(campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+    recipients = notification_recipients.where.not(id: opt_outs.select(:user_id))
+
+    render json: raw_json({ count: recipients.count })
+  end
+
   def participant_counts
     projects = policy_scope(Project)
       .where(id: params[:project_ids])
+      .includes(:phases)
 
     authorize projects, :participant_counts?
 

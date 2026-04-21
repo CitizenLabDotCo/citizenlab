@@ -457,6 +457,8 @@ fi-FI:
       preheader: Et vastannut kyselyyn osallistumisalustalla %{organizationName}
       subject: '%{organizationName}: Melkein perillä! Lähetä vastauksesi'
       submissions_close: Lähetys päättyy %{phaseEndDate}.
+      submissions_close_at_time: Ehdotusten jättäminen päättyy %{datetime}.
+      submissions_close_on_date: Ehdotusten jättäminen päättyy %{date} lopussa.
       title: Melkein valmis! Lähetä vastauksesi
     new_comment_for_admin:
       anonymous_user: Anonyymi käyttäjä

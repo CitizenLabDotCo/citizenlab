@@ -187,7 +187,7 @@ class OmniauthCallbackController < ApplicationController
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname') || {}
+    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
   end
 
   def add_uri_params(uri, params = {})

@@ -11,9 +11,18 @@ module BulkImportIdeas::Parsers::Pdf
     def parse_idea(file_uploader, page_count)
       parsed_response = parse(file_uploader)
 
+      fields = if parsed_response.present?
+        parsed_response
+          .select { |r| r.is_a?(Hash) && r['text'].present? }
+          .map { |r| { r['text'] => r['answer'] } }
+          .reduce({}, :merge)
+      else
+        {}
+      end
+
       {
         pdf_pages: (1..page_count).to_a,
-        fields: parsed_response&.map { |r| { r['text'] => r['answer'] } }&.reduce({}, :merge)
+        fields: fields
       }
     end
 

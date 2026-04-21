@@ -129,7 +129,7 @@ describe Permissions::IdeaPermissionsService do
       let(:proposed_status) { create(:idea_status, code: 'proposed') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: proposed_status) }
 
-      it "does not return 'not_reactable_status_code'" do
+      it "does not return 'reacting_not_allowed'" do
         expect(reason).to be_nil
       end
     end
@@ -138,8 +138,8 @@ describe Permissions::IdeaPermissionsService do
       let(:prescreening_status) { create(:idea_status, code: 'prescreening') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], publication_status: 'submitted', idea_status: prescreening_status) }
 
-      it "returns 'not_reactable_status_code'" do
-        expect(reason).to eq 'not_reactable_status_code'
+      it "returns 'reacting_not_allowed'" do
+        expect(reason).to eq 'reacting_not_allowed'
       end
     end
 
@@ -147,17 +147,53 @@ describe Permissions::IdeaPermissionsService do
       let(:ineligible_status) { create(:idea_status, code: 'ineligible') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: ineligible_status) }
 
-      it "returns 'not_reactable_status_code'" do
-        expect(reason).to eq 'not_reactable_status_code'
+      it "returns 'reacting_not_allowed'" do
+        expect(reason).to eq 'reacting_not_allowed'
       end
     end
 
     context "when idea has 'expired' status" do
-      let(:expired_status) { create(:idea_status, code: 'ineligible') }
+      let(:expired_status) { create(:idea_status, code: 'expired') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: expired_status) }
 
-      it "returns 'not_reactable_status_code'" do
-        expect(reason).to eq 'not_reactable_status_code'
+      it "returns 'reacting_not_allowed'" do
+        expect(reason).to eq 'reacting_not_allowed'
+      end
+    end
+
+    context 'when proposal has threshold_reached status and voting deadline has passed' do
+      let(:phase) { create(:proposals_phase, expire_days_limit: 30) }
+      let(:project) { phase.project }
+      let(:threshold_reached_status) { create(:proposal_status_threshold_reached) }
+      let(:input) do
+        create(:idea,
+          project: project,
+          creation_phase: phase,
+          phases: [phase],
+          idea_status: threshold_reached_status,
+          published_at: 31.days.ago)
+      end
+
+      it "returns 'reacting_not_allowed'" do
+        expect(reason).to eq 'reacting_not_allowed'
+      end
+    end
+
+    context 'when proposal has threshold_reached status and voting deadline has not passed' do
+      let(:phase) { create(:proposals_phase, expire_days_limit: 30) }
+      let(:project) { phase.project }
+      let(:threshold_reached_status) { create(:proposal_status_threshold_reached) }
+      let(:input) do
+        create(:idea,
+          project: project,
+          creation_phase: phase,
+          phases: [phase],
+          idea_status: threshold_reached_status,
+          published_at: 10.days.ago)
+      end
+
+      it 'returns nil' do
+        expect(reason).to be_nil
       end
     end
 

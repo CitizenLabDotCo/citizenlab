@@ -10,10 +10,10 @@
       "da-DK",
       { "nl-NL": ["nl-BE"] },
       { "fr-FR": ["fr-BE"] },
-      "de-DE",
-      { "es-ES": ["es-CL"] }
+      { "de-DE": ["de-AT"] }
     ],
     "l2": [
+      { "es-ES": ["es-CL"] },
       "ar-SA",
       "hr-HR",
       "en-CA",

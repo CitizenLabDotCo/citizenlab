@@ -4,7 +4,7 @@ module ProjectFolders
   class FolderPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
+        if user&.admin? || user&.moderator?
           scope.all
         else
           published_folders
@@ -17,7 +17,7 @@ module ProjectFolders
     end
 
     def index_for_admin?
-      user&.admin? || user&.project_folder_moderator?
+      user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
     end
 
     def show?
@@ -36,13 +36,19 @@ module ProjectFolders
     def create?
       return unless user&.active?
 
-      user.admin?
+      return true if user.admin?
+
+      if record.space_id && user.space_moderator?(record.space_id)
+        return true
+      end
+
+      false
     end
 
     def update?
       return unless user&.active?
 
-      create? || user&.project_folder_moderator?(record.id)
+      create? || UserRoleService.new.can_moderate?(record, user)
     end
 
     def destroy?
@@ -62,7 +68,7 @@ module ProjectFolders
           header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES }
       ]
 
-      attrs << :space_id if user&.admin?
+      attrs << :space_id if user&.admin? || user&.space_moderator?
       attrs
     end
   end
