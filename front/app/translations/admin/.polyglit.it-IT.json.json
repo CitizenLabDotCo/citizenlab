@@ -8074,9 +8074,19 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
+    "state": "verified",
+    "verified_at": "2026-04-21T10:00:15.964102Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": {
     "state": "verified",
     "verified_at": "2026-03-26T16:52:34.112148Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
+    "state": "verified",
+    "verified_at": "2026-04-21T10:00:15.964102Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": {

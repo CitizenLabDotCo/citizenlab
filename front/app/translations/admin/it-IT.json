@@ -1585,7 +1585,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Impossibile visualizzare il file importato. La visualizzazione del file importato è disponibile solo per le importazioni in PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La fase selezionata non può contenere contributi. Selezionane un'altra.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Approvate di recente ({count})",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Approvati di recente ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Rimuovi tutti i contributi",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Annulla approvazione",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Questo progetto non contiene fasi che possano contenere idee.",
