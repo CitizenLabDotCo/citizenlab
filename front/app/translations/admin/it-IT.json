@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Si sono verificati degli errori durante l'importazione e alcuni contributi non sono stati importati. Correggi gli errori e reimposta i contributi mancanti.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Dati del modulo non validi. Controlla che il modulo di cui sopra non contenga errori.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importa un file Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importa moduli scansionati (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importa moduli scansionati",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Contributi importati",

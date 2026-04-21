@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Tuonnin aikana tapahtui virheitä, ja joitain syötteitä ei ole tuotu. Korjaa virheet ja tuo puuttuvat syötteet uudelleen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Virheelliset lomaketiedot. Tarkista yllä olevasta lomakkeesta virheitä.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Tuo Excel-tiedosto (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Tuonti",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Tuo skannatut lomakkeet (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Tuo skannatut lomakkeet",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Tuodut tulot",

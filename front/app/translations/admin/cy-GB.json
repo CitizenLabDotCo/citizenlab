@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Digwyddodd gwallau yn ystod y mewnforio ac nid yw rhai mewnbynnau wedi'u mewnforio. Cywirwch y gwallau ac ail-fewnforiwch unrhyw fewnbynnau coll.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Data ffurf annilys. Gwiriwch y ffurflen uchod am wallau.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Mewnforio ffeil Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Mewnforio",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Mewnforio ffurflenni wedi'u sganio (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Mewnforio ffurflenni wedi'u sganio",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Mewnbynnau wedi'u mewnforio",

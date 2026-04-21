@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Der opstod fejl under importen, og nogle input er ikke blevet importeret. Ret venligst fejlene, og genimporter eventuelle manglende input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige formulardata. Tjek formularen ovenfor for fejl.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importer Excel-fil (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importer scannede formularer (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importer scannede formularer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importerede input",

@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "S'han produït errors durant la importació i algunes entrades no s'han importat. Corregiu els errors i torneu a importar les entrades que falten.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Dades del formulari no vàlides. Reviseu si hi ha errors al formulari anterior.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importa un fitxer Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importar formularis escanejats (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importa formularis escanejats",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Aportacions importades",
