@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Importuojant įvyko klaidų ir kai kurie įvesties duomenys nebuvo importuoti. Ištaisykite klaidas ir iš naujo importuokite trūkstamus įvesties duomenis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Netinkami formos duomenys. Patikrinkite, ar pirmiau pateiktoje formoje nėra klaidų.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importuoti \"Excel\" failą (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importas",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importuokite nuskaitytas formas (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importuoti nuskaitytas formas",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importuoti įėjimai",

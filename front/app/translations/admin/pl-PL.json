@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Podczas importu wystąpiły błędy i niektóre dane wejściowe nie zostały zaimportowane. Popraw błędy i ponownie zaimportuj brakujące dane wejściowe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nieprawidłowe dane formularza. Sprawdź powyższy formularz pod kątem błędów.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importuj plik Excel (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importuj zeskanowane formularze (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importuj zeskanowane formularze",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importowane wejścia",

@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Eqqussinermi kukkusoqarpoq ilaatigullu ilanngussat ilaannik eqqussisoqanngilaq. Kukkunersioruk missingillu eqqunniarsaralugit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Immersugassami paasissutissat kukkuneqarput. Qulaani immersugassaq kukkunersioruk.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Excel-fiili (.xlsx) eqqugu",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Eqqussineq",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Immersugassat scannikkat (.pdf) aakkit",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Immersugassat skannerneqarsimasut aakkit",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Siunnersuutit eqqussat",

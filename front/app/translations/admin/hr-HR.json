@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Došlo je do pogrešaka tijekom uvoza i neki unosi nisu uvezeni. Ispravite pogreške i ponovno uvezite unose koji nedostaju.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nevažeći podaci obrasca. Provjerite gornji obrazac za pogreške.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Uvezi Excel datoteku (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Uvoz",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Uvoz skeniranih obrazaca (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Uvoz skeniranih obrazaca",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Uvezeni ulazi",

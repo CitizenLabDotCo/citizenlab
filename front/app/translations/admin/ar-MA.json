@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "حدثت أخطاء أثناء الاستيراد ولم يتم استيراد بعض المدخلات. المرجو تصحيح الأخطاء وإعادة استيراد أي مدخلات مفقودة.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "بيانات النموذج غير صالحة. تحقق من النموذج أعلاه بحثاً عن أخطاء.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "استيراد ملف إكسيل (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "استيراد",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "استيراد النماذج الممسوحة ضوئياً (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "استيراد النماذج الممسوحة ضوئيًا",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "المساهمات المستوردة",

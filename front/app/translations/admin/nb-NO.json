@@ -1579,7 +1579,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Det oppstod feil under importen, og noen inndata er ikke importert. Korriger feilene, og importer eventuelle manglende inndata på nytt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige skjemadata. Sjekk om det er feil i skjemaet ovenfor.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importer Excel-fil (.xlsx)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importer skannede skjemaer (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importer skannede skjemaer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importerte innganger",
