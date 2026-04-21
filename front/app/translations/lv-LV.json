@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 balsis} one {1 balss} other {# balsis}}",
   "app.utils.votingMethodUtils.results": "Rezultāti",
   "app.utils.votingMethodUtils.singleVotingEnded": "Balsošana tika slēgta vietnē <b>{endDate}.</b> Dalībnieki varēja <b>balsot par {maxVotes} iespējām.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Izvēlieties vēlamo opciju, piesitot \"Balsot\".",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Izvēlieties vēlamos variantus, nospiežot uz “Izvēlēties”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Jums ir <b>{totalVotes} balsis</b> , kuras varat piešķirt opcijām.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Kad esat pabeidzis, noklikšķiniet uz \"Iesniegt\", lai nodotu savu balsi.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Balsošana tika slēgta vietnē <b>{endDate}.</b> Dalībnieki varēja <b>balsot par 1 iespēju.</b>",

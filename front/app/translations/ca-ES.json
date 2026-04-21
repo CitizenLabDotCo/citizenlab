@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 vots} one {1 vot} other {# vots}}",
   "app.utils.votingMethodUtils.results": "Resultats",
   "app.utils.votingMethodUtils.singleVotingEnded": "La votació es va tancar{endDate}<b></b> participants podrien votar <b>per {maxVotes} opcions.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Seleccioneu les vostres opcions preferides tocant \"Vota\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Selecciona les teves opcions preferides fent clic a «Selecciona»",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Tens <b>{totalVotes} vots</b> que pots assignar a les opcions.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Un cop hàgiu acabat, feu clic a \"Enviar\" per votar.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "La votació es va tancar{endDate}<b></b> participants podrien votar <b>per 1 opció.</b>",

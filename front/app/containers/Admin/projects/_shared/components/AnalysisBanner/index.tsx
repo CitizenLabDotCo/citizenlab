@@ -16,14 +16,13 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import messages from 'containers/Admin/projects/project/ideas/messages';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import messages from '../../project/ideas/messages';
 
 import { getAnalysisScope } from './utils';
 

@@ -465,6 +465,8 @@ pt-BR:
       preheader: Você não concluiu a resposta da pesquisa na plataforma de participação de %{organizationName}
       subject: '%{organizationName}: Quase lá! Envie suas respostas'
       submissions_close: As inscrições serão encerradas em %{phaseEndDate}.
+      submissions_close_at_time: As submissões serão encerradas em %{datetime}.
+      submissions_close_on_date: As submissões se encerram ao final de %{date}.
       title: Você está quase lá! Envie suas respostas
     new_comment_for_admin:
       anonymous_user: Usuário anônimo

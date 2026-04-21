@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 ääntä} one {1 ääni} other {# ääntä}}",
   "app.utils.votingMethodUtils.results": "Tulokset",
   "app.utils.votingMethodUtils.singleVotingEnded": "Äänestys päättyi <b>{endDate}.</b> Osallistujat voivat <b>äänestää {maxVotes} vaihtoehtoja.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Valitse haluamasi vaihtoehto napsauttamalla \"valitse\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Valitse haluamasi vaihtoehdot napauttamalla ”Valitse”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Sinulla on <b>{totalVotes} ääntä</b> , jotka voit määrittää vaihtoehdoille.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Kun olet valmis, napsauta \"lähetä\" äänestääksesi.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Äänestys päättyi <b>{endDate}.</b> Osallistujat voivat <b>äänestää 1 vaihtoehdon puolesta.</b>",

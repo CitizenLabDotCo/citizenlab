@@ -854,6 +854,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.continueEditing": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:38:06.231905Z",
+    "verified_by": "Roger"
+  },
   "app.components.CustomFieldsForm.descriptionMaxLength": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -3709,6 +3714,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:38:06.231905Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -3793,6 +3803,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:38:06.231905Z",
+    "verified_by": "Roger"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",
@@ -9034,6 +9049,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:38:06.231905Z",
+    "verified_by": "Roger"
+  },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -13286,8 +13306,8 @@
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
-    "verified_at": "2026-03-18T16:40:24.277483Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-20T15:38:06.231905Z",
+    "verified_by": "Roger"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",

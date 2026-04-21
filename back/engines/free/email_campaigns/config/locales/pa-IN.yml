@@ -465,6 +465,8 @@ pa-IN:
       preheader: ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਆਪਣਾ ਸਰਵੇਖਣ ਜਵਾਬ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ
       subject: '%{organizationName}: ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
       submissions_close: ਸਬਮਿਸ਼ਨਾਂ %{phaseEndDate}ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੀਆਂ।
+      submissions_close_at_time: ਸਬਮਿਸ਼ਨ %{datetime} ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੇ।
+      submissions_close_on_date: ਸਬਮਿਸ਼ਨ %{date} ਦੇ ਅੰਤ 'ਤੇ ਬੰਦ ਹੋ ਜਾਣਗੇ।
       title: ਲਗਭਗ ਹੋ ਗਿਆ! ਆਪਣੇ ਜਵਾਬ ਸਪੁਰਦ ਕਰੋ।
     new_comment_for_admin:
       anonymous_user: ਅਗਿਆਤ ਵਰਤੋਂਕਾਰ

@@ -467,6 +467,8 @@ lb-LU:
       preheader: Dir hutt Är Ëmfro-Äntwert net op der Participatiounsplattform vun %{organizationName}ofgeschloss
       subject: '%{organizationName}: Bal do! Gitt Är Äntwerten of'
       submissions_close: D'Umeldungen schléissen den %{phaseEndDate}.
+      submissions_close_at_time: D'Areechunge ginn de %{datetime} zou.
+      submissions_close_on_date: D'Areechunge ginn um Enn vum %{date} zou.
       title: Bal fäerdeg! Gitt Är Äntwerten of
     new_comment_for_admin:
       anonymous_user: Anonyme Benotzer

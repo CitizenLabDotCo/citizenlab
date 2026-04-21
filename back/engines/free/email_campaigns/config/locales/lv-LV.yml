@@ -465,6 +465,8 @@ lv-LV:
       preheader: Jūs neesat aizpildījis savu aptaujas atbildi %{organizationName}dalības platformā.
       subject: '%{organizationName}: Gandrīz ir! Nosūtiet savas atbildes'
       submissions_close: Pieteikumu iesniegšana tiks slēgta %{phaseEndDate}.
+      submissions_close_at_time: Iesniegšana noslēgsies %{datetime}.
+      submissions_close_on_date: Iesniegšana noslēdzas %{date} dienas beigās.
       title: Gandrīz ir! Nosūtiet savas atbildes
     new_comment_for_admin:
       anonymous_user: Anonīms lietotājs

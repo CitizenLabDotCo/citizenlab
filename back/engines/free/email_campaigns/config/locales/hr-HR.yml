@@ -465,6 +465,8 @@ hr-HR:
       preheader: Niste ispunili svoj odgovor na anketu na platformi za sudjelovanje %{organizationName}
       subject: '%{organizationName}: Još malo pa smo stigli! Pošaljite svoje odgovore'
       submissions_close: Prijave će se zatvoriti %{phaseEndDate}.
+      submissions_close_at_time: Prijave se zatvaraju %{datetime}.
+      submissions_close_on_date: Prijave se zatvaraju krajem %{date}.
       title: Skoro je gotovo! Pošaljite svoje odgovore
     new_comment_for_admin:
       anonymous_user: Anonimni korisnik

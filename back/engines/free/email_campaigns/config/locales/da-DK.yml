@@ -465,6 +465,8 @@ da-DK:
       preheader: Du har ikke udfyldt din besvarelse af undersøgelsen på inddragelsesplatformen %{organizationName}
       subject: '%{organizationName}: Næsten i mål! Indsend dine svar'
       submissions_close: Der lukkes for indsendelser den %{phaseEndDate}.
+      submissions_close_at_time: Indsendelser lukker den %{datetime}.
+      submissions_close_on_date: Indsendelser lukker ved udgangen af %{date}.
       title: Så er vi der næsten! Indsend dine svar
     new_comment_for_admin:
       anonymous_user: Anonym bruger

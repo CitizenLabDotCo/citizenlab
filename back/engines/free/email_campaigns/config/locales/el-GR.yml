@@ -465,6 +465,8 @@ el-GR:
       preheader: Δεν ολοκληρώσατε την απάντησή σας στην έρευνα στην πλατφόρμα συμμετοχής του %{organizationName}.
       subject: '%{organizationName}: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
       submissions_close: 'Ημερομηνία ολοκλήρωσης υποβολών: %{phaseEndDate}.'
+      submissions_close_at_time: Οι υποβολές θα λήξουν στις %{datetime}.
+      submissions_close_on_date: Οι υποβολές λήγουν στο τέλος της %{date}.
       title: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας
     new_comment_for_admin:
       anonymous_user: Ανώνυμος χρήστης

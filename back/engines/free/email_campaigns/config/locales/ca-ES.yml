@@ -465,6 +465,8 @@ ca-ES:
       preheader: No heu completat la resposta de l'enquesta a la plataforma de participació de %{organizationName}
       subject: '%{organizationName}: Gairebé allà! Envieu les vostres respostes'
       submissions_close: El termini d'enviament de propostes es tancarà el %{phaseEndDate}.
+      submissions_close_at_time: Les propostes es tancaran el %{datetime}.
+      submissions_close_on_date: Les propostes es tanquen al final del dia %{date}.
       title: Ja gairebé hi som! Envieu les vostres respostes!
     new_comment_for_admin:
       anonymous_user: Usuari anònim

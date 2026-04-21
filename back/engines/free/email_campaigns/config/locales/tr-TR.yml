@@ -465,6 +465,8 @@ tr-TR:
       preheader: Anket yanıtınızı %{organizationName}katılım platformunda tamamlamadınız
       subject: '%{organizationName}: Neredeyse bitti! Cevaplarınızı gönderin'
       submissions_close: Başvurular %{phaseEndDate}adresinde sona erecektir.
+      submissions_close_at_time: Başvurular %{datetime} tarihinde sona erecektir.
+      submissions_close_on_date: Başvurular %{date} günü sonunda sona erecektir.
       title: Neredeyse bitti! Cevaplarınızı gönderin
     new_comment_for_admin:
       anonymous_user: Anonim kullanıcı

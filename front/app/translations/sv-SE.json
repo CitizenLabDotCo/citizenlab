@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 röster} one {1 röst} other {# röster}}",
   "app.utils.votingMethodUtils.results": "Resultat",
   "app.utils.votingMethodUtils.singleVotingEnded": "Omröstningen avslutades på <b>{endDate}.</b> Deltagarna kunde <b>rösta på {maxVotes} alternativ.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Välj önskat alternativ genom att trycka på \"Rösta\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Välj dina föredragna alternativ genom att trycka på ”Välj”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Du har <b>{totalVotes} röster</b> som du kan tilldela alternativen.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "När du är klar klickar du på \"Skicka\" för att avge din röst.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Omröstningen avslutades den <b>{endDate}.</b> Deltagarna kunde <b>rösta på 1 alternativ.</b>",

@@ -854,7 +854,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.continueEditing": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.209348Z",
@@ -955,7 +954,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.submitConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.209348Z",
@@ -1046,7 +1044,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.yesSubmit": {
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.209348Z",
@@ -3632,7 +3629,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T17:20:13.461605Z",
@@ -3698,7 +3694,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T16:01:33.305288Z",
@@ -3719,7 +3714,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-31T07:26:09.082531Z",
@@ -3785,7 +3779,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T17:20:13.461605Z",
@@ -3801,7 +3794,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-26T16:01:33.305288Z",
@@ -3812,7 +3804,6 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-31T07:26:09.082531Z",
@@ -13311,11 +13302,6 @@
   "app.utils.votingMethodUtils.singleVotingEnded": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
-    "verified_by": "Admin"
-  },
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:09.080991Z",
     "verified_by": "Admin"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {

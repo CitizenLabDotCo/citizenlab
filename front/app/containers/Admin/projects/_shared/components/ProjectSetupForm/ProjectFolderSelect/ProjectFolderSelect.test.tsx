@@ -4,7 +4,7 @@ import { makeUser } from 'api/users/__mocks__/useUsers';
 
 import { render, screen, within } from 'utils/testUtils/rtl';
 
-import ProjectFolderSelect from './';
+import ProjectFolderSelect from '.';
 
 const projectFolders = {
   pages: [

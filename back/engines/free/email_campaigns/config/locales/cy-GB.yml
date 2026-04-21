@@ -465,6 +465,8 @@ cy-GB:
       preheader: Ni wnaethoch gwblhau eich ymateb i'r arolwg ar y llwyfan cyfranogiad o %{organizationName}
       subject: "%{organizationName}: Bron yno! Cyflwyno'ch atebion"
       submissions_close: Bydd cyflwyniadau'n cau ar %{phaseEndDate}.
+      submissions_close_at_time: Bydd cyflwyniadau’n cau ar %{datetime}.
+      submissions_close_on_date: Mae cyflwyniadau’n cau ar ddiwedd %{date}.
       title: Bron yno! Cyflwynwch eich atebion
     new_comment_for_admin:
       anonymous_user: Defnyddiwr anhysbys

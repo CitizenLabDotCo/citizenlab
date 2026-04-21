@@ -650,6 +650,8 @@ kl-GL:
       preheader: '%{organizationName}-ip peqataatitsinermut nittartagaani misissuinermut akissutit naammassinngilat'
       subject: '%{organizationName}: Inerlavissat qanillivaat! Akissutitit nassiukkit'
       submissions_close: Tunniussivissaq %{phaseEndDate} matussaaq.
+      submissions_close_at_time: Tunniussivissaq %{datetime} matussaaq.
+      submissions_close_on_date: Tunniussivissaq %{date} naanera ilanngullugu killeqarpoq.
       title: Tikilerpat! Akissutitit nassiukkit
     new_comment_for_admin:
       anonymous_user: Atuisoq kinaassutsiminik isertortoq

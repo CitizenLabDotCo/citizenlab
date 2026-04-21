@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 ψήφοι} one {1 ψήφος} other {# ψήφοι}}",
   "app.utils.votingMethodUtils.results": "Αποτελέσματα",
   "app.utils.votingMethodUtils.singleVotingEnded": "Η ψηφοφορία έκλεισε στο <b>{endDate}.</b> Οι συμμετέχοντες μπορούσαν <b>να ψηφίσουν για τις επιλογές {maxVotes} .</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Επιλέξτε τις προτιμώμενες επιλογές σας πατώντας \"Ψηφίστε\".",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Επιλέξτε τις προτιμώμενες επιλογές σας πατώντας στο «Επιλογή»",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Έχετε <b>{totalVotes} ψήφους</b> που μπορείτε να αντιστοιχίσετε στις επιλογές.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Μόλις τελειώσετε, κάντε κλικ στο κουμπί \"Υποβολή\" για να δώσετε την ψήφο σας.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Η ψηφοφορία έκλεισε στο <b>{endDate}.</b> Οι συμμετέχοντες μπορούσαν να ψηφίσουν <b>για 1 επιλογή.</b>",

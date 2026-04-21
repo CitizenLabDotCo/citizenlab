@@ -468,6 +468,8 @@ fr-FR:
       preheader: "Vous n'avez pas terminé votre réponse à l'enquête sur la plateforme de participation de %{organizationName}"
       subject: '%{organizationName}: Nous y sommes presque ! Soumettez vos réponses'
       submissions_close: Les soumissions seront clôturées le %{phaseEndDate}.
+      submissions_close_at_time: Les contributions se termineront le %{datetime}.
+      submissions_close_on_date: Les contributions se terminent à la fin du %{date}.
       title: Vous y êtes presque ! Envoyez vos réponses
     new_comment_for_admin:
       anonymous_user: Utilisateur anonyme

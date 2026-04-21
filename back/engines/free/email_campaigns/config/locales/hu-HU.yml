@@ -465,6 +465,8 @@ hu-HU:
       preheader: Nem töltötte ki a felmérésre adott válaszát a %{organizationName}részvételi platformján
       subject: '%{organizationName}: Majdnem kész! Nyújtsa be válaszait'
       submissions_close: A beküldési határidő %{phaseEndDate}.
+      submissions_close_at_time: A beküldés %{datetime} időpontban zárul.
+      submissions_close_on_date: A beküldés %{date} végén zárul.
       title: Majdnem kész! Küldd be a válaszaidat
     new_comment_for_admin:
       anonymous_user: Névtelen felhasználó

@@ -2659,7 +2659,7 @@
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 glasova} one {1 glas} other {# glasova}}",
   "app.utils.votingMethodUtils.results": "Rezultati",
   "app.utils.votingMethodUtils.singleVotingEnded": "Glasovanje je zatvoreno <b>{endDate}.</b> sudionika mogla su <b>glasati za {maxVotes} opcije.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Odaberite željene opcije dodirom na \"Glasaj\"",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Odaberite željene opcije pritiskom na „Odaberi”",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Imate <b>{totalVotes} glasova</b> koje možete dodijeliti opcijama.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Kada ste gotovi, kliknite \"Pošalji\" da biste dali svoj glas.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Glasovanje je zatvoreno <b>{endDate}.</b> sudionika mogla su <b>glasati za 1 opciju.</b>",

@@ -465,6 +465,8 @@ lt-LT:
       preheader: Neužpildėte savo atsakymo į apklausos klausimus %{organizationName}dalyvavimo platformoje.
       subject: '%{organizationName}: Beveik ten! Pateikite savo atsakymus'
       submissions_close: Paraiškos bus teikiamos iki %{phaseEndDate}.
+      submissions_close_at_time: Pasiūlymų teikimas baigsis %{datetime}.
+      submissions_close_on_date: Pasiūlymų teikimas baigiasi %{date} pabaigoje.
       title: Jau beveik ten! Pateikite savo atsakymus
     new_comment_for_admin:
       anonymous_user: Anoniminis naudotojas

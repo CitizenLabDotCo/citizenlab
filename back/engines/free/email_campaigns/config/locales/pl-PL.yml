@@ -465,6 +465,8 @@ pl-PL:
       preheader: Nie wypełniłeś swojej ankiety na platformie uczestnictwa %{organizationName}.
       subject: '%{organizationName}Już prawie! Prześlij swoje odpowiedzi'
       submissions_close: Zgłoszenia zostaną zamknięte na stronie %{phaseEndDate}.
+      submissions_close_at_time: Zgłoszenia zostaną zamknięte %{datetime}.
+      submissions_close_on_date: Zgłoszenia zostaną zamknięte z końcem dnia %{date}.
       title: Już prawie! Prześlij swoje odpowiedzi
     new_comment_for_admin:
       anonymous_user: Anonimowy użytkownik

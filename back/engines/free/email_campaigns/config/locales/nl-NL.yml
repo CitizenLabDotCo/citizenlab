@@ -465,6 +465,8 @@ nl-NL:
       preheader: Je hebt de vragenlijst op het participatieplatform van %{organizationName} niet afgerond
       subject: '%{organizationName}: Bijna klaar! Stuur je antwoorden in'
       submissions_close: Inzendingen sluiten op %{phaseEndDate}.
+      submissions_close_at_time: Inzendingen sluiten op %{datetime}.
+      submissions_close_on_date: Inzendingen sluiten aan het einde van %{date}.
       title: Bijna klaar! Stuur je antwoorden in
     new_comment_for_admin:
       anonymous_user: Anonieme gebruiker

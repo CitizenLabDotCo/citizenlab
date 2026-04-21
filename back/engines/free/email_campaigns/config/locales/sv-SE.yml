@@ -465,6 +465,8 @@ sv-SE:
       preheader: Du slutförde inte ditt enkätsvar på deltagarplattformen på %{organizationName}
       subject: '%{organizationName}: Nästan klar! Skicka in dina svar'
       submissions_close: Sista inlämningsdag är %{phaseEndDate}.
+      submissions_close_at_time: Bidrag stängs den %{datetime}.
+      submissions_close_on_date: Bidrag stängs vid slutet av %{date}.
       title: Nästan framme! Skicka in dina svar
     new_comment_for_admin:
       anonymous_user: Anonym användare

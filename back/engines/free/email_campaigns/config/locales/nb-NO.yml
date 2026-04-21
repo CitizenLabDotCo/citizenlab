@@ -465,6 +465,8 @@ nb-NO:
       preheader: Du fullførte ikke undersøkelsen på medvirkningsplattformen til %{organizationName}
       subject: '%{organizationName}: Nesten i mål! Send inn svarene dine'
       submissions_close: Innleveringsfristen går ut på %{phaseEndDate}.
+      submissions_close_at_time: Innsendingen stenger %{datetime}.
+      submissions_close_on_date: Innsendingen stenger ved slutten av %{date}.
       title: Nesten i mål! Send inn svarene dine
     new_comment_for_admin:
       anonymous_user: Anonym bruker

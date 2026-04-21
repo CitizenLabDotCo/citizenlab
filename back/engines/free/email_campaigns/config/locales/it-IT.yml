@@ -465,6 +465,8 @@ it-IT:
       preheader: Non hai completato le risposte al sondaggio sulla piattaforma partecipativa di %{organizationName}
       subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
       submissions_close: Il sondaggio si concluderà il %{phaseEndDate}.
+      submissions_close_at_time: Le proposte chiuderanno il %{datetime}.
+      submissions_close_on_date: Le proposte chiudono alla fine del %{date}.
       title: Ci siamo quasi! Invia le tue risposte
     new_comment_for_admin:
       anonymous_user: Utente anonimo

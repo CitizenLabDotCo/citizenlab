@@ -465,6 +465,8 @@ ga-IE:
       preheader: Níor chríochnaigh tú d’fhreagra suirbhé ar ardán rannpháirtíochta %{organizationName}
       subject: '%{organizationName}: Beagnach ann! Cuir isteach do chuid freagraí'
       submissions_close: Dúnfar na haighneachtaí ar %{phaseEndDate}.
+      submissions_close_at_time: Dúnfar aighneachtaí ar %{datetime}.
+      submissions_close_on_date: Dúnfar aighneachtaí ag deireadh %{date}.
       title: Beagnach ann! Cuir isteach do chuid freagraí
     new_comment_for_admin:
       anonymous_user: Úsáideoir gan ainm

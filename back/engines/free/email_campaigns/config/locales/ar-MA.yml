@@ -465,6 +465,8 @@ ar-MA:
       preheader: لم تكمل إجابتك على الاستبيان على منصة المشاركة %{organizationName}
       subject: '%{organizationName}: أوشكت على الوصول! أرسل إجاباتك'
       submissions_close: سيتم إغلاق التقديم في %{phaseEndDate}.
+      submissions_close_at_time: ستغلق المشاركات في %{datetime}.
+      submissions_close_on_date: تنتهي المشاركات في نهاية %{date}.
       title: لقد اقتربنا! أرسل إجاباتك
     new_comment_for_admin:
       anonymous_user: مستخدم مجهول

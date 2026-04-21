@@ -465,6 +465,8 @@ ur-PK:
       preheader: آپ نے اپنا سروے کا جواب %{organizationName}کے شرکت کے پلیٹ فارم پر مکمل نہیں کیا۔
       subject: '%{organizationName}: قریب قریب! اپنے جوابات جمع کروائیں۔'
       submissions_close: گذارشات %{phaseEndDate}کو بند ہو جائیں گی۔
+      submissions_close_at_time: گذارشات %{datetime} کو بند ہو جائیں گی۔
+      submissions_close_on_date: گذارشات %{date} کے اختتام پر بند ہو جائیں گی۔
       title: تقریباً وہاں! اپنے جوابات جمع کروائیں۔
     new_comment_for_admin:
       anonymous_user: گمنام صارف

@@ -465,6 +465,8 @@ en-IE:
       preheader: You didn't complete your survey response on the participation platform of %{organizationName}
       subject: '%{organizationName}: Almost there! Submit your answers'
       submissions_close: Submissions will close on %{phaseEndDate}.
+      submissions_close_at_time: Submissions will close on %{datetime}.
+      submissions_close_on_date: Submissions close at the end of %{date}.
       title: Almost there! Submit your answers
     new_comment_for_admin:
       anonymous_user: Anonymous user

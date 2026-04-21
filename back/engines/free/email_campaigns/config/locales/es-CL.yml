@@ -465,6 +465,8 @@ es-CL:
       preheader: No completaste tu respuesta a la encuesta en la plataforma de participación de %{organizationName}
       subject: '%{organizationName}: ¡Ya casi está! Envía tus respuestas'
       submissions_close: La admisión de respuestas se cerrará en %{phaseEndDate}.
+      submissions_close_at_time: El plazo de presentación finalizará el %{datetime}.
+      submissions_close_on_date: El plazo de presentación finaliza al terminar el %{date}.
       title: ¡Ya casi está! Envía tus respuestas
     new_comment_for_admin:
       anonymous_user: Usuario anónimo
