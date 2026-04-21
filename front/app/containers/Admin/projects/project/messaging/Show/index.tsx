@@ -36,6 +36,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -241,7 +242,7 @@ const Show = () => {
           )}
           {!apiSendErrors && hasNoParticipants && (
             <Box mb="8px">
-              <Error text={formatMessage(messages.no_recipients)} />
+              <Warning>{formatMessage(messages.no_recipients)}</Warning>
             </Box>
           )}
           {apiSendErrors && (
