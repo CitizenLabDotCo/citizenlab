@@ -320,21 +320,6 @@ resource 'Phases' do
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
-      describe 'with date strings (backward compatibility)' do
-        let(:start_at) { '2025-06-01' }
-        let(:end_at) { '2025-07-15' }
-
-        example 'Create a phase with date strings', document: false do
-          do_request
-          assert_status 201
-
-          phase_in_db = Phase.find(response_data[:id])
-          expect(phase_in_db.start_at).to eq start_at.in_time_zone
-          # end_at shifted +1 day for exclusive end boundary
-          expect(phase_in_db.end_at).to eq end_at.in_time_zone + 1.day
-        end
-      end
-
       describe do
         with_options scope: :phase do
           parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage. Defaults to 90.'
@@ -645,20 +630,6 @@ resource 'Phases' do
         )
       end
 
-      describe 'with date strings (backward compatibility)' do
-        let(:start_at) { '2025-06-01' }
-        let(:end_at) { '2025-07-15' }
-
-        example 'Update a phase with date strings', document: false do
-          do_request
-          assert_status 200
-
-          phase.reload
-          expect(phase.start_at).to eq start_at.in_time_zone
-          # end_at shifted +1 day for exclusive end boundary
-          expect(phase.end_at).to eq end_at.in_time_zone + 1.day
-        end
-      end
 
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
