@@ -2428,6 +2428,7 @@
   "app.errors.maximum_attendees_greater_than1": "Det maximala antalet registrerade måste vara större än 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Det högsta antalet registrerade måste vara större än eller lika med det aktuella antalet registrerade.",
   "app.errors.no_invites_specified": "Ingen e-postadress hittades.",
+  "app.errors.no_recipients": "Kampanjen kan inte skickas ut eftersom det saknas mottagare. Gruppen du skickar till är antingen tom, eller så har ingen samtyckt till att ta emot e-post.",
   "app.errors.number_invalid": "Vänligen ange ett giltigt nummer.",
   "app.errors.password_blank": "Det här får inte vara tomt",
   "app.errors.password_invalid": "Kontrollera ditt nuvarande lösenord igen.",

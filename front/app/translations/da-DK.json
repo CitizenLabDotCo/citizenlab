@@ -2428,6 +2428,7 @@
   "app.errors.maximum_attendees_greater_than1": "Det maksimale antal deltagere skal være større end 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Det maksimale antal deltagere skal være større end eller lig med det aktuelle antal deltagere.",
   "app.errors.no_invites_specified": "Kunne ikke finde nogen e-mailadresse.",
+  "app.errors.no_recipients": "Kampagnen kan ikke sendes ud, da der ikke er nogen modtagere. Den gruppe, du sender til, er enten tom, eller også har ingen givet samtykke til at modtage e-mails.",
   "app.errors.number_invalid": "Indtast venligst et gyldigt nummer.",
   "app.errors.password_blank": "Dette kan ikke være tomt",
   "app.errors.password_invalid": "Kontroller venligst din nuværende adgangskode igen.",

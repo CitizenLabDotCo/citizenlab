@@ -2428,6 +2428,7 @@
   "app.errors.maximum_attendees_greater_than1": "Ní mór an líon uasta cláraitheoirí a bheith níos mó ná 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Ní mór don líon uasta cláraitheoirí a bheith níos mó ná nó cothrom leis an líon reatha cláraitheoirí.",
   "app.errors.no_invites_specified": "Níorbh fhéidir aon seoladh ríomhphoist a aimsiú.",
+  "app.errors.no_recipients": "Ní féidir an feachtas a sheoladh amach toisc nach bhfuil aon fhaighteoirí ann. Tá an grúpa a bhfuil tú á sheoladh chuige folamh, nó níor thug aon duine toiliú chun ríomhphoist a fháil.",
   "app.errors.number_invalid": "Cuir isteach uimhir bhailí le do thoil.",
   "app.errors.password_blank": "Ní féidir é seo a bheith folamh",
   "app.errors.password_invalid": "Seiceáil do phasfhocal reatha arís le do thoil.",

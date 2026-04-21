@@ -2428,6 +2428,7 @@
   "app.errors.maximum_attendees_greater_than1": "Het maximum aantal geregistreerden moet groter zijn dan 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Het maximum aantal geregistreerden moet groter zijn dan of gelijk aan het huidige aantal geregistreerden.",
   "app.errors.no_invites_specified": "Kon geen e-mailadres(sen) vinden.",
+  "app.errors.no_recipients": "De campagne kan niet worden verzonden omdat er geen ontvangers zijn. De groep waarnaar je verzendt is leeg, of niemand heeft toestemming gegeven voor het ontvangen van e-mails.",
   "app.errors.number_invalid": "Voer een geldig nummer in.",
   "app.errors.password_blank": "Dit mag niet leeg zijn",
   "app.errors.password_invalid": "Controleer uw huidige wachtwoord opnieuw.",
