@@ -269,9 +269,8 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
         pb="4px"
         w="100%"
         display="flex"
-        alignItems="center"
-        justifyContent="flex-start"
-        gap="8px"
+        flexDirection="column"
+        justifyContent="flex-end"
       >
         {ideaId && (
           <Tooltip
@@ -283,6 +282,7 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
               <Button
                 bgColor={colors.primary}
                 icon="check"
+                w="100%"
                 processing={loadingApproveIdea}
                 disabled={!userFormDataValid || !ideaFormDataValid}
                 onClick={onApproveIdea}
