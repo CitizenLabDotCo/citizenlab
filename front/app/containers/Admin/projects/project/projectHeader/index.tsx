@@ -31,7 +31,6 @@ import { getFullName } from 'utils/textUtils';
 import FolderProjectDropdown from './FolderProjectDropdown';
 import messages from './messages';
 import PublicationButtons from './PublicationButtons';
-import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -171,10 +170,6 @@ const ProjectHeader = ({ projectId }: Props) => {
               padding="4px 8px"
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
-            />
-            <PublicationStatus
-              className="intercom-product-tour-project-publication-status-dropdown"
-              project={project}
             />
             <ShareLink
               projectId={project.data.id}
