@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} proyectos",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite nuestro centro de soporte",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}.",
   "app.components.FormSync.paperFormsOCRDescription1": "Imprime el formulario, recopila en papel y escanea las respuestas de vuelta",
-
   "app.components.FormSync.unlockScanningTooltip2": "Habla con tu gestor de éxito gubernamental o con el administrador para desbloquearlo.",
-
   "app.components.FormSync.importScans1": "Importar escaneos",
-
   "app.components.FormSync.spreadsheet1": "Hoja de cálculo",
-
   "app.components.FormSync.spreadsheetDescription1": "Importar datos de respuesta desde Excel o CSV",
-
   "app.components.FormSync.unlockScanning1": "Desbloquear escaneo",
-
   "app.components.FormSync.template1": "Plantilla",
-
   "app.components.FormSync.paperFormsOCR1": "OCR de formularios en papel",
-
   "app.components.FormSync.importResponses1": "Importar respuestas",
-
-  "app.components.FormSync.unlockScanningTooltip1": "El escaneo de formularios en papel con FormSync no está incluido en tu plan actual.",
+  "app.components.FormSync.unlockScanningTooltip1": "El escaneo de formularios en papel con FormSync no está incluido en tu plan actual."
+}

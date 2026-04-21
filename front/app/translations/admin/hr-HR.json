@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekti",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "posjetite naš centar za podršku",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}.",
   "app.components.FormSync.unlockScanning1": "Otključaj skeniranje",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Ispišite obrazac, prikupite na papiru, skenirajte odgovore natrag",
-
   "app.components.FormSync.paperFormsOCR1": "OCR papirnatih obrazaca",
-
   "app.components.FormSync.spreadsheet1": "Proračunska tablica",
-
   "app.components.FormSync.unlockScanningTooltip1": "Skeniranje papirnatih obrazaca putem FormSynca nije uključeno u vaš trenutni paket.",
-
   "app.components.FormSync.template1": "Predložak",
-
   "app.components.FormSync.unlockScanningTooltip2": "Obratite se svom Government Success Manageru ili administratoru kako biste to otključali.",
-
   "app.components.FormSync.importScans1": "Uvezi skenirane dokumente",
-
   "app.components.FormSync.spreadsheetDescription1": "Uvezite podatke o odgovorima iz Excel ili CSV datoteke",
-
-  "app.components.FormSync.importResponses1": "Uvezi odgovore",
+  "app.components.FormSync.importResponses1": "Uvezi odgovore"
+}

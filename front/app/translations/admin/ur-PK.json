@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} پروجیکٹس",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ہمارے سپورٹ سینٹر پر جائیں۔",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔"
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔",
   "app.components.FormSync.unlockScanning1": "اسکیننگ ان لاک کریں",
-
   "app.components.FormSync.spreadsheetDescription1": "Excel یا CSV سے جوابی ڈیٹا امپورٹ کریں",
-
   "app.components.FormSync.unlockScanningTooltip1": "FormSync کے ساتھ کاغذی فارمز کو اسکین کرنا آپ کے موجودہ پلان میں شامل نہیں ہے۔",
-
   "app.components.FormSync.unlockScanningTooltip2": "اسے ان لاک کرنے کے لیے اپنے گورنمنٹ سکسیس مینیجر یا ایڈمن سے بات کریں۔",
-
   "app.components.FormSync.paperFormsOCRDescription1": "فارم پرنٹ کریں، کاغذ پر جمع کریں، اور جوابات واپس اسکین کریں",
-
   "app.components.FormSync.paperFormsOCR1": "کاغذی فارمز OCR",
-
   "app.components.FormSync.spreadsheet1": "اسپریڈ شیٹ",
-
   "app.components.FormSync.template1": "ٹیمپلیٹ",
-
   "app.components.FormSync.importScans1": "اسکینز امپورٹ کریں",
-
-  "app.components.FormSync.importResponses1": "جوابات امپورٹ کریں",
+  "app.components.FormSync.importResponses1": "جوابات امپورٹ کریں"
+}

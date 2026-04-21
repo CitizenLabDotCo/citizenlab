@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projetos",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite o nosso centro de apoio",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para mais informações sobre as resoluções de imagem recomendadas, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para mais informações sobre as resoluções de imagem recomendadas, {supportPageLink}.",
   "app.components.FormSync.spreadsheet1": "Planilha",
-
   "app.components.FormSync.template1": "Modelo",
-
   "app.components.FormSync.paperFormsOCR1": "OCR de formulários em papel",
-
   "app.components.FormSync.unlockScanningTooltip1": "A digitalização de formulários em papel com o FormSync não está incluída no seu plano atual.",
-
   "app.components.FormSync.unlockScanningTooltip2": "Fale com seu Gerente de Sucesso do Governo ou administrador para desbloqueá-lo.",
-
   "app.components.FormSync.unlockScanning1": "Desbloquear digitalização",
-
   "app.components.FormSync.importResponses1": "Importar respostas",
-
   "app.components.FormSync.spreadsheetDescription1": "Importar dados de resposta de Excel ou CSV",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Imprima o formulário, colete em papel e digitalize as respostas de volta",
-
-  "app.components.FormSync.importScans1": "Importar digitalizações",
+  "app.components.FormSync.importScans1": "Importar digitalizações"
+}

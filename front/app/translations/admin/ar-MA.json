@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} مشاريع",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "زيارة مركز الدعم التابع لنا",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.components.FormSync.paperFormsOCRDescription1": "اطبع النموذج، واجمعه ورقياً، ثم امسح الردود ضوئياً لإعادتها",
-
   "app.components.FormSync.paperFormsOCR1": "التعرف الضوئي على الحروف (OCR) للنماذج الورقية",
-
   "app.components.FormSync.importResponses1": "استيراد الردود",
-
   "app.components.FormSync.spreadsheet1": "جدول بيانات",
-
   "app.components.FormSync.template1": "قالب",
-
   "app.components.FormSync.unlockScanningTooltip2": "تواصل مع مدير نجاح الحكومات أو المسؤول لفتح هذه الميزة.",
-
   "app.components.FormSync.spreadsheetDescription1": "استيراد بيانات الردود من ملف Excel أو CSV",
-
   "app.components.FormSync.unlockScanning1": "فتح ميزة المسح الضوئي",
-
   "app.components.FormSync.importScans1": "استيراد المسوحات الضوئية",
-
-  "app.components.FormSync.unlockScanningTooltip1": "مسح النماذج الورقية ضوئياً باستخدام FormSync غير مشمول في خطتك الحالية.",
+  "app.components.FormSync.unlockScanningTooltip1": "مسح النماذج الورقية ضوئياً باستخدام FormSync غير مشمول في خطتك الحالية."
+}

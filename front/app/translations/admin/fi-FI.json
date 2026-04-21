@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projektia",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "vieraile tukikeskuksessamme",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommendedimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Lisätietoja suositelluista kuvaresoluutioista on {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Lisätietoja suositelluista kuvaresoluutioista on {supportPageLink}.",
   "app.components.FormSync.unlockScanningTooltip1": "Paperilomakkeiden skannaaminen FormSyncillä ei sisälly nykyiseen tilaukseesi.",
-
   "app.components.FormSync.paperFormsOCR1": "Paperilomakkeiden tekstintunnistus (OCR)",
-
   "app.components.FormSync.spreadsheet1": "Taulukkolaskenta",
-
   "app.components.FormSync.spreadsheetDescription1": "Tuo vastausdata Excel- tai CSV-tiedostosta",
-
   "app.components.FormSync.template1": "Malli",
-
   "app.components.FormSync.unlockScanning1": "Avaa skannaus",
-
   "app.components.FormSync.importScans1": "Tuo skannaukset",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Tulosta lomake, kerää vastaukset paperilla, skannaa vastaukset takaisin",
-
   "app.components.FormSync.unlockScanningTooltip2": "Ota yhteyttä Government Success Manageriisi tai ylläpitäjään avataksesi sen.",
-
-  "app.components.FormSync.importResponses1": "Tuo vastaukset",
+  "app.components.FormSync.importResponses1": "Tuo vastaukset"
+}

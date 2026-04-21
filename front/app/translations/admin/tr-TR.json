@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projeler",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "destek merkezimizi ziyaret edin",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Önerilen görüntü çözünürlükleri hakkında daha fazla bilgi için, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Önerilen görüntü çözünürlükleri hakkında daha fazla bilgi için, {supportPageLink}.",
   "app.components.FormSync.unlockScanning1": "Tarama özelliğinin kilidini aç",
-
   "app.components.FormSync.spreadsheet1": "Elektronik tablo",
-
   "app.components.FormSync.template1": "Şablon",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Formu yazdırın, kağıt üzerinde toplayın, yanıtları tarayarak geri yükleyin",
-
   "app.components.FormSync.unlockScanningTooltip1": "FormSync ile kağıt formları tarama özelliği mevcut planınıza dahil değildir.",
-
   "app.components.FormSync.unlockScanningTooltip2": "Kilidini açmak için Kamu Başarı Yöneticinizle veya yöneticinizle görüşün.",
-
   "app.components.FormSync.importResponses1": "Yanıtları içe aktar",
-
   "app.components.FormSync.importScans1": "Taramaları içe aktar",
-
   "app.components.FormSync.spreadsheetDescription1": "Excel veya CSV'den yanıt verilerini içe aktarın",
-
-  "app.components.FormSync.paperFormsOCR1": "Kağıt form OCR",
+  "app.components.FormSync.paperFormsOCR1": "Kağıt form OCR"
+}

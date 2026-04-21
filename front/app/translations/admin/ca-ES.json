@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projectes",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.FormSync.spreadsheetDescription1": "Importa dades de respostes des d'Excel o CSV",
-
   "app.components.FormSync.unlockScanningTooltip1": "L'escaneig de formularis en paper amb FormSync no està inclòs en el teu pla actual.",
-
   "app.components.FormSync.importResponses1": "Importa les respostes",
-
   "app.components.FormSync.unlockScanningTooltip2": "Parla amb el teu gestor d'èxit governamental o administrador per desbloquejar-ho.",
-
   "app.components.FormSync.unlockScanning1": "Desbloqueja l'escaneig",
-
   "app.components.FormSync.template1": "Plantilla",
-
   "app.components.FormSync.paperFormsOCR1": "OCR de formularis en paper",
-
   "app.components.FormSync.spreadsheet1": "Full de càlcul",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Imprimeix el formulari, recull les respostes en paper i torna a escanejar-les",
-
-  "app.components.FormSync.importScans1": "Importa els escanejos",
+  "app.components.FormSync.importScans1": "Importa els escanejos"
+}

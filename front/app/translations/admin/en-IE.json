@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projects",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.FormSync.spreadsheet1": "Spreadsheet",
-
   "app.components.FormSync.importScans1": "Import scans",
-
   "app.components.FormSync.template1": "Template",
-
   "app.components.FormSync.unlockScanningTooltip1": "Scanning paper forms with FormSync is not included on your current plan.",
-
   "app.components.FormSync.importResponses1": "Import responses",
-
   "app.components.FormSync.unlockScanningTooltip2": "Talk to your Government Success Manager or admin to unlock it.",
-
   "app.components.FormSync.spreadsheetDescription1": "Import response data from Excel or CSV",
-
   "app.components.FormSync.unlockScanning1": "Unlock scanning",
-
   "app.components.FormSync.paperFormsOCR1": "Paper forms OCR",
-
-  "app.components.FormSync.paperFormsOCRDescription1": "Print form, collect on paper, scan responses back",
+  "app.components.FormSync.paperFormsOCRDescription1": "Print form, collect on paper, scan responses back"
+}

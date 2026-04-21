@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projektai",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "apsilankykite mūsų pagalbos centre",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Daugiau informacijos apie rekomenduojamą vaizdo skiriamąją gebą rasite {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Daugiau informacijos apie rekomenduojamą vaizdo skiriamąją gebą rasite {supportPageLink}.",
   "app.components.FormSync.template1": "Šablonas",
-
   "app.components.FormSync.importScans1": "Importuoti skenuotas kopijas",
-
   "app.components.FormSync.paperFormsOCR1": "Popierinių formų OCR",
-
   "app.components.FormSync.unlockScanningTooltip2": "Susisiekite su savo „Government Success“ vadovu arba administratoriumi, kad atrakintumėte šią funkciją.",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Išspausdinkite formą, surinkite atsakymus popieriuje, nuskenuokite juos atgal",
-
   "app.components.FormSync.spreadsheet1": "Skaičiuoklė",
-
   "app.components.FormSync.unlockScanningTooltip1": "Popierinių formų skenavimas naudojant „FormSync“ nėra įtrauktas į jūsų dabartinį planą.",
-
   "app.components.FormSync.importResponses1": "Importuoti atsakymus",
-
   "app.components.FormSync.unlockScanning1": "Atrakinti skenavimą",
-
-  "app.components.FormSync.spreadsheetDescription1": "Importuoti atsakymų duomenis iš „Excel“ arba CSV",
+  "app.components.FormSync.spreadsheetDescription1": "Importuoti atsakymų duomenis iš „Excel“ arba CSV"
+}

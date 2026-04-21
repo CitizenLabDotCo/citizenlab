@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} ਪ੍ਰੋਜੈਕਟ",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ਸਾਡੇ ਸਹਾਇਤਾ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਰੈਜ਼ੋਲਿਊਸ਼ਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਰੈਜ਼ੋਲਿਊਸ਼ਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}.",
   "app.components.FormSync.unlockScanningTooltip2": "ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਗਵਰਨਮੈਂਟ ਸਕਸੈਸ ਮੈਨੇਜਰ ਜਾਂ ਐਡਮਿਨ ਨਾਲ ਗੱਲ ਕਰੋ।",
-
   "app.components.FormSync.importScans1": "ਸਕੈਨ ਇੰਪੋਰਟ ਕਰੋ",
-
   "app.components.FormSync.unlockScanningTooltip1": "FormSync ਨਾਲ ਕਾਗਜ਼ੀ ਫਾਰਮਾਂ ਨੂੰ ਸਕੈਨ ਕਰਨਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ।",
-
   "app.components.FormSync.spreadsheet1": "ਸਪ੍ਰੈਡਸ਼ੀਟ",
-
   "app.components.FormSync.spreadsheetDescription1": "Excel ਜਾਂ CSV ਤੋਂ ਜਵਾਬ ਡੇਟਾ ਇੰਪੋਰਟ ਕਰੋ",
-
   "app.components.FormSync.paperFormsOCRDescription1": "ਫਾਰਮ ਪ੍ਰਿੰਟ ਕਰੋ, ਕਾਗਜ਼ 'ਤੇ ਇਕੱਠੇ ਕਰੋ, ਜਵਾਬਾਂ ਨੂੰ ਵਾਪਸ ਸਕੈਨ ਕਰੋ",
-
   "app.components.FormSync.paperFormsOCR1": "ਕਾਗਜ਼ੀ ਫਾਰਮ OCR",
-
   "app.components.FormSync.importResponses1": "ਜਵਾਬ ਇੰਪੋਰਟ ਕਰੋ",
-
   "app.components.FormSync.template1": "ਟੈਂਪਲੇਟ",
-
-  "app.components.FormSync.unlockScanning1": "ਸਕੈਨਿੰਗ ਅਨਲੌਕ ਕਰੋ",
+  "app.components.FormSync.unlockScanning1": "ਸਕੈਨਿੰਗ ਅਨਲੌਕ ਕਰੋ"
+}

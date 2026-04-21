@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekty",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "odwiedź nasze centrum wsparcia",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Więcej informacji na temat zalecanych rozdzielczości obrazu można znaleźć na stronie {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Więcej informacji na temat zalecanych rozdzielczości obrazu można znaleźć na stronie {supportPageLink}.",
   "app.components.FormSync.paperFormsOCR1": "OCR formularzy papierowych",
-
   "app.components.FormSync.spreadsheet1": "Arkusz kalkulacyjny",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Wydrukuj formularz, zbierz odpowiedzi na papierze, zeskanuj odpowiedzi do systemu",
-
   "app.components.FormSync.importResponses1": "Importuj odpowiedzi",
-
   "app.components.FormSync.template1": "Szablon",
-
   "app.components.FormSync.unlockScanning1": "Odblokuj skanowanie",
-
   "app.components.FormSync.importScans1": "Importuj skany",
-
   "app.components.FormSync.spreadsheetDescription1": "Importuj dane odpowiedzi z pliku Excel lub CSV",
-
   "app.components.FormSync.unlockScanningTooltip2": "Skontaktuj się ze swoim opiekunem (Government Success Manager) lub administratorem, aby odblokować tę funkcję.",
-
-  "app.components.FormSync.unlockScanningTooltip1": "Skanowanie formularzy papierowych za pomocą FormSync nie jest objęte Twoim obecnym planem.",
+  "app.components.FormSync.unlockScanningTooltip1": "Skanowanie formularzy papierowych za pomocą FormSync nie jest objęte Twoim obecnym planem."
+}

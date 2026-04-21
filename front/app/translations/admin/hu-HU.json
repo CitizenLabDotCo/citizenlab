@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekt",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "látogasson el ügyfélszolgálati központunkba",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Az ajánlott képfelbontásokkal kapcsolatos további információkért: {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Az ajánlott képfelbontásokkal kapcsolatos további információkért: {supportPageLink}.",
   "app.components.FormSync.spreadsheet1": "Táblázat",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Nyomtassa ki az űrlapot, gyűjtse össze papíron, majd szkennelje be a válaszokat",
-
   "app.components.FormSync.paperFormsOCR1": "Papíralapú űrlapok OCR-je",
-
   "app.components.FormSync.unlockScanningTooltip2": "Forduljon a Government Success Manageréhez vagy az adminisztrátorhoz a funkció feloldásához.",
-
   "app.components.FormSync.unlockScanningTooltip1": "A papíralapú űrlapok FormSync-kel történő szkennelése nem része a jelenlegi csomagjának.",
-
   "app.components.FormSync.spreadsheetDescription1": "Válaszadatok importálása Excel vagy CSV fájlból",
-
   "app.components.FormSync.importResponses1": "Válaszok importálása",
-
   "app.components.FormSync.unlockScanning1": "Szkennelés feloldása",
-
   "app.components.FormSync.importScans1": "Szkennelt dokumentumok importálása",
-
-  "app.components.FormSync.template1": "Sablon",
+  "app.components.FormSync.template1": "Sablon"
+}

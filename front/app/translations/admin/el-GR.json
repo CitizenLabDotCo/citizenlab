@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} έργα",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.FormSync.template1": "Πρότυπο",
-
   "app.components.FormSync.importScans1": "Εισαγωγή σαρώσεων",
-
   "app.components.FormSync.paperFormsOCR1": "OCR έντυπων φορμών",
-
   "app.components.FormSync.unlockScanningTooltip2": "Επικοινωνήστε με τον Government Success Manager ή τον διαχειριστή σας για να το ξεκλειδώσετε.",
-
   "app.components.FormSync.unlockScanning1": "Ξεκλείδωμα σάρωσης",
-
   "app.components.FormSync.importResponses1": "Εισαγωγή απαντήσεων",
-
   "app.components.FormSync.spreadsheetDescription1": "Εισαγωγή δεδομένων απαντήσεων από Excel ή CSV",
-
   "app.components.FormSync.unlockScanningTooltip1": "Η σάρωση έντυπων φορμών με το FormSync δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας.",
-
   "app.components.FormSync.spreadsheet1": "Υπολογιστικό φύλλο",
-
-  "app.components.FormSync.paperFormsOCRDescription1": "Εκτυπώστε τη φόρμα, συλλέξτε τις απαντήσεις σε χαρτί, σαρώστε τις απαντήσεις",
+  "app.components.FormSync.paperFormsOCRDescription1": "Εκτυπώστε τη φόρμα, συλλέξτε τις απαντήσεις σε χαρτί, σαρώστε τις απαντήσεις"
+}

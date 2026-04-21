@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} Projeten",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.FormSync.template1": "Virlag",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Formulaire drécken, op Pabeier sammelen, Äntwerte zeréckscannen",
-
   "app.components.FormSync.paperFormsOCR1": "OCR fir Pabeierformulairen",
-
   "app.components.FormSync.importScans1": "Scans importéieren",
-
   "app.components.FormSync.importResponses1": "Äntwerten importéieren",
-
   "app.components.FormSync.spreadsheet1": "Tabell",
-
   "app.components.FormSync.unlockScanning1": "Scannen deblockéieren",
-
   "app.components.FormSync.unlockScanningTooltip2": "Kontaktéiert Äre Government Success Manager oder Administrateur, fir dës Funktioun fräizeschalten.",
-
   "app.components.FormSync.spreadsheetDescription1": "Äntwertdaten aus Excel oder CSV importéieren",
-
-  "app.components.FormSync.unlockScanningTooltip1": "D'Scanne vu Pabeierformulaire mat FormSync ass net an Ärem aktuelle Plang abegraff.",
+  "app.components.FormSync.unlockScanningTooltip1": "D'Scanne vu Pabeierformulaire mat FormSync ass net an Ärem aktuelle Plang abegraff."
+}

@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} prosiectau",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ymweld â'n canolfan gymorth",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}.",
   "app.components.FormSync.importScans1": "Mewnforio sganiau",
-
   "app.components.FormSync.importResponses1": "Mewnforio ymatebion",
-
   "app.components.FormSync.unlockScanningTooltip2": "Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu'ch gweinyddwr i'w ddatgloi.",
-
   "app.components.FormSync.unlockScanning1": "Datgloi sganio",
-
   "app.components.FormSync.spreadsheet1": "Taenlen",
-
   "app.components.FormSync.spreadsheetDescription1": "Mewnforio data ymateb o Excel neu CSV",
-
   "app.components.FormSync.unlockScanningTooltip1": "Nid yw sganio ffurflenni papur gyda FormSync wedi'i gynnwys yn eich cynllun presennol.",
-
   "app.components.FormSync.template1": "Templed",
-
   "app.components.FormSync.paperFormsOCR1": "OCR ffurflenni papur",
-
-  "app.components.FormSync.paperFormsOCRDescription1": "Argraffu ffurflen, casglu ar bapur, sganio ymatebion yn ôl",
+  "app.components.FormSync.paperFormsOCRDescription1": "Argraffu ffurflen, casglu ar bapur, sganio ymatebion yn ôl"
+}

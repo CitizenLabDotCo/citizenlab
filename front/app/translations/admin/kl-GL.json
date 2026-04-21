@@ -3883,25 +3883,15 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} suliniutit",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
-}
-
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.FormSync.template1": "Ilisserut",
-
   "app.components.FormSync.spreadsheetDescription1": "Akissutit Excel-imit imaluunniit CSV-mit nuukkit",
-
   "app.components.FormSync.paperFormsOCRDescription1": "Immersugassaq naqiguk, pappialanngorlugu katersigit, akissutillu skannerlugit utertikkit",
-
   "app.components.FormSync.unlockScanningTooltip2": "Government Success Manager-it imaluunniit aqutsisut attavigikkit ammarneqarnissaa pillugu.",
-
   "app.components.FormSync.unlockScanningTooltip1": "Pappialanik immersukkanik FormSync atorlugu skannerineq maanna pilersaarutinnut ilaanngilaq.",
-
   "app.components.FormSync.importScans1": "Skannerikkat nuukkit",
-
   "app.components.FormSync.importResponses1": "Akissutit nuukkit",
-
   "app.components.FormSync.spreadsheet1": "Regnearki",
-
   "app.components.FormSync.unlockScanning1": "Skannerineq ammaruk",
-
-  "app.components.FormSync.paperFormsOCR1": "Pappialanik immersukkanik OCR-imik atuarneq",
+  "app.components.FormSync.paperFormsOCR1": "Pappialanik immersukkanik OCR-imik atuarneq"
+}
