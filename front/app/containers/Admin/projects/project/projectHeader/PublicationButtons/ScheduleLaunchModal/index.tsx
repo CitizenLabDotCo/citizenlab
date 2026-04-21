@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
 import { MessageDescriptor } from 'react-intl';
 
@@ -59,21 +59,25 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const reviewState = projectReview?.data.attributes.state;
   const canReview = usePermission({ item: project, action: 'review' });
 
-  const defaultDate = addDays(
-    roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-    1
-  );
+  const initialDate = project.attributes.scheduled_at
+    ? new Date(project.attributes.scheduled_at)
+    : addDays(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 1);
 
   const [mode, setMode] = useState<Mode>(
     isProjectSchedulingEnabled ? 'schedule' : 'now'
   );
-  const [selectedDate, setSelectedDate] = useState<Date>(defaultDate);
-  const [selectedTime, setSelectedTime] = useState<Date>(defaultDate);
+  const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
+  const [selectedTime, setSelectedTime] = useState<Date>(initialDate);
   const [sendEmail, setSendEmail] = useState(
     project.attributes.publication_email_enabled
   );
+  const [activeAction, setActiveAction] = useState<'primary' | 'cancel' | null>(
+    null
+  );
 
-  const isLoading = isUpdatingProject || isApproving || isRequesting;
+  const anyLoading = isUpdatingProject || isApproving || isRequesting;
+  const primaryLoading = anyLoading && activeAction === 'primary';
+  const cancelLoading = anyLoading && activeAction === 'cancel';
 
   const buildScheduledAt = () => {
     const scheduledDate = new Date(selectedDate);
@@ -137,6 +141,20 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     } else {
       requestProjectReview(project.id, { onSuccess: onClose });
     }
+  };
+
+  const handleCancelSchedule = () => {
+    trackEventByName(tracks.scheduleCancelled);
+    updateProject(
+      {
+        projectId: project.id,
+        admin_publication_attributes: {
+          scheduled_at: null,
+          scheduled_status: null,
+        },
+      },
+      { onSuccess: onClose }
+    );
   };
 
   const primary: PrimaryAction = (() => {
@@ -204,12 +222,38 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
         </Box>
       }
       footer={
-        <Box display="flex" justifyContent="flex-end" w="100%">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          w="100%"
+        >
+          {project.attributes.scheduled_at ? (
+            <Button
+              buttonStyle="text"
+              onClick={() => {
+                setActiveAction('cancel');
+                handleCancelSchedule();
+              }}
+              textColor={colors.black}
+              textDecoration="underline"
+              textDecorationHover="underline"
+              processing={cancelLoading}
+              disabled={isProjectReviewEnabled && reviewState === 'pending'}
+            >
+              {formatMessage(messages.cancelSchedule)}
+            </Button>
+          ) : (
+            <Box />
+          )}
           <Button
             buttonStyle="admin-dark"
             icon={primary.icon}
-            onClick={primary.onClick}
-            processing={isLoading}
+            onClick={() => {
+              setActiveAction('primary');
+              primary.onClick();
+            }}
+            processing={primaryLoading}
             disabled={primary.disabled}
           >
             {formatMessage(primary.label)}

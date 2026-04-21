@@ -7,4 +7,5 @@ export default {
   projectApprovedAndPublished:
     'Clicked approve and publish in schedule launch modal',
   reviewRequested: 'Clicked request approval in schedule launch modal',
+  scheduleCancelled: 'Clicked cancel schedule in schedule launch modal',
 };
