@@ -81,6 +81,19 @@ const Combobox = ({
     triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
   };
 
+  const onTriggerKeyDown = (event: KeyboardEvent) => {
+    // When the listbox is open, ArrowDown / ArrowUp on the trigger moves focus
+    // into the listbox and highlights the first / last option.
+    if (opened && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+      event.preventDefault();
+      listboxRef.current?.focus();
+      const items = listboxRef.current?.querySelectorAll('li') ?? [];
+      setFocusedIndex(event.key === 'ArrowDown' ? 0 : items.length - 1);
+      return;
+    }
+    handleKeyDown?.(event);
+  };
+
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
       const items = listboxRef.current.querySelectorAll('li');
@@ -148,7 +161,7 @@ const Combobox = ({
             borderRadius="24px"
             onClick={toggleValuesList}
             minWidth={minWidth ? minWidth : undefined}
-            onKeyDown={handleKeyDown}
+            onKeyDown={onTriggerKeyDown}
             ariaExpanded={opened}
             ariaControls={baseID}
             // Needed to track aria-labelledby
@@ -175,7 +188,7 @@ const Combobox = ({
             onClick={toggleValuesList}
             baseID={baseID}
             textColor={textColor}
-            handleKeyDown={handleKeyDown}
+            handleKeyDown={onTriggerKeyDown}
             role="combobox"
             aria-haspopup="listbox"
           />
