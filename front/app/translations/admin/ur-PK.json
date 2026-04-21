@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ایک بار اضافی سیٹیں شامل ہونے کے بعد، آپ کی بلنگ میں اضافہ ہو جائے گا۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "سروے مکمل کرنے کے لیے آپ کا شکریہ! اگلی سہ ماہی میں اسے دوبارہ لینے کے لیے آپ کا استقبال ہے۔",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "PDF ڈاؤن لوڈ کریں",
   "app.components.FormSync.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "ایکسل ٹیمپلیٹس میں فائل اپ لوڈ کے سوالات اور کوئی میپنگ ان پٹ سوالات (ڈراپ پن، ڈرا روٹ، ڈرا ایریا، ESRI فائل اپ لوڈ) شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
-
   "app.components.FormSync.importFile1": "فائل امپورٹ کریں",
+  "app.components.FormSync.importResponses1": "جوابات امپورٹ کریں",
+  "app.components.FormSync.importScans1": "اسکینز امپورٹ کریں",
+  "app.components.FormSync.paperFormsOCR1": "کاغذی فارمز OCR",
+  "app.components.FormSync.paperFormsOCRDescription1": "فارم پرنٹ کریں، کاغذ پر جمع کریں، اور جوابات واپس اسکین کریں",
+  "app.components.FormSync.spreadsheet1": "اسپریڈ شیٹ",
+  "app.components.FormSync.spreadsheetDescription1": "Excel یا CSV سے جوابی ڈیٹا امپورٹ کریں",
+  "app.components.FormSync.template1": "ٹیمپلیٹ",
+  "app.components.FormSync.unlockScanning1": "اسکیننگ ان لاک کریں",
+  "app.components.FormSync.unlockScanningTooltip1": "FormSync کے ساتھ کاغذی فارمز کو اسکین کرنا آپ کے موجودہ پلان میں شامل نہیں ہے۔",
+  "app.components.FormSync.unlockScanningTooltip2": "اسے ان لاک کرنے کے لیے اپنے گورنمنٹ سکسیس مینیجر یا ایڈمن سے بات کریں۔",
   "app.components.ProjectTemplatePreview.close": "بند",
   "app.components.ProjectTemplatePreview.createProject": "پروجیکٹ بنائیں",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "ٹیمپلیٹ ''{templateTitle}'' کی بنیاد پر ایک پروجیکٹ بنائیں",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "ڈاؤن لوڈز",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "ایک اور سروے کی نقل بنائیں",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "سروے فارم میں ترمیم کریں۔",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "وضاحت کریں کہ شرکاء کے جوابات کی رہنمائی کے لیے کون سی معلومات فراہم کی جانی چاہئیں۔",
   "app.containers.Admin.surveyFormTab.surveyForm": "سروے فارم",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "نیا ٹوکن بنائیں",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} پروجیکٹس",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ہمارے سپورٹ سینٹر پر جائیں۔",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔",
-  "app.components.FormSync.unlockScanning1": "اسکیننگ ان لاک کریں",
-  "app.components.FormSync.spreadsheetDescription1": "Excel یا CSV سے جوابی ڈیٹا امپورٹ کریں",
-  "app.components.FormSync.unlockScanningTooltip1": "FormSync کے ساتھ کاغذی فارمز کو اسکین کرنا آپ کے موجودہ پلان میں شامل نہیں ہے۔",
-  "app.components.FormSync.unlockScanningTooltip2": "اسے ان لاک کرنے کے لیے اپنے گورنمنٹ سکسیس مینیجر یا ایڈمن سے بات کریں۔",
-  "app.components.FormSync.paperFormsOCRDescription1": "فارم پرنٹ کریں، کاغذ پر جمع کریں، اور جوابات واپس اسکین کریں",
-  "app.components.FormSync.paperFormsOCR1": "کاغذی فارمز OCR",
-  "app.components.FormSync.spreadsheet1": "اسپریڈ شیٹ",
-  "app.components.FormSync.template1": "ٹیمپلیٹ",
-  "app.components.FormSync.importScans1": "اسکینز امپورٹ کریں",
-  "app.components.FormSync.importResponses1": "جوابات امپورٹ کریں"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "تجویز کردہ تصویری قراردادوں کے بارے میں مزید معلومات کے لیے، {supportPageLink}۔"
 }

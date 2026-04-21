@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ਇੱਕ ਵਾਰ ਵਾਧੂ ਸੀਟਾਂ ਜੋੜਨ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੀ ਬਿਲਿੰਗ ਵਧਾਈ ਜਾਵੇਗੀ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "ਸਰਵੇਖਣ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ! ਅਗਲੀ ਤਿਮਾਹੀ ਵਿੱਚ ਇਸਨੂੰ ਦੁਬਾਰਾ ਲੈਣ ਲਈ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ।",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "PDF ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "ਐਕਸਲ ਟੈਂਪਲੇਟਾਂ ਵਿੱਚ ਫਾਈਲ ਅਪਲੋਡ ਪ੍ਰਸ਼ਨ ਅਤੇ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁਟ ਪ੍ਰਸ਼ਨ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ, ਡਰਾਅ ਏਰੀਆ, ESRI ਫਾਈਲ ਅਪਲੋਡ) ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਥੋਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",
-
   "app.components.FormSync.importFile1": "ਫਾਈਲ ਇੰਪੋਰਟ ਕਰੋ",
+  "app.components.FormSync.importResponses1": "ਜਵਾਬ ਇੰਪੋਰਟ ਕਰੋ",
+  "app.components.FormSync.importScans1": "ਸਕੈਨ ਇੰਪੋਰਟ ਕਰੋ",
+  "app.components.FormSync.paperFormsOCR1": "ਕਾਗਜ਼ੀ ਫਾਰਮ OCR",
+  "app.components.FormSync.paperFormsOCRDescription1": "ਫਾਰਮ ਪ੍ਰਿੰਟ ਕਰੋ, ਕਾਗਜ਼ 'ਤੇ ਇਕੱਠੇ ਕਰੋ, ਜਵਾਬਾਂ ਨੂੰ ਵਾਪਸ ਸਕੈਨ ਕਰੋ",
+  "app.components.FormSync.spreadsheet1": "ਸਪ੍ਰੈਡਸ਼ੀਟ",
+  "app.components.FormSync.spreadsheetDescription1": "Excel ਜਾਂ CSV ਤੋਂ ਜਵਾਬ ਡੇਟਾ ਇੰਪੋਰਟ ਕਰੋ",
+  "app.components.FormSync.template1": "ਟੈਂਪਲੇਟ",
+  "app.components.FormSync.unlockScanning1": "ਸਕੈਨਿੰਗ ਅਨਲੌਕ ਕਰੋ",
+  "app.components.FormSync.unlockScanningTooltip1": "FormSync ਨਾਲ ਕਾਗਜ਼ੀ ਫਾਰਮਾਂ ਨੂੰ ਸਕੈਨ ਕਰਨਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ।",
+  "app.components.FormSync.unlockScanningTooltip2": "ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਗਵਰਨਮੈਂਟ ਸਕਸੈਸ ਮੈਨੇਜਰ ਜਾਂ ਐਡਮਿਨ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.components.ProjectTemplatePreview.close": "ਬੰਦ ਕਰੋ",
   "app.components.ProjectTemplatePreview.createProject": "ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "''{templateTitle}'' ਟੈਂਪਲੇਟ ਦੇ ਆਧਾਰ 'ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ।",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "ਡਾਊਨਲੋਡ",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "ਕਿਸੇ ਹੋਰ ਸਰਵੇਖਣ ਦੀ ਡੁਪਲੀਕੇਟ ਬਣਾਓ",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "ਸਰਵੇਖਣ ਫਾਰਮ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "ਨਿਰਧਾਰਤ ਕਰੋ ਕਿ ਭਾਗੀਦਾਰਾਂ ਦੇ ਜਵਾਬਾਂ ਦੀ ਅਗਵਾਈ ਕਰਨ ਲਈ ਕਿਹੜੀ ਜਾਣਕਾਰੀ ਪ੍ਰਦਾਨ ਕੀਤੀ ਜਾਣੀ ਚਾਹੀਦੀ ਹੈ।",
   "app.containers.Admin.surveyFormTab.surveyForm": "ਸਰਵੇਖਣ ਫਾਰਮ",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "ਨਵਾਂ ਟੋਕਨ ਬਣਾਓ",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} ਪ੍ਰੋਜੈਕਟ",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ਸਾਡੇ ਸਹਾਇਤਾ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਰੈਜ਼ੋਲਿਊਸ਼ਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}.",
-  "app.components.FormSync.unlockScanningTooltip2": "ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਗਵਰਨਮੈਂਟ ਸਕਸੈਸ ਮੈਨੇਜਰ ਜਾਂ ਐਡਮਿਨ ਨਾਲ ਗੱਲ ਕਰੋ।",
-  "app.components.FormSync.importScans1": "ਸਕੈਨ ਇੰਪੋਰਟ ਕਰੋ",
-  "app.components.FormSync.unlockScanningTooltip1": "FormSync ਨਾਲ ਕਾਗਜ਼ੀ ਫਾਰਮਾਂ ਨੂੰ ਸਕੈਨ ਕਰਨਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ।",
-  "app.components.FormSync.spreadsheet1": "ਸਪ੍ਰੈਡਸ਼ੀਟ",
-  "app.components.FormSync.spreadsheetDescription1": "Excel ਜਾਂ CSV ਤੋਂ ਜਵਾਬ ਡੇਟਾ ਇੰਪੋਰਟ ਕਰੋ",
-  "app.components.FormSync.paperFormsOCRDescription1": "ਫਾਰਮ ਪ੍ਰਿੰਟ ਕਰੋ, ਕਾਗਜ਼ 'ਤੇ ਇਕੱਠੇ ਕਰੋ, ਜਵਾਬਾਂ ਨੂੰ ਵਾਪਸ ਸਕੈਨ ਕਰੋ",
-  "app.components.FormSync.paperFormsOCR1": "ਕਾਗਜ਼ੀ ਫਾਰਮ OCR",
-  "app.components.FormSync.importResponses1": "ਜਵਾਬ ਇੰਪੋਰਟ ਕਰੋ",
-  "app.components.FormSync.template1": "ਟੈਂਪਲੇਟ",
-  "app.components.FormSync.unlockScanning1": "ਸਕੈਨਿੰਗ ਅਨਲੌਕ ਕਰੋ"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਰੈਜ਼ੋਲਿਊਸ਼ਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}."
 }

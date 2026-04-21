@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/es/articles/527583-habilitar-la-participacion-anonima",
   "app.components.BillingWarning.billingWarning": "Una vez que se añadan plazas adicionales, se incrementará su facturación. Póngase en contacto con su gestor de GovSuccess para obtener más información.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "¡Gracias por completar la encuesta! Te invitamos a volver a hacerla el próximo trimestre.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Descargar PDF",
   "app.components.FormSync.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Las plantillas de Excel no incluirán preguntas de carga de archivos ni preguntas de introducción de datos cartográficos (pin en mapa, dibujar ruta, dibujar área, carga de archivos ESRI), ya que no son compatibles con la importación masiva en este momento.",
-
   "app.components.FormSync.importFile1": "Importar archivo",
+  "app.components.FormSync.importResponses1": "Importar respuestas",
+  "app.components.FormSync.importScans1": "Importar escaneos",
+  "app.components.FormSync.paperFormsOCR1": "OCR de formularios en papel",
+  "app.components.FormSync.paperFormsOCRDescription1": "Imprime el formulario, recopila en papel y escanea las respuestas de vuelta",
+  "app.components.FormSync.spreadsheet1": "Hoja de cálculo",
+  "app.components.FormSync.spreadsheetDescription1": "Importar datos de respuesta desde Excel o CSV",
+  "app.components.FormSync.template1": "Plantilla",
+  "app.components.FormSync.unlockScanning1": "Desbloquear escaneo",
+  "app.components.FormSync.unlockScanningTooltip1": "El escaneo de formularios en papel con FormSync no está incluido en tu plan actual.",
+  "app.components.FormSync.unlockScanningTooltip2": "Habla con tu gestor de éxito gubernamental o con el administrador para desbloquearlo.",
   "app.components.ProjectTemplatePreview.close": "Cerrar",
   "app.components.ProjectTemplatePreview.createProject": "Crear proyecto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un proyecto basado en la plantilla ''{templateTitle}''",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Descargas",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Duplicar otra encuesta",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Editar formulario de encuesta",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Especifica qué información debe proporcionarse para guiar las respuestas de los participantes.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Formulario de encuesta",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Crear nuevo token",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} proyectos",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite nuestra página de soporte",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/es/articles/527652-cuales-son-las-dimensiones-y-tamanos-recomendados-de-las-imagenes-de-la-plataforma",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}.",
-  "app.components.FormSync.importScans1": "Importar escaneos",
-  "app.components.FormSync.unlockScanning1": "Desbloquear escaneo",
-  "app.components.FormSync.unlockScanningTooltip1": "El escaneo de formularios en papel con FormSync no está incluido en tu plan actual.",
-  "app.components.FormSync.spreadsheetDescription1": "Importar datos de respuesta desde Excel o CSV",
-  "app.components.FormSync.paperFormsOCR1": "OCR de formularios en papel",
-  "app.components.FormSync.unlockScanningTooltip2": "Habla con tu gestor de éxito gubernamental o con el administrador para desbloquearlo.",
-  "app.components.FormSync.spreadsheet1": "Hoja de cálculo",
-  "app.components.FormSync.paperFormsOCRDescription1": "Imprime el formulario, recopila en papel y escanea las respuestas de vuelta",
-  "app.components.FormSync.importResponses1": "Importar respuestas",
-  "app.components.FormSync.template1": "Plantilla"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}."
 }

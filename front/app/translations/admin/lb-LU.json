@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Soubal zousätzlech Plazen dobäigesat ginn, gëtt Är Rechnung erhéicht. Kontaktéiert Äre GovSuccess Manager fir méi doriwwer ze erfuerderen.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci, datt Dir d'Ëmfro ausgefëllt hutt! Dir kënnt am nächste Quartal gären nach eng Kéier matmaachen.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "PDF eroflueden",
   "app.components.FormSync.downloadExcelTemplate": "Luet eng Excel-Virlag erof",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-Virlage wäerte keng Froen iwwer den Upload vu Dateie souwéi keng Froen iwwer Mapping-Inputen (Pin setzen, Route zeechnen, Beräich zeechnen, ESRI-Datei-Upload) enthalen, well dës de Moment net fir de Bulk-Import ënnerstëtzt ginn.",
-
   "app.components.FormSync.importFile1": "Datei importéieren",
+  "app.components.FormSync.importResponses1": "Äntwerten importéieren",
+  "app.components.FormSync.importScans1": "Scans importéieren",
+  "app.components.FormSync.paperFormsOCR1": "OCR fir Pabeierformulairen",
+  "app.components.FormSync.paperFormsOCRDescription1": "Formulaire drécken, op Pabeier sammelen, Äntwerte zeréckscannen",
+  "app.components.FormSync.spreadsheet1": "Tabell",
+  "app.components.FormSync.spreadsheetDescription1": "Äntwertdaten aus Excel oder CSV importéieren",
+  "app.components.FormSync.template1": "Virlag",
+  "app.components.FormSync.unlockScanning1": "Scannen deblockéieren",
+  "app.components.FormSync.unlockScanningTooltip1": "D'Scanne vu Pabeierformulaire mat FormSync ass net an Ärem aktuelle Plang abegraff.",
+  "app.components.FormSync.unlockScanningTooltip2": "Kontaktéiert Äre Government Success Manager oder Administrateur, fir dës Funktioun fräizeschalten.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "E Projet op Basis vun der Virlag ''{templateTitle}'' erstellen",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Eng aner Ëmfro duplizéieren",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Ëmfroformular editéieren",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Gitt un, wéi eng Informatioune bereetgestallt solle ginn, fir d'Äntwerte vun de Participanten ze leeden.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Ëmfroformular",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Neien Token erstellen",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} Projeten",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
-  "app.components.FormSync.template1": "Virlag",
-  "app.components.FormSync.paperFormsOCRDescription1": "Formulaire drécken, op Pabeier sammelen, Äntwerte zeréckscannen",
-  "app.components.FormSync.paperFormsOCR1": "OCR fir Pabeierformulairen",
-  "app.components.FormSync.importScans1": "Scans importéieren",
-  "app.components.FormSync.importResponses1": "Äntwerten importéieren",
-  "app.components.FormSync.spreadsheet1": "Tabell",
-  "app.components.FormSync.unlockScanning1": "Scannen deblockéieren",
-  "app.components.FormSync.unlockScanningTooltip2": "Kontaktéiert Äre Government Success Manager oder Administrateur, fir dës Funktioun fräizeschalten.",
-  "app.components.FormSync.spreadsheetDescription1": "Äntwertdaten aus Excel oder CSV importéieren",
-  "app.components.FormSync.unlockScanningTooltip1": "D'Scanne vu Pabeierformulaire mat FormSync ass net an Ärem aktuelle Plang abegraff."
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }

@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Kun lisää paikkoja on lisätty, laskutustasi korotetaan. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Kiitos kyselyn täyttämisestä! Voit ottaa sen uudelleen ensi vuosineljänneksellä.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Lataa PDF",
   "app.components.FormSync.downloadExcelTemplate": "Lataa Excel-malli",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-malleissa ei ole tiedostojen latauskysymyksiä eikä kartoitussyötteitä (Poista nasta, Piirrä reitti, Piirrä alue, ESRI-tiedostojen lataus), koska niitä ei tällä hetkellä tueta joukkotuonnissa.",
-
   "app.components.FormSync.importFile1": "Tuo tiedosto",
+  "app.components.FormSync.importResponses1": "Tuo vastaukset",
+  "app.components.FormSync.importScans1": "Tuo skannaukset",
+  "app.components.FormSync.paperFormsOCR1": "Paperilomakkeiden tekstintunnistus (OCR)",
+  "app.components.FormSync.paperFormsOCRDescription1": "Tulosta lomake, kerää vastaukset paperilla, skannaa vastaukset takaisin",
+  "app.components.FormSync.spreadsheet1": "Taulukkolaskenta",
+  "app.components.FormSync.spreadsheetDescription1": "Tuo vastausdata Excel- tai CSV-tiedostosta",
+  "app.components.FormSync.template1": "Malli",
+  "app.components.FormSync.unlockScanning1": "Avaa skannaus",
+  "app.components.FormSync.unlockScanningTooltip1": "Paperilomakkeiden skannaaminen FormSyncillä ei sisälly nykyiseen tilaukseesi.",
+  "app.components.FormSync.unlockScanningTooltip2": "Ota yhteyttä Government Success Manageriisi tai ylläpitäjään avataksesi sen.",
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Luo projekti mallin ''{templateTitle}'' pohjalta",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Lataukset",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Kopioi toinen kysely",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Muokkaa kyselylomaketta",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Määritä, mitä tietoja osallistujien vastausten ohjaamiseksi tulisi antaa.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Kyselylomake",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Luo uusi tunnus",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projektia",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "vieraile tukikeskuksessamme",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommendedimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Lisätietoja suositelluista kuvaresoluutioista on {supportPageLink}.",
-  "app.components.FormSync.unlockScanningTooltip1": "Paperilomakkeiden skannaaminen FormSyncillä ei sisälly nykyiseen tilaukseesi.",
-  "app.components.FormSync.paperFormsOCR1": "Paperilomakkeiden tekstintunnistus (OCR)",
-  "app.components.FormSync.spreadsheet1": "Taulukkolaskenta",
-  "app.components.FormSync.spreadsheetDescription1": "Tuo vastausdata Excel- tai CSV-tiedostosta",
-  "app.components.FormSync.template1": "Malli",
-  "app.components.FormSync.unlockScanning1": "Avaa skannaus",
-  "app.components.FormSync.importScans1": "Tuo skannaukset",
-  "app.components.FormSync.paperFormsOCRDescription1": "Tulosta lomake, kerää vastaukset paperilla, skannaa vastaukset takaisin",
-  "app.components.FormSync.unlockScanningTooltip2": "Ota yhteyttä Government Success Manageriisi tai ylläpitäjään avataksesi sen.",
-  "app.components.FormSync.importResponses1": "Tuo vastaukset"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Lisätietoja suositelluista kuvaresoluutioista on {supportPageLink}."
 }

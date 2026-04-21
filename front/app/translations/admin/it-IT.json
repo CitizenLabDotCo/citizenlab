@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Una volta aggiunti ulteriori posti, la fatturazione verrà aumentata. Raggiungi al tuo GovSuccess Manager per saperne di più.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Grazie per aver completato il sondaggio! Potrai compilarne uno nuovo il prossimo trimestre.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Scarica PDF",
   "app.components.FormSync.downloadExcelTemplate": "Scarica un modello Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "I modelli Excel non includeranno le domande di caricamento dei file e le domande di mappatura (Segnaposto, Percorso, Area, upload di file ESRI) perché al momento non sono supportate per l'importazione massiva.",
-
   "app.components.FormSync.importFile1": "Importa file",
+  "app.components.FormSync.importResponses1": "Importa risposte",
+  "app.components.FormSync.importScans1": "Importa scansioni",
+  "app.components.FormSync.paperFormsOCR1": "OCR moduli cartacei",
+  "app.components.FormSync.paperFormsOCRDescription1": "Stampa il modulo, raccogli su carta, scansiona le risposte",
+  "app.components.FormSync.spreadsheet1": "Foglio di calcolo",
+  "app.components.FormSync.spreadsheetDescription1": "Importa i dati delle risposte da Excel o CSV",
+  "app.components.FormSync.template1": "Modello",
+  "app.components.FormSync.unlockScanning1": "Sblocca la scansione",
+  "app.components.FormSync.unlockScanningTooltip1": "La scansione dei moduli cartacei con FormSync non è inclusa nel tuo piano attuale.",
+  "app.components.FormSync.unlockScanningTooltip2": "Contatta il tuo Government Success Manager o l'amministratore per sbloccarla.",
   "app.components.ProjectTemplatePreview.close": "Chiudi",
   "app.components.ProjectTemplatePreview.createProject": "Crea progetto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un progetto basato sul modello ''{templateTitle}''",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Download",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Copia un altro sondaggio",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Modifica il modulo del sondaggio",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Specifica quali informazioni devono essere fornite per guidare le risposte dei partecipanti.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Modulo del sondaggio",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Crea una nuova chiave",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} progetti",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visita il nostro centro assistenza",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Per maggiori informazioni sulle risoluzioni d'immagine consigliate, {supportPageLink}.",
-  "app.components.FormSync.spreadsheet1": "Foglio di calcolo",
-  "app.components.FormSync.importScans1": "Importa scansioni",
-  "app.components.FormSync.importResponses1": "Importa risposte",
-  "app.components.FormSync.template1": "Modello",
-  "app.components.FormSync.spreadsheetDescription1": "Importa i dati delle risposte da Excel o CSV",
-  "app.components.FormSync.unlockScanningTooltip2": "Contatta il tuo Government Success Manager o l'amministratore per sbloccarla.",
-  "app.components.FormSync.unlockScanningTooltip1": "La scansione dei moduli cartacei con FormSync non è inclusa nel tuo piano attuale.",
-  "app.components.FormSync.paperFormsOCR1": "OCR moduli cartacei",
-  "app.components.FormSync.unlockScanning1": "Sblocca la scansione",
-  "app.components.FormSync.paperFormsOCRDescription1": "Stampa il modulo, raccogli su carta, scansiona le risposte"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Per maggiori informazioni sulle risoluzioni d'immagine consigliate, {supportPageLink}."
 }

@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/fr/articles/527583-activer-la-participation-anonyme",
   "app.components.BillingWarning.billingWarning": "Si des sièges supplémentaires sont ajoutés, votre facturation sera adaptée. Contactez votre Spécialiste en participation Go Vocal pour en savoir plus.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci d'avoir complété l'enquête ! N'hésitez pas à y participer à nouveau au prochain trimestre.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Formulaire PDF",
   "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Les modèles Excel n'incluront pas les questions relatives au téléchargement de fichiers ni les questions relatives aux données cartographiques (Épingler, Dessiner un chemin, Zone de dessin, charger un fichier ESRI), car elles ne sont pas encore prises en charge pour l'importation en masse.",
-
   "app.components.FormSync.importFile1": "Importer",
+  "app.components.FormSync.importResponses1": "Importer des réponses",
+  "app.components.FormSync.importScans1": "Importer un PDF",
+  "app.components.FormSync.paperFormsOCR1": "Formulaires papier (OCR)",
+  "app.components.FormSync.paperFormsOCRDescription1": "Imprimez le formulaire, collectez les réponses sur papier, puis scannez-les.",
+  "app.components.FormSync.spreadsheet1": "Feuille de calcul",
+  "app.components.FormSync.spreadsheetDescription1": "Importez des réponses depuis un fichier Excel ou CSV.",
+  "app.components.FormSync.template1": "Modèle XLSX",
+  "app.components.FormSync.unlockScanning1": "Débloquer FormSync",
+  "app.components.FormSync.unlockScanningTooltip1": "FormSync, l'outil d'importation de réponses à partir de formulaires numérisés, n'est pas inclus dans votre plan actuel.",
+  "app.components.FormSync.unlockScanningTooltip2": "Contactez votre Spécialiste en participation Go Vocal ou votre administrateur pour le débloquer.",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Créer un projet basé sur le modèle ''{templateTitle}''.",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Téléchargements",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Dupliquer une autre enquête",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Modifier le formulaire",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Configurez les questions et la structure de votre enquête.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Formulaire de l'enquête",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Créer un nouveau jeton",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projets",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visitez notre centre d'assistance",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/fr/articles/527652-quelles-sont-les-dimensions-et-tailles-recommandees-pour-les-images-de-la-plate-forme",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}.",
-  "app.components.FormSync.importResponses1": "Importer des réponses",
-  "app.components.FormSync.spreadsheetDescription1": "Importez des réponses depuis un fichier Excel ou CSV.",
-  "app.components.FormSync.unlockScanningTooltip1": "FormSync, l'outil d'importation de réponses à partir de formulaires numérisés, n'est pas inclus dans votre plan actuel.",
-  "app.components.FormSync.spreadsheet1": "Feuille de calcul",
-  "app.components.FormSync.template1": "Modèle XLSX",
-  "app.components.FormSync.paperFormsOCRDescription1": "Imprimez le formulaire, collectez les réponses sur papier, puis scannez-les.",
-  "app.components.FormSync.unlockScanning1": "Débloquer FormSync",
-  "app.components.FormSync.paperFormsOCR1": "Formulaires papier (OCR)",
-  "app.components.FormSync.unlockScanningTooltip2": "Contactez votre Spécialiste en participation Go Vocal ou votre administrateur pour le débloquer.",
-  "app.components.FormSync.importScans1": "Importer un PDF"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}."
 }

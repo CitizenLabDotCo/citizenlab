@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "https://support.govocal.com/en/articles/527583-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Download PDF",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel templates will not include File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",
-
   "app.components.FormSync.importFile1": "Import file",
+  "app.components.FormSync.importResponses1": "Import responses",
+  "app.components.FormSync.importScans1": "Import scans",
+  "app.components.FormSync.paperFormsOCR1": "Paper forms OCR",
+  "app.components.FormSync.paperFormsOCRDescription1": "Print form, collect on paper, scan responses back",
+  "app.components.FormSync.spreadsheet1": "Spreadsheet",
+  "app.components.FormSync.spreadsheetDescription1": "Import response data from Excel or CSV",
+  "app.components.FormSync.template1": "Template",
+  "app.components.FormSync.unlockScanning1": "Unlock scanning",
+  "app.components.FormSync.unlockScanningTooltip1": "Scanning paper forms with FormSync is not included on your current plan.",
+  "app.components.FormSync.unlockScanningTooltip2": "Talk to your Government Success Manager or admin to unlock it.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Create a project based on the template ''{templateTitle}''",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Duplicate another survey",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Edit survey form",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Specify what information should be provided to guide participant responses.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Survey form",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Create new token",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projects",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
-  "app.components.FormSync.unlockScanning1": "Unlock scanning",
-  "app.components.FormSync.paperFormsOCR1": "Paper forms OCR",
-  "app.components.FormSync.spreadsheet1": "Spreadsheet",
-  "app.components.FormSync.importScans1": "Import scans",
-  "app.components.FormSync.spreadsheetDescription1": "Import response data from Excel or CSV",
-  "app.components.FormSync.importResponses1": "Import responses",
-  "app.components.FormSync.paperFormsOCRDescription1": "Print form, collect on paper, scan responses back",
-  "app.components.FormSync.unlockScanningTooltip2": "Talk to your Government Success Manager or admin to unlock it.",
-  "app.components.FormSync.template1": "Template",
-  "app.components.FormSync.unlockScanningTooltip1": "Scanning paper forms with FormSync is not included on your current plan."
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }

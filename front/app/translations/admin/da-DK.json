@@ -87,12 +87,20 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/da/articles/527583-aktivering-af-anonym-deltagelse}}",
   "app.components.BillingWarning.billingWarning": "Når der tilføjes flere pladser, vil din fakturering blive forhøjet. Kontakt Søren Kielgast på soren@govocal.dk for at få mere at vide om det.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tak, fordi du gennemførte undersøgelsen! Du er velkommen til at tage den igen næste kvartal.",
-
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": "Download PDF",
   "app.components.FormSync.downloadExcelTemplate": "Download en Excel-skabelon",
   "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-skabeloner vil ikke indeholde spørgsmål om filupload og spørgsmål om kortlægningsinput (Drop Pin, Draw Route, Draw Area, ESRI-filupload), da disse ikke understøttes til bulkimport på nuværende tidspunkt.",
-
   "app.components.FormSync.importFile1": "Importér fil",
+  "app.components.FormSync.importResponses1": "Importér svar",
+  "app.components.FormSync.importScans1": "Importér scanninger",
+  "app.components.FormSync.paperFormsOCR1": "OCR af papirformularer",
+  "app.components.FormSync.paperFormsOCRDescription1": "Udskriv formular, indsaml på papir, scan svar tilbage",
+  "app.components.FormSync.spreadsheet1": "Regneark",
+  "app.components.FormSync.spreadsheetDescription1": "Importér svardata fra Excel eller CSV",
+  "app.components.FormSync.template1": "Skabelon",
+  "app.components.FormSync.unlockScanning1": "Lås op for scanning",
+  "app.components.FormSync.unlockScanningTooltip1": "Scanning af papirformularer med FormSync er ikke inkluderet i dit nuværende abonnement.",
+  "app.components.FormSync.unlockScanningTooltip2": "Kontakt din Government Success projektleder eller administrator for at låse op for det.",
   "app.components.ProjectTemplatePreview.close": "Luk",
   "app.components.ProjectTemplatePreview.createProject": "Opret projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Opret et projekt baseret på skabelonen ''{templateTitle}''.",
@@ -1877,7 +1885,6 @@
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Kopier en anden survey",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Rediger surveyformular",
-
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Angiv, hvilke oplysninger der skal gives for at vejlede deltagernes svar.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Spørgeskema",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Opret nyt token",
@@ -3883,15 +3890,5 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekter",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besøg vores supportcenter",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images}}",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Du kan få flere oplysninger om anbefalede billedopløsninger ved at {supportPageLink}.",
-  "app.components.FormSync.importScans1": "Importér scanninger",
-  "app.components.FormSync.paperFormsOCR1": "OCR af papirformularer",
-  "app.components.FormSync.paperFormsOCRDescription1": "Udskriv formular, indsaml på papir, scan svar tilbage",
-  "app.components.FormSync.unlockScanningTooltip1": "Scanning af papirformularer med FormSync er ikke inkluderet i dit nuværende abonnement.",
-  "app.components.FormSync.importResponses1": "Importér svar",
-  "app.components.FormSync.unlockScanningTooltip2": "Kontakt din Government Success projektleder eller administrator for at låse op for det.",
-  "app.components.FormSync.spreadsheetDescription1": "Importér svardata fra Excel eller CSV",
-  "app.components.FormSync.spreadsheet1": "Regneark",
-  "app.components.FormSync.unlockScanning1": "Lås op for scanning",
-  "app.components.FormSync.template1": "Skabelon"
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Du kan få flere oplysninger om anbefalede billedopløsninger ved at {supportPageLink}."
 }
