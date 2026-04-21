@@ -4079,6 +4079,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:21:33.501914Z",
+    "verified_by": "Jelena"
+  },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
