@@ -630,7 +630,6 @@ resource 'Phases' do
         )
       end
 
-
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
 
@@ -734,7 +733,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
           responses.each do |response|
             expect { response.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
@@ -749,7 +748,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
         end
       end
 
@@ -762,7 +761,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
         end
       end
     end
