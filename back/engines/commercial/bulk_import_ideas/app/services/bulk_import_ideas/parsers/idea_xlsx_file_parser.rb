@@ -7,23 +7,12 @@ module BulkImportIdeas::Parsers
 
     attr_reader :row_mapper
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
-      @import_user = current_user
+    def initialize(_current_user, locale, phase_id, personal_data_enabled, _pages_per_form: nil)
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
       @personal_data_enabled = personal_data_enabled
       @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled)
-    end
-
-    def parse_file(file_content)
-      files = create_files(file_content)
-
-      idea_rows = []
-      files.each do |file|
-        idea_rows += parse_rows(file)
-      end
-      idea_rows
     end
 
     def parse_rows(file)
