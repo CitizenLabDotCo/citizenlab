@@ -67,13 +67,19 @@ const Combobox = ({
   filterSelectorStyle,
   minWidth,
   toggleValuesList,
+  closeExpanded,
   textColor,
   currentTitle,
   handleKeyDown,
 }: Props) => {
   const listboxRef = useRef<HTMLUListElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
+
+  const focusTrigger = () => {
+    triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
+  };
 
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
@@ -118,6 +124,13 @@ const Combobox = ({
             }
           }
           break;
+        case 'Escape':
+          if (opened) {
+            event.preventDefault();
+            closeExpanded();
+            focusTrigger();
+          }
+          break;
         default:
           break;
       }
@@ -126,7 +139,7 @@ const Combobox = ({
 
   return (
     <Box>
-      <Box>
+      <Box ref={triggerRef}>
         {/* The id is used for aria-labelledby on the group
          which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
