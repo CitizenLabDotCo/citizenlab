@@ -5,6 +5,7 @@ import { parseISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
@@ -17,6 +18,7 @@ import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { convertToTimeZoneISO, getDateInTimezone } from 'utils/dateUtils';
 
 import messages from '../messages';
 import { SubmitStateType, ValidationErrors } from '../typings';
@@ -43,14 +45,17 @@ const DateSetup = ({
   const { projectId, phaseId } = useParams();
   const { data: phases } = usePhases(projectId);
 
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
+
   const { start_at, end_at } = formData;
 
   const selectedRange = useMemo(() => {
     return {
-      from: start_at ? parseISO(start_at) : undefined,
-      to: end_at ? parseISO(end_at) : undefined,
+      from: getDateInTimezone(start_at, timeZone),
+      to: getDateInTimezone(end_at, timeZone),
     };
-  }, [start_at, end_at]);
+  }, [start_at, end_at, timeZone]);
 
   const disabledRanges = useMemo(() => {
     if (!phases) return [];
@@ -100,10 +105,13 @@ const DateSetup = ({
             ...prevState,
             phaseDateError: undefined,
           }));
+
+          const start_at = convertToTimeZoneISO(from, timeZone);
+          const end_at = convertToTimeZoneISO(to, timeZone);
           setFormData({
             ...formData,
-            start_at: from ? from.toISOString() : '',
-            end_at: to ? to.toISOString() : '',
+            start_at,
+            end_at,
           });
         }}
         className="intercom-admin-phase-date-setup"

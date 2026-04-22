@@ -402,7 +402,7 @@ export default defineMessages({
     defaultMessage:
       'Something went wrong. Please contact us if the problem persists.',
   },
-  phase_too_short: {
+  duration_too_short: {
     id: 'app.errors.phase_too_short',
     defaultMessage: 'The phase is too short. It must be at least 24 hours.',
   },

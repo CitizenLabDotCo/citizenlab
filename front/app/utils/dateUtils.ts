@@ -370,3 +370,42 @@ export const formatDateInTimezone = ({
   const zonedDate = moment.tz(date, timeZone);
   return zonedDate.format('M/D/YYYY h:mm A');
 };
+
+export const convertToTimeZoneISO = (
+  date: Date | undefined,
+  timeZone?: string
+): string => {
+  if (!date || !timeZone) return '';
+
+  return moment
+    .tz(
+      {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate(),
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
+      },
+      timeZone
+    )
+    .utc()
+    .toISOString();
+};
+export const getDateInTimezone = (
+  isoString: string | null | undefined,
+  timeZone: string | undefined
+): Date | undefined => {
+  if (!isoString || !timeZone) return undefined;
+
+  const m = moment.tz(isoString, timeZone);
+  // We don't use m.toDate() because it changes the time to the browser timezone.
+  return new Date(
+    m.year(),
+    m.month(),
+    m.date(),
+    m.hour(),
+    m.minute(),
+    m.second()
+  );
+};
