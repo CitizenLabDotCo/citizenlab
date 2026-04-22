@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Pareiškimas",
   "app.components.form.controls.noRankSelected": "Nepasirinktas rangas",
   "app.components.form.controls.optionalParentheses": "(neprivaloma)",
+  "app.components.form.controls.rankingDragHandleLabel": "Vilkite, kad pakeistumėte „{label}“ eiliškumą",
   "app.components.form.controls.rankingInstructions": "Vilkite ir nuleiskite rangavimo parinktis.",
   "app.components.form.controls.valueOutOfTotal": "{value} iš {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} iš {total}, {label}",
