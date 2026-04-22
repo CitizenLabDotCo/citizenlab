@@ -8,10 +8,11 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 interface Props {
   project: IProjectData;
@@ -44,7 +45,7 @@ const VisibilitySection = ({ project, onClose }: Props) => {
         })
         .filter(Boolean)
         .join(', ');
-      return groupNames || formatMessage(messages.everyone);
+      return groupNames;
     }
     return formatMessage(messages.everyone);
   };

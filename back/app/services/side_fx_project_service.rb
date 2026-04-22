@@ -130,6 +130,8 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
+  # A per-project ProjectPublished campaign only exists to override the global default to disabled.
+  # Enabling removes the override so the project inherits the global setting; disabling persists it.
   def sync_publication_email_campaign(project, publication_email_enabled)
     return if publication_email_enabled.nil?
 

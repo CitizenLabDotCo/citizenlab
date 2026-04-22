@@ -98,7 +98,7 @@ export interface IProjectAttributes {
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
   publication_email_enabled: boolean;
-  publication_email_available: boolean;
+  global_publication_email_enabled: boolean;
   space_id?: string | null;
 }
 

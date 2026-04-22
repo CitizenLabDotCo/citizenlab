@@ -94,7 +94,7 @@ export const project: IProjectData = {
     votes_count: 0,
     live_auto_input_topics_enabled: false,
     publication_email_enabled: true,
-    publication_email_available: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {
