@@ -60,7 +60,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   } else if (publication_status === 'published') {
     entryText = messages.published;
     entryIcon = 'check-circle';
-  } else if (publication_status === 'archived') {
+  } else {
     entryText = messages.archived;
     entryIcon = 'inbox';
   }
