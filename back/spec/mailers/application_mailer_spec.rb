@@ -27,6 +27,7 @@ RSpec.describe ApplicationMailer do
       it 'includes delivery_method and delivery_method_options in default_config' do
         instance = described_class.new
         instance.instance_variable_set(:@user, user)
+        allow(instance).to receive(:subject).and_return('Test subject')
 
         config = instance.send(:default_config)
 
@@ -43,11 +44,17 @@ RSpec.describe ApplicationMailer do
         )
       end
 
-      it 'only includes SMTP options that are set' do
-        SettingsService.new.activate_feature!('custom_smtp', settings: { 'address' => 'mail.test.org' })
+    end
 
+    context 'when custom_smtp is enabled with only address' do
+      before do
+        SettingsService.new.activate_feature!('custom_smtp', settings: { 'address' => 'mail.test.org' })
+      end
+
+      it 'only includes SMTP options that are set' do
         instance = described_class.new
         instance.instance_variable_set(:@user, user)
+        allow(instance).to receive(:subject).and_return('Test subject')
 
         options = instance.send(:default_config)[:delivery_method_options]
 
@@ -63,6 +70,7 @@ RSpec.describe ApplicationMailer do
       it 'does not include delivery_method_options in default_config' do
         instance = described_class.new
         instance.instance_variable_set(:@user, user)
+        allow(instance).to receive(:subject).and_return('Test subject')
 
         config = instance.send(:default_config)
 
