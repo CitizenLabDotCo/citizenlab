@@ -11,9 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import moment from 'moment';
-
-import usePhases from 'api/phases/usePhases';
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
@@ -31,6 +28,7 @@ import { getFullName } from 'utils/textUtils';
 import FolderProjectDropdown from './FolderProjectDropdown';
 import messages from './messages';
 import PublicationButtons from './PublicationButtons';
+import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -51,60 +49,11 @@ const ProjectHeader = ({ projectId }: Props) => {
   const { data: approver } = useUserById(
     projectReview?.data.relationships.reviewer?.data?.id
   );
-  const { data: phases } = usePhases(projectId);
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
   if (!project) return null;
-
-  const publicationStatus = (() => {
-    const attrs = project.data.attributes;
-    if (!attrs.first_published_at && attrs.scheduled_at) {
-      return {
-        message: messages.scheduled,
-        icon: 'clock' as IconNames,
-        color: colors.coolGrey600,
-      };
-    }
-    switch (attrs.publication_status) {
-      case 'published': {
-        const isOngoing = phases?.data.some(
-          (phase) =>
-            !phase.attributes.end_at ||
-            moment(phase.attributes.end_at).isSameOrAfter(
-              moment().startOf('day')
-            )
-        );
-        const noPhases = (phases?.data.length ?? 0) === 0;
-        if (noPhases || isOngoing) {
-          return {
-            message: messages.publishedActive,
-            icon: 'check-circle' as IconNames,
-            color: colors.green500,
-          };
-        }
-        return {
-          message: messages.publishedFinished,
-          icon: 'bullseye' as IconNames,
-          color: colors.coolGrey600,
-        };
-      }
-      case 'archived':
-        return {
-          message: messages.archived,
-          icon: 'inbox' as IconNames,
-          color: colors.coolGrey600,
-        };
-      case 'draft':
-      default:
-        return {
-          message: messages.draft,
-          icon: 'flag' as IconNames,
-          color: colors.orange500,
-        };
-    }
-  })();
 
   const folderId = project.data.attributes.folder_id;
   let visibilityMessage: MessageDescriptor = messages.everyone;
@@ -306,16 +255,7 @@ const ProjectHeader = ({ projectId }: Props) => {
           <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name={publicationStatus.icon}
-              fill={publicationStatus.color}
-              width="16px"
-            />
-            <Text color="coolGrey600" fontSize="s" m="0px">
-              {formatMessage(publicationStatus.message)}
-            </Text>
-          </Box>
+          <PublicationStatus project={project.data} />
         </Box>
       </Box>
     </NavigationTabs>
