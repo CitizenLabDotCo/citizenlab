@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { parseISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -58,18 +57,26 @@ const DateSetup = ({
   }, [start_at, end_at, timeZone]);
 
   const disabledRanges = useMemo(() => {
-    if (!phases) return [];
+    if (!phases || !timeZone) return [];
 
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
-    const disabledRanges = otherPhases.map(
-      ({ attributes: { start_at, end_at } }) => ({
-        from: parseISO(start_at),
-        to: end_at ? adjustEndForDisplay(parseISO(end_at)) : undefined,
+    const disabledRanges = otherPhases
+      .map(({ attributes: { start_at, end_at } }) => {
+        const fromDate = getDateInTimezone(start_at, timeZone);
+        const toDate = end_at ? getDateInTimezone(end_at, timeZone) : undefined;
+
+        return {
+          from: fromDate,
+          to: toDate ? adjustEndForDisplay(toDate) : undefined,
+        };
       })
-    );
+      .filter(
+        (range): range is { from: Date; to: Date | undefined } =>
+          range.from !== undefined
+      );
 
     return patchDisabledRanges(selectedRange, disabledRanges);
-  }, [phases, phaseId, selectedRange]);
+  }, [phases, phaseId, selectedRange, timeZone]);
 
   if (!phases) return null;
 
@@ -107,7 +114,7 @@ const DateSetup = ({
           }));
 
           const start_at = convertToTimeZoneISO(from, timeZone);
-          const end_at = convertToTimeZoneISO(to, timeZone);
+          const end_at = to ? convertToTimeZoneISO(to, timeZone) : null;
           setFormData({
             ...formData,
             start_at,
