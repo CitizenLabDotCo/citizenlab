@@ -184,9 +184,7 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
-  project_folders?: AppConfigurationFeature;
   project_preview_link?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
@@ -279,6 +277,7 @@ export interface IAppConfigurationSettings {
   phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
+  project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
 }

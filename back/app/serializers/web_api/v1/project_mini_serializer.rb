@@ -1,26 +1,23 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
-  attributes(
-    :title_multiloc,
-    :slug
-  )
+  attributes :title_multiloc, :slug
 
   attribute :starts_days_from_now do |object|
-    first_phase = object.phases.order(start_at: :asc).first
-    today = Time.zone.now.to_date
+    first_phase = object.phases.first
+    now = Time.now
 
-    if first_phase&.start_at && first_phase.start_at > today
-      (first_phase.start_at.to_date - today).to_i
+    if first_phase && first_phase.start_at > now
+      ((first_phase.start_at - now) / 1.day).floor
     end
   end
 
   attribute :ended_days_ago do |object|
-    last_phase = object.phases.order(end_at: :desc).last
-    today = Time.zone.now.to_date
+    last_phase = object.phases.last
+    now = Time.now
 
-    if last_phase&.end_at && last_phase.end_at < today
-      (today - last_phase.end_at.to_date).to_i
+    if last_phase&.end_at && last_phase.end_at < now
+      ((now - last_phase.end_at) / 1.day).floor
     end
   end
 

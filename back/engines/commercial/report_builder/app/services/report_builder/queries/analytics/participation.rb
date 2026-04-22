@@ -95,7 +95,7 @@ module ReportBuilder
         baskets_compared_period = {
           fact: 'participation',
           filters: {
-            **date_filter('dimension_date_created', start_at, end_at),
+            **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
             'dimension_type.name': 'basket'
           },

@@ -390,10 +390,6 @@ module MultiTenancy
                 }
               ]
             },
-            project_folders: {
-              enabled: true,
-              allowed: true
-            },
             project_preview_link: {
               enabled: true,
               allowed: true
@@ -524,6 +520,10 @@ module MultiTenancy
             project_review: {
               enabled: true,
               allowed: true
+            },
+            project_scheduling: {
+              enabled: false,
+              allowed: false
             },
             platform_templates: {
               enabled: false,

@@ -1,5 +1,7 @@
 class WebApi::V1::PhaseMiniSerializer < WebApi::V1::BaseSerializer
-  attributes :end_at, :participation_method, :input_term
+  attributes :participation_method, :input_term
+
+  attribute :end_at, &:end_date
 
   %i[
     voting_method native_survey_button_multiloc

@@ -89,7 +89,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const { data: authUser } = useAuthUser();
   const projectId = project.data.id;
 
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
@@ -151,10 +150,9 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       project.data.attributes.description_preview_multiloc
     );
 
-  const showProjectFolderSelect =
-    FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
-      authUser?.data.attributes.highest_role
-    ) && isProjectFoldersEnabled;
+  const showProjectFolderSelect = FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
+    authUser?.data.attributes.highest_role
+  );
 
   useEffect(() => {
     if (remoteProjectFileAttachments) {
