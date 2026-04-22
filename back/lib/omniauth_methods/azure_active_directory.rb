@@ -20,6 +20,16 @@ module OmniauthMethods
       }
     end
 
+    def enforced_email_domains
+      config = AppConfiguration.instance
+      return [] unless config.feature_activated?('azure_ad_login')
+
+      domains_str = config.settings('azure_ad_login', 'enforced_email_domains')
+      return [] if domains_str.blank?
+
+      domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
+    end
+
     private
 
     def remote_avatar_url(auth)

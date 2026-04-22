@@ -31,6 +31,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import ChangePasswordSuccess from './ChangePasswordSuccess';
 import messages from './messages';
+import Warning from 'components/UI/Warning';
+import { isAdmin } from 'utils/permissions/roles';
 
 type FormValues = {
   current_password: string;
@@ -131,6 +133,11 @@ const ChangePassword = () => {
           <Title>{formatMessage(pageTitle)}</Title>
           <FormProvider {...methods}>
             <Form>
+              {isAdmin(authUser) && (
+                <Warning mt="-20px" mb="20px">
+                  {formatMessage(messages.adminPasswordChangeWarning)}
+                </Warning>
+              )}
               {userHasPreviousPassword && (
                 <>
                   <LabelContainer>

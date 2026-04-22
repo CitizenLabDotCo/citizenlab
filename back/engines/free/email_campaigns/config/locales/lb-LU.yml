@@ -1,701 +1,731 @@
-lb:
+lb-LU:
   email_campaigns:
-    campaign_type_description:
-      "manual": Offiziell Noriichten
-      "manual_project_participants": Offiziell Messagen un de Projet Participanten
-      "admin_rights_received": Administratorrechter kritt
-      "comment_deleted_by_admin": Mäi Kommentar läschen
-      "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
-      "comment_on_your_comment": Eng Äntwert op mäi Kommentar
-      "comment_on_idea_you_follow": E Kommentar zu enger Iddi déi Dir verfollegt
-      "community_monitor_report": Communautéit Monitor Rapport
-      "cosponsor_of_your_idea": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
-      "event_registration_confirmation": Event Aschreiwung Bestätegung
-      "idea_marked_as_spam": Spambericht iwwer d'Iddien
-      "idea_published": Verëffentlechung vu menger Iddi
-      "invitation_to_cosponsor_idea": Invitatioun fir eng Propositioun ze sponseren
-      "invite_received": Invitatioun
-      "invite_reminder": Invitatiounserënnerung
-      "internal_comment_on_idea_assigned_to_you": Interne Kommentar zum Input, deen mir zougewisen ass
-      "internal_comment_on_idea_you_commented_internally_on": Interne Commentaire op Input Ech kommentéiert intern op
-      "internal_comment_on_idea_you_moderate": Intern Kommentar op Input am Projet oder Dossier ech verwalten
-      "internal_comment_on_unassigned_unmoderated_idea": Intern Kommentar iwwer net zougewisen Input am net verwalteten Projet
-      "internal_comment_on_your_internal_comment": Interne Kommentar zu mengem internen Kommentar
-      "mention_in_official_feedback": Ernimmung an engem Update
-      "mention_in_internal_comment": Ernimmen an engem internen Commentaire
-      "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
-      "new_idea_for_admin_published": Nei publizéiert Input an engem Projet, deen ech moderéieren
-      "new_idea_for_admin_prescreening": Nei Input, deen an engem Projet, deen ech moderéieren, Genehmegung brauch
-      "official_feedback_on_idea_you_follow": Update op eng Iddi déi Dir verfollegt
-      "password_reset": Passwuert zerécksetzen
-      "project_moderation_rights_received": Moderatiounsrechter fir Projete kritt
-      "project_folder_moderation_rights_received": Administratorrechter fir Dossier'en kritt
-      "project_phase_started": Nei Projetsphas
-      "project_phase_upcoming": Bevirstoend nei Projetsphas
-      "project_published": Projet publizéiert
-      "project_review_request": Projet review Ufro
-      "project_review_state_change": Projet guttgeheescht
-      "status_change_on_idea_you_follow": Status Ännerung vun enger Iddi déi Dir verfollegt
-      "survey_submitted": Ëmfro presentéiert
-      "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
-      "welcome": No der Aschreiwung
-      "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
-      "moderator_digest": Wéchentlech Iwwersiicht fir Projetsmanageren
-      "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
-      "user_digest": Wéchentlech Iwwersiicht
-      "voting_basket_submitted": Bestätegung vum Vote
-      "native_survey_not_submitted": Ëmfro net presentéiert
-      "voting_basket_not_submitted": Stëmmen net agereecht
-      "voting_last_chance": Déi lescht Chance fir ze wielen
-      "voting_phase_started": Nei Projetsphase mat Ofstëmmung
-      "voting_results": Wahlresultater
-      "your_input_in_screening": Meng Input waart op Screening
-      "screening_digest": Wëchentlech Screening-Erënnerung
-    general:
-      by_author: 'vum %{authorName}'
-      author_wrote: '%{authorName} geschriwwen:'
-      cta_goto_idea: 'Gitt op dës Iddi'
-      cta_goto_input: 'Gitt op dës Input'
-      cta_goto:
-        idea: 'Gitt op dës Iddi'
-        question: 'Gitt op dës Fro'
-        contribution: 'Gitt op dëse Bäitrag'
-        project: 'Gitt op dëse Projet'
-        issue: 'Gitt op dëst Thema'
-        option: 'Gitt op dës Optioun'
-        proposal: 'Gitt op dës Propositioun'
-        initiative: 'Gitt op dës Initiativ'
-        petition: 'Gitt op dës Petitioun'
-        comment: 'Gitt op dëse Kommentar'
-        response: 'Gitt op dës Äntwert'
-        suggestion: 'Gitt op dës Suggestioun'
-        topic: 'Gitt op dëst Thema'
-        post: 'Gitt op dëse Post'
-        story: 'Gitt op dës Geschicht'
-      cta_goto_your:
-        idea: 'Gitt op Är Iddi'
-        question: 'Gitt op Är Fro'
-        contribution: 'Gitt op Äre Bäitrag'
-        project: 'Gitt op Äre Projet'
-        issue: 'Gitt op Äert Thema'
-        option: 'Gitt op Är Optioun'
-        proposal: 'Gitt op Är Propositioun'
-        initiative: 'Gitt op Är Initiativ'
-        petition: 'Gitt op Är Petitioun'
-        comment: 'Gitt op Äre Kommentar'
-        response: 'Gitt op Är Äntwert'
-        suggestion: 'Gitt op Är Suggestioun'
-        topic: 'Gitt op Äert Thema'
-        post: 'Gitt op Äre Post'
-        story: 'Gitt op Är Geschicht'
-      cta_goto_proposal: 'Gitt op dës Propositioun'
-      cta_goto_project: 'Gitt op dëse Projet'
-    schedules:
-      weekly:
-        "0": "Wochemaart, Sonndes um %{hourOfDay}"
-        "1": "Wochemaart, op Méindes %{hourOfDay}"
-        "2": "Wochemaart, op Dënschdes %{hourOfDay}"
-        "3": "Wochemaart, Mëttwochs %{hourOfDay}"
-        "4": "Wochemaart, op Donneschden %{hourOfDay}"
-        "5": "Wochemaart, Freideg %{hourOfDay}"
-        "6": "Wochemaart, Samschdes %{hourOfDay}"
-      quarterly: "Trimester, um éischten Dag vum Véierel"
-    preview_data:
-      author_first_name: 'Jane'
-      author_last_name: 'Hinde'
-      author_display_name: 'Jane Doe'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Schmitz'
-      initiator_display_name: 'Bob Smith'
-      project_title: 'Beispillprojet'
-      project_description_preview: 'Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
-      phase_title: 'Beispillphase'
-      folder_title: 'Beispill-Dossier'
-      comment_body: 'Dëst ass e Beispillkommentar, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
-      comment_deleted_reason: 'Äre Beispillkommentar gouf als onpassend ugesinn.'
-      idea_title: 'Beispill Iddi'
-      idea_body: 'Dëst sinn e puer Beispiller vun Iddien fir Inhalt, déi benotzt gi fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
-      event_title: 'Beispill Event'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
-      event_address2: 'Zëmmer 3a, iewescht Stack'
-      proposal_title: 'Beispillvirschlag'
-      input_status_title: 'Beispill Status'
-      input_status_description: 'E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)'
-      official_feedback_body: 'Beispill vun offiziellem Feedback'
-    footer:
-      "link_privacy_policy": "Dateschutzrichtlinn"
-      "link_terms_conditions": "Geschäftsbedéngungen"
-      "link_unsubscribe": "Ofmellen"
-      "powered_by": "Ënnerstëtzt vun"
-      "recipient_statement": "Dës E-Mail gouf Iech vum Go Vocal am Numm vun %{organizationName}geschéckt, well Dir e registréierte Benotzer vun %{organizationLink}sidd."
-      "unsubscribe_statement": "Dir kënnt %{unsubscribeLink} wann Dir dës E-Mailen an Zukunft net wëllt kréien."
-      "unsubscribe_text": "ofmellen"
-    follow:
-      "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
-    manual:
-      preheader: 'Dir hutt Mail vun %{organizationName}'
-    manual_project_participants:
-      preheader: 'Dir hutt E-Mail vun %{organizationName}'
-    comment_deleted_by_admin:
-      subject: 'Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht'
-      preheader: 'Äre Kommentar gouf geläscht'
-      title: '%{organizationName} Äre Kommentar geläscht'
-      event_description: '%{organizationName} huet de Kommentar geläscht, deen Dir zu dëser Iddi geschriwwen hutt.'
-      cta_button: 'Kuckt dës Iddi'
-      reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
-      other_reason: '%{otherReason}'
-      inappropriate_reason: 'Äre Kommentar gouf als net ugemiess ageschat'
-      irrelevant_reason: 'Äre Kommentar gouf als net relevant fir dëse Kontext betruecht'
-      no_reason: 'Et gouf kee Grond uginn'
     admin_digest:
-      subject: 'Äre wëchentleche Bericht als Administrateur vun %{time}'
-      preheader: 'Bericht vun der Woch vun %{organizationName}'
+      cta_button: Besicht Är Plattform
+      event_description: Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat op Ärer Plattform lass ass!
+      new_comments: Nei Kommentaren
+      new_inputs: Nei Input
+      new_users: Nei Benotzer
+      preheader: Bericht vun der Woch vun %{organizationName}
+      reached_threshold: D'Schwell erreecht
+      subject: Äre wëchentleche Bericht als Administrateur vun %{time}
       title: '%{firstName}, Äre Wochenbericht'
-      event_description: 'Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat op Ärer Plattform lass ass!'
-      cta_button: 'Besicht Är Plattform'
-      new_users: 'Nei Benotzer'
-      new_inputs: 'Nei Input'
-      new_comments: 'Nei Kommentaren'
-      title_activity_past_week: 'Aktivitéit vun der leschter Woch'
-      title_no_activity_past_week: 'An der leschter Woch gouf et keng Aktivitéit'
-      reached_threshold: 'D''Schwell erreecht'
-      yesterday_by_author: 'Gëschter vun %{author}'
-      today_by_author: 'Haut vun %{author}'
-      x_days_ago_by_author: 'Virun %{x} Deeg vum %{author}'
+      title_activity_past_week: Aktivitéit vun der leschter Woch
+      title_no_activity_past_week: An der leschter Woch gouf et keng Aktivitéit
+      today_by_author: Haut vun %{author}
+      x_days_ago_by_author: Virun %{x} Deeg vum %{author}
+      yesterday_by_author: Gëschter vun %{author}
+    admin_labels:
+      content_type:
+        comments: Kommentaren
+        content_moderation: Inhalt Moderatioun
+        events: Evenementer
+        general: Général
+        inputs: Input
+        internal_comments: Intern Kommentaren
+        permissions: Permissiounen
+        projects: Projeten
+        proposals: Propositioune
+        reactions: Reaktiounen
+        surveys: Ëmfroen
+        voting: Ofstëmmung
+      recipient_role:
+        admins: An den Admins
+        admins_and_managers: Fir Administrateuren & Manager
+        managers: Zu Manager
+        project_participants: Zu Projet Participanten
+        registered_users: Fir registréiert Benotzer
+      recipient_segment:
+        admins: Administrateuren
+        admins_and_managers: Administrateuren a Manager
+        admins_and_managers_assigned_to_the_input: Administrateuren & Manager ginn dem Input zougewisen
+        admins_and_managers_managing_the_project: Administrateuren a Manager déi de Projet managen
+        admins_assigned_to_a_proposal: Administrateuren zu enger Propositioun zougewisen
+        all_users: All Benotzer
+        all_users_who_uploaded_proposals: All Benotzer déi Propositioune eropgelueden hunn
+        managers: Manager
+        managers_managing_the_project: Manager déi de Projet managen
+        new_attendee: Nei registréiert Benotzer
+        project_review_requester: Benotzer deen de Projet review gefrot
+        project_reviewers: Project Rezensiounen an Dossier Manager
+        user_who_commented: Benotzer deen kommentéiert
+        user_who_is_invited_to_cosponsor_a_proposal: Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren
+        user_who_is_mentioned: Benotzer deen ernimmt gëtt
+        user_who_is_receiving_admin_rights: Benotzer deen Admin Rechter kritt
+        user_who_is_receiving_folder_manager_rights: Benotzer, deen d'Rechter vum Dossier-Manager kritt
+        user_who_is_receiving_folder_moderator_rights: Benotzer deen Dossier Moderator Rechter kritt
+        user_who_is_receiving_project_manager_rights: Benotzer, deen d'Rechter vum Projet-Manager kritt
+        user_who_is_receiving_project_moderator_rights: Benotzer deen Projet Moderator Rechter kritt
+        user_who_is_receiving_space_manager_rights: Benotzer, deen d'Rechter vum Space-Manager kritt
+        user_who_published_the_input: Benotzer deen den Input publizéiert huet
+        user_who_published_the_proposal: Benotzer deen d'Propositioun publizéiert huet
+        user_who_registers: Benotzer deen registréiert
+        user_who_submitted_the_input: Benotzer deen den Input ofginn huet
+        user_who_voted: Benotzer deen gestëmmt huet
+        user_who_was_invited: Benotzer deen invitéiert gouf
+        user_with_unsubmitted_survey: Benotzer deen ugefaang huet awer net hir Ëmfro ofginn huet
+        user_with_unsubmitted_votes: Benotzer déi hir Stëmmen net ofginn huet
+        users_who_engaged_but_not_voted: Benotzer déi mam Projet engagéiert hunn awer net gestëmmt hunn
+        users_who_engaged_with_the_project: Benotzer déi mam Projet engagéiert hunn
+        users_who_follow_the_input: Benotzer déi den Input verfollegen
+        users_who_follow_the_project: Benotzer déi de Projet verfollegen
+        users_who_follow_the_proposal: Benotzer déi d'Propositioun verfollegen
+      trigger:
+        7_days_after_invite_is_sent: 7 Deeg no der Invitatioun geschéckt
+        7_days_before_the_project_changes_phase: 7 Deeg virum Projet Ännerungen Phas
+        comment_is_deleted: Commentaire geläscht
+        comment_is_flagged_as_spam: Kommentar gëtt als Spam markéiert
+        content_gets_flagged_as_innapropiate: Inhalt gëtt als innapropiate markéiert
+        initiative_resubmitted_for_review: Propositioun nees fir Iwwerpréiwung presentéiert
+        input_is_assigned: Input ass zougewisen
+        input_is_flagged_as_spam: Input gëtt als Spam markéiert
+        input_is_published: Input gëtt publizéiert
+        input_is_updated: Input gëtt aktualiséiert
+        input_status_changes: Input Status Ännerungen
+        internal_comment_is_posted_on_idea_assigned_to_user: Interne Kommentar gëtt op Input gepost dem Benotzer zougewisen
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Interne Kommentar gëtt op Input am Projet oder Dossier gepost
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Interne Kommentar gëtt op den Input gepost Benotzer huet intern kommentéiert
+        internal_comment_is_posted_on_idea_user_moderates: Interne Kommentar gëtt op Input Benotzer Moderéiert gepost
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Interne Kommentar gëtt op net zougewisenen Input am net verwalteten Projet gepost
+        new_input_awaits_screening: Neien Input waart op Screening
+        new_input_is_published: Neien Input gëtt publizéiert
+        new_proposal_is_posted: Nei Propositioun ass gepost
+        project_phase_changes: Projet Phase Ännerungen
+        project_published: Projet publizéiert
+        project_review_request: Moderator gefrot e Projet review
+        project_review_state_change: Rezensor huet de Projet guttgeheescht
+        proposal_gets_reported_as_spam: Propositioun gëtt als Spam gemellt
+        proposal_is_assigned_to_admin: Propositioun ass dem Administrateur zougewisen
+        proposal_is_published: Propositioun ass publizéiert
+        proposal_is_updated: Propositioun gëtt aktualiséiert
+        proposal_is_upvoted_above_threshold: "D'Propositioun gëtt iwwer d'Schwell gestëmmt"
+        proposal_status_changes: Propositioun Status Ännerungen
+        registration_to_event: Aschreiwung op en Event
+        survey_1_day_after_draft_saved: "1 Dag nodeems de Benotzer fir d'lescht d'Ëmfro am Entworf gespäichert huet"
+        user_accepts_invitation_to_cosponsor_a_proposal: De Benotzer acceptéiert d'Invitatioun fir eng Propositioun ze sponsoren
+        user_comments: Benotzer Kommentaren
+        user_comments_on_input: Benotzer Kommentaren op Input
+        user_comments_on_proposal: Benotzer Kommentaren op Propositioun
+        user_is_given_admin_rights: De Benotzer gëtt Admin Rechter
+        user_is_given_folder_manager_rights: Dem Benotzer ginn Dossier-Manager-Rechter ginn
+        user_is_given_folder_moderator_rights: Benotzer gëtt Dossier Moderator Rechter
+        user_is_given_project_manager_rights: Dem Benotzer gi Projet-Manager-Rechter ginn
+        user_is_given_project_moderator_rights: Benotzer gëtt Projet Moderator Rechter ginn
+        user_is_given_space_manager_rights: Dem Benotzer gi Space-Manager-Rechter ginn
+        user_is_invited_to_cosponsor_a_proposal: De Benotzer ass invitéiert fir eng Propositioun ze sponseren
+        user_is_invited_to_platform: Benotzer ass op d'Plattform invitéiert
+        user_is_mentioned: Benotzer gëtt ernimmt
+        user_is_mentioned_in_internal_comment: Benotzer gëtt am internen Kommentar ernimmt
+        user_registers_for_the_first_time: Benotzer registréiert fir d'éischte Kéier
+        user_replies_to_comment: Benotzer Äntwerten op Commentaire
+        user_replies_to_internal_comment: Benotzer Äntwerten op intern Kommentar
+        voting_1_day_after_last_votes: 1 Dag nodeems de Benotzer lescht gestëmmt huet
+        voting_2_days_before_phase_closes: 2 Deeg virum Ofstëmmungsphase zou
+        voting_basket_submitted: D'Stëmmen ginn agereecht
+        voting_phase_ended: D'Wahlphase ass eriwwer
     admin_rights_received:
-      subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
-      preheader: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}'
-      title: 'Dir sidd Administrateur ginn'
-      event_description: 'Dir hutt Administrateurrechter fir d''Participatiounsplattform vun %{organizationName}kritt.'
-      cta_button: 'Verwalt Är Plattform'
-      text_create_participatory_process: 'Als Administrateur kënnt Dir nei participativ Projeten uleeën an upassen. Dir kënnt nei Phasen an der Zäitlinn dobäimaachen. Jiddereng vun dëse Phasen ka bezüglech dem Verëffentleche vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
-      text_moderate_analyse_input: "Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. \nDen Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet."
-      text_platform_setup: 'Als Administrateur kënnt Dir d''participativ Plattform upassen. Wielt e Logo, Biller, Faarwen, schreift e personaliséierte Message op der Startsäit, verschéckt Invitatiounen a leet fest wat genee dir vun Äre Benotzer wësse wëllt...'
-      title_create_participatory_process: 'Entwerft de participative Prozess'
-      title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_platform_setup: 'Riicht Är Plattform an'
-      title_what_can_you_do_administrator: 'Wat kënnt Dir als Administrateur maachen?'
-    comment_marked_as_spam:
-      subject: '%{organizationName}: %{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
-      preheader: 'Reagéiert op dëse Kommentar, deen als Spam gemellt gouf'
-      title: '%{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
-      cta_button: 'Kommentar iwwerpréiwen'
-      by_author: 'vun %{authorName}'
-      commented: '%{authorName} huet kommentéiert:'
-      days_ago: 'Virun %{numberOfDays} Deeg'
-      event_description: 'De folgende Kommentar, deen op <strong>''%{post}''</strong> gepost gouf, gouf gemellt:'
-      inappropriate_content: 'De Kommentar ass net ugemiess oder beleedegend.'
-      reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
-      today: Haut
-      wrong_content: 'De Kommentar ass net relevant.'
-      yesterday: Gëschter
-    community_monitor_report:
-      subject: 'En neie Communautéitsmonitor Bericht ass verfügbar'
-      preheader: 'E neie Gemeinschaftsmonitorbericht ass verfügbar'
-      title: 'En neie Communautéitsmonitor Bericht ass verfügbar'
-      event_description: 'E Gemeinschaftsmonitorbericht gouf fir dat lescht Quartal erstallt. Dir kënnt drop zougräifen andeems Dir op de Knäppchen hei ënnendrënner klickt an Iech umellt.'
-      cta_button: 'Rapport ukucken'
-      report_name: 'Communautéit Monitor Rapport'
-    cosponsor_of_your_idea:
-      subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze sponsoren'
-      preheader: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
-      title: '%{cosponsorName} huet Är Invitatioun ugeholl, Äre Virschlag mat z''ënnerstëtzen.'
-      event_description: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
-      cta_button: 'Kuckt Är Propositioun'
+      cta_button: Verwalt Är Plattform
+      event_description: Dir hutt Administrateurrechter fir d'Participatiounsplattform vun %{organizationName}kritt.
+      preheader: Dir krut Administratorrechter fir d'participativ Plattform vum %{organizationName}
+      subject: Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn
+      text_create_participatory_process: Als Administrateur kënnt Dir nei participativ Projeten uleeën an upassen. Dir kënnt nei Phasen an der Zäitlinn dobäimaachen. Jiddereng vun dëse Phasen ka bezüglech dem Verëffentleche vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.
+      text_moderate_analyse_input: |-
+        Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. 
+        Den Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet.
+      text_platform_setup: Als Administrateur kënnt Dir d'participativ Plattform upassen. Wielt e Logo, Biller, Faarwen, schreift e personaliséierte Message op der Startsäit, verschéckt Invitatiounen a leet fest wat genee dir vun Äre Benotzer wësse wëllt...
+      title: Dir sidd Administrateur ginn
+      title_create_participatory_process: Entwerft de participative Prozess
+      title_moderate_analyse_input: Moderéiert an analyséiert d’Bäiträg
+      title_platform_setup: Riicht Är Plattform an
+      title_what_can_you_do_administrator: Wat kënnt Dir als Administrateur maachen?
     assignee_digest:
+      cta_button: Verwalt Är Input
+      preheader: Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}
       subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
-      preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
-      title: '%{firstName}, d''Meenung vun de Bierger waart op Äert Feedback'
-      cta_button: 'Verwalt Är Input'
-      x_inputs_need_your_feedback: 'Input brauch Äre Feedback'
-      title_assignment_past_week: 'Neist Iddien, déi Iech zougewise goufen'
-      title_no_assignment_past_week: 'D''lescht Woch goufen Iech keng nei Iddien zougewisen'
-      yesterday_by_author: 'Gëschter vun %{author}'
-      today_by_author: 'Haut vun %{author}'
-      x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
-      title_successful_past_week: 'Iech zougewisen, déi d''Schwell erreecht hunn'
-    idea_marked_as_spam:
-      subject: 'Dir hutt e Spambericht op der Plattform vum %{organizationName}'
-      preheader: 'Reagéiert op dës Spammeldung'
-      title: '%{firstName} %{lastName} Spam gemellt'
-      cta_button: 'Iwwerpréiwung'
-      report_inappropriate_offensive_content: 'Ech fannen dësen Inhalt net ugemiess oder beleidegend.'
-      report_not_an_idea: 'Dësen Inhalt ass keng Iddi a gehéiert net hei hin.'
+      title: "%{firstName}, d'Meenung vun de Bierger waart op Äert Feedback"
+      title_assignment_past_week: Neist Iddien, déi Iech zougewise goufen
+      title_no_assignment_past_week: D'lescht Woch goufen Iech keng nei Iddien zougewisen
+      title_successful_past_week: Iech zougewisen, déi d'Schwell erreecht hunn
+      today_by_author: Haut vun %{author}
+      x_days_ago_by_author: Virun %{x} Deeg %{author} vun
+      x_inputs_need_your_feedback: Input brauch Äre Feedback
+      yesterday_by_author: Gëschter vun %{author}
+    campaign_type_description:
+      admin_digest: Wéchentlechen Iwwerbléck fir Verwalteren
+      admin_rights_received: Administratorrechter kritt
+      assignee_digest: Wéchentlech Iwwersiicht iwwer zougewisen Iddien
+      comment_deleted_by_admin: Mäi Kommentar läschen
+      comment_marked_as_spam: Kommentéiert de Bericht vum Spam
+      comment_on_idea_you_follow: E Kommentar zu enger Iddi déi Dir verfollegt
+      comment_on_your_comment: Eng Äntwert op mäi Kommentar
+      community_monitor_report: Communautéit Monitor Rapport
+      cosponsor_of_your_idea: E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
+      event_registration_confirmation: Event Aschreiwung Bestätegung
+      idea_marked_as_spam: Spambericht iwwer d'Iddien
+      idea_published: Verëffentlechung vu menger Iddi
+      internal_comment_on_idea_assigned_to_you: Interne Kommentar zum Input, deen mir zougewisen ass
+      internal_comment_on_idea_you_commented_internally_on: Interne Commentaire op Input Ech kommentéiert intern op
+      internal_comment_on_idea_you_moderate: Intern Kommentar op Input am Projet oder Dossier ech verwalten
+      internal_comment_on_unassigned_unmoderated_idea: Intern Kommentar iwwer net zougewisen Input am net verwalteten Projet
+      internal_comment_on_your_internal_comment: Interne Kommentar zu mengem internen Kommentar
+      invitation_to_cosponsor_idea: Invitatioun fir eng Propositioun ze sponseren
+      invite_received: Invitatioun
+      invite_reminder: Invitatiounserënnerung
+      manual: Offiziell Noriichten
+      manual_project_participants: Offiziell Messagen un de Projet Participanten
+      mention_in_internal_comment: Ernimmen an engem internen Commentaire
+      mention_in_official_feedback: Ernimmung an engem Update
+      moderator_digest: Wéchentlech Iwwersiicht fir Projetsmanageren
+      native_survey_not_submitted: Ëmfro net presentéiert
+      new_comment_for_admin: Neie Kommentar an engem Projet, deen ech moderéieren
+      new_idea_for_admin_prescreening: Nei Input, deen an engem Projet, deen ech moderéieren, Genehmegung brauch
+      new_idea_for_admin_published: Nei publizéiert Input an engem Projet, deen ech moderéieren
+      official_feedback_on_idea_you_follow: Update op eng Iddi déi Dir verfollegt
+      password_reset: Passwuert zerécksetzen
+      project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
+      project_manager_rights_received: Projet-Manager-Rechter kritt
+      project_moderation_rights_received: Moderatiounsrechter fir Projete kritt
+      project_phase_started: Nei Projetsphas
+      project_phase_upcoming: Bevirstoend nei Projetsphas
+      project_published: Projet publizéiert
+      project_review_request: Projet review Ufro
+      project_review_state_change: Projet guttgeheescht
+      screening_digest: Wëchentlech Screening-Erënnerung
+      space_moderation_rights_received: Space-Manager-Rechter kritt
+      status_change_on_idea_you_follow: Status Ännerung vun enger Iddi déi Dir verfollegt
+      survey_submitted: Ëmfro presentéiert
+      threshold_reached_for_admin: "Virschlag huet d'Schwell vun de Stëmmen erreecht.\_"
+      user_digest: Wéchentlech Iwwersiicht
+      voting_basket_not_submitted: Stëmmen net agereecht
+      voting_basket_submitted: Bestätegung vum Vote
+      voting_last_chance: Déi lescht Chance fir ze wielen
+      voting_phase_started: Nei Projetsphase mat Ofstëmmung
+      voting_results: Wahlresultater
+      welcome: No der Aschreiwung
+      your_input_in_screening: Meng Input waart op Screening
+    comment_deleted_by_admin:
+      cta_button: Kuckt dës Iddi
+      event_description: '%{organizationName} huet de Kommentar geläscht, deen Dir zu dëser Iddi geschriwwen hutt.'
+      inappropriate_reason: Äre Kommentar gouf als net ugemiess ageschat
+      irrelevant_reason: Äre Kommentar gouf als net relevant fir dëse Kontext betruecht
+      no_reason: Et gouf kee Grond uginn
+      other_reason: '%{otherReason}'
+      preheader: Äre Kommentar gouf geläscht
+      reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
+      subject: Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht
+      title: '%{organizationName} Äre Kommentar geläscht'
+    comment_marked_as_spam:
+      by_author: vun %{authorName}
+      commented: '%{authorName} huet kommentéiert:'
+      cta_button: Kommentar iwwerpréiwen
+      days_ago: Virun %{numberOfDays} Deeg
+      event_description: "De folgende Kommentar, deen op <strong>'%{post}'</strong> gepost gouf, gouf gemellt:"
+      inappropriate_content: De Kommentar ass net ugemiess oder beleedegend.
+      preheader: Reagéiert op dëse Kommentar, deen als Spam gemellt gouf
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
-    invitation_to_cosponsor_idea:
-      subject: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
-      preheader: 'Dir sidd invitéiert fir d''Propositioun vum %{authorName}ze sponseren'
-      title: 'Dir sidd invitéiert ginn, e Virschlag matzesponsoren'
-      event_description: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
-      event_description_cosponsoring: 'Co-Sponsoréiere vun enger Propositioun bedeit datt <strong>Ären Numm</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun ugewise gëtt.'
-      event_description_before_action: 'Fir d''Propositioun ze gesinn an d''Invitatioun unzehuelen, musst Dir op Äre Kont ageloggt sinn.'
-      event_description_action: 'Klickt hei ënnen fir d''Propositioun ze liesen.'
-      cta_button: 'Matënnerstëtzer vun dësem Virschlag'
-    invite_reminder:
-      subject: 'Ausstoend Invitatioun fir d’participativ Plattform %{organizationName}'
-      preheader: '%{organizationName} huet Iech virun e puer Deeg eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
-      title: 'Är Invitatioun ass amgaang'
-      cta_button: 'Akzeptéiert Är Invitatioun'
-      invitation_expiry_message: 'Dës Invitatioun leeft no ongeféier %{expiryDaysRemaining} Deeg of.'
-    invite_received:
-      preheader: '%{organizationName} huet Iech eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
-      subject: 'Dir sidd invitéiert, fir der Plattform vun %{organizationName} bäizetrieden'
-      title: 'Dir sidd invitéiert!'
-      event_description: '%{organizationName} huet Iech op hir Participatiounsplattform invitéiert.'
-      cta_button: 'Akzeptéiert Är Invitatioun'
-      added_a_message: '%{organizationName} huet déi folgend Noriicht geschriwwen:'
-      invitation_expiry_message: 'Dës Invitatioun leeft an %{expiryDays} Deeg aus.'
-    mention_in_comment:
-      cta_reply_to: 'Äntwert %{commentAuthor}'
-      event_description: '%{commentAuthorFull} huet Iech a sengem Kommentar zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir mam %{commentAuthor} an d''Gespréich ze kommen'
-      main_header: 'Leit schwätzen iwwer Iech'
-      subject: 'Et huet een Iech op der Plattform vun %{organizationName} ernimmt'
-      preheader: '%{commentAuthor} huet Iech an engem Kommentar ernimmt'
-    mention_in_internal_comment:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
-      subject: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
-      title: '%{firstName} huet dech an engem internen Kommentar ernimmt.'
-      preheader: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
-    moderator_digest:
-      subject: 'Wéchentlechen Bericht fir Projetsmanageren vum %{time}'
-      preheader: 'Zesummefaassung fir Projetsmanagere vun %{organizationName}'
-      title: '%{firstName}, Äre Wochenbericht'
-      event_description: 'Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat mat Ärem Projet lass ass!'
-      cta_button: 'Verwalt Äert Projet'
-      new_users: 'Nei Notzeren'
-      new_ideas: 'Nei Iddien'
-      new_comments: 'Nei Kommentaren'
-      title_inputs_past_week: 'Nei Input an der vergaanger Woch'
-      title_no_inputs_past_week: 'Keng nei Input an der leschter Woch'
-      title_threshold_reached: Schwell erreecht an der leschter Woch
-      yesterday_by_author: 'Gëschter vun %{author}'
-      today_by_author: 'Haut vun %{author}'
-      x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
-    new_comment_for_admin:
-      commented: '%{authorFirstName} huet kommentéiert:'
-      anonymous_user: Anonyme Benotzer
-      cta_button: 'Kuckt de Kommentar vun %{authorFirstName}'
-      days_ago: 'Virun %{numberOfDays} Deeg'
-      event_description: '%{authorName} huet en neie Kommentar op Är Plattform hannerlooss.'
-      title: '%{firstName}, en neie Kommentar gouf op Ärer Plattform gepost'
-      subject: 'En neie Kommentar gouf op der %{organizationName} Plattform gepost'
-      preheader: '%{authorName} huet e Kommentar hannerlooss'
+      subject: '%{organizationName}: %{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
+      title: '%{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
       today: Haut
+      wrong_content: De Kommentar ass net relevant.
       yesterday: Gëschter
     comment_on_idea_you_follow:
-      subject: 'Et gëtt en neie Kommentar zu "%{input_title}"'
-      preheader: '%{authorName} huet e Kommentar op eng Iddi fir %{organizationName}'
-      title: '%{authorName} huet e Kommentar zu engem Input kommentéiert, deen Dir folgt'
-      event_description: '%{authorNameFull} huet eng Reaktioun op ''%{inputTitle}'' gesat. Klickt op de Knäppchen hei ënnen fir d''Gespréich mat %{authorName}weiderzemaachen.'
-      cta_button: 'Äntwert op %{commentAuthor}'
+      cta_button: Äntwert op %{commentAuthor}
+      event_description: "%{authorNameFull} huet eng Reaktioun op '%{inputTitle}' gesat. Klickt op de Knäppchen hei ënnen fir d'Gespréich mat %{authorName}weiderzemaachen."
       main_header:
-        idea: '%{authorName} kommentéiert eng Iddi déi Dir verfollegt'
-        question: '%{authorName} kommentéiert eng Fro déi Dir verfollegt'
+        comment: '%{authorName} huet e Kommentar kommentéiert, deen Dir folgt'
         contribution: '%{authorName} kommentéiert e Bäitrag deen Dir verfollegt'
-        project: '%{authorName} kommentéiert e Projet deen Dir verfollegt'
+        idea: '%{authorName} kommentéiert eng Iddi déi Dir verfollegt'
+        initiative: '%{authorName} huet eng Initiativ kommentéiert, déi Dir verfollegt'
         issue: '%{authorName} kommentéiert en Thema deen Dir verfollegt'
         option: '%{authorName} kommentéiert eng Optioun déi Dir verfollegt'
-        proposal: '%{authorName} kommentéiert eng Propositioun déi Dir verfollegt'
-        initiative: '%{authorName} huet eng Initiativ kommentéiert, déi Dir verfollegt'
         petition: '%{authorName} kommentéiert eng Petitioun déi Dir verfollegt'
-        comment: '%{authorName} huet e Kommentar kommentéiert, deen Dir folgt'
+        post: '%{authorName} huet e Kommentar zu engem Post kommentéiert, deen Dir folgt'
+        project: '%{authorName} kommentéiert e Projet deen Dir verfollegt'
+        proposal: '%{authorName} kommentéiert eng Propositioun déi Dir verfollegt'
+        question: '%{authorName} kommentéiert eng Fro déi Dir verfollegt'
         response: '%{authorName} huet op eng Äntwert komm, déi Dir folgt'
+        story: '%{authorName} huet e Kommentar zu engem Story geschriwwen, deen Dir folgt'
         suggestion: '%{authorName} huet e Virschlag kommentéiert, deen Dir verfollegt'
         topic: '%{authorName} huet e Kommentar zu engem Thema geschriwwen, dat Dir folgt'
-        post: '%{authorName} huet e Kommentar zu engem Post kommentéiert, deen Dir folgt'
-        story: '%{authorName} huet e Kommentar zu engem Story geschriwwen, deen Dir folgt'
-    new_idea_for_admin_published:
-      subject: 'En neien Input gouf op Ärer Plattform publizéiert'
-      preheader: '%{authorName} huet en neien Input op Ärer Plattform publizéiert'
-      title: 'En neien Input gouf op Ärer Plattform publizéiert'
-      event_description: '%{authorName} huet en neien Input op Ärer Plattform agereecht. Entdeckt en elo, gitt Feedback oder ännert säi Status!'
-      cta_button: 'Gitt Feedback un %{authorName}'
-      days_ago: 'virun %{numberOfDays} Deeg'
+      preheader: '%{authorName} huet e Kommentar op eng Iddi fir %{organizationName}'
+      subject: Et gëtt en neie Kommentar zu "%{input_title}"
+      title: '%{authorName} huet e Kommentar zu engem Input kommentéiert, deen Dir folgt'
+    comment_on_your_comment:
+      cta_button: Äntwert op %{authorFirstName}
+      event_description: "%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu '%{post}' op der participativer Plattform geschriwwen. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren."
+      preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
+      replied: '%{authorFirstName} huet geäntwert:'
+      subject: Dir hutt eng Äntwert op Äre Kommentar op der Plattform %{organizationName} kritt
+      title: '%{authorName} huet op Äre Kommentar geäntwert'
+    community_monitor_report:
+      cta_button: Rapport ukucken
+      event_description: E Gemeinschaftsmonitorbericht gouf fir dat lescht Quartal erstallt. Dir kënnt drop zougräifen andeems Dir op de Knäppchen hei ënnendrënner klickt an Iech umellt.
+      preheader: E neie Gemeinschaftsmonitorbericht ass verfügbar
+      report_name: Communautéit Monitor Rapport
+      subject: En neie Communautéitsmonitor Bericht ass verfügbar
+      title: En neie Communautéitsmonitor Bericht ass verfügbar
+    cosponsor_of_your_idea:
+      cta_button: Kuckt Är Propositioun
+      event_description: Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.
+      preheader: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
+      subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze sponsoren'
+      title: "%{cosponsorName} huet Är Invitatioun ugeholl, Äre Virschlag mat z'ënnerstëtzen."
+    event_registration_confirmation:
+      cta_add_to_calendar: An Äre Kalenner androen
+      cta_button: Kuckt d'Evenement
+      event_details:
+        labels:
+          date: Datum
+          description: Beschreiwung
+          location: Plaz
+          online_link: Online Link
+          project: Projet
+      preheader: '%{firstName}, Merci fir Är Aschreiwung fir %{eventTitle}'
+      subject: Dir sidd an! Dir sidd ageschriwwen fir "%{eventTitle}"
+      title: "%{firstName}, merci fir d'Aschreiwung"
+    follow:
+      unfollow_here: Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href="%{unfollow_url}">Dir kënnt et hei ofschléissen.</a>
+    footer:
+      link_privacy_policy: Dateschutzrichtlinn
+      link_terms_conditions: Geschäftsbedéngungen
+      link_unsubscribe: Ofmellen
+      powered_by: Ënnerstëtzt vun
+      recipient_statement: Dës E-Mail gouf Iech vum Go Vocal am Numm vun %{organizationName}geschéckt, well Dir e registréierte Benotzer vun %{organizationLink}sidd.
+      unsubscribe_statement: Dir kënnt %{unsubscribeLink} wann Dir dës E-Mailen an Zukunft net wëllt kréien.
+      unsubscribe_text: ofmellen
+    general:
+      author_wrote: '%{authorName} geschriwwen:'
+      by_author: vum %{authorName}
+      cta_goto:
+        comment: Gitt op dëse Kommentar
+        contribution: Gitt op dëse Bäitrag
+        idea: Gitt op dës Iddi
+        initiative: Gitt op dës Initiativ
+        issue: Gitt op dëst Thema
+        option: Gitt op dës Optioun
+        petition: Gitt op dës Petitioun
+        post: Gitt op dëse Post
+        project: Gitt op dëse Projet
+        proposal: Gitt op dës Propositioun
+        question: Gitt op dës Fro
+        response: Gitt op dës Äntwert
+        story: Gitt op dës Geschicht
+        suggestion: Gitt op dës Suggestioun
+        topic: Gitt op dëst Thema
+      cta_goto_idea: Gitt op dës Iddi
+      cta_goto_input: Gitt op dës Input
+      cta_goto_project: Gitt op dëse Projet
+      cta_goto_proposal: Gitt op dës Propositioun
+      cta_goto_your:
+        comment: Gitt op Äre Kommentar
+        contribution: Gitt op Äre Bäitrag
+        idea: Gitt op Är Iddi
+        initiative: Gitt op Är Initiativ
+        issue: Gitt op Äert Thema
+        option: Gitt op Är Optioun
+        petition: Gitt op Är Petitioun
+        post: Gitt op Äre Post
+        project: Gitt op Äre Projet
+        proposal: Gitt op Är Propositioun
+        question: Gitt op Är Fro
+        response: Gitt op Är Äntwert
+        story: Gitt op Är Geschicht
+        suggestion: Gitt op Är Suggestioun
+        topic: Gitt op Äert Thema
+    idea_marked_as_spam:
+      cta_button: Iwwerpréiwung
+      preheader: Reagéiert op dës Spammeldung
+      report_inappropriate_offensive_content: Ech fannen dësen Inhalt net ugemiess oder beleidegend.
+      report_not_an_idea: Dësen Inhalt ass keng Iddi a gehéiert net hei hin.
+      reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
+      subject: Dir hutt e Spambericht op der Plattform vum %{organizationName}
+      title: '%{firstName} %{lastName} Spam gemellt'
+    idea_published:
+      action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
+      action_published_idea: Verëffentlecht Iddi
+      action_send_email: Är Kontakter un %{sendEmailLink} schécken
+      action_share_fb: Sot et Äre Frënn op %{fbLink}
+      action_share_link: Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert
+      action_share_twitter: Informéiert Är Follower iwwer %{twitterLink}
+      add_image: A Bild afügen
+      header_message: Loosst eis sécher stellen datt et gelies gëtt.
+      input_type_subject:
+        comment: Äre Kommentar gouf publizéiert
+        contribution: Äre Bäitrag gouf publizéiert
+        idea: Är Iddi gouf publizéiert
+        initiative: Är Initiativ gouf publizéiert
+        issue: Är Ausgab gouf publizéiert
+        option: Är Optioun gouf publizéiert
+        petition: Är Petitioun gouf publizéiert
+        post: Äre Beitrag gouf publizéiert
+        project: Äert Projet gouf publizéiert
+        proposal: Äre Virschlag gouf publizéiert
+        question: Är Fro gouf publizéiert
+        response: Är Äntwert gouf publizéiert
+        story: Är Geschicht gouf publizéiert
+        suggestion: Äre Virschlag gouf publizéiert
+        topic: Äert Thema gouf publizéiert
+      link: Link
+      message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
+      preheader: '%{firstName}, Gléckwonsch fir d’Verëffentlechen vun Ärer Iddi op der %{organizationName} Plattform. Sammelt a kritt elo Ënnerstëtzung.'
+      send_email: E-Mail
+      subject: Är Iddi gouf publizéiert
+      title: Du hues "%{input_title}" gepost
+    internal_comment_on_idea_assigned_to_you:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Iech zougewisen gouf.'
+      preheader: "'%{post}' huet en neien internen Kommentar"
+      subject: "'%{post}' huet en neien internen Kommentar"
+      title: "Neien internen Kommentar zu '%{post}'"
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Dir intern kommentéiert hutt.'
+      preheader: "'%{post}' huet en neien internen Kommentar"
+      subject: "'%{post}' huet en neien internen Kommentar"
+      title: "Neien internen Kommentar zu '%{post}'"
+    internal_comment_on_idea_you_moderate:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} kommentéiert intern op en Input an engem Projet oder Dossier deen Dir geréiert.'
+      preheader: "'%{post}' huet en neien internen Kommentar"
+      subject: "'%{post}' huet en neien internen Kommentar"
+      title: "Neien internen Kommentar zu '%{post}'"
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} kommentéiert intern op en net zougewisenen Input an engem net verwalteten Projet.'
+      preheader: "'%{post}' huet en neien internen Kommentar"
+      subject: "'%{post}' huet en neien internen Kommentar"
+      title: "Neien internen Kommentar zu '%{post}'"
+    internal_comment_on_your_internal_comment:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} kommentéiert Ären internen Kommentar.'
+      preheader: "%{authorName} huet op Ären interne Kommentar op '%{post}' geäntwert"
+      subject: "Dir hutt e Kommentar zu Ärem internen Kommentar op '%{post}' kritt"
+      title: "Dir hutt e Kommentar zu Ärem internen Kommentar op '%{post}' kritt."
+    invitation_to_cosponsor_idea:
+      cta_button: Matënnerstëtzer vun dësem Virschlag
+      event_description: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
+      event_description_action: Klickt hei ënnen fir d'Propositioun ze liesen.
+      event_description_before_action: "Fir d'Propositioun ze gesinn an d'Invitatioun unzehuelen, musst Dir op Äre Kont ageloggt sinn."
+      event_description_cosponsoring: Co-Sponsoréiere vun enger Propositioun bedeit datt <strong>Ären Numm</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun ugewise gëtt.
+      preheader: Dir sidd invitéiert fir d'Propositioun vum %{authorName}ze sponseren
+      subject: Dir sidd invitéiert fir eng Propositioun ze sponseren
+      title: Dir sidd invitéiert ginn, e Virschlag matzesponsoren
+    invite_received:
+      added_a_message: '%{organizationName} huet déi folgend Noriicht geschriwwen:'
+      cta_button: Akzeptéiert Är Invitatioun
+      event_description: '%{organizationName} huet Iech op hir Participatiounsplattform invitéiert.'
+      invitation_expiry_message: Dës Invitatioun leeft an %{expiryDays} Deeg aus.
+      preheader: '%{organizationName} huet Iech eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
+      subject: Dir sidd invitéiert, fir der Plattform vun %{organizationName} bäizetrieden
+      title: Dir sidd invitéiert!
+    invite_reminder:
+      cta_button: Akzeptéiert Är Invitatioun
+      invitation_expiry_message: Dës Invitatioun leeft no ongeféier %{expiryDaysRemaining} Deeg of.
+      preheader: '%{organizationName} huet Iech virun e puer Deeg eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
+      subject: Ausstoend Invitatioun fir d’participativ Plattform %{organizationName}
+      title: Är Invitatioun ass amgaang
+    manual:
+      preheader: Dir hutt Mail vun %{organizationName}
+    manual_project_participants:
+      preheader: Dir hutt E-Mail vun %{organizationName}
+    mention_in_comment:
+      cta_reply_to: Äntwert %{commentAuthor}
+      event_description: "%{commentAuthorFull} huet Iech a sengem Kommentar zu der Iddi '%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir mam %{commentAuthor} an d'Gespréich ze kommen"
+      main_header: Leit schwätzen iwwer Iech
+      preheader: '%{commentAuthor} huet Iech an engem Kommentar ernimmt'
+      subject: Et huet een Iech op der Plattform vun %{organizationName} ernimmt
+    mention_in_internal_comment:
+      cta_button: Kommentar vun %{firstName}kucken
+      event_description: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
+      preheader: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
+      subject: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
+      title: '%{firstName} huet dech an engem internen Kommentar ernimmt.'
+    mention_in_official_feedback:
+      cta_button: Äntwert op %{organizationName}
+      event_description: "%{organizationName} hunn Iech an hirem Feedback zu der Iddi '%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen"
+      preheader: '%{commentAuthor} huet Iech am Feedback ernimmt'
+      subject: '%{organizationName} hunn Iech an hirem Feedback ernimmmt'
+      title: Dir sidd ernimmt ginn
+    moderator_digest:
+      cta_button: Verwalt Äert Projet
+      event_description: Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat mat Ärem Projet lass ass!
+      new_comments: Nei Kommentaren
+      new_ideas: Nei Iddien
+      new_users: Nei Notzeren
+      preheader: Zesummefaassung fir Projetsmanagere vun %{organizationName}
+      subject: Wéchentlechen Bericht fir Projetsmanageren vum %{time}
+      title: '%{firstName}, Äre Wochenbericht'
+      title_inputs_past_week: Nei Input an der vergaanger Woch
+      title_no_inputs_past_week: Keng nei Input an der leschter Woch
+      title_threshold_reached: Schwell erreecht an der leschter Woch
+      today_by_author: Haut vun %{author}
+      x_days_ago_by_author: Virun %{x} Deeg %{author} vun
+      yesterday_by_author: Gëschter vun %{author}
+    native_survey_not_submitted:
+      cta_button: Är Äntwert op d'Ëmfro weiderféieren
+      event_description: Dir hutt ugefaang Är Äntwerten op %{phaseTitle} ze deelen, awer se net ofginn. Klickt op de Knäppchen hei ënnendrënner fir do weiderzemaachen, wou Dir opgehalen hutt.
+      preheader: Dir hutt Är Ëmfro-Äntwert net op der Participatiounsplattform vun %{organizationName}ofgeschloss
+      subject: '%{organizationName}: Bal do! Gitt Är Äntwerten of'
+      submissions_close: D'Umeldungen schléissen den %{phaseEndDate}.
+      submissions_close_at_time: D'Areechunge ginn de %{datetime} zou.
+      submissions_close_on_date: D'Areechunge ginn um Enn vum %{date} zou.
+      title: Bal fäerdeg! Gitt Är Äntwerten of
+    new_comment_for_admin:
+      anonymous_user: Anonyme Benotzer
+      commented: '%{authorFirstName} huet kommentéiert:'
+      cta_button: Kuckt de Kommentar vun %{authorFirstName}
+      days_ago: Virun %{numberOfDays} Deeg
+      event_description: '%{authorName} huet en neie Kommentar op Är Plattform hannerlooss.'
+      preheader: '%{authorName} huet e Kommentar hannerlooss'
+      subject: En neie Kommentar gouf op der %{organizationName} Plattform gepost
+      title: '%{firstName}, en neie Kommentar gouf op Ärer Plattform gepost'
       today: Haut
       yesterday: Gëschter
     new_idea_for_admin_prescreening:
-      subject: 'En Input erfuerdert Är Iwwerpréiwung'
-      preheader: '%{authorName} huet en neien Input op Ärer Plattform publizéiert'
-      title: 'En Input erfuerdert Är Iwwerpréiwung'
-      cta_button: 'Iwwerpréift den Input'
+      cta_button: Iwwerpréift den Input
+      days_ago: virun %{numberOfDays} Deeg
       event_description: '%{authorName} huet en neien Input op Ärer Plattform agereecht.'
-      input_not_visible: '<b>Den Input ass net sichtbar</b> , bis Dir säi Status ännert.'
-      days_ago: 'virun %{numberOfDays} Deeg'
+      input_not_visible: <b>Den Input ass net sichtbar</b> , bis Dir säi Status ännert.
+      preheader: '%{authorName} huet en neien Input op Ärer Plattform publizéiert'
+      subject: En Input erfuerdert Är Iwwerpréiwung
+      title: En Input erfuerdert Är Iwwerpréiwung
       today: Haut
       yesterday: Gëschter
-    comment_on_your_comment:
-      subject: 'Dir hutt eng Äntwert op Äre Kommentar op der Plattform %{organizationName} kritt'
-      preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
-      title: '%{authorName} huet op Äre Kommentar geäntwert'
-      event_description: '%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu ''%{post}'' op der participativer Plattform geschriwwen. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
-      cta_button: 'Äntwert op %{authorFirstName}'
-      replied: '%{authorFirstName} huet geäntwert:'
-    internal_comment_on_your_internal_comment:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} kommentéiert Ären internen Kommentar.'
-      subject: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt'
-      title: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt.'
-      preheader: '%{authorName} huet op Ären interne Kommentar op ''%{post}'' geäntwert'
-    internal_comment_on_idea_assigned_to_you:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Iech zougewisen gouf.'
-      subject: '''%{post}'' huet en neien internen Kommentar'
-      title: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: '''%{post}'' huet en neien internen Kommentar'
-    internal_comment_on_idea_you_commented_internally_on:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} kommentéiert intern op en Input deen Dir intern kommentéiert hutt.'
-      subject: '''%{post}'' huet en neien internen Kommentar'
-      title: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: '''%{post}'' huet en neien internen Kommentar'
-    internal_comment_on_idea_you_moderate:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} kommentéiert intern op en Input an engem Projet oder Dossier deen Dir geréiert.'
-      subject: '''%{post}'' huet en neien internen Kommentar'
-      title: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: '''%{post}'' huet en neien internen Kommentar'
-    internal_comment_on_unassigned_unmoderated_idea:
-      cta_button: 'Kommentar vun %{firstName}kucken'
-      event_description: '%{authorNameFull} kommentéiert intern op en net zougewisenen Input an engem net verwalteten Projet.'
-      subject: '''%{post}'' huet en neien internen Kommentar'
-      title: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: '''%{post}'' huet en neien internen Kommentar'
+    new_idea_for_admin_published:
+      cta_button: Gitt Feedback un %{authorName}
+      days_ago: virun %{numberOfDays} Deeg
+      event_description: '%{authorName} huet en neien Input op Ärer Plattform agereecht. Entdeckt en elo, gitt Feedback oder ännert säi Status!'
+      preheader: '%{authorName} huet en neien Input op Ärer Plattform publizéiert'
+      subject: En neien Input gouf op Ärer Plattform publizéiert
+      title: En neien Input gouf op Ärer Plattform publizéiert
+      today: Haut
+      yesterday: Gëschter
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} huet en Update zu ''%{input_title}'' ginn.'
-      title: 'Et gëtt en Update op "%{input_title}"'
-      subject: 'Offiziell Feedback gouf op "%{input_title}" gepost'
-      preheader: 'Et gëtt en Update op engem Input deen Dir verfollegt'
       cta_button: Gitt op dësen Input
-    mention_in_official_feedback:
-      cta_button: 'Äntwert op %{organizationName}'
-      event_description: '%{organizationName} hunn Iech an hirem Feedback zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen'
-      title: 'Dir sidd ernimmt ginn'
-      subject: '%{organizationName} hunn Iech an hirem Feedback ernimmmt'
-      preheader: '%{commentAuthor} huet Iech am Feedback ernimmt'
-    project_moderation_rights_received:
-      cta_button: 'Dëse Projet verwalten'
-      event_description: 'En Administrateur vun der Participatiounsplattform vun %{organizationName} huet dech grad zum Projetmanager fir folgend Projet ernannt:'
-      no_ideas: 'Nach keng Iddien'
-      preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach'
-      subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
-      text_design_participatory_process: 'Als Projetsmanager kënnt Dir festleeë wéi d''Participante mat Äre Projeten interagéieren. Dir kënnt mat Hëllef vun der Zäitlinn nei Phase bäifügen. All eenzel Phas kann ënnerschiddlech Astellungunge fir d''Ofstëmmen, d''Kommentéieren an d''Verëffentleche vun Iddien hunn.'
-      text_moderate_analyse_input: "Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. \nDen Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet."
-      text_share_project_information: 'Fir d''Qualitéit vun den Iddien, déi Dir kritt, ze erhéijen ass et wichteg genuch Informatioun ze deelen: Füügt eng Beschreiwung vum Projet dobäi, hänkt Biller un (beispillsweis Skizzen a Pläng) a kommunizéiert iwwer mat dem Projet verbonnen Evenementer. Denkt drun: Gutt Informatiounen sinn d’Viraussetzung fir eng konstruktiv Bedeelegung!'
-      title_design_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
-      title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_share_project_information: 'Gitt Informatiounen iwwer de Projet'
-      title_what_can_you_do_moderator: 'Wat kënnt Dir als Projetsmanager maachen?'
-      title: 'Dir sidd Projetmanager ginn'
-      x_ideas: '%{numberOfIdeas} Iddien'
+      event_description: "%{feedback_author_name} huet en Update zu '%{input_title}' ginn."
+      preheader: Et gëtt en Update op engem Input deen Dir verfollegt
+      subject: Offiziell Feedback gouf op "%{input_title}" gepost
+      title: Et gëtt en Update op "%{input_title}"
+    preview_data:
+      author_display_name: Jane Doe
+      author_first_name: Jane
+      author_last_name: Hinde
+      comment_body: Dëst ass e Beispillkommentar, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
+      comment_deleted_reason: Äre Beispillkommentar gouf als onpassend ugesinn.
+      event_address1: 10 Example Street, Exampleton, Exampleshire
+      event_address2: Zëmmer 3a, iewescht Stack
+      event_title: Beispill Event
+      folder_title: Beispill-Dossier
+      idea_body: Dëst sinn e puer Beispiller vun Iddien fir Inhalt, déi benotzt gi fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
+      idea_title: Beispill Iddi
+      initiator_display_name: Bob Smith
+      initiator_first_name: Bob
+      initiator_last_name: Schmitz
+      input_status_description: E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)
+      input_status_title: Beispill Status
+      official_feedback_body: Beispill vun offiziellem Feedback
+      phase_title: Beispillphase
+      project_description_preview: Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
+      project_title: Beispillprojet
+      proposal_title: Beispillvirschlag
+      space_title: Beispill-Space
     project_folder_moderation_rights_received:
-      cta_button: 'Dësen Dossier ukucken'
-      event_description: 'Dir hutt Rechter fir d''Ordnerverwaltung op der Participatiounsplattform vun %{organizationName}fir de folgende Ordner kritt:'
-      no_projects: 'Nach keng Projeten'
-      preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech zum Administrateur vu folgendem Dossier gemaach'
-      subject: 'Dir sidd en Administrateur vun engem Dossier op der participativer Plattform %{organizationName} ginn'
-      text_manage_folder: 'En Dossier bitt d''Méiglechkeet, e puer Bedeelegungprojeten zesummen z’organiséieren. Als Administrateur vun engem Dossier kënnt Dir d''Beschreiwung vum Dossier änneren an nei Projeten uleeën (fir Projeten ze läschen, kontaktéiert den Administrateur vun Ärer Plattform). Dir kritt och d''Rechter fir all Projete vum Dossier ze verwalten. Dës Rechter erlaben et Iech d''Projeten ze beaarbechten, d’Bäiträg ze verwalten a Participanten eng E-Mail ze schécken.'
-      text_moderate_analyse_input: 'Esoubal d’Projeten ulafen, kommen déi éischt Bäiträg eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir eng Iwwersiicht behaalt, wat sech deet. De Bäitrag-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech, d’Bäiträg ze gesinn an ze verwalten, inklusiv Statussen zou ze weisen an op Verëffentlechungen a Kommentaren ze äntweren.'
-      text_design_participatory_process: 'Dir kënnt déi verschidde Participatiounsprojeten an Ärem Dossier verwalten – d''Method fir d''Participatioun adaptéieren, eng Beschreiwung vum Projet afügen, Biller unhänken, an iwwer Evenementer, déi domat verbonne sinn, informéieren. Dir kënnt och festleeën, wéi d''Participante mat Äre Projeten interagéiere kënnen. Dir kënnt beispillsweis Zougangsrechter festleeën an d''Verëffentlechungs- Ofstëmmungs- a Kommentarastellungen definéieren.'
-      title_design_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
-      title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_manage_folder: 'Leet d''Astellunge vum Dossier fest an erstellt nei Projeten.'
-      title_what_can_you_do_folderadmin: 'Wat kënnt Dir als Administrateur vun Dossiere maachen?'
-      title: 'Dir sidd als Dossiermanager bäigefüügt ginn'
+      cta_button: Dësen Dossier ukucken
+      event_description: "Dir hutt Rechter fir d'Ordnerverwaltung op der Participatiounsplattform vun %{organizationName}fir de folgende Ordner kritt:"
+      no_projects: Nach keng Projeten
+      preheader: En Administrateur vun der participativer Plattform %{organizationName} huet Iech zum Administrateur vu folgendem Dossier gemaach
+      subject: Dir sidd en Administrateur vun engem Dossier op der participativer Plattform %{organizationName} ginn
+      text_design_participatory_process: "Dir kënnt déi verschidde Participatiounsprojeten an Ärem Dossier verwalten – d'Method fir d'Participatioun adaptéieren, eng Beschreiwung vum Projet afügen, Biller unhänken, an iwwer Evenementer, déi domat verbonne sinn, informéieren. Dir kënnt och festleeën, wéi d'Participante mat Äre Projeten interagéiere kënnen. Dir kënnt beispillsweis Zougangsrechter festleeën an d'Verëffentlechungs- Ofstëmmungs- a Kommentarastellungen definéieren."
+      text_manage_folder: "En Dossier bitt d'Méiglechkeet, e puer Bedeelegungprojeten zesummen z’organiséieren. Als Administrateur vun engem Dossier kënnt Dir d'Beschreiwung vum Dossier änneren an nei Projeten uleeën (fir Projeten ze läschen, kontaktéiert den Administrateur vun Ärer Plattform). Dir kritt och d'Rechter fir all Projete vum Dossier ze verwalten. Dës Rechter erlaben et Iech d'Projeten ze beaarbechten, d’Bäiträg ze verwalten a Participanten eng E-Mail ze schécken."
+      text_moderate_analyse_input: Esoubal d’Projeten ulafen, kommen déi éischt Bäiträg eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir eng Iwwersiicht behaalt, wat sech deet. De Bäitrag-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech, d’Bäiträg ze gesinn an ze verwalten, inklusiv Statussen zou ze weisen an op Verëffentlechungen a Kommentaren ze äntweren.
+      title: Dir sidd als Dossiermanager bäigefüügt ginn
+      title_design_participatory_process: Konzipéiert de Bedeelegungsprozess
+      title_manage_folder: Leet d'Astellunge vum Dossier fest an erstellt nei Projeten.
+      title_moderate_analyse_input: Moderéiert an analyséiert d’Bäiträg
+      title_what_can_you_do_folderadmin: Wat kënnt Dir als Administrateur vun Dossiere maachen?
       x_projects: '%{numberOfProjects} Projeten'
+    project_moderation_rights_received:
+      cta_button: Dëse Projet verwalten
+      event_description: 'En Administrateur vun der Participatiounsplattform vun %{organizationName} huet dech grad zum Projetmanager fir folgend Projet ernannt:'
+      no_ideas: Nach keng Iddien
+      preheader: En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach
+      subject: Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn
+      text_design_participatory_process: "Als Projetsmanager kënnt Dir festleeë wéi d'Participante mat Äre Projeten interagéieren. Dir kënnt mat Hëllef vun der Zäitlinn nei Phase bäifügen. All eenzel Phas kann ënnerschiddlech Astellungunge fir d'Ofstëmmen, d'Kommentéieren an d'Verëffentleche vun Iddien hunn."
+      text_moderate_analyse_input: |-
+        Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. 
+        Den Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet.
+      text_share_project_information: "Fir d'Qualitéit vun den Iddien, déi Dir kritt, ze erhéijen ass et wichteg genuch Informatioun ze deelen: Füügt eng Beschreiwung vum Projet dobäi, hänkt Biller un (beispillsweis Skizzen a Pläng) a kommunizéiert iwwer mat dem Projet verbonnen Evenementer. Denkt drun: Gutt Informatiounen sinn d’Viraussetzung fir eng konstruktiv Bedeelegung!"
+      title: Dir sidd Projetmanager ginn
+      title_design_participatory_process: Konzipéiert de Bedeelegungsprozess
+      title_moderate_analyse_input: Moderéiert an analyséiert d’Bäiträg
+      title_share_project_information: Gitt Informatiounen iwwer de Projet
+      title_what_can_you_do_moderator: Wat kënnt Dir als Projetsmanager maachen?
+      x_ideas: '%{numberOfIdeas} Iddien'
     project_phase_started:
-      cta_button: 'Entdeckt dës nei Phase'
-      event_description: 'Dëse Projet ass op der %{organizationName} Plattform an eng nei Phas gaangen. Klickt op de Link hei ënnen, fir méi gewuer zu ginn!'
-      title: 'Eng nei Phase huet fir de Projet ''%{projectName}'' ugefaangen'
-      subtitle: 'Iwwer ''%{projectName}'''
-      new_phase: 'Dëse Projet ass an d’Phas ''%{phaseTitle}'' gaangen'
+      cta_button: Entdeckt dës nei Phase
+      event_description: Dëse Projet ass op der %{organizationName} Plattform an eng nei Phas gaangen. Klickt op de Link hei ënnen, fir méi gewuer zu ginn!
+      new_phase: "Dëse Projet ass an d’Phas '%{phaseTitle}' gaangen"
+      preheader: Eng nei Phas gouf fir %{projectName} ugefaangen
       subject: '%{projectName} ass an eng nei Phas gangen'
-      preheader: 'Eng nei Phas gouf fir %{projectName} ugefaangen'
+      subtitle: "Iwwer '%{projectName}'"
+      title: "Eng nei Phase huet fir de Projet '%{projectName}' ugefaangen"
     project_phase_upcoming:
-      cta_button: 'Setzt dës nei Phase op'
-      event_description: 'De Projet ''%{projectName}'' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d''Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?'
+      cta_button: Setzt dës nei Phase op
+      event_description: "De Projet '%{projectName}' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d'Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?"
+      new_phase: "De Projet geet an d’Phas '%{phaseTitle}'"
+      preheader: Geschwë fänkt eng nei Phas fir %{projectName} un
+      subject: Preparéiert alles fir déi nei Phas vu(n) %{projectName}
+      subtitle: "Iwwer '%{projectName}'"
       title: '%{firstName}, e Projet geet geschwënn an eng nei Phase'
-      subtitle: 'Iwwer ''%{projectName}'''
-      new_phase: 'De Projet geet an d’Phas ''%{phaseTitle}'''
-      subject: 'Preparéiert alles fir déi nei Phas vu(n) %{projectName}'
-      preheader: 'Geschwë fänkt eng nei Phas fir %{projectName} un'
     project_published:
-      subject: 'En neie Projet gouf op der Plattform vum %{organizationName}publizéiert'
-      title: 'En neit Projet gouf publizéiert'
-      event_description: 'D''Participatiounsplattform vun %{organizationName} huet just folgend Projet publizéiert:'
-      preheader: 'En neie Projet gouf publizéiert'
-      cta_button: 'Gitt op dëst Projet'
+      cta_button: Gitt op dëst Projet
+      event_description: "D'Participatiounsplattform vun %{organizationName} huet just folgend Projet publizéiert:"
+      preheader: En neie Projet gouf publizéiert
+      subject: En neie Projet gouf op der Plattform vum %{organizationName}publizéiert
+      title: En neit Projet gouf publizéiert
     project_review_request:
+      cta_button: Iwwerpréift de Projet
+      event_description: De Projet ass am Moment am Entworfmodus a kann net fir d'Benotzer gesi ginn. Soubal Dir en iwwerpréift an approuvéiert hutt, kann de Moderator en publizéieren.
+      preheader: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
       subject: 'Iwwerpréiwung Ufro: E Projet waart op Genehmegung.'
       title: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
-      event_description: "De Projet ass am Moment am Entworfmodus a kann net fir d'Benotzer gesi ginn. Soubal Dir en iwwerpréift an approuvéiert hutt, kann de Moderator en publizéieren."
-      cta_button: "Iwwerpréift de Projet"
-      preheader: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
     project_review_state_change:
+      cta_button: Gitt op d'Projetastellungen
+      event_description: De Projet ass elo prett fir online ze goen. Dir kënnt en publizéieren, wann Dir prett sidd!
+      preheader: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
       subject: '"%{projectTitle}" gouf guttgeheescht'
       title: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
-      event_description: "De Projet ass elo prett fir online ze goen. Dir kënnt en publizéieren, wann Dir prett sidd!"
-      cta_button: "Gitt op d'Projetastellungen"
-      preheader: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
-    status_change_on_idea_you_follow:
-      status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
-      event_description: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
-      title: 'En Input, deen Dir verfollegt, huet en neie Status'
-      subject: 'De Status vun "%{input_title}" ass geännert'
-      preheader: 'En Input deen Dir verfollegt huet en neie Status'
-      cta_button: Gitt op dësen Input
-    user_digest:
-      subject: "Är wéchentlech Aktivitéit op der participativer Plattform %{organizationName}"
-      commented: "%{authorFirstName} huet kommentéiert:"
-      preheader: "Wéchentlechen Iwwerbléck vun %{organizationName}"
-      title: "Entdeckt wat lescht Woch geschitt ass"
-      event_description: "Hei ass eng Zesummefassung vun deem wat op der Participatiounsplattform vun %{organizationName}geschitt ass."
-      cta_button: "Gitt op d'Plattform"
-      title_no_activity_past_week: "Keng Aktivitéit an der leschter Woch"
-      successful_proposals_title: "D'Schwell erreecht"
-      successful_proposals_text: "Dëse Virschlag huet genuch Ënnerstëtzung kritt fir an déi nächst Etapp ze kommen!! Klickt op de Virschlag fir méi gewuer ze ginn, wat als nächst geschitt."
-      today_by_author: "Haut vun %{author}"
-      yesterday_by_author: "Gëschter vun %{author}"
-      x_days_ago_by_author: "Virun %{x} Deeg %{author} vun"
-      trending_title: "Trending"
-      trending_text: "Interesséiert fir wat op der Plattform geschitt ass? Hei sinn déi dräi meescht trendy Bäiträg a wat d'Leit iwwer si soen."
-      no_notifications: "Keng Benoriichtegungen"
-      one_notification: "1 Benoriichtegung"
-      multiple_notifications: "%{notifCount} Benoriichtegungen"
-      no_unread_notifications: "Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!"
-      unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
-    threshold_reached_for_admin:
-      cta_button: 'Bréngt dëse Virschlag op déi nächst Schrëtt'
-      title: 'E Virschlag huet d''Walschwell erreecht!'
-      subject: 'E Virschlag op Ärer Plattform huet d''Schwell vun den Ofstëmmungen erreecht'
-      preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
-    welcome:
-      cta_button: 'Entdeckt d''Plattform'
-      subject: 'Wëllkomm op der Plattform vum %{organizationName}'
-      title: Wëllkomm!
-      event_description: 'Gratulatioun, Dir hutt Iech erfollegräich op der Participatiounsplattform vun %{organizationName}ugemellt. Dir kënnt d''Plattform elo entdecken a Är Stëmm héieren loossen. Dir kënnt och e Profilbild an eng kuerz Beschreiwung derbäisetzen, fir aneren ze soen, wien Dir sidd.'
-      preheader: 'Dar hei kënnt Dir op der Plattform vun %{organizationName} maachen'
-    idea_published:
-      subject: 'Är Iddi gouf publizéiert'
-      preheader: '%{firstName}, Gléckwonsch fir d’Verëffentlechen vun Ärer Iddi op der %{organizationName} Plattform. Sammelt a kritt elo Ënnerstëtzung.'
-      title: 'Du hues "%{input_title}" gepost'
-      input_type_subject:
-        idea: 'Är Iddi gouf publizéiert'
-        question: 'Är Fro gouf publizéiert'
-        contribution: 'Äre Bäitrag gouf publizéiert'
-        project: 'Äert Projet gouf publizéiert'
-        issue: 'Är Ausgab gouf publizéiert'
-        option: 'Är Optioun gouf publizéiert'
-        proposal: 'Äre Virschlag gouf publizéiert'
-        initiative: 'Är Initiativ gouf publizéiert'
-        petition: 'Är Petitioun gouf publizéiert'
-        comment: 'Äre Kommentar gouf publizéiert'
-        response: 'Är Äntwert gouf publizéiert'
-        suggestion: 'Äre Virschlag gouf publizéiert'
-        topic: 'Äert Thema gouf publizéiert'
-        post: 'Äre Beitrag gouf publizéiert'
-        story: 'Är Geschicht gouf publizéiert'
-      header_message: 'Loosst eis sécher stellen datt et gelies gëtt.'
-      message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
-      action_published_idea: 'Verëffentlecht Iddi'
-      action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
-      add_image: 'A Bild afügen'
-      action_share_fb: 'Sot et Äre Frënn op %{fbLink}'
-      action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
-      action_send_email: 'Är Kontakter un %{sendEmailLink} schécken'
-      send_email: E-Mail
-      action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
-      link: Link
-    your_input_in_screening:
-      main_header:
-        idea: 'Är Iddi ass an "%{prescreening_status_title}"'
-        question: 'Är Fro ass an "%{prescreening_status_title}"'
-        contribution: 'Äre Bäitrag ass an "%{prescreening_status_title}"'
-        project: 'Äre Projet ass an "%{prescreening_status_title}"'
-        issue: 'Ären Thema ass an "%{prescreening_status_title}"'
-        option: 'Är Optioun ass an "%{prescreening_status_title}"'
-        proposal: 'Är Propositioun ass an "%{prescreening_status_title}"'
-        initiative: 'Är Initiativ ass an "%{prescreening_status_title}"'
-        petition: 'Är Petitioun ass an "%{prescreening_status_title}"'
-        comment: 'Äre Kommentar ass an "%{prescreening_status_title}"'
-        response: 'Är Äntwert ass an "%{prescreening_status_title}"'
-        suggestion: 'Äre Virschlag ass an "%{prescreening_status_title}"'
-        topic: 'Äert Thema ass an "%{prescreening_status_title}"'
-        post: 'Äre Beitrag ass an "%{prescreening_status_title}"'
-        story: 'Är Geschicht ass an "%{prescreening_status_title}"'
-      event_description: '"%{input_title}" gëtt fir anerer sichtbar, soubal et iwwerpréift a guttgeheescht gouf.'
-      subject: '"%{input_title}" ass bal publizéiert'
-      preheader: 'Et ass de Moment an %{prescreening_status_title}'
+    schedules:
+      quarterly: Trimester, um éischten Dag vum Véierel
+      weekly:
+        '0': Wochemaart, Sonndes um %{hourOfDay}
+        '1': Wochemaart, op Méindes %{hourOfDay}
+        '2': Wochemaart, op Dënschdes %{hourOfDay}
+        '3': Wochemaart, Mëttwochs %{hourOfDay}
+        '4': Wochemaart, op Donneschden %{hourOfDay}
+        '5': Wochemaart, Freideg %{hourOfDay}
+        '6': Wochemaart, Samschdes %{hourOfDay}
     screening_digest:
+      cta_button: Iwwerpréift d'Entréen
+      event_description: Dës Inputen mussen approuvéiert ginn, ier se ëffentlech zougänglech sinn. Dir kënnt se am plattformweiten Input Manager oder am Input Manager vun all Phase iwwerpréiwen.
+      inputs_awaiting_screening: Entréeën fir ze iwwerpréiwen
+      preheader: Iwwerpréift d'Entréeën fir %{organizationName}
       subject: '%{count} Entréeën waarden op Iwwerpréiwung'
-      preheader: 'Iwwerpréift d''Entréeën fir %{organizationName}'
-      title: '%{firstName}, d''Entréeën waarden drop, iwwerpréift ze ginn'
-      event_description: "Dës Inputen mussen approuvéiert ginn, ier se ëffentlech zougänglech sinn. Dir kënnt se am plattformweiten Input Manager oder am Input Manager vun all Phase iwwerpréiwen."
-      cta_button: 'Iwwerpréift d''Entréen'
-      inputs_awaiting_screening: 'Entréeën fir ze iwwerpréiwen'
-    voting_basket_submitted:
-      subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
-      preheader: 'Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt'
-      title: 'Dir hutt erfollegräich gestëmmt'
-      event_description: 'Merci fir d''Matmaachen. Är Stëmmen goufen opgeholl. Besicht d''Plattform vun %{organizationName} fir Är Stëmmen ze gesinn an ze managen.'
-      cta_button: 'Kuckt d''Stëmmen, déi agereecht goufen'
-      cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
-    native_survey_not_submitted:
-      subject: '%{organizationName}: Bal do! Gitt Är Äntwerten of'
-      preheader: 'Dir hutt Är Ëmfro-Äntwert net op der Participatiounsplattform vun %{organizationName}ofgeschloss'
-      title: 'Bal fäerdeg! Gitt Är Äntwerten of'
-      event_description: 'Dir hutt ugefaang Är Äntwerten op %{phaseTitle} ze deelen, awer se net ofginn. Klickt op de Knäppchen hei ënnendrënner fir do weiderzemaachen, wou Dir opgehalen hutt.'
-      cta_button: 'Är Äntwert op d''Ëmfro weiderféieren'
-      submissions_close: 'D''Umeldungen schléissen den %{phaseEndDate}.'
-    voting_basket_not_submitted:
-      subject: '%{organizationName}: Dir hutt Är Stëmmen net ofginn'
-      preheader: 'Dir hutt Är Stëmmen net op der Participatiounsplattform vun %{organizationName}ofginn'
-      title: 'Dir hutt Är Stëmmen net ofginn'
-      event_description: 'Dir hutt e puer Optiounen fir %{contextTitle} ausgewielt, awer Dir hutt Är Auswiel net ofginn.'
-      cta_button: 'Optiounen ukucken a stëmmen of'
-      cta_message: 'Klickt op de Knäppchen hei ënnen fir Är gewielte Optiounen ofzeginn'
-    voting_last_chance:
-      subject: '%{organizationName}: Lescht Chance fir %{phaseTitle}ze wielen'
-      preheader: 'Lescht Chance fir %{phaseTitle} op der Participatiounsplattform vun %{organizationName}ze wielen'
-      title: 'Lescht Chance fir ze wielen fir %{phaseTitle}'
-      event_description: '<p>D''Ofstëmmungsphase fir de Projet %{projectTitle} geet muer um Mëtternuecht op en Enn.</p><p>D''Zäit leeft aus, an et ass eis opgefall, datt Dir nach net ofginn hutt! Maacht elo mat andeems Dir einfach op de Knäppchen hei ënnendrënner klickt fir matzemaachen.</p><p>Doduerch kritt Dir Zougang zu enger Rei vun Optiounen an d''Méiglechkeet, Äre Bäitrag ze ginn, wat entscheedend ass fir d''Zukunft vun dësem Projet ze entscheeden.</p>'
-      cta_button: 'Wiel'
-    voting_results:
-      subject: '%{organizationName}: %{phaseTitle} Stëmmen Resultater opgedeckt!'
-      preheader: '%{phaseTitle} Stëmme Resultater opgedeckt op der Participatioun Plattform vun %{organizationName}'
-      title: '%{phaseTitle} Ofstëmmungsresultater bekannt!'
-      body_1: 'Resultater sinn an!'
-      body_2: 'D''Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!'
-      body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
-      cta_button: 'Resultater op der Plattform kucken'
-    event_registration_confirmation:
-      subject: "Dir sidd an! Dir sidd ageschriwwen fir \"%{eventTitle}\""
-      preheader: "%{firstName}, Merci fir Är Aschreiwung fir %{eventTitle}"
-      title: "%{firstName}, merci fir d'Aschreiwung"
-      event_details:
-        labels:
-          date: 'Datum'
-          location: 'Plaz'
-          online_link: 'Online Link'
-          description: 'Beschreiwung'
-          project: 'Projet'
-      cta_button: 'Kuckt d''Evenement'
-      cta_add_to_calendar: 'An Äre Kalenner androen'
-    voting_phase_started:
-      subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
-      preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
-      title: '%{projectName}'
-      event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
-      cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
-      cta_button: 'Gitt op d''Plattform fir ze wielen'
+      title: "%{firstName}, d'Entréeën waarden drop, iwwerpréift ze ginn"
+    space_moderation_rights_received:
+      cta_button: Dëse Space verwalten
+      event_description: 'En Administrateur vun der Participatiounsplattform vun %{organizationName} huet Iech grad zum Space-Manager vum folgende Space gemaach:'
+      no_projects: Nach keng Projeten
+      preheader: En Administrateur vun der Participatiounsplattform vun %{organizationName} huet Iech grad zum Space-Manager vum folgende Space gemaach
+      subject: Dir sidd elo Space-Manager op der Plattform vun %{organizationName}
+      text_manage_space_settings: "Dir kënnt den Titel an d'Beschreiwung vum Space beaarbechten, sou datt d'Participanten an Är Manager-Kolleegen direkt verstinn, ëm wat et an Ärem Space geet a wéi en mat Ärer Organisatioun zesummenhänkt."
+      text_organize_projects_and_folders: Als Space-Manager kënnt Dir Projeten an Dossieren an Ärem Space verwalten, an och Management-Rollen dofir zouweisen oder ewechhuelen.
+      text_oversee_participation: Als Space-Manager hutt Dir Projet-Manager-Rechter fir all Projet an Ärem Space, sou datt Dir den Input am A behale kënnt an de Projet-Manageren hëllefe kënnt, wann et néideg ass.
+      title: Dir sidd elo Space-Manager
+      title_manage_space_settings: Space-Astellungen verwalten
+      title_organize_projects_and_folders: Projeten an Dossieren organiséieren
+      title_oversee_participation: D'Participatioun iwwerwaachen
+      title_what_can_you_do_space_manager: Wat kënnt Dir als Space-Manager maachen?
+      x_projects: '%{numberOfProjects} Projeten'
+    status_change_on_idea_you_follow:
+      cta_button: Gitt op dësen Input
+      event_description: "%{organizationName} huet de Status vum Input '%{input_title}' op hirer digitaler Participatiounsplattform aktualiséiert."
+      preheader: En Input deen Dir verfollegt huet en neie Status
+      status_change: "Den neie Status vun dësem Input ass '%{status}'"
+      subject: De Status vun "%{input_title}" ass geännert
+      title: En Input, deen Dir verfollegt, huet en neie Status
     survey_submitted:
+      cta_button: Luet Är Äntwerten erof
+      event_description: Ären Input fir "%{projectName}" gouf erfollegräich ofginn.
+      if_you_would_like_to_review: Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.
+      preheader: Hei sinn d'Detailer vun Ärer Soumissioun.
       subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
-      preheader: 'Hei sinn d''Detailer vun Ärer Soumissioun.'
-      title: 'Merci datt Dir Är Gedanken zu "%{projectName}" gedeelt hutt!'
-      event_description: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
-      if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'
+      title: Merci datt Dir Är Gedanken zu "%{projectName}" gedeelt hutt!
+      you_can_use_this_id: Dir kënnt dësen Identifizéierer benotze fir d'Plattformadministrateuren ze kontaktéieren am Fall wou Dir wëllt datt Är Soumissioun ewechgeholl gëtt.
       your_submission_has_id: 'Är Soumissioun huet de folgenden eenzegaartegen Identifizéierer:'
-      you_can_use_this_id: 'Dir kënnt dësen Identifizéierer benotze fir d''Plattformadministrateuren ze kontaktéieren am Fall wou Dir wëllt datt Är Soumissioun ewechgeholl gëtt.'
-      cta_button: 'Luet Är Äntwerten erof'
-    admin_labels:
-      recipient_role:
-        admins: 'An den Admins'
-        admins_and_managers: 'Fir Administrateuren & Manager'
-        managers: 'Zu Manager'
-        project_participants: 'Zu Projet Participanten'
-        registered_users: 'Fir registréiert Benotzer'
-      recipient_segment:
-        admins: 'Administrateuren'
-        admins_and_managers: 'Administrateuren a Manager'
-        admins_and_managers_assigned_to_the_input: 'Administrateuren & Manager ginn dem Input zougewisen'
-        admins_and_managers_managing_the_project: 'Administrateuren a Manager déi de Projet managen'
-        admins_assigned_to_a_proposal: 'Administrateuren zu enger Propositioun zougewisen'
-        all_users: 'All Benotzer'
-        all_users_who_uploaded_proposals: 'All Benotzer déi Propositioune eropgelueden hunn'
-        managers: 'Manager'
-        managers_managing_the_project: 'Manager déi de Projet managen'
-        new_attendee: 'Nei registréiert Benotzer'
-        project_reviewers: 'Project Rezensiounen an Dossier Manager'
-        project_review_requester: 'Benotzer deen de Projet review gefrot'
-        user_who_commented: 'Benotzer deen kommentéiert'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren'
-        user_who_is_mentioned: 'Benotzer deen ernimmt gëtt'
-        user_who_is_receiving_admin_rights: 'Benotzer deen Admin Rechter kritt'
-        user_who_is_receiving_folder_moderator_rights: 'Benotzer deen Dossier Moderator Rechter kritt'
-        user_who_is_receiving_project_moderator_rights: 'Benotzer deen Projet Moderator Rechter kritt'
-        user_who_published_the_input: 'Benotzer deen den Input publizéiert huet'
-        user_who_published_the_proposal: 'Benotzer deen d''Propositioun publizéiert huet'
-        user_who_registers: 'Benotzer deen registréiert'
-        user_who_submitted_the_input: 'Benotzer deen den Input ofginn huet'
-        user_who_voted: 'Benotzer deen gestëmmt huet'
-        user_who_was_invited: 'Benotzer deen invitéiert gouf'
-        user_with_unsubmitted_survey: 'Benotzer deen ugefaang huet awer net hir Ëmfro ofginn huet'
-        user_with_unsubmitted_votes: 'Benotzer déi hir Stëmmen net ofginn huet'
-        users_who_engaged_but_not_voted: 'Benotzer déi mam Projet engagéiert hunn awer net gestëmmt hunn'
-        users_who_engaged_with_the_project: 'Benotzer déi mam Projet engagéiert hunn'
-        users_who_follow_the_input: 'Benotzer déi den Input verfollegen'
-        users_who_follow_the_project: 'Benotzer déi de Projet verfollegen'
-        users_who_follow_the_proposal: 'Benotzer déi d''Propositioun verfollegen'
-      content_type:
-        comments: 'Kommentaren'
-        content_moderation: 'Inhalt Moderatioun'
-        events: 'Evenementer'
-        general: 'Général'
-        inputs: 'Input'
-        internal_comments: 'Intern Kommentaren'
-        permissions: 'Permissiounen'
-        projects: 'Projeten'
-        proposals: 'Propositioune'
-        reactions: 'Reaktiounen'
-        voting: 'Ofstëmmung'
-        surveys: 'Ëmfroen'
-      trigger:
-        7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
-        7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'
-        comment_is_deleted: 'Commentaire geläscht'
-        comment_is_flagged_as_spam: 'Kommentar gëtt als Spam markéiert'
-        content_gets_flagged_as_innapropiate: 'Inhalt gëtt als innapropiate markéiert'
-        initiative_resubmitted_for_review: 'Propositioun nees fir Iwwerpréiwung presentéiert'
-        input_is_assigned: 'Input ass zougewisen'
-        input_is_flagged_as_spam: 'Input gëtt als Spam markéiert'
-        input_is_published: 'Input gëtt publizéiert'
-        input_is_updated: 'Input gëtt aktualiséiert'
-        input_status_changes: 'Input Status Ännerungen'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Interne Kommentar gëtt op Input gepost dem Benotzer zougewisen'
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne Kommentar gëtt op Input am Projet oder Dossier gepost'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interne Kommentar gëtt op den Input gepost Benotzer huet intern kommentéiert'
-        internal_comment_is_posted_on_idea_user_moderates: 'Interne Kommentar gëtt op Input Benotzer Moderéiert gepost'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne Kommentar gëtt op net zougewisenen Input am net verwalteten Projet gepost'
-        project_review_request: 'Moderator gefrot e Projet review'
-        project_review_state_change: 'Rezensor huet de Projet guttgeheescht'
-        new_input_awaits_screening: 'Neien Input waart op Screening'
-        new_input_is_published: 'Neien Input gëtt publizéiert'
-        new_proposal_is_posted: 'Nei Propositioun ass gepost'
-        project_phase_changes: 'Projet Phase Ännerungen'
-        project_published: 'Projet publizéiert'
-        proposal_gets_reported_as_spam: 'Propositioun gëtt als Spam gemellt'
-        proposal_is_assigned_to_admin: 'Propositioun ass dem Administrateur zougewisen'
-        proposal_is_published: 'Propositioun ass publizéiert'
-        proposal_is_updated: 'Propositioun gëtt aktualiséiert'
-        proposal_is_upvoted_above_threshold: 'D''Propositioun gëtt iwwer d''Schwell gestëmmt'
-        proposal_status_changes: 'Propositioun Status Ännerungen'
-        registration_to_event: 'Aschreiwung op en Event'
-        survey_1_day_after_draft_saved: '1 Dag nodeems de Benotzer fir d''lescht d''Ëmfro am Entworf gespäichert huet'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'De Benotzer acceptéiert d''Invitatioun fir eng Propositioun ze sponsoren'
-        user_comments: 'Benotzer Kommentaren'
-        user_comments_on_input: 'Benotzer Kommentaren op Input'
-        user_comments_on_proposal: 'Benotzer Kommentaren op Propositioun'
-        user_is_given_admin_rights: 'De Benotzer gëtt Admin Rechter'
-        user_is_given_folder_moderator_rights: 'Benotzer gëtt Dossier Moderator Rechter'
-        user_is_given_project_moderator_rights: 'Benotzer gëtt Projet Moderator Rechter ginn'
-        user_is_invited_to_platform: 'Benotzer ass op d''Plattform invitéiert'
-        user_is_invited_to_cosponsor_a_proposal: 'De Benotzer ass invitéiert fir eng Propositioun ze sponseren'
-        user_is_mentioned: 'Benotzer gëtt ernimmt'
-        user_is_mentioned_in_internal_comment: 'Benotzer gëtt am internen Kommentar ernimmt'
-        user_registers_for_the_first_time: 'Benotzer registréiert fir d''éischte Kéier'
-        user_replies_to_comment: 'Benotzer Äntwerten op Commentaire'
-        user_replies_to_internal_comment: 'Benotzer Äntwerten op intern Kommentar'
-        voting_1_day_after_last_votes: '1 Dag nodeems de Benotzer lescht gestëmmt huet'
-        voting_2_days_before_phase_closes: '2 Deeg virum Ofstëmmungsphase zou'
-        voting_basket_submitted: 'D''Stëmmen ginn agereecht'
-        voting_phase_ended: 'D''Wahlphase ass eriwwer'
+    threshold_reached_for_admin:
+      cta_button: Bréngt dëse Virschlag op déi nächst Schrëtt
+      preheader: Stellt sécher, datt Dir déi nächst Schrëtter maacht
+      subject: E Virschlag op Ärer Plattform huet d'Schwell vun den Ofstëmmungen erreecht
+      title: E Virschlag huet d'Walschwell erreecht!
+    user_digest:
+      commented: '%{authorFirstName} huet kommentéiert:'
+      cta_button: Gitt op d'Plattform
+      event_description: Hei ass eng Zesummefassung vun deem wat op der Participatiounsplattform vun %{organizationName}geschitt ass.
+      multiple_notifications: '%{notifCount} Benoriichtegungen'
+      no_notifications: Keng Benoriichtegungen
+      no_unread_notifications: Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!
+      one_notification: 1 Benoriichtegung
+      preheader: Wéchentlechen Iwwerbléck vun %{organizationName}
+      subject: Är wéchentlech Aktivitéit op der participativer Plattform %{organizationName}
+      successful_proposals_text: Dëse Virschlag huet genuch Ënnerstëtzung kritt fir an déi nächst Etapp ze kommen!! Klickt op de Virschlag fir méi gewuer ze ginn, wat als nächst geschitt.
+      successful_proposals_title: D'Schwell erreecht
+      title: Entdeckt wat lescht Woch geschitt ass
+      title_no_activity_past_week: Keng Aktivitéit an der leschter Woch
+      today_by_author: Haut vun %{author}
+      trending_text: Interesséiert fir wat op der Plattform geschitt ass? Hei sinn déi dräi meescht trendy Bäiträg a wat d'Leit iwwer si soen.
+      trending_title: Trending
+      unread_notifications: Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!
+      x_days_ago_by_author: Virun %{x} Deeg %{author} vun
+      yesterday_by_author: Gëschter vun %{author}
+    voting_basket_not_submitted:
+      cta_button: Optiounen ukucken a stëmmen of
+      cta_message: Klickt op de Knäppchen hei ënnen fir Är gewielte Optiounen ofzeginn
+      event_description: Dir hutt e puer Optiounen fir %{contextTitle} ausgewielt, awer Dir hutt Är Auswiel net ofginn.
+      preheader: Dir hutt Är Stëmmen net op der Participatiounsplattform vun %{organizationName}ofginn
+      subject: '%{organizationName}: Dir hutt Är Stëmmen net ofginn'
+      title: Dir hutt Är Stëmmen net ofginn
+    voting_basket_submitted:
+      cta_button: Kuckt d'Stëmmen, déi agereecht goufen
+      cta_message: Klickt op de Knäppchen hei ënnen fir matzemaachen
+      event_description: "Merci fir d'Matmaachen. Är Stëmmen goufen opgeholl. Besicht d'Plattform vun %{organizationName} fir Är Stëmmen ze gesinn an ze managen."
+      preheader: Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt
+      subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
+      title: Dir hutt erfollegräich gestëmmt
+    voting_last_chance:
+      cta_button: Wiel
+      event_description: "<p>D'Ofstëmmungsphase fir de Projet %{projectTitle} geet muer um Mëtternuecht op en Enn.</p><p>D'Zäit leeft aus, an et ass eis opgefall, datt Dir nach net ofginn hutt! Maacht elo mat andeems Dir einfach op de Knäppchen hei ënnendrënner klickt fir matzemaachen.</p><p>Doduerch kritt Dir Zougang zu enger Rei vun Optiounen an d'Méiglechkeet, Äre Bäitrag ze ginn, wat entscheedend ass fir d'Zukunft vun dësem Projet ze entscheeden.</p>"
+      preheader: Lescht Chance fir %{phaseTitle} op der Participatiounsplattform vun %{organizationName}ze wielen
+      subject: '%{organizationName}: Lescht Chance fir %{phaseTitle}ze wielen'
+      title: Lescht Chance fir ze wielen fir %{phaseTitle}
+    voting_phase_started:
+      cta_button: Gitt op d'Plattform fir ze wielen
+      cta_message: Klickt op de Knäppchen hei ënnen fir matzemaachen
+      event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
+      preheader: D'Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang
+      subject: "%{organizationName}: D'Stëmmphase huet fir den %{projectName}ugefaangen"
+      title: '%{projectName}'
+    voting_results:
+      body_1: Resultater sinn an!
+      body_2: D'Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!
+      body_3: "Mir encouragéieren Iech d'Resultater z'iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt."
+      cta_button: Resultater op der Plattform kucken
+      preheader: '%{phaseTitle} Stëmme Resultater opgedeckt op der Participatioun Plattform vun %{organizationName}'
+      subject: '%{organizationName}: %{phaseTitle} Stëmmen Resultater opgedeckt!'
+      title: '%{phaseTitle} Ofstëmmungsresultater bekannt!'
+    welcome:
+      cta_button: Entdeckt d'Plattform
+      event_description: Gratulatioun, Dir hutt Iech erfollegräich op der Participatiounsplattform vun %{organizationName}ugemellt. Dir kënnt d'Plattform elo entdecken a Är Stëmm héieren loossen. Dir kënnt och e Profilbild an eng kuerz Beschreiwung derbäisetzen, fir aneren ze soen, wien Dir sidd.
+      preheader: Dar hei kënnt Dir op der Plattform vun %{organizationName} maachen
+      subject: Wëllkomm op der Plattform vum %{organizationName}
+      title: Wëllkomm!
+    your_input_in_screening:
+      event_description: '"%{input_title}" gëtt fir anerer sichtbar, soubal et iwwerpréift a guttgeheescht gouf.'
+      main_header:
+        comment: Äre Kommentar ass an "%{prescreening_status_title}"
+        contribution: Äre Bäitrag ass an "%{prescreening_status_title}"
+        idea: Är Iddi ass an "%{prescreening_status_title}"
+        initiative: Är Initiativ ass an "%{prescreening_status_title}"
+        issue: Ären Thema ass an "%{prescreening_status_title}"
+        option: Är Optioun ass an "%{prescreening_status_title}"
+        petition: Är Petitioun ass an "%{prescreening_status_title}"
+        post: Äre Beitrag ass an "%{prescreening_status_title}"
+        project: Äre Projet ass an "%{prescreening_status_title}"
+        proposal: Är Propositioun ass an "%{prescreening_status_title}"
+        question: Är Fro ass an "%{prescreening_status_title}"
+        response: Är Äntwert ass an "%{prescreening_status_title}"
+        story: Är Geschicht ass an "%{prescreening_status_title}"
+        suggestion: Äre Virschlag ass an "%{prescreening_status_title}"
+        topic: Äert Thema ass an "%{prescreening_status_title}"
+      preheader: Et ass de Moment an %{prescreening_status_title}
+      subject: '"%{input_title}" ass bal publizéiert'
