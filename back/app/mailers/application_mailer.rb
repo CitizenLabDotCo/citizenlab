@@ -102,13 +102,15 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def default_config
-    {
+    config = {
       subject: subject,
       from: from_email,
       to: to_email,
       reply_to: reply_to_email,
       domain: domain
     }
+    config.merge!(custom_smtp_delivery_options) if custom_smtp_enabled?
+    config
   end
 
   def mailgun_headers
@@ -149,6 +151,23 @@ class ApplicationMailer < ActionMailer::Base
 
   def domain
     raw_from_email&.split('@')&.last
+  end
+
+  def custom_smtp_enabled?
+    app_configuration.feature_activated?('custom_smtp')
+  end
+
+  def custom_smtp_delivery_options
+    smtp = app_configuration.settings['custom_smtp']
+    options = { address: smtp['address'] }
+    options[:port]                 = smtp['port']                 if smtp['port']
+    options[:domain]               = smtp['domain']               if smtp['domain']
+    options[:user_name]            = smtp['user_name']            if smtp['user_name']
+    options[:password]             = smtp['password']             if smtp['password']
+    options[:authentication]       = smtp['authentication']&.to_sym if smtp['authentication']
+    options[:enable_starttls_auto] = smtp['enable_starttls_auto'] unless smtp['enable_starttls_auto'].nil?
+    options[:openssl_verify_mode]  = smtp['openssl_verify_mode']  if smtp['openssl_verify_mode']
+    { delivery_method: :smtp, delivery_method_options: options }
   end
 
   def app_settings
