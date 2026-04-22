@@ -132,7 +132,7 @@ class ProjectPolicy < ApplicationPolicy
   def destroy?
     return false unless active?
 
-    admin? || (active_moderator? && record.never_published?)
+    admin? || can_moderate_space? || (active_moderator? && record.never_published?)
   end
 
   def copy?
@@ -221,6 +221,10 @@ class ProjectPolicy < ApplicationPolicy
 
   def can_moderate_folder?
     record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  end
+
+  def can_moderate_space?
+    record.space && UserRoleService.new.can_moderate?(record.space, user)
   end
 
   def project_preview?

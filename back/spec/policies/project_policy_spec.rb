@@ -621,7 +621,7 @@ describe ProjectPolicy do
             project.admin_publication.update!(first_published_at: Time.current)
           end
 
-          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.to permit(:destroy) }
         end
       end
 
