@@ -6275,7 +6275,6 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.all.clickExportToPDFSurvey8": {
     "state": "verified",
     "verified_at": "2026-03-26T13:26:33.151343Z",
@@ -17331,6 +17330,16 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.fieldDestinationLink": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.AdminPage.widgets.fieldFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
   "app.containers.AdminPage.widgets.fieldFont": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
@@ -17380,6 +17389,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.fieldProjectsLimit": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
   },
   "app.containers.AdminPage.widgets.fieldRelativeLink": {
     "state": "verified",
@@ -17446,6 +17460,26 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.projectSortEndingSoon": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.AdminPage.widgets.projectSortMostParticipants": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.AdminPage.widgets.projectSortNewest": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.AdminPage.widgets.projectSortPlatformOrder": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
   "app.containers.AdminPage.widgets.settingsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
@@ -17471,15 +17505,35 @@
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.tabIdeas": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
+  "app.containers.AdminPage.widgets.tabProjects": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
   "app.containers.AdminPage.widgets.title": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.titleContent": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
+  },
   "app.containers.AdminPage.widgets.titleDimensions": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:27.789251Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.titleHeaderAndButton": {
+    "state": "verified",
+    "verified_at": "2026-04-08T09:40:28.437144Z",
+    "verified_by": "Rob"
   },
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": {
     "state": "verified",
