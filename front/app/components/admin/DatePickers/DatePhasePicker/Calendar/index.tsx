@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import { differenceInHours } from 'date-fns';
 import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
@@ -242,7 +241,8 @@ const Calendar = ({
   const isSingleDaySelection =
     selectedRange.from &&
     selectedRange.to &&
-    differenceInHours(selectedRange.to, selectedRange.from) === 24;
+    selectedRange.to.getTime() - selectedRange.from.getTime() ===
+      24 * 60 * 60 * 1000;
 
   const locale = useLocale();
 
