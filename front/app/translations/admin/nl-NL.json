@@ -1888,7 +1888,7 @@
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Een andere vragenlijst dupliceren",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Vragenlijstformulier bewerken",
-  "app.containers.Admin.surveyFormTab.importResponses1": "Antwoorden importeren",
+  "app.containers.Admin.surveyFormTab.importResponses1": "Reacties importeren",
   "app.containers.Admin.surveyFormTab.inputFormDescription2": "Geef aan welke informatie moet worden verstrekt om de reacties van deelnemers te begeleiden.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Vragenlijstformulier",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Nieuw token aanmaken",
