@@ -46,6 +46,8 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateProject, isLoading: isUpdatingProject } =
     useUpdateProject();
+  const { mutate: cancelScheduleMutation, isLoading: isCancelling } =
+    useUpdateProject();
   const { mutate: approveProjectReview, isLoading: isApproving } =
     useApproveProjectReview();
   const { mutate: requestProjectReview, isLoading: isRequesting } =
@@ -71,13 +73,8 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const [sendEmail, setSendEmail] = useState(
     project.attributes.publication_email_enabled
   );
-  const [activeAction, setActiveAction] = useState<'primary' | 'cancel' | null>(
-    null
-  );
-
-  const anyLoading = isUpdatingProject || isApproving || isRequesting;
-  const primaryLoading = anyLoading && activeAction === 'primary';
-  const cancelLoading = anyLoading && activeAction === 'cancel';
+  const primaryLoading = isUpdatingProject || isApproving || isRequesting;
+  const cancelLoading = isCancelling;
 
   const buildScheduledAt = () => {
     const scheduledDate = new Date(selectedDate);
@@ -145,7 +142,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
 
   const handleCancelSchedule = () => {
     trackEventByName(tracks.scheduleCancelled);
-    updateProject(
+    cancelScheduleMutation(
       {
         projectId: project.id,
         admin_publication_attributes: {
@@ -235,10 +232,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           {project.attributes.scheduled_at ? (
             <Button
               buttonStyle="text"
-              onClick={() => {
-                setActiveAction('cancel');
-                handleCancelSchedule();
-              }}
+              onClick={handleCancelSchedule}
               textColor={colors.black}
               textDecoration="underline"
               textDecorationHover="underline"
@@ -253,10 +247,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           <Button
             buttonStyle="admin-dark"
             icon={primary.icon}
-            onClick={() => {
-              setActiveAction('primary');
-              primary.onClick();
-            }}
+            onClick={primary.onClick}
             processing={primaryLoading}
             disabled={primary.disabled}
             id="e2e-schedule-launch-submit"
