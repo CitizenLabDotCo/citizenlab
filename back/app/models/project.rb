@@ -156,27 +156,19 @@ class Project < ApplicationRecord
 
   scope :newest, -> { order(created_at: :desc) }
 
-  scope :joined_with_current_phases, lambda {
-    now = Time.zone.now.to_fs(:db)
-    joins(sanitize_sql_array([
-      'INNER JOIN phases AS current_phases ON current_phases.project_id = projects.id' \
-      ' AND current_phases.start_at <= ?' \
-      ' AND (current_phases.end_at >= ? OR current_phases.end_at IS NULL)',
-      now, now
-    ]))
-  }
-
-  scope :with_current_phase_dates, lambda {
-    joined_with_current_phases
-      .select('projects.*, current_phases.start_at AS current_phase_start_at, current_phases.end_at AS current_phase_end_at')
-  }
-
   scope :ending_soon, lambda {
-    subquery = joined_with_current_phases
-      .select('DISTINCT projects.*, current_phases.end_at AS current_phase_end_at')
-
-    from(subquery, :projects)
-      .order('current_phase_end_at ASC NULLS LAST')
+    joins(<<~SQL.squish)
+      INNER JOIN LATERAL (
+        SELECT phases.end_at AS current_phase_end_at
+        FROM phases
+        WHERE phases.project_id = projects.id
+          AND phases.start_at <= #{connection.quote(Time.zone.now)}
+          AND (phases.end_at >= #{connection.quote(Time.zone.now)} OR phases.end_at IS NULL)
+        ORDER BY phases.end_at ASC NULLS LAST
+        LIMIT 1
+      ) AS current_phase ON true
+    SQL
+    .order('current_phase.current_phase_end_at ASC NULLS LAST')
   }
 
   scope :by_participation_count, lambda { |direction = :desc|

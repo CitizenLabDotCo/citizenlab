@@ -36,6 +36,10 @@ resource 'Project', admin_api: true do
     parameter :sort, 'Sort order: platform_order (default), newest, ending_soon, most_participants', required: false
     parameter :limit, 'Maximum number of projects to return (default 3)', required: false
 
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     before do
       header 'tenant', Tenant.current.id
 

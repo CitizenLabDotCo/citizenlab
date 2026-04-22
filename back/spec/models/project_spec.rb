@@ -252,32 +252,6 @@ RSpec.describe Project do
     end
   end
 
-  describe 'with_current_phase_dates scope' do
-    it 'returns projects with a current phase and exposes start_at and end_at' do
-      project = create(:project)
-      phase = create(:phase, project: project, start_at: 3.days.ago, end_at: 4.days.from_now)
-
-      result = described_class.with_current_phase_dates.find(project.id)
-      expect(result['current_phase_start_at'].to_date).to eq(phase.start_at)
-      expect(result['current_phase_end_at'].to_date).to eq(phase.end_at)
-    end
-
-    it 'includes open-ended phases (end_at nil)' do
-      project = create(:project)
-      create(:phase, project: project, start_at: 3.days.ago, end_at: nil)
-
-      result = described_class.with_current_phase_dates.find(project.id)
-      expect(result['current_phase_end_at']).to be_nil
-    end
-
-    it 'excludes projects with no current phase' do
-      project = create(:project)
-      create(:phase, project: project, start_at: 30.days.ago, end_at: 1.day.ago)
-
-      expect(described_class.with_current_phase_dates.where(id: project.id)).to be_empty
-    end
-  end
-
   describe 'ending_soon scope' do
     it 'orders by current phase end_at ascending, open-ended last' do
       open_ended = create(:project)
