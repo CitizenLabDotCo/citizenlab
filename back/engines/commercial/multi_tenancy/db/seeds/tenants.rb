@@ -587,8 +587,8 @@ module MultiTenancy
               allowed: false
             },
             spaces: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true
             },
             email_scheduling: {
               enabled: true,
