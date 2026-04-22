@@ -12194,6 +12194,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.343531Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

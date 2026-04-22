@@ -819,15 +819,35 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.DatePhasePicker.Input.endTime": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.547246Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.DatePhasePicker.Input.openEnded": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.DatePhasePicker.Input.sameDaySelection": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.547246Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.DatePhasePicker.Input.sameDaySelectionWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.547246Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.DatePhasePicker.Input.selectDate": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.DatePhasePicker.Input.startTime": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.547246Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": {
     "state": "verified",
