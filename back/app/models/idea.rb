@@ -375,6 +375,16 @@ class Idea < ApplicationRecord
     self.manual_votes_last_updated_at = Time.now
   end
 
+  def expires_at
+    return if !published? || !creation_phase&.expire_days_limit
+
+    published_at + creation_phase.expire_days_limit.days
+  end
+
+  def voting_expired?
+    expires_at.present? && expires_at < Time.zone.now
+  end
+
   def draft?
     publication_status == 'draft'
   end

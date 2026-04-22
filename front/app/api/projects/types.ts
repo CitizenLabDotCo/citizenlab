@@ -99,6 +99,8 @@ export interface IProjectAttributes {
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
+  publication_email_enabled: boolean;
+  global_publication_email_enabled: boolean;
   space_id?: string | null;
 }
 
@@ -176,6 +178,7 @@ export interface IUpdatedProjectProperties {
   // This oddity needs to be dealt with
   projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -213,4 +216,6 @@ export interface IUpdatedProjectProperties {
   listed?: boolean;
   live_auto_input_topics_enabled?: boolean;
   space_id?: string | null;
+  scheduled_at?: string | null;
+  publication_email_enabled?: boolean;
 }

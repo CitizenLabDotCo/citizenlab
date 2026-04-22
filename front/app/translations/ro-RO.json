@@ -1067,7 +1067,6 @@
   "app.modules.id_oostende_rrn.submit": "Trimite",
   "app.modules.id_oostende_rrn.takenFormError": "Numărul dvs. de securitate socială a fost deja folosit pentru a verifica un alt cont.",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verificați folosind numărul de asigurare socială",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Ați primit drepturi de administrator pentru dosarul \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Distribuie",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Consultați proiectele la {folderUrl} pentru a vă face vocea auzită!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} |de pe platforma de participare a {orgName}",

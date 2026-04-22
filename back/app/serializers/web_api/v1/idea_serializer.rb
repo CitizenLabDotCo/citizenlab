@@ -22,6 +22,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :manual_votes_amount,
     :anonymous,
     :author_hash,
+    :expires_at,
     :weglot_data
 
   attribute :author_name do |object, params|
@@ -40,12 +41,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attribute :action_descriptors do |object, params|
     user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
-  end
-
-  attribute :expires_at, if: proc { |input|
-    input.published? && input.participation_method_on_creation.supports_serializing_input?(:expires_at)
-  } do |input|
-    input.published_at + input.creation_phase.expire_days_limit.days
   end
 
   attribute :reacting_threshold, if: proc { |input|

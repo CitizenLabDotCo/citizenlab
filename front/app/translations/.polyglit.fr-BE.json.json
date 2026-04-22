@@ -6369,6 +6369,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:17:31.977349Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -6443,6 +6448,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:17:31.977349Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
@@ -9039,6 +9049,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:33:28.670634Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -9673,6 +9688,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
+    "state": "verified",
+    "verified_at": "2026-04-13T14:12:08.871163Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": {
     "state": "verified",
@@ -12014,6 +12034,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-27T13:18:47.756965Z",
+    "verified_by": "Cindy EB"
+  },
   "app.errors.email_taken": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.080991Z",
@@ -12518,6 +12543,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
+    "state": "verified",
+    "verified_at": "2026-04-13T14:12:08.871163Z",
+    "verified_by": "Cindy EB"
   },
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": {
     "state": "verified",
@@ -13272,11 +13302,6 @@
   "app.utils.votingMethodUtils.singleVotingEnded": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
-    "verified_by": "Admin"
-  },
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:35:09.080991Z",
     "verified_by": "Admin"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {

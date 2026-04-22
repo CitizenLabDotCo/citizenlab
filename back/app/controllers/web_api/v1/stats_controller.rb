@@ -9,6 +9,6 @@ class WebApi::V1::StatsController < ApplicationController
   private
 
   def parse_time_boundaries
-    @start_at, @end_at, @no_data = TimeBoundariesParser.new(params[:start_at], params[:end_at]).parse
+    @start_at, @end_at, @no_data = TimeBoundaries.parse(params[:start_at], params[:end_at])
   end
 end

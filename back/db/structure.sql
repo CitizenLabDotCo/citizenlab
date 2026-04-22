@@ -60,6 +60,7 @@ ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
@@ -191,6 +192,7 @@ DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
+DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
@@ -253,6 +255,7 @@ DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
+DROP INDEX IF EXISTS public.index_notifications_on_space_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
@@ -1542,7 +1545,8 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    token_expiry_key character varying
 );
 
 
@@ -1758,8 +1762,8 @@ CREATE TABLE public.phases (
     project_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    start_at date,
-    end_at date,
+    start_at timestamp(6) without time zone,
+    end_at timestamp(6) without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     participation_method character varying DEFAULT 'ideation'::character varying NOT NULL,
@@ -2022,7 +2026,7 @@ CREATE VIEW public.analytics_fact_posts AS
 CREATE VIEW public.analytics_fact_project_statuses AS
  WITH finished_statuses_for_timeline_projects AS (
          SELECT phases.project_id,
-            ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+            max(phases.end_at) AS "timestamp"
            FROM public.phases
           GROUP BY phases.project_id
          HAVING (max(phases.end_at) < now())
@@ -3244,7 +3248,8 @@ CREATE TABLE public.notifications (
     internal_comment_id uuid,
     basket_id uuid,
     cosponsorship_id uuid,
-    project_review_id uuid
+    project_review_id uuid,
+    space_id uuid
 );
 
 
@@ -4703,7 +4708,7 @@ ALTER TABLE ONLY public.phases
 --
 
 ALTER TABLE public.phases
-    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at <= end_at))) NOT VALID;
+    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at < end_at))) NOT VALID;
 
 
 --
@@ -6669,6 +6674,13 @@ CREATE INDEX index_notifications_on_recipient_id_and_read_at ON public.notificat
 
 
 --
+-- Name: index_notifications_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_space_id ON public.notifications USING btree (space_id);
+
+
+--
 -- Name: index_notifications_on_spam_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7100,6 +7112,13 @@ CREATE INDEX index_users_on_registration_completed_at ON public.users USING btre
 --
 
 CREATE UNIQUE INDEX index_users_on_slug ON public.users USING btree (slug);
+
+
+--
+-- Name: index_users_on_token_expiry_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_token_expiry_key ON public.users USING btree (token_expiry_key);
 
 
 --
@@ -8124,6 +8143,14 @@ ALTER TABLE ONLY public.official_feedbacks
 
 
 --
+-- Name: notifications fk_rails_b82ab32ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_b82ab32ac2 FOREIGN KEY (space_id) REFERENCES public.spaces(id);
+
+
+--
 -- Name: notifications fk_rails_b894d506a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8538,6 +8565,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260421105121'),
+('20260408161034'),
 ('20260408131955'),
 ('20260323120000'),
 ('20260313160000'),
@@ -8546,6 +8575,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260311100002'),
 ('20260311100001'),
 ('20260311100000'),
+('20260309120000'),
+('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),

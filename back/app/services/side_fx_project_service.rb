@@ -54,7 +54,9 @@ class SideFxProjectService
     set_scheduled_by(project.admin_publication, user)
   end
 
-  def after_update(project, user)
+  def after_update(project, user, publication_email_enabled: nil)
+    sync_publication_email_campaign(project, publication_email_enabled)
+
     change = project.saved_changes
     if project.admin_publication.publication_status != @publication_status_was
       change['publication_status'] = [@publication_status_was, project.admin_publication.publication_status]
@@ -128,6 +130,19 @@ class SideFxProjectService
 
   def after_publish(project, user)
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
+  end
+
+  # A per-project ProjectPublished campaign only exists to override the global default to disabled.
+  # Enabling removes the override so the project inherits the global setting; disabling persists it.
+  def sync_publication_email_campaign(project, publication_email_enabled)
+    return if publication_email_enabled.nil?
+
+    if publication_email_enabled
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    else
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.update!(enabled: false)
+    end
   end
 
   def set_scheduled_by(admin_pub, user)

@@ -20,6 +20,24 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :space_id
   )
 
+  # The index endpoint preloads a hash of per-project values to avoid N+1 queries
+  attribute :publication_email_enabled do |project, params|
+    if params[:publication_email_enabled_per_project]
+      !!params.dig(:publication_email_enabled_per_project, project.id)
+    else
+      !EmailCampaigns::Campaigns::ProjectPublished.exists?(context: project, enabled: false)
+    end
+  end
+
+  # The index endpoint passes the preloaded value via params to avoid looking it up per project
+  attribute :global_publication_email_enabled do |_project, params|
+    if params.key?(:global_publication_email_enabled)
+      params[:global_publication_email_enabled]
+    else
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
+    end
+  end
+
   attribute :folder_id do |project|
     project.folder&.id
   end

@@ -38,12 +38,14 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  unique_code                         :string
 #  last_active_at                      :datetime
 #  imported                            :boolean          default(FALSE), not null
+#  token_expiry_key                    :string
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
+#  index_users_on_token_expiry_key           (token_expiry_key)
 #  index_users_on_unique_code                (unique_code) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
@@ -232,9 +234,19 @@ class User < ApplicationRecord
       sub: id,
       highest_role: highest_role,
       exp: token_lifetime.from_now.to_i,
+      expiry_key: token_expiry_key,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
     }
+  end
+
+  def self.from_token_payload(payload)
+    find_by!(id: payload['sub'], token_expiry_key: payload['expiry_key'])
+  end
+
+  # We can expire a token by changing the token_expiry_key, which is checked when decoding the token in from_token_payload.
+  def expire_token!
+    update!(token_expiry_key: SecureRandom.hex(10))
   end
 
   def avatar_blank?

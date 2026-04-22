@@ -905,8 +905,8 @@ resource 'Projects' do
           :phase,
           project: project,
           participation_method: 'ideation',
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago,
+          end_at: 30.days.ago
         )
       end
 
@@ -914,8 +914,8 @@ resource 'Projects' do
         create(
           :volunteering_phase,
           project: project,
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago
         )
       end
 
@@ -923,8 +923,8 @@ resource 'Projects' do
         create(
           :poll_phase,
           project: project,
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: volunteering_phase.end_at,
+          end_at: 10.days.ago
         )
       end
 
@@ -1030,70 +1030,68 @@ resource 'Projects' do
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
-      let(:project) { create(:project) }
-      let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
-      let(:ideation_phase) do
-        create(
+      before_all do
+        @project = create(:project)
+        project_form = create(:custom_form, :with_default_fields, participation_context: @project)
+        @extra_idea_field = create(:custom_field, resource: project_form)
+
+        ideation_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'ideation',
           title_multiloc: { 'en' => 'Phase 1: Ideation' },
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago, end_at: 30.days.ago
         )
-      end
-      let(:native_survey_phase) do
-        create(
+
+        native_survey_phase = create(
           :native_survey_phase,
-          project: project,
+          project: @project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days),
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago,
           with_permissions: true
         )
-      end
-      let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }
-      let!(:linear_scale_field) { create(:custom_field_linear_scale, resource: survey_form) }
-      let(:information_phase) do
-        create(
+        survey_form = create(:custom_form, participation_context: native_survey_phase)
+        @linear_scale_field = create(:custom_field_linear_scale, resource: survey_form)
+
+        information_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'information',
           title_multiloc: { 'en' => 'Phase 3: Information' },
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: native_survey_phase.end_at,
+          end_at: 10.days.ago
         )
-      end
-      let(:single_voting_phase) do
-        create(
-          :single_voting_phase,
-          project: project,
-          title_multiloc: { 'en' => 'Phase 4: Voting' },
-          start_at: (Time.zone.today - 10.days),
-          end_at: (Time.zone.today + 2.days)
-        )
-      end
-      let(:id) { project.id }
 
-      let!(:ideation_response) do
-        create(
+        single_voting_phase = create(
+          :single_voting_phase,
+          project: @project,
+          title_multiloc: { 'en' => 'Phase 4: Voting' },
+          start_at: information_phase.end_at,
+          end_at: 2.days.from_now
+        )
+
+        @ideation_response = create(
           :idea,
-          project: project,
-          custom_field_values: { extra_idea_field.key => 'Answer' },
+          custom_field_values: { @extra_idea_field.key => 'Answer' },
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
-      end
-      let!(:survey_response) do
-        create(
+
+        @survey_response = create(
           :idea,
-          project: project,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_values: { linear_scale_field.key => 2 }
+          custom_field_values: { @linear_scale_field.key => 2 }
         )
       end
+
+      let(:project) { @project }
+      let(:id) { project.id }
+      let(:ideation_response) { @ideation_response }
+      let(:survey_response) { @survey_response }
+      let(:linear_scale_field) { @linear_scale_field }
+      let(:extra_idea_field) { @extra_idea_field }
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
         assert_status 200
@@ -1125,7 +1123,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1152,7 +1151,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         }, {
@@ -1164,7 +1164,8 @@ resource 'Projects' do
             'Author email',
             'Author ID',
             'Submitted at',
-            'Project'
+            'Project',
+            'Imported'
           ],
           rows: [
             [
@@ -1174,7 +1175,8 @@ resource 'Projects' do
               survey_response.author.email,
               survey_response.author_id,
               an_instance_of(DateTime), # created_at
-              project.title_multiloc['en']
+              project.title_multiloc['en'],
+              'false'
             ]
           ]
         }, {
@@ -1202,7 +1204,8 @@ resource 'Projects' do
             'Project',
             'Status',
             'Assignee',
-            'Assignee email'
+            'Assignee email',
+            'Imported'
           ],
           rows: [
             [
@@ -1228,7 +1231,8 @@ resource 'Projects' do
               project.title_multiloc['en'],
               ideation_response.idea_status.title_multiloc['en'],
               nil,
-              nil
+              nil,
+              'false'
             ]
           ]
         })
@@ -1337,7 +1341,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
-        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
+        dutch_column_headers = fixtures['nl-NL']['xlsx_export']['column_headers']
         @admin.update!(locale: 'nl-NL')
 
         do_request
@@ -1735,7 +1739,8 @@ resource 'Projects' do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: [
                 [
@@ -1761,7 +1766,8 @@ resource 'Projects' do
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
                   nil,
-                  nil
+                  nil,
+                  'false'
                 ]
               ]
             }

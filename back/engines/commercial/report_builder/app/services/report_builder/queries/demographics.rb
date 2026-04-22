@@ -44,9 +44,9 @@ module ReportBuilder
       #   does not impact the report queries. But for consistency, we should find a way
       #   to pass the policy context.
       users = StatUserPolicy::Scope.new(@current_user, User.active).resolve
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
       finder_params = {
-        registration_date_range: start_date..end_date,
+        registration_date_range: start_at...end_at,
         project: project_id,
         group: group_id
       }
@@ -76,8 +76,8 @@ module ReportBuilder
       return if phases.blank?
 
       # Only find published ideas with null users, as any user demographics will already be included
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-      Idea.published.where(author: nil, creation_phase: phases, created_at: start_date..end_date)
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
+      Idea.published.where(author: nil, creation_phase: phases, created_at: start_at...end_at)
     end
   end
 end
