@@ -73,7 +73,6 @@ const ProjectSetupForm = () => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
   const { containerRef } = useContainerWidthAndHeight();
@@ -114,10 +113,9 @@ const ProjectSetupForm = () => {
     string | null
   >(null);
 
-  const showProjectFolderSelect =
-    FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
-      authUser?.data.attributes.highest_role
-    ) && isProjectFoldersEnabled;
+  const showProjectFolderSelect = FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
+    authUser?.data.attributes.highest_role
+  );
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (

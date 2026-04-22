@@ -384,18 +384,6 @@
         }
       },
 
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "project_preview_link" : {
         "type": "object",
         "title": "Project Preview Link",
@@ -1347,6 +1335,18 @@
         "type": "object",
         "title": "Project review",
         "description": "Enables the ability to review projects before they are published.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_scheduling": {
+        "type": "object",
+        "title": "Project scheduling",
+        "description": "Enables scheduling project publication for a future date and time.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

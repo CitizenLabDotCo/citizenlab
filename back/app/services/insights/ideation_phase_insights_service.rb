@@ -12,14 +12,12 @@ module Insights
     end
 
     def participations_posting_idea
-      end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = @phase.end_at || Time.current
+
       ideas = @phase.ideas
         .transitive
         .where.not(published_at: nil)
-        .where(<<~SQL.squish, @phase.start_at.beginning_of_day, end_time)
-          ideas.created_at >= ? AND ideas.created_at <= ?
-          AND ideas.publication_status = 'published'
-        SQL
+        .where(created_at: @phase.start_at...end_time, publication_status: 'published')
         .includes(:author)
 
       ideas.map do |idea|
@@ -35,13 +33,11 @@ module Insights
     end
 
     def participations_commenting_idea
-      end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = @phase.end_at || Time.current
+
       comments = Comment.joins(:idea)
         .merge(@phase.ideas)
-        .where(<<~SQL.squish, @phase.start_at.beginning_of_day, end_time)
-          comments.created_at >= ? AND comments.created_at <= ?
-          AND comments.publication_status = 'published'
-        SQL
+        .where(created_at: @phase.start_at...end_time, publication_status: 'published')
         .includes(:author)
 
       comments.map do |comment|
@@ -57,11 +53,12 @@ module Insights
     end
 
     def participations_reacting_idea
-      end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = @phase.end_at || Time.current
+
       reactions = Reaction.where(
         reactable_type: 'Idea',
-        reactable_id: @phase.ideas.select(:id),
-        created_at: @phase.start_at.beginning_of_day..end_time
+        reactable_id: @phase.ideas,
+        created_at: @phase.start_at...end_time
       ).includes(:user)
 
       reactions.map do |reaction|

@@ -95,6 +95,8 @@ export const project1: IProjectData = {
     baskets_count: 0,
     votes_count: 0,
     live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {
@@ -241,6 +243,8 @@ export const project2: IProjectData = {
     baskets_count: 0,
     votes_count: 0,
     live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {
@@ -388,6 +392,8 @@ const votingProject: IProject = {
       uses_content_builder: true,
       preview_token: 'fake-token-0123456789',
       live_auto_input_topics_enabled: false,
+      publication_email_enabled: true,
+      global_publication_email_enabled: true,
     },
     relationships: {
       admin_publication: {
