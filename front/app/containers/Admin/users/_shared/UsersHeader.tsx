@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { colors, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -63,12 +63,21 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
         </TextAndButtons>
         <Spacer />
         {authUserIsAdmin && (
-          <ButtonWithLink
-            linkTo="/admin/dashboard/users"
-            text={<FormattedMessage {...messages.userInsights} />}
-            icon="chart-bar"
-            buttonStyle="secondary-outlined"
-          />
+          <Box display="flex" flexDirection="row" alignItems="flex-start">
+            <ButtonWithLink
+              linkTo="/admin/users/seats"
+              icon="shield-checkered"
+              mr="12px"
+            >
+              <FormattedMessage {...messages.seatsOverview} />
+            </ButtonWithLink>
+            <ButtonWithLink
+              linkTo="/admin/dashboard/users"
+              text={<FormattedMessage {...messages.userInsights} />}
+              icon="chart-bar"
+              buttonStyle="secondary-outlined"
+            />
+          </Box>
         )}
       </FirstRow>
       {subtitle && <FormattedMessage tagName="h2" {...subtitle} />}

@@ -29,7 +29,7 @@ module Surveys
 
     def visit_select_base(field)
       query = inputs(field)
-      query = query.joins(:author) if group_mode == 'user_field'
+      query = query.left_joins(:author) if group_mode == 'user_field'
 
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
       raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
@@ -93,6 +93,37 @@ module Surveys
         .from(query)
         .group(:answer, group ? :group : nil)
         .count
+    end
+
+    # Override to check for u_-prefixed demographic data on the idea first,
+    # then fall back to the user's custom_field_values. This handles anonymous
+    # surveys where demographic data is stored on the idea, not the user.
+    def select_field_query(field, as: 'answer')
+      if field.resource_type == 'User' && group_mode == 'user_field'
+        prefixed_key = UserFieldsInFormService.prefix_key(field.key)
+
+        if field.supports_single_selection?
+          "COALESCE(ideas.custom_field_values->'#{prefixed_key}', users.custom_field_values->'#{field.key}', 'null') as #{as}"
+        elsif field.supports_multiple_selection?
+          %{
+            jsonb_array_elements(
+              CASE WHEN (
+                jsonb_path_exists(ideas.custom_field_values, '$ ? (exists (@."#{prefixed_key}"))') AND
+                jsonb_typeof(ideas.custom_field_values->'#{prefixed_key}') = 'array'
+              ) THEN ideas.custom_field_values->'#{prefixed_key}'
+              WHEN (
+                jsonb_path_exists(users.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
+                jsonb_typeof(users.custom_field_values->'#{field.key}') = 'array'
+              ) THEN users.custom_field_values->'#{field.key}'
+              ELSE '[null]'::jsonb END
+            ) as #{as}
+          }
+        else
+          raise "Unsupported field type: #{field.input_type}"
+        end
+      else
+        super
+      end
     end
 
     def get_multilocs(field)

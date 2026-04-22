@@ -275,11 +275,6 @@ export default defineMessages({
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
   },
-  disabledCustomFieldsTooltip: {
-    id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
-    defaultMessage:
-      'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
   questionCannotBeDeleted: {
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",

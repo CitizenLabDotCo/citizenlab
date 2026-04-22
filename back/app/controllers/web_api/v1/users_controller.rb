@@ -2,7 +2,10 @@
 
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
+  include UserCookies
+  include EnforceUserSso
 
+  before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
@@ -280,6 +283,7 @@ class WebApi::V1::UsersController < ApplicationController
     authorize @user
     if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:password])
+        reset_jwt_cookie
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params
@@ -303,6 +307,12 @@ class WebApi::V1::UsersController < ApplicationController
     else
       render json: { errors: current_user.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  def check_if_exceeds_seats
+    authorize :user, :check_if_exceeds_seats?
+    result = UserExceedsSeatsService.new(user_exceeds_seats_params).execute
+    render json: raw_json({ value: result })
   end
 
   private
@@ -374,5 +384,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def params_service
     @params_service ||= CustomFieldParamsService.new
+  end
+
+  def user_exceeds_seats_params
+    params.permit(:seat_type, :user_id, :user_email)
   end
 end

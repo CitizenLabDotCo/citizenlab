@@ -1,4 +1,4 @@
-it:
+it-IT:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ore.
@@ -168,6 +168,11 @@ it:
       last_name: Cognome
       line_print_description: Traccia un percorso sulla mappa sottostante.
       linear_scale_print_description: Scrivi solo un numero compreso tra %{min_label} e %{max_label}
+      logic_go_to_section: Passa alla sezione <strong>%{section}</strong>.
+      logic_if_answered_end: Se hai risposto <strong>%{option}</strong> alla domanda %{question}, <strong>non</strong> è necessario rispondere ad altre domande.
+      logic_if_answered_go_to: Se hai risposto <strong>%{option}</strong> alla domanda %{question}, passa alla sezione <strong>%{section}</strong>.
+      logic_no_further_questions: In base alle tue risposte, <strong>non</strong> è necessario rispondere ad altre domande.
+      logic_section: Sezione %{letter}
       matrix_print_description: Per ogni riga, segna un'opzione con una croce per indicare la tua preferenza.
       optional: opzionale
       page: Pagina
@@ -390,6 +395,7 @@ it:
       email: Email
       first_name: Nome/i
       image_url: URL immagine
+      imported: Importato
       input_id: ID
       input_url: URL
       last_name: Cognome

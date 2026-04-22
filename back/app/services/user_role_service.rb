@@ -75,56 +75,75 @@ class UserRoleService
     end
   end
 
+  def moderatable_folders(user, scope = ProjectFolders::Folder)
+    return scope.none unless user
+    return scope.all if user.admin?
+
+    if user.project_folder_moderator? || user.space_moderator?
+      scope.where(id: user.moderatable_folder_ids)
+    else
+      scope.none
+    end
+  end
+
   def moderates_something?(user)
     user.admin? || user.project_moderator? || user.project_folder_moderator? || user.space_moderator?
   end
 
   # Returns a hash with project IDs as keys and arrays of users as values
   def moderators_per_project(project_ids)
-    return {} if project_ids.empty?
-
-    users = User.where(<<~SQL.squish, project_ids)
-      EXISTS (
-        SELECT 1 FROM jsonb_array_elements(roles) AS role
-        WHERE role->>'type' = 'project_moderator'
-          AND role->>'project_id' = ANY (ARRAY[?]::varchar[])
-      )
-    SQL
-
-    users.each_with_object({}) do |user, hash|
-      user.roles.each do |role|
-        next unless role['type'] == 'project_moderator'
-
-        project_id = role['project_id']
-        next unless project_id && project_ids.include?(project_id)
-
-        hash[project_id] ||= []
-        hash[project_id] << user
-      end
-    end
+    moderators_per_resource(
+      project_ids,
+      role_type: 'project_moderator',
+      id_field: 'project_id'
+    )
   end
 
   # Returns a hash with folder IDs as keys and arrays of users as values
   def moderators_per_folder(folder_ids)
-    return {} if folder_ids.empty?
+    moderators_per_resource(
+      folder_ids,
+      role_type: 'project_folder_moderator',
+      id_field: 'project_folder_id'
+    )
+  end
 
-    users = User.where(<<~SQL.squish, folder_ids)
+  # Returns a hash with space IDs as keys and arrays of users as values
+  def moderators_per_space(space_ids)
+    moderators_per_resource(
+      space_ids,
+      role_type: 'space_moderator',
+      id_field: 'space_id'
+    )
+  end
+
+  private
+
+  # Generic method to fetch moderators per resource
+  # @param resource_ids [Array<String>] IDs of the resources
+  # @param role_type [String] The role type to filter by (e.g., 'project_moderator')
+  # @param id_field [String] The field name in the role JSON (e.g., 'project_id')
+  # @return [Hash] Hash with resource IDs as keys and arrays of users as values
+  def moderators_per_resource(resource_ids, role_type:, id_field:)
+    return {} if resource_ids.empty?
+
+    users = User.where(<<~SQL.squish, resource_ids)
       EXISTS (
         SELECT 1 FROM jsonb_array_elements(roles) AS role
-        WHERE role->>'type' = 'project_folder_moderator'
-          AND role->>'project_folder_id' = ANY(ARRAY[?]::varchar[])
+        WHERE role->>'type' = '#{role_type}'
+          AND role->>'#{id_field}' = ANY (ARRAY[?]::varchar[])
       )
     SQL
 
     users.each_with_object({}) do |user, hash|
       user.roles.each do |role|
-        next unless role['type'] == 'project_folder_moderator'
+        next unless role['type'] == role_type
 
-        folder_id = role['project_folder_id']
-        next unless folder_id && folder_ids.include?(folder_id)
+        resource_id = role[id_field]
+        next unless resource_id && resource_ids.include?(resource_id)
 
-        hash[folder_id] ||= []
-        hash[folder_id] << user
+        hash[resource_id] ||= []
+        hash[resource_id] << user
       end
     end
   end

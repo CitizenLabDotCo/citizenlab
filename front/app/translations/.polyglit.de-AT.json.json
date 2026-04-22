@@ -2114,11 +2114,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-  "app.components.PostCardsComponents.feed": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
-  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -3719,6 +3714,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-30T15:24:55.177799Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.UserFilterConditions.predicate_is_verified": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -3803,6 +3803,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
+    "state": "verified",
+    "verified_at": "2026-03-30T15:24:55.177799Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_verified": {
     "state": "verified",
@@ -6364,6 +6369,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-16T10:38:21.084743Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6438,6 +6448,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-16T10:38:21.084743Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
@@ -9033,6 +9048,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T06:16:15.353191Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
@@ -12009,6 +12029,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:11:30.161781Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.email_taken": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13265,11 +13290,6 @@
     "verified_by": "Edwin Kato"
   },
   "app.utils.votingMethodUtils.singleVotingEnded": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
-  },
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"

@@ -9,6 +9,7 @@ import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IFileData } from 'api/files/types';
 import useAddFile from 'api/files/useAddFile';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -22,6 +23,7 @@ import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import { HighestRole } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -59,7 +61,7 @@ import {
   isUploadFile,
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { usePermission } from 'utils/permissions';
+import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -85,10 +87,18 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
+const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
+  'super_admin',
+  'admin',
+  'space_moderator',
+  'project_folder_moderator',
+] satisfies HighestRole[];
+
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -154,10 +164,9 @@ const AdminProjectsProjectGeneral = () => {
     useState<Multiloc | null>(null);
 
   const showProjectFolderSelect =
-    usePermission({
-      item: 'project_folder',
-      action: 'create_project_in_folder',
-    }) && isProjectFoldersEnabled;
+    FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
+      authUser?.data.attributes.highest_role
+    ) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {
@@ -516,6 +525,12 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
+    const { space_id, folder_id } = projectAttributesDiff;
+
+    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
+      return false;
+    }
+
     return formIsValid;
   };
 
@@ -709,7 +724,7 @@ const AdminProjectsProjectGeneral = () => {
 
           <SpaceSelectSection
             spaceId={projectAttrs.space_id ?? null}
-            disabled={!!projectAttrs.folder_id}
+            isProjectInsideFolder={!!projectAttrs.folder_id}
             onChange={handleSpaceSelectChange}
           />
 
