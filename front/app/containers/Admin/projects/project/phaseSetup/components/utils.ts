@@ -1,4 +1,4 @@
-import { addDays, subDays } from 'date-fns';
+import { addDays, subSeconds } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -31,5 +31,5 @@ export const adjustEndForDisplay = (date?: Date) => {
   const isMidnight =
     date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0;
 
-  return isMidnight ? subDays(date, 1) : date;
+  return isMidnight ? subSeconds(date, 1) : date;
 };
