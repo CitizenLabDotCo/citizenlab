@@ -3,5 +3,10 @@
     "state": "verified",
     "verified_at": "2026-03-31T12:17:27.190175Z",
     "verified_by": "Nola Moreau"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:49:19.291150Z",
+    "verified_by": "Nola Moreau"
   }
 }

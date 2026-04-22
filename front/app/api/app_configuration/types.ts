@@ -97,6 +97,7 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
     visibility?: 'show' | 'link' | 'hide';
+    enforced_email_domain_error_multiloc?: Multiloc;
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -185,7 +186,6 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   project_preview_link?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;

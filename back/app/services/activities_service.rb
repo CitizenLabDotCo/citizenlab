@@ -16,31 +16,27 @@ class ActivitiesService
 
   private
 
-  def create_phase_started_activities(now, last_time)
-    return unless now.to_date != last_time.to_date
+  def create_phase_started_activities(now, _last_time)
+    # Selects more phases than strictly necessary to make it more defensive and help
+    # recover if previous jobs failed.
+    starting_phases = Phase.published.where(start_at: (now - 1.day)..now)
 
-    start_date = now.to_date
-    start_time = start_date.in_time_zone
-    starting_phases = Phase.published.starting_on(start_date)
-
-    # Phases that already have a started activity for *this starting date* are excluded
-    # to avoid creating duplicate activities (and, consequently, duplicate
-    # notifications). We still allow the creation of new activities when the start date
-    # is different (which can occur if the phase is edited).
+    # Phases with a started activity in the last 24 hours are excluded to avoid creating
+    # duplicate activities (and consequently, duplicate notifications). We still allow
+    # multiple started activities on different days to account for modifications to the
+    # `start_at` of a phase.
     excluded_phases = Activity
-      .where(item_id: starting_phases, action: 'started', acted_at: start_date.all_day)
+      .where(item_id: starting_phases, action: 'started', acted_at: (now - 1.day)..)
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
-      LogActivityJob.perform_later(phase, 'started', nil, start_time)
+      LogActivityJob.perform_later(phase, 'started', nil, phase.start_at)
     end
   end
 
-  def create_phase_upcoming_activities(now, last_time)
-    today = now.to_date
-    return unless today != last_time.to_date
+  def create_phase_upcoming_activities(now, _last_time)
+    upcoming_phases = Phase.published.where(start_at: now..(now + 1.week))
 
-    upcoming_phases = Phase.published.starting_on(today..(today + 1.week))
     # Exclude phases for which an upcoming activity has already been created to avoid
     # duplicate notifications.
     excluded_phases = Activity
@@ -49,8 +45,12 @@ class ActivitiesService
 
     upcoming_phases.where.not(id: excluded_phases).each do |phase|
       if phase.ends_before?(now + 1.day)
-        raise "Invalid phase upcoming event would have been generated for phase\
-               #{phase.id} with now=#{now} and last_time=#{last_time}"
+        ErrorReporter.report_msg(
+          'Invalid phase upcoming event would have been generated',
+          extra: { phase_id: phase.id, now: now, end_at: phase.end_at }
+        )
+
+        next
       end
 
       LogActivityJob.perform_later(phase, 'upcoming', nil, now)
@@ -65,20 +65,30 @@ class ActivitiesService
   end
 
   def create_phase_ending_soon_activities(now)
-    if now.hour >= 8 && now.hour <= 20 # Only log activities during day time so they emails are more likely to be noticed
-      Phase.published.where(end_at: now..now + 2.days).each do |phase|
-        if Activity.find_by(item: phase, action: 'ending_soon').nil?
-          LogActivityJob.perform_later(phase, 'ending_soon', nil, now)
-        end
-      end
+    # Only log activities during daytime, so email notifications are more likely to be noticed.
+    return unless now.hour >= 8 && now.hour <= 20
+
+    ending_soon_phases = Phase.published.where(end_at: now..(now + 2.days))
+
+    excluded_phases = Activity
+      .where(item_id: ending_soon_phases, action: 'ending_soon')
+      .select(:item_id)
+
+    ending_soon_phases.where.not(id: excluded_phases).each do |phase|
+      LogActivityJob.perform_later(phase, 'ending_soon', nil, now)
     end
   end
 
   def create_basket_not_submitted_activities(now)
-    Basket.not_submitted.each do |basket|
-      next if Activity.find_by(item: basket, action: 'not_submitted')
+    baskets = Basket.not_submitted.includes(:phase, :baskets_ideas)
+
+    excluded_baskets = Activity
+      .where(item_id: baskets, action: 'not_submitted')
+      .select(:item_id)
+
+    baskets.where.not(id: excluded_baskets).each do |basket|
       next if basket.baskets_ideas.blank?
-      next if basket.baskets_ideas.order(:updated_at).last.updated_at > now - 1.day
+      next if basket.baskets_ideas.max_by(&:updated_at).updated_at > now - 1.day
       next if basket.phase.ends_before?(now)
 
       LogActivityJob.perform_later(basket, 'not_submitted', nil, now)
@@ -86,23 +96,31 @@ class ActivitiesService
   end
 
   def create_survey_not_submitted_activities(now)
-    Idea.draft_surveys.each do |idea|
-      next if Activity.find_by(item: idea, action: 'survey_not_submitted')
+    draft_surveys = Idea.draft_surveys.includes(:creation_phase)
+
+    excluded_ideas = Activity
+      .where(item_id: draft_surveys, action: 'survey_not_submitted')
+      .select(:item_id)
+
+    draft_surveys.where.not(id: excluded_ideas).each do |idea|
       next if idea.updated_at > now - 1.day
       next if idea.creation_phase.ends_before?(now)
-
       # Is there survey already submitted by the same author in the same phase?
-      next if Idea.find_by(author_id: idea.author_id, creation_phase: idea.creation_phase, publication_status: 'published')
+      next if Idea.exists?(author_id: idea.author_id, creation_phase: idea.creation_phase, publication_status: 'published')
 
       LogActivityJob.perform_later(idea, 'survey_not_submitted', nil, now)
     end
   end
 
   def create_phase_ended_activities(now)
-    Phase.published.where(end_at: ..now - 1.day).each do |phase|
-      if Activity.find_by(item: phase, action: 'ended').nil?
-        LogActivityJob.perform_later(phase, 'ended', nil, now)
-      end
+    ended_phases = Phase.published.where(end_at: ..now)
+
+    excluded_phases = Activity
+      .where(item_id: ended_phases, action: 'ended')
+      .select(:item_id)
+
+    ended_phases.where.not(id: excluded_phases).each do |phase|
+      LogActivityJob.perform_later(phase, 'ended', nil, now)
     end
   end
 end

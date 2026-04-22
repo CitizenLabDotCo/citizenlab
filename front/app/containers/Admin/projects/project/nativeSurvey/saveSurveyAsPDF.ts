@@ -9,6 +9,7 @@ import { requestBlob } from 'utils/requestBlob';
 interface Params {
   locale: SupportedLocale;
   personal_data: boolean;
+  include_logic: boolean;
   phaseId: string;
 }
 
@@ -16,6 +17,7 @@ export async function saveSurveyAsPDF({
   phaseId,
   locale,
   personal_data,
+  include_logic,
 }: Params) {
   try {
     const blob = await requestBlob(
@@ -24,6 +26,7 @@ export async function saveSurveyAsPDF({
       {
         locale,
         personal_data,
+        include_logic,
       }
     );
 

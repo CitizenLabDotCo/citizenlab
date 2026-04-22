@@ -884,7 +884,6 @@
   "app.modules.id_id_card_lookup.somethingWentWrongError": "We can't verify you because something went wrong",
   "app.modules.id_id_card_lookup.submit": "Tāpae",
   "app.modules.id_id_card_lookup.takenFormError": "Already taken.",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | from the participation platform of {orgName}",

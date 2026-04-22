@@ -97,6 +97,10 @@ declare global {
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
+      dragToolboxItemTo(
+        toolboxSelector: string,
+        targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
     }

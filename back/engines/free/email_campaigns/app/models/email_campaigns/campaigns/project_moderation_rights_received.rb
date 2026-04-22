@@ -68,12 +68,23 @@ module EmailCampaigns
       }]
     end
 
+    # Overridden to use a renamed i18n key (`project_manager_rights_received`)
+    # so the back-office list displays "Project manager rights received" instead
+    # of the legacy "Project moderation rights received". The class name,
+    # campaign_name, DB type and factory all stay as `project_moderation_rights_received`.
+    def self.campaign_description_multiloc
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc(
+        'email_campaigns.campaign_type_description.project_manager_rights_received'
+      )
+    end
+
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_project_moderator_rights'
+      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_project_manager_rights'
     end
 
     def self.content_type_multiloc_key
@@ -81,7 +92,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_is_given_project_moderator_rights'
+      'email_campaigns.admin_labels.trigger.user_is_given_project_manager_rights'
     end
   end
 end

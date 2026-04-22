@@ -69,4 +69,9 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.proposals.VoteControl.a11y_timeLeft',
     defaultMessage: 'Time left to vote:',
   },
+  thresholdReachedStillOpen: {
+    id: 'app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1',
+    defaultMessage:
+      'This input has met the required support threshold! It is still open to receive votes. Share it to build even more support.',
+  },
 });

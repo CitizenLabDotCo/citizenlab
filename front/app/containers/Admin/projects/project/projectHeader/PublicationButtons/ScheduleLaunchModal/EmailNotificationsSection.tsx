@@ -38,7 +38,7 @@ const EmailNotificationsSection = ({
   const count = recipientCount?.data.attributes.count;
   const isUnlisted = !project?.data.attributes.listed;
   const emailDisabledGlobally =
-    !project?.data.attributes.publication_email_available;
+    !project?.data.attributes.global_publication_email_enabled;
 
   const toggleDisabled = emailDisabledGlobally || isUnlisted;
   const toggleTooltip = isUnlisted

@@ -1,4 +1,4 @@
-fr:
+fr-FR:
   email_campaigns:
     campaign_type_description:
       "manual": Messages officiels
@@ -27,8 +27,9 @@ fr:
       "new_idea_for_admin": Nouvelle idée dans un projet que je modère
       "official_feedback_on_idea_you_follow": Mise à jour d'une idée que vous suivez
       "password_reset": Réinitialisation du mot de passe
-      "project_moderation_rights_received": Droits de modération de projet reçus
+      "project_manager_rights_received": Droits de gestionnaire de projet reçus
       "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
+      "space_moderation_rights_received": Droits de gestionnaire d'espace reçus
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
       "project_published": Projet publié
@@ -383,6 +384,21 @@ fr:
       header: '%{reviewerName} a approuvé le projet "%{projectTitle}"'
       header_message: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous êtes prêt !"
       cta_go_to_project: "Accéder au projet"
+    space_moderation_rights_received:
+      cta_button: 'Gérez cet espace'
+      event_description: 'Un administrateur de la plateforme de %{organizationName} vous a nommé gestionnaire de l''espace suivant :'
+      no_projects: 'Pas encore de projets'
+      preheader: 'Un administrateur de la plateforme de %{organizationName} vous a nommé gestionnaire de l''espace suivant'
+      subject: 'Vous êtes à présent gestionnaire d''espace sur la plateforme de %{organizationName}'
+      text_organize_projects_and_folders: 'En tant que gestionnaire d''espace, vous pouvez gérer les projets et les dossiers de votre espace, notamment attribuer et retirer les rôles de gestion qui leur sont associés.'
+      text_manage_space_settings: 'Vous pouvez modifier le titre et la description de l''espace afin que les participants et vos collègues gestionnaires comprennent immédiatement de quoi votre espace traite et comment il s''inscrit dans votre organisation.'
+      text_oversee_participation: 'En tant que gestionnaire d''espace, vous disposez des droits d''administrateur projet sur chaque projet de votre espace, ce qui vous permet de suivre les contributions et d''assister les administrateurs projet quand c''est nécessaire.'
+      title_organize_projects_and_folders: 'Organiser les projets et les dossiers'
+      title_manage_space_settings: 'Gérer les paramètres de l''espace'
+      title_oversee_participation: 'Suivre la participation'
+      title_what_can_you_do_space_manager: 'Que pouvez-vous faire en tant que gestionnaire d''espace ?'
+      title: 'Vous êtes à présent gestionnaire d''espace'
+      x_projects: '%{numberOfProjects} projets'
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette contribution est « %{status} »'
       event_description: '%{organizationName} a mis à jour le statut de la contribution « %{input_title} » sur leur plateforme de participation.'
@@ -545,8 +561,9 @@ fr:
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_mentioned: 'Utilisateur mentionné'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
-        user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
-        user_who_is_receiving_project_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de projet'
+        user_who_is_receiving_folder_manager_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
+        user_who_is_receiving_project_manager_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de projet'
+        user_who_is_receiving_space_manager_rights: 'L''utilisateur qui reçoit les droits de gestionnaire d''espace'
         user_who_published_the_input: 'L''utilisateur qui a posté la contribution'
         user_who_published_the_proposal: 'L''utilisateur qui a posté la proposition'
         user_who_registers: 'Utilisateur qui s''inscrit'
@@ -610,8 +627,9 @@ fr:
         user_comments_on_input: 'L''utilisateur commente une contribution'
         user_comments_on_proposal: 'Commentaires sur une proposition'
         user_is_given_admin_rights: 'L''utilisateur reçoit des droits d''administrateur'
-        user_is_given_folder_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de dossier'
-        user_is_given_project_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de projet'
+        user_is_given_folder_manager_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de dossier'
+        user_is_given_project_manager_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de projet'
+        user_is_given_space_manager_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire d''espace'
         user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned: 'L''utilisateur est mentionné'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'

@@ -100,7 +100,7 @@ export interface IProjectAttributes {
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
   publication_email_enabled: boolean;
-  publication_email_available: boolean;
+  global_publication_email_enabled: boolean;
   space_id?: string | null;
 }
 
@@ -178,6 +178,7 @@ export interface IUpdatedProjectProperties {
   // This oddity needs to be dealt with
   projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;

@@ -54,4 +54,9 @@ export default defineMessages({
     id: 'app.containers.ChangePassword.newPasswordRequired',
     defaultMessage: 'Enter your new password',
   },
+  adminPasswordChangeWarning: {
+    id: 'app.containers.ChangePassword.adminPasswordChangeWarning2',
+    defaultMessage:
+      'Changing your password will sign you out in other browsers you are also signed into. You will lose any unsaved changes.',
+  },
 });

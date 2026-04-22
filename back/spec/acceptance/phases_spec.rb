@@ -314,10 +314,25 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
-        expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
-        expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_date.iso8601
+        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_date&.iso8601
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      describe 'with date strings (backward compatibility)' do
+        let(:start_at) { '2025-06-01' }
+        let(:end_at) { '2025-07-15' }
+
+        example 'Create a phase with date strings', document: false do
+          do_request
+          assert_status 201
+
+          phase_in_db = Phase.find(response_data[:id])
+          expect(phase_in_db.start_at).to eq start_at.in_time_zone
+          # end_at shifted +1 day for exclusive end boundary
+          expect(phase_in_db.end_at).to eq end_at.in_time_zone + 1.day
+        end
       end
 
       describe do
@@ -628,6 +643,21 @@ resource 'Phases' do
           similarity_enabled: similarity_enabled,
           similarity_threshold_body: similarity_threshold_body
         )
+      end
+
+      describe 'with date strings (backward compatibility)' do
+        let(:start_at) { '2025-06-01' }
+        let(:end_at) { '2025-07-15' }
+
+        example 'Update a phase with date strings', document: false do
+          do_request
+          assert_status 200
+
+          phase.reload
+          expect(phase.start_at).to eq start_at.in_time_zone
+          # end_at shifted +1 day for exclusive end boundary
+          expect(phase.end_at).to eq end_at.in_time_zone + 1.day
+        end
       end
 
       context 'when description_multiloc contains images' do
@@ -967,7 +997,7 @@ resource 'Phases' do
               quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
               service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
               governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
-              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Overig' }
             }
           }
         })
@@ -1096,7 +1126,8 @@ resource 'Phases' do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -1106,7 +1137,8 @@ resource 'Phases' do
                     survey_response1.author.email,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -1115,7 +1147,8 @@ resource 'Phases' do
                     survey_response2.author.email,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
@@ -1232,7 +1265,8 @@ resource 'Phases' do
               'Author email',
               'Author ID',
               'Submitted at',
-              'Project'
+              'Project',
+              'Imported'
             ],
             rows: [
               [
@@ -1242,7 +1276,8 @@ resource 'Phases' do
                 survey_response.author.email,
                 survey_response.author_id,
                 an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
+                project.title_multiloc['en'],
+                'false'
               ]
             ]
           }
