@@ -137,12 +137,11 @@ class SideFxProjectService
   def sync_publication_email_campaign(project, publication_email_enabled)
     return if publication_email_enabled.nil?
 
-    if publication_email_enabled == false
-      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
-      campaign.enabled = false
-      campaign.save!
-    else
+    if publication_email_enabled
       EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    else
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.update!(enabled: false)
     end
   end
 

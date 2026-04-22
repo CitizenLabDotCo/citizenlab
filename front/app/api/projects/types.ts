@@ -91,8 +91,8 @@ export interface IProjectAttributes {
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
-  scheduled_status: PublicationStatus | null;
-  scheduled_at: string | null;
+  scheduled_status?: PublicationStatus | null;
+  scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
