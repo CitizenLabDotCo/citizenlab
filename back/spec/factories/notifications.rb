@@ -132,6 +132,11 @@ FactoryBot.define do
     project_folder
   end
 
+  factory :space_moderation_rights_received, parent: :notification, class: 'Notifications::SpaceModerationRightsReceived' do
+    initiating_user
+    space
+  end
+
   factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
     initiating_user
     project

@@ -52,8 +52,11 @@ hr-HR:
         user_who_is_invited_to_cosponsor_a_proposal: Korisnik koji je pozvan da susponzorira prijedlog
         user_who_is_mentioned: Korisnik koji se spominje
         user_who_is_receiving_admin_rights: Korisnik koji dobiva administratorska prava
+        user_who_is_receiving_folder_manager_rights: Korisnik koji prima prava voditelja mape
         user_who_is_receiving_folder_moderator_rights: Korisnik koji dobiva prava moderatora mape
+        user_who_is_receiving_project_manager_rights: Korisnik koji prima prava voditelja projekta
         user_who_is_receiving_project_moderator_rights: Korisnik koji dobiva prava moderatora projekta
+        user_who_is_receiving_space_manager_rights: Korisnik koji prima prava voditelja prostora
         user_who_published_the_input: Korisnik koji je objavio unos
         user_who_published_the_proposal: Korisnik koji je objavio prijedlog
         user_who_registers: Korisnik koji se registrira
@@ -104,8 +107,11 @@ hr-HR:
         user_comments_on_input: Korisnički komentari na unos
         user_comments_on_proposal: Komentari korisnika na prijedlog
         user_is_given_admin_rights: Korisnik dobiva administratorska prava
+        user_is_given_folder_manager_rights: Korisniku su dodijeljena prava voditelja mape
         user_is_given_folder_moderator_rights: Korisniku su dana prava moderatora mape
+        user_is_given_project_manager_rights: Korisniku su dodijeljena prava voditelja projekta
         user_is_given_project_moderator_rights: Korisnik dobiva prava moderatora projekta
+        user_is_given_space_manager_rights: Korisniku su dodijeljena prava voditelja prostora
         user_is_invited_to_cosponsor_a_proposal: Korisnik je pozvan da susponzorira prijedlog
         user_is_invited_to_platform: Korisnik je pozvan na platformu
         user_is_mentioned: Spominje se korisnik
@@ -175,6 +181,7 @@ hr-HR:
       official_feedback_on_idea_you_follow: Ažuriranje ideje koju slijedite
       password_reset: Ponovno postavljanje lozinke
       project_folder_moderation_rights_received: Primljena prava upravitelja mape
+      project_manager_rights_received: Primljena prava voditelja projekta
       project_moderation_rights_received: Dodjela prava za moderiranje projekta
       project_phase_started: Nova faza projekta
       project_phase_upcoming: Nadolazeća nova faza projekta
@@ -182,6 +189,7 @@ hr-HR:
       project_review_request: Zahtjev za pregled projekta
       project_review_state_change: Projekt odobren
       screening_digest: Podsjetnik na tjedni pregled
+      space_moderation_rights_received: Primljena prava voditelja prostora
       status_change_on_idea_you_follow: Promjena statusa ideje koju slijedite
       survey_submitted: Anketa poslana
       threshold_reached_for_admin: Prijedlog je dosegao prag glasovanja
@@ -518,6 +526,7 @@ hr-HR:
       project_description_preview: Ovo je primjer faznog sadržaja koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
       project_title: Primjer projekta
       proposal_title: Primjer prijedloga
+      space_title: Primjer prostora
     project_folder_moderation_rights_received:
       cta_button: Prikaži ovu mapu
       event_description: 'Dobili ste prava upravitelja mapa na platformi za sudjelovanje korisnika %{organizationName}za sljedeću mapu:'
@@ -599,6 +608,21 @@ hr-HR:
       preheader: Pregledajte unose za %{organizationName}
       subject: '%{count} unosi čekaju pregled'
       title: '%{firstName}, unosi čekaju pregled'
+    space_moderation_rights_received:
+      cta_button: Upravljajte ovim prostorom
+      event_description: 'Administrator platforme za sudjelovanje %{organizationName} upravo vas je imenovao voditeljem sljedećeg prostora:'
+      no_projects: Još nema projekata
+      preheader: Administrator platforme za sudjelovanje %{organizationName} upravo vas je imenovao voditeljem sljedećeg prostora
+      subject: Postali ste voditelj prostora na platformi %{organizationName}
+      text_manage_space_settings: Možete uređivati naslov i opis prostora kako bi sudionici i vaši kolege voditelji odmah razumjeli o čemu se radi u vašem prostoru i kako je on povezan s vašom organizacijom.
+      text_organize_projects_and_folders: Kao voditelj prostora, možete upravljati projektima i mapama unutar svog prostora, uključujući dodjeljivanje i uklanjanje uloga upravljanja za njih.
+      text_oversee_participation: Kao voditelj prostora, imate prava voditelja projekta nad svakim projektom unutar vašeg prostora, tako da možete pratiti pristigle doprinose i po potrebi pomagati voditeljima projekata.
+      title: Postali ste voditelj prostora
+      title_manage_space_settings: Upravljajte postavkama prostora
+      title_organize_projects_and_folders: Organizirajte projekte i mape
+      title_oversee_participation: Nadzirite sudjelovanje
+      title_what_can_you_do_space_manager: Što možete raditi kao voditelj prostora?
+      x_projects: '%{numberOfProjects} projekata'
     status_change_on_idea_you_follow:
       cta_button: Idi na ovaj ulaz
       event_description: "%{organizationName} ažurirao/la je status unosa '%{input_title}' na svojoj platformi za digitalno sudjelovanje."

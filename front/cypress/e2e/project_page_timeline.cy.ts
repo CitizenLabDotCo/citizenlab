@@ -92,7 +92,7 @@ describe('New timeline project', () => {
         projectId,
         title: phaseCurrentTitle,
         startAt: today,
-        endAt: today,
+        endAt: inTwoDays,
         participationMethod: 'ideation',
         canComment: true,
         canPost: true,

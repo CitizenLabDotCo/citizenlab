@@ -52,8 +52,11 @@ hu-HU:
         user_who_is_invited_to_cosponsor_a_proposal: Felhasználó, akit meghívtak egy javaslat társszponzorálására
         user_who_is_mentioned: Az említett felhasználó
         user_who_is_receiving_admin_rights: Felhasználó, aki rendszergazdai jogokat kap
+        user_who_is_receiving_folder_manager_rights: Felhasználó, aki mappakezelői jogosultságokat kap
         user_who_is_receiving_folder_moderator_rights: Felhasználó, aki mappamoderátori jogokat kap
+        user_who_is_receiving_project_manager_rights: Felhasználó, aki projektmenedzseri jogosultságokat kap
         user_who_is_receiving_project_moderator_rights: Felhasználó, aki projektmoderátori jogokat kap
+        user_who_is_receiving_space_manager_rights: Felhasználó, aki térkezelői jogosultságokat kap
         user_who_published_the_input: Felhasználó, aki közzétette a bemenetet
         user_who_published_the_proposal: Az ajánlatot közzétevő felhasználó
         user_who_registers: Felhasználó, aki regisztrál
@@ -104,8 +107,11 @@ hu-HU:
         user_comments_on_input: Felhasználói megjegyzések a bevitelhez
         user_comments_on_proposal: Felhasználói megjegyzések az ajánlathoz
         user_is_given_admin_rights: A felhasználó rendszergazdai jogokat kap
+        user_is_given_folder_manager_rights: A felhasználó mappakezelői jogosultságokat kapott
         user_is_given_folder_moderator_rights: A felhasználó mappamoderátori jogokat kap
+        user_is_given_project_manager_rights: A felhasználó projektmenedzseri jogosultságokat kapott
         user_is_given_project_moderator_rights: A felhasználó projektmoderátori jogokat kap
+        user_is_given_space_manager_rights: A felhasználó térkezelői jogosultságokat kapott
         user_is_invited_to_cosponsor_a_proposal: A felhasználót felkérik, hogy társszponzoráljon egy javaslatot
         user_is_invited_to_platform: Felhasználó meghívást kapott a platformra
         user_is_mentioned: A felhasználó meg van említve
@@ -175,6 +181,7 @@ hu-HU:
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
+      project_manager_rights_received: Projektmenedzseri jogosultságok megadva
       project_moderation_rights_received: A projekt moderálási jogai megkapták
       project_phase_started: Új projekt fázis
       project_phase_upcoming: Közelgő új projektszakasz
@@ -182,6 +189,7 @@ hu-HU:
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
       screening_digest: Heti szűrővizsgálati emlékeztető
+      space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
       survey_submitted: Felmérés benyújtva
       threshold_reached_for_admin: A javaslat elérte a szavazati küszöböt
@@ -518,6 +526,7 @@ hu-HU:
       project_description_preview: Ez egy példa egy fázistartalomra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valódi tartalom.
       project_title: Példaprojekt
       proposal_title: Példaajánlat
+      space_title: Példa tér
     project_folder_moderation_rights_received:
       cta_button: Mappa megtekintése
       event_description: 'Mappakezelői jogokat kaptál %{organizationName}részvételi platformján a következő mappához:'
@@ -599,6 +608,21 @@ hu-HU:
       preheader: Tekintse át a %{organizationName}bemeneteit
       subject: '%{count} elbírálásra váró bemenet'
       title: '%{firstName}, a bemenetek ellenőrzésre várnak'
+    space_moderation_rights_received:
+      cta_button: Tér kezelése
+      event_description: 'A(z) %{organizationName} részvételi platformjának egyik adminisztrátora kinevezte Önt a következő tér térkezelőjének:'
+      no_projects: Még nincsenek projektek
+      preheader: A(z) %{organizationName} részvételi platformjának egyik adminisztrátora kinevezte Önt a következő tér térkezelőjének
+      subject: Ön térkezelő lett a(z) %{organizationName} platformján
+      text_manage_space_settings: Szerkesztheti a tér címét és leírását, hogy a résztvevők és a kezelőtársai azonnal megértsék, miről szól a tér, és hogyan kapcsolódik a szervezetéhez.
+      text_organize_projects_and_folders: Térkezelőként kezelheti a terén belüli projekteket és mappákat, beleértve a hozzájuk tartozó kezelői szerepkörök kiosztását és visszavonását is.
+      text_oversee_participation: Térkezelőként projektmenedzseri jogosultságokkal rendelkezik a terén belüli összes projekt felett, így figyelemmel kísérheti a beérkező hozzászólásokat, és szükség esetén segítheti a projektmenedzserek munkáját.
+      title: Ön térkezelő lett
+      title_manage_space_settings: Térbeállítások kezelése
+      title_organize_projects_and_folders: Projektek és mappák rendszerezése
+      title_oversee_participation: Részvétel felügyelete
+      title_what_can_you_do_space_manager: Mit tehet térkezelőként?
+      x_projects: '%{numberOfProjects} projekt'
     status_change_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: '%{organizationName} frissítette a(z) „%{input_title}” bemenet állapotát a digitális részvételi platformján.'

@@ -52,8 +52,11 @@ tr-TR:
         user_who_is_invited_to_cosponsor_a_proposal: Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı
         user_who_is_mentioned: Bahsi geçen kullanıcı
         user_who_is_receiving_admin_rights: Yönetici haklarını alan kullanıcı
+        user_who_is_receiving_folder_manager_rights: Klasör yöneticisi yetkileri alan kullanıcı
         user_who_is_receiving_folder_moderator_rights: Klasör moderatörü haklarını alan kullanıcı
+        user_who_is_receiving_project_manager_rights: Proje yöneticisi yetkileri alan kullanıcı
         user_who_is_receiving_project_moderator_rights: Proje moderatörü haklarını alan kullanıcı
+        user_who_is_receiving_space_manager_rights: Alan yöneticisi yetkileri alan kullanıcı
         user_who_published_the_input: Girdiyi yayınlayan kullanıcı
         user_who_published_the_proposal: Teklifi yayınlayan kullanıcı
         user_who_registers: Kayıt olan kullanıcı
@@ -104,8 +107,11 @@ tr-TR:
         user_comments_on_input: Giriş hakkında kullanıcı yorumları
         user_comments_on_proposal: Teklifle ilgili kullanıcı yorumları
         user_is_given_admin_rights: Kullanıcıya yönetici hakları verilir
+        user_is_given_folder_manager_rights: Kullanıcıya klasör yöneticisi yetkileri verildi
         user_is_given_folder_moderator_rights: Kullanıcıya klasör moderatörü hakları verilir
+        user_is_given_project_manager_rights: Kullanıcıya proje yöneticisi yetkileri verildi
         user_is_given_project_moderator_rights: Kullanıcıya proje moderatörü hakları verilir
+        user_is_given_space_manager_rights: Kullanıcıya alan yöneticisi yetkileri verildi
         user_is_invited_to_cosponsor_a_proposal: Kullanıcı bir teklife eş sponsorluk yapmaya davet edilir
         user_is_invited_to_platform: Kullanıcı platforma davet edilir
         user_is_mentioned: Kullanıcıdan bahsedilir
@@ -175,6 +181,7 @@ tr-TR:
       official_feedback_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında güncelleme
       password_reset: Parola sıfırla
       project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
+      project_manager_rights_received: Proje yöneticisi yetkileri alındı
       project_moderation_rights_received: Proje moderasyon hakları alındı
       project_phase_started: Yeni proje aşaması
       project_phase_upcoming: Yaklaşan yeni proje aşaması
@@ -182,6 +189,7 @@ tr-TR:
       project_review_request: Proje inceleme talebi
       project_review_state_change: Proje onaylandı
       screening_digest: Haftalık tarama hatırlatması
+      space_moderation_rights_received: Alan yöneticisi yetkileri alındı
       status_change_on_idea_you_follow: Takip ettiğiniz bir fikrin durum değişikliği
       survey_submitted: Anket gönderildi
       threshold_reached_for_admin: Öneri oylama eşiğine ulaştı
@@ -518,6 +526,7 @@ tr-TR:
       project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek faz içerikleridir. Bu gerçek içerik değildir.
       project_title: Örnek proje
       proposal_title: Örnek Teklif
+      space_title: Örnek alan
     project_folder_moderation_rights_received:
       cta_button: Bu klasörü görüntüle
       event_description: "Size %{organizationName}'un katılım platformunda aşağıdaki klasör için klasör yöneticisi hakları verildi:"
@@ -599,6 +608,21 @@ tr-TR:
       preheader: '%{organizationName}için girdileri gözden geçirin'
       subject: '%{count} gözden geçirilmeyi bekleyen girdiler'
       title: '%{firstName}, girdiler gözden geçirilmeyi bekliyor'
+    space_moderation_rights_received:
+      cta_button: Bu alanı yönet
+      event_description: '%{organizationName} katılım platformunun bir yöneticisi sizi şu alanın yöneticisi yaptı:'
+      no_projects: Henüz proje yok
+      preheader: '%{organizationName} katılım platformunun bir yöneticisi sizi şu alanın yöneticisi yaptı'
+      subject: '%{organizationName} platformunda alan yöneticisi oldunuz'
+      text_manage_space_settings: Katılımcıların ve diğer yöneticilerin alanınızın ne hakkında olduğunu ve kuruluşunuzla nasıl bir ilişkisi olduğunu hemen anlamaları için alan başlığını ve açıklamasını düzenleyebilirsiniz.
+      text_organize_projects_and_folders: Bir alan yöneticisi olarak, alanınızdaki projeleri ve klasörleri yönetebilir, bunlar için yönetim rollerini atayabilir veya kaldırabilirsiniz.
+      text_oversee_participation: Bir alan yöneticisi olarak, alanınızdaki her proje üzerinde proje yöneticisi yetkilerine sahipsiniz; böylece gelen girdileri takip edebilir ve gerektiğinde proje yöneticilerine yardımcı olabilirsiniz.
+      title: Alan yöneticisi oldunuz
+      title_manage_space_settings: Alan ayarlarını yönet
+      title_organize_projects_and_folders: Projeleri ve klasörleri düzenleyin
+      title_oversee_participation: Katılımı denetleyin
+      title_what_can_you_do_space_manager: Bir alan yöneticisi olarak neler yapabilirsiniz?
+      x_projects: '%{numberOfProjects} proje'
     status_change_on_idea_you_follow:
       cta_button: Bu girişe gidin
       event_description: "%{organizationName} dijital katılım platformlarında '%{input_title}' girdisinin durumunu güncelledi."
