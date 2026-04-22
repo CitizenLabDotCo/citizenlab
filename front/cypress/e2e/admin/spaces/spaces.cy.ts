@@ -21,14 +21,20 @@ describe('Spaces CRUD', () => {
   it('Space can be deleted', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects?tab=spaces');
-    const tableRow = cy.dataCy('spaces-overview-folder-table-row').first();
-    tableRow.contains(spaceName);
-    tableRow.find('.e2e-more-actions').click();
+    cy.dataCy('spaces-overview-folder-table-row')
+      .first()
+      .contains(spaceName)
+      .dataCy('spaces-overview-folder-table-row')
+      .first()
+      .find('.e2e-more-actions')
+      .click();
 
     const moreActionsTooltip = cy.get('.e2e-more-actions-list').first();
     moreActionsTooltip.find('button').first().contains('Delete space').click();
 
     cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
     cy.dataCy('typed-confirmation-delete-button').click();
+
+    cy.contains('No spaces found').should('exist');
   });
 });
