@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Declaració",
   "app.components.form.controls.noRankSelected": "No s'ha seleccionat cap rang",
   "app.components.form.controls.optionalParentheses": "(opcional)",
+  "app.components.form.controls.rankingDragHandleLabel": "Arrossega per reordenar {label}",
   "app.components.form.controls.rankingInstructions": "Arrossegueu i deixeu anar per classificar les opcions.",
   "app.components.form.controls.valueOutOfTotal": "{value} de {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} de {total}, {label}",

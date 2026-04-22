@@ -4079,6 +4079,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:30:27.600217Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -9689,6 +9694,7 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:08.871163Z",
@@ -12544,6 +12550,7 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:08.871163Z",

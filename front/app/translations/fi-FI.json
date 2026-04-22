@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Lausunto",
   "app.components.form.controls.noRankSelected": "Arvoa ei ole valittu",
   "app.components.form.controls.optionalParentheses": "(valinnainen)",
+  "app.components.form.controls.rankingDragHandleLabel": "Vedä muuttaaksesi kohteen {label} järjestystä",
   "app.components.form.controls.rankingInstructions": "Sijoita vaihtoehtoja vetämällä ja pudottamalla.",
   "app.components.form.controls.valueOutOfTotal": "{value} / {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} / {total}, {label}",

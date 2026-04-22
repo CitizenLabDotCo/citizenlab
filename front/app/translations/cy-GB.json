@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Datganiad",
   "app.components.form.controls.noRankSelected": "Dim rheng wedi'i dewis",
   "app.components.form.controls.optionalParentheses": "(dewisol)",
+  "app.components.form.controls.rankingDragHandleLabel": "Llusgwch i aildrefnu {label}",
   "app.components.form.controls.rankingInstructions": "Llusgo a gollwng i opsiynau graddio.",
   "app.components.form.controls.valueOutOfTotal": "{value} allan o {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} allan o {total}, {label}",
