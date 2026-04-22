@@ -303,14 +303,30 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         setSubmitState('success');
 
         if (redirectAfterSave) {
-          const redirectTab = getTimelineTab(
-            phaseResponse,
-            phaseInsightsEnabled
-          );
+          const participationMethod =
+            phaseResponse.attributes.participation_method;
           window.scrollTo(0, 0);
-          clHistory.push(
-            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
-          );
+
+          if (participationMethod === 'native_survey') {
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+            );
+          } else if (
+            participationMethod === 'ideation' ||
+            participationMethod === 'proposals'
+          ) {
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phaseId}/form/edit`
+            );
+          } else {
+            const redirectTab = getTimelineTab(
+              phaseResponse,
+              phaseInsightsEnabled
+            );
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
+            );
+          }
         } else {
           setFormData(response.data.attributes);
         }

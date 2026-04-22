@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -8,6 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
+import CopySurveyModal from '../CopySurveyModal';
+import NewSurveyEmptyState from '../NewSurveyEmptyState';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
 const SurveyFormBuilder = ({
@@ -21,6 +24,8 @@ const SurveyFormBuilder = ({
   const copyFrom = searchParams.get('copy_from');
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [showCopyModal, setShowCopyModal] = useState(false);
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
@@ -34,28 +39,58 @@ const SurveyFormBuilder = ({
   const isFormPersisted = copyFrom
     ? false
     : phase.data.attributes.custom_form_persisted;
+
+  const isNewForm = !isFormPersisted && !copyFrom;
+
   const newCustomFields = isFormPersisted
     ? formCustomFields
     : clearOptionAndStatementIds(formCustomFields);
 
+  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
+
+  const emptyStateContent =
+    isNewForm && !hasStarted ? (
+      <NewSurveyEmptyState
+        onStartFromScratch={() => setHasStarted(true)}
+        onDuplicateExisting={() => setShowCopyModal(true)}
+      />
+    ) : undefined;
+
   return (
-    <FormBuilder
-      builderConfig={{
-        ...nativeSurveyConfig,
-        formCustomFields: newCustomFields,
-        goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/survey-form`,
-      }}
-      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-    />
+    <>
+      <FormBuilder
+        builderConfig={{
+          ...nativeSurveyConfig,
+          formCustomFields: newCustomFields,
+          goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/survey-form`,
+        }}
+        viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+        emptyStateContent={emptyStateContent}
+      />
+      <CopySurveyModal
+        editFormLink={editFormLink}
+        showCopySurveyModal={showCopyModal}
+        setShowCopySurveyModal={setShowCopyModal}
+        surveyFormPersisted={false}
+      />
+    </>
   );
 };
 
 export default () => {
   const { projectId, phaseId } = useParams();
+  const [searchParams] = useSearchParams();
+  const copyFrom = searchParams.get('copy_from');
 
   if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
     return null;
   }
 
-  return <SurveyFormBuilder projectId={projectId} phaseId={phaseId} />;
+  return (
+    <SurveyFormBuilder
+      key={`${phaseId}-${copyFrom}`}
+      projectId={projectId}
+      phaseId={phaseId}
+    />
+  );
 };
