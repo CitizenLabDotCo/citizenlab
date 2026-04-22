@@ -7,7 +7,7 @@ module BulkImportIdeas::Parsers
 
     attr_reader :row_mapper
 
-    def initialize(_current_user, locale, phase_id, personal_data_enabled, _pages_per_form: nil)
+    def initialize(_current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
