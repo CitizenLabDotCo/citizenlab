@@ -274,7 +274,6 @@ export interface IAppConfigurationSettings {
   nested_input_topics?: AppConfigurationFeature;
   live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
   project_scheduling?: AppConfigurationFeature;
