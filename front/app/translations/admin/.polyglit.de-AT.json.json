@@ -1924,6 +1924,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.SpaceSelect.pleaseSelectASpace": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.SpaceSelect.sameSpaceAsFolder": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4019,6 +4024,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.Users.GroupsPanel.spaceManagers": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4078,6 +4088,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.Users.alreadyManager": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.Users.assign": {
     "state": "verified",
@@ -4229,6 +4244,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.Users.folders": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.helmetDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4289,6 +4309,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.Users.projects": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.registeredUser": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4314,6 +4339,21 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.Users.selectFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.selectPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.selectProjects": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.selectPublications": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4323,6 +4363,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.Users.selectSpaces": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.Users.setAsAdmin": {
     "state": "verified",
@@ -4334,6 +4379,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.Users.setUserAsManager": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.setUserAsProjectModerator": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -4342,6 +4392,11 @@
   "app.containers.Admin.Users.spaceManager": {
     "state": "verified",
     "verified_at": "2026-03-30T15:24:55.238123Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.Users.spaces": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.Users.userBlockModal.allDone": {
@@ -10249,10 +10304,20 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.users.UserAssignedItems.lockedFolderInSpace": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.users.UserAssignedItems.lockedProject": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.users.UserAssignedItems.lockedProjectInSpace": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": {
     "state": "verified",
@@ -10269,10 +10334,25 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.users.UserAssignedItems.spacesUserManages": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.users.UserAssignedItems.thisUserCanManageFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.users.UserAssignedItems.thisUserCanManageSpaces": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": {
     "state": "verified",
@@ -14204,6 +14284,16 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectTimeline.editPhaseTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -15549,6 +15639,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.SideBar.spaceManager": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.SideBar.support": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -16304,10 +16399,20 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateSpaces": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": {
     "state": "verified",
@@ -17793,6 +17898,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.EditSpace.spaceManagers": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.601551Z",
+    "verified_by": "Jelena"
   },
   "app.containers.EditSpace.spaceName": {
     "state": "verified",

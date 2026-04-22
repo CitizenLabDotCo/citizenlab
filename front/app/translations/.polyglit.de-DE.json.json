@@ -2114,6 +2114,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -13303,6 +13308,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",
