@@ -14,7 +14,6 @@ import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import messages from './messages';
 
 const Header = () => {
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: authUser } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
@@ -59,31 +58,28 @@ const Header = () => {
             </Box>
           </Tooltip>
         )}
-        {isProjectFoldersEnabled && (
-          <Tooltip
-            content={
-              <FormattedMessage
-                {...(spacesEnabled
-                  ? messages.onlyAdminsAndSpaceManagersCanCreateFolders
-                  : messages.onlyAdminsCanCreateFolders)}
-              />
-            }
-            disabled={userCanAddFolders}
-          >
-            <Box>
-              <Button
-                data-cy="e2e-new-project-folder-button"
-                linkTo={'/admin/projects/folders/new'}
-                buttonStyle="secondary-outlined"
-                icon="folder-add"
-                disabled={!userCanAddFolders}
-              >
-                <FormattedMessage {...messages.createProjectFolder} />
-              </Button>
-            </Box>
-          </Tooltip>
-        )}
-
+        <Tooltip
+          content={
+            <FormattedMessage
+              {...(spacesEnabled
+                ? messages.onlyAdminsAndSpaceManagersCanCreateFolders
+                : messages.onlyAdminsCanCreateFolders)}
+            />
+          }
+          disabled={userCanAddFolders}
+        >
+          <Box>
+            <Button
+              data-cy="e2e-new-project-folder-button"
+              linkTo={'/admin/projects/folders/new'}
+              buttonStyle="secondary-outlined"
+              icon="folder-add"
+              disabled={!userCanAddFolders}
+            >
+              <FormattedMessage {...messages.createProjectFolder} />
+            </Button>
+          </Box>
+        </Tooltip>
         <Box>
           <Button
             data-cy="e2e-new-project-button"

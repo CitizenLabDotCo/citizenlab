@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "ਬਿਆਨ",
   "app.components.form.controls.noRankSelected": "ਕੋਈ ਰੈਂਕ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
   "app.components.form.controls.optionalParentheses": "(ਵਿਕਲਪਿਕ)",
+  "app.components.form.controls.rankingDragHandleLabel": "{label} ਨੂੰ ਦੁਬਾਰਾ ਤਰਤੀਬ ਦੇਣ ਲਈ ਖਿੱਚੋ",
   "app.components.form.controls.rankingInstructions": "ਰੈਂਕ ਵਿਕਲਪਾਂ ਲਈ ਖਿੱਚੋ ਅਤੇ ਸੁੱਟੋ।",
   "app.components.form.controls.valueOutOfTotal": "{total}ਵਿੱਚੋਂ {value}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{total}ਵਿੱਚੋਂ {value} , {label}",

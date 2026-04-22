@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Oświadczenie",
   "app.components.form.controls.noRankSelected": "Nie wybrano rangi",
   "app.components.form.controls.optionalParentheses": "(opcjonalnie)",
+  "app.components.form.controls.rankingDragHandleLabel": "Przeciągnij, aby zmienić kolejność {label}",
   "app.components.form.controls.rankingInstructions": "Przeciągnij i upuść, aby uszeregować opcje.",
   "app.components.form.controls.valueOutOfTotal": "{value} z {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} z {total}, {label}",

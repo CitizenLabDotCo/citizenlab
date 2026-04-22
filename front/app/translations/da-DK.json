@@ -816,6 +816,7 @@
   "app.components.form.controls.matrixStatementHeader": "Erklæring",
   "app.components.form.controls.noRankSelected": "Ingen rang valgt",
   "app.components.form.controls.optionalParentheses": "(valgfri)",
+  "app.components.form.controls.rankingDragHandleLabel": "Træk for at omarrangere {label}",
   "app.components.form.controls.rankingInstructions": "Træk og slip for at rangordne muligheder.",
   "app.components.form.controls.valueOutOfTotal": "{value} af {total}",
   "app.components.form.controls.valueOutOfTotalWithLabel": "{value} ud af {total}, {label}",
