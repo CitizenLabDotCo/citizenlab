@@ -313,6 +313,10 @@ const Calendar = ({
     day,
     { isDisabledMiddle, isDisabledSingle }
   ) => {
+    // Reset selected times when a new day is clicked
+    setSelectedStartTime(null);
+    setSelectedEndTime(null);
+
     if (
       isDisabledMiddle ||
       isDisabledSingle ||
