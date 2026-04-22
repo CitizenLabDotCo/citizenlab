@@ -1,13 +1,7 @@
 {
   "app.components.form.controls.rankingDragHandleLabel": {
     "state": "verified",
-    "verified_at": "2026-04-21T09:30:08.904397Z",
-    "verified_by": "kielgast@govocal.com"
+    "verified_at": "2026-04-22T16:13:29.827729Z",
+    "verified_by": "Edwin Kato"
   }
 }
-
-  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
-    "state": "verified",
-    "verified_at": "2026-04-21T10:05:00.205740Z",
-    "verified_by": "Simon"
-  }
