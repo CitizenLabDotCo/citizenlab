@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Box } from '@citizenlab/cl2-component-library';
 
 import useProjectReview from 'api/project_reviews/useProjectReview';
-import { IProjectData } from 'api/projects/types';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -16,13 +16,40 @@ import messages from './messages';
 import ScheduleLaunchModal from './ScheduleLaunchModal';
 import tracks from './tracks';
 
-type EntryIcon =
-  | 'send'
-  | 'unlock'
-  | 'clock'
-  | 'lock'
-  | 'check-circle'
-  | 'inbox';
+const getPublicationButton = ({
+  publicationStatus,
+  hasSchedule,
+  isPending,
+  canReview,
+}: {
+  publicationStatus: PublicationStatus;
+  hasSchedule: boolean;
+  isPending: boolean;
+  canReview: boolean;
+}) => {
+  let text = messages.publish;
+  let icon: 'send' | 'unlock' | 'clock' | 'lock' | 'check-circle' | 'inbox' =
+    'send';
+  if (publicationStatus === 'draft') {
+    if (isPending && canReview) {
+      text = messages.approveAndSchedule;
+      icon = 'unlock';
+    } else if (isPending) {
+      text = messages.approvalRequested;
+      icon = 'lock';
+    } else if (hasSchedule) {
+      text = messages.scheduled;
+      icon = 'clock';
+    }
+  } else if (publicationStatus === 'published') {
+    text = messages.published;
+    icon = 'check-circle';
+  } else {
+    text = messages.archived;
+    icon = 'inbox';
+  }
+  return { text, icon };
+};
 
 const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
@@ -41,29 +68,14 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
 
   const { publication_status, scheduled_at } = project.attributes;
   const isDraft = publication_status === 'draft';
-  const hasSchedule = !!scheduled_at;
   const isPending = isProjectReviewEnabled && reviewState === 'pending';
 
-  let entryText = messages.publish;
-  let entryIcon: EntryIcon = 'send';
-  if (isDraft) {
-    if (isPending && canReview) {
-      entryText = messages.approveAndSchedule;
-      entryIcon = 'unlock';
-    } else if (isPending) {
-      entryText = messages.approvalRequested;
-      entryIcon = 'lock';
-    } else if (hasSchedule) {
-      entryText = messages.scheduled;
-      entryIcon = 'clock';
-    }
-  } else if (publication_status === 'published') {
-    entryText = messages.published;
-    entryIcon = 'check-circle';
-  } else {
-    entryText = messages.archived;
-    entryIcon = 'inbox';
-  }
+  const publicationButton = getPublicationButton({
+    publicationStatus: publication_status,
+    hasSchedule: !!scheduled_at,
+    isPending,
+    canReview,
+  });
 
   const handleEntryClick = () => {
     if (isDraft) {
@@ -79,14 +91,14 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     <Box display="flex" gap="8px">
       <Button
         buttonStyle="admin-dark"
-        icon={entryIcon}
+        icon={publicationButton.icon}
         onClick={handleEntryClick}
         size="s"
         padding="4px 8px"
         iconSize="20px"
         id="e2e-publish"
       >
-        {formatMessage(entryText)}
+        {formatMessage(publicationButton.text)}
       </Button>
 
       <ScheduleLaunchModal
