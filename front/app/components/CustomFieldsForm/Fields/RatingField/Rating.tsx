@@ -1,11 +1,6 @@
 import React, { useRef } from 'react';
 
-import {
-  Box,
-  useBreakpoint,
-  Button,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Icon } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -22,6 +17,12 @@ const StyledIcon = styled(Icon)`
   :hover {
     fill: ${(props) => props.theme.colors.grey800};
   }
+`;
+
+const OptionTarget = styled.div`
+  cursor: pointer;
+  padding: 12px 0;
+  width: 100%;
 `;
 
 const Rating = ({ value: data, question, onChange }: Props) => {
@@ -105,16 +106,10 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                 key={`${id}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
               >
-                <Button
-                  type="button"
-                  py="12px"
+                <OptionTarget
                   id={`${inputId}-option-${visualIndex}`}
-                  tabIndex={-1}
-                  aria-pressed={data === visualIndex}
-                  px="0"
-                  width="100%"
                   onClick={() => onChange(visualIndex)}
-                  buttonStyle="text"
+                  aria-hidden
                 >
                   <Box
                     display="flex"
@@ -134,7 +129,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                     />
                     {visualIndex}
                   </Box>
-                </Button>
+                </OptionTarget>
               </Box>
             );
           })}

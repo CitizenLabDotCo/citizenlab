@@ -525,6 +525,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            project_scheduling: {
+              enabled: false,
+              allowed: false
+            },
             platform_templates: {
               enabled: false,
               allowed: false

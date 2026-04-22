@@ -8844,6 +8844,106 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.everyone": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.makeProjectVisibleTooltip": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.now": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.recipientsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.reviewSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:53:03.011872Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",

@@ -1355,6 +1355,18 @@
         }
       },
 
+      "project_scheduling": {
+        "type": "object",
+        "title": "Project scheduling",
+        "description": "Enables scheduling project publication for a future date and time.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
