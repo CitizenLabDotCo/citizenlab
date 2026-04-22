@@ -113,14 +113,12 @@ const ProjectsWidgetForm = () => {
               }
             </GetProjects>
           </SectionField>
-          {!hasSelectedProjects && (
-            <SectionField>
-              <Label htmlFor="folders">
-                <FormattedMessage {...messages.fieldFolders} />
-              </Label>
-              <MultipleSelect name="folders" options={folderOptions} />
-            </SectionField>
-          )}
+          <SectionField>
+            <Label htmlFor="folders">
+              <FormattedMessage {...messages.fieldFolders} />
+            </Label>
+            <MultipleSelect name="folders" options={folderOptions} />
+          </SectionField>
           <SectionField>
             <Select
               name="sort"

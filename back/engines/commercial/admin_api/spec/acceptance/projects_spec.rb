@@ -86,6 +86,18 @@ resource 'Project', admin_api: true do
       expect(ids).to eq([@public_no_phase.id])
     end
 
+    example 'Filters projects by folder' do
+      folder = create(:project_folder)
+      @public_active.update!(folder_id: folder.id)
+
+      do_request(folders: [folder.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id)
+      expect(ids).to_not include(@public_active2.id)
+    end
+
     example 'Limits the number of projects' do
       do_request(limit: 1)
       expect(status).to eq 200

@@ -11,13 +11,10 @@ module AdminApi
     end
 
     def widget_projects
-      base = ProjectPolicy::Scope.new(nil, Project).resolve.not_hidden
-
-      projects = if params[:projects].present?
-        base.where(id: params[:projects])
-      else
-        base.with_active_phase
-      end
+      projects = ProjectPolicy::Scope.new(nil, Project).resolve.not_hidden
+      projects = projects.with_active_phase if params[:projects].blank?
+      projects = projects.where(id: params[:projects]) if params[:projects].present?
+      projects = filter_by_folders(projects) if params[:folders].present?
 
       projects = projects
         .includes(:project_images, :phases, :admin_publication)
@@ -43,6 +40,15 @@ module AdminApi
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
       render json: { job_id: job.job_id }, status: :accepted
+    end
+
+    def filter_by_folders(projects)
+      folder_publication_ids = AdminPublication.where(
+        publication_type: 'ProjectFolders::Folder',
+        publication_id: params[:folders]
+      ).select(:id)
+
+      projects.joins(:admin_publication).where(admin_publications: { parent_id: folder_publication_ids })
     end
 
     def template_import_params
