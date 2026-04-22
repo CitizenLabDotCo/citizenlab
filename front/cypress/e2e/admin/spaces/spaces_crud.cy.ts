@@ -30,5 +30,7 @@ describe('Spaces CRUD', () => {
 
     cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
     cy.dataCy('typed-confirmation-delete-button').click();
+
+    // ujareiophjtriohbpj
   });
 });
