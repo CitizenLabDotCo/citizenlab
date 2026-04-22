@@ -189,8 +189,8 @@ de-AT:
       sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
       this_answer: Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.
       unsupported_field: Dieses Feld kann nicht auf Papier ausgefüllt werden. Bitte verwenden Sie stattdessen die Online-Version dieses Formulars.
-      write_as_clearly: Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt
-      write_in_language: Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular
+      write_as_clearly: Schreibe so <b>deutlich</b> wie möglich - diese Formulare werden gescannt
+      write_in_language: Schreibe deine Antworten bitte in der gleichen Sprache wie dieses Formular
   ics_calendar_event:
     event_details: Veranstaltungsdetails
   idea_statuses:
