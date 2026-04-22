@@ -39,7 +39,7 @@ const Row = ({ space, spaceModeratorsById }: Props) => {
     : [];
 
   return (
-    <Tr dataCy="projects-overview-folder-table-row">
+    <Tr dataCy="spaces-overview-folder-table-row">
       <StyledTd
         background={colors.grey50}
         onClick={() => {
