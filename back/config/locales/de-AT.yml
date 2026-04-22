@@ -154,7 +154,7 @@ de-AT:
     pdf_export:
       by_checking_this_box: Durch Ankreuzen dieses Kästchens erkläre ich mich damit einverstanden, dass meine Daten verwendet werden, um ein Konto auf der Beteiligungsplattform %{organizationName} zu erstellen.
       choose_as_many: Beliebig viele auswählen
-      choose_at_least: Wählen Sie mindestens %{count} Optionen
+      choose_at_least: mindestens %{count} Optionen auswählen
       choose_at_most: Wählen Sie höchstens %{count} Optionen
       choose_between: Wählen Sie zwischen %{min} und %{max} Optionen
       choose_exactly:
@@ -184,7 +184,7 @@ de-AT:
       polygon_print_description: Bitte zeichnen Sie eine Form auf der Karte unten.
       ranking_print_description: Bitte schreiben Sie in jedes Feld eine Zahl zwischen 1 (am meisten bevorzugt) und %{max_rank} (am wenigsten bevorzugt). Verwenden Sie jede Zahl genau einmal.
       rating_print_description: Bewerten Sie dies, indem Sie eine Zahl zwischen 1 (schlechteste) und %{max_stars} (beste) schreiben.
-      select_print_description: Wählen Sie nur eine Option.
+      select_print_description: Nur eine Option auswählen
       sentiment_linear_scale_print_description: Bitte schreiben Sie eine Zahl zwischen 1 und 5.
       sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
       this_answer: Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.
