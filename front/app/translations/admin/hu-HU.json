@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Kérdőív",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Are you sure you want to delete this phase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phase description",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Mentés",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BÉTA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Módosítások elvetése",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "PISZKOZAT",

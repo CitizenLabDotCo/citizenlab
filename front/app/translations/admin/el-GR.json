@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Έρευνα",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φάση;",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Περιγραφή φάσης",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Αποθήκευση",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Απόρριψη αλλαγών",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ΠΡΟΣΧΕΔΙΟ",

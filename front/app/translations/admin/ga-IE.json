@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Suirbhé",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "An bhfuil tú cinnte gur mian leat an chéim seo a scriosadh?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Cur síos ar an gcéim",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Sábháil",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Diúltaigh do na hathruithe",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRÉACHT",

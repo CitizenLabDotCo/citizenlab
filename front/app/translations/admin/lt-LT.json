@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Apklausa",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Ar tikrai norite ištrinti šį etapą?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Fazės aprašymas",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Išsaugoti",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Atmesti pakeitimus",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "JUODRAŠTIS",

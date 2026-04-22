@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "ਸਰਵੇਖਣ",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ ਪੜਾਅ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "ਪੜਾਅ ਦਾ ਵੇਰਵਾ",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "ਸੰਭਾਲੋ",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "ਬੀਟਾ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "ਤਬਦੀਲੀਆਂ ਨੂੰ ਰੱਦ ਕਰੋ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ਡਰਾਫਟ",

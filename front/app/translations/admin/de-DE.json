@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Umfrage",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Sind Sie sicher, dass Sie diese Phase löschen wollen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phasenbeschreibung",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Speichern",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Änderungen verwerfen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ENTWURF",

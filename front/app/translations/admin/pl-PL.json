@@ -2842,6 +2842,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Ankieta",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Czy na pewno usunąć ten etap?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Opis etapu",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Zapisz",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odrzuć zmiany",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "WERSJA ROBOCZA",
