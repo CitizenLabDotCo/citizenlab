@@ -158,9 +158,8 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   };
 
   const primary: PrimaryAction = (() => {
-    const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
-    if (!reviewGated) {
-      return mode === 'schedule'
+    const saveOrPublish: PrimaryAction =
+      mode === 'schedule'
         ? {
             label: messages.saveChanges,
             icon: 'check',
@@ -171,9 +170,11 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
             icon: 'send',
             onClick: handlePublishNow,
           };
-    }
 
-    // Admin/folder manager can approve — one click resolves the review and
+    const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
+    if (!reviewGated) return saveOrPublish;
+
+    // Admin/folder manager on a pending review — one click approves and
     // saves the schedule or publishes.
     if (reviewState === 'pending' && canReview) {
       return mode === 'schedule'
@@ -198,6 +199,9 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
         disabled: true,
       };
     }
+
+    // No review yet. Admins skip the request flow entirely.
+    if (canReview) return saveOrPublish;
 
     // PM with no review yet — request approval (saves schedule alongside).
     return {
@@ -255,6 +259,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
             }}
             processing={primaryLoading}
             disabled={primary.disabled}
+            id="e2e-schedule-launch-submit"
           >
             {formatMessage(primary.label)}
           </Button>

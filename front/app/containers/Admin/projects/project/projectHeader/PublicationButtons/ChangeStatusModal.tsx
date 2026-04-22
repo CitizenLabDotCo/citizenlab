@@ -116,6 +116,7 @@ const ChangeStatusModal = ({ opened, project, onClose }: Props) => {
             icon="check"
             onClick={handleSave}
             processing={isLoading}
+            id="e2e-change-status-submit"
           >
             {formatMessage(messages.saveChanges)}
           </Button>

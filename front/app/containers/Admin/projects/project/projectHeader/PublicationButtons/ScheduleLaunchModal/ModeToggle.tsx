@@ -41,6 +41,7 @@ const ModeToggle = ({ mode, onChange, schedulingEnabled }: Props) => {
             borderRadius="6px"
             p="8px"
             disabled={!schedulingEnabled}
+            data-cy="e2e-mode-toggle-schedule"
           >
             <Box display="flex" alignItems="center" gap="8px">
               <Icon
@@ -62,6 +63,7 @@ const ModeToggle = ({ mode, onChange, schedulingEnabled }: Props) => {
           textColor={colors.black}
           borderRadius="6px"
           p="8px"
+          data-cy="e2e-mode-toggle-now"
         >
           <Box display="flex" alignItems="center" gap="8px">
             <Icon name="send" fill={colors.black} />
