@@ -73,7 +73,7 @@ const WidgetBuilder = ({
       );
       setWidgetParams(stringify({ ...cleanedParams, locale }));
     }, 500);
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     getWidgetParams(formValues);

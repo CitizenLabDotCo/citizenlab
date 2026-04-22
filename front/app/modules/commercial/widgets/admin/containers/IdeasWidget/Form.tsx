@@ -23,7 +23,7 @@ import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
 
 import { SharedFormValues } from '../WidgetBuilder/shared';
 
-export interface FormValues extends SharedFormValues {
+interface FormValues extends SharedFormValues {
   sort: 'trending' | 'popular' | 'newest';
   topics: string[];
   projects: string[];

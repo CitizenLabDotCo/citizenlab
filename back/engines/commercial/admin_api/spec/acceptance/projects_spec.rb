@@ -69,10 +69,10 @@ resource 'Project', admin_api: true do
       json_response = json_parse(response_body)
       ids = json_response[:projects].pluck(:id)
       expect(ids).to include(@public_active.id, @public_active2.id)
-      expect(ids).to_not include(@public_no_phase.id)
-      expect(ids).to_not include(@restricted_active.id)
-      expect(ids).to_not include(@draft_active.id)
-      expect(ids).to_not include(@hidden_active.id)
+      expect(ids).not_to include(@public_no_phase.id)
+      expect(ids).not_to include(@restricted_active.id)
+      expect(ids).not_to include(@draft_active.id)
+      expect(ids).not_to include(@hidden_active.id)
     end
 
     example 'Returns specific projects filtered by visibility' do
@@ -81,7 +81,7 @@ resource 'Project', admin_api: true do
       json_response = json_parse(response_body)
       ids = json_response[:projects].pluck(:id)
       expect(ids).to include(@public_active.id)
-      expect(ids).to_not include(@restricted_active.id)
+      expect(ids).not_to include(@restricted_active.id)
     end
 
     example 'Returns only publicly visible projects when filtering by non-active projects' do
@@ -101,7 +101,7 @@ resource 'Project', admin_api: true do
       json_response = json_parse(response_body)
       ids = json_response[:projects].pluck(:id)
       expect(ids).to include(@public_active.id)
-      expect(ids).to_not include(@public_active2.id)
+      expect(ids).not_to include(@public_active2.id)
     end
 
     example 'Limits the number of projects' do

@@ -22,7 +22,7 @@ import SharedFormSections from '../WidgetBuilder/SharedFormSections';
 import { SharedFormValues } from '../WidgetBuilder/shared';
 import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
 
-export interface FormValues extends SharedFormValues {
+interface FormValues extends SharedFormValues {
   projects: string[];
   folders: string[];
   sort: 'platform_order' | 'newest' | 'ending_soon' | 'most_participants';

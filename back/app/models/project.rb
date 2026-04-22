@@ -168,7 +168,7 @@ class Project < ApplicationRecord
         LIMIT 1
       ) AS current_phase ON true
     SQL
-    .order('current_phase.current_phase_end_at ASC NULLS LAST')
+      .order('current_phase.current_phase_end_at ASC NULLS LAST')
   }
 
   scope :by_participation_count, lambda { |direction = :desc|
