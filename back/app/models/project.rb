@@ -154,6 +154,37 @@ class Project < ApplicationRecord
 
   scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
 
+  scope :newest, -> { order(created_at: :desc) }
+
+  scope :joined_with_current_phases, lambda {
+    now = Time.zone.now.to_fs(:db)
+    joins(sanitize_sql_array([
+      'INNER JOIN phases AS current_phases ON current_phases.project_id = projects.id' \
+      ' AND current_phases.start_at <= ?' \
+      ' AND (current_phases.end_at >= ? OR current_phases.end_at IS NULL)',
+      now, now
+    ]))
+  }
+
+  scope :with_current_phase_dates, lambda {
+    joined_with_current_phases
+      .select('projects.*, current_phases.start_at AS current_phase_start_at, current_phases.end_at AS current_phase_end_at')
+  }
+
+  scope :ending_soon, lambda {
+    subquery = joined_with_current_phases
+      .select('DISTINCT projects.*, current_phases.end_at AS current_phase_end_at')
+
+    from(subquery, :projects)
+      .order('current_phase_end_at ASC NULLS LAST')
+  }
+
+  scope :by_participation_count, lambda { |direction = :desc|
+    dir = direction.to_s.upcase == 'ASC' ? 'ASC' : 'DESC'
+    with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{dir}, projects.id ASC"))
+  }
+
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
     project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)

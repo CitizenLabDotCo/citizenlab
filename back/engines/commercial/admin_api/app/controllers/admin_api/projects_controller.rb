@@ -16,6 +16,7 @@ module AdminApi
       projects = projects.where(id: params[:projects]) if params[:projects].present?
       projects = filter_by_folders(projects) if params[:folders].present?
 
+      projects = sort_projects(projects)
       projects = projects
         .includes(:project_images, :phases, :admin_publication)
         .limit(params[:limit]&.to_i || 3)
@@ -40,6 +41,19 @@ module AdminApi
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
       render json: { job_id: job.job_id }, status: :accepted
+    end
+
+    def sort_projects(projects)
+      case params[:sort]
+      when 'newest'
+        projects.newest
+      when 'ending_soon'
+        projects.ending_soon
+      when 'most_participants'
+        projects.by_participation_count(:desc)
+      else # 'platform_order' (default)
+        projects.ordered
+      end
     end
 
     def filter_by_folders(projects)

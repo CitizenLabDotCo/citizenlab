@@ -25,7 +25,7 @@ import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
 export interface FormValues extends SharedFormValues {
   projects: string[];
   folders: string[];
-  sort: 'newest' | 'ending_soon' | 'most_participants' | 'platform_order';
+  sort: 'platform_order' | 'newest' | 'ending_soon' | 'most_participants';
   limit: number;
 }
 
@@ -51,6 +51,10 @@ const ProjectsWidgetForm = () => {
   };
 
   const sortOptions = () => [
+    {
+      value: 'platform_order',
+      label: formatMessage(messages.projectSortPlatformOrder),
+    },
     { value: 'newest', label: formatMessage(messages.projectSortNewest) },
     {
       value: 'ending_soon',
@@ -59,10 +63,6 @@ const ProjectsWidgetForm = () => {
     {
       value: 'most_participants',
       label: formatMessage(messages.projectSortMostParticipants),
-    },
-    {
-      value: 'platform_order',
-      label: formatMessage(messages.projectSortPlatformOrder),
     },
   ];
 

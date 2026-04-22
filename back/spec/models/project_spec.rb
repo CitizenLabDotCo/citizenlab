@@ -252,6 +252,67 @@ RSpec.describe Project do
     end
   end
 
+  describe 'with_current_phase_dates scope' do
+    it 'returns projects with a current phase and exposes start_at and end_at' do
+      project = create(:project)
+      phase = create(:phase, project: project, start_at: 3.days.ago, end_at: 4.days.from_now)
+
+      result = described_class.with_current_phase_dates.find(project.id)
+      expect(result['current_phase_start_at'].to_date).to eq(phase.start_at)
+      expect(result['current_phase_end_at'].to_date).to eq(phase.end_at)
+    end
+
+    it 'includes open-ended phases (end_at nil)' do
+      project = create(:project)
+      create(:phase, project: project, start_at: 3.days.ago, end_at: nil)
+
+      result = described_class.with_current_phase_dates.find(project.id)
+      expect(result['current_phase_end_at']).to be_nil
+    end
+
+    it 'excludes projects with no current phase' do
+      project = create(:project)
+      create(:phase, project: project, start_at: 30.days.ago, end_at: 1.day.ago)
+
+      expect(described_class.with_current_phase_dates.where(id: project.id)).to be_empty
+    end
+  end
+
+  describe 'ending_soon scope' do
+    it 'orders by current phase end_at ascending, open-ended last' do
+      open_ended = create(:project)
+      create(:phase, project: open_ended, start_at: 1.week.ago, end_at: nil)
+
+      later = create(:project)
+      create(:phase, project: later, start_at: 1.week.ago, end_at: 10.days.from_now)
+
+      soon = create(:project)
+      create(:phase, project: soon, start_at: 1.week.ago, end_at: 2.days.from_now)
+
+      ids = described_class.ending_soon.pluck(:id)
+      expect(ids).to eq([soon.id, later.id, open_ended.id])
+    end
+  end
+
+  describe 'by_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    it 'orders by participation count in the given direction' do
+      project_many = create(:project)
+      project_few = create(:project)
+      create_list(:idea, 3, project: project_many)
+      create_list(:idea, 1, project: project_few)
+
+      ids_desc = described_class.by_participation_count(:desc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_desc).to eq([project_many.id, project_few.id])
+
+      ids_asc = described_class.by_participation_count(:asc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_asc).to eq([project_few.id, project_many.id])
+    end
+  end
+
   describe "'hidden' scopes" do
     let!(:project) { create(:project) }
     let!(:hidden_project) { create(:project, hidden: true) }

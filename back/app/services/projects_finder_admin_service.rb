@@ -110,11 +110,8 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_by_participation(scope, params)
-    direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
-
-    scope
-      .with_participation_count
-      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{direction}, projects.id ASC"))
+    direction = params[:sort] == 'participation_desc' ? :desc : :asc
+    scope.by_participation_count(direction)
   end
 
   # FILTERING METHODS

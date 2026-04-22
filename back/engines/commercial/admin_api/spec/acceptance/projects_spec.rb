@@ -32,6 +32,8 @@ resource 'Project', admin_api: true do
 
   get 'admin_api/projects/widget_projects' do
     parameter :projects, 'Filter by specific project IDs', required: false
+    parameter :folders, 'Filter by folder IDs', required: false
+    parameter :sort, 'Sort order: platform_order (default), newest, ending_soon, most_participants', required: false
     parameter :limit, 'Maximum number of projects to return (default 3)', required: false
 
     before do
@@ -103,6 +105,54 @@ resource 'Project', admin_api: true do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:projects].size).to eq 1
+    end
+
+    example 'Sorts by newest (created_at DESC)' do
+      @public_active.update!(created_at: 2.days.ago)
+      @public_active2.update!(created_at: 1.day.ago)
+
+      do_request(sort: 'newest')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_active2.id, @public_active.id])
+    end
+
+    example 'Sorts by ending_soon (current phase end_at ASC)' do
+      @public_active.phases.first.update!(end_at: 3.days.from_now)
+      @public_active2.phases.first.update!(end_at: 1.day.from_now)
+
+      do_request(sort: 'ending_soon')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_active2.id, @public_active.id])
+    end
+
+    example 'Sorts by most_participants (participation count DESC)' do
+      user1 = create(:user)
+      user2 = create(:user)
+      create(:idea, project: @public_active, author: user1, phases: @public_active.phases)
+      create(:idea, project: @public_active, author: user2, phases: @public_active.phases)
+      create(:idea, project: @public_active2, author: user1, phases: @public_active2.phases)
+
+      do_request(sort: 'most_participants')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids.first).to eq(@public_active.id)
+    end
+
+    example 'Sorts by platform_order by default' do
+      do_request
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expected_order = AdminPublication
+        .where(publication_type: 'Project', publication_id: ids)
+        .order(:ordering)
+        .pluck(:publication_id)
+      expect(ids).to eq(expected_order)
     end
 
     example 'Response includes widget fields' do
