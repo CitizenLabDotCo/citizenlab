@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Anket",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Bu aşamayı silmek istediğinizden emin misiniz?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Aşama açıklaması",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Kaydet",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Değişiklikleri at",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "TASLAK",

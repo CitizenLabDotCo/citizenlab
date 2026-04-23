@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Vragenlijst",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Weet u zeker dat u deze fase wilt verwijderen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Fasebeschrijving",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Opslaan",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Wijzigingen verwijderen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "CONCEPT",

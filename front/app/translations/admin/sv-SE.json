@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Undersökning",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Är du säker på att du vill ta bort den här fasen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Fasbeskrivning",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Spara",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Släng ändringar",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "UTKAST",

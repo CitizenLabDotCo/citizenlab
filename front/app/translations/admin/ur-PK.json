@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "سروے",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "کیا آپ واقعی اس مرحلے کو حذف کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "مرحلے کی تفصیل",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "محفوظ کریں",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "بیٹا",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "تبدیلیاں مسترد کریں",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ڈرافٹ",

@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Pregled",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Jeste li sigurni da želite izbrisati ovu fazu?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Opis faze",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Spremi",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odbaci promjene",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "NACRT",

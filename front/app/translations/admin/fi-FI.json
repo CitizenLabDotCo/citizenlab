@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Kysely",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Haluatko varmasti poistaa tämän vaiheen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Vaiheen kuvaus",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Tallenna",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Hylkää muutokset",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "LUONNOS",

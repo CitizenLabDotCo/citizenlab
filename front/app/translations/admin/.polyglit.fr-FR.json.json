@@ -14409,6 +14409,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": {
+    "state": "verified",
+    "verified_at": "2026-04-22T15:59:02.652649Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
     "state": "verified",
     "verified_at": "2026-04-13T08:34:03.287493Z",

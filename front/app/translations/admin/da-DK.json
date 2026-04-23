@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Undersøgelse",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Er du sikker på, at du ønsker at slette denne fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Beskrivelse af fase",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Gem",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Kassér ændringer",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "KLADDE",

@@ -2838,6 +2838,7 @@
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "استطلاع",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "هل تريد حذف هذه المرحلة بالتأكيد؟",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "وصف المرحلة",
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": "حفظ",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "تجريبي",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "تجاهل التغييرات",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "مسودة",
