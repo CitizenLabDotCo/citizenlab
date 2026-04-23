@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -16,12 +16,12 @@ import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 const SurveyFormBuilder = ({
   projectId,
   phaseId,
-  initialCopyFrom,
 }: {
   projectId: string;
   phaseId: string;
-  initialCopyFrom: string | null;
 }) => {
+  const [searchParams] = useSearchParams();
+  const copyFrom = searchParams.get('copy_from');
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
   const [hasStarted, setHasStarted] = useState(false);
@@ -29,18 +29,18 @@ const SurveyFormBuilder = ({
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: initialCopyFrom ? initialCopyFrom : phaseId,
-    copy: initialCopyFrom ? true : false,
+    phaseId: copyFrom ? copyFrom : phaseId,
+    copy: copyFrom ? true : false,
   });
 
   if (!phase || !project || !formCustomFields) return null;
 
   // Reset option and statement IDs if this is a new or copied form
-  const isFormPersisted = initialCopyFrom
+  const isFormPersisted = copyFrom
     ? false
     : phase.data.attributes.custom_form_persisted;
 
-  const isNewForm = !isFormPersisted && !initialCopyFrom;
+  const isNewForm = !isFormPersisted && !copyFrom;
 
   const newCustomFields = isFormPersisted
     ? formCustomFields
@@ -82,27 +82,15 @@ export default () => {
   const [searchParams] = useSearchParams();
   const copyFrom = searchParams.get('copy_from');
 
-  // Only remount on new copy initiation, not when resetCopyFrom()
-  // clears the param after save — that remount would reset FormEdit's
-  // internal state and lose the saved fields.
-  const [mountKey, setMountKey] = useState(copyFrom);
-
-  useEffect(() => {
-    if (copyFrom !== null && copyFrom !== mountKey) {
-      setMountKey(copyFrom);
-    }
-  }, [copyFrom, mountKey]);
-
   if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
     return null;
   }
 
   return (
     <SurveyFormBuilder
-      key={`${phaseId}-${mountKey}`}
+      key={`${phaseId}-${copyFrom}`}
       projectId={projectId}
       phaseId={phaseId}
-      initialCopyFrom={mountKey}
     />
   );
 };

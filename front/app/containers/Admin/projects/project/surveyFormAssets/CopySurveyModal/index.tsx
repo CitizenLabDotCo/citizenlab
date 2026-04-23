@@ -105,10 +105,13 @@ const CopySurveyModal = ({
             buttonStyle="admin-dark"
             disabled={!phaseId}
             onClick={() => {
-              clHistory.push({
-                pathname: editFormLink,
-                search: `?copy_from=${phaseId}`,
-              });
+              const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
+              clHistory.push(url);
+
+              // If we're already in the form builder, we need to reload the page to trigger the copy.
+              if (window.location.pathname.includes(editFormLink)) {
+                window.location.reload();
+              }
             }}
             data-cy="e2e-copy-survey-modal-duplicate"
           >
