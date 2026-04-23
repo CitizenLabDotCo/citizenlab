@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "پروجیکٹ میسجنگ ٹیب سے آپ صرف پروجیکٹ کے تمام شرکاء کو ای میل کر سکتے ہیں۔ منتظمین پلیٹ فارم میسجنگ ٹیب کے ذریعے دیگر شرکاء یا صارفین کے ذیلی سیٹوں کو ای میلز بھیج سکتے ہیں۔",
   "app.containers.Admin.project.emails.message": "پیغام",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "آپ متغیرات کا استعمال کرتے ہوئے شہریوں سے براہ راست بات کر سکتے ہیں {firstName} {lastName}۔ مثال کے طور پر \"پیارے {firstName} {lastName}، ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "مہم نہیں بھیجی جا سکتی کیونکہ کوئی وصول کنندگان نہیں ہیں۔ جس گروپ کو آپ بھیج رہے ہیں وہ یا تو خالی ہے، یا کسی نے بھی ای میلز موصول کرنے کی رضامندی ظاہر نہیں کی ہے۔",
   "app.containers.Admin.project.emails.participants": "شرکاء",
   "app.containers.Admin.project.emails.preview": "پیش منظر",
   "app.containers.Admin.project.emails.previewSentConfirmation": "ایک پیش نظارہ ای میل آپ کے ای میل پتے پر بھیج دیا گیا ہے۔",

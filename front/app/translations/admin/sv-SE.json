@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Från fliken Project Messaging kan du bara skicka e-post till alla projektdeltagare. Administratörer kan skicka e-post till andra deltagare eller undergrupper av användare via fliken Platform Messaging.",
   "app.containers.Admin.project.emails.message": "Meddelande",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Du kan vända dig direkt till mottagarna genom att använda variablerna {firstName} {lastName}. T.ex. \"Kära {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Kampanjen kan inte skickas ut eftersom det saknas mottagare. Gruppen du skickar till är antingen tom, eller så har ingen gett sitt samtycke till att ta emot e-post.",
   "app.containers.Admin.project.emails.participants": "deltagare",
   "app.containers.Admin.project.emails.preview": "Förhandsgranska",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Ett e-postmeddelande med förhandsgranskning har skickats till din e-postadress",

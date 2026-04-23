@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "O'r tab Negeseuon Prosiect y gallwch chi ond e-bostio holl gyfranogwyr y prosiect. Gall gweinyddwyr anfon e-byst at gyfranogwyr eraill neu is-setiau o ddefnyddwyr trwy'r tab Negeseuon Platfform.",
   "app.containers.Admin.project.emails.message": "Neges",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Gallwch siarad yn uniongyrchol â dinasyddion gan ddefnyddio'r newidynnau {firstName} {lastName}. Ee \"Annwyl {firstName} {lastName},...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Ni ellir anfon yr ymgyrch oherwydd nid oes unrhyw dderbynwyr. Mae'r grŵp rydych chi'n anfon ato naill ai'n wag, neu nid oes neb wedi cydsynio i dderbyn e-byst.",
   "app.containers.Admin.project.emails.participants": "cyfranogwyr",
   "app.containers.Admin.project.emails.preview": "Rhagolwg",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Mae e-bost rhagolwg wedi'i anfon i'ch cyfeiriad e-bost",

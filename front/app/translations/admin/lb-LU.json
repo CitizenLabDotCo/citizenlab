@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Vum Tab \"Projet-Messagerie\" aus kënnt Dir nëmmen all Projetsparticipanten eng E-Mail schécken. Adminne kënnen E-Mailen un aner Participanten oder Deelgruppe vu Benotzer iwwer den Tab \"Plattform-Messagerie\" schécken.",
   "app.containers.Admin.project.emails.message": "Message",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Dir kënnt d'Bierger direkt uspriechen, andeems Dir d'Variabelen {firstName} {lastName} benotzt. Z. B. \"Léif {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "D'Campagne kann net verschéckt ginn, well et keng Empfänger gëtt. De Grupp, un deen Dir schéckt, ass entweeder eidel oder et huet kee säin Accord ginn, fir E-Maile ze kréien.",
   "app.containers.Admin.project.emails.participants": "Participanten",
   "app.containers.Admin.project.emails.preview": "Virschau",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Eng Virschau-E-Mail gouf un Är E-Mail-Adress geschéckt",

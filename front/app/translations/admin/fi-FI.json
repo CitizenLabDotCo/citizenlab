@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Project Messaging -välilehdeltä voit lähettää sähköpostia vain kaikille projektin osallistujille. Järjestelmänvalvojat voivat lähettää sähköposteja muille osallistujille tai käyttäjien alajoukoille Platform Messaging -välilehden kautta.",
   "app.containers.Admin.project.emails.message": "Viesti",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Voit puhua suoraan kansalaisille käyttämällä muuttujia {firstName} {lastName}. Esim \"Rakas {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Kampanjaa ei voida lähettää, koska vastaanottajia ei ole. Ryhmä, jolle olet lähettämässä, on joko tyhjä tai kukaan ei ole antanut suostumusta sähköpostien vastaanottamiseen.",
   "app.containers.Admin.project.emails.participants": "osallistujia",
   "app.containers.Admin.project.emails.preview": "Esikatselu",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Sähköpostiosoitteeseesi on lähetetty esikatseluviesti",

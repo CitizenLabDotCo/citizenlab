@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Proje Mesajlaşma sekmesinden yalnızca tüm proje katılımcılarına e-posta gönderebilirsiniz. Yöneticiler, Platform Mesajlaşma sekmesi aracılığıyla diğer katılımcılara veya kullanıcı alt kümelerine e-posta gönderebilir.",
   "app.containers.Admin.project.emails.message": "Mesaj",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "{firstName} {lastName}değişkenlerini kullanarak vatandaşlarla doğrudan konuşabilirsiniz. Örneğin \"Sayın {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Alıcı bulunmadığı için kampanya gönderilemiyor. Gönderim yaptığınız grup ya boş ya da kimse e-posta almayı onaylamadı.",
   "app.containers.Admin.project.emails.participants": "Katılımcılar",
   "app.containers.Admin.project.emails.preview": "Önizleme",
   "app.containers.Admin.project.emails.previewSentConfirmation": "E-posta adresinize bir önizleme e-postası gönderildi",

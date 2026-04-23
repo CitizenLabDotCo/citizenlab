@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Ón táb Teachtaireachtaí Tionscadail ní féidir leat ríomhphost a sheoladh ach chuig gach rannpháirtí tionscadail. Is féidir le riarthóirí ríomhphoist a sheoladh chuig rannpháirtithe eile nó chuig foghrúpaí úsáideoirí tríd an táb Teachtaireachtaí Ardáin.",
   "app.containers.Admin.project.emails.message": "Teachtaireacht",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Is féidir leat labhairt go díreach le saoránaigh ag baint úsáide as na hathróga {firstName} {lastName}. M.sh. \"A chara {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "Ní féidir an feachtas a sheoladh amach toisc nach bhfuil aon fhaighteoirí ann. Tá an grúpa a bhfuil tú ag seoladh chuige folamh, nó níl toiliú tugtha ag aon duine ríomhphoist a fháil.",
   "app.containers.Admin.project.emails.participants": "rannpháirtithe",
   "app.containers.Admin.project.emails.preview": "Réamhamharc",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Tá ríomhphost réamhamhairc seolta chuig do sheoladh ríomhphoist",

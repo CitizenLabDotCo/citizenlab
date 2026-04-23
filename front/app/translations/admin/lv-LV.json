@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Cilnē Projekta ziņojumi varat nosūtīt e-pastu tikai visiem projekta dalībniekiem. Administratori var sūtīt e-pasta vēstules citiem dalībniekiem vai lietotāju apakškopām, izmantojot cilni Platformas ziņojumi.",
   "app.containers.Admin.project.emails.message": "Ziņa",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Jūs varat tieši sazināties ar iedzīvotājiem, izmantojot mainīgos lielumus {firstName} {lastName}. Piemēram, \"Dārgais {firstName} {lastName}, ...\".",
+  "app.containers.Admin.project.emails.no_recipients": "Kampaņu nevar nosūtīt, jo nav saņēmēju. Grupa, kurai sūtāt, ir vai nu tukša, vai arī neviens nav piekritis saņemt e-pastus.",
   "app.containers.Admin.project.emails.participants": "dalībnieki",
   "app.containers.Admin.project.emails.preview": "Priekšskatījums",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Uz jūsu e-pasta adresi ir nosūtīts priekšskatījuma e-pasts",

@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Vanaf het tabblad Project e-mails kun je alleen e-mails sturen naar alle projectdeelnemers. Platformbeheerders kunnen e-mails sturen naar andere deelnemers of subsets van gebruikers via het tabblad Platform e-mails.",
   "app.containers.Admin.project.emails.message": "Bericht",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Je kunt inwoners rechtstreeks aanspreken met de variabelen {firstName} {lastName}. Bijv. \"Beste {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "De campagne kan niet worden verzonden omdat er geen ontvangers zijn. De groep waarnaar je verzendt is leeg, of niemand heeft toestemming gegeven voor het ontvangen van e-mails.",
   "app.containers.Admin.project.emails.participants": "deelnemers",
   "app.containers.Admin.project.emails.preview": "Voorbeeld",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Een voorbeeld e-mail is verzonden naar jouw e-mailadres",

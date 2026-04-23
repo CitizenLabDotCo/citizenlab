@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "ਪ੍ਰੋਜੈਕਟ ਮੈਸੇਜਿੰਗ ਟੈਬ ਤੋਂ ਤੁਸੀਂ ਸਿਰਫ ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਈਮੇਲ ਕਰ ਸਕਦੇ ਹੋ। ਪ੍ਰਸ਼ਾਸਕ ਪਲੇਟਫਾਰਮ ਮੈਸੇਜਿੰਗ ਟੈਬ ਰਾਹੀਂ ਦੂਜੇ ਭਾਗੀਦਾਰਾਂ ਜਾਂ ਉਪਭੋਗਤਾਵਾਂ ਦੇ ਉਪ ਸਮੂਹਾਂ ਨੂੰ ਈਮੇਲ ਭੇਜ ਸਕਦੇ ਹਨ।",
   "app.containers.Admin.project.emails.message": "ਸੁਨੇਹਾ",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "ਤੁਸੀਂ {firstName} {lastName}ਵੇਰੀਏਬਲ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਨਾਗਰਿਕਾਂ ਨਾਲ ਸਿੱਧਾ ਗੱਲ ਕਰ ਸਕਦੇ ਹੋ। ਜਿਵੇਂ ਕਿ \"ਪਿਆਰੇ {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "ਮੁਹਿੰਮ ਨਹੀਂ ਭੇਜੀ ਜਾ ਸਕਦੀ ਕਿਉਂਕਿ ਕੋਈ ਪ੍ਰਾਪਤਕਰਤਾ ਨਹੀਂ ਹੈ। ਜਿਸ ਸਮੂਹ ਨੂੰ ਤੁਸੀਂ ਭੇਜ ਰਹੇ ਹੋ ਉਹ ਜਾਂ ਤਾਂ ਖਾਲੀ ਹੈ, ਜਾਂ ਕਿਸੇ ਨੇ ਵੀ ਈਮੇਲਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਸਹਿਮਤੀ ਨਹੀਂ ਦਿੱਤੀ ਹੈ।",
   "app.containers.Admin.project.emails.participants": "ਭਾਗੀਦਾਰ",
   "app.containers.Admin.project.emails.preview": "ਪੂਰਵ-ਝਲਕ",
   "app.containers.Admin.project.emails.previewSentConfirmation": "ਇੱਕ ਪੂਰਵਦਰਸ਼ਨ ਈਮੇਲ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ 'ਤੇ ਭੇਜੀ ਗਈ ਹੈ",

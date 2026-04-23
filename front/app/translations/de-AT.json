@@ -2434,7 +2434,7 @@
   "app.errors.maximum_attendees_greater_than1": "Die maximale Anzahl der angemeldeten Personen muss größer als 0 sein.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Die maximale Anzahl der angemeldeten Personen muss größer oder gleich der aktuellen Anzahl der angemeldeten Personen sein.",
   "app.errors.no_invites_specified": "Es konnten keine E-Mail-Adressen gefunden werden.",
-  "app.errors.no_recipients": "Die Kampagne kann nicht verschickt werden, weil es keine Empfänger*innen gibt. Die Gruppe, an die Sie senden, ist entweder leer, oder niemand hat dem Empfang von E-Mails zugestimmt.",
+  "app.errors.no_recipients": "Die Kampagne kann nicht versendet werden, da es keine Empfänger*innen gibt. Die Gruppe, an die Sie senden, ist entweder leer oder niemand hat dem Erhalt von E-Mails zugestimmt.",
   "app.errors.number_invalid": "Bitte geben Sie eine gültige Nummer ein.",
   "app.errors.password_blank": "Dies kann nicht leer sein",
   "app.errors.password_invalid": "Bitte überprüfen Sie noch einmal Ihr aktuelles Passwort.",

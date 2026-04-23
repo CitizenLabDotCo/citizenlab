@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "A Projektüzenetek fülről csak az összes projekt-résztvevőnek küldhet e-mailt. Az adminisztrátorok a Platformüzenetek fülön keresztül küldhetnek e-maileket más résztvevőknek vagy a felhasználók egy csoportjának.",
   "app.containers.Admin.project.emails.message": "Üzenet",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Közvetlenül is megszólíthatja a polgárokat a {firstName} {lastName} változók használatával. Pl. „Kedves {firstName} {lastName}! ...”",
+  "app.containers.Admin.project.emails.no_recipients": "A kampány nem küldhető ki, mert nincsenek címzettek. A megcélzott csoport vagy üres, vagy senki nem járult hozzá az e-mailek fogadásához.",
   "app.containers.Admin.project.emails.participants": "résztvevők",
   "app.containers.Admin.project.emails.preview": "Előnézet",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Egy előnézeti e-mailt küldtünk az e-mail-címére.",

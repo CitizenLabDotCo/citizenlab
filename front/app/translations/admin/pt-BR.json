@@ -1199,6 +1199,7 @@
   "app.containers.Admin.project.emails.infoboxModeratorText": "Na guia Project Messaging (Mensagens do projeto), você só pode enviar e-mails a todos os participantes do projeto. Os administradores podem enviar e-mails para outros participantes ou subconjuntos de usuários por meio da guia Platform Messaging (Mensagens da plataforma).",
   "app.containers.Admin.project.emails.message": "Mensagem",
   "app.containers.Admin.project.emails.nameVariablesInfo2": "Você pode falar diretamente com os cidadãos usando as variáveis {firstName} {lastName}. Por exemplo, \"Prezado {firstName} {lastName}, ...\"",
+  "app.containers.Admin.project.emails.no_recipients": "A campanha não pode ser enviada porque não há destinatários. O grupo para o qual você está enviando está vazio ou ninguém autorizou o recebimento de e-mails.",
   "app.containers.Admin.project.emails.participants": "participantes",
   "app.containers.Admin.project.emails.preview": "Pré-visualização",
   "app.containers.Admin.project.emails.previewSentConfirmation": "Um e-mail de visualização foi enviado para o seu endereço de e-mail",

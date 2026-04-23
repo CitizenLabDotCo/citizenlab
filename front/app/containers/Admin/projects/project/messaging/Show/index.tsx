@@ -11,6 +11,7 @@ import {
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -21,6 +22,7 @@ import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { isDraft } from 'api/campaigns/util';
+import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -34,10 +36,10 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { formatDateInTimezone } from 'utils/dateUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -57,7 +59,6 @@ const FromTo = styled.div`
 const FromToHeader = styled.span`
   font-weight: bold;
 `;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -67,7 +68,6 @@ const Buttons = styled.div`
   align-items: center;
 `;
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
 const Show = () => {
   const { projectId, campaignId } = useParams() as {
     projectId: string;
@@ -76,6 +76,7 @@ const Show = () => {
 
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
+  const { data: project } = useProjectById(projectId);
 
   const {
     mutate: sendCampaign,
@@ -150,10 +151,13 @@ const Show = () => {
   });
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
+  const hasNoParticipants =
+    project?.data.attributes.participants_count === 0 &&
+    campaign?.data.attributes.scheduled_at;
+
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
-
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
@@ -183,10 +187,9 @@ const Show = () => {
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   <Text fontSize="base" whiteSpace="nowrap">
-                    {formatDateInTimezone({
-                      date: campaign.data.attributes.scheduled_at,
-                      timeZone,
-                    })}
+                    {moment(campaign.data.attributes.scheduled_at)
+                      .tz(timeZone)
+                      .format('LLL')}
                   </Text>
                 </>
               )}
@@ -235,6 +238,11 @@ const Show = () => {
                 showIcon
                 showBackground
               />
+            </Box>
+          )}
+          {!apiSendErrors && hasNoParticipants && (
+            <Box mb="8px">
+              <Warning>{formatMessage(messages.no_recipients)}</Warning>
             </Box>
           )}
           {apiSendErrors && (

@@ -11,6 +11,7 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { useParams, useSearchParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
@@ -40,7 +41,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { formatDateInTimezone } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -61,7 +61,6 @@ const FromTo = styled.div`
 const FromToHeader = styled.span`
   font-weight: bold;
 `;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -97,7 +96,6 @@ const SendNowWarning = styled.div`
   margin-bottom: 30px;
 `;
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
 const Show = () => {
   const { campaignId } = useParams() as { campaignId: string };
 
@@ -245,10 +243,9 @@ const Show = () => {
                   text={<FormattedMessage {...messages.scheduled} />}
                 />
                 <Text fontSize="base" whiteSpace="nowrap">
-                  {formatDateInTimezone({
-                    date: campaign.data.attributes.scheduled_at,
-                    timeZone,
-                  })}
+                  {moment(campaign.data.attributes.scheduled_at)
+                    .tz(timeZone)
+                    .format('LLL')}
                 </Text>
               </>
             )}
