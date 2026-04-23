@@ -2643,7 +2643,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExisting": "Duplicate existing",
   "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExistingDescription": "Copy a survey from another project as a starting point.",
   "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.newSurvey": "New survey",
-  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent": "<b>Planning an event?</b> Use the Paper Form button above to preview, download and import scanned responses",
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent3": "<b>Planning an event?</b> Use the \"Paper form\" button above to download a printable PDF of your form and import the scans.",
   "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratch": "Start from scratch",
   "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratchDescription": "Build your input collection drag and dropping the questions on the left.",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "No survey responses yet",
