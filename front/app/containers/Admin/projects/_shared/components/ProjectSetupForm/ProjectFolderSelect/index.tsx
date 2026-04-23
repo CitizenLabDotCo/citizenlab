@@ -6,11 +6,8 @@ import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
-import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
@@ -25,14 +22,11 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 interface Props {
-  projectAttrs: IUpdatedProjectProperties;
-  onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
+  folder_id?: string | null;
+  onChange: (folder_id: string | null) => void;
 }
 
-const ProjectFolderSelect = ({
-  projectAttrs: { folder_id },
-  onProjectAttributesDiffChange,
-}: Props) => {
+const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: projectFolders } = useInfiniteProjectFoldersAdmin({}, 10000);
@@ -62,7 +56,7 @@ const ProjectFolderSelect = ({
 
   const handleSelectFolderChange = ({ value }) => {
     const folderId = value === noFolderId ? null : value;
-    onProjectAttributesDiffChange({ folder_id: folderId }, 'enabled');
+    onChange(folderId);
   };
 
   const isAdminUser = isAdmin(authUser);

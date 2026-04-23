@@ -499,18 +499,21 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           {showProjectFolderSelect && (
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
-                projectAttrs={projectAttrs}
-                onProjectAttributesDiffChange={(change, submitState) => {
-                  if (change.folder_id) {
+                folder_id={projectAttrs.folder_id}
+                onChange={(folder_id) => {
+                  if (folder_id) {
                     // If a folder is chosen, the project will automatically
                     // inherit the folder's space. So we clear
                     // any previously chosen space.
                     handleProjectAttributeDiffOnChange(
-                      { ...change, space_id: undefined },
-                      submitState
+                      { folder_id, space_id: undefined },
+                      'enabled'
                     );
                   } else {
-                    handleProjectAttributeDiffOnChange(change, submitState);
+                    handleProjectAttributeDiffOnChange(
+                      { folder_id },
+                      'enabled'
+                    );
                   }
                 }}
               />
