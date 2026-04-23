@@ -1745,7 +1745,7 @@
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Visitors timeline",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": "Admins only",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approvalRequested": "Approval requested",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndPublish": "Approve & publish",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approve": "Approve",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndSchedule": "Approve & schedule",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2": "≈ {count, plural, one {# recipient} other {# recipients}}",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": "Cancel schedule",
