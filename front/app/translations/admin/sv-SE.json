@@ -1583,7 +1583,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Denna input importerades anonymt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} bidrag kunde inte godkännas. Kontrollera varje bidrag för valideringsfel.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lokal:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Inget att granska än. Klicka på \"Importera skanningar\" för att importera en PDF-fil som innehåller skannade formulär eller en Excel-fil som innehåller bidrag.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Inget att granska än. Klicka på \"Importera skanningar\" för att importera en PDF-fil som innehåller inskannade formulär eller en Excel-fil som innehåller bidrag.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Inget att granska än. Klicka på \"Importera fil\" för att importera en Excel-fil som innehåller bidrag.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Idé",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Det går inte att visa den importerade filen. Visning av importerade filer är endast tillgängligt för PDF-import.",
