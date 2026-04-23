@@ -3142,7 +3142,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Geben Sie einen Themen-Namen für alle Sprachen an",
   "app.containers.AdminPage.Topics.inputTags": "Beitrags-Tags",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Es ist mindestens ein Themen-Tag erforderlich. Wenn Sie keine Tags verwenden möchten, können Sie das Element 'Tags' aus dem Eingabeformular einer beliebigen Phase löschen (falls vorhanden).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "KI-gestütztes Tagging überschreibt Ihre manuellen Tag-Definitionen. Tags werden automatisch erstellt, aktualisiert und zugewiesen.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "KI-gestütztes Tagging überschreibt deine manuellen Tag-Definitionen. Tags werden automatisch erstellt, aktualisiert und zugewiesen.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatisches Erkennen und Zuweisen von Tags",
   "app.containers.AdminPage.Topics.perspectives": "Perspektiven",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Themen-Tags erstellen und verwalten, mit denen Nutzer*innen ihre Beiträge in diesem Projekt kategorisieren können.",
