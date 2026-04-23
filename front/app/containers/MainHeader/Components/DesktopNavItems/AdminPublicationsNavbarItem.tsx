@@ -14,7 +14,6 @@ import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
@@ -150,7 +149,6 @@ const AdminPublicationsNavbarItem = ({
 }: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   const { data } = useAdminPublications(
     {
@@ -232,15 +230,14 @@ const AdminPublicationsNavbarItem = ({
                         {localize(item.attributes.publication_title_multiloc)}
                       </ProjectsListItem>
                     )}
-                    {isProjectFoldersEnabled &&
-                      item.relationships.publication.data.type === 'folder' && (
-                        <ProjectsListItem
-                          to={`/folders/${item.attributes.publication_slug}`}
-                          scrollToTop
-                        >
-                          {localize(item.attributes.publication_title_multiloc)}
-                        </ProjectsListItem>
-                      )}
+                    {item.relationships.publication.data.type === 'folder' && (
+                      <ProjectsListItem
+                        to={`/folders/${item.attributes.publication_slug}`}
+                        scrollToTop
+                      >
+                        {localize(item.attributes.publication_title_multiloc)}
+                      </ProjectsListItem>
+                    )}
                   </React.Fragment>
                 ))}
               </>

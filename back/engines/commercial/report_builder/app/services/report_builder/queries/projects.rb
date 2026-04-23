@@ -2,14 +2,14 @@ module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
     def run_query(params = {})
       extract_params = extract_parameters(params)
-      start_date, end_date, no_data = TimeBoundariesParser.new(extract_params[:start_at], extract_params[:end_at]).parse
+      start_at, end_at, no_data = TimeBoundaries.parse(extract_params[:start_at], extract_params[:end_at])
 
       return empty_result if no_data
 
       finder_params = {
         **extract_params.except(:start_at, :end_at),
-        phase_start_date: start_date,
-        phase_end_date: end_date
+        phase_start_date: start_at,
+        phase_end_date: end_at
       }
       projects = ProjectsFinderAdminService.execute(
         Project.not_hidden,
@@ -60,10 +60,15 @@ module ReportBuilder
         .where(project_id: project_ids)
         .group(:project_id)
         .to_h do |period|
-        [
-          period.project_id,
-          period.slice(:start_at, :end_at)
-        ]
+        start_at = period.start_at&.to_date
+        end_at = if period.end_at
+          end_date = period.end_at.to_date
+          # Subtract one day if end_at falls exactly on midnight, because the end
+          # boundary is exclusive (the phase is no longer active at that point).
+          period.end_at.seconds_since_midnight.zero? ? end_date - 1.day : end_date
+        end
+
+        [period.project_id, { start_at:, end_at: }]
       end
     end
 

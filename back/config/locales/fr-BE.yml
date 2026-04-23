@@ -323,7 +323,8 @@ fr-BE:
   time:
     am: du matin
     formats:
-      hour_of_day: '%Hh'
+      hour_of_day: "%Hh"
+      long: "%A %d %B %Y à %Hh%M"
     pm: de l'après-midi
   topics:
     community: Développement communautaire

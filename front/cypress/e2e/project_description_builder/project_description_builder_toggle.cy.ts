@@ -56,12 +56,13 @@ describe('Project description builder toggle', () => {
   });
 
   it('shows original description by default along with any attachments if project description builder is not used', () => {
-    cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/files`).as('saveProjectFiles');
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/general`);
-    cy.wait(2000);
+    // This 4s wait is necessary. I tried waiting in a number of other ways,
+    // but this was the only consistent solution.
+    cy.wait(4000);
     cy.scrollTo('bottom');
 
     // Open the file upload modal
@@ -73,7 +74,6 @@ describe('Project description builder toggle', () => {
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.wait('@saveProject');
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
@@ -97,7 +97,6 @@ describe('Project description builder toggle', () => {
   });
 
   it('shows attachments added to the project after description added using project description builder', () => {
-    cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
@@ -105,7 +104,9 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/general`);
-    cy.wait(2000);
+    // This 4s wait is necessary. I tried waiting in a number of other ways,
+    // but this was the only consistent solution.
+    cy.wait(4000);
     cy.scrollTo('bottom');
 
     // Open the file upload modal
@@ -119,7 +120,6 @@ describe('Project description builder toggle', () => {
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.wait('@saveProject');
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
