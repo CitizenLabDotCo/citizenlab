@@ -294,7 +294,7 @@ describe ProjectPolicy do
     end
   end
 
-  context 'on a draft project' do
+  context 'on a draft project in root' do
     let!(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
 
     context 'for a visitor' do
@@ -470,7 +470,7 @@ describe ProjectPolicy do
       let(:user) { create(:space_moderator) }
 
       it { is_expected.not_to permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
+      it { is_expected.to permit(:create)                    }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -528,7 +528,12 @@ describe ProjectPolicy do
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
     context 'for a timeline project contained within a folder the user moderates' do
-      let!(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
+      let!(:project) do 
+        create(:single_phase_ideation_project, admin_publication_attributes: { 
+          parent_id: project_folder.admin_publication.id,
+          publication_status: 'draft'
+        })
+      end
 
       it { is_expected.to permit(:create) }
       it { is_expected.to permit(:copy)   }
@@ -551,7 +556,7 @@ describe ProjectPolicy do
       context 'when project is created without folder or space id' do
         let(:project) { build(:project, admin_publication_attributes: { publication_status: 'draft' }) }
 
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
       end
 
       context 'when project is created with folder id' do
@@ -718,9 +723,9 @@ describe ProjectPolicy do
       end
 
       context 'when the project has never been published' do
-        it 'permits removing the project from its folder' do
+        it 'denies removing the project from its folder' do
           project.folder_id = nil
-          is_expected.to permit(:update)
+          is_expected.not_to permit(:update)
         end
       end
 
@@ -771,9 +776,9 @@ describe ProjectPolicy do
       end
 
       context 'when the project has never been published' do
-        it 'permits removing the project from its folder' do
+        it 'denies removing the project from its folder into root' do
           project.folder_id = nil
-          is_expected.to permit(:update)
+          is_expected.not_to permit(:update)
         end
       end
 
@@ -847,9 +852,9 @@ describe ProjectPolicy do
       end
 
       context 'when the project has never been published' do
-        it 'permits removing the project from its space' do
+        it 'denies removing the project from its space' do
           project.space_id = nil
-          is_expected.to permit(:update)
+          is_expected.not_to permit(:update)
         end
       end
 

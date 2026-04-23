@@ -96,15 +96,11 @@ class ProjectPolicy < ApplicationPolicy
     return false unless active?
     return true if admin?
 
-    if record.folder
-      UserRoleService.new.can_moderate?(record.folder, user)
-    elsif record.space
-      UserRoleService.new.can_moderate?(record.space, user)
-    else
-      # PMs and FMs can create projects, which then need to be approved.
-      # SMs can't for now.
-      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
-    end
+    return false if record.folder && !can_moderate_folder?
+    return false if record.space && !can_moderate_space?
+
+    # Moderators can create projects in root, which then need to be approved.
+    record.admin_publication.draft? && (user.moderator?)
   end
 
   def show?
@@ -118,13 +114,16 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    return true if active_admin?
-    return active_moderator? unless record.folder_changed? || record.space_changed?
+    if active_moderator?
+      return true unless record.folder_changed? || record.space_changed?
 
-    return false if record.folder_changed? && !folder_change_permitted?
-    return false if record.space_changed? && !space_change_permitted?
+      return false if record.folder_changed? && !can_moderate_folder?
+      return false if record.space_changed? && !can_moderate_space?
 
-    true
+      return true
+    end
+
+    false
   end
 
   def refresh_preview_token?
@@ -226,57 +225,11 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def can_moderate_folder?
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
-  end
-
-  def can_moderate_persisted_project?
-    UserRoleService.new.can_moderate_project?(record.class.find(record.id), user)
+    UserRoleService.new.can_moderate?(record.folder, user)
   end
 
   def can_moderate_space?
-    record.space && UserRoleService.new.can_moderate?(record.space, user)
-  end
-
-  def folder_change_permitted?
-    # PMs and regular users can't change folder or space.
-    return false unless active? && (user.project_folder_moderator? || user.space_moderator?)
-
-    # Evaluate moderation against the persisted project (pre-change state).
-    return false unless can_moderate_persisted_project?
-
-    if record.folder.nil?
-      # Removing the project from its folder — no target folder to moderate;
-      # permit only when the project has never been published.
-      # (Note: space_id is preserved by Project#folder_id=, so "no folder"
-      # doesn't imply the project is leaving its space.)
-      !record.ever_published?
-    else
-      # Moving to a specific folder — must be able to moderate it.
-      can_moderate_folder?
-    end
-  end
-
-  def space_change_permitted?
-    return false unless active?
-
-    # Side-effect of a folder move already vetted by folder_change_permitted?;
-    # no further check needed. (Reachable only when folder_change_permitted?
-    # returned true, so the user is known to be an FM or SM.)
-    return true if record.folder_changed? && record.folder&.space_id == record.space_id
-
-    # Direct space change. Only SMs can submit :space_id via permitted_attributes.
-    return false unless user.space_moderator?
-
-    # Evaluate moderation against the persisted project (pre-change state).
-    return false unless can_moderate_persisted_project?
-
-    if record.space.nil?
-      # Removing the project from its space — permit only if project has never been published.
-      !record.ever_published?
-    else
-      # Direct space assignment — user must moderate the target space.
-      UserRoleService.new.can_moderate?(record.space, user)
-    end
+    UserRoleService.new.can_moderate?(record.space, user)
   end
 
   def project_preview?
