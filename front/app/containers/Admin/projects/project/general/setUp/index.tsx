@@ -519,8 +519,8 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           )}
 
           <SpaceSelectSection
-            spaceId={projectAttrs.space_id ?? null}
-            isProjectInsideFolder={!!projectAttrs.folder_id}
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
             onChange={handleSpaceSelectChange}
           />
 

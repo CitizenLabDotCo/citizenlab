@@ -16,16 +16,12 @@ import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import messages from './messages';
 
 interface Props {
-  spaceId: string | null;
-  isProjectInsideFolder?: boolean;
+  spaceId?: string | null;
+  folderId?: string | null;
   onChange: (spaceId: string | null) => void;
 }
 
-const SpaceSelectSection = ({
-  spaceId,
-  isProjectInsideFolder = false,
-  onChange,
-}: Props) => {
+const SpaceSelectSection = ({ spaceId, folderId, onChange }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
@@ -38,7 +34,7 @@ const SpaceSelectSection = ({
   if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
 
   const getTooltipMessage = () => {
-    if (isProjectInsideFolder) {
+    if (folderId) {
       return messages.disabledTooltip;
     }
 
@@ -62,7 +58,7 @@ const SpaceSelectSection = ({
 
       <SpaceSelect
         spaceId={spaceId}
-        isProjectInsideFolder={isProjectInsideFolder}
+        folderId={folderId}
         spaces={spaces.data}
         role={userIsAdmin ? 'admin' : 'space_moderator'}
         onChange={onChange}

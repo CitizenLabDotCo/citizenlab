@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Select } from '@citizenlab/cl2-component-library';
 
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import { SpaceData } from 'api/spaces/types';
+import useSpace from 'api/spaces/useSpace';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -11,9 +13,9 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  spaceId: string | null;
+  spaceId?: string | null;
   spaces: SpaceData[];
-  isProjectInsideFolder?: boolean;
+  folderId?: string | null;
   role: 'admin' | 'space_moderator';
   onChange: (spaceId: string | null) => void;
 }
@@ -23,31 +25,34 @@ interface Props {
 // inside of the Select component
 const NO_SPACE_ID = '/';
 
-const SpaceSelect = ({
-  spaceId,
-  spaces,
-  isProjectInsideFolder = false,
-  role,
-  onChange,
-}: Props) => {
+const SpaceSelect = ({ spaceId, spaces, folderId, role, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { data: folder } = useProjectFolderById(folderId);
+  const { data: spaceAssociatedWithFolder } = useSpace(
+    folder?.data.attributes.space_id ?? undefined
+  );
 
-  const getNoSpaceMessage = () => {
-    if (isProjectInsideFolder) {
-      return messages.sameSpaceAsFolder;
+  const getNoSpaceLabel = () => {
+    if (folderId) {
+      if (spaceAssociatedWithFolder) {
+        return localize(
+          spaceAssociatedWithFolder.data.attributes.title_multiloc
+        );
+      }
+
+      return formatMessage(messages.sameSpaceAsFolder);
     }
 
     if (role === 'space_moderator') {
-      return messages.pleaseSelectASpace;
+      return formatMessage(messages.pleaseSelectASpace);
     }
 
-    return messages.noSpaceLabel;
+    return formatMessage(messages.noSpaceLabel);
   };
 
-  const noSpaceMessage = getNoSpaceMessage();
+  const noSpaceLabel = getNoSpaceLabel();
 
-  const noSpaceLabel = formatMessage(noSpaceMessage);
   const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
   const spaceOptions = [
@@ -69,7 +74,7 @@ const SpaceSelect = ({
         const nilValue = value === '' || value === NO_SPACE_ID;
         onChange(nilValue ? null : value);
       }}
-      disabled={isProjectInsideFolder}
+      disabled={!!folderId}
     />
   );
 };

@@ -11,8 +11,8 @@ const AdminInterface = ({ space_id, folder_id }: Props) => {
 
   return (
     <SpaceSelectSection
-      spaceId={space_id || null}
-      isProjectInsideFolder={!!folder_id}
+      spaceId={space_id}
+      folderId={folder_id}
       onChange={() => {}}
     />
   );
