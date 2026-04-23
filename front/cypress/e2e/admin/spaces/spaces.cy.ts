@@ -54,8 +54,12 @@ describe('Spaces CRUD', () => {
       .find('.e2e-more-actions')
       .click();
 
-    const moreActionsTooltip = cy.get('.e2e-more-actions-list').first();
-    moreActionsTooltip.find('button').first().contains('Delete space').click();
+    cy.get('.e2e-more-actions-list')
+      .first()
+      .find('button')
+      .first()
+      .contains('Delete space')
+      .click();
 
     cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
     cy.dataCy('typed-confirmation-delete-button').click();
