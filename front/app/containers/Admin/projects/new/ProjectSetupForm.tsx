@@ -341,7 +341,6 @@ const ProjectSetupForm = () => {
                     handleProjectAttributeDiffOnChange(change, submitState);
                   }
                 }}
-                isNewProject={true}
               />
             </Highlighter>
           )}

@@ -513,7 +513,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
                     handleProjectAttributeDiffOnChange(change, submitState);
                   }
                 }}
-                isNewProject={false}
               />
             </Highlighter>
           )}

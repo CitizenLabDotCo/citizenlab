@@ -15,8 +15,7 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
-import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -28,13 +27,11 @@ const StyledSectionField = styled(SectionField)`
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
-  isNewProject: boolean;
 }
 
 const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
-  isNewProject,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -70,18 +67,6 @@ const ProjectFolderSelect = ({
 
   const isAdminUser = isAdmin(authUser);
 
-  const getSelectEnabled = () => {
-    if (isAdminUser) return true;
-
-    if (isNewProject) {
-      return isProjectFolderModerator(authUser) || isSpaceModerator(authUser);
-    }
-
-    return false;
-  };
-
-  const selectEnabled = getSelectEnabled();
-
   if (folderOptions.length === 0) return null;
 
   const defaultFolderSelectOptionValue = folderOptions[0].value;
@@ -106,7 +91,6 @@ const ProjectFolderSelect = ({
         value={folder_id || defaultFolderSelectOptionValue}
         options={folderOptions}
         onChange={handleSelectFolderChange}
-        disabled={!selectEnabled}
       />
     </StyledSectionField>
   );
