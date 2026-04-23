@@ -5,7 +5,6 @@ import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
-import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
@@ -106,8 +105,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useFeatureFlag({
       name: 'project_description_builder',
     }) && projectFolder; // description builder cannot be used when creating a folder
-
-  const { data: authUser } = useAuthUser();
 
   /*
     ==============
