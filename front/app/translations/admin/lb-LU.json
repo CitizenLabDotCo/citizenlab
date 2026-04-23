@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Gitt en Tag-Numm fir all Sproochen un",
   "app.containers.AdminPage.Topics.inputTags": "Bäitrag-Tags",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Op d'mannst een Tag ass erfuerderlech. Wann Dir keng Taggë benotze wëllt, kann den Element „Taggë“ aus dem Input-Formular vun all Phas geläscht ginn (wa viraussen).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Wann dës Funktioun aktivéiert ass, gi mat Hëllef vun KI kontinuéierlech Tagge generéiert, aktualiséiert an den Inputen zougewisen.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "AI-gestützt Tagging iwwerschreift Är manuell Tag-Definitiounen. Tags ginn automatesch erstallt, aktualiséiert an zougewisen.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Tags automatesch erkennen an zouweisen",
   "app.containers.AdminPage.Topics.perspectives": "Perspektiven",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Erstellt a geréiert d'Tags, déi d'Bierger benotze kënnen, fir hir Bäiträg an dësem Projet ze kategoriséieren.",

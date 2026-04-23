@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Oqaatsinut tamanut ilisarnaammik atsiigit",
   "app.containers.AdminPage.Topics.inputTags": "Ilanngussanut ilisarnaatit",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Ikinnerpaamik tag ataaseq piumasaqaataavoq. Tag-it atorusunngikkukkit, 'Tag-it' immersugassamiit piiaarneqarsinnaavoq (peqarpat).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Atulerpat, tag-it AI atorlugu ingerlaavartumik pilersinneqartassapput, nutarterneqartassapput akissutinullu inississorneqartassallutik.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "AI atorlugu tag-ilersuinerup nammineq tag-inik nassuiaatitit qaangertarpai. Tag-it nammineerlutik pilersinneqartassapput, nutarterneqartassapput inissitsiterneqartassallutillu.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Ilisarnaatit nammineerluni nassaarikkit inissillugillu",
   "app.containers.AdminPage.Topics.perspectives": "Isiginnittaatsit",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Pilersikkit aqullugillu tag-it innuttaasut suliniummi uani ilanngussatik immikkoortiternerannut atorsinnaasaat.",

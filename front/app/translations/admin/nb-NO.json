@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Inndatakoder",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Minst én tagg er påkrevd. Hvis du ikke ønsker å bruke tagger, kan du slette \"Tagger\"-elementet fra inndataskjemaet for alle faser (hvis det finnes).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Når denne funksjonen er aktivert, opprettes, oppdateres og tilordnes tagger kontinuerlig til innganger ved hjelp av AI.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "AI-drevet tagging overstyrer dine manuelle tag-definisjoner. Tagger vil bli opprettet, oppdatert og tildelt automatisk.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatisk gjenkjenning og tildeling av tagger",
   "app.containers.AdminPage.Topics.perspectives": "Perspektiver",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",

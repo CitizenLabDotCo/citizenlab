@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Cuir ainm clibe ar fáil do gach teanga",
   "app.containers.AdminPage.Topics.inputTags": "Clibeanna ionchuir",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Tá clib amháin ar a laghad ag teastáil. Mura mian leat clibeanna a úsáid, is féidir an mhír 'Clibeanna' a scriosadh ó fhoirm ionchuir aon chéime (más ann di).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Nuair a bhíonn sé cumasaithe, cruthaítear, nuashonraítear agus sanntar clibeanna d'ionchuir go leanúnach, ag baint úsáide as hintleacht shaorga.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Sáraíonn clibeáil faoi thiomáint ag AI do shainmhínithe clibeanna láimhe. Cruthófar, nuashonrófar agus sannfar clibeanna go huathoibríoch.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Braith agus sannadh clibeanna go huathoibríoch",
   "app.containers.AdminPage.Topics.perspectives": "Peirspictíochtaí",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Cruthaigh agus bainistigh na clibeanna ar féidir le saoránaigh a úsáid chun a gcuid ionchuir sa tionscadal seo a chatagóiriú.",

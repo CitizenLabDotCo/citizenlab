@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Δώστε ένα όνομα ετικέτας για όλες τις γλώσσες",
   "app.containers.AdminPage.Topics.inputTags": "Ετικέτες καταχωρίσεων",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Απαιτείται τουλάχιστον μία ετικέτα. Εάν δεν επιθυμείτε να χρησιμοποιήσετε ετικέτες, το στοιχείο «Ετικέτες» μπορεί να διαγραφεί από τη φόρμα εισαγωγής οποιασδήποτε φάσης (εάν υπάρχει).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Όταν είναι ενεργοποιημένο, δημιουργούνται, ενημερώνονται και αντιστοιχίζονται συνεχώς ετικέτες στις εισροές, με τη χρήση τεχνητής νοημοσύνης.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Η σήμανση μέσω AI αντικαθιστά τους χειροκίνητους ορισμούς ετικετών σας. Οι ετικέτες θα δημιουργούνται, θα ενημερώνονται και θα αντιστοιχίζονται αυτόματα.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Αυτόματος εντοπισμός και αντιστοίχιση ετικετών",
   "app.containers.AdminPage.Topics.perspectives": "Προοπτικές",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Δημιουργήστε και διαχειριστείτε τις ετικέτες που μπορούν να χρησιμοποιούν οι πολίτες για να κατηγοριοποιούν τις συνεισφορές τους σε αυτό το έργο.",

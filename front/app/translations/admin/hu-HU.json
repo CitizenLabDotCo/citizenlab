@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Adja meg a címke nevét minden nyelven",
   "app.containers.AdminPage.Topics.inputTags": "Beküldési címkék",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Legalább egy címke megadása kötelező. Ha nem kíván címkéket használni, a „Címkék” elem bármely szakasz beviteli űrlapjából törölhető (ha szerepel benne).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Ha engedélyezve van, a rendszer mesterséges intelligencia segítségével folyamatosan hoz létre, frissít és rendel hozzá címkéket a beküldött tartalmakhoz.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Az MI-alapú címkézés felülírja a manuális címkedefiníciókat. A címkék automatikusan jönnek létre, frissülnek és kerülnek hozzárendelésre.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Címkék automatikus felismerése és hozzárendelése",
   "app.containers.AdminPage.Topics.perspectives": "Perspektívák",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Hozza létre és kezelje azokat a címkéket, amelyeket a lakosok használhatnak a projektben beküldött hozzászólásaik kategorizálására.",

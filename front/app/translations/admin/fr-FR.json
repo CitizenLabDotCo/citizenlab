@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Veuillez renseigner le nom de l'étiquette pour chaque langue",
   "app.containers.AdminPage.Topics.inputTags": "Étiquettes",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Au moins une étiquette est requise. Si vous ne souhaitez pas utiliser d’étiquettes pour une phase, vous pouvez supprimer l’élément « Étiquettes » du formulaire de contribution de cette phase.",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Les étiquettes sont automatiquement générées, mises à jour et associées aux entrées par l’IA.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "L'étiquetage par IA remplace vos définitions manuelles d'étiquettes. Les étiquettes seront créées, mises à jour et attribuées automatiquement.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Étiquetage automatique",
   "app.containers.AdminPage.Topics.perspectives": "Perspectives",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Gérez les étiquettes que les citoyens peuvent assigner à leurs contributions dans ce projet.",

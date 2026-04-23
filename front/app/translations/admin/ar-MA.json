@@ -3141,7 +3141,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "أدخل اسماً للوسم بجميع اللغات",
   "app.containers.AdminPage.Topics.inputTags": "وسوم المدخلات",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "ضروري يكون وسم واحد على الأقل. إلا مكنتيش بغيتي تستعمل الأوسمة، تقدر تمسح عنصر \"الأوسمة\" من نموذج الإدخال ديال أي مرحلة (إلا كان موجود).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "ملي كتكون مفعلة، الأوسمة كيتنشأو وكيتحدثو وكيتعينو للمدخلات باستمرار، باستعمال الذكاء الاصطناعي.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "التصنيف بالذكاء الاصطناعي كيعوض تعريفات التصنيفات اليدوية ديالك. غادي يتم إنشاء وتحديث وتعيين التصنيفات بشكل تلقائي.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "كشف وتعيين الوسوم تلقائياً",
   "app.containers.AdminPage.Topics.perspectives": "وجهات نظر",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "قم بإنشاء وإدارة الوسوم التي يمكن للمواطنين استخدامها لتصنيف مساهماتهم في هذا المشروع.",
