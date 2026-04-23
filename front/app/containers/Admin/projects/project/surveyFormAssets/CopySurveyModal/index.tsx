@@ -108,7 +108,8 @@ const CopySurveyModal = ({
               const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
               clHistory.push(url);
 
-              // If we're already in the form builder, we need to reload the page to trigger the copy.
+              // clHistory.push with a query-only change doesn't reliably
+              // trigger a React Router re-render, so force a full reload.
               if (window.location.pathname.includes(editFormLink)) {
                 window.location.reload();
               }

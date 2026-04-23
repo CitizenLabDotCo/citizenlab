@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import customFormKeys from 'api/custom_form/keys';
+import phasesKeys from 'api/phases/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -69,6 +70,12 @@ const useUpdateCustomField = () => {
             projectId: variables.projectId,
             phaseId: variables.phaseId,
           }),
+        });
+
+        // Saving custom fields creates a custom_form record, which flips the phase's custom_form_persisted flag,
+        // so we need to invalidate the phase query to update that flag for use in the Form Builder UI.
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
         });
       }
     },

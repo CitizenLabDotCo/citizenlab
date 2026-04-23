@@ -79,18 +79,10 @@ const SurveyFormBuilder = ({
 
 export default () => {
   const { projectId, phaseId } = useParams();
-  const [searchParams] = useSearchParams();
-  const copyFrom = searchParams.get('copy_from');
 
   if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
     return null;
   }
 
-  return (
-    <SurveyFormBuilder
-      key={`${phaseId}-${copyFrom}`}
-      projectId={projectId}
-      phaseId={phaseId}
-    />
-  );
+  return <SurveyFormBuilder projectId={projectId} phaseId={phaseId} />;
 };
