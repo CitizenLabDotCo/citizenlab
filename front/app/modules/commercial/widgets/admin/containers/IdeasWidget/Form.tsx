@@ -21,15 +21,6 @@ import messages from '../../messages';
 import SharedFormSections from '../WidgetBuilder/SharedFormSections';
 import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
 
-import { SharedFormValues } from '../WidgetBuilder/shared';
-
-interface FormValues extends SharedFormValues {
-  sort: 'trending' | 'popular' | 'newest';
-  topics: string[];
-  projects: string[];
-  limit: number;
-}
-
 const IdeasWidgetForm = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();

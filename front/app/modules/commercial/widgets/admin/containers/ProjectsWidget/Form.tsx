@@ -19,15 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import SharedFormSections from '../WidgetBuilder/SharedFormSections';
-import { SharedFormValues } from '../WidgetBuilder/shared';
 import { StyledCollapse, StyledSection } from '../WidgetBuilder/styles';
-
-interface FormValues extends SharedFormValues {
-  projects: string[];
-  folders: string[];
-  sort: 'platform_order' | 'newest' | 'ending_soon' | 'most_participants';
-  limit: number;
-}
 
 const ProjectsWidgetForm = () => {
   const { formatMessage } = useIntl();
