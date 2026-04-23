@@ -798,6 +798,112 @@ describe ProjectPolicy do
     end
   end
 
+  describe '#update? space movement rules' do
+    # space_id is a real column on Project, so ActiveModel's dirty tracking
+    # provides space_changed? out of the box. The controller assigns params
+    # (including space_id) before calling `authorize`; these tests simulate
+    # that by assigning space_id in-memory right before asking the policy.
+
+    let!(:project_space) { create(:space) }
+    let!(:other_space) { create(:space) }
+    let!(:project) do
+      create(
+        :project,
+        space: project_space,
+        admin_publication_attributes: { publication_status: 'draft' }
+      )
+    end
+
+    def mark_as_published
+      project.admin_publication.update!(first_published_at: Time.current)
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it 'permits moving to another space' do
+        project.space_id = other_space.id
+        is_expected.to permit(:update)
+      end
+
+      it 'permits removing the project from its space' do
+        project.space_id = nil
+        is_expected.to permit(:update)
+      end
+
+      it 'permits removing a published project from its space' do
+        mark_as_published
+        project.space_id = nil
+        is_expected.to permit(:update)
+      end
+    end
+
+    context 'for a space moderator of the project space only' do
+      let(:user) { create(:space_moderator, spaces: [project_space]) }
+
+      it 'denies moving to a space the user does not moderate' do
+        project.space_id = other_space.id
+        is_expected.not_to permit(:update)
+      end
+
+      context 'when the project has never been published' do
+        it 'permits removing the project from its space' do
+          project.space_id = nil
+          is_expected.to permit(:update)
+        end
+      end
+
+      context 'when the project has been published' do
+        before { mark_as_published }
+
+        it 'denies removing the project from its space' do
+          project.space_id = nil
+          is_expected.not_to permit(:update)
+        end
+      end
+    end
+
+    context 'for a space moderator of both the project space and another space' do
+      let(:user) { create(:space_moderator, spaces: [project_space, other_space]) }
+
+      it 'permits moving to the other moderated space' do
+        project.space_id = other_space.id
+        is_expected.to permit(:update)
+      end
+
+      it 'permits moving to the other moderated space even when the project has been published' do
+        mark_as_published
+        project.space_id = other_space.id
+        is_expected.to permit(:update)
+      end
+    end
+
+    context 'for a space moderator of a different space only' do
+      let(:user) { create(:space_moderator, spaces: [other_space]) }
+
+      it 'denies any space change (user is not a moderator of the project)' do
+        project.space_id = nil
+        is_expected.not_to permit(:update)
+      end
+    end
+
+    context 'when moving into a folder in a different space (space change is a side-effect)' do
+      let!(:target_folder) { create(:project_folder, space: other_space) }
+      let(:user) do
+        create(:space_moderator, spaces: [project_space]).tap do |u|
+          u.add_role('project_folder_moderator', project_folder_id: target_folder.id)
+        end
+      end
+
+      it 'permits the folder move even though the resulting space is not moderated' do
+        # Project#folder_id= auto-assigns project.space_id = target_folder.space_id,
+        # so both folder_changed? and space_changed? become true.
+        project.folder_id = target_folder.id
+        is_expected.to permit(:update)
+      end
+    end
+  end
+
   describe '#shared_permitted_attributes' do
     let(:project) { create(:project) }
 

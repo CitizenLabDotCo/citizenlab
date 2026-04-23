@@ -119,28 +119,43 @@ class ProjectPolicy < ApplicationPolicy
 
   def update?
     return true if active_admin?
-    return active_moderator? unless record.folder_changed?
+    return active_moderator? unless record.folder_changed? || record.space_changed?
 
-    # Only folder or space moderators can change a project's folder. PMs and
-    # residents are already filtered out at the permitted_attributes level —
-    # this is defense-in-depth.
+    # PMs and regular users can't change folder or space. Prefer explicit permissive filter.
     return false unless active? && (user&.project_folder_moderator? || user&.space_moderator?)
 
-    # Evaluate moderation against the persisted project (pre-change state),
-    # since after the pending move the in-memory project may reflect a folder
-    # or space the user no longer moderates.
+    # Evaluate moderation against the persisted project (pre-change state).
     return false unless can_moderate_persisted_project?
 
-    if record.folder.nil?
-      # Removing the project from its folder — no target folder to moderate;
-      # permit only when the project has never been published. (Note: space_id
-      # is preserved by Project#folder_id=, so "no folder" doesn't imply the
-      # project is leaving its space.)
-      !record.ever_published?
-    else
-      # Moving to a specific folder — must be able to moderate it.
-      can_moderate_folder?
+    # Folder change rules
+    if record.folder_changed?
+      if record.folder.nil?
+        # Removing the project from its folder — no target folder to moderate;
+        # permit only when the project has never been published.
+        # (Note: space_id is preserved by Project#folder_id=, so "no folder"
+        # doesn't imply the project is leaving its space.)
+        return false if record.ever_published?
+      else
+        # Moving to a specific folder — must be able to moderate it.
+        return false unless can_moderate_folder?
+      end
     end
+
+    # Space change rules
+    if record.space_changed?
+      if record.space.nil?
+        # Removing the project from its space — permit only when the project
+        # has never been published.
+        return false if record.ever_published?
+      elsif !(record.folder_changed? && record.folder&.space_id == record.space_id)
+        # Non-nil space change that is NOT a side-effect of a folder move into
+        # that space (in which case the folder rules above already vetted it).
+        # The user must moderate the target space directly.
+        return false unless UserRoleService.new.can_moderate?(record.space, user)
+      end
+    end
+
+    true
   end
 
   def refresh_preview_token?
