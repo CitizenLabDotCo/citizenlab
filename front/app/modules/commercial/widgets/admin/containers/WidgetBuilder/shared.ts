@@ -4,24 +4,6 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-export interface SharedFormValues {
-  width: number;
-  height: number;
-  siteBgColor: string;
-  bgColor: string;
-  textColor: string;
-  accentColor: string;
-  font: string | null;
-  fontSize: number;
-  relativeLink: string;
-  showHeader: boolean;
-  showLogo: boolean;
-  headerText: string;
-  headerSubText: string;
-  showFooter: boolean;
-  buttonText: string;
-}
-
 export const sharedSchemaFields = {
   width: number().required(),
   height: number().required(),
