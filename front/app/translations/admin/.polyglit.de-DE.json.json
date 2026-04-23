@@ -6194,6 +6194,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.project.emails.no_recipients": {
+    "state": "verified",
+    "verified_at": "2026-04-21T14:15:29.684180Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.project.emails.participants": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -14469,6 +14474,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": {
+    "state": "verified",
+    "verified_at": "2026-04-23T07:44:07.660323Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
     "state": "verified",
     "verified_at": "2026-04-22T11:27:40.426605Z",
@@ -15985,11 +15995,6 @@
     "verified_by": "Admin"
   },
   "app.containers.AdminPage.Topics.lastTopicWarning3": {
-    "state": "verified",
-    "verified_at": "2026-03-18T15:41:17.382742Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"

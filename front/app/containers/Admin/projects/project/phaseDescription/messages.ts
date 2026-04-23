@@ -48,4 +48,8 @@ export default defineMessages({
     defaultMessage:
       'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
   },
+  descriptionSave: {
+    id: 'app.containers.AdminPage.ProjectTimeline.descriptionSave',
+    defaultMessage: 'Save',
+  },
 });
