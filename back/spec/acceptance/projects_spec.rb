@@ -1727,11 +1727,39 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       describe do
-        let(:project) { create(:project) }
         let(:id) { project.id }
 
-        example_request 'It does not authorize a folder moderator to update project outside their folder' do
-          assert_status 401
+        context 'when project is outside their folder' do
+          let(:project) { create(:project) }
+
+          example_request 'It does not authorize a folder moderator to update project outside their folder' do
+            assert_status 401
+          end
+        end
+
+        context 'when project is in a folder they moderate' do
+          let(:project) { create(:project, folder: project_folder) }
+
+          example 'It allows FM to move a project to another folder they moderate' do
+            project_folder2 = create(:project_folder)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
+
+          example 'It allows FM to move a project to another folder they moderate, even if that project is in a space they cannot moderate' do
+            other_space = create(:space)
+            project_folder2 = create(:project_folder, space: other_space)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
         end
       end
     end
