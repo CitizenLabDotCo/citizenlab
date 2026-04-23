@@ -172,9 +172,9 @@ export function getPhaseLandingTab(
   const participationMethod = phase.attributes.participation_method;
 
   if (participationMethod === 'ideation' || participationMethod === 'voting') {
-    return 'ideas';
+    return 'survey-form/edit';
   } else if (participationMethod === 'proposals') {
-    return 'proposals';
+    return 'survey-form/edit';
   } else if (participationMethod === 'native_survey') {
     return 'survey-form/edit';
   } else if (participationMethod === 'poll') {
