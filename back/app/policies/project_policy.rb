@@ -127,33 +127,8 @@ class ProjectPolicy < ApplicationPolicy
     # Evaluate moderation against the persisted project (pre-change state).
     return false unless can_moderate_persisted_project?
 
-    # Folder change rules
-    if record.folder_changed?
-      if record.folder.nil?
-        # Removing the project from its folder — no target folder to moderate;
-        # permit only when the project has never been published.
-        # (Note: space_id is preserved by Project#folder_id=, so "no folder"
-        # doesn't imply the project is leaving its space.)
-        return false if record.ever_published?
-      else
-        # Moving to a specific folder — must be able to moderate it.
-        return false unless can_moderate_folder?
-      end
-    end
-
-    # Space change rules
-    if record.space_changed?
-      if record.space.nil?
-        # Removing the project from its space — permit only when the project
-        # has never been published.
-        return false if record.ever_published?
-      elsif !(record.folder_changed? && record.folder&.space_id == record.space_id)
-        # Non-nil space change that is NOT a side-effect of a folder move into
-        # that space (in which case the folder rules above already vetted it).
-        # The user must moderate the target space directly.
-        return false unless UserRoleService.new.can_moderate?(record.space, user)
-      end
-    end
+    return false if record.folder_changed? && !folder_change_permitted?
+    return false if record.space_changed? && !space_change_permitted?
 
     true
   end
@@ -266,6 +241,34 @@ class ProjectPolicy < ApplicationPolicy
 
   def can_moderate_space?
     record.space && UserRoleService.new.can_moderate?(record.space, user)
+  end
+
+  def folder_change_permitted?
+    if record.folder.nil?
+      # Removing the project from its folder — no target folder to moderate;
+      # permit only when the project has never been published.
+      # (Note: space_id is preserved by Project#folder_id=, so "no folder"
+      # doesn't imply the project is leaving its space.)
+      !record.ever_published?
+    else
+      # Moving to a specific folder — must be able to moderate it.
+      can_moderate_folder?
+    end
+  end
+
+  def space_change_permitted?
+    if record.space.nil?
+      # Removing the project from its space — permit only when the project
+      # has never been published.
+      !record.ever_published?
+    elsif record.folder_changed? && record.folder&.space_id == record.space_id
+      # Space change is a side-effect of a folder move that was already vetted
+      # by folder_change_permitted?.
+      true
+    else
+      # Direct space assignment — user must moderate the target space.
+      UserRoleService.new.can_moderate?(record.space, user)
+    end
   end
 
   def project_preview?
