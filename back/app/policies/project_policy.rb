@@ -118,15 +118,27 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    # if record.folder_changed?
-    #   puts "Y Folder change detected to #{(record&.folder&.id).inspect}"
-    # else
-    #   puts 'Y No folder change detected'
-    # end
-
     return true if active_admin?
+    return active_moderator? unless record.folder_changed?
 
-    active_moderator?
+    # Only folder or space moderators can change a project's folder. PMs and
+    # residents are already filtered out at the permitted_attributes level —
+    # this is defense-in-depth.
+    return false unless active? && (user&.project_folder_moderator? || user&.space_moderator?)
+
+    # Evaluate moderation against the persisted project (pre-change state),
+    # since after the pending move the in-memory project may reflect a folder
+    # or space the user no longer moderates.
+    return false unless can_moderate_persisted_project?
+
+    if record.folder.nil?
+      # Moving to root — no target folder to moderate; permit only when the
+      # project has never been published.
+      !record.ever_published?
+    else
+      # Moving to a specific folder — must be able to moderate it.
+      can_moderate_folder?
+    end
   end
 
   def refresh_preview_token?
@@ -229,6 +241,10 @@ class ProjectPolicy < ApplicationPolicy
 
   def can_moderate_folder?
     record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  end
+
+  def can_moderate_persisted_project?
+    UserRoleService.new.can_moderate_project?(record.class.find(record.id), user)
   end
 
   def can_moderate_space?

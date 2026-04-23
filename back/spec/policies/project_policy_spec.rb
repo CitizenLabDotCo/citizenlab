@@ -655,6 +655,153 @@ describe ProjectPolicy do
     end
   end
 
+  describe '#update? folder movement rules' do
+    # The controller assigns params (including folder_id) before calling `authorize`,
+    # so when Project#folder_id= runs it flips `folder_changed?` to true and points
+    # `project.folder` at the new target. These tests simulate that by assigning
+    # folder_id in-memory right before asking the policy.
+
+    let!(:source_folder) { create(:project_folder) }
+    let!(:target_folder) { create(:project_folder) }
+    let!(:project) do
+      create(
+        :project,
+        admin_publication_attributes: {
+          parent_id: source_folder.admin_publication.id,
+          publication_status: 'draft' # otherwise the default 'published' status auto-sets first_published_at
+        }
+      )
+    end
+
+    def move_to(folder)
+      project.folder_id = folder&.id
+    end
+
+    def mark_as_published
+      project.admin_publication.update!(first_published_at: Time.current)
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it 'permits moving to another folder' do
+        move_to(target_folder)
+        is_expected.to permit(:update)
+      end
+
+      it 'permits moving to root' do
+        move_to(nil)
+        is_expected.to permit(:update)
+      end
+
+      it 'permits moving a published project to root' do
+        mark_as_published
+        move_to(nil)
+        is_expected.to permit(:update)
+      end
+    end
+
+    context 'for a project moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      # PMs never receive :folder_id in permitted attributes (see shared_permitted_attributes
+      # tests), so the policy wouldn't see folder_changed? in practice. Still, asserting the
+      # cross-folder denial gives us defense-in-depth if that filter ever changes.
+      it 'denies moving to another folder' do
+        move_to(target_folder)
+        is_expected.not_to permit(:update)
+      end
+    end
+
+    context 'for a folder moderator of the source folder only' do
+      let(:user) { create(:project_folder_moderator, project_folders: [source_folder]) }
+
+      it 'denies moving to a folder the user does not moderate' do
+        move_to(target_folder)
+        is_expected.not_to permit(:update)
+      end
+
+      context 'when the project has never been published' do
+        it 'permits moving to root' do
+          move_to(nil)
+          is_expected.to permit(:update)
+        end
+      end
+
+      context 'when the project has been published' do
+        before { mark_as_published }
+
+        it 'denies moving to root' do
+          move_to(nil)
+          is_expected.not_to permit(:update)
+        end
+      end
+    end
+
+    context 'for a folder moderator of both source and target folders' do
+      let(:user) { create(:project_folder_moderator, project_folders: [source_folder, target_folder]) }
+
+      it 'permits moving to the target folder' do
+        move_to(target_folder)
+        is_expected.to permit(:update)
+      end
+
+      it 'permits moving to the target folder when the project has been published' do
+        mark_as_published
+        move_to(target_folder)
+        is_expected.to permit(:update)
+      end
+    end
+
+    context 'for a space moderator whose space contains the project' do
+      let!(:space) { create(:space) }
+      let!(:source_folder) { create(:project_folder, space: space) }
+      let!(:target_folder) { create(:project_folder, space: space) }
+      let!(:project) do
+        create(
+          :project,
+          space: space,
+          admin_publication_attributes: {
+            parent_id: source_folder.admin_publication.id,
+            publication_status: 'draft'
+          }
+        )
+      end
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it 'permits moving to another folder in the same space' do
+        move_to(target_folder)
+        is_expected.to permit(:update)
+      end
+
+      context 'when the project has never been published' do
+        it 'permits moving to root' do
+          move_to(nil)
+          is_expected.to permit(:update)
+        end
+      end
+
+      context 'when the project has been published' do
+        before { mark_as_published }
+
+        it 'denies moving to root' do
+          move_to(nil)
+          is_expected.not_to permit(:update)
+        end
+      end
+    end
+
+    context 'for a space moderator of a different space' do
+      let!(:other_space) { create(:space) }
+      let(:user) { create(:space_moderator, spaces: [other_space]) }
+
+      it 'denies any folder change (user is not a moderator of the project)' do
+        move_to(target_folder)
+        is_expected.not_to permit(:update)
+      end
+    end
+  end
+
   describe '#shared_permitted_attributes' do
     let(:project) { create(:project) }
 
