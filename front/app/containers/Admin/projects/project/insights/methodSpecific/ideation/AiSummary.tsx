@@ -22,7 +22,7 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { getAnalysisScope } from 'containers/Admin/projects/components/AnalysisBanner/utils';
+import { getAnalysisScope } from 'containers/Admin/projects/_shared/components/AnalysisBanner/utils';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 

@@ -1,4 +1,4 @@
-ur:
+ur-PK:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 گھنٹے
@@ -168,6 +168,11 @@ ur:
       last_name: آخری نام
       line_print_description: براہ کرم نیچے نقشے پر ایک راستہ بنائیں۔
       linear_scale_print_description: براہ کرم صرف %{min_label} اور %{max_label} کے درمیان نمبر لکھیں۔
+      logic_go_to_section: آگے <strong>%{section}</strong> پر جائیں۔
+      logic_if_answered_end: اگر آپ نے سوال %{question} کے لیے <strong>%{option}</strong> جواب دیا ہے، تو آپ کو مزید کسی سوال کا جواب دینے کی <strong>ضرورت نہیں</strong> ہے۔
+      logic_if_answered_go_to: اگر آپ نے سوال %{question} کے لیے <strong>%{option}</strong> جواب دیا ہے، تو آگے <strong>%{section}</strong> پر جائیں۔
+      logic_no_further_questions: آپ کے جوابات کی بنیاد پر، آپ کو مزید کسی سوال کا جواب دینے کی <strong>ضرورت نہیں</strong> ہے۔
+      logic_section: سیکشن %{letter}
       matrix_print_description: ہر قطار کے لیے، اپنی ترجیح کی نشاندہی کرنے کے لیے ایک دائرے کو کراس سے نشان زد کریں۔
       optional: اختیاری
       page: صفحہ
@@ -390,6 +395,7 @@ ur:
       email: ای میل
       first_name: پہلا نام
       image_url: تصویری URL
+      imported: درآمد شدہ
       input_id: ID
       input_url: URL
       last_name: آخری نام

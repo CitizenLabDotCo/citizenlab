@@ -1,18 +1,18 @@
-it:
+it-IT:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ore.
       best_regards: Cordiali saluti,
       confirm_email_address: Conferma l'indirizzo e-mail
-      copy_paste_the_link_below: Copia e incolla il codice qui sotto nel tuo modulo di registrazione.
-      did_you_receive_this_email_in_error: Hai ricevuto questa e-mail per errore? <a href="%{link}">Facci sapere</a>.
+      copy_paste_the_link_below: Copia e incolla il codice qui sotto nel tuo modulo di registrazione alla piattaforma.
+      did_you_receive_this_email_in_error: Hai ricevuto questa e-mail per errore? <a href="%{link}">Faccelo sapere</a>.
       expire_code: 'Questo codice scadrà tra '
       header: Il tuo codice di conferma
       header_message: Ciao %{firstName}!
-      ignore_email: Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail.
+      ignore_email: Se non hai richiesto un codice, puoi tranquillamente ignorare questa e-mail.
       preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
-      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
-      thanks_for_signing_up1: 'Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma di partecipazione %{organizationName}:'
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
+      thanks_for_signing_up1: 'Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma partecipativa di %{organizationName}:'
       the_link_is_valid_for: Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href="%{link}">richiedere un nuovo codice</a>.
   custom_field_options:
     domicile:
@@ -24,7 +24,7 @@ it:
   custom_fields:
     community_monitor:
       form_end:
-        button_text: Torna alla home page
+        button_text: Torna alla homepage
       labels:
         label_1: Molto negativo
         label_2: Negativo
@@ -35,7 +35,7 @@ it:
         governance_and_trust: Governance e fiducia
         other: Altro
         quality_of_life: Qualità della vita
-        service_delivery: Servizi
+        service_delivery: Erogazione servizi
       questions:
         access_to_parks:
           title: Accesso ai parchi, agli spazi verdi e alle opportunità ricreative
@@ -105,13 +105,13 @@ it:
         comment:
           title: Qual è il tuo commento?
         contribution:
-          title: Qual è il suo contributo?
+          title: Qual è il tuo contributo?
         idea:
           title: Qual è la tua idea?
         initiative:
           title: Qual è la tua iniziativa?
         issue:
-          title: Qual è il suo commento?
+          title: Qual è il tuo commento?
         option:
           title: Qual è la tua opzione?
         petition:
@@ -119,11 +119,11 @@ it:
         post:
           title: Qual è il tuo post?
         project:
-          title: Qual è il suo progetto?
+          title: Qual è il tuo progetto?
         proposal:
           title: Qual è la tua proposta?
         question:
-          title: Qual è il suo domanda?
+          title: Qual è la tua domanda?
         response:
           title: Qual è la tua risposta?
         story:
@@ -158,7 +158,7 @@ it:
       choose_at_most: Scegli al massimo %{count} opzioni
       choose_between: Scegli tra le opzioni %{min} e %{max}
       choose_exactly:
-        one: Scegli esattamente l'opzione %{count}
+        one: Scegli esattamente %{count} opzione
         other: Scegli esattamente %{count} opzioni
       date_print_description: Scrivi una data nel formato AAAA-MM-GG.
       date_published: Data di pubblicazione (gg-mm-aaaa)
@@ -168,6 +168,11 @@ it:
       last_name: Cognome
       line_print_description: Traccia un percorso sulla mappa sottostante.
       linear_scale_print_description: Scrivi solo un numero compreso tra %{min_label} e %{max_label}
+      logic_go_to_section: Passa alla sezione <strong>%{section}</strong>.
+      logic_if_answered_end: Se hai risposto <strong>%{option}</strong> alla domanda %{question}, <strong>non</strong> è necessario rispondere ad altre domande.
+      logic_if_answered_go_to: Se hai risposto <strong>%{option}</strong> alla domanda %{question}, passa alla sezione <strong>%{section}</strong>.
+      logic_no_further_questions: In base alle tue risposte, <strong>non</strong> è necessario rispondere ad altre domande.
+      logic_section: Sezione %{letter}
       matrix_print_description: Per ogni riga, segna un'opzione con una croce per indicare la tua preferenza.
       optional: opzionale
       page: Pagina
@@ -177,14 +182,14 @@ it:
       personal_data_explanation_public: Invieremo il tuo contributo alla piattaforma partecipativa di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti ad esso relativi, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non vuoi che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti.
       point_print_description: Per indicare la posizione, traccia una X sulla mappa sottostante oppure scrivi l'indirizzo.
       polygon_print_description: Disegna una forma sulla mappa sottostante.
-      ranking_print_description: Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero esattamente una volta.
+      ranking_print_description: Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero solo una volta.
       rating_print_description: Dai una valutazione scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).
       select_print_description: Scegli una sola opzione.
       sentiment_linear_scale_print_description: Scrivi un numero compreso tra 1 e 5.
       sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
-      this_answer: Questa risposta sarà condivisa solo dai moderatori e non dal pubblico.
+      this_answer: Questa risposta sarà condivisa solo con i moderatori e non con il pubblico.
       unsupported_field: Questo campo non può essere completato su carta. Si prega di utilizzare la versione online di questo modulo.
-      write_as_clearly: Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.
+      write_as_clearly: Scrivi <b>il più chiaramente</b> possibile - questi moduli potrebbero essere scannerizzati.
       write_in_language: Scrivi le tue risposte nella stessa lingua di questo modulo
   ics_calendar_event:
     event_details: Dettagli dell'evento
@@ -203,7 +208,7 @@ it:
     prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
     proposed_description: Questo contributo è stato presentato ed è ora aperto al sostegno dell'opinione pubblica. Puoi votarlo per aiutarlo a passare alla fase successiva.
-    rejected: rifiutato
+    rejected: respinto
     rejected_description: Questo contributo è stato respinto.
     threshold_reached: soglia raggiunta
     threshold_reached_description: Questo contributo ha raggiunto la soglia di supporto richiesta e sarà ora preso in considerazione.
@@ -272,16 +277,16 @@ it:
   projects:
     open_idea_project_description: |
       <p>Qui, puoi iniziare la tua idea se non rientra in uno dei progetti esistenti.</p><p><strong>L'obiettivo?</strong> Far entrare la tua idea nell'agenda politica.</p><p><strong>Come?</strong> Raccogliendo supporto, cioè almeno 100 voti in 3 mesi. Potete farlo rendendo prima la vostra idea "attraente". Scrivi in modo chiaro e accattivante, aggiungi immagini, dai argomenti forti basati sui fatti, aggiungi allegati con ulteriori dettagli o informazioni di base, ... Dopo aver fatto questo, inizia a condividere la tua idea sui social media o tramite e-mail. Invita le persone a partecipare alla discussione sulla tua idea, o semplicemente convincile a sostenerla votando a favore.</p><p><strong>Su cosa?</strong> La tua idea può riguardare un sacco di cose, purché sia collegata alla tua città e alla sua politica. Può essere un problema che sperimenti, una soluzione che immagini o anche una combinazione di entrambi. Può essere selvaggia e a lungo termine, o molto tangibile e una vittoria veloce.</p><p><strong>E poi? </strong>Hai raggiunto 100 voti in 3 mesi? Congratulazioni! La città prenderà ora in considerazione la tua idea. Se la tua idea è considerata fattibile e non danneggia specifici gruppi o individui, avrai la possibilità di presentare la tua proposta durante la riunione del consiglio. Durante la stessa riunione, i membri del consiglio ti daranno un feedback diretto su cosa faranno o non faranno con la tua idea e perché. Se non raccogliete 100 voti in 3 mesi, la vostra proposta non sarà considerata.</p><p>Siamo curiosi di conoscere le tue idee!</p>
-    open_idea_project_description_preview: "Forse hai un'idea che non si adatta a uno dei progetti esistenti? Allora postala qui, raccogli il sostegno e falla entrare nell'agenda politica!"
-    open_idea_project_title: Un'idea? Portala al tuo consiglio!
+    open_idea_project_description_preview: "Forse hai un'idea che non si adatta a uno dei progetti esistenti? Allora postala qui, raccogli sostegno e falla entrare nell'agenda politica!"
+    open_idea_project_title: Hai un'idea? Portala al tuo consiglio!
     published_projects: Progetti pubblicati
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: Ripristina la tua password
-      message_you_reset_your_password: Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.
-      preheader: Reimposta la tua password per %{organizationName}
+      cta_reset_password: Resetta la tua password
+      message_you_reset_your_password: Hai richiesto un reset della password per la piattaforma partecipativa di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.
+      preheader: Resetta la tua password per %{organizationName}
       subject: '%{organizationName}: Resetta la tua password'
-      title_reset_your_password: Scegliere una nuova password
+      title_reset_your_password: Seleziona una nuova password
   static_pages:
     faq_body: |-
       <h2 class="ql-align-justify">A cosa serve questa piattaforma?</h2><p class="ql-align-justify">Questa piattaforma è progettata come un hub centrale per condividere informazioni e ottenere input e feedback. I progetti di partecipazione che sono attualmente attivi sono mostrati sulla homepage - ogni progetto di partecipazione può avere una diversa modalità di coinvolgimento, sia che si tratti di aggiungere un'idea, commentare una proposta, votare e dare priorità ai progetti, o fare un sondaggio.</p><h2 class="ql-align-justify">Come posso partecipare?</h2><p class="ql-align-justify">È sempre possibile sfogliare i progetti pubblici, ma è necessario iscriversi per intraprendere un'azione. Questo aiuta a mantenere una sensazione di comunità e a garantire la legittimità degli input.</p><h2 class="ql-align-justify">Quali informazioni possono vedere le persone su di me?</h2><p class="ql-align-justify">Il tuo nome, foto e biografia, se ne hai aggiunta una, sono visibili. Puoi sempre cambiarli nelle tue Impostazioni.</p><h2 class="ql-align-justify">Perché non posso pubblicare il mio contributo o inviare un commento?</h2><p class="ql-align-justify">Postare, commentare e votare può essere abilitato solo durante certi momenti o fasi di un progetto. In alcuni casi, un progetto può essere aperto solo ai contributi di un certo gruppo di stakeholder.</p><p class="ql-align-justify">Se la pubblicazione è attualmente abilitata per un progetto, vedrai un pulsante che ti chiede di inviare un messaggio. In alternativa, è possibile sfogliare altri progetti attivi per ulteriori opportunità di impegno.</p><h2 class="ql-align-justify">Come posso modificare o eliminare il mio contributo?</h2><p class="ql-align-justify">Se hai pubblicato il tuo contributo ma vuoi modificarlo o cancellarlo, puoi trovare questa opzione cliccando sui tre piccoli punti in alto a destra del post.</p><h2 class="ql-align-justify">Quali sono le linee guida della comunità e le politiche di moderazione?</h2><p class="ql-align-justify">Le nostre linee guida della comunità sono qui per aiutare a garantire che la piattaforma sia uno spazio sicuro per tutti. Per favore assicuratevi che i vostri post siano privi di:</p><ul>
@@ -316,13 +321,13 @@ it:
   symbols:
     outside: da qualche altra parte
   time:
-    am: sono
+    am: am
     formats:
       hour_of_day: '%H:%M'
     pm: pm
   topics:
-    community: Sviluppo comunitario
-    community_description: Sviluppo comunitario
+    community: Sviluppo della comunità
+    community_description: Sviluppo della comunità
     culture: Cultura, sport ed eventi
     culture_description: Cultura, sport ed eventi
     economy: Lavoro, economia e turismo
@@ -347,7 +352,7 @@ it:
     quality_of_life: Qualità della vita
     safety: Sicurezza
     safety_description: Sicurezza
-    service_delivery: Servizi
+    service_delivery: Erogazione servizi
     services: Servizi pubblici
     services_description: Servizi pubblici
     sustainability: Sviluppo sostenibile
@@ -362,20 +367,20 @@ it:
       animals: "alligatore, coccodrillo, alpaca, formica, antilope, scimmia, armadillo, babbuino, tasso, pipistrello, orso, castoro, ape, scarabeo, bufalo, farfalla, cammello, bufalo d'acqua, caribù, gatto, bovino, ghepardo, scimpanzé, cincillà, cicala, vongola, scarafaggio, merluzzo, coyote, granchio, grillo, corvo,cervo, dinosauro, cane, delfino, focena, anatra, aquila, anguilla, elefante, alce, furetto, pesce, mosca, volpe, rana, rospo, gerbillo, giraffa, moscerino, gnu, gnu, capra, pesce rosso, oca, gorilla, cavalletta, porcellino d'India, criceto, lepre, riccio, aringa, ippopotamo, calabrone, cavallo, segugio,iena, impala, sciacallo, medusa, canguro, wallaby, koala, leopardo, leone, lucertola, lama, locusta, pidocchio, ara, germano reale, mammut, lamantino, martora, visone, minnow, talpa, alce, zanzara, topo, ratto, mulo, topo muschiato, lontra, bue, ostrica, panda, maiale, ornitorinco, istrice, cane della prateria,carlino, coniglio, procione, renna, rinoceronte, salmone, sardina, scorpione, foca, leone marino, serval, squalo, pecora, puzzola, lumaca, serpente, ragno, scoiattolo, cigno, termite, tigre, trota, tartaruga, testuggine, tricheco, vespa, balena, lupo, vombato, marmotta, verme, yak, giuggiola, zebra"
   user_blocked_mailer:
     send_user_blocked_email:
-      for_more_information: Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}.
-      paragraph_1_with_reason: 'Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
-      paragraph_1_without_reason: Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità.
-      preheader: Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato.
-      subject: Il suo account è stato temporaneamente disabilitato
-      title_user_blocked: Il suo account è stato temporaneamente disabilitato
-      you_can_sign_in_again_from: È possibile accedere nuovamente a %{date}
+      for_more_information: Per ulteriori informazioni, è possibile consultare la pagina %{termsAndConditionsPage}.
+      paragraph_1_with_reason: 'Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
+      paragraph_1_without_reason: Il tuo account sulla piattaforma partecipativa %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità.
+      preheader: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato.
+      subject: Il tuo account è stato temporaneamente disabilitato
+      title_user_blocked: Il tuo account è stato temporaneamente disabilitato
+      you_can_sign_in_again_from: Potrai accedere nuovamente il %{date}
   voting_method:
     default_voting_term_plural: voti
     default_voting_term_singular: voto
   xlsx_export:
     anonymous: Anonimo
     column_headers:
-      assignee_email: Email del destinatario
+      assignee_email: Email assegnatario
       assignee_fullname: Assegnatario
       attachments: Allegati
       author_email: Email autore
@@ -390,6 +395,7 @@ it:
       email: Email
       first_name: Nome/i
       image_url: URL immagine
+      imported: Importato
       input_id: ID
       input_url: URL
       last_name: Cognome

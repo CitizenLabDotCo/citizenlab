@@ -8,9 +8,10 @@ import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import CopySurveyModal from '../nativeSurvey/CopySurveyModal';
+import CopySurveyModal from '../surveyFormAssets/CopySurveyModal';
 
 import messages from './messages';
+import { useTheme } from 'styled-components';
 
 interface Props {
   phaseId: string;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const DuplicateSurveyButtonWithModal = ({ phaseId, editFormLink }: Props) => {
+  const theme = useTheme();
   const { data: submissionCount } = useSubmissionCount({
     phaseId,
   });
@@ -39,9 +41,11 @@ const DuplicateSurveyButtonWithModal = ({ phaseId, editFormLink }: Props) => {
         onClick={() => {
           setShowCopySurveyModal(true);
         }}
-        disabled={haveSubmissionsComeIn}
         icon="copy"
-        buttonStyle="primary-outlined"
+        disabled={haveSubmissionsComeIn}
+        iconColor={theme.colors.blue500}
+        buttonStyle="text"
+        textColor={theme.colors.blue500}
       >
         <FormattedMessage {...messages.duplicateAnotherSurvey1} />
       </Button>

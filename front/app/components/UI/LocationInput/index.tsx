@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
 import AsyncSelect from 'react-select/async';
 import { useTheme } from 'styled-components';
 
@@ -35,64 +36,58 @@ export type LocationInputProps = React.ComponentProps<typeof AsyncSelect> & {
 const LocationInput = (props: LocationInputProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [defaultOptions, setDefaultOptions] = useState<Option[]>([]);
   const theme = useTheme();
 
-  useEffect(() => {
-    const fetchDefaultOptions = async () => {
+  const defaultOptions = props.value
+    ? [{ label: props.value.value, value: props.value.value }]
+    : [];
+
+  const fetchOptions = useCallback(
+    async (inputValue: string) => {
       try {
         const response = await fetcher<TextSearchResponse>({
           path: '/location/autocomplete',
           action: 'get',
           queryParams: {
-            input: props.value?.value,
+            input: inputValue,
             language: locale,
           },
         });
 
-        return setDefaultOptions(
+        const options =
           response.data.attributes.results?.map((item) => ({
             label: item,
             value: item,
-          })) || []
-        );
+          })) || [];
+
+        // Add the inputValue as an option if it is a valid coordinate
+        if (isValidCoordinate(inputValue)) {
+          options.push({ label: inputValue, value: inputValue });
+        }
+
+        return options;
       } catch (error) {
-        return setDefaultOptions([]);
+        return [];
       }
-    };
+    },
+    [locale]
+  );
 
-    if (props.value?.value) {
-      fetchDefaultOptions();
-    }
-  }, [locale, props.value?.value]);
+  const loadOptions = useMemo(
+    () =>
+      debounce((inputValue: string, resolve: (options: Option[]) => void) => {
+        fetchOptions(inputValue).then(resolve);
+      }, 500),
+    [fetchOptions]
+  );
 
-  const promiseOptions = async (inputValue: string) => {
-    try {
-      const response = await fetcher<TextSearchResponse>({
-        path: '/location/autocomplete',
-        action: 'get',
-        queryParams: {
-          input: inputValue,
-          language: locale,
-        },
-      });
-
-      const options =
-        response.data.attributes.results?.map((item) => ({
-          label: item,
-          value: item,
-        })) || [];
-
-      // Add the inputValue as an option if it is a valid coordinate
-      if (isValidCoordinate(inputValue)) {
-        options.push({ label: inputValue, value: inputValue });
-      }
-
-      return options;
-    } catch (error) {
-      return [];
-    }
-  };
+  const promiseOptions = useCallback(
+    (inputValue: string) =>
+      new Promise<Option[]>((resolve) => {
+        loadOptions(inputValue, resolve);
+      }),
+    [loadOptions]
+  );
 
   return (
     <AsyncSelect

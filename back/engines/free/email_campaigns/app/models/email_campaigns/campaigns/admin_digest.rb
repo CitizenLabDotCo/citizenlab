@@ -139,10 +139,8 @@ module EmailCampaigns
 
     def top_project_inputs
       @top_project_inputs ||= Project.where(id: top_project_ids).map do |project|
-        phase = TimelineService.new.current_phase project
         {
           project: serialize_project(project),
-          current_phase: phase ? serialize_phase(phase) : nil,
           top_ideas: top_ideas_grouped_by_project[project.id].map { |idea| serialize_input(idea) }
         }
       end
@@ -228,16 +226,6 @@ module EmailCampaigns
         id: project.id,
         title_multiloc: project.title_multiloc,
         url: Frontend::UrlService.new.model_to_url(project)
-      }
-    end
-
-    def serialize_phase(phase)
-      {
-        id: phase.id,
-        title_multiloc: phase.title_multiloc,
-        participation_method: phase.participation_method,
-        start_at: phase.start_at.iso8601,
-        end_at: phase.end_at&.iso8601
       }
     end
 

@@ -168,6 +168,11 @@ nl-BE:
       last_name: Achternaam
       line_print_description: Teken een route op de kaart hieronder.
       linear_scale_print_description: Schrijf alleen een getal tussen %{min_label} en %{max_label}
+      logic_go_to_section: Ga vervolgens naar <strong>%{section}</strong>.
+      logic_if_answered_end: Als u <strong>%{option}</strong> heeft geantwoord bij vraag %{question}, hoeft u <strong>geen</strong> verdere vragen meer te beantwoorden.
+      logic_if_answered_go_to: Als u <strong>%{option}</strong> heeft geantwoord bij vraag %{question}, ga dan naar <strong>%{section}</strong>.
+      logic_no_further_questions: Op basis van uw antwoorden hoeft u <strong>geen</strong> verdere vragen meer te beantwoorden.
+      logic_section: Sectie %{letter}
       matrix_print_description: Kruis in elke rij een cirkel aan om je voorkeur aan te geven.
       optional: optioneel
       page: Pagina
@@ -390,6 +395,7 @@ nl-BE:
       email: E-mail
       first_name: Voorna(a)m(en)
       image_url: Afbeelding URL
+      imported: Geïmporteerd
       input_id: ID
       input_url: URL
       last_name: Achternaam

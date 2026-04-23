@@ -384,18 +384,6 @@
         }
       },
 
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "project_preview_link" : {
         "type": "object",
         "title": "Project Preview Link",
@@ -514,6 +502,16 @@
             "enum": ["show", "link", "hide"],
             "default": "show",
             "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
+          },
+          "enforced_email_domains": {
+            "title": "Enforced Domains",
+            "type": "string",
+            "description": "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via Azure AD."
+          },
+          "enforced_email_domain_error_multiloc": {
+            "title": "Enforce Email Domain Error Message",
+            "$ref": "#/definitions/multiloc_string",
+            "description": "Custom error message shown to users who must sign in via Azure AD due to their email domain."
           }
         }
       },
@@ -1345,6 +1343,18 @@
         }
       },
 
+      "project_scheduling": {
+        "type": "object",
+        "title": "Project scheduling",
+        "description": "Enables scheduling project publication for a future date and time.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
@@ -1575,18 +1585,6 @@
         "type": "object",
         "title": "Project importer [Alpha]",
         "description": "Super admin only feature to import project, phases and content from XLSX.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "phase_insights": {
-        "type": "object",
-        "title": "Phase insights",
-        "description": "Phase insights dashboard. Metrics and insights about a project phase where participation is/was possible.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
