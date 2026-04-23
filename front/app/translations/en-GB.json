@@ -2434,6 +2434,7 @@
   "app.errors.maximum_attendees_greater_than1": "The maximum number of registrants must be greater than 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "The maximum number of registrants must be greater than or equal to the current number of registrants.",
   "app.errors.no_invites_specified": "Could not find any email address.",
+  "app.errors.no_recipients": "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receive emails.",
   "app.errors.number_invalid": "Please enter a valid number.",
   "app.errors.password_blank": "This cannot be empty",
   "app.errors.password_invalid": "Please check your current password again.",
