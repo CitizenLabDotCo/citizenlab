@@ -29,19 +29,23 @@ const SpaceSelect = ({ spaceId, spaces, folderId, role, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: folder } = useProjectFolderById(folderId);
-  const { data: spaceAssociatedWithFolder } = useSpace(
-    folder?.data.attributes.space_id ?? undefined
-  );
+  const associatedSpaceId = folder?.data.attributes.space_id;
+  const { data: spaceAssociatedWithFolder } = useSpace(associatedSpaceId);
 
   const getNoSpaceLabel = () => {
     if (folderId) {
-      if (spaceAssociatedWithFolder) {
-        return localize(
-          spaceAssociatedWithFolder.data.attributes.title_multiloc
-        );
+      if (associatedSpaceId) {
+        if (spaceAssociatedWithFolder) {
+          return localize(
+            spaceAssociatedWithFolder.data.attributes.title_multiloc
+          );
+        } else {
+          // Fallback message while space is loading
+          return formatMessage(messages.sameSpaceAsFolder);
+        }
       }
 
-      return formatMessage(messages.sameSpaceAsFolder);
+      return formatMessage(messages.noSpaceBecauseOfFolder);
     }
 
     if (role === 'space_moderator') {
