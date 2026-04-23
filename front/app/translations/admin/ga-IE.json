@@ -1584,6 +1584,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Iompórtáladh an ionchur seo go hanaithnid.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "Níorbh fhéidir {numNotApproved} ionchur a cheadú. Seiceáil gach ionchur le haghaidh fadhbanna bailíochtaithe, le do thoil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Logán:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Níl aon rud le hathbhreithniú fós. Cliceáil ar \"Iompórtáil scananna\" chun comhad PDF ina bhfuil foirmeacha ionchuir scanta nó comhad Excel ina bhfuil ionchuir a iompórtáil.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Níl aon rud le hathbhreithniú fós. Cliceáil ar \"Iompórtáil comhad\" chun comhad Excel ina bhfuil ionchuir a iompórtáil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ionchur",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Ní féidir an comhad allmhairithe a thaispeáint. Ní féidir comhaid allmhairithe a fheiceáil ach amháin le haghaidh allmhairí PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Céim:",

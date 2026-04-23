@@ -1584,6 +1584,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Questi contributi sono stati importati in forma anonima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} contributi non possono essere approvati. Controlla ogni contributo per eventuali errori di convalida.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Locale:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Nulla da revisionare al momento. Fai clic su \"Importa scansioni\" per importare un file PDF contenente moduli di contributo scansionati o un file Excel contenente i contributi.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Nulla da revisionare al momento. Fai clic su \"Importa file\" per importare un file Excel contenente i contributi.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Contributo",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Impossibile visualizzare il file importato. La visualizzazione del file importato è disponibile solo per le importazioni in PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",

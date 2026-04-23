@@ -1584,6 +1584,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "یہ ان پٹ گمنام طور پر درآمد کیا گیا تھا۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} اندراجات منظور نہیں کیے جا سکے۔ براہ کرم تصدیقی مسائل کے لیے ہر اندراج کو چیک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "مقامی:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "ابھی جائزہ لینے کے لیے کچھ نہیں ہے۔ اسکین شدہ ان پٹ فارمز پر مشتمل پی ڈی ایف فائل یا ان پٹس پر مشتمل ایکسل فائل امپورٹ کرنے کے لیے \"اسکینز امپورٹ کریں\" پر کلک کریں۔",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "ابھی جائزہ لینے کے لیے کچھ نہیں ہے۔ ان پٹس پر مشتمل ایکسل فائل امپورٹ کرنے کے لیے \"فائل امپورٹ کریں\" پر کلک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "ان پٹ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "درآمد شدہ فائل کو ظاہر نہیں کیا جا سکتا۔ درآمد شدہ فائل دیکھنا صرف پی ڈی ایف کی درآمدات کے لیے دستیاب ہے۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "مرحلہ:",

@@ -1584,6 +1584,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dieser Beitrag wurde anonym importiert.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} Beiträge konnten nicht genehmigt werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsfehler.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Sprache:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Noch nichts zu prüfen. Klicken Sie auf „Scans importieren“, um eine PDF-Datei mit gescannten Beitragsformularen oder eine Excel-Datei mit Beiträgen zu importieren.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Noch nichts zu prüfen. Klicken Sie auf „Datei importieren“, um eine Excel-Datei mit Beiträgen zu importieren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Beitrag",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Die importierte Datei kann nicht angezeigt werden. Die Anzeige importierter Dateien ist nur für PDF-Importe verfügbar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",

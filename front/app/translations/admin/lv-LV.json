@@ -1584,6 +1584,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Šie dati tika importēti anonīmi.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} ierakstus neizdevās apstiprināt. Lūdzu, pārbaudiet, vai katrā ierakstā nav validācijas kļūdu.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Atrašanās vieta:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Vēl nav nekā, ko pārskatīt. Noklikšķiniet uz \"Importēt skenējumus\", lai importētu PDF failu ar skenētām ieguldījumu veidlapām vai Excel failu, kurā ir ieguldījumi.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Vēl nav nekā, ko pārskatīt. Noklikšķiniet uz \"Importēt failu\", lai importētu Excel failu, kurā ir ieguldījumi.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ieeja",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nevar parādīt importēto failu. Importētā faila skatīšana ir pieejama tikai PDF importam.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fāze:",
