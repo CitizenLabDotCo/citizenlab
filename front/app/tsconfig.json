@@ -16,7 +16,6 @@
     "strictBindCallApply": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
-    "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,

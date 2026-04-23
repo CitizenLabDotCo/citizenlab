@@ -48,7 +48,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -322,10 +321,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
 
-    if (isSpaceModerator(authUser) && !spaceId) {
-      valid = false;
-    }
-
     if (!valid) {
       setSubmitState('error');
     }
@@ -336,8 +331,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     titleMultiloc,
     descriptionMultiloc,
     shortDescriptionMultiloc,
-    authUser,
-    spaceId,
   ]);
 
   const saveForm = async () => {
