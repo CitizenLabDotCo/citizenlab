@@ -7,9 +7,9 @@ import Highlighter from 'components/Highlighter';
 
 import ProjectFolderSelect from '../ProjectSetupForm/ProjectFolderSelect';
 
-import { Props } from './types';
+import { BaseProps } from './types';
 
-const AdminInterface = ({ space_id, folder_id, onChange }: Props) => {
+const AdminInterface = ({ space_id, folder_id, onChange }: BaseProps) => {
   return (
     <>
       <Highlighter fragmentId={folderFragmentId}>

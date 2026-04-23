@@ -3,9 +3,9 @@ import React from 'react';
 import useAuthUser from 'api/me/useAuthUser';
 
 import AdminInterface from './AdminInterface';
-import { Props } from './types';
+import { BaseProps } from './types';
 
-const FolderAndSpaceSelectSection = (props: Props) => {
+const FolderAndSpaceSelectSection = (props: BaseProps) => {
   const { data: authUser } = useAuthUser();
   if (!authUser) return null;
 

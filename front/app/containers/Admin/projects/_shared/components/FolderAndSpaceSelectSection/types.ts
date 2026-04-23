@@ -1,4 +1,4 @@
-export interface Props {
+export interface BaseProps {
   space_id?: string | null;
   folder_id?: string | null;
   onChange: (args: {
