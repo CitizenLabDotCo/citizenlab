@@ -1730,7 +1730,7 @@ resource 'Projects' do
         let(:project) { create(:project) }
         let(:id) { project.id }
 
-        example_request 'It does not authorize the folder moderator' do
+        example_request 'It does not authorize a folder moderator to update project outside their folder' do
           assert_status 401
         end
       end
