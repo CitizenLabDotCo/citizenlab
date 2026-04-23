@@ -21,9 +21,9 @@ module UserConfirmation
     # we only say that the user requires confirmation if they have requested to set their
     # email.
     # If they haven't, we will regard them as not requiring confirmation.
-    is_verified_sso_user_without_email = sso? && verified && email.nil? && new_email.nil?
+    is_sso_user_without_email = sso? && email.nil? && new_email.nil?
 
-    user_confirmation_enabled? && confirmation_required && !is_verified_sso_user_without_email
+    user_confirmation_enabled? && confirmation_required && !is_sso_user_without_email
   end
 
   def confirm

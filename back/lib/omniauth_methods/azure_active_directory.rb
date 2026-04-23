@@ -14,7 +14,7 @@ module OmniauthMethods
       {
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
-        email: auth.info['email'],
+        email: nil, # auth.info['email'],
         remote_avatar_url: remote_avatar_url(auth),
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
@@ -28,6 +28,14 @@ module OmniauthMethods
       return [] if domains_str.blank?
 
       domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
+    end
+
+    def email_always_present?
+      false
+    end
+
+    def email_confirmed?(_auth)
+      false
     end
 
     private
