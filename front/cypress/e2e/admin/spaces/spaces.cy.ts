@@ -63,3 +63,7 @@ describe('Spaces CRUD', () => {
     cy.contains('No spaces found').should('exist');
   });
 });
+
+describe('Space moderator: permissions', () => {
+  // TODO
+});
