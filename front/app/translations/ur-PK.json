@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "جمع کروائیں۔",
   "app.modules.id_oostende_rrn.takenFormError": "آپ کا سوشل سیکورٹی نمبر پہلے ہی دوسرے اکاؤنٹ کی تصدیق کے لیے استعمال ہو چکا ہے۔",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "سوشل سیکیورٹی نمبر استعمال کرکے تصدیق کریں۔",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "آپ کو \"{folderName}\" فولڈر پر منتظم کے حقوق مل گئے ہیں۔",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "شیئر کریں۔",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "اپنی آواز سننے کے لیے پروجیکٹس کو {folderUrl} پر دیکھیں!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | {orgName}کے شرکت کے پلیٹ فارم سے",

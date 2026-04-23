@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "Cyflwyno",
   "app.modules.id_oostende_rrn.takenFormError": "Mae eich rhif nawdd cymdeithasol eisoes wedi'i ddefnyddio i ddilysu cyfrif arall",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Dilyswch gan ddefnyddio rhif nawdd cymdeithasol",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Rydych chi wedi derbyn hawliau gweinyddol dros y ffolder \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Rhannu",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Edrychwch ar y prosiectau yn {folderUrl} i sicrhau bod eich llais yn cael ei glywed!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | o lwyfan cyfranogiad {orgName}",

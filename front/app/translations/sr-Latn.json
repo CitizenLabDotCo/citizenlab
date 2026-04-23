@@ -2492,7 +2492,6 @@
   "app.modules.id_oostende_rrn.submit": "Pošalji",
   "app.modules.id_oostende_rrn.takenFormError": "Vaš broj socijalnog osiguranja je već korišćen za verifikaciju drugog naloga",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verifikuj pomoću broja socijalnog osiguranja",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Dodeljena su vam administratorska prava nad \"{folderName}\" folderom.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podeli",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Pogledajte projekte na {folderUrl} kako bi se čuo i vaš glas!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | sa platforme za učešće {orgName}",

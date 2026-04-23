@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "ਜਮ੍ਹਾਂ ਕਰੋ",
   "app.modules.id_oostende_rrn.takenFormError": "ਤੁਹਾਡਾ ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ ਨੰਬਰ ਪਹਿਲਾਂ ਹੀ ਕਿਸੇ ਹੋਰ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ ਵਰਤਿਆ ਜਾ ਚੁੱਕਾ ਹੈ",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ ਨੰਬਰ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਪੁਸ਼ਟੀ ਕਰੋ",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "ਤੁਹਾਨੂੰ \"{folderName}\" ਫੋਲਡਰ ਉੱਤੇ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ ਹਨ।",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "ਸ਼ੇਅਰ ਕਰੋ",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "ਆਪਣੀ ਆਵਾਜ਼ ਸੁਣਨ ਲਈ {folderUrl} 'ਤੇ ਪ੍ਰੋਜੈਕਟ ਦੇਖੋ!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | {orgName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਤੋਂ",

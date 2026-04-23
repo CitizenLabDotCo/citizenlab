@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "Prześlij",
   "app.modules.id_oostende_rrn.takenFormError": "Twój numer PESEL został już użyty do weryfikacji innego konta",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Weryfikacja przy użyciu numeru ubezpieczenia społecznego",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Otrzymałeś prawa administratora do folderu \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podziel się",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Zapoznaj się z projektami na stronie {folderUrl}, aby Twój głos został usłyszany!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | z platformy partycypacyjnej {orgName}",

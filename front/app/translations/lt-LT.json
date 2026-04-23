@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "Pateikti",
   "app.modules.id_oostende_rrn.takenFormError": "Jūsų socialinio draudimo numeris jau buvo panaudotas kitai paskyrai patvirtinti.",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Patikrinkite naudodami socialinio draudimo numerį",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Gavote administratoriaus teises į aplanką \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Dalintis",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "Peržiūrėkite projektus adresu {folderUrl} ir pareikškite savo nuomonę!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | iš {orgName}dalyvavimo platformos",

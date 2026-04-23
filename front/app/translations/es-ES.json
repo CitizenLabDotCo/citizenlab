@@ -2502,7 +2502,6 @@
   "app.modules.id_oostende_rrn.submit": "Enviar",
   "app.modules.id_oostende_rrn.takenFormError": "Su número de seguridad social ya ha sido utilizado para verificar otra cuenta",
   "app.modules.id_oostende_rrn.verifyOostendeRrn": "Verificar con el número de la seguridad social",
-  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Has recibido derechos de administrador para la carpeta \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Compártelo",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody": "¡Mire los proyectos en {folderUrl} para hacer oír su voz!",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject": "{projectFolderName} | de la plataforma de participación de {orgName}",
