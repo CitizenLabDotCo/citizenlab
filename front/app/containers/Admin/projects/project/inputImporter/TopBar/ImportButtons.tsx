@@ -12,9 +12,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 interface Props {
   onClickPDFImport: () => void;
   onClickExcelImport: () => void;
+  pdfImportSupported: boolean;
 }
 
-const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
+const ImportButtons = ({
+  onClickPDFImport,
+  onClickExcelImport,
+  pdfImportSupported,
+}: Props) => {
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
@@ -35,28 +40,40 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
           <FormattedMessage {...formSyncMessages.importFile} />
         </Button>
       </UpsellTooltip>
-      {printedFormsEnabled ? (
-        <Button
-          buttonStyle="admin-dark"
-          icon="form-sync"
-          onClick={onClickPDFImport}
-        >
-          <FormattedMessage {...formSyncMessages.importScans} />
-        </Button>
-      ) : (
-        <Tooltip
-          content={
-            <Box display="flex" flexDirection="column" gap="8px">
-              <FormattedMessage {...formSyncMessages.unlockScanningTooltip1} />
-              <FormattedMessage {...formSyncMessages.unlockScanningTooltip2} />
-            </Box>
-          }
-          theme="dark"
-        >
-          <Button buttonStyle="admin-dark" icon="lock">
-            <FormattedMessage {...formSyncMessages.unlockScanning} />
-          </Button>
-        </Tooltip>
+      {pdfImportSupported && (
+        <>
+          {printedFormsEnabled ? (
+            <Button
+              buttonStyle="admin-dark"
+              icon="form-sync"
+              onClick={onClickPDFImport}
+            >
+              <FormattedMessage {...formSyncMessages.importScans} />
+            </Button>
+          ) : (
+            <Tooltip
+              content={
+                <Box display="flex" flexDirection="column" gap="8px">
+                  <FormattedMessage
+                    {...formSyncMessages.unlockScanningTooltip1}
+                  />
+                  <FormattedMessage
+                    {...formSyncMessages.unlockScanningTooltip2}
+                  />
+                </Box>
+              }
+              theme="dark"
+            >
+              <Button
+                buttonStyle="admin-dark"
+                icon="lock"
+                style={{ cursor: 'not-allowed' }}
+              >
+                <FormattedMessage {...formSyncMessages.unlockScanning} />
+              </Button>
+            </Tooltip>
+          )}
+        </>
       )}
     </Box>
   );

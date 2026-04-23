@@ -21,6 +21,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { isPDFUploadSupported } from '../ReviewSection/utils';
 
 import ImportButtons from './ImportButtons';
 import { getBackPath } from './utils';
@@ -85,6 +86,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         <ImportButtons
           onClickPDFImport={onClickPDFImport}
           onClickExcelImport={onClickExcelImport}
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
         />
       </Box>
     </Box>

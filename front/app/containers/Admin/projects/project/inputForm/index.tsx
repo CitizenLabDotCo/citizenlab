@@ -3,11 +3,15 @@ import React from 'react';
 import { Box, Divider, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import ImportResponsesSection from 'components/admin/FormSync/ImportInputsSection';
+import usePhase from 'api/phases/usePhase';
+
+import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import { isPDFUploadSupported } from '../inputImporter/ReviewSection/utils';
 
 import messages from './messages';
 
@@ -17,6 +21,9 @@ export const InputForm = () => {
     projectId: string;
     phaseId: string;
   };
+
+  const { data: phase } = usePhase(phaseId);
+  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <Box maxWidth="1200px">
@@ -48,7 +55,10 @@ export const InputForm = () => {
         >
           {formatMessage(messages.importResponses).toUpperCase()}
         </Title>
-        <ImportResponsesSection formType="input_form" />
+        <ImportInputsSection
+          formType="input_form"
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
+        />
       </Box>
     </Box>
   );

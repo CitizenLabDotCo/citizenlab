@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
-import ImportResponsesSection from 'components/admin/FormSync/ImportInputsSection';
+import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -33,7 +33,10 @@ const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
 
   const participationMethod = phase?.data.attributes.participation_method;
   const formType =
-    participationMethod === 'native_survey' ? 'survey' : 'input_form';
+    participationMethod &&
+    ['native_survey', 'community_monitor_survey'].includes(participationMethod)
+      ? 'survey'
+      : 'input_form';
   const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   return (
@@ -58,20 +61,18 @@ const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
           <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>
-          <FormattedMessage
-            {...(pdfImportSupported
-              ? messages.noIdeasYet
-              : messages.noIdeasYetNoPdf)}
-            values={{
-              importFile: <FormattedMessage {...sharedMessages.importFile} />,
-            }}
-          />
+          {pdfImportSupported ? (
+            <FormattedMessage {...messages.noIdeasYet} />
+          ) : (
+            <FormattedMessage {...messages.noIdeasYetNoPdf} />
+          )}
         </Text>
         <Box mt="24px">
-          <ImportResponsesSection
+          <ImportInputsSection
             formType={formType}
             onClickPDFImport={onClickPDFImport}
             onClickExcelImport={onClickExcelImport}
+            pdfImportSupported={pdfImportSupported}
           />
         </Box>
       </Box>
