@@ -167,7 +167,8 @@ export function getPhaseLandingTab(
   | 'insights'
   | 'polls'
   | 'survey-results'
-  | 'volunteering' {
+  | 'volunteering'
+  | 'survey-form/edit' {
   const participationMethod = phase.attributes.participation_method;
 
   if (participationMethod === 'ideation' || participationMethod === 'voting') {
@@ -175,7 +176,7 @@ export function getPhaseLandingTab(
   } else if (participationMethod === 'proposals') {
     return 'proposals';
   } else if (participationMethod === 'native_survey') {
-    return 'insights';
+    return 'survey-form/edit';
   } else if (participationMethod === 'poll') {
     return 'polls';
   } else if (participationMethod === 'survey') {

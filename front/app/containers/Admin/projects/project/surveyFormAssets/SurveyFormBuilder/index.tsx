@@ -9,8 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
+import NewSurveyEmptyState from '../../nativeSurvey/NewSurveyEmptyState';
 import CopySurveyModal from '../CopySurveyModal';
-import NewSurveyEmptyState from '../NewSurveyEmptyState';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
 const SurveyFormBuilder = ({
