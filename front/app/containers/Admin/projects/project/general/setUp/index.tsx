@@ -51,7 +51,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -359,12 +358,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
-
-    const { space_id, folder_id } = projectAttributesDiff;
-
-    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
-      return false;
-    }
 
     return formIsValid;
   };

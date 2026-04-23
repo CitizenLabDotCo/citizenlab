@@ -56,7 +56,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
 
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
@@ -263,12 +262,6 @@ const ProjectSetupForm = () => {
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
-
-    const { space_id, folder_id } = projectAttributesDiff;
-
-    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
-      return false;
-    }
 
     return formIsValid;
   };

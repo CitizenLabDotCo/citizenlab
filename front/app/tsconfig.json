@@ -18,6 +18,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "incremental": true,
+    "useUnknownInCatchVariables": false,
     "types": ["vite/client", "jest", "@testing-library/jest-dom"],
     "plugins": [
       {
