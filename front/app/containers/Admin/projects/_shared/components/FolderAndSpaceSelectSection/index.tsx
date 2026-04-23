@@ -3,9 +3,14 @@ import React from 'react';
 import useAuthUser from 'api/me/useAuthUser';
 
 import AdminInterface from './AdminInterface';
+import FolderModeratorInterface from './FolderModeratorInterface';
 import { BaseProps } from './types';
 
-const FolderAndSpaceSelectSection = (props: BaseProps) => {
+interface Props extends BaseProps {
+  isNewProject: boolean;
+}
+
+const FolderAndSpaceSelectSection = ({ isNewProject, ...props }: Props) => {
   const { data: authUser } = useAuthUser();
   if (!authUser) return null;
 
@@ -20,7 +25,7 @@ const FolderAndSpaceSelectSection = (props: BaseProps) => {
   }
 
   if (highest_role === 'project_folder_moderator') {
-    return <></>;
+    return <FolderModeratorInterface isNewProject={isNewProject} {...props} />;
   }
 
   return null;
