@@ -22,8 +22,4 @@ export default defineMessages({
     id: 'app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1',
     defaultMessage: 'Duplicate another survey',
   },
-  importResponses: {
-    id: 'app.containers.Admin.surveyFormTab.importResponses1',
-    defaultMessage: 'Import responses',
-  },
 });

@@ -5,16 +5,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.inputImporter',
     defaultMessage: 'Input importer',
   },
-  importFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile3',
-    defaultMessage: 'Import scans',
-  },
-  importExcelFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile',
-    defaultMessage: 'Import Excel file (.xlsx)',
-  },
-  importPDFFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile',
-    defaultMessage: 'Import scanned forms (.pdf)',
-  },
 });
