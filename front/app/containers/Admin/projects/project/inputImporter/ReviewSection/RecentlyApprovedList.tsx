@@ -29,7 +29,7 @@ interface Props {
 // Drive overflow from the CollapsibleContainer's aria-expanded so the
 // scrollbar disappears the instant the user clicks to collapse, instead of
 // waiting for CollapsibleContainer's 1500ms unmount timeout.
-const StickyWrapper = styled(Box)`
+const Wrapper = styled(Box)`
   overflow: hidden;
   &:has(button[aria-expanded='true']) {
     overflow-y: auto;
@@ -42,14 +42,12 @@ const RecentlyApprovedList = ({ ideas, onUndo, undoingId }: Props) => {
   if (ideas.length === 0) return null;
 
   return (
-    <StickyWrapper
-      position="sticky"
-      bottom="0"
+    <Wrapper
       bgColor={colors.white}
       borderTop={`1px ${colors.grey400} solid`}
-      mt="12px"
       py="8px"
       maxHeight="50%"
+      flexShrink={0}
     >
       <CollapsibleContainer
         titleAs="h3"
@@ -100,7 +98,7 @@ const RecentlyApprovedList = ({ ideas, onUndo, undoingId }: Props) => {
           ))}
         </Box>
       </CollapsibleContainer>
-    </StickyWrapper>
+    </Wrapper>
   );
 };
 

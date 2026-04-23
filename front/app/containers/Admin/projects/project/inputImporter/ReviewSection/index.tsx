@@ -217,48 +217,52 @@ const ReviewSection = ({
           w="25%"
           borderRight={`1px ${colors.grey400} solid`}
           pr="8px"
-          overflowY="scroll"
+          display="flex"
+          flexDirection="column"
+          minHeight="0"
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          {(importing || importFailed || isLoadingIdeas) && (
-            <Box
-              py="8px"
-              borderBottom={`1px ${colors.grey400} solid`}
-              position="relative"
-            >
-              {importErrors.length > 0 ? (
-                <>
-                  <Error
-                    text={formatMessage(messages.errorImporting)}
-                    showIcon={false}
-                  />
-                  {importErrors.map((error, index) => (
-                    <Error key={index} apiErrors={[error]} />
-                  ))}
-                </>
-              ) : (
-                <Box
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  display="flex"
-                >
-                  <Box mr="8px">
-                    <Spinner size="20px" />
+          <Box flex="1" minHeight="0" overflowY="auto">
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+            {(importing || importFailed || isLoadingIdeas) && (
+              <Box
+                py="8px"
+                borderBottom={`1px ${colors.grey400} solid`}
+                position="relative"
+              >
+                {importErrors.length > 0 ? (
+                  <>
+                    <Error
+                      text={formatMessage(messages.errorImporting)}
+                      showIcon={false}
+                    />
+                    {importErrors.map((error, index) => (
+                      <Error key={index} apiErrors={[error]} />
+                    ))}
+                  </>
+                ) : (
+                  <Box
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    display="flex"
+                  >
+                    <Box mr="8px">
+                      <Spinner size="20px" />
+                    </Box>
+                    <Text m="0" color="black" fontSize="m">
+                      <FormattedMessage {...messages.importing} />
+                    </Text>
                   </Box>
-                  <Text m="0" color="black" fontSize="m">
-                    <FormattedMessage {...messages.importing} />
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          )}
-          <IdeaList
-            ideaId={ideaId}
-            ideas={ideas}
-            onSelectIdea={handleSelectIdea}
-            onDeleteIdea={handleDeleteIdea}
-          />
+                )}
+              </Box>
+            )}
+            <IdeaList
+              ideaId={ideaId}
+              ideas={ideas}
+              onSelectIdea={handleSelectIdea}
+              onDeleteIdea={handleDeleteIdea}
+            />
+          </Box>
           <RecentlyApprovedList
             ideas={approvedThisSession}
             onUndo={handleUndoApproval}
