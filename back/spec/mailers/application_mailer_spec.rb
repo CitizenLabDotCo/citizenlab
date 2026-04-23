@@ -13,7 +13,7 @@ RSpec.describe ApplicationMailer do
         'domain' => 'example.com',
         'user_name' => 'testuser',
         'password' => 'testpass',
-        'authentication' => 'login',
+        'authentication_type' => 'login',
         'enable_starttls_auto' => false,
         'openssl_verify_mode' => 'peer'
       }
@@ -43,7 +43,6 @@ RSpec.describe ApplicationMailer do
           openssl_verify_mode: 'peer'
         )
       end
-
     end
 
     context 'when custom_smtp is enabled with only address' do

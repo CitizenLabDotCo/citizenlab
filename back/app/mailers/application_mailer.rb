@@ -164,7 +164,7 @@ class ApplicationMailer < ActionMailer::Base
     options[:domain]               = smtp['domain']               if smtp['domain']
     options[:user_name]            = smtp['user_name']            if smtp['user_name']
     options[:password]             = smtp['password']             if smtp['password']
-    options[:authentication]       = smtp['authentication']&.to_sym if smtp['authentication']
+    options[:authentication]       = smtp['authentication_type']&.to_sym if smtp['authentication_type']
     options[:enable_starttls_auto] = smtp['enable_starttls_auto'] unless smtp['enable_starttls_auto'].nil?
     options[:openssl_verify_mode]  = smtp['openssl_verify_mode']  if smtp['openssl_verify_mode']
     { delivery_method: :smtp, delivery_method_options: options }
