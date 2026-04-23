@@ -80,8 +80,4 @@ export default defineMessages({
     defaultMessage:
       'Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.',
   },
-  importResponses: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.importResponses',
-    defaultMessage: 'Import responses',
-  },
 });

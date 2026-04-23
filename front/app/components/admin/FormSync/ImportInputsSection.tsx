@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Divider,
   Icon,
   Text,
+  Title,
   Button,
   colors,
   stylingConsts,
@@ -15,7 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { FormType } from 'components/FormBuilder/utils';
 import UpsellTooltip from 'components/UpsellTooltip';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import ExcelImportButton from './components/ExcelImportButton';
 import PDFImportButton from './components/PDFImportButton';
@@ -28,6 +30,7 @@ interface Props {
   onClickPDFImport?: () => void;
   onClickExcelImport?: () => void;
   pdfImportSupported: boolean;
+  showTitle?: boolean;
 }
 
 const ImportInputsSection = ({
@@ -35,7 +38,9 @@ const ImportInputsSection = ({
   onClickPDFImport,
   onClickExcelImport,
   pdfImportSupported,
+  showTitle,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -54,6 +59,19 @@ const ImportInputsSection = ({
 
   return (
     <Box>
+      {showTitle && (
+        <>
+          <Divider mb="28px" />
+          <Title
+            variant="h5"
+            color="coolGrey600"
+            fontWeight="semi-bold"
+            mb="28px"
+          >
+            {formatMessage(messages.importResponses).toUpperCase()}
+          </Title>
+        </>
+      )}
       <Box display="flex" flexDirection="column" gap="16px">
         {/* Paper forms OCR card */}
         {pdfImportSupported && (
