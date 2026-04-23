@@ -5,6 +5,7 @@ import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
@@ -47,6 +48,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
+import { isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -110,7 +112,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -322,12 +326,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setSubmitState('error');
     }
 
+    if (isSpaceModerator(authUser) && !spaceId) {
+      valid = false;
+    }
+
     return valid;
   }, [
     tenantLocales,
     titleMultiloc,
     descriptionMultiloc,
     shortDescriptionMultiloc,
+    authUser,
+    spaceId,
   ]);
 
   const saveForm = async () => {
