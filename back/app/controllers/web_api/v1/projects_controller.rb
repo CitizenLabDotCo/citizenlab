@@ -2,6 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
+  before_action :authorize_project, only: %i[show destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -290,6 +291,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
 
+    # Authorize here (rather than in a before_action) so ProjectPolicy#update?
+    # can inspect pending changes via ActiveModel dirty tracking — notably for
+    # policy rules around moving the project between folder or space / to root.
+    authorize @project
+
     sidefx.before_update(@project, current_user)
 
     publication_email_enabled = params.dig(:project, :publication_email_enabled)
@@ -434,6 +440,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def authorize_project
     authorize @project
   end
 

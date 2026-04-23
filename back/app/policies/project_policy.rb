@@ -118,6 +118,14 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
+    # if record.folder_changed?
+    #   puts "Y Folder change detected to #{(record&.folder&.id).inspect}"
+    # else
+    #   puts 'Y No folder change detected'
+    # end
+
+    return true if active_admin?
+
     active_moderator?
   end
 
