@@ -118,7 +118,11 @@ class ProjectPolicy < ApplicationPolicy
       return true unless record.folder_changed? || record.space_changed?
 
       return false if record.folder_changed? && !can_moderate_folder?
-      return false if record.space_changed? && !can_moderate_space?
+
+      if record.space_changed?
+        # TODO???
+        # return false if record.space_changed? && !can_moderate_space?
+      end
 
       return true
     end
