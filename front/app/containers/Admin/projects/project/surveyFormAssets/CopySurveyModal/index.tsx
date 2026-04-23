@@ -13,7 +13,6 @@ import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
 import Warning from 'components/UI/Warning';
 
-// routing
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -106,13 +105,10 @@ const CopySurveyModal = ({
             buttonStyle="admin-dark"
             disabled={!phaseId}
             onClick={() => {
-              const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
-              clHistory.push(url);
-
-              // If we're already in the form builder, we need to reload the page to trigger the copy.
-              if (window.location.pathname.includes(editFormLink)) {
-                window.location.reload();
-              }
+              clHistory.push({
+                pathname: editFormLink,
+                search: `?copy_from=${phaseId}`,
+              });
             }}
             data-cy="e2e-copy-survey-modal-duplicate"
           >
