@@ -281,6 +281,7 @@ export interface IAppConfigurationSettings {
   spaces?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
+  project_widget?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -8,6 +8,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Tabs from 'components/UI/Tabs';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -26,6 +28,7 @@ const AdminSettingsWidgets = () => {
   const { formatMessage } = useIntl();
   const location = useLocation();
   const hasGoBackLink = location.key !== 'default';
+  const projectWidgetEnabled = useFeatureFlag({ name: 'project_widget' });
   const [selectedTab, setSelectedTab] = useState<WidgetTab>('ideas');
 
   const goBack = () => {
@@ -34,7 +37,14 @@ const AdminSettingsWidgets = () => {
 
   const tabItems = [
     { name: 'ideas', label: formatMessage(messages.tabIdeas) },
-    { name: 'projects', label: formatMessage(messages.tabProjects) },
+    ...(projectWidgetEnabled
+      ? [
+          {
+            name: 'projects' as const,
+            label: formatMessage(messages.tabProjects),
+          },
+        ]
+      : []),
   ];
 
   return (
