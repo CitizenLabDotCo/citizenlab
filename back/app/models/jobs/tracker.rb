@@ -129,10 +129,8 @@ module Jobs
     end
 
     def job_errors
-      QueJob
-        .where('id = :id OR data @> :data', id: root_job_id, data: { root_job_id: root_job_id }.to_json)
-        .where(finished_at: nil) # Filter out jobs that are not finished yet since they might be retried and the error might be resolved in a retry.
-        .where.not(last_error_message: nil)
+      jobs
+        .where.not(expired_at: nil) # Only include jobs that have exhausted their retries.
         .filter_map(&:last_error)
     end
 
@@ -149,6 +147,12 @@ module Jobs
       )
 
       reload
+    end
+
+    private
+
+    def jobs
+      QueJob.where('id = :id OR data @> :data', id: root_job_id, data: { root_job_id: root_job_id }.to_json)
     end
   end
 end
