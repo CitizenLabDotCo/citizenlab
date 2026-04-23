@@ -52,8 +52,11 @@ lt-LT:
         user_who_is_invited_to_cosponsor_a_proposal: Naudotojas, kuris kviečiamas bendrai remti pasiūlymą
         user_who_is_mentioned: Vartotojas, kuris paminėtas
         user_who_is_receiving_admin_rights: Naudotojas, kuriam suteikiamos administratoriaus teisės
+        user_who_is_receiving_folder_manager_rights: Naudotojas, gaunantis aplanko valdytojo teises
         user_who_is_receiving_folder_moderator_rights: Naudotojas, kuriam suteikiamos aplanko moderatoriaus teisės
+        user_who_is_receiving_project_manager_rights: Naudotojas, gaunantis projekto valdytojo teises
         user_who_is_receiving_project_moderator_rights: Naudotojas, kuriam suteikiamos projekto moderatoriaus teisės
+        user_who_is_receiving_space_manager_rights: Naudotojas, gaunantis erdvės valdytojo teises
         user_who_published_the_input: Įvestį paskelbęs naudotojas
         user_who_published_the_proposal: Pasiūlymą paskelbęs naudotojas
         user_who_registers: Užsiregistravęs naudotojas
@@ -104,8 +107,11 @@ lt-LT:
         user_comments_on_input: Vartotojo komentarai apie įvestį
         user_comments_on_proposal: Vartotojų pastabos dėl pasiūlymo
         user_is_given_admin_rights: Naudotojui suteikiamos administratoriaus teisės
+        user_is_given_folder_manager_rights: Naudotojui suteikiamos aplanko valdytojo teisės
         user_is_given_folder_moderator_rights: Naudotojui suteiktos aplanko moderatoriaus teisės
+        user_is_given_project_manager_rights: Naudotojui suteikiamos projekto valdytojo teisės
         user_is_given_project_moderator_rights: Naudotojui suteikiamos projekto moderatoriaus teisės
+        user_is_given_space_manager_rights: Naudotojui suteikiamos erdvės valdytojo teisės
         user_is_invited_to_cosponsor_a_proposal: Naudotojas kviečiamas tapti vienu iš pasiūlymo rėmėjų
         user_is_invited_to_platform: Naudotojas kviečiamas į platformą
         user_is_mentioned: Vartotojas paminėtas
@@ -175,6 +181,7 @@ lt-LT:
       official_feedback_on_idea_you_follow: Įvesties, kurią sekate, atnaujinimas
       password_reset: Slaptažodžio atkūrimas
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
+      project_manager_rights_received: Suteiktos projekto valdytojo teisės
       project_moderation_rights_received: Gautos projekto moderavimo teisės
       project_phase_started: Naujas projekto etapas
       project_phase_upcoming: Būsimas naujas projekto etapas
@@ -182,6 +189,7 @@ lt-LT:
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
       screening_digest: Savaitinis priminimas apie patikrą
+      space_moderation_rights_received: Suteiktos erdvės valdytojo teisės
       status_change_on_idea_you_follow: Įvesties, kurią sekate, būsenos pasikeitimas
       survey_submitted: Pateikta apklausa
       threshold_reached_for_admin: Pasiūlymas pasiekė balsavimo ribą
@@ -518,6 +526,7 @@ lt-LT:
       project_description_preview: Tai tam tikras etapo turinio pavyzdys, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.
       project_title: Projekto pavyzdys
       proposal_title: Pasiūlymo pavyzdys
+      space_title: Pavyzdinė erdvė
     project_folder_moderation_rights_received:
       cta_button: Peržiūrėti šį aplanką
       event_description: "Jums suteiktos aplanko tvarkytojo teisės %{organizationName}'s dalyvavimo platformoje šiam aplankui:"
@@ -599,6 +608,21 @@ lt-LT:
       preheader: Įvesties duomenų peržiūra %{organizationName}
       subject: '%{count} peržiūros laukiantys duomenys'
       title: '%{firstName}, laukiama, kol bus peržiūrėtos įvestys'
+    space_moderation_rights_received:
+      cta_button: Valdyti šią erdvę
+      event_description: '%{organizationName} dalyvavimo platformos administratorius ką tik paskyrė jus šios erdvės valdytoju:'
+      no_projects: Projektų dar nėra
+      preheader: '%{organizationName} dalyvavimo platformos administratorius ką tik paskyrė jus šios erdvės valdytoju'
+      subject: Tapote erdvės valdytoju %{organizationName} platformoje
+      text_manage_space_settings: Galite redaguoti erdvės pavadinimą ir aprašymą, kad dalyviai ir kiti valdytojai iškart suprastų, kam skirta ši erdvė ir kaip ji susijusi su jūsų organizacija.
+      text_organize_projects_and_folders: Kaip erdvės valdytojas, galite valdyti savo erdvės projektus ir aplankus, įskaitant jų valdymo rolių priskyrimą ir pašalinimą.
+      text_oversee_participation: Kaip erdvės valdytojas, turite projekto valdytojo teises visiems jūsų erdvėje esantiems projektams, todėl galite stebėti gaunamą informaciją ir prireikus padėti projektų valdytojams.
+      title: Tapote erdvės valdytoju
+      title_manage_space_settings: Valdyti erdvės nustatymus
+      title_organize_projects_and_folders: Organizuoti projektus ir aplankus
+      title_oversee_participation: Prižiūrėti dalyvavimą
+      title_what_can_you_do_space_manager: Ką galite daryti kaip erdvės valdytojas?
+      x_projects: '%{numberOfProjects} projektai'
     status_change_on_idea_you_follow:
       cta_button: Eikite į šią įvestį
       event_description: '%{organizationName} savo skaitmeninėje dalyvavimo platformoje atnaujino įvesties statusą "%{input_title}".'

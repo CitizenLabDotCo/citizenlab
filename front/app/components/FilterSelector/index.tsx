@@ -210,6 +210,11 @@ const FilterSelector = ({
     if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
       toggleValuesList();
+      return;
+    }
+    if (event.key === 'Escape' && opened) {
+      event.preventDefault();
+      closeExpanded();
     }
   };
 
@@ -237,6 +242,7 @@ const FilterSelector = ({
     filterSelectorStyle,
     minWidth,
     toggleValuesList,
+    closeExpanded,
     textColor,
     currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
     handleKeyDown,

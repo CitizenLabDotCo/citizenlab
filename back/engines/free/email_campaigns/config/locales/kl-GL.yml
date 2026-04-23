@@ -107,8 +107,11 @@ kl-GL:
         user_who_is_invited_to_cosponsor_a_proposal: Atuisoq siunnersuummut tapersersueqataasussatut aggersagaq
         user_who_is_mentioned: Atuisoq taaneqartoq
         user_who_is_receiving_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_folder_manager_rights: Atuisoq folderimi aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_is_receiving_folder_moderator_rights: Atuisoq mappip aqutsisuatut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_project_manager_rights: Atuisoq suliniutinik aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_is_receiving_project_moderator_rights: Atuisoq suliniutip aqutsisuatut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_space_manager_rights: Atuisoq immikkoortortami aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_published_the_input: Atuisoq saqqummiussisoq
         user_who_published_the_proposal: Atuisoq siunnersuummik saqqummiussisoq
         user_who_registers: Atuisoq nalunaarsortoq
@@ -159,8 +162,11 @@ kl-GL:
         user_comments_on_input: Atuisoq siunnersuummut oqaaseqaateqarpoq
         user_comments_on_proposal: Atuisoq siunnersuummut oqaaseqaateqarpoq
         user_is_given_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqarpoq
+        user_is_given_folder_manager_rights: Atuisoq folderimi aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_folder_moderator_rights: Atuisoq mappimi aqutsisutut pisinnaatitaaffilerneqarpoq
+        user_is_given_project_manager_rights: Atuisoq suliniutinik aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_project_moderator_rights: Atuisoq suliniutip nakkutilliisuatut pisinnaatitaaffilerneqarpoq
+        user_is_given_space_manager_rights: Atuisoq immikkoortortami aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_invited_to_cosponsor_a_proposal: Atuisoq siunnersuummut tapersersueqataasussatut qaaqquneqarpoq
         user_is_invited_to_platform: Atuisoq nittartakkamut qaaqquneqarpoq
         user_is_mentioned: Atuisoq taaneqarpoq
@@ -258,6 +264,7 @@ kl-GL:
       official_feedback_on_your_initiative: Innutaasutut siunnersuutigisimasannik nutarterineq
       password_reset: Kodemik isissutissamik allannguineq
       project_folder_moderation_rights_received: Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
+      project_manager_rights_received: Suliniutinik aqutsisutut pisinnaatitaaffiit tiguneqarput
       project_moderation_rights_received: Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
       project_phase_started: Suliniummut nikeriarfik nutaaq
       project_phase_upcoming: Suliniummut nikeriarfik nutaaq takkuttussaq
@@ -265,6 +272,7 @@ kl-GL:
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
+      space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
       status_change_of_commented_idea: Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
       status_change_of_commented_initiative: Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
       status_change_of_voted_idea: Isumassarsiap taasiffigisimasama killiffiani allanngorneq
@@ -803,6 +811,7 @@ kl-GL:
       project_description_preview: Una tassaavoq immikkoortup imarisaanut assersuut e-mailit imarisaannik takunnissinnaanermut atorneqartoq. Una imarisaavinnik imaqanngilaq.
       project_title: Suliniut assersuut
       proposal_title: Siunnersuut assersuut
+      space_title: Immikkoortortaq assersuut
     project_folder_moderation_rights_received:
       cta_button: Toqqorsivik una takuuk
       cta_view_folder_button: Mappi nuisiuguk
@@ -894,6 +903,21 @@ kl-GL:
       preheader: '%{organizationName}-imut ilanngussat misissukkit'
       subject: Isersaatit %{count} misissorneqarnissartik utaqqiigaat
       title: '%{firstName}, siunnersuutit misissorneqarnissartik utaqqiigaat'
+    space_moderation_rights_received:
+      cta_button: Immikkoortortaq una aqutariuk
+      event_description: '%{organizationName}-ip peqataatitsinermut platformiani aqutsisup matuma kinguninngua immikkoortortami uani aqutsisunngortippaatit:'
+      no_projects: Suli suliniuteqanngilaq
+      preheader: '%{organizationName}-ip peqataatitsinermut platformiani aqutsisup matuma kinguninngua immikkoortortami uani aqutsisunngortippaatit'
+      subject: '%{organizationName}-ip platformiani immikkoortortami aqutsisuunngorputit'
+      text_manage_space_settings: Immikkoortortap qulequtaa nassuiaataalu aaqqissuussinnaavatit, taamaalillutit peqataasut aqutsiseqatitillu immikkoortortap suunera aamma suliffeqarfinnut qanoq attuumassuteqarnera pillugu paasinnissinnaaniassammata.
+      text_organize_projects_and_folders: Immikkoortortami aqutsisutut, immikkoortortanni suliniutit folderillu aqutarisinnaavatit, matumunnga ilanngullugit aqutsisutut inissisimanernik tunniussineq peernerlu.
+      text_oversee_participation: Immikkoortortami aqutsisutut, immikkoortortanni suliniutinut tamanut suliniutinik aqutsisutut pisinnaatitaaffeqarputit, taamaalillutit isumassarsianik takkuttunik malinnaasinnaavutit pisariaqarfianilu suliniutinik aqutsisut ikiorserlugit.
+      title: Immikkoortortami aqutsisuunngorputit
+      title_manage_space_settings: Immikkoortortap inissinneri aqutariuk
+      title_organize_projects_and_folders: Suliniutit folderillu aaqqissuussikkit
+      title_oversee_participation: Peqataaneq nakkutigiuk
+      title_what_can_you_do_space_manager: Immikkoortortami aqutsisutut suna suliarisinnaaviuk?
+      x_projects: Suliniutit %{numberOfProjects}
     status_change_of_commented_idea:
       cta_view_idea: Isumassarsiamukarit
       event_description: "%{organizationName}p isumassarsiaq '%{ideaTitle}' namminneq peqataasunut platformiminni nutaanik ilaartuivoq."
