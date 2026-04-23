@@ -14,9 +14,7 @@ module ProjectFolders
       )
     end
 
-    def before_update(folder, user)
-      set_scheduled_by(folder.admin_publication, user)
-    end
+    def before_update(_folder, _user); end
 
     def after_update(folder, user)
       change = folder.saved_changes
@@ -56,12 +54,6 @@ module ProjectFolders
     end
 
     private
-
-    def set_scheduled_by(admin_pub, user)
-      return unless admin_pub.will_save_change_to_scheduled_status?
-
-      admin_pub.scheduled_by = admin_pub.scheduled_status.present? ? user : nil
-    end
 
     def enqueue_scheduled_transition(admin_pub)
       return unless admin_pub.saved_change_to_scheduled_at?

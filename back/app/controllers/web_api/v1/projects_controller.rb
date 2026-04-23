@@ -213,7 +213,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new permitted_attributes(Project)
+    project = Project.new(create_params)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
@@ -282,15 +282,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def update
-    params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
-    params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
-
-    process_due_transition(@project)
-
-    project_params = permitted_attributes(@project)
-
-    @project.assign_attributes project_params
-    remove_image_if_requested!(@project, project_params, :header_bg)
+    process_due_status_transition(@project)
+    @project.assign_attributes(update_params)
+    remove_image_if_requested!(@project, update_params, :header_bg)
 
     sidefx.before_update(@project, current_user)
 
@@ -309,7 +303,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def destroy
-    process_due_transition(@project)
+    process_due_status_transition(@project)
     sidefx.before_destroy(@project, current_user)
     if @project.destroy
       sidefx.after_destroy(@project, current_user)
@@ -445,11 +439,40 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 
-  def process_due_transition(publication)
+  def process_due_status_transition(publication)
     admin_pub = publication.admin_publication
     return unless admin_pub.scheduled_at&.<=(Time.current)
 
     ProcessScheduledPublicationTransitionsJob.new.run(admin_pub)
+  end
+
+  def create_params
+    @create_params ||= permitted_attributes(Project).tap do |project_params|
+      admin_pub_attrs = project_params[:admin_publication_attributes]
+      assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+    end
+  end
+
+  def update_params
+    @update_params ||= begin
+      # When area_ids or global_topic_ids is sent as nil, they are dropped entirely by
+      # strong parameters since it expects an array. Converting nil to [] ensures the
+      # association is cleared as intended.
+      params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+      params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
+
+      permitted_attributes(@project).tap do |project_params|
+        admin_pub_attrs = project_params[:admin_publication_attributes]
+        assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+      end
+    end
+  end
+
+  def assign_scheduled_by(admin_publication_attrs)
+    return unless admin_publication_attrs.key?(:scheduled_status)
+
+    admin_publication_attrs[:scheduled_by_id] =
+      admin_publication_attrs[:scheduled_status].present? ? current_user.id : nil
   end
 
   def base_render_mini_index
