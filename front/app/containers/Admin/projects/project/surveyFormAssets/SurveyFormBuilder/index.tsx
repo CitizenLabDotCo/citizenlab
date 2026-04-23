@@ -82,10 +82,9 @@ export default () => {
   const [searchParams] = useSearchParams();
   const copyFrom = searchParams.get('copy_from');
 
-  // Track copy_from in state so that only new copy initiations (non-null)
-  // trigger a remount via the key. When resetCopyFrom() clears the param
-  // after save, copyFrom becomes null — but we keep the key stable to
-  // prevent a remount that would reset FormBuilder's internal state.
+  // Only remount on new copy initiation, not when resetCopyFrom()
+  // clears the param after save — that remount would reset FormEdit's
+  // internal state and lose the saved fields.
   const [mountKey, setMountKey] = useState(copyFrom);
 
   useEffect(() => {
