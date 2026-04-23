@@ -167,16 +167,15 @@ export function getPhaseLandingTab(
   | 'insights'
   | 'polls'
   | 'survey-results'
-  | 'volunteering'
-  | 'survey-form/edit' {
+  | 'volunteering' {
   const participationMethod = phase.attributes.participation_method;
 
   if (participationMethod === 'ideation' || participationMethod === 'voting') {
-    return 'survey-form/edit';
+    return 'ideas';
   } else if (participationMethod === 'proposals') {
-    return 'survey-form/edit';
+    return 'proposals';
   } else if (participationMethod === 'native_survey') {
-    return 'survey-form/edit';
+    return 'insights';
   } else if (participationMethod === 'poll') {
     return 'polls';
   } else if (participationMethod === 'survey') {

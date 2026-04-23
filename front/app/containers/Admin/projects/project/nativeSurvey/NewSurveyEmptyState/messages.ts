@@ -23,8 +23,8 @@ export default defineMessages({
     defaultMessage: 'Copy a survey from another project as a starting point.',
   },
   planningInPersonEvent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent3',
     defaultMessage:
-      '<b>Planning an event?</b> Use the Paper Form button above to preview, download and import scanned responses',
+      '<b>Planning an event?</b> Use the "Paper form" button above to download a printable PDF of your form and import the scans.',
   },
 });

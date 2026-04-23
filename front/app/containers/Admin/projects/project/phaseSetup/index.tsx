@@ -275,6 +275,10 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     redirectAfterSave: boolean
   ) => {
     const phaseResponse = response.data;
+    const participationMethod = phaseResponse.attributes.participation_method;
+    const phaseHasInputs = ['native_survey', 'ideation', 'proposals'].includes(
+      participationMethod
+    );
     const phaseId = phaseResponse.id;
 
     const initialFileAttachmentOrdering = phaseFileAttachments?.data.reduce(
@@ -303,6 +307,17 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         if (redirectAfterSave) {
           const redirectTab = getPhaseLandingTab(phaseResponse);
           window.scrollTo(0, 0);
+
+          // If the participation method uses a form, we override the default
+          // redirect tab to bring them to the Form Builder on phase creation.
+          if (phaseHasInputs) {
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+            );
+            return;
+          }
+
+          // Otherwise, use the default redirect tab
           clHistory.push(
             `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
           );
