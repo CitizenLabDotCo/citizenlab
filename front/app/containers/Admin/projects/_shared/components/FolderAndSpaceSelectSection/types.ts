@@ -1,4 +1,8 @@
 export interface Props {
-  space_id?: string;
-  folder_id?: string;
+  space_id?: string | null;
+  folder_id?: string | null;
+  onChange: (args: {
+    space_id?: string | null;
+    folder_id?: string | null;
+  }) => void;
 }

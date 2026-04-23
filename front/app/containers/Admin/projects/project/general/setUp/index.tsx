@@ -7,7 +7,6 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -17,13 +16,13 @@ import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
-import { HighestRole } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/FolderAndSpaceSelectSection';
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
@@ -38,7 +37,6 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
-import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
@@ -58,7 +56,6 @@ import { TOnProjectAttributesDiffChangeFunction } from '..';
 import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
-import ProjectFolderSelect from '../../../_shared/components/ProjectSetupForm/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
 import ProjectNameInput from '../../../_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
@@ -68,16 +65,8 @@ import {
 } from '../../../_shared/components/ProjectSetupForm/styling';
 import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
 import { fragmentId } from '../../projectHeader';
-import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
 import messages from '../messages';
 import validateTitle from '../utils/validateTitle';
-
-const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
-  'super_admin',
-  'admin',
-  'space_moderator',
-  'project_folder_moderator',
-] satisfies HighestRole[];
 
 interface Props {
   project: IProject;
@@ -85,7 +74,6 @@ interface Props {
 
 const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -148,10 +136,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     useState<Multiloc | null>(
       project.data.attributes.description_preview_multiloc
     );
-
-  const showProjectFolderSelect = FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
-    authUser?.data.attributes.highest_role
-  );
 
   useEffect(() => {
     if (remoteProjectFileAttachments) {
@@ -362,10 +346,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     return formIsValid;
   };
 
-  const handleSpaceSelectChange = (spaceId: string | null) => {
-    handleProjectAttributeDiffOnChange({ space_id: spaceId });
-  };
-
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -496,34 +476,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {showProjectFolderSelect && (
-            <Highlighter fragmentId={folderFragmentId}>
-              <ProjectFolderSelect
-                folder_id={projectAttrs.folder_id}
-                onChange={(folder_id) => {
-                  if (folder_id) {
-                    // If a folder is chosen, the project will automatically
-                    // inherit the folder's space. So we clear
-                    // any previously chosen space.
-                    handleProjectAttributeDiffOnChange(
-                      { folder_id, space_id: undefined },
-                      'enabled'
-                    );
-                  } else {
-                    handleProjectAttributeDiffOnChange(
-                      { folder_id },
-                      'enabled'
-                    );
-                  }
-                }}
-              />
-            </Highlighter>
-          )}
-
-          <SpaceSelectSection
-            spaceId={projectAttrs.space_id}
-            folderId={projectAttrs.folder_id}
-            onChange={handleSpaceSelectChange}
+          <FolderAndSpaceSelectSection
+            space_id={projectAttrs.space_id}
+            folder_id={projectAttrs.folder_id}
+            onChange={(diff) => handleProjectAttributeDiffOnChange(diff)}
           />
 
           <SectionField className="intercom-product-tour-project-header-image-field">
