@@ -18,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../messages';
 
 import messages from './messages';
-import { isPDFUploadSupported } from './utils';
+import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -32,11 +32,9 @@ const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
-  const formType =
-    participationMethod &&
-    ['native_survey', 'community_monitor_survey'].includes(participationMethod)
-      ? 'survey'
-      : 'input_form';
+  const formType = supportsNativeSurvey(participationMethod)
+    ? 'survey'
+    : 'input_form';
   const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   return (

@@ -1,5 +1,5 @@
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import { pastPresentOrFuture } from './dateUtils';
 
@@ -10,6 +10,16 @@ export function isCommunityMonitorProject(
   const communityMonitorProjectId =
     appConfig?.data.attributes.settings.community_monitor?.project_id;
   return projectId === communityMonitorProjectId;
+}
+
+const methodsWithInputs: ParticipationMethod[] = [
+  'native_survey',
+  'ideation',
+  'proposals',
+];
+
+export function phaseHasInputs(participationMethod: ParticipationMethod) {
+  return methodsWithInputs.includes(participationMethod);
 }
 
 export function isPhaseActive(phase: IPhaseData): boolean {

@@ -36,6 +36,7 @@ import {
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { generateTemporaryFileAttachment } from 'utils/fileUtils';
+import { phaseHasInputs } from 'utils/projectUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
@@ -276,9 +277,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   ) => {
     const phaseResponse = response.data;
     const participationMethod = phaseResponse.attributes.participation_method;
-    const phaseHasInputs = ['native_survey', 'ideation', 'proposals'].includes(
-      participationMethod
-    );
     const phaseId = phaseResponse.id;
 
     const initialFileAttachmentOrdering = phaseFileAttachments?.data.reduce(
@@ -310,7 +308,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
           // If the participation method uses a form, we override the default
           // redirect tab to bring them to the Form Builder on phase creation.
-          if (phaseHasInputs) {
+          if (phaseHasInputs(participationMethod)) {
             clHistory.push(
               `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
             );
