@@ -71,8 +71,6 @@ const ProjectsWidgetForm = () => {
   const selectedProjects: string[] = methods.watch('projects') || [];
   const hasSelectedProjects = selectedProjects.length > 0;
 
-  // TODO: Consider filtering to only published folders (like with projects),
-  // or folders visible to everyone (then we also need to change this for projects).
   const folderOptions = projectFolders
     ? resourcesToOptionList(projectFolders.data)
     : [];

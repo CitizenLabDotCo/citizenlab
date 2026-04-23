@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  tabWidgets: {
-    id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
-    defaultMessage: 'Widgets',
-  },
-  title: {
-    id: 'app.containers.AdminPage.widgets.title',
-    defaultMessage: 'Widgets',
-  },
   titleWidgets: {
     id: 'app.containers.AdminPage.widgets.titleWidgets',
     defaultMessage: 'Widgets',
