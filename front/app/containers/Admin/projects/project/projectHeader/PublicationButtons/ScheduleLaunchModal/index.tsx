@@ -76,6 +76,11 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const primaryLoading = isUpdatingProject || isApproving || isRequesting;
   const cancelLoading = isCancelling;
 
+  const isDirty =
+    selectedDate.getTime() !== initialDate.getTime() ||
+    selectedTime.getTime() !== initialDate.getTime() ||
+    sendEmail !== project.attributes.publication_email_enabled;
+
   const buildScheduledAt = () => {
     const scheduledDate = new Date(selectedDate);
     scheduledDate.setHours(selectedTime.getHours());
@@ -187,8 +192,16 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           };
     }
 
-    // PM waiting on an existing request — disabled indicator.
+    // PM waiting on an existing request — disabled indicator, unless the
+    // schedule has been edited, in which case allow saving the changes.
     if (reviewState === 'pending') {
+      if (isDirty && mode === 'schedule') {
+        return {
+          label: messages.saveChanges,
+          icon: 'check',
+          onClick: handleSaveSchedule,
+        };
+      }
       return {
         label: messages.approvalRequested,
         icon: 'lock',
