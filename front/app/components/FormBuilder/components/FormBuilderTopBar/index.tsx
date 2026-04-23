@@ -22,7 +22,7 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocalize from 'hooks/useLocalize';
 
-import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
+import PaperFormDropdown from 'components/admin/FormSync/PaperFormDropdown';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
@@ -177,17 +177,17 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        <DownloadPDFButtonWithModal
-          mr="20px"
-          formType={builderConfig.type}
-          phaseId={phaseId}
-        />
         <EditSchemaButtonWithModal
           customFields={customFields}
           projectId={projectId}
           phase={phase.data}
           isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
           onSaveSuccess={onFormSave}
+        />
+        <PaperFormDropdown
+          mr="20px"
+          formType={builderConfig.type}
+          phaseId={phaseId}
         />
         <ButtonWithLink
           buttonStyle="secondary-outlined"

@@ -24,11 +24,7 @@ interface Props extends ButtonProps {
   phaseId: string;
 }
 
-const DownloadPDFButtonWithModal = ({
-  formType,
-  phaseId,
-  ...buttonProps
-}: Props) => {
+const PaperFormDropdown = ({ formType, phaseId, ...buttonProps }: Props) => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { projectId } = useParams() as { projectId: string };
@@ -88,4 +84,4 @@ const DownloadPDFButtonWithModal = ({
   );
 };
 
-export default DownloadPDFButtonWithModal;
+export default PaperFormDropdown;
