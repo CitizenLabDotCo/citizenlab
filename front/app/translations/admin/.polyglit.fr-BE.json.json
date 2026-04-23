@@ -444,6 +444,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormSync.downloadExcelTemplate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -453,6 +458,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.components.FormSync.importFile1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T15:04:33.309996Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.importResponses1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:03:22.997135Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.importScans1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T15:04:33.309996Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.paperFormsOCR1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:15:59.071403Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.paperFormsOCRDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.spreadsheet1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:03:22.997135Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.spreadsheetDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:20:48.864877Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.template1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:22:18.640632Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanning1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:49:05.074810Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanningTooltip1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:58:44.600513Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormSync.unlockScanningTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:58:06.941111Z",
+    "verified_by": "Adrien"
   },
   "app.components.ProjectTemplatePreview.close": {
     "state": "verified",
@@ -4299,6 +4359,11 @@
     "verified_at": "2026-03-18T16:35:09.151932Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.folders": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:22:02.929297Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.helmetDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -4358,6 +4423,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.151932Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.projects": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:22:02.929297Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.Users.registeredUser": {
     "state": "verified",
@@ -6333,6 +6403,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.includeLogic": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:05:37.250932Z",
+    "verified_by": "Amanda A"
+  },
+  "app.containers.Admin.projects.all.includeLogicExplanation": {
+    "state": "verified",
+    "verified_at": "2026-04-08T13:05:37.250932Z",
+    "verified_by": "Amanda A"
   },
   "app.containers.Admin.projects.all.itIsAlsoPossible1": {
     "state": "verified",
@@ -8734,6 +8814,106 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.edit": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.everyone": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.makeProjectVisibleTooltip": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.now": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.recipientsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.reviewSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:03:21.454925Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9518,6 +9698,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.surveyFormTab.inputFormDescription2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T14:36:46.420431Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.surveyFormTab.surveyForm": {
     "state": "verified",
@@ -12774,6 +12959,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.needInspiration2": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.381821Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectEdit.needInspirationDescription": {
+    "state": "verified",
+    "verified_at": "2026-04-17T13:44:43.381821Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectEdit.newComment": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -14173,6 +14368,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectTimeline.descriptionSave": {
+    "state": "verified",
+    "verified_at": "2026-04-22T15:59:02.817308Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": {
     "state": "verified",

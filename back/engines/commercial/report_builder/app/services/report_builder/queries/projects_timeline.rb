@@ -61,10 +61,10 @@ module ReportBuilder
         {
           id: project.id,
           title: project.title_multiloc,
-          start_date: first_phase&.start_at || project.admin_publication.first_published_at,
-          end_date: last_phase&.end_at,
-          current_phase_start_date: current_phase&.start_at,
-          current_phase_end_date: current_phase&.end_at,
+          start_date: first_phase&.start_date || project.admin_publication.first_published_at,
+          end_date: last_phase&.end_date,
+          current_phase_start_date: current_phase&.start_date,
+          current_phase_end_date: current_phase&.end_date,
           publication_status: project.admin_publication.publication_status,
           folder_title_multiloc: project.folder&.title_multiloc
         }

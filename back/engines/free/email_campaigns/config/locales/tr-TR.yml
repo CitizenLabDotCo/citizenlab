@@ -1,701 +1,727 @@
-tr:
+tr-TR:
   email_campaigns:
+    admin_digest:
+      cta_button: Platformunuzu ziyaret edin
+      event_description: Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Platformunuzda neler olduğunu öğrenin!
+      new_comments: Yeni yorumlar
+      new_inputs: Yeni girişler
+      new_users: Yeni kullanıcılar
+      preheader: '%{organizationName} ile ilgili yönetici özeti'
+      reached_threshold: Eşiğe ulaşıldı
+      subject: '%{time} için haftalık yönetici raporunuz'
+      title: '%{firstName}haftalık raporunuz'
+      title_activity_past_week: Geçen haftanın etkinliği
+      title_no_activity_past_week: Geçen hafta etkinlik yoktu
+      today_by_author: '%{author} tarafından bugün'
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
+      yesterday_by_author: '%{author} tarafından dün'
+    admin_labels:
+      content_type:
+        comments: Yorumlar
+        content_moderation: İçerik moderasyonu
+        events: Etkinlikler
+        general: Genel
+        inputs: Girişler
+        internal_comments: Dahili yorumlar
+        permissions: İzinler
+        projects: Projeler
+        proposals: Teklifler
+        reactions: Tepkiler
+        surveys: Anketler
+        voting: Oylama
+      recipient_role:
+        admins: Yöneticilere
+        admins_and_managers: Yöneticilere ve müdürlere
+        managers: Yöneticilere
+        project_participants: Proje katılımcılarına
+        registered_users: Kayıtlı kullanıcılara
+      recipient_segment:
+        admins: Yöneticiler
+        admins_and_managers: Yöneticiler ve müdürler
+        admins_and_managers_assigned_to_the_input: Girişe atanan yöneticiler ve müdürler
+        admins_and_managers_managing_the_project: Projeyi yöneten yöneticiler ve müdürler
+        admins_assigned_to_a_proposal: Bir teklife atanan yöneticiler
+        all_users: Tüm kullanıcılar
+        all_users_who_uploaded_proposals: Teklif yükleyen tüm kullanıcılar
+        managers: Yöneticiler
+        managers_managing_the_project: Projeyi yöneten yöneticiler
+        new_attendee: Yeni kayıtlı kullanıcı
+        project_review_requester: Proje incelemesini talep eden kullanıcı
+        project_reviewers: Proje gözden geçiricileri ve klasör yöneticileri
+        user_who_commented: Yorum yapan kullanıcı
+        user_who_is_invited_to_cosponsor_a_proposal: Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı
+        user_who_is_mentioned: Bahsi geçen kullanıcı
+        user_who_is_receiving_admin_rights: Yönetici haklarını alan kullanıcı
+        user_who_is_receiving_folder_manager_rights: Klasör yöneticisi yetkileri alan kullanıcı
+        user_who_is_receiving_folder_moderator_rights: Klasör moderatörü haklarını alan kullanıcı
+        user_who_is_receiving_project_manager_rights: Proje yöneticisi yetkileri alan kullanıcı
+        user_who_is_receiving_project_moderator_rights: Proje moderatörü haklarını alan kullanıcı
+        user_who_is_receiving_space_manager_rights: Alan yöneticisi yetkileri alan kullanıcı
+        user_who_published_the_input: Girdiyi yayınlayan kullanıcı
+        user_who_published_the_proposal: Teklifi yayınlayan kullanıcı
+        user_who_registers: Kayıt olan kullanıcı
+        user_who_submitted_the_input: Girdiyi gönderen kullanıcı
+        user_who_voted: Oy veren kullanıcı
+        user_who_was_invited: Davet edilen kullanıcı
+        user_with_unsubmitted_survey: Anketini başlatmış ancak göndermemiş kullanıcı
+        user_with_unsubmitted_votes: Oylarını göndermemiş olan kullanıcı
+        users_who_engaged_but_not_voted: Proje ile ilgilenen ancak oy kullanmayan kullanıcılar
+        users_who_engaged_with_the_project: Proje ile etkileşime geçen kullanıcılar
+        users_who_follow_the_input: Girişi takip eden kullanıcılar
+        users_who_follow_the_project: Projeyi takip eden kullanıcılar
+        users_who_follow_the_proposal: Teklifi takip eden kullanıcılar
+      trigger:
+        7_days_after_invite_is_sent: Davetiye gönderildikten 7 gün sonra
+        7_days_before_the_project_changes_phase: Proje değişiklik aşamasından 7 gün önce
+        comment_is_deleted: Yorum silindi
+        comment_is_flagged_as_spam: Yorum spam olarak işaretlendi
+        content_gets_flagged_as_innapropiate: İçerik uygunsuz olarak işaretlenir
+        initiative_resubmitted_for_review: Teklif incelenmek üzere yeniden sunuldu
+        input_is_assigned: Giriş atanmıştır
+        input_is_flagged_as_spam: Girdi spam olarak işaretlendi
+        input_is_published: Girdi yayınlandı
+        input_is_updated: Girdi güncellenir
+        input_status_changes: Giriş durumu değişiklikleri
+        internal_comment_is_posted_on_idea_assigned_to_user: Kullanıcıya atanan girdiye dahili yorum gönderilir'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Dahili yorum, kullanıcının yönettiği proje veya klasördeki girdiye gönderilir'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Dahili yorum, kullanıcının dahili olarak yorum yaptığı girdiye gönderilir'
+        internal_comment_is_posted_on_idea_user_moderates: Giriş kullanıcı moderatörlerine dahili yorum gönderilir
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Yönetilmeyen projedeki atanmamış girdiye dahili yorum gönderildi'
+        new_input_awaits_screening: Yeni girdiler taranmayı bekliyor
+        new_input_is_published: Yeni girdi yayınlandı
+        new_proposal_is_posted: Yeni teklif yayınlandı
+        project_phase_changes: Proje aşaması değişiklikleri
+        project_published: Proje yayınlandı
+        project_review_request: Moderatör proje incelemesi talep etti
+        project_review_state_change: Gözden geçiren projeyi onayladı
+        proposal_gets_reported_as_spam: Teklif spam olarak bildiriliyor
+        proposal_is_assigned_to_admin: Teklif yöneticiye atanır
+        proposal_is_published: Teklif yayınlandı
+        proposal_is_updated: Teklif güncellendi
+        proposal_is_upvoted_above_threshold: Teklif eşik değerin üzerinde oylandı
+        proposal_status_changes: Teklif durumu değişiklikleri
+        registration_to_event: Bir etkinliğe kayıt
+        survey_1_day_after_draft_saved: Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra
+        user_accepts_invitation_to_cosponsor_a_proposal: Kullanıcı bir teklife eş sponsorluk davetini kabul eder
+        user_comments: Kullanıcı yorumları
+        user_comments_on_input: Giriş hakkında kullanıcı yorumları
+        user_comments_on_proposal: Teklifle ilgili kullanıcı yorumları
+        user_is_given_admin_rights: Kullanıcıya yönetici hakları verilir
+        user_is_given_folder_manager_rights: Kullanıcıya klasör yöneticisi yetkileri verildi
+        user_is_given_folder_moderator_rights: Kullanıcıya klasör moderatörü hakları verilir
+        user_is_given_project_manager_rights: Kullanıcıya proje yöneticisi yetkileri verildi
+        user_is_given_project_moderator_rights: Kullanıcıya proje moderatörü hakları verilir
+        user_is_given_space_manager_rights: Kullanıcıya alan yöneticisi yetkileri verildi
+        user_is_invited_to_cosponsor_a_proposal: Kullanıcı bir teklife eş sponsorluk yapmaya davet edilir
+        user_is_invited_to_platform: Kullanıcı platforma davet edilir
+        user_is_mentioned: Kullanıcıdan bahsedilir
+        user_is_mentioned_in_internal_comment: Dahili yorumda kullanıcıdan bahsediliyor
+        user_registers_for_the_first_time: Kullanıcı ilk kez kaydolur
+        user_replies_to_comment: Kullanıcı yoruma yanıt veriyor
+        user_replies_to_internal_comment: Kullanıcı dahili yoruma yanıt veriyor
+        voting_1_day_after_last_votes: Kullanıcı son oylamadan 1 gün sonra
+        voting_2_days_before_phase_closes: Oylama aşamasının kapanmasına 2 gün kala
+        voting_basket_submitted: Oylar teslim edildi
+        voting_phase_ended: Oylama aşaması sona erdi
+    admin_rights_received:
+      cta_button: Platformunuzu yönetin
+      event_description: Size %{organizationName}katılım platformu için yönetici hakları verilmiştir.
+      preheader: '%{organizationName} katılım platformu için yönetici hakları almıştınız'
+      subject: '%{organizationName} platformunda yönetici oldunuz'
+      text_create_participatory_process: Yönetici olarak yeni katılım projeleri oluşturabilir ve yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.
+      text_moderate_analyse_input: Projeler başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Fikirlere genel bakış, girdileri yönetmenize ve onları işlerken iş birliği yapmanıza yardımcı olacaktır.
+      text_platform_setup: Yönetici olarak kendi katılım platformunuzu ayarlayabilirsiniz. Bir logo, görseller ve renkler seçin, ana sayfanıza kişisel bir mesaj yazın, davetiyeler gönderin, kullanıcılarınız hakkında bilmek istediklerinizi tanımlayın vb.
+      title: Yönetici oldunuz
+      title_create_participatory_process: Katılımcı süreci tasarlama
+      title_moderate_analyse_input: Girdileri yönetme ve analiz etme
+      title_platform_setup: Platformu ayarlama
+      title_what_can_you_do_administrator: Yönetici olarak neler yapabilirsiniz?
+    assignee_digest:
+      cta_button: Girdilerinizi yönetin
+      preheader: '%{organizationName} için atanan özeti'
+      subject: 'Geri bildiriminizi gerektiren fikir sayısı: %{numberIdeas}'
+      title: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
+      title_assignment_past_week: Size atanan en son fikirler
+      title_no_assignment_past_week: Geçen hafta size yeni fikir atanmadı
+      title_successful_past_week: Eşiğe ulaşan size atananlar
+      today_by_author: '%{author} tarafından bugün'
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
+      x_inputs_need_your_feedback: girdilerin geri bildiriminize ihtiyacı var
+      yesterday_by_author: '%{author} tarafından dün'
     campaign_type_description:
-      "manual": Resmi mesajlar
-      "manual_project_participants": Proje katılımcılarına resmi mesajlar
-      "admin_rights_received": Yönetici hakları alındı
-      "comment_deleted_by_admin": Yorumumun silinmesi
-      "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
-      "comment_on_your_comment": Yorumuma bir yanıt
-      "comment_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında yorum
-      "community_monitor_report": Topluluk gözlemci raporu
-      "cosponsor_of_your_idea": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
-      "event_registration_confirmation": Etkinlik kayıt onayı
-      "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
-      "idea_published": Fikrimin yayımlanması
-      "invitation_to_cosponsor_idea": Bir teklifin ortak sponsorluğuna davet
-      "invite_received": Davetiye
-      "invite_reminder": Davetiye anımsatıcısı
-      "internal_comment_on_idea_assigned_to_you": Bana atanan girdiye ilişkin dahili yorum
-      "internal_comment_on_idea_you_commented_internally_on": Girdiye ilişkin dahili yorum Dahili olarak yorum yaptım
-      "internal_comment_on_idea_you_moderate": Yönettiğim proje veya klasördeki girdiye ilişkin dahili yorum
-      "internal_comment_on_unassigned_unmoderated_idea": Yönetilmeyen projede atanmamış girdi hakkında dahili yorum
-      "internal_comment_on_your_internal_comment": İç yorumum üzerine iç yorum
-      "mention_in_official_feedback": Bir bildirimde bahis
-      "mention_in_internal_comment": Dahili bir yorumda bahsedin
-      "new_comment_for_admin": Yönettiğim bir projede yeni yorum
-      "new_idea_for_admin_published": Yönettiğim bir projede yeni yayınlanmış girdi
-      "new_idea_for_admin_prescreening": Ilımlı bir projede onay gerektiren yeni girdi
-      "official_feedback_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında güncelleme
-      "password_reset": Parola sıfırla
-      "project_moderation_rights_received": Proje moderasyon hakları alındı
-      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": Yeni proje aşaması
-      "project_phase_upcoming": Yaklaşan yeni proje aşaması
-      "project_published": Proje yayınlandı
-      "project_review_request": Proje inceleme talebi
-      "project_review_state_change": Proje onaylandı
-      "status_change_on_idea_you_follow": Takip ettiğiniz bir fikrin durum değişikliği
-      "survey_submitted": Anket gönderildi
-      "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı
-      "welcome": Kayıttan sonra
-      "admin_digest": Yöneticiler için haftalık genel bakış
-      "moderator_digest": Proje yöneticileri için haftalık genel bakış
-      "assignee_digest": Atanmış fikirlere haftalık genel bakış
-      "user_digest": Haftalık genel bakış
-      "voting_basket_submitted": Oylamanın onaylanması
-      "native_survey_not_submitted": Anket gönderilmedi
-      "voting_basket_not_submitted": Gönderilmeyen oylar
-      "voting_last_chance": Oy vermek için son şans
-      "voting_phase_started": Oylama ile yeni proje aşaması
-      "voting_results": Oylama sonuçları
-      "your_input_in_screening": Girdilerim taranmayı bekliyor
-      "screening_digest": Haftalık tarama hatırlatması
-    general:
-      by_author: 'tarafından %{authorName}'
-      author_wrote: '%{authorName} yazdı:'
-      cta_goto_idea: 'Bu fikre git'
-      cta_goto_input: 'Bu girişe gidin'
-      cta_goto:
-        idea: 'Bu fikre git'
-        question: 'Bu soruya git'
-        contribution: 'Bu katkıya gidin'
-        project: 'Bu projeye gidin'
-        issue: 'Bu sayıya gidin'
-        option: 'Bu seçeneğe gidin'
-        proposal: 'Bu teklife gidin'
-        initiative: 'Bu girişime gidin'
-        petition: 'Bu dilekçeye gidin'
-        comment: 'Bu yoruma git'
-        response: 'Bu yanıta git'
-        suggestion: 'Bu öneriye gidin'
-        topic: 'Bu konuya git'
-        post: 'Bu gönderiye git'
-        story: 'Bu hikayeye git'
-      cta_goto_your:
-        idea: 'Fikrinize gidin'
-        question: 'Sorunuza gidin'
-        contribution: 'Katkı payınıza gidin'
-        project: 'Projenize gidin'
-        issue: 'Sorununuza gidin'
-        option: 'Seçeneğinize gidin'
-        proposal: 'Teklifinize gidin'
-        initiative: 'Girişiminize gidin'
-        petition: 'Dilekçenize gidin'
-        comment: 'Yorumunuza gidin'
-        response: 'Yanıtınıza gidin'
-        suggestion: 'Önerinize gidin'
-        topic: 'Konunuza gidin'
-        post: 'Gönderinize gidin'
-        story: 'Hikayene git'
-      cta_goto_proposal: 'Bu teklife gidin'
-      cta_goto_project: 'Bu projeye gidin'
-    schedules:
-      weekly:
-        "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
-        "1": "Haftalık Pazartesi günleri %{hourOfDay}"
-        "2": "Haftalık Salı günleri %{hourOfDay}"
-        "3": "Haftalık Çarşamba günleri %{hourOfDay}"
-        "4": "Haftalık Perşembe günleri %{hourOfDay}"
-        "5": "Haftalık Cuma günleri %{hourOfDay}"
-        "6": "Haftalık Cumartesi günleri %{hourOfDay}"
-      quarterly: "Üç ayda bir, üç aylık dönemin ilk gününde"
-    preview_data:
-      author_first_name: 'Jane'
-      author_last_name: 'Doe'
-      author_display_name: 'Jane Doe'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
-      project_title: 'Örnek proje'
-      project_description_preview: 'Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek faz içerikleridir. Bu gerçek içerik değildir.'
-      phase_title: 'Örnek aşama'
-      folder_title: 'Örnek klasör'
-      comment_body: 'Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir yorumdur. Bu gerçek içerik değildir.'
-      comment_deleted_reason: 'Örnek yorumunuz uygunsuz olarak değerlendirilmiştir.'
-      idea_title: 'Örnek Fikir'
-      idea_body: 'Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek fikir içerikleridir. Bu gerçek içerik değildir.'
-      event_title: 'Örnek Etkinlik'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
-      event_address2: 'Oda 3a, Üst Kat'
-      proposal_title: 'Örnek Teklif'
-      input_status_title: 'Örnek Durum'
-      input_status_description: 'Bir girdi için durum örneği (örneğin kabul edildi, reddedildi, uygulandı...)'
-      official_feedback_body: 'Örnek resmi geri bildirim'
-    footer:
-      "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
-      "link_terms_conditions": "Hüküm ve Koşullar"
-      "link_unsubscribe": "Abonelikten ayrıl"
-      "powered_by": "Destekleyen"
-      "recipient_statement": "Bu e-posta size Go Vocal tarafından %{organizationName}adına gönderilmiştir, çünkü siz %{organizationLink}sitesinin kayıtlı bir kullanıcısısınız."
-      "unsubscribe_statement": "Gelecekte bu e-postaları almak istemiyorsanız %{unsubscribeLink} adresini ziyaret edebilirsiniz."
-      "unsubscribe_text": "abonelikten ayrılabilirsiniz"
+      admin_digest: Yöneticiler için haftalık genel bakış
+      admin_rights_received: Yönetici hakları alındı
+      assignee_digest: Atanmış fikirlere haftalık genel bakış
+      comment_deleted_by_admin: Yorumumun silinmesi
+      comment_marked_as_spam: Yorumun spam olarak bildirilmesi
+      comment_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında yorum
+      comment_on_your_comment: Yorumuma bir yanıt
+      community_monitor_report: Topluluk gözlemci raporu
+      cosponsor_of_your_idea: Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      event_registration_confirmation: Etkinlik kayıt onayı
+      idea_marked_as_spam: Fikrin spam olarak bildirilmesi
+      idea_published: Fikrimin yayımlanması
+      internal_comment_on_idea_assigned_to_you: Bana atanan girdiye ilişkin dahili yorum
+      internal_comment_on_idea_you_commented_internally_on: Girdiye ilişkin dahili yorum Dahili olarak yorum yaptım
+      internal_comment_on_idea_you_moderate: Yönettiğim proje veya klasördeki girdiye ilişkin dahili yorum
+      internal_comment_on_unassigned_unmoderated_idea: Yönetilmeyen projede atanmamış girdi hakkında dahili yorum
+      internal_comment_on_your_internal_comment: İç yorumum üzerine iç yorum
+      invitation_to_cosponsor_idea: Bir teklifin ortak sponsorluğuna davet
+      invite_received: Davetiye
+      invite_reminder: Davetiye anımsatıcısı
+      manual: Resmi mesajlar
+      manual_project_participants: Proje katılımcılarına resmi mesajlar
+      mention_in_internal_comment: Dahili bir yorumda bahsedin
+      mention_in_official_feedback: Bir bildirimde bahis
+      moderator_digest: Proje yöneticileri için haftalık genel bakış
+      native_survey_not_submitted: Anket gönderilmedi
+      new_comment_for_admin: Yönettiğim bir projede yeni yorum
+      new_idea_for_admin_prescreening: Ilımlı bir projede onay gerektiren yeni girdi
+      new_idea_for_admin_published: Yönettiğim bir projede yeni yayınlanmış girdi
+      official_feedback_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında güncelleme
+      password_reset: Parola sıfırla
+      project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
+      project_manager_rights_received: Proje yöneticisi yetkileri alındı
+      project_moderation_rights_received: Proje moderasyon hakları alındı
+      project_phase_started: Yeni proje aşaması
+      project_phase_upcoming: Yaklaşan yeni proje aşaması
+      project_published: Proje yayınlandı
+      project_review_request: Proje inceleme talebi
+      project_review_state_change: Proje onaylandı
+      screening_digest: Haftalık tarama hatırlatması
+      space_moderation_rights_received: Alan yöneticisi yetkileri alındı
+      status_change_on_idea_you_follow: Takip ettiğiniz bir fikrin durum değişikliği
+      survey_submitted: Anket gönderildi
+      threshold_reached_for_admin: Öneri oylama eşiğine ulaştı
+      user_digest: Haftalık genel bakış
+      voting_basket_not_submitted: Gönderilmeyen oylar
+      voting_basket_submitted: Oylamanın onaylanması
+      voting_last_chance: Oy vermek için son şans
+      voting_phase_started: Oylama ile yeni proje aşaması
+      voting_results: Oylama sonuçları
+      welcome: Kayıttan sonra
+      your_input_in_screening: Girdilerim taranmayı bekliyor
+    comment_deleted_by_admin:
+      cta_button: Bu fikri görüntüleyin
+      event_description: '%{organizationName} bir fikir hakkında yazdığınız yorumu sildi.'
+      inappropriate_reason: Yorumunuz uygunsuz bulundu
+      irrelevant_reason: Yorumunuz konuyla alakasız bulundu
+      no_reason: Neden belirtilmedi
+      other_reason: '%{otherReason}'
+      preheader: Yorumunuz silindi
+      reason: 'Yorumunuzun silinme nedeni:'
+      subject: Yorumunuz %{organizationName} platformundan silindi
+      title: '%{organizationName} yorumunuzu sildim'
+    comment_marked_as_spam:
+      by_author: '%{authorName} tarafından'
+      commented: '%{authorName} yorum yaptı:'
+      cta_button: Yorumu gözden geçirin
+      days_ago: '%{numberOfDays} gün önce'
+      event_description: "<strong>'%{post}'</strong> hakkında yayınlanan şu yorum bildirildi:"
+      inappropriate_content: Yorum uygunsuz veya küçük düşürücü.
+      preheader: Yorumun spam olarak bildirilmesi ile ilgili işlem
+      reported_this_because: '%{reporterFirstName} bunu bildirdi:'
+      subject: '%{organizationName}: %{firstName} %{lastName} bu yorumu spam olarak bildirdi'
+      title: '%{firstName} %{lastName} bu yorumu spam olarak bildirdi'
+      today: Bugün
+      wrong_content: Bu yorum konuyla alakasız.
+      yesterday: Dün
+    comment_on_idea_you_follow:
+      cta_button: Yanıtla %{commentAuthor}
+      event_description: "%{authorNameFull} placed a reaction on '%{inputTitle}'. Click the button below to continue the conversation with %{authorName}."
+      main_header:
+        comment: '%{authorName} takip ettiğiniz bir yoruma yorum yaptı'
+        contribution: '%{authorName} takip ettiğiniz bir katkıya yorum yaptı'
+        idea: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
+        initiative: '%{authorName} takip ettiğiniz bir girişim hakkında yorum yaptı'
+        issue: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
+        option: '%{authorName} takip ettiğiniz bir seçenek hakkında yorum yaptı'
+        petition: '%{authorName} takip ettiğiniz bir dilekçeye yorum yaptı'
+        post: '%{authorName} takip ettiğiniz bir gönderiye yorum yaptı'
+        project: '%{authorName} takip ettiğiniz bir proje hakkında yorum yaptı'
+        proposal: '%{authorName} takip ettiğiniz bir teklif hakkında yorum yaptı'
+        question: '%{authorName} takip ettiğiniz bir soruya yorum yaptı'
+        response: '%{authorName} takip ettiğiniz bir yanıt üzerine yorum yaptı'
+        story: '%{authorName} takip ettiğiniz bir hikayeye yorum yaptı'
+        suggestion: '%{authorName} takip ettiğiniz bir öneriye yorum yaptı'
+        topic: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
+      preheader: '%{authorName} %{organizationName}için bir fikir üzerine bir yorum bıraktı'
+      subject: There's a new comment on "%{input_title}"
+      title: '%{authorName} takip ettiğiniz bir girdiye yorum yaptı'
+    comment_on_your_comment:
+      cta_button: Yanıtla %{authorFirstName}
+      event_description: "%{authorNameFull} katılım platformundaki '%{post}' ile ilgili yorumunuza yanıt yazdı. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın."
+      preheader: '%{authorName} %{organizationName} platformundaki yorumunuzu yanıtladı'
+      replied: '%{authorFirstName} yanıtı:'
+      subject: '%{organizationName} platformundaki yorumunuz hakkında bir yanıt aldınız'
+      title: '%{authorName} yorumunuza cevap verdi'
+    community_monitor_report:
+      cta_button: Raporu görüntüle
+      event_description: Bir önceki çeyrek için bir topluluk izleme raporu oluşturulmuştur. Aşağıdaki butona tıklayıp giriş yaparak rapora erişebilirsiniz.
+      preheader: Yeni bir toplum izleme raporu hazırlandı
+      report_name: Topluluk gözlemci raporu
+      subject: Yeni bir toplum izleme raporu hazırlandı
+      title: Yeni bir toplum izleme raporu hazırlandı
+    cosponsor_of_your_idea:
+      cta_button: Teklifinizi görüntüleyin
+      event_description: Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.
+      preheader: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+      subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+      title: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+    event_registration_confirmation:
+      cta_add_to_calendar: Takviminize ekleyin
+      cta_button: Etkinliği görüntüleyin
+      event_details:
+        labels:
+          date: Tarih
+          description: Açıklama
+          location: Konum
+          online_link: Çevrimiçi bağlantı
+          project: Proje
+      preheader: '%{firstName}, %{eventTitle}adresine kaydolduğunuz için teşekkürler'
+      subject: Girdiniz! "%{eventTitle}" için kaydınız onaylandı
+      title: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
     follow:
-      "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
+      unfollow_here: Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href="%{unfollow_url}">Buradan takibi bırakabilirsiniz.</a>
+    footer:
+      link_privacy_policy: Gi̇zli̇li̇k Poli̇ti̇kası
+      link_terms_conditions: Hüküm ve Koşullar
+      link_unsubscribe: Abonelikten ayrıl
+      powered_by: Destekleyen
+      recipient_statement: Bu e-posta size Go Vocal tarafından %{organizationName}adına gönderilmiştir, çünkü siz %{organizationLink}sitesinin kayıtlı bir kullanıcısısınız.
+      unsubscribe_statement: Gelecekte bu e-postaları almak istemiyorsanız %{unsubscribeLink} adresini ziyaret edebilirsiniz.
+      unsubscribe_text: abonelikten ayrılabilirsiniz
+    general:
+      author_wrote: '%{authorName} yazdı:'
+      by_author: tarafından %{authorName}
+      cta_goto:
+        comment: Bu yoruma git
+        contribution: Bu katkıya gidin
+        idea: Bu fikre git
+        initiative: Bu girişime gidin
+        issue: Bu sayıya gidin
+        option: Bu seçeneğe gidin
+        petition: Bu dilekçeye gidin
+        post: Bu gönderiye git
+        project: Bu projeye gidin
+        proposal: Bu teklife gidin
+        question: Bu soruya git
+        response: Bu yanıta git
+        story: Bu hikayeye git
+        suggestion: Bu öneriye gidin
+        topic: Bu konuya git
+      cta_goto_idea: Bu fikre git
+      cta_goto_input: Bu girişe gidin
+      cta_goto_project: Bu projeye gidin
+      cta_goto_proposal: Bu teklife gidin
+      cta_goto_your:
+        comment: Yorumunuza gidin
+        contribution: Katkı payınıza gidin
+        idea: Fikrinize gidin
+        initiative: Girişiminize gidin
+        issue: Sorununuza gidin
+        option: Seçeneğinize gidin
+        petition: Dilekçenize gidin
+        post: Gönderinize gidin
+        project: Projenize gidin
+        proposal: Teklifinize gidin
+        question: Sorunuza gidin
+        response: Yanıtınıza gidin
+        story: Hikayene git
+        suggestion: Önerinize gidin
+        topic: Konunuza gidin
+    idea_marked_as_spam:
+      cta_button: İnceleme
+      preheader: Bu spam bildirimi ile ilgili işlem yapın
+      report_inappropriate_offensive_content: Bu içeriği uygunsuz veya küçük düşürücü buluyorum.
+      report_not_an_idea: Bu içerik bir fikir değil, burada bulunmaması gerekir.
+      reported_this_because: '%{reporterFirstName} bunu bildirdi:'
+      subject: '%{organizationName} platformunda bir spam bildiriminiz var'
+      title: '%{firstName} %{lastName} bildirilen spam'
+    idea_published:
+      action_add_image: Görünürlüğünüzü artırmak için %{addImageLink}
+      action_published_idea: Yayımlanan fikir
+      action_send_email: İlgili kişilerinize bir %{sendEmailLink} gönderin
+      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
+      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
+      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
+      add_image: Görsel ekleyin
+      header_message: Okunduğundan emin olalım.
+      input_type_subject:
+        comment: Yorumunuz yayınlandı
+        contribution: Katkınız yayınlandı
+        idea: Fikriniz yayınlandı
+        initiative: Girişiminiz yayınlandı
+        issue: Sayınız yayınlandı
+        option: Seçeneğiniz yayınlandı
+        petition: Dilekçeniz yayınlandı
+        post: Gönderiniz yayınlandı
+        project: Projeniz yayınlandı
+        proposal: Teklifiniz yayınlandı
+        question: Sorunuz yayınlandı
+        response: Yanıtınız yayınlandı
+        story: Hikayeniz yayınlandı
+        suggestion: Öneriniz yayınlandı
+        topic: Konunuz yayınlandı
+      link: Bağlantı
+      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
+      preheader: '%{firstName}, %{organizationName} platformunda fikrinizi yayınladığınız için tebrik ederiz. Şimdi destek toplayın.'
+      send_email: e-posta
+      subject: Fikriniz yayınlandı
+      title: '"%{input_title}" göndermişsiniz.'
+    internal_comment_on_idea_assigned_to_you:
+      cta_button: Yorumu görüntüle %{firstName}
+      event_description: '%{authorNameFull} Size atanan bir girdi hakkında dahili olarak yorum yaptı.'
+      preheader: "'%{post}' yeni bir dahili yoruma sahiptir"
+      subject: "'%{post}' yeni bir dahili yoruma sahiptir"
+      title: "'%{post}' hakkında yeni dahili yorum"
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_button: Yorumu görüntüle %{firstName}
+      event_description: '%{authorNameFull} dahili olarak yorumladığınız bir girdi üzerinde dahili olarak yorum yaptı.'
+      preheader: "'%{post}' yeni bir dahili yoruma sahiptir"
+      subject: "'%{post}' yeni bir dahili yoruma sahiptir"
+      title: "'%{post}' hakkında yeni dahili yorum"
+    internal_comment_on_idea_you_moderate:
+      cta_button: Yorumu görüntüle %{firstName}
+      event_description: '%{authorNameFull} Yönettiğiniz bir proje veya klasördeki bir girdi hakkında dahili olarak yorum yaptı.'
+      preheader: "'%{post}' yeni bir dahili yoruma sahiptir"
+      subject: "'%{post}' yeni bir dahili yoruma sahiptir"
+      title: "'%{post}' hakkında yeni dahili yorum"
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_button: Yorumu görüntüle %{firstName}
+      event_description: '%{authorNameFull} Yönetilmeyen bir projedeki atanmamış bir girdi hakkında dahili olarak yorum yaptı.'
+      preheader: "'%{post}' yeni bir dahili yoruma sahiptir"
+      subject: "'%{post}' yeni bir dahili yoruma sahiptir"
+      title: "'%{post}' hakkında yeni dahili yorum"
+    internal_comment_on_your_internal_comment:
+      cta_button: Yorumu görüntüle %{firstName}
+      event_description: '%{authorNameFull} iç yorumunuz üzerine yorum yaptı.'
+      preheader: "%{authorName} '%{post}' hakkındaki dahili yorumunuza yanıt verdi"
+      subject: "'%{post}' hakkındaki dahili yorumunuz hakkında bir yorum aldınız."
+      title: "'%{post}' hakkındaki dahili yorumunuz hakkında bir yorum aldınız."
+    invitation_to_cosponsor_idea:
+      cta_button: Bu teklife eş sponsorluk yapın
+      event_description: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
+      event_description_action: Teklifi okumak için aşağıya tıklayın.
+      event_description_before_action: Teklifi görmek ve daveti kabul etmek için hesabınıza giriş yapmış olmanız gerekmektedir.
+      event_description_cosponsoring: Bir teklife eş-sponsorluk yapmak, <strong>adınızın</strong> teklifin diğer eş-sponsorlarının <strong>adlarıyla</strong> birlikte <strong>görüntüleneceği</strong> anlamına gelir.
+      preheader: '%{authorName}adresindeki teklife eş sponsorluk yapmaya davet edildiniz.'
+      subject: Bir teklife eş sponsorluk yapmaya davet edildiniz
+      title: Bir teklife eş sponsorluk yapmaya davet edildiniz
+    invite_received:
+      added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
+      cta_button: Davetinizi kabul edin
+      event_description: '%{organizationName} sizi katılım platformlarına davet etti.'
+      invitation_expiry_message: Bu davet %{expiryDays} gün içinde sona erecektir.
+      preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
+      subject: '%{organizationName} platformuna katılmaya davet edildiniz'
+      title: Davetlisiniz!
+    invite_reminder:
+      cta_button: Davetinizi kabul edin
+      invitation_expiry_message: Bu davetiyenin süresi yaklaşık %{expiryDaysRemaining} gün içinde dolacaktır.
+      preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
+      subject: '%{organizationName} katılım platformu için bekleyen davetiye'
+      title: Davetiyeniz beklemede
     manual:
       preheader: '%{organizationName}adresinden postanız var.'
     manual_project_participants:
       preheader: '%{organizationName}adresinden postanız var.'
-    comment_deleted_by_admin:
-      subject: 'Yorumunuz %{organizationName} platformundan silindi'
-      preheader: 'Yorumunuz silindi'
-      title: '%{organizationName} yorumunuzu sildim'
-      event_description: '%{organizationName} bir fikir hakkında yazdığınız yorumu sildi.'
-      cta_button: 'Bu fikri görüntüleyin'
-      reason: 'Yorumunuzun silinme nedeni:'
-      other_reason: '%{otherReason}'
-      inappropriate_reason: 'Yorumunuz uygunsuz bulundu'
-      irrelevant_reason: 'Yorumunuz konuyla alakasız bulundu'
-      no_reason: 'Neden belirtilmedi'
-    admin_digest:
-      subject: '%{time} için haftalık yönetici raporunuz'
-      preheader: '%{organizationName} ile ilgili yönetici özeti'
-      title: '%{firstName}haftalık raporunuz'
-      event_description: 'Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Platformunuzda neler olduğunu öğrenin!'
-      cta_button: 'Platformunuzu ziyaret edin'
-      new_users: 'Yeni kullanıcılar'
-      new_inputs: 'Yeni girişler'
-      new_comments: 'Yeni yorumlar'
-      title_activity_past_week: 'Geçen haftanın etkinliği'
-      title_no_activity_past_week: 'Geçen hafta etkinlik yoktu'
-      reached_threshold: 'Eşiğe ulaşıldı'
-      yesterday_by_author: '%{author} tarafından dün'
-      today_by_author: '%{author} tarafından bugün'
-      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
-    admin_rights_received:
-      subject: '%{organizationName} platformunda yönetici oldunuz'
-      preheader: '%{organizationName} katılım platformu için yönetici hakları almıştınız'
-      title: 'Yönetici oldunuz'
-      event_description: 'Size %{organizationName}katılım platformu için yönetici hakları verilmiştir.'
-      cta_button: 'Platformunuzu yönetin'
-      text_create_participatory_process: 'Yönetici olarak yeni katılım projeleri oluşturabilir ve yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.'
-      text_moderate_analyse_input: 'Projeler başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Fikirlere genel bakış, girdileri yönetmenize ve onları işlerken iş birliği yapmanıza yardımcı olacaktır.'
-      text_platform_setup: 'Yönetici olarak kendi katılım platformunuzu ayarlayabilirsiniz. Bir logo, görseller ve renkler seçin, ana sayfanıza kişisel bir mesaj yazın, davetiyeler gönderin, kullanıcılarınız hakkında bilmek istediklerinizi tanımlayın vb.'
-      title_create_participatory_process: 'Katılımcı süreci tasarlama'
-      title_moderate_analyse_input: 'Girdileri yönetme ve analiz etme'
-      title_platform_setup: 'Platformu ayarlama'
-      title_what_can_you_do_administrator: 'Yönetici olarak neler yapabilirsiniz?'
-    comment_marked_as_spam:
-      subject: '%{organizationName}: %{firstName} %{lastName} bu yorumu spam olarak bildirdi'
-      preheader: 'Yorumun spam olarak bildirilmesi ile ilgili işlem'
-      title: '%{firstName} %{lastName} bu yorumu spam olarak bildirdi'
-      cta_button: 'Yorumu gözden geçirin'
-      by_author: '%{authorName} tarafından'
-      commented: '%{authorName} yorum yaptı:'
-      days_ago: '%{numberOfDays} gün önce'
-      event_description: '<strong>''%{post}''</strong> hakkında yayınlanan şu yorum bildirildi:'
-      inappropriate_content: 'Yorum uygunsuz veya küçük düşürücü.'
-      reported_this_because: '%{reporterFirstName} bunu bildirdi:'
-      today: Bugün
-      wrong_content: 'Bu yorum konuyla alakasız.'
-      yesterday: Dün
-    community_monitor_report:
-      subject: 'Yeni bir toplum izleme raporu hazırlandı'
-      preheader: 'Yeni bir toplum izleme raporu hazırlandı'
-      title: 'Yeni bir toplum izleme raporu hazırlandı'
-      event_description: 'Bir önceki çeyrek için bir topluluk izleme raporu oluşturulmuştur. Aşağıdaki butona tıklayıp giriş yaparak rapora erişebilirsiniz.'
-      cta_button: 'Raporu görüntüle'
-      report_name: 'Topluluk gözlemci raporu'
-    cosponsor_of_your_idea:
-      subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
-      preheader: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
-      title: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
-      event_description: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
-      cta_button: 'Teklifinizi görüntüleyin'
-    assignee_digest:
-      subject: 'Geri bildiriminizi gerektiren fikir sayısı: %{numberIdeas}'
-      preheader: '%{organizationName} için atanan özeti'
-      title: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
-      cta_button: 'Girdilerinizi yönetin'
-      x_inputs_need_your_feedback: 'girdilerin geri bildiriminize ihtiyacı var'
-      title_assignment_past_week: 'Size atanan en son fikirler'
-      title_no_assignment_past_week: 'Geçen hafta size yeni fikir atanmadı'
-      yesterday_by_author: '%{author} tarafından dün'
-      today_by_author: '%{author} tarafından bugün'
-      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
-      title_successful_past_week: 'Eşiğe ulaşan size atananlar'
-    idea_marked_as_spam:
-      subject: '%{organizationName} platformunda bir spam bildiriminiz var'
-      preheader: 'Bu spam bildirimi ile ilgili işlem yapın'
-      title: '%{firstName} %{lastName} bildirilen spam'
-      cta_button: 'İnceleme'
-      report_inappropriate_offensive_content: 'Bu içeriği uygunsuz veya küçük düşürücü buluyorum.'
-      report_not_an_idea: 'Bu içerik bir fikir değil, burada bulunmaması gerekir.'
-      reported_this_because: '%{reporterFirstName} bunu bildirdi:'
-    invitation_to_cosponsor_idea:
-      subject: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
-      preheader: '%{authorName}adresindeki teklife eş sponsorluk yapmaya davet edildiniz.'
-      title: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
-      event_description: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
-      event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, <strong>adınızın</strong> teklifin diğer eş-sponsorlarının <strong>adlarıyla</strong> birlikte <strong>görüntüleneceği</strong> anlamına gelir.'
-      event_description_before_action: 'Teklifi görmek ve daveti kabul etmek için hesabınıza giriş yapmış olmanız gerekmektedir.'
-      event_description_action: 'Teklifi okumak için aşağıya tıklayın.'
-      cta_button: 'Bu teklife eş sponsorluk yapın'
-    invite_reminder:
-      subject: '%{organizationName} katılım platformu için bekleyen davetiye'
-      preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
-      title: 'Davetiyeniz beklemede'
-      cta_button: 'Davetinizi kabul edin'
-      invitation_expiry_message: 'Bu davetiyenin süresi yaklaşık %{expiryDaysRemaining} gün içinde dolacaktır.'
-    invite_received:
-      preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
-      subject: '%{organizationName} platformuna katılmaya davet edildiniz'
-      title: 'Davetlisiniz!'
-      event_description: '%{organizationName} sizi katılım platformlarına davet etti.'
-      cta_button: 'Davetinizi kabul edin'
-      added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
-      invitation_expiry_message: 'Bu davet %{expiryDays} gün içinde sona erecektir.'
     mention_in_comment:
       cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
-      event_description: '%{commentAuthorFull} ''%{post}‘ fikri hakkındaki yorumunda sizden bahsetti. %{commentAuthor} ile sohbete başlamak için aşağıdaki bağlantıya tıklayın'
-      main_header: 'İnsanlar sizin hakkınızda konuşuyor'
-      subject: 'Birileri %{organizationName} platformunda sizden bahsetti'
+      event_description: "%{commentAuthorFull} '%{post}‘ fikri hakkındaki yorumunda sizden bahsetti. %{commentAuthor} ile sohbete başlamak için aşağıdaki bağlantıya tıklayın"
+      main_header: İnsanlar sizin hakkınızda konuşuyor
       preheader: '%{commentAuthor} bir yorumda sizden bahsetti'
+      subject: Birileri %{organizationName} platformunda sizden bahsetti
     mention_in_internal_comment:
-      cta_button: 'Yorumu görüntüle %{firstName}'
+      cta_button: Yorumu görüntüle %{firstName}
       event_description: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
+      preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
       subject: '%{firstName} bir iç yorumda sizden bahsetti.'
       title: '%{firstName} bir iç yorumda sizden bahsetti.'
-      preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
+    mention_in_official_feedback:
+      cta_button: Yanıtla %{organizationName}
+      event_description: "%{organizationName} '%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın"
+      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
+      subject: '%{organizationName} geri bildiriminde sizden bahsetti'
+      title: Sizden bahsedildi
     moderator_digest:
-      subject: '%{project_title} haftalık proje yöneticisi raporunuz'
+      cta_button: Projenizi yönetin
+      event_description: Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Projenizle ilgili neler olduğunu öğrenin!
+      new_comments: Yeni yorumlar
+      new_ideas: Yeni fikirler
+      new_users: Yeni kullanıcılar
       preheader: '%{organizationName} proje yöneticisi özeti'
+      subject: '%{project_title} haftalık proje yöneticisi raporunuz'
       title: '%{firstName}haftalık raporunuz'
-      event_description: 'Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Projenizle ilgili neler olduğunu öğrenin!'
-      cta_button: 'Projenizi yönetin'
-      new_users: 'Yeni kullanıcılar'
-      new_ideas: 'Yeni fikirler'
-      new_comments: 'Yeni yorumlar'
-      title_inputs_past_week: 'Geçtiğimiz hafta yeni girdiler'
-      title_no_inputs_past_week: 'Geçtiğimiz hafta yeni girdi yok'
+      title_inputs_past_week: Geçtiğimiz hafta yeni girdiler
+      title_no_inputs_past_week: Geçtiğimiz hafta yeni girdi yok
       title_threshold_reached: Geçtiğimiz hafta içinde ulaşılan eşik
-      yesterday_by_author: '%{author} tarafından dün'
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
+      yesterday_by_author: '%{author} tarafından dün'
+    native_survey_not_submitted:
+      cta_button: Anket yanıtınıza devam edin
+      event_description: Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Kaldığınız yerden devam etmek için aşağıdaki butona tıklayın.
+      preheader: Anket yanıtınızı %{organizationName}katılım platformunda tamamlamadınız
+      subject: '%{organizationName}: Neredeyse bitti! Cevaplarınızı gönderin'
+      submissions_close: Başvurular %{phaseEndDate}adresinde sona erecektir.
+      submissions_close_at_time: Başvurular %{datetime} tarihinde sona erecektir.
+      submissions_close_on_date: Başvurular %{date} günü sonunda sona erecektir.
+      title: Neredeyse bitti! Cevaplarınızı gönderin
     new_comment_for_admin:
-      commented: '%{authorFirstName} yorum yaptı:'
       anonymous_user: Anonim kullanıcı
-      cta_button: '%{authorFirstName}''un yorumunu görüntüleyin'
+      commented: '%{authorFirstName} yorum yaptı:'
+      cta_button: "%{authorFirstName}'un yorumunu görüntüleyin"
       days_ago: '%{numberOfDays} gün önce'
       event_description: '%{authorName} platformunuza yeni bir yorum ekledi.'
-      title: '%{firstName}, platformunuza yeni bir yorum gönderildi'
-      subject: '%{organizationName} platformunda yeni bir yorum yayınlandı'
       preheader: '%{authorName} bir yorum bıraktı'
-      today: Bugün
-      yesterday: Dün
-    comment_on_idea_you_follow:
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} %{organizationName}için bir fikir üzerine bir yorum bıraktı'
-      title: '%{authorName} takip ettiğiniz bir girdiye yorum yaptı'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      cta_button: 'Yanıtla %{commentAuthor}'
-      main_header:
-        idea: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
-        question: '%{authorName} takip ettiğiniz bir soruya yorum yaptı'
-        contribution: '%{authorName} takip ettiğiniz bir katkıya yorum yaptı'
-        project: '%{authorName} takip ettiğiniz bir proje hakkında yorum yaptı'
-        issue: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
-        option: '%{authorName} takip ettiğiniz bir seçenek hakkında yorum yaptı'
-        proposal: '%{authorName} takip ettiğiniz bir teklif hakkında yorum yaptı'
-        initiative: '%{authorName} takip ettiğiniz bir girişim hakkında yorum yaptı'
-        petition: '%{authorName} takip ettiğiniz bir dilekçeye yorum yaptı'
-        comment: '%{authorName} takip ettiğiniz bir yoruma yorum yaptı'
-        response: '%{authorName} takip ettiğiniz bir yanıt üzerine yorum yaptı'
-        suggestion: '%{authorName} takip ettiğiniz bir öneriye yorum yaptı'
-        topic: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
-        post: '%{authorName} takip ettiğiniz bir gönderiye yorum yaptı'
-        story: '%{authorName} takip ettiğiniz bir hikayeye yorum yaptı'
-    new_idea_for_admin_published:
-      subject: 'Platformunuzda yeni bir girdi yayınlandı'
-      preheader: '%{authorName} platformunuzda yeni bir girdi yayınladı'
-      title: 'Platformunuzda yeni bir girdi yayınlandı'
-      event_description: '%{authorName} platformunuza yeni bir girdi gönderdi. Şimdi keşfedin, geri bildirimde bulunun veya durumunu değiştirin!'
-      cta_button: '%{authorName}adresine geri bildirimde bulunun'
-      days_ago: '%{numberOfDays} günler önce'
+      subject: '%{organizationName} platformunda yeni bir yorum yayınlandı'
+      title: '%{firstName}, platformunuza yeni bir yorum gönderildi'
       today: Bugün
       yesterday: Dün
     new_idea_for_admin_prescreening:
-      subject: 'Bir girdi, gözden geçirmenizi gerektiriyor'
-      preheader: '%{authorName} platformunuzda yeni bir girdi yayınladı'
-      title: 'Bir girdi, gözden geçirmenizi gerektiriyor'
-      cta_button: 'Girdiyi gözden geçirin'
-      event_description: '%{authorName} platformunuza yeni bir girdi gönderdi.'
-      input_not_visible: 'Siz durumunu değiştirene kadar <b>girdi görünür olmayacaktır</b>.'
+      cta_button: Girdiyi gözden geçirin
       days_ago: '%{numberOfDays} günler önce'
+      event_description: '%{authorName} platformunuza yeni bir girdi gönderdi.'
+      input_not_visible: Siz durumunu değiştirene kadar <b>girdi görünür olmayacaktır</b>.
+      preheader: '%{authorName} platformunuzda yeni bir girdi yayınladı'
+      subject: Bir girdi, gözden geçirmenizi gerektiriyor
+      title: Bir girdi, gözden geçirmenizi gerektiriyor
       today: Bugün
       yesterday: Dün
-    comment_on_your_comment:
-      subject: '%{organizationName} platformundaki yorumunuz hakkında bir yanıt aldınız'
-      preheader: '%{authorName} %{organizationName} platformundaki yorumunuzu yanıtladı'
-      title: '%{authorName} yorumunuza cevap verdi'
-      event_description: '%{authorNameFull} katılım platformundaki ''%{post}'' ile ilgili yorumunuza yanıt yazdı. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın.'
-      cta_button: 'Yanıtla %{authorFirstName}'
-      replied: '%{authorFirstName} yanıtı:'
-    internal_comment_on_your_internal_comment:
-      cta_button: 'Yorumu görüntüle %{firstName}'
-      event_description: '%{authorNameFull} iç yorumunuz üzerine yorum yaptı.'
-      subject: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
-      title: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
-      preheader: '%{authorName} ''%{post}'' hakkındaki dahili yorumunuza yanıt verdi'
-    internal_comment_on_idea_assigned_to_you:
-      cta_button: 'Yorumu görüntüle %{firstName}'
-      event_description: '%{authorNameFull} Size atanan bir girdi hakkında dahili olarak yorum yaptı.'
-      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
-      title: '''%{post}'' hakkında yeni dahili yorum'
-      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
-    internal_comment_on_idea_you_commented_internally_on:
-      cta_button: 'Yorumu görüntüle %{firstName}'
-      event_description: '%{authorNameFull} dahili olarak yorumladığınız bir girdi üzerinde dahili olarak yorum yaptı.'
-      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
-      title: '''%{post}'' hakkında yeni dahili yorum'
-      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
-    internal_comment_on_idea_you_moderate:
-      cta_button: 'Yorumu görüntüle %{firstName}'
-      event_description: '%{authorNameFull} Yönettiğiniz bir proje veya klasördeki bir girdi hakkında dahili olarak yorum yaptı.'
-      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
-      title: '''%{post}'' hakkında yeni dahili yorum'
-      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
-    internal_comment_on_unassigned_unmoderated_idea:
-      cta_button: 'Yorumu görüntüle %{firstName}'
-      event_description: '%{authorNameFull} Yönetilmeyen bir projedeki atanmamış bir girdi hakkında dahili olarak yorum yaptı.'
-      subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
-      title: '''%{post}'' hakkında yeni dahili yorum'
-      preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
+    new_idea_for_admin_published:
+      cta_button: '%{authorName}adresine geri bildirimde bulunun'
+      days_ago: '%{numberOfDays} günler önce'
+      event_description: '%{authorName} platformunuza yeni bir girdi gönderdi. Şimdi keşfedin, geri bildirimde bulunun veya durumunu değiştirin!'
+      preheader: '%{authorName} platformunuzda yeni bir girdi yayınladı'
+      subject: Platformunuzda yeni bir girdi yayınlandı
+      title: Platformunuzda yeni bir girdi yayınlandı
+      today: Bugün
+      yesterday: Dün
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} ''%{input_title}'' adresinde bir güncelleme yaptı.'
-      title: '"%{input_title}" adresinde bir güncelleme var.'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
       cta_button: Bu girişe gidin
-    mention_in_official_feedback:
-      cta_button: 'Yanıtla %{organizationName}'
-      event_description: '%{organizationName} ''%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın'
-      title: 'Sizden bahsedildi'
-      subject: '%{organizationName} geri bildiriminde sizden bahsetti'
-      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
-    project_moderation_rights_received:
-      cta_button: 'Bu projeyi yönetin'
-      event_description: '%{organizationName} katılım platformunun bir yöneticisi sizi aşağıdaki projenin proje yöneticisi yaptı:'
-      no_ideas: 'Henüz fikir yok'
-      preheader: '%{organizationName} katılım platformundaki bir yönetici sizi aşağıdaki projenin proje yöneticisi yaptı'
-      subject: '%{organizationName} platformunda proje yöneticisi oldunuz'
-      text_design_participatory_process: 'Proje yöneticisi olarak insanların projenizle etkileşim kurma biçimini yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.'
-      text_moderate_analyse_input: 'Proje başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Proje yöneticisi görünümünde bulabileceğiniz fikirlere genel bakış, en çok hangi fikirlerin olumlu veya olumsuz oy aldığını anlamanıza yardımcı olacaktır.'
-      text_share_project_information: 'Aldığınız fikirlerin kalitesini yükseltmek için yeterli bilgi paylaşımı çok önemlidir: proje açıklaması ekleme, görseller (çizimler ve planlar dahil) ekleme ve tüm ilgili etkinlikleri bildirme. Unutmayın; iyi bilgilendirme katılımın iyi olmasını sağlar!'
-      title_design_participatory_process: 'Katılımcı süreci tasarlama'
-      title_moderate_analyse_input: 'Girdileri yönetme ve analiz etme'
-      title_share_project_information: 'Proje açıklaması girin'
-      title_what_can_you_do_moderator: 'Proje yöneticisi olarak neler yapabilirsiniz?'
-      title: 'Proje yöneticisi oldunuz'
-      x_ideas: '%{numberOfIdeas} fikir'
+      event_description: "%{feedback_author_name} '%{input_title}' adresinde bir güncelleme yaptı."
+      preheader: There's an update on an input you follow
+      subject: Official feedback was posted on "%{input_title}"
+      title: '"%{input_title}" adresinde bir güncelleme var.'
+    preview_data:
+      author_display_name: Jane Doe
+      author_first_name: Jane
+      author_last_name: Doe
+      comment_body: Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir yorumdur. Bu gerçek içerik değildir.
+      comment_deleted_reason: Örnek yorumunuz uygunsuz olarak değerlendirilmiştir.
+      event_address1: 10 Example Street, Exampleton, Exampleshire
+      event_address2: Oda 3a, Üst Kat
+      event_title: Örnek Etkinlik
+      folder_title: Örnek klasör
+      idea_body: Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek fikir içerikleridir. Bu gerçek içerik değildir.
+      idea_title: Örnek Fikir
+      initiator_display_name: Bob Smith
+      initiator_first_name: Bob
+      initiator_last_name: Smith
+      input_status_description: Bir girdi için durum örneği (örneğin kabul edildi, reddedildi, uygulandı...)
+      input_status_title: Örnek Durum
+      official_feedback_body: Örnek resmi geri bildirim
+      phase_title: Örnek aşama
+      project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek faz içerikleridir. Bu gerçek içerik değildir.
+      project_title: Örnek proje
+      proposal_title: Örnek Teklif
+      space_title: Örnek alan
     project_folder_moderation_rights_received:
-      cta_button: 'Bu klasörü görüntüle'
-      event_description: 'Size %{organizationName}''un katılım platformunda aşağıdaki klasör için klasör yöneticisi hakları verildi:'
-      no_projects: 'Henüz proje yok'
+      cta_button: Bu klasörü görüntüle
+      event_description: "Size %{organizationName}'un katılım platformunda aşağıdaki klasör için klasör yöneticisi hakları verildi:"
+      no_projects: Henüz proje yok
       preheader: '%{organizationName} katılım platformundan bir yönetici sizi aşağıdaki klasörün yöneticisi yaptı'
       subject: '%{organizationName} katılım platformunda proje klasörü yöneticisi oldunuz'
-      text_manage_folder: 'Klasörler birden fazla katılım projesini organize etmenin bir yöntemidir. Klasör yöneticisi olarak klasörü ve klasör açıklamasını yönetebilir ve yeni projeler oluşturabilirsiniz (projeleri silmek için platformunuzun yöneticisi ile iletişim kurun). Ayrıca, klasörün içindeki tüm projeler için, projeleri düzenlemenize ve girdileri ve e-posta katılımcılarını yönetmenize izin veren proje yönetimi haklarına sahip olursunuz.'
-      text_moderate_analyse_input: 'Projeler başlatıldığında girdiler gelmeye başlar. Her şeyden haberdar olmanız için önemli faaliyetleri içeren haftalık raporlar alırsınız. ''Platformu Yönet'' panonuzdaki Girdi Yöneticisi girdileri görmenize, durum atama, yayınları ve yorumları yanıtlama gibi girdi yönetimi işlemlerini gerçekleştirmenize olanak sağlar.'
-      text_design_participatory_process: 'Katılım yöntemini yapılandırarak, proje açıklaması ve görseller ekleyerek ve ilgili etkinlikleri bildirerek klasörünüzdeki farklı katılım projelerini yönetebilirsiniz. Ayrıca, erişim hakları atama, yayın, oy ve yorum ayarlarını yapılandırma gibi konular dahil olmak üzere, katılımcıların projelerinizle etkileşim kurma şeklini de yönetebilirsiniz.'
-      title_design_participatory_process: 'Katılımcı süreci tasarlama'
-      title_moderate_analyse_input: 'Girdileri yönetme ve analiz etme'
-      title_manage_folder: 'Klasör ayarlarını yönetin ve yeni projeler oluşturun.'
-      title_what_can_you_do_folderadmin: 'Klasör yöneticisi olarak neler yapabilirsiniz?'
-      title: 'Klasör yöneticisi olarak eklendiniz'
+      text_design_participatory_process: Katılım yöntemini yapılandırarak, proje açıklaması ve görseller ekleyerek ve ilgili etkinlikleri bildirerek klasörünüzdeki farklı katılım projelerini yönetebilirsiniz. Ayrıca, erişim hakları atama, yayın, oy ve yorum ayarlarını yapılandırma gibi konular dahil olmak üzere, katılımcıların projelerinizle etkileşim kurma şeklini de yönetebilirsiniz.
+      text_manage_folder: Klasörler birden fazla katılım projesini organize etmenin bir yöntemidir. Klasör yöneticisi olarak klasörü ve klasör açıklamasını yönetebilir ve yeni projeler oluşturabilirsiniz (projeleri silmek için platformunuzun yöneticisi ile iletişim kurun). Ayrıca, klasörün içindeki tüm projeler için, projeleri düzenlemenize ve girdileri ve e-posta katılımcılarını yönetmenize izin veren proje yönetimi haklarına sahip olursunuz.
+      text_moderate_analyse_input: "Projeler başlatıldığında girdiler gelmeye başlar. Her şeyden haberdar olmanız için önemli faaliyetleri içeren haftalık raporlar alırsınız. 'Platformu Yönet' panonuzdaki Girdi Yöneticisi girdileri görmenize, durum atama, yayınları ve yorumları yanıtlama gibi girdi yönetimi işlemlerini gerçekleştirmenize olanak sağlar."
+      title: Klasör yöneticisi olarak eklendiniz
+      title_design_participatory_process: Katılımcı süreci tasarlama
+      title_manage_folder: Klasör ayarlarını yönetin ve yeni projeler oluşturun.
+      title_moderate_analyse_input: Girdileri yönetme ve analiz etme
+      title_what_can_you_do_folderadmin: Klasör yöneticisi olarak neler yapabilirsiniz?
       x_projects: '%{numberOfProjects} proje'
+    project_moderation_rights_received:
+      cta_button: Bu projeyi yönetin
+      event_description: '%{organizationName} katılım platformunun bir yöneticisi sizi aşağıdaki projenin proje yöneticisi yaptı:'
+      no_ideas: Henüz fikir yok
+      preheader: '%{organizationName} katılım platformundaki bir yönetici sizi aşağıdaki projenin proje yöneticisi yaptı'
+      subject: '%{organizationName} platformunda proje yöneticisi oldunuz'
+      text_design_participatory_process: Proje yöneticisi olarak insanların projenizle etkileşim kurma biçimini yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.
+      text_moderate_analyse_input: Proje başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Proje yöneticisi görünümünde bulabileceğiniz fikirlere genel bakış, en çok hangi fikirlerin olumlu veya olumsuz oy aldığını anlamanıza yardımcı olacaktır.
+      text_share_project_information: 'Aldığınız fikirlerin kalitesini yükseltmek için yeterli bilgi paylaşımı çok önemlidir: proje açıklaması ekleme, görseller (çizimler ve planlar dahil) ekleme ve tüm ilgili etkinlikleri bildirme. Unutmayın; iyi bilgilendirme katılımın iyi olmasını sağlar!'
+      title: Proje yöneticisi oldunuz
+      title_design_participatory_process: Katılımcı süreci tasarlama
+      title_moderate_analyse_input: Girdileri yönetme ve analiz etme
+      title_share_project_information: Proje açıklaması girin
+      title_what_can_you_do_moderator: Proje yöneticisi olarak neler yapabilirsiniz?
+      x_ideas: '%{numberOfIdeas} fikir'
     project_phase_started:
-      cta_button: 'Bu yeni aşamayı keşfedin'
-      event_description: 'Bu proje, %{organizationName} platformunda yeni bir aşamaya geçti. Daha fazla bilgi için aşağıdaki bağlantıyı tıklayın.'
-      title: '''%{projectName}'' projesi için yeni bir dönem başladı'
-      subtitle: 'Hakkında ''%{projectName}'''
-      new_phase: 'Bu proje ''%{phaseTitle}'' aşamasına geçti'
-      subject: '%{projectName} yeni bir aşamaya girdi'
+      cta_button: Bu yeni aşamayı keşfedin
+      event_description: Bu proje, %{organizationName} platformunda yeni bir aşamaya geçti. Daha fazla bilgi için aşağıdaki bağlantıyı tıklayın.
+      new_phase: "Bu proje '%{phaseTitle}' aşamasına geçti"
       preheader: '%{projectName} adlı proje için yeni bir aşama başladı'
+      subject: '%{projectName} yeni bir aşamaya girdi'
+      subtitle: "Hakkında '%{projectName}'"
+      title: "'%{projectName}' projesi için yeni bir dönem başladı"
     project_phase_upcoming:
-      cta_button: 'Bu yeni aşamayı ayarlayın'
-      event_description: '''%{projectName}'' adlı proje yakında yeni bir aşamaya geçiyor. Bu aşama için her şeyin hazır olduğundan emin olun: Uygun bir açıklama var mı? Seçilen fikirler bu aşamaya aktarıldı mı? Özel bir e-posta kampanyası ile vatandaşlarınızı bu aşamanın özellikleri hakkında bilgilendirmek istiyor musunuz?'
-      title: '%{firstName}bir proje yakında yeni bir aşamaya girecek'
-      subtitle: 'Hakkında ''%{projectName}'''
-      new_phase: 'Proje ''%{phaseTitle}'' aşamasına geçecek'
-      subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
+      cta_button: Bu yeni aşamayı ayarlayın
+      event_description: "'%{projectName}' adlı proje yakında yeni bir aşamaya geçiyor. Bu aşama için her şeyin hazır olduğundan emin olun: Uygun bir açıklama var mı? Seçilen fikirler bu aşamaya aktarıldı mı? Özel bir e-posta kampanyası ile vatandaşlarınızı bu aşamanın özellikleri hakkında bilgilendirmek istiyor musunuz?"
+      new_phase: "Proje '%{phaseTitle}' aşamasına geçecek"
       preheader: '%{projectName} için yakında yeni bir aşama başlıyor'
+      subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
+      subtitle: "Hakkında '%{projectName}'"
+      title: '%{firstName}bir proje yakında yeni bir aşamaya girecek'
     project_published:
-      subject: '%{organizationName}platformunda yeni bir proje yayınlandı'
-      title: 'Yeni bir proje yayınlandı'
+      cta_button: Bu projeye gidin
       event_description: '%{organizationName} katılım platformu aşağıdaki projeyi yayınladı:'
-      preheader: 'Yeni bir proje yayınlandı'
-      cta_button: 'Bu projeye gidin'
+      preheader: Yeni bir proje yayınlandı
+      subject: '%{organizationName}platformunda yeni bir proje yayınlandı'
+      title: Yeni bir proje yayınlandı
     project_review_request:
+      cta_button: Projeyi gözden geçirin
+      event_description: Şu anda proje taslak modundadır ve kullanıcılar tarafından görülemez. Siz inceleyip onayladıktan sonra moderatör projeyi yayınlayabilecektir.
+      preheader: '%{requesterName} sizi "%{projectTitle}" projesini incelemeye davet etti.'
       subject: 'İnceleme talebi: Bir proje onay için bekliyor.'
       title: '%{requesterName} sizi "%{projectTitle}" projesini incelemeye davet etti.'
-      event_description: "Şu anda proje taslak modundadır ve kullanıcılar tarafından görülemez. Siz inceleyip onayladıktan sonra moderatör projeyi yayınlayabilecektir."
-      cta_button: "Projeyi gözden geçirin"
-      preheader: '%{requesterName} sizi "%{projectTitle}" projesini incelemeye davet etti.'
     project_review_state_change:
+      cta_button: Proje ayarlarına gidin
+      event_description: Proje artık yayına girmeye hazır. Hazır olduğunuzda yayınlayabilirsiniz!
+      preheader: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
       subject: '"%{projectTitle}" onaylanmıştır'
       title: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
-      event_description: "Proje artık yayına girmeye hazır. Hazır olduğunuzda yayınlayabilirsiniz!"
-      cta_button: "Proje ayarlarına gidin"
-      preheader: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
+    schedules:
+      quarterly: Üç ayda bir, üç aylık dönemin ilk gününde
+      weekly:
+        '0': Haftalık, Pazar günleri %{hourOfDay}adresinde
+        '1': Haftalık Pazartesi günleri %{hourOfDay}
+        '2': Haftalık Salı günleri %{hourOfDay}
+        '3': Haftalık Çarşamba günleri %{hourOfDay}
+        '4': Haftalık Perşembe günleri %{hourOfDay}
+        '5': Haftalık Cuma günleri %{hourOfDay}
+        '6': Haftalık Cumartesi günleri %{hourOfDay}
+    screening_digest:
+      cta_button: Girdileri gözden geçirin
+      event_description: Bu girdilerin kamuya açık hale gelmeden önce onaylanması gerekir. Bunları platform genelindeki Girdi Yöneticisinde veya her aşamanın Girdi Yöneticisinde inceleyebilirsiniz.
+      inputs_awaiting_screening: gözden geçirilecek girdiler
+      preheader: '%{organizationName}için girdileri gözden geçirin'
+      subject: '%{count} gözden geçirilmeyi bekleyen girdiler'
+      title: '%{firstName}, girdiler gözden geçirilmeyi bekliyor'
+    space_moderation_rights_received:
+      cta_button: Bu alanı yönet
+      event_description: '%{organizationName} katılım platformunun bir yöneticisi sizi şu alanın yöneticisi yaptı:'
+      no_projects: Henüz proje yok
+      preheader: '%{organizationName} katılım platformunun bir yöneticisi sizi şu alanın yöneticisi yaptı'
+      subject: '%{organizationName} platformunda alan yöneticisi oldunuz'
+      text_manage_space_settings: Katılımcıların ve diğer yöneticilerin alanınızın ne hakkında olduğunu ve kuruluşunuzla nasıl bir ilişkisi olduğunu hemen anlamaları için alan başlığını ve açıklamasını düzenleyebilirsiniz.
+      text_organize_projects_and_folders: Bir alan yöneticisi olarak, alanınızdaki projeleri ve klasörleri yönetebilir, bunlar için yönetim rollerini atayabilir veya kaldırabilirsiniz.
+      text_oversee_participation: Bir alan yöneticisi olarak, alanınızdaki her proje üzerinde proje yöneticisi yetkilerine sahipsiniz; böylece gelen girdileri takip edebilir ve gerektiğinde proje yöneticilerine yardımcı olabilirsiniz.
+      title: Alan yöneticisi oldunuz
+      title_manage_space_settings: Alan ayarlarını yönet
+      title_organize_projects_and_folders: Projeleri ve klasörleri düzenleyin
+      title_oversee_participation: Katılımı denetleyin
+      title_what_can_you_do_space_manager: Bir alan yöneticisi olarak neler yapabilirsiniz?
+      x_projects: '%{numberOfProjects} proje'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
-      event_description: '%{organizationName} dijital katılım platformlarında ''%{input_title}'' girdisinin durumunu güncelledi.'
-      title: 'Takip ettiğiniz bir girdinin yeni bir durumu var'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
       cta_button: Bu girişe gidin
-    user_digest:
-      subject: "%{organizationName} katılım platformundaki etkinlik durumunuz"
-      commented: "%{authorFirstName} yorum yaptı:"
-      preheader: "%{organizationName} haftalık genel bakışı"
-      title: "Geçen hafta neler olduğunu keşfedin"
-      event_description: "İşte %{organizationName}katılım platformunda yaşananların bir özeti."
-      cta_button: "Platforma gidin"
-      title_no_activity_past_week: "Geçen hafta etkinlik yoktu"
-      successful_proposals_title: "Eşiğe ulaşıldı"
-      successful_proposals_text: "Bu öneriler, bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı ile ilgili daha fazla bilgi için öneriye tıklayın."
-      today_by_author: "%{author} tarafından bugün"
-      yesterday_by_author: "%{author} tarafından dün"
-      x_days_ago_by_author: "%{author} tarafından %{x} gün önce"
-      trending_title: "Trend"
-      trending_text: "Platformda neler olup bittiğini merak ediyor musunuz? İşte en trend üç katkı ve insanların onlar hakkında söyledikleri."
-      no_notifications: "Bildirim yok"
-      one_notification: "1 bildirim"
-      multiple_notifications: "%{notifCount} bildirim"
-      no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
-      unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
+      event_description: "%{organizationName} dijital katılım platformlarında '%{input_title}' girdisinin durumunu güncelledi."
+      preheader: An input you follow has a new status
+      status_change: "The new status of this input is '%{status}'"
+      subject: The status of "%{input_title}" has changed
+      title: Takip ettiğiniz bir girdinin yeni bir durumu var
+    survey_submitted:
+      cta_button: Yanıtlarınızı indirin
+      event_description: '"%{projectName}" için girdiniz başarıyla gönderildi.'
+      if_you_would_like_to_review: Gönderinizi gözden geçirmek isterseniz, yanıtlarınızı aşağıdan indirebilirsiniz.
+      preheader: İşte başvurunuzun ayrıntıları.
+      subject: '%{organizationName}: Cevabınız için teşekkür ederim! 🎉'
+      title: '"%{projectName}" hakkındaki düşüncelerinizi paylaştığınız için teşekkür ederiz!'
+      you_can_use_this_id: Gönderinizin kaldırılmasını istemeniz durumunda platform yöneticileriyle iletişime geçmek için bu tanımlayıcıyı kullanabilirsiniz.
+      your_submission_has_id: 'Gönderiniz aşağıdaki benzersiz tanımlayıcıya sahiptir:'
     threshold_reached_for_admin:
-      cta_button: 'Bu teklifi bir sonraki adıma taşıyın'
-      title: 'Bir teklif oylama eşiğine ulaştı!'
-      subject: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı'
-      preheader: 'Sonraki adımları mutlaka gerçekleştirin'
+      cta_button: Bu teklifi bir sonraki adıma taşıyın
+      preheader: Sonraki adımları mutlaka gerçekleştirin
+      subject: Bir girişim, platformunuzdaki oylama eşiğine ulaştı
+      title: Bir teklif oylama eşiğine ulaştı!
+    user_digest:
+      commented: '%{authorFirstName} yorum yaptı:'
+      cta_button: Platforma gidin
+      event_description: İşte %{organizationName}katılım platformunda yaşananların bir özeti.
+      multiple_notifications: '%{notifCount} bildirim'
+      no_notifications: Bildirim yok
+      no_unread_notifications: Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin.
+      one_notification: 1 bildirim
+      preheader: '%{organizationName} haftalık genel bakışı'
+      subject: '%{organizationName} katılım platformundaki etkinlik durumunuz'
+      successful_proposals_text: Bu öneriler, bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı ile ilgili daha fazla bilgi için öneriye tıklayın.
+      successful_proposals_title: Eşiğe ulaşıldı
+      title: Geçen hafta neler olduğunu keşfedin
+      title_no_activity_past_week: Geçen hafta etkinlik yoktu
+      today_by_author: '%{author} tarafından bugün'
+      trending_text: Platformda neler olup bittiğini merak ediyor musunuz? İşte en trend üç katkı ve insanların onlar hakkında söyledikleri.
+      trending_title: Trend
+      unread_notifications: Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin.
+      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
+      yesterday_by_author: '%{author} tarafından dün'
+    voting_basket_not_submitted:
+      cta_button: Seçenekleri görüntüleyin ve oy verin
+      cta_message: Seçtiğiniz seçenekleri göndermek için aşağıdaki düğmeyi tıklayın
+      event_description: '%{contextTitle} için birkaç seçenek belirlediniz ancak seçiminizi göndermediniz.'
+      preheader: Oylarınızı %{organizationName}katılım platformuna göndermediniz
+      subject: '%{organizationName}: Oylarınızı teslim etmediniz'
+      title: Oylarınızı teslim etmediniz
+    voting_basket_submitted:
+      cta_button: Verilen oyları görün
+      cta_message: Katılmak için aşağıdaki butona tıklayın
+      event_description: Katıldığınız için teşekkürler. Oylarınız kaydedilmiştir. Oylarınızı görmek ve yönetmek için %{organizationName} platformunu ziyaret edin.
+      preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'
+      subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
+      title: Başarılı bir şekilde oy kullandınız
+    voting_last_chance:
+      cta_button: Oylama
+      event_description: <p> %{projectTitle} projesi için oylama aşaması yarın gece yarısı sona eriyor.</p><p>Zaman azalıyor ve henüz oyunuzu kullanmadığınızı fark ettik! Katılmak için aşağıdaki butona tıklayarak hemen harekete geçin.</p><p>Bunu yaparak, bir dizi seçeneğe erişim kazanacak ve bu projenin geleceğine karar vermede çok önemli olan girdilerinizi sağlama şansına sahip olacaksınız.</p>
+      preheader: '%{organizationName}katılım platformunda %{phaseTitle} için oy kullanmak için son şans'
+      subject: '%{organizationName}: %{phaseTitle}adresine oy vermek için son şans'
+      title: Oy vermek için son şans %{phaseTitle}
+    voting_phase_started:
+      cta_button: Oy vermek için platforma gidin
+      cta_message: Katılmak için aşağıdaki butona tıklayın
+      event_description: '"%{projectName}" projesi sizden %{numIdeas} seçenekleri arasında oylama yapmanızı istiyor:'
+      preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
+      subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
+      title: '%{projectName}'
+    voting_results:
+      body_1: Sonuçlar geldi!
+      body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
+      body_3: Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.
+      cta_button: Platformdaki sonuçları görün
+      preheader: '%{phaseTitle} oy sonuçlari %{organizationName}katilim platformu üzeri̇nden açiklandi'
+      subject: '%{organizationName}: %{phaseTitle} oylama sonuçları açıklandı!'
+      title: '%{phaseTitle} oylama sonuçlari açiklandi!'
     welcome:
-      cta_button: 'Platformu keşfedin'
+      cta_button: Platformu keşfedin
+      event_description: Tebrikler, %{organizationName}katılım platformuna başarıyla kaydoldunuz. Artık platformu keşfedebilir ve sesinizi duyurabilirsiniz. Başkalarına kim olduğunuzu anlatmak için bir profil resmi ve kısa bir açıklama da ekleyebilirsiniz.
+      preheader: '%{organizationName} platformunda şunları yapabilirsiniz'
       subject: '%{organizationName} platformuna hoş geldiniz'
       title: Hoş geldiniz!
-      event_description: 'Tebrikler, %{organizationName}katılım platformuna başarıyla kaydoldunuz. Artık platformu keşfedebilir ve sesinizi duyurabilirsiniz. Başkalarına kim olduğunuzu anlatmak için bir profil resmi ve kısa bir açıklama da ekleyebilirsiniz.'
-      preheader: '%{organizationName} platformunda şunları yapabilirsiniz'
-    idea_published:
-      subject: 'Fikriniz yayınlandı'
-      preheader: '%{firstName}, %{organizationName} platformunda fikrinizi yayınladığınız için tebrik ederiz. Şimdi destek toplayın.'
-      title: '"%{input_title}" göndermişsiniz.'
-      input_type_subject:
-        idea: 'Fikriniz yayınlandı'
-        question: 'Sorunuz yayınlandı'
-        contribution: 'Katkınız yayınlandı'
-        project: 'Projeniz yayınlandı'
-        issue: 'Sayınız yayınlandı'
-        option: 'Seçeneğiniz yayınlandı'
-        proposal: 'Teklifiniz yayınlandı'
-        initiative: 'Girişiminiz yayınlandı'
-        petition: 'Dilekçeniz yayınlandı'
-        comment: 'Yorumunuz yayınlandı'
-        response: 'Yanıtınız yayınlandı'
-        suggestion: 'Öneriniz yayınlandı'
-        topic: 'Konunuz yayınlandı'
-        post: 'Gönderiniz yayınlandı'
-        story: 'Hikayeniz yayınlandı'
-      header_message: 'Okunduğundan emin olalım.'
-      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
-      action_published_idea: 'Yayımlanan fikir'
-      action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      add_image: 'Görsel ekleyin'
-      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
-      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
-      action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
-      send_email: e-posta
-      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
-      link: Bağlantı
     your_input_in_screening:
-      main_header:
-        idea: 'Fikriniz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        question: 'Sorunuz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        contribution: 'Katkınız "%{prescreening_status_title}" adresinde yer almaktadır.'
-        project: 'Projeniz "%{prescreening_status_title}" adresinde'
-        issue: 'Sorununuz "%{prescreening_status_title}" adresinde'
-        option: 'Seçeneğiniz "%{prescreening_status_title}" adresinde.'
-        proposal: 'Teklifiniz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        initiative: 'Girişiminiz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        petition: 'Dilekçeniz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        comment: 'Yorumunuz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        response: 'Yanıtınız "%{prescreening_status_title}" adresinde yer almaktadır.'
-        suggestion: 'Öneriniz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        topic: 'Konunuz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        post: 'Gönderiniz "%{prescreening_status_title}" adresinde yer almaktadır.'
-        story: 'Hikayeniz "%{prescreening_status_title}" adresinde.'
       event_description: '"%{input_title}" ifadesi incelendikten ve onaylandıktan sonra başkaları tarafından görülebilir hale gelecektir.'
+      main_header:
+        comment: Yorumunuz "%{prescreening_status_title}" adresinde yer almaktadır.
+        contribution: Katkınız "%{prescreening_status_title}" adresinde yer almaktadır.
+        idea: Fikriniz "%{prescreening_status_title}" adresinde yer almaktadır.
+        initiative: Girişiminiz "%{prescreening_status_title}" adresinde yer almaktadır.
+        issue: Sorununuz "%{prescreening_status_title}" adresinde
+        option: Seçeneğiniz "%{prescreening_status_title}" adresinde.
+        petition: Dilekçeniz "%{prescreening_status_title}" adresinde yer almaktadır.
+        post: Gönderiniz "%{prescreening_status_title}" adresinde yer almaktadır.
+        project: Projeniz "%{prescreening_status_title}" adresinde
+        proposal: Teklifiniz "%{prescreening_status_title}" adresinde yer almaktadır.
+        question: Sorunuz "%{prescreening_status_title}" adresinde yer almaktadır.
+        response: Yanıtınız "%{prescreening_status_title}" adresinde yer almaktadır.
+        story: Hikayeniz "%{prescreening_status_title}" adresinde.
+        suggestion: Öneriniz "%{prescreening_status_title}" adresinde yer almaktadır.
+        topic: Konunuz "%{prescreening_status_title}" adresinde yer almaktadır.
+      preheader: Şu anda %{prescreening_status_title}adresinde
       subject: '"%{input_title}" neredeyse yayınlandı'
-      preheader: 'Şu anda %{prescreening_status_title}adresinde'
-    screening_digest:
-      subject: '%{count} gözden geçirilmeyi bekleyen girdiler'
-      preheader: '%{organizationName}için girdileri gözden geçirin'
-      title: '%{firstName}, girdiler gözden geçirilmeyi bekliyor'
-      event_description: "Bu girdilerin kamuya açık hale gelmeden önce onaylanması gerekir. Bunları platform genelindeki Girdi Yöneticisinde veya her aşamanın Girdi Yöneticisinde inceleyebilirsiniz."
-      cta_button: 'Girdileri gözden geçirin'
-      inputs_awaiting_screening: 'gözden geçirilecek girdiler'
-    voting_basket_submitted:
-      subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
-      preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'
-      title: 'Başarılı bir şekilde oy kullandınız'
-      event_description: 'Katıldığınız için teşekkürler. Oylarınız kaydedilmiştir. Oylarınızı görmek ve yönetmek için %{organizationName} platformunu ziyaret edin.'
-      cta_button: 'Verilen oyları görün'
-      cta_message: 'Katılmak için aşağıdaki butona tıklayın'
-    native_survey_not_submitted:
-      subject: '%{organizationName}: Neredeyse bitti! Cevaplarınızı gönderin'
-      preheader: 'Anket yanıtınızı %{organizationName}katılım platformunda tamamlamadınız'
-      title: 'Neredeyse bitti! Cevaplarınızı gönderin'
-      event_description: 'Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Kaldığınız yerden devam etmek için aşağıdaki butona tıklayın.'
-      cta_button: 'Anket yanıtınıza devam edin'
-      submissions_close: 'Başvurular %{phaseEndDate}adresinde sona erecektir.'
-    voting_basket_not_submitted:
-      subject: '%{organizationName}: Oylarınızı teslim etmediniz'
-      preheader: 'Oylarınızı %{organizationName}katılım platformuna göndermediniz'
-      title: 'Oylarınızı teslim etmediniz'
-      event_description: '%{contextTitle} için birkaç seçenek belirlediniz ancak seçiminizi göndermediniz.'
-      cta_button: 'Seçenekleri görüntüleyin ve oy verin'
-      cta_message: 'Seçtiğiniz seçenekleri göndermek için aşağıdaki düğmeyi tıklayın'
-    voting_last_chance:
-      subject: '%{organizationName}: %{phaseTitle}adresine oy vermek için son şans'
-      preheader: '%{organizationName}katılım platformunda %{phaseTitle} için oy kullanmak için son şans'
-      title: 'Oy vermek için son şans %{phaseTitle}'
-      event_description: '<p> %{projectTitle} projesi için oylama aşaması yarın gece yarısı sona eriyor.</p><p>Zaman azalıyor ve henüz oyunuzu kullanmadığınızı fark ettik! Katılmak için aşağıdaki butona tıklayarak hemen harekete geçin.</p><p>Bunu yaparak, bir dizi seçeneğe erişim kazanacak ve bu projenin geleceğine karar vermede çok önemli olan girdilerinizi sağlama şansına sahip olacaksınız.</p>'
-      cta_button: 'Oylama'
-    voting_results:
-      subject: '%{organizationName}: %{phaseTitle} oylama sonuçları açıklandı!'
-      preheader: '%{phaseTitle} oy sonuçlari %{organizationName}katilim platformu üzeri̇nden açiklandi'
-      title: '%{phaseTitle} oylama sonuçlari açiklandi!'
-      body_1: 'Sonuçlar geldi!'
-      body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
-      body_3: 'Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.'
-      cta_button: 'Platformdaki sonuçları görün'
-    event_registration_confirmation:
-      subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
-      preheader: "%{firstName}, %{eventTitle}adresine kaydolduğunuz için teşekkürler"
-      title: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
-      event_details:
-        labels:
-          date: 'Tarih'
-          location: 'Konum'
-          online_link: 'Çevrimiçi bağlantı'
-          description: 'Açıklama'
-          project: 'Proje'
-      cta_button: 'Etkinliği görüntüleyin'
-      cta_add_to_calendar: 'Takviminize ekleyin'
-    voting_phase_started:
-      subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
-      preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
-      title: '%{projectName}'
-      event_description: '"%{projectName}" projesi sizden %{numIdeas} seçenekleri arasında oylama yapmanızı istiyor:'
-      cta_message: 'Katılmak için aşağıdaki butona tıklayın'
-      cta_button: 'Oy vermek için platforma gidin'
-    survey_submitted:
-      subject: '%{organizationName}: Cevabınız için teşekkür ederim! 🎉'
-      preheader: 'İşte başvurunuzun ayrıntıları.'
-      title: '"%{projectName}" hakkındaki düşüncelerinizi paylaştığınız için teşekkür ederiz!'
-      event_description: '"%{projectName}" için girdiniz başarıyla gönderildi.'
-      if_you_would_like_to_review: 'Gönderinizi gözden geçirmek isterseniz, yanıtlarınızı aşağıdan indirebilirsiniz.'
-      your_submission_has_id: 'Gönderiniz aşağıdaki benzersiz tanımlayıcıya sahiptir:'
-      you_can_use_this_id: 'Gönderinizin kaldırılmasını istemeniz durumunda platform yöneticileriyle iletişime geçmek için bu tanımlayıcıyı kullanabilirsiniz.'
-      cta_button: 'Yanıtlarınızı indirin'
-    admin_labels:
-      recipient_role:
-        admins: 'Yöneticilere'
-        admins_and_managers: 'Yöneticilere ve müdürlere'
-        managers: 'Yöneticilere'
-        project_participants: 'Proje katılımcılarına'
-        registered_users: 'Kayıtlı kullanıcılara'
-      recipient_segment:
-        admins: 'Yöneticiler'
-        admins_and_managers: 'Yöneticiler ve müdürler'
-        admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
-        admins_and_managers_managing_the_project: 'Projeyi yöneten yöneticiler ve müdürler'
-        admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
-        all_users: 'Tüm kullanıcılar'
-        all_users_who_uploaded_proposals: 'Teklif yükleyen tüm kullanıcılar'
-        managers: 'Yöneticiler'
-        managers_managing_the_project: 'Projeyi yöneten yöneticiler'
-        new_attendee: 'Yeni kayıtlı kullanıcı'
-        project_reviewers: 'Proje gözden geçiricileri ve klasör yöneticileri'
-        project_review_requester: 'Proje incelemesini talep eden kullanıcı'
-        user_who_commented: 'Yorum yapan kullanıcı'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı'
-        user_who_is_mentioned: 'Bahsi geçen kullanıcı'
-        user_who_is_receiving_admin_rights: 'Yönetici haklarını alan kullanıcı'
-        user_who_is_receiving_folder_moderator_rights: 'Klasör moderatörü haklarını alan kullanıcı'
-        user_who_is_receiving_project_moderator_rights: 'Proje moderatörü haklarını alan kullanıcı'
-        user_who_published_the_input: 'Girdiyi yayınlayan kullanıcı'
-        user_who_published_the_proposal: 'Teklifi yayınlayan kullanıcı'
-        user_who_registers: 'Kayıt olan kullanıcı'
-        user_who_submitted_the_input: 'Girdiyi gönderen kullanıcı'
-        user_who_voted: 'Oy veren kullanıcı'
-        user_who_was_invited: 'Davet edilen kullanıcı'
-        user_with_unsubmitted_survey: 'Anketini başlatmış ancak göndermemiş kullanıcı'
-        user_with_unsubmitted_votes: 'Oylarını göndermemiş olan kullanıcı'
-        users_who_engaged_but_not_voted: 'Proje ile ilgilenen ancak oy kullanmayan kullanıcılar'
-        users_who_engaged_with_the_project: 'Proje ile etkileşime geçen kullanıcılar'
-        users_who_follow_the_input: 'Girişi takip eden kullanıcılar'
-        users_who_follow_the_project: 'Projeyi takip eden kullanıcılar'
-        users_who_follow_the_proposal: 'Teklifi takip eden kullanıcılar'
-      content_type:
-        comments: 'Yorumlar'
-        content_moderation: 'İçerik moderasyonu'
-        events: 'Etkinlikler'
-        general: 'Genel'
-        inputs: 'Girişler'
-        internal_comments: 'Dahili yorumlar'
-        permissions: 'İzinler'
-        projects: 'Projeler'
-        proposals: 'Teklifler'
-        reactions: 'Tepkiler'
-        voting: 'Oylama'
-        surveys: 'Anketler'
-      trigger:
-        7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
-        7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
-        comment_is_deleted: 'Yorum silindi'
-        comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
-        content_gets_flagged_as_innapropiate: 'İçerik uygunsuz olarak işaretlenir'
-        initiative_resubmitted_for_review: 'Teklif incelenmek üzere yeniden sunuldu'
-        input_is_assigned: 'Giriş atanmıştır'
-        input_is_flagged_as_spam: 'Girdi spam olarak işaretlendi'
-        input_is_published: 'Girdi yayınlandı'
-        input_is_updated: 'Girdi güncellenir'
-        input_status_changes: 'Giriş durumu değişiklikleri'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Kullanıcıya atanan girdiye dahili yorum gönderilir'''
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Dahili yorum, kullanıcının yönettiği proje veya klasördeki girdiye gönderilir'''
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Dahili yorum, kullanıcının dahili olarak yorum yaptığı girdiye gönderilir'''
-        internal_comment_is_posted_on_idea_user_moderates: 'Giriş kullanıcı moderatörlerine dahili yorum gönderilir'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Yönetilmeyen projedeki atanmamış girdiye dahili yorum gönderildi'''
-        project_review_request: 'Moderatör proje incelemesi talep etti'
-        project_review_state_change: 'Gözden geçiren projeyi onayladı'
-        new_input_awaits_screening: 'Yeni girdiler taranmayı bekliyor'
-        new_input_is_published: 'Yeni girdi yayınlandı'
-        new_proposal_is_posted: 'Yeni teklif yayınlandı'
-        project_phase_changes: 'Proje aşaması değişiklikleri'
-        project_published: 'Proje yayınlandı'
-        proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
-        proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
-        proposal_is_published: 'Teklif yayınlandı'
-        proposal_is_updated: 'Teklif güncellendi'
-        proposal_is_upvoted_above_threshold: 'Teklif eşik değerin üzerinde oylandı'
-        proposal_status_changes: 'Teklif durumu değişiklikleri'
-        registration_to_event: 'Bir etkinliğe kayıt'
-        survey_1_day_after_draft_saved: 'Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'Kullanıcı bir teklife eş sponsorluk davetini kabul eder'
-        user_comments: 'Kullanıcı yorumları'
-        user_comments_on_input: 'Giriş hakkında kullanıcı yorumları'
-        user_comments_on_proposal: 'Teklifle ilgili kullanıcı yorumları'
-        user_is_given_admin_rights: 'Kullanıcıya yönetici hakları verilir'
-        user_is_given_folder_moderator_rights: 'Kullanıcıya klasör moderatörü hakları verilir'
-        user_is_given_project_moderator_rights: 'Kullanıcıya proje moderatörü hakları verilir'
-        user_is_invited_to_platform: 'Kullanıcı platforma davet edilir'
-        user_is_invited_to_cosponsor_a_proposal: 'Kullanıcı bir teklife eş sponsorluk yapmaya davet edilir'
-        user_is_mentioned: 'Kullanıcıdan bahsedilir'
-        user_is_mentioned_in_internal_comment: 'Dahili yorumda kullanıcıdan bahsediliyor'
-        user_registers_for_the_first_time: 'Kullanıcı ilk kez kaydolur'
-        user_replies_to_comment: 'Kullanıcı yoruma yanıt veriyor'
-        user_replies_to_internal_comment: 'Kullanıcı dahili yoruma yanıt veriyor'
-        voting_1_day_after_last_votes: 'Kullanıcı son oylamadan 1 gün sonra'
-        voting_2_days_before_phase_closes: 'Oylama aşamasının kapanmasına 2 gün kala'
-        voting_basket_submitted: 'Oylar teslim edildi'
-        voting_phase_ended: 'Oylama aşaması sona erdi'

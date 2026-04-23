@@ -17,8 +17,8 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import AnalysisBanner from '../../components/AnalysisBanner';
-import NewIdeaButton from '../../components/NewIdeaButton';
+import AnalysisBanner from '../../_shared/components/AnalysisBanner';
+import NewIdeaButton from '../../_shared/components/NewIdeaButton';
 import messages from '../messages';
 
 import ownMessages from './messages';

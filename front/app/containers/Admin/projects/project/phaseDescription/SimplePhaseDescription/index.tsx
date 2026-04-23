@@ -75,7 +75,7 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
               buttonStyle="admin-dark"
               processing={methods.formState.isSubmitting}
             >
-              {formatMessage(messages.draftDescriptionPublish)}
+              {formatMessage(messages.descriptionSave)}
             </Button>
           </Box>
         </Box>

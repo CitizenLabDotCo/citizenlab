@@ -1,4 +1,4 @@
-el:
+el-GR:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 ώρες.
@@ -168,6 +168,11 @@ el:
       last_name: Επώνυμο
       line_print_description: Παρακαλούμε σχεδιάστε μια διαδρομή στον παρακάτω χάρτη.
       linear_scale_print_description: Παρακαλώ γράψτε έναν αριθμό μεταξύ %{min_label} και %{max_label} μόνο
+      logic_go_to_section: Μεταβείτε στην ενότητα <strong>%{section}</strong> στη συνέχεια.
+      logic_if_answered_end: Αν απαντήσατε <strong>%{option}</strong> στην Ερώτηση %{question}, <strong>δεν χρειάζεται</strong> να απαντήσετε σε άλλες ερωτήσεις.
+      logic_if_answered_go_to: Αν απαντήσατε <strong>%{option}</strong> στην Ερώτηση %{question}, μεταβείτε στην ενότητα <strong>%{section}</strong> στη συνέχεια.
+      logic_no_further_questions: Με βάση τις απαντήσεις σας, <strong>δεν χρειάζεται</strong> να απαντήσετε σε άλλες ερωτήσεις.
+      logic_section: Ενότητα %{letter}
       matrix_print_description: Για κάθε σειρά, σημειώστε έναν κύκλο με σταυρό για να υποδείξετε την προτίμησή σας.
       optional: προαιρετικό
       page: Σελίδα
@@ -390,6 +395,7 @@ el:
       email: Ηλεκτρονικό ταχυδρομείο
       first_name: Όνομα(-α)
       image_url: URL εικόνας
+      imported: Εισήχθησαν
       input_id: Ταυτότητα
       input_url: ΔΙΕΎΘΥΝΣΗ URL
       last_name: Επώνυμο
