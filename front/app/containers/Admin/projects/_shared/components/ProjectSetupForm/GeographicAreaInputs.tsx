@@ -18,8 +18,8 @@ import Link from 'utils/cl-router/Link';
 import { isString } from 'utils/helperUtils';
 
 import { TOnProjectAttributesDiffChangeFunction } from '../../../project/general';
-import { LabelHeaderDescription } from '../../../project/phaseSetup/components/PhaseParticipationConfig/components/shared/labels';
 import messages from '../../../project/general/messages';
+import { LabelHeaderDescription } from '../../../project/phaseSetup/components/PhaseParticipationConfig/components/shared/labels';
 
 import { StyledSectionField, StyledMultipleSelect } from './styling';
 
