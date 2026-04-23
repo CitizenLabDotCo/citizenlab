@@ -158,6 +158,17 @@ resource 'Spaces' do
         expect(status).to eq(204)
         expect(Space.where(id: space1.id)).to be_empty
       end
+
+      example 'Deleting a space also strips space_moderator roles from its moderators' do
+        create_list(:space_moderator, 3, spaces: [space1])
+        expect(User.space_moderator(space1.id).count).to eq 3
+
+        do_request
+
+        expect(status).to eq(204)
+        expect(Space.where(id: space1.id)).to be_empty
+        expect(User.space_moderator(space1.id).count).to eq 0
+      end
     end
   end
 
