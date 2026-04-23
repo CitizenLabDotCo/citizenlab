@@ -384,18 +384,6 @@
         }
       },
 
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "project_preview_link" : {
         "type": "object",
         "title": "Project Preview Link",
@@ -1597,18 +1585,6 @@
         "type": "object",
         "title": "Project importer [Alpha]",
         "description": "Super admin only feature to import project, phases and content from XLSX.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "phase_insights": {
-        "type": "object",
-        "title": "Phase insights",
-        "description": "Phase insights dashboard. Metrics and insights about a project phase where participation is/was possible.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

@@ -551,6 +551,13 @@ resource 'Campaigns' do
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'no_recipients')
       end
+
+      example '[error] Send a campaign that has already been sent' do
+        create(:delivery, campaign: campaign)
+        do_request
+        assert_status 422
+        expect(json_response_body).to include_response_error(:base, 'already_sent')
+      end
     end
 
     get 'web_api/v1/campaigns/:id/deliveries' do

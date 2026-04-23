@@ -109,7 +109,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/results`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
     cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
       'exist'
     );
@@ -160,7 +160,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/results`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
     cy.dataCy('e2e-more-survey-actions-button').click();
 
     // Click the delete button
@@ -204,7 +204,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-page-number-1').should('be.visible');
     cy.dataCy('e2e-after-submission').should('be.visible');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/results`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
     cy.dataCy('e2e-more-survey-actions-button').click();
 
     // Click button to export survey results

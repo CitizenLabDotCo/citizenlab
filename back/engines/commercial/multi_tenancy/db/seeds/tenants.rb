@@ -390,10 +390,6 @@ module MultiTenancy
                 }
               ]
             },
-            project_folders: {
-              enabled: true,
-              allowed: true
-            },
             project_preview_link: {
               enabled: true,
               allowed: true
@@ -583,10 +579,6 @@ module MultiTenancy
               allowed: true
             },
             project_importer: {
-              enabled: true,
-              allowed: true
-            },
-            phase_insights: {
               enabled: true,
               allowed: true
             },
