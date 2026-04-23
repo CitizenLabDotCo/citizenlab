@@ -2,14 +2,17 @@ import React from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-const FolderAndSpaceSelectSection = () => {
+import AdminInterface from './AdminInterface';
+import { Props } from './types';
+
+const FolderAndSpaceSelectSection = (props: Props) => {
   const { data: authUser } = useAuthUser();
   if (!authUser) return null;
 
   const { highest_role } = authUser.data.attributes;
 
   if (highest_role === 'admin') {
-    return <></>;
+    return <AdminInterface {...props} />;
   }
 
   if (highest_role === 'space_moderator') {
