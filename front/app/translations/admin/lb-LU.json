@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic-Quellen",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Mir hunn d'Aart a Weis geännert, wéi mir Visiteurendaten erfaassen an uweisen. Doduerch sinn d'Visiteurendaten méi präzis a méi Datekategorië sinn disponibel, wärend d'DSGVO weiderhin agehale gëtt. Mir hunn eréischt am November 2024 ugefaangen, dës nei Daten ze sammelen, dofir sinn d'Date vun derzäit virdrun net disponibel.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zäitplang vun de Visiteuren",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "De Projet ass {underlinedUnlisted}. Et ginn keng E-Maile verschéckt.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phaserapport",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Text iwwer d'Phas bäisetzen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",

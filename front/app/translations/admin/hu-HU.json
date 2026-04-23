@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Forgalmi források",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Megváltoztattuk a látogatói adatok gyűjtésének és megjelenítésének módját. Ennek eredményeként a látogatói adatok pontosabbak, és többféle adattípus érhető el, miközben továbbra is megfelelnek a GDPR-nak. Ezen új adatok gyűjtését csak 2024 novemberében kezdtük el, így az ezt megelőző időszakról nem állnak rendelkezésre adatok.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Látogatók idővonala",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "A projekt {underlinedUnlisted}. E-mailek nem kerülnek kiküldésre.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Szakaszjelentés",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Adjon meg egy rövid szöveget a szakaszról",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Ez egy szöveg. A jobb oldali panelen található szerkesztővel módosíthatja és formázhatja.",

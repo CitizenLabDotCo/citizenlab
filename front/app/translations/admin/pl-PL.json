@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Źródła ruchu",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Zmieniliśmy sposób gromadzenia i wyświetlania danych odwiedzających. W rezultacie dane odwiedzających są dokładniejsze i dostępnych jest więcej rodzajów danych, przy jednoczesnym zachowaniu zgodności z RODO. Zaczęliśmy gromadzić te nowe dane dopiero w listopadzie 2024 r., więc wcześniej żadne dane nie były dostępne.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Oś czasu odwiedzających",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Projekt jest {underlinedUnlisted}. Żadne wiadomości e-mail nie zostaną wysłane.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Raport z fazy",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Dodaj tekst o fazie",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "To jest przykładowy tekst. Można go edytować i formatować za pomocą edytora w panelu po prawej stronie.",

@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Foinsí tráchta",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Tá athrú déanta againn ar an gcaoi a mbailímid agus a thaispeánaimid sonraí cuairteoirí. Mar thoradh air sin, tá sonraí cuairteoirí níos cruinne agus tá níos mó cineálacha sonraí ar fáil, agus fós ag cloí le GDPR. Níor thosaíomar ag bailiú na sonraí nua seo ach i mí na Samhna 2024, mar sin roimhe sin níl aon sonraí ar fáil.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Amlíne na gcuairteoirí",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Tá an tionscadal {underlinedUnlisted}. Ní sheolfar aon ríomhphoist.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Tuarascáil chéime",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Cuir roinnt téacs leis faoin gcéim",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Seo roinnt téacs. Is féidir leat é a chur in eagar agus a fhormáidiú trí úsáid a bhaint as an eagarthóir sa phainéal ar dheis.",

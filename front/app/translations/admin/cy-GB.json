@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Ffynonellau traffig",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Rydym wedi newid y ffordd rydym yn casglu ac yn arddangos data ymwelwyr. O ganlyniad, mae data ymwelwyr yn fwy cywir ac mae mwy o fathau o ddata ar gael, tra'n dal i gydymffurfio â GDPR. Dim ond ym mis Tachwedd 2024 y dechreuon ni gasglu'r data newydd hwn, felly cyn hynny nid oes unrhyw ddata ar gael.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Llinell amser ymwelwyr",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Mae'r prosiect yn {underlinedUnlisted}. Ni fydd unrhyw negeseuon e-bost yn cael eu hanfon.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Adroddiad cyfnod",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Ychwanegwch ychydig o destun am y cyfnod",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dyma ychydig o destun. Gallwch ei olygu a'i fformatio trwy ddefnyddio'r golygydd yn y panel ar y dde.",

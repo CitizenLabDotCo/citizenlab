@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Isertut suminngaanneerneri",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Alakkartut paasissutissaataannik katerseriaaserput saqqummiusseriaaserpullu allanngortippagut. Tamatuma kingunerisaanik paasissutissat eqqornerulerput paasissutissallu assigiinngitsut amerlanerulerlutik, suli GDPR-imut naapertuullutik. Paasissutissanik nutaanik katersineq aatsaat november 2024-mi aallartipparput, taamaattumik tamatuma siornatigut paasissutissanik peqanngilaq.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Isertut piffissatigut ingerlanerat",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Suliniaq {underlinedUnlisted}-iuvoq. E-mailinik nassiussisoqassanngilaq.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Immikkoortumut nalunaarusiaq",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Immikkoortoq pillugu oqaasertanik ikkussigit",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",

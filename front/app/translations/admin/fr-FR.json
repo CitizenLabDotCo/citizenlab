@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Sources de trafic",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Nous avons modifié la façon dont nous collectons et affichons les données relatives aux visiteurs. En conséquence, les données sur les visiteurs sont plus précises et davantage d'informations sont disponibles, tout en restant conformes au RGPD. Nous avons commencé à collecter ces nouvelles données seulement en novembre 2024, les données ne sont donc pas disponibles avant cette date.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Visiteurs",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Le projet est {underlinedUnlisted}. Aucun e-mail ne sera envoyé.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Rapport de phase",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Ajoutez un texte introductif ou une explication à propos de la phase",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Voici du texte. Vous pouvez le modifier et le mettre en forme en utilisant l'éditeur dans le panneau de droite.",

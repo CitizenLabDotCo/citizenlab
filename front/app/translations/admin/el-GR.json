@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Πηγές επισκεψιμότητας",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Έχουμε αλλάξει τον τρόπο με τον οποίο συλλέγουμε και εμφανίζουμε τα δεδομένα επισκεπτών. Ως αποτέλεσμα, τα δεδομένα επισκεπτών είναι πιο ακριβή και περισσότεροι τύποι δεδομένων είναι διαθέσιμοι, παραμένοντας παράλληλα συμβατά με τον GDPR. Ξεκινήσαμε τη συλλογή αυτών των νέων δεδομένων τον Νοέμβριο του 2024, επομένως δεν υπάρχουν διαθέσιμα δεδομένα πριν από αυτό το διάστημα.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Χρονολόγιο επισκεπτών",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Το έργο είναι {underlinedUnlisted}. Δεν θα σταλούν μηνύματα ηλεκτρονικού ταχυδρομείου.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Αναφορά φάσης",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Προσθέστε κείμενο σχετικά με τη φάση",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",

@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Kommunikations-Kanäle",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Wir haben die Art und Weise, wie wir Besucherdaten sammeln und anzeigen, geändert. Das Ergebnis ist, dass die Besucherdaten genauer sind und mehr Datenarten zur Verfügung stehen, ohne dass wir die Datenschutzbestimmungen verletzen. Wir haben erst im November 2024 mit der Erhebung dieser neuen Daten begonnen, so dass davor keine Daten verfügbar sind.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zeitleiste für Besucher*innen",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Das Projekt ist {underlinedUnlisted}. Es werden keine E-Mails versendet.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phasenbericht",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Text über die Phase hinzufügen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein Text. Sie können ihn mit dem Editor im rechten Bereich bearbeiten und formatieren.",

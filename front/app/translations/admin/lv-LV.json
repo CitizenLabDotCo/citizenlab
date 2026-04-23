@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Satiksmes avoti",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Esam mainījuši veidu, kā vācam un rādām apmeklētāju datus. Rezultātā apmeklētāju dati ir precīzāki un pieejami vairāk datu veidu, vienlaikus saglabājot atbilstību GDPR. Šos jaunos datus sākām vākt tikai 2024. gada novembrī, tāpēc pirms tam dati nav pieejami.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Apmeklētāju grafiks",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Projekts ir {underlinedUnlisted}. E-pasti netiks sūtīti.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Posma ziņojums",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Pievienojiet tekstu par fāzi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Šeit ir teksts. To var rediģēt un formatēt, izmantojot redaktoru panelī labajā pusē.",

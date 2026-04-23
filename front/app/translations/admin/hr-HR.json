@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Izvori prometa",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Promijenili smo način prikupljanja i prikaza podataka o posjetiteljima. Kao rezultat toga, podaci o posjetiteljima su točniji i dostupno je više vrsta podataka, a istovremeno su i dalje u skladu s GDPR-om. Ove nove podatke počeli smo prikupljati tek u studenom 2024., tako da prije toga nisu bili dostupni nikakvi podaci.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Vremenska traka posjetitelja",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Projekt je {underlinedUnlisted}. E-poruke neće biti poslane.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Izvješće o fazi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Dodajte tekst o fazi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Ovo je neki tekst. Možete ga uređivati i formatirati pomoću uređivača u ploči s desne strane.",

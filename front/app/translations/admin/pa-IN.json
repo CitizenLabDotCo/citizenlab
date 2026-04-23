@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "ਆਵਾਜਾਈ ਸਰੋਤ",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "ਅਸੀਂ ਵਿਜ਼ਟਰ ਡੇਟਾ ਇਕੱਠਾ ਕਰਨ ਅਤੇ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਦੇ ਤਰੀਕੇ ਨੂੰ ਬਦਲ ਦਿੱਤਾ ਹੈ। ਨਤੀਜੇ ਵਜੋਂ, ਵਿਜ਼ਟਰ ਡੇਟਾ ਵਧੇਰੇ ਸਟੀਕ ਹੈ ਅਤੇ GDPR ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹੋਏ, ਹੋਰ ਕਿਸਮਾਂ ਦੇ ਡੇਟਾ ਉਪਲਬਧ ਹਨ। ਅਸੀਂ ਇਹ ਨਵਾਂ ਡੇਟਾ ਨਵੰਬਰ 2024 ਵਿੱਚ ਹੀ ਇਕੱਠਾ ਕਰਨਾ ਸ਼ੁਰੂ ਕੀਤਾ ਸੀ, ਇਸ ਲਈ ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕੋਈ ਡੇਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "ਵਿਜ਼ਿਟਰ ਟਾਈਮਲਾਈਨ",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "ਪ੍ਰੋਜੈਕਟ {underlinedUnlisted} ਹੈ। ਕੋਈ ਵੀ ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ ਜਾਵੇਗੀ।",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "ਪੜਾਅ ਰਿਪੋਰਟ",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "ਪੜਾਅ ਬਾਰੇ ਕੁਝ ਟੈਕਸਟ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "ਇਹ ਕੁਝ ਟੈਕਸਟ ਹੈ। ਤੁਸੀਂ ਸੱਜੇ ਪਾਸੇ ਪੈਨਲ ਵਿੱਚ ਸੰਪਾਦਕ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਸਨੂੰ ਸੰਪਾਦਿਤ ਅਤੇ ਫਾਰਮੈਟ ਕਰ ਸਕਦੇ ਹੋ।",

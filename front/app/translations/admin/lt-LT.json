@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Eismo srauto šaltiniai",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Pakeitėme lankytojų duomenų rinkimo ir rodymo būdą. Dėl to lankytojų duomenys yra tikslesni ir galima gauti daugiau duomenų tipų, tačiau jie vis dar atitinka BDAR reikalavimus. Šiuos naujus duomenis pradėjome rinkti tik 2024 m. lapkritį, todėl anksčiau jokių duomenų nebuvo.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Lankytojų tvarkaraštis",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Projektas yra {underlinedUnlisted}. El. laiškai nebus siunčiami.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Etapo ataskaita",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Pridėkite tekstą apie etapą",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Tai yra tam tikras tekstas. Jį galite redaguoti ir formatuoti naudodami dešinėje esantį redaktorių.",

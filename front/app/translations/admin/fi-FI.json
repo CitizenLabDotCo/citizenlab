@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Liikenteen lähteet",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Olemme muuttaneet tapaamme kerätä ja näyttää kävijätietoja. Tämän seurauksena kävijätiedot ovat tarkempia ja saatavilla on useampia datatyyppejä, mutta ne ovat edelleen GDPR-yhteensopivia. Aloitimme näiden uusien tietojen keräämisen vasta marraskuussa 2024, joten sitä ennen tietoja ei ole saatavilla.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Vierailijoiden aikajana",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Hanke on {underlinedUnlisted}. Sähköposteja ei lähetetä.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Vaiheraportti",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Lisää tekstiä vaiheesta",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Tämä on vähän tekstiä. Voit muokata ja muotoilla sitä käyttämällä oikeanpuoleisen paneelin editoria.",

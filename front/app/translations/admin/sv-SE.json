@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Källor till trafik",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Vi har ändrat vårt sätt att samla in och visa besöksdata. Som ett resultat är besöksdata mer exakt och fler typer av data finns tillgängliga, samtidigt som de fortfarande är GDPR-kompatibla. Vi började samla in dessa nya data först i november 2024, så innan dess finns inga data tillgängliga.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Besökarnas tidslinje",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Projektet är {underlinedUnlisted}. Inga e-postmeddelanden kommer att skickas.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Fasrapport",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Lägg till lite text om fasen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Det här är lite text. Du kan redigera och formatera den genom att använda redigeraren i panelen till höger.",

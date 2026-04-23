@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fonts de trànsit",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Hem canviat la manera com recollim i mostrem les dades dels visitants. Com a resultat, les dades dels visitants són més precises i hi ha més tipus de dades disponibles, tot complint amb el RGPD. Hem començat a recollir aquestes dades noves al novembre de 2024, per la qual cosa no hi ha dades disponibles d'abans d'aquesta data.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Cronologia de visitants",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "El projecte està {underlinedUnlisted}. No s'enviarà cap correu electrònic.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Informe de la fase",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Afegeix text sobre la fase",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",

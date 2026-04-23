@@ -1715,6 +1715,7 @@
   "app.containers.Admin.projects.project.traffic.trafficSources": "Kanalen",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "We hebben de manier waarop we bezoekersgegevens verzamelen en weergeven veranderd. Hierdoor zijn de bezoekersgegevens nauwkeuriger en zijn er meer soorten gegevens beschikbaar, terwijl we nog steeds voldoen aan de GDPR. We zijn pas in november 2024 begonnen met het verzamelen van deze nieuwe gegevens, dus daarvoor zijn geen gegevens beschikbaar.",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Bezoekers tijdlijn",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.projectUnlisted": "Het project is {underlinedUnlisted}. Er worden geen e-mails verzonden.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Faserapport",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Voeg wat tekst over de fase toe",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dit is tekst. Je kunt het aanpassen en formatteren met behulp van de editor in het paneel aan de rechterzijde.",
