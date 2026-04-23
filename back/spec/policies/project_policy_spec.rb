@@ -673,10 +673,6 @@ describe ProjectPolicy do
       )
     end
 
-    def move_to(folder)
-      project.folder_id = folder&.id
-    end
-
     def mark_as_published
       project.admin_publication.update!(first_published_at: Time.current)
     end
@@ -685,18 +681,18 @@ describe ProjectPolicy do
       let(:user) { create(:admin) }
 
       it 'permits moving to another folder' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.to permit(:update)
       end
 
-      it 'permits moving to root' do
-        move_to(nil)
+      it 'permits removing the project from its folder' do
+        project.folder_id = nil
         is_expected.to permit(:update)
       end
 
-      it 'permits moving a published project to root' do
+      it 'permits removing a published project from its folder' do
         mark_as_published
-        move_to(nil)
+        project.folder_id = nil
         is_expected.to permit(:update)
       end
     end
@@ -708,7 +704,7 @@ describe ProjectPolicy do
       # tests), so the policy wouldn't see folder_changed? in practice. Still, asserting the
       # cross-folder denial gives us defense-in-depth if that filter ever changes.
       it 'denies moving to another folder' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.not_to permit(:update)
       end
     end
@@ -717,13 +713,13 @@ describe ProjectPolicy do
       let(:user) { create(:project_folder_moderator, project_folders: [source_folder]) }
 
       it 'denies moving to a folder the user does not moderate' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.not_to permit(:update)
       end
 
       context 'when the project has never been published' do
-        it 'permits moving to root' do
-          move_to(nil)
+        it 'permits removing the project from its folder' do
+          project.folder_id = nil
           is_expected.to permit(:update)
         end
       end
@@ -731,8 +727,8 @@ describe ProjectPolicy do
       context 'when the project has been published' do
         before { mark_as_published }
 
-        it 'denies moving to root' do
-          move_to(nil)
+        it 'denies removing the project from its folder' do
+          project.folder_id = nil
           is_expected.not_to permit(:update)
         end
       end
@@ -742,13 +738,13 @@ describe ProjectPolicy do
       let(:user) { create(:project_folder_moderator, project_folders: [source_folder, target_folder]) }
 
       it 'permits moving to the target folder' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.to permit(:update)
       end
 
       it 'permits moving to the target folder when the project has been published' do
         mark_as_published
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.to permit(:update)
       end
     end
@@ -770,13 +766,13 @@ describe ProjectPolicy do
       let(:user) { create(:space_moderator, spaces: [space]) }
 
       it 'permits moving to another folder in the same space' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.to permit(:update)
       end
 
       context 'when the project has never been published' do
-        it 'permits moving to root' do
-          move_to(nil)
+        it 'permits removing the project from its folder' do
+          project.folder_id = nil
           is_expected.to permit(:update)
         end
       end
@@ -784,8 +780,8 @@ describe ProjectPolicy do
       context 'when the project has been published' do
         before { mark_as_published }
 
-        it 'denies moving to root' do
-          move_to(nil)
+        it 'denies removing the project from its folder' do
+          project.folder_id = nil
           is_expected.not_to permit(:update)
         end
       end
@@ -796,7 +792,7 @@ describe ProjectPolicy do
       let(:user) { create(:space_moderator, spaces: [other_space]) }
 
       it 'denies any folder change (user is not a moderator of the project)' do
-        move_to(target_folder)
+        project.folder_id = target_folder.id
         is_expected.not_to permit(:update)
       end
     end

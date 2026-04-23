@@ -132,8 +132,10 @@ class ProjectPolicy < ApplicationPolicy
     return false unless can_moderate_persisted_project?
 
     if record.folder.nil?
-      # Moving to root — no target folder to moderate; permit only when the
-      # project has never been published.
+      # Removing the project from its folder — no target folder to moderate;
+      # permit only when the project has never been published. (Note: space_id
+      # is preserved by Project#folder_id=, so "no folder" doesn't imply the
+      # project is leaving its space.)
       !record.ever_published?
     else
       # Moving to a specific folder — must be able to moderate it.
