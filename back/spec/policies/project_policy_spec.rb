@@ -668,7 +668,7 @@ describe ProjectPolicy do
         :project,
         admin_publication_attributes: {
           parent_id: source_folder.admin_publication.id,
-          publication_status: 'draft' # otherwise the default 'published' status auto-sets first_published_at
+          publication_status: 'draft'
         }
       )
     end
@@ -686,12 +686,6 @@ describe ProjectPolicy do
       end
 
       it 'permits removing the project from its folder' do
-        project.folder_id = nil
-        is_expected.to permit(:update)
-      end
-
-      it 'permits removing a published project from its folder' do
-        mark_as_published
         project.folder_id = nil
         is_expected.to permit(:update)
       end
@@ -717,20 +711,9 @@ describe ProjectPolicy do
         is_expected.not_to permit(:update)
       end
 
-      context 'when the project has never been published' do
-        it 'permits removing the project from its folder' do
-          project.folder_id = nil
-          is_expected.to permit(:update)
-        end
-      end
-
-      context 'when the project has been published' do
-        before { mark_as_published }
-
-        it 'denies removing the project from its folder' do
-          project.folder_id = nil
-          is_expected.not_to permit(:update)
-        end
+      it 'denies removing the project from its folder' do
+        project.folder_id = nil
+        is_expected.not_to permit(:update)
       end
     end
 
@@ -742,7 +725,7 @@ describe ProjectPolicy do
         is_expected.to permit(:update)
       end
 
-      it 'permits moving to the target folder when the project has been published' do
+      it 'permits moving to the target folder even when the project has been published' do
         mark_as_published
         project.folder_id = target_folder.id
         is_expected.to permit(:update)
@@ -770,20 +753,9 @@ describe ProjectPolicy do
         is_expected.to permit(:update)
       end
 
-      context 'when the project has never been published' do
-        it 'permits removing the project from its folder' do
-          project.folder_id = nil
-          is_expected.to permit(:update)
-        end
-      end
-
-      context 'when the project has been published' do
-        before { mark_as_published }
-
-        it 'denies removing the project from its folder' do
-          project.folder_id = nil
-          is_expected.not_to permit(:update)
-        end
+      it 'denies removing the project from its folder' do
+        project.folder_id = nil
+        is_expected.not_to permit(:update)
       end
     end
 
@@ -794,6 +766,37 @@ describe ProjectPolicy do
       it 'denies any folder change (user is not a moderator of the project)' do
         project.folder_id = target_folder.id
         is_expected.not_to permit(:update)
+      end
+    end
+
+    context 'when moving into a folder in a different space (space change is a side-effect of Project#folder_id=)' do
+      let!(:project_space) { create(:space) }
+      let!(:other_space) { create(:space) }
+      let!(:target_folder) { create(:project_folder, space: other_space) }
+      let!(:project) do
+        create(
+          :project,
+          space: project_space,
+          admin_publication_attributes: { publication_status: 'draft' }
+        )
+      end
+
+      context 'for a user moderating both the project space and the target space' do
+        let(:user) { create(:space_moderator, spaces: [project_space, other_space]) }
+
+        it 'permits the folder move' do
+          project.folder_id = target_folder.id
+          is_expected.to permit(:update)
+        end
+      end
+
+      context 'for a folder moderator of the target folder (not moderating the target space)' do
+        let(:user) { create(:project_folder_moderator, project_folders: [target_folder]) }
+
+        it 'permits the folder move — FM of target folder should be able to move the project in regardless of the target space' do
+          project.folder_id = target_folder.id
+          is_expected.to permit(:update)
+        end
       end
     end
   end
@@ -830,12 +833,6 @@ describe ProjectPolicy do
         project.space_id = nil
         is_expected.to permit(:update)
       end
-
-      it 'permits removing a published project from its space' do
-        mark_as_published
-        project.space_id = nil
-        is_expected.to permit(:update)
-      end
     end
 
     context 'for a space moderator of the project space only' do
@@ -846,20 +843,9 @@ describe ProjectPolicy do
         is_expected.not_to permit(:update)
       end
 
-      context 'when the project has never been published' do
-        it 'permits removing the project from its space' do
-          project.space_id = nil
-          is_expected.to permit(:update)
-        end
-      end
-
-      context 'when the project has been published' do
-        before { mark_as_published }
-
-        it 'denies removing the project from its space' do
-          project.space_id = nil
-          is_expected.not_to permit(:update)
-        end
+      it 'denies removing the project from its space' do
+        project.space_id = nil
+        is_expected.not_to permit(:update)
       end
     end
 
@@ -884,22 +870,6 @@ describe ProjectPolicy do
       it 'denies any space change (user is not a moderator of the project)' do
         project.space_id = nil
         is_expected.not_to permit(:update)
-      end
-    end
-
-    context 'when moving into a folder in a different space (space change is a side-effect)' do
-      let!(:target_folder) { create(:project_folder, space: other_space) }
-      let(:user) do
-        create(:space_moderator, spaces: [project_space]).tap do |u|
-          u.add_role('project_folder_moderator', project_folder_id: target_folder.id)
-        end
-      end
-
-      it 'permits the folder move even though the resulting space is not moderated' do
-        # Project#folder_id= auto-assigns project.space_id = target_folder.space_id,
-        # so both folder_changed? and space_changed? become true.
-        project.folder_id = target_folder.id
-        is_expected.to permit(:update)
       end
     end
   end
