@@ -136,9 +136,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless active?
-
-    admin? || can_moderate_space? || (active_moderator? && record.never_published?)
+    active_admin? || can_moderate_space? || (active_moderator? && record.never_published?)
   end
 
   def copy?
@@ -235,8 +233,8 @@ class ProjectPolicy < ApplicationPolicy
 
   def space_moderation_required?
     # A space change that mirrors the target folder's space is a side-effect of
-    # Project#folder_id= and rides on the folder-move authorization; no
-    # separate space-moderation check is needed.
+    # Project#folder_id= and rides on the folder-move authorization.
+    # No separate space-moderation check is needed in that case.
     record.space_changed? && !(record.folder_changed? && record.folder&.space_id == record.space_id)
   end
 
