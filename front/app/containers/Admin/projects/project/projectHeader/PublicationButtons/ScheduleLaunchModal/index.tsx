@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
@@ -65,6 +65,12 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     ? new Date(project.attributes.scheduled_at)
     : addDays(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 1);
 
+  const pendingReviewWithoutSchedule =
+    isProjectReviewEnabled &&
+    reviewState === 'pending' &&
+    canReview &&
+    !project.attributes.scheduled_at;
+
   const [mode, setMode] = useState<Mode>(
     isProjectSchedulingEnabled ? 'schedule' : 'now'
   );
@@ -75,6 +81,12 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   );
   const primaryLoading = isUpdatingProject || isApproving || isRequesting;
   const cancelLoading = isCancelling;
+
+  useEffect(() => {
+    if (pendingReviewWithoutSchedule) {
+      setMode('now');
+    }
+  }, [pendingReviewWithoutSchedule]);
 
   const isDirty =
     selectedDate.getTime() !== initialDate.getTime() ||
@@ -132,6 +144,11 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     });
   };
 
+  const handleApprove = () => {
+    trackEventByName(tracks.projectApproved);
+    approveProjectReview(project.id, { onSuccess: onClose });
+  };
+
   const handleRequestApproval = () => {
     trackEventByName(tracks.reviewRequested);
     if (mode === 'schedule') {
@@ -179,6 +196,13 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     // Admin/folder manager on a pending review — one click approves and
     // saves the schedule or publishes.
     if (reviewState === 'pending' && canReview) {
+      if (pendingReviewWithoutSchedule && mode === 'now') {
+        return {
+          label: messages.approve,
+          icon: 'unlock',
+          onClick: handleApprove,
+        };
+      }
       return mode === 'schedule'
         ? {
             label: messages.approveAndSchedule,
@@ -192,8 +216,7 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           };
     }
 
-    // PM waiting on an existing request — disabled indicator, unless the
-    // schedule has been edited, in which case allow saving the changes.
+    // PM waiting on an existing request — disabled indicator.
     if (reviewState === 'pending') {
       if (isDirty && mode === 'schedule') {
         return {

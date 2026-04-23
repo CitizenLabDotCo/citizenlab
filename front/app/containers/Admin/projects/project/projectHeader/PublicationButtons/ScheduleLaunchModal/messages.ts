@@ -96,9 +96,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndSchedule',
     defaultMessage: 'Approve & schedule',
   },
-  approveAndPublish: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndPublish',
-    defaultMessage: 'Approve & publish',
+  approve: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approve',
+    defaultMessage: 'Approve',
   },
   schedulingNotIncludedTooltip: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip',
