@@ -21,22 +21,16 @@ const Edit = () => {
     defaultInputTopicId: string;
   };
   const { data: topic } = useDefaultInputTopic(defaultInputTopicId);
-  const { mutate: updateDefaultInputTopic } = useUpdateDefaultInputTopic();
+  const { mutateAsync: updateDefaultInputTopic } = useUpdateDefaultInputTopic();
 
-  const handleSubmit = (values: Omit<IDefaultInputTopicUpdate, 'id'>) => {
+  const handleSubmit = async (values: Omit<IDefaultInputTopicUpdate, 'id'>) => {
     if (!topic) return;
 
-    updateDefaultInputTopic(
-      {
-        id: topic.data.id,
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/topics/input');
-        },
-      }
-    );
+    await updateDefaultInputTopic({
+      id: topic.data.id,
+      ...values,
+    });
+    clHistory.push('/admin/settings/topics/input');
   };
 
   const goBack = () => {

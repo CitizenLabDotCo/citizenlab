@@ -218,10 +218,6 @@ namespace :cl2_back do
             }
           ]
         },
-        project_folders: {
-          enabled: true,
-          allowed: true
-        },
         project_preview_link: {
           enabled: true,
           allowed: true
@@ -323,6 +319,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_scheduling: {
+          enabled: false,
+          allowed: false
+        },
         platform_templates: {
           enabled: false,
           allowed: false
@@ -356,10 +356,6 @@ namespace :cl2_back do
           allowed: true
         },
         project_planning_calendar: {
-          enabled: true,
-          allowed: true
-        },
-        phase_insights: {
           enabled: true,
           allowed: true
         },

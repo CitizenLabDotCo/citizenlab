@@ -4,6 +4,8 @@ import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import ResolutionControl, {
   IResolution,
@@ -14,7 +16,6 @@ import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
 
 import Charts from './Charts';
 import messages from './messages';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const TrafficDatesRange = ({
   defaultStartDate,

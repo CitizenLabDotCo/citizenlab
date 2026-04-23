@@ -23,27 +23,21 @@ const PageTitle = styled.h1`
 `;
 
 const RegistrationCustomFieldNew = () => {
-  const { mutate: addCustomFieldForUsers } = useAddUserCustomField();
+  const { mutateAsync: addCustomFieldForUsers } = useAddUserCustomField();
   const hasOptions = (inputType: IUserCustomFieldInputType) => {
     return inputType === 'select' || inputType === 'multiselect';
   };
-  const handleSubmit = (values: FormValues) => {
-    addCustomFieldForUsers(
-      {
-        ...values,
-      },
-      {
-        onSuccess: (result) => {
-          if (hasOptions(values.input_type)) {
-            clHistory.push(
-              `/admin/settings/registration/custom-fields/${result.data.id}/options`
-            );
-          } else {
-            clHistory.push('/admin/settings/registration');
-          }
-        },
-      }
-    );
+  const handleSubmit = async (values: FormValues) => {
+    const result = await addCustomFieldForUsers({
+      ...values,
+    });
+    if (hasOptions(values.input_type)) {
+      clHistory.push(
+        `/admin/settings/registration/custom-fields/${result.data.id}/options`
+      );
+    } else {
+      clHistory.push('/admin/settings/registration');
+    }
   };
 
   const goBack = () => {
