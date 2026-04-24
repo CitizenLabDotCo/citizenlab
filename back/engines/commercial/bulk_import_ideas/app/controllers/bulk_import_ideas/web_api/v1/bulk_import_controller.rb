@@ -152,16 +152,16 @@ module BulkImportIdeas
     end
 
     def parser_locale
-      @parser_locale ||= params[:import] ? bulk_create_params[:locale] : current_user.locale
+      @parser_locale ||= bulk_create_params[:locale] || current_user.locale
     end
 
     def parser_personal_data_enabled
-      @parser_personal_data_enabled ||= params[:import] ? bulk_create_params[:personal_data] || false : false
+      @parser_personal_data_enabled ||= bulk_create_params[:personal_data] || false
     end
 
     def file_parser_service
-      pages_per_form = params[:import] ? bulk_create_params[:pages_per_form]&.to_i : nil
-      pages_per_form = nil if pages_per_form&.zero?
+      pages_per_form = Integer(bulk_create_params[:pages_per_form]) if bulk_create_params[:pages_per_form]
+      pages_per_form = nil unless pages_per_form&.positive?
       phase_id = params[:id]
 
       service = find_class(:parser_class)
