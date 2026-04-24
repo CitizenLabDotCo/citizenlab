@@ -71,9 +71,9 @@ export default defineMessages({
       'Auto insights are not available for projects with less than 30 participants.',
   },
   autoInsightsTooManyFields: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields',
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2',
     defaultMessage:
-      'Auto-insights are not available because this analysis includes more than 50 questions. With that many questions, automated correlations become unreliable and are not shown.',
+      'Auto-insights are not available because this analysis includes more than 50 questions. With that many questions, automated correlations become unreliable, so we don’t show them.',
   },
   true: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.true',
