@@ -2,8 +2,7 @@
 
 class UserSearchService
   def search(query, idea_id: nil, moderators_only: false, limit: 5, exclude_user: nil)
-    sanitized_query = sanitize_query(query)
-    users = User.active.by_username(sanitized_query)
+    users = User.active.by_username(query)
     users = users.admin_or_moderator if moderators_only
 
     results = []
@@ -24,11 +23,5 @@ class UserSearchService
     end
 
     results.excluding(exclude_user)
-  end
-
-  private
-
-  def sanitize_query(query)
-    query.gsub(/[^\p{L}'\s-]/, ' ')
   end
 end

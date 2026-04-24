@@ -52,6 +52,13 @@ describe UserSearchService do
       expect(results).not_to include(unregistered)
     end
 
+    it 'handles tsquery special characters without raising' do
+      tintin = create(:user, first_name: 'Tintin')
+
+      expect { service.search('tin & |!():*') }.not_to raise_error
+      expect(service.search('tin & |!():*')).to contain_exactly(tintin)
+    end
+
     it 'excludes blocked users' do
       create(:user, first_name: 'Tintin', block_start_at: 1.week.ago, block_end_at: 1.week.from_now)
 
