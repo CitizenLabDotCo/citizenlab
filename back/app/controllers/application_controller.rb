@@ -5,15 +5,6 @@ class ApplicationController < ActionController::API
   include Pundit::Authorization
   include ActionController::Cookies
 
-  class FeatureRequiredError < StandardError
-    attr_reader :feature
-
-    def initialize(feature)
-      super()
-      @feature = feature
-    end
-  end
-
   before_action :authenticate_user
   before_action :set_policy_context
   before_action :set_current_location_headers
@@ -31,8 +22,6 @@ class ApplicationController < ActionController::API
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  rescue_from FeatureRequiredError, with: :feature_required_error
 
   # +pundit_user+ is overridden to be able to embed additional context in the +user+
   # object passed to policies. It is meant to be used with policies that inherit from
@@ -95,11 +84,6 @@ class ApplicationController < ActionController::API
       reason = exception.try(:reason) || 'Unauthorized!'
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
     end
-  end
-
-  def feature_required_error(exception)
-    skip_authorization
-    render json: { errors: { base: [{ error: "#{exception.feature}_disabled" }] } }, status: :unauthorized
   end
 
   # Used by semantic logger to include in every log line
@@ -172,7 +156,10 @@ class ApplicationController < ActionController::API
   end
 
   def require_feature!(feature)
-    raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
+    if !AppConfiguration.instance.feature_activated?(feature)
+      skip_authorization
+      raise ApiError.new(:"#{feature}_disabled", status: 401)
+    end
   end
 
   private
