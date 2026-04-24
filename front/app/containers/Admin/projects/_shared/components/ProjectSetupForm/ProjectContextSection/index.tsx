@@ -6,6 +6,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import useSpaces from 'api/spaces/useSpaces';
 import { HighestRole } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
 import { SubSectionTitle } from 'components/admin/Section';
@@ -36,16 +38,20 @@ const ProjectContextSection = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: spaces } = useSpaces();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   if (!authUser || !spaces) return null;
 
   const { highest_role } = authUser.data.attributes;
+
+  const canSeeSpaces =
+    spacesEnabled && ROLES_THAT_CAN_SEE_SPACES.includes(highest_role);
 
   return (
     <Box mb="40px">
       <SubSectionTitle>
         <FormattedMessage {...messages.projectContext} />
       </SubSectionTitle>
-      {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && (
+      {canSeeSpaces && (
         <>
           <Radio
             name="space"
