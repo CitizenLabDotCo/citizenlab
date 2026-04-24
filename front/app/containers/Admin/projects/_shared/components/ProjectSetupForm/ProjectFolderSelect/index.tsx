@@ -23,7 +23,7 @@ const StyledSectionField = styled(SectionField)`
 
 interface Props {
   folder_id?: string | null;
-  onChange: (folder_id: string | null) => void;
+  onChange: (folder_id: string) => void;
 }
 
 const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {

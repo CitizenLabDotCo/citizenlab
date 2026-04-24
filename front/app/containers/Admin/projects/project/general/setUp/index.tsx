@@ -492,7 +492,13 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
-            onChange={(diff) => handleProjectAttributeDiffOnChange(diff)}
+            onSetContext={setProjectContext}
+            onChangeSpace={(space_id) => {
+              handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+            }}
+            onChangeFolder={(folder_id) => {
+              handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+            }}
           />
 
           <SectionField className="intercom-product-tour-project-header-image-field">
