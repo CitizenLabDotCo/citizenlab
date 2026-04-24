@@ -1548,7 +1548,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Last ned PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-post:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Det oppstod feil under importen, og noen inndata er ikke importert. Korriger feilene, og importer eventuelle manglende inndata på nytt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige skjemadata. Sjekk om det er feil i skjemaet ovenfor.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importer Excel-fil (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",

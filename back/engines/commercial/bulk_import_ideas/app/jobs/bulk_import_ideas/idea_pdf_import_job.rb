@@ -2,26 +2,80 @@
 
 module BulkImportIdeas
   class IdeaPdfImportJob < ApplicationJob
-    self.priority = 60
-    perform_retries false
+    include Jobs::TrackableJob
 
-    def run(idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
+    self.priority = 60
+
+    def run(idea_import_files, import_user, locale, phase, personal_data_enabled, _first_idea_index)
       file_parser = Parsers::IdeaPdfFileParser.new(import_user, locale, phase.id, personal_data_enabled)
       import_service = Importers::IdeaImporter.new(import_user, locale)
 
-      idea_rows = []
+      all_ideas = []
       idea_import_files.each do |file|
-        idea_rows += file_parser.parse_rows file
+        next if IdeaImport.exists?(file_id: file.id)
+
+        idea_rows = file_parser.parse_rows(file)
+        all_ideas += import_service.import(idea_rows)
+        track_progress(1)
       end
 
-      ideas = import_service.import(idea_rows)
-      users = import_service.imported_users
+      SideFxBulkImportService.new.after_success(import_user, phase, 'idea', 'pdf', all_ideas, import_service.imported_users) if all_ideas.any?
+      complete_if_done!
+    end
 
-      SideFxBulkImportService.new.after_success(import_user, phase, 'idea', 'pdf', ideas, users)
-    rescue StandardError => e
-      e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
-      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', e.to_s)
-      raise e
+    private
+
+    RETRYABLE_ERRORS = [
+      RubyLLM::RateLimitError,
+      RubyLLM::OverloadedError,
+      RubyLLM::ServerError,
+      RubyLLM::ServiceUnavailableError
+    ].freeze
+
+    def handle_error(error)
+      case error
+      when *RETRYABLE_ERRORS then super
+      else expire
+      end
+    end
+
+    def expire
+      finalize_failure(idea_import_files, import_user, phase, last_error)
+      super
+    end
+
+    def last_error
+      que_target.que_error
+    end
+
+    def finalize_failure(idea_files, user, phase, error)
+      SideFxBulkImportService.new.after_failure(user, phase, 'idea', 'pdf', error.to_s)
+
+      remaining = count_missing_imports(idea_files)
+      track_progress(remaining, remaining) if remaining > 0
+      complete_if_done!
+    end
+
+    def count_missing_imports(idea_files)
+      file_ids = idea_files.map(&:id)
+      file_ids.size - IdeaImport.where(file_id: file_ids).count
+    end
+
+    def idea_import_files
+      arguments[0]
+    end
+
+    def import_user
+      arguments[1]
+    end
+
+    def phase
+      arguments[3]
+    end
+
+    # Required by Jobs::TrackableJob
+    def job_tracking_context
+      phase
     end
   end
 end

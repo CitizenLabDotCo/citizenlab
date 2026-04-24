@@ -49,19 +49,10 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     )
   end
 
-  describe 'parse_file_async' do
-    it 'creates a job to process a file with less that 50 ideas' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      expect do
-        service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      end.to have_enqueued_job(BulkImportIdeas::IdeaXlsxImportJob)
-    end
-  end
-
   describe 'create_files' do
     it 'splits the file into separate files (1 original & 1 copy) when uploading' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      service.send(:create_files, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      service.create_files("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
       expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
       expect(BulkImportIdeas::IdeaImportFile.last.import_type).to eq 'xlsx'
