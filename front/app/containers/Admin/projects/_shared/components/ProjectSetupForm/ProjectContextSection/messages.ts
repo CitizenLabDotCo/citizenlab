@@ -9,24 +9,37 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space',
     defaultMessage: 'Space',
   },
-  spaceDescription: {
+  spaceDescriptionChangeLater: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceDescription',
-    defaultMessage: 'The project will be created within a space.',
+    defaultMessage:
+      'The project will be created within a space. You can change this later.',
   },
   folder: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder',
     defaultMessage: 'Folder',
   },
-  folderDescription: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderDescription',
-    defaultMessage: 'The project will be created within a folder.',
+  folderDescriptionChangeLater: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderDescriptionChangeLater',
+    defaultMessage:
+      'The project will be created within a folder. You can change this later.',
+  },
+  folderDescriptioChangeLaterExceptRoot: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderDescriptioChangeLaterExceptRoot',
+    defaultMessage:
+      'The project will be created within a folder. You can change the folder later, but you cannot move the project to root later.',
   },
   root: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root',
     defaultMessage: 'Root',
   },
-  rootDescription: {
+  rootDescriptionChangeLater: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescription',
-    defaultMessage: 'Project will not be in any folder or space.',
+    defaultMessage:
+      'Project will not be in any folder or space. You can change this later.',
+  },
+  rootDescriptionPMsAndFMs: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionPMsAndFMs',
+    defaultMessage:
+      'Project will not be in any folder or space. If you choose this, you will need approval to publish the project.',
   },
 });

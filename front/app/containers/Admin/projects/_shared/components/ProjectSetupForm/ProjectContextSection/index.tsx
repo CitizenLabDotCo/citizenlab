@@ -46,6 +46,25 @@ const ProjectContextSection = ({
   const canSeeSpaces =
     spacesEnabled && ROLES_THAT_CAN_SEE_SPACES.includes(highest_role);
 
+  const getFolderDescriptionMessage = () => {
+    if (highest_role === 'project_folder_moderator') {
+      return messages.folderDescriptioChangeLaterExceptRoot;
+    }
+
+    return messages.folderDescriptionChangeLater;
+  };
+
+  const getRootDescriptionMessage = () => {
+    if (
+      highest_role === 'space_moderator' ||
+      highest_role === 'project_folder_moderator'
+    ) {
+      return messages.rootDescriptionPMsAndFMs;
+    }
+
+    return messages.rootDescriptionChangeLater;
+  };
+
   return (
     <Box mb="40px">
       <SubSectionTitle>
@@ -61,7 +80,7 @@ const ProjectContextSection = ({
               <LabelHeaderDescription
                 header={<FormattedMessage {...messages.space} />}
                 description={
-                  <FormattedMessage {...messages.spaceDescription} />
+                  <FormattedMessage {...messages.spaceDescriptionChangeLater} />
                 }
               />
             }
@@ -88,7 +107,9 @@ const ProjectContextSection = ({
         label={
           <LabelHeaderDescription
             header={<FormattedMessage {...messages.folder} />}
-            description={<FormattedMessage {...messages.folderDescription} />}
+            description={
+              <FormattedMessage {...getFolderDescriptionMessage()} />
+            }
           />
         }
         onChange={() => onSetContext('folder')}
@@ -113,7 +134,7 @@ const ProjectContextSection = ({
         label={
           <LabelHeaderDescription
             header={<FormattedMessage {...messages.root} />}
-            description={<FormattedMessage {...messages.rootDescription} />}
+            description={<FormattedMessage {...getRootDescriptionMessage()} />}
           />
         }
         onChange={() => onSetContext('root')}
