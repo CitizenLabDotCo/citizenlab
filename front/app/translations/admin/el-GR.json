@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Εμφάνιση μόνο καταχωρίσεων με αυτήν την τιμή",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Απόκρυψη αποκρίσεων χωρίς απάντηση",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Αυτόματες αναλύσεις",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Οι αυτόματες αναλύσεις δεν είναι διαθέσιμες επειδή αυτή η ανάλυση περιλαμβάνει περισσότερες από 50 ερωτήσεις. Με τόσες ερωτήσεις, οι αυτόματες συσχετίσεις γίνονται αναξιόπιστες, επομένως δεν τις εμφανίζουμε.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Τιμές στηλών",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Υπάρχουν {count} περιπτώσεις αυτού του συνδυασμού.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Καταψηφίσεις",

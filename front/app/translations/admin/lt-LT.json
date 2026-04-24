@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Rodyti tik įvestis su šia reikšme",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslėpti atsakymus be atsakymo",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatinės įžvalgos",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Automatinės įžvalgos neprieinamos, nes ši analizė apima daugiau nei 50 klausimų. Esant tokiam dideliam klausimų kiekiui, automatinės koreliacijos tampa nepatikimos, todėl jų nerodome.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Stulpelio reikšmės",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Šio derinio atvejų yra {count} .",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nemėgsta",

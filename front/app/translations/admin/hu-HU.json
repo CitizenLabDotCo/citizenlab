@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Csak az ezzel az értékkel rendelkező bemenetek megjelenítése",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Válasz nélküli válaszok elrejtése",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatikus elemzések",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Az automatikus elemzések nem érhetők el, mert ez az elemzés több mint 50 kérdést tartalmaz. Ennyi kérdés mellett az automatikus összefüggések megbízhatatlanná válnak, ezért nem jelenítjük meg őket.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Oszlopértékek",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Ebből a kombinációból {count} előfordulás található.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nem tetszések",

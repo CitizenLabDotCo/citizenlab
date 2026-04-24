@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Dangos mewnbynnau gyda'r gwerth hwn yn unig",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cuddio ymatebion heb unrhyw ateb",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-mewnwelediadau",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Nid yw mewnwelediadau awtomatig ar gael oherwydd bod y dadansoddiad hwn yn cynnwys mwy na 50 o gwestiynau. Gyda chymaint o gwestiynau, mae cydberthynasau awtomataidd yn dod yn annibynadwy, felly nid ydym yn eu dangos.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Gwerthoedd colofn",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Mae {count} enghreifftiau o'r cyfuniad hwn.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Cas bethau",

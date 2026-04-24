@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Mostrar apenas entradas com este valor",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Ocultar respostas sem resposta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Insights automáticos",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Os insights automáticos não estão disponíveis porque esta análise inclui mais de 50 perguntas. Com tantas perguntas, as correlações automatizadas tornam-se pouco confiáveis, por isso não as mostramos.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Valores de coluna",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Há {count} instâncias dessa combinação.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Não gosta",

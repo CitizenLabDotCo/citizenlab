@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Taamaallaat nalillit tamatuminnga imallit takutikkit",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Akissutitaqanngitsut toqqortertik",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Paasissutissat nammineertumik suliarineqartut",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Auto-insights-it atorneqarsinnaanngillat misissueqqissaarnermi matumani apeqqutit 50-it sinnerlugit atorneqarmata. Apeqqutit taama amerlatigitillugit nammineq ingerlasumik ataqatigiissitsinerit tutsuiginanngitsunngortarmata takutinngilavut.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Sanileriiaani nalit",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Kattunnerit taamaattut {count}-iupput.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Isumaqatiginngisat",

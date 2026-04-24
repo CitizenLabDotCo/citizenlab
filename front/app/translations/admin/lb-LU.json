@@ -3424,6 +3424,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Nëmmen Inpute mat dësem Wäert uweisen",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Äntwerten ouni Äntwert verstoppen",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-Insights",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Auto-Insights sinn net disponibel, well dës Analys méi wéi 50 Froen enthält. Mat esou vill Froen ginn automatesch Korrelatiounen onzouverlässeg, dofir weise mir se net un.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Spaltewäerter",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Et gëtt {count} Instanze vun dëser Kombinatioun.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",
