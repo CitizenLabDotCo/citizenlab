@@ -3,12 +3,13 @@ import React from 'react';
 import { Box, Radio } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useSpaces from 'api/spaces/useSpaces';
 import { HighestRole } from 'api/users/types';
 
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
 import { SubSectionTitle } from 'components/admin/Section';
-import SpaceSelectSection from 'components/admin/SpaceSelectSection';
+import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 import Highlighter from 'components/Highlighter';
 
 import { LabelHeaderDescription } from '../../labels';
@@ -31,7 +32,8 @@ const FolderAndSpaceSelectSection = ({
   onChangeFolder,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  if (!authUser) return null;
+  const { data: spaces } = useSpaces();
+  if (!authUser || !spaces) return null;
 
   const { highest_role } = authUser.data.attributes;
 
@@ -54,13 +56,15 @@ const FolderAndSpaceSelectSection = ({
             mb="12px"
           />
           {projectContext === 'space' && (
-            <SpaceSelectSection
-              spaceId={space_id}
-              folderId={folder_id}
-              onChange={(space_id) => {
-                onChangeSpace(space_id);
-              }}
-            />
+            <Box mb="40px">
+              <SpaceSelect
+                spaceId={space_id}
+                spaces={spaces.data}
+                onChange={(space_id) => {
+                  onChangeSpace(space_id);
+                }}
+              />
+            </Box>
           )}
         </>
       )}
