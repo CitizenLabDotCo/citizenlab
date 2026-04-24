@@ -14,6 +14,11 @@
     "verified_at": "2026-04-24T09:57:09.001319Z",
     "verified_by": "KenVM"
   },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:58:18.836927Z",
+    "verified_by": "KenVM"
+  },
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": {
     "state": "verified",
     "verified_at": "2026-04-24T09:57:09.001319Z",
