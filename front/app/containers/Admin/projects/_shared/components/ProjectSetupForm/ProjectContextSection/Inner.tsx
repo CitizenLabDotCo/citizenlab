@@ -27,7 +27,11 @@ const Inner = (props: Props) => {
         />
         <RootRadio
           {...props}
-          descriptionMessage={messages.rootDescriptionChangeLater}
+          descriptionMessage={
+            spacesEnabled
+              ? messages.rootDescriptionChangeLater
+              : messages.rootDescriptionChangeLaterNoSpaces
+          }
         />
       </>
     );
@@ -43,14 +47,25 @@ const Inner = (props: Props) => {
         />
         <RootRadio
           {...props}
-          descriptionMessage={messages.rootDescriptionPMsAndFMs}
+          descriptionMessage={messages.rootDescriptionSMs}
         />
       </>
     );
   }
 
   if (highest_role === 'project_folder_moderator') {
-    return null;
+    return (
+      <>
+        <FolderRadio
+          {...props}
+          descriptionMessage={messages.folderDescriptionChangeLater}
+        />
+        <RootRadio
+          {...props}
+          descriptionMessage={messages.rootDescriptionFMs}
+        />
+      </>
+    );
   }
 
   return null;

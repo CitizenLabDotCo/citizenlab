@@ -37,9 +37,19 @@ export default defineMessages({
     defaultMessage:
       'Project will not be in any folder or space. You can change this later.',
   },
-  rootDescriptionPMsAndFMs: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionPMsAndFMs',
+  rootDescriptionChangeLaterNoSpaces: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionChangeLaterNoSpaces',
+    defaultMessage:
+      'Project will not be in any folder. You can change this later.',
+  },
+  rootDescriptionSMs: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionSMs',
     defaultMessage:
       'Project will not be in any folder or space. If you choose this, you will need approval to publish the project.',
+  },
+  rootDescriptionFMs: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionFMs',
+    defaultMessage:
+      'Project will not be in any folder. If you choose this, you will need approval to publish the project.',
   },
 });
