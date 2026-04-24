@@ -9,7 +9,7 @@ class WebApi::V1::MentionsController < ApplicationController
 
   def users
     limit = params[:limit]&.to_i || 5
-    query = params[:mention] # .gsub(/\W/, "\s")
+    query = params[:mention].gsub(/[^\p{L}'\s-]/, ' ')
     idea = Idea.find_by(id: params[:idea_id])
 
     @users = []

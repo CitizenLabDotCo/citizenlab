@@ -77,6 +77,15 @@ resource 'Mentions' do
       end
     end
 
+    example 'Find user by mention containing special characters', document: false do
+      user = create(:user, first_name: 'Thomas', last_name: 'Rødgaard')
+
+      do_request mention: 'thomas rød'
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].pluck(:id)).to include(user.id)
+    end
+
     example 'Does not return unregistered user by (partial) mention', document: false do
       users.first.update!(registration_completed_at: nil)
 
