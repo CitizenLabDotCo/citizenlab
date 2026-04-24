@@ -3,5 +3,20 @@
     "state": "verified",
     "verified_at": "2026-04-22T16:13:29.827729Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
   }
 }
