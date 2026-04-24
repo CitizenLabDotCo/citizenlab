@@ -14,12 +14,12 @@ export interface Props {
   placeholder?: string;
   id?: string;
   inputId?: string;
-  // Exclude users that can moderate the project from selectable users.
-  // We pass the projectId here.
+  // Exclude users that can moderate the project/folder/space
+  // from selectable users.
+  // We pass the projectId/folderId/spaceId here.
   isNotProjectModeratorOfProjectId?: string;
-  // Exclude users that can moderate the folder from selectable users.
-  // We pass the folderId here.
   isNotFolderModeratorOfFolderId?: string;
+  isNotSpaceModeratorOfFolderId?: string;
   onChange: (user?: IUserData) => void;
 }
 
@@ -28,8 +28,9 @@ const UserSelect = ({
   placeholder,
   id,
   inputId,
-  isNotFolderModeratorOfFolderId,
   isNotProjectModeratorOfProjectId,
+  isNotFolderModeratorOfFolderId,
+  isNotSpaceModeratorOfFolderId,
   onChange,
 }: Props) => {
   const [searchValue, setSearchValue] = useState('');
@@ -41,8 +42,9 @@ const UserSelect = ({
   } = useInfiniteUsers({
     pageSize: 5,
     sort: 'last_name',
-    is_not_folder_moderator: isNotFolderModeratorOfFolderId,
     is_not_project_moderator: isNotProjectModeratorOfProjectId,
+    is_not_folder_moderator: isNotFolderModeratorOfFolderId,
+    is_not_space_moderator: isNotSpaceModeratorOfFolderId,
     search: searchValue,
   });
 
@@ -77,7 +79,11 @@ const UserSelect = ({
         />
       )}
       onInputChange={setSearchValue}
-      onMenuScrollToBottom={() => fetchNextPage()}
+      onMenuScrollToBottom={() => {
+        if (hasNextPage) {
+          fetchNextPage();
+        }
+      }}
       onChange={handleChange}
       onMenuOpen={handleChange}
     />

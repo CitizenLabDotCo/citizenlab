@@ -193,9 +193,13 @@ export default defineMessages({
     defaultMessage: 'Header image alt text',
   },
   needInspiration: {
-    id: 'app.containers.AdminPage.ProjectEdit.needInspiration',
+    id: 'app.containers.AdminPage.ProjectEdit.needInspiration2',
+    defaultMessage: 'Need inspiration?',
+  },
+  needInspirationDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.needInspirationDescription',
     defaultMessage:
-      'Need inspiration? Explore similar projects from other cities in the {inspirationHubLink}',
+      'Explore similar projects from other cities in the {inspirationHubLink}',
   },
   inspirationHub: {
     id: 'app.containers.AdminPage.ProjectEdit.inspirationHub',

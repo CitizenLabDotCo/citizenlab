@@ -45,6 +45,7 @@
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
 #  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
+#  index_ideas_on_creation_phase_id                (creation_phase_id)
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
@@ -374,6 +375,16 @@ class Idea < ApplicationRecord
     self.manual_votes_amount = amount
     self.manual_votes_last_updated_by = user if user
     self.manual_votes_last_updated_at = Time.now
+  end
+
+  def expires_at
+    return if !published? || !creation_phase&.expire_days_limit
+
+    published_at + creation_phase.expire_days_limit.days
+  end
+
+  def voting_expired?
+    expires_at.present? && expires_at < Time.zone.now
   end
 
   def draft?

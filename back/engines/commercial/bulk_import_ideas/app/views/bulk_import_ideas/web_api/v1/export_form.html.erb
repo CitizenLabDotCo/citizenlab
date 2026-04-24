@@ -132,6 +132,12 @@
       div.page {
         margin-right: 30px;
       }
+      div.logic-instructions {
+        margin-top: 10px;
+        margin-left: 30px;
+        font-style: italic;
+        p { margin: 0; line-height: 1.6; }
+      }
     }
   </style>
 </head>
@@ -317,6 +323,11 @@
             <p><%= field[:visibility_disclaimer] %></p>
           </div>
         </div>
+      </div>
+    <% end %>
+    <% if field[:logic_instructions].present? %>
+      <div class="logic-instructions">
+        <p><%== field[:logic_instructions] %></p>
       </div>
     <% end %>
   <% if field[:field_group][:end] %></div><% end %>

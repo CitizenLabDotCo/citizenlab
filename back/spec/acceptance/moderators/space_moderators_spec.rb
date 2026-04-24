@@ -59,8 +59,8 @@ resource 'Moderators' do
 
       example 'Add a space moderator role to a user' do
         do_request space_id: space.id, moderator: { user_id: user.id }
-        expect(response_status).to eq 201
-        expect(response_data[:id]).to eq user.id
+        assert_status 200
+        expect(response_data[:type]).to eq 'user'
         expect(user.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
         expect(LogActivityJob).to have_been_enqueued.with(user, 'space_moderation_rights_received', admin, kind_of(Integer), payload: { space_id: space.id })
       end
@@ -133,8 +133,8 @@ resource 'Moderators' do
 
       shared_examples 'adding a moderator' do
         example_request 'Add a moderator role' do
-          expect(response_status).to eq 201
-          expect(response_data[:id]).to eq test_user.id
+          assert_status 200
+          expect(response_data[:type]).to eq 'user'
           expect(LogActivityJob).to have_been_enqueued.with(test_user, 'space_moderation_rights_received', space_moderator, kind_of(Integer), payload: { space_id: space.id })
         end
 
@@ -150,13 +150,13 @@ resource 'Moderators' do
             before { create(:space_moderator) } # to reach the limit
 
             example_request 'Increments additional seats', document: false do
-              assert_status 201
+              assert_status 200
               expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(1)
             end
           end
 
           example_request 'Does not increment additional seats if limit is not reached', document: false do
-            assert_status 201
+            assert_status 200
             expect(AppConfiguration.instance.settings['core']['additional_moderators_number']).to eq(0)
           end
         end
@@ -180,13 +180,24 @@ resource 'Moderators' do
     delete 'web_api/v1/spaces/:space_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:moderator) { create(:space_moderator, spaces: [space]) }
+      let(:moderator_of_same_space) { create(:space_moderator, spaces: [space]) }
+      let(:moderator_of_other_space) { create(:space_moderator, spaces: [other_space]) }
 
-      example '[error] Remove a space moderator role from a user' do
-        do_request space_id: space.id, user_id: moderator.id
+      example "Remove a space moderator role from a user in the moderator's space" do
+        n_roles_before = moderator_of_same_space.roles.size
+        do_request space_id: space.id, user_id: moderator_of_same_space.id
+
+        expect(response_status).to eq 200
+        expect(moderator_of_same_space.reload.roles.size).to eq(n_roles_before - 1)
+        expect(LogActivityJob).to have_been_enqueued.with(moderator_of_same_space, 'space_moderation_rights_removed', space_moderator, kind_of(Integer), payload: { space_id: space.id })
+      end
+
+      example '[Unauthorized] Remove a space moderator role from a user in a space not moderated by the user' do
+        n_roles_before = moderator_of_other_space.roles.size
+        do_request space_id: other_space.id, user_id: moderator_of_other_space.id
+
         expect(response_status).to eq 401
-
-        expect(moderator.reload.roles).to eq([{ 'type' => 'space_moderator', 'space_id' => space.id }])
+        expect(moderator_of_other_space.reload.roles.size).to eq(n_roles_before)
       end
     end
   end

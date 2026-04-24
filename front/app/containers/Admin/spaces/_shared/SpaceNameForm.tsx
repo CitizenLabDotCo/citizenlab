@@ -73,6 +73,7 @@ const SpaceNameForm = ({ spaceName = {}, onSubmit }: Props) => {
                 processing={isSubmitting}
                 buttonStyle="admin-dark"
                 mt="16px"
+                dataCy="space-name-save-button"
               >
                 {formatMessage(messages.save)}
               </Button>

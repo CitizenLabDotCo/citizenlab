@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data]
+  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -53,11 +53,20 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_followers ||= {}
 
+    publication_email_enabled_per_project = EmailCampaigns::Campaigns::ProjectPublished
+      .where(context_id: @projects.map(&:id))
+      .to_h { |campaign| [campaign.context_id, campaign.enabled] }
+
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      publication_email_enabled_per_project: publication_email_enabled_per_project,
+      # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
+      # AssureCampaignsService on tenant finalization, but isn't guaranteed in every environment
+      # (notably test fixtures), so we fall back to treating a missing global campaign as enabled.
+      global_publication_email_enabled: EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
     }
 
     render json: linked_json(
@@ -183,7 +192,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_project: moderators_per_project
+        moderators_per_project:
       ),
       include: %i[phases project_images groups moderators]
     )
@@ -283,8 +292,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     sidefx.before_update(@project, current_user)
 
+    publication_email_enabled = params.dig(:project, :publication_email_enabled)
+
     if save_project(@project)
-      sidefx.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: jsonapi_serializer_params,
@@ -375,6 +386,17 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params.merge(request: request),
       include: %i[current_phase]
     ).serializable_hash
+  end
+
+  def publication_recipient_count
+    # Temporarily pretend the project is published (in-memory only) to compute the list
+    # of recipients, even for draft projects.
+    @project.admin_publication.publication_status = 'published'
+    notification_recipients = Notifications::ProjectPublished.recipients(@project)
+    opt_outs = EmailCampaigns::Consent.where(campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+    recipients = notification_recipients.where.not(id: opt_outs.select(:user_id))
+
+    render json: raw_json({ count: recipients.count })
   end
 
   def participant_counts

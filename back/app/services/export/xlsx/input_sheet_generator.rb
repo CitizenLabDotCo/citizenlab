@@ -301,3 +301,5 @@ module Export
     end
   end
 end
+
+Export::Xlsx::InputSheetGenerator.prepend(BulkImportIdeas::Patches::InputSheetGenerator)

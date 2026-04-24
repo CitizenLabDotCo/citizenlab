@@ -494,6 +494,31 @@
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
   },
+  "form_builder.pdf_export.logic_go_to_section": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
+  },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
+  },
+  "form_builder.pdf_export.logic_if_answered_go_to": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
+  },
+  "form_builder.pdf_export.logic_section": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
+  },
   "form_builder.pdf_export.matrix_print_description": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
@@ -723,6 +748,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
+  },
+  "locales.de-AT": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:30:54.819614Z",
+    "verified_by": "Luuc"
   },
   "locales.de-DE": {
     "state": "verified",
@@ -1343,6 +1373,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
+  },
+  "xlsx_export.column_headers.imported": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:48:47.492281Z",
+    "verified_by": "Luuc"
   },
   "xlsx_export.column_headers.input_id": {
     "state": "verified",

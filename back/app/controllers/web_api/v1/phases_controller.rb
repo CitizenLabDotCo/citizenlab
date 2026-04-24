@@ -187,6 +187,7 @@ class WebApi::V1::PhasesController < ApplicationController
         available_views: [],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
+        draft_description_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }
@@ -196,7 +197,17 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    params.require(:phase).permit(permitted)
+    # When end_at is sent as a date (YYYY-MM-DD), shift it +1 day to convert from
+    # inclusive end date to exclusive end boundary.
+    params.require(:phase).permit(permitted).tap do |attrs|
+      attrs[:end_at] = Date.parse(attrs[:end_at]) + 1.day if date_format?(attrs[:end_at])
+    end
+  end
+
+  def date_format?(str)
+    return false unless str.is_a?(String)
+
+    str.strip.match?(/\A\d{4}-\d{2}-\d{2}\z/)
   end
 
   def detect_invalid_timeline_changes

@@ -7,8 +7,6 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :participation_method,
     :project_id,
     :project_title,
-    :start_at,
-    :end_at,
     :created_at,
     :updated_at,
     :ideas_count,
@@ -26,6 +24,14 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :voting_method,
     :voting_max_total,
     :voting_min_total
+
+  def start_at
+    object.start_date
+  end
+
+  def end_at
+    object.end_date
+  end
 
   def title
     multiloc_service.t(object.title_multiloc)

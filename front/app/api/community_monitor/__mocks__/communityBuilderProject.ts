@@ -93,6 +93,8 @@ export const project: IProjectData = {
     baskets_count: 0,
     votes_count: 0,
     live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {

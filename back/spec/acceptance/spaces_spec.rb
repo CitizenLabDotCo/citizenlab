@@ -115,6 +115,14 @@ resource 'Spaces' do
         expect(project_ids).to include(project_in_folder.id.to_s)
         expect(project_ids).to include(project_not_in_folder.id.to_s)
       end
+
+      example 'Retrieving list of spaces with search' do
+        space2 = create(:space, title_multiloc: { en: 'Blast off!' })
+        do_request(search: 'Blast')
+        expect(status).to eq(200)
+        expect(response_data.size).to eq(1)
+        expect(response_data.first[:id]).to eq(space2.id)
+      end
     end
 
     post 'web_api/v1/spaces' do

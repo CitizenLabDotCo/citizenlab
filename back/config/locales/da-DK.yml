@@ -1,4 +1,4 @@
-da:
+da-DK:
   confirmations_mailer:
     send_confirmation_code:
       24_hours: 24 timer.
@@ -168,6 +168,11 @@ da:
       last_name: Efternavn
       line_print_description: Tegn venligst en rute på kortet nedenfor.
       linear_scale_print_description: Skriv kun et tal mellem %{min_label} og %{max_label}
+      logic_go_to_section: Gå videre til <strong>%{section}</strong>.
+      logic_if_answered_end: Hvis du svarede <strong>%{option}</strong> på spørgsmål %{question}, behøver du <strong>ikke</strong> besvare flere spørgsmål.
+      logic_if_answered_go_to: Hvis du svarede <strong>%{option}</strong> på spørgsmål %{question}, skal du gå videre til <strong>%{section}</strong>.
+      logic_no_further_questions: Baseret på dine svar behøver du <strong>ikke</strong> besvare flere spørgsmål.
+      logic_section: Afsnit %{letter}
       matrix_print_description: Marker en cirkel for hver række med et kryds for at angive din præference.
       optional: valgfrit
       page: Side
@@ -377,6 +382,7 @@ da:
       email: E-mail
       first_name: Fornavn(e)
       image_url: Billed-URL
+      imported: Importeret
       input_id: ID
       input_url: URL
       last_name: Efternavn

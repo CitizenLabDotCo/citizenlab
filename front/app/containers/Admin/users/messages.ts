@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.admins',
     defaultMessage: 'Admins',
   },
+  spaceManagers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.spaceManagers',
+    defaultMessage: 'Space managers',
+  },
   folderManagers: {
     id: 'app.containers.Admin.Users.GroupsPanel.folderManagers',
     defaultMessage: 'Folder managers',

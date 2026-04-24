@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';
 import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
 
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+import ProjectRow from 'containers/Admin/projects/_shared/components/ProjectRow';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';

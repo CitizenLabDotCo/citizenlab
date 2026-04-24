@@ -25,11 +25,13 @@ const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
+  const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const { data: campaigns } = useCampaigns({
     withoutCampaignNames: [
       'manual',
       ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
+      ...(isSpacesEnabled ? [] : ['space_moderation_rights_received' as const]),
     ],
     pageSize: 250,
   });

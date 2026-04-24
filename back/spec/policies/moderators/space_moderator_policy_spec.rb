@@ -13,22 +13,23 @@ describe Moderators::SpaceModeratorPolicy do
     it { is_expected.not_to permit(:destroy) }
   end
 
-  context 'for an admin' do
-    let(:user) { create(:admin) }
-
+  shared_examples 'all actions permitted' do
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
   end
 
+  context 'for an admin' do
+    let(:user) { create(:admin) }
+
+    it_behaves_like 'all actions permitted'
+  end
+
   context 'for a space moderator of the space' do
     let(:user) { create(:user, roles: [{ type: 'space_moderator', space_id: space.id }]) }
 
-    it { is_expected.to permit(:index) }
-    it { is_expected.to permit(:show) }
-    it { is_expected.to permit(:create) }
-    it { is_expected.not_to permit(:destroy) }
+    it_behaves_like 'all actions permitted'
   end
 
   context 'for a space moderator of an unrelated space' do

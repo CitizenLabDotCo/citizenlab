@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 
-import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Icon,
+  Tooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { FolderNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
 import RemoveButton from './_shared/RemoveButton';
@@ -16,13 +22,15 @@ import Project from './Project';
 interface Props {
   node: FolderNode;
   lockedProjectTooltip?: MessageDescriptor;
-  removeButtonMessage: MessageDescriptor;
-  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
+  lockedFolderTooltip?: MessageDescriptor;
+  removeButtonMessage?: MessageDescriptor;
+  onRemove?: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const Folder = ({
   node,
   lockedProjectTooltip,
+  lockedFolderTooltip,
   removeButtonMessage,
   onRemove,
 }: Props) => {
@@ -31,6 +39,7 @@ const Folder = ({
   const [isRemoving, setIsRemoving] = useState(false);
 
   const handleRemoveFolder = async () => {
+    if (!onRemove) return;
     setIsRemoving(true);
     await onRemove(node.id, 'folder');
     setIsRemoving(false);
@@ -40,9 +49,40 @@ const Folder = ({
     <Box>
       <Row>
         <Box display="flex" alignItems="flex-start">
+          <Icon
+            name="folder-outline"
+            mr="12px"
+            width="20px"
+            height="20px"
+            transform="translateY(-1px)"
+            fill={lockedFolderTooltip ? colors.grey600 : colors.black}
+          />
+          <Link
+            to={`/admin/projects/folders/${node.id}`}
+            color={lockedFolderTooltip ? colors.grey600 : colors.black}
+          >
+            {localize(node.title_multiloc)}
+          </Link>
+          {lockedFolderTooltip && (
+            <Tooltip
+              content={
+                <Box>
+                  <FormattedMessage {...lockedFolderTooltip} />
+                </Box>
+              }
+            >
+              <Icon
+                name="lock"
+                ml="8px"
+                width="20px"
+                height="20px"
+                transform="translateY(-1px)"
+                fill={colors.grey600}
+              />
+            </Tooltip>
+          )}
           <IconButton
-            mr="8px"
-            ml="-7px"
+            ml="4px"
             iconName={expanded ? 'chevron-down' : 'chevron-right'}
             iconWidth="20px"
             iconHeight="20px"
@@ -51,15 +91,14 @@ const Folder = ({
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
-          <Link to={`/admin/projects/folders/${node.id}`} color={colors.black}>
-            {localize(node.title_multiloc)}
-          </Link>
         </Box>
-        <RemoveButton
-          processing={isRemoving}
-          message={removeButtonMessage}
-          onClick={handleRemoveFolder}
-        />
+        {!lockedFolderTooltip && removeButtonMessage && onRemove && (
+          <RemoveButton
+            processing={isRemoving}
+            message={removeButtonMessage}
+            onClick={handleRemoveFolder}
+          />
+        )}
       </Row>
       <Box pl="31px">
         {expanded && (

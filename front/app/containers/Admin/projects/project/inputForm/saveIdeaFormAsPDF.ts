@@ -10,18 +10,20 @@ interface Params {
   locale: SupportedLocale;
   phaseId: string;
   personal_data: boolean;
+  include_logic: boolean;
 }
 
 export async function saveIdeaFormAsPDF({
   phaseId,
   locale,
   personal_data,
+  include_logic,
 }: Params) {
   try {
     const blob = await requestBlob(
       `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`,
       'application/pdf',
-      { locale, personal_data, phaseId }
+      { locale, personal_data, include_logic, phaseId }
     );
 
     saveAs(blob, 'idea_form.pdf');

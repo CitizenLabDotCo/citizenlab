@@ -76,10 +76,12 @@ class Phase < ApplicationRecord
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment response suggestion topic post story].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit percent]
+  MIN_DURATION          = 1.day
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
   has_many_text_images from: :description_multiloc, as: :text_images
+  has_many_text_images from: :draft_description_multiloc, as: :draft_description_text_images
   accepts_nested_attributes_for :text_images
 
   belongs_to :project
@@ -96,20 +98,23 @@ class Phase < ApplicationRecord
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
+  before_validation :sanitize_draft_description_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
+  before_save :close_previous_open_phase # see also Phase#validate_previous_phase_can_be_closed
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :draft_description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
   validate :validate_end_at
-  validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
+  validate :validate_duration
+  validate :validate_previous_phase_can_be_closed # see also Phase#close_previous_open_phase
   validate :validate_no_other_overlapping_phases
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
@@ -195,10 +200,6 @@ class Phase < ApplicationRecord
                     allow_nil: true }
   validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
-  scope :starting_on, lambda { |date|
-    where(start_at: date)
-  }
-
   # any type of native_survey phase
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
@@ -230,13 +231,12 @@ class Phase < ApplicationRecord
   }
 
   scope :current, lambda {
-    where('start_at <= ? AND (end_at IS NULL OR end_at >= ?)', Time.zone.now, Time.zone.now)
+    now = Time.zone.now
+    where('start_at <= ? AND (end_at IS NULL OR end_at > ?)', now, now)
   }
 
-  def ends_before?(date)
-    return false if end_at.blank?
-
-    end_at.iso8601 < date.to_date.iso8601
+  def ends_before?(time)
+    end_at.present? && end_at <= time
   end
 
   def permission_scope
@@ -261,6 +261,17 @@ class Phase < ApplicationRecord
 
   def started?
     start_at <= Time.zone.now
+  end
+
+  def start_date
+    start_at&.to_date
+  end
+
+  def end_date
+    return unless end_at
+
+    date = end_at.to_date
+    end_at.seconds_since_midnight.zero? ? date - 1.day : date
   end
 
   # Used for validations (which are hard to delegate through the participation method)
@@ -349,13 +360,13 @@ class Phase < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
+    self.description_multiloc = sanitize_html_multiloc(description_multiloc)
+  end
+
+  def sanitize_draft_description_multiloc
+    return if draft_description_multiloc.blank?
+
+    self.draft_description_multiloc = sanitize_html_multiloc(draft_description_multiloc)
   end
 
   def validate_end_at
@@ -364,33 +375,41 @@ class Phase < ApplicationRecord
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
 
-  # If a previous phase has a blank end_at, update it and validate that the end date is 2 days after
-  def validate_previous_blank_end_at
-    previous_phase = TimelineService.new.previous_phase(self)
-    if previous_phase && previous_phase.end_at.blank?
-      if start_at < (previous_phase.start_at + 2.days)
-        errors.add(:start_at, message: 'must be 2 days after the start of the last phase')
-      else
-        previous_phase.update!(end_at: (start_at - 1.day))
-        @previous_phase_end_at_updated = true
-      end
-    end
-  end
+  def validate_duration
+    return unless start_at.present? && end_at.present? && (end_at - start_at) < MIN_DURATION
 
-  def validate_start_at_before_end_at
-    return unless start_at.present? && end_at.present? && start_at > end_at
-
-    errors.add(:start_at, :after_end_at, message: 'is after end_at')
+    errors.add(:base, :duration_too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
   end
 
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
+      # Skip open-ended phases that start before this phase as they have their own
+      # validation. See Phase#validate_previous_phase_can_be_closed
+      next if other_phase.end_at.nil? && other_phase.start_at < start_at
       next unless ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
-        message: 'has other phases which overlap in start and end date')
+        message: "overlaps with Phase##{other_phase.id}")
     end
+  end
+
+  def validate_previous_phase_can_be_closed
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.end_at = start_at
+    return if previous_phase.valid?
+
+    previous_phase.errors.each { |error| errors.add(:previous_phase, error.full_message) }
+  end
+
+  def close_previous_open_phase
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.update!(end_at: start_at)
+    @previous_phase_end_at_updated = true
   end
 
   def strip_title
@@ -462,6 +481,16 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def sanitize_html_multiloc(multiloc)
+    service = SanitizationService.new
+    multiloc = service.sanitize_multiloc(
+      multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    multiloc = service.remove_multiloc_empty_trailing_tags(multiloc)
+    service.linkify_multiloc(multiloc)
   end
 end
 

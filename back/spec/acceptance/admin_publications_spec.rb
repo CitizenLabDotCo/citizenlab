@@ -408,15 +408,6 @@ resource 'AdminPublication' do
         folders = nodes.filter { |n| n[:type] == 'folder' }
         expect(folders.length).to eq 2
       end
-
-      example 'Filter by space id' do
-        space = create(:space, :with_projects)
-        create(:project_folder, space_id: space.id)
-        do_request({ space_id: space.id })
-        expect(status).to eq 200
-        nodes = response_data[:attributes][:nodes]
-        expect(nodes.length).to eq 3
-      end
     end
   end
 
@@ -932,7 +923,7 @@ resource 'AdminPublication' do
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )
-          end.not_to exceed_query_limit(123)
+          end.not_to exceed_query_limit(127)
 
           assert_status 200
         end

@@ -312,4 +312,36 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(custom_field_values[:u_date]).to eq '2025-01-01'
     end
   end
+
+  describe 'rich_text_column_headers' do
+    it 'returns the localized title of the body_multiloc field' do
+      expect(service.send(:rich_text_column_headers)).to eq ['Description']
+    end
+
+    it 'returns an empty array when the form has no html or html_multiloc fields' do
+      survey_phase = create(:native_survey_phase)
+      survey_service = described_class.new(create(:admin), 'en', survey_phase.id, false)
+      expect(survey_service.send(:rich_text_column_headers)).to eq []
+    end
+  end
+
+  describe 'format_date' do
+    it 'formats date strings in dd-mm-yyyy format' do
+      date_string = '15-08-2023'
+      formatted_date = service.row_mapper.send(:format_date, date_string)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'formats date objects' do
+      date_object = Date.new(2023, 8, 15)
+      formatted_date = service.row_mapper.send(:format_date, date_object)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'returns nil for invalid date strings' do
+      invalid_date_string = 'A DATE'
+      formatted_date = service.row_mapper.send(:format_date, invalid_date_string)
+      expect(formatted_date).to be_nil
+    end
+  end
 end
