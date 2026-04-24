@@ -24,7 +24,7 @@ const SurveyFormBuilder = ({
   const copyFrom = searchParams.get('copy_from');
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
-  const [hasStarted, setHasStarted] = useState(false);
+  const [startedFromScratch, setStartedFromScratch] = useState(false);
   const [showCopyModal, setShowCopyModal] = useState(false);
 
   const { data: formCustomFields } = useFormCustomFields({
@@ -49,9 +49,9 @@ const SurveyFormBuilder = ({
   const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
 
   const emptyStateContent =
-    isNewForm && !hasStarted ? (
+    isNewForm && !startedFromScratch ? (
       <NewSurveyEmptyState
-        onStartFromScratch={() => setHasStarted(true)}
+        onStartFromScratch={() => setStartedFromScratch(true)}
         onDuplicateExisting={() => setShowCopyModal(true)}
       />
     ) : undefined;
