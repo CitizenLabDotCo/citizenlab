@@ -117,7 +117,7 @@
   "app.components.ConfirmationModal.didntGetAnEmail": "Non hai ricevuto un'e-mail?",
   "app.components.ConfirmationModal.sendNewCode": "Invia un nuovo codice.",
   "app.components.ConfirmationModal.verifyAndContinue": "Verifica e continua",
-  "app.components.ConfirmationModal.wrongEmail": "Un'email sbagliata?",
+  "app.components.ConfirmationModal.wrongEmail": "L'email è sbagliata?",
   "app.components.ConsentManager.Banner.accept": "Accetta",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rifiuto della politica e chiusura del banner",
   "app.components.ConsentManager.Banner.close": "Chiudere",
