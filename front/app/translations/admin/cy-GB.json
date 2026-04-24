@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Mwyaf diweddar",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Ddim yn swm dilys",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Dim ffolder",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "— Dim ffolder —",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Heb ganfod templedi",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Rhowch deitl prosiect",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Ddim yn rhif dilys",

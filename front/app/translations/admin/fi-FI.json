@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Viimeisin",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Ei kelvollinen summa",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Ei kansiota",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "— Ei kansiota —",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Malleja ei löytynyt",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Anna projektin nimi",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Ei kelvollinen numero",

@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Jaunākais",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Summa nav derīga",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Nav mapes",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "- Nav mapes -",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Nav atrastas veidnes",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Lūdzu, ievadiet projekta virsrakstu",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Numurs nav derīgs",
