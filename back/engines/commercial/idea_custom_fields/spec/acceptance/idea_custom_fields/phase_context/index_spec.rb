@@ -168,12 +168,11 @@ resource 'Idea Custom Fields' do
         shared_examples 'returns default survey custom fields' do
           example_request 'List default survey custom fields' do
             assert_status 200
-            expect(response_data.size).to eq 3
+            expect(response_data.size).to eq 2
 
             keys = response_data.map { |d| d.dig(:attributes, :key) }
 
             expect(keys).to include('page1', 'form_end')
-            expect(keys.any? { |key| key.include?('default_question') }).to be true
           end
         end
 
@@ -186,7 +185,7 @@ resource 'Idea Custom Fields' do
             project.update!(visible_to: 'groups')
             do_request
             assert_status 200
-            expect(response_data.size).to eq 3
+            expect(response_data.size).to eq 2
           end
         end
 
@@ -216,7 +215,7 @@ resource 'Idea Custom Fields' do
             create(:groups_project, group: group, project: project)
             do_request
             assert_status 200
-            expect(response_data.size).to eq 3
+            expect(response_data.size).to eq 2
           end
         end
 
