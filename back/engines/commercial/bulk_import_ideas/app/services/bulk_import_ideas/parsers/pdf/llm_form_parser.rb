@@ -18,6 +18,10 @@ module BulkImportIdeas::Parsers::Pdf
       }
     end
 
+    def parser_name
+      llm.name
+    end
+
     private
 
     def parse(file_uploader)
