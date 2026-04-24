@@ -2137,7 +2137,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Mehr anzeigen",
   "app.containers.ReactionControl.a11y_likesDislikes": "Gefällt mir insgesamt: {likesCount}, Gefällt mir nicht insgesamt: {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Du hast deine Abneigung gegen diesen Beitrag erfolgreich aufgehoben.",
-  "app.containers.ReactionControl.cancelLikeSuccess": "Sie haben Ihr Like für diese Eingabe erfolgreich gelöscht.",
+  "app.containers.ReactionControl.cancelLikeSuccess": "Du hast deinen Like für diesen Beitrag erfolgreich gelöscht.",
   "app.containers.ReactionControl.dislikeSuccess": "Sie haben diese Eingabe erfolgreich abgelehnt.",
   "app.containers.ReactionControl.likeSuccess": "Diese Eingabe hat Ihnen gut gefallen.",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Aufgrund eines Fehlers konnte Ihre Reaktion nicht gespeichert werden. Bitte versuchen Sie es in ein paar Minuten erneut.",
