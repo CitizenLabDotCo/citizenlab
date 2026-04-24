@@ -9,10 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
+
+import Warning from 'components/UI/Warning';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -42,6 +45,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const { formatMessage } = useIntl();
 
   const { analysisId } = useParams() as { analysisId: string };
+
+  const { data: analysis } = useAnalysis(analysisId);
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
@@ -97,6 +102,12 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   };
 
   if (analysisHeatmapCells.data.length === 0) {
+    if (analysis?.data.attributes.auto_insights_too_many_fields) {
+      return (
+        <Warning>{formatMessage(messages.autoInsightsTooManyFields)}</Warning>
+      );
+    }
+
     return (
       <Box display="flex" justifyContent="center">
         <Button
