@@ -15,10 +15,6 @@ export default defineMessages({
     defaultMessage:
       'You will be signed out automatically in {seconds} {seconds, plural, one {second} other {seconds}}. Would you like to stay signed in?',
   },
-  stayLoggedIn: {
-    id: 'app.containers.App.SessionExpiryModal.staySignedIn',
-    defaultMessage: 'Stay signed in',
-  },
   sessionExpiredTitle: {
     id: 'app.containers.App.SessionExpiryModal.sessionExpiredTitle1',
     defaultMessage: 'You have been signed out',
@@ -28,7 +24,7 @@ export default defineMessages({
     defaultMessage:
       'Your session has expired. Please sign in again to continue.',
   },
-  logInAgain: {
+  signInAgain: {
     id: 'app.containers.App.SessionExpiryModal.signInAgain',
     defaultMessage: 'Sign in again',
   },

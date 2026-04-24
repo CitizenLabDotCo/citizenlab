@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 
-import refreshToken from 'api/authentication/sign_in_out/refreshToken';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Modal from 'components/UI/Modal';
@@ -40,14 +38,10 @@ const SessionExpiringSoonModal = ({
     return () => clearInterval(id);
   }, [initialSecondsRemaining]);
 
-  const handleStaySignedIn = async () => {
-    try {
-      await refreshToken();
-      onResetState();
-    } catch {
-      onResetState();
-      triggerAuthenticationFlow(undefined, 'signin');
-    }
+  const handleSignInAgain = async () => {
+    await onClearSession();
+    onResetState();
+    triggerAuthenticationFlow(undefined, 'signin');
   };
 
   const handleSignOut = async () => {
@@ -80,8 +74,8 @@ const SessionExpiringSoonModal = ({
           <Button buttonStyle="text" onClick={handleSignOut}>
             {formatMessage(messages.signOut)}
           </Button>
-          <Button onClick={handleStaySignedIn}>
-            {formatMessage(messages.stayLoggedIn)}
+          <Button onClick={handleSignInAgain}>
+            {formatMessage(messages.signInAgain)}
           </Button>
         </Box>
       </Box>

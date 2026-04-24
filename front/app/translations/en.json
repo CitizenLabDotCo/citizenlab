@@ -1247,7 +1247,6 @@
   "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": "Your session is about to expire",
   "app.containers.App.SessionExpiryModal.signInAgain": "Sign in again",
   "app.containers.App.SessionExpiryModal.signOut": "Sign out",
-  "app.containers.App.SessionExpiryModal.staySignedIn": "Stay signed in",
   "app.containers.App.SessionExpiryModal.staySignedOut": "Stay signed out",
   "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": "Session expiring soon",
   "app.containers.App.SessionExpiryModal.tabTitleSignedOut": "Signed out",

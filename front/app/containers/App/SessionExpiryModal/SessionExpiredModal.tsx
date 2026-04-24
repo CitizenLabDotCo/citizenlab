@@ -54,7 +54,7 @@ const SessionExpiredModal = ({ onClearSession, onResetState }: Props) => {
             {formatMessage(messages.staySignedOut)}
           </Button>
           <Button onClick={handleSignInAgain}>
-            {formatMessage(messages.logInAgain)}
+            {formatMessage(messages.signInAgain)}
           </Button>
         </Box>
       </Box>
