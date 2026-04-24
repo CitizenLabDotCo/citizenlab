@@ -280,6 +280,7 @@ export interface IAppConfigurationSettings {
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
+  custom_smtp?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

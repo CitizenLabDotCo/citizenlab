@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 import useCampaignStats from 'api/campaign_stats/useCampaignStats';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -63,12 +65,18 @@ type IRelevantStats = 'sent' | 'delivered' | 'opened' | 'clicked';
 
 const CampaignStats = ({ campaignId, className }: Props) => {
   const { data: stats } = useCampaignStats(campaignId);
+  const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
   const relevantsStats = [
     'sent',
     'delivered',
     'opened',
     'clicked',
   ] as IRelevantStats[];
+  const smptDisabledStats: IRelevantStats[] = [
+    'delivered',
+    'opened',
+    'clicked',
+  ];
 
   if (!stats) return null;
 
@@ -91,42 +99,51 @@ const CampaignStats = ({ campaignId, className }: Props) => {
           <FormattedMessage {...messages.deliveryStatus_failed} />
         </GraphCardTitle>
       </GraphCard>
-      {relevantsStats.map((status) => (
-        <GraphCard key={status}>
-          <GraphCardPercentage>
-            {stats.data.attributes[status]}
-          </GraphCardPercentage>
-          <GraphCardCount>
-            <FormattedNumber
-              style="percent"
-              value={
-                stats.data.attributes[status] / stats.data.attributes.total
-              }
-            />
-          </GraphCardCount>
-          <GraphCardTitle>
-            <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-            {status === 'opened' && (
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.deliveryStatus_openedTooltip}
-                  />
+      {relevantsStats.map((status) => {
+        const isGreyedOut = isCustomSmtp && smptDisabledStats.includes(status);
+
+        return (
+          <GraphCard
+            key={status}
+            style={
+              isGreyedOut ? { opacity: 0.4, pointerEvents: 'none' } : undefined
+            }
+          >
+            <GraphCardPercentage>
+              {stats.data.attributes[status]}
+            </GraphCardPercentage>
+            <GraphCardCount>
+              <FormattedNumber
+                style="percent"
+                value={
+                  stats.data.attributes[status] / stats.data.attributes.total
                 }
               />
-            )}
-            {status === 'clicked' && (
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.deliveryStatus_clickedTooltip}
-                  />
-                }
-              />
-            )}
-          </GraphCardTitle>
-        </GraphCard>
-      ))}
+            </GraphCardCount>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
+              {status === 'opened' && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.deliveryStatus_openedTooltip}
+                    />
+                  }
+                />
+              )}
+              {status === 'clicked' && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.deliveryStatus_clickedTooltip}
+                    />
+                  }
+                />
+              )}
+            </GraphCardTitle>
+          </GraphCard>
+        );
+      })}
     </Container>
   );
 };
