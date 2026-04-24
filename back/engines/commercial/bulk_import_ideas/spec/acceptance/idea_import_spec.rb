@@ -64,9 +64,8 @@ resource 'BulkImportIdeasImportIdeas' do
             do_request
             assert_status 200
 
-            expect(response_data).to be_a Array
-            expect(response_data.first[:type]).to eq 'background_job'
-            expect(response_data.first[:attributes]).to include(:active, :failed, :job_id)
+            expect(response_data[:type]).to eq 'job'
+            expect(response_data[:attributes]).to include(:progress, :error_count, :total, :errors)
 
             expect(Idea.all.count).to eq 0 # No ideas created yet
             expect(User.all.count).to eq 1 # No new users created
@@ -91,9 +90,8 @@ resource 'BulkImportIdeasImportIdeas' do
             do_request
             assert_status 200
 
-            expect(response_data).to be_a Array
-            expect(response_data.first[:type]).to eq 'background_job'
-            expect(response_data.first[:attributes]).to include(:active, :failed, :job_id)
+            expect(response_data[:type]).to eq 'job'
+            expect(response_data[:attributes]).to include(:progress, :error_count, :total, :errors)
 
             expect(Idea.all.count).to eq 0 # No ideas created yet
             expect(User.all.count).to eq 1 # No new users created
