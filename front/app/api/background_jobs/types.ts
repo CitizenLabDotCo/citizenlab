@@ -1,12 +1,35 @@
-import { CLError } from 'typings';
+import { CLError, IRelationship } from 'typings';
 
-export interface IBackgroundJobData {
+export interface IJobData {
   id: string;
-  type: string;
+  type: 'job';
   attributes: {
-    job_id: string;
-    failed: boolean;
-    active: boolean;
-    last_error: CLError | null;
+    progress: number;
+    error_count: number;
+    total: number;
+    completed_at: string | null;
+    created_at: string;
+    updated_at: string;
+    job_type: string;
+    errors: CLError[];
   };
+  relationships: {
+    owner: {
+      data: IRelationship;
+    };
+    project: {
+      data: IRelationship;
+    };
+    context: {
+      data: IRelationship;
+    };
+  };
+}
+
+export interface IJob {
+  data: IJobData;
+}
+
+export interface IJobs {
+  data: IJobData[];
 }
