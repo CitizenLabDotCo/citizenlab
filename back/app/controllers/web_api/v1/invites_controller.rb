@@ -6,11 +6,6 @@ class WebApi::V1::InvitesController < ApplicationController
   # authenticate a user
   skip_before_action :authenticate_user
 
-  UNAUTHORIZED_ACCEPT_REASONS = {
-    token_not_found: 'token_not_found',
-    already_accepted: 'already_accepted'
-  }
-
   skip_after_action :verify_authorized, only: %i[accept resend]
 
   def index
@@ -73,44 +68,23 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def accept
     @invite = Invite.find_by(token: params[:token])
-    unless @invite
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized
-      return
-    end
-    if @invite.accepted_at
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:already_accepted] }] } }, status: :unauthorized
-      return
-    end
+    raise ApiError.new(:token_not_found, status: 401) if !@invite
+    raise ApiError.new(:already_accepted, status: 401) if @invite.accepted_at
     invitee = @invite.invitee
-    begin
-      ActiveRecord::Base.transaction do
-        invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
-        SideFxInviteService.new.before_accept @invite
-        unless invitee.save(context: :form_submission)
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
-        end
-        unless @invite.save
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
-        end
+    ActiveRecord::Base.transaction do
+      invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
+      SideFxInviteService.new.before_accept @invite
+      save_or_raise! invitee, context: :form_submission
+      save_or_raise! @invite
 
-        claim_tokens = params.dig(:invite, :claim_tokens)
-        SideFxInviteService.new.after_accept(@invite, claim_tokens:)
+      claim_tokens = params.dig(:invite, :claim_tokens)
+      SideFxInviteService.new.after_accept(@invite, claim_tokens:)
 
-        render json: WebApi::V1::InviteSerializer.new(
-          @invite.reload,
-          params: jsonapi_serializer_params,
-          include: [:invitee]
-        ).serializable_hash, status: :ok
-      end
-    rescue ClErrors::TransactionError => e
-      case e.error_key
-      when :unprocessable_invitee
-        render json: { errors: invitee.errors.details }, status: :unprocessable_entity
-      when :unprocessable_invite
-        render json: { errors: @invite.errors.details }, status: :unprocessable_entity
-      else
-        raise e
-      end
+      render json: WebApi::V1::InviteSerializer.new(
+        @invite.reload,
+        params: jsonapi_serializer_params,
+        include: [:invitee]
+      ).serializable_hash, status: :ok
     end
   end
 
