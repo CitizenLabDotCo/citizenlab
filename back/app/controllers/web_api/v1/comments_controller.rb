@@ -181,7 +181,7 @@ class WebApi::V1::CommentsController < ApplicationController
         render json: { errors: @comment.errors.details }, status: :unprocessable_entity
       end
     else
-      raise ClErrors::TransactionError.new(error_key: :invalid_reason)
+      raise ApiError, :invalid_reason
     end
   end
 

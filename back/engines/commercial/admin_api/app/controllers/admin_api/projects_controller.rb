@@ -25,7 +25,7 @@ module AdminApi
       job = CopyProjectJob.perform_later(template_yaml, user_id, folder_id)
     rescue StandardError => e
       ErrorReporter.report(e)
-      raise ClErrors::TransactionError.new(error_key: :bad_template)
+      raise ApiError, :bad_template
     else
       render json: { job_id: job.job_id }, status: :accepted
     end
