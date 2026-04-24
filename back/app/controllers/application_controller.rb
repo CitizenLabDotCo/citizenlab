@@ -30,8 +30,6 @@ class ApplicationController < ActionController::API
       status: :bad_request
   end
 
-  rescue_from ClErrors::TransactionError, with: :transaction_error
-
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   rescue_from FeatureRequiredError, with: :feature_required_error
@@ -86,10 +84,6 @@ class ApplicationController < ActionController::API
 
   def send_unprocessable_entity(record)
     render json: { errors: record.errors.details }, status: :unprocessable_entity
-  end
-
-  def transaction_error(exception)
-    render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
   end
 
   # @param [Pundit::NotAuthorized] exception
