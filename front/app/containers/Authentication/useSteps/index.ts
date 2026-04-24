@@ -118,6 +118,10 @@ export default function useSteps() {
     setState((state) => ({ ...state, ...newState }));
   }, []);
 
+  const getAuthUser = useCallback(() => {
+    return authUser ?? undefined;
+  }, [authUser]);
+
   /** stepConfig defines each step (similar to a state, in a statemachine), and
    * for each step the supported transition functions. It the stepConfig
    * function aggregates all steps from all different flows (in ./stepConfig*)
@@ -130,7 +134,8 @@ export default function useSteps() {
       setError,
       updateState,
       state,
-      userConfirmationEnabled
+      userConfirmationEnabled,
+      getAuthUser
     );
   }, [
     getAuthenticationData,
@@ -140,6 +145,7 @@ export default function useSteps() {
     updateState,
     state,
     userConfirmationEnabled,
+    getAuthUser,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */

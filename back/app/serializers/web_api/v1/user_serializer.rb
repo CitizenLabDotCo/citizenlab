@@ -58,6 +58,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.unread_notifications.size
   end
 
+  attribute :new_email, if: PRIVATE
+
   attribute :confirmation_required, if: PRIVATE do |user|
     user.confirmation_required?
   end

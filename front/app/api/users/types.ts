@@ -55,6 +55,7 @@ export interface IUserAttributes {
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
+  new_email?: string;
   gender?: 'male' | 'female' | 'unspecified';
   birthyear?: number;
   domicile?: string;

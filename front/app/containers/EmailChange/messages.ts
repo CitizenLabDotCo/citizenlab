@@ -67,4 +67,12 @@ export default defineMessages({
     defaultMessage:
       'Changing your email address will sign you out in other browsers you are also signed into. You will lose any unsaved changes.',
   },
+  currentEmail: {
+    id: 'app.containers.ChangeEmail.currentEmail',
+    defaultMessage: 'Your current email address is {email}.',
+  },
+  noEmail: {
+    id: 'app.containers.ChangeEmail.noEmail',
+    defaultMessage: 'You currently have no email address saved.',
+  },
 });

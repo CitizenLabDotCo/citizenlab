@@ -1,6 +1,7 @@
 import { parse } from 'qs';
 
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import { IUser } from 'api/users/types';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -25,7 +26,8 @@ export const sharedSteps = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setError: SetError,
-  updateState: UpdateState
+  updateState: UpdateState,
+  getAuthUser: () => IUser | undefined
 ) => {
   return {
     closed: {
@@ -69,6 +71,15 @@ export const sharedSteps = (
         );
 
         if (missingDataStep) {
+          if (missingDataStep === 'missing-data:email-confirmation') {
+            const authUser = getAuthUser();
+            const email =
+              authUser?.data.attributes.new_email ??
+              authUser?.data.attributes.email ??
+              null;
+            updateState({ email });
+          }
+
           setCurrentStep(missingDataStep);
           return;
         }
@@ -124,6 +135,16 @@ export const sharedSteps = (
           );
 
           if (missingDataStep) {
+            // TODO: JS - Not sure this is the correct fix
+            if (missingDataStep === 'missing-data:email-confirmation') {
+              const authUser = getAuthUser();
+              const email =
+                authUser?.data.attributes.new_email ??
+                authUser?.data.attributes.email ??
+                null;
+              updateState({ email });
+            }
+
             setCurrentStep(missingDataStep);
             return;
           }

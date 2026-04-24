@@ -1,3 +1,5 @@
+import { IUser } from 'api/users/types';
+
 import {
   GetRequirements,
   UpdateState,
@@ -22,7 +24,8 @@ export const getStepConfig = (
   setError: SetError,
   updateState: UpdateState,
   state: State,
-  userConfirmationEnabled: boolean
+  userConfirmationEnabled: boolean,
+  getAuthUser: () => IUser | undefined
 ) => {
   return {
     ...emailFlow(
@@ -55,7 +58,8 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState
+      updateState,
+      getAuthUser
     ),
 
     ...ssoVerificationFlow(

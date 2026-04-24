@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Success } from '@citizenlab/cl2-component-library';
+import { Box, Success, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
+import meKeys from 'api/me/keys';
 import { IUser } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,6 +22,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -46,23 +48,26 @@ const UpdateEmailForm = ({
   const { formatMessage } = useIntl();
   const [error, setError] = useState<'taken' | undefined>(undefined);
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
+  const currentEmail = user.data.attributes.email;
 
   const onFormSubmit = async (formValues: FormValues) => {
+    setError(undefined);
     try {
       // If confirmation required, launch modal
       if (userConfirmationEnabled) {
-        requestEmailConfirmationCodeChangeEmail(formValues.email)
-          .then(() => {
-            setOpenConfirmationModal(true);
-            setError(undefined);
-          })
-          .catch(() => {
-            setError('taken');
-          });
+        try {
+          await requestEmailConfirmationCodeChangeEmail(formValues.email);
+          setOpenConfirmationModal(true);
+          setError(undefined);
+        } catch {
+          setError('taken');
+        }
       } else {
         // Otherwise, update the user's email
         await updateEmailUnconfirmed(formValues.email);
+        await queryClient.invalidateQueries({ queryKey: meKeys.all() });
         setUpdateSuccessful(true);
+        methods.reset({ email: '' });
       }
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
@@ -77,12 +82,19 @@ const UpdateEmailForm = ({
             ? formatMessage(messages.titleAddEmail)
             : formatMessage(messages.titleChangeEmail)}
         </Title>
-        <Form>
+        <Form onSubmit={methods.handleSubmit(onFormSubmit)}>
           {isAdmin(user) && (
             <Warning mt="-20px" mb="20px">
               {formatMessage(messages.adminEmailChangeWarning)}
             </Warning>
           )}
+          <Text mt="-20px" mb="20px" color="textSecondary">
+            {currentEmail
+              ? formatMessage(messages.currentEmail, {
+                  email: currentEmail,
+                })
+              : formatMessage(messages.noEmail)}
+          </Text>
           <LabelContainer>
             <FormLabel
               width="max-content"
@@ -91,13 +103,7 @@ const UpdateEmailForm = ({
               htmlFor="new_password"
             />
           </LabelContainer>
-          <Input
-            name="email"
-            type="text"
-            onBlur={() => {
-              setError(undefined);
-            }}
-          />
+          <Input name="email" type="text" />
           {error === 'taken' && (
             <Error marginTop="4px" text={formatMessage(messages.emailTaken)} />
           )}
@@ -105,7 +111,7 @@ const UpdateEmailForm = ({
             type="submit"
             size="m"
             processing={methods.formState.isSubmitting}
-            onClick={methods.handleSubmit(onFormSubmit)}
+            disabled={methods.formState.isSubmitting}
             text={formatMessage(messages.submitButton)}
             dataCy="change-email-submit-button"
           />

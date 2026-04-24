@@ -8,6 +8,7 @@ import { object, string } from 'yup';
 
 import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
@@ -20,6 +21,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 
 import CancelUpdate from './CancelUpdate';
@@ -50,7 +52,7 @@ const EmailChange = () => {
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      email: '',
+      email: authUser?.data.attributes.new_email ?? '',
     },
     resolver: yupResolver(schema),
   });
@@ -63,9 +65,11 @@ const EmailChange = () => {
     try {
       if (!emailValue) return;
       await confirmEmailConfirmationCodeChangeEmail(code);
+      await queryClient.invalidateQueries({ queryKey: meKeys.all() });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
+      methods.reset({ email: '' });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
         setConfirmationError('wrong_confirmation_code');
