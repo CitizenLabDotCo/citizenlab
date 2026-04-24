@@ -80,6 +80,10 @@ module Analysis
       ([main_custom_field] + additional_custom_fields).compact
     end
 
+    def submission_custom_fields
+      associated_custom_fields.select(&:supports_submission?)
+    end
+
     private
 
     def project_xor_phase_present
