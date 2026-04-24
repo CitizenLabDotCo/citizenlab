@@ -46,13 +46,7 @@ const NewSurveyEmptyState = ({
             width="24px"
             height="24px"
           />
-          <Text
-            fontWeight="bold"
-            mt="12px"
-            mb="4px"
-            fontSize="m"
-            color="blue500"
-          >
+          <Text fontWeight="bold" mt="12px" mb="4px" color="blue500">
             {formatMessage(messages.startFromScratch)}
           </Text>
           <Text fontSize="s" color="blue500" m="0">
@@ -66,13 +60,7 @@ const NewSurveyEmptyState = ({
             width="24px"
             height="24px"
           />
-          <Text
-            fontWeight="bold"
-            mt="12px"
-            mb="4px"
-            fontSize="m"
-            color="coolGrey500"
-          >
+          <Text fontWeight="bold" mt="12px" mb="4px" color="coolGrey500">
             {formatMessage(messages.duplicateExisting)}
           </Text>
           <Text fontSize="s" color="coolGrey500" m="0">

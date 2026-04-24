@@ -64,11 +64,7 @@ const ImportButtons = ({
               }
               theme="dark"
             >
-              <Button
-                buttonStyle="admin-dark"
-                icon="lock"
-                style={{ cursor: 'not-allowed' }}
-              >
+              <Button buttonStyle="admin-dark" icon="lock" disabled>
                 <FormattedMessage {...formSyncMessages.unlockScanning} />
               </Button>
             </Tooltip>
