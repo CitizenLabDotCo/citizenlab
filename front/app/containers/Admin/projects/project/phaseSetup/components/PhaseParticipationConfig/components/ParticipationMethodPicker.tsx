@@ -20,6 +20,7 @@ import Error from 'components/UI/Error';
 import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { phaseUsesInputs } from 'utils/projectUtils';
 
 import messages from '../../../../messages';
 
