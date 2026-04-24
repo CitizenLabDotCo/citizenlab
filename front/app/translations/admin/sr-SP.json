@@ -2477,7 +2477,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Најновији",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Није важећи износ",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Нема фолдера",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "— No folder —",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Није пронађен ниједан шаблон",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Унесите назив пројекта",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Није важећи број",

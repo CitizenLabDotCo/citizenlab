@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "De siste",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Ikke et gyldig beløp",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Ingen mappe",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "- Ingen mappe -",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Ingen maler funnet",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Vennligst skriv inn en prosjekttittel",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Ikke et gyldig nummer",

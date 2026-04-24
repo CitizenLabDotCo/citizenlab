@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Naujausias",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Netinkama suma",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Nėra aplanko",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "- Jokio aplanko -",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Šablonų nerasta",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Įveskite projekto pavadinimą",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Netinkamas skaičius",

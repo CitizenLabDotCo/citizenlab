@@ -2580,7 +2580,6 @@
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Is déanaí",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Ní méid bailí é",
   "app.containers.AdminPage.ProjectEdit.noFolder": "Gan fillteán",
-  "app.containers.AdminPage.ProjectEdit.noFolderLabel": "— Gan fillteán —",
   "app.containers.AdminPage.ProjectEdit.noTemplatesFound": "Níor aimsíodh aon teimpléid",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Cuir isteach teideal tionscadail le do thoil",
   "app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage": "Ní uimhir bhailí í",
