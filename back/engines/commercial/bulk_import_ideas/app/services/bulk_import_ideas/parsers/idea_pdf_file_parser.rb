@@ -18,7 +18,7 @@ module BulkImportIdeas::Parsers
       llm_parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, personal_data_enabled: @personal_data_enabled)
       form_parsed_idea = llm_parser.parse_idea(file.file, file.num_pages)
 
-      file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
+      file.update!(parsed_value: { parser: llm_parser.parser_name, value: form_parsed_idea })
 
       [idea_to_idea_row(form_parsed_idea, file)]
     end

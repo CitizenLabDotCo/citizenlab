@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import { CLError } from 'typings';
 
 import Error from 'components/UI/Error';
 import ProgressBar from 'components/UI/ProgressBar';
@@ -14,21 +15,37 @@ interface Props {
   hasErrors: boolean;
   progress: number;
   total: number;
+  errorCount: number;
+  errors: CLError[];
 }
 
-const ImportStatus = ({ hasErrors, progress, total }: Props) => {
+const ImportStatus = ({
+  hasErrors,
+  progress,
+  total,
+  errorCount,
+  errors,
+}: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
   if (hasErrors) {
+    const succeeded = progress - errorCount;
     return (
       <Container>
         <Error
-          text={formatMessage(messages.errorImporting)}
+          text={formatMessage(messages.errorImportingWithCounts, {
+            succeeded,
+            total,
+            failed: errorCount,
+          })}
           showIcon={true}
           showBackground={false}
           scrollIntoView={false}
         />
+        {errors.map((error, index) => (
+          <Error key={index} apiErrors={[error]} />
+        ))}
       </Container>
     );
   }
