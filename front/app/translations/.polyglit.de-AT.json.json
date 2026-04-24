@@ -349,6 +349,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": {
+    "state": "verified",
+    "verified_at": "2026-04-24T13:03:23.900214Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CityLogoSection.logoLinkAriaLabelInternal": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
