@@ -24,9 +24,10 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
 import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
-import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
+import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
@@ -354,6 +355,10 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
+
+    if (!validateProjectContext(projectContext, projectAttrs)) {
+      return false;
+    }
 
     return formIsValid;
   };

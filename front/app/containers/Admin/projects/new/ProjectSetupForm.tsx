@@ -56,6 +56,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import FolderAndSpaceSelectSection from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
 import { ProjectContext } from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
+import { validateProjectContext } from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/utils';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
@@ -260,6 +261,10 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
+
+    if (!validateProjectContext(projectContext, projectAttrs)) {
+      return false;
+    }
 
     return formIsValid;
   };
