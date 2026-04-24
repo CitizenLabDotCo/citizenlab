@@ -65,6 +65,10 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id || user&.admin?)
   end
 
+  def show_onboarding?
+    user&.registered? && !user&.blocked? && record.id == user.id
+  end
+
   def destroy?
     record.id == user&.id || active_admin?
   end

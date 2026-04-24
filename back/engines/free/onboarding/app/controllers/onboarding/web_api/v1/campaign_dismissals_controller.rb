@@ -7,7 +7,7 @@ module Onboarding
         skip_before_action :authenticate_user
 
         def create
-          authorize current_user, :update?
+          authorize current_user, :show_onboarding?
           campaign_name = params[:campaign_id]
           dismissal = CampaignDismissal.new(campaign_name: campaign_name, user: current_user)
           if dismissal.save

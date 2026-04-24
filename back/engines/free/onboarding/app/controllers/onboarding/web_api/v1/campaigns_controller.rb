@@ -16,7 +16,7 @@ module Onboarding
         end
 
         def current
-          authorize current_user, :update?
+          authorize current_user, :show_onboarding?
           service = OnboardingService.new
           current_campaign = service.current_campaign(current_user)
           custom_cta = current_campaign == :custom_cta
