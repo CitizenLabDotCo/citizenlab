@@ -47,6 +47,19 @@ resource 'Onboarding campaigns' do
       end
     end
 
+    context 'for a user with unconfirmed email' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['user_confirmation'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update_column(:confirmation_required, true)
+      end
+
+      example_request 'Get the current onboarding campaign' do
+        assert_status 200
+      end
+    end
+
     context 'for a not signed-in user' do
       before do
         header 'Authorization', nil
