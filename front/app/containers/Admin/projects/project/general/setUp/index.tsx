@@ -497,7 +497,13 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
-            onSetContext={setProjectContext}
+            onSetContext={(context) => {
+              handleProjectAttributeDiffOnChange({
+                space_id: null,
+                folder_id: null,
+              });
+              setProjectContext(context);
+            }}
             onChangeSpace={(space_id) => {
               handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
             }}
