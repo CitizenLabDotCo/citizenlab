@@ -307,7 +307,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           window.scrollTo(0, 0);
 
           // If the participation method uses a form, we override the default
-          // redirect tab to bring them to the Form Builder on phase creation.
+          // redirect tab to bring them to the Form Builder only on phase creation.
           if (phaseUsesInputs(participationMethod)) {
             clHistory.push(
               `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
