@@ -83,6 +83,7 @@ const FolderAndSpaceSelectSection = ({
           <ProjectFolderSelect
             folder_id={folder_id}
             onChange={(folder_id) => {
+              if (!folder_id) return;
               onChangeFolder(folder_id);
             }}
           />
