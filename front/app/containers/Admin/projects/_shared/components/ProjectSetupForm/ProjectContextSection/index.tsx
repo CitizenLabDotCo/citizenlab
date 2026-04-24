@@ -12,8 +12,11 @@ import { SubSectionTitle } from 'components/admin/Section';
 import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 import Highlighter from 'components/Highlighter';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { LabelHeaderDescription } from '../../labels';
 
+import messages from './messages';
 import ProjectFolderSelect from './ProjectFolderSelect';
 import { Props } from './types';
 
@@ -39,7 +42,9 @@ const ProjectContextSection = ({
 
   return (
     <Box mb="40px">
-      <SubSectionTitle>Project context (TODO)</SubSectionTitle>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.projectContext} />
+      </SubSectionTitle>
       {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && (
         <>
           <Radio
@@ -48,8 +53,10 @@ const ProjectContextSection = ({
             currentValue={projectContext}
             label={
               <LabelHeaderDescription
-                header={<>Space</>}
-                description={<>Description</>}
+                header={<FormattedMessage {...messages.space} />}
+                description={
+                  <FormattedMessage {...messages.spaceDescription} />
+                }
               />
             }
             onChange={() => onSetContext('space')}
@@ -74,8 +81,8 @@ const ProjectContextSection = ({
         currentValue={projectContext}
         label={
           <LabelHeaderDescription
-            header={<>Folder</>}
-            description={<>Description</>}
+            header={<FormattedMessage {...messages.folder} />}
+            description={<FormattedMessage {...messages.folderDescription} />}
           />
         }
         onChange={() => onSetContext('folder')}
@@ -99,13 +106,8 @@ const ProjectContextSection = ({
         currentValue={projectContext}
         label={
           <LabelHeaderDescription
-            header={<>Root</>}
-            description={
-              <>
-                Project will not be in any folder or space. This can be changed
-                later.
-              </>
-            }
+            header={<FormattedMessage {...messages.root} />}
+            description={<FormattedMessage {...messages.rootDescription} />}
           />
         }
         onChange={() => onSetContext('root')}
