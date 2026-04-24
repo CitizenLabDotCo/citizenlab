@@ -83,8 +83,11 @@ const SurveyActions = ({ phase }: Props) => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
-  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
-    getFormActionsConfig(project.data, updatePhase, phase);
+  const { postingEnabled, togglePostingEnabled } = getFormActionsConfig(
+    project.data,
+    updatePhase,
+    phase
+  );
 
   const inputCustomFieldsIds = inputCustomFields?.data.map(
     (customField) => customField.id
