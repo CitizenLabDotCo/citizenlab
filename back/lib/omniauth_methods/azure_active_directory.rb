@@ -34,8 +34,12 @@ module OmniauthMethods
       false
     end
 
-    def email_confirmed?(_auth)
-      false
+    def email_confirmed?(auth)
+      auth&.info['email']&.present?
+    end
+
+    def updateable_user_attrs
+      super + %i[remote_avatar_url]
     end
 
     private
@@ -45,9 +49,5 @@ module OmniauthMethods
 
       auth.info['image']
     end
-  end
-
-  def updateable_user_attrs
-    super + %i[remote_avatar_url]
   end
 end
