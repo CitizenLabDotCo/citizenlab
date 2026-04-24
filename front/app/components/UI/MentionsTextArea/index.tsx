@@ -8,7 +8,6 @@ import styled, { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import getMentions from 'api/mentions/getMentions';
-import { MentionRoles } from 'api/mentions/types';
 
 import Error from 'components/UI/Error';
 
@@ -71,7 +70,7 @@ export interface Props {
   background?: string;
   ariaLabel?: string;
   children?: React.ReactNode;
-  roles?: MentionRoles[];
+  moderatorsOnly?: boolean;
   trigger?: string;
   showUniqueUsers?: boolean;
   onChangeMentions?: (mentions: MentionItem[]) => void;
@@ -106,7 +105,7 @@ const MentionsTextArea = ({
   name,
   error,
   children,
-  roles,
+  moderatorsOnly,
   trigger = '@',
   userReferenceType = 'slug',
   showUniqueUsers = false,
@@ -220,7 +219,7 @@ const MentionsTextArea = ({
       const queryParameters = {
         mention: query.toLowerCase(),
         idea_id: postId,
-        roles,
+        moderators_only: moderatorsOnly,
       };
 
       const response = await getMentions(queryParameters);

@@ -16,9 +16,7 @@ resource 'Mentions' do
     parameter :mention, 'The (partial) search string for the mention (without the @)', required: true
     parameter :idea_id, 'An idea that is used as a context to return related users first', required: false
     parameter :limit, 'The number of results to return', required: false
-    parameter :roles, "An array, including 'admin' and/or 'moderator' (moderators of post, if post specified)." \
-                      'The roles of the users to return, exclusively - response will not include regular users,' \
-                      'regardless of whether they are post author, or have commented on post.', required: false
+    parameter :moderators_only, 'When true, only return admins and moderators', required: false
 
     let(:users) { [create(:user, first_name: 'Flupke')] + create_list(:user, 9, last_name: 'Smith') }
     let(:mention) { users.first.first_name[0..3] }
@@ -77,15 +75,6 @@ resource 'Mentions' do
       end
     end
 
-    example 'Find user by mention containing special characters', document: false do
-      user = create(:user, first_name: 'Thomas', last_name: 'Rødgaard')
-
-      do_request mention: 'thomas rød'
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].pluck(:id)).to include(user.id)
-    end
-
     example 'Does not return unregistered user by (partial) mention', document: false do
       users.first.update!(registration_completed_at: nil)
 
@@ -104,81 +93,33 @@ resource 'Mentions' do
       expect(json_response[:data].pluck(:id)).not_to include users.first.id
     end
 
-    context 'when role(s) is/are specified using roles parameter' do
+    context 'with moderators_only' do
       before { User.delete_all }
 
-      let(:project) { create(:project) }
-      let(:idea) { create(:idea, project: project) }
       let(:first_name) { 'Aaa' }
       let(:last_name) { 'Bbb' }
       let(:names) { { first_name: first_name, last_name: last_name } }
 
       let!(:regular_user) { create(:user, names) }
       let!(:admin) { create(:admin, names) }
-      let!(:moderator_of_project) { create(:project_moderator, names.merge({ projects: [project] })) }
-      let!(:moderator_of_other_project) { create(:project_moderator, names) }
+      let!(:moderator) { create(:project_moderator, names) }
 
-      let(:base_query_params) { { idea_id: idea.id, mention: first_name } }
+      example 'Does not include regular user' do
+        do_request mention: first_name, moderators_only: true
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to contain_exactly(admin.id, moderator.id)
+      end
 
-      example 'Does not include regular user, even if has commented on post' do
-        create(:comment, idea: idea, author: regular_user)
+      example 'Does not include regular user, even if idea participant' do
+        idea = create(:idea, author: regular_user)
+        create(:comment, idea: idea, author: moderator)
 
-        do_request base_query_params.merge({ roles: %w[admin moderator] })
+        do_request idea_id: idea.id, mention: first_name, moderators_only: true
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].pluck(:id)).not_to include(regular_user.id)
-      end
-
-      example 'Does not include regular user, even if post author' do
-        idea.update!(author_id: regular_user.id)
-
-        do_request base_query_params.merge({ roles: %w[admin moderator] })
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].pluck(:id)).not_to include(regular_user.id)
-      end
-
-      example 'Includes only admins when only admin role is specified' do
-        do_request base_query_params.merge({ roles: ['admin'] })
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].pluck(:id)).to contain_exactly(admin.id)
-      end
-
-      context 'when a post is specified' do
-        example "Includes only moderators of post's project when only moderator role is specified" do
-          do_request base_query_params.merge({ roles: ['moderator'] })
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(moderator_of_project.id)
-        end
-
-        example "Includes only admins and moderators of post's project when both roles are specified" do
-          do_request base_query_params.merge({ roles: %w[moderator admin] })
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to contain_exactly(moderator_of_project.id, admin.id)
-        end
-      end
-
-      context 'when no post is specified' do
-        let(:base_query_params) { { mention: first_name } }
-
-        example 'Includes only project moderators when only moderator role is specified' do
-          do_request base_query_params.merge({ roles: ['moderator'] })
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id))
-            .to contain_exactly(moderator_of_project.id, moderator_of_other_project.id)
-        end
-
-        example 'Includes only admins and moderators when both roles are specified' do
-          do_request base_query_params.merge({ roles: %w[admin moderator] })
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id))
-            .to contain_exactly(moderator_of_project.id, moderator_of_other_project.id, admin.id)
-        end
+        expect(json_response[:data].pluck(:id)).to include(admin.id, moderator.id)
       end
     end
   end
