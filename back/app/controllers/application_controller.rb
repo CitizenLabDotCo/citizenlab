@@ -21,6 +21,8 @@ class ApplicationController < ActionController::API
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
+  rescue_from ApiError, with: :render_api_error
+
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
@@ -60,6 +62,14 @@ class ApplicationController < ActionController::API
   # @return [Hash]
   def policy_context
     @policy_context ||= {}
+  end
+
+  def render_api_error(exception)
+    render json: exception.payload, status: exception.status
+  end
+
+  def save_or_raise!(record, **save_options)
+    raise ApiError.from_record(record) if !record.save(**save_options)
   end
 
   def send_error(error = nil, status = 400)

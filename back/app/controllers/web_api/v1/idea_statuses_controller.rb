@@ -18,66 +18,42 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     @idea_status = IdeaStatus.new(idea_status_params_for_create)
     authorize @idea_status
     if IdeaStatus::LOCKED_CODES.include?(@idea_status.code)
-      render json: { errors: { code: [{ error: 'Cannot create additional locked statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
-      return
+      raise ApiError.new(:locked_status, field: :code, value: @idea_status.code)
     end
-    if @idea_status.save
-      SideFxIdeaStatusService.new.after_create(@idea_status, current_user)
-      render json: serialize(@idea_status), status: :created
-    else
-      render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise! @idea_status
+    SideFxIdeaStatusService.new.after_create(@idea_status, current_user)
+    render json: serialize(@idea_status), status: :created
   end
 
   def update
     code_change = params.dig(:idea_status, :code) != @idea_status.code
     if code_change && @idea_status.locked?
-      render json: { errors: { code: [{ error: 'Cannot change the code of locked statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
-      return
+      raise ApiError.new(:cannot_change_locked_code, field: :code, value: @idea_status.code)
     end
     @idea_status.assign_attributes(idea_status_params_for_update)
     if code_change && @idea_status.locked?
-      render json: { errors: { code: [{ error: 'Cannot set the code to a locked status code', value: @idea_status.code }] } }, status: :unprocessable_entity
-      return
+      raise ApiError.new(:cannot_set_locked_code, field: :code, value: @idea_status.code)
     end
-    if @idea_status.save
-      SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
-      render json: serialize(@idea_status), status: :ok
-    else
-      render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise! @idea_status
+    SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
+    render json: serialize(@idea_status), status: :ok
   end
 
   def reorder
     ordering = params.require(:idea_status).permit(:ordering)[:ordering]
-    if @idea_status.locked?
-      render json: { errors: { base: 'Cannot reorder a locked status' } }, status: :unprocessable_entity
-      return
-    end
-    if ordering <= max_ordering
-      render json: { errors: { base: 'Cannot reorder into the locked statuses section' } }, status: :unprocessable_entity
-      return
-    end
-    if @idea_status.insert_at(ordering)
-      SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
-      render json: serialize(@idea_status), status: :ok
-    else
-      render json: { errors: @idea_status.errors.details }, status: :unprocessable_entity
-    end
+    raise ApiError, :cannot_reorder_locked_status if @idea_status.locked?
+    raise ApiError, :cannot_reorder_into_locked_section if ordering <= max_ordering
+    raise ApiError, :reorder_failed if !@idea_status.insert_at(ordering)
+    SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
+    render json: serialize(@idea_status), status: :ok
   end
 
   def destroy
-    if @idea_status.locked?
-      render json: { errors: { base: 'Cannot delete a locked status' } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError, :cannot_delete_locked_status if @idea_status.locked?
     frozen_idea_status = @idea_status.destroy
-    if frozen_idea_status.destroyed?
-      SideFxIdeaStatusService.new.after_destroy(frozen_idea_status, current_user)
-      head :ok
-    else
-      head :internal_server_error
-    end
+    raise ApiError.new(:destroy_failed, status: 500) if !frozen_idea_status.destroyed?
+    SideFxIdeaStatusService.new.after_destroy(frozen_idea_status, current_user)
+    head :ok
   end
 
   private
