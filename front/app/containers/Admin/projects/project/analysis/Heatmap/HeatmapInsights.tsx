@@ -48,11 +48,12 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
 
   const { data: analysis } = useAnalysis(analysisId);
 
-  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
-    analysisId,
-    maxPValue: 0.05,
-    pageSize: 25,
-  });
+  const { data: analysisHeatmapCells, isLoading: isLoadingCells } =
+    useAnalysisHeatmapCells({
+      analysisId,
+      maxPValue: 0.05,
+      pageSize: 25,
+    });
 
   const selectedCell = analysisHeatmapCells?.data.find(
     (cell) => cell.id === selectedInsightId
@@ -82,26 +83,14 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     }
   }, [analysisHeatmapCells]);
 
-  if (!analysisHeatmapCells) return null;
+  // The backend returns 204 No Content when no heatmap cells exist, which
+  // makes `analysisHeatmapCells` null. Treat that as the empty state so the
+  // too-many-fields warning / fallback button still renders.
+  if (isLoadingCells) return null;
 
-  const handleChangeInsight = (offset: number) => {
-    trackEventByName(tracks.useAutoInsightsCarrousel);
-    setSelectedInsightId((currentId) => {
-      const insights = analysisHeatmapCells.data;
-      const currentIndex = insights.findIndex(
-        (field) => field.id === currentId
-      );
-      const length = insights.length;
+  const cells = analysisHeatmapCells?.data ?? [];
 
-      // Calculate new index with wraparound
-      let newIndex = (currentIndex + offset) % length;
-      if (newIndex < 0) newIndex += length;
-
-      return insights[newIndex].id;
-    });
-  };
-
-  if (analysisHeatmapCells.data.length === 0) {
+  if (cells.length === 0) {
     if (analysis?.data.attributes.auto_insights_too_many_fields) {
       return (
         <Warning>{formatMessage(messages.autoInsightsTooManyFields)}</Warning>
@@ -128,6 +117,20 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     );
   }
 
+  const handleChangeInsight = (offset: number) => {
+    trackEventByName(tracks.useAutoInsightsCarrousel);
+    setSelectedInsightId((currentId) => {
+      const currentIndex = cells.findIndex((field) => field.id === currentId);
+      const length = cells.length;
+
+      // Calculate new index with wraparound
+      let newIndex = (currentIndex + offset) % length;
+      if (newIndex < 0) newIndex += length;
+
+      return cells[newIndex].id;
+    });
+  };
+
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -143,10 +146,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           />
           {selectedInsightId && (
             <Text mx="8px">
-              {analysisHeatmapCells.data.findIndex(
-                (cell) => cell.id === selectedInsightId
-              ) + 1}
-              /{analysisHeatmapCells.data.length}
+              {cells.findIndex((cell) => cell.id === selectedInsightId) + 1}/
+              {cells.length}
             </Text>
           )}
           <IconButton
