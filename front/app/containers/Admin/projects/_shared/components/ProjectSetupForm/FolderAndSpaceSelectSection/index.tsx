@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { Radio, Text } from '@citizenlab/cl2-component-library';
+import { Box, Radio } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { HighestRole } from 'api/users/types';
 
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
+import { SubSectionTitle } from 'components/admin/Section';
 import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import Highlighter from 'components/Highlighter';
 
-import ProjectFolderSelect from '../ProjectSetupForm/ProjectFolderSelect';
+import { LabelHeaderDescription } from '../../labels';
+import ProjectFolderSelect from '../ProjectFolderSelect';
 
 import { Props } from './types';
 
@@ -34,15 +36,22 @@ const FolderAndSpaceSelectSection = ({
   const { highest_role } = authUser.data.attributes;
 
   return (
-    <>
+    <Box mb="40px">
+      <SubSectionTitle>Project context (TODO)</SubSectionTitle>
       {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && (
         <>
           <Radio
             name="space"
             value="space"
             currentValue={projectContext}
-            label={<Text>Space TODO</Text>}
+            label={
+              <LabelHeaderDescription
+                header={<>Space</>}
+                description={<>Description</>}
+              />
+            }
             onChange={() => onSetContext('space')}
+            mb="12px"
           />
           {projectContext === 'space' && (
             <SpaceSelectSection
@@ -60,8 +69,14 @@ const FolderAndSpaceSelectSection = ({
         name="folder"
         value="folder"
         currentValue={projectContext}
-        label={<Text>Folder TODO</Text>}
+        label={
+          <LabelHeaderDescription
+            header={<>Folder</>}
+            description={<>Description</>}
+          />
+        }
         onChange={() => onSetContext('folder')}
+        mb="12px"
       />
       {projectContext === 'folder' && (
         <Highlighter fragmentId={folderFragmentId}>
@@ -77,10 +92,20 @@ const FolderAndSpaceSelectSection = ({
         name="root"
         value="root"
         currentValue={projectContext}
-        label={<Text>Root TODO</Text>}
+        label={
+          <LabelHeaderDescription
+            header={<>Root</>}
+            description={
+              <>
+                Project will not be in any folder or space. This can be changed
+                later.
+              </>
+            }
+          />
+        }
         onChange={() => onSetContext('root')}
       />
-    </>
+    </Box>
   );
 };
 

@@ -7,7 +7,10 @@ import messages from 'containers/Admin/projects/project/messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import FormattedCurrency from 'utils/currency/FormattedCurrency';
 
-import { LabelText, LabelWrapper } from './styling';
+import {
+  LabelText,
+  LabelWrapper,
+} from '../../project/phaseSetup/components/PhaseParticipationConfig/components/shared/styling';
 
 export const LabelHeaderDescription = ({
   header,

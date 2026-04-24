@@ -53,9 +53,9 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-import FolderAndSpaceSelectSection from '../_shared/components/FolderAndSpaceSelectSection';
-import { ProjectContext } from '../_shared/components/FolderAndSpaceSelectSection/types';
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
+import FolderAndSpaceSelectSection from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
+import { ProjectContext } from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 

@@ -24,8 +24,8 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/FolderAndSpaceSelectSection';
-import { ProjectContext } from 'containers/Admin/projects/_shared/components/FolderAndSpaceSelectSection/types';
+import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
+import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
