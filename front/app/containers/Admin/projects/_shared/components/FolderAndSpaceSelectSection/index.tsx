@@ -7,10 +7,13 @@ import FolderModeratorInterface from './FolderModeratorInterface';
 import { BaseProps } from './types';
 
 interface Props extends BaseProps {
-  isNewProject: boolean;
+  isNewProject?: boolean;
 }
 
-const FolderAndSpaceSelectSection = ({ isNewProject, ...props }: Props) => {
+const FolderAndSpaceSelectSection = ({
+  isNewProject = false,
+  ...props
+}: Props) => {
   const { data: authUser } = useAuthUser();
   if (!authUser) return null;
 

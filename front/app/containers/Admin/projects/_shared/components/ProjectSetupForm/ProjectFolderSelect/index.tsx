@@ -32,31 +32,23 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
   const { data: projectFolders } = useInfiniteProjectFoldersAdmin({}, 10000);
   const { data: authUser } = useAuthUser();
 
-  const noFolderId = '/'; // This sentinel must not be a valid folder id.
-  const noFolderLabel = formatMessage(messages.noFolderLabel);
-  const noFolderOption = { value: noFolderId, label: noFolderLabel };
-
   const flatFolders = projectFolders?.pages.flatMap((page) => page.data);
   const folderOptions: IOption[] = flatFolders
-    ? [
-        noFolderOption,
-        ...flatFolders
-          .map((folder) => ({
-            value: folder.id,
-            label: localize(folder.attributes.title_multiloc),
-          }))
-          .sort((a, b) =>
-            a.label.localeCompare(b.label, undefined, {
-              sensitivity: 'base',
-              numeric: true,
-            })
-          ),
-      ]
+    ? flatFolders
+        .map((folder) => ({
+          value: folder.id,
+          label: localize(folder.attributes.title_multiloc),
+        }))
+        .sort((a, b) =>
+          a.label.localeCompare(b.label, undefined, {
+            sensitivity: 'base',
+            numeric: true,
+          })
+        )
     : [];
 
   const handleSelectFolderChange = ({ value }) => {
-    const folderId = value === noFolderId ? null : value;
-    onChange(folderId);
+    onChange(value);
   };
 
   const isAdminUser = isAdmin(authUser);

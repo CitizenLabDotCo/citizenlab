@@ -7,6 +7,7 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -16,6 +17,7 @@ import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import { IUser } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -23,6 +25,7 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/FolderAndSpaceSelectSection';
+import { ProjectContext } from 'containers/Admin/projects/_shared/components/FolderAndSpaceSelectSection/types';
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
@@ -70,9 +73,10 @@ import validateTitle from '../utils/validateTitle';
 
 interface Props {
   project: IProject;
+  authUser: IUser;
 }
 
-const AdminProjectsProjectGeneral = ({ project }: Props) => {
+const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.data.id;
 
@@ -136,6 +140,14 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     useState<Multiloc | null>(
       project.data.attributes.description_preview_multiloc
     );
+
+  const { highest_role } = authUser.data.attributes;
+
+  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
+    if (highest_role === 'space_moderator') return 'space';
+    if (highest_role === 'project_folder_moderator') return 'folder';
+    return 'root';
+  });
 
   useEffect(() => {
     if (remoteProjectFileAttachments) {
@@ -477,6 +489,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           />
 
           <FolderAndSpaceSelectSection
+            projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
             onChange={(diff) => handleProjectAttributeDiffOnChange(diff)}
@@ -596,9 +609,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 const AdminProjectsProjectGeneralWrapper = () => {
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
-  if (!project) return null;
+  const { data: authUser } = useAuthUser();
+  if (!project || !authUser) return null;
 
-  return <AdminProjectsProjectGeneral project={project} />;
+  return <AdminProjectsProjectGeneral project={project} authUser={authUser} />;
 };
 
 export default AdminProjectsProjectGeneralWrapper;

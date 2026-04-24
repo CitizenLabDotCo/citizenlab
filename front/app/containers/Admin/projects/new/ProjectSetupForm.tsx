@@ -12,6 +12,7 @@ import {
 import projectPermissionKeys from 'api/project_permissions/keys';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
+import { IUser } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -53,11 +54,16 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import FolderAndSpaceSelectSection from '../_shared/components/FolderAndSpaceSelectSection';
+import { ProjectContext } from '../_shared/components/FolderAndSpaceSelectSection/types';
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
-const ProjectSetupForm = () => {
+interface Props {
+  authUser: IUser;
+}
+
+const ProjectSetupForm = ({ authUser }: Props) => {
   const { formatMessage } = useIntl();
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -99,6 +105,14 @@ const ProjectSetupForm = () => {
   const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
     string | null
   >(null);
+
+  const { highest_role } = authUser.data.attributes;
+
+  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
+    if (highest_role === 'space_moderator') return 'space';
+    if (highest_role === 'project_folder_moderator') return 'folder';
+    return 'root';
+  });
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (
@@ -305,6 +319,8 @@ const ProjectSetupForm = () => {
           />
 
           <FolderAndSpaceSelectSection
+            projectContext={projectContext}
+            isNewProject
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
             onChange={(diff) => handleProjectAttributeDiffOnChange(diff)}
