@@ -20,7 +20,6 @@ import Error from 'components/UI/Error';
 import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { phaseHasInputs } from 'utils/projectUtils';
 
 import messages from '../../../../messages';
 
@@ -365,7 +364,7 @@ const ParticipationMethodPicker = ({
               </>
             )}
           </Box>
-          {selectedMethod && phaseHasInputs(selectedMethod) && (
+          {selectedMethod && phaseUsesInputs(selectedMethod) && (
             <Box mt="24px" width="750px">
               <FeatureCallout
                 icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}

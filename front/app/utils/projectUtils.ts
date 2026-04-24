@@ -18,7 +18,7 @@ const methodsWithInputs: ParticipationMethod[] = [
   'proposals',
 ];
 
-export function phaseHasInputs(participationMethod: ParticipationMethod) {
+export function phaseUsesInputs(participationMethod: ParticipationMethod) {
   return methodsWithInputs.includes(participationMethod);
 }
 

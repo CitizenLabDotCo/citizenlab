@@ -36,7 +36,7 @@ import {
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { generateTemporaryFileAttachment } from 'utils/fileUtils';
-import { phaseHasInputs } from 'utils/projectUtils';
+import { phaseUsesInputs } from 'utils/projectUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
@@ -308,7 +308,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
           // If the participation method uses a form, we override the default
           // redirect tab to bring them to the Form Builder on phase creation.
-          if (phaseHasInputs(participationMethod)) {
+          if (phaseUsesInputs(participationMethod)) {
             clHistory.push(
               `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
             );
