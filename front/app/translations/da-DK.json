@@ -1874,7 +1874,7 @@
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Vælg ikke, hvis du bruger en offentlig computer",
   "app.containers.NewAuthModal.steps.Policies.change1": "ændring",
   "app.containers.NewAuthModal.steps.Policies.createANewAccountWith": "Opret en ny konto med: {email} {changeLink}",
-  "app.containers.NewAuthModal.steps.Success.allDone": "Alt er gjort",
+  "app.containers.NewAuthModal.steps.Success.allDone": "Tak for dit bidrag",
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Fortsæt nu din deltagelse.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "Din identitet er blevet bekræftet. Du er nu et fuldt medlem af fællesskabet på denne platform.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedTitle": "Du er nu verificeret!",
