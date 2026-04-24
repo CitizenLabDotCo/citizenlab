@@ -81,7 +81,6 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'xlsx',
-        personal_data: false,
         locale,
       });
 

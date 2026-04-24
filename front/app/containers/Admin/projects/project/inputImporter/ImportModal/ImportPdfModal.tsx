@@ -36,7 +36,6 @@ import messages from './messages';
 interface FormValues {
   locale: SupportedLocale;
   file?: Record<string, any>;
-  personal_data: boolean;
   multiple_forms: boolean;
   pages_per_form: number | undefined;
 }
@@ -65,7 +64,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const defaultValues = {
     locale,
     file: undefined,
-    personal_data: false,
     multiple_forms: false,
     pages_per_form: undefined,
   };
@@ -73,7 +71,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const schema = object({
     locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
-    personal_data: boolean().required(),
     multiple_forms: boolean().required(),
     pages_per_form: number()
       .transform((value, originalValue) =>
@@ -105,7 +102,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const submitFile = async ({
     file,
     locale,
-    personal_data,
     multiple_forms,
     pages_per_form,
   }: FormValues) => {
@@ -117,7 +113,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         file: file?.base64,
         format: 'pdf',
         locale,
-        personal_data,
         pages_per_form: multiple_forms ? pages_per_form : undefined,
       });
 
@@ -195,12 +190,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
               </Box>
             )}
 
-            <Box mt="24px">
-              <CheckboxWithLabel
-                name="personal_data"
-                label={<FormattedMessage {...messages.formHasPersonalData} />}
-              />
-            </Box>
             <Box w="100%" display="flex" mt="32px">
               <Button
                 bgColor={colors.primary}

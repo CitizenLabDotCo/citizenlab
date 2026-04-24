@@ -131,7 +131,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data pages_per_form])
+        .permit(%i[file locale pages_per_form])
     end
 
     def authorize_bulk_import_ideas
@@ -150,7 +150,7 @@ module BulkImportIdeas
 
     def file_parser_service
       locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
-      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
+      personal_data_enabled = @phase.custom_form&.print_personal_data_fields || false
       pages_per_form = params[:import] ? bulk_create_params[:pages_per_form]&.to_i : nil
       pages_per_form = nil if pages_per_form&.zero?
       phase_id = params[:id]
