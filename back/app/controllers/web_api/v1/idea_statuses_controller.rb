@@ -20,6 +20,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     if IdeaStatus::LOCKED_CODES.include?(@idea_status.code)
       raise ApiError.new(:locked_status, field: :code, value: @idea_status.code)
     end
+
     save_or_raise! @idea_status
     SideFxIdeaStatusService.new.after_create(@idea_status, current_user)
     render json: serialize(@idea_status), status: :created
@@ -30,10 +31,12 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     if code_change && @idea_status.locked?
       raise ApiError.new(:cannot_change_locked_code, field: :code, value: @idea_status.code)
     end
+
     @idea_status.assign_attributes(idea_status_params_for_update)
     if code_change && @idea_status.locked?
       raise ApiError.new(:cannot_set_locked_code, field: :code, value: @idea_status.code)
     end
+
     save_or_raise! @idea_status
     SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
     render json: serialize(@idea_status), status: :ok
@@ -44,14 +47,17 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     raise ApiError, :cannot_reorder_locked_status if @idea_status.locked?
     raise ApiError, :cannot_reorder_into_locked_section if ordering <= max_ordering
     raise ApiError, :reorder_failed if !@idea_status.insert_at(ordering)
+
     SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
     render json: serialize(@idea_status), status: :ok
   end
 
   def destroy
     raise ApiError, :cannot_delete_locked_status if @idea_status.locked?
+
     frozen_idea_status = @idea_status.destroy
     raise ApiError.new(:destroy_failed, status: 500) if !frozen_idea_status.destroyed?
+
     SideFxIdeaStatusService.new.after_destroy(frozen_idea_status, current_user)
     head :ok
   end
