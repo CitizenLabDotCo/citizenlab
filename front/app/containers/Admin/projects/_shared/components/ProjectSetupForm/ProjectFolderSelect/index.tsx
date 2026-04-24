@@ -1,25 +1,15 @@
 import React from 'react';
 
-import { Select, IconTooltip } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import useAuthUser from 'api/me/useAuthUser';
 import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-
-const StyledSectionField = styled(SectionField)`
-  max-width: 100%;
-  margin-bottom: 40px;
-`;
 
 interface Props {
   folder_id?: string | null;
@@ -30,7 +20,6 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: projectFolders } = useInfiniteProjectFoldersAdmin({}, 10000);
-  const { data: authUser } = useAuthUser();
 
   const noFolderId = '/'; // This sentinel must not be a valid folder id.
   const noFolderLabel = formatMessage(messages.noFolderLabel);
@@ -59,34 +48,16 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
     onChange(folderId);
   };
 
-  const isAdminUser = isAdmin(authUser);
-
   if (folderOptions.length === 0) return null;
 
   const defaultFolderSelectOptionValue = folderOptions[0].value;
 
-  const sectionTooltip = formatMessage(
-    isAdminUser
-      ? messages.adminProjectFolderSelectTooltip
-      : messages.folderAdminProjectFolderSelectTooltip
-  );
-
   return (
-    <StyledSectionField
-      data-testid="projectFolderSelect"
-      data-cy="e2e-project-folder-setting-field"
-    >
-      <SubSectionTitle>
-        <FormattedMessage {...messages.projectFolderSelectTitle} />
-        <IconTooltip content={sectionTooltip} />
-      </SubSectionTitle>
-
-      <Select
-        value={folder_id || defaultFolderSelectOptionValue}
-        options={folderOptions}
-        onChange={handleSelectFolderChange}
-      />
-    </StyledSectionField>
+    <Select
+      value={folder_id || defaultFolderSelectOptionValue}
+      options={folderOptions}
+      onChange={handleSelectFolderChange}
+    />
   );
 };
 

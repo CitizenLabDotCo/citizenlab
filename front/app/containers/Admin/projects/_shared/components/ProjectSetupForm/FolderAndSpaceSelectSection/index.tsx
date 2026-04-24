@@ -58,7 +58,6 @@ const FolderAndSpaceSelectSection = ({
               spaceId={space_id}
               folderId={folder_id}
               onChange={(space_id) => {
-                if (!space_id) return;
                 onChangeSpace(space_id);
               }}
             />
@@ -79,15 +78,16 @@ const FolderAndSpaceSelectSection = ({
         mb="12px"
       />
       {projectContext === 'folder' && (
-        <Highlighter fragmentId={folderFragmentId}>
-          <ProjectFolderSelect
-            folder_id={folder_id}
-            onChange={(folder_id) => {
-              if (!folder_id) return;
-              onChangeFolder(folder_id);
-            }}
-          />
-        </Highlighter>
+        <Box mb="40px">
+          <Highlighter fragmentId={folderFragmentId}>
+            <ProjectFolderSelect
+              folder_id={folder_id}
+              onChange={(folder_id) => {
+                onChangeFolder(folder_id);
+              }}
+            />
+          </Highlighter>
+        </Box>
       )}
       <Radio
         name="root"
