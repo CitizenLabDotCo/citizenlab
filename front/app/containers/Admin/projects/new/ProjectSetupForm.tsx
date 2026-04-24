@@ -54,9 +54,9 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
-import FolderAndSpaceSelectSection from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
-import { ProjectContext } from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
-import { validateProjectContext } from '../_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/utils';
+import ProjectContextSection from '../_shared/components/ProjectSetupForm/ProjectContextSection';
+import { ProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import { validateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
@@ -323,7 +323,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          <FolderAndSpaceSelectSection
+          <ProjectContextSection
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}

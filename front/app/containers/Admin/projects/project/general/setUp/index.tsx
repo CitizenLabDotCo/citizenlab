@@ -25,9 +25,9 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
-import FolderAndSpaceSelectSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection';
-import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/types';
-import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FolderAndSpaceSelectSection/utils';
+import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
+import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
@@ -493,7 +493,7 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          <FolderAndSpaceSelectSection
+          <ProjectContextSection
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}

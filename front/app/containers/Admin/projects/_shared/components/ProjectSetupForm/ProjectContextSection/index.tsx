@@ -13,8 +13,8 @@ import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 import Highlighter from 'components/Highlighter';
 
 import { LabelHeaderDescription } from '../../labels';
-import ProjectFolderSelect from '../ProjectFolderSelect';
 
+import ProjectFolderSelect from './ProjectFolderSelect';
 import { Props } from './types';
 
 const ROLES_THAT_CAN_SEE_SPACES: (string | undefined)[] = [
@@ -23,7 +23,7 @@ const ROLES_THAT_CAN_SEE_SPACES: (string | undefined)[] = [
   'project_moderator',
 ] satisfies HighestRole[];
 
-const FolderAndSpaceSelectSection = ({
+const ProjectContextSection = ({
   projectContext,
   space_id,
   folder_id,
@@ -114,4 +114,4 @@ const FolderAndSpaceSelectSection = ({
   );
 };
 
-export default FolderAndSpaceSelectSection;
+export default ProjectContextSection;
