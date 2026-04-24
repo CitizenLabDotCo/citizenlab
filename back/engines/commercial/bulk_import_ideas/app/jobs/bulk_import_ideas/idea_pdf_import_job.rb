@@ -5,14 +5,6 @@ module BulkImportIdeas
     include Jobs::TrackableJob
 
     self.priority = 60
-    perform_retries true
-
-    RETRYABLE_ERRORS = [
-      RubyLLM::RateLimitError,
-      RubyLLM::OverloadedError,
-      RubyLLM::ServerError,
-      RubyLLM::ServiceUnavailableError
-    ].freeze
 
     def run(idea_import_files, import_user, locale, phase, personal_data_enabled, _first_idea_index)
       file_parser = Parsers::IdeaPdfFileParser.new(import_user, locale, phase.id, personal_data_enabled)
@@ -31,25 +23,46 @@ module BulkImportIdeas
       complete_if_done!
     end
 
-    def handle_error(error)
-      case error
-      when *RETRYABLE_ERRORS
-        return super if error_count <= maximum_retry_count
-      end
-
-      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', 'pdf', error.to_s)
-
-      remaining = unprocessed_files_count
-      track_progress(remaining, remaining) if remaining > 0
-      complete_if_done!
-      ErrorReporter.report(error, extra: { phase_id: phase&.id })
-      expire
-    end
-
     private
 
-    def unprocessed_files_count
-      arguments[0].count { |file| !IdeaImport.exists?(file_id: file.id) } # arguments[0] is idea_import_files
+    RETRYABLE_ERRORS = [
+      RubyLLM::RateLimitError,
+      RubyLLM::OverloadedError,
+      RubyLLM::ServerError,
+      RubyLLM::ServiceUnavailableError
+    ].freeze
+
+    def handle_error(error)
+      case error
+      when *RETRYABLE_ERRORS then super
+      else expire
+      end
+    end
+
+    def expire
+      finalize_failure(idea_import_files, import_user, phase, last_error)
+      super
+    end
+
+    def last_error
+      que_target.que_error
+    end
+
+    def finalize_failure(idea_files, user, phase, error)
+      SideFxBulkImportService.new.after_failure(user, phase, 'idea', 'pdf', error.to_s)
+
+      remaining = count_missing_imports(idea_files)
+      track_progress(remaining, remaining) if remaining > 0
+      complete_if_done!
+    end
+
+    def count_missing_imports(idea_files)
+      file_ids = idea_files.map(&:id)
+      file_ids.size - IdeaImport.where(file_id: file_ids).count
+    end
+
+    def idea_import_files
+      arguments[0]
     end
 
     def import_user
