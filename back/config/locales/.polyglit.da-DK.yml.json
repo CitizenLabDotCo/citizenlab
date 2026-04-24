@@ -393,7 +393,7 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
-  }
+  },
 
   "confirmations_mailer.send_confirmation_code.did_you_receive_this_email_in_error": {
     "state": "verified",

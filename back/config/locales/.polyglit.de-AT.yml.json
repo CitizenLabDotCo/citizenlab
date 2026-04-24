@@ -4,637 +4,12 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_forms.categories.main_content.option.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.threshold_reached_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.da-DK": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "errors.messages.max_must_be_greater_than_min_characters": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "reset_password_mailer.send_reset_password.cta_reset_password": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.ar-SA": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.for_more_information": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.neutral_reactions_count": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.housing_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.labels.label_4": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.users.birthyear.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.question_categories.governance_and_trust": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "voting_method.default_voting_term_plural": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.sr-Latn": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.tags": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.attachments.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.viewed_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.implemented_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.fr-BE": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.access_to_parks.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.images.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.first_name": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.matrix_print_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "ics_calendar_event.event_details": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "reset_password_mailer.send_reset_password.subject": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.events.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.did_you_receive_this_email_in_error": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.choose_between": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.inclusion": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.paragraph_1_with_reason": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.other_input_field.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.form_user_page.title_text": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.personal_data": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "events.council_meeting_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.header_message": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.economy": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.housing": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.author_email": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.choose_as_many": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.projects.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.comment.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.proposed_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.de-DE": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.sustainability_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.assignee_email": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.last_name": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.nature_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.published_at": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.quality_of_services.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.mobility_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.pt-BR": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.users.domicile.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.culture_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.nature": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.initiative.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.personal_data_explanation_public": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.it-IT": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.terms_and_conditions_body": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "reset_password_mailer.send_reset_password.preheader": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.budget.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.created_at": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.prescreening": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
   "confirmations_mailer.send_confirmation_code.best_regards": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.accepted_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.answered_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.last_name": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "phases.native_survey_button": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "project_copy.title_suffix": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.safety": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.input_id": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.economy_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.about.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.post.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "time.pm": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.dislikes_count": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.question_categories.other": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.subject": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.email_address": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.transparency_of_money_spent.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.unsupported_field": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.paragraph_1_without_reason": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.faq_body": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.proposal.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.responsiveness_of_officials.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.choose_at_least": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.response.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.sustainability": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_field_options.gender.unspecified": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.contribution.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.faq.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user.anon_first_name": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "errors.messages.max_must_be_greater_than_or_equal_to_min_select_count": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.other": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.suggestion.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.form_end_page.description_text_3": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.date_published": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.author_id.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.de-AT": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.fi-FI": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "phases.open_idea_phase_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.cost": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.body.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.ignore_email": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "phases.community_monitor_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.consponsor_ids.description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.proposals.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.mi": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.topic.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.trust_in_government.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.expired_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.ga-IE": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.terms_and_conditions_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.personal_data_explanation_private": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.mobility": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.author_id": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.image_url": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "projects.open_idea_project_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.quality_of_life": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.cy-GB": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.safety_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.accepted": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.labels.label_3": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.location.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_field_options.gender.female": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.petition.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.overall_value.title": {
+  "confirmations_mailer.send_confirmation_code.confirm_email_address": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -644,42 +19,7 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "locales.fr-FR": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.health_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.hu-HU": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.author_fullname": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.first_name": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.service_delivery": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.community": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.infopage_title": {
+  "confirmations_mailer.send_confirmation_code.did_you_receive_this_email_in_error": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -689,12 +29,37 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.linear_scale_print_description": {
+  "confirmations_mailer.send_confirmation_code.header": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_fields.community_monitor.questions.employment_opportunities.title": {
+  "confirmations_mailer.send_confirmation_code.header_message": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "confirmations_mailer.send_confirmation_code.ignore_email": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "confirmations_mailer.send_confirmation_code.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "confirmations_mailer.send_confirmation_code.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "confirmations_mailer.send_confirmation_code.thanks_for_signing_up1": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "confirmations_mailer.send_confirmation_code.the_link_is_valid_for": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -704,37 +69,7 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.sentiment_linear_scale_print_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.pl-PL": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.longitude": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.this_answer": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.labels.label_2": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.budget": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "reset_password_mailer.send_reset_password.message_you_reset_your_password": {
+  "custom_field_options.gender.female": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -744,27 +79,12 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "voting_method.default_voting_term_singular": {
+  "custom_field_options.gender.unspecified": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.threshold_reached": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.services": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.registration_completed_at": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.question_categories.service_delivery": {
+  "custom_fields.community_monitor.form_end.button_text": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -774,102 +94,47 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.optional": {
+  "custom_fields.community_monitor.labels.label_2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_fields.community_monitor.questions.place_to_live.title": {
+  "custom_fields.community_monitor.labels.label_3": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.polygon_print_description": {
+  "custom_fields.community_monitor.labels.label_4": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "user_blocked_mailer.send_user_blocked_email.preheader": {
+  "custom_fields.community_monitor.labels.label_5": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.date_print_description": {
+  "custom_fields.community_monitor.question_categories.governance_and_trust": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.manual_votes": {
+  "custom_fields.community_monitor.question_categories.other": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "topics.waste_description": {
+  "custom_fields.community_monitor.question_categories.quality_of_life": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "locales.tr-TR": {
+  "custom_fields.community_monitor.question_categories.service_delivery": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "topics.governance_and_trust": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "projects.published_projects": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.topic_ids.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.picks": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "events.council_meeting_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.form_end_page.title_text_3": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.services_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.permission": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.home.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.assignee_fullname": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.inclusion_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.health": {
+  "custom_fields.community_monitor.questions.access_to_parks.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -884,117 +149,42 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_forms.categories.main_content.story.title": {
+  "custom_fields.community_monitor.questions.employment_opportunities.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.default_select_field.title": {
+  "custom_fields.community_monitor.questions.overall_value.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_fields.ideas.uploads_page.title": {
+  "custom_fields.community_monitor.questions.place_to_live.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.point_print_description": {
+  "custom_fields.community_monitor.questions.quality_of_services.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.expired": {
+  "custom_fields.community_monitor.questions.responsiveness_of_officials.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.prescreening_description": {
+  "custom_fields.community_monitor.questions.sense_of_safety.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.proposed": {
+  "custom_fields.community_monitor.questions.transparency_of_money_spent.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.participants": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.email": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.lv-LV": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.title.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.preheader": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.form_end.button_text": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.ca-ES": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.education_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.nl-NL": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.hr-HR": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.details_page.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.kl-GL": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.the_link_is_valid_for": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.ro-RO": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.sentiment_linear_scale_print_labels": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.question_categories.quality_of_life": {
+  "custom_fields.community_monitor.questions.trust_in_government.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1004,12 +194,137 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.page": {
+  "custom_fields.ideas.attachments.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.rejected": {
+  "custom_fields.ideas.author_id.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.body.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.body_page.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.budget.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.consponsor_ids.description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.consponsor_ids.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.details_page.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.images.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.location.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.other_input_field.print_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.other_input_field.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.proposed_budget.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.title.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.topic_ids.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.ideas.uploads_page.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.users.birthyear.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.users.domicile.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_fields.users.gender.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.comment.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.contribution.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.idea.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.initiative.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.issue.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.option.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.petition.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "custom_forms.categories.main_content.post.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1019,7 +334,7 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.rejected_description": {
+  "custom_forms.categories.main_content.proposal.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1029,22 +344,222 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "locales.sv-SE": {
+  "custom_forms.categories.main_content.response.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "static_pages.privacy_policy_body": {
+  "custom_forms.categories.main_content.story.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.implemented": {
+  "custom_forms.categories.main_content.suggestion.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_forms.categories.main_content.issue.title": {
+  "custom_forms.categories.main_content.topic.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "errors.messages.in_the_past": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "errors.messages.max_must_be_greater_than_min_characters": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "errors.messages.max_must_be_greater_than_or_equal_to_min_select_count": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "events.council_meeting_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "events.council_meeting_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.default_select_field.option1": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.default_select_field.option2": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.default_select_field.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.form_end_page.description_text_3": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.form_end_page.title_text_3": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.form_user_page.title_text": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.by_checking_this_box": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_as_many": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_at_least": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_at_most": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_between": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_exactly.one": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.choose_exactly.other": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.date_print_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.date_published": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.email_address": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.first_name": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.instructions": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.last_name": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.line_print_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.linear_scale_print_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.logic_go_to_section": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_if_answered_go_to": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.logic_section": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "form_builder.pdf_export.matrix_print_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.optional": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.page": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.permission": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.personal_data": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.personal_data_explanation_private": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.personal_data_explanation_public": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.point_print_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "form_builder.pdf_export.polygon_print_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1059,158 +574,27 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.votes_count": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  }
-
-  "custom_fields.users.gender.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.viewed": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.community_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.answered": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.header": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.ar-MA": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "phases.native_survey_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.likes_count": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.es-ES": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.sr-SP": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "time.am": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.public_space": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.latitude": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.culture": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.subject": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.technology": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.other_input_field.print_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.lb-LU": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.privacy_policy_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.anonymous": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.status": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "projects.open_idea_project_title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.en": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
   "form_builder.pdf_export.select_print_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "topics.technology_description": {
+  "form_builder.pdf_export.sentiment_linear_scale_print_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.user_data": {
+  "form_builder.pdf_export.sentiment_linear_scale_print_labels": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.line_print_description": {
+  "form_builder.pdf_export.this_answer": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.input_url": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "errors.messages.in_the_past": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.by_checking_this_box": {
+  "form_builder.pdf_export.unsupported_field": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1220,172 +604,52 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "time.formats.hour_of_day": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.attachments": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "form_builder.pdf_export.choose_at_most": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "static_pages.infopage_body": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.waste": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.title_user_blocked": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "reset_password_mailer.send_reset_password.title_reset_your_password": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.nb-NO": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "confirmations_mailer.send_confirmation_code.confirm_email_address": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user.anon_scheme.animals": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
   "form_builder.pdf_export.write_in_language": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "static_pages.faq_title": {
+  "ics_calendar_event.event_details": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "projects.open_idea_project_description_preview": {
+  "idea_statuses.accepted": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_fields.community_monitor.labels.label_5": {
+  "idea_statuses.accepted_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.default_select_field.option2": {
+  "idea_statuses.answered": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "custom_fields.ideas.proposed_budget.title": {
+  "idea_statuses.answered_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.choose_exactly.one": {
+  "idea_statuses.expired": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "idea_statuses.under_consideration": {
+  "idea_statuses.expired_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "locales.el-GR": {
+  "idea_statuses.implemented": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "locales.en-CA": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.nl-BE": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "nav_bar_items.all_input.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.public_space_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "user_blocked_mailer.send_user_blocked_email.you_can_sign_in_again_from": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.submitted_at": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.education": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.es-CL": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "topics.other_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.body_page.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "symbols.outside": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_forms.categories.main_content.idea.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.community_monitor.questions.sense_of_safety.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "idea_statuses.under_consideration_description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.project": {
+  "idea_statuses.implemented_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1395,47 +659,117 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "confirmations_mailer.send_confirmation_code.thanks_for_signing_up1": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.description": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "xlsx_export.column_headers.location": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "custom_fields.ideas.consponsor_ids.title": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
-  "locales.en-IE": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.526133Z",
-    "verified_by": "Edwin Kato"
-  },
   "idea_statuses.ineligible_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.choose_exactly.other": {
+  "idea_statuses.prescreening": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "xlsx_export.column_headers.comments_count": {
+  "idea_statuses.prescreening_description": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.pdf_export.instructions": {
+  "idea_statuses.proposed": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.proposed_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.rejected": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.rejected_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.threshold_reached": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.threshold_reached_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.under_consideration": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.under_consideration_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.viewed": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "idea_statuses.viewed_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.ar-MA": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.ar-SA": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.ca-ES": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.cy-GB": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.da-DK": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.de-AT": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.de-DE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.el-GR": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.en": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.en-CA": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
@@ -1445,7 +779,702 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
-  "form_builder.default_select_field.option1": {
+  "locales.en-IE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.es-CL": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.es-ES": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.fi-FI": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.fr-BE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.fr-FR": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.ga-IE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.hr-HR": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.hu-HU": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.it-IT": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.kl-GL": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.lb-LU": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.lv-LV": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.mi": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.nb-NO": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.nl-BE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.nl-NL": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.pl-PL": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.pt-BR": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.ro-RO": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.sr-Latn": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.sr-SP": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.sv-SE": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "locales.tr-TR": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.about.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.all_input.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.events.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.faq.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.home.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.projects.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "nav_bar_items.proposals.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "phases.community_monitor_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "phases.native_survey_button": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "phases.native_survey_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "phases.open_idea_phase_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "project_copy.title_suffix": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "projects.open_idea_project_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "projects.open_idea_project_description_preview": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "projects.open_idea_project_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "projects.published_projects": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "reset_password_mailer.send_reset_password.cta_reset_password": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "reset_password_mailer.send_reset_password.message_you_reset_your_password": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "reset_password_mailer.send_reset_password.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "reset_password_mailer.send_reset_password.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "reset_password_mailer.send_reset_password.title_reset_your_password": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.faq_body": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.faq_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.infopage_body": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.infopage_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.privacy_policy_body": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.privacy_policy_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.terms_and_conditions_body": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "static_pages.terms_and_conditions_title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "symbols.outside": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "time.am": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "time.formats.hour_of_day": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "time.pm": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.community": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.community_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.culture": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.culture_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.economy": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.economy_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.education": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.education_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.governance_and_trust": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.health": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.health_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.housing": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.housing_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.inclusion": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.inclusion_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.mobility": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.mobility_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.nature": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.nature_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.other": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.other_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.public_space": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.public_space_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.quality_of_life": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.safety": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.safety_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.service_delivery": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.services": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.services_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.sustainability": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.sustainability_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.technology": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.technology_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.waste": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "topics.waste_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user.anon_first_name": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user.anon_scheme.animals": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.for_more_information": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.paragraph_1_with_reason": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.paragraph_1_without_reason": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.title_user_blocked": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "user_blocked_mailer.send_user_blocked_email.you_can_sign_in_again_from": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "voting_method.default_voting_term_plural": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "voting_method.default_voting_term_singular": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.anonymous": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.assignee_email": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.assignee_fullname": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.attachments": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.author_email": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.author_fullname": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.author_id": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.budget": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.comments_count": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.cost": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.created_at": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.dislikes_count": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.email": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.first_name": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.image_url": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.imported": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.689210Z",
+    "verified_by": "Jelena"
+  },
+  "xlsx_export.column_headers.input_id": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.input_url": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.last_name": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.latitude": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.likes_count": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.location": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.longitude": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.manual_votes": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.neutral_reactions_count": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.participants": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.picks": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.project": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.published_at": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.registration_completed_at": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.status": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.submitted_at": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.tags": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.user_data": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.526133Z",
+    "verified_by": "Edwin Kato"
+  },
+  "xlsx_export.column_headers.votes_count": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"

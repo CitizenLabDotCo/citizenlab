@@ -13,7 +13,6 @@ import { RouteType } from 'routes';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -39,7 +38,6 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
 
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const topBarTitle =
     localize(project?.data.attributes.title_multiloc) + // TODO: Fix this the next time the file is edited.
@@ -51,7 +49,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const backPath: RouteType =
     projectId &&
     phaseId &&
-    getBackPath(projectId, phaseId, participationMethod, phaseInsightsEnabled);
+    getBackPath(projectId, phaseId, participationMethod);
 
   return (
     <Box

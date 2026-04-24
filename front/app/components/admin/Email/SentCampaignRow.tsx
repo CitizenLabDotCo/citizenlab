@@ -7,9 +7,10 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import moment from 'moment';
 import { RouteType } from 'routes';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -39,6 +40,8 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
       : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
   return (
     <Row id={campaign.id}>
@@ -47,23 +50,26 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <Text m="0px" fontSize="s">
-            <FormattedDate value={campaign.attributes.updated_at} />
-            &nbsp;
-            <FormattedTime value={campaign.attributes.updated_at} />
-          </Text>
           <StatusLabel
             backgroundColor={colors.success}
             text={<FormattedMessage {...messages.sent} />}
           />
+
+          <Text as="span" fontSize="base" mb="0px" color="textSecondary">
+            {moment(campaign.attributes.updated_at).tz(timeZone).format('LLL')}
+          </Text>
+
           {/* Only display project name in the global messaging tab */}
           {context === 'global' && project && (
-            <Text m="0px" fontSize="s">
-              {formatMessage(messages.project)}:{' '}
-              {/* TODO: Fix this the next time the file is edited. */}
-              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-              {localize(project?.data.attributes.title_multiloc)}
-            </Text>
+            <>
+              <Text as="span" mb="0px" color="textSecondary">
+                &bull;
+              </Text>
+              <Text as="span" fontSize="base" mb="0px" color="textSecondary">
+                {formatMessage(messages.project)}:{' '}
+                {localize(project.data.attributes.title_multiloc)}
+              </Text>
+            </>
           )}
         </Box>
       </Box>

@@ -19,11 +19,11 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
 
       participations_in_period = participations(
-        start_date,
-        end_date,
+        start_at,
+        end_at,
         project_id: project_id,
         exclude_roles: exclude_roles
       )
@@ -51,14 +51,15 @@ module ReportBuilder
         participants_whole_period: participants_whole_period,
         participation_rate_whole_period: participation_rate_as_percent(
           participants_whole_period,
-          start_date,
-          end_date,
+          start_at,
+          end_at,
           project_id: project_id,
           exclude_roles: exclude_roles
         )
       }
 
       if compare_start_at && compare_end_at
+        compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         participants_compared_period = participations(
           compare_start_at,
           compare_end_at,
@@ -81,13 +82,13 @@ module ReportBuilder
     end
 
     def participations(
-      start_date,
-      end_date,
+      start_at,
+      end_at,
       project_id: nil,
       exclude_roles: nil
     )
       participations = Analytics::FactParticipation
-        .where(dimension_date_created_id: start_date..end_date)
+        .where(dimension_date_created_id: start_at...end_at)
 
       if project_id.present?
         participations = participations
@@ -105,8 +106,8 @@ module ReportBuilder
       participations
     end
 
-    def participation_rate_as_percent(participants, start_date, end_date, project_id: nil, exclude_roles: nil)
-      visits_service = Insights::VisitsService.new(project_id, start_at: start_date, end_at: end_date, exclude_roles: exclude_roles)
+    def participation_rate_as_percent(participants, start_at, end_at, project_id: nil, exclude_roles: nil)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
       visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (participants / visitors.to_f)
     end

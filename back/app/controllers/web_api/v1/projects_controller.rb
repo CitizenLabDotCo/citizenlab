@@ -53,11 +53,20 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_followers ||= {}
 
+    publication_email_enabled_per_project = EmailCampaigns::Campaigns::ProjectPublished
+      .where(context_id: @projects.map(&:id))
+      .to_h { |campaign| [campaign.context_id, campaign.enabled] }
+
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      publication_email_enabled_per_project: publication_email_enabled_per_project,
+      # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
+      # AssureCampaignsService on tenant finalization, but isn't guaranteed in every environment
+      # (notably test fixtures), so we fall back to treating a missing global campaign as enabled.
+      global_publication_email_enabled: EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
     }
 
     render json: linked_json(
@@ -283,8 +292,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     sidefx.before_update(@project, current_user)
 
+    publication_email_enabled = params.dig(:project, :publication_email_enabled)
+
     if save_project(@project)
-      sidefx.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: jsonapi_serializer_params,
