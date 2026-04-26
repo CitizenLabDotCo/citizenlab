@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors, ILinks, SupportedLocale } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
+import { IJob } from 'api/background_jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -16,11 +16,6 @@ interface RequestParams {
   pages_per_form?: number;
 }
 
-interface JobIdResponse {
-  data: IBackgroundJobData[];
-  links: ILinks;
-}
-
 const addOfflineIdeas = async ({
   phase_id,
   file,
@@ -28,8 +23,8 @@ const addOfflineIdeas = async ({
   locale,
   personal_data,
   pages_per_form,
-}: RequestParams): Promise<JobIdResponse> =>
-  fetcher<JobIdResponse>({
+}: RequestParams): Promise<IJob> =>
+  fetcher<IJob>({
     path: `/phases/${phase_id}/importer/bulk_create_async/idea/${format}`,
     action: 'post',
     body: { import: { file, locale, personal_data, pages_per_form } },
@@ -38,7 +33,7 @@ const addOfflineIdeas = async ({
 const useAddOfflineIdeasAsync = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<JobIdResponse, CLErrors, RequestParams>({
+  return useMutation<IJob, CLErrors, RequestParams>({
     mutationFn: addOfflineIdeas,
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
