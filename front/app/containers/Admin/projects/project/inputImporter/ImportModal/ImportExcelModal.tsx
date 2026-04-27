@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed } from 'yup';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddImportedIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
@@ -39,10 +38,9 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (jobs: IBackgroundJobData[]) => void;
 }
 
-const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
+const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
@@ -77,7 +75,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
     if (!phaseId) return;
 
     try {
-      const response = await addOfflineIdeas({
+      await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
         format: 'xlsx',
@@ -85,7 +83,6 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
         locale,
       });
 
-      onImport(response.data);
       onClose();
       methods.reset();
     } catch (e) {
@@ -132,7 +129,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".xlsx" />
+              <SingleFileUploader name="file" accept=".xlsx" shouldUnregister />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">
