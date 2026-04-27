@@ -13,7 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder',
     defaultMessage: 'Folder',
   },
-
+  root: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root',
+    defaultMessage: 'Root level',
+  },
   spaceDescription: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceDescription',
     defaultMessage: 'The project will be inside of a space.',
