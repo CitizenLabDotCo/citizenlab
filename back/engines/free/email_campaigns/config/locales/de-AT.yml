@@ -529,7 +529,7 @@ de-AT:
       space_title: Beispiel-Space
     project_folder_moderation_rights_received:
       cta_button: Diesen Ordner anzeigen
-      event_description: 'Sie haben Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
+      event_description: 'Du hast Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
       no_projects: Noch keine Projekte erhalten
       preheader: Ein Admin der Beteiligungsplattform %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt
       subject: Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt
@@ -650,7 +650,7 @@ de-AT:
       event_description: Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform %{organizationName} passiert ist.
       multiple_notifications: '%{notifCount} Benachrichtigungen'
       no_notifications: Keine Benachrichtigungen
-      no_unread_notifications: Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!
+      no_unread_notifications: Du hast keine ungelesenen Benachrichtigungen. Besuche die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!
       one_notification: 1 Benachrichtigung
       preheader: Wöchentliche Übersicht über %{organizationName}
       subject: Ihre Aktivität auf der Beteiligungsplattform %{organizationName}
@@ -661,16 +661,16 @@ de-AT:
       today_by_author: Heute von %{author}
       trending_text: Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei beliebtesten Beiträge und was die Leute darüber sagen.
       trending_title: Beliebt
-      unread_notifications: Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist.
+      unread_notifications: Du hast ungelesene Benachrichtigungen. Besuche die Plattform, um zu erfahren, was los ist.
       x_days_ago_by_author: Vor %{x} Tagen von %{author}
       yesterday_by_author: Gestern von %{author}
     voting_basket_not_submitted:
       cta_button: Optionen ansehen und abstimmen
       cta_message: Auf den Button unten klicken, um die ausgewählten Optionen abzuschicken
-      event_description: Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.
-      preheader: Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben
-      subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
-      title: Sie haben Ihre Stimme nicht abgegeben
+      event_description: Du hast ein paar Optionen für %{contextTitle} ausgewählt, aber du hast deine Auswahl nicht abgeschickt.
+      preheader: Du hast deine Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben
+      subject: '%{organizationName}: Du hast deine Stimmen nicht abgegeben'
+      title: Du hast deine Stimme nicht abgegeben
     voting_basket_submitted:
       cta_button: Siehe abgegebene Stimmen
       cta_message: Klicken Sie auf den Button unten, um teilzunehmen
