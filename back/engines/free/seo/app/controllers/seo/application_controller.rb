@@ -11,11 +11,9 @@ module Seo
     layout false
 
     def sitemap
-      visible_statuses = AdminPublication.with_status('published', 'archived')
-
       @projects = Pundit.policy_scope(nil, Project)
-        .joins(:admin_publication).merge(visible_statuses)
-        .where(visible_to: 'public', listed: true)
+        .joins(:admin_publication)
+        .where(listed: true)
         .select(
           :'projects.id', :'projects.slug', :'projects.visible_to',
           :'projects.updated_at', :'admin_publications.publication_status',
@@ -23,7 +21,7 @@ module Seo
         )
 
       @folders = Pundit.policy_scope(nil, ProjectFolders::Folder)
-        .joins(:admin_publication).merge(visible_statuses)
+        .joins(:admin_publication)
         .select(
           :'project_folders_folders.id', :'project_folders_folders.slug',
           :'project_folders_folders.updated_at', :'admin_publications.publication_status',

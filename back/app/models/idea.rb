@@ -212,7 +212,7 @@ class Idea < ApplicationRecord
   end)
 
   scope :with_project_publication_status, lambda { |status|
-    joins(project: [:admin_publication]).merge(AdminPublication.with_status(status))
+    where(project: Project.where(admin_publication: AdminPublication.with_status(status)))
   }
 
   scope :order_new, ->(direction = :desc) { order(published_at: direction) }

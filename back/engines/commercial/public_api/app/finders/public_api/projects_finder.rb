@@ -40,9 +40,7 @@ module PublicApi
     def filter_by_publication_status(scope)
       return scope unless @publication_status
 
-      scope
-        .joins(:admin_publication)
-        .merge(AdminPublication.with_status(@publication_status))
+      scope.where(admin_publication: AdminPublication.with_status(@publication_status))
     end
 
     # Select only the projects that have all the specified topics.
