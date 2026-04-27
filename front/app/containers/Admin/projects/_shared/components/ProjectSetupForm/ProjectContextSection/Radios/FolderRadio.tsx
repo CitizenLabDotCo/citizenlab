@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Radio, Error } from '@citizenlab/cl2-component-library';
 
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
 import Highlighter from 'components/Highlighter';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { LabelHeaderDescription } from '../../../labels';
 import messages from '../messages';
@@ -15,10 +15,13 @@ import { Props } from '../types';
 
 const FolderRadio = ({
   projectContext,
-  onSetContext,
   folder_id,
+  error,
+  onSetContext,
   onChangeFolder,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <>
       <Radio
@@ -46,6 +49,7 @@ const FolderRadio = ({
           </Highlighter>
         </Box>
       )}
+      {error && <Error text={formatMessage(messages.folderError)} />}
     </>
   );
 };

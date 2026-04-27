@@ -43,4 +43,12 @@ export default defineMessages({
     defaultMessage:
       'The project will not be in a folder. If you choose this option, you will need approval from an admin to publish this project.',
   },
+  spaceError: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceError',
+    defaultMessage: 'Please select a space.',
+  },
+  folderError: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError',
+    defaultMessage: 'Please select a folder.',
+  },
 });

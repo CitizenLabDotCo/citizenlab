@@ -113,6 +113,8 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
+  const [projectContextError, setProjectContextError] = useState(false);
+
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
@@ -357,6 +359,7 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     const formIsValid = !hasTitleError;
 
     if (!validateProjectContext(projectContext, projectAttrs)) {
+      setProjectContextError(true);
       return false;
     }
 
@@ -505,18 +508,22 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
                 ? 'editing-project-in-root'
                 : 'editing-project-not-in-root'
             }
+            error={projectContextError}
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
                 space_id: null,
                 folder_id: null,
               });
               setProjectContext(context);
+              setProjectContextError(false);
             }}
             onChangeSpace={(space_id) => {
               handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+              setProjectContextError(false);
             }}
             onChangeFolder={(folder_id) => {
               handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+              setProjectContextError(false);
             }}
           />
 

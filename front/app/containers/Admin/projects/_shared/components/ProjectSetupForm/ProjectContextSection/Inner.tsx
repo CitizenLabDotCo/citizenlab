@@ -17,7 +17,11 @@ import RootRadio from './Radios/RootRadio';
 import SpaceRadio from './Radios/SpaceRadio';
 import { Props, FormSituation } from './types';
 
-const Inner = (props: Props & { formSituation: FormSituation }) => {
+const Inner = (
+  props: Props & {
+    formSituation: FormSituation;
+  }
+) => {
   const { data: authUser } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   if (!authUser) return null;

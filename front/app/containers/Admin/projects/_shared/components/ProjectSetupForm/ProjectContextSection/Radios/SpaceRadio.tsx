@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Error, Radio } from '@citizenlab/cl2-component-library';
 
 import useSpaces from 'api/spaces/useSpaces';
 
 import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { LabelHeaderDescription } from '../../../labels';
 import messages from '../messages';
@@ -14,10 +14,12 @@ import { Props } from '../types';
 
 const SpaceRadio = ({
   projectContext,
-  onSetContext,
   space_id,
+  error,
+  onSetContext,
   onChangeSpace,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: spaces } = useSpaces();
   if (!spaces) return null;
 
@@ -47,6 +49,7 @@ const SpaceRadio = ({
           />
         </Box>
       )}
+      {error && <Error text={formatMessage(messages.spaceError)} />}
     </>
   );
 };

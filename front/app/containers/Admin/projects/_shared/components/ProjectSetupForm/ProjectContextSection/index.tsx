@@ -11,7 +11,9 @@ import messages from './messages';
 import { Props, FormSituation } from './types';
 
 const ProjectContextSection = (
-  props: Props & { formSituation: FormSituation }
+  props: Props & {
+    formSituation: FormSituation;
+  }
 ) => {
   return (
     <Box mb="40px">

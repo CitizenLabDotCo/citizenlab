@@ -90,6 +90,8 @@ const ProjectSetupForm = ({ authUser }: Props) => {
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
+  const [projectContextError, setProjectContextError] = useState(false);
+
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
@@ -263,6 +265,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     const formIsValid = !hasTitleError;
 
     if (!validateProjectContext(projectContext, projectAttrs)) {
+      setProjectContextError(true);
       return false;
     }
 
@@ -328,18 +331,22 @@ const ProjectSetupForm = ({ authUser }: Props) => {
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
             formSituation="creating"
+            error={projectContextError}
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
                 space_id: null,
                 folder_id: null,
               });
               setProjectContext(context);
+              setProjectContextError(false);
             }}
             onChangeSpace={(space_id) => {
               handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+              setProjectContextError(false);
             }}
             onChangeFolder={(folder_id) => {
               handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+              setProjectContextError(false);
             }}
           />
 
