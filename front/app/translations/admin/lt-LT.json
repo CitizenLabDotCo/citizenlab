@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Šie duomenys buvo importuoti anonimiškai.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} įrašų nepavyko patvirtinti. Patikrinkite, ar kiekviename įraše nėra validavimo problemų.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Vietovė:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Dar nėra ką peržiūrėti. Spustelėkite „Importuoti skenuotus dokumentus“, kad importuotumėte PDF failą su nuskenuotomis formomis arba „Excel“ failą su įrašais.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Dar nėra ką peržiūrėti. Spustelėkite „Importuoti failą“, kad importuotumėte „Excel“ failą su įrašais.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Įvestis",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nepavyksta parodyti importuoto failo. Importuoto failo peržiūra galima tik importuojant PDF failus.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Etapas:",

@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Disse innspillene ble importert anonymt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} innspill kunne ikke godkjennes. Vennligst sjekk hvert enkelt innspill for valideringsfeil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lokaliteten:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Ingenting å gjennomgå ennå. Klikk på «Importer skanninger» for å importere en PDF-fil som inneholder skannede innspillsskjemaer eller en Excel-fil som inneholder innspill.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Ingenting å gjennomgå ennå. Klikk på «Importer fil» for å importere en Excel-fil som inneholder innspill.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Inndata",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan ikke vise den importerte filen. Visning av importerte filer er bare tilgjengelig for PDF-import.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",

@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Ez a bejegyzés névtelenül lett importálva.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} bejegyzést nem sikerült jóváhagyni. Kérjük, ellenőrizze az egyes bejegyzések érvényesítési hibáit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Területi beállítás:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Még nincs mit áttekinteni. Kattintson a „Szkennelt dokumentumok importálása” gombra szkennelt űrlapokat tartalmazó PDF-fájl vagy bejegyzéseket tartalmazó Excel-fájl importálásához.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Még nincs mit áttekinteni. Kattintson a „Fájl importálása” gombra egy bejegyzéseket tartalmazó Excel-fájl importálásához.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Hozzászólás",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Az importált fájl nem jeleníthető meg. Az importált fájlok megtekintése csak PDF-importálás esetén érhető el.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Szakasz:",

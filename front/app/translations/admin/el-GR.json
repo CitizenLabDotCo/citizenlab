@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Αυτή η καταχώριση εισήχθη ανώνυμα.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} καταχωρίσεις δεν μπόρεσαν να εγκριθούν. Παρακαλούμε ελέγξτε κάθε καταχώριση για σφάλματα επικύρωσης.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Τοπικές ρυθμίσεις:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Δεν υπάρχει τίποτα προς έλεγχο ακόμα. Κάντε κλικ στο «Εισαγωγή σαρώσεων» για να εισαγάγετε ένα αρχείο PDF που περιέχει σαρωμένες φόρμες καταχώρισης ή ένα αρχείο Excel που περιέχει καταχωρίσεις.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Δεν υπάρχει τίποτα προς έλεγχο ακόμα. Κάντε κλικ στο «Εισαγωγή αρχείου» για να εισαγάγετε ένα αρχείο Excel που περιέχει καταχωρίσεις.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Εισροή",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Αδυναμία εμφάνισης του εισαγόμενου αρχείου. Η προβολή εισαγόμενου αρχείου είναι διαθέσιμη μόνο για εισαγωγές PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Φάση:",

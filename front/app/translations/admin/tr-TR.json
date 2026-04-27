@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Bu girdi anonim olarak aktarılmıştır.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} giriş onaylanamadı. Lütfen her bir girişi doğrulama sorunları için kontrol edin.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Yerel:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Henüz incelenecek bir şey yok. Taranmış girdi formlarını içeren bir PDF dosyasını veya girdileri içeren bir Excel dosyasını içe aktarmak için \"Taramaları içe aktar\"a tıklayın.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Henüz incelenecek bir şey yok. Girdileri içeren bir Excel dosyasını içe aktarmak için \"Dosya içe aktar\"a tıklayın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Giriş",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "İçe aktarılan dosya görüntülenemiyor. İçe aktarılan dosya görüntüleme yalnızca PDF içe aktarmaları için kullanılabilir.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Aşama:",

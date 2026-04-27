@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dane te zostały zaimportowane anonimowo.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} zgłoszeń nie mogło zostać zatwierdzonych. Proszę sprawdzić każde zgłoszenie pod kątem błędów walidacji.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lokalizacja:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "Nie ma jeszcze nic do sprawdzenia. Kliknij „Importuj skany”, aby zaimportować plik PDF zawierający zeskanowane formularze zgłoszeniowe lub plik Excel zawierający zgłoszenia.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "Nie ma jeszcze nic do sprawdzenia. Kliknij „Importuj plik”, aby zaimportować plik Excel zawierający zgłoszenia.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Wejście",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nie można wyświetlić zaimportowanego pliku. Wyświetlanie zaimportowanego pliku jest dostępne tylko w przypadku importu plików PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",

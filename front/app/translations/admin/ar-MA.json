@@ -1583,8 +1583,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "تم استيراد هذه المساهمة بشكل مجهول.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "تعذر قبول {numNotApproved} من المدخلات. يرجى التحقق من كل مدخل بحثاً عن مشاكل في التحقق.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "اللغة:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet4": "مازال ما كاين والو للمراجعة. اضغط على \"استيراد النسخ الممسوحة\" باش تستورد ملف PDF فيه استمارات مساهمة ممسوحة ضوئياً ولا ملف Excel فيه مساهمات.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": "مازال ما كاين والو للمراجعة. اضغط على \"استيراد ملف\" باش تستورد ملف Excel فيه مساهمات.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "مساهمة",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "تعذر عرض الملف المستورد. عرض الملفات المستوردة متاح فقط لملفات PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "المرحلة:",
