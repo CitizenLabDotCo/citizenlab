@@ -47,9 +47,9 @@ const SpaceRadio = ({
               onChangeSpace(space_id);
             }}
           />
+          {error && <Error text={formatMessage(messages.spaceError)} />}
         </Box>
       )}
-      {error && <Error text={formatMessage(messages.spaceError)} />}
     </>
   );
 };

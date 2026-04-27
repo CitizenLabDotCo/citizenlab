@@ -47,9 +47,9 @@ const FolderRadio = ({
               }}
             />
           </Highlighter>
+          {error && <Error text={formatMessage(messages.folderError)} />}
         </Box>
       )}
-      {error && <Error text={formatMessage(messages.folderError)} />}
     </>
   );
 };
