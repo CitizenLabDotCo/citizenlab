@@ -2,7 +2,6 @@ export interface Props {
   projectContext: ProjectContext;
   space_id?: string | null;
   folder_id?: string | null;
-  formSituation: FormSituation;
   onSetContext: (context: ProjectContext) => void;
   onChangeSpace: (space_id: string | null) => void;
   onChangeFolder: (folder_id: string | null) => void;

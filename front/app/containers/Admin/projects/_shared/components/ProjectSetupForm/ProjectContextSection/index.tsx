@@ -8,9 +8,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import Inner from './Inner';
 import messages from './messages';
-import { Props } from './types';
+import { Props, FormSituation } from './types';
 
-const ProjectContextSection = (props: Props) => {
+const ProjectContextSection = (
+  props: Props & { formSituation: FormSituation }
+) => {
   return (
     <Box mb="40px">
       <SubSectionTitle>

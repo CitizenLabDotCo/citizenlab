@@ -15,9 +15,9 @@ import ProjectFolderSelect from './ProjectFolderSelect';
 import FolderRadio from './Radios/FolderRadio';
 import RootRadio from './Radios/RootRadio';
 import SpaceRadio from './Radios/SpaceRadio';
-import { Props } from './types';
+import { Props, FormSituation } from './types';
 
-const Inner = (props: Props) => {
+const Inner = (props: Props & { formSituation: FormSituation }) => {
   const { data: authUser } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   if (!authUser) return null;
