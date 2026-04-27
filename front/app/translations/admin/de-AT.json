@@ -3431,7 +3431,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Nur Beiträge mit diesem Wert anzeigen",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatische Einblicke",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Auto-Insights sind nicht verfügbar, da diese Analyse mehr als 50 Fragen umfasst. Bei so vielen Fragen werden automatisierte Korrelationen unzuverlässig, weshalb wir sie nicht anzeigen.",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Automatische Einblicke sind nicht verfügbar, da diese Analyse mehr als 50 Fragen umfasst. Bei so vielen Fragen werden automatisierte Korrelationen unzuverlässig, weshalb wir sie nicht anzeigen.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Spaltenwerte",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Es gibt {count} Beispiele für diese Kombination.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Gefällt mir nicht",
