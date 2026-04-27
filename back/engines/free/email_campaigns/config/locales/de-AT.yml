@@ -425,7 +425,7 @@ de-AT:
     manual:
       preheader: Du hast Post von %{organizationName}
     manual_project_participants:
-      preheader: Sie haben Post von %{organizationName}
+      preheader: Du hast Post von %{organizationName}
     mention_in_comment:
       cta_reply_to: Antworten Sie %{commentAuthor}
       event_description: "%{commentAuthorFull} hat dich in seinem Kommentar zur Idee '%{post}' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren"
