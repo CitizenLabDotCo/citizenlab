@@ -44,9 +44,8 @@ describe ProjectFolders::SideFxProjectFolderService do
     it 'enqueues the transition job when a schedule is set' do
       scheduled_at = 1.day.from_now
       project_folder.assign_attributes(
-        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at }
+        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at, scheduled_by_id: user.id }
       )
-      service.before_update(project_folder, user)
       project_folder.save!
 
       expect { service.after_update(project_folder, user) }

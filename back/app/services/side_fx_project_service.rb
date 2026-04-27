@@ -48,10 +48,9 @@ class SideFxProjectService
     )
   end
 
-  def before_update(project, user)
+  def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
-    set_scheduled_by(project.admin_publication, user)
   end
 
   def after_update(project, user, publication_email_enabled: nil)
@@ -143,12 +142,6 @@ class SideFxProjectService
       campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
       campaign.update!(enabled: false)
     end
-  end
-
-  def set_scheduled_by(admin_pub, user)
-    return unless admin_pub.will_save_change_to_scheduled_status?
-
-    admin_pub.scheduled_by = admin_pub.scheduled_status.present? ? user : nil
   end
 
   def enqueue_scheduled_transition(admin_pub)

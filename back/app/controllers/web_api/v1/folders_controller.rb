@@ -71,7 +71,7 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
 
     if @project_folder.save
-      ProjectFolders::SideFxProjectFolderService.new.after_create(@project_folder, current_user)
+      sidefx.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
@@ -90,7 +90,7 @@ class WebApi::V1::FoldersController < ApplicationController
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
     if @project_folder.save
-      ProjectFolders::SideFxProjectFolderService.new.after_update(@project_folder, current_user)
+      sidefx.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
         params: jsonapi_serializer_params,
@@ -117,7 +117,7 @@ class WebApi::V1::FoldersController < ApplicationController
     end
 
     if frozen_folder.destroyed?
-      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
+      sidefx.after_destroy(frozen_folder, current_user)
       frozen_projects.each do |project|
         SideFxProjectService.new.after_destroy(project, current_user)
       end
@@ -128,6 +128,10 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   private
+
+  def sidefx
+    @sidefx ||= ProjectFolders::SideFxProjectFolderService.new
+  end
 
   def process_due_transition(publication)
     admin_pub = publication.admin_publication
@@ -142,9 +146,22 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def project_folder_params
-    params.require(:project_folder).permit(
-      policy(@project_folder || ProjectFolders::Folder.new).permitted_attributes
-    )
+    @project_folder_params ||= begin
+      attrs = policy(@project_folder || ProjectFolders::Folder.new).permitted_attributes
+
+      params.require(:project_folder).permit(attrs).tap do |folder_params|
+        admin_pub_attrs = folder_params[:admin_publication_attributes]
+        assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+      end
+    end
+  end
+
+  # Automatically set the scheduled_by_id according to the new scheduled status.
+  def assign_scheduled_by(admin_publication_attrs)
+    return unless admin_publication_attrs.key?(:scheduled_status)
+
+    admin_publication_attrs[:scheduled_by_id] =
+      admin_publication_attrs[:scheduled_status].present? ? current_user.id : nil
   end
 
   def visible_children_count_by_parent_id
