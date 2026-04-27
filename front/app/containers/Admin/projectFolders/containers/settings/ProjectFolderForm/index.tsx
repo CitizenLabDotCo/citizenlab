@@ -148,6 +148,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -243,6 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleSpaceIdChange = (spaceId: string | null) => {
     setSubmitState('enabled');
+    setSpaceIdError(false);
     setSpaceId(spaceId);
   };
 
@@ -322,12 +324,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
 
-    if (!valid) {
-      setSubmitState('error');
-    }
-
     if (isSpaceModerator(authUser) && !spaceId) {
       valid = false;
+      setSpaceIdError(true);
+    }
+
+    if (!valid) {
+      setSubmitState('error');
     }
 
     return valid;
@@ -642,7 +645,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
 
-        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>

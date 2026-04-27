@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { Error, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useSpaces from 'api/spaces/useSpaces';
@@ -17,10 +17,11 @@ import messages from './messages';
 
 interface Props {
   spaceId?: string | null;
+  error?: boolean;
   onChange: (spaceId: string | null) => void;
 }
 
-const SpaceSelectSection = ({ spaceId, onChange }: Props) => {
+const SpaceSelectSection = ({ spaceId, error, onChange }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
@@ -52,6 +53,7 @@ const SpaceSelectSection = ({ spaceId, onChange }: Props) => {
       </SubSectionTitle>
 
       <SpaceSelect spaceId={spaceId} spaces={spaces.data} onChange={onChange} />
+      {error && <Error text={formatMessage(messages.pleaseSelectASpace)} />}
     </SectionField>
   );
 };
