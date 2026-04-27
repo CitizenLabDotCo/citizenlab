@@ -2,7 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
-  before_action :authorize_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
+  before_action :authorize_project, only: %i[create show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -214,11 +214,16 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
+    puts "irp34iut50yh"
     project = Project.new permitted_attributes(Project)
+    puts "irp34iut5ferkerog0yh"
     sidefx.before_create(project, current_user)
+    puts "irp34i2i30295804ut50yh"
 
     created = Project.transaction do
+      puts "irp34i2i30295804utfwejeaofea50yh"
       save_project(project).tap do |saved|
+        puts "3u2894jg40bjb"
         sidefx.after_create(project, current_user) if saved
       end
     end
