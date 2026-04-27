@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useRef } from 'react';
 
 import {
   Box,
@@ -40,6 +40,8 @@ const MultipleSelect = ({
   isSearchable,
 }: Props) => {
   const theme = useTheme();
+  const selectRef = useRef<any>(null);
+
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
   };
@@ -74,10 +76,33 @@ const MultipleSelect = ({
       event.stopPropagation();
     }
   };
+
+  const handleRemoveValue = (event: React.KeyboardEvent) => {
+    preventModalCloseOnEscape(event);
+
+    if (event.key === 'Enter') {
+      const focusedValue = selectRef.current?.state?.focusedValue;
+
+      if (focusedValue) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const currentValues = findFullOptionValues();
+        if (Array.isArray(currentValues)) {
+          const newValues = currentValues.filter(
+            (val) => val.value !== focusedValue.value
+          );
+          onChange(newValues);
+        }
+      }
+    }
+  };
+
   return (
     <Box onKeyDown={handleKeyDown}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <ReactSelect
+        ref={selectRef}
         id={id}
         inputId={inputId}
         className={className}
@@ -117,7 +142,7 @@ const MultipleSelect = ({
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
-        onKeyDown={preventModalCloseOnEscape}
+        onKeyDown={handleRemoveValue}
       />
     </Box>
   );
