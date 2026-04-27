@@ -672,7 +672,7 @@
   "app.components.VerificationModal.verifyYourIdentity": "Werden Sie verifizierte:r Bürger:in",
   "app.components.VoteControl.budgetingFutureEnabled": "Sie können Ihr Budget ab {enabledFromDate} zuweisen.\n",
   "app.components.VoteControl.budgetingNotPermitted": "Ein Bürgerhaushalt ist derzeit nicht möglich.",
-  "app.components.VoteControl.budgetingNotPossible": "Derzeit können keine Änderungen an Ihrem Budget vorgenommen werden.\n",
+  "app.components.VoteControl.budgetingNotPossible": "Derzeit können keine Änderungen an deinem Budget vorgenommen werden.",
   "app.components.VoteControl.budgetingNotVerified": "Bitte {verifyAccountLink}, um fortzufahren.\n",
   "app.components.VoteInputs._shared.currencyLeft1": "Du hast {budgetLeft} / {totalBudget} übrig",
   "app.components.VoteInputs._shared.numberOfCreditsLeft": "Du hast {votesLeft, plural, =0 {keine Guthaben mehr} other {# von {totalNumberOfVotes, plural, one {1 Guthaben} other {# Guthaben}} übrig}}.",
