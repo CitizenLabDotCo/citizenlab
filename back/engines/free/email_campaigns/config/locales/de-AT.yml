@@ -675,9 +675,9 @@ de-AT:
       cta_button: Siehe abgegebene Stimmen
       cta_message: Klicken Sie auf den Button unten, um teilzunehmen
       event_description: Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.
-      preheader: Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt
-      subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
-      title: Sie haben erfolgreich abgestimmt
+      preheader: Du hast erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt
+      subject: '%{organizationName}: Du hast erfolgreich abgestimmt'
+      title: Du hast erfolgreich abgestimmt
     voting_last_chance:
       cta_button: Auswählen
       event_description: <p>Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.</p><p>Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Handeln Sie jetzt und klicken Sie einfach auf die Schaltfläche unten, um teilzunehmen.</p><p>Dadurch erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihren Beitrag hinzuzufügen, der für die Entscheidung über die Zukunft dieses Projekts sehr wichtig ist.</p>
@@ -701,7 +701,7 @@ de-AT:
       title: '%{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
     welcome:
       cta_button: Plattform entdecken
-      event_description: Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.
+      event_description: Du hast dich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier kannst du im Dialog mit uns zu bestimmten Fragestellungen deine Gedanken austauschen, Ideen sammeln und Feedback geben.
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
       subject: Ihre Registrierung für die %{organizationName} Plattform
       title: Herzlich Willkommen!
