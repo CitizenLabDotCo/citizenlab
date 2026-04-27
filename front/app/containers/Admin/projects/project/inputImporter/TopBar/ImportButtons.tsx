@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import formSyncMessages from 'components/admin/FormSync/messages';
+import ExcelImportButton from 'components/admin/FormSync/components/ExcelImportButton';
+import PDFImportButton from 'components/admin/FormSync/components/PDFImportButton';
 import UpsellTooltip from 'components/UpsellTooltip';
-
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -31,49 +30,16 @@ const ImportButtons = ({
   return (
     <Box display="flex" gap="8px">
       <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
-        <Button
-          buttonStyle="text"
-          icon="upload-file"
-          onClick={onClickExcelImport}
-          disabled={!inputImporterAllowed}
-        >
-          <FormattedMessage {...formSyncMessages.importFile} />
-        </Button>
+        <ExcelImportButton
+          onClickExcelImport={onClickExcelImport}
+          inputImporterAllowed={inputImporterAllowed}
+        />
       </UpsellTooltip>
       {pdfImportSupported && (
-        <>
-          {printedFormsEnabled ? (
-            <Button
-              buttonStyle="admin-dark"
-              icon="form-sync"
-              onClick={onClickPDFImport}
-            >
-              <FormattedMessage {...formSyncMessages.importScans} />
-            </Button>
-          ) : (
-            <Tooltip
-              content={
-                <Box display="flex" flexDirection="column" gap="8px">
-                  <FormattedMessage
-                    {...formSyncMessages.unlockScanningTooltip1}
-                  />
-                  <FormattedMessage
-                    {...formSyncMessages.unlockScanningTooltip2}
-                  />
-                </Box>
-              }
-              theme="dark"
-            >
-              <Button
-                buttonStyle="admin-dark"
-                icon="lock"
-                style={{ cursor: 'not-allowed' }}
-              >
-                <FormattedMessage {...formSyncMessages.unlockScanning} />
-              </Button>
-            </Tooltip>
-          )}
-        </>
+        <PDFImportButton
+          printedFormsEnabled={printedFormsEnabled}
+          onClickPDFImport={onClickPDFImport}
+        />
       )}
     </Box>
   );

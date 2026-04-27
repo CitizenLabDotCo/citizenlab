@@ -10,7 +10,7 @@ import messages from '../messages';
 
 interface Props {
   onClickExcelImport?: () => void;
-  importerPath: string;
+  importerPath?: string;
   inputImporterAllowed: boolean;
 }
 
@@ -32,7 +32,7 @@ const ExcelImportButton = ({
     );
   }
 
-  return (
+  return importerPath ? (
     <ButtonWithLink
       buttonStyle="text"
       icon="upload-file"
@@ -41,7 +41,7 @@ const ExcelImportButton = ({
     >
       <FormattedMessage {...messages.importFile} />
     </ButtonWithLink>
-  );
+  ) : null;
 };
 
 export default ExcelImportButton;
