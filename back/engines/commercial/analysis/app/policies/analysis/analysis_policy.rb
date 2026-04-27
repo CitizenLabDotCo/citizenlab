@@ -6,7 +6,7 @@ module Analysis
       def resolve
         if user&.active? && user.admin?
           scope.all
-        elsif user&.active? && (user&.project_moderator? || user&.project_folder_moderator?)
+        elsif user&.active? && user&.moderator?
           projects = UserRoleService.new.moderatable_projects(user)
           phases = Phase.where(project: projects)
           scope.where(project: projects).or(scope.where(phase: phases))
@@ -17,7 +17,7 @@ module Analysis
     end
 
     def index?
-      active? && (admin? || user.project_folder_moderator? || user.project_moderator?)
+      active? && (admin? || user.moderator?)
     end
 
     def create?

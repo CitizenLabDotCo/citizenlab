@@ -8,7 +8,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    user&.admin? || user&.project_moderator?
+    active? && (user&.admin? || user&.moderator?)
   end
 
   def create?

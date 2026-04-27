@@ -81,7 +81,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def index_for_admin?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def votes_by_user_xlsx?
@@ -151,7 +151,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def participant_counts?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def shared_permitted_attributes
