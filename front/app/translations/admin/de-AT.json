@@ -416,7 +416,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Gib hier den Link zu deinem Konveio-Dokument an. Weitere Informationen zum Einrichten von Konveio findest du in unserem {supportArticleLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "Support-Artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/de/articles/527582-einbetten-von-konveio-pdf-dokumenten-zum-sammeln-von-feedback",
-  "app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
+  "app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip": "Diese Funktion ist in deiner aktuellen Lizenz nicht enthalten. Sprich mit deiner Kundenbetreuerin oder deinem Admin, um sie freizuschalten.",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Ein maximales Budget ist erforderlich",
   "app.components.app.containers.AdminPage.ProjectEdit.maxVotesPerOptionError": "Die maximale Anzahl der Stimmen pro Option muss kleiner oder gleich der Gesamtzahl der Stimmen sein",
   "app.components.app.containers.AdminPage.ProjectEdit.maxVotesRequired": "Eine maximale Anzahl von Stimmen ist erforderlich",
