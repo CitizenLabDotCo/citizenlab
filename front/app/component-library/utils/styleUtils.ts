@@ -461,7 +461,8 @@ export function quillEditedContent(
 
     .ql-image-align-left,
     .ql-iframe-align-left {
-      margin: 0 auto 1em 0;
+      float: left;
+      margin: 0 1em 1em 0;
     }
 
     .ql-image-align-center,
@@ -472,7 +473,8 @@ export function quillEditedContent(
 
     .ql-image-align-right,
     .ql-iframe-align-right {
-      margin: 0 0 1em auto;
+      float: right;
+      margin: 0 0 1em 1em;
     }
 
     .custom-button {
