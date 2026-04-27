@@ -5,13 +5,30 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publish',
     defaultMessage: 'Publish',
   },
-  approvalRequested: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvalRequested',
-    defaultMessage: 'Approval requested',
-  },
   approve: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve',
     defaultMessage: 'Approve',
+  },
+  approveTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approveTooltip2',
+    defaultMessage: 'Approving allows Project Managers to publish the project.',
+  },
+  requestApproval: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval',
+    defaultMessage: 'Request approval',
+  },
+  requestApprovalDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2',
+    defaultMessage:
+      'The project must be approved by an admin{inFolder, select, true { or one of the Folder Managers} other {}} before you can publish it. Click the button below to request approval.',
+  },
+  pendingApproval: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval',
+    defaultMessage: 'Waiting for approval',
+  },
+  pendingApprovalTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApprovalTooltip2',
+    defaultMessage: 'Project reviewers have been notified.',
   },
   scheduled: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduled',

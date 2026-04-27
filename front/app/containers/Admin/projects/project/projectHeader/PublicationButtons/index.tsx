@@ -13,31 +13,21 @@ import { usePermission } from 'utils/permissions';
 
 import ChangeStatusModal from './ChangeStatusModal';
 import messages from './messages';
+import ReviewFlow from './ReviewFlow';
 import ScheduleLaunchModal from './ScheduleLaunchModal';
 import tracks from './tracks';
 
 const getPublicationButton = ({
   publicationStatus,
   hasSchedule,
-  isPending,
-  canReview,
 }: {
   publicationStatus: PublicationStatus;
   hasSchedule: boolean;
-  isPending: boolean;
-  canReview: boolean;
 }) => {
   let text = messages.publish;
-  let icon: 'send' | 'unlock' | 'clock' | 'lock' | 'check-circle' | 'inbox' =
-    'send';
+  let icon: 'send' | 'clock' | 'check-circle' | 'inbox' = 'send';
   if (publicationStatus === 'draft') {
-    if (isPending && canReview) {
-      text = messages.approve;
-      icon = 'unlock';
-    } else if (isPending) {
-      text = messages.approvalRequested;
-      icon = 'lock';
-    } else if (hasSchedule) {
+    if (hasSchedule) {
       text = messages.scheduled;
       icon = 'clock';
     }
@@ -56,10 +46,16 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
-  const reviewState = projectReview?.data.attributes.state;
+  const isApproved =
+    !isProjectReviewEnabled ||
+    projectReview?.data.attributes.state === 'approved';
 
-  const canReview = usePermission({ item: project, action: 'review' });
   const canModerate = usePermission({ item: project, action: 'moderate' });
+  const canPublish = usePermission({
+    item: project,
+    action: 'publish',
+    context: isApproved,
+  });
 
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [changeStatusModalOpen, setChangeStatusModalOpen] = useState(false);
@@ -68,13 +64,11 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
 
   const { publication_status, scheduled_at } = project.attributes;
   const isDraft = publication_status === 'draft';
-  const isPending = isProjectReviewEnabled && reviewState === 'pending';
+  const showPublishButton = !isDraft || canPublish;
 
   const publicationButton = getPublicationButton({
     publicationStatus: publication_status,
     hasSchedule: !!scheduled_at,
-    isPending,
-    canReview,
   });
 
   const handleEntryClick = () => {
@@ -89,17 +83,21 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
 
   return (
     <Box display="flex" gap="8px">
-      <Button
-        buttonStyle="admin-dark"
-        icon={publicationButton.icon}
-        onClick={handleEntryClick}
-        size="s"
-        padding="4px 8px"
-        iconSize="20px"
-        id="e2e-publish"
-      >
-        {formatMessage(publicationButton.text)}
-      </Button>
+      {showPublishButton && (
+        <Button
+          buttonStyle="admin-dark"
+          icon={publicationButton.icon}
+          onClick={handleEntryClick}
+          size="s"
+          padding="4px 8px"
+          iconSize="20px"
+          id="e2e-publish"
+        >
+          {formatMessage(publicationButton.text)}
+        </Button>
+      )}
+
+      {isProjectReviewEnabled && <ReviewFlow project={project} />}
 
       <ScheduleLaunchModal
         opened={scheduleModalOpen}

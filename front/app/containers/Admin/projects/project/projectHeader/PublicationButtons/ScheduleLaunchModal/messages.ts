@@ -84,22 +84,6 @@ export default defineMessages({
     defaultMessage:
       'Email notifications for project launches have been disabled platform-wide.',
   },
-  requestApproval: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.requestApproval',
-    defaultMessage: 'Request approval',
-  },
-  approvalRequested: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approvalRequested',
-    defaultMessage: 'Approval requested',
-  },
-  approveAndSchedule: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approveAndSchedule',
-    defaultMessage: 'Approve & schedule',
-  },
-  approve: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approve',
-    defaultMessage: 'Approve',
-  },
   schedulingNotIncludedTooltip: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip',
     defaultMessage:
