@@ -871,7 +871,7 @@
   "app.components.formBuilder.emptyTitleMessage": "Geben Sie einen Titel für alle Antworten an",
   "app.components.formBuilder.emptyTitleStatementMessage": "Geben Sie einen Titel für alle Aussagen an",
   "app.components.formBuilder.enable": "Aktivieren",
-  "app.components.formBuilder.errorMessage": "Es gibt ein Problem. Bitte beheben Sie das Problem, damit Sie Ihre Änderungen speichern können",
+  "app.components.formBuilder.errorMessage": "Es gibt ein Problem. Bitte behebe das Problem, damit du deine Änderungen speichern kannst",
   "app.components.formBuilder.fieldGroup.description": "Beschreibung (optional)",
   "app.components.formBuilder.fieldGroup.title": "Titel (optional)",
   "app.components.formBuilder.fieldIsNotVisibleTooltip": "Derzeit sind die Antworten auf diese Fragen nur in der exportierten Excel-Datei im Beitragsmanager verfügbar und für Nutzer*innen nicht sichtbar.",
