@@ -16,7 +16,7 @@ resource 'Mentions' do
     parameter :mention, 'The (partial) search string for the mention (without the @)', required: true
     parameter :idea_id, 'An idea that is used as a context to return related users first', required: false
     parameter :limit, 'The number of results to return', required: false
-    parameter :moderators_only, 'When true, only return admins and moderators', required: false
+    parameter :admins_and_moderators, 'When true, only return admins and moderators', required: false
 
     let(:users) { [create(:user, first_name: 'Flupke')] + create_list(:user, 9, last_name: 'Smith') }
     let(:mention) { users.first.first_name[0..3] }
@@ -93,7 +93,7 @@ resource 'Mentions' do
       expect(json_response[:data].pluck(:id)).not_to include users.first.id
     end
 
-    context 'with moderators_only' do
+    context 'with admins_and_moderators' do
       before { User.delete_all }
 
       let(:first_name) { 'Aaa' }
@@ -105,7 +105,7 @@ resource 'Mentions' do
       let!(:moderator) { create(:project_moderator, names) }
 
       example 'Does not include regular user' do
-        do_request mention: first_name, moderators_only: true
+        do_request mention: first_name, admins_and_moderators: true
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].pluck(:id)).to contain_exactly(admin.id, moderator.id)
@@ -115,7 +115,7 @@ resource 'Mentions' do
         idea = create(:idea, author: regular_user)
         create(:comment, idea: idea, author: moderator)
 
-        do_request idea_id: idea.id, mention: first_name, moderators_only: true
+        do_request idea_id: idea.id, mention: first_name, admins_and_moderators: true
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].pluck(:id)).not_to include(regular_user.id)

@@ -9,7 +9,7 @@ export type MentionsKeys = Keys<typeof mentionsKeys>;
 export type IQueryParameters = {
   mention: string;
   idea_id?: string;
-  moderators_only?: boolean;
+  admins_and_moderators?: boolean;
 };
 
 export interface IMentionData {

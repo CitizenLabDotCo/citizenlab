@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class UserSearchService
-  def search(query, idea_id: nil, moderators_only: false, limit: 5, exclude_user: nil)
+  def search(query, idea_id: nil, admins_and_moderators: false, limit: 5, exclude_user: nil)
     users = User.active.by_username(query)
-    users = users.admin_or_moderator if moderators_only
+    users = users.admin_or_moderator if admins_and_moderators
 
     results = []
 

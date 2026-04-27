@@ -70,7 +70,7 @@ export interface Props {
   background?: string;
   ariaLabel?: string;
   children?: React.ReactNode;
-  moderatorsOnly?: boolean;
+  adminsAndModerators?: boolean;
   trigger?: string;
   showUniqueUsers?: boolean;
   onChangeMentions?: (mentions: MentionItem[]) => void;
@@ -105,7 +105,7 @@ const MentionsTextArea = ({
   name,
   error,
   children,
-  moderatorsOnly,
+  adminsAndModerators,
   trigger = '@',
   userReferenceType = 'slug',
   showUniqueUsers = false,
@@ -219,7 +219,7 @@ const MentionsTextArea = ({
       const queryParameters = {
         mention: query.toLowerCase(),
         idea_id: postId,
-        moderators_only: moderatorsOnly,
+        admins_and_moderators: adminsAndModerators,
       };
 
       const response = await getMentions(queryParameters);

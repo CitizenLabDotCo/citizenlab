@@ -234,7 +234,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               border="none"
               boxShadow="none"
               getTextareaRef={setRef}
-              moderatorsOnly
+              adminsAndModerators
             />
             <ButtonWrapper className={focused || processing ? 'visible' : ''}>
               <CancelButton

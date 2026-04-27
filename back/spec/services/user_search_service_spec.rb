@@ -81,13 +81,13 @@ describe UserSearchService do
       expect(results.uniq).to eq results
     end
 
-    context 'with moderators_only' do
+    context 'with admins_and_moderators' do
       let!(:admin) { create(:admin, first_name: 'Haddock', last_name: 'Ansen') }
       let!(:moderator) { create(:project_moderator, first_name: 'Tournesol', last_name: 'Ansen') }
       let!(:regular) { create(:user, first_name: 'Tintin', last_name: 'Ansen') }
 
       it 'returns only admins and moderators' do
-        results = service.search('ansen', moderators_only: true)
+        results = service.search('ansen', admins_and_moderators: true)
         expect(results).to contain_exactly(admin, moderator)
       end
 
@@ -95,7 +95,7 @@ describe UserSearchService do
         idea = create(:idea, author: regular)
         create(:comment, idea: idea, author: moderator)
 
-        results = service.search('ansen', idea_id: idea.id, moderators_only: true, limit: 5)
+        results = service.search('ansen', idea_id: idea.id, admins_and_moderators: true, limit: 5)
         expect(results).to contain_exactly(admin, moderator)
       end
     end

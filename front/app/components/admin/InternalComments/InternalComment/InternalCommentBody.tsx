@@ -178,7 +178,7 @@ const InternalCommentBody = ({
               padding="15px"
               fontWeight="300"
               getTextareaRef={setNewTextAreaRef}
-              moderatorsOnly
+              adminsAndModerators
             />
           </QuillEditedContent>
           <ButtonsWrapper>

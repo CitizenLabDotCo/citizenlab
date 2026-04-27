@@ -281,7 +281,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
-                moderatorsOnly
+                adminsAndModerators
               />
               <ButtonWrapper>
                 <CancelButton
