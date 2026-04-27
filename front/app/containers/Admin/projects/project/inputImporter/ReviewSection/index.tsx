@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
@@ -13,6 +14,7 @@ import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgres
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -22,6 +24,7 @@ import IdeaList from './IdeaList';
 import ImportStatus from './ImportStatus';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
+import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {
@@ -31,6 +34,13 @@ const ReviewSection = () => {
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
+  const [confirmAction, setConfirmAction] = useState<
+    'approveAll' | 'removeAll' | null
+  >(null);
+  const [approvedThisSession, setApprovedThisSession] = useState<
+    ApprovedIdea[]
+  >([]);
+  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   const {
     data: ideas,
@@ -48,6 +58,7 @@ const ReviewSection = () => {
   } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
     useApproveImportedIdeas();
   const { mutate: deleteAllIdeas, isLoading: isDeleting } =
@@ -88,6 +99,7 @@ const ReviewSection = () => {
       onSuccess: (data) => {
         setApprovals(data.data.attributes);
         setIdeaId(null);
+        setConfirmAction(null);
         refetchIdeas();
       },
     });
@@ -97,9 +109,27 @@ const ReviewSection = () => {
     deleteAllIdeas(phaseId, {
       onSuccess: () => {
         setIdeaId(null);
+        setConfirmAction(null);
         refetchIdeas();
       },
     });
+  };
+
+  const handleIdeaApproved = (approved: ApprovedIdea) => {
+    setApprovedThisSession((prev) => [approved, ...prev]);
+  };
+
+  const handleUndoApproval = async (id: string) => {
+    setUndoingId(id);
+    try {
+      await updateIdea({
+        id,
+        requestBody: { publication_status: 'draft' },
+      });
+      setApprovedThisSession((prev) => prev.filter((i) => i.id !== id));
+    } finally {
+      setUndoingId(null);
+    }
   };
 
   return (
@@ -133,7 +163,7 @@ const ReviewSection = () => {
                 icon="check"
                 processing={isApproving}
                 disabled={isApproving || isDeleting || importing}
-                onClick={handleApproveAll}
+                onClick={() => setConfirmAction('approveAll')}
               >
                 <FormattedMessage
                   {...messages.approveAllInputs}
@@ -147,7 +177,7 @@ const ReviewSection = () => {
                 icon="delete"
                 processing={isDeleting}
                 disabled={isApproving || isDeleting || importing}
-                onClick={handleDeleteAll}
+                onClick={() => setConfirmAction('removeAll')}
               >
                 <FormattedMessage {...messages.removeAllInputs} />
               </ButtonWithLink>
@@ -177,22 +207,31 @@ const ReviewSection = () => {
           w="25%"
           borderRight={`1px ${colors.grey400} solid`}
           pr="8px"
-          overflowY="scroll"
+          display="flex"
+          flexDirection="column"
+          minHeight="0"
         >
-          {(importing || importHasErrors) && (
-            <ImportStatus
-              hasErrors={importHasErrors}
-              progress={importProgress}
-              total={importTotal}
-              errorCount={errorCount}
-              errors={importErrors}
+          <Box flex="1" minHeight="0" overflowY="auto">
+            {(importing || importHasErrors) && (
+              <ImportStatus
+                hasErrors={importHasErrors}
+                progress={importProgress}
+                total={importTotal}
+                errorCount={errorCount}
+                errors={importErrors}
+              />
+            )}
+            <IdeaList
+              ideaId={ideaId}
+              ideas={ideas}
+              onSelectIdea={handleSelectIdea}
+              onDeleteIdea={handleDeleteIdea}
             />
-          )}
-          <IdeaList
-            ideaId={ideaId}
-            ideas={ideas}
-            onSelectIdea={handleSelectIdea}
-            onDeleteIdea={handleDeleteIdea}
+          </Box>
+          <RecentlyApprovedList
+            ideas={approvedThisSession}
+            onUndo={handleUndoApproval}
+            undoingId={undoingId}
           />
         </Box>
         <Box
@@ -203,7 +242,11 @@ const ReviewSection = () => {
           alignItems="center"
           h="100%"
         >
-          <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
+          <IdeaEditor
+            ideaId={ideaId}
+            setIdeaId={setIdeaId}
+            onIdeaApproved={handleIdeaApproved}
+          />
         </Box>
         <Box w="40%">
           {ideaMetadata && ideaId && importType === 'pdf' && (
@@ -221,6 +264,26 @@ const ReviewSection = () => {
           )}
         </Box>
       </Box>
+      <WarningModal
+        open={confirmAction !== null}
+        isLoading={isApproving || isDeleting}
+        title={
+          confirmAction === 'approveAll'
+            ? formatMessage(messages.confirmApproveAll)
+            : formatMessage(messages.confirmRemoveAll)
+        }
+        explanation={
+          confirmAction === 'approveAll'
+            ? formatMessage(messages.confirmApproveAllExplanation, {
+                numIdeas,
+              })
+            : formatMessage(messages.confirmRemoveAllExplanation)
+        }
+        onClose={() => setConfirmAction(null)}
+        onConfirm={
+          confirmAction === 'approveAll' ? handleApproveAll : handleDeleteAll
+        }
+      />
     </Box>
   );
 };
