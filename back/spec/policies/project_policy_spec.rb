@@ -551,7 +551,7 @@ describe ProjectPolicy do
       context 'when project is created without folder or space id' do
         let(:project) { build(:project, admin_publication_attributes: { publication_status: 'draft' }) }
 
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
       end
 
       context 'when project is created with folder id' do

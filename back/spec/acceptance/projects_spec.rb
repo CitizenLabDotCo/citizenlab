@@ -2037,15 +2037,15 @@ resource 'Projects' do
       end
 
       context 'when neither space_id nor folder_id is provided' do
-        example '[Unauthorized] Cannot create project without space_id or folder_id', document: false do
+        example 'Can create project without space_id or folder_id', document: false do
           do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
-          assert_status 401
+          assert_status 200
         end
 
-        example '[Unauthorized] Cannot create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
+        example 'Can create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
           create(:project, space: space)
           do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
-          assert_status 401
+          assert_status 200
         end
       end
     end
