@@ -14,6 +14,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
@@ -35,6 +36,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
   const statsLink: RouteType =
     context === 'global'
@@ -81,7 +83,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
         gap="40px"
         alignItems="center"
       >
-        <Box display="flex" flexDirection="column" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          style={isCustomSmtp ? { opacity: 0.4 } : undefined}
+        >
           <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.opened || 0) /
@@ -94,7 +101,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.opened} />
           </Text>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          style={isCustomSmtp ? { opacity: 0.4 } : undefined}
+        >
           <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.clicked || 0) /

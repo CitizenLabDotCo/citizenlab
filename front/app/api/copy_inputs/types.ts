@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { CLError, IRelationship } from 'typings';
 
 export interface CopyRequestParams {
   toPhaseId: string;
@@ -18,6 +18,7 @@ export interface IJobData {
     created_at: string;
     updated_at: string;
     job_type: string;
+    errors: CLError[];
   };
   relationships: {
     owner: {
