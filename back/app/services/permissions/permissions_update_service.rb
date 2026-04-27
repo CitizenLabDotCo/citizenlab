@@ -68,8 +68,8 @@ class Permissions::PermissionsUpdateService
 
     # Load all phase permissions in one query
     all_permissions = Permission
-                        .where(permission_scope_type: 'Phase', permission_scope_id: phase_ids)
-                        .pluck(:id, :permission_scope_id, :action, :permitted_by)
+      .where(permission_scope_type: 'Phase', permission_scope_id: phase_ids)
+      .pluck(:id, :permission_scope_id, :action, :permitted_by)
     permissions_by_phase = all_permissions.group_by { |_id, scope_id, _action, _pb| scope_id }
 
     ids_to_delete = []
@@ -106,7 +106,7 @@ class Permissions::PermissionsUpdateService
     # Clean up orphaned permissions (scope was deleted or has unsupported type)
     valid_phase_permissions = Permission.where(permission_scope_type: 'Phase', permission_scope_id: phase_ids)
     Permission.where.not(permission_scope_id: nil)
-              .where.not(id: valid_phase_permissions.select(:id))
-              .destroy_all
+      .where.not(id: valid_phase_permissions.select(:id))
+      .destroy_all
   end
 end
