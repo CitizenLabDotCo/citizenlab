@@ -461,8 +461,8 @@ de-AT:
       yesterday_by_author: Gestern von %{author}
     native_survey_not_submitted:
       cta_button: Beantwortung der Umfrage fortsetzen
-      event_description: Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.
-      preheader: Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.
+      event_description: Du hast begonnen, deine Antworten zu %{phaseTitle} zu teilen, hast sie aber nicht abgeschickt. Klicke auf den Button unten, um dort fortzufahren, wo du aufgehört hast.
+      preheader: Du hast deine Umfrageantwort nicht auf der Beteiligungsplattform von %{organizationName} ausgefüllt.
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       submissions_close: Einsendeschluss ist %{phaseEndDate}.
       submissions_close_at_time: Einreichungen enden um %{datetime}.
