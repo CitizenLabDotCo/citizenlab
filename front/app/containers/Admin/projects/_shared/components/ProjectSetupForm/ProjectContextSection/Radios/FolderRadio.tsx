@@ -6,7 +6,7 @@ import { fragmentId as folderFragmentId } from 'containers/Admin/projects/projec
 
 import Highlighter from 'components/Highlighter';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { LabelHeaderDescription } from '../../../labels';
 import messages from '../messages';
@@ -18,8 +18,7 @@ const FolderRadio = ({
   onSetContext,
   folder_id,
   onChangeFolder,
-  descriptionMessage,
-}: Props & { descriptionMessage: MessageDescriptor }) => {
+}: Props) => {
   return (
     <>
       <Radio
@@ -29,7 +28,7 @@ const FolderRadio = ({
         label={
           <LabelHeaderDescription
             header={<FormattedMessage {...messages.folder} />}
-            description={<FormattedMessage {...descriptionMessage} />}
+            description={<FormattedMessage {...messages.folderDescription} />}
           />
         }
         onChange={() => onSetContext('folder')}

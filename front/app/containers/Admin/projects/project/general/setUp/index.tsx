@@ -377,6 +377,9 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     ? !projectCardImage.remote
     : false;
 
+  const projectIsInRoot =
+    !project.data.attributes.space_id && !project.data.attributes.folder_id;
+
   return (
     <Box ref={containerRef}>
       <StyledForm
@@ -497,6 +500,11 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
+            formSituation={
+              projectIsInRoot
+                ? 'editing-project-in-root'
+                : 'editing-project-not-in-root'
+            }
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
                 space_id: null,

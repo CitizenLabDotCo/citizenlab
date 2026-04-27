@@ -327,6 +327,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
             projectContext={projectContext}
             space_id={projectAttrs.space_id}
             folder_id={projectAttrs.folder_id}
+            formSituation="creating"
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
                 space_id: null,

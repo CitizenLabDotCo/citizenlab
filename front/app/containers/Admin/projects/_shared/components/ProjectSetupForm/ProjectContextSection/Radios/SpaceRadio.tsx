@@ -30,9 +30,7 @@ const SpaceRadio = ({
         label={
           <LabelHeaderDescription
             header={<FormattedMessage {...messages.space} />}
-            description={
-              <FormattedMessage {...messages.spaceDescriptionChangeLater} />
-            }
+            description={<FormattedMessage {...messages.spaceDescription} />}
           />
         }
         onChange={() => onSetContext('space')}
