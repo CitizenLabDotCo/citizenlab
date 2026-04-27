@@ -6224,6 +6224,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": {
+    "state": "verified",
+    "verified_at": "2026-04-23T11:26:35.911168Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.all.Spaces.Table.space": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -6428,6 +6433,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Folders.Table.noFoldersFound": {
+    "state": "verified",
+    "verified_at": "2026-04-23T11:26:35.911168Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.all.new.Folders.Table.numberOfProjects": {
     "state": "verified",
@@ -6743,6 +6753,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": {
+    "state": "verified",
+    "verified_at": "2026-04-23T11:26:35.911168Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": {
     "state": "verified",

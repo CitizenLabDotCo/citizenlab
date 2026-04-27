@@ -6244,6 +6244,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:33:52.425458Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.all.Spaces.Table.space": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -6448,6 +6453,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Folders.Table.noFoldersFound": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:33:52.425458Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.all.new.Folders.Table.numberOfProjects": {
     "state": "verified",
@@ -6763,6 +6773,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:33:52.425458Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": {
     "state": "verified",

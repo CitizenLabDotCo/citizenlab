@@ -9,6 +9,8 @@
 #  updated_at           :datetime         not null
 #
 class Space < ApplicationRecord
+  include PgSearch::Model
+
   has_many :projects, dependent: :nullify
   has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'
 
@@ -17,6 +19,10 @@ class Space < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
+    using: { tsearch: { prefix: true } }
 
   private
 
