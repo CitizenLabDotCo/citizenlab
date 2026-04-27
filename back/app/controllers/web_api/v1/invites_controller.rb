@@ -70,6 +70,7 @@ class WebApi::V1::InvitesController < ApplicationController
     @invite = Invite.find_by(token: params[:token])
     raise ApiError.new(:token_not_found, status: 401) if !@invite
     raise ApiError.new(:already_accepted, status: 401) if @invite.accepted_at
+
     invitee = @invite.invitee
     ActiveRecord::Base.transaction do
       invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
