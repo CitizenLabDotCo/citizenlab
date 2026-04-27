@@ -1583,7 +1583,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Una ilanngussaq kinaassuseq isertuullugu eqqunneqarpoq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} ilanngussat akuerineqarsinnaanngillat. Ilanngussat ataasiakkaarlugit kukkunersikkit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Oqaatsit:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Suli misissugassaqanngilaq. Ingerlaqqinniarlutit PDF-filimik immersukkanik skannerneqarsimasunik imalimmik imaluunniit Excel-filimik isummanik imalimmik eqqussigit.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Suli misissugassaqanngilaq. Ingerlaqqinniarlutit PDF-filimik immersugassanik skannikkanik imalimmik imaluunniit Excel-filimik isummanik imalimmik eqqussigit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Suli misissugassaqanngilaq. Ingerlaqqinniarlutit Excel-filimik isummanik imalimmik eqqussigit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ilanngussaq",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Fili eqqunneqartoq takutinneqarsinnaanngilaq. Filinik eqqussanik takunnissinnaaneq taamaallaat PDF-inut atuuppoq.",
