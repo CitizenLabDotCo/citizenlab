@@ -558,6 +558,20 @@ RSpec.describe UserRoles do
       user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
       expect(user.project_moderator?('456')).to be false
     end
+
+    it 'return false if user is space moderator and an indirectly moderate project, but is not a direct moderator (specific project)' do
+      space = create(:space)
+      project = create(:project, space: space)
+      user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      expect(user.project_moderator?(project.id)).to be false
+    end
+
+    it 'return false if user is space moderator and an indirectly moderate project, but is not a direct moderator (no specific project)' do
+      space = create(:space)
+      project = create(:project, space: space)
+      user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      expect(user.project_moderator?).to be false
+    end
   end
 
   describe '#normal_user?' do
