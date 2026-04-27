@@ -390,10 +390,6 @@ module MultiTenancy
                 }
               ]
             },
-            project_folders: {
-              enabled: true,
-              allowed: true
-            },
             project_preview_link: {
               enabled: true,
               allowed: true
@@ -423,10 +419,6 @@ module MultiTenancy
               allowed: true
             },
             report_data_grouping: {
-              enabled: true,
-              allowed: true
-            },
-            input_form_custom_fields: {
               enabled: true,
               allowed: true
             },
@@ -529,6 +521,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            project_scheduling: {
+              enabled: false,
+              allowed: false
+            },
             platform_templates: {
               enabled: false,
               allowed: false
@@ -586,10 +582,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            phase_insights: {
-              enabled: true,
-              allowed: true
-            },
             participation_location_tracking: {
               enabled: false,
               allowed: false
@@ -597,6 +589,10 @@ module MultiTenancy
             spaces: {
               enabled: false,
               allowed: false
+            },
+            email_scheduling: {
+              enabled: true,
+              allowed: true
             }
           })
         )

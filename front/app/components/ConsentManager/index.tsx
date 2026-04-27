@@ -11,7 +11,12 @@ import { useModalQueue } from 'containers/App/ModalQueue';
 
 import eventEmitter from 'utils/eventEmitter';
 
-import { getConsent, ISavedDestinations } from './consent';
+import {
+  getConsent,
+  IConsentCookie,
+  ISavedDestinations,
+  setConsent,
+} from './consent';
 import { useConsentRequired, getCurrentPreferences } from './utils';
 
 const ConsentManager = () => {
@@ -21,8 +26,27 @@ const ConsentManager = () => {
 
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
+  const bypassCookieConsent =
+    searchParams.get('yes-I-accept-cookies') === 'true';
 
   const isConsentRequired = useConsentRequired();
+
+  // Allow bypassing cookie consent via URL parameter,
+  // e.g. for web scrapers/archiving purposes.
+  useEffect(() => {
+    if (!bypassCookieConsent) return;
+
+    const consent = getConsent();
+    if (consent) return;
+
+    const allAccepted: IConsentCookie = {
+      functional: true,
+      analytics: true,
+      advertising: true,
+      savedChoices: {},
+    };
+    setConsent(allAccepted);
+  }, [bypassCookieConsent]);
 
   // Code that should run every time the app is first loaded.
   // Initialize everything that needs to be initialized,
@@ -51,17 +75,17 @@ const ConsentManager = () => {
 
   useEffect(() => {
     /*
-      When we click the link to the cookie policy in the modal, 
-      we wouldn't be able to read the cookie policy without this, 
+      When we click the link to the cookie policy in the modal,
+      we wouldn't be able to read the cookie policy without this,
       because the modal is on top of the page.
       Search the codebase for 'from=cookie-modal' to see where this is used.
     */
-    if (from === 'cookie-modal') {
+    if (from === 'cookie-modal' || bypassCookieConsent) {
       removeModal('consent-modal');
     } else if (isConsentRequired) {
       queueModal('consent-modal');
     }
-  }, [from, isConsentRequired, queueModal, removeModal]);
+  }, [from, bypassCookieConsent, isConsentRequired, queueModal, removeModal]);
 
   useObserveEvent('openConsentManager', () => {
     queueModal('consent-modal');

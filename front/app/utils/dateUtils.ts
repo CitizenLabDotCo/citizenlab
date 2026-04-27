@@ -355,3 +355,24 @@ export const toBackendDateString = (date?: Date) => {
 
   return `${date.getFullYear()}-${month}-${day}`;
 };
+
+// Calculate GMT offset based on selected date (or current date if none selected) - DST safe
+export const getGmtOffset = (
+  timeZone: string | undefined,
+  tenantTimeNow: Date,
+  selectedDate?: Date
+) => {
+  if (!timeZone) return '';
+
+  const dateToCheck = selectedDate || tenantTimeNow;
+  const momentDate = moment.tz(
+    {
+      year: dateToCheck.getFullYear(),
+      month: dateToCheck.getMonth(),
+      day: dateToCheck.getDate(),
+    },
+    timeZone
+  );
+
+  return momentDate.format('Z');
+};

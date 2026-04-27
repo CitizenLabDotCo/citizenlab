@@ -3,7 +3,7 @@ import React from 'react';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+import ProjectRow from 'containers/Admin/projects/_shared/components/ProjectRow';
 
 import { Row } from 'components/admin/ResourceList';
 

@@ -15,13 +15,13 @@ describe IdFedera::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'name' => 'Mario',
-              'familyName' => 'Rossi',
-              'email' => 'mario.rossi@example.it',
-              'domicileMunicipality' => '1234',
-              'dateOfBirth' => '1980-01-01',
-              'spidCode' => 'SPID-1234-abcd',
-              'fiscalNumber' => 'RSSMRA80A01H501U'
+              'nome' => 'Mario',
+              'cognome' => 'Rossi',
+              'emailAddressPersonale' => 'mario.rossi@example.it',
+              'comuneDomicilio' => '1234',
+              'dataNascita' => '1980-01-01',
+              'codiceIdentificativoSPID' => 'SPID-1234-abcd',
+              'codiceFiscale' => 'RSSMRA80A01H501U'
             },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
@@ -32,7 +32,7 @@ describe IdFedera::FederaOmniauth do
     before do
       # Create user custom fields that will be filled by the auth hash
       create(:custom_field, key: 'birthyear', resource_type: 'User')
-      create(:custom_field, key: 'domicile_municipality', resource_type: 'User')
+      create(:custom_field, key: 'municipality_code', resource_type: 'User')
     end
 
     it 'returns user attrs from profile response' do
@@ -42,7 +42,7 @@ describe IdFedera::FederaOmniauth do
         first_name: 'Mario',
         last_name: 'Rossi',
         email: 'mario.rossi@example.it',
-        custom_field_values: { 'birthyear' => 1980, 'domicile_municipality' => '1234' }
+        custom_field_values: { 'birthyear' => 1980, 'municipality_code' => '1234' }
       )
     end
   end
@@ -57,9 +57,9 @@ describe IdFedera::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'name' => 'Mario',
-              'familyName' => 'Rossi',
-              'fiscalNumber' => 'RSSMRA80A01H501U'
+              'nome' => 'Mario',
+              'cognome' => 'Rossi',
+              'codiceFiscale' => 'RSSMRA80A01H501U'
             },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
@@ -79,39 +79,39 @@ describe IdFedera::FederaOmniauth do
   end
 
   describe '#profile_to_uid' do
-    context 'when spidCode is present' do
+    context 'when codiceIdentificativoSPID is present' do
       let(:auth) do
         OmniAuth::AuthHash.new(
           {
             'extra' => {
               'raw_info' => {
-                'spidCode' => 'SPID-1234-abcd',
-                'fiscalNumber' => 'RSSMRA80A01H501U'
+                'codiceIdentificativoSPID' => 'SPID-1234-abcd',
+                'codiceFiscale' => 'RSSMRA80A01H501U'
               }
             }
           }
         )
       end
 
-      it 'returns spidCode as uid' do
+      it 'returns codiceIdentificativoSPID as uid' do
         expect(omniauth.profile_to_uid(auth)).to eq('SPID-1234-abcd')
       end
     end
 
-    context 'when spidCode is absent' do
+    context 'when codiceIdentificativoSPID is absent' do
       let(:auth) do
         OmniAuth::AuthHash.new(
           {
             'extra' => {
               'raw_info' => {
-                'fiscalNumber' => 'RSSMRA80A01H501U'
+                'codiceFiscale' => 'RSSMRA80A01H501U'
               }
             }
           }
         )
       end
 
-      it 'falls back to fiscalNumber' do
+      it 'falls back to codiceFiscale' do
         expect(omniauth.profile_to_uid(auth)).to eq('RSSMRA80A01H501U')
       end
     end
@@ -136,7 +136,7 @@ describe IdFedera::FederaOmniauth do
           'provider' => 'federa',
           'uid' => 'ABCD1234',
           'extra' => {
-            'raw_info' => { 'name' => 'Mario' },
+            'raw_info' => { 'nome' => 'Mario' },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
         }

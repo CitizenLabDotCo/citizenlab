@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.admin.SpaceSelect.sameSpaceAsFolder',
     defaultMessage: '— Same space as folder —',
   },
+  pleaseSelectASpace: {
+    id: 'app.components.admin.SpaceSelect.pleaseSelectASpace',
+    defaultMessage: '— Please select a space —',
+  },
 });

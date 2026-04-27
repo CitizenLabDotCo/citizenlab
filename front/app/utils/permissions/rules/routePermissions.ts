@@ -16,7 +16,6 @@ import {
 const MODERATOR_ROUTES = [
   '/admin/projects',
   '/admin/ideas',
-  '/admin/ideas/import',
   '/admin/tools',
   '/admin/processing',
   '/admin/reporting',

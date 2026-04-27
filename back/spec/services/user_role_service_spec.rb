@@ -152,9 +152,10 @@ describe UserRoleService do
   end
 
   describe 'moderators_for' do
-    let!(:project) { create(:project) }
+    let!(:space) { create(:space) }
+    let!(:project) { create(:project, space: space) }
     let!(:other_project) { create(:project) }
-    let!(:folder) { create(:project_folder, projects: [project]) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:other_folder) { create(:project_folder) }
 
     let!(:user) { create(:user) }
@@ -164,45 +165,48 @@ describe UserRoleService do
     let!(:other_project_moderator) { create(:project_moderator, projects: [other_project]) }
     let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
     let!(:other_folder_moderator) { create(:project_folder_moderator, project_folders: [other_folder]) }
+    let!(:space_moderator) { create(:space_moderator, spaces: [space]) }
+    let!(:other_space_moderator) { create(:space_moderator) }
 
-    it 'lists all moderators of a project folder' do
-      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id)
+    it 'lists all explicit and implicit moderators of a project folder' do
+      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a project' do
-      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+    it 'lists all explicit and implicit moderators of a project' do
+      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a phase' do
+    it 'lists all explicit and implicit moderators of a phase' do
       phase = create(:phase, project: project)
 
-      expect(service.moderators_for(phase.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+      expect(service.moderators_for(phase.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of an idea' do
+    it 'lists all explicit and implicit moderators of an idea' do
       idea = create(:idea, project: project)
 
-      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a comment' do
+    it 'lists all explicit and implicit moderators of a comment' do
       idea = create(:idea, project: project)
       comment = create(:comment, idea: idea)
 
-      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
 
-    it 'lists all moderators of a permission' do
+    it 'lists all explicit and implicit moderators of a permission' do
       phase = create(:phase, project: project)
       permission = create(:permission, permission_scope: phase)
 
-      expect(service.moderators_for(permission).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+      expect(service.moderators_for(permission).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id, space_moderator.id)
     end
   end
 
   describe 'moderators_for_project' do
-    it 'lists only project and folder moderators and admins' do
-      project = create(:project)
+    it 'lists project, folder, and space moderators and admins' do
+      space = create(:space)
+      project = create(:project, space: space)
       other_project = create(:project)
       folder = create(:project_folder, projects: [project])
       other_folder = create(:project_folder, projects: [other_project])
@@ -217,8 +221,12 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [folder]),
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
+      space_moderator = create(:space_moderator, spaces: [space])
+      create(:space_moderator) # for another space
 
-      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id)
+      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(
+        admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id, space_moderator.id
+      )
     end
   end
 
@@ -264,6 +272,16 @@ describe UserRoleService do
       expect(service.moderatable_projects(other_moderator)).to match_array(other_project)
     end
 
+    it 'lists projects in moderated spaces for space moderators' do
+      space = create(:space)
+      projects_in_space = create_list(:project, 2, space: space)
+      create(:project) # project not in space
+
+      moderator = create(:space_moderator, spaces: [space])
+
+      expect(service.moderatable_projects(moderator)).to match_array(projects_in_space)
+    end
+
     context 'when the user is both project moderator and admin' do
       let(:projects) { create_list(:project, 2) }
       let(:folder) { create(:project_folder, projects: projects.take(1)) }
@@ -289,6 +307,69 @@ describe UserRoleService do
     end
   end
 
+  describe 'moderatable_folders' do
+    it 'lists no folders for normal users' do
+      create_list(:project_folder, 2)
+
+      expect(service.moderatable_folders(create(:user)).ids).to eq []
+    end
+
+    it 'lists all folders in the given scope for admins' do
+      space = create(:space)
+      folders_in_space = create_list(:project_folder, 3, space: space)
+      create(:project_folder, space: nil)
+
+      expect(
+        service.moderatable_folders(create(:admin), ProjectFolders::Folder.where(space: space)).ids
+      ).to match_array folders_in_space.map(&:id)
+
+      expect(service.moderatable_folders(create(:admin)).ids).to match_array ProjectFolders::Folder.all.map(&:id)
+    end
+
+    it 'lists some folders for folder moderators' do
+      folders = create_list(:project_folder, 3)
+      other_folder = create(:project_folder)
+
+      moderator = create(:project_folder_moderator, project_folders: folders)
+      create(:project_folder_moderator, project_folders: [other_folder, folders.first])
+
+      expect(service.moderatable_folders(moderator).ids).to match_array folders.map(&:id)
+    end
+
+    it 'lists folders in moderated spaces for space moderators' do
+      space = create(:space)
+      folders_in_space = create_list(:project_folder, 2, space: space)
+      create(:project_folder) # folder not in space
+
+      moderator = create(:space_moderator, spaces: [space])
+
+      expect(service.moderatable_folders(moderator)).to match_array(folders_in_space)
+    end
+
+    context 'when the user is both folder moderator and admin' do
+      let(:folders) { create_list(:project_folder, 2) }
+      let(:user) { create(:project_folder_moderator, project_folders: folders.take(1)).add_role('admin') }
+
+      it 'lists all folders' do
+        expect(service.moderatable_folders(user)).to match_array(folders)
+      end
+    end
+
+    context 'when the user is both folder moderator and space moderator' do
+      it 'lists all moderatable folders in given scope' do
+        space = create(:space)
+        folders = create_list(:project_folder, 2)
+        folder_in_space = create(:project_folder, space: space)
+
+        user = create(:space_moderator, spaces: [space]).add_role('project_folder_moderator', project_folder_id: folders.last.id)
+
+        expect(service.moderatable_folders(user)).to contain_exactly(folders.last, folder_in_space)
+
+        expect(service.moderatable_folders(user, ProjectFolders::Folder.where(id: [folders.first.id, folder_in_space.id]))).to eq([folder_in_space])
+      end
+    end
+  end
+
   describe 'moderates_something?' do
     it 'permits admins' do
       expect(service.moderates_something?(create(:admin))).to be true
@@ -304,6 +385,10 @@ describe UserRoleService do
 
     it 'permits folders moderators' do
       expect(service.moderates_something?(create(:project_folder_moderator))).to be true
+    end
+
+    it 'permits space moderators' do
+      expect(service.moderates_something?(create(:space_moderator))).to be true
     end
   end
 
@@ -354,6 +439,30 @@ describe UserRoleService do
     it 'does not crash if no moderators exist' do
       f1 = create(:project_folder)
       expect(service.moderators_per_folder([f1.id])).to eq({})
+    end
+  end
+
+  describe 'moderators_per_space' do
+    it 'returns moderators grouped by space ID' do
+      s1, s2, s3 = create_list(:space, 3)
+      m1 = create(:space_moderator, spaces: [s1, s2])
+      m2 = create(:space_moderator, spaces: [s2])
+      create(:space_moderator, spaces: [s3])
+      m4 = create(:space_moderator, spaces: [s3, s2])
+
+      result = service.moderators_per_space([s1.id, s2.id])
+      expect(result.keys).to contain_exactly(s1.id, s2.id)
+      expect(result[s1.id]).to contain_exactly(m1)
+      expect(result[s2.id]).to contain_exactly(m1, m2, m4)
+    end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_space([])).to eq({})
+    end
+
+    it 'does not crash if no moderators exist' do
+      s1 = create(:space)
+      expect(service.moderators_per_space([s1.id])).to eq({})
     end
   end
 

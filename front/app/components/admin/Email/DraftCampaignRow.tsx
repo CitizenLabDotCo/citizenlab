@@ -7,9 +7,12 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { RouteType } from 'routes';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
+import { isDraft } from 'api/campaigns/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -38,7 +41,8 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
       : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
-
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
   return (
     <Row id={campaign.id}>
       <Box>
@@ -46,10 +50,26 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <StatusLabel
-            backgroundColor={colors.orange500}
-            text={<FormattedMessage {...messages.draft} />}
-          />
+          {campaign.attributes.scheduled_at && (
+            <>
+              <StatusLabel
+                backgroundColor={colors.teal500}
+                text={<FormattedMessage {...messages.scheduled} />}
+              />
+
+              <Text as="span" fontSize="base" m="0px" color="textSecondary">
+                {moment(campaign.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
+              </Text>
+            </>
+          )}
+          {isDraft(campaign) && (
+            <StatusLabel
+              backgroundColor={colors.orange500}
+              text={<FormattedMessage {...messages.draft} />}
+            />
+          )}
           {/* Only display project name in the global messaging tab */}
           {context === 'global' && project && (
             <Text m="0px">

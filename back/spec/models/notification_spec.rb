@@ -87,13 +87,23 @@ RSpec.describe Notification do
       expect(notifications).to be_present
     end
 
-    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_given' do
+    it 'makes a project moderation rights received notification on moderator (user) project_moderation_rights_received' do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
-      activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
+      activity = create(:activity, item: moderator, action: 'project_moderation_rights_received',
         payload: { project_id: project.id })
 
       notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
+      expect(notifications).to be_present
+    end
+
+    it 'makes a space moderation rights received notification on user space_moderation_rights_received' do
+      space = create(:space)
+      user = create(:user)
+      activity = create(:activity, item: user, action: 'space_moderation_rights_received',
+        payload: { space_id: space.id })
+
+      notifications = Notifications::SpaceModerationRightsReceived.make_notifications_on activity
       expect(notifications).to be_present
     end
 
@@ -161,6 +171,14 @@ RSpec.describe Notification do
     create(:project_moderation_rights_received, project: project)
     count = described_class.count
     project.destroy!
+    expect(described_class.count).to eq(count - 1)
+  end
+
+  it 'deleting a space also deletes notifications requiring that space' do
+    space = create(:space)
+    create(:space_moderation_rights_received, space: space)
+    count = described_class.count
+    space.destroy!
     expect(described_class.count).to eq(count - 1)
   end
 

@@ -1,6 +1,7 @@
 import { Multiloc, IRelationship, ILinks } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
+import { IUserData } from 'api/users/types';
 
 export type Parameters = {
   status?: PublicationStatus[];
@@ -8,9 +9,12 @@ export type Parameters = {
   search?: string;
 };
 
+type Included = IUserData[];
+
 export interface MiniProjectFolders {
   data: MiniProjectFolder[];
   links?: ILinks;
+  included?: Included;
 }
 
 export interface MiniProjectFolder {

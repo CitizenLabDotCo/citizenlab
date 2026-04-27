@@ -108,9 +108,10 @@ module Export
 
         if (file = model.idea_files.detect { |f| f.id == file_id })
           file.file.url
-        else
-          file_attachment = model.file_attachments.detect { |f| f.id == file_id }
+        elsif (file_attachment = model.file_attachments.detect { |f| f.id == file_id })
           file_attachment.file.content.url
+        else
+          ''
         end
       end
 

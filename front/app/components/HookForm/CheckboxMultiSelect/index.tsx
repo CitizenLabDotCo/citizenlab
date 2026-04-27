@@ -20,6 +20,7 @@ interface Props extends Omit<SelectProps, 'onChange'> {
   options: IOption[];
   scrollErrorIntoView?: boolean;
   title: string;
+  'aria-required'?: boolean;
 }
 
 const StyledBox = styled(Box)<{ selected: boolean }>`
@@ -35,6 +36,7 @@ const CheckboxMultiSelect = ({
   options,
   scrollErrorIntoView,
   title,
+  'aria-required': ariaRequired,
 }: Props) => {
   const {
     trigger,
@@ -58,7 +60,13 @@ const CheckboxMultiSelect = ({
         control={control}
         render={({ field: { ref: _ref } }) => {
           return (
-            <Box display="block" as="fieldset" border="none" p="0px">
+            <Box
+              display="block"
+              as="fieldset"
+              border="none"
+              p="0px"
+              aria-required={ariaRequired}
+            >
               <ScreenReaderOnly>
                 <legend>{title}</legend>
               </ScreenReaderOnly>

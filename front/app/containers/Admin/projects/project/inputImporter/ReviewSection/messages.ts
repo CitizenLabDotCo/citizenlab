@@ -57,31 +57,59 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously',
     defaultMessage: 'This input was imported anonymously.',
   },
-  inputsImported: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported',
-    defaultMessage:
-      '{numIdeas} inputs have been imported and require approval.',
-  },
   importing: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2',
     defaultMessage: 'Importing. This process may take a few minutes.',
   },
-  errorImporting: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
+  importingProgress: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress',
+    defaultMessage: 'Importing ({progress}/{total})',
+  },
+  errorImportingWithCounts: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts',
     defaultMessage:
-      'Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.',
+      'Imported {succeeded} of {total} inputs. {failed} could not be imported due to errors.',
   },
   inputsNotApproved: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3',
     defaultMessage:
-      '{numNotApproved} inputs could not be approved. Please check each input for validation issues and confirm individually.',
+      '{numNotApproved} inputs could not be approved. Please check each input for validation issues.',
   },
   approveAllInputs: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs',
-    defaultMessage: 'Approve all inputs',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2',
+    defaultMessage: 'Approve all inputs ({numIdeas})',
+  },
+  removeAllInputs: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs',
+    defaultMessage: 'Remove all inputs',
   },
   downloadPdf: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
     defaultMessage: 'Download PDF',
+  },
+  recentlyApprovedTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle',
+    defaultMessage: 'Recently approved ({count})',
+  },
+  undoApproval: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval',
+    defaultMessage: 'Undo approval',
+  },
+  confirmApproveAll: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll',
+    defaultMessage: 'Approve all inputs?',
+  },
+  confirmApproveAllExplanation: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported inputs at once. You can still find them in the input manager afterwards.',
+  },
+  confirmRemoveAll: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll',
+    defaultMessage: 'Remove all inputs?',
+  },
+  confirmRemoveAllExplanation: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation',
+    defaultMessage: 'This action cannot be undone.',
   },
 });

@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlFormExporter < BaseFormExporter
-    def initialize(phase, locale, personal_data_enabled)
+    def initialize(phase, locale, personal_data_enabled, include_logic: false)
       super
       @personal_data_enabled = personal_data_enabled
     end
@@ -27,6 +27,10 @@ module BulkImportIdeas::Exporters
       @printable_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
     end
 
+    def all_fields
+      @all_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).all_fields
+    end
+
     def render_config
       {
         template: 'bulk_import_ideas/web_api/v1/export_form',
@@ -42,6 +46,7 @@ module BulkImportIdeas::Exporters
         fields: format_fields,
         header: form_header,
         footer: form_footer,
+        include_logic: @include_logic,
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
@@ -112,33 +117,36 @@ module BulkImportIdeas::Exporters
     end
 
     def format_fields
+      logic_generator = LogicInstructionGenerator.new(printable_fields, all_fields, @locale) if @include_logic
+
       question_num = 0
+      current_page_id = nil
       fields = printable_fields.filter_map do |field|
-        next if field.title_multiloc[@locale].blank?
+        next if field.title_multiloc[@locale].blank? && !field.page?
+        next if field.title_multiloc[@locale].blank? && field.description_multiloc[@locale].blank? && !@include_logic
+
+        current_page_id = field.id if field.page?
 
         {
           id: field.id,
-          title: field_print_title(field),
+          title: @include_logic ? logic_generator.field_title(field, field_print_title(field)) : field_print_title(field),
           description: field_print_description(field),
           question_number: field_has_question_number?(field) ? "#{question_num += 1}." : '',
+          question_number_int: field_has_question_number?(field) ? question_num : nil,
           additional_text_question: field.additional_text_question?,
           format: field_print_format(field),
           input_type: field.input_type,
           visibility_disclaimer: print_visibility_disclaimer(field),
           optional: !field.required?,
-          options: field.options.map do |option|
-            {
-              id: option.id,
-              title: option.title_multiloc[@locale],
-              image_url: option_image_url(field, option)
-            }
-          end,
+          options: format_field_options(field, logic_generator),
           option_columns: field_option_columns?(field),
           matrix: field_matrix_details(field),
-          map_url: field_map_url(field)
+          map_url: field_map_url(field),
+          logic_instructions: nil
         }
       end
 
+      logic_generator&.attach_logic_instructions(fields)
       group_fields(fields)
     end
 
@@ -146,6 +154,21 @@ module BulkImportIdeas::Exporters
       return nil unless field.supports_option_images? && option.image
 
       format_urls(option.image.image.versions[:large].url)
+    end
+
+    def format_field_options(field, logic_generator)
+      field.options.each_with_index.map do |option, index|
+        title = if logic_generator
+          logic_generator.option_title(field, option, index)
+        else
+          option.title_multiloc[@locale]
+        end
+        {
+          id: option.id,
+          title: title,
+          image_url: option_image_url(field, option)
+        }
+      end
     end
 
     # Group fields together so that the first question of a page appears on the same printed page as the question

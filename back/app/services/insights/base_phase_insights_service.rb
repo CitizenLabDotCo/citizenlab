@@ -9,20 +9,12 @@ module Insights
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
-      participations = cached_phase_participations
-      cached_insights_data(participations)
-    end
-
-    # TODO: Implement caching, as intention is to resue cached participations in various places
-    def cached_phase_participations
-      # Imagine some caching stuff is here ;-)
-      phase_participations
+      insights_data(phase_participations)
     end
 
     private
 
-    # TODO: Implement caching? (may not be needed if performance good enough)
-    def cached_insights_data(participations)
+    def insights_data(participations)
       visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
@@ -93,19 +85,8 @@ module Insights
     end
 
     def phase_has_run_more_than_7_days?
-      time_now = Time.current.to_date
-      phase_end_date = @phase.end_at || time_now
-
-      # Check if the phase duration (start to end or current date) is less than 7 days
-      # Add 1 to include both start and end dates (inclusive counting)
-      phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
-
-      return false if phase_duration_days < 7
-
-      # Check if the elapsed time from phase start to now is more than 7 days
-      elapsed_days = (time_now - @phase.start_at).to_i
-
-      elapsed_days >= 7
+      effective_end = [@phase.end_at, Time.now].compact.min
+      (effective_end - @phase.start_at) / 1.day >= 7
     end
 
     def percentage_change(old_value, new_value)
@@ -150,7 +131,7 @@ module Insights
         .select { |key, _| key.to_s.start_with?(prefix) }
         .transform_keys { |key| key.to_s.delete_prefix(prefix) }
 
-      user_cfvs.merge(item_cfvs)
+      user_cfvs.merge(item_cfvs).reject { |_, v| v.is_a?(String) && v.blank? }
     end
 
     def demographics_data(participations, participant_ids)
@@ -304,8 +285,8 @@ module Insights
 
     # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
     def chart_resolution
-      end_at = @phase.end_at.present? ? @phase.end_at.to_time : Time.current
-      duration_seconds = end_at - @phase.start_at.to_time
+      end_at = @phase.end_at.presence || Time.current
+      duration_seconds = end_at - @phase.start_at
       duration_months = (duration_seconds / 1.month).round(1)
       duration_weeks = (duration_seconds / 1.week).round(1)
 

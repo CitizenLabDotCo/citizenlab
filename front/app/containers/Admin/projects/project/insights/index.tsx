@@ -27,7 +27,7 @@ import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
-import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
+import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
 
 import DemographicsSection from './demographics/DemographicsSection';
 import messages from './messages';

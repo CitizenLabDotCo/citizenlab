@@ -1,7 +1,10 @@
 import { ICampaignData, CampaignContext } from './types';
 
 export function isDraft(campaign: ICampaignData) {
-  return campaign.attributes.deliveries_count === 0;
+  return (
+    campaign.attributes.deliveries_count === 0 &&
+    !campaign.attributes.scheduled_at
+  );
 }
 
 export function getCampaignsContextPath({
