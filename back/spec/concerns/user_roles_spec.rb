@@ -547,11 +547,11 @@ RSpec.describe UserRoles do
       expect(user.project_moderator?('123')).to be true
     end
 
-    it 'returns true when user is project moderator through folder moderation' do
+    it 'returns false when user is project moderator through folder moderation' do
       folder = create(:project_folder)
       project = create(:project, folder: folder)
       user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
-      expect(user.project_moderator?(project.id)).to be true
+      expect(user.project_moderator?(project.id)).to be false
     end
 
     it 'returns false when checking project user does not moderate' do
