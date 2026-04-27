@@ -42,23 +42,26 @@ const renderField = ({
   question,
   projectId,
   ideaId,
+  participationMethod,
   scrollErrorIntoView = true,
 }: {
   question: IFlatCustomField;
   projectId?: string;
   ideaId?: string;
+  participationMethod?: ParticipationMethod;
   scrollErrorIntoView?: boolean;
 }) => {
   // Only user fields can be locked (disabled) for now due to a verification method!
   // Possible user fields are: text, number, multiline_text, select, multiselect, checkbox, date
   const disabled = question.constraints?.locked;
+  const hideLocaleSwitcher = participationMethod !== 'common_ground';
 
   switch (question.input_type) {
     case 'text_multiloc':
       return (
         <InputMultilocWithLocaleSwitcher
           name={question.key}
-          hideLocaleSwitcher
+          hideLocaleSwitcher={hideLocaleSwitcher}
           maxCharCount={question.max_characters}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
@@ -69,7 +72,7 @@ const renderField = ({
       return (
         <QuillMultilocWithLocaleSwitcher
           name={question.key}
-          hideLocaleSwitcher
+          hideLocaleSwitcher={hideLocaleSwitcher}
           scrollErrorIntoView={scrollErrorIntoView}
           id={question.key}
           maxCharCount={question.max_characters}
@@ -334,6 +337,7 @@ const CustomFields = ({
                     question,
                     projectId,
                     ideaId,
+                    participationMethod,
                     scrollErrorIntoView,
                   })}
                 </Box>

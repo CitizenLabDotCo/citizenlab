@@ -61,10 +61,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2',
     defaultMessage: 'Importing. This process may take a few minutes.',
   },
-  errorImporting: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
+  importingProgress: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress',
+    defaultMessage: 'Importing ({progress}/{total})',
+  },
+  errorImportingWithCounts: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts',
     defaultMessage:
-      'Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.',
+      'Imported {succeeded} of {total} inputs. {failed} could not be imported due to errors.',
   },
   inputsNotApproved: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3',
