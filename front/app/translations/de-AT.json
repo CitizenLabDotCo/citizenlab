@@ -782,7 +782,7 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelField": "Attribut",
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Bedingung",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Wert",
-  "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Sie erhalten keine Benachrichtigungen zu Ihrem Beitrag",
+  "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Du erhältst keine Benachrichtigungen zu deinem Beitrag",
   "app.components.anonymousParticipationModal.cancel": "Abbrechen",
   "app.components.anonymousParticipationModal.continue": "Weiter",
   "app.components.anonymousParticipationModal.participateAnonymously": "Anonym teilnehmen",
