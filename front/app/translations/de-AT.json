@@ -652,7 +652,7 @@
   "app.components.Upload.remaining": "restliche",
   "app.components.Upload.uploadImageLabel": "Bild auswählen (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Ein oder mehrere Bilder auswählen",
-  "app.components.UpsellTooltip.tooltipContent": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
+  "app.components.UpsellTooltip.tooltipContent": "Diese Funktion ist in deiner aktuellen Lizenz nicht enthalten. Sprich mit deiner Kundenbetreuerin oder deinem Admin, um sie freizuschalten.",
   "app.components.UserName.anonymous": "Anonym",
   "app.components.UserName.anonymousTooltip2": "Diese*r Nutzerin hat sich entschieden, seinen*ihren Beitrag zu anonymisieren",
   "app.components.UserName.authorWithNoNameTooltip": "Dein Name wurde automatisch generiert, da du deinen Namen nicht eingegeben hast. Bitte aktualisiere dein Profil, wenn du ihn ändern möchtest.",
