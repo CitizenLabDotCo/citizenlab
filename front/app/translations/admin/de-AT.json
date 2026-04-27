@@ -315,7 +315,7 @@
   "app.components.admin.PostManager.officialFeedbackModal.officialFeedbackPlaceholder": "Erklären Sie den Grund für die Statusänderung",
   "app.components.admin.PostManager.officialFeedbackModal.postFeedback": "Feedback posten",
   "app.components.admin.PostManager.officialFeedbackModal.skip": "Dieses Mal überspringen",
-  "app.components.admin.PostManager.officialFeedbackModal.title": "Erklären Sie Ihre Entscheidung",
+  "app.components.admin.PostManager.officialFeedbackModal.title": "Erkläre deine Entscheidung",
   "app.components.admin.PostManager.officialUpdateAuthor": "Wählen Sie, wie Ihr Name angezeigt werden soll",
   "app.components.admin.PostManager.officialUpdateBody": "Erklären Sie diese Statusänderung",
   "app.components.admin.PostManager.offlinePicks": "Analoge Stimmen",
