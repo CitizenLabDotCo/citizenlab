@@ -2041,6 +2041,12 @@ resource 'Projects' do
           do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
           assert_status 401
         end
+
+        example '[Unauthorized] Cannot create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
+          create(:project, space: space)
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 401
+        end
       end
     end
   end
