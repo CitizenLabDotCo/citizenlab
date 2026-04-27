@@ -147,8 +147,17 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
   const { highest_role } = authUser.data.attributes;
 
   const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    if (highest_role === 'space_moderator') return 'space';
-    if (highest_role === 'project_folder_moderator') return 'folder';
+    if (highest_role === 'space_moderator') {
+      if (project.data.attributes.space_id) return 'space';
+      if (project.data.attributes.folder_id) return 'folder';
+      return 'root';
+    }
+
+    if (highest_role === 'project_folder_moderator') {
+      if (project.data.attributes.folder_id) return 'folder';
+      return 'root';
+    }
+
     return 'root';
   });
 
