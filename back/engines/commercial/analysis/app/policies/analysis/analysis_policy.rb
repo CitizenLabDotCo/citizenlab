@@ -6,7 +6,7 @@ module Analysis
       def resolve
         if user&.active? && user.admin?
           scope.all
-        elsif user&.active? && user&.moderator?
+        elsif user&.active? && user.moderator?
           projects = UserRoleService.new.moderatable_projects(user)
           phases = Phase.where(project: projects)
           scope.where(project: projects).or(scope.where(phase: phases))

@@ -20,7 +20,7 @@ module UserCustomFields
 
     private
 
-    def active_admin_or_moderator??
+    def active_admin_or_moderator?
       active? && (admin? || user&.moderator?)
     end
   end
