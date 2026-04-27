@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Error } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -9,6 +9,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
 import Highlighter from 'components/Highlighter';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import ProjectFolderSelect from './ProjectFolderSelect';
@@ -23,6 +25,7 @@ const Inner = (
   }
 ) => {
   const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   if (!authUser) return null;
 
@@ -50,11 +53,7 @@ const Inner = (
           <FolderRadio {...props} />
           <RootRadio
             {...props}
-            descriptionMessage={
-              spacesEnabled
-                ? messages.rootDescriptionCreateWithSpaces
-                : messages.rootDescriptionCreateWithoutSpaces
-            }
+            descriptionMessage={messages.rootDescriptionCreateWithoutSpaces}
           />
         </>
       );
@@ -83,6 +82,9 @@ const Inner = (
                 }}
               />
             </Highlighter>
+            {props.error && (
+              <Error text={formatMessage(messages.folderError)} />
+            )}
           </Box>
         </>
       );
