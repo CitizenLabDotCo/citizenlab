@@ -296,7 +296,7 @@
   "app.components.admin.PostManager.latestFeedbackMode": "Verwenden Sie das letzte vorhandene offizielle Update als Erklärung",
   "app.components.admin.PostManager.layerAdded": "Ebene erfolgreich hinzugefügt",
   "app.components.admin.PostManager.likes": "Gefällt mir",
-  "app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation": "Wenn Sie diesen Beitrag von ihrem aktuellen Projekt wegbewegen, gehen die Informationen über die ihm zugewiesenen Phasen verloren. Möchten Sie fortfahren?",
+  "app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation": "Wenn du diesen Beitrag von seinem aktuellen Projekt wegbewegst, gehen die Informationen über die ihm zugewiesenen Phasen verloren. Möchtest du fortfahren?",
   "app.components.admin.PostManager.mapData": "Kartendaten",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} Beiträge",
   "app.components.admin.PostManager.newFeedbackMode": "Schreiben Sie ein neues Update, um diese Änderung zu erklären",
