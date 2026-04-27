@@ -129,7 +129,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".xlsx" />
+              <SingleFileUploader name="file" accept=".xlsx" shouldUnregister />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">
