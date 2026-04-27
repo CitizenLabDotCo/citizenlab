@@ -2434,7 +2434,7 @@
   "app.errors.maximum_attendees_greater_than1": "Maksimalt antall registrerte må være større enn 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Maksimalt antall registrerte må være større enn eller lik det nåværende antallet registrerte.",
   "app.errors.no_invites_specified": "Fant ingen e-postadresse.",
-  "app.errors.no_recipients": "Kampanjen kan ikke sendes ut fordi det ikke finnes noen mottakere. Gruppen du sender til, er enten tom, eller så har ingen gitt samtykke til å motta e-post.",
+  "app.errors.no_recipients": "Kampanjen kan ikke sendes ut fordi det ikke er noen mottakere. Gruppen du sender til er enten tom, eller så har ingen samtykket til å motta e-poster.",
   "app.errors.number_invalid": "Vennligst skriv inn et gyldig nummer.",
   "app.errors.password_blank": "Denne kan ikke være tom",
   "app.errors.password_invalid": "Vennligst sjekk ditt nåværende passord igjen.",
