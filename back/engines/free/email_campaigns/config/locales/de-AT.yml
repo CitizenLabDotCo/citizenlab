@@ -398,7 +398,7 @@ de-AT:
       event_description: '%{authorNameFull} hat auf Ihren internen Kommentar geantwortet.'
       preheader: '%{authorName} hat auf Ihren internen Kommentar %{post} geantwortet'
       subject: "Du hast einen Kommentar zu deinem internen Kommentar '%{post}' erhalten"
-      title: "Sie haben einen Kommentar zu Ihrem internen Kommentar '%{post}' erhalten"
+      title: "Du hast einen Kommentar zu deinem internen Kommentar '%{post}' erhalten"
     invitation_to_cosponsor_idea:
       cta_button: Vorschlag unterstützen
       event_description: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
@@ -423,7 +423,7 @@ de-AT:
       subject: Ausstehende Einladung für die Beteiligungsplattform %{organizationName}
       title: Einladung steht noch aus
     manual:
-      preheader: Sie haben Post von %{organizationName}
+      preheader: Du hast Post von %{organizationName}
     manual_project_participants:
       preheader: Sie haben Post von %{organizationName}
     mention_in_comment:
