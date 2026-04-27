@@ -101,9 +101,8 @@ class ProjectPolicy < ApplicationPolicy
     elsif record.space
       UserRoleService.new.can_moderate?(record.space, user)
     else
-      # PMs and FMs can create projects, which then need to be approved.
-      # SMs can't for now.
-      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+      # Moderators can create draft projects, which then need to be approved.
+      record.admin_publication.draft? && user.moderator?
     end
   end
 
