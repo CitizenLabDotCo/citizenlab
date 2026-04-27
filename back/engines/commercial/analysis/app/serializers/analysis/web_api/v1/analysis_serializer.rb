@@ -3,9 +3,7 @@
 class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
   attributes :created_at, :updated_at, :participation_method, :show_insights # TODO: move-participation-method-logic
 
-  attribute :auto_insights_too_many_fields do |analysis|
-    analysis.submission_custom_fields.size > 50
-  end
+  attribute :auto_insights_too_many_fields, &:auto_insights_too_many_fields?
 
   belongs_to :project, serializer: ::WebApi::V1::ProjectSerializer
   belongs_to :phase, serializer: ::WebApi::V1::PhaseSerializer
