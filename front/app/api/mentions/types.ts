@@ -6,12 +6,10 @@ import mentionsKeys from './keys';
 
 export type MentionsKeys = Keys<typeof mentionsKeys>;
 
-export type MentionRoles = 'admin' | 'moderator';
-
 export type IQueryParameters = {
   mention: string;
   idea_id?: string;
-  roles?: MentionRoles[];
+  admins_and_moderators?: boolean;
 };
 
 export interface IMentionData {

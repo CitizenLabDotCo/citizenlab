@@ -23,7 +23,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
-import { getMentionRoles } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -282,7 +281,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
-                roles={getMentionRoles(true)}
+                adminsAndModerators
               />
               <ButtonWrapper>
                 <CancelButton
