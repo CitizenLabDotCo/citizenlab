@@ -210,12 +210,10 @@ class Phase < ApplicationRecord
   validate :validate_phase_participation_method
 
   scope :published, lambda {
-    published_projects = joins(project: :admin_publication).merge(AdminPublication.published)
-    published_folders = AdminPublication.published.where(children_allowed: true)
-    top_level = published_projects.where(admin_publications: { parent_id: nil })
-    in_published_folder = published_projects.where(admin_publications: { parent_id: published_folders })
-
-    in_published_folder.or(top_level)
+    published_admin_pubs = AdminPublication.published.where(parent_id: nil)
+      .or(AdminPublication.published.where(parent_id: AdminPublication.published))
+    published_projects = Project.where(admin_publication: published_admin_pubs)
+    where(project: published_projects)
   }
 
   scope :current, lambda {

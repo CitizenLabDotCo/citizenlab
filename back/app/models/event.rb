@@ -61,7 +61,7 @@ class Event < ApplicationRecord
   before_validation :strip_title
 
   scope :with_project_publication_statuses, lambda { |statuses|
-    joins(project: [:admin_publication]).merge(AdminPublication.with_status(statuses))
+    where(project: Project.where(admin_publication: AdminPublication.with_status(statuses)))
   }
 
   private

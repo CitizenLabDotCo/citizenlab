@@ -12,7 +12,7 @@ module ProjectFolders
       end
 
       def published_folders
-        scope.joins(:admin_publication).merge(AdminPublication.not_draft)
+        scope.where(admin_publication: AdminPublication.not_draft)
       end
     end
 

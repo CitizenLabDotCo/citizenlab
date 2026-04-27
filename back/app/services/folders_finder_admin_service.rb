@@ -14,7 +14,7 @@ class FoldersFinderAdminService
     statuses = params[:status] || []
     return scope if statuses.blank?
 
-    scope.joins(:admin_publication).merge(AdminPublication.with_status(statuses))
+    scope.where(admin_publication: AdminPublication.with_status(statuses))
   end
 
   def self.filter_folder_manager(scope, params = {})

@@ -16,7 +16,7 @@ class ProjectsFinderService
   def participation_possible
     subquery = @projects
       .not_in_draft_folder
-      .joins(:admin_publication).merge(AdminPublication.published)
+      .where(admin_publication: AdminPublication.published)
 
     # Projects with active participatory (not information) phase & include the phases.end_at column
     subquery = projects_with_active_phase(subquery)
@@ -148,10 +148,10 @@ class ProjectsFinderService
     return @projects unless @filter_by.in? %w[finished archived finished_and_archived]
 
     result = @projects.none
-    base_scope = @projects.joins(:admin_publication, :phases).not_in_draft_folder
+    base_scope = @projects.joins(:phases).not_in_draft_folder
 
     if @filter_by.in? %w[finished finished_and_archived]
-      published_scope = base_scope.merge(AdminPublication.published)
+      published_scope = base_scope.where(admin_publication: AdminPublication.published)
       finished_scope = joins_last_phases_with_reports(published_scope).where(<<~SQL.squish, Time.zone.now)
         last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true)
       SQL
@@ -159,7 +159,7 @@ class ProjectsFinderService
     end
 
     if @filter_by.in? %w[archived finished_and_archived]
-      archived_scope = base_scope.merge(AdminPublication.archived)
+      archived_scope = base_scope.where(admin_publication: AdminPublication.archived)
       archived_scope = joins_last_phases_with_reports(archived_scope)
       result = result.or(archived_scope)
     end
