@@ -8174,6 +8174,11 @@
     "verified_at": "2026-04-23T12:17:08.584028Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": {
+    "state": "verified",
+    "verified_at": "2026-04-27T11:35:15.936437Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -8182,6 +8187,11 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf2": {
     "state": "verified",
     "verified_at": "2026-04-23T12:17:08.584028Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": {
+    "state": "verified",
+    "verified_at": "2026-04-27T11:35:15.936437Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": {
