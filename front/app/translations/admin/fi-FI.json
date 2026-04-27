@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Tämä syöte tuotiin anonyymisti.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} syötettä ei voitu hyväksyä. Tarkista kunkin syötteen validointivirheet.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Alue:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Ei vielä mitään tarkistettavaa. Jatkaaksesi tuo PDF-tiedosto, joka sisältää skannattuja vastauslomakkeita, tai Excel-tiedosto, joka sisältää syötteitä.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Ei vielä mitään tarkistettavaa. Jatkaaksesi tuo Excel-tiedosto, joka sisältää syötteitä.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Syöte",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Tuotua tiedostoa ei voi näyttää. Tuotujen tiedostojen katselu on käytettävissä vain PDF-tuonnissa.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Vaihe:",

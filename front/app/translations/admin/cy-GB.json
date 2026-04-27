@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Mewnforiwyd y mewnbwn hwn yn ddienw.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "Ni ellid cymeradwyo {numNotApproved} mewnbwn. Gwiriwch bob mewnbwn am faterion dilysu.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lleoliad:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Dim byd i'w adolygu eto. Mewnforiwch ffeil PDF sy'n cynnwys ffurflenni mewnbwn wedi'u sganio neu ffeil Excel sy'n cynnwys mewnbynnau i barhau.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Dim byd i'w adolygu eto. Mewnforiwch ffeil Excel sy'n cynnwys mewnbynnau i barhau.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Mewnbwn",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Methu dangos y ffeil a fewnforiwyd. Dim ond ar gyfer mewnforio PDF y mae modd gweld ffeiliau a fewnforiwyd.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Cyfnod:",

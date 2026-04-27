@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Essa entrada foi importada de forma anônima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} entradas não puderam ser aprovadas. Verifique se há problemas de validação em cada entrada.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Localidade:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Nada para revisar ainda. Importe um arquivo PDF contendo formulários de contribuição digitalizados ou um arquivo Excel contendo contribuições para continuar.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Nada para revisar ainda. Importe um arquivo Excel contendo contribuições para continuar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Entrada",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Não é possível exibir o arquivo importado. A visualização de arquivos importados está disponível apenas para importações de PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",

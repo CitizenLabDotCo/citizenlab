@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Aquesta aportació s'ha importat de manera anònima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} entrades no s'han pogut aprovar. Reviseu si hi ha errors de validació a cada entrada.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Idioma:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Encara no hi ha res per revisar. Importa un fitxer PDF que contingui formularis d'aportacions escanejats o un fitxer Excel que contingui aportacions per continuar.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Encara no hi ha res per revisar. Importa un fitxer Excel que contingui aportacions per continuar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Aportació",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "No es pot mostrar el fitxer importat. La visualització de fitxers importats només està disponible per a importacions en PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",

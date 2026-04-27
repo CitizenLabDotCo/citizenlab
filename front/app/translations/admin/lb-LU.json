@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dësen Input gouf anonym importéiert.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} Inputen konnten net guttgeheescht ginn. Iwwerpréift wgl. all Input op Validéierungsproblemer.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Locale:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Nach näischt ze iwwerpréiwen. Importéiert eng PDF-Datei mat gescannten Input-Formularen oder eng Excel-Datei mat Bäiträg, fir weiderzefueren.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Nach näischt ze iwwerpréiwen. Importéiert eng Excel-Datei mat Bäiträg, fir weiderzefueren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Input",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Déi importéiert Datei kann net ugewisen ginn. D'Uweise vun importéierte Dateien ass nëmme fir PDF-Importer méiglech.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phas:",

@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Esta aportación se importó de forma anónima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} aportaciones no se han podido aprobar. Por favor, comprueba si hay errores de validación en cada una.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Localidad:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Nada que revisar todavía. Importa un archivo PDF que contenga formularios de aportación escaneados o un archivo Excel que contenga aportaciones para continuar.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Nada que revisar todavía. Importa un archivo Excel que contenga aportaciones para continuar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Aportes",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "No se puede visualizar el archivo importado. La visualización del archivo importado sólo está disponible para las importaciones de PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",

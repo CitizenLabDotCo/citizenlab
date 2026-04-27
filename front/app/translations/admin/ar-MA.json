@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "تم استيراد هذه المساهمة بشكل مجهول.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "تعذر قبول {numNotApproved} من المدخلات. يرجى التحقق من كل مدخل بحثاً عن مشاكل في التحقق.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "اللغة:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "لا يوجد شيء للمراجعة بعد. قم باستيراد ملف PDF يتضمن استمارات مدخلات ممسوحة ضوئياً أو ملف Excel يتضمن المدخلات للمتابعة.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "لا يوجد شيء للمراجعة بعد. قم باستيراد ملف Excel يتضمن المدخلات للمتابعة.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "مساهمة",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "تعذر عرض الملف المستورد. عرض الملفات المستوردة متاح فقط لملفات PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "المرحلة:",

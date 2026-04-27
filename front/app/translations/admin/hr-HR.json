@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Ovaj unos uvezen je anonimno.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} unosa nije bilo moguće odobriti. Provjerite svaki unos zbog problema s validacijom.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lokalitet:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Još nema ničega za pregled. Uvezite PDF datoteku koja sadrži skenirane obrasce s unosima ili Excel datoteku koja sadrži unose kako biste nastavili.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Još nema ničega za pregled. Uvezite Excel datoteku koja sadrži unose kako biste nastavili.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ulazni",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nije moguće prikazati uvezenu datoteku. Pregled uvezenih datoteka dostupan je samo za uvoze PDF-a.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",

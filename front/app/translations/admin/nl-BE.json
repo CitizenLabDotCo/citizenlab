@@ -1583,6 +1583,8 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Deze input is anoniem geïmporteerd.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved3": "{numNotApproved} bijdragen konden niet worden goedgekeurd. Controleer elke bijdrage op validatiefouten.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Taal:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": "Nog niets om te beoordelen. Importeer een PDF-bestand met gescande invulformulieren of een Excel-bestand met bijdragen om verder te gaan.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": "Nog niets om te beoordelen. Importeer een Excel-bestand met bijdragen om verder te gaan.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Bijdragen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan het geïmporteerde bestand niet weergeven. Het bekijken van geïmporteerde bestanden is alleen beschikbaar voor PDF-bestanden.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
