@@ -58,14 +58,12 @@ export const getPlainTextLengthFromHTML = (
   return Math.max(0, text.length - 1);
 };
 
-// Alignment inline styles for images in email-safe format.
-// Avoid floats as they are poorly supported in email clients (especially Outlook).
-// Use text-align on a wrapper or margin-based centering instead.
+// Alignment inline styles matching the old quill-blot-formatter v1 output.
+// These allow text to wrap around floated images.
 const ALIGNMENT_STYLES: Record<string, string> = {
-  left: 'display: block; margin: 0 auto 1em 0; max-width: 100%; height: auto;',
-  center:
-    'display: block; margin: 0 auto 1em auto; max-width: 100%; height: auto;',
-  right: 'display: block; margin: 0 0 1em auto; max-width: 100%; height: auto;',
+  left: 'display: inline; float: left; margin: 0 1em 1em 0;',
+  center: 'display: block; margin: auto;',
+  right: 'display: inline; float: right; margin: 0 0 1em 1em;',
 };
 
 // Convert blot-formatter2 alignment to inline styles. Images use a wrapper
