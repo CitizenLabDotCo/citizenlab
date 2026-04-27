@@ -568,7 +568,7 @@ RSpec.describe UserRoles do
 
     it 'return false if user is space moderator and can indirectly moderate project, but is not a direct moderator (no specific project)' do
       space = create(:space)
-      project = create(:project, space: space)
+      create(:project, space: space)
       user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
       expect(user.project_moderator?).to be false
     end
