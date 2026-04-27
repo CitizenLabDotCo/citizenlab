@@ -17,6 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -84,6 +85,9 @@ const ParticipationMethodPicker = ({
   });
   const commonGroundEnabled = useFeatureFlag({
     name: 'common_ground',
+  });
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
   });
 
   useEffect(() => {
@@ -360,6 +364,40 @@ const ParticipationMethodPicker = ({
               </>
             )}
           </Box>
+          {selectedMethod &&
+            ['native_survey', 'ideation', 'proposals'].includes(
+              selectedMethod
+            ) && (
+              <Box mt="24px" width="750px">
+                <FeatureCallout
+                  icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                  disabledTooltipContent={
+                    <Box display="flex" flexDirection="column" gap="8px">
+                      <FormattedMessage {...messages2.formSyncLockedTooltip} />
+                      <FormattedMessage {...messages2.formSyncLockedTooltip2} />
+                    </Box>
+                  }
+                  tooltipDisabled={importPrintedFormsEnabled}
+                  linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
+                  linkText={<FormattedMessage {...messages2.learnMore} />}
+                  title={
+                    <FormattedMessage {...messages2.collectResponsesOnPaper} />
+                  }
+                  description={
+                    <>
+                      <FormattedMessage
+                        {...messages2.collectResponsesOnPaperDescription}
+                      />{' '}
+                      {!importPrintedFormsEnabled && (
+                        <FormattedMessage
+                          {...messages2.notAvailableInYourPlan}
+                        />
+                      )}
+                    </>
+                  }
+                />
+              </Box>
+            )}
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
       </SectionField>

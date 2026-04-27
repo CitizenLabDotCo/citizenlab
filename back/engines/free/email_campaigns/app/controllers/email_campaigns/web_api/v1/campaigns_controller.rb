@@ -8,7 +8,6 @@ module EmailCampaigns
     def index
       @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
         .resolve
-        .order(created_at: :desc)
       # Necessary because we instantiate the scope directly instead of using Pundit's
       # `policy_scope` method.
       skip_policy_scope
@@ -24,7 +23,12 @@ module EmailCampaigns
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
-      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
+      @campaigns = case parse_bool(params[:manual])
+      when true then manual_order(@campaigns.manual)
+      when false then @campaigns.automatic.order(created_at: :desc)
+      else # NOTE: parse_bool(nil) -> nil
+        @campaigns.order(created_at: :desc)
+      end
 
       @campaigns = paginate @campaigns
 
@@ -98,13 +102,7 @@ module EmailCampaigns
     end
 
     def do_send
-      if @campaign.valid?(:send)
-        SideFxCampaignService.new.before_send(@campaign, current_user)
-        @campaign.with_lock do
-          @campaign.clear_scheduled_at!
-          EmailCampaigns::DeliveryService.new.send_now(@campaign)
-        end
-        SideFxCampaignService.new.after_send(@campaign, current_user)
+      if @campaign.valid?(:send) && SendManualCampaignService.new.call(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: jsonapi_serializer_params
@@ -202,6 +200,22 @@ module EmailCampaigns
         intro_multiloc: I18n.available_locales,
         button_text_multiloc: I18n.available_locales
       )
+    end
+
+    # Sort campaigns by status group (draft → scheduled → sent),
+    # then by date within each group (most recent first).
+    def manual_order(scope)
+      scope.order(Arel.sql(<<~SQL))
+        CASE
+          WHEN deliveries_count = 0 AND (schedule IS NULL OR schedule = '{}') THEN 0 -- draft
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN 1 -- scheduled
+          ELSE 2 -- sent
+        END ASC,
+        CASE
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN (schedule->'rtimes'->0->>'time')::timestamp
+          ELSE updated_at
+        END DESC
+      SQL
     end
   end
 end

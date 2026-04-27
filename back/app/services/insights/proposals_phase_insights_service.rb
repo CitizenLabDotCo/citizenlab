@@ -11,14 +11,12 @@ module Insights
     end
 
     def participations_posting_idea
-      end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = @phase.end_at || Time.current
+
       ideas = @phase.ideas
         .transitive(false)
         .where.not(submitted_at: nil)
-        .where(<<~SQL.squish, @phase.start_at.beginning_of_day, end_time)
-          ideas.created_at >= ? AND ideas.created_at <= ?
-          AND ideas.publication_status IN ('published', 'submitted')
-        SQL
+        .where(created_at: @phase.start_at...end_time, publication_status: %w[published submitted])
         .includes(:author, :activities)
 
       ideas.map do |idea|

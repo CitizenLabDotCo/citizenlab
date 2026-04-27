@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -9,8 +8,10 @@ import {
   StatusLabel,
   Title,
   Text,
+  Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignFormValues } from 'api/campaigns/types';
@@ -24,27 +25,15 @@ import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/Campaign
 import messages from 'containers/Admin/messaging/messages';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { formatDateInTimezone } from 'utils/dateUtils';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
-
-type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
-const feedbackMessages = {
-  sent: messages.previewSentConfirmation,
-  updated: messages.emailUpdated,
-  created: messages.emailCreated,
-};
-
 const Edit = ({ campaignType }: EditProps) => {
   const { campaignId } = useParams() as {
     campaignId: string;
@@ -53,15 +42,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
-    created ? 'created' : null
-  );
-
-  useEffect(() => {
-    if (created) removeSearchParams(['created']);
-  }, [created]);
+  const [previewSent, setPreviewSent] = useState(false);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
@@ -70,7 +51,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        setFeedbackType('sent');
+        setPreviewSent(true);
       },
     });
   };
@@ -81,7 +62,13 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: CampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    setFeedbackType('updated');
+    if (campaignType === 'custom') {
+      clHistory.push(
+        `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
+      );
+    } else {
+      clHistory.push('/admin/messaging/emails/automated');
+    }
   };
 
   const goBack = () => {
@@ -110,10 +97,9 @@ const Edit = ({ campaignType }: EditProps) => {
                 text={<FormattedMessage {...messages.scheduled} />}
               />
               <Text fontSize="base" whiteSpace="nowrap">
-                {formatDateInTimezone({
-                  date: campaign.data.attributes.scheduled_at,
-                  timeZone,
-                })}
+                {moment(campaign.data.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
               </Text>
             </>
           )}
@@ -124,11 +110,14 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
-        {feedbackType && (
-          <SuccessFeedback
-            successMessage={formatMessage(feedbackMessages[feedbackType])}
-            closeSuccessMessage={() => setFeedbackType(null)}
-          />
+        {previewSent && (
+          <Box mb="8px">
+            <Success
+              text={formatMessage(messages.previewSentConfirmation)}
+              showIcon
+              showBackground
+            />
+          </Box>
         )}
       </Box>
       <Box display="flex">

@@ -5,6 +5,8 @@ import { keys } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { IOption } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -36,7 +38,10 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_larger_than_or_equal: messages.predicate_is_larger_than_or_equal,
   is_normal_user: messages.predicate_is_normal_user,
   is_one_of: messages.predicate_is_one_of,
+  is_space_moderator: messages.predicate_is_space_moderator,
+  is_project_folder_moderator: messages.predicate_is_project_folder_moderator,
   is_project_moderator: messages.predicate_is_project_moderator,
+  is_moderator: messages.predicate_is_moderator,
   is_smaller_than: messages.predicate_is_smaller_than,
   is_smaller_than_or_equal: messages.predicate_is_smaller_than_or_equal,
   is_verified: messages.predicate_is_verified,
@@ -49,12 +54,16 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   not_in: messages.predicate_not_in,
   not_is: messages.predicate_not_is,
   not_is_admin: messages.predicate_not_is_admin,
+  not_is_space_moderator: messages.predicate_not_is_space_moderator,
   not_is_checked: messages.predicate_not_is_checked,
   not_is_empty: messages.predicate_not_is_empty,
   not_is_equal: messages.predicate_not_is_equal,
   not_is_normal_user: messages.predicate_not_is_normal_user,
   not_is_one_of: messages.predicate_not_is_one_of,
+  not_is_project_folder_moderator:
+    messages.predicate_not_is_project_folder_moderator,
   not_is_project_moderator: messages.predicate_not_is_project_moderator,
+  not_is_moderator: messages.predicate_not_is_moderator,
   not_is_verified: messages.predicate_not_is_verified,
   not_posted_in: messages.predicate_not_posted_input,
   not_volunteered_in: messages.predicate_not_volunteered_in,
@@ -90,6 +99,11 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   not_taken_survey: messages.predicate_not_taken_survey,
 };
 
+const SPACE_MODERATOR_PREDICATES: TPredicate[] = [
+  'is_space_moderator',
+  'not_is_space_moderator',
+];
+
 const PredicateSelector = memo(
   ({
     ruleType,
@@ -97,6 +111,8 @@ const PredicateSelector = memo(
     onChange,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
+    const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
+
     const getMessage = (predicate: TPredicate) => {
       return PREDICATE_MESSAGES[predicate];
     };
@@ -105,7 +121,14 @@ const PredicateSelector = memo(
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ruleType) {
-        const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
+        const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]).filter(
+          (predicate) => {
+            return (
+              isSpacesEnabled ||
+              !SPACE_MODERATOR_PREDICATES.includes(predicate as TPredicate)
+            );
+          }
+        );
         return ruleTypePredicates.map((predicate) => {
           const message = getMessage(predicate as TPredicate);
           return {

@@ -25,6 +25,7 @@ const useProjectFolderFiles = (queryParams: IQueryParameters) => {
   >({
     queryKey: projectFolderFilesKeys.list(queryParams),
     queryFn: () => fetchProjectFolderFiles(queryParams),
+    enabled: !!queryParams.projectFolderId,
   });
 };
 

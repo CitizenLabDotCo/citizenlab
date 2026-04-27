@@ -268,6 +268,26 @@ resource 'Users' do
           assert_status 200
         end
       end
+
+      context 'when the email domain has SSO enforced' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+          settings = AppConfiguration.instance.settings
+          settings['azure_ad_login'] = {
+            'allowed' => true, 'enabled' => true,
+            'enforced_email_domains' => 'example.com'
+          }
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        let(:email) { 'user@example.com' }
+
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+        end
+      end
     end
 
     post 'web_api/v1/users' do
@@ -282,6 +302,27 @@ resource 'Users' do
       end
 
       ValidationErrorHelper.new.error_fields(self, User)
+
+      context 'when the email domain has SSO enforced' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+          settings = AppConfiguration.instance.settings
+          settings['azure_ad_login'] = {
+            'allowed' => true, 'enabled' => true,
+            'enforced_email_domains' => 'example.com'
+          }
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        let(:email) { 'newuser@example.com' }
+        let(:locale) { 'en' }
+
+        example_request 'Returns 422 with sso_enforced_for_domain error' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
+        end
+      end
 
       context 'when confirmation is turned on' do
         before do
@@ -937,6 +978,26 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/billed_admins' do
+        example 'Get list of admins that are billed' do
+          create(:super_admin) # super admin are not included in admins
+          @admins = [@user, *create_list(:admin, 3)]
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to match_array(@admins.map(&:id))
+        end
+      end
+
+      get 'web_api/v1/users/billed_moderators' do
+        example 'Get list of moderators that are billed' do
+          create(:super_admin) # super admin are not included in moderators
+          @moderators = create_list(:project_moderator, 3)
+          do_request
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to match_array(@moderators.map(&:id))
+        end
+      end
+
       get 'web_api/v1/users/as_xlsx' do
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
@@ -1376,6 +1437,19 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
         end
       end
+
+      get 'web_api/v1/users/check_if_exceeds_seats' do
+        let(:user_id) { create(:user).id }
+        let(:seat_type) { 'moderator' }
+
+        example 'Check if user exceeds seat limits' do
+          do_request(user_id:, seat_type:)
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :value)).to be(false)
+        end
+      end
     end
 
     context 'when non-admin' do
@@ -1776,6 +1850,10 @@ resource 'Users' do
             @user.reload
             expect(response_status).to eq 200
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+
+            # Resets the JWT cookie by setting a new token expiry key, so that old tokens are invalidated after password change
+            expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
+            expect(@user.token_expiry_key).not_to be_nil
           end
         end
 

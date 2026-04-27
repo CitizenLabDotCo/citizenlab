@@ -2,7 +2,7 @@
 
 class WebApi::V1::JobsController < ApplicationController
   def index
-    where_conditions = params.permit(:context_id, :context_type, :project_id, :owner_id)
+    where_conditions = params.permit(:context_id, :context_type, :project_id, :owner_id, :root_job_type)
     completed = Utils.to_bool(params[:completed]) if params[:completed]
 
     job_trackers = policy_scope(Jobs::Tracker)

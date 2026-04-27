@@ -701,34 +701,40 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   describe '#phase_has_run_more_than_7_days?' do
     it 'returns false when phase duration is less than 7 days' do
-      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 6)) # 6 days, including both start and end dates
-        service = described_class.new(phase)
+      start_at = '2026-01-01'.in_time_zone
+      end_at = start_at + 7.days - 1.second
+      now = end_at + 1.day
+
+      past_phase = create(:single_voting_phase, start_at:, end_at:)
+      service = described_class.new(past_phase)
+
+      travel_to(now) do
         expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
     it 'returns false when phase duration is 7 days but elapsed time is less than 7 days' do
-      travel_to(Time.zone.parse('2026-01-6 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
-        service = described_class.new(phase)
+      start_at = '2026-01-01'.in_time_zone
+      end_at = start_at + 10.days
+      now = start_at + 7.days - 1.second
+
+      ongoing_phase = create(:single_voting_phase, start_at:, end_at:)
+      service = described_class.new(ongoing_phase)
+
+      travel_to(now) do
         expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
     it 'returns true when phase duration is 7 days and elapsed time is at least 7 days' do
-      travel_to(Time.zone.parse('2026-01-8 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_7_days?)).to be true
-      end
-    end
+      start_at = '2026-01-01'.in_time_zone
+      end_at = now = start_at + 7.days
 
-    it 'returns false when phase is long enough but started less than 7 days ago' do
-      travel_to(Time.zone.parse('2026-01-7 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
+      phase = create(:single_voting_phase, start_at:, end_at:)
+      service = described_class.new(phase)
+
+      travel_to(now) do
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be true
       end
     end
 
@@ -860,6 +866,28 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
+    end
+
+    it 'excludes empty string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}domicile" => '', "#{prefix}gender" => '', "#{prefix}postcode" => '2324km' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'postcode' => '2324km' })
+    end
+
+    it 'excludes empty string values when merging item and user custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '' })
+      user = create(:user, custom_field_values: { 'key1' => 'value1', 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'excludes whitespace-only string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '  ', "#{prefix}key2" => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key2' => 'value2' })
     end
   end
 end

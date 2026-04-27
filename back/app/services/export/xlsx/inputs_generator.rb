@@ -89,3 +89,5 @@ module Export
     end
   end
 end
+
+Export::Xlsx::InputsGenerator.prepend(BulkImportIdeas::Patches::InputsGenerator)

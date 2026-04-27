@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
     defaultMessage: 'Phase',
   },
-  manager: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.manager',
-    defaultMessage: 'Manager',
-  },
   start: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.start',
     defaultMessage: 'Start',
@@ -111,5 +107,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache',
     defaultMessage:
       'This column uses cached participant data. To see the latest numbers, check the "Participants" tab of the project.',
+  },
+  noProjectsFound: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound',
+    defaultMessage: 'No projects found',
   },
 });

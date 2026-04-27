@@ -17,20 +17,14 @@ import messages from './messages';
 const New = () => {
   const [searchParams] = useSearchParams();
   const parentId = searchParams.get('parent_id');
-  const { mutate: addDefaultInputTopic } = useAddDefaultInputTopic();
+  const { mutateAsync: addDefaultInputTopic } = useAddDefaultInputTopic();
 
   const handleSubmit = async (values: IDefaultInputTopicAdd) => {
-    addDefaultInputTopic(
-      {
-        ...values,
-        parent_id: parentId || undefined,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/topics/input');
-        },
-      }
-    );
+    await addDefaultInputTopic({
+      ...values,
+      parent_id: parentId || undefined,
+    });
+    clHistory.push('/admin/settings/topics/input');
   };
 
   const goBack = () => {

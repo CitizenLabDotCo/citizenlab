@@ -34,6 +34,7 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
+      Campaigns::SpaceModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::ProjectPublished,

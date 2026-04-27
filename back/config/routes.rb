@@ -112,6 +112,8 @@ Rails.application.routes.draw do
         collection do
           get :me
           get :seats
+          get :billed_admins
+          get :billed_moderators
           get :as_xlsx, action: 'index_xlsx'
 
           post 'reset_password_email' => 'reset_password#reset_password_email'
@@ -123,6 +125,7 @@ Rails.application.routes.draw do
           get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
+          get :check_if_exceeds_seats
         end
 
         member do
@@ -273,6 +276,8 @@ Rails.application.routes.draw do
           get :votes_by_input_xlsx
 
           delete :participation_data, action: 'destroy_participation_data'
+
+          get :publication_recipient_count
 
           get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
           patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }

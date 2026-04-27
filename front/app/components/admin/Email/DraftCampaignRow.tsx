@@ -7,6 +7,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,7 +22,6 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { formatDateInTimezone } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -52,16 +52,16 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
         <Box display="flex" alignItems="center" gap="12px">
           {campaign.attributes.scheduled_at && (
             <>
-              <Text fontSize="base">
-                {formatDateInTimezone({
-                  date: campaign.attributes.scheduled_at,
-                  timeZone,
-                })}
-              </Text>
               <StatusLabel
                 backgroundColor={colors.teal500}
                 text={<FormattedMessage {...messages.scheduled} />}
               />
+
+              <Text as="span" fontSize="base" m="0px" color="textSecondary">
+                {moment(campaign.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
+              </Text>
             </>
           )}
           {isDraft(campaign) && (

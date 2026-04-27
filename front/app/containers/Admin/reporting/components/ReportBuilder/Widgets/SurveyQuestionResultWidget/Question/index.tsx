@@ -12,6 +12,7 @@ import MatrixQuestion from 'components/admin/FormResults/FormResultsQuestion/Mat
 import RankingQuestion from 'components/admin/FormResults/FormResultsQuestion/RankingQuestion';
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 import Legend from 'components/admin/Graphs/Legend';
+import { legendColors } from 'components/admin/Graphs/legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
@@ -112,7 +113,10 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={DEFAULT_CATEGORICAL_COLORS}
+                  colors={legendColors(
+                    attributes.legend,
+                    DEFAULT_CATEGORICAL_COLORS
+                  )}
                 />
               </Box>
             )}
@@ -132,7 +136,10 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={DEFAULT_CATEGORICAL_COLORS}
+                  colors={legendColors(
+                    attributes.legend,
+                    DEFAULT_CATEGORICAL_COLORS
+                  )}
                 />
               </Box>
             )}

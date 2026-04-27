@@ -227,6 +227,10 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.projectParticipants',
     defaultMessage: 'Project participants',
   },
+  preview: {
+    id: 'app.containers.Admin.project.emails.preview',
+    defaultMessage: 'Preview',
+  },
   scheduled: {
     id: 'app.containers.Admin.project.emails.scheduled',
     defaultMessage: 'Scheduled',
@@ -234,5 +238,18 @@ export default defineMessages({
   save: {
     id: 'app.containers.Admin.project.emails.save',
     defaultMessage: 'Save',
+  },
+  emailUpdated: {
+    id: 'app.containers.Admin.project.emails.emailUpdated',
+    defaultMessage: 'Email successfully updated',
+  },
+  emailCreated: {
+    id: 'app.containers.Admin.project.emails.emailCreated',
+    defaultMessage: 'Email successfully created in draft',
+  },
+  no_recipients: {
+    id: 'app.containers.Admin.project.emails.no_recipients',
+    defaultMessage:
+      "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
 });
