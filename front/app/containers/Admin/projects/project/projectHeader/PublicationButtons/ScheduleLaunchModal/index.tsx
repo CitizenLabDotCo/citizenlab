@@ -135,15 +135,6 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     });
   };
 
-  const handleApproveAndPublish = () => {
-    trackEventByName(tracks.projectApprovedAndPublished);
-    approveProjectReview(project.id, {
-      onSuccess: () => {
-        updateProject(publishPayload(), { onSuccess: onClose });
-      },
-    });
-  };
-
   const handleApprove = () => {
     trackEventByName(tracks.projectApproved);
     approveProjectReview(project.id, { onSuccess: onClose });
@@ -193,8 +184,6 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     const reviewGated = isProjectReviewEnabled && reviewState !== 'approved';
     if (!reviewGated) return saveOrPublish;
 
-    // Admin/folder manager on a pending review — one click approves and
-    // saves the schedule or publishes.
     if (reviewState === 'pending' && canReview) {
       if (pendingReviewWithoutSchedule && mode === 'now') {
         return {
@@ -202,18 +191,13 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
           icon: 'unlock',
           onClick: handleApprove,
         };
+      } else if (mode === 'schedule') {
+        return {
+          label: messages.approveAndSchedule,
+          icon: 'unlock',
+          onClick: handleApproveAndSchedule,
+        };
       }
-      return mode === 'schedule'
-        ? {
-            label: messages.approveAndSchedule,
-            icon: 'unlock',
-            onClick: handleApproveAndSchedule,
-          }
-        : {
-            label: messages.approveAndPublish,
-            icon: 'unlock',
-            onClick: handleApproveAndPublish,
-          };
     }
 
     // PM waiting on an existing request — disabled indicator.

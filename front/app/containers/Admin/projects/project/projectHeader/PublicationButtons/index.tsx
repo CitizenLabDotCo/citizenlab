@@ -32,7 +32,7 @@ const getPublicationButton = ({
     'send';
   if (publicationStatus === 'draft') {
     if (isPending && canReview) {
-      text = messages.approveAndSchedule;
+      text = messages.approve;
       icon = 'unlock';
     } else if (isPending) {
       text = messages.approvalRequested;

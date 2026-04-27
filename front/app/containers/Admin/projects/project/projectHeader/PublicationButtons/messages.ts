@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvalRequested',
     defaultMessage: 'Approval requested',
   },
-  approveAndSchedule: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approveAndSchedule',
-    defaultMessage: 'Approve & schedule',
+  approve: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve',
+    defaultMessage: 'Approve',
   },
   scheduled: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduled',
