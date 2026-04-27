@@ -833,7 +833,7 @@
   "app.containers.Admin.Users.deleteUserModal.eventAttendancesCount": "{count, plural, one {~ Veranstaltungsregistrierung} other {~ Veranstaltungsregistrierungen}}",
   "app.containers.Admin.Users.deleteUserModal.header": "Konto löschen",
   "app.containers.Admin.Users.deleteUserModal.ideasCount": "{count, plural, one {# Idee} other {# Ideen}}",
-  "app.containers.Admin.Users.deleteUserModal.intro": "Sie sind im Begriff, diese Daten endgültig zu löschen",
+  "app.containers.Admin.Users.deleteUserModal.intro": "Du bist im Begriff, diese Daten endgültig zu löschen",
   "app.containers.Admin.Users.deleteUserModal.memberSince": "Mitglied seit {date}",
   "app.containers.Admin.Users.deleteUserModal.noParticipation": "Diese*r Nutzer*in hat keine Teilnahmedaten.",
   "app.containers.Admin.Users.deleteUserModal.participationSummary": "Zusammenfassung der Beteiligung",
