@@ -10,21 +10,36 @@ export class ImageBlot extends Image {
   static tagName = 'img';
 
   static formats(domNode: HTMLImageElement) {
-    return attributes.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
+    return attributes.reduce<Record<string, string>>((formats, attribute) => {
+      const value = domNode.getAttribute(attribute);
+      if (value !== null) formats[attribute] = value;
       return formats;
     }, {});
   }
 
   format(name: string, value: string) {
     if (attributes.indexOf(name) > -1) {
-      if (value) {
-        (this.domNode as HTMLImageElement).setAttribute(name, value);
-      } else {
-        (this.domNode as HTMLImageElement).removeAttribute(name);
+      const node = this.domNode as HTMLImageElement;
+      if (!value) {
+        node.removeAttribute(name);
+        return;
       }
+      // The HTML `width` and `height` attributes must be unitless integers per
+      // the HTML spec. Email clients (notably Gmail) drop attributes that
+      // include a unit like "270px", which is what blot-formatter2 emits and
+      // is the root cause of TAN-7245. Normalize on write.
+      if (name === 'width' || name === 'height') {
+        const numeric = String(value).match(/^(\d+)(?:\s*px)?$/);
+        if (numeric) {
+          node.setAttribute(name, numeric[1]);
+          return;
+        }
+        // Non-pixel values (e.g. "auto", "50%") are invalid as HTML attrs.
+        // Drop the attr; the value can still be expressed via inline style.
+        node.removeAttribute(name);
+        return;
+      }
+      node.setAttribute(name, value);
     } else {
       super.format(name, value);
     }
