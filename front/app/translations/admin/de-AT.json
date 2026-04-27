@@ -99,7 +99,7 @@
   "app.components.FormSync.spreadsheetDescription1": "Antwortdaten aus Excel oder CSV importieren",
   "app.components.FormSync.template1": "Vorlage",
   "app.components.FormSync.unlockScanning1": "Scannen freischalten",
-  "app.components.FormSync.unlockScanningTooltip1": "Das Scannen von Papierformularen mit Papier-Scans ist in Ihrem aktuellen Paket nicht enthalten.",
+  "app.components.FormSync.unlockScanningTooltip1": "Das Scannen von Papierformularen mit Papier-Scans ist in deiner aktuellen Lizenz nicht enthalten.",
   "app.components.FormSync.unlockScanningTooltip2": "Wende dich an eure Kundenbetreuerin oder euren Admin, um dies freizuschalten.",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
