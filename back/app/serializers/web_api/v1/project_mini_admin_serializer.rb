@@ -37,6 +37,8 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
 
   has_one :folder
 
+  has_one :space
+
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
   has_many :phases, serializer: WebApi::V1::PhaseSerializer

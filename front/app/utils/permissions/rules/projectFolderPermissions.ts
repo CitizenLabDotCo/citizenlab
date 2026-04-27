@@ -21,6 +21,21 @@ export function userModeratesFolder(
   return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
 }
 
+// Mirrors the backend's UserRoleService#can_moderate?(folder, user): direct or
+// indirect moderation rights, including space moderators of the folder's space.
+export function canModerateFolder(
+  user: IUser | undefined,
+  folderId: string,
+  folderSpaceId?: string | null
+) {
+  if (!user) return false;
+
+  return (
+    userModeratesFolder(user, folderId) ||
+    (typeof folderSpaceId === 'string' && isSpaceModerator(user, folderSpaceId))
+  );
+}
+
 export const userModeratesSpace = (
   user: IUser | undefined,
   spaceId: string
