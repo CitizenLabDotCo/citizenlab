@@ -253,7 +253,7 @@ de-AT:
       event_description: '%{authorNameFull} hat eine Antwort auf Ihren Kommentar zu "%{post}" auf der Beteiligungsplattform geschrieben. Klicken Sie auf den Button unten, um auf %{authorName} zu reagieren.'
       preheader: '%{authorName} hat auf Ihren Kommentar auf der Plattform von %{organizationName} geantwortet'
       replied: '%{authorFirstName} hat geantwortet:'
-      subject: Sie haben eine Antwort auf Ihren Kommentar auf der Plattform von %{organizationName} erhalten
+      subject: Du hast eine Antwort auf deinen Kommentar auf der Plattform von %{organizationName} erhalten
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
     community_monitor_report:
       cta_button: Bericht ansehen
@@ -282,7 +282,7 @@ de-AT:
       subject: Du bist dabei! Deine Anmeldung für "%{eventTitle}" ist bestätigt
       title: '%{firstName}, danke für die Registrierung für'
     follow:
-      unfollow_here: Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href="%{unfollow_url}">Sie können hier aufhören diesem zu folgen.</a>
+      unfollow_here: Du hast diese Benachrichtigung wegen eines Elementes erhalten, dem du folgst. <a href="%{unfollow_url}">Du kannst hier aufhören diesem zu folgen.</a>
     footer:
       link_privacy_policy: Impressum & Datenschutz
       link_terms_conditions: Nutzungsbedingungen
@@ -336,7 +336,7 @@ de-AT:
       report_inappropriate_offensive_content: Ich finde diesen Inhalt unangemessen oder anstößig.
       report_not_an_idea: Dieser Inhalt ist keine Idee und gehört nicht hierhin.
       reported_this_because: '%{reporterFirstName} meldete dies, weil:'
-      subject: Sie haben eine Spam-Meldung auf der Plattform von %{organizationName}
+      subject: Du hast eine Spam-Meldung auf der Plattform von %{organizationName}
       title: '%{firstName} %{lastName} hat Spam gemeldet'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
@@ -368,7 +368,7 @@ de-AT:
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       send_email: e-Mail
       subject: Dein Beitrag wurde veröffentlicht
-      title: Sie haben "%{input_title}" gepostet.
+      title: Du hast "%{input_title}" gepostet.
     internal_comment_on_idea_assigned_to_you:
       cta_button: Kommentar anzeigen von %{firstName}
       event_description: '%{authorNameFull} hat einen Ihnen zugewiesenen Beitrag intern kommentiert.'
@@ -397,7 +397,7 @@ de-AT:
       cta_button: Kommentar anzeigen von %{firstName}
       event_description: '%{authorNameFull} hat auf Ihren internen Kommentar geantwortet.'
       preheader: '%{authorName} hat auf Ihren internen Kommentar %{post} geantwortet'
-      subject: "Sie haben einen Kommentar zu Ihrem internen Kommentar '%{post}' erhalten"
+      subject: "Du hast einen Kommentar zu deinem internen Kommentar '%{post}' erhalten"
       title: "Sie haben einen Kommentar zu Ihrem internen Kommentar '%{post}' erhalten"
     invitation_to_cosponsor_idea:
       cta_button: Vorschlag unterstützen

@@ -2705,6 +2705,6 @@
   "containers.SiteMap.successStories": "Erfolgsgeschichten",
   "containers.SiteMap.timeline": "Projektphasen",
   "containers.SiteMap.userSpaceSection": "Ihr Konto",
-  "containers.SubscriptionEndedPage.accessDenied": "Sie haben keinen Zugriff mehr",
+  "containers.SubscriptionEndedPage.accessDenied": "Du hast keinen Zugriff mehr",
   "containers.SubscriptionEndedPage.subscriptionEnded": "Diese Seite ist nur für Plattformen mit einem aktiven Abonnement zugänglich."
 }
