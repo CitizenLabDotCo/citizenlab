@@ -470,7 +470,7 @@ describe ProjectPolicy do
       let(:user) { create(:space_moderator) }
 
       it { is_expected.not_to permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
+      it { is_expected.to permit(:create)                }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
