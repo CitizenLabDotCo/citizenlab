@@ -3,5 +3,35 @@
     "state": "verified",
     "verified_at": "2026-04-22T16:13:29.827729Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.NewAuthModal.steps.Success.allDone": {
+    "state": "verified",
+    "verified_at": "2026-04-24T10:50:26.324675Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea4": {
+    "state": "verified",
+    "verified_at": "2026-04-28T07:08:39.432093Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:58:18.836927Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": {
+    "state": "verified",
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
   }
 }

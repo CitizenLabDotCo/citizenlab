@@ -2434,7 +2434,7 @@
   "app.errors.maximum_attendees_greater_than1": "El nombre màxim de registrats ha de ser superior a 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "El nombre màxim d'inscrits ha de ser superior o igual al nombre actual d'inscrits.",
   "app.errors.no_invites_specified": "No s'ha pogut trobar cap adreça de correu electrònic.",
-  "app.errors.no_recipients": "La campanya no es pot enviar perquè no hi ha destinataris. El grup al qual esteu enviant correus electrònics està buit o ningú no ha consentit rebre correus electrònics.",
+  "app.errors.no_recipients": "No es pot enviar la campanya perquè no hi ha destinataris. El grup al qual l'esteu enviant és buit, o bé ningú ha donat el seu consentiment per rebre correus electrònics.",
   "app.errors.number_invalid": "Introduïu un número vàlid.",
   "app.errors.password_blank": "Això no pot estar buit",
   "app.errors.password_invalid": "Si us plau, torneu a comprovar la vostra contrasenya actual.",

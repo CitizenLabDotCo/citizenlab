@@ -2434,7 +2434,7 @@
   "app.errors.maximum_attendees_greater_than1": "A regisztrálók maximális számának nagyobbnak kell lennie, mint 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "A regisztráltak maximális számának nagyobbnak vagy egyenlőnek kell lennie a jelenlegi regisztráltak számával.",
   "app.errors.no_invites_specified": "Nem található e-mail cím.",
-  "app.errors.no_recipients": "A kampányt nem lehet kiküldeni, mert nincs címzett. A csoport, amelynek küld, vagy üres, vagy senki sem járult hozzá az e-mailek fogadásához.",
+  "app.errors.no_recipients": "A kampány nem küldhető ki, mert nincsenek címzettek. A csoport, amelynek küldeni szeretné, vagy üres, vagy senki sem járult hozzá az e-mailek fogadásához.",
   "app.errors.number_invalid": "Kérjük, adjon meg egy érvényes számot.",
   "app.errors.password_blank": "Ez nem lehet üres",
   "app.errors.password_invalid": "Kérjük, ellenőrizze újra jelenlegi jelszavát.",
