@@ -133,7 +133,10 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_global_topics, (proc do |topic_ids|
-    with_dups = joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
+    with_dups =
+      joins(:projects_global_topics)
+      .where(projects_global_topics: { global_topic_id: topic_ids })
+
     where(id: with_dups)
   end)
 
@@ -142,8 +145,10 @@ class Project < ApplicationRecord
   }
 
   scope :draft, lambda {
-    where(id: AdminPublication.draft.where(publication_type: 'Project').select(:publication_id))
+    draft_admin_pubs = AdminPublication.draft.where(publication_type: 'Project')
+    where(id: draft_admin_pubs.select(:publication_id))
   }
+
   scope :not_draft, -> { where.not(id: draft) }
   scope :publicly_visible, -> { where(visible_to: 'public') }
 
@@ -154,10 +159,13 @@ class Project < ApplicationRecord
   }
 
   scope :not_in_draft_folder, lambda {
-    scope = joins(:admin_publication)
-    top_level = scope.where(admin_publications: { parent_id: nil })
     draft_folders = AdminPublication.draft.where(children_allowed: true)
-    top_level.or(scope.where.not(admin_publications: { parent_id: draft_folders }))
+
+    joined = joins(:admin_publication)
+    top_level = joined.where(admin_publications: { parent_id: nil })
+    in_folder = joined.where.not(admin_publications: { parent_id: draft_folders })
+
+    top_level.or(in_folder)
   }
 
   scope :with_participation_count, lambda {

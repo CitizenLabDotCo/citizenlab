@@ -29,7 +29,21 @@ resource 'Projects' do
     end
 
     with_options scope: %i[project admin_publication_attributes] do
-      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+      parameter :publication_status, <<~DESC.squish
+        The publication status of the project. 
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Defaults to published.
+      DESC
+
+      parameter :scheduled_status, <<~DESC.squish
+        The publication status that the project is scheduled to transition to.
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Must be set together with `scheduled_at`.
+        Set to null to cancel the schedule.
+      DESC
+
+      parameter :scheduled_at, <<~DESC.squish
+        The time at which the project is scheduled to transition to `scheduled_status`.
+        Must be set together with `scheduled_status`. Set to null to cancel the schedule.
+      DESC
     end
 
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -684,7 +698,7 @@ resource 'Projects' do
 
       context 'scheduled transitions', document: false do
         let(:project) { create(:project) }
-
+        let(:admin_publication) { project.admin_publication }
         let(:id) { project.id }
 
         example 'Schedule a status transition' do
@@ -692,8 +706,9 @@ resource 'Projects' do
           admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
 
           expect { do_request(project: { admin_publication_attributes: }) }
-            .to change { project.reload.admin_publication.scheduled_status }.from(nil).to('draft')
-            .and change { project.reload.admin_publication.scheduled_at }.to(scheduled_at.in_time_zone)
+            .to  change { admin_publication.reload.scheduled_status }.from(nil).to('draft')
+            .and change { admin_publication.reload.scheduled_at }.from(nil).to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.from(nil).to(@user)
 
           assert_status 200
 
@@ -707,14 +722,15 @@ resource 'Projects' do
           project.admin_publication.update!(
             scheduled_status: 'archived',
             scheduled_at: 1.day.from_now,
-            scheduled_by: @user
+            scheduled_by: create(:admin)
           )
 
           admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
 
           expect { do_request(project: { admin_publication_attributes: }) }
-            .to change { project.reload.admin_publication.scheduled_status }.from('archived').to(nil)
-            .and change { project.reload.admin_publication.scheduled_at }.to(nil)
+            .to  change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
 
           assert_status 200
 
@@ -728,25 +744,22 @@ resource 'Projects' do
           project.admin_publication.update!(
             scheduled_status: 'archived',
             scheduled_at: 1.day.from_now,
-            scheduled_by: @user
+            scheduled_by: create(:admin)
           )
 
           scheduled_at = 3.days.from_now.iso8601(3)
-          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+          admin_publication_attributes = { scheduled_at: }
 
           expect { do_request(project: { admin_publication_attributes: }) }
-            .to change { project.reload.admin_publication.scheduled_status }.from('archived').to('draft')
-            .and change { project.reload.admin_publication.scheduled_at }.to(scheduled_at.in_time_zone)
+            .to change { admin_publication.reload.scheduled_at }.to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.to(@user)
 
           assert_status 200
 
-          expect(response_data[:attributes]).to include(
-            scheduled_status: 'draft',
-            scheduled_at: scheduled_at
-          )
+          expect(response_data[:attributes]).to include(scheduled_at: scheduled_at)
         end
 
-        example 'Immediate status change cancels schedule' do
+        example 'Immediate status change cancels schedule', document: false do
           project.admin_publication.update!(
             scheduled_status: 'archived',
             scheduled_at: 1.day.from_now,
@@ -754,9 +767,10 @@ resource 'Projects' do
           )
 
           expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }
-            .to change { project.reload.admin_publication.publication_status }.from('published').to('draft')
-            .and change { project.reload.admin_publication.scheduled_status }.from('archived').to(nil)
-            .and change { project.reload.admin_publication.scheduled_at }.to(nil)
+            .to change { admin_publication.reload.publication_status }.from('published').to('draft')
+            .and change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
 
           assert_status 200
 
@@ -767,7 +781,7 @@ resource 'Projects' do
           )
         end
 
-        example 'Status change after scheduled_at passed materializes the transition first' do
+        example 'Updates materializes due status transition first' do
           project.admin_publication.update_columns(
             publication_status: 'draft',
             scheduled_status: 'published',
@@ -775,13 +789,21 @@ resource 'Projects' do
             scheduled_by_id: @user.id
           )
 
-          do_request(project: { admin_publication_attributes: { publication_status: 'archived' } })
+          admin_publication_attributes = { publication_status: 'archived' }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to enqueue_job(LogActivityJob).with(project, 'published', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(project, 'changed', anything, anything, anything).twice
 
           assert_status 200
-          admin_pub = project.reload.admin_publication
-          expect(admin_pub.publication_status).to eq('archived')
-          expect(admin_pub.scheduled_status).to be_nil
-          expect(admin_pub.first_published_at).to be_present
+
+          admin_publication.reload
+          expect(admin_publication.first_published_at).to be_present
+
+          expect(admin_publication.publication_status).to eq('archived')
+          expect(admin_publication.scheduled_status).to be_nil
+          expect(admin_publication.scheduled_at).to be_nil
+          expect(admin_publication.scheduled_by).to be_nil
         end
       end
     end

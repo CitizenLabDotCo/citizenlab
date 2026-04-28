@@ -407,6 +407,22 @@ describe ProjectPolicy do
         end
       end
 
+      context 'when the project has a due scheduled transition to published' do
+        before do
+          project.admin_publication.update_columns(
+            scheduled_status: 'published', scheduled_at: 1.hour.ago, scheduled_by_id: user.id
+          )
+        end
+
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'permits project status update and scheduling' do
+          nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+          expect(nested_permitted_attrs[:admin_publication_attributes])
+            .to include(:publication_status, :scheduled_status, :scheduled_at)
+        end
+      end
+
       context 'when the project has been published' do
         before do
           project.admin_publication.update!(first_published_at: Time.current)

@@ -186,7 +186,7 @@ class ProjectPolicy < ApplicationPolicy
     shared_permitted_attributes.tap do |attrs|
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
       nested_attrs.deep_merge!({
-        admin_publication_attributes: %i[publication_status scheduled_status scheduled_at]
+        admin_publication_attributes: %i[publication_status]
       })
     end
   end
