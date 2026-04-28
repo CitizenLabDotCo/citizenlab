@@ -78,19 +78,18 @@ It is also recommended that it supports [TSLint][tslint] in order to give you im
 
 For all these reasons, [VSCode][vscode] is the preferred editor, but feel free to use something else if you'd like.
 
-### VSCode setup
+### VSCode TypeScript version
 
-Recommended extensions:
+If VSCode shows a different TypeScript version than the one in `package.json` (or autocomplete/types look off), point it at the project's TypeScript by adding this to your `.vscode/settings.json`:
 
-- [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+```json
+{
+  "typescript.tsdk": "front/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
+```
 
-To use the project's TypeScript version (rather than VSCode's bundled one):
-
-1. Open any `.ts` or `.tsx` file
-2. Run `TypeScript: Select TypeScript Version` from the command palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-3. Choose **Use Workspace Version**
+Then reload the editor, open a TypeScript file, click the version number in the status bar, and select **Use Workspace Version**.
 
 [cl2back]: https://github.com/CitizenLabDotCo/cl2-back
 [editorconfig]: http://editorconfig.org/
