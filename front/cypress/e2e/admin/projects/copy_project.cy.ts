@@ -27,9 +27,8 @@ describe('Copy projects outside folder', () => {
   });
 
   it('allows user to copy project', () => {
-    cy.visit('/admin/projects');
+    cy.visit(`/admin/projects?search=${projectTitle}`);
 
-    cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
     cy.dataCy('projects-overview-table-row').first().contains(projectTitle);
 
     cy.get('[data-testid="moreOptionsButton"]').first().should('exist');
@@ -46,6 +45,7 @@ describe('Copy projects outside folder', () => {
 
     // A draft project is created and appears at the top of the list
     cy.contains(`${projectTitle} - Copy`).should('exist');
+    cy.reload();
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
 
     cy.dataCy('projects-overview-table-row')
