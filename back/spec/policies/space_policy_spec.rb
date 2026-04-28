@@ -41,9 +41,9 @@ describe SpacePolicy do
   end
 
   context 'for a space moderator' do
-    let(:user) do 
+    let(:user) do
       user = create(:user)
-      user.add_role('space_moderator', space_id: space.id) 
+      user.add_role('space_moderator', space_id: space.id)
       user
     end
 
