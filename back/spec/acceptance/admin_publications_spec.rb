@@ -378,25 +378,33 @@ resource 'AdminPublication' do
     end
 
     get 'web_api/v1/admin_publications/:id' do
-      let(:id) { projects.first.admin_publication.id }
+      let(:scheduled_at) { 1.day.from_now }
+      let(:admin_publication) do
+        projects.first.admin_publication.tap do
+          it.update!(
+            scheduled_status: 'archived',
+            scheduled_at: scheduled_at,
+            scheduled_by: create(:admin)
+          )
+        end
+      end
+      let(:id) { admin_publication.id }
 
       example_request 'Get one admin publication by id' do
-        expect(status).to eq 200
-        expect(response_data[:id]).to eq projects.first.admin_publication.id
-        expect(response_data.dig(:relationships, :publication, :data, :type)).to eq 'project'
-        expect(response_data.dig(:relationships, :publication, :data, :id)).to eq projects.first.id
-        expect(response_data.dig(:attributes, :publication_slug)).to eq projects.first.slug
-      end
+        expect(status).to eq(200)
 
-      example 'Get an admin publication with scheduled transition fields', document: false do
-        scheduled_at = 1.day.from_now
-        projects.first.admin_publication.update!(scheduled_status: 'archived', scheduled_at:, scheduled_by: @admin)
+        expect(response_data).to include(
+          id:,
+          attributes: hash_including(
+            publication_slug: projects.first.slug,
+            publication_status: 'published',
+            scheduled_status: 'archived',
+            scheduled_at: scheduled_at.iso8601(3)
+          )
+        )
 
-        do_request
-
-        expect(response_data[:attributes]).to include(
-          scheduled_status: 'archived',
-          scheduled_at: scheduled_at.iso8601(3)
+        expect(response_data[:relationships]).to include(
+          publication: { data: { id: projects.first.id, type: 'project' } }
         )
       end
     end
@@ -648,6 +656,26 @@ resource 'AdminPublication' do
 
         expect(status).to eq(200)
         expect(response_data).to be_empty
+      end
+    end
+
+    get 'web_api/v1/admin_publications/:id' do
+      let(:admin_publication) do
+        projects.first.admin_publication.tap do |ap|
+          ap.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+        end
+      end
+      let(:id) { admin_publication.id }
+
+      example 'Does not include scheduling attributes for a resident', document: false do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).not_to have_key(:scheduled_status)
+        expect(response_data[:attributes]).not_to have_key(:scheduled_at)
       end
     end
   end
