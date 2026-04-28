@@ -43,17 +43,30 @@ describe ProjectFolders::SideFxProjectFolderService do
 
     it 'enqueues the transition job when a schedule is set' do
       scheduled_at = 1.day.from_now
-      project_folder.assign_attributes(
-        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at, scheduled_by_id: user.id }
-      )
-      project_folder.save!
+
+      project_folder.update!(admin_publication_attributes: {
+        scheduled_status: 'archived',
+        scheduled_at: scheduled_at,
+        scheduled_by_id: user.id
+      })
 
       expect { service.after_update(project_folder, user) }
         .to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+        .at(project_folder.admin_publication.scheduled_at)
     end
 
     it 'does not enqueue the transition job when no schedule is set' do
       project_folder.update!(title_multiloc: { en: 'changed' })
+
+      expect { service.after_update(project_folder, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+    end
+
+    it 'does not enqueue the transition job when schedule is cancelled' do
+      project_folder.update!(admin_publication_attributes: {
+        scheduled_status: nil,
+        scheduled_at: nil
+      })
 
       expect { service.after_update(project_folder, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
