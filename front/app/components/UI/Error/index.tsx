@@ -140,6 +140,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  focusInput?: boolean;
 }
 
 export interface TFieldNameMap {
@@ -255,17 +256,41 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    focusInput = true,
   } = props;
 
+  const hasError = !!(text || apiErrors);
   useEffect(() => {
-    if (scrollIntoView) {
-      containerRef.current?.scrollIntoView &&
-        containerRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
+    if (hasError && containerRef.current) {
+      const focusTimeout = setTimeout(() => {
+        if (focusInput) {
+          // Get all invalid inputs and focus the first one.
+          const firstInvalidInput = document.querySelector<HTMLInputElement>(
+            'input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="true"]'
+          );
+
+          if (firstInvalidInput) {
+            requestAnimationFrame(() => {
+              firstInvalidInput.focus();
+              firstInvalidInput.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+              });
+            });
+          }
+        } else if (scrollIntoView) {
+          containerRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }, 150);
+
+      return () => clearTimeout(focusTimeout);
     }
-  }, [scrollIntoView]);
+
+    return undefined;
+  }, [hasError, scrollIntoView, animate, focusInput]);
 
   if (!appConfiguration) return null;
 
@@ -277,7 +302,7 @@ const Error = (props: ErrorProps) => {
   return (
     <CSSTransition
       classNames="error"
-      in={!!(text || apiErrors)}
+      in={hasError}
       timeout={timeout}
       mountOnEnter={true}
       unmountOnExit={true}
@@ -285,15 +310,17 @@ const Error = (props: ErrorProps) => {
       exit={animate}
     >
       <Container
+        ref={containerRef}
         className={`e2e-error-message ${className}`}
         id={id}
         marginTop={marginTop}
         marginBottom={marginBottom}
         role="alert"
+        aria-live="polite"
+        aria-atomic="true"
         data-testid="error-message"
       >
         <ContainerInner
-          ref={containerRef}
           showBackground={showBackground}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
@@ -302,6 +329,7 @@ const Error = (props: ErrorProps) => {
               name="alert-circle"
               fill={colors.error}
               data-testid="error-icon"
+              aria-hidden="true"
             />
           )}
 
@@ -338,7 +366,7 @@ const Error = (props: ErrorProps) => {
                       return (
                         <ErrorListItem key={index}>
                           {dedupApiErrors.length > 1 && (
-                            <Bullet aria-hidden>•</Bullet>
+                            <Bullet aria-hidden="true">•</Bullet>
                           )}
                           {errorMessage}
                         </ErrorListItem>
