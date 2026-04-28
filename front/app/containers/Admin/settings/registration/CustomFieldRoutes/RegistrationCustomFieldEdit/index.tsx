@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { Outlet as RouterOutlet } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
@@ -19,7 +18,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'utils/router';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from '../messages';
 

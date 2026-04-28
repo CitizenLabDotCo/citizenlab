@@ -41,11 +41,7 @@ const AdminProjectIdeas = () => {
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
-  if (
-    project === undefined ||
-    projectId === undefined ||
-    phaseId === undefined
-  ) {
+  if (project === undefined) {
     return null;
   }
 

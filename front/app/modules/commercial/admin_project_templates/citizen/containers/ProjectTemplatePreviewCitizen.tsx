@@ -15,8 +15,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams } from 'utils/router';
 import { isAdmin } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import messages from '../../admin/containers/messages';
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';

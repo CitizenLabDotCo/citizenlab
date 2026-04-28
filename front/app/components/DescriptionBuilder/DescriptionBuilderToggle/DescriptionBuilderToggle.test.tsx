@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useParams } from '@tanstack/react-router';
 import { Multiloc } from 'typings';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -27,8 +28,6 @@ const mockAddDescriptionBuilderLayout = jest.fn();
 jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
   jest.fn(() => ({ mutateAsync: mockAddDescriptionBuilderLayout }))
 );
-
-import { useParams } from '@tanstack/react-router';
 
 (useParams as jest.Mock).mockReturnValue({ projectId: 'projectId' });
 
