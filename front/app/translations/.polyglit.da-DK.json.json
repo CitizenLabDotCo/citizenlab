@@ -9,6 +9,11 @@
     "verified_at": "2026-04-24T10:50:26.324675Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea4": {
+    "state": "verified",
+    "verified_at": "2026-04-28T07:08:39.432093Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": {
     "state": "verified",
     "verified_at": "2026-04-24T09:57:09.001319Z",
