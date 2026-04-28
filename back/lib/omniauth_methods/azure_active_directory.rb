@@ -12,9 +12,9 @@ module OmniauthMethods
 
     def profile_to_user_attrs(auth)
       {
-        first_name: auth.info['first_name'] || auth.info['name'],
-        last_name: auth.info['last_name'] || auth.info['name'],
-        email: auth.info['email'],
+        first_name: auth.info['first_name'].presence || auth.info['name'],
+        last_name: auth.info['last_name'].presence || auth.info['name'],
+        email: auth.info['email'].presence,
         remote_avatar_url: remote_avatar_url(auth),
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
@@ -32,10 +32,6 @@ module OmniauthMethods
 
     def email_always_present?
       false
-    end
-
-    def email_confirmed?(auth)
-      auth&.info['email']&.present?
     end
 
     def updateable_user_attrs
