@@ -643,7 +643,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 };
 
 const AdminProjectsProjectGeneralWrapper = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 

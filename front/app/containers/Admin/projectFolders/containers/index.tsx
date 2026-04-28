@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
-import styled from 'styled-components';
-import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';

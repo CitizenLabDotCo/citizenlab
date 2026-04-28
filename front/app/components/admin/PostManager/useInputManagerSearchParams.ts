@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 
@@ -23,7 +23,7 @@ const useInputManagerSearchParams = (context: {
   projectId?: string | null;
   phaseId?: string;
 }) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const params: Params = useMemo(() => {
     const getParam = (name: string) => searchParams.get(name) || undefined;

@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Title,
-  Text,
-  colors,
-  stylingConsts,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -33,11 +26,7 @@ import messages from './messages';
 import PDFViewer from './PDFViewer';
 import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
-const ReviewSection = ({
-  importJobs,
-}: {
-  importJobs: IBackgroundJobData[];
-}) => {
+const ReviewSection = () => {
   const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;

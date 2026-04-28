@@ -7,7 +7,7 @@ import {
   IconTooltip,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -30,7 +30,7 @@ const EmailNotificationsSection = ({
   onCloseModal,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const { data: recipientCount } =
     useProjectPublicationRecipientCount(projectId);

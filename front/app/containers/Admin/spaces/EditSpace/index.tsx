@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useSpace from 'api/spaces/useSpace';
@@ -20,7 +20,7 @@ import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import messages from './messages';
 
 const EditSpace = () => {
-  const { spaceId } = useParams();
+  const { spaceId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: space } = useSpace(spaceId);

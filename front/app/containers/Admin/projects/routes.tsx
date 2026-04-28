@@ -35,7 +35,7 @@ const AdminProjectsProjectAudience = lazy(
   () => import('../../../components/admin/participation')
 );
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
-const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
+const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));

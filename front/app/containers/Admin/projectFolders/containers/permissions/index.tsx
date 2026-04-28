@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'utils/router';
 import styled from 'styled-components';
 

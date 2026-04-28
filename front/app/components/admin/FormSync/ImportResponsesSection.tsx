@@ -12,7 +12,7 @@ import {
   Divider,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -32,7 +32,7 @@ interface Props {
 }
 
 const ImportResponsesSection = ({ formType }: Props) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

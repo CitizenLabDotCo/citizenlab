@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { useParams, useSearch } from 'utils/router';
-import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';

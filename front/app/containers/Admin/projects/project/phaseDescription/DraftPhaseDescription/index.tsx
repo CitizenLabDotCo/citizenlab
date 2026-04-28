@@ -12,7 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
@@ -44,7 +44,7 @@ const DraftPhaseDescription = ({
   draftDescriptionMultiloc: initialDraft,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase, isLoading } = useUpdatePhase();
   const { mutate: updateDraftPhaseDescription, isLoading: isDraftLoading } =

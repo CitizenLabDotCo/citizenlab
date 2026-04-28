@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
@@ -28,7 +28,7 @@ interface Props {
 
 const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 

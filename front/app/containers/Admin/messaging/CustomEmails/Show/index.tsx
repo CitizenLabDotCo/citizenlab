@@ -12,7 +12,7 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useParams } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
@@ -116,7 +116,7 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({});
   const created = searchParams.get('created');
   const updated = searchParams.get('updated');
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
