@@ -175,7 +175,6 @@ resource 'Spaces' do
   end
 
   context 'when visitor' do
-
     get 'web_api/v1/spaces/:space_id' do
       example_request '[Unauthorized] Retrieving a space' do
         expect(status).to eq(401)
