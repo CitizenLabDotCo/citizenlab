@@ -32,7 +32,7 @@ class TrackIntercomService
   def track_user?(user)
     return false if user.super_admin?
 
-    user.admin? || user.moderator?
+    user.admin? || user.project_moderator?
   end
 
   def identify_tenant(tenant)
