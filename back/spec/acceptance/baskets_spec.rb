@@ -74,6 +74,26 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
       end
 
+      example 'A user cannot exceed voting_max_total by creating a second basket', document: false do
+        phase = @project.phases.first
+        # Cap the phase at the user's already-cast votes — they're now "fully used up".
+        phase.update!(voting_max_total: @basket.total_votes)
+        @basket.update_counts!
+
+        # Attempt the bypass: POST a 2nd basket and, if accepted, submit it with another full set of votes.
+        do_request(basket: { phase_id: phase.id, submitted: false })
+        if response_status == 201
+          evil_basket = Basket.find(json_parse(response_body).dig(:data, :id))
+          create(:baskets_idea, basket: evil_basket, idea: @ideas.first, votes: phase.voting_max_total)
+          evil_basket.update(submitted_at: Time.now)
+          evil_basket.update_counts!
+        end
+
+        user_total = @user.baskets.submitted.where(phase: phase).sum(&:total_votes)
+        expect(user_total).to be <= phase.voting_max_total,
+          "user cast #{user_total} votes; per-user cap is #{phase.voting_max_total} (bypass via 2nd basket)"
+      end
+
       example '[error] Create a basket in a survey', document: false do
         do_request(
           basket: {
@@ -111,6 +131,47 @@ resource 'Baskets' do
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
+        end
+
+        example 'Replaying the submit request does not duplicate votes or basket counts', document: false do
+          do_request
+          assert_status 200
+
+          @basket.reload
+          phase = @basket.phase.reload
+          project = phase.project.reload
+          baseline = {
+            total_baskets: Basket.count,
+            submitted_baskets: Basket.submitted.count,
+            basket_total_votes: @basket.total_votes,
+            baskets_ideas_count: @basket.baskets_ideas.count,
+            baskets_ideas_votes: @basket.baskets_ideas.pluck(:idea_id, :votes).sort,
+            phase_baskets_count: phase.baskets_count,
+            phase_votes_count: phase.votes_count,
+            project_baskets_count: project.baskets_count,
+            project_votes_count: project.votes_count,
+            ideas_counts: @ideas.map { |i| i.reload.slice(:baskets_count, :votes_count) }
+          }
+
+          10.times do
+            do_request
+            assert_status 200
+          end
+
+          @basket.reload
+          phase.reload
+          project.reload
+
+          expect(Basket.count).to eq baseline[:total_baskets]
+          expect(Basket.submitted.count).to eq baseline[:submitted_baskets]
+          expect(@basket.total_votes).to eq baseline[:basket_total_votes]
+          expect(@basket.baskets_ideas.count).to eq baseline[:baskets_ideas_count]
+          expect(@basket.baskets_ideas.pluck(:idea_id, :votes).sort).to eq baseline[:baskets_ideas_votes]
+          expect(phase.baskets_count).to eq baseline[:phase_baskets_count]
+          expect(phase.votes_count).to eq baseline[:phase_votes_count]
+          expect(project.baskets_count).to eq baseline[:project_baskets_count]
+          expect(project.votes_count).to eq baseline[:project_votes_count]
+          expect(@ideas.map { |i| i.reload.slice(:baskets_count, :votes_count) }).to eq baseline[:ideas_counts]
         end
 
         context 'when budgeting' do
