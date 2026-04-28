@@ -15,6 +15,7 @@ import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
@@ -53,6 +54,7 @@ const ProjectHeader = ({ projectId }: Props) => {
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!project) return null;
 
@@ -236,7 +238,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
-          {typeof spaceId === 'string' && (
+          {typeof spaceId === 'string' && spacesEnabled && (
             <>
               <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
                 ·
