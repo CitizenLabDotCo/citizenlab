@@ -4,7 +4,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import useInsightsPdfDownload from './useInsightsPdfDownload';
+import useInsightsPdfDownload, {
+  PdfExportStatus,
+} from './useInsightsPdfDownload';
 
 interface PdfExportContextValue {
   downloadPdf: () => Promise<void>;
@@ -20,6 +22,9 @@ interface PdfExportContextValue {
    * without affecting the visible UI during PDF generation.
    */
   isPdfRenderMode: boolean;
+  status: PdfExportStatus;
+  progress: { completed: number; total: number };
+  skippedSections: number;
 }
 
 const PdfExportContext = createContext<PdfExportContextValue>({
@@ -27,6 +32,9 @@ const PdfExportContext = createContext<PdfExportContextValue>({
   isDownloading: false,
   error: null,
   isPdfRenderMode: false,
+  status: 'idle',
+  progress: { completed: 0, total: 0 },
+  skippedSections: 0,
 });
 
 interface PdfExportProviderProps {
@@ -42,14 +50,29 @@ export const PdfExportProvider = ({
 }: PdfExportProviderProps) => {
   const { formatMessage } = useIntl();
   const parentContext = useContext(PdfExportContext);
-  const { downloadPdf, isDownloading, error } = useInsightsPdfDownload({
+  const {
+    downloadPdf,
+    isDownloading,
+    error,
+    status,
+    progress,
+    skippedSections,
+  } = useInsightsPdfDownload({
     filename: filename || '',
     errorMessage: formatMessage(messages.errorPdfDownload),
   });
 
   // If nested (no filename), inherit download state from parent
   const value = filename
-    ? { downloadPdf, isDownloading, error, isPdfRenderMode }
+    ? {
+        downloadPdf,
+        isDownloading,
+        error,
+        isPdfRenderMode,
+        status,
+        progress,
+        skippedSections,
+      }
     : { ...parentContext, isPdfRenderMode };
 
   return (
