@@ -89,6 +89,8 @@ If VSCode shows a different TypeScript version than the one in `package.json` (o
 }
 ```
 
+The path is relative to your VSCode workspace root. The example above assumes you opened the **repo root**; if you opened just the `front/` folder, use `node_modules/typescript/lib` — or whichever path is correct for your setup.
+
 Then reload the editor, open a TypeScript file, click the version number in the status bar, and select **Use Workspace Version**.
 
 [cl2back]: https://github.com/CitizenLabDotCo/cl2-back
