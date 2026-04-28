@@ -7,7 +7,6 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -19,6 +18,7 @@ import useTotalSeats from 'hooks/useTotalSeats';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 

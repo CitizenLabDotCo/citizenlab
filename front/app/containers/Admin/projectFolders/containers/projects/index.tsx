@@ -6,8 +6,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams } from 'utils/router';
 import { usePermission } from 'utils/permissions';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

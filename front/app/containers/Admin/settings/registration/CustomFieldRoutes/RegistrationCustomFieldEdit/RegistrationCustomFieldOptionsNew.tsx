@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

@@ -12,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
@@ -23,6 +22,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

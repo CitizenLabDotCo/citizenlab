@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import { TFilterMenu } from '.';
 

@@ -6,7 +6,6 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -21,6 +20,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearch } from 'utils/router';
 
 import Body from './Body';
 import CardImage from './CardImage';

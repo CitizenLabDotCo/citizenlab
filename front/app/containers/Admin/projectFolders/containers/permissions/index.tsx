@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
@@ -13,6 +12,7 @@ import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

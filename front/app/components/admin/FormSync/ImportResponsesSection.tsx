@@ -12,7 +12,6 @@ import {
   Divider,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
-import { useParams } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -23,6 +22,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 import PDFExportModal from './PDFExportModal';
@@ -32,10 +32,7 @@ interface Props {
 }
 
 const ImportResponsesSection = ({ formType }: Props) => {
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
@@ -164,12 +161,14 @@ const ImportResponsesSection = ({ formType }: Props) => {
         </Box>
       </Box>
 
-      <PDFExportModal
-        open={exportModalOpen}
-        formType={formType}
-        onClose={() => setExportModalOpen(false)}
-        phaseId={phaseId}
-      />
+      {phaseId && (
+        <PDFExportModal
+          open={exportModalOpen}
+          formType={formType}
+          onClose={() => setExportModalOpen(false)}
+          phaseId={phaseId}
+        />
+      )}
     </Box>
   );
 };

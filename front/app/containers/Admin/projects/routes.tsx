@@ -35,7 +35,7 @@ const AdminProjectsProjectAudience = lazy(
   () => import('../../../components/admin/participation')
 );
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
-const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
+const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
@@ -383,6 +383,16 @@ const phaseSetupRoute = createRoute({
   ),
 });
 
+const phaseDescriptionRoute = createRoute({
+  getParentRoute: () => projectPhasesRoute,
+  path: '$phaseId/description',
+  component: () => (
+    <PageLoading>
+      <AdminPhaseDescription />
+    </PageLoading>
+  ),
+});
+
 const phaseNewRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: 'new',
@@ -514,16 +524,6 @@ const phaseVolunteeringNewCauseRoute = createRoute({
   ),
 });
 
-const phaseNativeSurveyResultsRoute = createRoute({
-  getParentRoute: () => projectPhasesRoute,
-  path: '$phaseId/results',
-  component: () => (
-    <PageLoading>
-      <AdminProjectsSurvey />
-    </PageLoading>
-  ),
-});
-
 const phaseSurveyFormRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: '$phaseId/survey-form',
@@ -634,6 +634,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
       projectPhasesRoute.addChildren([
         phasesSetupRoute,
         phaseSetupRoute,
+        phaseDescriptionRoute,
         phaseNewRoute,
         phaseRoute,
         phaseExternalSurveyResultsRoute,
@@ -647,7 +648,6 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
         phaseVolunteeringRoute,
         phaseMapRoute,
         phaseVolunteeringNewCauseRoute,
-        phaseNativeSurveyResultsRoute,
         phaseSurveyFormRoute,
         phaseIdeaFormEditRoute,
         phaseNativeSurveyFormEditRoute,

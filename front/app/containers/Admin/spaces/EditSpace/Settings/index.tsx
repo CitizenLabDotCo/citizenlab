@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
@@ -15,6 +14,7 @@ import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import SpaceNameForm from '../../_shared/SpaceNameForm';
 import messages from '../messages';

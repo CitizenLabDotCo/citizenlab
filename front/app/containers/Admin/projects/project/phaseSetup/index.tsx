@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -36,6 +35,7 @@ import {
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { generateTemporaryFileAttachment } from 'utils/fileUtils';
+import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';

@@ -6,7 +6,6 @@ import {
   Box,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { PresentationMode } from 'api/phases/types';
@@ -17,6 +16,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../../../../messages';
 

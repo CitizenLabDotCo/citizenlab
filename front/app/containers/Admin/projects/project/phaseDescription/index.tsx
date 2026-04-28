@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useParams } from 'utils/router';
 
 import DraftPhaseDescription from './DraftPhaseDescription';
 import SimplePhaseDescription from './SimplePhaseDescription';

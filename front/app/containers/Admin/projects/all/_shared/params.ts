@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import { Parameters } from 'api/projects_mini_admin/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 export type Parameter = keyof Parameters;
 
