@@ -4,6 +4,8 @@ import { useSearch } from 'utils/router';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
@@ -22,6 +24,7 @@ export const PARAMS: Parameter[] = [
   'visibility',
   'discoverability',
   'review_state',
+  'space_ids',
 ];
 
 const MULTISELECT_PARAMS = new Set<string>([
@@ -32,6 +35,7 @@ const MULTISELECT_PARAMS = new Set<string>([
   'participation_methods',
   'visibility',
   'discoverability',
+  'space_ids',
 ] satisfies Parameter[]);
 
 export const setParam = <ParamName extends Parameter>(
@@ -66,25 +70,30 @@ export const useParam = <ParamName extends Parameter>(
 
 export const useParams = () => {
   const [searchParams] = useSearch({ strict: false });
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
-  return useMemo(
-    () =>
-      PARAMS.reduce((acc, paramName) => {
-        let value = searchParams.get(paramName);
+  return useMemo(() => {
+    let params = PARAMS;
 
-        if (value === null) {
-          return acc;
-        }
+    if (!spacesEnabled) {
+      params = params.filter((param) => param !== 'space_ids');
+    }
 
-        if (MULTISELECT_PARAMS.has(paramName)) {
-          value = JSON.parse(value);
-        }
+    return params.reduce((acc, paramName) => {
+      let value = searchParams.get(paramName);
 
-        return {
-          ...acc,
-          [paramName]: value as Parameters[typeof paramName],
-        };
-      }, {} as Partial<Parameters>),
-    [searchParams]
-  );
+      if (value === null) {
+        return acc;
+      }
+
+      if (MULTISELECT_PARAMS.has(paramName)) {
+        value = JSON.parse(value);
+      }
+
+      return {
+        ...acc,
+        [paramName]: value as Parameters[typeof paramName],
+      };
+    }, {} as Partial<Parameters>);
+  }, [searchParams, spacesEnabled]);
 };

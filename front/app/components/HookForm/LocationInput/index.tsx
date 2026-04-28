@@ -40,6 +40,7 @@ const LocationInput = ({
   const [searchParams] = useSearch({ strict: false });
   const latitude = searchParams.get('lat');
   const longitude = searchParams.get('lng');
+  const isTouched = !!touchedFields[name];
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -71,7 +72,7 @@ const LocationInput = ({
   const locationDescription = watch(name);
 
   useEffect(() => {
-    if (latitude && longitude && !touchedFields[name]) {
+    if (latitude && longitude && !isTouched) {
       const fetchLocationDescription = async () => {
         const location_description = await getLocationDescription();
         if (location_description) {
@@ -92,22 +93,22 @@ const LocationInput = ({
     locale,
     name,
     setValue,
-    locationDescription,
     getLocationDescription,
-    touchedFields,
+    isTouched,
   ]);
 
   useEffect(() => {
     // If the location input is changed but no lat/lng have been provided in the URL params,
     // we geocode the location description to get the geojson.
-    if (locationDescription && !latitude && !longitude) {
+    // To avoid unnecessary calls, only geocode when the user has actually changed the field.
+    if (locationDescription && !latitude && !longitude && isTouched) {
       getLocationGeojson(locationDescription).then((location_point_geojson) => {
         setValue('location_point_geojson', {
           ...location_point_geojson,
         });
       });
     }
-  }, [latitude, locationDescription, longitude, setValue]);
+  }, [latitude, locationDescription, longitude, name, setValue, isTouched]);
 
   const value = locationDescription
     ? {

@@ -18,11 +18,11 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { getPhaseLandingTab } from 'api/phases/utils';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -33,7 +33,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import {
   FormattedMessage,
@@ -49,7 +48,6 @@ import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab } from './utils';
 import validate from './validate';
 
 interface Props {
@@ -84,7 +82,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
@@ -148,10 +145,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     updateFormData({ title_multiloc });
-  };
-
-  const handleEditorOnChange = (description_multiloc: Multiloc) => {
-    updateFormData({ description_multiloc });
   };
 
   const handlePhaseFileOnAttach = (file: IFileData) => {
@@ -260,7 +253,12 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     event.preventDefault();
     if (!formData) return;
 
-    const { isValidated, errors } = validate(formData, phases, formatMessage);
+    const { isValidated, errors } = validate(
+      formData,
+      phases,
+      formatMessage,
+      phase?.data.id
+    );
 
     setValidationErrors(errors);
 
@@ -308,10 +306,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         setSubmitState('success');
 
         if (redirectAfterSave) {
-          const redirectTab = getTimelineTab(
-            phaseResponse,
-            phaseInsightsEnabled
-          );
+          const redirectTab = getPhaseLandingTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
             `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
@@ -416,27 +411,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
           />
-          <SectionField className="fullWidth intercom-phase-description-text-input">
-            <Box display="flex" alignItems="center">
-              <SubSectionTitle>
-                <FormattedMessage {...messages.descriptionLabel} />
-              </SubSectionTitle>
-              {phases && phases.data.length < 2 && (
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.emptyDescriptionWarning} />
-                  }
-                />
-              )}
-            </Box>
-            <QuillMultilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={formData.description_multiloc}
-              onChange={handleEditorOnChange}
-              withCTAButton
-            />
-            <Error apiErrors={errors && errors.description_multiloc} />
-          </SectionField>
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />

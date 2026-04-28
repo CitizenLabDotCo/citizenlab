@@ -99,14 +99,7 @@ module ParticipationMethod
           code: 'title_page',
           key: nil,
           title_multiloc: {},
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.title_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 0
@@ -121,14 +114,7 @@ module ParticipationMethod
             'custom_fields.ideas.title.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.title.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: true,
           enabled: true,
           ordering: 1,
@@ -146,14 +132,7 @@ module ParticipationMethod
             'custom_fields.ideas.body_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.body_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 2
@@ -168,14 +147,7 @@ module ParticipationMethod
             'custom_fields.ideas.body.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.body.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: true,
           enabled: true,
           ordering: 3
@@ -191,14 +163,7 @@ module ParticipationMethod
             'custom_fields.ideas.uploads_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.uploads_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 4
@@ -213,14 +178,7 @@ module ParticipationMethod
             'custom_fields.ideas.images.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.images.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 5
@@ -235,14 +193,7 @@ module ParticipationMethod
             'custom_fields.ideas.attachments.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.attachments.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 6
@@ -258,14 +209,7 @@ module ParticipationMethod
             'custom_fields.ideas.details_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.details_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 7
@@ -280,14 +224,7 @@ module ParticipationMethod
             'custom_fields.ideas.topic_ids.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.topic_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 8
@@ -302,14 +239,7 @@ module ParticipationMethod
             'custom_fields.ideas.location.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 9
@@ -326,14 +256,7 @@ module ParticipationMethod
             'custom_fields.ideas.proposed_budget.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.proposed_budget.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: false,
           ordering: 10
@@ -351,14 +274,10 @@ module ParticipationMethod
             'custom_fields.ideas.consponsor_ids.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.consponsor_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.consponsor_ids.description',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
           required: false,
           enabled: false,
           ordering: proposed_budget_in_form? ? 11 : 10
@@ -383,12 +302,6 @@ module ParticipationMethod
     def generate_slug(input)
       title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
       SlugService.new.generate_slug input, title
-    end
-
-    def validate_phase
-      if phase.id && Idea.exists?(creation_phase_id: phase.id)
-        phase.errors.add(:participation_method, :non_complying_inputs, message: 'some inputs do not comply with the participation method')
-      end
     end
 
     def supported_email_campaigns

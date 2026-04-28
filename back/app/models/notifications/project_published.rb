@@ -27,6 +27,7 @@
 #  basket_id                     :uuid
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
+#  space_id                      :uuid
 #
 # Indexes
 #
@@ -43,6 +44,7 @@
 #  index_notifications_on_project_review_id              (project_review_id)
 #  index_notifications_on_recipient_id                   (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at       (recipient_id,read_at)
+#  index_notifications_on_space_id                       (space_id)
 #  index_notifications_on_spam_report_id                 (spam_report_id)
 #
 # Foreign Keys
@@ -61,6 +63,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
@@ -70,17 +73,28 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'Project' => { 'published' => true } }
     EVENT_NAME = 'Project published'
 
+    def self.recipients(project)
+      return User.none unless project.listed?
+
+      topic_followers = Follower.where(followable: project.global_topics)
+      area_followers = Follower.where(followable: project.areas)
+      folder_followers = project.in_folder? ? Follower.where(followable: project.folder) : Follower.none
+      followers = topic_followers.or(area_followers).or(folder_followers)
+      # Pretend the project is published so InverseScope doesn't filter out draft projects.
+      project.admin_publication.publication_status = 'published'
+      users = ProjectPolicy::InverseScope.new(project, User.from_follows(followers)).resolve
+      # Exclude users who opted out of the project published campaign
+      opted_out_user_ids = EmailCampaigns::Consent.where(
+        campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished',
+        consented: false
+      ).pluck(:user_id)
+      users.where.not(id: opted_out_user_ids)
+    end
+
     def self.make_notifications_on(activity)
       initiator_id = activity.user_id
       project = activity.item
-
-      return [] unless project.listed?
-
-      followers = Follower.where(followable: project.global_topics).or(Follower.where(followable: project.areas))
-      followers = followers.or(Follower.where(followable: project.folder)) if project.in_folder?
-      ProjectPolicy::InverseScope.new(
-        project, User.from_follows(followers).where.not(id: initiator_id)
-      ).resolve.map do |recipient|
+      recipients(project).where.not(id: initiator_id).map do |recipient|
         new(
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,

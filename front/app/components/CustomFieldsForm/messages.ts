@@ -313,6 +313,26 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  viewYourResponse: {
+    id: 'app.utils.IdeasNewPage.viewYourResponse',
+    defaultMessage: 'View your response',
+  },
+  viewYourSuggestion: {
+    id: 'app.utils.IdeasNewPage.viewYourSuggestion',
+    defaultMessage: 'View your suggestion',
+  },
+  viewYourTopic: {
+    id: 'app.utils.IdeasNewPage.viewYourTopic',
+    defaultMessage: 'View your topic',
+  },
+  viewYourPost: {
+    id: 'app.utils.IdeasNewPage.viewYourPost',
+    defaultMessage: 'View your post',
+  },
+  viewYourStory: {
+    id: 'app.utils.IdeasNewPage.viewYourStory',
+    defaultMessage: 'View your story',
+  },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
     defaultMessage: '{value} out of {total}, {label}',
@@ -353,9 +373,25 @@ export default defineMessages({
     id: 'app.components.form.controls.rankingInstructions',
     defaultMessage: 'Drag and drop to rank options.',
   },
+  rankingDragHandleLabel: {
+    id: 'app.components.form.controls.rankingDragHandleLabel',
+    defaultMessage: 'Drag to reorder {label}',
+  },
   optionalParentheses: {
     id: 'app.components.form.controls.optionalParentheses',
     defaultMessage: '(optional)',
+  },
+  submitConfirmation: {
+    id: 'app.components.CustomFieldsForm.submitConfirmation',
+    defaultMessage: 'Are you sure you want to submit your answers?',
+  },
+  continueEditing: {
+    id: 'app.components.CustomFieldsForm.continueEditing',
+    defaultMessage: 'Continue editing',
+  },
+  yesSubmit: {
+    id: 'app.components.CustomFieldsForm.yesSubmit',
+    defaultMessage: 'Yes, submit',
   },
   birthyearTooHigh: {
     id: 'app.components.form.controls.birthyearTooHigh',

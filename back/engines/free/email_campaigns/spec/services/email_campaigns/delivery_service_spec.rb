@@ -39,11 +39,8 @@ describe EmailCampaigns::DeliveryService do
     end
 
     it 'returns campaign_types that all have at least 1 campaign_type_description translation defined' do
-      multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
-        campaign_name = campaign_type.constantize.campaign_name
-        expect { multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_name}") }
-          .not_to raise_error
+        expect { campaign_type.constantize.campaign_description_multiloc }.not_to raise_error
       end
     end
 
@@ -83,6 +80,18 @@ describe EmailCampaigns::DeliveryService do
         create(factory_type)
       end
       expect { service.send_on_schedule(Time.now) }.not_to raise_error
+    end
+
+    context 'with scheduled manual campaign' do
+      let!(:campaign) { create(:manual_campaign, scheduled_at: 1.hour.from_now) }
+      let!(:users) { create_list(:user, 3) }
+
+      it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do
+        travel_to(2.hours.from_now) do
+          expect { service.send_on_schedule(Time.zone.now) }
+            .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        end
+      end
     end
   end
 

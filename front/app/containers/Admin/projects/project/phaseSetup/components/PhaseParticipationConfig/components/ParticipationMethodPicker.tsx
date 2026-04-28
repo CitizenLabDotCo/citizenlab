@@ -2,25 +2,22 @@ import React, { useState, useEffect } from 'react';
 
 import {
   IconTooltip,
-  Text,
   Box,
   Badge,
   Icon,
-  Title,
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
-import { IPhase, ParticipationMethod } from 'api/phases/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -55,7 +52,6 @@ const ParticipationMethodDescriptionWrapper = styled.div<{ selected: boolean }>`
 
 interface Props {
   participation_method: ParticipationMethod;
-  phase?: IPhase | undefined | null;
   showSurveys: boolean;
   apiErrors: CLErrors | null | undefined;
   handleParticipationMethodOnChange: (
@@ -67,23 +63,16 @@ const ParticipationMethodPicker = ({
   participation_method,
   showSurveys,
   apiErrors,
-  phase,
   handleParticipationMethodOnChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [selectedMethod, setSelectedMethod] =
     useState<ParticipationMethod | null>(participation_method);
-  const [methodToChangeTo, setMethodToChangeTo] =
-    useState<ParticipationMethod | null>(null);
   const [showSurveyOptions, setShowSurveyOptions] = useState(
     participation_method === 'native_survey' ||
       participation_method === 'survey' ||
       participation_method === 'poll'
   );
-  const [showChangeMethodModal, setShowChangeMethodModal] = useState(false);
-  const closeModal = () => {
-    setShowChangeMethodModal(false);
-  };
   const documentAnnotationAllowed = useFeatureFlag({
     name: 'konveio_document_annotation',
     onlyCheckAllowed: true,
@@ -97,6 +86,9 @@ const ParticipationMethodPicker = ({
   const commonGroundEnabled = useFeatureFlag({
     name: 'common_ground',
   });
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   useEffect(() => {
     setSelectedMethod(participation_method);
@@ -107,10 +99,10 @@ const ParticipationMethodPicker = ({
     );
   }, [participation_method]);
 
-  const changeMethod = (newMethod?: ParticipationMethod) => {
-    const method = newMethod || methodToChangeTo;
+  const handleMethodSelect = (event, method: ParticipationMethod) => {
+    event.preventDefault();
 
-    if (!method) {
+    if (selectedMethod === method) {
       return;
     }
 
@@ -120,22 +112,6 @@ const ParticipationMethodPicker = ({
     setShowSurveyOptions(isSurveyCategory);
     setSelectedMethod(method);
     handleParticipationMethodOnChange(method);
-  };
-
-  const handleMethodSelect = (event, method: ParticipationMethod) => {
-    event.preventDefault();
-
-    // We don't want to change the method if it is the same
-    if (selectedMethod === method) {
-      return;
-    }
-
-    if (phase) {
-      setMethodToChangeTo(method);
-      setShowChangeMethodModal(true);
-    } else {
-      changeMethod(method);
-    }
   };
 
   return (
@@ -388,46 +364,43 @@ const ParticipationMethodPicker = ({
               </>
             )}
           </Box>
+          {selectedMethod &&
+            ['native_survey', 'ideation', 'proposals'].includes(
+              selectedMethod
+            ) && (
+              <Box mt="24px" width="750px">
+                <FeatureCallout
+                  icon={importPrintedFormsEnabled ? 'form-sync' : 'lock'}
+                  disabledTooltipContent={
+                    <Box display="flex" flexDirection="column" gap="8px">
+                      <FormattedMessage {...messages2.formSyncLockedTooltip} />
+                      <FormattedMessage {...messages2.formSyncLockedTooltip2} />
+                    </Box>
+                  }
+                  tooltipDisabled={importPrintedFormsEnabled}
+                  linkTo="https://support.govocal.com/en/articles/527575-bulk-import-ideas-surveys-via-formsync"
+                  linkText={<FormattedMessage {...messages2.learnMore} />}
+                  title={
+                    <FormattedMessage {...messages2.collectResponsesOnPaper} />
+                  }
+                  description={
+                    <>
+                      <FormattedMessage
+                        {...messages2.collectResponsesOnPaperDescription}
+                      />{' '}
+                      {!importPrintedFormsEnabled && (
+                        <FormattedMessage
+                          {...messages2.notAvailableInYourPlan}
+                        />
+                      )}
+                    </>
+                  }
+                />
+              </Box>
+            )}
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
       </SectionField>
-      <Modal opened={showChangeMethodModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              <FormattedMessage {...messages2.changingMethod} />
-            </Title>
-            <Text color="primary" fontSize="l">
-              <FormattedMessage {...messages2.changeMethodWarning} />
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <ButtonWithLink
-              buttonStyle="secondary-outlined"
-              width="100%"
-              onClick={closeModal}
-              mr="16px"
-            >
-              <FormattedMessage {...messages2.cancelMethodChange} />
-            </ButtonWithLink>
-            <ButtonWithLink
-              buttonStyle="delete"
-              width="100%"
-              onClick={() => {
-                changeMethod();
-                closeModal();
-              }}
-            >
-              <FormattedMessage {...messages2.confirmMethodChange} />
-            </ButtonWithLink>
-          </Box>
-        </Box>
-      </Modal>
     </>
   );
 };

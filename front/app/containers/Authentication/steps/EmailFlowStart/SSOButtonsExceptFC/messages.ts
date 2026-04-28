@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithFakeSSO',
     defaultMessage: 'Continue with Fake SSO',
   },
+  continueWithFedera: {
+    id: 'app.components.AuthProviders.continueWithFedera',
+    defaultMessage: 'Login with SPID, CIE or CNS',
+  },
 });

@@ -8,7 +8,7 @@ import React, {
 
 import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import Quill, { Range } from 'quill';
+import Quill from 'quill';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -110,7 +110,25 @@ const QuillEditor = ({
     setHTML(quill, value);
     setEditor(quill);
 
+    // When the blot-formatter alt text modal is appended to document.body,
+    // it falls outside react-focus-on's focus trap (used by our Modal component).
+    // Adding data-no-focus-lock lets react-focus-lock allow interaction with it.
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            node.hasAttribute('data-blot-formatter-modal')
+          ) {
+            node.setAttribute('data-no-focus-lock', 'true');
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true });
+
     return () => {
+      observer.disconnect();
       container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,27 +150,27 @@ const QuillEditor = ({
 
     const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
 
-    // Not sure why we handle focus like this, but seems to work
-    const focusHandler = (range: Range, oldRange: Range) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (range === null && oldRange !== null) {
-        setFocussed(false);
-        onBlurRef.current?.();
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      } else if (range !== null && oldRange === null) {
-        setFocussed(true);
-        onFocusRef.current?.();
-      }
+    // Native focus/blur handlers for cross-browser compatibility
+    const handleFocus = () => {
+      setFocussed(true);
+      onFocusRef.current?.();
     };
 
+    const handleBlur = () => {
+      setFocussed(false);
+      onBlurRef.current?.();
+    };
+
+    const editorElement = editor.root;
+
     editor.on('text-change', debouncedTextChangeHandler);
-    editor.on('selection-change', focusHandler);
+    editorElement.addEventListener('focus', handleFocus);
+    editorElement.addEventListener('blur', handleBlur);
 
     return () => {
       editor.off('text-change', debouncedTextChangeHandler);
-      editor.off('selection-change', focusHandler);
+      editorElement.removeEventListener('focus', handleFocus);
+      editorElement.removeEventListener('blur', handleBlur);
     };
   }, [editor]);
 

@@ -97,7 +97,12 @@ declare global {
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
+      dragToolboxItemTo(
+        toolboxSelector: string,
+        targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
+      apiCreateInputTopic: typeof apiCreateInputTopic;
     }
   }
 }
@@ -495,7 +500,7 @@ function apiCreateModeratorForFolder({
         method: 'POST',
         url: `web_api/v1/project_folders/${folderId}/moderators`,
         body: {
-          project_folder_moderator: {
+          moderator: {
             user_id: userId,
           },
         },
@@ -604,6 +609,49 @@ function getUserBySlug(userSlug: string) {
   });
 }
 
+type InputTopicType = {
+  projectId: string;
+  title: string;
+  description?: string;
+  icon?: string;
+  parentId?: string;
+};
+
+function apiCreateInputTopic({
+  projectId,
+  title,
+  description,
+  icon,
+  parentId,
+}: InputTopicType) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/input_topics`,
+      body: {
+        input_topic: {
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+          },
+          description_multiloc: {
+            en: description || '',
+            'nl-BE': description || '',
+          },
+          icon: icon || null,
+          parent_id: parentId,
+        },
+      },
+    });
+  });
+}
+
 type IdeaType = {
   projectId: string;
   ideaTitle: string;
@@ -614,6 +662,7 @@ type IdeaType = {
   budget?: number;
   anonymous?: boolean;
   phaseIds?: string[];
+  topicIds?: string[];
 };
 
 function apiCreateIdea({
@@ -626,6 +675,7 @@ function apiCreateIdea({
   budget,
   anonymous,
   phaseIds,
+  topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
     cy.request({
@@ -652,6 +702,7 @@ function apiCreateIdea({
           budget,
           anonymous,
           phase_ids: phaseIds,
+          topic_ids: topicIds,
         },
       },
     });
@@ -1168,6 +1219,7 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  available_views = ['card', 'map'],
 }: {
   projectId: string;
   title: string;
@@ -1180,7 +1232,8 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
-  presentation_mode?: 'card' | 'map';
+  presentation_mode?: 'card' | 'map' | 'feed';
+  available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
@@ -1214,6 +1267,7 @@ function apiCreatePhase({
           reacting_enabled: canReact,
           commenting_enabled: canComment,
           presentation_mode,
+          available_views,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
@@ -2241,3 +2295,4 @@ Cypress.Commands.add(
   'createProjectWithIdeationPhase',
   createProjectWithIdeationPhase
 );
+Cypress.Commands.add('apiCreateInputTopic', apiCreateInputTopic);

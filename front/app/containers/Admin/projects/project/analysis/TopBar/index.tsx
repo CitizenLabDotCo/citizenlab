@@ -16,7 +16,6 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -85,7 +84,6 @@ const TopBar = () => {
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const goBack = () => {
     const fromInsights = urlParams.get('from') === 'insights';
@@ -94,12 +92,7 @@ const TopBar = () => {
     if (participationMethod === 'community_monitor_survey') {
       clHistory.push(`/admin/community-monitor/live-monitor`);
     } else if (fromInsights || participationMethod === 'native_survey') {
-      // When phase_insights is disabled, redirect to old 'results' tab for native surveys
-      const tab =
-        participationMethod === 'native_survey' && !phaseInsightsEnabled
-          ? 'results'
-          : 'insights';
-      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/${tab}`);
+      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
     } else if (participationMethod === 'proposals') {
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/proposals`
@@ -182,7 +175,11 @@ const TopBar = () => {
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
-        <Modal opened={showLaunchModal} close={closeLaunchModal}>
+        <Modal
+          opened={showLaunchModal}
+          close={closeLaunchModal}
+          ariaLabelledBy="launch-modal-title"
+        >
           <LaunchModal onClose={closeLaunchModal} />
         </Modal>
       </Box>

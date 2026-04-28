@@ -21,9 +21,9 @@ describe Frontend::UrlService do
 
     it 'returns the correct url for a phase' do
       project = create(:project, slug: 'my-project')
-      _future_phase = create(:phase, project: project, start_at: (Time.zone.today + 20.days), end_at: (Time.zone.today + 25.days))
-      _past_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
-      current_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+      _future_phase = create(:phase, project: project, start_at: 20.days.from_now, end_at: 26.days.from_now)
+      _past_phase = create(:phase, project: project, start_at: 15.days.ago, end_at: 9.days.ago)
+      current_phase = create(:phase, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
 
       expect(service.model_to_url(current_phase.reload, locale: locale)).to eq "#{base_uri}/en/projects/my-project/2"
     end
@@ -82,6 +82,55 @@ describe Frontend::UrlService do
       expect(service.sso_return_url(pathname: '/', locale: locale)).to eq 'http://example.org/nl-NL/'
       expect(service.sso_return_url(pathname: '/en/some-path', locale: locale)).to eq 'http://example.org/nl-NL/some-path'
       expect(service.sso_return_url(pathname: '/en/another/path/', locale: locale)).to eq 'http://example.org/nl-NL/another/path/'
+    end
+  end
+
+  describe '#input_manager_url' do
+    let!(:phase) { create(:phase) }
+
+    it 'returns global input manager URL when no phase' do
+      expect(service.input_manager_url).to eq "#{base_uri}/admin/ideas"
+    end
+
+    it 'returns phase input manager URL when phase ID provided' do
+      expect(service.input_manager_url(for_phase: phase.id)).to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+    end
+
+    it 'returns phase input manager URL when phase record provided' do
+      expect(service.input_manager_url(for_phase: phase)).to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+    end
+
+    it 'adds status filter as query parameter' do
+      idea_status = create(:idea_status)
+      url = service.input_manager_url(status: idea_status)
+
+      expect(url).to eq "#{base_uri}/admin/ideas?status=#{idea_status.id}"
+    end
+
+    it 'adds tab filter as query parameter' do
+      url = service.input_manager_url(tab: 'statuses')
+      expect(url).to eq "#{base_uri}/admin/ideas?tab=statuses"
+    end
+
+    it 'combines for_phase with filters' do
+      idea_status = create(:idea_status)
+      url = service.input_manager_url(for_phase: phase, status: idea_status, tab: 'statuses')
+
+      expect(url).to include("#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas?")
+      expect(url).to include("status=#{idea_status.id}")
+      expect(url).to include('tab=statuses')
+    end
+
+    it 'handles boolean feedback_needed parameter' do
+      url = service.input_manager_url(feedback_needed: true)
+      expect(url).to eq "#{base_uri}/admin/ideas?feedback_needed=true"
+    end
+
+    it 'handles array parameters for topics and projects' do
+      topic1 = create(:topic)
+      topic2 = create(:topic)
+      url = service.input_manager_url(topics: [topic1, topic2])
+      expect(url).to eq "#{base_uri}/admin/ideas?topics=#{topic1.id}%2C#{topic2.id}"
     end
   end
 end

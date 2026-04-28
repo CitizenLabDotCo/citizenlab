@@ -84,6 +84,86 @@ RSpec.describe User do
     end
   end
 
+  describe '#slug' do
+    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
+
+    context 'when enhanced_user_profile_privacy feature is not active' do
+      it 'returns the normal slug' do
+        expect(user.slug).to eq 'bob-smith'
+      end
+    end
+
+    context 'when enhanced_user_profile_privacy feature is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      it 'returns the user id instead of the slug' do
+        expect(user.slug).to eq user.id
+      end
+    end
+  end
+
+  describe '#show_public_profile?' do
+    let(:user) { create(:user) }
+
+    context 'when enhanced_user_profile_privacy is not active' do
+      it 'returns true' do
+        expect(user.show_public_profile?).to be true
+      end
+    end
+
+    context 'when enhanced_user_profile_privacy is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+        create(:idea_status_proposed)
+      end
+
+      it 'returns false when user has no ideas or comments' do
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in an ideation phase' do
+        create(:idea, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas' do
+        create(:idea, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in a proposals phase' do
+        create(:proposal, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas in a proposals phase' do
+        create(:proposal, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns false when user only has ideas in a native survey phase' do
+        create(:native_survey_response, author: user)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has comments' do
+        create(:comment, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous comments' do
+        create(:comment, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+    end
+  end
+
   describe 'creating an invited user' do
     it 'has correct linking between invite and invitee' do
       invitee = create(:invited_user)
@@ -645,197 +725,26 @@ RSpec.describe User do
     end
   end
 
-  describe 'project_or_folder_moderator?' do
+  describe 'moderator?' do
     it 'responds true when the user has the project_folder_moderator role' do
-      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
-      expect(u.project_or_folder_moderator?).to be true
+      folder = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+      expect(u.moderator?).to be true
     end
 
     it 'responds true when the user is project_moderator' do
       u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
-      expect(u.project_or_folder_moderator?).to be true
+      expect(u.moderator?).to be true
+    end
+
+    it 'responds true when the user is space_moderator' do
+      u = build(:user, roles: [{ type: 'space_moderator', space_id: 'space_id' }])
+      expect(u.moderator?).to be true
     end
 
     it 'responds false when the user does not have any moderator roles' do
       u = build(:user, roles: [])
-      expect(u.project_or_folder_moderator?).to be false
-    end
-  end
-
-  describe 'moderator scopes' do
-    let(:user) { create(:user) }
-    let(:admin) { create(:admin) }
-    let!(:project) { create(:project) }
-    let!(:project_folder) { create(:project_folder, projects: [project]) }
-    let(:project_moderator) { create(:project_moderator, projects: [project]) }
-    let(:moderator_of_other_project) { create(:project_moderator, projects: [create(:project)]) }
-    let(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
-    let(:moderator_of_other_folder) { create(:project_folder_moderator, project_folders: [create(:project_folder)]) }
-
-    describe '.project_moderator' do
-      context 'when a project ID is provided' do
-        it 'excludes regular user with no roles' do
-          expect(described_class.project_moderator(project.id)).not_to include(user)
-        end
-
-        it 'excludes admins' do
-          expect(described_class.project_moderator(project.id)).not_to include(admin)
-        end
-
-        it 'includes project moderators of project' do
-          expect(described_class.project_moderator(project.id)).to include(project_moderator)
-        end
-
-        it 'excludes project moderators of other projects' do
-          expect(described_class.project_moderator(project.id)).not_to include(moderator_of_other_project)
-        end
-
-        it 'excludes folder moderators of project folder' do
-          expect(described_class.project_moderator(project.id)).not_to include(project_folder_moderator)
-        end
-
-        it 'excludes folder moderators of other folders' do
-          expect(described_class.project_moderator(project.id)).not_to include(moderator_of_other_folder)
-        end
-      end
-
-      context 'when a project ID is not provided' do
-        it 'includes only users with a project moderator role' do
-          expect(described_class.project_moderator)
-            .to contain_exactly(project_moderator, moderator_of_other_project)
-        end
-      end
-    end
-
-    describe '.project_folder_moderator' do
-      context 'when one folder ID is provided' do
-        it 'excludes regular user with no roles' do
-          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(user)
-        end
-
-        it 'excludes admins' do
-          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(admin)
-        end
-
-        it 'includes folder moderators of folder' do
-          expect(described_class.project_folder_moderator(project_folder.id)).to include(project_folder_moderator)
-        end
-
-        it 'excludes folder moderators of folder' do
-          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(moderator_of_other_folder)
-        end
-
-        it 'excludes project moderators who are not also moderator of the folder' do
-          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(project_moderator)
-          expect(described_class.project_folder_moderator(project_folder.id)).not_to include(moderator_of_other_project)
-        end
-
-        it 'includes project moderators who are also moderator of the folder' do
-          moderator_of_other_project.roles << { type: 'project_folder_moderator', project_folder_id: project_folder.id }
-          moderator_of_other_project.save!
-
-          expect(described_class.project_folder_moderator(project_folder.id)).to include(moderator_of_other_project)
-        end
-      end
-
-      context 'when multiple folder IDs are provided' do
-        it 'works as an AND filter' do
-          # Create user who is a moderator of both folders
-          user = create(:user)
-          another_folder = create(:project_folder)
-          user.roles << { type: 'project_folder_moderator', project_folder_id: project_folder.id }
-          user.roles << { type: 'project_moderator', project_id: create(:project).id }
-          user.roles << { type: 'project_folder_moderator', project_folder_id: another_folder.id }
-          user.save!
-
-          # Create user who is moderator of only one folder
-          user_with_only_one_folder = create(:user)
-          user_with_only_one_folder.roles << { type: 'project_folder_moderator', project_folder_id: another_folder.id }
-          user_with_only_one_folder.save!
-
-          expect(described_class.project_folder_moderator(project_folder.id, another_folder.id)).to include(user)
-          expect(described_class.project_folder_moderator(project_folder.id, another_folder.id)).not_to include(user_with_only_one_folder)
-        end
-      end
-
-      context 'when no folder ID is not provided' do
-        it 'includes only users with a folder moderator role' do
-          expect(described_class.project_folder_moderator)
-            .to contain_exactly(project_folder_moderator, moderator_of_other_folder)
-        end
-      end
-    end
-
-    describe '.not_project_moderator' do
-      context 'when a project ID is provided' do
-        it 'includes regular user with no roles' do
-          expect(described_class.not_project_moderator(project.id)).to include(user)
-        end
-
-        it 'includes admins' do
-          expect(described_class.not_project_moderator(project.id)).to include(admin)
-        end
-
-        it 'excludes project moderators of project' do
-          expect(described_class.not_project_moderator(project.id)).not_to include(project_moderator)
-        end
-
-        it 'includes project moderators of other projects' do
-          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_project)
-        end
-
-        it 'excludes folder moderators of project folder' do
-          expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
-        end
-
-        it 'includes folder moderators of other folders' do
-          expect(described_class.not_project_moderator(project.id)).to include(moderator_of_other_folder)
-        end
-      end
-
-      context 'when a project ID is not provided' do
-        it 'includes only users without a project moderator role' do
-          expect(described_class.not_project_moderator)
-            .to contain_exactly(user, admin, project_folder_moderator, moderator_of_other_folder)
-        end
-      end
-    end
-
-    describe '.not_project_folder_moderator' do
-      context 'when a folder ID is provided' do
-        it 'includes regular user with no roles' do
-          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(user)
-        end
-
-        it 'includes admins' do
-          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(admin)
-        end
-
-        it 'excludes folder moderators of folder' do
-          expect(described_class.not_project_folder_moderator(project_folder.id))
-            .not_to include(project_folder_moderator)
-        end
-
-        it 'includes folder moderators of other folders' do
-          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(moderator_of_other_folder)
-        end
-
-        it 'includes project moderators of projects in folder' do
-          expect(described_class.not_project_folder_moderator(project_folder.id)).to include(project_moderator)
-        end
-
-        it 'includes project moderators of projects not in folder' do
-          expect(described_class.not_project_folder_moderator(project_folder.id))
-            .to include(moderator_of_other_project)
-        end
-      end
-
-      context 'when a folder ID is not provided' do
-        it 'includes only users without a folder moderator role' do
-          expect(described_class.not_project_folder_moderator)
-            .to contain_exactly(user, admin, project_moderator, moderator_of_other_project)
-        end
-      end
+      expect(u.moderator?).to be false
     end
   end
 
@@ -870,24 +779,6 @@ RSpec.describe User do
       moderator.delete_role 'project_moderator', project_id: project.id
       expect(moderator.save).to be true
       expect(moderator.project_moderator?(project.id)).to be false
-    end
-  end
-
-  describe 'order_role' do
-    before do
-      10.times do |_i|
-        create(rand(2) == 0 ? :admin : :user)
-      end
-    end
-
-    it 'sorts from higher level roles to lower level roles by default' do
-      serie = described_class.order_role.map { |u| u.roles.size }
-      expect(serie).to eq serie.sort.reverse
-    end
-
-    it 'sorts from lower level roles to higher level roles with option asc' do
-      serie = described_class.order_role(:desc).map { |u| u.roles.size }
-      expect(serie).to eq serie.sort
     end
   end
 
@@ -1373,117 +1264,6 @@ RSpec.describe User do
       user.first_name = 'Smith'
       user.validate
       expect(user.first_name).to eq 'Smith'
-    end
-  end
-
-  context 'billed users' do
-    def create_admin_moderator(factory)
-      create(factory).tap do |user|
-        user.roles << { type: 'admin' }
-        user.save!
-      end
-    end
-
-    describe '.billed_admins' do
-      it 'returns admins' do
-        create(:user)
-        admin = create(:admin)
-        expect(described_class.billed_admins).to contain_exactly(admin)
-      end
-
-      it 'does not return Go Vocal admins' do
-        create(:user)
-        create(:admin, email: 'test@govocal.com')
-        non_gv_admin = create(:admin)
-        expect(described_class.billed_admins).to contain_exactly(non_gv_admin)
-      end
-
-      it 'does not return project and folder moderators' do
-        create(:user)
-        admin = create(:admin)
-        create(:project_moderator)
-        create(:project_folder_moderator)
-        expect(described_class.billed_admins).to contain_exactly(admin)
-      end
-
-      it 'returns admins who are also project or folder moderators' do
-        create(:user)
-        admin = create_admin_moderator(:project_moderator)
-        admin1 = create_admin_moderator(:project_folder_moderator)
-        expect(described_class.billed_admins).to contain_exactly(admin, admin1)
-      end
-    end
-
-    describe '.billed_moderators' do
-      it 'returns project and folder moderators' do
-        create(:user)
-        project_moderator = create(:project_moderator)
-        folder_moderator = create(:project_folder_moderator)
-        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
-      end
-
-      it 'does not return Go Vocal moderators' do
-        create(:user)
-        create(:project_moderator, email: 'test@govocal.eu')
-        non_cl_project_moderator = create(:project_moderator)
-        expect(described_class.billed_moderators).to contain_exactly(non_cl_project_moderator)
-      end
-
-      it 'does not return admins' do
-        create(:user)
-        project_moderator = create(:project_moderator)
-        folder_moderator = create(:project_folder_moderator)
-        create(:admin)
-        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
-      end
-
-      it 'does not return admins who are also project or folder moderators' do
-        create(:user)
-        create(:admin)
-        project_moderator = create(:project_moderator)
-        folder_moderator = create(:project_folder_moderator)
-        create_admin_moderator(:project_moderator)
-        create_admin_moderator(:project_folder_moderator)
-        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
-      end
-    end
-  end
-
-  context '(super_admins scopes)' do
-    let_it_be(:super_admins) { create_list(:super_admin, 1) }
-    let_it_be(:non_super_admins) do
-      [
-        create(:user),
-        create(:admin),
-        create(:project_moderator, email: 'hello@govocal.com')
-      ]
-    end
-
-    it '.super_admins returns super admins only' do
-      expect(described_class.super_admins).to match_array(super_admins)
-    end
-
-    it '.non_super_admins returns non super admins' do
-      expect(described_class.not_super_admins).to match_array(non_super_admins)
-    end
-  end
-
-  context 'project reviewer scope' do
-    let_it_be(:project_reviewers) { create_list(:admin, 2, :project_reviewer) }
-    let_it_be(:non_project_reviewers) do
-      [
-        create(:user),
-        create(:admin),
-        create(:project_moderator)
-      ]
-    end
-
-    specify do
-      expect(described_class.project_reviewers).to match_array(project_reviewers)
-    end
-
-    specify do
-      expect(described_class.project_reviewers(false)).to match_array(non_project_reviewers)
     end
   end
 end

@@ -8,7 +8,8 @@ import messages from '../messages';
 const validate = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  phaseId?: string
 ) => {
   const {
     start_at,
@@ -53,9 +54,20 @@ const validate = (
           new Date(phase.attributes.start_at).getTime()
         );
         const maxStartAt = Math.max(...startAtDates);
-        if (new Date(start_at).getTime() < maxStartAt) {
-          phaseDateError = formatMessage(messages.missingEndDateError);
-          isValidated = false;
+        const formStartAt = new Date(start_at).getTime();
+        if (formStartAt < maxStartAt) {
+          // Allow open end when editing the last phase (phase with latest start_at).
+          const phaseBeingEdited = phaseId
+            ? phases.data.find((p) => p.id === phaseId)
+            : undefined;
+          const isEditingLastPhase =
+            phaseBeingEdited &&
+            new Date(phaseBeingEdited.attributes.start_at).getTime() ===
+              maxStartAt;
+          if (!isEditingLastPhase) {
+            phaseDateError = formatMessage(messages.missingEndDateError);
+            isValidated = false;
+          }
         }
       }
     }

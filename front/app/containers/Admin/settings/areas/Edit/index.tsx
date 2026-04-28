@@ -16,22 +16,16 @@ import AreaForm, { FormValues } from '../AreaForm';
 import messages from '../messages';
 
 const Edit = () => {
-  const { mutate: updateArea } = useUpdateArea();
+  const { mutateAsync: updateArea } = useUpdateArea();
   const { areaId } = useParams({ strict: false }) as { areaId: string };
   const { data: area } = useArea(areaId);
   const handleSubmit = async (values: FormValues) => {
     if (!area) return;
-    updateArea(
-      {
-        id: area.data.id,
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/areas');
-        },
-      }
-    );
+    await updateArea({
+      id: area.data.id,
+      ...values,
+    });
+    clHistory.push('/admin/settings/areas');
   };
 
   const goBack = () => {

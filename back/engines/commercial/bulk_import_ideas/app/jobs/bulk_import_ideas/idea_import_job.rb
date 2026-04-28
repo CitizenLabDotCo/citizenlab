@@ -2,39 +2,43 @@
 
 module BulkImportIdeas
   class IdeaImportJob < ApplicationJob
+    include Jobs::TrackableJob
+
     self.priority = 60
     perform_retries false
 
-    def run(file_parser_class, idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
-      file_parser = file_parser_class.new(import_user, locale, phase.id, personal_data_enabled)
-      import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
+    FORMAT_CONFIG = {
+      'pdf' => {
+        child_job_class: IdeaPdfImportJob,
+        batch_size: Parsers::IdeaPdfFileParser::IDEAS_PER_JOB,
+        first_idea_index: 1,
+        index_step: Parsers::IdeaPdfFileParser::IDEAS_PER_JOB
+      },
+      'xlsx' => {
+        child_job_class: IdeaXlsxImportJob,
+        batch_size: 1,
+        first_idea_index: 2,
+        index_step: Parsers::IdeaXlsxFileParser::MAX_ROWS_PER_XLSX
+      }
+    }.freeze
 
-      idea_rows = []
-      idea_import_files.each do |file|
-        idea_rows += file_parser.parse_rows file
+    def run(files, import_user, locale, phase, personal_data_enabled, format)
+      config = FORMAT_CONFIG.fetch(format)
+      batches = files.each_slice(config[:batch_size]).to_a
+
+      update_tracker_total(files.size)
+
+      first_idea_index = config[:first_idea_index]
+      batches.each do |batch|
+        enqueue_child_job(config[:child_job_class], batch, import_user, locale, phase, personal_data_enabled, first_idea_index)
+        first_idea_index += config[:index_step]
       end
-
-      # Correct jumbled up text fields with GPT if using google PDF
-      idea_rows = idea_rows_with_corrected_texts(phase, idea_rows, file_parser_class)
-
-      ideas = import_service.import(idea_rows)
-      users = import_service.imported_users
-      format = file_parser_class == BulkImportIdeas::Parsers::IdeaXlsxFileParser ? 'xlsx' : 'pdf'
-
-      SideFxBulkImportService.new.after_success(import_user, phase, 'idea', format, ideas, users)
-    rescue StandardError => e
-      e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
-      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', format, e.to_s)
-      raise e
     end
 
     private
 
-    def idea_rows_with_corrected_texts(phase, idea_rows, file_parser_class)
-      return idea_rows unless file_parser_class == BulkImportIdeas::Parsers::IdeaPdfFileParser
-
-      corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(phase, idea_rows)
-      corrector.correct
+    def job_tracking_context
+      arguments[3] # phase
     end
   end
 end

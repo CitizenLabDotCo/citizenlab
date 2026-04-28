@@ -1,40 +1,33 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import { HighestRole } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import TabbedResource from 'components/admin/TabbedResource';
+import TabbedResource, {
+  Props as TabbedResourceProps,
+} from 'components/admin/TabbedResource';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
-
-type TabbedPropsType = {
-  resource: {
-    title: string;
-  };
-  tabs: ITab[];
-};
+const ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
+  'super_admin',
+  'admin',
+  'space_moderator',
+  'project_folder_moderator',
+] satisfies HighestRole[];
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams({ strict: false }) as {
@@ -45,13 +38,15 @@ const AdminProjectFolderEdition = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!authUser || !projectFolder) return null;
+  if (!authUser || !projectFolder || !projectFolderId) return null;
+  const { highest_role } = authUser.data.attributes;
+  if (!ALLOWED_HIGHEST_ROLES.includes(highest_role)) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps: TabbedPropsType = {
+  const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
@@ -66,23 +61,17 @@ const AdminProjectFolderEdition = () => {
         url: `/admin/projects/folders/${projectFolderId}/settings`,
         name: 'settings',
       },
-    ],
-  };
-
-  if (isAdmin(authUser)) {
-    tabbedProps = {
-      ...tabbedProps,
-      tabs: tabbedProps.tabs.concat({
+      {
         label: formatMessage(messages.projectFolderPermissionsTab),
         url: `/admin/projects/folders/${projectFolderId}/permissions`,
         name: 'permissions',
-      }),
-    };
-  }
+      },
+    ],
+  };
 
   return (
     <>
-      <TopContainer>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <GoBackButton onClick={goBack} />
         <ButtonWithLink
           buttonStyle="admin-dark"
@@ -92,7 +81,7 @@ const AdminProjectFolderEdition = () => {
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
         </ButtonWithLink>
-      </TopContainer>
+      </Box>
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>

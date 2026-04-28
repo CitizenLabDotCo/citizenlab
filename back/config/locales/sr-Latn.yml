@@ -16,6 +16,7 @@ sr-Latn:
     fi-FI: Finnish
     fr-BE: French (Belgium)
     fr-FR: French
+    ga-IE: Irish
     hr-HR: Croatian
     hu-HU: Hungarian
     it-IT: Italian
@@ -146,43 +147,31 @@ sr-Latn:
     ideas:
       title:
         title: Наслов
-        description:
       body:
         title: Opis
-        description:
       author_id:
         title: Autor
       topic_ids:
         title: Tema
-        description:
       consponsor_ids:
         title: Co-sponsors
         description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Lokacija
-        description:
       proposed_budget:
         title: Predloženi budžet
-        description:
       budget:
         title: Budžet
       images:
         title: Slike
-        description:
       attachments:
         title: Prilozi
-        description:
-      title_page:
-        description:
       body_page:
         title: Tell us more
-        description:
       uploads_page:
         title: Images and attachments
-        description:
       details_page:
         title: Details
-        description:
       other_input_field:
         title: Type your answer
         print_title: If '%{other_option}', please specify
@@ -246,6 +235,18 @@ sr-Latn:
           title: What is your initiative?
         petition:
           title: What is your petition?
+        comment:
+          title: What is your comment?
+        response:
+          title: What is your response?
+        suggestion:
+          title: What is your suggestion?
+        topic:
+          title: What is your topic?
+        post:
+          title: What is your post?
+        story:
+          title: What is your story?
   custom_field_options:
     gender:
       male: Muškarac
@@ -386,5 +387,6 @@ sr-Latn:
     event_details: "Event details"
   errors:
     messages:
+      in_the_past: "must be in the future"
       max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."

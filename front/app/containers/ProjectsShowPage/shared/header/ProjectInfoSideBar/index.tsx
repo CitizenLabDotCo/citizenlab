@@ -13,6 +13,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from 'containers/ProjectsShowPage/messages';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -45,6 +47,7 @@ const ProjectInfoSideBar = memo<Props>(
     const { data: project } = useProjectById(projectId, !isAdmin(authUser));
     const { data: phases } = usePhases(projectId);
     const { formatMessage } = useIntl();
+    const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
 
     if (project) {
       const projectParticipantsCount =
@@ -66,7 +69,7 @@ const ProjectInfoSideBar = memo<Props>(
       return (
         <Box id="e2e-project-sidebar" className={className || ''} w="100%">
           <StyledProjectActionButtons projectId={projectId} />
-          {!hideParticipationAvatars && (
+          {!hideParticipationAvatars && userAvatarsEnabled && (
             <Box
               display="flex"
               alignItems="center"

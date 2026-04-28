@@ -24,6 +24,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { weglotTranslateSubmission } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';
 import { commentAdded } from '../../events';
@@ -151,9 +152,14 @@ const ParentCommentForm = ({
     setFocused(false);
 
     if (isString(inputValue) && trim(inputValue) !== '') {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const processedValue = inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2');
+
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        processedValue,
+        locale,
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
+      );
+      const commentBodyMultiloc = { [locale]: translatedText };
 
       trackEventByName(tracks.clickParentCommentPublish, {
         postId: ideaId,
@@ -167,6 +173,7 @@ const ParentCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
+            weglot_data: weglotData,
             anonymous: postAnonymously,
           },
           {

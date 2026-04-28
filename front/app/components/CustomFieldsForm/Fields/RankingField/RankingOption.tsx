@@ -76,67 +76,80 @@ const RankingOption = ({
     })
   );
 
+  const selectId = `ranking-select-${option.value}`;
+
   return (
     <li aria-roledescription="sortable">
       <Drag index={index} useBorder={false} id={`ranking-item-${option.value}`}>
-        <StyledBox
-          style={{ cursor: 'grab' }}
-          mb="12px"
-          borderRadius={theme.borderRadius}
-          border={`1px solid ${theme.colors.borderDark}`}
-        >
+        {({ dragHandleProps }) => (
           <StyledBox
-            padding="18px 20px 18px 20px"
-            display="flex"
-            justifyContent="space-between"
+            mb="12px"
+            borderRadius={theme.borderRadius}
+            border={`1px solid ${theme.colors.borderDark}`}
           >
-            <Box display="flex">
-              <ScreenReaderOnly>
-                <Label>
-                  {`${option.label}. ${
-                    getRankOfOption(option)
-                      ? formatMessage(messages.currentRank)
-                      : formatMessage(messages.noRankSelected)
-                  }`}
-                </Label>
-              </ScreenReaderOnly>
+            <StyledBox
+              padding="18px 20px 18px 20px"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Box display="flex">
+                <ScreenReaderOnly>
+                  <Label htmlFor={selectId}>
+                    {`${option.label}. ${
+                      getRankOfOption(option)
+                        ? formatMessage(messages.currentRank)
+                        : formatMessage(messages.noRankSelected)
+                    }`}
+                  </Label>
+                </ScreenReaderOnly>
 
-              <StyledSelect
-                options={rankDropdownOptions}
-                value={getRankOfOption(option)}
-                height="auto"
-                onChange={(selectedOption) => {
-                  moveOptionInArray(index, selectedOption.value - 1);
+                <StyledSelect
+                  id={selectId}
+                  options={rankDropdownOptions}
+                  value={getRankOfOption(option)}
+                  height="auto"
+                  onChange={(selectedOption) => {
+                    moveOptionInArray(index, selectedOption.value - 1);
 
-                  // For a11y, focus the list item again after reordering.
-                  (
-                    document.querySelector(
-                      `[data-rbd-drag-handle-draggable-id="ranking-item-${option.value}"]`
-                    ) as HTMLElement
-                  ).focus();
-                }}
-              />
-              <Text
-                maxWidth="80%"
-                my="auto"
-                color="textPrimary"
-                p="0px"
-                m="0px"
-                aria-hidden
-              >
-                {option.label}
-              </Text>
-            </Box>
+                    // For a11y, focus the select dropdown of the reordered item.
+                    requestAnimationFrame(() => {
+                      document
+                        .getElementById(`ranking-item-${option.value}`)
+                        ?.querySelector<HTMLSelectElement>('select')
+                        ?.focus();
+                    });
+                  }}
+                />
+                <Text
+                  maxWidth="80%"
+                  my="auto"
+                  color="textPrimary"
+                  p="0px"
+                  m="0px"
+                  aria-hidden
+                >
+                  {option.label}
+                </Text>
+              </Box>
 
-            <Box flexShrink={0} my="auto" pl="8px">
-              <Icon
-                height="18px"
-                name="drag-handle"
-                fill={theme.colors.textPrimary}
-              />
-            </Box>
+              <Box flexShrink={0} my="auto" pl="8px">
+                <div
+                  style={{ cursor: 'grab' }}
+                  {...dragHandleProps}
+                  aria-label={formatMessage(messages.rankingDragHandleLabel, {
+                    label: option.label,
+                  })}
+                >
+                  <Icon
+                    height="18px"
+                    name="drag-handle"
+                    fill={theme.colors.textPrimary}
+                  />
+                </div>
+              </Box>
+            </StyledBox>
           </StyledBox>
-        </StyledBox>
+        )}
       </Drag>
     </li>
   );

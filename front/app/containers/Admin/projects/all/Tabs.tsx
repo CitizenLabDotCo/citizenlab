@@ -9,8 +9,9 @@ import {
 import { useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { HighestRole } from 'api/users/types';
 
-import NewLabel from 'components/UI/NewLabel';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -22,7 +23,12 @@ import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
 import tracks from './tracks';
 
-const FOLDER_PARAMS: Parameter[] = ['status', 'managers', 'search'];
+const FOLDER_PARAMS: Parameter[] = [
+  'status',
+  'managers',
+  'search',
+  'space_ids',
+];
 
 interface TabProps {
   message: MessageDescriptor;
@@ -58,16 +64,29 @@ const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
   );
 };
 
+const ROLES_THAT_CAN_SEE_SPACES: HighestRole[] = [
+  'super_admin',
+  'admin',
+  'space_moderator',
+];
+
+const ROLES_THAT_CAN_SEE_FOLDERS: HighestRole[] = [
+  ...ROLES_THAT_CAN_SEE_SPACES,
+  'project_folder_moderator',
+];
+
 const Tabs = () => {
   const [searchParams] = useSearch({ strict: false });
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
-  const { formatMessage } = useIntl();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+
   if (!user) return null;
 
   const userIsAdmin = isAdmin(user);
 
   const { highest_role } = user.data.attributes;
+  if (!highest_role) return null;
 
   return (
     <Box
@@ -91,7 +110,7 @@ const Tabs = () => {
           trackEventByName(tracks.setTab, { tab: 'projects' });
         }}
       />
-      {highest_role !== 'project_moderator' && (
+      {ROLES_THAT_CAN_SEE_FOLDERS.includes(highest_role) && (
         <Tab
           message={messages.folders}
           icon="folder-outline"
@@ -107,37 +126,33 @@ const Tabs = () => {
           }}
         />
       )}
-      <Box
-        borderBottom={
-          tab === 'calendar' ? `2px solid ${colors.primary}` : undefined
-        }
-        pb="4px"
-        mr="20px"
-        display="flex"
-        alignItems="center"
-        data-cy="projects-overview-calendar-tab"
-      >
-        <Button
-          buttonStyle="text"
-          p="0"
-          m="0"
-          icon="calendar"
-          iconSize="16px"
-          textColor={tab === 'calendar' ? colors.textPrimary : undefined}
-          iconColor={tab === 'calendar' ? colors.textPrimary : undefined}
+      {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && spacesEnabled && (
+        <Tab
+          message={messages.spaces}
+          icon="spaces"
+          active={tab === 'spaces'}
+          dataCy="projects-overview-spaces-tab"
           onClick={() => {
-            if (tab === 'folders') {
-              removeSearchParams(FOLDER_PARAMS);
-            }
-
-            updateSearchParams({ tab: 'calendar' });
-            trackEventByName(tracks.setTab, { tab: 'calendar' });
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'spaces' });
+            trackEventByName(tracks.setTab, { tab: 'spaces' });
           }}
-        >
-          {formatMessage(messages.calendar)}
-        </Button>
-        <NewLabel ml="4px" expiryDate={new Date('2025-12-01')} />
-      </Box>
+        />
+      )}
+      <Tab
+        message={messages.calendar}
+        icon="calendar"
+        active={tab === 'calendar'}
+        dataCy="projects-overview-calendar-tab"
+        onClick={() => {
+          if (tab === 'folders') {
+            removeSearchParams(FOLDER_PARAMS);
+          }
+
+          updateSearchParams({ tab: 'calendar' });
+          trackEventByName(tracks.setTab, { tab: 'calendar' });
+        }}
+      />
       {userIsAdmin && (
         <Tab
           message={messages.arrangeProjects}

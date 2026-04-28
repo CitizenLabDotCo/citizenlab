@@ -109,7 +109,7 @@ const BuiltInFields = ({
   return (
     <Box id="e2e-built-in-fields-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px">
             {formatMessage(messages.pleaseCompleteYourProfile)}
           </Text>
@@ -121,6 +121,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="given-name"
                 label={formatMessage(sharedMessages.firstNamesLabel)}
+                required
               />
             </Box>
           )}
@@ -132,6 +133,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+                required
               />
             </Box>
           )}
@@ -143,6 +145,7 @@ const BuiltInFields = ({
                 type="email"
                 autocomplete="email"
                 label={formatMessage(sharedMessages.email)}
+                required
               />
             </Box>
           )}
@@ -152,7 +155,8 @@ const BuiltInFields = ({
                 name="password"
                 id="password"
                 label={formatMessage(sharedMessages.password)}
-                autocomplete="current-password"
+                autocomplete="new-password"
+                required
               />
             </Box>
           )}

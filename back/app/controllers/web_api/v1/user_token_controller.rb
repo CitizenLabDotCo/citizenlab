@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+  include EnforceUserSso
+
   TOKEN_LIFETIME = 1.day
+  before_action :sso_enforced?, only: %i[create user_token_unconfirmed]
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]
 
@@ -11,7 +14,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
     raise ActiveRecord::RecordNotFound if user.blank?
 
-    if user.password_digest.present?
+    if user.password_digest.present? || user.sso?
       render(
         json: { errors: { base: [{ error: 'cannot_have_password' }] } },
         status: :unprocessable_entity
@@ -47,6 +50,10 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def user_token_unconfirmed_params
     params.require(:auth).permit id_param
+  end
+
+  def email_param
+    params.dig(:auth, :email)
   end
 
   def authenticate_user_token_unconfirmed

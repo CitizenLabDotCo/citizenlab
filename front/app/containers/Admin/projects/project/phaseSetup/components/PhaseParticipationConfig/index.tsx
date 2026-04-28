@@ -29,7 +29,7 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -274,6 +274,17 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleAvailableViewsChange = (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => {
+    updateFormData((state) => ({
+      ...state,
+      available_views,
+      ...(presentation_mode !== undefined ? { presentation_mode } : {}),
+    }));
+  };
+
   const handleIdeaDefaultSortMethodChange = (ideas_order: IdeaSortMethod) => {
     updateFormData((state) => ({
       ...state,
@@ -463,6 +474,7 @@ const PhaseParticipationConfig = ({
     similarity_threshold_title,
     similarity_threshold_body,
     vote_term: voteTerm,
+    available_views,
   } = formData;
 
   const showSurveys =
@@ -477,26 +489,29 @@ const PhaseParticipationConfig = ({
     <Container>
       <StyledSection>
         <ParticipationMethodPicker
-          phase={phase}
           participation_method={participation_method}
           showSurveys={showSurveys}
           apiErrors={apiErrors}
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
         {project_library_enabled && (
-          <Box mb="20px">
-            <Warning>
-              <FormattedMessage
-                {...projectMessages.needInspiration}
-                values={{
-                  inspirationHubLink: (
-                    <Link to="/admin/inspiration-hub" target="_blank">
-                      <FormattedMessage {...projectMessages.inspirationHub} />
-                    </Link>
-                  ),
-                }}
-              />
-            </Warning>
+          <Box mb="20px" width="750px">
+            <FeatureCallout
+              icon="info-solid"
+              title={<FormattedMessage {...projectMessages.needInspiration} />}
+              description={
+                <FormattedMessage
+                  {...projectMessages.needInspirationDescription}
+                  values={{
+                    inspirationHubLink: (
+                      <Link to="/admin/inspiration-hub" target="_blank">
+                        <FormattedMessage {...projectMessages.inspirationHub} />
+                      </Link>
+                    ),
+                  }}
+                />
+              }
+            />
           </Box>
         )}
         {participation_method === 'common_ground' && (
@@ -536,7 +551,9 @@ const PhaseParticipationConfig = ({
             apiErrors={apiErrors}
             validationErrors={validationErrors}
             presentation_mode={presentation_mode}
+            available_views={available_views}
             handleIdeasDisplayChange={handleIdeasDisplayChange}
+            handleAvailableViewsChange={handleAvailableViewsChange}
             handleVotingMethodOnChange={handleVotingMethodOnChange}
             voting_max_votes_per_idea={voting_max_votes_per_idea}
             handleMaxVotesPerOptionAmountChange={handleVotingMaxPerIdeaChange}
@@ -585,7 +602,9 @@ const PhaseParticipationConfig = ({
               handleAllowAnonymousParticipationOnChange
             }
             presentation_mode={presentation_mode}
+            available_views={available_views}
             handleIdeasDisplayChange={handleIdeasDisplayChange}
+            handleAvailableViewsChange={handleAvailableViewsChange}
             ideas_order={ideas_order}
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
@@ -624,7 +643,9 @@ const PhaseParticipationConfig = ({
               handleAllowAnonymousParticipationOnChange
             }
             presentation_mode={presentation_mode}
+            available_views={available_views}
             handleIdeasDisplayChange={handleIdeasDisplayChange}
+            handleAvailableViewsChange={handleAvailableViewsChange}
             ideas_order={ideas_order}
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange

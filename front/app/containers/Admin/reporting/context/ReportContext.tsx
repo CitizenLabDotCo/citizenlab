@@ -1,5 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
+import { SupportedLocale } from 'typings';
+
 import usePhase from 'api/phases/usePhase';
 
 type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
@@ -8,6 +10,7 @@ interface ReportContextBase {
   width: ReportWidth;
   reportId?: string;
   phaseId?: string;
+  contentBuilderLocale?: SupportedLocale;
 }
 
 export interface ReportContextProps extends ReportContextBase {
@@ -28,6 +31,7 @@ export const ReportContextProvider = ({
   width,
   reportId,
   phaseId,
+  contentBuilderLocale,
   children,
 }: ReportContextProps) => {
   const { data: phase } = usePhase(phaseId);
@@ -43,6 +47,7 @@ export const ReportContextProvider = ({
         reportId,
         projectId,
         phaseId,
+        contentBuilderLocale,
       }}
     >
       {children}

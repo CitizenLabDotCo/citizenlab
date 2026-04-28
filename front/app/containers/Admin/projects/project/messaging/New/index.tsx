@@ -26,7 +26,7 @@ const New = () => {
       ...values,
     });
     clHistory.push(
-      `/admin/projects/${projectId}/messaging/${response.data.id}`
+      `/admin/projects/${projectId}/messaging/${response.data.id}?created=true`
     );
   };
 

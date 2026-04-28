@@ -126,6 +126,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :space_moderation_rights_received_campaign, class: 'EmailCampaigns::Campaigns::SpaceModerationRightsReceived' do
+    enabled { true }
+  end
+
   factory :project_phase_started_campaign, class: 'EmailCampaigns::Campaigns::ProjectPhaseStarted' do
     enabled { true }
   end
@@ -168,6 +172,11 @@ FactoryBot.define do
   end
 
   factory :moderator_digest_campaign, class: 'EmailCampaigns::Campaigns::ModeratorDigest' do
+    enabled { true }
+    schedule { weekly_schedule }
+  end
+
+  factory :screening_digest_campaign, class: 'EmailCampaigns::Campaigns::ScreeningDigest' do
     enabled { true }
     schedule { weekly_schedule }
   end

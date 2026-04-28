@@ -50,7 +50,6 @@ const Separator = styled.hr`
   background: ${colors.divider};
   border: none;
   height: 1px;
-  margin: 1rem 0 3rem 0;
 `;
 
 const MenuTitle = styled.div`
@@ -180,6 +179,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -223,13 +223,35 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </MembersCount>
         )}
       </MenuLink>
-      <MenuLink to="/admin/users/moderators">
+      {spacesEnabled && (
+        <MenuLink to="/admin/users/space-moderators">
+          <GroupName>
+            <FormattedMessage {...messages.spaceManagers} />
+          </GroupName>
+          {usersCount && (
+            <MembersCount data-cy="e2e-space-moderator-count">
+              {usersCount.data.attributes.space_moderators_count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
+      <MenuLink to="/admin/users/folder-moderators">
         <GroupName>
-          <FormattedMessage {...messages.managers} />
+          <FormattedMessage {...messages.folderManagers} />
         </GroupName>
         {usersCount && (
-          <MembersCount data-cy="e2e-moderator-count">
-            {usersCount.data.attributes.moderators_count}
+          <MembersCount data-cy="e2e-folder-moderator-count">
+            {usersCount.data.attributes.folder_moderators_count}
+          </MembersCount>
+        )}
+      </MenuLink>
+      <MenuLink to="/admin/users/project-moderators">
+        <GroupName>
+          <FormattedMessage {...messages.projectManagers} />
+        </GroupName>
+        {usersCount && (
+          <MembersCount data-cy="e2e-project-moderator-count">
+            {usersCount.data.attributes.project_moderators_count}
           </MembersCount>
         )}
       </MenuLink>
@@ -302,7 +324,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             >
               <MenuLink
                 key={group.id}
-                to={`/admin/users/${group.id}`}
+                to={`/admin/users/groups/${group.id}`}
                 className={`${
                   highlightedGroups.has(group.id) ? 'highlight' : ''
                 }`}

@@ -1,658 +1,727 @@
-el:
+el-GR:
   email_campaigns:
-    campaign_type_description:
-      "manual": Επίσημα μηνύματα
-      "manual_project_participants": Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
-      "admin_rights_received": Δικαιώματα διαχειριστή
-      "comment_deleted_by_admin": Διαγραφή του σχολίου μου
-      "comment_marked_as_spam": Αναφορά ανεπιθύμητου σχολίου
-      "comment_on_your_comment": Μια απάντηση στο σχόλιό μου
-      "comment_on_idea_you_follow": Ένα σχόλιο σε μια ιδέα που ακολουθείτε
-      "community_monitor_report": Έκθεση κοινοτικού παρατηρητή
-      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
-      "event_registration_confirmation": Επιβεβαίωση προσθήκης στη λίστα εκδηλώσεων
-      "idea_marked_as_spam": Αναφορά spam ιδεών
-      "idea_published": Δημοσίευση της ιδέας μου
-      "invitation_to_cosponsor_idea": Πρόσκληση για να συν-υποστηρίξετε μια πρόταση
-      "invite_received": Προσκλήσεις
-      "invite_reminder": Υπενθύμιση πρόσκλησης
-      "internal_comment_on_idea_assigned_to_you": Εσωτερικό σχόλιο σχετικά με τις εισροές που μου έχουν ανατεθεί
-      "internal_comment_on_idea_you_commented_internally_on": Εσωτερικό σχόλιο για εισροή σχολίασα εσωτερικά για
-      "internal_comment_on_idea_you_moderate": Εσωτερικό σχόλιο σχετικά με την είσοδο σε έργο ή φάκελο που διαχειρίζομαι
-      "internal_comment_on_unassigned_unmoderated_idea": Εσωτερικό σχόλιο σχετικά με μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο
-      "internal_comment_on_your_internal_comment": Εσωτερικό σχόλιο για το εσωτερικό μου σχόλιο
-      "mention_in_official_feedback": Αναφορά σε μια ενημέρωση
-      "mention_in_internal_comment": Αναφορά σε εσωτερικό σχόλιο
-      "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
-      "new_idea_for_admin_published": Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
-      "new_idea_for_admin_prescreening": Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
-      "official_feedback_on_idea_you_follow": Ενημέρωση για μια ιδέα που ακολουθείτε
-      "password_reset": Επαναφορά κωδικού πρόσβασης
-      "project_moderation_rights_received": Δικαιώματα συντονισμού έργου που ελήφθησαν
-      "project_folder_moderation_rights_received": Δικαιώματα διαχειριστή φακέλων
-      "project_phase_started": Νέα φάση του έργου
-      "project_phase_upcoming": Επόμενη νέα φάση έργου
-      "project_published": Δημοσιευμένο έργο
-      "project_review_request": Αίτημα αξιολόγησης του έργου
-      "project_review_state_change": Το έργο εγκρίθηκε
-      "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
-      "survey_submitted": Υποβληθείσα έρευνα
-      "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
-      "welcome": Μετά την εγγραφή
-      "admin_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές
-      "moderator_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
-      "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
-      "user_digest": Εβδομαδιαία επισκόπηση
-      "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
-      "native_survey_not_submitted": Η έρευνα δεν υποβλήθηκε
-      "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
-      "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
-      "voting_phase_started": Νέα φάση έργου με ψηφοφορία
-      "voting_results": Αποτελέσματα ψηφοφορίας
-      "your_input_in_screening": Εκκρεμεί ο έλεγχος της πρότασής μου
-    general:
-      by_author: 'από %{authorName}'
-      author_wrote: '%{authorName} έγραψε:'
-      cta_goto_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      cta_goto_input: 'Πηγαίνετε στην ιδέα'
-      cta_goto:
-        idea: 'Πηγαίνετε στην ιδέα'
-        question: 'Πηγαίνετε σε αυτήν την ερώτηση'
-        contribution: 'Πηγαίνετε σε αυτή την πρόταση'
-        project: 'Μεταβείτε στο έργο'
-        issue: 'Μεταβείτε σε αυτό το θέμα'
-        option: 'Μεταβείτε σε αυτή την επιλογή'
-        proposal: 'Πηγαίνετε σε αυτήν την πρόταση'
-        petition: 'Πηγαίνετε σε αυτό το αίτημα'
-      cta_goto_your:
-        idea: 'Πηγαίνετε στην ιδέα σας'
-        question: 'Πηγαίνετε στην ερώτησή σας'
-        contribution: 'Πηγαίνετε στη συνεισφορά σας'
-        project: 'Πηγαίνετε στο έργο σας'
-        issue: 'Πηγαίνετε στο πρόβλημά σας'
-        option: 'Πηγαίνετε στην επιλογή σας'
-        proposal: 'Μεταβείτε στην πρότασή σας'
-        petition: 'Πηγαίνετε στο αίτημά σας'
-      cta_goto_proposal: 'Μεταβείτε στην παρούσα πρόταση'
-      cta_goto_project: 'Πηγαίνετε σε αυτό το έργο'
-    schedules:
-      weekly:
-        "0": "Εβδομαδιαία, τις Κυριακές στο %{hourOfDay}"
-        "1": "Εβδομαδιαία, κάθε Δευτέρα %{hourOfDay}"
-        "2": "Εβδομαδιαία, κάθε Τρίτη %{hourOfDay}"
-        "3": "Εβδομαδιαία, κάθε Τετάρτη %{hourOfDay}"
-        "4": "Εβδομαδιαία, κάθε Πέμπτη %{hourOfDay}"
-        "5": "Εβδομαδιαία, κάθε Παρασκευή %{hourOfDay}"
-        "6": "Εβδομαδιαίως, τα Σάββατα %{hourOfDay}"
-      quarterly: "Τριμηνιαία, την πρώτη ημέρα του τριμήνου"
-    preview_data:
-      author_first_name: 'Jane'
-      author_last_name: 'Doe'
-      author_display_name: 'Jane Doe'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
-      project_title: 'Παράδειγμα έργου'
-      project_description_preview: 'Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.'
-      phase_title: 'Παράδειγμα φάσης'
-      folder_title: 'Παράδειγμα φακέλου'
-      comment_body: 'Αυτό είναι ένα παράδειγμα σχολίου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.'
-      comment_deleted_reason: 'Το σχόλιο του παραδείγματός σας θεωρήθηκε ακατάλληλο.'
-      idea_title: 'Παράδειγμα ιδέας'
-      idea_body: 'Αυτό είναι κάποιο παράδειγμα περιεχομένου ιδέας που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.'
-      event_title: 'Παράδειγμα εκδήλωσης'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
-      event_address2: 'Δωμάτιο 3α, επάνω'
-      proposal_title: 'Παράδειγμα πρότασης'
-      input_status_title: 'Παράδειγμα Κατάσταση'
-      input_status_description: 'Ένα παράδειγμα κατάστασης για μια είσοδο (π.χ. αποδεκτή, απορριφθείσα, υλοποιημένη...)'
-      official_feedback_body: 'Παράδειγμα επίσημης ανατροφοδότησης'
-    footer:
-      "link_privacy_policy": "Πολιτική απορρήτου"
-      "link_terms_conditions": "Όροι & Προϋποθέσεις"
-      "link_unsubscribe": "Διαγραφή"
-      "powered_by": "Υποστηρίζεται από"
-      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του Οργανισμού \"%{organizationName}\" καθώς είστε εγγεγραμμένος χρήστης του %{organizationLink}."
-      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επιλέξετε %{unsubscribeLink}."
-      "unsubscribe_text": "διαγραφή"
-    follow:
-      "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
-    manual:
-      preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
-    manual_project_participants:
-      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
-    comment_deleted_by_admin:
-      subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
-      preheader: 'Το σχόλιό σας έχει διαγραφεί'
-      title: '%{organizationName} διέγραψε το σχόλιό σας'
-      event_description: '%{organizationName} διέγραψα το σχόλιο που γράψατε για μια ιδέα.'
-      cta_button: 'Δείτε αυτή την ιδέα'
-      reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
-      other_reason: '%{otherReason}'
-      inappropriate_reason: 'Το σχόλιό σας θεωρήθηκε ακατάλληλο'
-      irrelevant_reason: 'Το σχόλιό σας θεωρήθηκε άσχετο με το συγκεκριμένο πλαίσιο'
-      no_reason: 'Δεν προσδιορίστηκε λόγος'
     admin_digest:
-      subject: 'Η εβδομαδιαία διοικητική σας έκθεση του %{time}'
-      preheader: 'Admin digest του %{organizationName}'
+      cta_button: Επισκεφθείτε την πλατφόρμα σας
+      event_description: Έχουμε συγκεντρώσει για εσάς τα σχόλια που έχουν δημιουργήσει τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα σας!
+      new_comments: Νέα σχόλια
+      new_inputs: Νέες καταχωρήσεις
+      new_users: Νέοι χρήστες
+      preheader: Admin digest του %{organizationName}
+      reached_threshold: Έφτασε το όριο
+      subject: Η εβδομαδιαία διοικητική σας έκθεση του %{time}
       title: '%{firstName}, η εβδομαδιαία έκθεσή σας'
-      event_description: 'Έχουμε συγκεντρώσει για εσάς τα σχόλια που έχουν δημιουργήσει τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα σας!'
-      cta_button: 'Επισκεφθείτε την πλατφόρμα σας'
-      new_users: 'Νέοι χρήστες'
-      new_inputs: 'Νέες καταχωρήσεις'
-      new_comments: 'Νέα σχόλια'
-      title_activity_past_week: 'Δραστηριότητα της προηγούμενης εβδομάδας'
-      title_no_activity_past_week: 'Δεν υπήρξε καμία δραστηριότητα την προηγούμενη εβδομάδα'
-      reached_threshold: 'Έφτασε το όριο'
-      yesterday_by_author: 'Χθες από %{author}'
-      today_by_author: 'Σήμερα από %{author}'
+      title_activity_past_week: Δραστηριότητα της προηγούμενης εβδομάδας
+      title_no_activity_past_week: Δεν υπήρξε καμία δραστηριότητα την προηγούμενη εβδομάδα
+      today_by_author: Σήμερα από %{author}
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
+      yesterday_by_author: Χθες από %{author}
+    admin_labels:
+      content_type:
+        comments: Σχόλια
+        content_moderation: Μετριασμός περιεχομένου
+        events: Εκδηλώσεις
+        general: Γενικά
+        inputs: Είσοδοι
+        internal_comments: Εσωτερικά σχόλια
+        permissions: Δικαιώματα
+        projects: Έργα
+        proposals: Προτάσεις
+        reactions: Αντιδράσεις
+        surveys: Έρευνες
+        voting: Ψηφοφορία
+      recipient_role:
+        admins: Προς τους διαχειριστές
+        admins_and_managers: Προς διαχειριστές & διευθυντές
+        managers: Προς τους διαχειριστές
+        project_participants: Για τους συμμετέχοντες στο έργο
+        registered_users: Για εγγεγραμμένους χρήστες
+      recipient_segment:
+        admins: Διαχειριστές
+        admins_and_managers: Διαχειριστές και διευθυντές
+        admins_and_managers_assigned_to_the_input: Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο
+        admins_and_managers_managing_the_project: Διαχειριστές & διευθυντές που διαχειρίζονται το έργο
+        admins_assigned_to_a_proposal: Διαχειριστές που έχουν ανατεθεί σε μια πρόταση
+        all_users: Όλοι οι χρήστες
+        all_users_who_uploaded_proposals: Όλοι οι χρήστες που ανέβασαν προτάσεις
+        managers: Διευθυντές
+        managers_managing_the_project: Διαχειριστές που διαχειρίζονται το έργο
+        new_attendee: Πρόσφατα εγγεγραμμένος χρήστης
+        project_review_requester: Χρήστης που ζήτησε την αναθεώρηση του έργου
+        project_reviewers: Αξιολογητές έργων και διαχειριστές φακέλων
+        user_who_commented: Χρήστης που σχολίασε
+        user_who_is_invited_to_cosponsor_a_proposal: Χρήστης που καλείται να συνυποστηρίξει μια πρόταση
+        user_who_is_mentioned: Χρήστης που αναφέρεται
+        user_who_is_receiving_admin_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή
+        user_who_is_receiving_folder_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή φακέλου
+        user_who_is_receiving_folder_moderator_rights: Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου
+        user_who_is_receiving_project_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή έργου
+        user_who_is_receiving_project_moderator_rights: Χρήστης που λαμβάνει δικαιώματα συντονιστή έργου
+        user_who_is_receiving_space_manager_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή χώρου
+        user_who_published_the_input: Χρήστης που δημοσίευσε την είσοδο
+        user_who_published_the_proposal: Χρήστης που δημοσίευσε την πρόταση
+        user_who_registers: Χρήστης που εγγράφεται
+        user_who_submitted_the_input: Χρήστης που υπέβαλε την εισαγωγή
+        user_who_voted: Χρήστης που ψήφισε
+        user_who_was_invited: Χρήστης που προσκλήθηκε
+        user_with_unsubmitted_survey: Χρήστης που έχει ξεκινήσει αλλά δεν έχει υποβάλει την έρευνά του
+        user_with_unsubmitted_votes: Χρήστης που δεν έχει υποβάλει την ψήφο του
+        users_who_engaged_but_not_voted: Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν
+        users_who_engaged_with_the_project: Χρήστες που ασχολήθηκαν με το έργο
+        users_who_follow_the_input: Χρήστες που ακολουθούν την εισαγωγή
+        users_who_follow_the_project: Χρήστες που ακολουθούν το έργο
+        users_who_follow_the_proposal: Χρήστες που ακολουθούν την πρόταση
+      trigger:
+        7_days_after_invite_is_sent: 7 ημέρες μετά την αποστολή της πρόσκλησης
+        7_days_before_the_project_changes_phase: 7 ημέρες πριν από τη φάση αλλαγής του έργου
+        comment_is_deleted: Το σχόλιο διαγράφεται
+        comment_is_flagged_as_spam: Το σχόλιο επισημαίνεται ως spam
+        content_gets_flagged_as_innapropiate: Το περιεχόμενο επισημαίνεται ως μη κατάλληλο
+        initiative_resubmitted_for_review: Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
+        input_is_assigned: Η είσοδος εκχωρείται
+        input_is_flagged_as_spam: Η είσοδος επισημαίνεται ως spam
+        input_is_published: Η είσοδος δημοσιεύεται
+        input_is_updated: Η είσοδος ενημερώνεται
+        input_status_changes: Αλλαγές κατάστασης εισόδου
+        internal_comment_is_posted_on_idea_assigned_to_user: Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που έχει εκχωρηθεί στον χρήστη
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο στο έργο ή στο φάκελο που διαχειρίζεται ο χρήστης
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που σχολιάζει ο χρήστης εσωτερικά σε
+        internal_comment_is_posted_on_idea_user_moderates: Εσωτερικό σχόλιο δημοσιεύεται σε χρήστη εισόδου μετριάζει
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Εσωτερικό σχόλιο δημοσιεύεται σε μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο
+        new_input_awaits_screening: Η νέα εισροή αναμένει την προβολή
+        new_input_is_published: Δημοσιεύονται νέες εισροές
+        new_proposal_is_posted: Αναρτήθηκε νέα πρόταση
+        project_phase_changes: Αλλαγές φάσης έργου
+        project_published: Δημοσιευμένο έργο
+        project_review_request: Ο συντονιστής ζήτησε επανεξέταση του έργου
+        project_review_state_change: Ο κριτής ενέκρινε το έργο
+        proposal_gets_reported_as_spam: Η πρόταση αναφέρεται ως spam
+        proposal_is_assigned_to_admin: Η πρόταση ανατίθεται στον admin
+        proposal_is_published: Η πρόταση δημοσιεύεται
+        proposal_is_updated: Η πρόταση επικαιροποιείται
+        proposal_is_upvoted_above_threshold: Η πρόταση υπερκαλύπτει το όριο
+        proposal_status_changes: Αλλαγές στην κατάσταση της πρότασης
+        registration_to_event: Εγγραφή σε μια εκδήλωση
+        survey_1_day_after_draft_saved: 1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο
+        user_accepts_invitation_to_cosponsor_a_proposal: Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση
+        user_comments: Σχόλια χρηστών
+        user_comments_on_input: Σχόλια χρηστών σχετικά με την είσοδο
+        user_comments_on_proposal: Σχόλια χρηστών σχετικά με την πρόταση
+        user_is_given_admin_rights: Ο χρήστης αποκτά δικαιώματα διαχειριστή
+        user_is_given_folder_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή φακέλου
+        user_is_given_folder_moderator_rights: Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου
+        user_is_given_project_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή έργου
+        user_is_given_project_moderator_rights: Ο χρήστης αποκτά δικαιώματα συντονιστή έργου
+        user_is_given_space_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή χώρου
+        user_is_invited_to_cosponsor_a_proposal: Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση
+        user_is_invited_to_platform: Ο χρήστης καλείται στην πλατφόρμα
+        user_is_mentioned: Αναφέρεται ο χρήστης
+        user_is_mentioned_in_internal_comment: Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο
+        user_registers_for_the_first_time: Ο χρήστης εγγράφεται για πρώτη φορά
+        user_replies_to_comment: Ο χρήστης απαντά στο σχόλιο
+        user_replies_to_internal_comment: Ο χρήστης απαντά στο εσωτερικό σχόλιο
+        voting_1_day_after_last_votes: 1 ημέρα μετά την τελευταία ψηφοφορία του χρήστη
+        voting_2_days_before_phase_closes: 2 ημέρες πριν από τη λήξη της φάσης ψηφοφορίας
+        voting_basket_submitted: Υποβάλλονται οι ψήφοι
+        voting_phase_ended: Η φάση της ψηφοφορίας ολοκληρώθηκε
     admin_rights_received:
-      subject: 'Έγινες διαχειριστής στην πλατφόρμα %{organizationName}'
-      preheader: 'Σας χορηγήθηκαν δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής του %{organizationName}'
-      title: 'Έγινες διαχειριστής'
-      event_description: 'Σας έχουν χορηγηθεί δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής %{organizationName}.'
-      cta_button: 'Διαχειριστείτε την πλατφόρμα σας'
-      text_create_participatory_process: 'Ως διαχειριστής, μπορείτε να δημιουργήσετε και να διαμορφώσετε νέα έργα συμμετοχής. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά την ανάρτηση ιδεών, τον σχολιασμό και την ψηφοφορία.'
-      text_moderate_analyse_input: 'Μόλις ξεκινήσουν τα έργα, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών θα σας βοηθήσει να μετριάσετε τις εισροές και να συνεργαστείτε για την επεξεργασία τους.'
-      text_platform_setup: 'Ως διαχειριστής μπορείτε να ρυθμίσετε την πλατφόρμα συμμετοχής σας. Επιλέξτε ένα λογότυπο, εικόνες και χρώματα, γράψτε ένα προσωπικό μήνυμα στην αρχική σας σελίδα, στείλτε προσκλήσεις, ορίστε τι θέλετε να γνωρίζετε από τους χρήστες σας, ...'
-      title_create_participatory_process: 'Σχεδιασμός της συμμετοχικής διαδικασίας'
-      title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
-      title_platform_setup: 'Ρυθμίστε την πλατφόρμα σας'
-      title_what_can_you_do_administrator: 'Τι μπορείτε να κάνετε ως διαχειριστής;'
-    comment_marked_as_spam:
-      subject: '%{organizationName}: %{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
-      preheader: 'Ενεργήστε μετά από αυτό το σχόλιο που αναφέρθηκε ως spam'
-      title: '%{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
-      cta_button: 'Σχόλιο αναθεώρησης'
-      by_author: 'από %{authorName}'
-      commented: '%{authorName} σχολίασε:'
-      days_ago: '%{numberOfDays} ημέρες πριν'
-      event_description: 'Αναφέρθηκε το ακόλουθο σχόλιο που δημοσιεύθηκε στο <strong>''%{post}''</strong>:'
-      inappropriate_content: 'Το σχόλιο είναι ακατάλληλο ή προσβλητικό.'
-      reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
-      today: Σήμερα
-      wrong_content: 'Το σχόλιο δεν είναι σχετικό.'
-      yesterday: Χθες
-    community_monitor_report:
-      subject: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
-      preheader: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
-      title: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
-      event_description: 'Για το προηγούμενο τρίμηνο έχει δημιουργηθεί μια έκθεση παρακολούθησης της κοινότητας. Μπορείτε να έχετε πρόσβαση σε αυτήν κάνοντας κλικ στο παρακάτω κουμπί και συνδεόμενοι.'
-      cta_button: 'Προβολή έκθεσης'
-      report_name: 'Έκθεση κοινοτικού παρατηρητή'
-    cosponsor_of_your_idea:
-      subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
-      preheader: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
-      title: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
-      event_description: 'Συγχαρητήρια! Ο %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας.'
-      cta_button: 'Δείτε την πρότασή σας'
+      cta_button: Διαχειριστείτε την πλατφόρμα σας
+      event_description: Σας έχουν χορηγηθεί δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής %{organizationName}.
+      preheader: Σας χορηγήθηκαν δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής του %{organizationName}
+      subject: Έγινες διαχειριστής στην πλατφόρμα %{organizationName}
+      text_create_participatory_process: Ως διαχειριστής, μπορείτε να δημιουργήσετε και να διαμορφώσετε νέα έργα συμμετοχής. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά την ανάρτηση ιδεών, τον σχολιασμό και την ψηφοφορία.
+      text_moderate_analyse_input: Μόλις ξεκινήσουν τα έργα, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών θα σας βοηθήσει να μετριάσετε τις εισροές και να συνεργαστείτε για την επεξεργασία τους.
+      text_platform_setup: Ως διαχειριστής μπορείτε να ρυθμίσετε την πλατφόρμα συμμετοχής σας. Επιλέξτε ένα λογότυπο, εικόνες και χρώματα, γράψτε ένα προσωπικό μήνυμα στην αρχική σας σελίδα, στείλτε προσκλήσεις, ορίστε τι θέλετε να γνωρίζετε από τους χρήστες σας, ...
+      title: Έγινες διαχειριστής
+      title_create_participatory_process: Σχεδιασμός της συμμετοχικής διαδικασίας
+      title_moderate_analyse_input: Μετριοποίηση και ανάλυση των εισροών
+      title_platform_setup: Ρυθμίστε την πλατφόρμα σας
+      title_what_can_you_do_administrator: Τι μπορείτε να κάνετε ως διαχειριστής;
     assignee_digest:
+      cta_button: Διαχειριστείτε τις εισροές σας
+      preheader: Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}
       subject: 'Ιδέες που απαιτούν τα σχόλιά σας: %{numberIdeas}'
-      preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
       title: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
-      cta_button: 'Διαχειριστείτε τις εισροές σας'
-      x_inputs_need_your_feedback: 'οι προτάσεις χρειάζονται τα σχόλιά σας'
-      title_assignment_past_week: 'Τελευταίες ιδέες που σας έχουν ανατεθεί'
-      title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα'
-      yesterday_by_author: 'Χθες από %{author}'
-      today_by_author: 'Σήμερα από %{author}'
+      title_assignment_past_week: Τελευταίες ιδέες που σας έχουν ανατεθεί
+      title_no_assignment_past_week: Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα
+      title_successful_past_week: Προτάσεις που σας ανατέθηκαν και έφτασαν το όριο
+      today_by_author: Σήμερα από %{author}
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
-      title_successful_past_week: 'Προτάσεις που σας ανατέθηκαν και έφτασαν το όριο'
-    idea_marked_as_spam:
-      subject: 'Έχετε μια αναφορά ανεπιθύμητης αλληλογραφίας στην πλατφόρμα %{organizationName}'
-      preheader: 'Ενεργήστε βάσει αυτής της έκθεσης spam'
-      title: '%{firstName} %{lastName} αναφερθείσα ανεπιθύμητη αλληλογραφία'
-      cta_button: 'Ανασκόπηση'
-      report_inappropriate_offensive_content: 'Θεωρώ αυτό το περιεχόμενο ακατάλληλο ή προσβλητικό.'
-      report_not_an_idea: 'Αυτό το περιεχόμενο δεν είναι ιδέα και δεν ανήκει εδώ.'
-      reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
-    invitation_to_cosponsor_idea:
-      subject: 'Έχετε προσκληθεί να υποστηρίξετε μια πρόταση'
-      preheader: 'Έχετε προσκληθεί να υποστηρίξετε την πρόταση του %{authorName}'
-      title: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
-      event_description: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συν-υποστηρίξετε.'
-      event_description_cosponsoring: 'Η συν-υποστήριξη μιας πρότασης σημαίνει ότι <strong>το όνομά σας θα εμφανίζεται</strong> μαζί με τα ονόματα των άλλων συν-υποστηρικτών της ίδιας πρότασης.'
-      event_description_before_action: 'Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.'
-      event_description_action: 'Κάντε κλικ παρακάτω για να διαβάσετε την πρόταση.'
-      cta_button: 'Συν-χορηγός αυτής της πρότασης'
-    invite_reminder:
-      subject: 'Εκκρεμεί πρόσκληση για την πλατφόρμα συμμετοχής του %{organizationName}'
-      preheader: '%{organizationName} σας έστειλε πρόσκληση για να ενταχθείτε στην πλατφόρμα συμμετοχής τους πριν από μερικές ημέρες.'
-      title: 'Η πρόσκλησή σας εκκρεμεί'
-      cta_button: 'Αποδεχτείτε την πρόσκλησή σας'
-      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε περίπου %{expiryDaysRemaining} ημέρες.'
-    invite_received:
-      preheader: '%{organizationName} σας έστειλε πρόσκληση για να συμμετάσχετε στην πλατφόρμα συμμετοχής τους.'
-      subject: 'Σας προσκαλούμε να συμμετάσχετε στην πλατφόρμα %{organizationName}'
-      title: 'Είστε προσκεκλημένοι!'
-      event_description: '%{organizationName} σας προσκάλεσε στην πλατφόρμα συμμετοχής τους.'
-      cta_button: 'Αποδεχτείτε την πρόσκλησή σας'
-      added_a_message: '%{organizationName} έγραψε το ακόλουθο μήνυμα:'
-      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε %{expiryDays} ημέρες.'
-    mention_in_comment:
-      cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{commentAuthorFull} σας ανέφερε στο σχόλιό του σχετικά με την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{commentAuthor}.'
-      main_header: 'Ο κόσμος μιλάει για σένα'
-      subject: 'Κάποιος σας ανέφερε στην πλατφόρμα του %{organizationName}'
-      preheader: '%{commentAuthor} σας ανέφερε σε ένα σχόλιο'
-    mention_in_internal_comment:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-      subject: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-      title: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-      preheader: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-    moderator_digest:
-      subject: 'Η εβδομαδιαία έκθεση του διαχειριστή του έργου σας %{project_title}'
-      preheader: 'Ανακεφαλαίωση του διαχειριστή έργου στο %{organizationName}'
-      title: '%{firstName}, η εβδομαδιαία έκθεσή σας'
-      event_description: 'Έχουμε συγκεντρώσει για εσάς τα σχόλια / πληροφορίες που έχουν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα!'
-      cta_button: 'Διαχειριστείτε το έργο σας'
-      new_users: 'Νέοι χρήστες'
-      new_ideas: 'Νέες ιδέες'
-      new_comments: 'Νέα σχόλια'
-      title_inputs_past_week: 'Νέες εισροές την τελευταία εβδομάδα'
-      title_no_inputs_past_week: 'Δεν υπάρχουν νέες εισροές την τελευταία εβδομάδα'
-      title_threshold_reached: Το όριο επιτεύχθηκε την προηγούμενη εβδομάδα
-      yesterday_by_author: 'Χθες από %{author}'
-      today_by_author: 'Σήμερα από %{author}'
-      x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
-    new_comment_for_admin:
-      commented: '%{authorFirstName} σχολίασε:'
-      anonymous_user: Ανώνυμος χρήστης
-      cta_button: 'Δείτε το σχόλιο του %{authorFirstName}''s'
+      x_inputs_need_your_feedback: οι προτάσεις χρειάζονται τα σχόλιά σας
+      yesterday_by_author: Χθες από %{author}
+    campaign_type_description:
+      admin_digest: Εβδομαδιαία επισκόπηση για τους διαχειριστές
+      admin_rights_received: Δικαιώματα διαχειριστή
+      assignee_digest: Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
+      comment_deleted_by_admin: Διαγραφή του σχολίου μου
+      comment_marked_as_spam: Αναφορά ανεπιθύμητου σχολίου
+      comment_on_idea_you_follow: Ένα σχόλιο σε μια ιδέα που ακολουθείτε
+      comment_on_your_comment: Μια απάντηση στο σχόλιό μου
+      community_monitor_report: Έκθεση κοινοτικού παρατηρητή
+      cosponsor_of_your_idea: Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
+      event_registration_confirmation: Επιβεβαίωση προσθήκης στη λίστα εκδηλώσεων
+      idea_marked_as_spam: Αναφορά spam ιδεών
+      idea_published: Δημοσίευση της ιδέας μου
+      internal_comment_on_idea_assigned_to_you: Εσωτερικό σχόλιο σχετικά με τις εισροές που μου έχουν ανατεθεί
+      internal_comment_on_idea_you_commented_internally_on: Εσωτερικό σχόλιο για εισροή σχολίασα εσωτερικά για
+      internal_comment_on_idea_you_moderate: Εσωτερικό σχόλιο σχετικά με την είσοδο σε έργο ή φάκελο που διαχειρίζομαι
+      internal_comment_on_unassigned_unmoderated_idea: Εσωτερικό σχόλιο σχετικά με μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο
+      internal_comment_on_your_internal_comment: Εσωτερικό σχόλιο για το εσωτερικό μου σχόλιο
+      invitation_to_cosponsor_idea: Πρόσκληση για να συν-υποστηρίξετε μια πρόταση
+      invite_received: Προσκλήσεις
+      invite_reminder: Υπενθύμιση πρόσκλησης
+      manual: Επίσημα μηνύματα
+      manual_project_participants: Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
+      mention_in_internal_comment: Αναφορά σε εσωτερικό σχόλιο
+      mention_in_official_feedback: Αναφορά σε μια ενημέρωση
+      moderator_digest: Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
+      native_survey_not_submitted: Η έρευνα δεν υποβλήθηκε
+      new_comment_for_admin: Νέο σχόλιο σε ένα έργο που συντονίζω
+      new_idea_for_admin_prescreening: Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
+      new_idea_for_admin_published: Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
+      official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
+      password_reset: Επαναφορά κωδικού πρόσβασης
+      project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
+      project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
+      project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
+      project_phase_started: Νέα φάση του έργου
+      project_phase_upcoming: Επόμενη νέα φάση έργου
+      project_published: Δημοσιευμένο έργο
+      project_review_request: Αίτημα αξιολόγησης του έργου
+      project_review_state_change: Το έργο εγκρίθηκε
+      screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
+      space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
+      status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
+      survey_submitted: Υποβληθείσα έρευνα
+      threshold_reached_for_admin: Η πρόταση έφθασε το κατώτατο όριο ψήφου
+      user_digest: Εβδομαδιαία επισκόπηση
+      voting_basket_not_submitted: Ψήφοι που δεν υποβλήθηκαν
+      voting_basket_submitted: Επιβεβαίωση της ψηφοφορίας
+      voting_last_chance: Τελευταία ευκαιρία να ψηφίσετε
+      voting_phase_started: Νέα φάση έργου με ψηφοφορία
+      voting_results: Αποτελέσματα ψηφοφορίας
+      welcome: Μετά την εγγραφή
+      your_input_in_screening: Εκκρεμεί ο έλεγχος της πρότασής μου
+    comment_deleted_by_admin:
+      cta_button: Δείτε αυτή την ιδέα
+      event_description: '%{organizationName} διέγραψα το σχόλιο που γράψατε για μια ιδέα.'
+      inappropriate_reason: Το σχόλιό σας θεωρήθηκε ακατάλληλο
+      irrelevant_reason: Το σχόλιό σας θεωρήθηκε άσχετο με το συγκεκριμένο πλαίσιο
+      no_reason: Δεν προσδιορίστηκε λόγος
+      other_reason: '%{otherReason}'
+      preheader: Το σχόλιό σας έχει διαγραφεί
+      reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
+      subject: Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}
+      title: '%{organizationName} διέγραψε το σχόλιό σας'
+    comment_marked_as_spam:
+      by_author: από %{authorName}
+      commented: '%{authorName} σχολίασε:'
+      cta_button: Σχόλιο αναθεώρησης
       days_ago: '%{numberOfDays} ημέρες πριν'
-      event_description: '%{authorName} πρόσθεσε ένα νέο σχόλιο στην πλατφόρμα σας.'
-      title: '%{firstName}, ένα νέο σχόλιο έχει αναρτηθεί στην πλατφόρμα σας'
-      subject: 'Ένα νέο σχόλιο έχει αναρτηθεί στην πλατφόρμα %{organizationName}''s'
-      preheader: '%{authorName} άφησε ένα σχόλιο'
+      event_description: "Αναφέρθηκε το ακόλουθο σχόλιο που δημοσιεύθηκε στο <strong>'%{post}'</strong>:"
+      inappropriate_content: Το σχόλιο είναι ακατάλληλο ή προσβλητικό.
+      preheader: Ενεργήστε μετά από αυτό το σχόλιο που αναφέρθηκε ως spam
+      reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
+      subject: '%{organizationName}: %{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
+      title: '%{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
       today: Σήμερα
+      wrong_content: Το σχόλιο δεν είναι σχετικό.
       yesterday: Χθες
     comment_on_idea_you_follow:
-      subject: 'Υπάρχει ένα νέο σχόλιο στο "%{input_title}"'
-      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
-      title: '%{authorName} σχολίασε μια εισαγωγή που ακολουθείτε'
-      event_description: '%{authorNameFull} αντέδρασε στην ιδέα σας ''%{inputTitle}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να συνεχίσετε τη συζήτηση με τον %{authorName}.'
-      cta_button: 'Απάντηση στο %{commentAuthor}'
+      cta_button: Απάντηση στο %{commentAuthor}
+      event_description: "%{authorNameFull} αντέδρασε στην ιδέα σας '%{inputTitle}'. Κάντε κλικ στον παρακάτω σύνδεσμο για να συνεχίσετε τη συζήτηση με τον %{authorName}."
       main_header:
-        idea: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
-        question: '%{authorName} σχολίασε μια ερώτηση που ακολουθείτε'
+        comment: '%{authorName} σχολίασε ένα σχόλιο που ακολουθείς'
         contribution: '%{authorName} σχολίασε μια συνεισφορά που ακολουθείτε'
-        project: '%{authorName} σχολίασε ένα έργο που ακολουθείτε'
+        idea: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
+        initiative: '%{authorName} σχολιάσατε μια πρωτοβουλία που ακολουθείτε'
         issue: '%{authorName} σχολίασε ένα πρόβλημα που παρακολουθείτε'
         option: '%{authorName} σχολίασε μια επιλογή που ακολουθείτε'
-        proposal: '%{authorName} σχολίασε μια πρόταση που ακολουθείτε'
         petition: '%{authorName} σχολίασε ένα αίτημα που ακολουθείτε'
-    new_idea_for_admin_published:
-      subject: 'Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας'
-      preheader: '%{authorName} δημοσίευσε μια νέα είσοδο στην πλατφόρμα σας'
-      title: 'Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας'
-      event_description: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
-      cta_button: 'Ανατροφοδότηση στο %{authorName}'
+        post: '%{authorName} σχολίασε μια ανάρτηση που ακολουθείς'
+        project: '%{authorName} σχολίασε ένα έργο που ακολουθείτε'
+        proposal: '%{authorName} σχολίασε μια πρόταση που ακολουθείτε'
+        question: '%{authorName} σχολίασε μια ερώτηση που ακολουθείτε'
+        response: '%{authorName} σχολίασε μια απάντηση που ακολουθείτε'
+        story: '%{authorName} σχολιάσατε μια ιστορία που ακολουθείτε'
+        suggestion: '%{authorName} σχολίασε μια πρόταση που ακολουθείτε'
+        topic: '%{authorName} σχολιάσατε ένα θέμα που παρακολουθείτε'
+      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
+      subject: Υπάρχει ένα νέο σχόλιο στο "%{input_title}"
+      title: '%{authorName} σχολίασε μια εισαγωγή που ακολουθείτε'
+    comment_on_your_comment:
+      cta_button: Απάντηση στο %{authorFirstName}
+      event_description: "%{authorNameFull} έγραψε μια απάντηση στο σχόλιό σας στο '%{post}' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}."
+      preheader: "%{authorName} απάντησε στο σχόλιό σας στο %{organizationName}'s platform"
+      replied: '%{authorFirstName} απάντησε:'
+      subject: Λάβατε απάντηση στο σχόλιό σας στην πλατφόρμα %{organizationName}
+      title: '%{authorName} απάντησε στο σχόλιό σας'
+    community_monitor_report:
+      cta_button: Προβολή έκθεσης
+      event_description: Για το προηγούμενο τρίμηνο έχει δημιουργηθεί μια έκθεση παρακολούθησης της κοινότητας. Μπορείτε να έχετε πρόσβαση σε αυτήν κάνοντας κλικ στο παρακάτω κουμπί και συνδεόμενοι.
+      preheader: Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη
+      report_name: Έκθεση κοινοτικού παρατηρητή
+      subject: Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη
+      title: Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη
+    cosponsor_of_your_idea:
+      cta_button: Δείτε την πρότασή σας
+      event_description: Συγχαρητήρια! Ο %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας.
+      preheader: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
+      subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
+      title: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+    event_registration_confirmation:
+      cta_add_to_calendar: Προσθέστε στο ημερολόγιό σας
+      cta_button: Δείτε την εκδήλωση
+      event_details:
+        labels:
+          date: Ημερομηνία
+          description: Περιγραφή
+          location: Τοποθεσία
+          online_link: Ηλεκτρονικός σύνδεσμος
+          project: Έργο
+      preheader: '%{firstName}, ευχαριστούμε για το ενδιαφέρον σας για την εκδήλωση %{eventTitle}'
+      subject: Είσαι μέσα! Το ενδιαφέρον σας για το "%{eventTitle}" έχει καταχωρηθεί
+      title: '%{firstName}, ευχαριστώ για την εγγραφή σας για'
+    follow:
+      unfollow_here: Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href="%{unfollow_url}">Μπορείτε να το ακυρώσετε εδώ.</a>
+    footer:
+      link_privacy_policy: Πολιτική απορρήτου
+      link_terms_conditions: Όροι & Προϋποθέσεις
+      link_unsubscribe: Διαγραφή
+      powered_by: Υποστηρίζεται από
+      recipient_statement: Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του Οργανισμού "%{organizationName}" καθώς είστε εγγεγραμμένος χρήστης του %{organizationLink}.
+      unsubscribe_statement: Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επιλέξετε %{unsubscribeLink}.
+      unsubscribe_text: διαγραφή
+    general:
+      author_wrote: '%{authorName} έγραψε:'
+      by_author: από %{authorName}
+      cta_goto:
+        comment: Πηγαίνετε σε αυτό το σχόλιο
+        contribution: Πηγαίνετε σε αυτή την πρόταση
+        idea: Πηγαίνετε στην ιδέα
+        initiative: Μεταβείτε σε αυτή την πρωτοβουλία
+        issue: Μεταβείτε σε αυτό το θέμα
+        option: Μεταβείτε σε αυτή την επιλογή
+        petition: Πηγαίνετε σε αυτό το αίτημα
+        post: Πηγαίνετε σε αυτή τη θέση
+        project: Μεταβείτε στο έργο
+        proposal: Πηγαίνετε σε αυτήν την πρόταση
+        question: Πηγαίνετε σε αυτήν την ερώτηση
+        response: Πηγαίνετε σε αυτή την απάντηση
+        story: Πηγαίνετε σε αυτή την ιστορία
+        suggestion: Πηγαίνετε σε αυτή την πρόταση
+        topic: Πηγαίνετε σε αυτό το θέμα
+      cta_goto_idea: Πηγαίνετε σε αυτή την ιδέα
+      cta_goto_input: Πηγαίνετε στην ιδέα
+      cta_goto_project: Πηγαίνετε σε αυτό το έργο
+      cta_goto_proposal: Μεταβείτε στην παρούσα πρόταση
+      cta_goto_your:
+        comment: Πηγαίνετε στο σχόλιό σας
+        contribution: Πηγαίνετε στη συνεισφορά σας
+        idea: Πηγαίνετε στην ιδέα σας
+        initiative: Πηγαίνετε στην πρωτοβουλία σας
+        issue: Πηγαίνετε στο πρόβλημά σας
+        option: Πηγαίνετε στην επιλογή σας
+        petition: Πηγαίνετε στο αίτημά σας
+        post: Πηγαίνετε στη θέση σας
+        project: Πηγαίνετε στο έργο σας
+        proposal: Μεταβείτε στην πρότασή σας
+        question: Πηγαίνετε στην ερώτησή σας
+        response: Πηγαίνετε στην απάντησή σας
+        story: Πηγαίνετε στην ιστορία σας
+        suggestion: Πηγαίνετε στην πρότασή σας
+        topic: Πηγαίνετε στο θέμα σας
+    idea_marked_as_spam:
+      cta_button: Ανασκόπηση
+      preheader: Ενεργήστε βάσει αυτής της έκθεσης spam
+      report_inappropriate_offensive_content: Θεωρώ αυτό το περιεχόμενο ακατάλληλο ή προσβλητικό.
+      report_not_an_idea: Αυτό το περιεχόμενο δεν είναι ιδέα και δεν ανήκει εδώ.
+      reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
+      subject: Έχετε μια αναφορά ανεπιθύμητης αλληλογραφίας στην πλατφόρμα %{organizationName}
+      title: '%{firstName} %{lastName} αναφερθείσα ανεπιθύμητη αλληλογραφία'
+    idea_published:
+      action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
+      action_published_idea: Δημοσιευμένη ιδέα
+      action_send_email: Στείλτε στις επαφές σας ένα %{sendEmailLink}
+      action_share_fb: Ενημερώστε τους φίλους σας στο %{fbLink}
+      action_share_link: Μοιραστείτε το μέσω οποιουδήποτε καναλιού με χρήση του ακόλουθου link. "%{link}"
+      action_share_twitter: Ενημερώστε τους οπαδούς σας στο %{twitterLink}
+      add_image: Προσθήκη εικόνας
+      header_message: Ας βεβαιωθούμε ότι θα διαβαστεί.
+      input_type_subject:
+        comment: Το σχόλιό σας έχει δημοσιευτεί
+        contribution: Η συνεισφορά σας έχει δημοσιευτεί
+        idea: Η ιδέα σας έχει δημοσιευτεί
+        initiative: Η πρωτοβουλία σας έχει δημοσιευθεί
+        issue: Το τεύχος σας έχει δημοσιευτεί
+        option: Η επιλογή σας έχει δημοσιευτεί
+        petition: Το αίτημά σας έχει δημοσιευτεί
+        post: Η ανάρτησή σας έχει δημοσιευτεί
+        project: Το έργο σας έχει δημοσιευτεί
+        proposal: Η πρότασή σας έχει δημοσιευθεί
+        question: Η ερώτησή σας έχει δημοσιευτεί
+        response: Η απάντησή σας έχει δημοσιευθεί
+        story: Η ιστορία σας έχει δημοσιευτεί
+        suggestion: Η πρότασή σας έχει δημοσιευτεί
+        topic: Το θέμα σας έχει δημοσιευτεί
+      link: σύνδεσμος
+      message_get_votes: Μοιραστείτε την ιδέα σας με περισσότερους ανθρώπους
+      preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της ιδέας σας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη.'
+      send_email: email
+      subject: Η ιδέα σας έχει δημοσιευτεί
+      title: Δημοσιεύσατε το "%{input_title}"
+    internal_comment_on_idea_assigned_to_you:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σχολιάσατε εσωτερικά μια είσοδο που σας έχει ανατεθεί.'
+      preheader: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      subject: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      title: "Νέο εσωτερικό σχόλιο για το '%{post}'"
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο που σχολιάσατε εσωτερικά.'
+      preheader: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      subject: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      title: "Νέο εσωτερικό σχόλιο για το '%{post}'"
+    internal_comment_on_idea_you_moderate:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο σε ένα έργο ή φάκελο που διαχειρίζεστε.'
+      preheader: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      subject: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      title: "Νέο εσωτερικό σχόλιο για το '%{post}'"
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια μη καθορισμένη είσοδο σε ένα μη διαχειριζόμενο έργο.'
+      preheader: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      subject: "'%{post}' έχει ένα νέο εσωτερικό σχόλιο"
+      title: "Νέο εσωτερικό σχόλιο για το '%{post}'"
+    internal_comment_on_your_internal_comment:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σχολίασε το εσωτερικό σας σχόλιο.'
+      preheader: "%{authorName} απάντησε στο εσωτερικό σας σχόλιο στο '%{post}'"
+      subject: "Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο για το '%{post}'"
+      title: "Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο στο '%{post}'"
+    invitation_to_cosponsor_idea:
+      cta_button: Συν-χορηγός αυτής της πρότασης
+      event_description: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συν-υποστηρίξετε.'
+      event_description_action: Κάντε κλικ παρακάτω για να διαβάσετε την πρόταση.
+      event_description_before_action: Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.
+      event_description_cosponsoring: Η συν-υποστήριξη μιας πρότασης σημαίνει ότι <strong>το όνομά σας θα εμφανίζεται</strong> μαζί με τα ονόματα των άλλων συν-υποστηρικτών της ίδιας πρότασης.
+      preheader: Έχετε προσκληθεί να υποστηρίξετε την πρόταση του %{authorName}
+      subject: Έχετε προσκληθεί να υποστηρίξετε μια πρόταση
+      title: Έχετε προσκληθεί να συνυπογράψετε μια πρόταση
+    invite_received:
+      added_a_message: '%{organizationName} έγραψε το ακόλουθο μήνυμα:'
+      cta_button: Αποδεχτείτε την πρόσκλησή σας
+      event_description: '%{organizationName} σας προσκάλεσε στην πλατφόρμα συμμετοχής τους.'
+      invitation_expiry_message: Η πρόσκληση αυτή λήγει σε %{expiryDays} ημέρες.
+      preheader: '%{organizationName} σας έστειλε πρόσκληση για να συμμετάσχετε στην πλατφόρμα συμμετοχής τους.'
+      subject: Σας προσκαλούμε να συμμετάσχετε στην πλατφόρμα %{organizationName}
+      title: Είστε προσκεκλημένοι!
+    invite_reminder:
+      cta_button: Αποδεχτείτε την πρόσκλησή σας
+      invitation_expiry_message: Η πρόσκληση αυτή λήγει σε περίπου %{expiryDaysRemaining} ημέρες.
+      preheader: '%{organizationName} σας έστειλε πρόσκληση για να ενταχθείτε στην πλατφόρμα συμμετοχής τους πριν από μερικές ημέρες.'
+      subject: Εκκρεμεί πρόσκληση για την πλατφόρμα συμμετοχής του %{organizationName}
+      title: Η πρόσκλησή σας εκκρεμεί
+    manual:
+      preheader: Λάβατε μια ενημέρωση από το %{organizationName}
+    manual_project_participants:
+      preheader: Έχετε αλληλογραφία από το %{organizationName}
+    mention_in_comment:
+      cta_reply_to: Απάντηση στο %{commentAuthor}
+      event_description: "%{commentAuthorFull} σας ανέφερε στο σχόλιό του σχετικά με την ιδέα '%{post}'. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{commentAuthor}."
+      main_header: Ο κόσμος μιλάει για σένα
+      preheader: '%{commentAuthor} σας ανέφερε σε ένα σχόλιο'
+      subject: Κάποιος σας ανέφερε στην πλατφόρμα του %{organizationName}
+    mention_in_internal_comment:
+      cta_button: Προβολή σχολίου από %{firstName}
+      event_description: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+      preheader: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+      subject: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+      title: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+    mention_in_official_feedback:
+      cta_button: Απάντηση στο %{organizationName}
+      event_description: "%{organizationName} σας ανέφεραν στα σχόλιά τους για την ιδέα '%{post}'. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{organizationName}."
+      preheader: '%{commentAuthor} σας ανέφερα στα σχόλια'
+      subject: '%{organizationName} σας ανέφεραν στα σχόλιά τους'
+      title: Έχετε αναφερθεί
+    moderator_digest:
+      cta_button: Διαχειριστείτε το έργο σας
+      event_description: Έχουμε συγκεντρώσει για εσάς τα σχόλια / πληροφορίες που έχουν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα!
+      new_comments: Νέα σχόλια
+      new_ideas: Νέες ιδέες
+      new_users: Νέοι χρήστες
+      preheader: Ανακεφαλαίωση του διαχειριστή έργου στο %{organizationName}
+      subject: Η εβδομαδιαία έκθεση του διαχειριστή του έργου σας %{project_title}
+      title: '%{firstName}, η εβδομαδιαία έκθεσή σας'
+      title_inputs_past_week: Νέες εισροές την τελευταία εβδομάδα
+      title_no_inputs_past_week: Δεν υπάρχουν νέες εισροές την τελευταία εβδομάδα
+      title_threshold_reached: Το όριο επιτεύχθηκε την προηγούμενη εβδομάδα
+      today_by_author: Σήμερα από %{author}
+      x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
+      yesterday_by_author: Χθες από %{author}
+    native_survey_not_submitted:
+      cta_button: Συνεχίστε την απάντησή σας στην έρευνα
+      event_description: Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.
+      preheader: Δεν ολοκληρώσατε την απάντησή σας στην έρευνα στην πλατφόρμα συμμετοχής του %{organizationName}.
+      subject: '%{organizationName}: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
+      submissions_close: 'Ημερομηνία ολοκλήρωσης υποβολών: %{phaseEndDate}.'
+      submissions_close_at_time: Οι υποβολές θα λήξουν στις %{datetime}.
+      submissions_close_on_date: Οι υποβολές λήγουν στο τέλος της %{date}.
+      title: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας
+    new_comment_for_admin:
+      anonymous_user: Ανώνυμος χρήστης
+      commented: '%{authorFirstName} σχολίασε:'
+      cta_button: Δείτε το σχόλιο του %{authorFirstName}'s
       days_ago: '%{numberOfDays} ημέρες πριν'
+      event_description: '%{authorName} πρόσθεσε ένα νέο σχόλιο στην πλατφόρμα σας.'
+      preheader: '%{authorName} άφησε ένα σχόλιο'
+      subject: Ένα νέο σχόλιο έχει αναρτηθεί στην πλατφόρμα %{organizationName}'s
+      title: '%{firstName}, ένα νέο σχόλιο έχει αναρτηθεί στην πλατφόρμα σας'
       today: Σήμερα
       yesterday: Χθες
     new_idea_for_admin_prescreening:
-      subject: 'Μια εισαγωγή απαιτεί την αναθεώρησή σας'
-      preheader: '%{authorName} δημοσίευσε μια νέα είσοδο στην πλατφόρμα σας'
-      title: 'Μια εισαγωγή απαιτεί την αναθεώρησή σας'
-      cta_button: 'Επανεξέταση της εισόδου'
-      event_description: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας.'
-      input_not_visible: '<b>Η είσοδος δεν θα είναι ορατή</b> μέχρι να τροποποιήσετε την κατάστασή της.'
+      cta_button: Επανεξέταση της εισόδου
       days_ago: '%{numberOfDays} ημέρες πριν'
+      event_description: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας.'
+      input_not_visible: <b>Η είσοδος δεν θα είναι ορατή</b> μέχρι να τροποποιήσετε την κατάστασή της.
+      preheader: '%{authorName} δημοσίευσε μια νέα είσοδο στην πλατφόρμα σας'
+      subject: Μια εισαγωγή απαιτεί την αναθεώρησή σας
+      title: Μια εισαγωγή απαιτεί την αναθεώρησή σας
       today: Σήμερα
       yesterday: Χθες
-    comment_on_your_comment:
-      subject: 'Λάβατε απάντηση στο σχόλιό σας στην πλατφόρμα %{organizationName}'
-      preheader: '%{authorName} απάντησε στο σχόλιό σας στο %{organizationName}''s platform'
-      title: '%{authorName} απάντησε στο σχόλιό σας'
-      event_description: '%{authorNameFull} έγραψε μια απάντηση στο σχόλιό σας στο ''%{post}'' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
-      cta_button: 'Απάντηση στο %{authorFirstName}'
-      replied: '%{authorFirstName} απάντησε:'
-    internal_comment_on_your_internal_comment:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σχολίασε το εσωτερικό σας σχόλιο.'
-      subject: 'Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο για το ''%{post}'''
-      title: 'Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο στο ''%{post}'''
-      preheader: '%{authorName} απάντησε στο εσωτερικό σας σχόλιο στο ''%{post}'''
-    internal_comment_on_idea_assigned_to_you:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σχολιάσατε εσωτερικά μια είσοδο που σας έχει ανατεθεί.'
-      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-      title: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-    internal_comment_on_idea_you_commented_internally_on:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο που σχολιάσατε εσωτερικά.'
-      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-      title: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-    internal_comment_on_idea_you_moderate:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο σε ένα έργο ή φάκελο που διαχειρίζεστε.'
-      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-      title: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-    internal_comment_on_unassigned_unmoderated_idea:
-      cta_button: 'Προβολή σχολίου από %{firstName}'
-      event_description: '%{authorNameFull} σχολίασε εσωτερικά μια μη καθορισμένη είσοδο σε ένα μη διαχειριζόμενο έργο.'
-      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
-      title: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+    new_idea_for_admin_published:
+      cta_button: Ανατροφοδότηση στο %{authorName}
+      days_ago: '%{numberOfDays} ημέρες πριν'
+      event_description: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
+      preheader: '%{authorName} δημοσίευσε μια νέα είσοδο στην πλατφόρμα σας'
+      subject: Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας
+      title: Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας
+      today: Σήμερα
+      yesterday: Χθες
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} ενημέρωσε για το ''%{input_title}''.'
-      title: 'Υπάρχει μια ενημέρωση για το "%{input_title}"'
-      subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
-      preheader: 'Υπάρχει μια ενημέρωση σε μια εγγραφή που ακολουθείτε'
       cta_button: Πηγαίνετε σε αυτή την είσοδο
-    mention_in_official_feedback:
-      cta_button: 'Απάντηση στο %{organizationName}'
-      event_description: '%{organizationName} σας ανέφεραν στα σχόλιά τους για την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{organizationName}.'
-      title: 'Έχετε αναφερθεί'
-      subject: '%{organizationName} σας ανέφεραν στα σχόλιά τους'
-      preheader: '%{commentAuthor} σας ανέφερα στα σχόλια'
-    project_moderation_rights_received:
-      cta_button: 'Διαχειριστείτε αυτό το έργο'
-      event_description: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου:'
-      no_ideas: 'Καμία ιδέα ακόμα'
-      preheader: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου'
-      subject: 'Έγινες διαχειριστής έργων στην πλατφόρμα %{organizationName}.'
-      text_design_participatory_process: 'Ως διαχειριστής έργου, μπορείτε να ρυθμίσετε τον τρόπο με τον οποίο οι χρήστες αλληλεπιδρούν στο έργο σας. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά τη δημοσίευση ιδεών, το σχολιασμό και την ψηφοφορία.'
-      text_moderate_analyse_input: 'Μόλις ξεκινήσει το έργο, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών στην προβολή του διαχειριστή έργου σας θα σας βοηθήσει να καταλάβετε ποιες ιδέες έλαβαν τα περισσότερα upvotes και downvotes.'
-      text_share_project_information: 'Για να αυξήσετε την ποιότητα των ιδεών που λαμβάνετε, είναι βασικό να μοιράζεστε επαρκείς πληροφορίες: προσθέστε μια περιγραφή του έργου, επισυνάψτε εικόνες (συμπεριλαμβανομένων σκίτσων και σχεδίων) και κοινοποιήστε όλα τα σχετικά γεγονότα που λαμβάνουν χώρα. Να θυμάστε: η καλή πληροφόρηση προηγείται της καλής συμμετοχής!'
-      title_design_participatory_process: 'Σχεδιασμός της συμμετοχικής διαδικασίας'
-      title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
-      title_share_project_information: 'Παροχή πληροφοριών για το έργο'
-      title_what_can_you_do_moderator: 'Τι μπορείτε να κάνετε ως διαχειριστής έργων;'
-      title: 'Έγινες διαχειριστής έργων'
-      x_ideas: '%{numberOfIdeas} ιδέες'
+      event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."
+      preheader: Υπάρχει μια ενημέρωση σε μια εγγραφή που ακολουθείτε
+      subject: Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"
+      title: Υπάρχει μια ενημέρωση για το "%{input_title}"
+    preview_data:
+      author_display_name: Jane Doe
+      author_first_name: Jane
+      author_last_name: Doe
+      comment_body: Αυτό είναι ένα παράδειγμα σχολίου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      comment_deleted_reason: Το σχόλιο του παραδείγματός σας θεωρήθηκε ακατάλληλο.
+      event_address1: 10 Example Street, Exampleton, Exampleshire
+      event_address2: Δωμάτιο 3α, επάνω
+      event_title: Παράδειγμα εκδήλωσης
+      folder_title: Παράδειγμα φακέλου
+      idea_body: Αυτό είναι κάποιο παράδειγμα περιεχομένου ιδέας που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      idea_title: Παράδειγμα ιδέας
+      initiator_display_name: Bob Smith
+      initiator_first_name: Bob
+      initiator_last_name: Smith
+      input_status_description: Ένα παράδειγμα κατάστασης για μια είσοδο (π.χ. αποδεκτή, απορριφθείσα, υλοποιημένη...)
+      input_status_title: Παράδειγμα Κατάσταση
+      official_feedback_body: Παράδειγμα επίσημης ανατροφοδότησης
+      phase_title: Παράδειγμα φάσης
+      project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      project_title: Παράδειγμα έργου
+      proposal_title: Παράδειγμα πρότασης
+      space_title: Παράδειγμα χώρου
     project_folder_moderation_rights_received:
-      cta_button: 'Προβολή αυτού του φακέλου'
+      cta_button: Προβολή αυτού του φακέλου
       event_description: 'Σας έχουν δοθεί δικαιώματα διαχειριστή φακέλων στην πλατφόρμα συμμετοχής %{organizationName}για τον ακόλουθο φάκελο:'
-      no_projects: 'Δεν υπάρχουν ακόμη έργα'
-      preheader: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου φακέλου'
-      subject: 'Έγινες διαχειριστής φακέλου έργου στην πλατφόρμα συμμετοχής του %{organizationName}.'
-      text_manage_folder: 'Ένας φάκελος είναι ένας τρόπος οργάνωσης πολλών έργων συμμετοχής μαζί. Ως διαχειριστής φακέλου, μπορείτε να επεξεργαστείτε τον φάκελο και την περιγραφή του φακέλου και να δημιουργήσετε νέα έργα (για να διαγράψετε έργα, επικοινωνήστε με τον διαχειριστή της πλατφόρμας σας). Θα έχετε επίσης δικαιώματα διαχείρισης έργων σε όλα τα έργα εντός του φακέλου, επιτρέποντάς σας να επεξεργάζεστε τα έργα, να διαχειρίζεστε τις εισροές και να στέλνετε email στους συμμετέχοντες.'
-      text_moderate_analyse_input: 'Μόλις δρομολογηθούν τα έργα, θα αρχίσουν να έρχονται οι πρώτες εισροές. Θα λαμβάνετε εβδομαδιαίες αναφορές με τις βασικές δραστηριότητες, ώστε να μπορείτε να παρακολουθείτε τι συμβαίνει. Ο Διαχειριστής εισροών στον πίνακα "Διαχείριση πλατφόρμας" σας επιτρέπει να βλέπετε και να διαχειρίζεστε τις εισροές, συμπεριλαμβανομένης της ανάθεσης καταστάσεων και της απάντησης σε αναρτήσεις και σχόλια.'
-      text_design_participatory_process: 'Μπορείτε να διαχειρίζεστε τα διάφορα έργα συμμετοχής μέσα στο φάκελό σας - να ρυθμίζετε τη μέθοδο συμμετοχής, να προσθέτετε μια περιγραφή του έργου, να επισυνάπτετε εικόνες και να κοινοποιείτε σχετικές εκδηλώσεις. Μπορείτε επίσης να διαχειριστείτε τον τρόπο με τον οποίο οι συμμετέχοντες αλληλεπιδρούν με τα έργα σας, συμπεριλαμβανομένου του καθορισμού δικαιωμάτων πρόσβασης και της διαμόρφωσης των ρυθμίσεων για την ανάρτηση, την ψηφοφορία και τον σχολιασμό.'
-      title_design_participatory_process: 'Σχεδιασμός της συμμετοχικής διαδικασίας'
-      title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
-      title_manage_folder: 'Διαχειριστείτε τις ρυθμίσεις των φακέλων και δημιουργήστε νέα έργα.'
-      title_what_can_you_do_folderadmin: 'Τι μπορείτε να κάνετε ως διαχειριστής φακέλων;'
-      title: 'Έχετε προστεθεί ως διαχειριστής φακέλων'
+      no_projects: Δεν υπάρχουν ακόμη έργα
+      preheader: Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου φακέλου
+      subject: Έγινες διαχειριστής φακέλου έργου στην πλατφόρμα συμμετοχής του %{organizationName}.
+      text_design_participatory_process: Μπορείτε να διαχειρίζεστε τα διάφορα έργα συμμετοχής μέσα στο φάκελό σας - να ρυθμίζετε τη μέθοδο συμμετοχής, να προσθέτετε μια περιγραφή του έργου, να επισυνάπτετε εικόνες και να κοινοποιείτε σχετικές εκδηλώσεις. Μπορείτε επίσης να διαχειριστείτε τον τρόπο με τον οποίο οι συμμετέχοντες αλληλεπιδρούν με τα έργα σας, συμπεριλαμβανομένου του καθορισμού δικαιωμάτων πρόσβασης και της διαμόρφωσης των ρυθμίσεων για την ανάρτηση, την ψηφοφορία και τον σχολιασμό.
+      text_manage_folder: Ένας φάκελος είναι ένας τρόπος οργάνωσης πολλών έργων συμμετοχής μαζί. Ως διαχειριστής φακέλου, μπορείτε να επεξεργαστείτε τον φάκελο και την περιγραφή του φακέλου και να δημιουργήσετε νέα έργα (για να διαγράψετε έργα, επικοινωνήστε με τον διαχειριστή της πλατφόρμας σας). Θα έχετε επίσης δικαιώματα διαχείρισης έργων σε όλα τα έργα εντός του φακέλου, επιτρέποντάς σας να επεξεργάζεστε τα έργα, να διαχειρίζεστε τις εισροές και να στέλνετε email στους συμμετέχοντες.
+      text_moderate_analyse_input: Μόλις δρομολογηθούν τα έργα, θα αρχίσουν να έρχονται οι πρώτες εισροές. Θα λαμβάνετε εβδομαδιαίες αναφορές με τις βασικές δραστηριότητες, ώστε να μπορείτε να παρακολουθείτε τι συμβαίνει. Ο Διαχειριστής εισροών στον πίνακα "Διαχείριση πλατφόρμας" σας επιτρέπει να βλέπετε και να διαχειρίζεστε τις εισροές, συμπεριλαμβανομένης της ανάθεσης καταστάσεων και της απάντησης σε αναρτήσεις και σχόλια.
+      title: Έχετε προστεθεί ως διαχειριστής φακέλων
+      title_design_participatory_process: Σχεδιασμός της συμμετοχικής διαδικασίας
+      title_manage_folder: Διαχειριστείτε τις ρυθμίσεις των φακέλων και δημιουργήστε νέα έργα.
+      title_moderate_analyse_input: Μετριοποίηση και ανάλυση των εισροών
+      title_what_can_you_do_folderadmin: Τι μπορείτε να κάνετε ως διαχειριστής φακέλων;
       x_projects: '%{numberOfProjects} έργα'
+    project_moderation_rights_received:
+      cta_button: Διαχειριστείτε αυτό το έργο
+      event_description: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου:'
+      no_ideas: Καμία ιδέα ακόμα
+      preheader: Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου
+      subject: Έγινες διαχειριστής έργων στην πλατφόρμα %{organizationName}.
+      text_design_participatory_process: Ως διαχειριστής έργου, μπορείτε να ρυθμίσετε τον τρόπο με τον οποίο οι χρήστες αλληλεπιδρούν στο έργο σας. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά τη δημοσίευση ιδεών, το σχολιασμό και την ψηφοφορία.
+      text_moderate_analyse_input: Μόλις ξεκινήσει το έργο, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών στην προβολή του διαχειριστή έργου σας θα σας βοηθήσει να καταλάβετε ποιες ιδέες έλαβαν τα περισσότερα upvotes και downvotes.
+      text_share_project_information: 'Για να αυξήσετε την ποιότητα των ιδεών που λαμβάνετε, είναι βασικό να μοιράζεστε επαρκείς πληροφορίες: προσθέστε μια περιγραφή του έργου, επισυνάψτε εικόνες (συμπεριλαμβανομένων σκίτσων και σχεδίων) και κοινοποιήστε όλα τα σχετικά γεγονότα που λαμβάνουν χώρα. Να θυμάστε: η καλή πληροφόρηση προηγείται της καλής συμμετοχής!'
+      title: Έγινες διαχειριστής έργων
+      title_design_participatory_process: Σχεδιασμός της συμμετοχικής διαδικασίας
+      title_moderate_analyse_input: Μετριοποίηση και ανάλυση των εισροών
+      title_share_project_information: Παροχή πληροφοριών για το έργο
+      title_what_can_you_do_moderator: Τι μπορείτε να κάνετε ως διαχειριστής έργων;
+      x_ideas: '%{numberOfIdeas} ιδέες'
     project_phase_started:
-      cta_button: 'Ανακαλύψτε αυτή τη νέα φάση'
-      event_description: 'Το έργο αυτό εισήλθε σε νέα φάση με την πλατφόρμα %{organizationName}. Κάντε κλικ στον παρακάτω σύνδεσμο για να μάθετε περισσότερα!'
-      title: 'Μια νέα φάση ξεκίνησε για το έργο ''%{projectName}'''
-      subtitle: 'Σχετικά με ''%{projectName}'''
-      new_phase: 'Το έργο αυτό εισήλθε στη φάση ''%{phaseTitle}'''
+      cta_button: Ανακαλύψτε αυτή τη νέα φάση
+      event_description: Το έργο αυτό εισήλθε σε νέα φάση με την πλατφόρμα %{organizationName}. Κάντε κλικ στον παρακάτω σύνδεσμο για να μάθετε περισσότερα!
+      new_phase: "Το έργο αυτό εισήλθε στη φάση '%{phaseTitle}'"
+      preheader: Μια νέα φάση έχει ξεκινήσει για το %{projectName}
       subject: '%{projectName} εισήλθε σε νέα φάση'
-      preheader: 'Μια νέα φάση έχει ξεκινήσει για το %{projectName}'
+      subtitle: "Σχετικά με '%{projectName}'"
+      title: "Μια νέα φάση ξεκίνησε για το έργο '%{projectName}'"
     project_phase_upcoming:
-      cta_button: 'Ορίστε αυτή τη νέα φάση'
-      event_description: 'Το έργο ''%{projectName}'' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;'
+      cta_button: Ορίστε αυτή τη νέα φάση
+      event_description: "Το έργο '%{projectName}' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;"
+      new_phase: Το έργο θα εισέλθει στη φάση "%{phaseTitle}".
+      preheader: Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}
+      subject: Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}
+      subtitle: "Σχετικά με '%{projectName}'"
       title: '%{firstName}, ένα έργο θα εισέλθει σύντομα σε νέα φάση'
-      subtitle: 'Σχετικά με ''%{projectName}'''
-      new_phase: 'Το έργο θα εισέλθει στη φάση "%{phaseTitle}".'
-      subject: 'Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}'
-      preheader: 'Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}'
     project_published:
-      subject: 'Ένα νέο έργο δημοσιεύθηκε στην πλατφόρμα %{organizationName}.'
-      title: 'Δημοσιεύθηκε ένα νέο έργο'
+      cta_button: Πηγαίνετε σε αυτό το έργο
       event_description: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
-      preheader: 'Ένα νέο έργο δημοσιεύτηκε'
-      cta_button: 'Πηγαίνετε σε αυτό το έργο'
+      preheader: Ένα νέο έργο δημοσιεύτηκε
+      subject: Ένα νέο έργο δημοσιεύθηκε στην πλατφόρμα %{organizationName}.
+      title: Δημοσιεύθηκε ένα νέο έργο
     project_review_request:
+      cta_button: Επανεξέταση του έργου
+      event_description: Επί του παρόντος, το έργο βρίσκεται σε κατάσταση προσχεδίου και δεν είναι ορατό στους χρήστες. Μόλις το ελέγξετε και το εγκρίνετε, ο συντονιστής θα μπορεί να το δημοσιεύσει.
+      preheader: '%{requesterName} σας προσκάλεσε να επανεξετάσετε το έργο "%{projectTitle}"'
       subject: 'Αίτημα αξιολόγησης: Ένα έργο περιμένει έγκριση.'
       title: '%{requesterName} σας προσκάλεσε να επανεξετάσετε το έργο "%{projectTitle}"'
-      event_description: "Επί του παρόντος, το έργο βρίσκεται σε κατάσταση προσχεδίου και δεν είναι ορατό στους χρήστες. Μόλις το ελέγξετε και το εγκρίνετε, ο συντονιστής θα μπορεί να το δημοσιεύσει."
-      cta_button: "Επανεξέταση του έργου"
-      preheader: '%{requesterName} σας προσκάλεσε να επανεξετάσετε το έργο "%{projectTitle}"'
     project_review_state_change:
+      cta_button: Μεταβείτε στις ρυθμίσεις του έργου
+      event_description: Το έργο είναι τώρα έτοιμο να τεθεί σε λειτουργία. Μπορείτε να το δημοσιεύσετε όποτε είστε έτοιμοι!
+      preheader: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
       subject: '"%{projectTitle}" έχει εγκριθεί'
       title: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
-      event_description: "Το έργο είναι τώρα έτοιμο να τεθεί σε λειτουργία. Μπορείτε να το δημοσιεύσετε όποτε είστε έτοιμοι!"
-      cta_button: "Μεταβείτε στις ρυθμίσεις του έργου"
-      preheader: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
+    schedules:
+      quarterly: Τριμηνιαία, την πρώτη ημέρα του τριμήνου
+      weekly:
+        '0': Εβδομαδιαία, τις Κυριακές στο %{hourOfDay}
+        '1': Εβδομαδιαία, κάθε Δευτέρα %{hourOfDay}
+        '2': Εβδομαδιαία, κάθε Τρίτη %{hourOfDay}
+        '3': Εβδομαδιαία, κάθε Τετάρτη %{hourOfDay}
+        '4': Εβδομαδιαία, κάθε Πέμπτη %{hourOfDay}
+        '5': Εβδομαδιαία, κάθε Παρασκευή %{hourOfDay}
+        '6': Εβδομαδιαίως, τα Σάββατα %{hourOfDay}
+    screening_digest:
+      cta_button: Επανεξέταση εισροών
+      event_description: Αυτές οι εισροές χρειάζονται έγκριση πριν γίνουν ορατές στο κοινό. Μπορείτε να τις αναθεωρήσετε στο Διαχειριστή Εισροών όλης της πλατφόρμας ή στο Διαχειριστή Εισροών κάθε φάσης.
+      inputs_awaiting_screening: εισροές για επανεξέταση
+      preheader: Επανεξέταση των εισροών για το %{organizationName}
+      subject: '%{count} εισροές που αναμένουν επανεξέταση'
+      title: '%{firstName}, οι εισροές περιμένουν να επανεξεταστούν'
+    space_moderation_rights_received:
+      cta_button: Διαχείριση αυτού του χώρου
+      event_description: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του οργανισμού %{organizationName} μόλις σας όρισε διαχειριστή του παρακάτω χώρου:'
+      no_projects: Δεν υπάρχουν έργα ακόμα
+      preheader: Ένας διαχειριστής της πλατφόρμας συμμετοχής του οργανισμού %{organizationName} μόλις σας όρισε διαχειριστή του παρακάτω χώρου
+      subject: Γίνατε διαχειριστής χώρου στην πλατφόρμα του οργανισμού %{organizationName}
+      text_manage_space_settings: Μπορείτε να επεξεργαστείτε τον τίτλο και την περιγραφή του χώρου, ώστε οι συμμετέχοντες και οι υπόλοιποι διαχειριστές να κατανοήσουν αμέσως το θέμα του χώρου και πώς σχετίζεται με τον οργανισμό σας.
+      text_organize_projects_and_folders: Ως διαχειριστής χώρου, μπορείτε να διαχειρίζεστε έργα και φακέλους εντός του χώρου σας, συμπεριλαμβανομένης της ανάθεσης και της αφαίρεσης ρόλων διαχείρισης για αυτά.
+      text_oversee_participation: Ως διαχειριστής χώρου, έχετε δικαιώματα διαχειριστή έργου για κάθε έργο που βρίσκεται εντός του χώρου σας, ώστε να μπορείτε να παρακολουθείτε τη δραστηριότητα και να βοηθάτε τους διαχειριστές έργων όταν χρειάζεται.
+      title: Γίνατε διαχειριστής χώρου
+      title_manage_space_settings: Διαχείριση ρυθμίσεων χώρου
+      title_organize_projects_and_folders: Οργάνωση έργων και φακέλων
+      title_oversee_participation: Επίβλεψη συμμετοχής
+      title_what_can_you_do_space_manager: Τι μπορείτε να κάνετε ως διαχειριστής χώρου;
+      x_projects: '%{numberOfProjects} έργα'
     status_change_on_idea_you_follow:
-      status_change: 'Η συγκριμένη καταχώρηση ενημερώθηκε σε ''%{status}'''
-      event_description: '%{organizationName} ενημέρωσε την κατάσταση της εισόδου ''%{input_title}'' στην πλατφόρμα ψηφιακής συμμετοχής τους.'
-      title: 'Μια είσοδος που ακολουθείτε έχει νέα κατάσταση'
-      subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
-      preheader: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
       cta_button: Πηγαίνετε σε αυτή την είσοδο
-    user_digest:
-      subject: "Η δραστηριότητά σας στην πλατφόρμα συμμετοχής του %{organizationName}"
-      commented: "%{authorFirstName} σχολίασε:"
-      preheader: "Εβδομαδιαία επισκόπηση του Οργανισμού %{organizationName}"
-      title: "Ανακαλύψτε τι συνέβη την περασμένη εβδομάδα"
-      event_description: "Ακολουθεί μια περίληψη των όσων συνέβησαν στην πλατφόρμα συμμετοχής του %{organizationName}."
-      cta_button: "Μεταβείτε στην πλατφόρμα"
-      title_no_activity_past_week: "Καμία δραστηριότητα την τελευταία εβδομάδα"
-      successful_proposals_title: "Έφτασε το όριο"
-      successful_proposals_text: "Οι προτάσεις αυτές έχουν λάβει αρκετή υποστήριξη για να προχωρήσουν στο επόμενο στάδιο! Κάντε κλικ στην πρόταση για να μάθετε περισσότερα σχετικά με το τι θα γίνει στη συνέχεια."
-      today_by_author: "Σήμερα από %{author}"
-      yesterday_by_author: "Χθες από %{author}"
-      x_days_ago_by_author: "%{x} πριν από μέρες από %{author}"
-      trending_title: "Trending"
-      trending_text: "Ενδιαφέρεστε για το τι συμβαίνει στην πλατφόρμα; Εδώ είναι οι τρεις πιο δημοφιλείς συνεισφορές και τι λένε οι χρήστες γι' αυτές."
-      no_notifications: "Δεν υπάρχουν ειδοποιήσεις"
-      one_notification: "1 κοινοποίηση"
-      multiple_notifications: "%{notifCount} ειδοποιήσεις"
-      no_unread_notifications: "Δεν έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να συνεισφέρετε και να δημιουργήσετε νέες ειδοποιήσεις!"
-      unread_notifications: "Έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να ανακαλύψετε τι συμβαίνει!"
-    threshold_reached_for_admin:
-      cta_button: 'Προχωρήστε την πρόταση στα επόμενα βήματα'
-      title: 'Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!'
-      subject: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
-      preheader: 'Φροντίστε να κάνετε τα επόμενα βήματα'
-    welcome:
-      cta_button: 'Ανακαλύψτε την πλατφόρμα'
-      subject: 'Καλώς ήρθατε στην πλατφόρμα συμμετοχής και διαλόγου του οργανισμού "%{organizationName}"'
-      title: Καλώς ήρθατε!
-      event_description: 'Συγχαρητήρια, έχετε εγγραφεί επιτυχώς στην πλατφόρμα συμμετοχής του %{organizationName}. Τώρα μπορείτε να ανακαλύψετε την πλατφόρμα και να κάνετε τη φωνή σας να ακουστεί. Μπορείτε επίσης να προσθέσετε μια εικόνα προφίλ και μια σύντομη περιγραφή για να πείτε στους άλλους ποιος είστε.'
-      preheader: 'Δείτε τι μπορείτε να κάνετε στην πλατφόρμα του %{organizationName}'
-    idea_published:
-      subject: 'Η ιδέα σας έχει δημοσιευτεί'
-      preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της ιδέας σας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη.'
-      title: 'Δημοσιεύσατε το "%{input_title}"'
-      input_type_subject:
-        idea: 'Η ιδέα σας έχει δημοσιευτεί'
-        question: 'Η ερώτησή σας έχει δημοσιευτεί'
-        contribution: 'Η συνεισφορά σας έχει δημοσιευτεί'
-        project: 'Το έργο σας έχει δημοσιευτεί'
-        issue: 'Το τεύχος σας έχει δημοσιευτεί'
-        option: 'Η επιλογή σας έχει δημοσιευτεί'
-        proposal: 'Η πρότασή σας έχει δημοσιευθεί'
-        petition: 'Το αίτημά σας έχει δημοσιευτεί'
-      header_message: 'Ας βεβαιωθούμε ότι θα διαβαστεί.'
-      message_get_votes: 'Μοιραστείτε την ιδέα σας με περισσότερους ανθρώπους'
-      action_published_idea: 'Δημοσιευμένη ιδέα'
-      action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
-      add_image: 'Προσθήκη εικόνας'
-      action_share_fb: 'Ενημερώστε τους φίλους σας στο %{fbLink}'
-      action_share_twitter: 'Ενημερώστε τους οπαδούς σας στο %{twitterLink}'
-      action_send_email: 'Στείλτε στις επαφές σας ένα %{sendEmailLink}'
-      send_email: email
-      action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού με χρήση του ακόλουθου link. "%{link}"'
-      link: σύνδεσμος
-    your_input_in_screening:
-      main_header:
-        idea: 'Η ιδέα σας είναι στο "%{prescreening_status_title}"'
-        question: 'Η ερώτησή σας είναι στο "%{prescreening_status_title}"'
-        contribution: 'Η συνεισφορά σας είναι στο "%{prescreening_status_title}"'
-        project: 'Το έργο σας βρίσκεται στο "%{prescreening_status_title}"'
-        issue: 'Το θέμα σας βρίσκεται στο "%{prescreening_status_title}"'
-        option: 'Η επιλογή σας βρίσκεται στο "%{prescreening_status_title}"'
-        proposal: 'Η πρότασή σας βρίσκεται στο "%{prescreening_status_title}"'
-        petition: 'Το αίτημά σας βρίσκεται στο "%{prescreening_status_title}"'
-      event_description: '"%{input_title}" θα γίνει ορατό στους άλλους μόλις επανεξεταστεί και εγκριθεί.'
-      subject: '"%{input_title}" είναι σχεδόν δημοσιευμένο'
-      preheader: 'Αυτή τη στιγμή βρίσκεται στο %{prescreening_status_title}'
-    voting_basket_submitted:
-      subject: '%{organizationName}: Ψηφίσατε με επιτυχία'
-      preheader: 'Ψηφίσατε με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}'
-      title: 'Ψηφίσατε με επιτυχία'
-      event_description: 'Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.'
-      cta_button: 'Δείτε τις υποβληθείσες ψήφους'
-      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
-    native_survey_not_submitted:
-      subject: '%{organizationName}: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
-      preheader: 'Δεν ολοκληρώσατε την απάντησή σας στην έρευνα στην πλατφόρμα συμμετοχής του %{organizationName}.'
-      title: 'Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
-      event_description: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
-      cta_button: 'Συνεχίστε την απάντησή σας στην έρευνα'
-      submissions_close: 'Ημερομηνία ολοκλήρωσης υποβολών: %{phaseEndDate}.'
-    voting_basket_not_submitted:
-      subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
-      preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
-      title: 'Δεν υποβάλατε τις ψήφους σας'
-      event_description: 'Επιλέξατε μερικές επιλογές για το %{contextTitle} , αλλά δεν υποβάλατε την επιλογή σας.'
-      cta_button: 'Προβολή επιλογών και ψηφοφορία'
-      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να υποβάλετε τις επιλεγμένες επιλογές σας'
-    voting_last_chance:
-      subject: '%{organizationName}: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
-      preheader: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle} στην πλατφόρμα συμμετοχής του %{organizationName}'
-      title: 'Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
-      event_description: '<p>Η φάση της ψηφοφορίας για το έργο %{projectTitle} ολοκληρώνεται αύριο, τα μεσάνυχτα.</p><p>Ο χρόνος τελειώνει και παρατηρήσαμε ότι δεν έχετε ψηφίσει ακόμα! Ενεργήστε τώρα κάνοντας απλά κλικ στο παρακάτω κουμπί για να συμμετάσχετε.</p><p>Με αυτόν τον τρόπο, θα αποκτήσετε πρόσβαση σε μια σειρά επιλογών και θα έχετε την ευκαιρία να δώσετε τη συμβολή σας, η οποία είναι ζωτικής σημασίας για να αποφασιστεί το μέλλον αυτού του έργου.</p>'
-      cta_button: 'Ψηφίστε'
-    voting_results:
-      subject: '%{organizationName}: Αποκαλύφθηκαν τα αποτελέσματα της ψηφοφορίας στο %{phaseTitle} !'
-      preheader: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν στην πλατφόρμα συμμετοχής του %{organizationName}'
-      title: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν!'
-      body_1: 'Τα αποτελέσματα είναι έτοιμα!'
-      body_2: 'Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα του οργανισμού "%{organizationName}" έχουν δημοσιευθεί!'
-      body_3: 'Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.'
-      cta_button: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
-    event_registration_confirmation:
-      subject: "Είσαι μέσα! Το ενδιαφέρον σας για το \"%{eventTitle}\" έχει καταχωρηθεί"
-      preheader: "%{firstName}, ευχαριστούμε για το ενδιαφέρον σας για την εκδήλωση %{eventTitle}"
-      title: "%{firstName}, ευχαριστώ για την εγγραφή σας για"
-      event_details:
-        labels:
-          date: 'Ημερομηνία'
-          location: 'Τοποθεσία'
-          online_link: 'Ηλεκτρονικός σύνδεσμος'
-          description: 'Περιγραφή'
-          project: 'Έργο'
-      cta_button: 'Δείτε την εκδήλωση'
-      cta_add_to_calendar: 'Προσθέστε στο ημερολόγιό σας'
-    voting_phase_started:
-      subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
-      preheader: 'Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.'
-      title: '%{projectName}'
-      event_description: 'Το πρόγραμμα "%{projectName}" σας ζητά να ψηφίσετε μεταξύ των επιλογών %{numIdeas} :'
-      cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
-      cta_button: 'Πηγαίνετε στην πλατφόρμα για να ψηφίσετε'
+      event_description: "%{organizationName} ενημέρωσε την κατάσταση της εισόδου '%{input_title}' στην πλατφόρμα ψηφιακής συμμετοχής τους."
+      preheader: Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί
+      status_change: "Η συγκριμένη καταχώρηση ενημερώθηκε σε '%{status}'"
+      subject: Η κατάσταση του "%{input_title}" έχει αλλάξει
+      title: Μια είσοδος που ακολουθείτε έχει νέα κατάσταση
     survey_submitted:
+      cta_button: Κατεβάστε τις απαντήσεις σας
+      event_description: Η εισήγησή σας για το "%{projectName}" έχει υποβληθεί επιτυχώς.
+      if_you_would_like_to_review: Εάν θέλετε να επανεξετάσετε την υποβολή σας, μπορείτε να κατεβάσετε τις απαντήσεις σας παρακάτω.
+      preheader: Ακολουθούν οι λεπτομέρειες της υποβολής σας.
       subject: '%{organizationName}: Σας ευχαριστώ για την απάντησή σας! 🎉'
-      preheader: 'Ακολουθούν οι λεπτομέρειες της υποβολής σας.'
-      title: 'Σας ευχαριστούμε που μοιραστήκατε τις σκέψεις σας για το "%{projectName}"!'
-      event_description: 'Η εισήγησή σας για το "%{projectName}" έχει υποβληθεί επιτυχώς.'
-      if_you_would_like_to_review: 'Εάν θέλετε να επανεξετάσετε την υποβολή σας, μπορείτε να κατεβάσετε τις απαντήσεις σας παρακάτω.'
+      title: Σας ευχαριστούμε που μοιραστήκατε τις σκέψεις σας για το "%{projectName}"!
+      you_can_use_this_id: Μπορείτε να χρησιμοποιήσετε αυτό το αναγνωριστικό για να επικοινωνήσετε με τους διαχειριστές της πλατφόρμας σε περίπτωση που θέλετε να αφαιρεθεί η υποβολή σας.
       your_submission_has_id: 'Η υποβολή σας έχει το ακόλουθο μοναδικό αναγνωριστικό:'
-      you_can_use_this_id: 'Μπορείτε να χρησιμοποιήσετε αυτό το αναγνωριστικό για να επικοινωνήσετε με τους διαχειριστές της πλατφόρμας σε περίπτωση που θέλετε να αφαιρεθεί η υποβολή σας.'
-      cta_button: 'Κατεβάστε τις απαντήσεις σας'
-    admin_labels:
-      recipient_role:
-        admins: 'Προς τους διαχειριστές'
-        admins_and_managers: 'Προς διαχειριστές & διευθυντές'
-        managers: 'Προς τους διαχειριστές'
-        project_participants: 'Για τους συμμετέχοντες στο έργο'
-        registered_users: 'Για εγγεγραμμένους χρήστες'
-      recipient_segment:
-        admins: 'Διαχειριστές'
-        admins_and_managers: 'Διαχειριστές και διευθυντές'
-        admins_and_managers_assigned_to_the_input: 'Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο'
-        admins_and_managers_managing_the_project: 'Διαχειριστές & διευθυντές που διαχειρίζονται το έργο'
-        admins_assigned_to_a_proposal: 'Διαχειριστές που έχουν ανατεθεί σε μια πρόταση'
-        all_users: 'Όλοι οι χρήστες'
-        all_users_who_uploaded_proposals: 'Όλοι οι χρήστες που ανέβασαν προτάσεις'
-        managers: 'Διευθυντές'
-        managers_managing_the_project: 'Διαχειριστές που διαχειρίζονται το έργο'
-        new_attendee: 'Πρόσφατα εγγεγραμμένος χρήστης'
-        project_reviewers: 'Αξιολογητές έργων και διαχειριστές φακέλων'
-        project_review_requester: 'Χρήστης που ζήτησε την αναθεώρηση του έργου'
-        user_who_commented: 'Χρήστης που σχολίασε'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Χρήστης που καλείται να συνυποστηρίξει μια πρόταση'
-        user_who_is_mentioned: 'Χρήστης που αναφέρεται'
-        user_who_is_receiving_admin_rights: 'Χρήστης που λαμβάνει δικαιώματα διαχειριστή'
-        user_who_is_receiving_folder_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου'
-        user_who_is_receiving_project_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή έργου'
-        user_who_published_the_input: 'Χρήστης που δημοσίευσε την είσοδο'
-        user_who_published_the_proposal: 'Χρήστης που δημοσίευσε την πρόταση'
-        user_who_registers: 'Χρήστης που εγγράφεται'
-        user_who_submitted_the_input: 'Χρήστης που υπέβαλε την εισαγωγή'
-        user_who_voted: 'Χρήστης που ψήφισε'
-        user_who_was_invited: 'Χρήστης που προσκλήθηκε'
-        user_with_unsubmitted_survey: 'Χρήστης που έχει ξεκινήσει αλλά δεν έχει υποβάλει την έρευνά του'
-        user_with_unsubmitted_votes: 'Χρήστης που δεν έχει υποβάλει την ψήφο του'
-        users_who_engaged_but_not_voted: 'Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν'
-        users_who_engaged_with_the_project: 'Χρήστες που ασχολήθηκαν με το έργο'
-        users_who_follow_the_input: 'Χρήστες που ακολουθούν την εισαγωγή'
-        users_who_follow_the_project: 'Χρήστες που ακολουθούν το έργο'
-        users_who_follow_the_proposal: 'Χρήστες που ακολουθούν την πρόταση'
-      content_type:
-        comments: 'Σχόλια'
-        content_moderation: 'Μετριασμός περιεχομένου'
-        events: 'Εκδηλώσεις'
-        general: 'Γενικά'
-        inputs: 'Είσοδοι'
-        internal_comments: 'Εσωτερικά σχόλια'
-        permissions: 'Δικαιώματα'
-        projects: 'Έργα'
-        proposals: 'Προτάσεις'
-        reactions: 'Αντιδράσεις'
-        voting: 'Ψηφοφορία'
-        surveys: 'Έρευνες'
-      trigger:
-        7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
-        7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
-        comment_is_deleted: 'Το σχόλιο διαγράφεται'
-        comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
-        content_gets_flagged_as_innapropiate: 'Το περιεχόμενο επισημαίνεται ως μη κατάλληλο'
-        initiative_resubmitted_for_review: 'Η πρόταση υποβάλλεται εκ νέου για επανεξέταση'
-        input_is_assigned: 'Η είσοδος εκχωρείται'
-        input_is_flagged_as_spam: 'Η είσοδος επισημαίνεται ως spam'
-        input_is_published: 'Η είσοδος δημοσιεύεται'
-        input_is_updated: 'Η είσοδος ενημερώνεται'
-        input_status_changes: 'Αλλαγές κατάστασης εισόδου'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που έχει εκχωρηθεί στον χρήστη'
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο στο έργο ή στο φάκελο που διαχειρίζεται ο χρήστης'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που σχολιάζει ο χρήστης εσωτερικά σε'
-        internal_comment_is_posted_on_idea_user_moderates: 'Εσωτερικό σχόλιο δημοσιεύεται σε χρήστη εισόδου μετριάζει'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Εσωτερικό σχόλιο δημοσιεύεται σε μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο'
-        project_review_request: 'Ο συντονιστής ζήτησε επανεξέταση του έργου'
-        project_review_state_change: 'Ο κριτής ενέκρινε το έργο'
-        new_input_awaits_screening: 'Η νέα εισροή αναμένει την προβολή'
-        new_input_is_published: 'Δημοσιεύονται νέες εισροές'
-        new_proposal_is_posted: 'Αναρτήθηκε νέα πρόταση'
-        project_phase_changes: 'Αλλαγές φάσης έργου'
-        project_published: 'Δημοσιευμένο έργο'
-        proposal_gets_reported_as_spam: 'Η πρόταση αναφέρεται ως spam'
-        proposal_is_assigned_to_admin: 'Η πρόταση ανατίθεται στον admin'
-        proposal_is_published: 'Η πρόταση δημοσιεύεται'
-        proposal_is_updated: 'Η πρόταση επικαιροποιείται'
-        proposal_is_upvoted_above_threshold: 'Η πρόταση υπερκαλύπτει το όριο'
-        proposal_status_changes: 'Αλλαγές στην κατάσταση της πρότασης'
-        registration_to_event: 'Εγγραφή σε μια εκδήλωση'
-        survey_1_day_after_draft_saved: '1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση'
-        user_comments: 'Σχόλια χρηστών'
-        user_comments_on_input: 'Σχόλια χρηστών σχετικά με την είσοδο'
-        user_comments_on_proposal: 'Σχόλια χρηστών σχετικά με την πρόταση'
-        user_is_given_admin_rights: 'Ο χρήστης αποκτά δικαιώματα διαχειριστή'
-        user_is_given_folder_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου'
-        user_is_given_project_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή έργου'
-        user_is_invited_to_platform: 'Ο χρήστης καλείται στην πλατφόρμα'
-        user_is_invited_to_cosponsor_a_proposal: 'Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση'
-        user_is_mentioned: 'Αναφέρεται ο χρήστης'
-        user_is_mentioned_in_internal_comment: 'Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο'
-        user_registers_for_the_first_time: 'Ο χρήστης εγγράφεται για πρώτη φορά'
-        user_replies_to_comment: 'Ο χρήστης απαντά στο σχόλιο'
-        user_replies_to_internal_comment: 'Ο χρήστης απαντά στο εσωτερικό σχόλιο'
-        voting_1_day_after_last_votes: '1 ημέρα μετά την τελευταία ψηφοφορία του χρήστη'
-        voting_2_days_before_phase_closes: '2 ημέρες πριν από τη λήξη της φάσης ψηφοφορίας'
-        voting_basket_submitted: 'Υποβάλλονται οι ψήφοι'
-        voting_phase_ended: 'Η φάση της ψηφοφορίας ολοκληρώθηκε'
+    threshold_reached_for_admin:
+      cta_button: Προχωρήστε την πρόταση στα επόμενα βήματα
+      preheader: Φροντίστε να κάνετε τα επόμενα βήματα
+      subject: Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας
+      title: Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!
+    user_digest:
+      commented: '%{authorFirstName} σχολίασε:'
+      cta_button: Μεταβείτε στην πλατφόρμα
+      event_description: Ακολουθεί μια περίληψη των όσων συνέβησαν στην πλατφόρμα συμμετοχής του %{organizationName}.
+      multiple_notifications: '%{notifCount} ειδοποιήσεις'
+      no_notifications: Δεν υπάρχουν ειδοποιήσεις
+      no_unread_notifications: Δεν έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να συνεισφέρετε και να δημιουργήσετε νέες ειδοποιήσεις!
+      one_notification: 1 κοινοποίηση
+      preheader: Εβδομαδιαία επισκόπηση του Οργανισμού %{organizationName}
+      subject: Η δραστηριότητά σας στην πλατφόρμα συμμετοχής του %{organizationName}
+      successful_proposals_text: Οι προτάσεις αυτές έχουν λάβει αρκετή υποστήριξη για να προχωρήσουν στο επόμενο στάδιο! Κάντε κλικ στην πρόταση για να μάθετε περισσότερα σχετικά με το τι θα γίνει στη συνέχεια.
+      successful_proposals_title: Έφτασε το όριο
+      title: Ανακαλύψτε τι συνέβη την περασμένη εβδομάδα
+      title_no_activity_past_week: Καμία δραστηριότητα την τελευταία εβδομάδα
+      today_by_author: Σήμερα από %{author}
+      trending_text: Ενδιαφέρεστε για το τι συμβαίνει στην πλατφόρμα; Εδώ είναι οι τρεις πιο δημοφιλείς συνεισφορές και τι λένε οι χρήστες γι' αυτές.
+      trending_title: Trending
+      unread_notifications: Έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να ανακαλύψετε τι συμβαίνει!
+      x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
+      yesterday_by_author: Χθες από %{author}
+    voting_basket_not_submitted:
+      cta_button: Προβολή επιλογών και ψηφοφορία
+      cta_message: Κάντε κλικ στο παρακάτω κουμπί για να υποβάλετε τις επιλεγμένες επιλογές σας
+      event_description: Επιλέξατε μερικές επιλογές για το %{contextTitle} , αλλά δεν υποβάλατε την επιλογή σας.
+      preheader: Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}
+      subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
+      title: Δεν υποβάλατε τις ψήφους σας
+    voting_basket_submitted:
+      cta_button: Δείτε τις υποβληθείσες ψήφους
+      cta_message: Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε
+      event_description: Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.
+      preheader: Ψηφίσατε με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}
+      subject: '%{organizationName}: Ψηφίσατε με επιτυχία'
+      title: Ψηφίσατε με επιτυχία
+    voting_last_chance:
+      cta_button: Ψηφίστε
+      event_description: <p>Η φάση της ψηφοφορίας για το έργο %{projectTitle} ολοκληρώνεται αύριο, τα μεσάνυχτα.</p><p>Ο χρόνος τελειώνει και παρατηρήσαμε ότι δεν έχετε ψηφίσει ακόμα! Ενεργήστε τώρα κάνοντας απλά κλικ στο παρακάτω κουμπί για να συμμετάσχετε.</p><p>Με αυτόν τον τρόπο, θα αποκτήσετε πρόσβαση σε μια σειρά επιλογών και θα έχετε την ευκαιρία να δώσετε τη συμβολή σας, η οποία είναι ζωτικής σημασίας για να αποφασιστεί το μέλλον αυτού του έργου.</p>
+      preheader: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle} στην πλατφόρμα συμμετοχής του %{organizationName}
+      subject: '%{organizationName}: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}'
+      title: Τελευταία ευκαιρία να ψηφίσετε για το %{phaseTitle}
+    voting_phase_started:
+      cta_button: Πηγαίνετε στην πλατφόρμα για να ψηφίσετε
+      cta_message: Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε
+      event_description: 'Το πρόγραμμα "%{projectName}" σας ζητά να ψηφίσετε μεταξύ των επιλογών %{numIdeas} :'
+      preheader: Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.
+      subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
+      title: '%{projectName}'
+    voting_results:
+      body_1: Τα αποτελέσματα είναι έτοιμα!
+      body_2: Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα του οργανισμού "%{organizationName}" έχουν δημοσιευθεί!
+      body_3: Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.
+      cta_button: Δείτε τα αποτελέσματα στην πλατφόρμα
+      preheader: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν στην πλατφόρμα συμμετοχής του %{organizationName}'
+      subject: '%{organizationName}: Αποκαλύφθηκαν τα αποτελέσματα της ψηφοφορίας στο %{phaseTitle} !'
+      title: '%{phaseTitle} τα αποτελέσματα της ψηφοφορίας αποκαλύφθηκαν!'
+    welcome:
+      cta_button: Ανακαλύψτε την πλατφόρμα
+      event_description: Συγχαρητήρια, έχετε εγγραφεί επιτυχώς στην πλατφόρμα συμμετοχής του %{organizationName}. Τώρα μπορείτε να ανακαλύψετε την πλατφόρμα και να κάνετε τη φωνή σας να ακουστεί. Μπορείτε επίσης να προσθέσετε μια εικόνα προφίλ και μια σύντομη περιγραφή για να πείτε στους άλλους ποιος είστε.
+      preheader: Δείτε τι μπορείτε να κάνετε στην πλατφόρμα του %{organizationName}
+      subject: Καλώς ήρθατε στην πλατφόρμα συμμετοχής και διαλόγου του οργανισμού "%{organizationName}"
+      title: Καλώς ήρθατε!
+    your_input_in_screening:
+      event_description: '"%{input_title}" θα γίνει ορατό στους άλλους μόλις επανεξεταστεί και εγκριθεί.'
+      main_header:
+        comment: Το σχόλιό σας είναι στο "%{prescreening_status_title}"
+        contribution: Η συνεισφορά σας είναι στο "%{prescreening_status_title}"
+        idea: Η ιδέα σας είναι στο "%{prescreening_status_title}"
+        initiative: Η πρωτοβουλία σας είναι στο "%{prescreening_status_title}"
+        issue: Το θέμα σας βρίσκεται στο "%{prescreening_status_title}"
+        option: Η επιλογή σας βρίσκεται στο "%{prescreening_status_title}"
+        petition: Το αίτημά σας βρίσκεται στο "%{prescreening_status_title}"
+        post: Η ανάρτησή σας είναι στο "%{prescreening_status_title}"
+        project: Το έργο σας βρίσκεται στο "%{prescreening_status_title}"
+        proposal: Η πρότασή σας βρίσκεται στο "%{prescreening_status_title}"
+        question: Η ερώτησή σας είναι στο "%{prescreening_status_title}"
+        response: Η απάντησή σας είναι στο "%{prescreening_status_title}"
+        story: Η ιστορία σας είναι στο "%{prescreening_status_title}"
+        suggestion: Η πρότασή σας βρίσκεται στο "%{prescreening_status_title}"
+        topic: Το θέμα σας είναι στο "%{prescreening_status_title}"
+      preheader: Αυτή τη στιγμή βρίσκεται στο %{prescreening_status_title}
+      subject: '"%{input_title}" είναι σχεδόν δημοσιευμένο'

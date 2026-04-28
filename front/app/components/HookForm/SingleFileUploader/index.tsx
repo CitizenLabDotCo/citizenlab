@@ -15,9 +15,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 export interface Props {
   name: string;
   accept?: string;
+  // Unregister the field from the form when this component unmounts.
+  // Needed for forms that live inside a modal so the file value doesn't
+  // linger and reappear on the next open.
+  shouldUnregister?: boolean;
 }
 
-const SingleFileUploader = ({ name, accept }: Props) => {
+const SingleFileUploader = ({
+  name,
+  accept,
+  shouldUnregister = false,
+}: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -33,6 +41,7 @@ const SingleFileUploader = ({ name, accept }: Props) => {
         name={name}
         control={control}
         defaultValue={undefined}
+        shouldUnregister={shouldUnregister}
         render={({ field: { ref: _ref, ...field } }) => {
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

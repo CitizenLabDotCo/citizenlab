@@ -56,6 +56,14 @@ const IdeaForm = ({
     defaultValues: formData,
   });
 
+  // Trigger validation on mount so errors show immediately
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      methods.trigger();
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [methods]);
+
   // Ensure initial form validation state is correct
   useEffect(() => {
     setIdeaFormDataValid(methods.formState.isValid);
@@ -87,6 +95,8 @@ const IdeaForm = ({
                 participationMethod={
                   phase?.data.attributes.participation_method
                 }
+                showQuestionNumbers={true}
+                scrollErrorIntoView={false}
               />
             </Suspense>
           )}

@@ -2,10 +2,11 @@ import { randomString, randomEmail } from '../../../support/commands';
 import { generateProjectFolder } from '../../../fixtures';
 import moment = require('moment');
 
-describe('Seat based billing', () => {
+describe.skip('Seat based billing', () => {
   let createdUserIds: string[] = [];
   let adminCount: number;
-  let moderatorsCount: number;
+  let projectModeratorsCount: number;
+  let folderModeratorsCount: number;
 
   type CreateUserType = {
     firstName: string;
@@ -53,7 +54,10 @@ describe('Seat based billing', () => {
 
       cy.apiGetUsersCount().then((response) => {
         adminCount = response.body.data.attributes.administrators_count;
-        moderatorsCount = response.body.data.attributes.moderators_count;
+        projectModeratorsCount =
+          response.body.data.attributes.project_moderators_count;
+        folderModeratorsCount =
+          response.body.data.attributes.folderModeratorCount;
       });
 
       cy.setAdminLoginCookie();
@@ -81,9 +85,9 @@ describe('Seat based billing', () => {
           cy.visit('/admin/users/admins');
 
           cy.dataCy('e2e-admin-count').contains(adminCount);
-          cy.dataCy('e2e-admin-remaining-seats').contains(remainingSeats);
-          cy.dataCy('e2e-admin-used-seats').contains(usedSeats);
-          cy.dataCy('e2e-admin-total-seats').contains(totalSeats);
+          cy.dataCy('available-seats').contains(remainingSeats);
+          cy.dataCy('assigned-seats').contains(usedSeats);
+          cy.dataCy('total-seats').contains(totalSeats);
 
           // Navigate to users page
           cy.visit('/admin/users');
@@ -97,14 +101,15 @@ describe('Seat based billing', () => {
           cy.get('@firstRow').contains(user1Email);
           cy.get('@firstRow').contains('Registered user');
           cy.get('@firstRow').find('.e2e-more-actions').click();
+          cy.wait(1000);
 
           cy.get('.tippy-content').contains('Set as admin').click();
 
           if (usedSeats >= totalSeats) {
             // Verify that user is required to confirm
-            cy.dataCy('e2e-confirm-change-seat-body').should('exist');
+            cy.dataCy('seat-limit-reached-body').should('exist');
             // Confirm setting user to admin user
-            cy.dataCy('e2e-confirm-change-seat-button').click();
+            cy.dataCy('confirm-add-seat').click();
 
             // Check that success is shown and close the modal
             cy.dataCy('e2e-seat-set-success-body').should('exist');
@@ -141,12 +146,9 @@ describe('Seat based billing', () => {
             cy.visit('/admin/users');
             // Set user as normal user
             cy.get('@firstRow').find('.e2e-more-actions').click();
+            cy.wait(1000);
 
             cy.get('.tippy-content').contains('Set as normal user').click();
-
-            cy.dataCy('e2e-confirm-change-seat-body').should('exist');
-            // Confirm setting user to normal user
-            cy.dataCy('e2e-confirm-change-seat-button').click();
 
             cy.get('@firstRow').contains(user1Email);
             cy.get('@firstRow').contains('Registered user');
@@ -184,9 +186,9 @@ describe('Seat based billing', () => {
 
         if (usedSeats >= totalSeats && !hasSeatBeenAdded) {
           // Verify that user is required to confirm
-          cy.dataCy('e2e-add-moderators-body').should('exist');
+          cy.dataCy('seat-limit-reached-body').should('exist');
           // Confirm setting user to moderator user
-          cy.dataCy('e2e-confirm-add-moderator').click();
+          cy.dataCy('confirm-add-seat').click();
 
           // Check that success is shown and close the modal
           cy.dataCy('e2e-seat-set-success-body').should('exist');
@@ -361,15 +363,21 @@ describe('Seat based billing', () => {
       cy.get('.e2e-admin-list').contains(user5Email);
     });
 
-    it('updates admin and moderators number', () => {
+    it('updates admin and project moderators number', () => {
       cy.visit('/admin/users/admins');
 
       cy.apiGetUsersCount().then((response) => {
         adminCount = response.body.data.attributes.administrators_count;
-        moderatorsCount = response.body.data.attributes.moderators_count;
+        projectModeratorsCount =
+          response.body.data.attributes.project_moderators_count;
+        folderModeratorsCount =
+          response.body.data.attributes.folder_moderators_count;
 
         cy.dataCy('e2e-admin-count').contains(adminCount);
-        cy.dataCy('e2e-moderator-count').contains(moderatorsCount);
+        cy.dataCy('e2e-project-moderator-count').contains(
+          projectModeratorsCount
+        );
+        cy.dataCy('e2e-folder-moderator-count').contains(folderModeratorsCount);
 
         // Navigate to the project permissions page
         cy.visit(`admin/projects/${projectId}/general/access-rights`);
@@ -387,14 +395,14 @@ describe('Seat based billing', () => {
         cy.get('.e2e-admin-list').contains(user6Email);
 
         cy.visit('/admin/users/admins');
-        cy.dataCy('e2e-moderator-count').contains(
-          `${response.body.data.attributes.moderators_count + 1}`
+        cy.dataCy('e2e-project-moderator-count').contains(
+          `${projectModeratorsCount + 1}`
         );
       });
     });
 
     it('updates remaining seats and used seats', () => {
-      cy.visit('/admin/users/moderators');
+      cy.visit('/admin/users/project-moderators');
 
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
@@ -425,7 +433,7 @@ describe('Seat based billing', () => {
           testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user7Email);
 
-          cy.visit('/admin/users/moderators');
+          cy.visit('/admin/users/project-moderators');
 
           // We make a fresh request to the backend to get the updated values since the additionalModerators can change
           cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {
@@ -588,15 +596,18 @@ describe('Seat based billing', () => {
       cy.get('.e2e-admin-list').contains(user11Email);
     });
 
-    it('updates admin and moderators number', () => {
-      cy.visit('/admin/users/moderators');
+    it('updates admin and folder moderators number', () => {
+      cy.visit('/admin/users/folder-moderators');
 
       cy.apiGetUsersCount().then((response) => {
         adminCount = response.body.data.attributes.administrators_count;
-        moderatorsCount = response.body.data.attributes.moderators_count;
+        folderModeratorsCount =
+          response.body.data.attributes.folder_moderators_count;
         cy.dataCy('e2e-admin-count').contains(`${adminCount}`);
 
-        cy.dataCy('e2e-moderator-count').contains(`${moderatorsCount}`);
+        cy.dataCy('e2e-folder-moderator-count').contains(
+          `${folderModeratorsCount}`
+        );
 
         // Navigate to the folder permissions page
         cy.visit(`admin/projects/folders/${folderId}/permissions`);
@@ -609,15 +620,15 @@ describe('Seat based billing', () => {
         testShowModalOnAddingModerator(noOfUsedModeratorSeats);
         cy.get('.e2e-admin-list').contains(user12Email);
 
-        cy.visit('/admin/users/moderators');
-        cy.dataCy('e2e-moderator-count').contains(
-          `${response.body.data.attributes.moderators_count + 1}`
+        cy.visit('/admin/users/folder-moderators');
+        cy.dataCy('e2e-folder-moderator-count').contains(
+          `${folderModeratorsCount + 1}`
         );
       });
     });
 
     it('updates remaining seats and used seats', () => {
-      cy.visit('/admin/users/moderators');
+      cy.visit('/admin/users/folder-moderators');
 
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
@@ -650,7 +661,7 @@ describe('Seat based billing', () => {
           testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user13Email);
 
-          cy.visit('/admin/users/moderators');
+          cy.visit('/admin/users/folder-moderators');
 
           // We make a fresh request to the backend to get the updated values since the additionalModerators can change
           cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {

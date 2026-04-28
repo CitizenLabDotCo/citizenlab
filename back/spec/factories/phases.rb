@@ -21,11 +21,8 @@ FactoryBot.define do
       }
     end
 
-    start_at { Date.new(2017, 5, 1) }
-    end_at do
-      start_date = start_at.is_a?(String) ? Date.parse(start_at) : start_at
-      start_date + 60.days
-    end
+    start_at { '2017-05-01'.in_time_zone }
+    end_at { start_at.in_time_zone + 60.days }
 
     voting_min_total { 1 }
     voting_max_total { 10_000 }
@@ -64,8 +61,9 @@ FactoryBot.define do
       end
 
       after(:build) do |phase, evaluator|
-        phase.start_at = Time.now + ((evaluator.duration_in_days * Phase.count) + 1).days
-        phase.end_at = Time.now + (evaluator.duration_in_days * (Phase.count + 1)).days
+        start_at = Time.now + ((evaluator.duration_in_days * Phase.count) + 1).days
+        phase.start_at = start_at
+        phase.end_at = start_at + evaluator.duration_in_days.days
       end
     end
 
@@ -158,6 +156,7 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'Idea Feed (en)', 'nl-BE' => 'Idea Feed (nl)' } }
       participation_method { 'ideation' }
       presentation_mode { 'feed' }
+      available_views { %w[card feed] }
     end
 
     trait :ongoing do

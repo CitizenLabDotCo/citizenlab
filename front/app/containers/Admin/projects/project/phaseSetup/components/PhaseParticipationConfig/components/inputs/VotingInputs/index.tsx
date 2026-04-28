@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
-import { VoteTerm, VotingMethod } from 'api/phases/types';
+import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 
 import {
   SectionDescription,
@@ -27,9 +27,9 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
+import ViewSelector from '../../shared/ViewSelector';
 
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
@@ -67,8 +67,13 @@ export interface VotingInputsProps {
   apiErrors: CLErrors | null | undefined;
   validationErrors: ValidationErrors;
   presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
   handleIdeasDisplayChange: (
     presentation_mode: 'map' | 'card' | 'feed'
+  ) => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
   ) => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
   similarity_enabled?: boolean | null;
@@ -100,7 +105,9 @@ const VotingInputs = ({
   apiErrors,
   validationErrors,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   handleVotingMethodOnChange,
   similarity_enabled,
   similarity_threshold_title,
@@ -270,11 +277,14 @@ const VotingInputs = ({
           handleThresholdChange={handleThresholdChange}
         />
 
-        <DefaultViewPicker
+        <ViewSelector
           presentation_mode={presentation_mode}
+          available_views={available_views}
           apiErrors={apiErrors}
           handleIdeasDisplayChange={handleIdeasDisplayChange}
+          handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
+          hideFeed
         />
       </Box>
     </>

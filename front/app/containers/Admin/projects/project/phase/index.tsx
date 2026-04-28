@@ -5,7 +5,7 @@ import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -17,7 +17,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import { getTimelineTab } from '../phaseSetup/utils';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
@@ -44,9 +43,6 @@ const AdminProjectPhaseIndex = ({
     }),
     report_builder_enabled: useFeatureFlag({
       name: 'report_builder',
-    }),
-    phase_insights_enabled: useFeatureFlag({
-      name: 'phase_insights',
     }),
   };
 
@@ -108,7 +104,6 @@ export default () => {
     undefined
   );
   const { pathname } = useLocation();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     if (!phases) return;
@@ -131,22 +126,14 @@ export default () => {
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
-      const redirectTab = getTimelineTab(phaseShown, phaseInsightsEnabled);
+      const redirectTab = getPhaseLandingTab(phaseShown);
       clHistory.replace(
         `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 
     setSelectedPhase(phaseShown);
-  }, [
-    phaseId,
-    phases,
-    projectId,
-    pathname,
-    isLoadingPhases,
-    isFetchingPhases,
-    phaseInsightsEnabled,
-  ]);
+  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (

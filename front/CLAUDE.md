@@ -177,6 +177,7 @@ const Button = styled.button`
 ```
 
 For small customizations, we use a few components with styling props, most notably <Box>.
+For border radius adjustments, we use the value as specified by `stylingConsts.borderRadius.`
 
 ## Testing
 
@@ -301,7 +302,7 @@ Key features:
 - **Date Handling**: `date-fns`, `moment`, `react-day-picker`
 - **PDF**: `react-pdf`
 - **CSV Export**: `react-csv`, `papaparse`
-- **Analytics**: `posthog-js`, `@segment/snippet`
+- **Analytics**: `posthog-js`
 - **Error Tracking**: `@sentry/react`
 - **Animations**: `lottie-react`, `react-transition-group`
 
@@ -324,6 +325,10 @@ This extracts all `FormattedMessage` strings for translation.
 ```bash
 npm run find-unused-messages
 ```
+
+### Updating translations
+
+The translations JSON files in app/translations are managed externally through crowdin, and should never be updated manually. Instead, the `extract-intl` should be run in case of new entries in the messages.ts files. If text needs to change, the translation id needs to change, as corrections to the values in the messages.ts files (or translation json files) will either have no effect or be overwritten again. When 'bumping' a translation id, add a number at the end.
 
 ## CI/CD
 

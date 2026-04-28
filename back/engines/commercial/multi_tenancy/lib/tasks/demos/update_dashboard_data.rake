@@ -6,6 +6,8 @@
 #   - OfficialFeedback: creates records so 38% of non-native-survey ideas have one
 #   - Idea statuses + Activity: updates status for 80% of ideas and creates changed_status activities
 #   - User custom_field_values: populates select/multiselect fields and birthyear with random values
+#   - EmailCampaigns::Delivery: creates deliveries for sent campaigns (~50 users per campaign)
+#     2% failed, 98% delivered, 70% opened, 40% clicked
 #
 # Usage:
 #   rake 'demos:update_dashboard_data[hostname.com]'
@@ -43,6 +45,7 @@ namespace :demos do
       UpdateDemoDashboardData.create_official_feedback
       UpdateDemoDashboardData.create_idea_status_change_activities
       UpdateDemoDashboardData.update_user_custom_field_values
+      UpdateDemoDashboardData.create_email_campaign_deliveries
 
       puts 'Done.'
     end
@@ -249,6 +252,59 @@ module UpdateDemoDashboardData
     end
 
     puts "  Updated #{updated} users, skipped #{skip_count}"
+  end
+
+  def create_email_campaign_deliveries
+    campaigns = EmailCampaigns::Campaign.where('deliveries_count > 0')
+
+    if campaigns.none?
+      puts "\nNo sent EmailCampaigns found."
+      return
+    end
+
+    users = User.order('RANDOM()').limit(50).to_a
+    if users.empty?
+      puts "\nNo users found for email campaign deliveries."
+      return
+    end
+
+    puts "\nCreating EmailCampaigns::Delivery records for #{campaigns.count} campaigns (~#{users.size} users each)..."
+
+    created = 0
+    campaigns.each do |campaign|
+      existing_user_ids = campaign.deliveries.pluck(:user_id).to_set
+      eligible_users = users.reject { |u| existing_user_ids.include?(u.id) }
+
+      next if eligible_users.empty?
+
+      total = eligible_users.size
+      failed_count = (total * 0.02).round
+      clicked_count = (total * 0.40).round
+      opened_count = (total * 0.30).round
+      delivered_count = total - failed_count - clicked_count - opened_count
+
+      shuffled = eligible_users.shuffle
+      status_assignments = Array.new(failed_count, 'failed') +
+                           Array.new(delivered_count, 'delivered') +
+                           Array.new(opened_count, 'opened') +
+                           Array.new(clicked_count, 'clicked')
+
+      shuffled.zip(status_assignments).each do |user, status|
+        sent_at = campaign.created_at + rand(0..3600).seconds
+        EmailCampaigns::Delivery.create!(
+          campaign: campaign,
+          user: user,
+          delivery_status: status,
+          sent_at: sent_at
+        )
+        created += 1
+      end
+    end
+
+    # Fix counter caches after bulk creation
+    EmailCampaigns::Delivery.counter_culture_fix_counts only: :campaign
+
+    puts "  Created #{created} deliveries across #{campaigns.count} campaigns"
   end
 
   def option_values_for(field)

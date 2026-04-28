@@ -5,11 +5,11 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include Surveys::WebApi::V1::SurveyPhaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
-  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count,
+  attributes :title_multiloc, :created_at, :updated_at, :ideas_count,
     :participation_method, :submission_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
-    :presentation_mode, :ideas_order, :input_term, :vote_term,
+    :presentation_mode, :available_views, :ideas_order, :input_term, :vote_term,
     :prescreening_mode, :manual_voters_amount, :manual_votes_count,
     :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
     :survey_popup_frequency
@@ -24,6 +24,9 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
       phase.pmethod.supports_serializing?(attribute_name)
     }
   end
+
+  attribute :start_at, &:start_date
+  attribute :end_at, &:end_date
 
   attribute :votes_count, if: proc { |phase, params|
     phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))
@@ -45,6 +48,12 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
+  end
+
+  attribute :draft_description_multiloc, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  } do |object|
+    TextImageService.new.render_data_images_multiloc object.draft_description_multiloc, field: :draft_description_multiloc, imageable: object
   end
 
   attribute :previous_phase_end_at_updated do |object|
@@ -72,7 +81,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :allow_anonymous_participation do |phase|
-    posting_permission = phase.permissions.find_by(action: 'posting_idea')
+    posting_permission = phase.permissions.find { |p| p.action == 'posting_idea' }
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
   end
 

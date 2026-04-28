@@ -153,7 +153,9 @@ const EditSubscriptionModal = ({
 
   return (
     <Box w="100%" m="24px auto" pr="24px">
-      <Title variant="h2">{formatMessage(messages.editWebhookTitle)}</Title>
+      <Title id="edit-webhook-modal-title" variant="h2">
+        {formatMessage(messages.editWebhookTitle)}
+      </Title>
       <Text>{formatMessage(messages.editWebhookDescription)}</Text>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>

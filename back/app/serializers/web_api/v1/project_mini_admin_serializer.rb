@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
-  attributes(:title_multiloc, :visible_to, :listed)
+  attributes(:title_multiloc, :visible_to, :listed, :space_id)
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
@@ -13,22 +13,22 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
 
   attribute :first_phase_start_date do |object|
     first_phase = object.phases.order(:start_at).first
-    first_phase&.start_at
+    first_phase&.start_date
   end
 
   attribute :last_phase_end_date do |object|
     last_phase = object.phases.order(:start_at).last
-    last_phase&.end_at
+    last_phase&.end_date
   end
 
   attribute :current_phase_start_date do |object|
     phase = TimelineService.new.current_phase(object)
-    phase&.start_at
+    phase&.start_date
   end
 
   attribute :current_phase_end_date do |object|
     phase = TimelineService.new.current_phase(object)
-    phase&.end_at
+    phase&.end_date
   end
 
   attribute :folder_title_multiloc do |object|

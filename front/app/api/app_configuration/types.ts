@@ -43,7 +43,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
   topics_term?: Multiloc;
@@ -98,6 +97,7 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
     visibility?: 'show' | 'link' | 'hide';
+    enforced_email_domain_error_multiloc?: Multiloc;
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -141,6 +141,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  federa_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -180,9 +184,7 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
-  project_folders?: AppConfigurationFeature;
   project_preview_link?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
@@ -200,9 +202,6 @@ export interface IAppConfigurationSettings {
   };
   google_analytics?: AppConfigurationFeature & {
     tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
@@ -227,7 +226,6 @@ export interface IAppConfigurationSettings {
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
-  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
@@ -276,8 +274,12 @@ export interface IAppConfigurationSettings {
   nested_input_topics?: AppConfigurationFeature;
   live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
+  spaces?: AppConfigurationFeature;
+  project_scheduling?: AppConfigurationFeature;
+  draft_phase_description?: AppConfigurationFeature;
+  email_scheduling?: AppConfigurationFeature;
+  custom_smtp?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -26,7 +26,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project
   end
 
-  # rubocop:disable Metrics/AbcSize
   def export(
     project,
     local_copy: false,
@@ -96,7 +95,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
     @template
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -276,7 +274,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       end,
       'include_all_areas' => @project.include_all_areas,
       'hidden' => @project.hidden,
-      'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled
+      'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled,
+      'space_id' => @local_copy ? @project.space_id : nil
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
@@ -310,9 +309,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
   def yml_phases(shift_timestamps: 0, timeline_start_at: nil)
     if timeline_start_at && @project.phases.first
-      kickoff_at = @project.phases.first.start_at
-      shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
+      kickoff_date = @project.phases.first.start_at.to_date
+      timeline_start_date = timeline_start_at.in_time_zone.to_date
+      shift_timestamps = (timeline_start_date - kickoff_date)
     end
+
     @project.phases.map do |phase|
       yml_phase = {
         'project_ref' => lookup_ref(phase.project_id, :project),
@@ -332,6 +333,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
                                       }
                                     end,
         'presentation_mode' => phase.presentation_mode,
+        'available_views' => phase.available_views,
         'participation_method' => phase.participation_method,
         'submission_enabled' => phase.submission_enabled,
         'commenting_enabled' => phase.commenting_enabled,

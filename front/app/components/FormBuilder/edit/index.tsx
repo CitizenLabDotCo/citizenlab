@@ -129,7 +129,7 @@ const FormEdit = ({
     setValue,
   } = methods;
 
-  const { move, replace, insert } = useFieldArray({
+  const { move, replace, insert, remove } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -366,6 +366,7 @@ const FormEdit = ({
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
                         closeSettings={closeSettings}
+                        fieldArrayOperations={{ insert, move, remove }}
                       />
                     </Box>
                   </Box>

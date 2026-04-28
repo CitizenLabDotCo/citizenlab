@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -23,9 +23,9 @@ const Container = styled.div<{ mode: 'edit' | 'new' }>`
   ${({ mode }) =>
     mode === 'new'
       ? `
-    background: #fff;
+    background: ${colors.white};
     border-radius: 3px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid ${colors.borderLight};
     box-sizing: border-box;
     padding: 3.5rem 4rem;
     margin-bottom: 60px;

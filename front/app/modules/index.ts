@@ -13,6 +13,7 @@ import idClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import idCriiptoConfiguration from './commercial/id_criipto';
 import idFakeSSOConfiguration from './commercial/id_fake_sso';
+import idFederaConfiguration from './commercial/id_federa';
 import idFranceConnectConfiguration from './commercial/id_franceconnect';
 import idGentRrnConfiguration from './commercial/id_gent_rrn';
 import idIdAustriaConfiguration from './commercial/id_id_austria';
@@ -29,7 +30,6 @@ import matomoConfiguration from './commercial/matomo';
 import posthogConfiguration from './commercial/posthog_integration';
 import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import widgetsConfiguration from './commercial/widgets';
 
@@ -59,16 +59,10 @@ export default loadModules([
     configuration: satismeterConfiguration,
   },
   {
-    configuration: segmentConfiguration,
-  },
-  {
     configuration: flagInappropriateContentConfiguration,
   },
   {
     configuration: ideaAssignmentConfiguration,
-  },
-  {
-    configuration: bulkIdeaImportConfiguration,
   },
   {
     configuration: adminProjectTemplatesConfiguration,
@@ -78,6 +72,9 @@ export default loadModules([
   },
   {
     configuration: idFakeSSOConfiguration,
+  },
+  {
+    configuration: idFederaConfiguration,
   },
   {
     configuration: idBosaFasConfiguration,

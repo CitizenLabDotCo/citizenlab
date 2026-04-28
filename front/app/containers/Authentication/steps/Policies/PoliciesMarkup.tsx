@@ -48,6 +48,7 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
         <CheckboxWithLabel
           name="termsAndConditionsAccepted"
           dataTestId="termsAndConditionsAccepted"
+          required
           label={
             <ConsentText>
               <FormattedMessage
@@ -70,6 +71,7 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
         <CheckboxWithLabel
           name="privacyPolicyAccepted"
           dataTestId="privacyPolicyAccepted"
+          required
           label={
             <ConsentText>
               <FormattedMessage
@@ -89,7 +91,13 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
         />
       </Box>
       {showByContinuingText && (
-        <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
+        <Text
+          id="email-consent-description"
+          mt="24px"
+          mb="0px"
+          fontSize="s"
+          color="tenantText"
+        >
           {formatMessage(messages.byContinuing)}
         </Text>
       )}

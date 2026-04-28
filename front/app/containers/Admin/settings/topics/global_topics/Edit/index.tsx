@@ -19,22 +19,16 @@ import TopicForm from '../TopicForm';
 const Edit = () => {
   const { topicId } = useParams({ strict: false }) as { topicId: string };
   const { data: topic } = useGlobalTopic(topicId);
-  const { mutate: updateTopic } = useUpdateGlobalTopic();
+  const { mutateAsync: updateTopic } = useUpdateGlobalTopic();
 
-  const handleSubmit = (values: Omit<IGlobalTopicUpdate, 'id'>) => {
+  const handleSubmit = async (values: Omit<IGlobalTopicUpdate, 'id'>) => {
     if (!topic) return;
 
-    updateTopic(
-      {
-        id: topic.data.id,
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/topics/platform');
-        },
-      }
-    );
+    await updateTopic({
+      id: topic.data.id,
+      ...values,
+    });
+    clHistory.push('/admin/settings/topics/platform');
   };
 
   const goBack = () => {

@@ -84,6 +84,7 @@ export const DropdownListItem = styled.button`
   font-weight: 400;
   display: flex;
   align-items: center;
+  text-align: start;
   margin: 0;
   margin-bottom: 4px;
   padding: 10px;

@@ -9,9 +9,5 @@ module InputTypeStrategy
     def supports_matrix_statements?
       true
     end
-
-    def supports_pdf_import?
-      false
-    end
   end
 end

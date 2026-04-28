@@ -92,14 +92,13 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
   };
 
   // May need memoization
-  const localeOptions = Object.entries(appLocalePairs).map(
-    ([locale, label]) => {
-      return {
-        label,
-        value: locale,
-      };
-    }
-  );
+  const localeOptions = Object.entries(appLocalePairs)
+    // TEMPORARY: Quick fix to hide ga-IE (Irish) until the client has paid. Remove this filter once approved.
+    .filter(([locale]) => locale !== 'ga-IE')
+    .map(([locale, label]) => ({
+      label,
+      value: locale,
+    }));
 
   return (
     <FormProvider {...methods}>

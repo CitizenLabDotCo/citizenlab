@@ -5,6 +5,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   let(:phase) { create(:single_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
+  let(:visits_service) { Insights::VisitsService.new(phase.project_id, start_at: phase.start_at, end_at: phase.end_at) }
+
+  before { AppConfiguration.instance.update!(platform_start_at: 1.year.ago.beginning_of_day) }
 
   describe '#participant_id' do
     it 'returns the user_id when present' do
@@ -37,35 +40,38 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
-    let(:visits) do
-      [
-        { acted_at: 10.days.ago, visitor_id: user1.id.to_s }, # during phase (in week before last)
-        { acted_at: 5.days.ago, visitor_id: user1.id.to_s },  # during phase & in last 7 days
-        { acted_at: 10.days.ago, visitor_id: user2.id.to_s }, # during phase (in week before last)
-        { acted_at: 4.days.ago, visitor_id: user2.id.to_s },  # during phase & in last 7 days
-        { acted_at: 4.days.ago, visitor_id: 'anonymous_1' },  # during phase & in last 7 days
-        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } # # during phase (in week before last)
-      ]
-    end
-
     it 'calculates base metrics correctly' do
-      result = service.send(:base_metrics, participations, participant_ids, visits)
+      # Setup some visits
+      session1 = create(:session, user_id: user1.id)
+      create(:pageview, session: session1, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
+      create(:pageview, session: session1, created_at: 5.days.ago, project_id: phase.project.id) # during phase & in last 7 days
+
+      session2 = create(:session, user_id: user2.id)
+      create(:pageview, session: session2, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
+      create(:pageview, session: session2, created_at: 4.days.ago, project_id: phase.project.id) # during phase & in last 7 days
+
+      session3 = create(:session, user_id: nil) # anonymous visitor
+      create(:pageview, session: session3, created_at: 4.days.ago, project_id: phase.project.id) # during phase & in last 7 days
+
+      session4 = create(:session, user_id: create(:user).id) # visitor who did not participate
+      create(:pageview, session: session4, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
+
+      result = service.send(:base_metrics, participations, participant_ids, visits_service)
 
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 33.3, # From 3 unique visitors 7-days ago, to 4 now = 33.3% change
           participants: 3,
           participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           participation_rate_as_percent: 75.0,
-          participation_rate_7_day_percent_change: 50.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participation_rate_7_day_percent_change: 12.5 # participation_rate_7_days_ago=0.6666666666666666, participation_rate_now=0.75 = (((0.75 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1)
         }
       )
     end
 
     it 'handles zero visitors as expected' do
-      visits = []
-      result = service.send(:base_metrics, participations, participant_ids, visits)
+      result = service.send(:base_metrics, participations, participant_ids, visits_service)
 
       expect(result).to eq(
         {
@@ -90,24 +96,23 @@ RSpec.describe Insights::BasePhaseInsightsService do
         ]
       }
 
-      visits = [
-        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid },
-        { acted_at: 5.days.ago, visitor_id: SecureRandom.uuid },
-        { acted_at: 4.days.ago, visitor_id: SecureRandom.uuid }
-      ]
+      # Setup 3 visits (only 1 is > 7 days ago)
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash1'), created_at: 10.days.ago, project_id: phase.project.id)
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash2'), created_at: 5.days.ago, project_id: phase.project.id)
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash3'), created_at: 4.days.ago, project_id: phase.project.id)
 
-      result = service.send(:base_7_day_changes, participations, visits)
+      result = service.send(:base_7_day_changes, participations, 3, 3)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
-          participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          visitors_7_day_percent_change: 200.0, # From 1 unique visitor 7-days ago, to 3 now = 200% change
+          participants_7_day_percent_change: 200.0, # from 1 unique participants 7-days ago, to 3 now = 200% increase
           participation_rate_7_day_percent_change: 0.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         }
       )
     end
 
-    it 'handles zero visitors in either of last two 7-day periods as expected' do
+    it 'handles zero visitors as expected' do
       participations = {
         voting: [
           create(:basket_participation, acted_at: 10.days.ago),
@@ -116,35 +121,41 @@ RSpec.describe Insights::BasePhaseInsightsService do
         ]
       }
 
-      visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits in week before last
-      result = service.send(:base_7_day_changes, participations, visits)
+      # No visits before 7-days ago
+      page_view = create(:pageview, session: create(:session), created_at: 5.days.ago, project_id: phase.project.id)
+
+      result = service.send(:base_7_day_changes, participations, 1, 3)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 'last_7_days_compared_with_zero',
-          participants_7_day_percent_change: 100.0,
+          visitors_7_day_percent_change: 'current_value_compared_with_zero',
+          participants_7_day_percent_change: 200.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
 
-      visits = [{ acted_at: 10.days.ago, visitor_id: SecureRandom.uuid }] # No visits in last 7 days
-      result = service.send(:base_7_day_changes, participations, visits)
+      # No visits in last 7 days
+      page_view.update!(created_at: 10.days.ago)
+
+      result = service.send(:base_7_day_changes, participations, 1, 3)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: -100.0,
-          participants_7_day_percent_change: 100.0,
-          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+          visitors_7_day_percent_change: 0.0,
+          participants_7_day_percent_change: 200.0,
+          participation_rate_7_day_percent_change: 200.0 # participation_rate_7_days_ago=1.0, participation_rate_now=3.0 = (((3.0 - 1.0).to_f / 1.0) * 100.0).round(1) = 200% change
         }
       )
 
-      visits = [] # No visits in either period
-      result = service.send(:base_7_day_changes, participations, visits)
+      # No visits in either period
+      page_view.destroy!
+
+      result = service.send(:base_7_day_changes, participations, 0, 3)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
-          participants_7_day_percent_change: 100.0,
+          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'current_value_compared_with_zero' if no visitors to phase at all
+          participants_7_day_percent_change: 200.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
@@ -598,21 +609,20 @@ RSpec.describe Insights::BasePhaseInsightsService do
   describe '#participants_and_visitors_chart_data' do
     it 'handles empty participations and visits data' do
       flattened_participations = []
-      visits = []
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_service)
 
       expect(result).to eq({ resolution: 'day', timeseries: [] })
     end
 
     it 'handles empty participations with non-empty visits data' do
       flattened_participations = []
-      visits = [
-        { acted_at: 10.days.ago.beginning_of_day, visitor_id: 'visitor_1' },
-        { acted_at: 9.days.ago.beginning_of_day, visitor_id: 'visitor_2' },
-        { acted_at: 9.days.ago.beginning_of_day, visitor_id: 'visitor_3' }
-      ]
 
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
+      # Setup 3 visits / 3 visitors
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash1'), created_at: 10.days.ago, project_id: phase.project.id)
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash2'), created_at: 9.days.ago, project_id: phase.project.id)
+      create(:pageview, session: create(:session, monthly_user_hash: 'hash3'), created_at: 9.days.ago, project_id: phase.project.id)
+
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_service)
 
       expect(result).to eq({
         resolution: 'day',
@@ -629,8 +639,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       participation2 = create(:basket_participation, acted_at: 7.days.ago, user: user)
 
       flattened_participations = [participation1, participation2]
-      visits = []
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
+
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_service)
 
       expect(result).to eq({
         resolution: 'day',
@@ -689,49 +699,55 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#phase_has_run_more_than_14_days?' do
-    it 'returns false when phase duration is less than 14 days' do
-      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 13)) # 13 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+  describe '#phase_has_run_more_than_7_days?' do
+    it 'returns false when phase duration is less than 7 days' do
+      start_at = '2026-01-01'.in_time_zone
+      end_at = start_at + 7.days - 1.second
+      now = end_at + 1.day
+
+      past_phase = create(:single_voting_phase, start_at:, end_at:)
+      service = described_class.new(past_phase)
+
+      travel_to(now) do
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
-    it 'returns false when phase duration is 14 days but elapsed time is less than 14 days' do
-      travel_to(Time.zone.parse('2026-01-13 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    it 'returns false when phase duration is 7 days but elapsed time is less than 7 days' do
+      start_at = '2026-01-01'.in_time_zone
+      end_at = start_at + 10.days
+      now = start_at + 7.days - 1.second
+
+      ongoing_phase = create(:single_voting_phase, start_at:, end_at:)
+      service = described_class.new(ongoing_phase)
+
+      travel_to(now) do
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
-    it 'returns true when phase duration is 14 days and elapsed time is at least 14 days' do
-      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be true
-      end
-    end
+    it 'returns true when phase duration is 7 days and elapsed time is at least 7 days' do
+      start_at = '2026-01-01'.in_time_zone
+      end_at = now = start_at + 7.days
 
-    it 'returns false when phase is long enough but started less than 14 days ago' do
-      travel_to(Time.zone.parse('2026-01-14 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
-        service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
-      end
-    end
-
-    it 'returns true for ongoing phases without end_at when started more than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: nil)
+      phase = create(:single_voting_phase, start_at:, end_at:)
       service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+
+      travel_to(now) do
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be true
+      end
     end
 
-    it 'returns false for ongoing phases without end_at when started less than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: nil)
+    it 'returns true for ongoing phases without end_at when started more than 7 days ago' do
+      phase = create(:single_voting_phase, start_at: 9.days.ago, end_at: nil)
       service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      expect(service.send(:phase_has_run_more_than_7_days?)).to be true
+    end
+
+    it 'returns false for ongoing phases without end_at when started less than 7 days ago' do
+      phase = create(:single_voting_phase, start_at: 6.days.ago, end_at: nil)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_7_days?)).to be false
     end
   end
 
@@ -743,8 +759,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 80, 60)).to eq(-25.0)
     end
 
-    it "returns 'last_7_days_compared_with_zero' when old value is zero and new value is not zero" do
-      expect(service.send(:percentage_change, 0, 100)).to eq('last_7_days_compared_with_zero')
+    it "returns 'current_value_compared_with_zero' when old value is zero and new value is not zero" do
+      expect(service.send(:percentage_change, 0, 100)).to eq('current_value_compared_with_zero')
     end
 
     it 'returns zero when there is no change' do
@@ -759,8 +775,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
     end
 
-    it 'returns null when phase less than 14 days old' do
-      phase.update(start_at: 10.days.ago)
+    it 'returns null when phase less than 7 days old' do
+      phase.update(start_at: 6.days.ago)
 
       expect(service.send(:percentage_change, 100, 150)).to be_nil
     end
@@ -792,15 +808,16 @@ RSpec.describe Insights::BasePhaseInsightsService do
         create(:basket_participation, acted_at: 4.days.ago, participant_id: 'user_3')
       ]
 
-      # Unique participants in 7-14 days ago: user_1, user_2 => 2
-      # Unique participants in last 7 days: user_1, user_3 => 2
-      expect(service.send(:participations_7_day_change, participations)).to eq(0.0)
+      # Participations count 7-days ago: 2
+      # Participantions count now: 4
+      expect(service.send(:participations_7_day_change, participations)).to eq(100.0)
 
       # Adding one more participation in the last 7 days
       participations << create(:basket_participation, acted_at: 3.days.ago, participant_id: 'user_4')
 
-      # Unique participants in last 7 days: user_1, user_3, user_4 => 3
-      expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
+      # Participations count 7-days ago: 2
+      # Participantions count now: 5
+      expect(service.send(:participations_7_day_change, participations)).to eq(150.0)
     end
   end
 
@@ -849,6 +866,28 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
+    end
+
+    it 'excludes empty string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}domicile" => '', "#{prefix}gender" => '', "#{prefix}postcode" => '2324km' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'postcode' => '2324km' })
+    end
+
+    it 'excludes empty string values when merging item and user custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '' })
+      user = create(:user, custom_field_values: { 'key1' => 'value1', 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'excludes whitespace-only string values from item custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => '  ', "#{prefix}key2" => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key2' => 'value2' })
     end
   end
 end

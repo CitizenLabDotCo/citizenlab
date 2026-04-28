@@ -16,24 +16,18 @@ import RegistrationCustomFieldOptionsForm, {
 } from './RegistrationCustomFieldOptionsForm';
 
 const RegistrationCustomFieldOptionsNew = () => {
-  const { mutate: addCustomFieldOption } = useAddCustomFieldOption();
+  const { mutateAsync: addCustomFieldOption } = useAddCustomFieldOption();
   const { userCustomFieldId } = useParams({ strict: false }) as {
     userCustomFieldId: string;
   };
 
-  const handleSubmit = (values: FormValues) => {
-    addCustomFieldOption(
-      {
-        customFieldId: userCustomFieldId,
-        title_multiloc: values.title_multiloc,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push(
-            `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-          );
-        },
-      }
+  const handleSubmit = async (values: FormValues) => {
+    await addCustomFieldOption({
+      customFieldId: userCustomFieldId,
+      title_multiloc: values.title_multiloc,
+    });
+    clHistory.push(
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 

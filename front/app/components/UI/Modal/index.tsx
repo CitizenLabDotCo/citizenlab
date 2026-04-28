@@ -216,16 +216,16 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
   ${media.phone`
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -261,10 +261,10 @@ const FooterContainer = styled.div`
   flex-shrink: 0;
   flex-direction: row;
   align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   border-top: solid 1px ${colors.divider};
   background: #fff;
 
@@ -317,14 +317,13 @@ const ModalContentContainerSwitch = ({
   return <StyledFocusOn width={width}>{children}</StyledFocusOn>;
 };
 
-interface Props {
+interface BaseProps {
   'data-testid'?: string;
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
   close: () => void;
   className?: string;
-  header?: JSX.Element | string;
   niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
@@ -341,6 +340,10 @@ interface Props {
    */
   returnFocusRef?: React.RefObject<HTMLElement>;
 }
+
+type Props =
+  | (BaseProps & { header: JSX.Element | string; ariaLabelledBy?: string })
+  | (BaseProps & { header?: JSX.Element | string; ariaLabelledBy: string });
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
@@ -359,6 +362,7 @@ const Modal: React.FC<Props> = ({
   children,
   zIndex,
   hideCloseButton,
+  ariaLabelledBy,
   returnFocusRef,
 }) => {
   const nodeRef = useRef(null); // Needed to fix React StrictMode warning
@@ -490,7 +494,7 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
-            ariaLabelledBy={header ? 'modal-header' : undefined}
+            ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             aria-modal="true"
             role="dialog"
           >

@@ -9,4 +9,5 @@ export default {
   setSort: 'Projects page: set sort',
   setStatus: 'Projects page: set status filter',
   setVisibility: 'Projects page: set visibility filter',
+  setSpace: 'Projects page: set space filter',
 };

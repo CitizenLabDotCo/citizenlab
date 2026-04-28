@@ -29,10 +29,6 @@ import messages from '../../../messages';
 import AnalysisInsights from './AnalysisInsights';
 import { filterForCommunityMonitorQuarter } from './utils';
 
-const StyledDropdownListItem = styled(DropdownListItem)`
-  text-align: left;
-`;
-
 type Props = {
   customFieldId: string;
   textResponsesCount: number;
@@ -218,7 +214,7 @@ const Analysis = ({
               onClickOutside={() => setDropdownOpened(false)}
               content={
                 <>
-                  <StyledDropdownListItem
+                  <DropdownListItem
                     id="e2e-hide-summaries"
                     onClick={() => {
                       updateAnalysis(
@@ -239,7 +235,7 @@ const Analysis = ({
                     ) : (
                       formatMessage(messages.hideSummaries)
                     )}
-                  </StyledDropdownListItem>
+                  </DropdownListItem>
                 </>
               }
             />

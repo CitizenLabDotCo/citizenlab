@@ -163,16 +163,16 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job if the presentation_mode is feed' do
+    it 'enqueues a wise voice detection job if feed is in available_views' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.phases.first.update!(presentation_mode: 'feed', available_views: %w[card feed])
       expect { service.after_create(idea, user, phase) }
         .to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
         .exactly(1).times
     end
 
-    it "doesn't enqueue a wise voice detection job if the presentation_mode is not feed" do
+    it "doesn't enqueue a wise voice detection job if feed is not in available_views" do
       idea = create(:idea)
       expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
@@ -453,9 +453,9 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job when presentation_mode is feed and title or body changed' do
+    it 'enqueues a wise voice detection job when feed is in available_views and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.phases.first.update!(presentation_mode: 'feed', available_views: %w[card feed])
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(WiseVoiceDetectionJob)
@@ -463,7 +463,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'does not enqueue a wise voice detection job when presentation_mode is not feed' do
+    it 'does not enqueue a wise voice detection job when feed is not in available_views' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }

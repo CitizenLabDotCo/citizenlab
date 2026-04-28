@@ -43,9 +43,13 @@ const InviteUsersWithSeatsModal = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const newSeats = newSeatsResponse.data.attributes;
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.result.newly_added_moderators_number,
+  const { loading, checkIfSeatsExceeded } = useExceedsSeats();
+  if (loading) return null;
+
+  const exceedsSeats = checkIfSeatsExceeded({
+    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number ?? 0,
+    newlyAddedModeratorsNumber:
+      newSeats.result.newly_added_moderators_number ?? 0,
   });
 
   const handleConfirmClick = () => {
@@ -56,7 +60,14 @@ const InviteUsersWithSeatsModal = ({
   };
 
   const header = !showSuccess ? (
-    <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+    <Text
+      id="invite-users-modal-title"
+      color="primary"
+      my="8px"
+      fontSize="l"
+      fontWeight="bold"
+      px="2px"
+    >
       {formatMessage(messages.confirmSeatUsageChange)}
     </Text>
   ) : undefined;
@@ -87,7 +98,12 @@ const InviteUsersWithSeatsModal = ({
   };
 
   return (
-    <Modal opened={showModal} close={resetModal} header={header}>
+    <Modal
+      opened={showModal}
+      close={resetModal}
+      header={header}
+      ariaLabelledBy="invite-users-modal-title"
+    >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}

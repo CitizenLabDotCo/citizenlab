@@ -10,8 +10,8 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-      registrations_in_period = User.where(registration_completed_at: start_date..end_date)
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
+      registrations_in_period = User.where(registration_completed_at: start_at...end_at)
 
       # Time series
       registrations_timeseries = registrations_in_period
@@ -35,14 +35,15 @@ module ReportBuilder
         registrations_whole_period: registrations_whole_period,
         registration_rate_whole_period: registration_rate(
           registrations_whole_period,
-          start_date,
-          end_date
+          start_at,
+          end_at
         )
       }
 
       if compare_start_at && compare_end_at
+        compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         registrations_compared_period = User
-          .where(registration_completed_at: compare_start_at..compare_end_at)
+          .where(registration_completed_at: compare_start_at...compare_end_at)
           .count
 
         response[:registrations_compared_period] = registrations_compared_period
@@ -56,13 +57,9 @@ module ReportBuilder
       response
     end
 
-    def registration_rate(registrations, start_date, end_date)
-      visitors = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
-        .distinct
-        .pluck(:monthly_user_hash)
-        .count
-
+    def registration_rate(registrations, start_at, end_at)
+      visits_service = Insights::VisitsService.new(nil, start_at:, end_at:)
+      visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (registrations / visitors.to_f)
     end
   end

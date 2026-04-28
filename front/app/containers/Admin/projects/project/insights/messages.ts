@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Total',
   },
   participants: {
-    id: 'app.containers.Admin.projects.project.insights.participants',
-    defaultMessage: 'Participants',
+    id: 'app.containers.Admin.projects.project.insights.participants2',
+    defaultMessage: 'Phase participants',
   },
   inputs: {
     id: 'app.containers.Admin.projects.project.insights.inputs',
@@ -201,9 +201,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.count',
     defaultMessage: 'Count',
   },
-  vsLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
-    defaultMessage: 'vs last 7 days',
+  sevenDayChange: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChange',
+    defaultMessage: '7-day change',
+  },
+  sevenDayChangeDefaultTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip',
+    defaultMessage:
+      "The percentage this metric's value has changed, in comparison to its value 7-days ago.",
   },
   phaseParticipantsMetricTooltip2: {
     id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
@@ -224,15 +229,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',
   },
-  insufficientComparisonDataPhaseTooNew: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew',
+  insufficientComparisonDataPhaseTooYoung: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooYoung',
     defaultMessage:
-      'Cannot calculate 7 day change when phase has run for less than 14 days',
+      'Cannot calculate 7-day change when phase has run for less than 7 days',
   },
-  insufficientComparisonDataNoPriorActivity: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity',
+  currentValueComparedWithZero: {
+    id: 'app.containers.Admin.projects.project.insights.currentValueComparedWithZero',
     defaultMessage:
-      'The 7 day period before last had no activity to compare against (which would give an infinite value)',
+      'Current value compared with zero (would give infinite percentage change)',
   },
   cannotCalculateNoVisitsInPeriod: {
     id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
@@ -257,5 +262,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:
       'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
   },
 });

@@ -9,8 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 import { usePermission } from 'utils/permissions';
 
-// localisation
-
 import messages from '../messages';
 
 import ItemsInFolder from './ItemsInFolder';
@@ -47,10 +45,9 @@ const Spacer = styled.div`
 `;
 
 const AdminFolderProjectsList = () => {
-  const { projectFolderId } = useParams({ strict: false }) as Record<
-    string,
-    string
-  >;
+  const { projectFolderId } = useParams({ strict: false }) as {
+    projectFolderId: string;
+  };
   const { data: authUser } = useAuthUser();
 
   const canManageProjects = usePermission({

@@ -18,31 +18,34 @@ module MultiTenancy
       end
 
       def create_mixed_3_methods_project
+        space = Space.find_by(title_multiloc: { 'en' => 'Space1' })
+
         project = Project.create!(
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
           description_multiloc: runner.rand_description_multiloc,
           slug: 'mixed-3-methods-project',
-          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open
+          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
+          space: space
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Past proposals phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
           start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days
+          end_at: Time.zone.today - 9.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
-          start_at: Time.zone.today - 10.days,
-          end_at: Time.zone.today + 10.days
+          start_at: Time.zone.today - 9.days,
+          end_at: Time.zone.today + 12.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'native_survey',
-          start_at: Time.zone.today + 11.days,
+          start_at: Time.zone.today + 12.days,
           end_at: nil,
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
@@ -90,7 +93,7 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'information',
           start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days
+          end_at: Time.zone.today - 9.days
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
         project.input_topics.create!(
@@ -147,14 +150,14 @@ module MultiTenancy
       def configure_random_timeline_for(project)
         start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
         rand(8).times do
-          start_at += 1.day
           phase = project.phases.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
-            end_at: (start_at += rand(150).days),
+            end_at: (start_at += rand(1..150).days),
             participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
+
           if phase.voting?
             phase.assign_attributes(voting_method: 'budgeting', voting_max_total: rand(100..1_000_099).round(-2))
           elsif phase.participation_method == 'ideation'
@@ -170,7 +173,9 @@ module MultiTenancy
               autoshare_results_enabled: true
             })
           end
+
           phase.save!
+
           if rand(5) == 0
             rand(1..3).times do
               phase.phase_files.create!(runner.generate_file_attributes)

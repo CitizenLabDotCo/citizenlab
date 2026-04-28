@@ -26,7 +26,7 @@ import TextArea from 'components/UI/TextArea';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { replaceIdsWithNewUuids } from './utils';
+import { replaceIdsWithNewUuids, replaceUuidsInText } from './utils';
 
 const CodeTextArea = styled(TextArea)`
   .TextArea textarea {
@@ -90,6 +90,22 @@ const EditSchemaButtonWithModal = ({
     }
   };
 
+  // Native copy also needs to be handed to ensure that we can never directly
+  // copy & paste the same IDs to different platforms - causes metabase issues
+  const handleNativeCopy = (e: React.ClipboardEvent) => {
+    const selection = window.getSelection()?.toString();
+    if (!selection) return;
+    e.preventDefault();
+    let rewritten: string;
+    try {
+      const parsed = JSON.parse(selection) as IFlatCustomField[];
+      rewritten = JSON.stringify(replaceIdsWithNewUuids(parsed), null, 2);
+    } catch {
+      rewritten = replaceUuidsInText(selection);
+    }
+    e.clipboardData.setData('text/plain', rewritten);
+  };
+
   const handleSave = async () => {
     setError(null);
     setIsSaving(true);
@@ -144,17 +160,24 @@ const EditSchemaButtonWithModal = ({
       >
         <FormattedMessage {...messages.schemaEdit} />
       </Button>
-      <Modal opened={showModal} close={() => setShowModal(false)} width="800px">
+      <Modal
+        opened={showModal}
+        close={() => setShowModal(false)}
+        width="800px"
+        ariaLabelledBy="edit-schema-modal-title"
+      >
         <Box p="24px">
-          <Title variant="h3" mb="16px">
+          <Title id="edit-schema-modal-title" variant="h3" mb="16px">
             <FormattedMessage {...messages.schemaEdit} />
           </Title>
 
-          <CodeTextArea
-            value={jsonText}
-            onChange={(value) => setJsonText(value)}
-            maxRows={20}
-          />
+          <Box onCopy={handleNativeCopy}>
+            <CodeTextArea
+              value={jsonText}
+              onChange={(value) => setJsonText(value)}
+              maxRows={20}
+            />
+          </Box>
 
           {error && <Error text={error} marginTop="8px" marginBottom="0" />}
 

@@ -361,8 +361,6 @@ Style/SafeNavigationChainLength:
     - 'app/services/surveys/results_generator.rb'
     - 'config/initializers/rack_attack.rb'
     - 'engines/commercial/admin_api/spec/graphql/ideas_spec.rb'
-    - 'engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/pdf/gpt_text_corrector.rb'
-    - 'engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/pdf/idea_google_form_parser_service.rb'
     - 'engines/commercial/idea_custom_fields/app/policies/idea_custom_fields/idea_custom_field_policy.rb'
     - 'engines/free/email_campaigns/app/serializers/email_campaigns/web_api/v1/consent_serializer.rb'
     - 'engines/free/email_campaigns/app/services/email_campaigns/internal_comment_campaign_commands_builder.rb'

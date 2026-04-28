@@ -11,7 +11,7 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import { getAnalysisScope } from 'containers/Admin/projects/components/AnalysisBanner/utils';
+import { getAnalysisScope } from 'containers/Admin/projects/_shared/components/AnalysisBanner/utils';
 
 export interface TopicData {
   id: string;

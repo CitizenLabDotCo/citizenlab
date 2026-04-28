@@ -16,7 +16,7 @@ const IdeaFormBuilder = lazy(
   () => import('./project/inputForm/IdeaFormBuilder')
 );
 const SurveyFormBuilder = lazy(
-  () => import('./project/nativeSurvey/SurveyFormBuilder')
+  () => import('./project/surveyFormAssets/SurveyFormBuilder')
 );
 const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
@@ -35,6 +35,7 @@ const AdminProjectsProjectAudience = lazy(
   () => import('../../../components/admin/participation')
 );
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
+const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
@@ -47,7 +48,6 @@ const AdminPhaseEmails = lazy(
 );
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
-const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminPhaseSurveyFormTabPanel = lazy(

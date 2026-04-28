@@ -61,6 +61,7 @@ const PasswordInputComponent = ({
   intl: { formatMessage },
   ariaInvalid,
   ariaDescribedBy,
+  required,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -100,6 +101,12 @@ const PasswordInputComponent = ({
     setPasswordScore(score);
   };
 
+  const strengthDescriptionId = `${id}-strength-description`;
+  const combinedAriaDescribedBy =
+    [!isLoginPasswordInput ? strengthDescriptionId : undefined, ariaDescribedBy]
+      .filter(Boolean)
+      .join(' ') || undefined;
+
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     return (
       <>
@@ -118,7 +125,8 @@ const PasswordInputComponent = ({
             placeholder={placeholder}
             setRef={setInputRef}
             ariaInvalid={ariaInvalid}
-            ariaDescribedBy={ariaDescribedBy}
+            ariaDescribedBy={combinedAriaDescribedBy}
+            required={required}
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
@@ -142,30 +150,32 @@ const PasswordInputComponent = ({
         </Container>
         {!isLoginPasswordInput && (
           <>
-            <Suspense fallback={null}>
-              <PasswordStrengthBar
-                password={password || undefined}
-                minLength={minimumPasswordLength}
-                shortScoreWord={formatMessage(
-                  messages.initialPasswordStrengthCheckerMessage,
-                  {
-                    minimumPasswordLength,
-                  }
-                )}
-                scoreWords={[
-                  formatMessage(messages.strength1Password),
-                  formatMessage(messages.strength2Password),
-                  formatMessage(messages.strength3Password),
-                  formatMessage(messages.strength4Password),
-                  formatMessage(messages.strength5Password),
-                ]}
-                onChangeScore={handleOnChangeScore}
-                scoreWordStyle={{
-                  color: colors.textSecondary,
-                }}
-              />
-            </Suspense>
-            <ScreenReaderOnly aria-live="polite">
+            <div aria-hidden="true">
+              <Suspense fallback={null}>
+                <PasswordStrengthBar
+                  password={password || undefined}
+                  minLength={minimumPasswordLength}
+                  shortScoreWord={formatMessage(
+                    messages.initialPasswordStrengthCheckerMessage,
+                    {
+                      minimumPasswordLength,
+                    }
+                  )}
+                  scoreWords={[
+                    formatMessage(messages.strength1Password),
+                    formatMessage(messages.strength2Password),
+                    formatMessage(messages.strength3Password),
+                    formatMessage(messages.strength4Password),
+                    formatMessage(messages.strength5Password),
+                  ]}
+                  onChangeScore={handleOnChangeScore}
+                  scoreWordStyle={{
+                    color: colors.textSecondary,
+                  }}
+                />
+              </Suspense>
+            </div>
+            <ScreenReaderOnly id={strengthDescriptionId} aria-live="polite">
               {formatMessage(
                 {
                   0: messages.a11y_strength1Password,

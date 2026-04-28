@@ -45,18 +45,15 @@ export const configureMapView = (
   }
 
   // Change location of zoom widget if specified
+  const zoom = mapView.ui.find('zoom');
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const zoom = mapView.ui?.find('zoom');
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.remove(zoom);
+    if (zoom) {
+      mapView.ui.remove(zoom);
+    }
   } else if (initialData?.zoomWidgetLocation === 'right') {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const zoom = mapView.ui?.find('zoom');
-
-    // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(zoom, 'top-right');
+    if (zoom) {
+      mapView.ui.add(zoom, 'top-right');
+    }
   }
 
   // Add fullscreen widget if set
@@ -65,9 +62,7 @@ export const configureMapView = (
       view: mapView,
     });
 
-    // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(fullscreen, 'top-right');
+    mapView.ui.add(fullscreen, 'top-right');
   }
 
   // Add map legend if set
@@ -83,9 +78,7 @@ export const configureMapView = (
   // Add any ui elements that were passed in
   if (initialData?.uiElements) {
     initialData.uiElements.forEach((uiElement) => {
-      // Note: Incorrect type from ArcGIS API, ui might be null.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      mapView.ui?.add(uiElement.element, uiElement.position);
+      mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
 };

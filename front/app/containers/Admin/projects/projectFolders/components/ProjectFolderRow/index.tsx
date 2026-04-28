@@ -6,15 +6,15 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
+import useLocalize from 'hooks/useLocalize';
+
+import PublicationStatusLabel from 'containers/Admin/projects/_shared/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
-} from 'containers/Admin/projects/components/StyledComponents';
-
-import useLocalize from 'hooks/useLocalize';
+} from 'containers/Admin/projects/_shared/components/StyledComponents';
 
 import Error from 'components/UI/Error';
 

@@ -176,6 +176,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       <Modal
         opened={renameModalOpenedTagId === tag.id}
         close={closeTagRenameModal}
+        ariaLabelledBy="rename-tag-modal-title"
       >
         <RenameTagModal
           closeRenameModal={closeTagRenameModal}

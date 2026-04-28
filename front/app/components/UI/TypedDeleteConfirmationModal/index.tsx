@@ -75,8 +75,9 @@ const TypedDeleteConfirmationModal = ({
       close={onClose}
       width={500}
       closeOnClickOutside={!isDeleting}
+      ariaLabelledBy="typed-delete-modal-title"
     >
-      <Title variant="h3" color="primary">
+      <Title id="typed-delete-modal-title" variant="h3" color="primary">
         {formatMessage(title)}
       </Title>
 

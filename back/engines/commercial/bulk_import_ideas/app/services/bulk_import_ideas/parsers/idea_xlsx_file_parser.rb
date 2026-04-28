@@ -1,33 +1,40 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers
-  class IdeaXlsxFileParser < IdeaBaseFileParser
+  class IdeaXlsxFileParser
     MAX_ROWS_PER_XLSX = 50
+    MULTI_VALUE_INPUT_TYPES = %w[select multiselect multiselect_image ranking].freeze
+
+    attr_reader :row_mapper
+
+    def initialize(_current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
+      @phase = Phase.find(phase_id)
+      @project = @phase.project
+      @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
+      @personal_data_enabled = personal_data_enabled
+      @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled)
+    end
+
     def parse_rows(file)
-      xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
-      ideas_to_idea_rows(xlsx_ideas, file)
+      ideas_to_idea_rows(parse_xlsx_ideas(file), file)
     end
 
-    # Asynchronous version of the parse_file method
-    # Sends 1 XSLX file containing 50 ideas to each job
-    def parse_file_async(file_content)
-      files = create_files file_content
-
-      job_ids = []
-      job_first_idea_index = 2 # First row is the header
-      files.each do |file|
-        job = BulkImportIdeas::IdeaImportJob.perform_later(self.class, [file], @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
-        job_ids << job.job_id
-        job_first_idea_index += MAX_ROWS_PER_XLSX
-      end
-
-      job_ids
+    def ideas_to_idea_rows(ideas_array, file)
+      ideas_array.each_with_index.filter_map { |idea, index| idea_to_idea_row(idea, file, index: index) }
     end
 
-    private
+    def idea_to_idea_row(idea, file, index: 0)
+      return nil if @row_mapper.idea_blank?(idea)
+
+      idea_row = @row_mapper.build_base_idea_row(fields: idea, file: file, index: index)
+      structured_fields = structure_raw_fields(idea)
+      idea_row = @row_mapper.process_user_details(structured_fields, idea_row)
+      merged_fields = merge_idea_with_form_fields(structured_fields)
+      @row_mapper.process_custom_form_fields(merged_fields, idea_row)
+    end
 
     def create_files(file_content)
-      source_file = upload_source_file(file_content)
+      source_file = @row_mapper.upload_source_file(file_content)
 
       # Split into multiple XLSX files with 50 ideas each
       split_xlsx_files = XlsxService.new.split_xlsx(source_file.file.read, MAX_ROWS_PER_XLSX)
@@ -45,12 +52,14 @@ module BulkImportIdeas::Parsers
       end
     end
 
-    def parse_xlsx_ideas(file)
-      # Empty cells are included so we get all form fields per idea - this is important for 'other' fields that have the same header
-      XlsxService.new.xlsx_to_hash_array(file.file.read, include_empty_cells: true)
+    private
+
+    def structure_raw_fields(fields)
+      fields.map do |name, value|
+        { name: Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix(name), value: value }
+      end
     end
 
-    # Merge the form fields that generated the input xlsx sheet and the import values into a single array
     def merge_idea_with_form_fields(idea)
       merged_idea = []
       form_fields = template_data[:fields].deep_dup
@@ -59,13 +68,71 @@ module BulkImportIdeas::Parsers
           if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')
             new_field = form_field
             new_field[:value] = idea_field[:value]
-            new_field = process_field_value(new_field, form_fields)
+            new_field = normalize_field_value(new_field, form_fields)
             merged_idea << new_field
-            idea.delete_if { |f| f == idea_field }
+            idea.delete_at(idea.index { |f| f.equal?(idea_field) })
             break
           end
         end
       end
+      merged_idea
+    end
+
+    def normalize_field_value(field, form_fields)
+      if field[:input_type] == 'matrix_linear_scale'
+        field[:value] = extract_matrix_value(field) if field[:value].present?
+        return field
+      end
+
+      if MULTI_VALUE_INPUT_TYPES.include?(field[:input_type]) && field[:value].is_a?(String)
+        field[:value] = field[:value].split(';').map(&:strip)
+      end
+
+      @row_mapper.process_field_value(field, form_fields)
+    end
+
+    def extract_matrix_value(field)
+      return nil if field[:value].blank?
+
+      multiloc_service = MultilocService.new
+      matrix_field = CustomField.find_by(key: field[:key])
+
+      label_values = (1..matrix_field.maximum).each_with_object({}) do |i, res|
+        label_attr = :"linear_scale_label_#{i}_multiloc"
+        label = I18n.with_locale(@locale) { multiloc_service.t(matrix_field[label_attr]) }
+        res[label] = i if label.present?
+      end
+
+      statement_keys = matrix_field.matrix_statements.each_with_object({}) do |statement, res|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        res[statement_title] = statement.key if statement_title.present?
+      end
+
+      # Extract the matrix value from the string
+      field[:value].split(';').each_with_object({}) do |statement, res|
+        key, val = statement.split(':').map(&:strip)
+        key = statement_keys[key]
+        val = label_values[val]
+        res[key] = val.to_i if key && val
+      end
+    end
+
+    def parse_xlsx_ideas(file)
+      # Empty cells are included so we get all form fields per idea - this is important for 'other' fields that have the same header
+      XlsxService.new.xlsx_to_hash_array(
+        file.file.read,
+        include_empty_cells: true,
+        rich_text_columns: rich_text_column_headers
+      )
+    end
+
+    # Cells for fields whose input_type stores HTML (e.g. body_multiloc) can
+    # contain formatting (bold/italic/etc) that we want to preserve.
+    def rich_text_column_headers
+      html_input_types = %w[html html_multiloc]
+      template_data[:fields]
+        .select { |f| html_input_types.include?(f[:input_type]) }
+        .pluck(:name)
     end
 
     def template_data

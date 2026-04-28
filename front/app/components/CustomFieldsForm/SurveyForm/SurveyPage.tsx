@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
@@ -32,13 +32,20 @@ import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import PostParticipationBox from '../PostParticipationBox';
-import { getFormCompletionPercentage, Pages } from '../util';
+import {
+  getFormCompletionPercentage,
+  hasUnansweredQuestions,
+  isNillish,
+  Pages,
+  trackFormPageView,
+} from '../util';
 
 import {
   determineNextPageNumber,
   determinePreviousPageNumber,
   getSkippedPageIndices,
 } from './logic';
+import SubmitConfirmation from './SubmitConfirmation';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -125,6 +132,23 @@ const SurveyPage = ({
     formData: methods.watch(),
   });
 
+  const [showSubmitConfirmation, setShowSubmitConfirmation] = useState(false);
+  const isSubmissionPage = nextPageNumber === lastPageIndex;
+
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
+
+  // Reset confirmation when user changes form values
+  useEffect(() => {
+    if (!showSubmitConfirmation) return undefined;
+
+    const subscription = methods.watch(() => {
+      setShowSubmitConfirmation(false);
+    });
+    return () => subscription.unsubscribe();
+  }, [showSubmitConfirmation, methods]);
+
   // Clear values from skipped pages when form data changes
   // This ensures that if a user changes an answer that affects conditional logic,
   // any previously filled values from now-skipped pages are removed
@@ -165,9 +189,10 @@ const SurveyPage = ({
 
     try {
       setShowFormFeedback(false);
+      setShowSubmitConfirmation(false);
       await onSubmit({
         formValues,
-        isSubmitPage: nextPageNumber === lastPageIndex,
+        isSubmitPage: isSubmissionPage,
       });
       // Go to the next page
       if (currentPageIndex < lastPageIndex) {
@@ -202,8 +227,59 @@ const SurveyPage = ({
     methods.handleSubmit((e) => onFormSubmit(e))();
   };
 
+  const handleEnterKeySubmit = () => {
+    pageRef.current?.scrollTo(0, 0);
+    if (showSubmitConfirmation) setShowSubmitConfirmation(false);
+    methods.handleSubmit((formValues) => {
+      if (
+        isSubmissionPage &&
+        hasUnansweredQuestions(pageQuestions, formValues)
+      ) {
+        setShowSubmitConfirmation(true);
+        return;
+      }
+      return onFormSubmit(formValues);
+    })();
+  };
+
+  const handleContinueEditing = () => {
+    setShowSubmitConfirmation(false);
+
+    const formValues = methods.getValues();
+    const firstUnanswered = pageQuestions.find((q) =>
+      isNillish(formValues[q.key])
+    );
+
+    // Focus the user back to the first unanswered question on the page
+    if (firstUnanswered) {
+      const questionEl = document.querySelector(
+        `[data-question-id="${firstUnanswered.id}"]`
+      );
+      if (questionEl) {
+        const focusable = questionEl.querySelector<HTMLElement>(
+          'input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable?.focus();
+        questionEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  // Ensure that pressing Enter in a text or number input field does not
+  // accidentally submit the form with empty responses
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key !== 'Enter') return;
+    const target = e.target as HTMLInputElement;
+    if (target.tagName.toLowerCase() !== 'input') return;
+    const inputType = target.type;
+    if (inputType !== 'text' && inputType !== 'number') return;
+    e.preventDefault();
+    handleEnterKeySubmit();
+  };
+
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
+    setShowSubmitConfirmation(false);
     // Remove the current page from navigation history when going back
     setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
@@ -216,7 +292,7 @@ const SurveyPage = ({
 
   return (
     <FormProvider {...methods}>
-      <StyledForm id="idea-form">
+      <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
         <Box
           id="container"
           display="flex"
@@ -302,6 +378,12 @@ const SurveyPage = ({
                 </Box>
               </Box>
             </Box>
+            {showSubmitConfirmation && (
+              <SubmitConfirmation
+                onContinueEditing={handleContinueEditing}
+                onConfirmSubmit={handleNextAndSubmit}
+              />
+            )}
           </Box>
           <PageFooter
             variant={

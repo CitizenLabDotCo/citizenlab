@@ -2,6 +2,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import { trackVirtualPageView } from 'utils/analytics';
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
@@ -35,14 +36,22 @@ export const convertCustomFieldsToNestedPages = (
   return nestedPagesData;
 };
 
-const isNillish = (value: any) => {
+export const isNillish = (value: any) => {
   if (!value) return true;
   if (Array.isArray(value) && value.length === 0) return true;
   if (value.constructor === Object) {
     if (Object.keys(value).length === 0) return true;
-    if (isEmptyMultiloc(value)) return true;
+    const isMultiloc = Object.values(value).every((v) => typeof v === 'string');
+    if (isMultiloc && isEmptyMultiloc(value)) return true;
   }
   return false;
+};
+
+export const hasUnansweredQuestions = (
+  pageQuestions: IFlatCustomField[],
+  formValues: Record<string, any>
+): boolean => {
+  return pageQuestions.some((q) => isNillish(formValues[q.key]));
 };
 
 type GetFormCompletionPercentageParams = {
@@ -178,4 +187,16 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
   }
 
   return newValues;
+};
+
+// Tracks each page view after the first page - the first page is tracked when the form is opened
+export const trackFormPageView = (
+  currentPageIndex: number,
+  lastPageIndex: number
+) => {
+  const pageNum =
+    currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
+  if (pageNum !== 1) {
+    trackVirtualPageView(`${window.location.pathname}/${pageNum}`);
+  }
 };

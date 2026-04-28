@@ -58,6 +58,12 @@ const inputTermMessages: Record<string, MessageDescriptor> = {
   proposal: messages.viewYourProposal,
   petition: messages.viewYourPetition,
   initiative: messages.viewYourInitiative,
+  comment: messages.viewYourComment,
+  response: messages.viewYourResponse,
+  suggestion: messages.viewYourSuggestion,
+  topic: messages.viewYourTopic,
+  post: messages.viewYourPost,
+  story: messages.viewYourStory,
 };
 
 interface Props {
@@ -207,6 +213,7 @@ const PageControlButtons = ({
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && pageVariant !== 'after-submission' && (
           <Button
+            type="button"
             onClick={handlePrevious}
             data-cy="e2e-previous-page"
             icon="chevron-left"

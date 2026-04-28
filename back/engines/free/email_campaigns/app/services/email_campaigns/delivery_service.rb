@@ -34,6 +34,7 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
+      Campaigns::SpaceModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::ProjectPublished,
@@ -48,6 +49,7 @@ module EmailCampaigns
       Campaigns::VotingLastChance,
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
+      Campaigns::ScreeningDigest,
       Campaigns::Welcome,
       Campaigns::YourInputInScreening
     ].freeze

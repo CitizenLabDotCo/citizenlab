@@ -110,7 +110,7 @@ const EmailChange = () => {
               setOpenConfirmationModal={setOpenConfirmationModal}
               setUpdateSuccessful={setUpdateSuccessful}
               methods={methods}
-              user={authUser.data}
+              user={authUser}
             />
           )}
         </StyledContentContainer>
@@ -139,6 +139,7 @@ const EmailChange = () => {
                 token: null,
                 prefilledBuiltInFields: null,
                 ssoProvider: null,
+                claimTokens: null,
               }}
               loading={loading}
               setError={setConfirmationError}

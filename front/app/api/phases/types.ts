@@ -37,6 +37,7 @@ export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  draft_description_multiloc: Multiloc;
   start_at: string;
   end_at: string | null;
   input_term: InputTerm;
@@ -54,6 +55,7 @@ export interface IPhaseAttributes {
   reacting_dislike_enabled: boolean;
   reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
+  available_views?: PresentationMode[];
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   survey_popup_frequency?: number | null;
@@ -97,6 +99,7 @@ export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  draft_description_multiloc?: Multiloc;
   input_term?: InputTerm;
   start_at?: string;
   end_at?: string | null;
@@ -114,6 +117,7 @@ export interface IUpdatedPhaseProperties {
   reacting_dislike_limited_max?: number | null;
   reacting_threshold?: number | null;
   presentation_mode?: 'card' | 'map' | 'feed' | null;
+  available_views?: PresentationMode[] | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
@@ -189,7 +193,13 @@ export type InputTerm =
   | 'contribution'
   | 'proposal'
   | 'initiative'
-  | 'petition';
+  | 'petition'
+  | 'comment'
+  | 'response'
+  | 'suggestion'
+  | 'topic'
+  | 'post'
+  | 'story';
 
 export type PresentationMode = 'card' | 'map' | 'feed';
 

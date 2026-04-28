@@ -33,7 +33,8 @@ interface Props {
     email: string,
     password: string,
     rememberMe: boolean,
-    tokenLifetime: number
+    tokenLifetime: number,
+    claimTokens?: string[]
   ) => void;
   onClose: () => void;
 }
@@ -80,7 +81,13 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
         .authentication_token_lifetime_in_days;
 
     try {
-      await onSubmit(email, password, rememberMe, tokenLifetime);
+      await onSubmit(
+        email,
+        password,
+        rememberMe,
+        tokenLifetime,
+        state.claimTokens ?? undefined
+      );
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -93,7 +100,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px">
           <Icon
             width="20px"
@@ -116,6 +123,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}
+            required
           />
         </Box>
         <Box mt="28px">

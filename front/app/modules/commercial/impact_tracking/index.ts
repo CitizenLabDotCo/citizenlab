@@ -2,7 +2,7 @@ import authUserStream from 'api/me/authUserStream';
 
 import { API_PATH, locales } from 'containers/App/constants';
 
-import { pageChanges$ } from 'utils/analytics';
+import { pageChanges$, virtualPageViews$ } from 'utils/analytics';
 import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getRoutePattern } from 'utils/getRoutePattern';
@@ -113,6 +113,10 @@ const configuration: ModuleConfiguration = {
           trackPageView(strippedPath);
         }
       }
+    });
+
+    virtualPageViews$.subscribe((path) => {
+      trackPageView(path);
     });
 
     authUserStream.subscribe(() => {

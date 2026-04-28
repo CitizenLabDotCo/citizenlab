@@ -688,6 +688,85 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
     end
   end
 
+  describe 'anonymous participation with user field grouping' do
+    let_it_be(:anon_project) { create(:single_phase_native_survey_project) }
+    let_it_be(:anon_phase) do
+      anon_project.phases.first.tap { |p| p.update!(allow_anonymous_participation: true) }
+    end
+    let_it_be(:anon_form) { create(:custom_form, participation_context: anon_phase) }
+    let_it_be(:anon_page) { create(:custom_field_page, resource: anon_form) }
+    let_it_be(:favourite_animal_field) do
+      create(
+        :custom_field_select,
+        resource: anon_form,
+        title_multiloc: { 'en' => 'What is your favourite animal?' },
+        description_multiloc: {},
+        required: true,
+        options: [
+          create(:custom_field_option, key: 'godzilla', title_multiloc: { 'en' => 'Godzilla' }),
+          create(:custom_field_option, key: 'gremlin', title_multiloc: { 'en' => 'Gremlin' }),
+          create(:custom_field_option, key: 'unicorn', title_multiloc: { 'en' => 'Unicorn' })
+        ]
+      )
+    end
+
+    let_it_be(:anon_responses) do
+      male_user = create(:user, custom_field_values: { gender: 'male' })
+      female_user = create(:user, custom_field_values: { gender: 'female' })
+
+      # Anonymous responses - author_id becomes NULL, but demographic
+      # data is merged into idea custom_field_values with u_ prefix
+      # (simulating what the controller does via UserFieldsInFormService)
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'male' },
+        author: male_user,
+        anonymous: true
+      )
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'female' },
+        author: female_user,
+        anonymous: true
+      )
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_values: { favourite_animal_field.key => 'gremlin', 'u_gender' => 'female' },
+        author: female_user,
+        anonymous: true
+      )
+    end
+
+    it 'returns correct counts when grouping anonymous responses by user field' do
+      generator = described_class.new(
+        anon_phase,
+        group_mode: 'user_field',
+        group_field_id: gender_user_custom_field.id
+      )
+      result = generator.generate_result_for_field(favourite_animal_field.id)
+
+      expect(result[:totalResponseCount]).to eq 3
+      expect(result[:questionResponseCount]).to eq 3
+      expect(result[:answers]).to match [
+        { answer: 'godzilla', count: 2, groups: [
+          { count: 1, group: 'male' },
+          { count: 1, group: 'female' }
+        ] },
+        { answer: 'gremlin', count: 1, groups: [
+          { count: 1, group: 'female' }
+        ] },
+        { answer: 'unicorn', count: 0, groups: [] },
+        { answer: nil, count: 0, groups: [] }
+      ]
+    end
+  end
+
   describe 'performance' do
     it 'does not run too many SQL queries when generating a single result' do
       expect do
