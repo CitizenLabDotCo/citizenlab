@@ -30,6 +30,7 @@ import messages from './messages';
 import PublicationButtons from './PublicationButtons';
 import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
+import SpaceName from './SpaceName';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -56,6 +57,8 @@ const ProjectHeader = ({ projectId }: Props) => {
   if (!project) return null;
 
   const folderId = project.data.attributes.folder_id;
+  const spaceId = project.data.attributes.space_id;
+
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
   switch (project.data.attributes.visible_to) {
@@ -233,6 +236,14 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
+          {typeof spaceId === 'string' && (
+            <>
+              <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+                ·
+              </Text>
+              <SpaceName spaceId={spaceId} />
+            </>
+          )}
           {typeof folderId === 'string' && (
             <>
               <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
