@@ -14,24 +14,14 @@ import {
 
 export function userModeratesFolder(
   user: IUser | undefined,
-  projectFolderId: string
-) {
-  if (!user) return false;
-
-  return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
-}
-
-// Mirrors the backend's UserRoleService#can_moderate?(folder, user): direct or
-// indirect moderation rights, including space moderators of the folder's space.
-export function canModerateFolder(
-  user: IUser | undefined,
-  folderId: string,
+  projectFolderId: string,
   folderSpaceId?: string | null
 ) {
   if (!user) return false;
 
   return (
-    userModeratesFolder(user, folderId) ||
+    isAdmin(user) ||
+    isProjectFolderModerator(user, projectFolderId) ||
     (typeof folderSpaceId === 'string' && isSpaceModerator(user, folderSpaceId))
   );
 }

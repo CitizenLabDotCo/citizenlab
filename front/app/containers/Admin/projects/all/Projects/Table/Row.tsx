@@ -24,7 +24,7 @@ import Error from 'components/UI/Error';
 
 import Link from 'utils/cl-router/Link';
 import { parseBackendDateString } from 'utils/dateUtils';
-import { canModerateFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
@@ -86,7 +86,7 @@ const Row = ({
   const folderId = project.relationships.folder?.data?.id;
   const folderSpaceId = project.relationships.space?.data?.id;
   const canModerateThisFolder =
-    !!folderId && canModerateFolder(authUser, folderId, folderSpaceId);
+    !!folderId && userModeratesFolder(authUser, folderId, folderSpaceId);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
