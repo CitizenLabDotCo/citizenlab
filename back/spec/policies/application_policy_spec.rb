@@ -56,15 +56,16 @@ describe ApplicationPolicy do
   end
 
   describe '#owner?' do
+    let(:record_class) { Struct.new(:user_id) }
     let(:user) { create(:user) }
-    let(:record) { instance_double('Record', user_id: user.id) }
+    let(:record) { record_class.new(user.id) }
 
     it 'is true when the record belongs to the user' do
       expect(described_class.new(user, record).send(:owner?)).to be true
     end
 
     it 'is false when the record belongs to another user' do
-      other_record = instance_double('Record', user_id: create(:user).id)
+      other_record = record_class.new(create(:user).id)
       expect(described_class.new(user, other_record).send(:owner?)).to be false
     end
 
