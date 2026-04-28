@@ -113,6 +113,8 @@ const ProjectTemplatePreviewCitizen = memo<Props>(({ className }) => {
     'projectTemplateId'
   );
 
+  // TODO: Fix lint exception after full route conversion completed.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (projectTemplateId) {
     if (!isNilOrError(authUser) && isAdmin(authUser)) {
       clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
