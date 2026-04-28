@@ -10,7 +10,7 @@ describe('Spaces CRUD', () => {
 
   it('Space can be created', () => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects?tab=spaces');
+    cy.visit(`/admin/projects?tab=spaces&search=${spaceName}`);
     cy.dataCy('e2e-new-space-button').click();
     cy.get('.e2e-localeswitcher').each((button) => {
       cy.wrap(button).click();
@@ -27,7 +27,7 @@ describe('Spaces CRUD', () => {
     cy.setAdminLoginCookie();
 
     // Assign space moderator
-    cy.visit('/admin/projects?tab=spaces');
+    cy.visit(`/admin/projects?tab=spaces&search=${spaceName}`);
     cy.get('.space-table-row-title').contains(spaceName).click();
     cy.get('.e2e-resource-header').find('h1').should('have.text', spaceName);
 
@@ -45,7 +45,7 @@ describe('Spaces CRUD', () => {
 
   it('Space can be deleted', () => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects?tab=spaces');
+    cy.visit(`/admin/projects?tab=spaces&search=${spaceName}`);
     cy.dataCy('spaces-overview-folder-table-row')
       .first()
       .contains(spaceName)
@@ -66,8 +66,4 @@ describe('Spaces CRUD', () => {
 
     cy.contains('No spaces found').should('exist');
   });
-});
-
-describe('Space moderator: permissions', () => {
-  // TODO
 });
