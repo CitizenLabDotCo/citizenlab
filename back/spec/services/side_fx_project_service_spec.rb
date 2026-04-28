@@ -129,20 +129,30 @@ describe SideFxProjectService do
 
     it 'enqueues the transition job when a schedule is set' do
       scheduled_at = 1.day.from_now
-      project.assign_attributes(
-        admin_publication_attributes: { scheduled_status: 'archived', scheduled_at: scheduled_at, scheduled_by_id: user.id }
-      )
-      service.before_update(project, user)
-      project.save!
+
+      project.update!(admin_publication_attributes: {
+        scheduled_status: 'archived',
+        scheduled_at: scheduled_at,
+        scheduled_by_id: user.id
+      })
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+        .at(project.admin_publication.scheduled_at)
     end
 
     it 'does not enqueue the transition job when no schedule is set' do
-      project.assign_attributes(title_multiloc: { en: 'changed' })
-      service.before_update(project, user)
-      project.save!
+      project.update!(title_multiloc: { en: 'changed' })
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+    end
+
+    it 'does not enqueue the transition job when schedule is cancelled' do
+      project.update!(admin_publication_attributes: {
+        scheduled_status: nil,
+        scheduled_at: nil
+      })
 
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
