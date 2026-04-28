@@ -44,7 +44,7 @@ const SurveyResultsPdfExport = ({ projectId, phaseId }: Props) => {
 
   return (
     <Box width="100%">
-      <PageBreakBox>
+      <PageBreakBox data-pdf-section="true">
         <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">
           {formatMessage(messages.questions)}
         </Title>
@@ -73,19 +73,20 @@ const SurveyResultsPdfExport = ({ projectId, phaseId }: Props) => {
       </PageBreakBox>
 
       {firstGroup.remainingQuestions.map((result, qIndex) => (
-        <FormResultsQuestion
-          key={`0-${qIndex}`}
-          result={result}
-          totalSubmissions={totalSubmissions}
-          logicConfig={logicConfig}
-          isPdfExport={true}
-        />
+        <Box key={`0-${qIndex}`} data-pdf-section="true">
+          <FormResultsQuestion
+            result={result}
+            totalSubmissions={totalSubmissions}
+            logicConfig={logicConfig}
+            isPdfExport={true}
+          />
+        </Box>
       ))}
 
       {remainingGroups.map((group, groupIndex) => (
         <React.Fragment key={groupIndex + 1}>
           {(group.page || group.firstQuestion) && (
-            <PageBreakBox>
+            <PageBreakBox data-pdf-section="true">
               {group.page && (
                 <FormResultsPage
                   result={group.page}
@@ -104,13 +105,14 @@ const SurveyResultsPdfExport = ({ projectId, phaseId }: Props) => {
             </PageBreakBox>
           )}
           {group.remainingQuestions.map((result, qIndex) => (
-            <FormResultsQuestion
-              key={`${groupIndex + 1}-${qIndex}`}
-              result={result}
-              totalSubmissions={totalSubmissions}
-              logicConfig={logicConfig}
-              isPdfExport={true}
-            />
+            <Box key={`${groupIndex + 1}-${qIndex}`} data-pdf-section="true">
+              <FormResultsQuestion
+                result={result}
+                totalSubmissions={totalSubmissions}
+                logicConfig={logicConfig}
+                isPdfExport={true}
+              />
+            </Box>
           ))}
         </React.Fragment>
       ))}
