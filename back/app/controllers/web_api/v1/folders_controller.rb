@@ -159,7 +159,7 @@ class WebApi::V1::FoldersController < ApplicationController
   # Automatically set the scheduled_by_id according to the new scheduled status.
   def assign_scheduled_by(admin_publication_attrs)
     attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
-    return unless attrs.keys.present?
+    return if attrs.keys.blank?
 
     scheduling = attrs.values.any?
     admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil
