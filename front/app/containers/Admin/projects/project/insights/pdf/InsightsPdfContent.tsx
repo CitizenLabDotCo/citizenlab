@@ -36,27 +36,29 @@ const InsightsPdfContent = ({ phase }: Props) => {
       display="flex"
       flexDirection="column"
     >
-      {phaseName && (
-        <Title variant="h1" as="h1" color="textPrimary" m="0px" mb="24px">
-          {phaseName}
+      <Box data-pdf-section="true">
+        {phaseName && (
+          <Title variant="h1" as="h1" color="textPrimary" m="0px" mb="24px">
+            {phaseName}
+          </Title>
+        )}
+        <Title variant="h2" as="h2" color="textPrimary" m="0px">
+          <FormattedMessage {...messages.insights} />
         </Title>
-      )}
-      <Title variant="h2" as="h2" color="textPrimary" m="0px">
-        <FormattedMessage {...messages.insights} />
-      </Title>
+      </Box>
 
       <Box display="flex" flexDirection="column" gap="16px" pt="16px">
-        <PageBreakBox>
+        <PageBreakBox data-pdf-section="true">
           <ParticipationMetrics phase={phase} />
         </PageBreakBox>
 
-        <PageBreakBox>
+        <PageBreakBox data-pdf-section="true">
           <ParticipantsTimeline phaseId={phase.id} />
         </PageBreakBox>
 
         <DemographicsSection phase={phase} />
 
-        <PageBreakBox>
+        <PageBreakBox data-pdf-section="true">
           <MethodSpecificInsights
             phaseId={phase.id}
             participationMethod={phase.attributes.participation_method}
