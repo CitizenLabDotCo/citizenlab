@@ -441,9 +441,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def process_due_status_transition(publication)
     admin_pub = publication.admin_publication
-    return unless admin_pub.scheduled_at&.<=(Time.current)
+    return unless admin_pub.scheduled_at&.<(Time.current)
 
-    ProcessScheduledPublicationTransitionsJob.new.run(admin_pub)
+    ProcessScheduledPublicationTransitionsJob.perform_now(admin_pub)
   end
 
   def create_params
