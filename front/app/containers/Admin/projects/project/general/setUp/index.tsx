@@ -286,7 +286,7 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     try {
       setProcessing(true);
       if (!isEmpty(projectAttributesDiff)) {
-        // We need to remove all nil / undefined values
+        // We need to remove all undefined values
         // because otherwise the API would interpret them as us
         // wanting to set those attributes to null / undefined, which is not the case.
         const projectAttributesDiffWithoutUndefined = keys(
