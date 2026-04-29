@@ -52,7 +52,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
-import { isNilOrError, keys } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -292,22 +292,9 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     try {
       setProcessing(true);
       if (!isEmpty(projectAttributesDiff)) {
-        // We need to remove all undefined values
-        // because otherwise the API would interpret them as us
-        // wanting to set those attributes to null / undefined, which is not the case.
-        const projectAttributesDiffWithoutUndefined = keys(
-          projectAttributesDiff
-        ).reduce((acc, key) => {
-          const value = projectAttributesDiff[key];
-          if (value !== undefined) {
-            acc[key] = value as any;
-          }
-          return acc;
-        }, {} as IUpdatedProjectProperties);
-
         await updateProject({
           projectId,
-          ...projectAttributesDiffWithoutUndefined,
+          ...projectAttributesDiff,
         });
       }
 
@@ -551,13 +538,20 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             onChangeSpace={(space_id) => {
               handleProjectAttributeDiffOnChange({
                 space_id,
-                folder_id: undefined,
+                // folder_id has to be null, because we
+                // need to explicitly tell the backend to
+                // remove the folder if we move it to a space.
+                folder_id: null,
               });
               setProjectContextError(false);
             }}
             onChangeFolder={(folder_id) => {
               handleProjectAttributeDiffOnChange({
                 folder_id,
+                // space_id has to be undefined,
+                // because if we set the folder_id, the backend
+                // automatically updates the space_id, and if we send it
+                // also a space_id it gets confused
                 space_id: undefined,
               });
               setProjectContextError(false);
