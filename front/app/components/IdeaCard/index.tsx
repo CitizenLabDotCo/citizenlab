@@ -148,7 +148,7 @@ const IdeaCard = ({
           <Link
             to="/$locale/ideas/$slug"
             params={{ slug }}
-            search={{ go_back: 'true' } as any}
+            search={{ go_back: 'true' }}
             onClick={handleClick}
           >
             <Tooltip
