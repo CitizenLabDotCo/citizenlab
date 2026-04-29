@@ -867,7 +867,7 @@
   "app.containers.Admin.Users.role": "Rôle",
   "app.containers.Admin.Users.seeProfile": "Voir le profil de cet utilisateur",
   "app.containers.Admin.Users.selectFolders": "Sélectionner des dossiers",
-  "app.containers.Admin.Users.selectPlaceholder": "Saisissez pour rechercher",
+  "app.containers.Admin.Users.selectPlaceholder": "Rechercher...",
   "app.containers.Admin.Users.selectProjects": "Sélectionner des projets",
   "app.containers.Admin.Users.selectSpaces": "Sélectionner des espaces",
   "app.containers.Admin.Users.setAsAdmin": "Définir en tant qu'administrateur",
