@@ -4,13 +4,23 @@ require 'rails_helper'
 
 RSpec.describe FileUpload do
   let(:idea) { create(:idea) }
-  let(:file_upload) do
-    create(:file_upload, name: 'some_file_name.notwhitelisted')
-  end
 
-  describe 'extension_whitelist validation' do
-    it 'is valid for any non-whitelisted file extension' do
+  describe 'extension allowlist validation' do
+    it 'is valid for an allowlisted file extension' do
+      file_upload = create(:file_upload)
       expect(file_upload).to be_valid
+    end
+
+    it 'rejects disallowed extensions on upload' do
+      file_upload = described_class.new(
+        idea: idea,
+        file_by_content: {
+          content: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP...',
+          name: 'some_file_name.notwhitelisted'
+        }
+      )
+
+      expect(file_upload).not_to be_valid
     end
   end
 
