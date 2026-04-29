@@ -147,7 +147,7 @@ const PostCommentGroup = ({ comments, userId, postId }: Props) => {
       <PostLink
         to="/$locale/ideas/$slug"
         params={{ slug }}
-        search={{ go_back: 'true' } as any}
+        search={{ go_back: 'true' }}
       >
         <PostLinkLeft>
           <StyledIcon ariaHidden name={'idea'} />
