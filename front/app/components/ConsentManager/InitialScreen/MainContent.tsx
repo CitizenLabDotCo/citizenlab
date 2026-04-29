@@ -30,7 +30,8 @@ const MainContent = () => {
             linkToCookiePolicy: (
               <TextLink
                 target="_blank"
-                to="/$locale/pages/cookie-policy?from=cookie-modal"
+                to="/$locale/pages/cookie-policy"
+                search={{ from: 'cookie-modal' } as any}
               >
                 <FormattedMessage {...messages.linkToCookiePolicyText} />
               </TextLink>

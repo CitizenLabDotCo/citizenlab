@@ -100,7 +100,16 @@ const DescriptionBuilderToggle = ({
     });
   };
 
-  const route = `/admin/description-builder/${contentBuildableType}s/${contentBuildableId}/description`;
+  const linkProps =
+    contentBuildableType === 'project'
+      ? ({
+          to: '/$locale/admin/description-builder/projects/$projectId/description',
+          params: { projectId: contentBuildableId },
+        } as const)
+      : ({
+          to: '/$locale/admin/description-builder/folders/$folderId/description',
+          params: { folderId: contentBuildableId },
+        } as const);
 
   return (
     <Box data-testid="descriptionBuilderToggle">
@@ -121,7 +130,7 @@ const DescriptionBuilderToggle = ({
 
       {descriptionBuilderLinkVisible && (
         <>
-          <StyledLink id="e2e-project-description-builder-link" to={route}>
+          <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
             {formatMessage(messages.linkText)}
           </StyledLink>
           <Box mt="10px">

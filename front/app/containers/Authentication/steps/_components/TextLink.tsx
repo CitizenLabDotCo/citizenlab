@@ -3,7 +3,7 @@ import React from 'react';
 import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Link, { Props } from 'utils/cl-router/Link';
+import Link from 'utils/cl-router/Link';
 
 export const ClickableTextStyles = `
   font-size: ${fontSizes.base}px;
@@ -17,4 +17,4 @@ export const ClickableTextStyles = `
 `;
 export const StyledLink = styled(Link)`${ClickableTextStyles}}` as typeof Link;
 
-export default (props: Props) => <StyledLink {...props} />;
+export default StyledLink;

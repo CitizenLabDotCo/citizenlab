@@ -15,20 +15,11 @@ const StyledLink = styled(OriginalLink)<{
     color: ${({ color }) => color};
     text-decoration: underline;
   }
-`;
+` as typeof OriginalLink;
 
-interface Props {
-  to: string;
-  color?: string;
-  children: React.ReactNode;
-}
-
-const Link = ({ to, color = colors.black, children }: Props) => {
-  return (
-    <StyledLink to={to as any} color={color}>
-      {children}
-    </StyledLink>
-  );
+const Link: typeof OriginalLink = (props: any) => {
+  const { color = colors.black, ...rest } = props;
+  return <StyledLink {...rest} color={color} />;
 };
 
 export default Link;
