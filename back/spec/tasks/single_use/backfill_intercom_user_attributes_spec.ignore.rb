@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-# rubocop:disable RSpec/DescribeClass, RSpec/AnyInstance
+# rubocop:disable RSpec/DescribeClass, RSpec/VerifiedDoubles, Style/OpenStructUse
 describe 'single_use:backfill_intercom_user_attributes rake task' do
   let(:contacts_api) { double('contacts_api') }
   let(:intercom_client) { double('intercom_client', contacts: contacts_api).as_null_object }
@@ -27,7 +27,7 @@ describe 'single_use:backfill_intercom_user_attributes rake task' do
 
   describe 'dry run' do
     it 'searches existing contacts but makes no writes' do
-      user = create(:admin)
+      create(:admin)
       contact = double('contact', custom_attributes: {}).as_null_object
 
       expect(contacts_api).to receive(:search).once.and_return(double(count: 1, :[] => contact))
@@ -183,4 +183,4 @@ describe 'single_use:backfill_intercom_user_attributes rake task' do
     end
   end
 end
-# rubocop:enable RSpec/DescribeClass, RSpec/AnyInstance
+# rubocop:enable RSpec/DescribeClass, RSpec/VerifiedDoubles, Style/OpenStructUse
