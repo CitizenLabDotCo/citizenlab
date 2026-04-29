@@ -2549,6 +2549,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": {
+    "state": "verified",
+    "verified_at": "2026-04-29T10:29:14.334319Z",
+    "verified_by": "Jelena"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -5906,8 +5911,8 @@
   },
   "app.containers.Admin.project.emails.emptyCampaignsDescription": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.437453Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-29T10:35:25.643874Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.project.emails.emptyCampaignsHeader": {
     "state": "verified",
@@ -8696,8 +8701,8 @@
   },
   "app.containers.Admin.projects.project.survey.upsell.bullet2": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.437453Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-29T10:35:25.643874Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.survey.upsell.bullet3": {
     "state": "verified",

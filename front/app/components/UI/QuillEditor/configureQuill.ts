@@ -1,6 +1,7 @@
 import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 import Quill from 'quill';
 import QuillInline from 'quill/blots/inline';
+import Bold from 'quill/formats/bold';
 import QuillLink from 'quill/formats/link';
 import Video from 'quill/formats/video';
 
@@ -36,6 +37,10 @@ export const configureQuill = () => {
   );
 
   Quill.register('modules/blotFormatter', BlotFormatter);
+
+  class CustomBold extends Bold {}
+  CustomBold.tagName = ['B'];
+  Quill.register('formats/bold', CustomBold, true);
 
   // BEGIN allow video resizing styles
   class VideoFormat extends Video {
