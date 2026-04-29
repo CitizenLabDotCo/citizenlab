@@ -43,7 +43,7 @@ import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
+const Container = styled(Link)`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   &.dynamic {
     border: 1px ${colors.grey300} solid;
   }
-`;
+` as typeof Link;
 
 const ProjectImageContainer = styled.div`
   width: 100%;
