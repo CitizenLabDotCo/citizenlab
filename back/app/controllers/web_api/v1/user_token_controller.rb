@@ -6,7 +6,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
   before_action :sso_enforced?, only: %i[create user_token_unconfirmed]
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
-  skip_before_action :authenticate, only: %i[user_token_unconfirmed]
+  skip_before_action :authenticate, only: [:user_token_unconfirmed]
 
   # This endpoint is only used when user_confirmation is disabled.
   def user_token_unconfirmed
