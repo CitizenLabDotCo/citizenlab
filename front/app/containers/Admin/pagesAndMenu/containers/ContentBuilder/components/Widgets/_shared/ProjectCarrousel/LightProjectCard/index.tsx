@@ -53,41 +53,43 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const projectLink = getProjectLinkProps(project.attributes.slug);
 
   return (
-    <CardContainer
-      as={Link}
+    <Link
       scrollToTop
-      tabIndex={0}
-      w={`${CARD_WIDTH}px`}
-      ml={ml}
-      mr={mr}
       {...projectLink}
-      display="block"
       onKeyDown={onKeyDown}
       data-cy="e2e-light-project-card"
     >
-      <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
-      <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
-        {title}
-      </Title>
-      <Box mt="8px">
-        <TimeIndicator
-          currentPhaseEndsAt={phase?.data.attributes.end_at}
-          projectStartsInDays={project.attributes.starts_days_from_now}
-          projectEndedDaysAgo={project.attributes.ended_days_ago}
-        />
-        {phase && (
-          <Text mt="2px" mb="0px" color="textSecondary">
-            {getCTAMessage({
-              phase: phase.data,
-              actionDescriptors: project.attributes.action_descriptors,
-              localize,
-              formatMessage,
-              hasPublicReport,
-            })}
-          </Text>
-        )}
-      </Box>
-    </CardContainer>
+      <CardContainer
+        tabIndex={0}
+        w={`${CARD_WIDTH}px`}
+        ml={ml}
+        mr={mr}
+        display="block"
+      >
+        <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
+        <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
+          {title}
+        </Title>
+        <Box mt="8px">
+          <TimeIndicator
+            currentPhaseEndsAt={phase?.data.attributes.end_at}
+            projectStartsInDays={project.attributes.starts_days_from_now}
+            projectEndedDaysAgo={project.attributes.ended_days_ago}
+          />
+          {phase && (
+            <Text mt="2px" mb="0px" color="textSecondary">
+              {getCTAMessage({
+                phase: phase.data,
+                actionDescriptors: project.attributes.action_descriptors,
+                localize,
+                formatMessage,
+                hasPublicReport,
+              })}
+            </Text>
+          )}
+        </Box>
+      </CardContainer>
+    </Link>
   );
 };
 
