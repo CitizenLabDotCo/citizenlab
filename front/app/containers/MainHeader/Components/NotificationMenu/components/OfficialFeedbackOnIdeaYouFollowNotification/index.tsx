@@ -62,7 +62,10 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
               <T value={notification.attributes.official_feedback_author} />
             ),
             idea: (
-              <Link to={`/ideas/${notification.attributes.post_slug}`}>
+              <Link
+                to="/$locale/ideas/$slug"
+                params={{ slug: notification.attributes.post_slug }}
+              >
                 <T value={notification.attributes.post_title_multiloc} />
               </Link>
             ),

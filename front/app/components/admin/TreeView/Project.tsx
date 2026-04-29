@@ -47,7 +47,8 @@ const Project = ({
           fill={lockedProjectTooltip ? colors.grey600 : colors.black}
         />
         <Link
-          to={`/admin/projects/${node.id}`}
+          to="/$locale/admin/projects/$projectId"
+          params={{ projectId: node.id }}
           color={lockedProjectTooltip ? colors.grey600 : colors.black}
         >
           {localize(node.title_multiloc)}

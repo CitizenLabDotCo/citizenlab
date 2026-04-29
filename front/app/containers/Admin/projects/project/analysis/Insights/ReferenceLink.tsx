@@ -111,7 +111,9 @@ const ReferenceLink = ({
     >
       <Box display="inline">
         <StyledLink
-          to={`/admin/projects/${projectId}/analysis/${analysisId}?phase_id=${phaseId}&selected_input_id=${match}`}
+          to="/$locale/admin/projects/$projectId/analysis/$analysisId"
+          params={{ projectId, analysisId }}
+          search={{ phase_id: phaseId, selected_input_id: match } as any}
           isActive={selectedInputId === match}
           target={isAnalysisScreen ? '_self' : '_blank'}
         >

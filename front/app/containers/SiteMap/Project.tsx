@@ -35,7 +35,10 @@ const Project = ({ projectId, hightestTitle }: Props) => {
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/projects/${project.data.attributes.slug}`}>
+            <Link
+              to="/$locale/projects/$slug"
+              params={{ slug: project.data.attributes.slug }}
+            >
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>
@@ -43,7 +46,11 @@ const Project = ({ projectId, hightestTitle }: Props) => {
 
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
-              <Link to={`/projects/${project.data.attributes.slug}/events`}>
+              <Link
+                to={
+                  `/$locale/projects/${project.data.attributes.slug}/events` as any
+                }
+              >
                 <FormattedMessage {...messages.projectEvents} />
               </Link>
             </li>

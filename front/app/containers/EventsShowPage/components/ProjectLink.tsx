@@ -53,7 +53,7 @@ const ProjectLink = ({ project }: ProjectLinkProps) => {
             projectTitle: projectTitleLocalized,
           })}
         </Text>
-        <Link to={`/projects/${projectSlug}`}>
+        <Link to="/$locale/projects/$slug" params={{ slug: projectSlug }}>
           <Text
             fontSize={isMobileOrSmaller ? 'xs' : 's'}
             p="0px"

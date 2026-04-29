@@ -70,9 +70,8 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
                 values={{
                   inputTagsLink: (
                     <Link
-                      to={`/admin/projects/${
-                        projectId ?? ''
-                      }/general/input-tags`}
+                      to="/$locale/admin/projects/$projectId/general/input-tags"
+                      params={{ projectId: projectId ?? '' }}
                       target="_blank"
                     >
                       <FormattedMessage {...messages.inputTagsPage} />

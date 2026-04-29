@@ -321,7 +321,8 @@ const PlatformFooter = ({ className }: Props) => {
                       </StyledA>
                     ) : (
                       <StyledLink
-                        to={`/pages/${slug}`}
+                        to="/$locale/pages/$slug"
+                        params={{ slug }}
                         className={index === 0 ? 'first' : ''}
                         scrollToTop={true}
                       >

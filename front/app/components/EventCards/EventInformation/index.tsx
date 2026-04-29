@@ -81,7 +81,10 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink to={`/events/${event.id}`}>
+          <PrimaryLink
+            to="/$locale/events/$eventId"
+            params={{ eventId: event.id }}
+          >
             <Title
               variant="h3"
               fontSize="l"

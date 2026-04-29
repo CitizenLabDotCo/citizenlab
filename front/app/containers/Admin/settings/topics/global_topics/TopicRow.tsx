@@ -63,7 +63,8 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
         {staticPages.map((staticPage) => (
           <li key={staticPage.id}>
             <StyledLink
-              to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+              to="/$locale/admin/pages-menu/pages/$customPageId/settings"
+              params={{ customPageId: staticPage.id }}
             >
               {localize(staticPage.attributes.title_multiloc)}
             </StyledLink>

@@ -249,7 +249,8 @@ const AdminIdeaContent = ({
                 projectLink: (
                   <ProjectLink
                     className="e2e-project-link"
-                    to={`/projects/${project.data.attributes.slug}`}
+                    to="/$locale/projects/$slug"
+                    params={{ slug: project.data.attributes.slug }}
                   >
                     <T value={project.data.attributes.title_multiloc} />
                   </ProjectLink>

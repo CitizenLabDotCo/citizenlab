@@ -37,7 +37,7 @@ const InputAssignment = ({ projectId }: Props) => {
               {...messages.inputAssignmentTooltipText}
               values={{
                 globalInputManagerLink: (
-                  <StyledLink to={`/admin/ideas`}>
+                  <StyledLink to="/$locale/admin/ideas">
                     <FormattedMessage
                       {...messages.globalInputManagerLinkText}
                     />

@@ -141,7 +141,6 @@ interface Props {
 }
 
 const AdminPublicationsNavbarItem = ({
-  linkTo,
   navigationItemTitle,
   onDropdownStateChange,
 }: Props) => {
@@ -221,7 +220,8 @@ const AdminPublicationsNavbarItem = ({
                   <React.Fragment key={item.id}>
                     {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
-                        to={`${linkTo}/${item.attributes.publication_slug}`}
+                        to="/$locale/projects/$slug"
+                        params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
@@ -229,7 +229,8 @@ const AdminPublicationsNavbarItem = ({
                     )}
                     {item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
-                        to={`/folders/${item.attributes.publication_slug}`}
+                        to="/$locale/folders/$slug"
+                        params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
@@ -247,7 +248,7 @@ const AdminPublicationsNavbarItem = ({
           <>
             {totalProjectsListLength > 9 && (
               <ProjectsListFooter
-                to={linkTo}
+                to="/$locale/projects"
                 id="e2e-all-projects-link"
                 scrollToTop
               >

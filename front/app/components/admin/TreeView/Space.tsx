@@ -57,7 +57,11 @@ const Space = ({
             transform="translateY(-1px)"
             fill={colors.black}
           />
-          <Link to={`/admin/projects/spaces/${node.id}`} color={colors.black}>
+          <Link
+            to="/$locale/admin/projects/spaces/$spaceId"
+            params={{ spaceId: node.id }}
+            color={colors.black}
+          >
             {localize(node.title_multiloc)}
           </Link>
           <IconButton

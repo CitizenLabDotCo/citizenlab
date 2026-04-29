@@ -48,7 +48,8 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
     return (
       <Link
         data-cy="e2e-groups-permissions-tag"
-        to={`/admin/projects/${projectId}/general/access-rights`}
+        to="/$locale/admin/projects/$projectId/general/access-rights"
+        params={{ projectId }}
       >
         <StatusLabel groupCount={groupCount} />
       </Link>

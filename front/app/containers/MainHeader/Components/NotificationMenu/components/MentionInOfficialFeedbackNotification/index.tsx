@@ -39,7 +39,10 @@ const MentionInCommentNotification = memo<Props>((props) => {
             <DeletedUser />
           ) : (
             <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              to="/$locale/profile/$userSlug"
+              params={{
+                userSlug: notification.attributes.initiating_user_slug,
+              }}
               onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />

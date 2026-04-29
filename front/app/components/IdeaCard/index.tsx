@@ -145,7 +145,12 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+          <Link
+            to="/$locale/ideas/$slug"
+            params={{ slug }}
+            search={{ go_back: 'true' } as any}
+            onClick={handleClick}
+          >
             <Tooltip
               content={ideaTitle}
               disabled={!isTitleClamped}

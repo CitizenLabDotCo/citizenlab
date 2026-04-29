@@ -47,7 +47,10 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
             ...sharedValues,
             name: (
               <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
+                to="/$locale/profile/$userSlug"
+                params={{
+                  userSlug: notification.attributes.initiating_user_slug,
+                }}
                 onClick={onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}
