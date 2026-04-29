@@ -47,9 +47,9 @@ const Project = ({ projectId, hightestTitle }: Props) => {
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
               <Link
-                to={
-                  `/$locale/projects/${project.data.attributes.slug}/events` as any
-                }
+                to="/$locale/projects/$slug"
+                params={{ slug: project.data.attributes.slug }}
+                hash="e2e-events-section-project-page"
               >
                 <FormattedMessage {...messages.projectEvents} />
               </Link>
