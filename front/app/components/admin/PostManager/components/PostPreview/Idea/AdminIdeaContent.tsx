@@ -89,7 +89,7 @@ const ProjectLink = styled(Link)`
     color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 const IdeaImage = styled.img`
   width: 100%;

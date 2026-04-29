@@ -57,7 +57,7 @@ const EventPageLink = styled(Link)`
     color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 interface Props {
   staticPageId?: string;

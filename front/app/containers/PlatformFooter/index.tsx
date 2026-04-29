@@ -138,7 +138,7 @@ const linkStyle = css`
 
 const StyledLink = styled(Link)`
   ${linkStyle}
-`;
+` as typeof Link;
 
 const StyledA = styled.a`
   ${linkStyle}

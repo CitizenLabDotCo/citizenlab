@@ -20,6 +20,6 @@ const ProjectsListItem = styled(Link)`
     background: ${colors.grey300};
     text-decoration: none;
   }
-`;
+` as typeof Link;
 
 export default ProjectsListItem;

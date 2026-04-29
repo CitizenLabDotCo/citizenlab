@@ -63,7 +63,7 @@ const StyledLink = styled(Link)`
         theme.navbarActiveItemBorderColor || theme.colors.tenantPrimary};
     }
   }
-`;
+` as typeof Link;
 
 interface Props {
   className?: string;

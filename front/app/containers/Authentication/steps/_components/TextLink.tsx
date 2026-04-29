@@ -15,6 +15,6 @@ export const ClickableTextStyles = `
     text-decoration: underline;
   }
 `;
-export const StyledLink = styled(Link)`${ClickableTextStyles}}`;
+export const StyledLink = styled(Link)`${ClickableTextStyles}}` as typeof Link;
 
 export default (props: Props) => <StyledLink {...props} />;

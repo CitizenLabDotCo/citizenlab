@@ -132,7 +132,7 @@ const ProjectsListFooter = styled(Link)`
     background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
-`;
+` as typeof Link;
 
 interface Props {
   linkTo: string;

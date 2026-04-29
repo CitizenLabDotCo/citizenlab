@@ -56,7 +56,7 @@ const PostLink = styled(Link)`
   &:focus {
     background: ${darken(0.02, colors.background)};
   }
-`;
+` as typeof Link;
 
 const PostLinkLeft = styled.div`
   display: flex;

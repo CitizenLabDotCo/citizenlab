@@ -39,7 +39,7 @@ const DropdownListItem = styled(Link)`
     background-color: ${colors.teal500};
     color: white;
   }
-`;
+` as typeof Link;
 
 const DropdownItemText = styled.span`
   overflow: hidden;

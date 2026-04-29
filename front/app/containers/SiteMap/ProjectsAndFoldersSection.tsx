@@ -17,7 +17,7 @@ import { H2 } from '.';
 const AllProjectsLink = styled(Link)`
   display: block;
   margin-bottom: 20px;
-`;
+` as typeof Link;
 
 interface Props {
   projectsSectionRef: any;

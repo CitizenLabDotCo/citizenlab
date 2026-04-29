@@ -31,7 +31,7 @@ const StyledLink = styled(Link)`
   &.active {
     color: ${(props) => props.theme.colors.tenantPrimary};
   }
-`;
+` as typeof Link;
 
 interface Props {
   linkTo: string;

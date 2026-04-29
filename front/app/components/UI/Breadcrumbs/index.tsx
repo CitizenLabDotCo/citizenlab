@@ -12,7 +12,7 @@ const StyledLink = styled(Link)`
     color: inherit;
     margin-bottom: -2px;
   }
-`;
+` as typeof Link;
 
 type TBreadcrumb = {
   label: string;

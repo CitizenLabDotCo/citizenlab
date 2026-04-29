@@ -21,7 +21,7 @@ const StyledLink = styled(Link)`
     color: inherit;
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 interface Props {
   user: IUserData;

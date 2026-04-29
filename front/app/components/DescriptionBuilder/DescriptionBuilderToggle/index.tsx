@@ -46,7 +46,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 const StyledLink = styled(Link)`
   margin-top: -10px;
   font-size: ${fontSizes.base}px;
-`;
+` as typeof Link;
 
 const DescriptionBuilderToggle = ({
   intl: { formatMessage },

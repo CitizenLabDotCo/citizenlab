@@ -53,7 +53,7 @@ const PrimaryLink = styled(Link)`
 
   // Place the pseudo-element on top of the whole card.
   z-index: 1; /* 3 */
-`;
+` as typeof Link;
 
 interface Props {
   event: IEventData;

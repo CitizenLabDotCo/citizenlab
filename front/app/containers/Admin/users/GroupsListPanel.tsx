@@ -124,7 +124,7 @@ const MenuLink = styled(Link)`
       background-color: ${rgba(colors.success, 0)};
     }
   }
-`;
+` as typeof Link;
 
 const GroupName = styled.div`
   flex: 1;

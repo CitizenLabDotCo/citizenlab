@@ -18,7 +18,7 @@ const TextLink = styled(Link)`
     color: ${colors.textPrimary};
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 const MainContent = () => {
   return (

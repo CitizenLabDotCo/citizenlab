@@ -20,7 +20,7 @@ const StyledLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 interface Props {
   projectId: string;

@@ -68,7 +68,7 @@ const GoToLink = styled(Link)`
   margin: 0;
   border: none;
   cursor: pointer;
-`;
+` as typeof Link;
 
 const GoToIcon = styled(Icon)`
   &:hover {
