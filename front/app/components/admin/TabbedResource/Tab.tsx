@@ -6,6 +6,7 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import type { LinkProps } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
@@ -75,7 +76,7 @@ const Tab = ({
       className={`${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
-      <Link to={url as any}>
+      <Link to={url as LinkProps['to']}>
         {label}
         {statusLabel && (
           <Box ml="12px" display="inline">
