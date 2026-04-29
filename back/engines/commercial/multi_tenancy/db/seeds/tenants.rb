@@ -172,10 +172,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            bulk_import_ideas: {
-              enabled: true,
-              allowed: true
-            },
             project_description_builder: {
               enabled: true,
               allowed: true

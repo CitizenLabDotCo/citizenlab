@@ -1271,7 +1271,7 @@
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-Mails in dieser Kategorie",
   "app.containers.CampaignsConsentForm.messageError": "Es ist ein Fehler beim Speichern Ihrer E-Mail-Einstellungen aufgetreten.",
   "app.containers.CampaignsConsentForm.messageSuccess": "Ihre E-Mail-Einstellungen wurden gespeichert.",
-  "app.containers.CampaignsConsentForm.notificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchten Sie erhalten? ",
+  "app.containers.CampaignsConsentForm.notificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Benachrichtigungen",
   "app.containers.CampaignsConsentForm.submit": "Speichern",
   "app.containers.ChangeEmail.adminEmailChangeWarning2": "Wenn du deine E-Mail-Adresse änderst, wirst du in anderen Browsern, in denen du ebenfalls angemeldet bist, abgemeldet. Du verlierst alle nicht gespeicherten Änderungen.",
