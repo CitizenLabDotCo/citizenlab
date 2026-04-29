@@ -16,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
 import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
@@ -342,6 +343,10 @@ const SurveyPage = ({
                   <Box p="24px" w="100%">
                     <Box display="flex" flexDirection="column">
                       <PageTitle page={page} />
+
+                      {page.key === 'user_page' && (
+                        <CustomFieldsSignupHelperText />
+                      )}
 
                       <CustomFields
                         questions={pageQuestions}
