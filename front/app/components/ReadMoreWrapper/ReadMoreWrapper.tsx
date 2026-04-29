@@ -122,6 +122,8 @@ const ReadMoreWrapper = memo<Props>(
                 <QuillEditedContent
                   fontSize={fontSize}
                   textColor={theme.colors.tenantText}
+                  // We disable tabbing to content when the "Read More" button is shown to prevent keyboard users from getting lost in content that they cannot see.
+                  disableTabbing={!expanded}
                 >
                   {content}
                 </QuillEditedContent>
