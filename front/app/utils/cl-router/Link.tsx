@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-router';
 
 import useLocale from 'hooks/useLocale';
+
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
 interface ExtraProps {
@@ -23,6 +24,7 @@ type InnerProps = CreateLinkProps &
 
 const Inner = React.forwardRef<HTMLAnchorElement, InnerProps>(
   ({ scrollToTop, onlyActiveOnIndex: _i, onClick, ...rest }, ref) => (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <a
       ref={ref}
       {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
@@ -37,15 +39,44 @@ Inner.displayName = 'ClRouterLinkInner';
 
 const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
 
-// `locale` is part of the route tree (`/$locale/...`) but is auto-injected by
-// the wrapper, so callers don't need to include it in `params`. The exported
-// type makes `locale` optional within `params` while keeping every other param
-// strictly typed against the route tree.
-// Wrapper-specific Link signature: `to` keeps full TanStack type-safety against
-// the route tree, but `params` is loosened so callers don't have to pass
-// `locale` (the wrapper auto-injects it from `useLocale()`). Param-name
-// type-checking is sacrificed for the locale ergonomics — runtime validation
-// still applies via TanStack itself.
+// Make `locale` optional inside a resolved params object/reducer while keeping
+// every other key strictly typed against the route tree. Distributes over the
+// `true | object | (prev) => object` union that TanStack emits for `params`.
+type WithOptionalLocale<TP> = TP extends true
+  ? TP
+  : TP extends (...args: infer A) => infer R
+  ? (...args: A) => WithOptionalLocale<R>
+  : TP extends Record<string, unknown>
+  ? Omit<TP, 'locale'> & {
+      locale?: TP extends { locale: infer L } ? L : string;
+    }
+  : TP;
+
+// `never` if every key of T is optional, else the union of required keys.
+// Used to decide whether `params` itself can be demoted from required to
+// optional after `locale` is made optional within it.
+type RequiredKeysOf<T> = {
+  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
+}[keyof T];
+
+// Replace the resolved `params` shape on `LinkComponentProps` with a
+// locale-optional version. If `locale` was the only required param on the
+// route (so making it optional leaves no required keys), `params` itself is
+// also demoted to optional — otherwise required-ness is preserved.
+type WithLocaleAwareParams<P> = P extends { params: infer TP }
+  ? [
+      RequiredKeysOf<Extract<WithOptionalLocale<TP>, Record<string, unknown>>>
+    ] extends [never]
+    ? Omit<P, 'params'> & { params?: WithOptionalLocale<TP> }
+    : Omit<P, 'params'> & { params: WithOptionalLocale<TP> }
+  : P extends { params?: infer TP }
+  ? Omit<P, 'params'> & { params?: WithOptionalLocale<TP> }
+  : P;
+
+// Wrapper-specific Link signature: `to`, `params`, and `search` keep full
+// TanStack type-safety against the route tree. The only relaxation is that
+// `locale` is optional within `params` — the wrapper auto-injects it from
+// `useLocale()`. Other route params (e.g. `projectId`) remain required.
 type LocaleAwareLink<TComp> = <
   TRouter extends AnyRouter = RegisteredRouter,
   const TFrom extends string = string,
@@ -53,12 +84,9 @@ type LocaleAwareLink<TComp> = <
   const TMaskFrom extends string = TFrom,
   const TMaskTo extends string = ''
 >(
-  props: Omit<
-    LinkComponentProps<TComp, TRouter, TFrom, TTo, TMaskFrom, TMaskTo>,
-    'params'
-  > & {
-    params?: Record<string, string | number | undefined>;
-  }
+  props: WithLocaleAwareParams<
+    LinkComponentProps<TComp, TRouter, TFrom, TTo, TMaskFrom, TMaskTo>
+  >
 ) => React.ReactElement;
 
 const Link = (props: any) => {
@@ -68,7 +96,9 @@ const Link = (props: any) => {
   const mergedParams =
     typeof params === 'function'
       ? (prev: unknown) => ({ locale, ...params(prev) })
-      : { locale, ...((params as Record<string, unknown>) ?? {}) };
+      : params
+      ? { locale, ...(params as Record<string, unknown>) }
+      : { locale };
 
   const resolvedActiveOptions = onlyActiveOnIndex
     ? { exact: true, ...activeOptions }
