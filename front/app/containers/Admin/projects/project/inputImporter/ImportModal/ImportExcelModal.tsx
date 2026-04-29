@@ -49,10 +49,16 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
   });
   const { data: phase } = usePhase(phaseId);
 
-  const downloadFormPath =
+  const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
-      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
+      ? ({
+          to: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form',
+          params: { projectId, phaseId },
+        } as const)
+      : ({
+          to: '/$locale/admin/projects/$projectId/phases/$phaseId/form',
+          params: { projectId, phaseId },
+        } as const);
 
   const defaultValues = {
     locale,
@@ -114,7 +120,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
                       <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                     ),
                     hereLink: (
-                      <Link to={{ pathname: downloadFormPath }}>
+                      <Link {...downloadFormLink}>
                         <FormattedMessage
                           {...messages.templateCanBeDownloadedHere}
                         />

@@ -149,7 +149,7 @@ const Sidebar = ({ authUser }: Props) => {
            * making it unclear for screen readers what the link point to.
            * https://stackoverflow.com/a/53765144/7237112
            */}
-          <Link to="/" aria-label={formatMessage(messages.toPlatform)}>
+          <Link to="/$locale/" aria-label={formatMessage(messages.toPlatform)}>
             <Box
               height={
                 isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'

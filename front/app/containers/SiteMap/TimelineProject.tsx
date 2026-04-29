@@ -24,7 +24,10 @@ const TimelineProject = ({ project }: Props) => {
   if (phases.data.length === 1) {
     return (
       <li key={phases.data[0].id}>
-        <Link to={{ pathname: `/projects/${project.attributes.slug}/1` }}>
+        <Link
+          to="/$locale/projects/$slug/$phaseNumber"
+          params={{ slug: project.attributes.slug, phaseNumber: '1' }}
+        >
           <T value={phases.data[0].attributes.title_multiloc} />
         </Link>
       </li>
@@ -38,8 +41,10 @@ const TimelineProject = ({ project }: Props) => {
         {phases.data.map((phase, i) => (
           <li key={phase.id}>
             <Link
-              to={{
-                pathname: `/projects/${project.attributes.slug}/${i + 1}`,
+              to="/$locale/projects/$slug/$phaseNumber"
+              params={{
+                slug: project.attributes.slug,
+                phaseNumber: String(i + 1),
               }}
             >
               <T value={phase.attributes.title_multiloc} />

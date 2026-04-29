@@ -148,7 +148,7 @@ class PasswordReset extends React.PureComponent<Props, State> {
 
             invalidTokenError.payload = {
               passwordResetLink: (
-                <Link to="/password-recovery">
+                <Link to="/$locale/password-recovery">
                   <FormattedMessage {...messages.requestNewPasswordReset} />
                 </Link>
               ),

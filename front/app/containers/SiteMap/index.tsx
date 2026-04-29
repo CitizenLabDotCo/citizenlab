@@ -275,7 +275,7 @@ const SiteMap = () => {
                     {/* Default cookie policy link if no custom one exists */}
                     {!hasStaticPageWithCode('cookie-policy') && (
                       <li key="default-cookie-policy">
-                        <Link to="/pages/cookie-policy">
+                        <Link to="/$locale/pages/cookie-policy">
                           <FormattedMessage
                             {...messages.cookiePolicyLinkTitle}
                           />
@@ -299,7 +299,7 @@ const SiteMap = () => {
                               </Link>
                             </li>
                             <li>
-                              <Link to="/profile/edit">
+                              <Link to="/$locale/profile/edit">
                                 <FormattedMessage
                                   {...messages.profileSettings}
                                 />

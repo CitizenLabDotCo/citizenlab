@@ -99,7 +99,7 @@ const Consent = memo(
               {...messages.iHaveReadAndAgreeToVienna}
               values={{
                 link: (
-                  <Link target="_blank" to="/pages/privacy-policy">
+                  <Link target="_blank" to="/$locale/pages/privacy-policy">
                     <FormattedMessage {...messages.viennaDataProtection} />
                   </Link>
                 ),
@@ -123,7 +123,7 @@ const Consent = memo(
                     {...messages.iHaveReadAndAgreeToTerms}
                     values={{
                       link: (
-                        <Link target="_blank" to="/pages/terms-and-conditions">
+                        <Link target="_blank" to="/$locale/pages/terms-and-conditions">
                           <FormattedMessage
                             {...messages.theTermsAndConditions}
                           />
@@ -155,7 +155,7 @@ const Consent = memo(
                     {...messages.iHaveReadAndAgreeToPrivacy}
                     values={{
                       link: (
-                        <Link target="_blank" to="/pages/privacy-policy">
+                        <Link target="_blank" to="/$locale/pages/privacy-policy">
                           <FormattedMessage {...messages.thePrivacyPolicy} />
                         </Link>
                       ),

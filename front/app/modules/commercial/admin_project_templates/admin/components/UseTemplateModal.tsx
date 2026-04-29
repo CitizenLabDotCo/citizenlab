@@ -382,7 +382,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                     {...messages.goBackTo}
                     values={{
                       goBackLink: (
-                        <Link to="/admin/projects/">
+                        <Link to="/$locale/admin/projects/">
                           <FormattedMessage
                             {...messages.projectsOverviewPage}
                           />

@@ -112,7 +112,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
                     {...commentsMessages.profanityError}
                     values={{
                       guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
+                        <Link to="/$locale/pages/faq" target="_blank">
                           {formatMessage(commentsMessages.guidelinesLinkText)}
                         </Link>
                       ),

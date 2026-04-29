@@ -128,7 +128,7 @@ const GeographicAreaInputs = ({
                 {...messages.areasLabelTooltipHint}
                 values={{
                   areasLabelTooltipLink: (
-                    <Link to="/admin/settings/areas">
+                    <Link to="/$locale/admin/settings/areas">
                       <FormattedMessage
                         {...messages.areasLabelTooltipLinkText}
                       />

@@ -93,7 +93,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
                     {...messages.globalRegFlowTooltip}
                     values={{
                       globalRegFlowLink: (
-                        <Link to="/admin/settings/registration" target="_blank">
+                        <Link to="/$locale/admin/settings/registration" target="_blank">
                           <FormattedMessage {...messages.globalRegFlowLink} />
                         </Link>
                       ),

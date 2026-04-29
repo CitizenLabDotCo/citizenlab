@@ -112,7 +112,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
           </Box>
 
           <Box alignSelf="center">
-            <EventPageLink to="/events">
+            <EventPageLink to="/$locale/events">
               {formatMessage(messages.viewAllEventsText)}
             </EventPageLink>
           </Box>

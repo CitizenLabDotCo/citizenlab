@@ -468,7 +468,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
                   {...messages.needInspiration}
                   values={{
                     inspirationHubLink: (
-                      <Link to="/admin/inspiration-hub" target="_blank">
+                      <Link to="/$locale/admin/inspiration-hub" target="_blank">
                         <FormattedMessage {...messages.inspirationHub} />
                       </Link>
                     ),

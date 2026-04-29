@@ -67,7 +67,7 @@ const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
             {...messages.goToAllUsers}
             values={{
               allUsersLink: (
-                <Link to="/admin/users/">
+                <Link to="/$locale/admin/users/">
                   <FormattedMessage {...messages.allUsers} />
                 </Link>
               ),
