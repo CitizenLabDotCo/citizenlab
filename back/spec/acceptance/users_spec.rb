@@ -404,6 +404,12 @@ resource 'Users' do
         end
       end
     end
+
+    get 'web_api/v1/users/me/ping' do
+      example_request '[error] Ping without authentication' do
+        assert_status 401
+      end
+    end
   end
 
   context 'when authenticated' do
@@ -1450,6 +1456,23 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :value)).to be(false)
         end
       end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as an admin' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as an admin with admin param' do
+            assert_status 200
+          end
+        end
+      end
     end
 
     context 'when non-admin' do
@@ -2024,6 +2047,47 @@ resource 'Users' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
+        end
+      end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as a normal user' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as a normal user with admin param' do
+            assert_status 403
+          end
+        end
+      end
+    end
+
+    context 'when project moderator' do
+      before do
+        project = create(:project)
+        @user.update!(roles: [{ type: 'project_moderator', project_id: project.id }])
+      end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as a project moderator' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as a project moderator with admin param' do
+            assert_status 200
+          end
         end
       end
     end

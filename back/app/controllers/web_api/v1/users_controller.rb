@@ -107,11 +107,10 @@ class WebApi::V1::UsersController < ApplicationController
   def ping
     skip_authorization
 
-    if params[:admin].present?
-      unless current_user&.admin? || current_user&.project_or_folder_moderator?
-        head :forbidden
-        return
-      end
+    # Allows us to return a different response when a user hits an admin route in the front-end
+    if params[:admin].present? && current_user&.normal_user?
+      head :forbidden
+      return
     end
 
     head :ok
