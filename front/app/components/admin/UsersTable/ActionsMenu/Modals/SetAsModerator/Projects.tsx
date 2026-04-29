@@ -11,6 +11,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { useIntl } from 'utils/cl-intl';
 import { IProjectModeratorRole } from 'utils/permissions/roles';
 
+import { Resources } from '../../useAssignModerator';
 import messages from '../messages';
 
 import AssignButton from './AssignButton';
@@ -52,11 +53,10 @@ const getOptions = (
 interface Props {
   user: IUserData;
   onClose: () => void;
-  onAssign: () => Promise<void>;
-  onExceedsSeats: () => void;
+  onAssign: (resources: Resources) => Promise<void>;
 }
 
-const Projects = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
+const Projects = ({ user, onClose, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: projects } = useProjects({
@@ -85,10 +85,8 @@ const Projects = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
       />
       <AssignButton
         disabled={selectedProjects.length === 0}
-        user={user}
         onClose={onClose}
-        onAssign={onAssign}
-        onExceedsSeats={onExceedsSeats}
+        onAssign={() => onAssign({ type: 'project', ids: selectedProjects })}
       />
     </>
   );

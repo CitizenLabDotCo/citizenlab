@@ -17,6 +17,7 @@ import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import messages from './messages';
 import Modals from './Modals';
 import { ModalName, Action } from './types';
+import useAssignModerator, { Resources } from './useAssignModerator';
 
 interface Props {
   user: IUserData;
@@ -30,6 +31,10 @@ const ActionsMenu = ({ user }: Props) => {
   });
   const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const { mutate: updateUser } = useUpdateUser();
+  const assignModerator = useAssignModerator();
+
+  const [resourcesForModeratorAssignment, setResourcesForModeratorAssignment] =
+    useState<Resources | null>(null);
 
   if (!authUser) return null;
 
@@ -44,6 +49,20 @@ const ActionsMenu = ({ user }: Props) => {
       userId: user.id,
       roles: [...(user.attributes.roles ?? []), { type: 'admin' }],
     });
+  };
+
+  const handleOnAssignModerator = async (resources: Resources) => {
+    const shouldOpenModal = await checkIfUserExceedsSeats({
+      user_id: user.id,
+      seat_type: 'moderator',
+    });
+
+    if (shouldOpenModal) {
+      setResourcesForModeratorAssignment(resources);
+      setModalOpened('seat-limit-reached-moderator');
+    } else {
+      assignModerator(user, resources);
+    }
   };
 
   const onAction = async (action: Action) => {
@@ -64,7 +83,7 @@ const ActionsMenu = ({ user }: Props) => {
         });
 
         if (shouldOpenModal) {
-          setModalOpened('seat-limit-reached');
+          setModalOpened('seat-limit-reached-admin');
         } else {
           handleMakeAdmin();
         }
@@ -186,6 +205,13 @@ const ActionsMenu = ({ user }: Props) => {
         user={user}
         closeModal={() => setModalOpened(null)}
         onAcceptIncreasedSeatLimitForAdmin={handleMakeAdmin}
+        onAssignModerator={handleOnAssignModerator}
+        onAcceptIncreasedSeatLimitForModerator={() => {
+          if (resourcesForModeratorAssignment) {
+            assignModerator(user, resourcesForModeratorAssignment);
+            setResourcesForModeratorAssignment(null);
+          }
+        }}
       />
     </>
   );

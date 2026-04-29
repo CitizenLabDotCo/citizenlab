@@ -11,6 +11,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { useIntl } from 'utils/cl-intl';
 import { IProjectFolderModeratorRole } from 'utils/permissions/roles';
 
+import { Resources } from '../../useAssignModerator';
 import messages from '../messages';
 
 import AssignButton from './AssignButton';
@@ -52,11 +53,10 @@ const getOptions = (
 interface Props {
   user: IUserData;
   onClose: () => void;
-  onAssign: () => Promise<void>;
-  onExceedsSeats: () => void;
+  onAssign: (resources: Resources) => Promise<void>;
 }
 
-const Folders = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
+const Folders = ({ user, onClose, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: folders } = useProjectFolders({});
@@ -84,10 +84,8 @@ const Folders = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
       />
       <AssignButton
         disabled={selectedFolders.length === 0}
-        user={user}
         onClose={onClose}
-        onAssign={onAssign}
-        onExceedsSeats={onExceedsSeats}
+        onAssign={() => onAssign({ type: 'folder', ids: selectedFolders })}
       />
     </>
   );
