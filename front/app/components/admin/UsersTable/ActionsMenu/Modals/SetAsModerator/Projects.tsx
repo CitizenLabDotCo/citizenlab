@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IProjectData } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
-import { IUser, IUserData } from 'api/users/types';
+import { IUserData } from 'api/users/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -15,11 +14,6 @@ import { IProjectModeratorRole } from 'utils/permissions/roles';
 import messages from '../messages';
 
 import AssignButton from './AssignButton';
-
-interface Props {
-  user: IUserData;
-  onClose: () => void;
-}
 
 const getOptions = (
   localize: Localize,
@@ -55,8 +49,14 @@ const getOptions = (
   return options;
 };
 
-const Projects = ({ user, onClose }: Props) => {
-  const { mutateAsync: addProjectModerator } = useAddProjectModerator();
+interface Props {
+  user: IUserData;
+  onClose: () => void;
+  onAssign: () => Promise<void>;
+  onExceedsSeats: () => void;
+}
+
+const Projects = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: projects } = useProjects({
@@ -72,22 +72,6 @@ const Projects = ({ user, onClose }: Props) => {
       projects?.data,
       user.attributes.roles
     ) || [];
-
-  const assignPMs = async () => {
-    const promises: Promise<IUser>[] = [];
-
-    for (const projectId of selectedProjects) {
-      promises.push(
-        addProjectModerator({
-          projectId,
-          user_id: user.id,
-        })
-      );
-    }
-
-    await Promise.all(promises);
-  };
-
   return (
     <>
       <MultipleSelect
@@ -103,7 +87,8 @@ const Projects = ({ user, onClose }: Props) => {
         disabled={selectedProjects.length === 0}
         user={user}
         onClose={onClose}
-        onAssign={assignPMs}
+        onAssign={onAssign}
+        onExceedsSeats={onExceedsSeats}
       />
     </>
   );

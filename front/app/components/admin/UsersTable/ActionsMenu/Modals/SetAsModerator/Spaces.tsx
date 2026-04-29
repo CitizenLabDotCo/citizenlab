@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
 import { SpaceData } from 'api/spaces/types';
 import useSpaces from 'api/spaces/useSpaces';
-import { IUser, IUserData } from 'api/users/types';
+import { IUserData } from 'api/users/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -15,11 +14,6 @@ import { ISpaceModeratorRole } from 'utils/permissions/roles';
 import messages from '../messages';
 
 import AssignButton from './AssignButton';
-
-interface Props {
-  user: IUserData;
-  onClose: () => void;
-}
 
 const getOptions = (
   localize: Localize,
@@ -54,11 +48,17 @@ const getOptions = (
   return options;
 };
 
-const Spaces = ({ user, onClose }: Props) => {
+interface Props {
+  user: IUserData;
+  onClose: () => void;
+  onAssign: () => Promise<void>;
+  onExceedsSeats: () => void;
+}
+
+const Spaces = ({ user, onClose, onAssign, onExceedsSeats }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: spaces } = useSpaces();
-  const { mutateAsync: addSpaceModerator } = useAddSpaceModerator();
 
   const [selectedSpaces, setSelectedSpaces] = useState<string[]>([]);
 
@@ -69,20 +69,6 @@ const Spaces = ({ user, onClose }: Props) => {
       spaces?.data,
       user.attributes.roles
     ) || [];
-  const assignSMs = async () => {
-    const promises: Promise<IUser>[] = [];
-
-    for (const spaceId of selectedSpaces) {
-      promises.push(
-        addSpaceModerator({
-          spaceId,
-          user_id: user.id,
-        })
-      );
-    }
-
-    await Promise.all(promises);
-  };
 
   return (
     <>
@@ -99,7 +85,8 @@ const Spaces = ({ user, onClose }: Props) => {
         disabled={selectedSpaces.length === 0}
         user={user}
         onClose={onClose}
-        onAssign={assignSMs}
+        onAssign={onAssign}
+        onExceedsSeats={onExceedsSeats}
       />
     </>
   );
