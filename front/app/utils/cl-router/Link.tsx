@@ -1,9 +1,12 @@
 import React from 'react';
 
 import {
+  type AnyRouter,
   createLink,
   type CreateLinkProps,
   type LinkComponent,
+  type LinkComponentProps,
+  type RegisteredRouter,
 } from '@tanstack/react-router';
 
 import useLocale from 'hooks/useLocale';
@@ -14,41 +17,67 @@ interface ExtraProps {
   onlyActiveOnIndex?: boolean;
 }
 
-const Inner = React.forwardRef<
-  HTMLAnchorElement,
-  CreateLinkProps & ExtraProps
->(({ scrollToTop, onlyActiveOnIndex: _i, onClick, ...rest }, ref) => (
-  <a
-    ref={ref}
-    {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-    onClick={(e) => {
-      onClick?.(e as any);
-      if (scrollToTop) scrollTop('link');
-    }}
-  />
-));
+type InnerProps = CreateLinkProps &
+  ExtraProps &
+  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+
+const Inner = React.forwardRef<HTMLAnchorElement, InnerProps>(
+  ({ scrollToTop, onlyActiveOnIndex: _i, onClick, ...rest }, ref) => (
+    <a
+      ref={ref}
+      {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      onClick={(e) => {
+        onClick?.(e);
+        if (scrollToTop) scrollTop('link');
+      }}
+    />
+  )
+);
 Inner.displayName = 'ClRouterLinkInner';
 
 const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
 
-// Wrapper that auto-injects the current locale into `params` so callers can
-// write typed paths like `/$locale/admin/projects/$projectId` without ever
-// passing `locale` themselves. A user-supplied `params.locale` wins (escape
-// hatch for cross-locale links).
-const Link: LinkComponent<typeof Inner> = (props) => {
+// `locale` is part of the route tree (`/$locale/...`) but is auto-injected by
+// the wrapper, so callers don't need to include it in `params`. The exported
+// type makes `locale` optional within `params` while keeping every other param
+// strictly typed against the route tree.
+type WithOptionalLocale<P> = P extends { locale: string }
+  ? Omit<P, 'locale'> & { locale?: string }
+  : P;
+
+type LocaleAwareLink<TComp> = <
+  TRouter extends AnyRouter = RegisteredRouter,
+  const TFrom extends string = string,
+  const TTo extends string | undefined = undefined,
+  const TMaskFrom extends string = TFrom,
+  const TMaskTo extends string = ''
+>(
+  props: Omit<
+    LinkComponentProps<TComp, TRouter, TFrom, TTo, TMaskFrom, TMaskTo>,
+    'params'
+  > & {
+    params?: WithOptionalLocale<
+      NonNullable<
+        LinkComponentProps<
+          TComp,
+          TRouter,
+          TFrom,
+          TTo,
+          TMaskFrom,
+          TMaskTo
+        >['params']
+      >
+    >;
+  }
+) => React.ReactElement;
+
+const Link = (props: any) => {
   const locale = useLocale();
-  const { params, onlyActiveOnIndex, activeOptions, ...rest } = props as {
-    params?: unknown;
-    onlyActiveOnIndex?: boolean;
-    activeOptions?: { exact?: boolean };
-  } & Record<string, unknown>;
+  const { params, onlyActiveOnIndex, activeOptions, ...rest } = props;
 
   const mergedParams =
     typeof params === 'function'
-      ? (prev: unknown) => ({
-          locale,
-          ...(params as (p: unknown) => Record<string, unknown>)(prev),
-        })
+      ? (prev: unknown) => ({ locale, ...params(prev) })
       : { locale, ...((params as Record<string, unknown>) ?? {}) };
 
   const resolvedActiveOptions = onlyActiveOnIndex
@@ -57,11 +86,11 @@ const Link: LinkComponent<typeof Inner> = (props) => {
 
   return (
     <TypedLink
-      {...(rest as any)}
+      {...rest}
       params={mergedParams}
       activeOptions={resolvedActiveOptions}
     />
   );
 };
 
-export default Link;
+export default Link as LocaleAwareLink<typeof Inner>;
