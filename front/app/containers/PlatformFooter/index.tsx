@@ -355,7 +355,7 @@ const PlatformFooter = ({ className }: Props) => {
                 <GoVocalLogo
                   ariaHidden={false}
                   name={getLocalizedLogoName()}
-                  title="Go Vocal"
+                  title="Go Vocal formerly CitizenLab"
                 />
               </GoVocalLink>
             </PoweredBy>
