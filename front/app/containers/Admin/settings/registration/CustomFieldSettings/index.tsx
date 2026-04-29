@@ -190,7 +190,7 @@ const CustomFieldSettings = () => {
                                 {...messages.domicileManagementInfo}
                                 values={{
                                   geographicAreasTabLink: (
-                                    <Link to={'/admin/settings/areas'}>
+                                    <Link to="/$locale/admin/settings/areas">
                                       {formatMessage(
                                         messages.geographicAreasTabLinkText
                                       )}
