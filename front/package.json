@@ -53,6 +53,10 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
+  "overrides": {
+    "@tanstack/router-core": "1.161.3",
+    "@tanstack/history": "1.154.14"
+  },
   "dependencies": {
     "@arcgis/core": "^4.34.8",
     "@babel/runtime": "7.x",
@@ -65,7 +69,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@sentry/react": "10.17.0",
     "@tanstack/react-query": "4.22.4",
-    "@tanstack/react-router": "^1.168.25",
+    "@tanstack/react-router": "1.161.3",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
     "ajv": "8.18.0",
@@ -162,8 +166,8 @@
     "@storybook/react-vite": "8.6.15",
     "@storybook/react-webpack5": "8.6.15",
     "@tanstack/react-query-devtools": "4.22.4",
-    "@tanstack/react-router-devtools": "^1.166.13",
-    "@tanstack/router-plugin": "^1.167.28",
+    "@tanstack/react-router-devtools": "1.161.3",
+    "@tanstack/router-plugin": "1.161.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "16.1.0",
     "@testing-library/user-event": "14.6.1",
