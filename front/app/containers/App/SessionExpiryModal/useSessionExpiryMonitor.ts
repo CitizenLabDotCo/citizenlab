@@ -6,8 +6,8 @@ import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_S = 10; // 300; // Checks every 5 minutes unless the route is changed
-const EXPIRING_SOON_THRESHOLD_S = 60; // 1800; // 30 minutes
+const CHECK_INTERVAL_S = 300; // Checks every 5 minutes unless the route is changed
+const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
 
 type PingResult = 'valid' | 'expired' | 'not_admin';
 

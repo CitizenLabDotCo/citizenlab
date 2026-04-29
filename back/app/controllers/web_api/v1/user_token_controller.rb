@@ -3,7 +3,7 @@
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   include EnforceUserSso
 
-  TOKEN_LIFETIME = 2.minutes # 1.day
+  TOKEN_LIFETIME = 1.day
   before_action :sso_enforced?, only: %i[create user_token_unconfirmed]
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]

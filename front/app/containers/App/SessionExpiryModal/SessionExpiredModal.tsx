@@ -1,15 +1,9 @@
 import React from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
-
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import Modal from 'components/UI/Modal';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import useDocumentTitle from './useDocumentTitle';
+import SessionExpiryModalBase from './SessionExpiryModalBase';
 
 interface Props {
   onClearSession: () => Promise<void>;
@@ -18,12 +12,6 @@ interface Props {
 
 const SessionExpiredModal = ({ onClearSession, onResetState }: Props) => {
   const { formatMessage } = useIntl();
-  useDocumentTitle(formatMessage(messages.tabTitleSignedOut));
-
-  const handleSignInAgain = () => {
-    onResetState();
-    triggerAuthenticationFlow(undefined, 'signin');
-  };
 
   const handleStaySignedOut = async () => {
     await onClearSession();
@@ -31,34 +19,15 @@ const SessionExpiredModal = ({ onClearSession, onResetState }: Props) => {
   };
 
   return (
-    <Modal
-      opened
-      close={handleStaySignedOut}
-      ariaLabelledBy="session-expiry-modal-title"
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        p="32px"
-        gap="16px"
-      >
-        <Title variant="h2" textAlign="center" id="session-expiry-modal-title">
-          {formatMessage(messages.sessionExpiredTitle)}
-        </Title>
-        <Text textAlign="center" color="textSecondary">
-          {formatMessage(messages.sessionExpiredDescription)}
-        </Text>
-        <Box display="flex" gap="12px">
-          <Button buttonStyle="text" onClick={handleStaySignedOut}>
-            {formatMessage(messages.staySignedOut)}
-          </Button>
-          <Button onClick={handleSignInAgain}>
-            {formatMessage(messages.signInAgain)}
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
+    <SessionExpiryModalBase
+      tabTitle={formatMessage(messages.tabTitleSignedOut)}
+      title={formatMessage(messages.sessionExpiredTitle)}
+      description={formatMessage(messages.sessionExpiredDescription)}
+      dismissButtonLabel={formatMessage(messages.staySignedOut)}
+      onClose={handleStaySignedOut}
+      onClearSession={onClearSession}
+      onResetState={onResetState}
+    />
   );
 };
 
