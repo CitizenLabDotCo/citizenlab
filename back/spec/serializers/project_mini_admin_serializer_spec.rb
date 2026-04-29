@@ -38,4 +38,21 @@ describe WebApi::V1::ProjectMiniAdminSerializer do
     phase_ids = serialized_project2.dig(:data, :relationships, :phases, :data).pluck(:id)
     expect(phase_ids).to eq(project2.phases.pluck(:id).map(&:to_s))
   end
+
+  it 'exposes the folder relationship' do
+    expect(serialized_project.dig(:data, :relationships, :folder, :data, :id)).to eq(folder.id)
+  end
+
+  it 'exposes the space relationship when the project belongs to a space' do
+    space = create(:space)
+    folder.update!(space: space)
+    project.reload.update!(space: space)
+
+    serialized = described_class.new(project, params: { current_user: user }).serializable_hash
+    expect(serialized.dig(:data, :relationships, :space, :data, :id)).to eq(space.id)
+  end
+
+  it 'exposes a nil space relationship when the project has no space' do
+    expect(serialized_project.dig(:data, :relationships, :space, :data)).to be_nil
+  end
 end

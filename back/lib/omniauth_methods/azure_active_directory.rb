@@ -12,9 +12,9 @@ module OmniauthMethods
 
     def profile_to_user_attrs(auth)
       {
-        first_name: auth.info['first_name'],
-        last_name: auth.info['last_name'],
-        email: auth.info['email'],
+        first_name: auth.info['first_name'].presence || auth.info['name'],
+        last_name: auth.info['last_name'].presence || auth.info['name'],
+        email: auth.info['email'].presence,
         remote_avatar_url: remote_avatar_url(auth),
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
@@ -30,6 +30,14 @@ module OmniauthMethods
       domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
     end
 
+    def email_always_present?
+      false
+    end
+
+    def updateable_user_attrs
+      super + %i[remote_avatar_url]
+    end
+
     private
 
     def remote_avatar_url(auth)
@@ -37,9 +45,5 @@ module OmniauthMethods
 
       auth.info['image']
     end
-  end
-
-  def updateable_user_attrs
-    super + %i[remote_avatar_url]
   end
 end

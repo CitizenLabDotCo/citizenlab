@@ -14,11 +14,16 @@ import {
 
 export function userModeratesFolder(
   user: IUser | undefined,
-  projectFolderId: string
+  projectFolderId: string,
+  folderSpaceId?: string | null
 ) {
   if (!user) return false;
 
-  return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
+  return (
+    isAdmin(user) ||
+    isProjectFolderModerator(user, projectFolderId) ||
+    (typeof folderSpaceId === 'string' && isSpaceModerator(user, folderSpaceId))
+  );
 }
 
 export const userModeratesSpace = (
