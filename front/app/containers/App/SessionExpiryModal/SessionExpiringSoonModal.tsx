@@ -38,8 +38,7 @@ const SessionExpiringSoonModal = ({
     return () => clearInterval(id);
   }, [initialSecondsRemaining]);
 
-  const handleSignInAgain = async () => {
-    await onClearSession();
+  const handleSignInAgain = () => {
     onResetState();
     triggerAuthenticationFlow(undefined, 'signin');
   };
