@@ -142,7 +142,9 @@ export const addMapLegend = (
   showLegendExpanded: boolean | undefined,
   formatMessage?: (message: any) => string
 ) => {
-  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null;
+  // Check if legend already exists and return to prevent duplicates
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const existingLegend = mapView.ui?.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
   if (existingLegend) return;
 
   const legend = new Expand({
@@ -155,7 +157,7 @@ export const addMapLegend = (
     view: mapView,
     expanded:
       showLegendExpanded === undefined
-        ? !isMobileOrSmaller
+        ? !isMobileOrSmaller // By default, show the legend expanded only on desktop
         : showLegendExpanded,
     mode: 'floating',
     expandIcon: 'legend',
@@ -169,7 +171,9 @@ export const addMapLegend = (
     }),
   });
 
-  mapView.ui.add(legend, 'bottom-right');
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(legend, 'bottom-right');
 };
 
 // showLayerVisibilityControls
@@ -178,9 +182,11 @@ export const showLayerVisibilityControls = (
   mapView: MapView,
   formatMessage?: (message: any) => string
 ) => {
-  const existingLayerList = mapView.ui.find(
+  // Check if layer list already exists and return to prevent duplicates
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const existingLayerList = mapView.ui?.find(
     'mapLayerListExpand'
-  ) as Expand | null;
+  ) as Expand | null; // Esri has incorrect types here
   if (existingLayerList) return;
 
   const layerList = new Expand({
@@ -202,7 +208,9 @@ export const showLayerVisibilityControls = (
     }),
   });
 
-  mapView.ui.add(layerList, {
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(layerList, {
     position: 'top-right',
   });
 };
