@@ -72,6 +72,8 @@ import { fragmentId } from '../../projectHeader';
 import messages from '../messages';
 import validateTitle from '../utils/validateTitle';
 
+import { getProjectAttributes } from './utils';
+
 interface Props {
   project: IProject;
   authUser: IUser;
@@ -359,6 +361,8 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
   };
 
+  const projectAttrs = getProjectAttributes(project, projectAttributesDiff);
+
   const validateForm = () => {
     const titleError = !isNilOrError(appConfigLocales)
       ? validateTitle(
@@ -377,11 +381,6 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     }
 
     return formIsValid;
-  };
-
-  const projectAttrs = {
-    ...(!isNilOrError(project) ? project.data.attributes : {}),
-    ...projectAttributesDiff,
   };
 
   const selectedTopicIds = getSelectedTopicIds(
