@@ -1,46 +1,65 @@
 import React from 'react';
 
-import useLocale from 'hooks/useLocale';
+import {
+  createLink,
+  type CreateLinkProps,
+  type LinkComponent,
+} from '@tanstack/react-router';
 
-import { Link as RouterLink, LinkProps as NavLinkProps } from 'utils/router';
+import useLocale from 'hooks/useLocale';
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
-import updateLocationDescriptor from './updateLocationDescriptor';
-
-export type Props = {
-  to: any;
-  onlyActiveOnIndex?: boolean;
+interface ExtraProps {
   scrollToTop?: boolean;
-  active?: boolean;
-  onClick?: (event: React.MouseEvent) => void;
-  className?: string;
-  id?: string;
-  rel?: string;
-} & Omit<NavLinkProps, 'onClick' | 'to'>;
+  onlyActiveOnIndex?: boolean;
+}
 
-/*
- * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
- */
-const Link = ({
-  to,
-  onlyActiveOnIndex,
-  scrollToTop,
-  onClick,
-  active: _active,
-  ...otherProps
-}: Props) => {
+const Inner = React.forwardRef<
+  HTMLAnchorElement,
+  CreateLinkProps & ExtraProps
+>(({ scrollToTop, onlyActiveOnIndex: _i, onClick, ...rest }, ref) => (
+  <a
+    ref={ref}
+    {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+    onClick={(e) => {
+      onClick?.(e as any);
+      if (scrollToTop) scrollTop('link');
+    }}
+  />
+));
+Inner.displayName = 'ClRouterLinkInner';
+
+const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
+
+// Wrapper that auto-injects the current locale into `params` so callers can
+// write typed paths like `/$locale/admin/projects/$projectId` without ever
+// passing `locale` themselves. A user-supplied `params.locale` wins (escape
+// hatch for cross-locale links).
+const Link: LinkComponent<typeof Inner> = (props) => {
   const locale = useLocale();
+  const { params, onlyActiveOnIndex, activeOptions, ...rest } = props as {
+    params?: unknown;
+    onlyActiveOnIndex?: boolean;
+    activeOptions?: { exact?: boolean };
+  } & Record<string, unknown>;
+
+  const mergedParams =
+    typeof params === 'function'
+      ? (prev: unknown) => ({
+          locale,
+          ...(params as (p: unknown) => Record<string, unknown>)(prev),
+        })
+      : { locale, ...((params as Record<string, unknown>) ?? {}) };
+
+  const resolvedActiveOptions = onlyActiveOnIndex
+    ? { exact: true, ...activeOptions }
+    : activeOptions;
+
   return (
-    <RouterLink
-      activeOptions={onlyActiveOnIndex ? { exact: true } : undefined}
-      to={(updateLocationDescriptor(to, locale).pathname ?? '#') as any}
-      onClick={(event) => {
-        onClick && onClick(event);
-        if (scrollToTop) {
-          scrollTop('link');
-        }
-      }}
-      {...otherProps}
+    <TypedLink
+      {...(rest as any)}
+      params={mergedParams}
+      activeOptions={resolvedActiveOptions}
     />
   );
 };

@@ -3,7 +3,9 @@ import React, { useMemo } from 'react';
 /* eslint-disable no-restricted-imports */
 import {
   type AnyRoute,
+  type LinkComponent,
   type LinkProps,
+  type RegisteredRouter,
   Navigate as TanstackNavigate,
   Link,
   Outlet,
@@ -16,7 +18,7 @@ import {
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
 export { useLocation, useParams, Link, Outlet, RouterProvider, createRoute };
-export type { AnyRoute, LinkProps };
+export type { AnyRoute, LinkComponent, LinkProps, RegisteredRouter };
 
 export const useSearch = (_options: any) => {
   const { searchStr } = useLocation();
