@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { usePermission } from 'utils/permissions';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -45,17 +45,20 @@ const Spacer = styled.div`
 `;
 
 const AdminFolderProjectsList = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams();
   const { data: authUser } = useAuthUser();
+  const { data: folder } = useProjectFolderById(projectFolderId);
 
-  const canManageProjects = usePermission({
-    item: 'project_folder',
-    action: 'manage_projects',
-  });
+  // const canAddAndRemoveProjectsFromFolder = isAdmin(authUser) ||
 
-  if (isNilOrError(authUser)) {
+  if (!authUser || !folder) {
     return null;
   }
+
+  const { space_id } = folder.data.attributes;
+
+  const canAddAndRemoveProjectsFromFolder =
+    isAdmin(authUser) || (space_id && isSpaceModerator(authUser, space_id));
 
   return (
     <Container>
@@ -67,9 +70,9 @@ const AdminFolderProjectsList = () => {
           <Spacer />
         </ListHeader>
 
-        <ItemsInFolder projectFolderId={projectFolderId} />
+        <ItemsInFolder projectFolderId={folder.data.id} />
 
-        {canManageProjects && (
+        {canAddAndRemoveProjectsFromFolder && (
           <>
             <ListHeader>
               <StyledHeaderTitle>
@@ -77,7 +80,7 @@ const AdminFolderProjectsList = () => {
               </StyledHeaderTitle>
             </ListHeader>
 
-            <ItemsNotInFolder projectFolderId={projectFolderId} />
+            <ItemsNotInFolder projectFolderId={folder.data.id} />
           </>
         )}
       </ListsContainer>
