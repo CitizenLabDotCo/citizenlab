@@ -113,6 +113,8 @@ Rails.application.routes.draw do
           get :me
           get 'me/ping', action: 'ping'
           get :seats
+          get :billed_admins
+          get :billed_moderators
           get :as_xlsx, action: 'index_xlsx'
 
           post 'reset_password_email' => 'reset_password#reset_password_email'
@@ -124,6 +126,7 @@ Rails.application.routes.draw do
           get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
+          get :check_if_exceeds_seats
         end
 
         member do
@@ -249,9 +252,7 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :moderators, controller: 'project_moderators', except: [:update] do
-          get :users_search, on: :collection
-        end
+        resources :moderators, controller: 'moderators/project_moderators', except: [:update]
 
         collection do
           get 'by_slug/:slug', to: 'projects#by_slug'
@@ -277,24 +278,27 @@ Rails.application.routes.draw do
 
           delete :participation_data, action: 'destroy_participation_data'
 
+          get :publication_recipient_count
+
           get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
           patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
         end
       end
 
       resources :spaces, only: %i[index show create update destroy] do
-        get 'tree_view', on: :member, to: 'spaces#tree_view'
+        resources :moderators, controller: 'moderators/space_moderators', except: %i[update]
       end
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
         get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
+        get 'tree_view', on: :collection
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
         concerns :file_attachable, attachable_type: 'ProjectFolders::Folder'
-        resources :moderators, controller: 'folder_moderators', except: %i[update]
+        resources :moderators, controller: 'moderators/folder_moderators', except: %i[update]
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'

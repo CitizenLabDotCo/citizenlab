@@ -63,6 +63,7 @@ export type Props = {
   autofocus?: boolean | undefined;
   maxCharCount?: number;
   disabled?: boolean;
+  required?: boolean;
   focusOnError?: boolean;
   className?: string;
   children?: React.ReactNode;
@@ -134,6 +135,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
       children,
       maxCharCount,
       disabled,
+      required,
       className,
     } = this.props;
 
@@ -160,6 +162,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             disabled={disabled}
+            required={required}
           />
           {value && maxCharCount && (
             <CharacterCount

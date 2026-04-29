@@ -11,14 +11,13 @@ import {
 
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
-import { IUser } from 'api/users/types';
-import useUsersWithIds from 'api/users/useUsersWithIds';
+import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import ProjectMoreActionsMenu, {
   ActionType,
-} from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+} from 'containers/Admin/projects/_shared/components/ProjectRow/ProjectMoreActionsMenu';
 
 import Error from 'components/UI/Error';
 
@@ -35,9 +34,15 @@ interface Props {
   project: ProjectMiniAdminData;
   participantsCount?: number;
   firstRow: boolean;
+  moderatorsById?: Record<string, IUserData>;
 }
 
-const Row = ({ project, participantsCount, firstRow }: Props) => {
+const Row = ({
+  project,
+  participantsCount,
+  firstRow,
+  moderatorsById,
+}: Props) => {
   const localize = useLocalize();
 
   const imageId = project.relationships.project_images.data[0]?.id;
@@ -65,10 +70,9 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   const moderatorIds = project.relationships.moderators.data.map(
     (user) => user.id
   );
-  const moderatorsData = useUsersWithIds(moderatorIds);
-  const moderators = moderatorsData
-    .map((result) => result.data)
-    .filter((user): user is IUser => !!user);
+  const moderators = moderatorsById
+    ? moderatorIds.map((id) => moderatorsById[id])
+    : [];
 
   const formatDate = (date: string | null) => {
     const parsedDate = date ? parseBackendDateString(date) : undefined;
@@ -165,7 +169,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
       </Td>
       <Td background={colors.grey50} width="140px">
         <ManagerBubbles
-          managers={moderators.map(({ data: { attributes } }) => ({
+          managers={moderators.map(({ attributes }) => ({
             first_name: attributes.first_name ?? undefined,
             last_name: attributes.last_name ?? undefined,
             avatar: attributes.avatar,

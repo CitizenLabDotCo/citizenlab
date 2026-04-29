@@ -97,6 +97,10 @@ declare global {
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
+      dragToolboxItemTo(
+        toolboxSelector: string,
+        targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
     }
@@ -496,7 +500,7 @@ function apiCreateModeratorForFolder({
         method: 'POST',
         url: `web_api/v1/project_folders/${folderId}/moderators`,
         body: {
-          project_folder_moderator: {
+          moderator: {
             user_id: userId,
           },
         },

@@ -1,0 +1,186 @@
+import React from 'react';
+
+import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
+import { includes, isArray } from 'lodash-es';
+import styled from 'styled-components';
+
+import { IQueryParameters, IUserData } from 'api/users/types';
+
+import Pagination from 'components/Pagination';
+import Warning from 'components/UI/Warning';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+
+import UsersTableRow from './UsersTableRow';
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+`;
+
+const StyledPagination = styled(Pagination)`
+  margin-top: 12px;
+`;
+
+const Uppercase = styled.span`
+  text-transform: uppercase;
+`;
+
+interface SortableThProps {
+  sortDirection: 'ascending' | 'descending' | undefined;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
+  <Th clickable sortDirection={sortDirection} onClick={onClick}>
+    <Uppercase>{children}</Uppercase>
+  </Th>
+);
+
+interface Props {
+  selectedUsers: string[] | 'none' | 'all';
+  handleSelect: (userId: string) => void;
+  notCitizenlabMember?: boolean;
+  currentPage: number | null;
+  lastPage: number | null;
+  sort: IQueryParameters['sort'];
+  onChangePage: (pageNumber: number) => void;
+  onChangeSorting: (sort: IQueryParameters['sort']) => void;
+  usersList: IUserData[];
+}
+
+const UsersTable = ({
+  usersList,
+  sort,
+  currentPage,
+  lastPage,
+  selectedUsers,
+  handleSelect,
+  onChangePage,
+  onChangeSorting,
+  notCitizenlabMember,
+}: Props) => {
+  const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
+    trackEventByName(tracks.sortChange, {
+      sort,
+    });
+    onChangeSorting(sort);
+  };
+
+  const handlePaginationClick = (pageNumber: number) => {
+    trackEventByName(tracks.pagination);
+    onChangePage(pageNumber);
+  };
+
+  const handleUserToggle = (userId: string) => () => {
+    trackEventByName(tracks.toggleOneUser);
+    handleSelect(userId);
+  };
+
+  if (isArray(usersList) && usersList.length > 0) {
+    return (
+      <Container className="e2e-user-table">
+        {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
+          <Warning>
+            <span>
+              <b>@govocal.com & @citizenlab.co</b> email addresses are not
+              included as admins & managers.
+            </span>
+          </Warning>
+        )}
+        <Table mt="20px">
+          <Thead>
+            <Tr>
+              <Th />
+              <SortableTh
+                sortDirection={
+                  sort === 'last_name'
+                    ? 'descending'
+                    : sort === '-last_name'
+                    ? 'ascending'
+                    : undefined
+                }
+                onClick={handleSortingOnChange(
+                  sort === 'last_name' ? '-last_name' : 'last_name'
+                )}
+              >
+                <FormattedMessage {...messages.name} />
+              </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.role} />
+                </Uppercase>
+              </Th>
+              <SortableTh
+                sortDirection={
+                  sort === 'last_active_at'
+                    ? 'descending'
+                    : sort === '-last_active_at'
+                    ? 'ascending'
+                    : undefined
+                }
+                onClick={handleSortingOnChange(
+                  sort === 'last_active_at'
+                    ? '-last_active_at'
+                    : 'last_active_at'
+                )}
+              >
+                <FormattedMessage {...messages.lastActive} />
+              </SortableTh>
+
+              <SortableTh
+                sortDirection={
+                  sort === 'created_at'
+                    ? 'descending'
+                    : sort === '-created_at'
+                    ? 'ascending'
+                    : undefined
+                }
+                onClick={handleSortingOnChange(
+                  sort === 'created_at' ? '-created_at' : 'created_at'
+                )}
+              >
+                <FormattedMessage {...messages.joined} />
+              </SortableTh>
+
+              <Th>
+                <Uppercase>
+                  <FormattedMessage tagName="div" {...messages.options} />
+                </Uppercase>
+              </Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {usersList.map((user) => (
+              <UsersTableRow
+                key={user.id}
+                userInRow={user}
+                selected={
+                  selectedUsers === 'all' || includes(selectedUsers, user.id)
+                }
+                toggleSelect={handleUserToggle(user.id)}
+              />
+            ))}
+          </Tbody>
+        </Table>
+
+        <StyledPagination
+          currentPage={currentPage || 1}
+          totalPages={lastPage || 1}
+          loadPage={handlePaginationClick}
+        />
+      </Container>
+    );
+  }
+
+  return null;
+};
+
+export default UsersTable;

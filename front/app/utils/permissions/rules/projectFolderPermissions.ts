@@ -6,7 +6,7 @@ import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
-import { isAdmin, TRole } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator, TRole } from 'utils/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
@@ -20,6 +20,15 @@ export function userModeratesFolder(
 
   return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
 }
+
+export const userModeratesSpace = (
+  user: IUser | undefined,
+  spaceId: string
+) => {
+  if (!user) return false;
+
+  return isAdmin(user) || isSpaceModerator(user, spaceId);
+};
 
 /**
  * Checks if the user is a project folder moderator. If a folderId is provided,

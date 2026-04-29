@@ -13,7 +13,7 @@ import RegistrationCustomFieldForm, {
 const RegistrationCustomFieldSettings = () => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
   const { data: customField } = useUserCustomField(userCustomFieldId);
-  const { mutate: updateCustomFieldForUsers } = useUpdateUserCustomField();
+  const { mutateAsync: updateCustomFieldForUsers } = useUpdateUserCustomField();
 
   if (!customField) return null;
 
@@ -31,8 +31,8 @@ const RegistrationCustomFieldSettings = () => {
     );
   };
 
-  const handleSubmit = (values: FormValues) => {
-    updateCustomFieldForUsers({
+  const handleSubmit = async (values: FormValues) => {
+    await updateCustomFieldForUsers({
       customFieldId: customField.data.id,
       ...values,
     });

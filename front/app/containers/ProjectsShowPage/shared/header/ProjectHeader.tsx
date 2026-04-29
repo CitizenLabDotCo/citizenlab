@@ -69,7 +69,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
   const projectFolderId = project?.data.attributes.folder_id;
@@ -98,7 +97,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                {projectFolderId && isProjectFoldersEnabled && (
+                {projectFolderId && (
                   <ProjectFolderGoBackButton
                     projectFolderId={projectFolderId}
                   />

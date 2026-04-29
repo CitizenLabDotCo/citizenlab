@@ -68,6 +68,8 @@ module IdeaCustomFields
         delete_fields = fields.reject { |field| given_field_ids.include?(field.id) } if @custom_form.persisted?
         delete_fields.each { |field| delete_field!(field) }
 
+        processed_field_ids = []
+
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete(:options)
           statements_params = field_params.delete(:matrix_statements)
@@ -87,11 +89,13 @@ module IdeaCustomFields
 
           update_statements!(field, statements_params, index) if statements_params
           relate_map_config_to_field(field, field_params, index)
-          field.move_to_bottom
+          processed_field_ids << field.id
           count_fields(field)
         end
 
         raise UpdateAllFailedError, @errors if @errors.present?
+
+        CustomField.where(resource: @custom_form).bulk_reorder!(processed_field_ids)
       end
     end
 
@@ -158,6 +162,8 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include?(option.id) }
         deleted_options.each { |option| delete_option!(option) }
 
+        processed_option_ids = []
+
         options_params.each_with_index do |option_params, option_index|
           if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
@@ -167,8 +173,10 @@ module IdeaCustomFields
             next unless option
           end
           update_option_image!(option, option_params[:image_id])
-          option.move_to_bottom
+          processed_option_ids << option.id
         end
+
+        field.options.bulk_reorder!(processed_option_ids)
       end
     end
 
@@ -238,35 +246,43 @@ module IdeaCustomFields
       deleted_statements = statements.reject { |statement| given_ids.include?(statement.id) }
       deleted_statements.each { |statement| delete_statement!(statement) }
 
+      processed_statement_ids = []
+
       statements_params.each_with_index do |statement_params, statement_index|
         if statement_params[:id] && statements_by_id[statement_params[:id]]
           statement = statements_by_id[statement_params[:id]]
-          update_statement!(statement, statement_params, field_index, statement_index)
+          next unless update_statement!(statement, statement_params, field_index, statement_index)
         else
           statement = create_statement!(statement_params, field, field_index, statement_index)
+          next unless statement
         end
-        statement&.move_to_bottom
+        processed_statement_ids << statement.id
       end
+
+      field.matrix_statements.bulk_reorder!(processed_statement_ids)
     end
 
     def create_statement!(statement_params, field, field_index, statement_index)
       statement = CustomFieldMatrixStatement.new(statement_params.merge(custom_field: field))
       if statement.save
         SideFxCustomFieldMatrixStatementService.new.after_create(statement, @current_user)
+        statement
       else
         add_statements_errors(statement.errors.details, field_index, statement_index)
+        false
       end
-      statement
     end
 
     def update_statement!(statement, statement_params, field_index, statement_index)
       statement.assign_attributes(statement_params)
-      return unless statement.changed?
+      return statement unless statement.changed?
 
       if statement.save
         SideFxCustomFieldMatrixStatementService.new.after_update(statement, @current_user)
+        statement
       else
         add_statements_errors(statement.errors.details, field_index, statement_index)
+        false
       end
     end
 

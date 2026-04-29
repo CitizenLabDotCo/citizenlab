@@ -73,7 +73,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 49
+        expect(response_data.size).to eq 50
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -190,6 +190,14 @@ resource 'Campaigns' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
+      end
+
+      example 'Get a scheduled campaign includes scheduled_at', document: false do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :scheduled_at)).to be_present
       end
 
       example 'Get a manual campaign that has been sent' do
@@ -353,6 +361,7 @@ resource 'Campaigns' do
       context 'manual campaigns' do
         with_options scope: :campaign do
           parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+          parameter :scheduled_at, 'The datetime at which the campaign should be sent (ISO 8601)', required: false
         end
 
         let(:campaign) { create(:manual_campaign) }
@@ -370,6 +379,34 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        end
+
+        example 'Schedule a campaign for future sending', document: false do
+          scheduled_time = 2.hours.from_now.iso8601
+
+          expect { do_request(campaign: { scheduled_at: scheduled_time }) }
+            .to enqueue_job(EmailCampaigns::SendScheduledCampaignJob)
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_present
+        end
+
+        # Stale scheduled jobs are handled by SendScheduledCampaignJob
+        # which checks campaign.scheduled_at == expected_time before executing.
+        example 'Unschedule a campaign by setting scheduled_at to nil', document: false do
+          campaign.scheduled_at = 2.hours.from_now
+          campaign.save!
+
+          do_request(campaign: { scheduled_at: nil })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_nil
+        end
+
+        example '[error] Schedule a campaign with a past date' do
+          do_request(campaign: { scheduled_at: 1.hour.ago.iso8601 })
+
+          assert_status 422
         end
 
         context 'when body contains images' do
@@ -484,8 +521,15 @@ resource 'Campaigns' do
 
       example_request 'Send out the campaign now' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
+        expect(response_data.dig(:attributes, :deliveries_count)).to eq User.count
+      end
+
+      example 'Send a scheduled campaign immediately (overrides schedule)' do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
       end
 
       example '[error] Send out the campaign without an author' do
@@ -506,6 +550,13 @@ resource 'Campaigns' do
         do_request
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'no_recipients')
+      end
+
+      example '[error] Send a campaign that has already been sent' do
+        create(:delivery, campaign: campaign)
+        do_request
+        assert_status 422
+        expect(json_response_body).to include_response_error(:base, 'already_sent')
       end
     end
 

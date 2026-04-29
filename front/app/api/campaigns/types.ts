@@ -54,6 +54,7 @@ export interface ICampaignData {
       clicked: number;
       total: number;
     };
+    scheduled_at?: string | null;
   };
   relationships: {
     author: {
@@ -77,6 +78,7 @@ export interface CampaignFormValues {
   intro_multiloc?: Multiloc;
   button_text_multiloc?: Multiloc;
   group_ids?: string[];
+  scheduled_at?: string | null;
 }
 
 export interface EditableRegion {
@@ -147,6 +149,7 @@ type AdminModeratorCampaignName =
   | 'new_idea_for_admin'
   | 'project_folder_moderation_rights_received'
   | 'project_moderation_rights_received'
+  | 'space_moderation_rights_received'
   | 'threshold_reached_for_admin'
   | InternalCommentType;
 

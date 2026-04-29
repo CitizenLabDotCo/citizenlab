@@ -13,16 +13,20 @@ module IdeaFeed
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
 
-      candidates = if eligible_ideas.none?
-        fetch_least_exposed_candidates(fetch_all_ideas(scope), n * 4)
+      if eligible_ideas.none?
+        # When recycling (all ideas seen), respect the exposure-count ordering
+        # directly. Diversity sampling would override this ordering by selecting
+        # based on embedding distance, causing the same ideas to be returned
+        # every time regardless of their exposure counts.
+        fetch_least_exposed_candidates(fetch_all_ideas(scope), n).to_a
       else
-        fetch_scored_candidates(eligible_ideas, n * 4)
-      end
+        candidates = fetch_scored_candidates(eligible_ideas, n * 4)
 
-      if skip_diversity_sampling?
-        candidates.limit(n).to_a
-      else
-        DiversityService.new.generate_list(candidates, exposures_scope, n)
+        if skip_diversity_sampling?
+          candidates.limit(n).to_a
+        else
+          DiversityService.new.generate_list(candidates, exposures_scope, n)
+        end
       end
     end
 

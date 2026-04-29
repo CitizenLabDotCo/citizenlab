@@ -10,7 +10,7 @@ class SideFxUserService
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i, payload: create_user_activity_payload(user))
     UpdateMemberCountJob.perform_later
     if user.admin?
-      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
+      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_received', current_user, user.created_at.to_i)
     end
 
     if user.registration_completed_at # For example, when a user is created via SSO
@@ -31,8 +31,6 @@ class SideFxUserService
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
     after_roles_changed current_user, user if user.roles_previously_changed?
-
-    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
   end
@@ -67,6 +65,7 @@ class SideFxUserService
       }
     )
     UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
+    user.expire_token! # Stop any active sessions of the blocked user
   end
 
   def after_unblock(user, current_user)
@@ -93,33 +92,44 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
+    expire_token_on_role_change!(user)
   end
 
   def role_created_side_fx(role, user, current_user)
-    new_project_moderator(role, user, current_user) if role['type'] == 'project_moderator'
-    new_admin(user, current_user) if role['type'] == 'admin'
-  end
+    item_id_attribute_name = role_item_id_name(role)
 
-  def new_admin(user, current_user)
-    LogActivityJob
-      .set(wait: 5.seconds)
-      .perform_later(user, 'admin_rights_given', current_user, user.updated_at.to_i)
-  end
-
-  def new_project_moderator(role, user, current_user)
     LogActivityJob.set(wait: 5.seconds).perform_later(
-      user, 'project_moderation_rights_given',
-      current_user, Time.now.to_i,
-      payload: { project_id: role['project_id'] }
+      user,
+      "#{role_prefix(role)}_rights_received",
+      current_user,
+      Time.now.to_i,
+      payload: item_id_attribute_name.present? ? { item_id_attribute_name.to_sym => role[item_id_attribute_name] } : {}
     )
   end
 
   def role_destroyed_side_fx(role, user, current_user)
-    project_moderator_destroyed(user, current_user) if role['type'] == 'project_moderator'
+    item_id_attribute_name = role_item_id_name(role)
+
+    LogActivityJob.perform_later(
+      user,
+      "#{role_prefix(role)}_rights_removed",
+      current_user,
+      Time.now.to_i,
+      payload: item_id_attribute_name.present? ? { item_id_attribute_name.to_sym => role[item_id_attribute_name] } : {}
+    )
   end
 
-  def project_moderator_destroyed(user, current_user)
-    LogActivityJob.perform_later(user, 'project_moderation_rights_removed', current_user, Time.now.to_i)
+  def role_prefix(role)
+    return 'admin' if role['type'] == 'admin'
+
+    "#{role['type'].split('_moderator').first}_moderation"
+  end
+
+  def role_item_id_name(role)
+    return nil if role['type'] == 'admin'
+
+    "#{role['type'].split('_moderator').first}_id"
   end
 
   def lost_roles(user)
@@ -132,13 +142,21 @@ class SideFxUserService
     new_roles.to_a - old_roles.to_a
   end
 
+  # Expire the user's token when they first get roles or all roles are removed.
+  # NOTE: Must be called after all other side effects that depend on previous_changes,
+  # since expire_token! calls update! which resets previous_changes.
+  def expire_token_on_role_change!(user)
+    old_roles, new_roles = user.roles_previous_change
+    user.expire_token! if old_roles.blank? || new_roles.blank?
+  end
+
   def create_followers(user)
     area = Area.where(id: user.domicile).first
     Follower.find_or_create_by(followable: area, user: user) if area
   end
 
   def should_send_confirmation_email?(user)
-    user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
+    !user.invite_pending? && user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 

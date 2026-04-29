@@ -248,7 +248,7 @@ resource 'Phases' do
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
-        parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
+        parameter :title_multiloc, 'The title of the phase in multiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens submit inputs in this phase? Defaults to true', required: false
@@ -314,10 +314,25 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
-        expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
-        expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_date.iso8601
+        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_date&.iso8601
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      describe 'with date strings (backward compatibility)' do
+        let(:start_at) { '2025-06-01' }
+        let(:end_at) { '2025-07-15' }
+
+        example 'Create a phase with date strings', document: false do
+          do_request
+          assert_status 201
+
+          phase_in_db = Phase.find(response_data[:id])
+          expect(phase_in_db.start_at).to eq start_at.in_time_zone
+          # end_at shifted +1 day for exclusive end boundary
+          expect(phase_in_db.end_at).to eq end_at.in_time_zone + 1.day
+        end
       end
 
       describe do
@@ -630,6 +645,21 @@ resource 'Phases' do
         )
       end
 
+      describe 'with date strings (backward compatibility)' do
+        let(:start_at) { '2025-06-01' }
+        let(:end_at) { '2025-07-15' }
+
+        example 'Update a phase with date strings', document: false do
+          do_request
+          assert_status 200
+
+          phase.reload
+          expect(phase.start_at).to eq start_at.in_time_zone
+          # end_at shifted +1 day for exclusive end boundary
+          expect(phase.end_at).to eq end_at.in_time_zone + 1.day
+        end
+      end
+
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
 
@@ -700,60 +730,16 @@ resource 'Phases' do
       end
 
       describe do
-        before do
-          @project.phases.first.update!(
-            participation_method: 'voting',
-            voting_method: 'budgeting',
-            voting_max_total: 30_000,
-            voting_filtering_enabled: false,
-            ideas_order: 'random'
-          )
-        end
-
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Change a phase with ideas into an information phase' do
-          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
-          do_request
-          assert_status 200
-        end
-      end
-
-      describe 'When updating ideation phase with ideas to a poll phase' do
-        before do
-          phase.update!(
-            participation_method: 'ideation',
-            ideas: create_list(:idea, 2, project: @project)
-          )
-        end
-
-        let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
-        let(:participation_method) { 'poll' }
-
-        example 'Existing related ideas_phase remains valid' do
-          expect(ideas_phase.valid?).to be true
-          do_request
-          ideas_phase.reload
-          expect(response_status).to eq 200
-          expect(ideas_phase.valid?).to be true
-        end
-      end
-
-      describe do
-        let(:project) { create(:project) }
-        let(:id) { create(:proposals_phase, project: project).id }
-        let(:participation_method) { 'ideation' }
-
-        example '[error] Cannot be changed to ideation when there are non-transitive inputs' do
-          proposal = create(:proposal, project: project, creation_phase_id: id)
+        example '[error] Cannot change participation method when phase has inputs' do
           do_request
           assert_status 422
           expect(json_response).to eq(
-            { errors: { participation_method: [{ error: 'non_complying_inputs' }] } }
+            { errors: { participation_method: [{ error: 'has_inputs' }] } }
           )
-          expect(proposal.reload).to be_valid
         end
       end
     end
@@ -786,6 +772,19 @@ resource 'Phases' do
 
       context 'on an ideation phase' do
         let(:phase) { create(:phase, participation_method: 'ideation', project: @project) }
+
+        example 'Deleting a phase does not delete the ideas', document: false do
+          idea = create(:idea, project: @project, phases: [phase])
+
+          do_request
+
+          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      # Edge case: Historic code means a phase with ideas could be changed to an information phase
+      context 'on an information phase' do
+        let(:phase) { create(:phase, participation_method: 'information', project: @project) }
 
         example 'Deleting a phase does not delete the ideas', document: false do
           idea = create(:idea, project: @project, phases: [phase])
@@ -998,7 +997,7 @@ resource 'Phases' do
               quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
               service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
               governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
-              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Overig' }
             }
           }
         })
@@ -1127,7 +1126,8 @@ resource 'Phases' do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -1137,7 +1137,8 @@ resource 'Phases' do
                     survey_response1.author.email,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -1146,7 +1147,8 @@ resource 'Phases' do
                     survey_response2.author.email,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
+                    project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
@@ -1263,7 +1265,8 @@ resource 'Phases' do
               'Author email',
               'Author ID',
               'Submitted at',
-              'Project'
+              'Project',
+              'Imported'
             ],
             rows: [
               [
@@ -1273,7 +1276,8 @@ resource 'Phases' do
                 survey_response.author.email,
                 survey_response.author_id,
                 an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
+                project.title_multiloc['en'],
+                'false'
               ]
             ]
           }

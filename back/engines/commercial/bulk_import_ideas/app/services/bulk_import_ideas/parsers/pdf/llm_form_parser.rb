@@ -2,10 +2,10 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class LLMFormParser
-    def initialize(phase, locale, llm_class: Analysis::LLM::ClaudeSonnet46)
+    def initialize(phase, locale, personal_data_enabled: false)
       @phase = phase
       @locale = locale
-      @llm_class = llm_class
+      @personal_data_enabled = personal_data_enabled
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -14,8 +14,12 @@ module BulkImportIdeas::Parsers::Pdf
 
       {
         pdf_pages: (1..page_count).to_a,
-        fields: parsed_response&.map { |r| { r['text'] => r['answer'] } }&.reduce({}, :merge)
+        fields: map_response_to_fields(parsed_response)
       }
+    end
+
+    def parser_name
+      llm.name
     end
 
     private
@@ -28,109 +32,86 @@ module BulkImportIdeas::Parsers::Pdf
       )
 
       message = Analysis::LLM::Message.new(prompt, pdf_file)
-      gpt_response = llm.chat(message)
 
-      corrected_response = gpt_response.match(/\[.+\]/m)&.try(:[], 0) # to be sure it is json that can be parsed
+      begin
+        response = llm.chat(message, response_schema: schema_builder.output_schema)
+      rescue RubyLLM::BadRequestError => e
+        raise unless e.message.include?('grammar is too large')
 
-      corrected_response.present? ? JSON.parse(corrected_response) : nil
+        response = llm.chat(message)
+      end
+      parse_response(response)
+    end
+
+    # RubyLLM auto-parses JSON when a schema is set, so response may be a Hash or a String.
+    def parse_response(response)
+      return nil if response.blank?
+      return response if response.is_a?(Hash)
+
+      parsed = response.match(/\{.+\}/m)&.try(:[], 0)
+      parsed.present? ? JSON.parse(parsed) : nil
+    end
+
+    def map_response_to_fields(response)
+      return {} if response.blank?
+
+      mapping = schema_builder.key_mapping
+      result = {}
+
+      response.each do |schema_key, answer|
+        field_info = mapping[schema_key]
+        next unless field_info
+
+        case field_info[:type]
+        when :personal_data
+          next if not_found?(answer)
+
+          result[field_info[:label]] = answer if answer.present?
+        when :field
+          next if not_found?(answer)
+
+          result[field_info[:field_key]] = answer if answer.present?
+        when :matrix
+          matrix_answer = build_matrix_answer(answer, field_info)
+          result[field_info[:field_key]] = matrix_answer if matrix_answer.present?
+        end
+      end
+
+      result
+    end
+
+    def build_matrix_answer(answer, field_info)
+      return {} unless answer.is_a?(Hash)
+
+      result = {}
+      field_info[:statements].each do |sub_key, statement_key|
+        sub_answer = answer[sub_key]
+        next if sub_answer.blank? || not_found?(sub_answer) || sub_answer == 0
+
+        result[statement_key] = sub_answer
+      end
+      result
+    end
+
+    def not_found?(value)
+      return true if value == FormSyncSchemaBuilder::NOT_FOUND
+      return true if value.is_a?(Integer) && value == -1
+
+      false
     end
 
     def prompt
-      <<~GPT_PROMPT
-        In this message is a scanned survey form that has been filled in by hand.
-  
-        Your task is to extract the text and checked options based on the questions in the JSON form schema below.
-  
-        Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
-  
-        Do not extract answers unless they are in the correct order in the scanned form.
-
-        The language used in the form is #{@locale}.
-
-        Return the same array of JSON objects in the same order, but with an additional 'answer' attribute for each question, according to the following rules:
-        - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
-        - if the question is of type select or multiselect then return an attribute answer as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
-        - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
-        - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
-        - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
-        - if the question is of type matrix_linear_scale, then there will checkboxes in rows against a list of matrix_statements on the left hand side. Return the answer as a hash with each statement as the key and the value as the number corresponding to the order (starting from 1, left to right) of the box that is checked or ticked for that row.
-        - if the question is optional, sometimes it may not be present in the scanned form.
-
-        Provide only the JSON without any additional text or markers.
-  
-        JSON form schema:
-        #{personal_data_schema + form_schema}
-      GPT_PROMPT
+      ::Analysis::LLM::Prompt.new.fetch('form_sync',
+        locale: @locale,
+        output_schema_json: JSON.pretty_generate(schema_builder.output_schema))
     end
 
-    # Return a simple schema to send to GPT
-    def form_schema
-      field_num = 0
-      fields = printable_form_fields.map do |f|
-        next if !f.supports_submission?
-
-        field = {
-          id: field_num += 1,
-          type: f.input_type,
-          text: f.title_multiloc[@locale.to_s]
-        }
-
-        if f.supports_options?
-          field[:options] = f.options.map do |o|
-            o.title_multiloc[@locale.to_s]
-          end
-        end
-
-        if f.supports_matrix_statements?
-          field[:matrix_statements] = f.matrix_statements.map.with_index do |ms, _statement_num|
-            ms.title_multiloc[@locale.to_s]
-          end
-          field[:labels] = (1..f.maximum).map do |label_num|
-            attr_name = :"linear_scale_label_#{label_num}_multiloc"
-            f[attr_name][@locale.to_s]
-          end.compact_blank
-        end
-
-        field
-      end
-
-      fields.compact
-    end
-
-    def personal_data_schema
-      organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
-      [{
-        id: 0,
-        type: 'text',
-        optional: true,
-        text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
-      },
-        {
-          id: 0,
-          type: 'text',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
-        },
-        {
-          id: 0,
-          type: 'text',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
-        },
-        {
-          id: 0,
-          type: 'checkbox',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
-        }]
+    def schema_builder
+      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled)
     end
 
     def llm
-      @llm ||= @llm_class.new
-    end
-
-    def printable_form_fields
-      @printable_form_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
+      @llm ||= LLMSelector.new.llm_class_for_use_case('form_sync').new
     end
   end
 end

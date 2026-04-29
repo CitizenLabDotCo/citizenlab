@@ -35,8 +35,8 @@ resource 'Graph data units' do
       }
     }
     phase = create(:phase,
-      start_at: Time.zone.today - 2.days,
-      end_at: Time.zone.today + 2.days,
+      start_at: 2.days.ago,
+      end_at: 2.days.from_now,
       project: project)
 
     @report = create(

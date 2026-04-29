@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
-import { IUsers } from 'api/users/types';
+import { IUser } from 'api/users/types';
 import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -12,28 +12,31 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectModeratorsKeys from './keys';
 import { ProjectModeratorAdd } from './types';
 
-const addModerator = async ({ moderatorId, projectId }: ProjectModeratorAdd) =>
-  fetcher<IUsers>({
+const addModerator = async ({
+  user_id,
+  user_email,
+  projectId,
+}: ProjectModeratorAdd) =>
+  fetcher<IUser>({
     path: `/projects/${projectId}/moderators`,
     action: 'post',
     body: {
       moderator: {
-        user_id: moderatorId,
+        user_id,
+        user_email,
       },
     },
   });
 
 const useAddProjectModerator = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUsers, CLErrors, ProjectModeratorAdd>({
+  return useMutation<IUser, CLErrors, ProjectModeratorAdd>({
     mutationFn: addModerator,
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (_data) => {
       queryClient.invalidateQueries({
-        queryKey: projectModeratorsKeys.list({
-          projectId: variables.projectId,
-        }),
+        queryKey: projectModeratorsKeys.all(),
       });
-      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: usersKeys.all() });
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });

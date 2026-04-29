@@ -64,12 +64,6 @@ resource 'Spaces' do
         expect(status).to eq(401)
       end
     end
-
-    get 'web_api/v1/spaces/:space_id/tree_view' do
-      example_request 'Retrieving space tree view' do
-        expect(status).to eq(401)
-      end
-    end
   end
 
   before { header 'Content-Type', 'application/json' }
@@ -121,6 +115,14 @@ resource 'Spaces' do
         expect(project_ids).to include(project_in_folder.id.to_s)
         expect(project_ids).to include(project_not_in_folder.id.to_s)
       end
+
+      example 'Retrieving list of spaces with search' do
+        space2 = create(:space, title_multiloc: { en: 'Blast off!' })
+        do_request(search: 'Blast')
+        expect(status).to eq(200)
+        expect(response_data.size).to eq(1)
+        expect(response_data.first[:id]).to eq(space2.id)
+      end
     end
 
     post 'web_api/v1/spaces' do
@@ -163,18 +165,6 @@ resource 'Spaces' do
       example_request 'Deleting a space' do
         expect(status).to eq(204)
         expect(Space.where(id: space1.id)).to be_empty
-      end
-    end
-
-    get 'web_api/v1/spaces/:space_id/tree_view' do
-      example_request 'Retrieving space tree view' do
-        expect(status).to eq(200)
-        nodes = response_data[:attributes][:nodes]
-        expect(nodes.length).to eq(2)
-        expect(nodes.count { |n| n[:type] == 'project' }).to eq(1)
-        folders = nodes.select { |n| n[:type] == 'folder' }
-        expect(folders.length).to eq(1)
-        expect(folders[0][:children].length).to eq(1)
       end
     end
   end

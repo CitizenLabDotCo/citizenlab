@@ -10,7 +10,10 @@ module MultiTenancy
 
       unless Rails.env.test?
         def asset_host
-          AppConfiguration.instance.base_asset_host_uri
+          # Read the host from `model` when possible to avoid an N+1 on tenant
+          # listing (AdminApi::TenantsController#index).
+          config = model.is_a?(AppConfiguration) ? model : AppConfiguration.instance
+          config.base_asset_host_uri
         rescue ActiveRecord::RecordNotFound
           # If there is no AppConfiguration, fall back on the default carrierwave
           # behavior (S3 in production).

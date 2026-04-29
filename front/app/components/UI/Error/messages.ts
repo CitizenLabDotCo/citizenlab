@@ -164,6 +164,11 @@ export default defineMessages({
     defaultMessage:
       'The participation method you selected does not support this type of input. Please edit your selection and try again.',
   },
+  has_inputs: {
+    id: 'app.errors.has_inputs',
+    defaultMessage:
+      'You cannot change the participation method because this phase already has inputs. Please remove all inputs first.',
+  },
   slug_taken: {
     id: 'app.errors.slug_taken',
     defaultMessage:
@@ -221,6 +226,11 @@ export default defineMessages({
   email_blank: {
     id: 'app.errors.email_blank',
     defaultMessage: 'Please enter your email address',
+  },
+  email_sso_enforced_for_domain: {
+    id: 'app.errors.email_sso_enforced_for_domain',
+    defaultMessage:
+      'You must sign in using single sign-on (SSO) for this email domain.',
   },
   first_name_blank: {
     id: 'app.errors.first_name_blank',

@@ -50,8 +50,8 @@ resource 'Phases' do
         expect(json_response[:phase]).to match({
           id: id,
           title: 'Idea phase',
-          start_at: phase.start_at.to_s,
-          end_at: phase.end_at.to_s
+          start_at: phase.start_date.to_s,
+          end_at: phase.end_date.to_s
         })
       end
     end

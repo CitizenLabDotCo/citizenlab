@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
@@ -43,10 +43,13 @@ const PDFViewer = ({ file, ideaId }: Props) => {
   };
 
   const jwt = getJwt();
-  const fileWithHeaders = {
-    url: file,
-    httpHeaders: { Authorization: jwt },
-  };
+  const fileWithHeaders = useMemo(
+    () => ({
+      url: file,
+      httpHeaders: { Authorization: jwt },
+    }),
+    [file, jwt]
+  );
 
   return (
     <>
@@ -58,7 +61,11 @@ const PDFViewer = ({ file, ideaId }: Props) => {
         background={colors.grey100}
         p="12px"
       >
-        <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
+        <Document
+          key={ideaId}
+          file={fileWithHeaders}
+          onLoadSuccess={handleLoadSuccess}
+        >
           {pagesInDocument &&
             [...Array(pagesInDocument)].map((_, pageIndex) => (
               <FullWidthPage key={pageIndex}>

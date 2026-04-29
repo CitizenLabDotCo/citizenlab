@@ -28,8 +28,6 @@ module ParticipationMethod
       true
     end
 
-    def validate_phase; end
-
     def supported_email_campaigns
       super + %w[cosponsor_of_your_idea invitation_to_cosponsor_idea]
     end
@@ -48,6 +46,10 @@ module ParticipationMethod
 
     def transitive?
       false
+    end
+
+    def destroy_ideas_on_phase_destroy?
+      true
     end
 
     def use_reactions_as_votes?
