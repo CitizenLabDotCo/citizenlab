@@ -45,12 +45,11 @@ const GoBackButtonSolid = ({
       whiteSpace="normal"
       onClick={handleClick}
       linkTo={linkTo}
-      text={text}
     >
       <Box
         as="span"
         display={isSmallerThanPhone ? 'none' : 'block'}
-        aria-hidden
+        aria-hidden="true"
       >
         {text}
       </Box>
