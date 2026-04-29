@@ -21,7 +21,7 @@ import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
-import { getProjectUrl } from 'api/projects/utils';
+import { getProjectLinkProps } from 'api/projects/utils';
 import useReport from 'api/reports/useReport';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -410,7 +410,7 @@ const ProjectCard = memo<InputProps>(
       projectImage?.data.attributes.alt_text_multiloc
     );
 
-    const projectUrl = getProjectUrl(project.data.attributes.slug);
+    const projectLink = getProjectLinkProps(project.data.attributes.slug);
     const isFinished = project.data.attributes.timeline_active === 'past';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
@@ -540,7 +540,7 @@ const ProjectCard = memo<InputProps>(
         ]
           .filter((item) => item)
           .join(' ')}
-        to={projectUrl}
+        {...projectLink}
         scrollToTop
         onClick={() => {
           handleProjectCardOnClick(project.data.id);

@@ -4,7 +4,7 @@ import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import useProjectImage from 'api/project_images/useProjectImage';
-import { getProjectUrl } from 'api/projects/utils';
+import { getProjectLinkProps } from 'api/projects/utils';
 import { MiniProjectData } from 'api/projects_mini/types';
 import useReport from 'api/reports/useReport';
 
@@ -50,7 +50,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
   const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
-  const projectUrl = getProjectUrl(project.attributes.slug);
+  const projectLink = getProjectLinkProps(project.attributes.slug);
 
   return (
     <CardContainer
@@ -60,7 +60,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       w={`${CARD_WIDTH}px`}
       ml={ml}
       mr={mr}
-      to={projectUrl}
+      {...projectLink}
       display="block"
       onKeyDown={onKeyDown}
       data-cy="e2e-light-project-card"

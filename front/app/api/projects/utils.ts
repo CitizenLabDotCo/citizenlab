@@ -11,8 +11,11 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import projectsKeys from './keys';
 
-export function getProjectUrl(slug: string): string {
-  return `/projects/${slug}`;
+export function getProjectLinkProps(slug: string) {
+  return {
+    to: '/$locale/projects/$slug',
+    params: { slug },
+  } as const;
 }
 
 export const invalidateOnCRUD = () => {

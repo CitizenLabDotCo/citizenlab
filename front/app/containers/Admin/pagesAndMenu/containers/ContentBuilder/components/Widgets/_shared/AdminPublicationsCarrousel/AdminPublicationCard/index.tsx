@@ -27,7 +27,7 @@ import { CardContainer, CardImage } from '../../BaseCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
-import { getPublicationURL } from './utils';
+import { getPublicationLinkProps } from './utils';
 
 interface Props {
   adminPublication: IAdminPublicationData;
@@ -77,7 +77,7 @@ export const AdminPublicationCard = ({
       w={`${cardWidth}px`}
       ml={ml}
       mr={mr}
-      to={getPublicationURL(adminPublication)}
+      {...getPublicationLinkProps(adminPublication)}
       display="block"
       onKeyDown={onKeyDown}
     >
