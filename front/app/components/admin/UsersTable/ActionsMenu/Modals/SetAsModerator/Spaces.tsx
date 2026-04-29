@@ -55,7 +55,7 @@ interface Props {
   onAssign: (resources: Resources) => Promise<void>;
 }
 
-const Spaces = ({ user, onClose, onAssign }: Props) => {
+const Spaces = ({ user, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: spaces } = useSpaces();
@@ -83,7 +83,6 @@ const Spaces = ({ user, onClose, onAssign }: Props) => {
       />
       <AssignButton
         disabled={selectedSpaces.length === 0}
-        onClose={onClose}
         onAssign={() => onAssign({ type: 'space', ids: selectedSpaces })}
       />
     </>

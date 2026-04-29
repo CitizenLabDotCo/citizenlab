@@ -56,7 +56,7 @@ interface Props {
   onAssign: (resources: Resources) => Promise<void>;
 }
 
-const Folders = ({ user, onClose, onAssign }: Props) => {
+const Folders = ({ user, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: folders } = useProjectFolders({});
@@ -84,7 +84,6 @@ const Folders = ({ user, onClose, onAssign }: Props) => {
       />
       <AssignButton
         disabled={selectedFolders.length === 0}
-        onClose={onClose}
         onAssign={() => onAssign({ type: 'folder', ids: selectedFolders })}
       />
     </>

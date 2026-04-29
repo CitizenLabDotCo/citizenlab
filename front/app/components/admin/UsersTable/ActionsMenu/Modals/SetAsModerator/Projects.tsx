@@ -56,7 +56,7 @@ interface Props {
   onAssign: (resources: Resources) => Promise<void>;
 }
 
-const Projects = ({ user, onClose, onAssign }: Props) => {
+const Projects = ({ user, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: projects } = useProjects({
@@ -85,7 +85,6 @@ const Projects = ({ user, onClose, onAssign }: Props) => {
       />
       <AssignButton
         disabled={selectedProjects.length === 0}
-        onClose={onClose}
         onAssign={() => onAssign({ type: 'project', ids: selectedProjects })}
       />
     </>

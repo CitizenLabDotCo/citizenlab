@@ -8,11 +8,10 @@ import messages from '../messages';
 
 interface Props {
   disabled?: boolean;
-  onClose: () => void;
   onAssign: () => Promise<void>;
 }
 
-const AssignButton = ({ disabled, onClose, onAssign }: Props) => {
+const AssignButton = ({ disabled, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,7 +19,6 @@ const AssignButton = ({ disabled, onClose, onAssign }: Props) => {
     setIsLoading(true);
     await onAssign();
     setIsLoading(false);
-    onClose();
   };
 
   return (

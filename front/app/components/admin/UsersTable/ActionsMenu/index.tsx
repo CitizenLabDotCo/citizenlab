@@ -62,6 +62,7 @@ const ActionsMenu = ({ user }: Props) => {
       setModalOpened('seat-limit-reached-moderator');
     } else {
       assignModerator(user, resources);
+      setModalOpened(null);
     }
   };
 
