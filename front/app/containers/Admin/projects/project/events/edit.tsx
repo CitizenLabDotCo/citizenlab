@@ -13,7 +13,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';
@@ -58,6 +57,7 @@ import {
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
+import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import messages from './messages';

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -10,6 +9,7 @@ import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import messages from './messages';
 import ProjectHeader from './projectHeader';

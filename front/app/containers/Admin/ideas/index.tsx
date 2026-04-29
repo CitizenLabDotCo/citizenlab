@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 // module
 
-import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
 import NavigationTabs, {
@@ -15,6 +14,7 @@ import Outlet from 'components/Outlet';
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import messages from './messages';
 

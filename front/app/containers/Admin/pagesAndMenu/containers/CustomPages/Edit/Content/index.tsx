@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
@@ -20,6 +19,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

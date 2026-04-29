@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'utils/router';
 
 import HelmetIntl from 'components/HelmetIntl';
+
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import messages from './messages';
 

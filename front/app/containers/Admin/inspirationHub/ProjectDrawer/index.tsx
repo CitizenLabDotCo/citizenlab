@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectLibraryProject from 'api/project_library_projects/useProjectLibraryProject';
@@ -12,6 +11,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useSearch } from 'utils/router';
 
 import { useLocalizeProjectLibrary } from '../utils';
 

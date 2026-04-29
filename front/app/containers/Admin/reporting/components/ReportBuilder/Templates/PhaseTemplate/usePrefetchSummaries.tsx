@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { UseQueryResult } from '@tanstack/react-query';
-import { useLocation } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -11,6 +10,8 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
+
+import { useLocation } from 'utils/router';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 

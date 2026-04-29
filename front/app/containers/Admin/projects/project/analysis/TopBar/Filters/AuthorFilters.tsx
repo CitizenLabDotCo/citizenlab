@@ -7,7 +7,6 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
@@ -17,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import tracks from '../../tracks';
 import { handleArraySearchParam } from '../../util';

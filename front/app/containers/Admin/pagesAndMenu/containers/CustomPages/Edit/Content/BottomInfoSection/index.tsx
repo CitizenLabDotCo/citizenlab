@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
@@ -11,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 import GenericBottomInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericBottomInfoSection';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 const BottomInfoSection = () => {
   const localize = useLocalize();

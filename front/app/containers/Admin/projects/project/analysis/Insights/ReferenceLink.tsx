@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -13,6 +12,7 @@ import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import Link from 'utils/cl-router/Link';
+import { useLocation } from 'utils/router';
 
 const StyledLink = styled(Link)<{ isActive: boolean }>`
   color: ${colors.textPrimary};

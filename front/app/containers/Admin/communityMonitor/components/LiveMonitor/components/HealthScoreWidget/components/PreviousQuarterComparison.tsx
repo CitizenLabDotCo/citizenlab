@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useSearch } from 'utils/router';
-
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
+
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';

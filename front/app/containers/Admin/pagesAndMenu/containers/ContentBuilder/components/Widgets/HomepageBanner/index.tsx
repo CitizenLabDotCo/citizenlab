@@ -12,7 +12,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
@@ -40,6 +39,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { useLocation, useSearch } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
 
 import { DEFAULT_Y_PADDING } from '../constants';

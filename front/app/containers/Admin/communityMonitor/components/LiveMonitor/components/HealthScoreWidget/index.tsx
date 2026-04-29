@@ -10,7 +10,6 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 
@@ -19,6 +18,7 @@ import useLocale from 'hooks/useLocale';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import CategoryScores from './components/CategoryScores';
 import HealthScoreChart from './components/HealthScoreChart';

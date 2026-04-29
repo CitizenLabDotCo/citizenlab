@@ -1,7 +1,6 @@
 import React, { memo, useEffect } from 'react';
 
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -9,6 +8,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import Sidebar from './sideBar/';
 

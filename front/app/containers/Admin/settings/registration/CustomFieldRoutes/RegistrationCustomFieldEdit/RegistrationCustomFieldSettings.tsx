@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import { useParams } from 'utils/router';
 
 import RegistrationCustomFieldForm, {
   FormValues,

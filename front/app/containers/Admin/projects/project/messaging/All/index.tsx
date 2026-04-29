@@ -7,7 +7,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';
@@ -20,6 +19,7 @@ import Pagination from 'components/Pagination';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

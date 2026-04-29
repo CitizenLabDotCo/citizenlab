@@ -4,7 +4,6 @@ import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -18,6 +17,7 @@ import Error from 'components/UI/Error';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
 import messages from '../messages';

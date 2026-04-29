@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import { ITab } from 'typings';
 
 import NavigationTabs, {
@@ -12,6 +11,7 @@ import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import messages from './messages';

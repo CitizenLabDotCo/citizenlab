@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
@@ -10,6 +9,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';

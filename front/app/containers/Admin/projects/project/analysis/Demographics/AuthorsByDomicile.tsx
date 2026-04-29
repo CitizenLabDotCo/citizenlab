@@ -9,7 +9,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { useParams } from 'utils/router';
 import {
   BarChart,
   Bar,
@@ -27,6 +26,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

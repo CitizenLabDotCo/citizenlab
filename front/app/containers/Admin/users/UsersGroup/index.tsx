@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'utils/router';
 
 import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
 import { MembershipType } from 'api/groups/types';
@@ -21,6 +20,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import NormalGroupForm, { NormalFormValues } from '../_shared/NormalGroupForm';
 import UserManager from '../_shared/UserManager';

@@ -9,7 +9,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'utils/router';
 import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
@@ -33,6 +32,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import {
   pagesAndMenuBreadcrumb,

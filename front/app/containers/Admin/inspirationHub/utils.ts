@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearch } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { Country } from 'api/project_library_countries/types';
@@ -13,6 +12,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { keys } from 'utils/helperUtils';
 import { findSimilarLocale } from 'utils/i18n';
+import { useSearch } from 'utils/router';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,

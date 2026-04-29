@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -14,6 +13,7 @@ import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import Centerer from 'components/UI/Centerer';
 
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
+import { useParams } from 'utils/router';
 
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';

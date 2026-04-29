@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -14,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 import { isSuperAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import { NavItem } from './navItems';

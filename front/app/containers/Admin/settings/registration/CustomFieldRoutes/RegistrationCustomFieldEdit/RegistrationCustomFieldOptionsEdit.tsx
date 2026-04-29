@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 import useUpdateCustomFieldOption from 'api/custom_field_options/useUpdateCustomFieldOption';
 
@@ -9,6 +7,7 @@ import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

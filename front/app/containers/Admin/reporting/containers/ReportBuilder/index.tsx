@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useLocation, useParams, useSearch } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
@@ -22,6 +21,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useParams, useSearch } from 'utils/router';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';

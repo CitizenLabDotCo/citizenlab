@@ -6,7 +6,6 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { HighestRole } from 'api/users/types';
@@ -18,6 +17,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
+import { useSearch } from 'utils/router';
 
 import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';

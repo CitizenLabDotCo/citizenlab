@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import { IDefaultInputTopicUpdate } from 'api/default_input_topics/types';
 import useDefaultInputTopic from 'api/default_input_topics/useDefaultInputTopic';
 import useUpdateDefaultInputTopic from 'api/default_input_topics/useUpdateDefaultInputTopic';
@@ -12,6 +10,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import DefaultInputTopicForm from './DefaultInputTopicForm';
 import messages from './messages';

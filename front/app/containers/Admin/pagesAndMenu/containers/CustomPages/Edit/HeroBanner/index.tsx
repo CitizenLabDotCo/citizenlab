@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
@@ -26,6 +25,7 @@ import HelmetIntl from 'components/HelmetIntl';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';

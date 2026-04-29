@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

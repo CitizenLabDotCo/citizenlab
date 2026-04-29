@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { useSearch } from 'utils/router';
 
 import { handleArraySearchParam } from '../util';
 

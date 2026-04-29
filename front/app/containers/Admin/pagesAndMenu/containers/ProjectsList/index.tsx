@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -10,6 +8,7 @@ import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import {
   pagesAndMenuBreadcrumb,

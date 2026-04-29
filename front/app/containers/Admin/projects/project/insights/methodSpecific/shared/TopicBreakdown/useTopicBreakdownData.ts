@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 
-import { useParams } from 'utils/router';
-
 import useAnalyses from 'api/analyses/useAnalyses';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -12,6 +10,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { getAnalysisScope } from 'containers/Admin/projects/_shared/components/AnalysisBanner/utils';
+
+import { useParams } from 'utils/router';
 
 export interface TopicData {
   id: string;

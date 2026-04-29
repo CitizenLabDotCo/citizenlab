@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation, Outlet } from 'utils/router';
 
 import { Tab } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
+import { useLocation, Outlet } from 'utils/router';
 
 import messages from '../../messages';
 const StatusesComponent = React.lazy(() => import('./index'));

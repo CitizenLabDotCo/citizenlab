@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useSupportedCampaignNames from 'api/campaigns/useSupportedCampaignNames';
@@ -12,6 +11,7 @@ import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow'
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

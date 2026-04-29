@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import { Tab } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import { getSettingsTabs } from './utils';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
@@ -15,6 +14,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 

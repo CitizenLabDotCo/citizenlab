@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useLocation } from 'utils/router';
 import { ITab } from 'typings';
 
 import NavigationTabs, {
@@ -9,6 +8,7 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 interface Props {
   children?: React.ReactNode;

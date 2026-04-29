@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Toggle } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 

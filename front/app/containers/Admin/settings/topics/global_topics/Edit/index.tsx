@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import { IGlobalTopicUpdate } from 'api/global_topics/types';
 import useGlobalTopic from 'api/global_topics/useGlobalTopic';
 import useUpdateGlobalTopic from 'api/global_topics/useUpdateGlobalTopic';
@@ -12,6 +10,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import TopicForm from '../TopicForm';

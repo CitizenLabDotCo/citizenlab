@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useSearch } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
@@ -14,6 +13,7 @@ import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import Editor from '../../components/Editor';
 

@@ -10,7 +10,6 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-import { useParams } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
@@ -21,6 +20,7 @@ import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { ViewOptions } from '..';
 import messages from '../messages';

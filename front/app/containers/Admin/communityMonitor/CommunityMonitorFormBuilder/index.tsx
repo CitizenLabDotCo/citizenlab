@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
+
+import { useParams } from 'utils/router';
 
 import { communityMonitorConfig } from './utils';
 

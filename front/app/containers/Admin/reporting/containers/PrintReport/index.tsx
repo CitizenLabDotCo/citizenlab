@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 

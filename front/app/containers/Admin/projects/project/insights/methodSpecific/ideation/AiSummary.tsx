@@ -8,7 +8,6 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -28,6 +27,7 @@ import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/S
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import { useWordSection } from '../../word/useWordSection';

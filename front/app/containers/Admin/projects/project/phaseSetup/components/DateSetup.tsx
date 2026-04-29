@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { format, parseISO, startOfDay } from 'date-fns';
-import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
@@ -17,6 +16,7 @@ import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import { SubmitStateType, ValidationErrors } from '../typings';

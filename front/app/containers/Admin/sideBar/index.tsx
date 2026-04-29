@@ -9,7 +9,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
@@ -26,6 +25,7 @@ import Link from 'utils/cl-router/Link';
 import { isPage } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import MenuItem from './MenuItem';
 import messages from './messages';

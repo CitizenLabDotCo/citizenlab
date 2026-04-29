@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { set } from 'js-cookie';
-import { useParams } from 'utils/router';
 
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 const ProjectPreviewToken = () => {
   const { slug, token } = useParams({ strict: false }) as {

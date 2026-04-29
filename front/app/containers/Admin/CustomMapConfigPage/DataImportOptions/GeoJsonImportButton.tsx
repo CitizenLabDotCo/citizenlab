@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -15,6 +14,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
 import messages from '../messages';

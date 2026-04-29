@@ -6,10 +6,11 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
+
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { categoryColors, getYearFilter, getQuarterFilter } from '../utils';

@@ -6,7 +6,6 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
@@ -20,6 +19,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 

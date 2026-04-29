@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import Search from './_shared/FilterBar/Filters/Search';
 import Folders from './Folders';

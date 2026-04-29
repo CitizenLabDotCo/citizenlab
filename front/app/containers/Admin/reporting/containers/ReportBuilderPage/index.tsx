@@ -7,7 +7,6 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -21,6 +20,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+import { useSearch } from 'utils/router';
 
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';

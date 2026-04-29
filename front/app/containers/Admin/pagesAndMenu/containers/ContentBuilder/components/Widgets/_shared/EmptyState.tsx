@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import Warning from 'components/UI/Warning';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 const isHomepageBuilder = (pathname: string) => {
   return pathname.includes('/homepage-builder');

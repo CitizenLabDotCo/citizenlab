@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box, Select, Input, Label } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import tracks from '../../tracks';
 import messages from '../messages';

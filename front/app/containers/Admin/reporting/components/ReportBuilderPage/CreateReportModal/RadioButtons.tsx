@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Radio, Text } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -9,6 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
 import { isSuperAdmin, isAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
@@ -15,6 +13,7 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 

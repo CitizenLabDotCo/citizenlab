@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { FormatMessage } from 'typings';
 
@@ -18,6 +17,7 @@ import {
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import FileItem from '../FileItem';
 

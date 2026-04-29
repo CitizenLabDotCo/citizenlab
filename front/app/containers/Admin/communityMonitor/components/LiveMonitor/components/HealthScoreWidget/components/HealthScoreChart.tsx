@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';

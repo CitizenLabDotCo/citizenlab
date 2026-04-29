@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';
@@ -9,6 +8,7 @@ import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestio
 import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
