@@ -14,24 +14,20 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import Link from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
 
-const StyledLink = styled(Link)<{ isActive: boolean }>`
+const StyledLink = styled(Link)`
   color: ${colors.textPrimary};
   svg {
     transform: scaleX(-1);
     margin-bottom: 4px;
     fill: ${colors.textPrimary};
   }
-  :hover {
+  :hover,
+  &.active {
     svg {
       fill: ${colors.teal500};
     }
   }
-  ${({ isActive }) =>
-    isActive &&
-    `svg {
-      fill: ${colors.teal500};
-    }`}
-`;
+` as typeof Link;
 
 const referenceDisplayValue = (
   input: IInput,
@@ -114,7 +110,7 @@ const ReferenceLink = ({
           to="/$locale/admin/projects/$projectId/analysis/$analysisId"
           params={{ projectId, analysisId }}
           search={{ phase_id: phaseId, selected_input_id: match } as any}
-          isActive={selectedInputId === match}
+          className={selectedInputId === match ? 'active' : undefined}
           target={isAnalysisScreen ? '_self' : '_blank'}
         >
           <Icon name="comment" width="12px" height="12px" />
