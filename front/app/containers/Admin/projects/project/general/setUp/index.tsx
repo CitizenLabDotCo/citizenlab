@@ -149,6 +149,12 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
   const { highest_role } = authUser.data.attributes;
 
   const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
+    if (highest_role === 'admin' || highest_role === 'super_admin') {
+      if (project.data.attributes.folder_id) return 'folder';
+      if (project.data.attributes.space_id) return 'space';
+      return 'root';
+    }
+
     if (highest_role === 'space_moderator') {
       // folder needs to be checked before space_id,
       // because if a project is in a folder that is in a space,
