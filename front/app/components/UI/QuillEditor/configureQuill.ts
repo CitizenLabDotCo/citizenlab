@@ -39,7 +39,7 @@ export const configureQuill = () => {
   Quill.register('modules/blotFormatter', BlotFormatter);
 
   class CustomBold extends Bold {}
-  CustomBold.tagName = 'B';
+  CustomBold.tagName = ['B'];
   Quill.register('formats/bold', CustomBold, true);
 
   // BEGIN allow video resizing styles
