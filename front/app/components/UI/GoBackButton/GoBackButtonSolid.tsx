@@ -49,7 +49,7 @@ const GoBackButtonSolid = ({
       <Box
         as="span"
         display={isSmallerThanPhone ? 'none' : 'block'}
-        aria-hidden="true"
+        aria-hidden
       >
         {text}
       </Box>
