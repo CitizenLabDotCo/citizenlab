@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  type ActiveOptions,
   type AnyRouter,
   createLink,
   type CreateLinkProps,
@@ -89,28 +90,48 @@ type LocaleAwareLink<TComp> = <
   >
 ) => React.ReactElement;
 
-const Link = (props: any) => {
+// Implementation-side props: the public `LocaleAwareLink<>` signature is the
+// source of truth (applied via the cast on `export default` below). Internally
+// we widen `params` and `activeOptions` to the loose union TanStack emits so
+// the body can destructure and remap without per-call generic resolution.
+type ParamsValue =
+  | true
+  | Record<string, unknown>
+  | ((prev: unknown) => Record<string, unknown>);
+
+type LinkImplProps = ExtraProps &
+  Omit<CreateLinkProps, 'params' | 'activeOptions'> &
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+    params?: ParamsValue;
+    activeOptions?: ActiveOptions;
+  };
+
+const Link = (props: LinkImplProps) => {
   const locale = useLocale();
   const { params, onlyActiveOnIndex, activeOptions, ...rest } = props;
 
   const mergedParams =
     typeof params === 'function'
       ? (prev: unknown) => ({ locale, ...params(prev) })
-      : params
-      ? { locale, ...(params as Record<string, unknown>) }
+      : params && params !== true
+      ? { locale, ...params }
       : { locale };
 
   const resolvedActiveOptions = onlyActiveOnIndex
     ? { exact: true, ...activeOptions }
     : activeOptions;
 
-  return (
-    <TypedLink
-      {...rest}
-      params={mergedParams}
-      activeOptions={resolvedActiveOptions}
-    />
-  );
+  // Single contained cast: the public `LocaleAwareLink<>` type already enforces
+  // the route-aware shape on callers; here we hand the resolved (locale-merged)
+  // props to `TypedLink`, whose generic param/search types we've intentionally
+  // erased to keep the wrapper non-generic.
+  const linkProps = {
+    ...rest,
+    params: mergedParams,
+    activeOptions: resolvedActiveOptions,
+  } as React.ComponentProps<typeof TypedLink>;
+
+  return <TypedLink {...linkProps} />;
 };
 
 export default Link as LocaleAwareLink<typeof Inner>;
