@@ -11,6 +11,7 @@ import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 import { calculateScaleFromZoom } from 'utils/mapUtils/map';
 
+import messages from './messages';
 import { InitialData } from './types';
 
 export const configureMapView = (
@@ -101,17 +102,10 @@ export const setMapAccessibility = (
     const mapSurface = mapView.container?.querySelector('.esri-view-surface');
     if (mapSurface) {
       mapSurface.setAttribute('role', 'region');
-      if (formatMessage) {
-        mapSurface.setAttribute(
-          'aria-label',
-          formatMessage({
-            id: 'app.components.EsriMap.mapAriaLabel',
-            defaultMessage: 'Interactive map',
-          })
-        );
-      } else {
-        mapSurface.setAttribute('aria-label', 'Interactive map');
-      }
+      mapSurface.setAttribute(
+        'aria-label',
+        formatMessage ? formatMessage(messages.mapAriaLabel) : ''
+      );
     }
   });
 };
@@ -162,12 +156,8 @@ export const addMapLegend = (
     mode: 'floating',
     expandIcon: 'legend',
     ...(formatMessage && {
-      expandTooltip: formatMessage({
-        id: 'app.components.EsriMap.mapLegendAriaLabel',
-      }),
-      collapseTooltip: formatMessage({
-        id: 'app.components.EsriMap.mapLegendAriaLabel',
-      }),
+      expandTooltip: formatMessage(messages.mapLegendAriaLabel),
+      collapseTooltip: formatMessage(messages.mapLegendAriaLabel),
     }),
   });
 
@@ -199,12 +189,8 @@ export const showLayerVisibilityControls = (
     mode: 'floating',
     expandIcon: 'layers',
     ...(formatMessage && {
-      expandTooltip: formatMessage({
-        id: 'app.components.EsriMap.mapLayerListAriaLabel',
-      }),
-      collapseTooltip: formatMessage({
-        id: 'app.components.EsriMap.mapLayerListAriaLabel',
-      }),
+      expandTooltip: formatMessage(messages.mapLayerListAriaLabel),
+      collapseTooltip: formatMessage(messages.mapLayerListAriaLabel),
     }),
   });
 
