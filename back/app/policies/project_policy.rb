@@ -81,7 +81,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def index_for_admin?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def votes_by_user_xlsx?
@@ -101,9 +101,8 @@ class ProjectPolicy < ApplicationPolicy
     elsif record.space
       UserRoleService.new.can_moderate?(record.space, user)
     else
-      # PMs and FMs can create projects, which then need to be approved.
-      # SMs can't for now.
-      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+      # Moderators can create draft projects, which then need to be approved.
+      record.admin_publication.draft? && user.moderator?
     end
   end
 
@@ -118,7 +117,13 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    active_moderator?
+    return true if active_admin?
+    return active_moderator? unless record.folder_changed? || record.space_changed?
+
+    return false if record.folder_changed? && !can_moderate_folder?
+    return false if space_moderation_required? && !can_moderate_space?
+
+    true
   end
 
   def refresh_preview_token?
@@ -130,9 +135,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless active?
-
-    admin? || (active_moderator? && record.never_published?)
+    active_admin? || can_moderate_space? || (active_moderator? && record.never_published?)
   end
 
   def copy?
@@ -148,7 +151,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def participant_counts?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def shared_permitted_attributes
@@ -169,6 +172,7 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
+    shared << :folder_id if user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
     shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
@@ -215,15 +219,22 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    admin_like? || record.ever_published? || record.review&.approved?
+    can_moderate_folder? || can_moderate_space? || record.ever_published? || record.review&.approved?
   end
 
-  def admin_like?
-    admin? || folder_moderator?
+  def can_moderate_folder?
+    record.folder && active? && UserRoleService.new.can_moderate?(record.folder, user)
   end
 
-  def folder_moderator?
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  def can_moderate_space?
+    record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
+  end
+
+  def space_moderation_required?
+    # A space change that mirrors the target folder's space is a side-effect of
+    # Project#folder_id= and rides on the folder-move authorization.
+    # No separate space-moderation check is needed in that case.
+    record.space_changed? && !(record.folder_changed? && record.folder&.space_id == record.space_id)
   end
 
   def project_preview?

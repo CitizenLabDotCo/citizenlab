@@ -108,13 +108,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       name: 'project_description_builder',
     }) && projectFolder; // description builder cannot be used when creating a folder
 
-  const { data: authUser } = useAuthUser();
-
   /*
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -148,6 +148,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -243,6 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleSpaceIdChange = (spaceId: string | null) => {
     setSubmitState('enabled');
+    setSpaceIdError(false);
     setSpaceId(spaceId);
   };
 
@@ -324,6 +326,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
     if (isSpaceModerator(authUser) && !spaceId) {
       valid = false;
+      setSpaceIdError(true);
     }
 
     if (!valid) {
@@ -642,7 +645,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
 
-        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>
