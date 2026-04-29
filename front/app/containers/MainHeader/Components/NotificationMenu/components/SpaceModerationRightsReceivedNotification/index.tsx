@@ -17,12 +17,11 @@ interface Props {
 
 const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
   const { notification } = props;
-  const spacePath =
-    `/admin/projects/spaces/${notification.attributes.space_id}` as const;
+  const spaceId = notification.attributes.space_id;
 
   return (
     <NotificationWrapper
-      linkTo={spacePath}
+      linkTo={`/admin/projects/spaces/${spaceId}`}
       timing={notification.attributes.created_at}
       icon="shield-checkered"
       isRead={!!notification.attributes.read_at}
@@ -31,7 +30,11 @@ const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
         {...messages.spaceModerationRightsReceived}
         values={{
           spaceLink: (
-            <Link to={spacePath} onClick={stopPropagation}>
+            <Link
+              to="/$locale/admin/projects/spaces/$spaceId"
+              params={{ spaceId }}
+              onClick={stopPropagation}
+            >
               <T value={notification.attributes.space_title_multiloc} />
             </Link>
           ),
