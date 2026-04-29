@@ -8,7 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'utils/router';
-import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInputTopicData } from 'api/input_topics/types';
@@ -76,7 +75,7 @@ const FilterSidebar = ({
 
   if (!authUser) return null;
 
-  const getLinkToTagManager = (): RouteType | null => {
+  const getLinkToTagManager = (): string | null => {
     // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
     if (
       (type === 'ProjectIdeas' || type === 'ProjectProposals') &&

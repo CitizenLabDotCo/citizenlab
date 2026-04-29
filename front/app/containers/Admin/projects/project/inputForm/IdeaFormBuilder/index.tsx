@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { RouteType } from 'routes';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -41,7 +39,7 @@ const IdeaFormBuilder = ({
     phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
   });
 
-  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
+  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   return (
     <FormBuilder

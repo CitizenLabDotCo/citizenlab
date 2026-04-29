@@ -6,7 +6,6 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -49,7 +48,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
 
   const { slug } = project.data.attributes;
 
-  const projectUrl = `/projects/${slug}` satisfies RouteType;
+  const projectUrl = `/projects/${slug}`;
 
   const handleClickCard = (e: React.MouseEvent) => {
     e.stopPropagation();

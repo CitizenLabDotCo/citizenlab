@@ -2,7 +2,6 @@ import React from 'react';
 
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -68,7 +67,7 @@ const StyledLink = styled(Link)`
 
 interface Props {
   className?: string;
-  linkTo: RouteType;
+  linkTo: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }

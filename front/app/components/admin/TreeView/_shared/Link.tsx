@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import OriginalLink from 'utils/cl-router/Link';
@@ -19,7 +18,7 @@ const StyledLink = styled(OriginalLink)<{
 `;
 
 interface Props {
-  to: RouteType;
+  to: string;
   color?: string;
   children: React.ReactNode;
 }

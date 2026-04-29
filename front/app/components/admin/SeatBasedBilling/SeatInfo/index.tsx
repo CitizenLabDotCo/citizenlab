@@ -7,7 +7,6 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -38,7 +37,7 @@ const TOTAL_SEAT_MESSAGES = {
   moderator: messages.totalManagerSeats,
 };
 
-const SEATS_OVERVIEW_PAGE: RouteType = '/admin/users/seats';
+const SEATS_OVERVIEW_PAGE = '/admin/users/seats';
 
 const StyledLink = styled(Link)`
   text-decoration: underline;

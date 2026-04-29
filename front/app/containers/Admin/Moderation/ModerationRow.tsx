@@ -11,7 +11,6 @@ import {
 import moment from 'moment';
 import { rgba } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
@@ -138,7 +137,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
-    const viewLink: RouteType | null = getViewLink(moderatableType);
+    const viewLink: string | null = getViewLink(moderatableType);
 
     const handleOnChecked = (_event: React.ChangeEvent) => {
       onSelect(moderation);
@@ -166,7 +165,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       win && win.focus();
     };
 
-    function getViewLink(moderatableType: TModeratableType): RouteType | null {
+    function getViewLink(moderatableType: TModeratableType): string | null {
       if (moderatableType === 'Comment') {
         if (
           belongsToTypes.includes('idea') &&

@@ -10,7 +10,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearch } from 'utils/router';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -68,7 +67,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
     !isSmallerThanPhone &&
     canModerateProject(project.data, authUser) &&
     !isCommonGround;
-  const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
+  const linkToFormBuilder = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
   const onClickClose = () => {
     const pathname = isCommonGround

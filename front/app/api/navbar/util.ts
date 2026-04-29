@@ -1,8 +1,6 @@
-import { RouteType } from 'routes';
-
 import { TDefaultNavbarItemCode, INavbarItem } from './types';
 
-export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
+export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
@@ -13,7 +11,7 @@ export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
 export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
-}: INavbarItem): RouteType | null {
+}: INavbarItem): string | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
   // TODO: Fix this the next time the file is edited.

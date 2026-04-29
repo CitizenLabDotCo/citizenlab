@@ -59,10 +59,6 @@ const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
 
-// TODO: Replace with proper route types after migration
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RouteType = any;
-
 // Root search schema — SSO/auth callback params that can appear on any route
 const rootSearchSchema = yup.object({
   verification_error: yup.string(),

@@ -1,12 +1,10 @@
-import { RouteType } from 'routes';
-
 import { ParticipationMethod } from 'api/phases/types';
 
 export const getBackPath = (
   projectId: string,
   phaseId: string,
   participationMethod?: ParticipationMethod
-): RouteType => {
+): string => {
   switch (participationMethod) {
     case 'native_survey':
       return `/admin/projects/${projectId}/phases/${phaseId}/insights`;

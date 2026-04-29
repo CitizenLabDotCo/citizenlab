@@ -6,7 +6,6 @@ import {
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -75,7 +74,7 @@ type TabProps = {
   className?: string;
   'data-cy'?: string;
   label: string | React.ReactNode;
-  url: RouteType;
+  url: string;
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;

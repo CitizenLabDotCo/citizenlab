@@ -9,7 +9,6 @@ import {
   ClickOutside,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -171,7 +170,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink2) as RouteType}
+          linkTo={formatMessage(messages.supportArticleLink2)}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}

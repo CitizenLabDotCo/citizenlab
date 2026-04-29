@@ -8,7 +8,6 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { rgba, darken } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -136,7 +135,7 @@ const ProjectsListFooter = styled(Link)`
 `;
 
 interface Props {
-  linkTo: RouteType;
+  linkTo: string;
   navigationItemTitle: Multiloc;
   onDropdownStateChange?: (isOpen: boolean) => void;
 }
@@ -222,9 +221,7 @@ const AdminPublicationsNavbarItem = ({
                   <React.Fragment key={item.id}>
                     {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
-                        to={
-                          `${linkTo}/${item.attributes.publication_slug}` as RouteType
-                        }
+                        to={`${linkTo}/${item.attributes.publication_slug}`}
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}

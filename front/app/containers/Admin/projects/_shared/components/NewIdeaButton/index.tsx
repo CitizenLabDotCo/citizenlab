@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { RouteType } from 'routes';
-
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -15,7 +13,7 @@ import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
-  linkTo: RouteType;
+  linkTo: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;
 }

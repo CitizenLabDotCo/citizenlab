@@ -12,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'utils/router';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -49,7 +48,7 @@ const StyledStatusLabel = styled(StatusLabel)`
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  viewFormLink: string;
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;

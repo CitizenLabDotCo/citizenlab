@@ -8,7 +8,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
@@ -38,7 +37,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   const { formatMessage } = useIntl();
   const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
-  const statsLink: RouteType =
+  const statsLink =
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
       : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;

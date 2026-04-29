@@ -11,7 +11,6 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { useParams, useSearch } from 'utils/router';
-import { RouteType } from 'routes';
 
 import {
   IFlatCreateCustomField,
@@ -66,7 +65,7 @@ type FormEditProps = {
   };
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: RouteType;
+  viewFormLink: string;
   phase: IPhaseData;
 };
 
@@ -394,7 +393,7 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  viewFormLink: string;
 };
 
 const FormBuilderPage = ({

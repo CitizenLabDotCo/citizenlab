@@ -1,5 +1,4 @@
 import { isEqual } from 'lodash-es';
-import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
 
 export const TEMP_DROPDOWN_ITEM_STYLES = `
@@ -12,7 +11,7 @@ export const TEMP_DROPDOWN_ITEM_STYLES = `
 `;
 
 export interface NavbarItemProps {
-  linkTo: RouteType;
+  linkTo: string;
   onlyActiveOnIndex?: boolean;
   navigationItemTitle: Multiloc;
 }
@@ -109,7 +108,7 @@ export const calculateAvailableWidth = (
 
 export const createTempElementsForMeasurement = (
   navbarItemPropsArray: Array<{
-    linkTo: RouteType | null;
+    linkTo: string | null;
     onlyActiveOnIndex: boolean;
     navigationItemTitle: Multiloc;
   }>,

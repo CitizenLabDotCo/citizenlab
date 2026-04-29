@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -17,7 +16,7 @@ const StyledLink = styled(Link)`
 
 type TBreadcrumb = {
   label: string;
-  linkTo?: RouteType;
+  linkTo?: string;
 };
 
 export type TBreadcrumbs = TBreadcrumb[];

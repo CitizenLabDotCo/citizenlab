@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -62,7 +61,7 @@ const IdeasFeedPage = () => {
     // If sheet is open without subtopic -> handled by linkTo (exit to project)
   };
 
-  const getMobileBackLinkTo = (): RouteType | undefined => {
+  const getMobileBackLinkTo = (): string | undefined => {
     // Only exit to project when sheet is open and no subtopic selected
     if (sheetOpen && !selectedSubtopicId) {
       return `/projects/${slug}`;

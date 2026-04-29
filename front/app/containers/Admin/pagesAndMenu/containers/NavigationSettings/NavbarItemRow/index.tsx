@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -44,7 +43,7 @@ interface Props {
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
   showViewButton?: boolean;
-  viewButtonLink?: RouteType;
+  viewButtonLink?: string;
   onClickEditButton?: () => void;
   onClickAddButton?: () => void;
   onClickRemoveButton?: () => void;

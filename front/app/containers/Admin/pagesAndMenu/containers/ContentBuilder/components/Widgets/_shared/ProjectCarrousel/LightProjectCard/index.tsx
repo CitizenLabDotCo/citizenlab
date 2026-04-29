@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import useProjectImage from 'api/project_images/useProjectImage';
@@ -51,7 +50,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
   const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
-  const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
+  const projectUrl = getProjectUrl(project.attributes.slug);
 
   return (
     <CardContainer

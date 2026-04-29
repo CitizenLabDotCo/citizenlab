@@ -12,7 +12,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
@@ -96,7 +95,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
-  banner_cta_signed_out_url: RouteType | null;
+  banner_cta_signed_out_url: string | null;
   // signed_in
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_in_header_overlay_color?: string | null;
@@ -115,7 +114,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: RouteType | null;
+  banner_cta_signed_in_url: string | null;
   header_bg?: ImageSizes | null;
 }
 
@@ -301,9 +300,7 @@ const HomepageBannerSettings = () => {
     field: 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url'
   ) => {
     const validation = isValidUrl(value);
-    setProp(
-      (props: Props) => (props.homepageSettings[field] = value as RouteType)
-    );
+    setProp((props: Props) => (props.homepageSettings[field] = value));
 
     if (!validation) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -20,7 +19,7 @@ const StyledButton = styled(ButtonWithLink)`
 
 interface Props {
   onClick?: () => void;
-  linkTo?: RouteType;
+  linkTo?: string;
   className?: string;
   text: string;
 }

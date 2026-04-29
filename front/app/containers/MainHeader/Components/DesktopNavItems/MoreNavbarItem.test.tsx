@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { RouteType } from 'routes';
-
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import MoreNavbarItem from './MoreNavbarItem';
 
 const mockOverflowItems = [
   {
-    linkTo: '/test1' as RouteType,
+    linkTo: '/test1',
     navigationItemTitle: { en: 'Test Item 1' },
     onlyActiveOnIndex: false,
   },
   {
-    linkTo: '/test2' as RouteType,
+    linkTo: '/test2',
     navigationItemTitle: { en: 'Test Item 2' },
     onlyActiveOnIndex: false,
   },

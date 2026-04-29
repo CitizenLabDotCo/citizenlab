@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
@@ -39,7 +38,7 @@ interface Props {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToViewPage?: RouteType;
+  linkToViewPage?: string;
 }
 
 interface FormValues {

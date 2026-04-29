@@ -15,7 +15,6 @@ import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -411,7 +410,7 @@ const ProjectCard = memo<InputProps>(
       projectImage?.data.attributes.alt_text_multiloc
     );
 
-    const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
+    const projectUrl = getProjectUrl(project.data.attributes.slug);
     const isFinished = project.data.attributes.timeline_active === 'past';
     const isArchived =
       project.data.attributes.publication_status === 'archived';

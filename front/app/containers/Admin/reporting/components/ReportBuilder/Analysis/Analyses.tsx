@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
@@ -31,7 +30,7 @@ const Analyses = ({
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  const projectLink: RouteType =
+  const projectLink =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
       : `/admin/projects/${projectId}/phases/${phaseId}/insights`;

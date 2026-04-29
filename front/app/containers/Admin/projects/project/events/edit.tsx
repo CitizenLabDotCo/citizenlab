@@ -13,7 +13,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';
 
@@ -288,7 +287,7 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url as RouteType,
+      using_url: url,
     });
     setErrors({});
   };

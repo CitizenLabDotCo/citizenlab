@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
@@ -59,7 +58,7 @@ const SurveySettings = () => {
   // Variables from form config
   const { postingEnabled, togglePostingEnabled, inputImporterLink } =
     getFormActionsConfig(project.data, updatePhase, phase.data);
-  const editFormLink: RouteType = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
+  const editFormLink = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
 
   // Functions to handle modal states
   const closeDeleteModal = () => {

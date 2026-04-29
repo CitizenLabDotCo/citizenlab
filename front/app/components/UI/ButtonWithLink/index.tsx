@@ -5,7 +5,6 @@ import {
   ButtonProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import Link from 'utils/cl-router/Link';
 
@@ -47,7 +46,7 @@ const ButtonWithLink = forwardRef<Ref, Props>(
             }: Omit<ButtonProps, 'as' | 'size'> &
               React.HTMLAttributes<HTMLAnchorElement>) => (
               <Link
-                to={linkTo as RouteType}
+                to={linkTo}
                 target={openLinkInNewTab ? '_blank' : undefined}
                 rel="noreferrer"
                 scrollToTop={scrollToTop}

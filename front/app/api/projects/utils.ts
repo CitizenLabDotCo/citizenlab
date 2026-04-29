@@ -1,5 +1,3 @@
-import { RouteType } from 'routes';
-
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
@@ -13,7 +11,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import projectsKeys from './keys';
 
-export function getProjectUrl(slug: string): RouteType {
+export function getProjectUrl(slug: string): string {
   return `/projects/${slug}`;
 }
 

@@ -1,5 +1,3 @@
-import { RouteType } from 'routes';
-
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
 import { toBackendDateString } from 'utils/dateUtils';
@@ -46,5 +44,5 @@ export const getRedirectUrl = ({
     params = `?${startDateParam}&${endDateParam}`;
   }
 
-  return `${reportRoute}${params}` as RouteType;
+  return `${reportRoute}${params}`;
 };

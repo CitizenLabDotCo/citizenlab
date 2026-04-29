@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'utils/router';
-import { RouteType } from 'routes';
 import styled, { keyframes, css } from 'styled-components';
 
 import { scrollToElement } from 'utils/scroll';
@@ -80,4 +79,4 @@ const Highlighter = ({ fragmentId, children }: Props) => {
 export default Highlighter;
 // The purpose of createHighlighterLink is to easily locate
 // links used in conjunction with Highlighter in the codebase.
-export const createHighlighterLink = (path: RouteType) => path;
+export const createHighlighterLink = (path: string) => path;

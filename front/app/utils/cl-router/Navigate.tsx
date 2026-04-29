@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 
-import { RouteType } from 'routes';
-
 import clHistory from 'utils/cl-router/history';
 
 interface Props {
-  to: RouteType;
+  to: string;
   replace?: boolean;
 }
 

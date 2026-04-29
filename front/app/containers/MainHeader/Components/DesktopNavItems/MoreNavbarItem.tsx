@@ -6,7 +6,6 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -70,7 +69,7 @@ const StyledButton = styled.button`
 `;
 
 interface NavbarItemProps {
-  linkTo: RouteType;
+  linkTo: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }

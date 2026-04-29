@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
-import { RouteType } from 'routes';
-
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
@@ -324,9 +322,7 @@ export default function useSteps() {
       localStorage.removeItem('auth_context');
 
       // Check if there is a path in local storage
-      const pathFromLocalStorage = localStorage.getItem(
-        'auth_path'
-      ) as RouteType;
+      const pathFromLocalStorage = localStorage.getItem('auth_path');
       localStorage.removeItem('auth_path');
 
       const context = contextFromLocalStorage

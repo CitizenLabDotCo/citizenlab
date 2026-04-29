@@ -6,7 +6,6 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -110,7 +109,7 @@ const IdeaCard = ({
     if (phaseId) {
       ideaUrl += `&phase_context=${phaseId}`;
     }
-    clHistory.push(ideaUrl as RouteType, {
+    clHistory.push(ideaUrl, {
       scrollToTop: true,
     });
   };

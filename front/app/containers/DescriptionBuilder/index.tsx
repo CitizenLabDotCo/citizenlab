@@ -4,7 +4,6 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { useLocation } from 'utils/router';
-import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -31,8 +30,8 @@ import { isNilOrError } from 'utils/helperUtils';
 type Props = {
   contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
-  backPath: RouteType;
-  previewPath: RouteType;
+  backPath: string;
+  previewPath: string;
   titleMultiloc: Multiloc;
 };
 

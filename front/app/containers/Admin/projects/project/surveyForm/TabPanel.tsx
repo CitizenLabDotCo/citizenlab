@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import ImportResponsesSection from 'components/admin/FormSync/ImportResponsesSection';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
@@ -20,7 +19,7 @@ const TabPanel = ({
   projectId: string;
   phaseId: string;
 }) => {
-  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
+  const editFormLink = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
 
   return (
     <Box maxWidth="1200px">

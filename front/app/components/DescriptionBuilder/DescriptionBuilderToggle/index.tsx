@@ -7,7 +7,6 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
@@ -101,8 +100,7 @@ const DescriptionBuilderToggle = ({
     });
   };
 
-  const route =
-    `/admin/description-builder/${contentBuildableType}s/${contentBuildableId}/description` as RouteType;
+  const route = `/admin/description-builder/${contentBuildableType}s/${contentBuildableId}/description`;
 
   return (
     <Box data-testid="descriptionBuilderToggle">

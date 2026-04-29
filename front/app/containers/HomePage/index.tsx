@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { RouteType } from 'routes';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -16,7 +14,7 @@ import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 import HomePageMeta from './HomePageMeta';
 import Viewer from './Viewer';
 
-export const adminRedirectPath: RouteType = '/admin';
+export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
   const { data: authUser } = useAuthUser();

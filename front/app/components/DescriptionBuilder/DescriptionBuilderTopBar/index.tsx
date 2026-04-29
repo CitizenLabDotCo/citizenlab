@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -34,8 +33,8 @@ type DescriptionBuilderTopBarProps = {
   }) => void;
   contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
-  backPath: RouteType;
-  previewPath: RouteType;
+  backPath: string;
+  previewPath: string;
   titleMultiloc: Multiloc;
 };
 

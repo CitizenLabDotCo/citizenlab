@@ -2,7 +2,6 @@ import React, { MouseEvent } from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { RouteType } from 'routes';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -19,7 +18,7 @@ interface Props {
   selectableTopics: IInputTopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
-  linkToTagManager: RouteType | null;
+  linkToTagManager: string | null;
 }
 
 const FilterSidebarTopics = ({

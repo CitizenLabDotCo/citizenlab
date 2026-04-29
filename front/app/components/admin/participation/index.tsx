@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams } from 'utils/router';
-import { RouteType } from 'routes';
 import { ITab } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -13,6 +11,7 @@ import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { useLocation, useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import Demographics from './Demographics';
@@ -36,7 +35,7 @@ const ProjectParticipation = () => {
         {
           name: 'participants',
           label: formatMessage(messages.participantsTab),
-          url: basePath as RouteType,
+          url: basePath,
         },
       ]
     : [];
@@ -46,12 +45,12 @@ const ProjectParticipation = () => {
     {
       name: 'demographics',
       label: formatMessage(messages.demographicsTab),
-      url: `${basePath}/demographics` as RouteType,
+      url: `${basePath}/demographics`,
     },
     {
       name: 'traffic',
       label: formatMessage(messages.trafficTab),
-      url: `${basePath}/traffic` as RouteType,
+      url: `${basePath}/traffic`,
     },
   ];
 

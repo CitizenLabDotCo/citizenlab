@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { RouteType } from 'routes';
-
 import usePhase from 'api/phases/usePhase';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import { downloadSurveyResults } from 'api/survey_results/utils';
@@ -18,7 +16,7 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
-  editFormLink: RouteType;
+  editFormLink: string;
 }
 
 const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {

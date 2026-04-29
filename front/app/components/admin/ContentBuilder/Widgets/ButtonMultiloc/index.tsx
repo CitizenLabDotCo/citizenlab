@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
 import { darken } from 'polished';
-import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -27,7 +26,7 @@ import messages from './messages';
 
 type ButtonProps = {
   text: Multiloc;
-  url: RouteType;
+  url: string;
   type: 'primary' | 'secondary-outlined';
   alignment: string;
 };
@@ -122,7 +121,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
-          onChange={(value: RouteType) => {
+          onChange={(value: string) => {
             setProp((props: ButtonProps) => (props.url = value));
           }}
         />

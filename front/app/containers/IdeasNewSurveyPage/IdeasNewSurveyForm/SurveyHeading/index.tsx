@@ -10,7 +10,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearch } from 'utils/router';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
@@ -72,7 +71,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: RouteType =
+  const linkToSurveyBuilder: string =
     phaseParticipationMethod === 'community_monitor_survey'
       ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
       : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;

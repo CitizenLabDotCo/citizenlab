@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { RouteType } from 'routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -10,7 +9,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  linkTo: RouteType;
+  linkTo: string;
 }
 
 const ViewCustomPageButton = ({

@@ -8,7 +8,6 @@ import {
   fontSizes,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import {
   ManagementFeedAction,
@@ -65,7 +64,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
     }
   };
 
-  const getLink: () => RouteType = () => {
+  const getLink: () => string = () => {
     if (!item.attributes.item_exists) return '';
     switch (item.attributes.item_type) {
       case 'project':

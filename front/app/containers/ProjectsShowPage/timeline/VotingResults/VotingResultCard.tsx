@@ -9,7 +9,6 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -147,7 +146,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const votingMethod = phase.data.attributes.voting_method;
-  const url: RouteType = `/ideas/${idea.attributes.slug}?go_back=true`;
+  const url = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();

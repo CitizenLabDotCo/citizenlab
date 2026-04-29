@@ -12,7 +12,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
@@ -385,7 +384,7 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 

@@ -8,7 +8,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
@@ -98,7 +97,7 @@ type Props = {
   icon?: IconNames;
   timing?: string;
   children: React.ReactNode;
-  linkTo: RouteType;
+  linkTo: string;
   isRead: boolean;
 };
 

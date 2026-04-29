@@ -1,4 +1,3 @@
-import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
 
 import { UpdatePhaseObject, IPhaseData } from 'api/phases/types';
@@ -6,7 +5,7 @@ import { IProjectData } from 'api/projects/types';
 
 type FormActionsConfig = {
   phaseId?: string;
-  inputImporterLink: RouteType;
+  inputImporterLink: string;
   heading?: Multiloc;
   postingEnabled: boolean;
   togglePostingEnabled: () => void;

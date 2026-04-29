@@ -7,7 +7,6 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -45,7 +44,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
 
   const participationMethod = phase?.data.attributes.participation_method;
 
-  const backPath: RouteType =
+  const backPath =
     projectId &&
     phaseId &&
     getBackPath(projectId, phaseId, participationMethod);

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -12,7 +11,7 @@ import messages from './messages';
 interface Props {
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
-  linkTo: RouteType;
+  linkTo: string;
 }
 
 const EditStatusButton = ({
