@@ -103,6 +103,16 @@ export type InputImporterSearchParams = yup.InferType<
   typeof inputImporterSearchSchema
 >;
 
+// Project analysis search schema
+const projectAnalysisSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  selected_input_id: yup.string().optional(),
+});
+
+export type ProjectAnalysisSearchParams = yup.InferType<
+  typeof projectAnalysisSearchSchema
+>;
+
 // --- Projects layout route ---
 const projectsRoute = createRoute({
   getParentRoute: () => adminRoute,
@@ -298,6 +308,10 @@ const projectMessagingShowRoute = createRoute({
 const projectAnalysisRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'analysis/$analysisId',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectAnalysisSearchParams =>
+    projectAnalysisSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminProjectAnalysis />
