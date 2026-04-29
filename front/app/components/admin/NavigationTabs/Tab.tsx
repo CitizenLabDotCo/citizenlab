@@ -6,6 +6,7 @@ import {
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import type { LinkProps } from '@tanstack/react-router';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -102,7 +103,11 @@ const Tab = ({
     }
   >
     <Container disable={!!disabledTooltipText} {...props}>
-      <Link to={url as any} onClick={handleClick} className={className ?? ''}>
+      <Link
+        to={url as LinkProps['to']}
+        onClick={handleClick}
+        className={className ?? ''}
+      >
         {label}
         {badge && <>{badge}</>}
       </Link>
