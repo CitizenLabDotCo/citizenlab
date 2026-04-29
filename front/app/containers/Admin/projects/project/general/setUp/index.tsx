@@ -52,7 +52,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, keys } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -286,9 +286,19 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
     try {
       setProcessing(true);
       if (!isEmpty(projectAttributesDiff)) {
+        const projectAttributesDiffWithoutUndefined = keys(
+          projectAttributesDiff
+        ).reduce((acc, key) => {
+          const value = projectAttributesDiff[key];
+          if (value !== undefined) {
+            acc[key] = value as any;
+          }
+          return acc;
+        }, {} as IUpdatedProjectProperties);
+
         await updateProject({
           projectId,
-          ...projectAttributesDiff,
+          ...projectAttributesDiffWithoutUndefined,
         });
       }
 
@@ -523,18 +533,24 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             error={projectContextError}
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
-                space_id: null,
-                folder_id: null,
+                space_id: undefined,
+                folder_id: undefined,
               });
               setProjectContext(context);
               setProjectContextError(false);
             }}
             onChangeSpace={(space_id) => {
-              handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+              handleProjectAttributeDiffOnChange({
+                space_id,
+                folder_id: undefined,
+              });
               setProjectContextError(false);
             }}
             onChangeFolder={(folder_id) => {
-              handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+              handleProjectAttributeDiffOnChange({
+                folder_id,
+                space_id: undefined,
+              });
               setProjectContextError(false);
             }}
           />

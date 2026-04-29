@@ -11,14 +11,12 @@ export const getProjectAttributes = (
     ...projectAttributesDiff,
   };
 
-  // This is necessary to make validation pass.
-  // In the BE, a project in folder in a space will also have
-  // a space_id.
-  // But in the frontend interface, we do not see it like this:
-  // either you are in a space, or in a folder, and if your folder
-  // is in a space it is still just in the folder and not in the space.
-  if (attributes.space_id && attributes.folder_id) {
-    projectAttrs.space_id = null;
+  if (projectAttrs.folder_id) {
+    delete projectAttrs.space_id;
+  }
+
+  if (projectAttrs.space_id) {
+    delete projectAttrs.folder_id;
   }
 
   return projectAttrs;
