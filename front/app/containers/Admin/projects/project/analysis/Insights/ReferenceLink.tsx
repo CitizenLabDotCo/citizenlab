@@ -109,7 +109,7 @@ const ReferenceLink = ({
         <StyledLink
           to="/$locale/admin/projects/$projectId/analysis/$analysisId"
           params={{ projectId, analysisId }}
-          search={{ phase_id: phaseId, selected_input_id: match } as any}
+          search={{ phase_id: phaseId, selected_input_id: match }}
           className={selectedInputId === match ? 'active' : undefined}
           target={isAnalysisScreen ? '_self' : '_blank'}
         >
