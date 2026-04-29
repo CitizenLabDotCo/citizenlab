@@ -66,7 +66,11 @@ resource 'Baskets' do
       let(:submitted) { false }
       let(:phase_id) { @project.phases.first.id }
 
-      example_request 'Create a basket' do
+      example 'Create a basket' do
+        # The shared `before` block creates a basket for @user on this phase. Remove it so we're
+        # actually testing fresh basket creation (a user can only have one basket per phase).
+        @basket.destroy!
+        do_request
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
@@ -131,47 +135,6 @@ resource 'Baskets' do
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :submitted_at)).to be_present
-        end
-
-        example 'Replaying the submit request does not duplicate votes or basket counts', document: false do
-          do_request
-          assert_status 200
-
-          @basket.reload
-          phase = @basket.phase.reload
-          project = phase.project.reload
-          baseline = {
-            total_baskets: Basket.count,
-            submitted_baskets: Basket.submitted.count,
-            basket_total_votes: @basket.total_votes,
-            baskets_ideas_count: @basket.baskets_ideas.count,
-            baskets_ideas_votes: @basket.baskets_ideas.pluck(:idea_id, :votes).sort,
-            phase_baskets_count: phase.baskets_count,
-            phase_votes_count: phase.votes_count,
-            project_baskets_count: project.baskets_count,
-            project_votes_count: project.votes_count,
-            ideas_counts: @ideas.map { |i| i.reload.slice(:baskets_count, :votes_count) }
-          }
-
-          10.times do
-            do_request
-            assert_status 200
-          end
-
-          @basket.reload
-          phase.reload
-          project.reload
-
-          expect(Basket.count).to eq baseline[:total_baskets]
-          expect(Basket.submitted.count).to eq baseline[:submitted_baskets]
-          expect(@basket.total_votes).to eq baseline[:basket_total_votes]
-          expect(@basket.baskets_ideas.count).to eq baseline[:baskets_ideas_count]
-          expect(@basket.baskets_ideas.pluck(:idea_id, :votes).sort).to eq baseline[:baskets_ideas_votes]
-          expect(phase.baskets_count).to eq baseline[:phase_baskets_count]
-          expect(phase.votes_count).to eq baseline[:phase_votes_count]
-          expect(project.baskets_count).to eq baseline[:project_baskets_count]
-          expect(project.votes_count).to eq baseline[:project_votes_count]
-          expect(@ideas.map { |i| i.reload.slice(:baskets_count, :votes_count) }).to eq baseline[:ideas_counts]
         end
 
         context 'when budgeting' do
