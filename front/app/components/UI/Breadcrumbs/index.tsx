@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import type { LinkProps } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -45,7 +46,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
           >
             {linkTo && (
               <Text fontSize="m" as="span">
-                <StyledLink to={linkTo as any}>{label}</StyledLink>
+                <StyledLink to={linkTo as LinkProps['to']}>{label}</StyledLink>
               </Text>
             )}
             {!linkTo && (
