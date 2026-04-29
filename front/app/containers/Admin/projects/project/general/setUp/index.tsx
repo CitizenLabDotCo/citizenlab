@@ -535,25 +535,12 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
               setProjectContext(context);
               setProjectContextError(false);
             }}
-            onChangeSpace={(space_id) => {
-              handleProjectAttributeDiffOnChange({
-                space_id,
-                // folder_id has to be null, because we
-                // need to explicitly tell the backend to
-                // remove the folder if we move it to a space.
-                folder_id: null,
-              });
+            onChangeSpace={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
-            onChangeFolder={(folder_id) => {
-              handleProjectAttributeDiffOnChange({
-                folder_id,
-                // space_id has to be undefined,
-                // because if we set the folder_id, the backend
-                // automatically updates the space_id, and if we send it
-                // also a space_id it gets confused
-                space_id: undefined,
-              });
+            onChangeFolder={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
           />
