@@ -41,10 +41,11 @@ const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
 // the wrapper, so callers don't need to include it in `params`. The exported
 // type makes `locale` optional within `params` while keeping every other param
 // strictly typed against the route tree.
-type WithOptionalLocale<P> = P extends { locale: string }
-  ? Omit<P, 'locale'> & { locale?: string }
-  : P;
-
+// Wrapper-specific Link signature: `to` keeps full TanStack type-safety against
+// the route tree, but `params` is loosened so callers don't have to pass
+// `locale` (the wrapper auto-injects it from `useLocale()`). Param-name
+// type-checking is sacrificed for the locale ergonomics — runtime validation
+// still applies via TanStack itself.
 type LocaleAwareLink<TComp> = <
   TRouter extends AnyRouter = RegisteredRouter,
   const TFrom extends string = string,
@@ -56,18 +57,7 @@ type LocaleAwareLink<TComp> = <
     LinkComponentProps<TComp, TRouter, TFrom, TTo, TMaskFrom, TMaskTo>,
     'params'
   > & {
-    params?: WithOptionalLocale<
-      NonNullable<
-        LinkComponentProps<
-          TComp,
-          TRouter,
-          TFrom,
-          TTo,
-          TMaskFrom,
-          TMaskTo
-        >['params']
-      >
-    >;
+    params?: Record<string, string | number | undefined>;
   }
 ) => React.ReactElement;
 

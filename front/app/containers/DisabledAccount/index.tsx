@@ -33,7 +33,7 @@ const DisabledAccount = () => {
               {...messages.text}
               values={{
                 TermsAndConditions: (
-                  <Link to="/$locale/pages/terms-and-conditions">
+                  <Link to="/$locale/pages/$slug" params={{ slug: "terms-and-conditions" }}>
                     <FormattedMessage {...messages.termsAndConditions} />
                   </Link>
                 ),

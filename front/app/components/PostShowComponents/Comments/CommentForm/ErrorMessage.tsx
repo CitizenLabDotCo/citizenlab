@@ -21,7 +21,7 @@ const ErrorMessage = ({ profanityApiError }: Props) => {
         {...messages.profanityError}
         values={{
           guidelinesLink: (
-            <Link to="/$locale/pages/faq" target="_blank">
+            <Link to="/$locale/pages/$slug" params={{ slug: "faq" }} target="_blank">
               {formatMessage(messages.guidelinesLinkText)}
             </Link>
           ),
