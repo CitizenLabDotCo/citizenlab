@@ -61,8 +61,11 @@ namespace :single_use do
       skipped = 0
       errored = 0
 
-      User.active.find_each do |user|
-        unless service.track_user?(user)
+      # Pre-filter at SQL level: only users with a non-empty roles array can
+      # possibly be tracked. The remaining super_admin? check is email-regex
+      # based and can't be expressed in SQL.
+      User.active.not_normal_user.find_each do |user|
+        if user.super_admin?
           skipped += 1
           next
         end
