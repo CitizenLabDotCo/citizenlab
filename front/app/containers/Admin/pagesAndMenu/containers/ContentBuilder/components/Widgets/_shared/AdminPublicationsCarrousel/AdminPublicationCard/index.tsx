@@ -70,53 +70,55 @@ export const AdminPublicationCard = ({
   const { type } = adminPublication.relationships.publication.data;
 
   return (
-    <CardContainer
-      as={Link}
+    <Link
       scrollToTop
-      tabIndex={0}
-      w={`${cardWidth}px`}
-      ml={ml}
-      mr={mr}
       {...getPublicationLinkProps(adminPublication)}
-      display="block"
       onKeyDown={onKeyDown}
     >
-      <CardImage imageUrl={imageUrl} alt={imageAltText} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
-        {localize(publication_title_multiloc)}
-      </Title>
-      <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
-        {type === 'folder' && (
-          <>
-            <Icon
-              name="folder-solid"
-              height="20px"
-              ml="-2px"
-              mr="4px"
-              mt="0px"
-              fill={theme.colors.tenantPrimary}
-            />
-            <Text m="0px" mr="12px">
-              {formatMessage(messages.xProjects, {
-                numberOfProjects: visible_children_count,
-              })}
-            </Text>
-          </>
-        )}
-        <AvatarBubbles
-          avatarIds={avatarIds}
-          size={16}
-          limit={3}
-          userCount={userCount}
-          participantsTextFontSize="m"
-          showParticipantText={!isSmallerThanPhone}
-          userCountBubbleFontSize={10}
-        />
-      </Box>
-      <Text mt="8px" mb="0">
-        {truncate(localize(publication_description_preview_multiloc), 280)}
-      </Text>
-    </CardContainer>
+      <CardContainer
+        tabIndex={0}
+        w={`${cardWidth}px`}
+        ml={ml}
+        mr={mr}
+        display="block"
+      >
+        <CardImage imageUrl={imageUrl} alt={imageAltText} />
+        <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
+          {localize(publication_title_multiloc)}
+        </Title>
+        <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
+          {type === 'folder' && (
+            <>
+              <Icon
+                name="folder-solid"
+                height="20px"
+                ml="-2px"
+                mr="4px"
+                mt="0px"
+                fill={theme.colors.tenantPrimary}
+              />
+              <Text m="0px" mr="12px">
+                {formatMessage(messages.xProjects, {
+                  numberOfProjects: visible_children_count,
+                })}
+              </Text>
+            </>
+          )}
+          <AvatarBubbles
+            avatarIds={avatarIds}
+            size={16}
+            limit={3}
+            userCount={userCount}
+            participantsTextFontSize="m"
+            showParticipantText={!isSmallerThanPhone}
+            userCountBubbleFontSize={10}
+          />
+        </Box>
+        <Text mt="8px" mb="0">
+          {truncate(localize(publication_description_preview_multiloc), 280)}
+        </Text>
+      </CardContainer>
+    </Link>
   );
 };
 
