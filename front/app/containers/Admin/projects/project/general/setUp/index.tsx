@@ -148,8 +148,12 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
 
   const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
     if (highest_role === 'space_moderator') {
-      if (project.data.attributes.space_id) return 'space';
+      // folder needs to be checked before space_id,
+      // because if a project is in a folder that is in a space,
+      // the project ALSO has a space_id.
+      // But in this case we want to show the folder as context, not the space.
       if (project.data.attributes.folder_id) return 'folder';
+      if (project.data.attributes.space_id) return 'space';
       return 'root';
     }
 
