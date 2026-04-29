@@ -37,7 +37,7 @@ export const StyledLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
+` as typeof Link;
 
 const AreaList = () => {
   const { data: areas } = useAreas({ includeStaticPages: true });
