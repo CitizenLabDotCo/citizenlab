@@ -25,7 +25,7 @@ interface Props {
 
 const Link = ({ to, color = colors.black, children }: Props) => {
   return (
-    <StyledLink to={to} color={color}>
+    <StyledLink to={to as any} color={color}>
       {children}
     </StyledLink>
   );

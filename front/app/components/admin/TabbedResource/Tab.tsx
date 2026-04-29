@@ -75,7 +75,7 @@ const Tab = ({
       className={`${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
-      <Link to={url}>
+      <Link to={url as any}>
         {label}
         {statusLabel && (
           <Box ml="12px" display="inline">

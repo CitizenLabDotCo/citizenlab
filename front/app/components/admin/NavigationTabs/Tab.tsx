@@ -102,7 +102,7 @@ const Tab = ({
     }
   >
     <Container disable={!!disabledTooltipText} {...props}>
-      <Link to={url} onClick={handleClick} className={className ?? ''}>
+      <Link to={url as any} onClick={handleClick} className={className ?? ''}>
         {label}
         {badge && <>{badge}</>}
       </Link>

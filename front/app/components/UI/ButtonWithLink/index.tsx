@@ -46,7 +46,7 @@ const ButtonWithLink = forwardRef<Ref, Props>(
             }: Omit<ButtonProps, 'as' | 'size'> &
               React.HTMLAttributes<HTMLAnchorElement>) => (
               <Link
-                to={linkTo}
+                to={linkTo as any}
                 target={openLinkInNewTab ? '_blank' : undefined}
                 rel="noreferrer"
                 scrollToTop={scrollToTop}

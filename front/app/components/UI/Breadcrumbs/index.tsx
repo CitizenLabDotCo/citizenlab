@@ -45,7 +45,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
           >
             {linkTo && (
               <Text fontSize="m" as="span">
-                <StyledLink to={linkTo}>{label}</StyledLink>
+                <StyledLink to={linkTo as any}>{label}</StyledLink>
               </Text>
             )}
             {!linkTo && (
