@@ -5909,11 +5909,6 @@
     "verified_at": "2026-03-30T13:26:03.978269Z",
     "verified_by": "Jelena"
   },
-  "app.containers.Admin.project.emails.emptyCampaignsDescription": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.437453Z",
-    "verified_by": "Edwin Kato"
-  },
   "app.containers.Admin.project.emails.emptyCampaignsHeader": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -8695,11 +8690,6 @@
     "verified_by": "Edwin Kato"
   },
   "app.containers.Admin.projects.project.survey.upsell.bullet1": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.437453Z",
-    "verified_by": "Edwin Kato"
-  },
-  "app.containers.Admin.projects.project.survey.upsell.bullet2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
