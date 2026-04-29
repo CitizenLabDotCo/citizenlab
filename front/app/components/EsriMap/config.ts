@@ -17,7 +17,8 @@ export const configureMapView = (
   mapView: MapView,
   initialData: InitialData | undefined,
   globalMapSettings: AppConfigurationMapSettings,
-  isMobileOrSmaller: boolean
+  isMobileOrSmaller: boolean,
+  formatMessage?: (message: any) => string
 ) => {
   // Set map center
   setMapCenter(mapView, initialData, globalMapSettings);
@@ -44,6 +45,9 @@ export const configureMapView = (
     mapView.scale = calculateScaleFromZoom(zoomLevel);
   }
 
+  // Set map accessibility attributes
+  setMapAccessibility(mapView, formatMessage);
+
   // Change location of zoom widget if specified
   const zoom = mapView.ui.find('zoom');
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
@@ -67,12 +71,17 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller, initialData.showLegendExpanded);
+    addMapLegend(
+      mapView,
+      isMobileOrSmaller,
+      initialData.showLegendExpanded,
+      formatMessage
+    );
   }
 
   // Show layer visibility controls if set
   if (initialData?.showLayerVisibilityControl) {
-    showLayerVisibilityControls(mapView);
+    showLayerVisibilityControls(mapView, formatMessage);
   }
 
   // Add any ui elements that were passed in
@@ -81,6 +90,30 @@ export const configureMapView = (
       mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
+};
+
+// set Map Accessibility role and labels for screen readers
+export const setMapAccessibility = (
+  mapView: MapView,
+  formatMessage?: (message: any) => string
+) => {
+  mapView.when(() => {
+    const mapSurface = mapView.container?.querySelector('.esri-view-surface');
+    if (mapSurface) {
+      mapSurface.setAttribute('role', 'region');
+      if (formatMessage) {
+        mapSurface.setAttribute(
+          'aria-label',
+          formatMessage({
+            id: 'app.components.EsriMap.mapAriaLabel',
+            defaultMessage: 'Interactive map',
+          })
+        );
+      } else {
+        mapSurface.setAttribute('aria-label', 'Interactive map');
+      }
+    }
+  });
 };
 
 // setMapCenter
@@ -106,11 +139,10 @@ export const setMapCenter = (
 export const addMapLegend = (
   mapView: MapView,
   isMobileOrSmaller: boolean,
-  showLegendExpanded: boolean | undefined
+  showLegendExpanded: boolean | undefined,
+  formatMessage?: (message: any) => string
 ) => {
-  // Check if legend already exists and return to prevent duplicates
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const existingLegend = mapView.ui?.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
+  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null;
   if (existingLegend) return;
 
   const legend = new Expand({
@@ -123,23 +155,32 @@ export const addMapLegend = (
     view: mapView,
     expanded:
       showLegendExpanded === undefined
-        ? !isMobileOrSmaller // By default, show the legend expanded only on desktop
+        ? !isMobileOrSmaller
         : showLegendExpanded,
     mode: 'floating',
+    expandIcon: 'legend',
+    ...(formatMessage && {
+      expandTooltip: formatMessage({
+        id: 'app.components.EsriMap.mapLegendAriaLabel',
+      }),
+      collapseTooltip: formatMessage({
+        id: 'app.components.EsriMap.mapLegendAriaLabel',
+      }),
+    }),
   });
-  // Note: Incorrect type from ArcGIS API, ui might be null.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  mapView.ui?.add(legend, 'bottom-right');
+
+  mapView.ui.add(legend, 'bottom-right');
 };
 
 // showLayerVisibilityControls
 // Description: Shows the layer visibility controls on the map
-export const showLayerVisibilityControls = (mapView: MapView) => {
-  // Check if layer list already exists and return to prevent duplicates
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const existingLayerList = mapView.ui?.find(
+export const showLayerVisibilityControls = (
+  mapView: MapView,
+  formatMessage?: (message: any) => string
+) => {
+  const existingLayerList = mapView.ui.find(
     'mapLayerListExpand'
-  ) as Expand | null; // Esri has incorrect types here
+  ) as Expand | null;
   if (existingLayerList) return;
 
   const layerList = new Expand({
@@ -150,11 +191,18 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
     view: mapView,
     expanded: false,
     mode: 'floating',
+    expandIcon: 'layers',
+    ...(formatMessage && {
+      expandTooltip: formatMessage({
+        id: 'app.components.EsriMap.mapLayerListAriaLabel',
+      }),
+      collapseTooltip: formatMessage({
+        id: 'app.components.EsriMap.mapLayerListAriaLabel',
+      }),
+    }),
   });
 
-  // Note: Incorrect type from ArcGIS API, ui might be null.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  mapView.ui?.add(layerList, {
+  mapView.ui.add(layerList, {
     position: 'top-right',
   });
 };
