@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
+import { IProjectFolder } from 'api/project_folders/types';
 import { PublicationStatus } from 'api/projects/types';
 import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
 import ProjectRow from 'containers/Admin/projects/_shared/components/ProjectRow';
 
@@ -15,6 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // localisation
 import messages from '../messages';
 
+import { getAdminPublicationsThatCanBeAdded } from './utils';
+
 const publicationStatuses: PublicationStatus[] = [
   'draft',
   'archived',
@@ -22,50 +26,56 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 interface Props {
-  projectFolderId: string;
+  folder: IProjectFolder;
 }
 
-const ItemsNotInFolder = ({ projectFolderId }: Props) => {
+const ItemsNotInFolder = ({ folder }: Props) => {
+  const projectFolderId = folder.data.id;
+  const spaceId = folder.data.attributes.space_id;
   const { data: authUser } = useAuthUser();
 
-  const { data } = useAdminPublications({
+  const { data: adminPubsData } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
+  const { data: projectsData } = useInfiniteProjectsMiniAdmin({
+    sort: 'alphabetically_asc',
+  });
 
-  const adminPublications = data?.pages.map((page) => page.data).flat();
+  const adminPublications = adminPubsData?.pages
+    .map((page) => page.data)
+    .flat();
+  const projects = projectsData?.pages.map((page) => page.data).flat();
 
   const { mutate: updateProjectFolderMembership } =
     useUpdateProjectFolderMembership();
   const [processing, setProcessing] = useState<string[]>([]);
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
 
-  const addProjectToFolder =
-    (projectFolderId: string) => (projectId: string) => async () => {
-      setProcessing([...processing, projectId]);
+  const addProjectToFolder = (projectId: string) => async () => {
+    setProcessing([...processing, projectId]);
 
-      updateProjectFolderMembership(
-        {
-          projectId,
-          newProjectFolderId: projectFolderId,
+    updateProjectFolderMembership(
+      {
+        projectId,
+        newProjectFolderId: projectFolderId,
+      },
+      {
+        onSuccess: () => {
+          setProcessing(processing.filter((item) => projectId !== item));
         },
-        {
-          onSuccess: () => {
-            setProcessing(processing.filter((item) => projectId !== item));
-          },
-        }
-      );
-    };
+      }
+    );
+  };
 
-  const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
-    ? adminPublications.filter(
-        (item) =>
-          item.relationships.publication.data.type === 'project' &&
-          item.attributes.depth === 0
-      )
-    : null;
+  const adminPublicationsThatCanBeAdded = getAdminPublicationsThatCanBeAdded(
+    spaceId,
+    adminPublications,
+    projects,
+    authUser
+  );
 
   if (
     !isNilOrError(adminPublicationsThatCanBeAdded) &&
@@ -92,7 +102,7 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
                       buttonContent: (
                         <FormattedMessage {...messages.addToFolder} />
                       ),
-                      handler: addProjectToFolder(projectFolderId),
+                      handler: addProjectToFolder,
                       processing: processing.includes(
                         adminPublication.relationships.publication.data.id
                       ),

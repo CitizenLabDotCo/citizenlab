@@ -49,8 +49,6 @@ const AdminFolderProjectsList = () => {
   const { data: authUser } = useAuthUser();
   const { data: folder } = useProjectFolderById(projectFolderId);
 
-  // const canAddAndRemoveProjectsFromFolder = isAdmin(authUser) ||
-
   if (!authUser || !folder) {
     return null;
   }
@@ -80,7 +78,7 @@ const AdminFolderProjectsList = () => {
               </StyledHeaderTitle>
             </ListHeader>
 
-            <ItemsNotInFolder projectFolderId={folder.data.id} />
+            <ItemsNotInFolder folder={folder} />
           </>
         )}
       </ListsContainer>
