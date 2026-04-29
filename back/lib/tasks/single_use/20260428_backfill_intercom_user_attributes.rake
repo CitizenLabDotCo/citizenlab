@@ -33,7 +33,7 @@ namespace :single_use do
     reporter = ScriptReporter.new
     # Tune if you hit 429s. Intercom contact-search is more restrictive than
     # the global limit; ~6-10 req/sec is a safe starting point.
-    sleep_between_users = 0.15
+    sleep_between_users = 0.25
 
     # Returns true when the contact already has every CDA we'd write set to
     # the same value — in which case the update is a no-op and we can skip
