@@ -331,7 +331,7 @@ describe.skip('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user2Email);
       cy.get(`[data-cy="e2e-user-${user2Email}"]`).click();
-      cy.dataCy('e2e-add-project-moderator-button').click();
+      cy.dataCy('e2e-add-moderator-button').click();
       testShowModalOnAddingModerator(noOfUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user2Email);
       noOfUsedModeratorSeats = noOfUsedModeratorSeats + 1;
@@ -340,7 +340,7 @@ describe.skip('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user3Email);
       cy.get(`[data-cy="e2e-user-${user3Email}"]`).click();
-      cy.dataCy('e2e-add-project-moderator-button').click();
+      cy.dataCy('e2e-add-moderator-button').click();
       testShowModalOnAddingModerator(noOfUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user3Email);
       noOfUsedModeratorSeats = noOfUsedModeratorSeats + 1;
@@ -349,7 +349,7 @@ describe.skip('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user4Email);
       cy.get(`[data-cy="e2e-user-${user4Email}"]`).click();
-      cy.dataCy('e2e-add-project-moderator-button').click();
+      cy.dataCy('e2e-add-moderator-button').click();
       testShowModalOnAddingModerator(noOfUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user4Email);
       noOfUsedModeratorSeats = noOfUsedModeratorSeats + 1;
@@ -358,7 +358,7 @@ describe.skip('Seat based billing', () => {
       cy.get('#projectModeratorUserSearch').should('exist');
       cy.get('#projectModeratorUserSearch').type(user5Email);
       cy.get(`[data-cy="e2e-user-${user5Email}"]`).click();
-      cy.dataCy('e2e-add-project-moderator-button').click();
+      cy.dataCy('e2e-add-moderator-button').click();
       testShowModalOnAddingModerator(noOfUsedModeratorSeats);
       cy.get('.e2e-admin-list').contains(user5Email);
     });
@@ -390,7 +390,7 @@ describe.skip('Seat based billing', () => {
         cy.get('#projectModeratorUserSearch').should('exist');
         cy.get('#projectModeratorUserSearch').type(user6Email);
         cy.get(`[data-cy="e2e-user-${user6Email}"]`).click();
-        cy.dataCy('e2e-add-project-moderator-button').click();
+        cy.dataCy('e2e-add-moderator-button').click();
         testShowModalOnAddingModerator(noOfUsedModeratorSeats);
         cy.get('.e2e-admin-list').contains(user6Email);
 
@@ -429,7 +429,7 @@ describe.skip('Seat based billing', () => {
           cy.get('#projectModeratorUserSearch').should('exist');
           cy.get('#projectModeratorUserSearch').type(user7Email);
           cy.get(`[data-cy="e2e-user-${user7Email}"]`).click();
-          cy.dataCy('e2e-add-project-moderator-button').click();
+          cy.dataCy('e2e-add-moderator-button').click();
           testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user7Email);
 

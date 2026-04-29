@@ -482,6 +482,13 @@ describe ProjectPolicy do
       it { expect(scope.resolve).not_to include(project) }
       it { expect(inverse_scope.resolve).not_to include(user) }
 
+      it 'permits project status update of project inside of moderated space' do
+        project.update!(space: create(:space))
+        user.add_role('space_moderator', space_id: project.space.id) # Ensure the user has the role for the project’s space
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+      end
+
       it 'does not permit project status update of project outside of moderated space' do
         nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
         expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
