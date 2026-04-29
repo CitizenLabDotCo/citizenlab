@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "ਇਸਦਾ ਪਤਾ ਲਗਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰੋ",
   "app.components.ErrorToast.budgetExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦਾ ਬਜਟ ਨਹੀਂ ਹੈ",
   "app.components.ErrorToast.votesExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦੀਆਂ ਵੋਟਾਂ ਨਹੀਂ ਬਚੀਆਂ ਹਨ",
+  "app.components.EsriMap.mapAriaLabel": "ਇੰਟਰਐਕਟਿਵ ਨਕਸ਼ਾ",
   "app.components.EsriMap.mapLayerListAriaLabel": "ਪਰਤ ਸੂਚੀ ਟੌਗਲ ਕਰੋ",
   "app.components.EsriMap.mapLegendAriaLabel": "ਲੈਜੇਂਡ ਟੌਗਲ ਕਰੋ",
   "app.components.EventAttendanceButton.forwardToFriend": "ਇੱਕ ਦੋਸਤ ਨੂੰ ਅੱਗੇ",

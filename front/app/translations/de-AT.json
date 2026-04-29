@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "hilf uns herauszufinden was passiert ist",
   "app.components.ErrorToast.budgetExceededError": "Ihr Budget reicht nicht aus",
   "app.components.ErrorToast.votesExceededError": "Du hast nicht mehr genug Stimmen",
+  "app.components.EsriMap.mapAriaLabel": "Interaktive Karte",
   "app.components.EsriMap.mapLayerListAriaLabel": "Ebenenliste ein/aus",
   "app.components.EsriMap.mapLegendAriaLabel": "Legende ein/aus",
   "app.components.EventAttendanceButton.forwardToFriend": "Weiterleiten an Freund*innen",

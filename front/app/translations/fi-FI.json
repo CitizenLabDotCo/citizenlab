@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "auta meitä selvittämään se",
   "app.components.ErrorToast.budgetExceededError": "Sinulla ei ole tarpeeksi budjettia",
   "app.components.ErrorToast.votesExceededError": "Sinulla ei ole tarpeeksi ääniä jäljellä",
+  "app.components.EsriMap.mapAriaLabel": "Interaktiivinen kartta",
   "app.components.EsriMap.mapLayerListAriaLabel": "Näytä/piilota tasoluettelo",
   "app.components.EsriMap.mapLegendAriaLabel": "Näytä/piilota selite",
   "app.components.EventAttendanceButton.forwardToFriend": "Lähetä ystävälle",

@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "padėkite mums tai išsiaiškinti",
   "app.components.ErrorToast.budgetExceededError": "Neturite pakankamai biudžeto",
   "app.components.ErrorToast.votesExceededError": "Jums neliko pakankamai balsų",
+  "app.components.EsriMap.mapAriaLabel": "Interaktyvus žemėlapis",
   "app.components.EsriMap.mapLayerListAriaLabel": "Perjungti sluoksnių sąrašą",
   "app.components.EsriMap.mapLegendAriaLabel": "Perjungti legendą",
   "app.components.EventAttendanceButton.forwardToFriend": "Persiųsti draugui",

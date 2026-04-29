@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "ساعدنا في تحديد الخلل",
   "app.components.ErrorToast.budgetExceededError": "ليس لديك ميزانية كافية",
   "app.components.ErrorToast.votesExceededError": "ليس لديك ما يكفي من الأصوات المتبقية",
+  "app.components.EsriMap.mapAriaLabel": "خريطة تفاعلية",
   "app.components.EsriMap.mapLayerListAriaLabel": "تبديل قائمة الطبقات",
   "app.components.EsriMap.mapLegendAriaLabel": "إظهار/إخفاء مفتاح الرموز",
   "app.components.EventAttendanceButton.forwardToFriend": "إرسال إلى صديق",

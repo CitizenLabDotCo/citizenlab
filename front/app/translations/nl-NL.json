@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "help ons het op te lossen",
   "app.components.ErrorToast.budgetExceededError": "Je hebt niet genoeg budget",
   "app.components.ErrorToast.votesExceededError": "Je hebt niet genoeg stemmen over",
+  "app.components.EsriMap.mapAriaLabel": "Interactieve kaart",
   "app.components.EsriMap.mapLayerListAriaLabel": "Laaglijst weergeven/verbergen",
   "app.components.EsriMap.mapLegendAriaLabel": "Legenda weergeven/verbergen",
   "app.components.EventAttendanceButton.forwardToFriend": "Doorsturen naar een vriend",

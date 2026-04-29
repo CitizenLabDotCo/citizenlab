@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "segítsen kitalálni",
   "app.components.ErrorToast.budgetExceededError": "Nincs elég költségvetése",
   "app.components.ErrorToast.votesExceededError": "Nincs elég szavazatod",
+  "app.components.EsriMap.mapAriaLabel": "Interaktív térkép",
   "app.components.EsriMap.mapLayerListAriaLabel": "Réteglista be- és kikapcsolása",
   "app.components.EsriMap.mapLegendAriaLabel": "Jelmagyarázat be-/kikapcsolása",
   "app.components.EventAttendanceButton.forwardToFriend": "Továbbítás egy barátnak",

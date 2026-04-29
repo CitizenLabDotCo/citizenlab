@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "cabhraigh linn é a réiteach",
   "app.components.ErrorToast.budgetExceededError": "Níl dóthain buiséid agat",
   "app.components.ErrorToast.votesExceededError": "Níl dóthain vótaí fágtha agat",
+  "app.components.EsriMap.mapAriaLabel": "Léarscáil idirghníomhach",
   "app.components.EsriMap.mapLayerListAriaLabel": "Scoránaigh liosta na sraitheanna",
   "app.components.EsriMap.mapLegendAriaLabel": "Scoraigh finscéal",
   "app.components.EventAttendanceButton.forwardToFriend": "Seol ar aghaidh chuig cara",

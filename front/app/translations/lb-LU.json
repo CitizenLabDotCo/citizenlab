@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "Hëlleft eis ze verstoen wat geschitt ass ",
   "app.components.ErrorToast.budgetExceededError": "Dir hutt net genuch Budget",
   "app.components.ErrorToast.votesExceededError": "Dir hutt net genuch Stëmmen méi",
+  "app.components.EsriMap.mapAriaLabel": "Interaktiv Kaart",
   "app.components.EsriMap.mapLayerListAriaLabel": "Lëscht vun de Schichten opklappen/opklappen",
   "app.components.EsriMap.mapLegendAriaLabel": "Legend op- an ofschalten",
   "app.components.EventAttendanceButton.forwardToFriend": "Mat engem Frënd deelen",

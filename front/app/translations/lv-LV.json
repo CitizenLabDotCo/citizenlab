@@ -224,6 +224,7 @@
   "app.components.ErrorBoundary.openFormText": "palīdziet mums to noskaidrot",
   "app.components.ErrorToast.budgetExceededError": "Jums nav pietiekama budžeta",
   "app.components.ErrorToast.votesExceededError": "Jums vairs nav pietiekami daudz balsu",
+  "app.components.EsriMap.mapAriaLabel": "Interaktīvā karte",
   "app.components.EsriMap.mapLayerListAriaLabel": "Pārslēgt slāņu sarakstu",
   "app.components.EsriMap.mapLegendAriaLabel": "Pārslēgt leģendu",
   "app.components.EventAttendanceButton.forwardToFriend": "Pārsūtīšana draugam",
