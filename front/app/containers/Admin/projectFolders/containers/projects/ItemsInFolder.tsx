@@ -14,8 +14,6 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-// localisation
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from '../messages';
