@@ -3,11 +3,13 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { API_PATH } from 'containers/App/constants';
 
 import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
+import clHistory from 'utils/cl-router/history';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
 
-const CHECK_INTERVAL_S = 300; // Checks every 5 minutes unless the route is changed
-const EXPIRING_SOON_THRESHOLD_S = 1800; // 30 minutes
+const CHECK_INTERVAL_S = 300; // Checks session valid every 5 minutes unless the route is changed
+const EXPIRING_SOON_THRESHOLD_S = 1800; // Show expiring soon 30 minutes before expiry
+const DISMISSED_RESHOW_THRESHOLD_S = 320; // If dismissed re-show expiring soon just over 5 mins before expiry
 
 type PingResult = 'valid' | 'expired' | 'not_admin';
 
@@ -46,6 +48,7 @@ export default function useSessionExpiryMonitor(
   >(null);
   const checkingRef = useRef(false);
   const dismissedRef = useRef(false);
+  const dismissedExpiringSoonRef = useRef(false);
   const lastExpRef = useRef<number | null>(null);
   const wasAuthenticatedRef = useRef(isAuthenticated);
 
@@ -54,8 +57,10 @@ export default function useSessionExpiryMonitor(
     setSessionState('idle');
   }, []);
 
-  // Hides the modal but keeps the monitor running
+  // Hides the modal but keeps the monitor running.
+  // It won't re-appear until DISMISSED_RESHOW_THRESHOLD_S before expiry.
   const dismissModal = useCallback(() => {
+    dismissedExpiringSoonRef.current = true;
     setSessionState('idle');
   }, []);
 
@@ -64,6 +69,7 @@ export default function useSessionExpiryMonitor(
   useEffect(() => {
     if (!wasAuthenticatedRef.current && isAuthenticated) {
       dismissedRef.current = false;
+      dismissedExpiringSoonRef.current = false;
       setSessionState('idle');
     }
     wasAuthenticatedRef.current = isAuthenticated;
@@ -84,6 +90,7 @@ export default function useSessionExpiryMonitor(
         if (lastExpRef.current !== null && currentExp > lastExpRef.current) {
           // JWT was replaced with a newer one — user logged back in
           dismissedRef.current = false;
+          dismissedExpiringSoonRef.current = false;
           setSessionState('idle');
         }
         lastExpRef.current = currentExp;
@@ -107,7 +114,7 @@ export default function useSessionExpiryMonitor(
         const pingResult = await checkSessionOnServer(isAdminRoute);
         if (pingResult === 'not_admin') {
           // User is authenticated but lacks admin/moderator access
-          window.location.replace('/');
+          clHistory.push('/');
           return;
         }
         if (pingResult === 'expired') {
@@ -116,8 +123,15 @@ export default function useSessionExpiryMonitor(
         }
 
         if (secondsLeft !== null && secondsLeft <= EXPIRING_SOON_THRESHOLD_S) {
-          setInitialSecondsRemaining(Math.max(0, Math.floor(secondsLeft)));
-          setSessionState('expiring_soon');
+          const threshold = dismissedExpiringSoonRef.current
+            ? DISMISSED_RESHOW_THRESHOLD_S
+            : EXPIRING_SOON_THRESHOLD_S;
+
+          if (secondsLeft <= threshold) {
+            dismissedExpiringSoonRef.current = false;
+            setInitialSecondsRemaining(Math.max(0, Math.floor(secondsLeft)));
+            setSessionState('expiring_soon');
+          }
         }
       } finally {
         checkingRef.current = false;
