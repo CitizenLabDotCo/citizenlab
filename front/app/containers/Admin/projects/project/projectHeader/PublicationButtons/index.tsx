@@ -106,6 +106,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
       />
 
       <ChangeStatusModal
+        key={project.attributes.publication_status}
         opened={changeStatusModalOpen}
         project={project}
         onClose={() => setChangeStatusModalOpen(false)}
