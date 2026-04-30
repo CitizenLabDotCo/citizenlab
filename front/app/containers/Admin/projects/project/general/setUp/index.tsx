@@ -17,7 +17,7 @@ import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
-import { HighestRole } from 'api/users/types';
+import { IUser } from 'api/users/types';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -25,6 +25,9 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
+import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
+import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
@@ -38,7 +41,6 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
-import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
@@ -51,7 +53,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -59,7 +60,6 @@ import { TOnProjectAttributesDiffChangeFunction } from '..';
 import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
-import ProjectFolderSelect from '../../../_shared/components/ProjectSetupForm/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
 import ProjectNameInput from '../../../_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
@@ -69,24 +69,16 @@ import {
 } from '../../../_shared/components/ProjectSetupForm/styling';
 import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
 import { fragmentId } from '../../projectHeader';
-import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
 import messages from '../messages';
 import validateTitle from '../utils/validateTitle';
 
-const FOLDER_SELECT_ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
-  'super_admin',
-  'admin',
-  'space_moderator',
-  'project_folder_moderator',
-] satisfies HighestRole[];
-
 interface Props {
   project: IProject;
+  authUser: IUser;
 }
 
-const AdminProjectsProjectGeneral = ({ project }: Props) => {
+const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -121,6 +113,8 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
+  const [projectContextError, setProjectContextError] = useState(false);
+
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
@@ -150,9 +144,22 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       project.data.attributes.description_preview_multiloc
     );
 
-  const showProjectFolderSelect = FOLDER_SELECT_ALLOWED_HIGHEST_ROLES.includes(
-    authUser?.data.attributes.highest_role
-  );
+  const { highest_role } = authUser.data.attributes;
+
+  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
+    if (highest_role === 'space_moderator') {
+      if (project.data.attributes.space_id) return 'space';
+      if (project.data.attributes.folder_id) return 'folder';
+      return 'root';
+    }
+
+    if (highest_role === 'project_folder_moderator') {
+      if (project.data.attributes.folder_id) return 'folder';
+      return 'root';
+    }
+
+    return 'root';
+  });
 
   useEffect(() => {
     if (remoteProjectFileAttachments) {
@@ -360,17 +367,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
-    const { space_id, folder_id } = projectAttributesDiff;
-
-    if (isSpaceModerator(authUser) && !space_id && !folder_id) {
+    if (!validateProjectContext(projectContext, projectAttrs)) {
+      setProjectContextError(true);
       return false;
     }
 
     return formIsValid;
-  };
-
-  const handleSpaceSelectChange = (spaceId: string | null) => {
-    handleProjectAttributeDiffOnChange({ space_id: spaceId });
   };
 
   const projectAttrs = {
@@ -386,6 +388,9 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
+
+  const projectIsInRoot =
+    !project.data.attributes.space_id && !project.data.attributes.folder_id;
 
   return (
     <Box ref={containerRef}>
@@ -503,32 +508,32 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {showProjectFolderSelect && (
-            <Highlighter fragmentId={folderFragmentId}>
-              <ProjectFolderSelect
-                projectAttrs={projectAttrs}
-                onProjectAttributesDiffChange={(change, submitState) => {
-                  if (change.folder_id) {
-                    // If a folder is chosen, the project will automatically
-                    // inherit the folder's space. So we clear
-                    // any previously chosen space.
-                    handleProjectAttributeDiffOnChange(
-                      { ...change, space_id: undefined },
-                      submitState
-                    );
-                  } else {
-                    handleProjectAttributeDiffOnChange(change, submitState);
-                  }
-                }}
-                isNewProject={false}
-              />
-            </Highlighter>
-          )}
-
-          <SpaceSelectSection
-            spaceId={projectAttrs.space_id ?? null}
-            isProjectInsideFolder={!!projectAttrs.folder_id}
-            onChange={handleSpaceSelectChange}
+          <ProjectContextSection
+            projectContext={projectContext}
+            space_id={projectAttrs.space_id}
+            folder_id={projectAttrs.folder_id}
+            formSituation={
+              projectIsInRoot
+                ? 'editing-project-in-root'
+                : 'editing-project-not-in-root'
+            }
+            error={projectContextError}
+            onSetContext={(context) => {
+              handleProjectAttributeDiffOnChange({
+                space_id: null,
+                folder_id: null,
+              });
+              setProjectContext(context);
+              setProjectContextError(false);
+            }}
+            onChangeSpace={(space_id) => {
+              handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+              setProjectContextError(false);
+            }}
+            onChangeFolder={(folder_id) => {
+              handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+              setProjectContextError(false);
+            }}
           />
 
           <SectionField className="intercom-product-tour-project-header-image-field">
@@ -645,9 +650,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 const AdminProjectsProjectGeneralWrapper = () => {
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
-  if (!project) return null;
+  const { data: authUser } = useAuthUser();
+  if (!project || !authUser) return null;
 
-  return <AdminProjectsProjectGeneral project={project} />;
+  return <AdminProjectsProjectGeneral project={project} authUser={authUser} />;
 };
 
 export default AdminProjectsProjectGeneralWrapper;

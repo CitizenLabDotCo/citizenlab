@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.admin.SpaceSelect.pleaseSelectASpace',
     defaultMessage: '— Please select a space —',
   },
+  noSpaceBecauseOfFolder: {
+    id: 'app.components.admin.SpaceSelect.noSpaceBecauseOfFolder',
+    defaultMessage: '— No space (folder is not in a space) —',
+  },
 });

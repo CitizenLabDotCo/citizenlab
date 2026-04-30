@@ -12,6 +12,7 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
+import { Resources } from '../../useAssignModerator';
 import messages from '../messages';
 
 import Folders from './Folders';
@@ -22,9 +23,10 @@ interface Props {
   opened: boolean;
   user: IUserData;
   onClose: () => void;
+  onAssign: (resources: Resources) => Promise<void>;
 }
 
-const SetAsModerator = ({ opened, user, onClose }: Props) => {
+const SetAsModerator = ({ opened, user, onClose, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const [currentTab, setCurrentTab] = useState('projects');
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
@@ -69,12 +71,14 @@ const SetAsModerator = ({ opened, user, onClose }: Props) => {
         </Box>
         <Box mt="40px">
           {currentTab === 'projects' && (
-            <Projects user={user} onClose={onClose} />
+            <Projects user={user} onClose={onClose} onAssign={onAssign} />
           )}
           {currentTab === 'folders' && (
-            <Folders user={user} onClose={onClose} />
+            <Folders user={user} onClose={onClose} onAssign={onAssign} />
           )}
-          {currentTab === 'spaces' && <Spaces user={user} onClose={onClose} />}
+          {currentTab === 'spaces' && (
+            <Spaces user={user} onClose={onClose} onAssign={onAssign} />
+          )}
         </Box>
       </Modal>
     </div>
