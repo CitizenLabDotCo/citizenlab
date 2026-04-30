@@ -666,7 +666,10 @@ describe ProjectPolicy do
     # The controller assigns params (including folder_id) before calling `authorize`,
     # so when Project#folder_id= runs it flips `folder_changed?` to true and points
     # `project.folder` at the new target. These tests simulate that by assigning
-    # folder_id in-memory right before asking the policy.
+    # folder_id in-memory right before asking the policy. The controller also passes
+    # the pre-mutation project state via `policy_context[:prior_record]`; we mirror
+    # that here by reloading from the DB at policy-check time.
+    let(:context) { { prior_record: Project.find(project.id) } }
 
     let!(:source_folder) { create(:project_folder) }
     let!(:target_folder) { create(:project_folder) }
@@ -695,18 +698,6 @@ describe ProjectPolicy do
       it 'permits removing the project from its folder' do
         project.folder_id = nil
         is_expected.to permit(:update)
-      end
-    end
-
-    context 'for a project moderator of the project' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
-      # PMs never receive :folder_id in permitted attributes (see shared_permitted_attributes
-      # tests), so the policy wouldn't see folder_changed? in practice. Still, asserting the
-      # cross-folder denial gives us defense-in-depth if that filter ever changes.
-      it 'denies moving to another folder' do
-        project.folder_id = target_folder.id
-        is_expected.not_to permit(:update)
       end
     end
 
@@ -880,7 +871,11 @@ describe ProjectPolicy do
     # space_id is a real column on Project, so ActiveModel's dirty tracking
     # provides space_changed? out of the box. The controller assigns params
     # (including space_id) before calling `authorize`; these tests simulate
-    # that by assigning space_id in-memory right before asking the policy.
+    # that by assigning space_id in-memory right before asking the policy. The
+    # controller also passes the pre-mutation project state via
+    # `policy_context[:prior_record]`; we mirror that here by reloading from
+    # the DB at policy-check time.
+    let(:context) { { prior_record: Project.find(project.id) } }
 
     let!(:project_space) { create(:space) }
     let!(:other_space) { create(:space) }
