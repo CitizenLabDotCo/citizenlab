@@ -14,9 +14,10 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { usePermission } from 'utils/permissions';
 
 // localisation
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+
 import messages from '../messages';
 
 const publicationStatuses: PublicationStatus[] = [
@@ -37,10 +38,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
     publicationStatusFilter: publicationStatuses,
   });
 
-  const canRemoveProjects = usePermission({
-    item: 'project_folder',
-    action: 'manage_projects',
-  });
+  const canRemoveProjects = isAdmin(authUser) || isSpaceModerator(authUser);
 
   const projectsInFolder = data?.pages.map((page) => page.data).flat();
 

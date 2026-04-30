@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { Spinner } from '@citizenlab/cl2-component-library';
+
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectFolder } from 'api/project_folders/types';
@@ -12,7 +14,6 @@ import ProjectRow from 'containers/Admin/projects/_shared/components/ProjectRow'
 import { List, Row } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 // localisation
 import messages from '../messages';
@@ -34,12 +35,14 @@ const ItemsNotInFolder = ({ folder }: Props) => {
   const spaceId = folder.data.attributes.space_id;
   const { data: authUser } = useAuthUser();
 
-  const { data: adminPubsData } = useAdminPublications({
-    publicationStatusFilter: publicationStatuses,
-  });
-  const { data: projectsData } = useInfiniteProjectsMiniAdmin({
-    sort: 'alphabetically_asc',
-  });
+  const { data: adminPubsData, isLoading: isLoadingAdminPubs } =
+    useAdminPublications({
+      publicationStatusFilter: publicationStatuses,
+    });
+  const { data: projectsData, isLoading: isLoadingProjects } =
+    useInfiniteProjectsMiniAdmin({
+      sort: 'alphabetically_asc',
+    });
 
   const adminPublications = adminPubsData?.pages
     .map((page) => page.data)
@@ -77,12 +80,11 @@ const ItemsNotInFolder = ({ folder }: Props) => {
     authUser
   );
 
-  if (
-    !isNilOrError(adminPublicationsThatCanBeAdded) &&
-    // the length check is needed because an empty array
-    // is also truthy, so we won't reach the fallback message
-    adminPublicationsThatCanBeAdded.length > 0
-  ) {
+  if (isLoadingAdminPubs || isLoadingProjects) {
+    return <Spinner />;
+  }
+
+  if (adminPublicationsThatCanBeAdded.length > 0) {
     return (
       <List>
         <>
