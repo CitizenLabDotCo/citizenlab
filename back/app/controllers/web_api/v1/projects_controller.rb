@@ -288,6 +288,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     project_params = permitted_attributes(@project)
 
+    policy_context[:prior_record] = Project.find(@project.id)
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
 
