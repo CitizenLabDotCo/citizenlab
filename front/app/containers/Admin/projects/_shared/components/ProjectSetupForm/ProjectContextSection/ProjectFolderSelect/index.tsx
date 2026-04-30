@@ -55,8 +55,6 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
     } else {
       onChange({ space_id: null, folder_id: null });
     }
-    // const folderId = value === noFolderId ? null : value;
-    // onChange(folderId);
   };
 
   if (folderOptions.length === 0) return null;
