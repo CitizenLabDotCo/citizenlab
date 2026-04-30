@@ -11,11 +11,14 @@ resource 'Project reviews' do
   context 'as an admin' do
     before do
       header 'Content-Type', 'application/json'
+      admin_header_token
+      admin_header_token
+      @user = create(:admin)
+      header_token_for(@user)
+      admin_header_token
     end
 
     post 'web_api/v1/projects/:project_id/review' do
-      before { admin_header_token }
-
       with_options scope: :project_review do
         parameter :reviewer_id, <<~DESC, required: false
           The ID of the user to whom the review request is assigned.
@@ -58,8 +61,6 @@ resource 'Project reviews' do
     end
 
     get 'web_api/v1/projects/:project_id/review' do
-      before { admin_header_token }
-
       describe 'when the project has a review' do
         let!(:project_review) { create(:project_review) }
         let(:project_id) { project_review.project_id }
@@ -95,11 +96,6 @@ resource 'Project reviews' do
     end
 
     patch 'web_api/v1/projects/:project_id/review' do
-      before do
-        @user = create(:admin)
-        header_token_for(@user)
-      end
-
       with_options scope: :project_review do
         parameter :state, <<~DESC, required: true
           The status of the review. Currently only `approved` is supported.
@@ -147,8 +143,6 @@ resource 'Project reviews' do
     end
 
     delete 'web_api/v1/projects/:project_id/review' do
-      before { admin_header_token }
-
       describe 'when the project has a review' do
         let!(:project_review) { create(:project_review) }
         let(:project_id) { project_review.project_id }
@@ -178,15 +172,12 @@ resource 'Project reviews' do
   context 'as a space moderator' do
     before do
       header 'Content-Type', 'application/json'
+      @space = create(:space)
+      @user = create(:space_moderator, spaces: [@space])
+      header_token_for(@user)
     end
 
     patch 'web_api/v1/projects/:project_id/review' do
-      before do
-        @space = create(:space)
-        @user = create(:space_moderator, spaces: [@space])
-        header_token_for(@user)
-      end
-
       with_options scope: :project_review do
         parameter :state, <<~DESC, required: true
           The status of the review. Currently only `approved` is supported.
