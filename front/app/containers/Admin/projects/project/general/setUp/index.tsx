@@ -341,7 +341,7 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
       });
     } catch (errors) {
       setSubmitState('error');
-      setApiErrors(errors.errors);
+      setApiErrors((errors as any).errors);
       setProcessing(false);
     }
   }
@@ -529,8 +529,8 @@ const AdminProjectsProjectGeneral = ({ project, authUser }: Props) => {
             error={projectContextError}
             onSetContext={(context) => {
               handleProjectAttributeDiffOnChange({
-                space_id: undefined,
-                folder_id: undefined,
+                space_id: null,
+                folder_id: null,
               });
               setProjectContext(context);
               setProjectContextError(false);

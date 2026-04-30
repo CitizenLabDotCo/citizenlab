@@ -242,7 +242,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
       });
     } catch (errors) {
       setSubmitState('error');
-      setApiErrors(errors.errors);
+      setApiErrors((errors as any).errors);
       setProcessing(false);
     }
   }
