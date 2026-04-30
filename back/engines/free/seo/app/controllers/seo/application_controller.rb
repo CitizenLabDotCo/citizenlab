@@ -26,6 +26,11 @@ module Seo
       ).includes(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
       @pages = Pundit.policy_scope(nil, StaticPage).select(:slug, :updated_at)
       @ideas = Pundit.policy_scope(nil, Idea).select(:slug, :updated_at, :project_id).where(project_id: @projects.map(&:id))
+      @phases_by_project_id = Phase
+        .where(project_id: @projects.map(&:id))
+        .select(:id, :project_id, :updated_at, :start_at)
+        .order(:start_at)
+        .group_by(&:project_id)
     end
 
     def robots; end
