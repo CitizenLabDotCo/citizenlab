@@ -110,6 +110,12 @@ const ReadMoreWrapper = memo<Props>(
       }
     };
 
+    const showReadMoreButton = Boolean(
+      contentHeight && contentHeight > collapsedContentMaxHeight && !expanded
+    );
+    const showSeeLessButton = Boolean(
+      contentHeight && contentHeight > collapsedContentMaxHeight && expanded
+    );
     return (
       <Container className={`${className || ''}`}>
         <Content
@@ -123,55 +129,25 @@ const ReadMoreWrapper = memo<Props>(
                   fontSize={fontSize}
                   textColor={theme.colors.tenantText}
                   // We disable tabbing to content when the "Read More" button is shown to prevent keyboard users from getting lost in content that they cannot see.
-                  disableTabbing={!expanded}
+                  disableTabbing={showReadMoreButton}
                 >
                   {content}
                 </QuillEditedContent>
               </div>
             </ReactResizeDetector>
-            {contentHeight &&
-              contentHeight > collapsedContentMaxHeight &&
-              !expanded && (
-                <Box
-                  display="flex"
-                  height="132px"
-                  position="absolute"
-                  bottom="0"
-                  left="0"
-                  right="0"
-                  background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
-                >
-                  <Box position="relative" flex="1">
-                    <ReadMoreButton
-                      id={`e2e-project-${contentId}-read-more-button`}
-                      buttonStyle="text"
-                      onClick={toggleExpandCollapse}
-                      textDecoration="underline"
-                      textDecorationHover="underline"
-                      textColor={colors.textSecondary}
-                      textHoverColor={theme.colors.tenantText}
-                      fontWeight="500"
-                      fontSize={`${fontSizes.m}px`}
-                      padding="0"
-                      ariaExpanded={false}
-                      ariaControls={`e2e-project-${contentId}`}
-                      icon="arrow-down"
-                      iconPos="right"
-                      iconSize="16px"
-                      ref={readMoreButtonRef}
-                      type="button"
-                    >
-                      <FormattedMessage {...messages.readMore} />
-                    </ReadMoreButton>
-                  </Box>
-                </Box>
-              )}
-            {contentHeight &&
-              contentHeight > collapsedContentMaxHeight &&
-              expanded && (
-                <Box display="flex" justifyContent="flex-start" mt="20px">
-                  <Button
-                    id={`e2e-project-${contentId}-see-less-button`}
+            {showReadMoreButton && (
+              <Box
+                display="flex"
+                height="132px"
+                position="absolute"
+                bottom="0"
+                left="0"
+                right="0"
+                background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
+              >
+                <Box position="relative" flex="1">
+                  <ReadMoreButton
+                    id={`e2e-project-${contentId}-read-more-button`}
                     buttonStyle="text"
                     onClick={toggleExpandCollapse}
                     textDecoration="underline"
@@ -181,18 +157,44 @@ const ReadMoreWrapper = memo<Props>(
                     fontWeight="500"
                     fontSize={`${fontSizes.m}px`}
                     padding="0"
-                    ariaExpanded={true}
+                    ariaExpanded={false}
                     ariaControls={`e2e-project-${contentId}`}
-                    icon="arrow-up"
+                    icon="arrow-down"
                     iconPos="right"
                     iconSize="16px"
-                    ref={seeLessButtonRef}
+                    ref={readMoreButtonRef}
                     type="button"
                   >
-                    <FormattedMessage {...messages.readLess} />
-                  </Button>
+                    <FormattedMessage {...messages.readMore} />
+                  </ReadMoreButton>
                 </Box>
-              )}
+              </Box>
+            )}
+            {showSeeLessButton && (
+              <Box display="flex" justifyContent="flex-start" mt="20px">
+                <Button
+                  id={`e2e-project-${contentId}-see-less-button`}
+                  buttonStyle="text"
+                  onClick={toggleExpandCollapse}
+                  textDecoration="underline"
+                  textDecorationHover="underline"
+                  textColor={colors.textSecondary}
+                  textHoverColor={theme.colors.tenantText}
+                  fontWeight="500"
+                  fontSize={`${fontSizes.m}px`}
+                  padding="0"
+                  ariaExpanded={true}
+                  ariaControls={`e2e-project-${contentId}`}
+                  icon="arrow-up"
+                  iconPos="right"
+                  iconSize="16px"
+                  ref={seeLessButtonRef}
+                  type="button"
+                >
+                  <FormattedMessage {...messages.readLess} />
+                </Button>
+              </Box>
+            )}
           </>
         </Content>
       </Container>
