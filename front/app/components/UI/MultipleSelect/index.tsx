@@ -6,7 +6,7 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import ReactSelect from 'react-select';
+import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -40,8 +40,7 @@ const MultipleSelect = ({
   isSearchable,
 }: Props) => {
   const theme = useTheme();
-  const selectRef = useRef<any>(null);
-
+  const selectRef = useRef<SelectInstance<IOption, true>>(null);
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
   };
@@ -77,25 +76,18 @@ const MultipleSelect = ({
     }
   };
 
-  const handleRemoveValue = (event: React.KeyboardEvent) => {
+  const handleSelectKeyDown = (event: KeyboardEvent) => {
     preventModalCloseOnEscape(event);
 
-    if (event.key === 'Enter') {
-      const focusedValue = selectRef.current?.state?.focusedValue;
+    if (event.key !== 'Enter') return;
 
-      if (focusedValue) {
-        event.preventDefault();
-        event.stopPropagation();
+    const select = selectRef.current;
+    const focusedValue = select?.state.focusedValue;
+    if (!select || !focusedValue) return;
 
-        const currentValues = findFullOptionValues();
-        if (Array.isArray(currentValues)) {
-          const newValues = currentValues.filter(
-            (val) => val.value !== focusedValue.value
-          );
-          onChange(newValues);
-        }
-      }
-    }
+    event.preventDefault();
+    event.stopPropagation();
+    select.removeValue(focusedValue);
   };
 
   return (
@@ -142,7 +134,7 @@ const MultipleSelect = ({
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
-        onKeyDown={handleRemoveValue}
+        onKeyDown={handleSelectKeyDown}
       />
     </Box>
   );
