@@ -119,7 +119,7 @@ class ProjectPolicy < ApplicationPolicy
   def update?
     return true if active_admin?
     return active_moderator? unless record.folder_changed? || record.space_changed?
-    
+
     can_moderate_before_and_after_change?
   end
 
