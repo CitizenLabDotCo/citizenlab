@@ -11,7 +11,7 @@ const spacesKeys = {
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id?: string }) => [
+  item: ({ id }: { id?: string | null }) => [
     {
       ...baseKey,
       operation: 'item',

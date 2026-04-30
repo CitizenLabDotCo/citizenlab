@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrors, Pagination } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectFoldersKeys from './keys';
-import { IProjectFolders, IQueryParameters, ProjectFoldersKeys } from './types';
+import { IProjectFolders, ProjectFoldersKeys } from './types';
 
-const fetchProjectFolders = ({ ...queryParams }: IQueryParameters) =>
+const fetchProjectFolders = ({ ...queryParams }: Pagination) =>
   fetcher<IProjectFolders>({
     path: `/project_folders`,
     action: 'get',
@@ -15,7 +15,7 @@ const fetchProjectFolders = ({ ...queryParams }: IQueryParameters) =>
     },
   });
 
-const useProjectFolders = (queryParams: IQueryParameters, enabled = true) => {
+const useProjectFolders = (queryParams: Pagination = {}, enabled = true) => {
   return useQuery<
     IProjectFolders,
     CLErrors,

@@ -7,7 +7,9 @@ describe CommentPolicy do
 
   let(:scope) { CommentPolicy::Scope.new(user, idea.comments) }
 
-  let!(:project) { create(:single_phase_ideation_project) }
+  let!(:space) { create(:space) }
+  let!(:project) { create(:single_phase_ideation_project, space: space) }
+  let!(:folder) { create(:project_folder, projects: [project], space: space) }
   let!(:idea) { create(:idea, project: project, phases: project.phases) }
   let!(:comment) { create(:comment, idea: idea) }
   let!(:user) { create(:user) }
@@ -74,18 +76,64 @@ describe CommentPolicy do
       end
     end
 
-    context 'for a moderator' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
+    shared_examples 'moderator on public idea comment in their scope' do
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
-      it { is_expected.to permit(:index_xlsx)  }
+      it { is_expected.to     permit(:index_xlsx) }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
       end
+    end
+
+    shared_examples 'moderator on public idea comment outside their scope' do
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.to     permit(:index_xlsx) }
+
+      it 'indexes the comment' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it_behaves_like 'moderator on public idea comment in their scope'
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'moderator on public idea comment outside their scope'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'moderator on public idea comment in their scope'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'moderator on public idea comment outside their scope'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'moderator on public idea comment in their scope'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'moderator on public idea comment outside their scope'
     end
   end
 
@@ -137,7 +185,7 @@ describe CommentPolicy do
   context 'for a mortal user who owns the comment in a project where commenting is not permitted' do
     let!(:comment) { create(:comment, idea: idea, author: user) }
     let!(:project) do
-      create(:single_phase_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
+      create(:single_phase_budgeting_project, phase_attrs: { with_permissions: true }, space: space).tap do |project|
         project.phases.first.permissions.find_by(action: 'commenting_idea')
           .update!(permitted_by: 'admins_moderators')
       end
