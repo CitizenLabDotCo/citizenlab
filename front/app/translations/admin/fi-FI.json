@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Muutoksesi on tallennettu.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Etusivun kuvaus",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Tämä lyhyt kuvaus näytetään kansion kortissa etusivulla. Pidä se ytimekkäänä ja kiinnostavana.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Sinun on valittava tila ennen kuin voit lähettää tämän lomakkeen.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Julkaisun tila",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Selitä miksi projektit kuuluvat yhteen, määritä visuaalinen ilme ja jaa tietoa.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Selitä miksi projektit kuuluvat yhteen, määritä visuaalinen ilme ja jaa tietoa.",

@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Le modifiche sono state salvate.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Descrizione della homepage",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Questa breve descrizione verrà visualizzata nella scheda della cartella sulla homepage. Tienila concisa e accattivante.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "È necessario selezionare uno spazio prima di poter inviare questo modulo.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Stato della pubblicazione",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Spiega perché i progetti sono interconnessi, definisci un'identità visiva e condividi le informazioni.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Spiega perché i progetti sono interconnessi, definisci un'identità visiva e condividi le informazioni.",

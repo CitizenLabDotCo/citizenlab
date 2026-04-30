@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Homepage-Beschreibung",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Diese kurze Beschreibung wird auf der Karte für den Ordner auf der Homepage angezeigt. Halten Sie sie kurz und ansprechend.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Sie müssen einen Bereich auswählen, bevor Sie dieses Formular absenden können.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Veröffentlichungsstatus",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Erklären Sie, warum die Projekte zusammengehören, definieren Sie eine visuelle Identität und teilen Sie Informationen.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Erklären Sie, warum die Projekte zusammengehören, definieren Sie eine visuelle Identität und teilen Sie Informationen.",

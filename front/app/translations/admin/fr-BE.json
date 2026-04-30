@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Vos modifications ont été enregistrées.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Description sur la page d'accueil",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Cette brève description sera affichée sur la fiche du dossier sur la page d'accueil. Veillez à ce qu'elle soit concise et attrayante.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Vous devez sélectionner un espace avant de pouvoir soumettre ce formulaire.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Statut du dossier",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Expliquer pourquoi ces projets sont communs, définir une identité visuelle et partager des informations.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Expliquer pourquoi ces projets sont communs, définir une identité visuelle et partager des informations.",

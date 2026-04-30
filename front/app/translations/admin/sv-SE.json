@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Dina ändringar har sparats.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Beskrivning av hemsidan",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Denna korta beskrivning kommer att visas på kortet för mappen på hemsidan. Håll den kortfattad och engagerande.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Du behöver välja en yta innan du kan skicka in det här formuläret.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Publiceringsstatus",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Förklara varför projekten hör ihop, definiera en visuell identitet och dela information.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Förklara varför projekten hör ihop, definiera en visuell identitet och dela information.",

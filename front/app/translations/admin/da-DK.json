@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Dine ændringer er blevet gemt.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Beskrivelse af siden",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Denne korte beskrivelse vil blive vist på kortet til mappen på hjemmesiden. Hold den kortfattet og engagerende.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Du skal vælge et område, før du kan indsende denne formular.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status for offentliggørelse",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Forklar, hvorfor projekterne hører sammen, definer en visuel identitet og deler information.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Forklar, hvorfor projekterne hører sammen, definer en visuel identitet og deler information.",

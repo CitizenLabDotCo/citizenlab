@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Pakeitimai buvo išsaugoti.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Pradžia aprašymas",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Šis trumpas aprašymas bus rodomas aplanko kortelėje pagrindiniame puslapyje. Tegul jis būna glaustas ir patrauklus.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Prieš pateikdami šią formą, turite pasirinkti erdvę.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Leidinio statusas",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Paaiškinkite, kodėl projektai priklauso vienas kitam, apibrėžkite vizualinį identitetą ir dalinkitės informacija.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Paaiškinkite, kodėl projektai priklauso vienas kitam, apibrėžkite vizualinį identitetą ir dalinkitės informacija.",

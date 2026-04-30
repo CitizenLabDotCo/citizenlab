@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Főoldal leírása",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Ez a rövid leírás fog megjelenni a mappa kártyáján a főoldalon. Legyen tömör és figyelemfelkeltő.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Ki kell választania egy teret az űrlap beküldése előtt.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Publication status",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explain why the projects belong together, define a visual identity and share information.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explain why the projects belong together, define a visual identity and share information.",

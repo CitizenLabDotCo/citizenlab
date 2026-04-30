@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Yaptığınız değişiklikler kaydedildi.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Ana sayfa açıklaması",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Bu kısa açıklama ana sayfadaki klasör kartında gösterilecektir. Kısa ve ilgi çekici olmasını sağlayın.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Bu formu gönderebilmek için önce bir alan seçmeniz gerekiyor.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Yayımlanma durumu",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Projelerin neden bir araya gelebileceğini açıklayın, görsel bir kimlik tanımlayın ve bilgi paylaşın.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Projelerin neden bir araya gelebileceğini açıklayın, görsel bir kimlik tanımlayın ve bilgi paylaşın.",

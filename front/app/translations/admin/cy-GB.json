@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Mae eich newidiadau wedi'u cadw.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Disgrifiad o'r dudalen gartref",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Bydd y disgrifiad byr hwn yn cael ei ddangos ar gerdyn y ffolder ar yr hafan. Cadwch ef yn gryno ac yn ddeniadol.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Mae angen i chi ddewis gofod cyn y gallwch gyflwyno'r ffurflen hon.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Statws cyhoeddi",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Egluro pam mae'r prosiectau'n perthyn i'w gilydd, diffinio hunaniaeth weledol a rhannu gwybodaeth.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Egluro pam mae'r prosiectau'n perthyn i'w gilydd, diffinio hunaniaeth weledol a rhannu gwybodaeth.",

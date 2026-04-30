@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Suas alterações foram salvas.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Descrição da página inicial",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Essa breve descrição será exibida no cartão da pasta na página inicial. Mantenha-a concisa e envolvente.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Você precisa selecionar um espaço antes de enviar este formulário.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status de publicação",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explique por que os projetos estão juntos, defina uma identidade visual e compartilhe informações.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explique por que os projetos estão juntos, defina uma identidade visual e compartilhe informações.",
