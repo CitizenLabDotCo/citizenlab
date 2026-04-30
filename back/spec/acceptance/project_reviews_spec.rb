@@ -176,6 +176,10 @@ resource 'Project reviews' do
   end
 
   context 'as a space moderator' do
+    before do
+      header 'Content-Type', 'application/json'
+    end
+
     patch 'web_api/v1/projects/:project_id/review' do
       before do
         @space = create(:space)
@@ -220,11 +224,12 @@ resource 'Project reviews' do
         end
 
         example 'Cannot approve the project review if cannot moderate space' do
-          other_project_in_space = create(:project, space: @space)
-          other_project_review = create(:project_review, project: other_project_in_space)
+          another_space = create(:space)
+          project_in_other_space = create(:project, space: another_space)
+          other_project_review = create(:project_review, project: project_in_other_space)
 
           do_request project_id: other_project_review.project_id
-          assert_status 403
+          assert_status 401
 
           expect(other_project_review.reload).not_to be_approved
         end
@@ -233,9 +238,9 @@ resource 'Project reviews' do
       describe 'when the project does not have a review' do
         let(:project_id) { create(:project).id }
 
-        example 'Not Found (404)', document: false do
+        example 'Unauthorized (401)', document: false do
           do_request
-          assert_status 404
+          assert_status 401
         end
       end
     end
