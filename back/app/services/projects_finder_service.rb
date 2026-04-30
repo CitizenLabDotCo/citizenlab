@@ -143,7 +143,7 @@ class ProjectsFinderService
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
-  # => [Project]
+  # @return [Project::ActiveRecord_Relation]
   def finished_or_archived
     return @projects unless @filter_by.in? %w[finished archived finished_and_archived]
 
@@ -153,7 +153,7 @@ class ProjectsFinderService
     if @filter_by.in? %w[finished finished_and_archived]
       published_scope = base_scope.where(admin_publication: AdminPublication.published)
       finished_scope = joins_last_phases_with_reports(published_scope).where(<<~SQL.squish, Time.zone.now)
-        last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true)
+        last_phases.last_phase_end_at <= ? OR (reports.id IS NOT NULL AND reports.visible = true)
       SQL
       result = result.or(finished_scope)
     end

@@ -469,10 +469,11 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def assign_scheduled_by(admin_publication_attrs)
-    return unless admin_publication_attrs.key?(:scheduled_status)
+    attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
+    return unless attrs.keys.present?
 
-    admin_publication_attrs[:scheduled_by_id] =
-      admin_publication_attrs[:scheduled_status].present? ? current_user.id : nil
+    scheduling = attrs.values.any?
+    admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil
   end
 
   def base_render_mini_index
