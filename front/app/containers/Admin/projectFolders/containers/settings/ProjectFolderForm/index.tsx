@@ -527,6 +527,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCardImage.remote
     : false;
 
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
+
   return (
     <form onSubmit={saveForm}>
       <Section>
@@ -744,12 +760,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />
