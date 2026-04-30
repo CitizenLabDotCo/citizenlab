@@ -361,6 +361,11 @@ describe ProjectPolicy do
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
 
+      it 'permits project status update on a never-published draft project' do
+        nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+        expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+      end
+
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
