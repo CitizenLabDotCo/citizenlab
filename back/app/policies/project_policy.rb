@@ -120,10 +120,11 @@ class ProjectPolicy < ApplicationPolicy
     return true if active_admin?
     return active_moderator? unless record.folder_changed? || record.space_changed?
 
-    return false if record.folder_changed? && !can_moderate_folder?
-    return false if space_moderation_required? && !can_moderate_space?
+    prior_folder_id = record.folder_changed? ? record.folder_was&.id : record.folder_id
+    prior_space_id = record.space_changed? ? record.space_id_was : record.space_id
 
-    true
+    can_moderate_project_with_container?(prior_folder_id, prior_space_id) &&
+      can_moderate_project_with_container?(record.folder_id, record.space_id)
   end
 
   def refresh_preview_token?
@@ -230,11 +231,11 @@ class ProjectPolicy < ApplicationPolicy
     record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
   end
 
-  def space_moderation_required?
-    # A space change that mirrors the target folder's space is a side-effect of
-    # Project#folder_id= and rides on the folder-move authorization.
-    # No separate space-moderation check is needed in that case.
-    record.space_changed? && !(record.folder_changed? && record.folder&.space_id == record.space_id)
+  def can_moderate_project_with_container?(folder_id, space_id)
+    return true if folder_id && user.project_folder_moderator?(folder_id)
+    return true if space_id && user.space_moderator?(space_id)
+
+    false
   end
 
   def project_preview?

@@ -762,7 +762,55 @@ describe ProjectPolicy do
 
       it 'denies removing the project from its folder' do
         project.folder_id = nil
-        is_expected.not_to permit(:update)
+        is_expected.to permit(:update)
+      end
+    end
+
+    context 'for a space moderator removing the project from its folder (project and folder both in the moderated space)' do
+      let!(:space) { create(:space) }
+      let!(:other_managed_space) { create(:space) }
+      let!(:unmanaged_space) { create(:space) }
+      let!(:source_folder) { create(:project_folder, space: space) }
+      let!(:project) do
+        create(
+          :project,
+          space: space,
+          admin_publication_attributes: {
+            parent_id: source_folder.admin_publication.id,
+            publication_status: 'draft'
+          }
+        )
+      end
+
+      context 'when the SM moderates only the project space' do
+        let(:user) { create(:space_moderator, spaces: [space]) }
+
+        it 'permits removing the project from its folder (keeping it in the same space)' do
+          project.folder_id = nil
+          is_expected.to permit(:update)
+        end
+
+        it 'denies moving the project out of the folder and into a space the SM does not moderate' do
+          project.folder_id = nil
+          project.space_id = unmanaged_space.id
+          is_expected.not_to permit(:update)
+        end
+
+        it 'denies moving the project out of the folder and to no space' do
+          project.folder_id = nil
+          project.space_id = nil
+          is_expected.not_to permit(:update)
+        end
+      end
+
+      context 'when the SM also moderates another space' do
+        let(:user) { create(:space_moderator, spaces: [space, other_managed_space]) }
+
+        it 'permits moving the project out of the folder and into the other moderated space' do
+          project.folder_id = nil
+          project.space_id = other_managed_space.id
+          is_expected.to permit(:update)
+        end
       end
     end
 
@@ -797,12 +845,32 @@ describe ProjectPolicy do
         end
       end
 
-      context 'for a folder moderator of the target folder (not moderating the target space)' do
-        let(:user) { create(:project_folder_moderator, project_folders: [target_folder]) }
+      context 'for a folder moderator of the target folder who already moderates the project (via a source folder)' do
+        let!(:source_folder) { create(:project_folder, space: project_space) }
+        let!(:project) do
+          create(
+            :project,
+            space: project_space,
+            admin_publication_attributes: {
+              parent_id: source_folder.admin_publication.id,
+              publication_status: 'draft'
+            }
+          )
+        end
+        let(:user) { create(:project_folder_moderator, project_folders: [source_folder, target_folder]) }
 
-        it 'permits the folder move — FM of target folder should be able to move the project in regardless of the target space' do
+        it 'permits the folder move — FM moderates the project both before and after' do
           project.folder_id = target_folder.id
           is_expected.to permit(:update)
+        end
+      end
+
+      context 'for a folder moderator of the target folder with no prior moderation of the project' do
+        let(:user) { create(:project_folder_moderator, project_folders: [target_folder]) }
+
+        it 'denies the folder move — FM must moderate the project before the change, not only after' do
+          project.folder_id = target_folder.id
+          is_expected.not_to permit(:update)
         end
       end
     end
