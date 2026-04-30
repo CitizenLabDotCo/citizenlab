@@ -120,11 +120,7 @@ class ProjectPolicy < ApplicationPolicy
     return true if active_admin?
     return active_moderator? unless record.folder_changed? || record.space_changed?
 
-    prior_folder_id = record.folder_changed? ? record.folder_was&.id : record.folder_id
-    prior_space_id = record.space_changed? ? record.space_id_was : record.space_id
-
-    can_moderate_project_with_container?(prior_folder_id, prior_space_id) &&
-      can_moderate_project_with_container?(record.folder_id, record.space_id)
+    container_change_permitted?
   end
 
   def refresh_preview_token?
@@ -231,7 +227,18 @@ class ProjectPolicy < ApplicationPolicy
     record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
   end
 
-  def can_moderate_project_with_container?(folder_id, space_id)
+  def container_change_permitted?
+    return false unless active?
+    return false unless user.space_moderator? || user.project_folder_moderator?
+
+    prior_folder_id = record.folder_changed? ? record.folder_was&.id : record.folder_id
+    prior_space_id = record.space_changed? ? record.space_id_was : record.space_id
+
+    can_moderate_container?(prior_folder_id, prior_space_id) &&
+      can_moderate_container?(record.folder_id, record.space_id)
+  end
+
+  def can_moderate_container?(folder_id, space_id)
     return true if folder_id && user.project_folder_moderator?(folder_id)
     return true if space_id && user.space_moderator?(space_id)
 
