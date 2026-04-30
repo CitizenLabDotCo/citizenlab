@@ -180,9 +180,11 @@ const SurveyPage = ({
   }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
-    // Go to the project page if this is the last page
+    // Go to the project page if this is the last page.
+    // Use replace to remove the survey URL from browser history,
+    // preventing back/forward navigation back into a completed survey.
     if (currentPageIndex === lastPageIndex) {
-      clHistory.push({
+      clHistory.replace({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
       return;
