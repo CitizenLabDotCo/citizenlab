@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Descripció de la pàgina d'inici",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Aquesta descripció curta es mostrarà a la targeta de la carpeta a la pàgina d'inici. Mantingueu-la concisa i atractiva.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Heu de seleccionar un espai abans de poder enviar aquest formulari.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Estat de publicació",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Expliqueu per què els projectes pertanyen, definiu una identitat visual i compartiu informació.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explain why the projects belong together, define a visual identity and share information.",

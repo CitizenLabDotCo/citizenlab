@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Tá do chuid athruithe sábháilte.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Cur síos ar an leathanach baile",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Taispeánfar an cur síos gairid seo ar chárta an fhillteáin ar an leathanach baile. Coinnigh gonta agus tarraingteach é.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Ní mór duit spás a roghnú sula bhféadfaidh tú an fhoirm seo a chur isteach.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Stádas foilsitheoireachta",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Mínigh cén fáth a mbaineann na tionscadail le chéile, sainmhínigh céannacht amhairc agus roinn faisnéis.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Mínigh cén fáth a mbaineann na tionscadail le chéile, sainmhínigh céannacht amhairc agus roinn faisnéis.",

@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Twoje zmiany zostały zapisane.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Opis strony głównej",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Ten krótki opis będzie wyświetlany na karcie folderu na stronie głównej. Niech będzie zwięzły i angażujący.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Musisz wybrać przestrzeń przed wysłaniem tego formularza.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status publikacji",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Wyjaśnij, dlaczego projekty są połączone, określ stronę wizualną i poinformuj.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Wyjaśnij, dlaczego projekty są połączone, określ stronę wizualną i poinformuj.",

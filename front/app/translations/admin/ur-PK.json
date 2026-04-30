@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "آپ کی تبدیلیاں محفوظ ہو گئی ہیں۔",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "ہوم پیج کی تفصیل",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "یہ مختصر تفصیل ہوم پیج پر فولڈر کے کارڈ پر دکھائی جائے گی۔ اسے جامع اور پرکشش رکھیں۔",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "اس فارم کو جمع کرانے سے پہلے آپ کو ایک جگہ منتخب کرنے کی ضرورت ہے۔",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "اشاعت کی حیثیت",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "وضاحت کریں کہ پروجیکٹس ایک ساتھ کیوں ہیں، ایک بصری شناخت کی وضاحت کریں اور معلومات کا اشتراک کریں۔",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "وضاحت کریں کہ پروجیکٹس ایک ساتھ کیوں ہیں، ایک بصری شناخت کی وضاحت کریں اور معلومات کا اشتراک کریں۔",

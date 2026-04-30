@@ -165,4 +165,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.folderImageAltTextTitle',
     defaultMessage: 'Folder card image alternative text',
   },
+  spaceRequiredError: {
+    id: 'app.containers.AdminPage.FoldersEdit.spaceRequiredError',
+    defaultMessage:
+      'You need to select a space before you can submit this form.',
+  },
 });

@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Περιγραφή αρχικής σελίδας",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Αυτή η σύντομη περιγραφή θα εμφανίζεται στην κάρτα του φακέλου στην αρχική σελίδα. Διατηρήστε την περιεκτική και ελκυστική.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Πρέπει να επιλέξετε έναν χώρο προτού μπορέσετε να υποβάλετε αυτή τη φόρμα.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Κατάσταση δημοσίευσης",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Εξηγήστε γιατί τα έργα ανήκουν μαζί, ορίστε μια οπτική ταυτότητα και κοινοποιείστε πληροφορίες.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explain why the projects belong together, define a visual identity and share information.",

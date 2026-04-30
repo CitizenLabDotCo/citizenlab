@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰ ਲਿਆ ਗਿਆ ਹੈ।",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "ਹੋਮਪੇਜ ਵਰਣਨ",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "ਇਹ ਛੋਟਾ ਵੇਰਵਾ ਹੋਮਪੇਜ 'ਤੇ ਫੋਲਡਰ ਦੇ ਕਾਰਡ 'ਤੇ ਦਿਖਾਇਆ ਜਾਵੇਗਾ। ਇਸਨੂੰ ਸੰਖੇਪ ਅਤੇ ਦਿਲਚਸਪ ਰੱਖੋ।",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "ਇਸ ਫਾਰਮ ਨੂੰ ਜਮ੍ਹਾਂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਇੱਕ ਸਪੇਸ ਚੁਣਨ ਦੀ ਲੋੜ ਹੈ।",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "ਪ੍ਰਕਾਸ਼ਨ ਸਥਿਤੀ",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "ਸਮਝਾਓ ਕਿ ਪ੍ਰੋਜੈਕਟ ਇਕੱਠੇ ਕਿਉਂ ਹਨ, ਇੱਕ ਵਿਜ਼ੂਅਲ ਪਛਾਣ ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ ਅਤੇ ਜਾਣਕਾਰੀ ਸਾਂਝੀ ਕਰੋ।",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "ਸਮਝਾਓ ਕਿ ਪ੍ਰੋਜੈਕਟ ਇਕੱਠੇ ਕਿਉਂ ਹਨ, ਇੱਕ ਵਿਜ਼ੂਅਲ ਪਛਾਣ ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ ਅਤੇ ਜਾਣਕਾਰੀ ਸਾਂਝੀ ਕਰੋ।",

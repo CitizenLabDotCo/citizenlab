@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Los cambios han sido guardados.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Descripción en la página de inicio",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Esta breve descripción se mostrará en la ficha de la carpeta en la página de inicio. Que sea concisa y atractiva.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Debes seleccionar un espacio antes de enviar este formulario.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Estado de la carpeta",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explica por qué los proyectos están unidos, define una identidad visual y comparte información.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explica por qué los proyectos están unidos, define una identidad visual y comparte información.",

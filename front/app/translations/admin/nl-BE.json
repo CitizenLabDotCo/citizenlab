@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Je wijzigingen zijn opgeslagen.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Beschrijving op de startpagina",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Deze korte beschrijving wordt getoond op de kaart voor de folder op de homepage. Houd het beknopt en aantrekkelijk.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Je moet een ruimte selecteren voordat je dit formulier kunt indienen.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status van de map",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Beschrijf waarom deze projecten samenhoren, bepaal een visuele identiteit en deel informatie.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Beschrijf waarom deze projecten samenhoren, bepaal een visuele identiteit en deel informatie.",

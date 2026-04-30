@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.FoldersEdit.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2": "Saqqaap nassuiaataa",
   "app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2": "Naatsumik nassuiaat una saqqami mappip kortiani ersissaaq. Naatsunnguullunilu pilerinarunarsaruk.",
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": "Immersugassaq una nassiutinnginnerani inissaq toqqartariaqarpat.",
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Saqqummersinneqarnerata killiffia",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Suliniutit qanoq ataqatigiinnersut nassuiaruk, ilisarnaammik ersittumik nassuiaagit paasissutissanillu avitseqatiginnillutit.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explain why the projects belong together, define a visual identity and share information.",
