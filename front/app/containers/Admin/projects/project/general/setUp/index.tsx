@@ -142,8 +142,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     );
 
   const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    if (project.data.attributes.space_id) return 'space';
+    // folder needs to be checked before space_id,
+    // because if a project is in a folder that is in a space,
+    // the project ALSO has a space_id.
+    // But in this case we want to show the folder as context, not the space.
     if (project.data.attributes.folder_id) return 'folder';
+    if (project.data.attributes.space_id) return 'space';
     return 'root';
   });
 
@@ -315,7 +319,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       });
     } catch (errors) {
       setSubmitState('error');
-      setApiErrors(errors.errors);
+      setApiErrors((errors as any).errors);
       setProcessing(false);
     }
   }
@@ -341,6 +345,11 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
   };
 
+  const projectAttrs = {
+    ...project.data.attributes,
+    ...projectAttributesDiff,
+  };
+
   const validateForm = () => {
     const titleError = !isNilOrError(appConfigLocales)
       ? validateTitle(
@@ -359,11 +368,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     }
 
     return formIsValid;
-  };
-
-  const projectAttrs = {
-    ...(!isNilOrError(project) ? project.data.attributes : {}),
-    ...projectAttributesDiff,
   };
 
   const selectedTopicIds = getSelectedTopicIds(
@@ -512,12 +516,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               setProjectContext(context);
               setProjectContextError(false);
             }}
-            onChangeSpace={(space_id) => {
-              handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+            onChangeSpace={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
-            onChangeFolder={(folder_id) => {
-              handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+            onChangeFolder={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
           />

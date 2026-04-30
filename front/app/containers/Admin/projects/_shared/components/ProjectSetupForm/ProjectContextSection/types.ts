@@ -4,9 +4,14 @@ export interface Props {
   folder_id?: string | null;
   error: boolean;
   onSetContext: (context: ProjectContext) => void;
-  onChangeSpace: (space_id: string | null) => void;
-  onChangeFolder: (folder_id: string | null) => void;
+  onChangeSpace: (spaceAndFolderId: SpaceAndFolderId) => void;
+  onChangeFolder: (spaceAndFolderId: SpaceAndFolderId) => void;
 }
+
+export type SpaceAndFolderId = {
+  space_id: string | null;
+  folder_id: string | null;
+};
 
 export type ProjectContext = 'root' | 'folder' | 'space';
 
