@@ -340,12 +340,12 @@ const ProjectSetupForm = ({ authUser }: Props) => {
               setProjectContext(context);
               setProjectContextError(false);
             }}
-            onChangeSpace={(space_id) => {
-              handleProjectAttributeDiffOnChange({ space_id, folder_id: null });
+            onChangeSpace={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
-            onChangeFolder={(folder_id) => {
-              handleProjectAttributeDiffOnChange({ folder_id, space_id: null });
+            onChangeFolder={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
           />
