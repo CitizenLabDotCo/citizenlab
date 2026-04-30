@@ -33,7 +33,10 @@ const OPTIONS: StatusOption[] = [
   {
     value: 'published',
     title: messages.changeStatusPublishedTitle,
-    bullets: [messages.changeStatusPublishedBullet1],
+    bullets: [
+      messages.changeStatusPublishedBullet1,
+      messages.changeStatusPublishedBullet2,
+    ],
   },
   {
     value: 'draft',
@@ -153,7 +156,7 @@ const ChangeStatusModal = ({ opened, project, onClose }: Props) => {
                   >
                     {option.bullets.map((bullet, i) => (
                       <Box as="li" key={i}>
-                        <Text m="0px" color="textSecondary" fontSize="s">
+                        <Text m="0px" color="textPrimary" fontSize="s">
                           {formatMessage(bullet)}
                         </Text>
                       </Box>

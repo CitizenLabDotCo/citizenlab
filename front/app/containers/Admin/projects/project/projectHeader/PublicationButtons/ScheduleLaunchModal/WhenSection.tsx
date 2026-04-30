@@ -29,8 +29,20 @@ const WhenSection = ({
   const { data: appConfiguration } = useAppConfiguration();
   const timezone =
     appConfiguration?.data.attributes.settings.core.timezone ?? '';
-  const tenantTimeNow = timezone ? moment().tz(timezone).toDate() : new Date();
-  const gmtOffset = timezone ? moment().tz(timezone).format('Z') : '';
+  const tenantNow = timezone ? moment().tz(timezone) : moment();
+  const tenantTimeNow = new Date(
+    tenantNow.year(),
+    tenantNow.month(),
+    tenantNow.date(),
+    tenantNow.hour(),
+    tenantNow.minute()
+  );
+  const tenantTodayStart = new Date(
+    tenantNow.year(),
+    tenantNow.month(),
+    tenantNow.date()
+  );
+  const gmtOffset = timezone ? tenantNow.format('Z') : '';
 
   return (
     <Box mb="8px">
@@ -48,7 +60,7 @@ const WhenSection = ({
             onDateChange(date);
           }}
           placement="right"
-          disabledPast={{ before: new Date() }}
+          disabledPast={{ before: tenantTodayStart }}
         />
         <TimeInput
           selectedTime={selectedTime}

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { roundToNearestMinutes, addDays } from 'date-fns';
+import moment from 'moment-timezone';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -35,6 +37,9 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     useUpdateProject();
   const { mutate: cancelScheduleMutation, isLoading: isCancelling } =
     useUpdateProject();
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings.core.timezone;
 
   const isProjectSchedulingEnabled = useFeatureFlag({
     name: 'project_scheduling',
@@ -54,11 +59,18 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   );
 
   const buildScheduledAt = () => {
-    const scheduledDate = new Date(selectedDate);
-    scheduledDate.setHours(selectedTime.getHours());
-    scheduledDate.setMinutes(selectedTime.getMinutes());
-    scheduledDate.setSeconds(0);
-    return scheduledDate.toISOString();
+    const dateTimeParts = {
+      year: selectedDate.getFullYear(),
+      month: selectedDate.getMonth(),
+      day: selectedDate.getDate(),
+      hour: selectedTime.getHours(),
+      minute: selectedTime.getMinutes(),
+      second: 0,
+    };
+    const scheduled = tenantTimezone
+      ? moment.tz(dateTimeParts, tenantTimezone)
+      : moment(dateTimeParts);
+    return scheduled.toISOString();
   };
 
   const schedulePayload = () => ({
@@ -121,9 +133,6 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
         <Box>
           <Text fontSize="xl" fontWeight="bold" m="0px">
             {formatMessage(messages.scheduleLaunch)}
-          </Text>
-          <Text color="grey700" fontSize="s" my="4px">
-            {formatMessage(messages.reviewSubtitle)}
           </Text>
         </Box>
       }

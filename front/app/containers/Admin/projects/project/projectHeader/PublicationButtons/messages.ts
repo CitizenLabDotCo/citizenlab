@@ -43,54 +43,58 @@ export default defineMessages({
     defaultMessage: 'Archived',
   },
   changeProjectStatus: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeProjectStatus',
-    defaultMessage: 'Change project status',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeProjectStatus2',
+    defaultMessage: 'Project status',
   },
   close: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.close',
     defaultMessage: 'Close',
   },
   saveChanges: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.saveChanges',
-    defaultMessage: 'Save changes',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.saveChanges2',
+    defaultMessage: 'Save',
   },
   changeStatusPublishedTitle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedTitle',
     defaultMessage: 'Published',
   },
   changeStatusPublishedBullet1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet1',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12',
     defaultMessage:
-      'Makes the project publicly visible to selected groups (unless unlisted).',
+      'Accessible to all users or to specific groups, depending on the project settings',
+  },
+  changeStatusPublishedBullet2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet2',
+    defaultMessage:
+      'Shown in the project list and in search, unless set to unlisted',
   },
   changeStatusDraftTitle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle',
-    defaultMessage: 'Move to Draft',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2',
+    defaultMessage: 'Draft',
   },
   changeStatusDraftBullet1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1',
-    defaultMessage:
-      'Hides this project from all users except admins & assigned project managers.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12',
+    defaultMessage: 'Accessible only to admins and assigned project managers',
   },
   changeStatusDraftBullet2: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet2',
-    defaultMessage: 'The public URL will only work via the Share preview link.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22',
+    defaultMessage: 'Anyone with the Share preview link can also access it',
   },
   changeStatusArchivedTitle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle',
-    defaultMessage: 'Archive project',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2',
+    defaultMessage: 'Archived',
   },
   changeStatusArchivedBullet1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet1',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet12',
     defaultMessage:
-      'Closes participation while keeping the project visible and accessible via URL.',
+      'Participation is closed, but the project stays accessible via its URL',
   },
   changeStatusArchivedBullet2: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet2',
-    defaultMessage: 'Hides the project from general project search.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22',
+    defaultMessage: 'Hidden from the general project search',
   },
   changeStatusArchivedBullet3: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet3',
-    defaultMessage: 'It can still appear in dedicated homepage modules.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32',
+    defaultMessage: 'Visible only in dedicated homepage modules',
   },
 });
