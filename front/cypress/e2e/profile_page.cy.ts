@@ -58,7 +58,7 @@ describe('Profile Page', () => {
   });
 
   beforeEach(() => {
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.get('#e2e-usersshowpage');
     cy.wait(1000);
     cy.injectAxe();
@@ -96,7 +96,7 @@ describe('Profile Page', () => {
   it('shows the events the user is attending', () => {
     cy.clearCookies();
     // Confirm that the user event tab is not visible to other users
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.acceptCookies();
 
     cy.get('#e2e-usersshowpage');
@@ -114,7 +114,7 @@ describe('Profile Page', () => {
     cy.wait(1000);
 
     // Go to profile
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.get('#e2e-usersshowpage');
 
     // Confirm the event is in the list
