@@ -46,7 +46,7 @@ module CustomFieldBins
       return if custom_field.custom_field_bins.any?
 
       custom_field.options.order(:ordering).each do |option|
-        create!(custom_field:, custom_field_option: option)
+        find_or_create_by!(custom_field:, custom_field_option: option)
       end
     end
 

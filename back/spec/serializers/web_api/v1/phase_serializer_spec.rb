@@ -6,7 +6,7 @@ describe WebApi::V1::PhaseSerializer do
   let(:result) { described_class.new(phase, params: { current_user: user }).serializable_hash }
 
   context 'for a past voting phase' do
-    let(:phase) { create(:single_voting_phase, start_at: Time.zone.today - 5.days, end_at: Time.zone.today - 2.days, baskets_count: 4, votes_count: 7) }
+    let(:phase) { create(:single_voting_phase, start_at: 5.days.ago, end_at: 1.day.ago, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
       let(:user) { create(:project_moderator, projects: [phase.project]) }
@@ -28,7 +28,7 @@ describe WebApi::V1::PhaseSerializer do
   end
 
   context 'for an active voting phase' do
-    let(:phase) { create(:single_voting_phase, start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days, baskets_count: 4, votes_count: 7) }
+    let(:phase) { create(:single_voting_phase, start_at: 5.days.ago, end_at: 6.days.from_now, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
       let(:user) { create(:project_moderator, projects: [phase.project]) }
@@ -50,7 +50,7 @@ describe WebApi::V1::PhaseSerializer do
   end
 
   context 'for a future voting phase' do
-    let(:phase) { create(:single_voting_phase, start_at: Time.zone.today + 2.days, end_at: Time.zone.today + 5.days, baskets_count: 4, votes_count: 7) }
+    let(:phase) { create(:single_voting_phase, start_at: 2.days.from_now, end_at: 6.days.from_now, baskets_count: 4, votes_count: 7) }
 
     context 'when moderator' do
       let(:user) { create(:project_moderator, projects: [phase.project]) }

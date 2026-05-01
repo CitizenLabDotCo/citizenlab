@@ -13,11 +13,11 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { getPhaseLandingTab } from 'api/phases/utils';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -43,7 +43,6 @@ import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab } from './utils';
 import validate from './validate';
 
 interface Props {
@@ -78,7 +77,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
@@ -303,10 +301,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         setSubmitState('success');
 
         if (redirectAfterSave) {
-          const redirectTab = getTimelineTab(
-            phaseResponse,
-            phaseInsightsEnabled
-          );
+          const redirectTab = getPhaseLandingTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
             `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`

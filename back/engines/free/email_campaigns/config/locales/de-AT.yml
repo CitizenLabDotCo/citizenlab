@@ -52,8 +52,11 @@ de-AT:
         user_who_is_invited_to_cosponsor_a_proposal: Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen
         user_who_is_mentioned: Erwähnte Admins & Manager*innen
         user_who_is_receiving_admin_rights: Nutzer*in erhält Admin-Rechte
+        user_who_is_receiving_folder_manager_rights: Nutzer*in, der/die Ordner-Manager*innen-Rechte erhält
         user_who_is_receiving_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
+        user_who_is_receiving_project_manager_rights: Nutzer*in, der/die Projekt-Manager*innen-Rechte erhält
         user_who_is_receiving_project_moderator_rights: Nutzer*in erhält Projektmanagementrechte
+        user_who_is_receiving_space_manager_rights: Nutzer*in, der/die Space-Manager*innen-Rechte erhält
         user_who_published_the_input: Nutzer*in veröffentlicht Beitrag
         user_who_published_the_proposal: Nutzer*in veröffentlicht Vorschlag
         user_who_registers: 'Nutzer*in registriert sich '
@@ -104,8 +107,11 @@ de-AT:
         user_comments_on_input: Kommentar wird veröffentlicht
         user_comments_on_proposal: Nutzer*in kommentiert Vorschlag
         user_is_given_admin_rights: Nutzer*in erhält Admin-Rechte
+        user_is_given_folder_manager_rights: Nutzer*in erhält Ordner-Manager*innen-Rechte
         user_is_given_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
+        user_is_given_project_manager_rights: Nutzer*in erhält Projekt-Manager*innen-Rechte
         user_is_given_project_moderator_rights: Nutzer*in erhält Projektmanagementrechte
+        user_is_given_space_manager_rights: Nutzer*in erhält Space-Manager*innen-Rechte
         user_is_invited_to_cosponsor_a_proposal: Nutzer*in ist eingeladen, einen Vorschlag zu unterstützen
         user_is_invited_to_platform: Benutzer ist zu Plattform eingeladen
         user_is_mentioned: Nutzer*in wird erwähnt
@@ -125,7 +131,7 @@ de-AT:
       text_create_participatory_process: Als Admin können Sie neue Beteiligungsprojekte erstellen und konfigurieren. Über die Zeitleiste können Sie neue Phasen hinzufügen. Jede dieser Phasen kann ihr eigenes Verhalten in Bezug auf das Posten von Ideen, das Kommentieren und das Abstimmen haben.
       text_moderate_analyse_input: Sobald die Projekte angelaufen sind, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht hilft Ihnen, den Input zu moderieren und zu bearbeiten.
       text_platform_setup: Als Admin können Sie Ihre Beteiligungsplattform einrichten. Wählen Sie ein Logo, Bilder und Farben, schreiben Sie eine persönliche Nachricht auf Ihre Homepage, verschicken Sie Einladungen, legen Sie fest, was Sie von Ihren Nutzer:innen wissen wollen, ...
-      title: Sie sind nun Admin
+      title: Du bist nun Admin
       title_create_participatory_process: Gestalten Sie den partizipativen Prozess
       title_moderate_analyse_input: Moderieren und Analysieren Sie Beiträge
       title_platform_setup: Richten Sie Ihre Plattform ein
@@ -175,6 +181,7 @@ de-AT:
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
+      project_manager_rights_received: Projekt-Manager*innen-Rechte erhalten
       project_moderation_rights_received: Projektmanagementrechte erhalten
       project_phase_started: Neue Projektphase
       project_phase_upcoming: Anstehende Projektphase
@@ -182,6 +189,7 @@ de-AT:
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
+      space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
       survey_submitted: Umfrage eingereicht
       threshold_reached_for_admin: Vorschlag hat die Abstimmungsschwelle erreicht
@@ -245,7 +253,7 @@ de-AT:
       event_description: '%{authorNameFull} hat eine Antwort auf Ihren Kommentar zu "%{post}" auf der Beteiligungsplattform geschrieben. Klicken Sie auf den Button unten, um auf %{authorName} zu reagieren.'
       preheader: '%{authorName} hat auf Ihren Kommentar auf der Plattform von %{organizationName} geantwortet'
       replied: '%{authorFirstName} hat geantwortet:'
-      subject: Sie haben eine Antwort auf Ihren Kommentar auf der Plattform von %{organizationName} erhalten
+      subject: Du hast eine Antwort auf deinen Kommentar auf der Plattform von %{organizationName} erhalten
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
     community_monitor_report:
       cta_button: Bericht ansehen
@@ -271,10 +279,10 @@ de-AT:
           online_link: Online-Link
           project: Projekt
       preheader: '%{firstName}, danke für Ihre Anmeldung für %{eventTitle}'
-      subject: Sie sind dabei! Ihre Anmeldung für "%{eventTitle}" ist bestätigt
+      subject: Du bist dabei! Deine Anmeldung für "%{eventTitle}" ist bestätigt
       title: '%{firstName}, danke für die Registrierung für'
     follow:
-      unfollow_here: Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href="%{unfollow_url}">Sie können hier aufhören diesem zu folgen.</a>
+      unfollow_here: Du hast diese Benachrichtigung wegen eines Elementes erhalten, dem du folgst. <a href="%{unfollow_url}">Du kannst hier aufhören diesem zu folgen.</a>
     footer:
       link_privacy_policy: Impressum & Datenschutz
       link_terms_conditions: Nutzungsbedingungen
@@ -328,7 +336,7 @@ de-AT:
       report_inappropriate_offensive_content: Ich finde diesen Inhalt unangemessen oder anstößig.
       report_not_an_idea: Dieser Inhalt ist keine Idee und gehört nicht hierhin.
       reported_this_because: '%{reporterFirstName} meldete dies, weil:'
-      subject: Sie haben eine Spam-Meldung auf der Plattform von %{organizationName}
+      subject: Du hast eine Spam-Meldung auf der Plattform von %{organizationName}
       title: '%{firstName} %{lastName} hat Spam gemeldet'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
@@ -360,7 +368,7 @@ de-AT:
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       send_email: e-Mail
       subject: Dein Beitrag wurde veröffentlicht
-      title: Sie haben "%{input_title}" gepostet.
+      title: Du hast "%{input_title}" gepostet.
     internal_comment_on_idea_assigned_to_you:
       cta_button: Kommentar anzeigen von %{firstName}
       event_description: '%{authorNameFull} hat einen Ihnen zugewiesenen Beitrag intern kommentiert.'
@@ -389,8 +397,8 @@ de-AT:
       cta_button: Kommentar anzeigen von %{firstName}
       event_description: '%{authorNameFull} hat auf Ihren internen Kommentar geantwortet.'
       preheader: '%{authorName} hat auf Ihren internen Kommentar %{post} geantwortet'
-      subject: "Sie haben einen Kommentar zu Ihrem internen Kommentar '%{post}' erhalten"
-      title: "Sie haben einen Kommentar zu Ihrem internen Kommentar '%{post}' erhalten"
+      subject: "Du hast einen Kommentar zu deinem internen Kommentar '%{post}' erhalten"
+      title: "Du hast einen Kommentar zu deinem internen Kommentar '%{post}' erhalten"
     invitation_to_cosponsor_idea:
       cta_button: Vorschlag unterstützen
       event_description: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
@@ -406,8 +414,8 @@ de-AT:
       event_description: '%{organizationName} hat Sie auf ihre Beteiligungsplattform eingeladen.'
       invitation_expiry_message: Diese Einladung läuft in %{expiryDays} Tagen ab.
       preheader: '%{organizationName} hat Ihnen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
-      subject: Sie sind eingeladen worden um an der Plattform von %{organizationName} mitzuwirken
-      title: Sie sind eingeladen!
+      subject: Du bist eingeladen worden um an der Plattform von %{organizationName} mitzuwirken
+      title: Du bist eingeladen!
     invite_reminder:
       cta_button: Einladung annehmen
       invitation_expiry_message: Diese Einladung läuft in etwa %{expiryDaysRemaining} Tagen ab.
@@ -415,9 +423,9 @@ de-AT:
       subject: Ausstehende Einladung für die Beteiligungsplattform %{organizationName}
       title: Einladung steht noch aus
     manual:
-      preheader: Sie haben Post von %{organizationName}
+      preheader: Du hast Post von %{organizationName}
     manual_project_participants:
-      preheader: Sie haben Post von %{organizationName}
+      preheader: Du hast Post von %{organizationName}
     mention_in_comment:
       cta_reply_to: Antworten Sie %{commentAuthor}
       event_description: "%{commentAuthorFull} hat dich in seinem Kommentar zur Idee '%{post}' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren"
@@ -453,10 +461,12 @@ de-AT:
       yesterday_by_author: Gestern von %{author}
     native_survey_not_submitted:
       cta_button: Beantwortung der Umfrage fortsetzen
-      event_description: Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.
-      preheader: Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.
+      event_description: Du hast begonnen, deine Antworten zu %{phaseTitle} zu teilen, hast sie aber nicht abgeschickt. Klicke auf den Button unten, um dort fortzufahren, wo du aufgehört hast.
+      preheader: Du hast deine Umfrageantwort nicht auf der Beteiligungsplattform von %{organizationName} ausgefüllt.
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       submissions_close: Einsendeschluss ist %{phaseEndDate}.
+      submissions_close_at_time: Einreichungen enden um %{datetime}.
+      submissions_close_on_date: Einreichungen enden am %{date}.
       title: Fast fertig! Antwort einsenden nicht vergessen
     new_comment_for_admin:
       anonymous_user: Anonymer Teilnehmer
@@ -516,9 +526,10 @@ de-AT:
       project_description_preview: Dies ist ein Beispiel für Phaseninhalte, die zur Vorschau des Inhalts von E-Mails verwendet werden. Dies ist kein echter Inhalt.
       project_title: Beispielprojekt
       proposal_title: Beispiel-Vorschlag
+      space_title: Beispiel-Space
     project_folder_moderation_rights_received:
       cta_button: Diesen Ordner anzeigen
-      event_description: 'Sie haben Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
+      event_description: 'Du hast Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
       no_projects: Noch keine Projekte erhalten
       preheader: Ein Admin der Beteiligungsplattform %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt
       subject: Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt
@@ -536,11 +547,11 @@ de-AT:
       event_description: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt:'
       no_ideas: Noch keine Ideen
       preheader: Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt
-      subject: Sie sind jetzt Projektmanager*in auf der Plattform %{organizationName}
+      subject: Du bist jetzt Projektmanager*in auf der Plattform %{organizationName}
       text_design_participatory_process: Als Projektmanager*in können Sie konfigurieren, wie Nutzer*innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.
       text_moderate_analyse_input: Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanagement-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
-      title: Sie sind nun Projektmanager*in
+      title: Du bist nun Projektmanager*in
       title_design_participatory_process: Gestalten Sie den partizipativen Prozess
       title_moderate_analyse_input: Moderieren und analysieren Sie den Input der Bürger:innen
       title_share_project_information: Stellen Sie Projektinformationen bereit
@@ -597,6 +608,21 @@ de-AT:
       preheader: Beiträge überprüfen für %{organizationName}
       subject: '%{count} Beiträge, die zur Überprüfung anstehen'
       title: '%{firstName}, Beiträge warten darauf, überprüft zu werden'
+    space_moderation_rights_received:
+      cta_button: Diesen Space verwalten
+      event_description: 'Ein*e Administrator*in der Beteiligungsplattform von %{organizationName} hat Sie soeben zum/zur Space-Manager*innen des folgenden Spaces ernannt:'
+      no_projects: Noch keine Projekte
+      preheader: Ein*e Administrator*in der Beteiligungsplattform von %{organizationName} hat Sie soeben zum/zur Space-Manager*innen des folgenden Spaces ernannt
+      subject: Du bist jetzt Space-Manager*innen auf der Plattform von %{organizationName}
+      text_manage_space_settings: Sie können den Titel und die Beschreibung des Spaces bearbeiten, damit Teilnehmende und Ihre Manager*innen-Kolleg*innen sofort verstehen, worum es in Ihrem Space geht und wie er mit Ihrer Organisation zusammenhängt.
+      text_organize_projects_and_folders: Als Space-Manager*innen können Sie Projekte und Ordner in Ihrem Space verwalten, einschließlich der Zuweisung und Aufhebung von Management-Rollen für diese.
+      text_oversee_participation: Als Space-Manager*innen haben Sie Projekt-Manager*innen-Rechte für jedes Projekt in Ihrem Space, sodass Sie eingehende Beiträge im Blick behalten und Projekt-Manager*innen bei Bedarf unterstützen können.
+      title: Du bist jetzt Space-Manager*innen
+      title_manage_space_settings: Space-Einstellungen verwalten
+      title_organize_projects_and_folders: Projekte und Ordner organisieren
+      title_oversee_participation: Beteiligung überblicken
+      title_what_can_you_do_space_manager: Was können Sie als Space-Manager*innen tun?
+      x_projects: '%{numberOfProjects} Projekte'
     status_change_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{organizationName} hat den Status des Beitrags '%{input_title}' auf Ihrer digitalen Beteiligungsplattform aktualisiert."
@@ -624,7 +650,7 @@ de-AT:
       event_description: Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform %{organizationName} passiert ist.
       multiple_notifications: '%{notifCount} Benachrichtigungen'
       no_notifications: Keine Benachrichtigungen
-      no_unread_notifications: Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!
+      no_unread_notifications: Du hast keine ungelesenen Benachrichtigungen. Besuche die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!
       one_notification: 1 Benachrichtigung
       preheader: Wöchentliche Übersicht über %{organizationName}
       subject: Ihre Aktivität auf der Beteiligungsplattform %{organizationName}
@@ -635,23 +661,23 @@ de-AT:
       today_by_author: Heute von %{author}
       trending_text: Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei beliebtesten Beiträge und was die Leute darüber sagen.
       trending_title: Beliebt
-      unread_notifications: Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist.
+      unread_notifications: Du hast ungelesene Benachrichtigungen. Besuche die Plattform, um zu erfahren, was los ist.
       x_days_ago_by_author: Vor %{x} Tagen von %{author}
       yesterday_by_author: Gestern von %{author}
     voting_basket_not_submitted:
       cta_button: Optionen ansehen und abstimmen
       cta_message: Auf den Button unten klicken, um die ausgewählten Optionen abzuschicken
-      event_description: Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.
-      preheader: Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben
-      subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
-      title: Sie haben Ihre Stimme nicht abgegeben
+      event_description: Du hast ein paar Optionen für %{contextTitle} ausgewählt, aber du hast deine Auswahl nicht abgeschickt.
+      preheader: Du hast deine Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben
+      subject: '%{organizationName}: Du hast deine Stimmen nicht abgegeben'
+      title: Du hast deine Stimme nicht abgegeben
     voting_basket_submitted:
       cta_button: Siehe abgegebene Stimmen
       cta_message: Klicken Sie auf den Button unten, um teilzunehmen
       event_description: Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.
-      preheader: Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt
-      subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
-      title: Sie haben erfolgreich abgestimmt
+      preheader: Du hast erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt
+      subject: '%{organizationName}: Du hast erfolgreich abgestimmt'
+      title: Du hast erfolgreich abgestimmt
     voting_last_chance:
       cta_button: Auswählen
       event_description: <p>Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.</p><p>Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Handeln Sie jetzt und klicken Sie einfach auf die Schaltfläche unten, um teilzunehmen.</p><p>Dadurch erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihren Beitrag hinzuzufügen, der für die Entscheidung über die Zukunft dieses Projekts sehr wichtig ist.</p>
@@ -675,7 +701,7 @@ de-AT:
       title: '%{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
     welcome:
       cta_button: Plattform entdecken
-      event_description: Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.
+      event_description: Du hast dich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier kannst du im Dialog mit uns zu bestimmten Fragestellungen deine Gedanken austauschen, Ideen sammeln und Feedback geben.
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
       subject: Ihre Registrierung für die %{organizationName} Plattform
       title: Herzlich Willkommen!

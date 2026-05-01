@@ -154,7 +154,7 @@ de-AT:
     pdf_export:
       by_checking_this_box: Durch Ankreuzen dieses Kästchens erkläre ich mich damit einverstanden, dass meine Daten verwendet werden, um ein Konto auf der Beteiligungsplattform %{organizationName} zu erstellen.
       choose_as_many: Beliebig viele auswählen
-      choose_at_least: Wählen Sie mindestens %{count} Optionen
+      choose_at_least: mindestens %{count} Optionen auswählen
       choose_at_most: Wählen Sie höchstens %{count} Optionen
       choose_between: Wählen Sie zwischen %{min} und %{max} Optionen
       choose_exactly:
@@ -168,6 +168,11 @@ de-AT:
       last_name: Nachname
       line_print_description: Bitte zeichnen Sie eine Route auf der Karte unten ein.
       linear_scale_print_description: Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}
+      logic_go_to_section: Als Nächstes zu <strong>%{section}</strong> gehen.
+      logic_if_answered_end: Wenn Sie <strong>%{option}</strong> bei Frage %{question} geantwortet haben, müssen Sie <strong>keine</strong> weiteren Fragen beantworten.
+      logic_if_answered_go_to: Wenn Sie <strong>%{option}</strong> bei Frage %{question} geantwortet haben, gehen Sie als Nächstes zu <strong>%{section}</strong>.
+      logic_no_further_questions: Basierend auf Ihren Antworten müssen Sie <strong>keine</strong> weiteren Fragen beantworten.
+      logic_section: Abschnitt %{letter}
       matrix_print_description: Markieren Sie für jede Reihe einen Kreis mit einem Kreuz, um Ihre Präferenz anzugeben.
       optional: optional
       page: Seite
@@ -179,13 +184,13 @@ de-AT:
       polygon_print_description: Bitte zeichnen Sie eine Form auf der Karte unten.
       ranking_print_description: Bitte schreiben Sie in jedes Feld eine Zahl zwischen 1 (am meisten bevorzugt) und %{max_rank} (am wenigsten bevorzugt). Verwenden Sie jede Zahl genau einmal.
       rating_print_description: Bewerten Sie dies, indem Sie eine Zahl zwischen 1 (schlechteste) und %{max_stars} (beste) schreiben.
-      select_print_description: Wählen Sie nur eine Option.
+      select_print_description: Nur eine Option auswählen
       sentiment_linear_scale_print_description: Bitte schreiben Sie eine Zahl zwischen 1 und 5.
       sentiment_linear_scale_print_labels: 1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.
       this_answer: Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.
       unsupported_field: Dieses Feld kann nicht auf Papier ausgefüllt werden. Bitte verwenden Sie stattdessen die Online-Version dieses Formulars.
-      write_as_clearly: Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt
-      write_in_language: Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular
+      write_as_clearly: Schreibe so <b>deutlich</b> wie möglich - diese Formulare werden gescannt
+      write_in_language: Schreibe deine Antworten bitte in der gleichen Sprache wie dieses Formular
   ics_calendar_event:
     event_details: Veranstaltungsdetails
   idea_statuses:
@@ -278,7 +283,7 @@ de-AT:
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: Passwort zurücksetzen
-      message_you_reset_your_password: Sie haben ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicken Sie auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.
+      message_you_reset_your_password: Du hast ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicke auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.
       preheader: Passwort für %{organizationName} zurücksetzen
       subject: '%{organizationName}: Passwort zurücksetzen'
       title_reset_your_password: Wählen Sie ein neues Passwort
@@ -429,6 +434,7 @@ de-AT:
       email: E-Mail
       first_name: Vorname(n)
       image_url: Bild-URL
+      imported: Importiert
       input_id: ID
       input_url: URL
       last_name: Familienname

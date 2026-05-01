@@ -3,11 +3,12 @@ module EmailCampaigns
     PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc, :surveys_url)
     PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :description_multiloc, :description_preview_multiloc, :url, :deleted_reason)
     PreviewEvent = Struct.new(:id, :title_multiloc, :address1, :address2_multiloc)
-    PreviewData = Struct.new(:idea, :project, :phase, :folder, :comment, :proposal, :event, :input_status, :official_feedback, :author, :initiator, :organization_name, :placeholder_image_url)
+    PreviewData = Struct.new(:idea, :project, :phase, :folder, :space, :comment, :proposal, :event, :input_status, :official_feedback, :author, :initiator, :organization_name, :placeholder_image_url)
 
     # Static content that can be used across all email previews.
     def preview_data(recipient)
       multiloc_service = MultilocService.new
+      space_preview_id = SecureRandom.uuid
       PreviewData.new(
         idea: PreviewContentItem.new(
           id: SecureRandom.uuid,
@@ -35,6 +36,11 @@ module EmailCampaigns
           id: SecureRandom.uuid,
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.folder_title'),
           url: "/#{recipient.locale}/folders/example-folder"
+        ),
+        space: PreviewContentItem.new(
+          id: space_preview_id,
+          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.space_title'),
+          url: Frontend::UrlService.new.admin_space_url(space_preview_id)
         ),
         comment: PreviewContentItem.new(
           id: SecureRandom.uuid,

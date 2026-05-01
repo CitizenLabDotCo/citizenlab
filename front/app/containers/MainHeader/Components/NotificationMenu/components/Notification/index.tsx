@@ -22,6 +22,7 @@ import {
   IProjectReviewRequestNotificationData,
   IProjectReviewStateChangeNotificationData,
   IStatusChangeOnIdeaYouFollowNotificationData,
+  ISpaceModerationRightsReceivedNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
   INativeSurveyNotSubmittedNotificationData,
@@ -30,8 +31,6 @@ import {
   IVotingResultsNotificationData,
   ICosponsorOfYourIdeaNotificationData,
 } from 'api/notifications/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
 
@@ -57,6 +56,7 @@ import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotificatio
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import ProjectReviewRequestNotification from '../ProjectReviewRequestNotification';
 import ProjectReviewStateChangeNotification from '../ProjectReviewStateChangeNotification';
+import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
@@ -68,8 +68,6 @@ type Props = {
 };
 
 const Notification = ({ notification }: Props) => {
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
   switch (notification.attributes.type) {
     case 'admin_rights_received':
       return (
@@ -177,6 +175,14 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
+    case 'space_moderation_rights_received':
+      return (
+        <SpaceModerationRightsReceivedNotification
+          notification={
+            notification as ISpaceModerationRightsReceivedNotificationData
+          }
+        />
+      );
     case 'project_phase_started':
       return (
         <ProjectPhaseStartedNotification
@@ -218,17 +224,13 @@ const Notification = ({ notification }: Props) => {
         />
       );
     case 'project_folder_moderation_rights_received':
-      if (isProjectFoldersEnabled) {
-        return (
-          <ProjectFolderModerationRightsReceivedNotification
-            notification={
-              notification as IProjectFolderModerationRightsReceivedNotificationData
-            }
-          />
-        );
-      } else {
-        return null;
-      }
+      return (
+        <ProjectFolderModerationRightsReceivedNotification
+          notification={
+            notification as IProjectFolderModerationRightsReceivedNotificationData
+          }
+        />
+      );
     case 'voting_basket_submitted':
       return (
         <VotingBasketSubmittedNotification

@@ -351,8 +351,8 @@
   },
   "app.components.CityLogoSection.logoLinkAriaLabelExternal": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T13:03:23.900214Z",
+    "verified_by": "Jelena"
   },
   "app.components.CityLogoSection.logoLinkAriaLabelInternal": {
     "state": "verified",
@@ -1741,8 +1741,8 @@
   },
   "app.components.PagesForm.descriptionMissingOneLanguageError": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-23T12:33:26.887534Z",
+    "verified_by": "Jelena"
   },
   "app.components.PagesForm.editContent": {
     "state": "verified",
@@ -2114,6 +2114,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.557643Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2331,8 +2336,8 @@
   },
   "app.components.PostComponents.SharingModalContent.postEmailSharingSubject": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T14:52:27.465099Z",
+    "verified_by": "Jelena"
   },
   "app.components.PostComponents.SharingModalContent.postWhatsAppMessage": {
     "state": "verified",
@@ -2371,8 +2376,8 @@
   },
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T14:52:09.518312Z",
+    "verified_by": "Jelena"
   },
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": {
     "state": "verified",
@@ -4078,6 +4083,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:21:33.501914Z",
+    "verified_by": "Jelena"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -6369,6 +6379,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.ChangeEmail.adminEmailChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-16T10:38:21.084743Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.backToProfile": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6443,6 +6458,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.ChangePassword.adminPasswordChangeWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-16T10:38:21.084743Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangePassword.currentPasswordLabel": {
     "state": "verified",
@@ -9039,6 +9059,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStillOpen1": {
+    "state": "verified",
+    "verified_at": "2026-04-17T06:16:15.353191Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.proposals.VoteControl.vote": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -9673,6 +9698,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.484605Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": {
     "state": "verified",
@@ -12014,6 +12044,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.email_sso_enforced_for_domain": {
+    "state": "verified",
+    "verified_at": "2026-03-30T13:11:30.161781Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.email_taken": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12518,6 +12553,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.484605Z",
+    "verified_by": "Jelena"
   },
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": {
     "state": "verified",
@@ -13276,8 +13316,8 @@
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-22T11:27:40.557643Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",

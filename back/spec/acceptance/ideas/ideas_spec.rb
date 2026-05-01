@@ -668,18 +668,18 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/by_slug/:slug' do
-      example 'Includes not_reactable_status_code in response when ineligible' do
+      example 'Includes reacting_not_allowed in response when ineligible' do
         do_request slug: ineligible_proposal.slug
 
         expect(status).to eq 200
-        expect(upvote_disabled_reason).to eq 'not_reactable_status_code'
+        expect(upvote_disabled_reason).to eq 'reacting_not_allowed'
       end
 
-      example 'Includes not_reactable_status_code in response when expired' do
+      example 'Includes reacting_not_allowed in response when expired' do
         do_request slug: expired_proposal.slug
 
         expect(status).to eq 200
-        expect(upvote_disabled_reason).to eq 'not_reactable_status_code'
+        expect(upvote_disabled_reason).to eq 'reacting_not_allowed'
       end
 
       example 'Includes user_not_signed_in in response when proposed' do

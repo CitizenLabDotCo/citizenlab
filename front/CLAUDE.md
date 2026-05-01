@@ -90,19 +90,84 @@ Build output goes to `build/` directory.
 
 ### Key Libraries & Patterns
 
-#### Data Fetching
+#### Data Fetching (TanStack Query)
 
-**REST (TanStack Query)**:
+API hooks live in `app/api/<resource>/`. Each resource folder follows a consistent layout:
+
+- `keys.ts` — query key factory (`all`, `lists`, `list`, `items`, `item`) typed via `QueryKeys` from `utils/cl-react-query/types`
+- `types.ts` — request/response types and a `Keys<typeof xxxKeys>` alias used by `useQuery` generics
+- One file per hook: `useXxx.ts` for queries, `useAddXxx.ts` / `useUpdateXxx.ts` / `useDeleteXxx.ts` for mutations
+- `__mocks__/` and `*.test.ts` colocated
+
+**Queries** wrap `useQuery` and call `fetcher` from `utils/cl-react-query/fetcher` (do **not** import from `services/api`):
 
 ```typescript
 import { useQuery } from '@tanstack/react-query';
-import api from 'services/api';
+import { CLErrors } from 'typings';
 
-const { data, isLoading } = useQuery({
-  queryKey: ['key'],
-  queryFn: () => api.getData(),
-});
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import ideasKeys from './keys';
+import { IIdea, IdeasKeys } from './types';
+
+const fetchIdea = ({ id }: { id?: string }) =>
+  fetcher<IIdea>({ path: `/ideas/${id}`, action: 'get' });
+
+const useIdeaById = (id?: string) => {
+  return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
+    queryKey: ideasKeys.item({ id }),
+    queryFn: () => fetchIdea({ id }),
+    enabled: !!id,
+  });
+};
 ```
+
+The four `useQuery` generics are always `<Response, CLErrors, Response, ResourceKeys>`. Use `enabled: !!id` to gate fetches on optional params.
+
+**Mutations** wrap `useMutation` + `useQueryClient` and invalidate every related key factory in `onSuccess`:
+
+```typescript
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+
+import projectsKeys from 'api/projects/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import ideasKeys from './keys';
+import { IIdea, IIdeaAdd } from './types';
+
+const addIdea = (requestBody: IIdeaAdd) =>
+  fetcher<IIdea>({
+    path: `/ideas`,
+    action: 'post',
+    body: { idea: requestBody },
+  });
+
+const useAddIdea = () => {
+  const queryClient = useQueryClient();
+  return useMutation<IIdea, CLErrors, IIdeaAdd>({
+    mutationFn: addIdea,
+    onSuccess: (idea) => {
+      queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
+      const projectId = idea.data.relationships?.project.data.id;
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: projectId }),
+        });
+      }
+    },
+  });
+};
+```
+
+Conventions for mutations:
+
+- Generics are `<Response, CLErrors, Variables>`. For updates, `Variables` is typically `{ id: string; requestBody: IXxxUpdate }`.
+- Invalidate broadly but precisely: list keys for collections that may have changed, item keys for specific records, and any cross-resource keys whose data depends on this one (e.g. `projectsKeys`, `meKeys`, `analyticsKeys`).
+- Prefer `key.lists()` / `key.items()` over `key.all()` when you only need to invalidate one operation type.
+- Don't call `setQueryData` for create/update responses unless there's a measured reason — invalidation is the default.
+- Consume mutations in components via `const { mutate } = useAddIdea()` and pass `{ onSuccess, onError }` at the call site for UI side effects (toasts, navigation, form errors).
 
 #### Forms
 
@@ -145,7 +210,7 @@ const text = formatMessage(messages.title);
 
 The data often contains multiloc attributes, which we transform to a string with the `localize` method.
 
-```typesript
+```typescript
 import useLocalize from 'hooks/useLocalize';
 
 // Component usage
@@ -177,6 +242,34 @@ const Button = styled.button`
 ```
 
 For small customizations, we use a few components with styling props, most notably <Box>.
+For border radius adjustments, we use the value as specified by `stylingConsts.borderRadius.`
+
+## Code Quality & Maintainability
+
+### TypeScript
+
+Type everything as strictly as possible. The goal is to push as many bugs as possible into the type checker so they never reach runtime or review.
+
+- Avoid `any`.
+- Avoid `as` casts. They silently disable type checking. Prefer type guards (`if (typeof x === 'string')`, `if ('foo' in obj)`), `satisfies` for literal-shape validation, or fixing the upstream type. Reserve casts for cases where you genuinely know more than the compiler (e.g. parsed JSON at a trusted boundary) and add a comment explaining why.
+- Don't use non-null assertions (`!`) to silence the compiler. If a value can be undefined, handle it; if it really cannot, narrow it with a guard so the type system knows.
+- Model state with discriminated unions instead of multiple optional fields. `{ status: 'loading' } | { status: 'success'; data: T } | { status: 'error'; error: E }` makes invalid combinations unrepresentable.
+- Prefer `readonly` arrays/objects and literal types (`'a' | 'b'`) over wider types when the value is fixed.
+- Always type `useState`, function parameters, and return types of exported functions explicitly when inference is not obviously correct. Don't rely on inference across module boundaries.
+
+### useEffect
+
+`useEffect` is for synchronizing with **external** systems (the DOM, subscriptions, timers, network side effects not already handled by TanStack Query). Most other uses are mistakes. Before adding one, ask: can this be derived in some other way.
+
+Common mistakes to avoid:
+
+- **Syncing props to local state.** `useEffect(() => setX(prop), [prop])` is almost always wrong — it causes an extra render, drops local edits unpredictably, and hides the real intent. Either use the prop directly, derive from it during render, or use a `key` to reset a child component when the identity changes.
+- **Computing derived values.** `useEffect(() => setFullName(`${first} ${last}`), [first, last])` should just be `const fullName = `${first} ${last}``during render. Wrap in`useMemo` only if profiling shows it matters.
+- **Reacting to user events.** Logic that should run because the user clicked something belongs in the click handler, not in an effect that watches the resulting state. Effects make the cause non-local and harder to trace.
+- **Chaining effects to cascade state updates.** If effect A sets state that triggers effect B, collapse them — usually the data flow can be expressed in one place.
+- **Fetching data.** That's what TanStack Query hooks (`app/api/<resource>/`) are for. Don't roll your own fetch-in-`useEffect`.
+
+When you do need an effect, keep its dependency array honest (don't omit deps to "make it work") and include a cleanup function for anything subscribed, timed, or aborted.
 
 ## Testing
 

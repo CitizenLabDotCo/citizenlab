@@ -22,8 +22,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { getMentionRoles } from '../utils';
-
 const Container = styled.div``;
 
 const CommentWrapper = styled.div`
@@ -184,7 +182,7 @@ const InternalCommentBody = ({
               padding="15px"
               fontWeight="300"
               getTextareaRef={setNewTextAreaRef}
-              roles={getMentionRoles(!!ideaId)}
+              adminsAndModerators
             />
           </QuillEditedContent>
           <ButtonsWrapper>

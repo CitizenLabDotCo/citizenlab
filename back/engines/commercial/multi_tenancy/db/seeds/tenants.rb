@@ -172,10 +172,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            bulk_import_ideas: {
-              enabled: true,
-              allowed: true
-            },
             project_description_builder: {
               enabled: true,
               allowed: true
@@ -201,8 +197,8 @@ module MultiTenancy
               allowed: true
             },
             intercom: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             segment: {
               enabled: false,
@@ -390,10 +386,6 @@ module MultiTenancy
                 }
               ]
             },
-            project_folders: {
-              enabled: true,
-              allowed: true
-            },
             project_preview_link: {
               enabled: true,
               allowed: true
@@ -525,6 +517,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            project_scheduling: {
+              enabled: false,
+              allowed: false
+            },
             platform_templates: {
               enabled: false,
               allowed: false
@@ -579,10 +575,6 @@ module MultiTenancy
               allowed: true
             },
             project_importer: {
-              enabled: true,
-              allowed: true
-            },
-            phase_insights: {
               enabled: true,
               allowed: true
             },

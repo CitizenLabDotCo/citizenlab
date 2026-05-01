@@ -2,7 +2,10 @@
 
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
+  include UserCookies
+  include EnforceUserSso
 
+  before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
 
@@ -274,6 +277,7 @@ class WebApi::V1::UsersController < ApplicationController
     authorize @user
     if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:password])
+        reset_jwt_cookie
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params

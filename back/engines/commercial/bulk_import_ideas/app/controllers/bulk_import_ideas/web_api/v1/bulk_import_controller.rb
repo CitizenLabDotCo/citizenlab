@@ -27,12 +27,16 @@ module BulkImportIdeas
       send_not_found unless supported_model? && supported_format?
 
       file = bulk_create_params[:file]
-      job_ids = file_parser_service.parse_file_async file
+      files = file_parser_service.create_files(file)
+
+      job = IdeaImportJob
+        .with_tracking(owner: current_user)
+        .perform_later(files, current_user, parser_locale, @phase, parser_personal_data_enabled, params[:format])
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
 
       render json: ::WebApi::V1::BackgroundJobSerializer.new(
-        QueJob.all_by_job_ids(job_ids),
+        QueJob.where(id: job.que_job.id),
         params: jsonapi_serializer_params
       ).serializable_hash
     rescue BulkImportIdeas::Error => e
@@ -45,8 +49,9 @@ module BulkImportIdeas
 
       locale = params[:locale] || current_user.locale || Locale.default
       personal_data_enabled = params[:personal_data] == 'true'
+      include_logic = params[:include_logic] == 'true'
 
-      service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+      service = form_exporter_service.new(@phase, locale, personal_data_enabled, include_logic:)
       file = service.export # This service is failing
 
       send_not_found and return unless file
@@ -147,15 +152,21 @@ module BulkImportIdeas
       @sidefx ||= SideFxBulkImportService.new
     end
 
+    def parser_locale
+      @parser_locale ||= bulk_create_params[:locale] || current_user.locale
+    end
+
+    def parser_personal_data_enabled
+      @parser_personal_data_enabled ||= bulk_create_params[:personal_data] || false
+    end
+
     def file_parser_service
-      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
-      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
-      pages_per_form = params[:import] ? bulk_create_params[:pages_per_form]&.to_i : nil
-      pages_per_form = nil if pages_per_form&.zero?
+      pages_per_form = Integer(bulk_create_params[:pages_per_form]) if bulk_create_params[:pages_per_form]
+      pages_per_form = nil unless pages_per_form&.positive?
       phase_id = params[:id]
 
       service = find_class(:parser_class)
-      @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled, pages_per_form: pages_per_form)
+      @file_parser_service ||= service.new(current_user, parser_locale, phase_id, parser_personal_data_enabled, pages_per_form: pages_per_form)
     end
 
     def form_exporter_service

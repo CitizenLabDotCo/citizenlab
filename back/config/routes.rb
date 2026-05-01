@@ -276,6 +276,8 @@ Rails.application.routes.draw do
 
           delete :participation_data, action: 'destroy_participation_data'
 
+          get :publication_recipient_count
+
           get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
           patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
         end

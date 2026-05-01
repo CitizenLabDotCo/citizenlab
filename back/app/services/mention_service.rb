@@ -62,16 +62,6 @@ class MentionService
     new_users - old_users
   end
 
-  # @param [String] query
-  # @param [idea] idea
-  # @param [Integer] limit
-  # @return [Array<User>]
-  def users_from_idea(query, idea, limit)
-    user_ids = User.joins(:comments).where(comments: { idea_id: idea.id }).ids.uniq # Commenters' IDs
-    user_ids << idea.author_id if idea.author_id
-    User.where(id: user_ids).by_username(query).limit(limit).to_a
-  end
-
   # @param [String] text
   # @param [User] user
   # @return [Boolean]

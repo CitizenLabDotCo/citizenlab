@@ -5,15 +5,11 @@ import { ParticipationMethod } from 'api/phases/types';
 export const getBackPath = (
   projectId: string,
   phaseId: string,
-  participationMethod?: ParticipationMethod,
-  phaseInsightsEnabled = true
+  participationMethod?: ParticipationMethod
 ): RouteType => {
   switch (participationMethod) {
     case 'native_survey':
-      // When phase_insights is disabled, redirect to old 'results' tab
-      return phaseInsightsEnabled
-        ? `/admin/projects/${projectId}/phases/${phaseId}/insights`
-        : `/admin/projects/${projectId}/phases/${phaseId}/results`;
+      return `/admin/projects/${projectId}/phases/${phaseId}/insights`;
     case 'community_monitor_survey':
       return `/admin/community-monitor/settings`;
     default:

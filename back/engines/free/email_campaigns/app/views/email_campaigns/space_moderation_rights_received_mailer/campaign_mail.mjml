@@ -1,0 +1,53 @@
+<!-- Space preview -->
+<mj-section
+  padding="20px 25px 0"
+  border-radius="5px"
+  text-align="left">
+  <mj-column
+    padding="25px"
+    background-color="#F2F6F8"
+    border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.space_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px">
+        <% if event.space_projects_count == 0 %>
+          <%= format_message("no_projects") %>
+        <% else %>
+          <%= format_message("x_projects", values: { numberOfProjects: event.space_projects_count }) %>
+        <% end %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<mj-section padding="0 0 80px">
+  <mj-column>
+    <mj-button
+      href="<%= event.space_url %>"
+      border-radius="5px"
+      background-color="#044D6C"
+      color="#fff"
+      width="100%"
+      padding="0 25px"><%= cta_button_text %></mj-button>
+  </mj-column>
+</mj-section>
+
+<!-- What can you do as a space manager? -->
+<mj-section
+  padding="0 30px 80px">
+  <mj-column
+    padding="50px 30px"
+    background-color="#F2F6F8"
+    border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-bottom: 40px"><%= format_message('title_what_can_you_do_space_manager') %></h2>
+      <h3 style="font-size: 15px;"><%= format_message('title_organize_projects_and_folders') %></h3>
+      <p><%= format_message('text_organize_projects_and_folders') %></p>
+      <h3 style="font-size: 15px;"><%= format_message('title_manage_space_settings') %></h3>
+      <p><%= format_message('text_manage_space_settings') %></p>
+      <h3 style="font-size: 15px;"><%= format_message('title_oversee_participation') %></h3>
+      <p><%= format_message('text_oversee_participation') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>

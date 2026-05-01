@@ -19,12 +19,6 @@ resource 'Spaces' do
   let(:space_id) { space1.id }
 
   shared_examples 'unauthorized access examples' do
-    get 'web_api/v1/spaces/:space_id' do
-      example_request '[Unauthorized] Retrieving a space' do
-        expect(status).to eq(401)
-      end
-    end
-
     get 'web_api/v1/spaces' do
       example_request '[Unauthorized] Retrieving list of spaces' do
         expect(status).to eq(401)
@@ -115,6 +109,14 @@ resource 'Spaces' do
         expect(project_ids).to include(project_in_folder.id.to_s)
         expect(project_ids).to include(project_not_in_folder.id.to_s)
       end
+
+      example 'Retrieving list of spaces with search' do
+        space2 = create(:space, title_multiloc: { en: 'Blast off!' })
+        do_request(search: 'Blast')
+        expect(status).to eq(200)
+        expect(response_data.size).to eq(1)
+        expect(response_data.first[:id]).to eq(space2.id)
+      end
     end
 
     post 'web_api/v1/spaces' do
@@ -158,27 +160,97 @@ resource 'Spaces' do
         expect(status).to eq(204)
         expect(Space.where(id: space1.id)).to be_empty
       end
+
+      example 'Deleting a space also strips space_moderator roles from its moderators' do
+        create_list(:space_moderator, 3, spaces: [space1])
+        expect(User.space_moderator(space1.id).count).to eq 3
+
+        do_request
+
+        expect(status).to eq(204)
+        expect(Space.where(id: space1.id)).to be_empty
+        expect(User.space_moderator(space1.id).count).to eq 0
+      end
     end
   end
 
   context 'when visitor' do
+    get 'web_api/v1/spaces/:space_id' do
+      example_request '[Unauthorized] Retrieving a space' do
+        expect(status).to eq(401)
+      end
+    end
+
     include_examples 'unauthorized access examples'
   end
 
   context 'when normal user' do
     before { resident_header_token }
 
+    get 'web_api/v1/spaces/:space_id' do
+      example_request '[Unauthorized] Retrieving a space' do
+        expect(status).to eq(401)
+      end
+    end
+
     include_examples 'unauthorized access examples'
   end
 
-  # TODO: Insert tests when role is implemented
-  # context 'space manager (moderator)' do
-  # end
+  context 'space moderator' do
+    before do
+      space_moderator = create(:space_moderator, spaces: [space1])
+      header_token_for(space_moderator)
+    end
+
+    post 'web_api/v1/spaces' do
+      with_options scope: :space do
+        parameter :title_multiloc, 'The multiloc title of the space', required: true
+        parameter :description_multiloc, 'The multiloc description of the space', required: false
+      end
+
+      let(:title_multiloc) { { 'en' => 'New Space' } }
+      let(:description_multiloc) { { 'en' => 'Description of the new space.' } }
+
+      example_request '[Unauthorized] Creating a space' do
+        expect(status).to eq(401)
+      end
+    end
+
+    patch 'web_api/v1/spaces/:space_id' do
+      with_options scope: :space do
+        parameter :title_multiloc, 'The multiloc title of the space', required: false
+        parameter :description_multiloc, 'The multiloc description of the space', required: false
+      end
+
+      let(:title_multiloc) { { 'en' => 'Updated Space Title' } }
+      let(:description_multiloc) { { 'en' => 'Updated description of the space.' } }
+
+      example_request 'Updating a space' do
+        expect(status).to eq(200)
+        expect(response_data[:attributes]).to include(
+          title_multiloc: { en: 'Updated Space Title' },
+          description_multiloc: { en: 'Updated description of the space.' }
+        )
+      end
+    end
+
+    delete 'web_api/v1/spaces/:space_id' do
+      example_request '[Unauthorized] Deleting a space' do
+        expect(status).to eq(401)
+      end
+    end
+  end
 
   context 'project moderator' do
     before do
       project_moderator = create(:project_moderator)
       header_token_for(project_moderator)
+    end
+
+    get 'web_api/v1/spaces/:space_id' do
+      example_request 'Retrieving a space' do
+        expect(status).to eq(200)
+      end
     end
 
     include_examples 'unauthorized access examples'
@@ -188,6 +260,12 @@ resource 'Spaces' do
     before do
       folder_moderator = create(:project_folder_moderator)
       header_token_for(folder_moderator)
+    end
+
+    get 'web_api/v1/spaces/:space_id' do
+      example_request 'Retrieving a space' do
+        expect(status).to eq(200)
+      end
     end
 
     include_examples 'unauthorized access examples'

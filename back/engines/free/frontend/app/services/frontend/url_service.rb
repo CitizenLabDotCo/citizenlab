@@ -134,6 +134,10 @@ module Frontend
       "#{configuration.base_frontend_uri}/admin/projects/#{project_id}"
     end
 
+    def admin_space_url(space_id, configuration = app_config_instance)
+      "#{configuration.base_frontend_uri}/admin/projects/spaces/#{space_id}"
+    end
+
     # Generates a URL for the Input Manager with optional filters.
     #
     # @param for_phase [Phase, String, nil] Phase record or ID to scope the Input Manager to. If nil, returns global input manager URL.

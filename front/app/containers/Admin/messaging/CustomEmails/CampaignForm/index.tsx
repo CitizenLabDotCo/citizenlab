@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
   IconTooltip,
@@ -232,6 +232,7 @@ const CampaignForm = ({
                 firstName: '{{first_name}}',
                 lastName: '{{last_name}}',
               })}
+              withGifSupport
               noVideos
               noAlign
             />
