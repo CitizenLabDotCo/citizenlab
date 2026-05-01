@@ -15,11 +15,15 @@ class ParticipantsService
   def participants(options = {})
     since = options[:since]
     to = options[:to]
+    date_range = since..to
 
-    Analytics::FactParticipation
-      .select(:dimension_user_id).distinct
-      .where.not(dimension_user_id: nil)
-      .where(dimension_date_created_id: since..to)
+    participants = User.where(id: Idea.published.where(created_at: date_range).select(:author_id))
+    participants = participants.or(User.where(id: Comment.where(created_at: date_range).select(:author_id)))
+    participants = participants.or(User.where(id: Reaction.where(created_at: date_range).select(:user_id)))
+    participants = participants.or(User.where(id: Basket.submitted.where(created_at: date_range).select(:user_id)))
+    participants = participants.or(User.where(id: Polls::Response.where(created_at: date_range).select(:user_id)))
+    participants = participants.or(User.where(id: Volunteering::Volunteer.where(created_at: date_range).select(:user_id)))
+    participants.or(User.where(id: Events::Attendance.where(created_at: date_range).select(:attendee_id)))
   end
 
   def ideas_participants(ideas, options = {})
@@ -89,11 +93,7 @@ class ParticipantsService
   end
 
   def project_participants_count_uncached(project)
-    Analytics::FactParticipation
-      .where(dimension_project_id: project.id)
-      .select(:participant_id)
-      .distinct
-      .count
+    count_participants_for_projects([project.id])
   end
 
   # Returns a hash of project IDs to participant counts for the given projects.
@@ -111,10 +111,7 @@ class ParticipantsService
   # Returns the total count of all folder participants including anonymous posts - cached
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
-      Analytics::FactParticipation
-        .where(dimension_project_id: folder.projects)
-        .distinct
-        .count(:participant_id)
+      count_participants_for_projects(folder.projects.select(:id))
     end
   end
 
@@ -263,10 +260,59 @@ class ParticipantsService
   private
 
   def participated_project_ids(user)
-    Analytics::FactParticipation
-      .where(dimension_user_id: user.id)
-      .pluck(:dimension_project_id)
-      .compact
-      .uniq
+    project_ids = []
+    project_ids += Idea.where(author_id: user.id).pluck(:project_id)
+    project_ids += Comment.where(author_id: user.id).joins(:idea).pluck('ideas.project_id')
+    project_ids += Reaction.where(user_id: user.id, reactable_type: 'Idea')
+                     .joins('INNER JOIN ideas ON ideas.id = reactions.reactable_id')
+                     .pluck('ideas.project_id')
+    project_ids += Basket.where(user_id: user.id).joins(:phase).pluck('phases.project_id')
+    project_ids += Polls::Response.where(user_id: user.id).joins(:phase).pluck('phases.project_id')
+    project_ids += Volunteering::Volunteer.where(user_id: user.id)
+                     .joins(cause: :phase).pluck('phases.project_id')
+    project_ids += Events::Attendance.where(attendee_id: user.id)
+                     .joins(:event).pluck('events.project_id')
+    project_ids.compact.uniq
+  end
+
+  def count_participants_for_projects(project_ids)
+    sql = <<~SQL.squish
+      SELECT COUNT(DISTINCT participant_id) FROM (
+        SELECT COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) AS participant_id
+        FROM ideas i WHERE i.project_id IN (:project_ids) AND i.publication_status = 'published'
+        UNION ALL
+        SELECT COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT)
+        FROM comments c INNER JOIN ideas i ON c.idea_id = i.id WHERE i.project_id IN (:project_ids)
+        UNION ALL
+        SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)
+        FROM reactions r INNER JOIN ideas i ON i.id = r.reactable_id
+        WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Idea'
+        UNION ALL
+        SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)
+        FROM reactions r INNER JOIN comments c ON c.id = r.reactable_id
+        INNER JOIN ideas i ON i.id = c.idea_id
+        WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Comment'
+        UNION ALL
+        SELECT COALESCE(pr.user_id::TEXT, pr.id::TEXT)
+        FROM polls_responses pr INNER JOIN phases p ON p.id = pr.phase_id
+        WHERE p.project_id IN (:project_ids)
+        UNION ALL
+        SELECT COALESCE(vv.user_id::TEXT, vv.id::TEXT)
+        FROM volunteering_volunteers vv INNER JOIN volunteering_causes vc ON vc.id = vv.cause_id
+        INNER JOIN phases p ON p.id = vc.phase_id WHERE p.project_id IN (:project_ids)
+        UNION ALL
+        SELECT COALESCE(b.user_id::TEXT, b.id::TEXT)
+        FROM baskets b INNER JOIN phases p ON p.id = b.phase_id
+        WHERE p.project_id IN (:project_ids)
+        UNION ALL
+        SELECT ea.attendee_id::TEXT
+        FROM events_attendances ea INNER JOIN events e ON e.id = ea.event_id
+        WHERE e.project_id IN (:project_ids)
+      ) AS all_participations
+    SQL
+
+    ActiveRecord::Base.connection.select_value(
+      ActiveRecord::Base.sanitize_sql([sql, { project_ids: project_ids }])
+    ).to_i
   end
 end
