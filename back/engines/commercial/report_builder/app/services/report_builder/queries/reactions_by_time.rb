@@ -32,10 +32,10 @@ module ReportBuilder
 
     def time_series_query(scope, interval)
       format = case interval
-               when 'month' then 'YYYY-MM'
-               when 'week' then 'IYYY-IW'
-               when 'day' then 'YYYY-MM-DD'
-               end
+      when 'month' then 'YYYY-MM'
+      when 'week' then 'IYYY-IW'
+      when 'day' then 'YYYY-MM-DD'
+      end
 
       group_expr = "to_char(date_trunc('#{interval}', reactions.created_at), '#{format}')"
 

@@ -269,14 +269,14 @@ class ParticipantsService
     project_ids += Idea.where(author_id: user.id).pluck(:project_id)
     project_ids += Comment.where(author_id: user.id).joins(:idea).pluck('ideas.project_id')
     project_ids += Reaction.where(user_id: user.id, reactable_type: 'Idea')
-                     .joins('INNER JOIN ideas ON ideas.id = reactions.reactable_id')
-                     .pluck('ideas.project_id')
+      .joins('INNER JOIN ideas ON ideas.id = reactions.reactable_id')
+      .pluck('ideas.project_id')
     project_ids += Basket.where(user_id: user.id).joins(:phase).pluck('phases.project_id')
     project_ids += Polls::Response.where(user_id: user.id).joins(:phase).pluck('phases.project_id')
     project_ids += Volunteering::Volunteer.where(user_id: user.id)
-                     .joins(cause: :phase).pluck('phases.project_id')
+      .joins(cause: :phase).pluck('phases.project_id')
     project_ids += Events::Attendance.where(attendee_id: user.id)
-                     .joins(:event).pluck('events.project_id')
+      .joins(:event).pluck('events.project_id')
     project_ids.compact.uniq
   end
 

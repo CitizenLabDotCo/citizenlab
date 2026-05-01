@@ -109,7 +109,7 @@ module ReportBuilder
       end
 
       role_join = if exclude_roles == 'exclude_admins_and_moderators'
-        "INNER JOIN users u ON u.id = user_id AND jsonb_array_length(u.roles) = 0"
+        'INNER JOIN users u ON u.id = user_id AND jsonb_array_length(u.roles) = 0'
       else
         ''
       end
@@ -119,7 +119,7 @@ module ReportBuilder
       # excluded by the INNER JOIN when role filtering is active, which is correct
       # (anonymous participants don't have admin roles).
       author_role_join = if exclude_roles == 'exclude_admins_and_moderators'
-        "INNER JOIN users u ON u.id = author_id AND jsonb_array_length(u.roles) = 0"
+        'INNER JOIN users u ON u.id = author_id AND jsonb_array_length(u.roles) = 0'
       else
         ''
       end
