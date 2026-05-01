@@ -10,7 +10,7 @@ resource 'Analytics', use_transactional_fixtures: false do
 
   before { header 'Content-Type', 'application/json' }
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     parameter :query, 'The query object.', required: true
 
     let(:created_at) { Time.utc(2022, 9, 1) }

@@ -13,7 +13,7 @@ resource 'Analytics - Sessions model' do
     admin_header_token
   end
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before do
       create_list(:session, 5)
     end

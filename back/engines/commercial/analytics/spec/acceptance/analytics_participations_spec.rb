@@ -11,7 +11,7 @@ resource 'Analytics - FactParticipations' do
     admin_header_token
   end
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before_all do
       # Using UTC explicitly, because (unfortunately) the fact_participations view uses UTC when
       # converting created_at to dates instead of tenant timezone.

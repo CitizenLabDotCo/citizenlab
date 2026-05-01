@@ -19,7 +19,7 @@ resource 'Analytics - FactRegistrations model' do
   end
 
   context 'fully complete registrations' do
-    post 'web_api/v1/analytics' do
+    get 'web_api/v1/analytics' do
       before_all do
         # Create 3 users - 2 registered in Sept 2022 (admin & citizen) and 1 in Oct 2022 (citizen)
         create(:admin, registration_completed_at: '2022-08-01 10:15:00')
@@ -67,7 +67,7 @@ resource 'Analytics - FactRegistrations model' do
       create(:invite, created_at: '2022-09-1 13:22:00')
       create(:accepted_invite, created_at: '2022-09-1 13:22:00', accepted_at: '2022-09-1 17:22:00')
     end
-    post 'web_api/v1/analytics' do
+    get 'web_api/v1/analytics' do
       example 'find pending invitations only' do
         do_request({
           query: {

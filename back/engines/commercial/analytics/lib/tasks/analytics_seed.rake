@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :analytics do
-  desc 'Fixes the dimension seeding that cannot be done through the template system because they reference views'
+  desc 'Associates dimension records with fact visits created by the template system'
   task seed: :environment do
     Tenant.not_deleted.each do |tenant|
       tenant.switch do

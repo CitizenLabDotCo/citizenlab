@@ -49,7 +49,6 @@ PATH
   specs:
     analytics (0.1.0)
       rails (~> 7.2)
-      scenic
 
 PATH
   remote: engines/commercial/bulk_import_ideas

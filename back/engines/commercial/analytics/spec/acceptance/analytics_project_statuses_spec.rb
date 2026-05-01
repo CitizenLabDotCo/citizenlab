@@ -9,7 +9,7 @@ resource 'Analytics - ProjectStatus' do
 
   before { admin_header_token }
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before_all do
       create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) # open ended but archived
       create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'draft' }, phase_attrs: { start_at: '2022-01-01', end_at: '2022-01-31' }) # ended but draft

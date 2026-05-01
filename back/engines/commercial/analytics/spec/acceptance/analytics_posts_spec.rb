@@ -11,7 +11,7 @@ resource 'Analytics - FactPosts model' do
     admin_header_token
   end
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before do
       # Using UTC explicitly, because (unfortunately) the fact_posts view uses UTC when
       # converting created_at to dates instead of tenant timezone.

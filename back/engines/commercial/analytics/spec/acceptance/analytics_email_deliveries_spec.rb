@@ -11,7 +11,7 @@ resource 'Analytics - FactEmailDeliveries model' do
     admin_header_token
   end
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before_all do
       create(:delivery)
       campaign1 = create(:manual_project_participants_campaign) # Has a project context associated

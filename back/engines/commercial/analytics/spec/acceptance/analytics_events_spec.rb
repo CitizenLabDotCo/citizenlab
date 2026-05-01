@@ -11,7 +11,7 @@ resource 'Analytics - FactEvent' do
     admin_header_token
   end
 
-  post 'web_api/v1/analytics' do
+  get 'web_api/v1/analytics' do
     before_all do
       # Using UTC explicitly, because (unfortunately) the fact_events view uses UTC
       # instead of the tenant timezone when converting timestamps to dates.
