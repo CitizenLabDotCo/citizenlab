@@ -60,7 +60,7 @@ module EmailCampaigns
           first_name: I18n.t('email_campaigns.preview_data.author_first_name', locale: recipient.locale),
           last_name: I18n.t('email_campaigns.preview_data.author_last_name', locale: recipient.locale),
           display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale),
-          surveys_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys"
+          surveys_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.id}/surveys"
         ),
         initiator: PreviewUser.new(
           first_name: I18n.t('email_campaigns.preview_data.initiator_first_name', locale: recipient.locale),

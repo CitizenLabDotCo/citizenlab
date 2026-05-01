@@ -64,8 +64,8 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
-  # NOTE: Apr 2026 - Slug is still generated but no longer used in URLs.
-  # This is just in case we want to add it back in the future.
+  # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
+  # It will be removed in the near future when we are sure there is no further use for it.
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
   class << self

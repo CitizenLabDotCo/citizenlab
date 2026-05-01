@@ -20,7 +20,6 @@ export interface IMentionData {
   attributes: {
     first_name: string;
     last_name: string;
-    slug: string;
     avatar: ImageSizes;
   };
 }
