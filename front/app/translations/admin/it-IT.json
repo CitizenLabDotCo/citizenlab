@@ -3258,7 +3258,7 @@
   "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip1": "La scansione dei moduli cartacei con Formsync non è inclusa nel tuo piano attuale.",
   "app.containers.AdminPage.phase.methodPicker.formSyncLockedTooltip2": "Contatta il tuo Government Success Manager o l'amministratore per sbloccarla.",
   "app.containers.AdminPage.phase.methodPicker.ideationDescription1": "Sfrutta l'intelligenza collettiva dei tuoi utenti. Invitali a presentare, discutere idee e/o fornire feedback in un forum pubblico.",
-  "app.containers.AdminPage.phase.methodPicker.ideationTitle1": "Raccogli input e feedback in pubblico",
+  "app.containers.AdminPage.phase.methodPicker.ideationTitle1": "Raccogli contributi e feedback in pubblico",
   "app.containers.AdminPage.phase.methodPicker.informationTitle1": "Condividi informazioni",
   "app.containers.AdminPage.phase.methodPicker.lacksAIText1": "Manca degli approfondimenti basati sull'AI della piattaforma",
   "app.containers.AdminPage.phase.methodPicker.lacksReportingText1": "Manca la reportistica della piattaforma, la visualizzazione e l'elaborazione dei dati",
