@@ -31,7 +31,7 @@ describe ParticipantsService do
       create(:idea, author: pp4)
       create(:poll_response, user: pp5)
 
-      expect(service.participants.map(&:dimension_user_id)).to match_array participants.map(&:id)
+      expect(service.participants.map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns participants across the whole platform since a given date' do
@@ -52,7 +52,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to contain_exactly(pp2.id, pp3.id, pp4.id)
+      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to contain_exactly(pp2.id, pp3.id, pp4.id)
     end
   end
 

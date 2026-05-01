@@ -3,7 +3,7 @@
 module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_CLASSES = {
-      'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
+      'ReactionsByTimeWidget' => Queries::ReactionsByTime,
       'VisitorsWidget' => Queries::Visitors,
       'ParticipantsWidget' => Queries::Participants,
       'VisitorsTrafficSourcesWidget' => Queries::TrafficSources,
@@ -13,7 +13,7 @@ module ReportBuilder
       'DemographicsWidget' => Queries::Demographics,
       'RegistrationsWidget' => Queries::Registrations,
       'MethodsUsedWidget' => Queries::MethodsUsed,
-      'ParticipationWidget' => Queries::Analytics::Participation,
+      'ParticipationWidget' => Queries::Participation,
       'ProjectsWidget' => Queries::Projects,
       'ProjectsTimelineWidget' => Queries::ProjectsTimeline,
       'DeviceTypesWidget' => Queries::DeviceTypes,

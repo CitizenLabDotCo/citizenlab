@@ -79,11 +79,46 @@ module ReportBuilder
     end
 
     def fetch_project_participants(project_ids)
-      Analytics::FactParticipation
-        .where(dimension_project_id: project_ids)
-        .group(:dimension_project_id)
-        .select('COUNT(DISTINCT participant_id) as participants_count, dimension_project_id')
-        .to_h { |participant| [participant.dimension_project_id, participant.participants_count] }
+      return {} if project_ids.empty?
+
+      sql = <<~SQL.squish
+        SELECT project_id, COUNT(DISTINCT participant_id) AS participants_count FROM (
+          SELECT COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) AS participant_id, i.project_id
+          FROM ideas i WHERE i.project_id IN (:project_ids) AND i.publication_status = 'published'
+          UNION ALL
+          SELECT COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT), i.project_id
+          FROM comments c INNER JOIN ideas i ON c.idea_id = i.id WHERE i.project_id IN (:project_ids)
+          UNION ALL
+          SELECT COALESCE(r.user_id::TEXT, r.id::TEXT), i.project_id
+          FROM reactions r INNER JOIN ideas i ON i.id = r.reactable_id
+          WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Idea'
+          UNION ALL
+          SELECT COALESCE(r.user_id::TEXT, r.id::TEXT), i.project_id
+          FROM reactions r INNER JOIN comments c ON c.id = r.reactable_id
+          INNER JOIN ideas i ON i.id = c.idea_id
+          WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Comment'
+          UNION ALL
+          SELECT COALESCE(pr.user_id::TEXT, pr.id::TEXT), p.project_id
+          FROM polls_responses pr INNER JOIN phases p ON p.id = pr.phase_id
+          WHERE p.project_id IN (:project_ids)
+          UNION ALL
+          SELECT COALESCE(vv.user_id::TEXT, vv.id::TEXT), p.project_id
+          FROM volunteering_volunteers vv INNER JOIN volunteering_causes vc ON vc.id = vv.cause_id
+          INNER JOIN phases p ON p.id = vc.phase_id WHERE p.project_id IN (:project_ids)
+          UNION ALL
+          SELECT COALESCE(b.user_id::TEXT, b.id::TEXT), p.project_id
+          FROM baskets b INNER JOIN phases p ON p.id = b.phase_id WHERE p.project_id IN (:project_ids)
+          UNION ALL
+          SELECT ea.attendee_id::TEXT, e.project_id
+          FROM events_attendances ea INNER JOIN events e ON e.id = ea.event_id
+          WHERE e.project_id IN (:project_ids)
+        ) AS all_participations
+        GROUP BY project_id
+      SQL
+
+      ActiveRecord::Base.connection.select_all(
+        ActiveRecord::Base.sanitize_sql([sql, { project_ids: project_ids }])
+      ).to_h { |row| [row['project_id'], row['participants_count'].to_i] }
     end
 
     def serialize(entity, serializer)

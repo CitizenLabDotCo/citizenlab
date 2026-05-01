@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::Queries::Analytics::Participation do
+RSpec.describe ReportBuilder::Queries::Participation do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do

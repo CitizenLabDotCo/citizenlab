@@ -13,17 +13,16 @@ class ParticipantsService
   ]
 
   def participants(options = {})
-    since = options[:since]
-    to = options[:to]
-    date_range = since..to
+    since = options[:since]&.to_date
+    to = options[:to]&.to_date
 
-    participants = User.where(id: Idea.published.where(created_at: date_range).select(:author_id))
-    participants = participants.or(User.where(id: Comment.where(created_at: date_range).select(:author_id)))
-    participants = participants.or(User.where(id: Reaction.where(created_at: date_range).select(:user_id)))
-    participants = participants.or(User.where(id: Basket.submitted.where(created_at: date_range).select(:user_id)))
-    participants = participants.or(User.where(id: Polls::Response.where(created_at: date_range).select(:user_id)))
-    participants = participants.or(User.where(id: Volunteering::Volunteer.where(created_at: date_range).select(:user_id)))
-    participants.or(User.where(id: Events::Attendance.where(created_at: date_range).select(:attendee_id)))
+    participants = User.where(id: date_scoped(Idea.published, since, to).select(:author_id))
+    participants = participants.or(User.where(id: date_scoped(Comment, since, to).select(:author_id)))
+    participants = participants.or(User.where(id: date_scoped(Reaction, since, to).select(:user_id)))
+    participants = participants.or(User.where(id: date_scoped(Basket.submitted, since, to).select(:user_id)))
+    participants = participants.or(User.where(id: date_scoped(Polls::Response, since, to).select(:user_id)))
+    participants = participants.or(User.where(id: date_scoped(Volunteering::Volunteer, since, to).select(:user_id)))
+    participants.or(User.where(id: date_scoped(Events::Attendance, since, to).select(:attendee_id)))
   end
 
   def ideas_participants(ideas, options = {})
@@ -258,6 +257,12 @@ class ParticipantsService
   end
 
   private
+
+  def date_scoped(scope, since, to)
+    scope = scope.where('created_at::date >= ?', since) if since
+    scope = scope.where('created_at::date <= ?', to) if to
+    scope
+  end
 
   def participated_project_ids(user)
     project_ids = []

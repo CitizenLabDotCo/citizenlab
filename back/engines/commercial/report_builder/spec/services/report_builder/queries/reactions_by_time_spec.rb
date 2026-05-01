@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
+RSpec.describe ReportBuilder::Queries::ReactionsByTime do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
