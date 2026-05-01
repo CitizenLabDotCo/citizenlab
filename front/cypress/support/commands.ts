@@ -2066,7 +2066,7 @@ function createProjectWithNativeSurveyPhase({
     })
     .then((project) => {
       const projectId = project.body.data.id;
-      const projectSlug = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
 
       return cy
         .apiCreateNativeSurveyPhase({
@@ -2126,7 +2126,7 @@ function createProjectWithIdeationPhase({
     })
     .then((project) => {
       const projectId = project.body.data.id;
-      const projectSlug = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
 
       return cy
         .apiCreatePhase({

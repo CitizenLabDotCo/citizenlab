@@ -6,11 +6,9 @@ describe('Follow area', () => {
   const email = randomEmail();
   const password = randomString();
   let userId: string;
-  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
-      userId = response.body.data.id;
       userId = response.body.data.id;
     });
   });
