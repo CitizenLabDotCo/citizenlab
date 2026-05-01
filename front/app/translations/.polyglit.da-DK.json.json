@@ -4,6 +4,56 @@
     "verified_at": "2026-04-22T16:13:29.827729Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:01:09.437196Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.NewAuthModal.steps.Success.allDone": {
     "state": "verified",
     "verified_at": "2026-04-24T10:50:26.324675Z",
