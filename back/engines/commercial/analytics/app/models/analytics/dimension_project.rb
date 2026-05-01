@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: analytics_dimension_projects
-#
-#  id             :uuid             primary key
-#  title_multiloc :jsonb
-#
 module Analytics
   class DimensionProject < Analytics::ApplicationRecordView
     self.primary_key = :id
+
+    attribute :id, :string
+    attribute :title_multiloc, :jsonb
+
+    backed_by_query <<~SQL.squish
+      SELECT id, title_multiloc FROM projects
+    SQL
   end
 end
