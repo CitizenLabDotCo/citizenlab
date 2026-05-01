@@ -165,14 +165,13 @@ class Project < ApplicationRecord
   }
 
   scope :with_participation_count, lambda {
-    joins(<<~SQL.squish
+    union_sql = ParticipantsService.participations_union_sql('= projects.id')
+    joins(<<~SQL.squish)
       LEFT JOIN LATERAL (
         SELECT COUNT(DISTINCT participant_id) as participants_count
-        FROM analytics_fact_participations
-        WHERE dimension_project_id = projects.id
+        FROM (#{union_sql}) AS all_participations
       ) AS project_participants ON true
     SQL
-         )
   }
 
   alias project_id id

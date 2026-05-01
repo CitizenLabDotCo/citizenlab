@@ -5,7 +5,6 @@ module Analytics
     MODELS = {
       email_delivery: FactEmailDelivery,
       event: FactEvent,
-      participation: FactParticipation,
       post: FactPost,
       project_status: FactProjectStatus,
       registration: FactRegistration,

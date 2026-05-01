@@ -256,6 +256,67 @@ class ParticipantsService
     end
   end
 
+  # Generates a UNION ALL SQL query that produces (participant_id[, created_at])
+  # rows for all participation types within the given project scope.
+  #
+  # @param project_filter [String] SQL expression for project scoping.
+  #   Applied as "i.project_id <filter>" / "p.project_id <filter>" / "e.project_id <filter>".
+  #   Examples: "IN ('uuid1','uuid2')", "= projects.id"
+  # @param date_filter [String, nil] Optional SQL WHERE clause for date scoping,
+  #   using the placeholder "created_at" which is table-qualified per branch.
+  #   Example: "created_at >= '2022-01-01' AND created_at < '2023-01-01'"
+  # @param exclude_roles [String, nil] Pass 'exclude_admins_and_moderators' to
+  #   INNER JOIN users and filter out admins/moderators.
+  # @param include_created_at [Boolean] When true, includes created_at as a
+  #   second column (needed for time-series grouping).
+  # @return [String] SQL fragment
+  def self.participations_union_sql(project_filter, date_filter: nil, exclude_roles: nil, include_created_at: false)
+    role_join = if exclude_roles == 'exclude_admins_and_moderators'
+      ->(col) { "INNER JOIN users u ON u.id = #{col} AND jsonb_array_length(u.roles) = 0" }
+    else
+      ->(_col) { '' }
+    end
+
+    date_and = ->(col) { date_filter ? " AND #{date_filter.gsub('created_at', col)}" : '' }
+    created_col = ->(col) { include_created_at ? ", #{col}" : '' }
+
+    <<~SQL.squish
+      SELECT COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) AS participant_id#{created_col.call('i.created_at')}
+      FROM ideas i #{role_join.call('i.author_id')}
+      WHERE i.project_id #{project_filter} AND i.publication_status = 'published'#{date_and.call('i.created_at')}
+      UNION ALL
+      SELECT COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT)#{created_col.call('c.created_at')}
+      FROM comments c INNER JOIN ideas i ON c.idea_id = i.id #{role_join.call('c.author_id')}
+      WHERE i.project_id #{project_filter}#{date_and.call('c.created_at')}
+      UNION ALL
+      SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)#{created_col.call('r.created_at')}
+      FROM reactions r INNER JOIN ideas i ON i.id = r.reactable_id #{role_join.call('r.user_id')}
+      WHERE i.project_id #{project_filter} AND r.reactable_type = 'Idea'#{date_and.call('r.created_at')}
+      UNION ALL
+      SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)#{created_col.call('r.created_at')}
+      FROM reactions r INNER JOIN comments c ON c.id = r.reactable_id
+      INNER JOIN ideas i ON i.id = c.idea_id #{role_join.call('r.user_id')}
+      WHERE i.project_id #{project_filter} AND r.reactable_type = 'Comment'#{date_and.call('r.created_at')}
+      UNION ALL
+      SELECT COALESCE(pr.user_id::TEXT, pr.id::TEXT)#{created_col.call('pr.created_at')}
+      FROM polls_responses pr INNER JOIN phases p ON p.id = pr.phase_id #{role_join.call('pr.user_id')}
+      WHERE p.project_id #{project_filter}#{date_and.call('pr.created_at')}
+      UNION ALL
+      SELECT COALESCE(vv.user_id::TEXT, vv.id::TEXT)#{created_col.call('vv.created_at')}
+      FROM volunteering_volunteers vv INNER JOIN volunteering_causes vc ON vc.id = vv.cause_id
+      INNER JOIN phases p ON p.id = vc.phase_id #{role_join.call('vv.user_id')}
+      WHERE p.project_id #{project_filter}#{date_and.call('vv.created_at')}
+      UNION ALL
+      SELECT COALESCE(b.user_id::TEXT, b.id::TEXT)#{created_col.call('b.created_at')}
+      FROM baskets b INNER JOIN phases p ON p.id = b.phase_id #{role_join.call('b.user_id')}
+      WHERE p.project_id #{project_filter}#{date_and.call('b.created_at')}
+      UNION ALL
+      SELECT ea.attendee_id::TEXT#{created_col.call('ea.created_at')}
+      FROM events_attendances ea INNER JOIN events e ON e.id = ea.event_id #{role_join.call('ea.attendee_id')}
+      WHERE e.project_id #{project_filter}#{date_and.call('ea.created_at')}
+    SQL
+  end
+
   private
 
   def date_scoped(scope, since, to)
@@ -281,43 +342,9 @@ class ParticipantsService
   end
 
   def count_participants_for_projects(project_ids)
-    sql = <<~SQL.squish
-      SELECT COUNT(DISTINCT participant_id) FROM (
-        SELECT COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) AS participant_id
-        FROM ideas i WHERE i.project_id IN (:project_ids) AND i.publication_status = 'published'
-        UNION ALL
-        SELECT COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT)
-        FROM comments c INNER JOIN ideas i ON c.idea_id = i.id WHERE i.project_id IN (:project_ids)
-        UNION ALL
-        SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)
-        FROM reactions r INNER JOIN ideas i ON i.id = r.reactable_id
-        WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Idea'
-        UNION ALL
-        SELECT COALESCE(r.user_id::TEXT, r.id::TEXT)
-        FROM reactions r INNER JOIN comments c ON c.id = r.reactable_id
-        INNER JOIN ideas i ON i.id = c.idea_id
-        WHERE i.project_id IN (:project_ids) AND r.reactable_type = 'Comment'
-        UNION ALL
-        SELECT COALESCE(pr.user_id::TEXT, pr.id::TEXT)
-        FROM polls_responses pr INNER JOIN phases p ON p.id = pr.phase_id
-        WHERE p.project_id IN (:project_ids)
-        UNION ALL
-        SELECT COALESCE(vv.user_id::TEXT, vv.id::TEXT)
-        FROM volunteering_volunteers vv INNER JOIN volunteering_causes vc ON vc.id = vv.cause_id
-        INNER JOIN phases p ON p.id = vc.phase_id WHERE p.project_id IN (:project_ids)
-        UNION ALL
-        SELECT COALESCE(b.user_id::TEXT, b.id::TEXT)
-        FROM baskets b INNER JOIN phases p ON p.id = b.phase_id
-        WHERE p.project_id IN (:project_ids)
-        UNION ALL
-        SELECT ea.attendee_id::TEXT
-        FROM events_attendances ea INNER JOIN events e ON e.id = ea.event_id
-        WHERE e.project_id IN (:project_ids)
-      ) AS all_participations
-    SQL
+    filter = ActiveRecord::Base.sanitize_sql(['IN (?)', project_ids])
+    sql = "SELECT COUNT(DISTINCT participant_id) FROM (#{self.class.participations_union_sql(filter)}) AS all_participations"
 
-    ActiveRecord::Base.connection.select_value(
-      ActiveRecord::Base.sanitize_sql([sql, { project_ids: project_ids }])
-    ).to_i
+    ActiveRecord::Base.connection.select_value(sql).to_i
   end
 end
