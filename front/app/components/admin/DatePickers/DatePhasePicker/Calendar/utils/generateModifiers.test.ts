@@ -75,7 +75,7 @@ describe('generateModifiers', () => {
           { from: new Date(2024, 2, 2), to: new Date(2024, 2, 31) },
           { from: new Date(2024, 4, 2), to: new Date(2024, 4, 31) },
         ],
-        isNoTimeAvailableDay: [new Date(2024, 2, 1), new Date(2024, 4, 1)],
+        isNoTimeAvailable: [new Date(2024, 2, 1), new Date(2024, 4, 1)],
       });
     });
 
@@ -100,7 +100,7 @@ describe('generateModifiers', () => {
         isDisabledGradient_two: new Date(2024, 4, 3),
         isDisabledGradient_three: new Date(2024, 4, 4),
         isDisabledSingle: undefined,
-        isNoTimeAvailableDay: [new Date(2024, 2, 1), new Date(2024, 4, 1)],
+        isNoTimeAvailable: [new Date(2024, 2, 1), new Date(2024, 4, 1)],
       });
     });
 
@@ -127,7 +127,7 @@ describe('generateModifiers', () => {
         ],
         isDisabledEnd: [new Date(2024, 2, 20)],
         isFullOccupiedDay: [new Date(2024, 2, 1)],
-        isNoTimeAvailableDay: [new Date(2024, 2, 1), new Date(2024, 2, 2)],
+        isNoTimeAvailable: [new Date(2024, 2, 1), new Date(2024, 2, 2)],
       });
     });
 
@@ -151,7 +151,7 @@ describe('generateModifiers', () => {
         isDisabledEnd: undefined,
         isDisabledMiddle: undefined,
         isFullOccupiedDay: [new Date(2024, 2, 1)],
-        isNoTimeAvailableDay: [new Date(2024, 2, 1), new Date(2024, 2, 2)],
+        isNoTimeAvailable: [new Date(2024, 2, 1), new Date(2024, 2, 2)],
       });
     });
 
@@ -166,7 +166,7 @@ describe('generateModifiers', () => {
       expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
         isDisabledSingle: [new Date(2024, 2, 1)],
         isFullOccupiedDay: [new Date(2024, 2, 1)],
-        isNoTimeAvailableDay: [new Date(2024, 2, 1)],
+        isNoTimeAvailable: [new Date(2024, 2, 1)],
       });
     });
   });
@@ -194,7 +194,7 @@ describe('generateModifiers', () => {
         isSelectedGradient_one: new Date(2024, 4, 2),
         isSelectedGradient_two: new Date(2024, 4, 3),
         isSelectedGradient_three: new Date(2024, 4, 4),
-        isNoTimeAvailableDay: [new Date(2024, 2, 1)],
+        isNoTimeAvailable: [new Date(2024, 2, 1)],
       });
     });
 
@@ -222,7 +222,7 @@ describe('generateModifiers', () => {
         ],
         isDisabledEnd: [new Date(2024, 3, 1), new Date(2024, 6, 1)],
         isSelectedSingleDay: selectedRange.from,
-        isNoTimeAvailableDay: [new Date(2024, 2, 1), new Date(2024, 5, 1)],
+        isNoTimeAvailable: [new Date(2024, 2, 1), new Date(2024, 5, 1)],
       });
     });
   });

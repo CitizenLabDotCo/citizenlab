@@ -173,6 +173,21 @@ const DayPickerStyles = styled.div`
     ) !important;
     border-radius: 0 !important;
   }
+
+  .is-selected-single-day.is-disabled-end:not(.is-full-occupied-day):not(
+      .is-no-time-available
+    )
+    > button,
+  .rdp-range_end.is-disabled-end:not(.is-full-occupied-day):not(
+      .is-no-time-available
+    )
+    > button {
+    background: var(--rdp-accent-color);
+    color: ${colors.white};
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+  }
 `;
 
 const TimeInputContainer = styled(Box)`
