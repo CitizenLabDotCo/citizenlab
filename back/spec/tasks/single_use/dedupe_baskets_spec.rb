@@ -117,7 +117,7 @@ describe 'single_use:dedupe_baskets rake task' do
       end
     end
 
-    context 'when basket.update fails for an orphan' do
+    context 'when basket.update fails' do
       let!(:draft_basket) { create(:basket, user: user, phase: phase, submitted_at: nil) }
 
       before do
@@ -126,7 +126,7 @@ describe 'single_use:dedupe_baskets rake task' do
         allow_any_instance_of(Basket).to receive(:update).with(user_id: nil).and_return(false)
       end
 
-      it 'leaves the failed orphan attached' do
+      it 'leaves the basket attached' do
         run_task(execute: true)
 
         expect(draft_basket.reload.user_id).to eq(user.id)
