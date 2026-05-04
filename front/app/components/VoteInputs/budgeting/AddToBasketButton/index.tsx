@@ -7,7 +7,6 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -30,6 +29,7 @@ import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { isPhaseActive } from 'utils/projectUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';

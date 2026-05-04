@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from 'react';
 
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-import { useLocation } from 'utils/router';
 
 import useEvents from 'api/events/useEvents';
 import { IPhaseData } from 'api/phases/types';
@@ -23,6 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
+import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 interface Props {

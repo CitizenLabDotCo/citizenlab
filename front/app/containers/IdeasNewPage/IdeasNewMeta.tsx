@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -14,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { getInputTermMessage } from 'utils/i18n';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

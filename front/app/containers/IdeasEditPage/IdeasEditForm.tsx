@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -17,6 +16,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlB
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
+import { useSearch } from 'utils/router';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';

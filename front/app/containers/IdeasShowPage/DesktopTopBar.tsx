@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -10,6 +9,7 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../IdeasShow/messages';
 

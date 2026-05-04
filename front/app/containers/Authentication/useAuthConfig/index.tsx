@@ -1,9 +1,9 @@
-import { useLocation, useSearch } from 'utils/router';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
+
+import { useLocation, useSearch } from 'utils/router';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();

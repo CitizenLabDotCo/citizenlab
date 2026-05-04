@@ -7,12 +7,12 @@ import {
   Box,
   CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 

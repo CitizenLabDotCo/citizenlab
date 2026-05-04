@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import { isSuperAdmin } from 'utils/permissions/roles';
+import { useSearch } from 'utils/router';
 
 /**
  * Hook to check if we should be able to see super_admin (internal only) features in the interface.

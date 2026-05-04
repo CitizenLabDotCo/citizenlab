@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -11,6 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 import { Top } from 'components/admin/PostManager/components/PostPreview';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 

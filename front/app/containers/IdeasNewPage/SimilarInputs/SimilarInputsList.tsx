@@ -7,7 +7,6 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -23,6 +22,7 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from './messages';
 

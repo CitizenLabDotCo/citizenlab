@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -19,6 +18,7 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 import SurveyNotActiveNotice from './SurveyNotActiveNotice';

@@ -8,7 +8,6 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import { PublicationTab } from '../..';
 

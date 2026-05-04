@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFiles from 'api/files/useFiles';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../FileUploader/messages';
 

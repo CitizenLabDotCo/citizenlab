@@ -6,12 +6,13 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import type { LinkProps } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
 import Link from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
+
+import type { LinkProps } from '@tanstack/react-router';
 
 // very similar to front/app/components/admin/NavigationTabs/Tab.tsx
 const Container = styled.div`

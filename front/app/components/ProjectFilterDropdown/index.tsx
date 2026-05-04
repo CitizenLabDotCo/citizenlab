@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import useProjects from 'api/projects/useProjects';
 
 import useLocalize from 'hooks/useLocalize';
@@ -9,6 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { classNames } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 type Props = {
   title: string | JSX.Element;

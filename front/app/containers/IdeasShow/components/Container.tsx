@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useSearch } from 'utils/router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
@@ -8,6 +7,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isString } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import {
   pageContentMaxWidth,

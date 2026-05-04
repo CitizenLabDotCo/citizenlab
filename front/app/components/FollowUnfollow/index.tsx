@@ -8,7 +8,6 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 
 import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';
@@ -24,6 +23,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';

@@ -6,7 +6,6 @@ import {
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import type { LinkProps } from '@tanstack/react-router';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -17,6 +16,8 @@ import {
   tabBorderSize,
   activeBorderSize,
 } from './tabsStyleConstants';
+
+import type { LinkProps } from '@tanstack/react-router';
 
 type ContainerProps = {
   active: boolean;
