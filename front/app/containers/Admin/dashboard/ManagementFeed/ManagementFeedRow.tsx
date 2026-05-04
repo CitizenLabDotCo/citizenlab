@@ -118,7 +118,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
                     values={{
                       project: (
                         <Link
-                          to="/$locale/admin/projects/$projectId"
+                          to="/admin/projects/$projectId"
                           params={{ projectId: project.data.id }}
                           target="_blank"
                         >

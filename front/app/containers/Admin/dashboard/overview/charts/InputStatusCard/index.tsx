@@ -126,7 +126,7 @@ const InputStatusCard = ({
         marginTop="20px"
         textDecorationHover="underline"
         text={formatMessage(messages.goToInputManager)}
-        to="/$locale/admin/ideas"
+        to="/admin/ideas"
       />
     </GraphCard>
   );

@@ -45,7 +45,7 @@ const EmptyState = () => (
             width="auto"
             mb="16px"
             bgColor={colors.primary}
-            to="/$locale/admin/dashboard/representation/edit-base-data"
+            to="/admin/dashboard/representation/edit-base-data"
           >
             <FormattedMessage {...messages.submitBaseDataButton} />
           </ButtonWithLink>

@@ -160,7 +160,7 @@ export const UserMenu = () => {
               </ItemMenu>
             )}
             <ItemMenu
-              to="/$locale/profile/$userSlug"
+              to="/profile/$userSlug"
               params={{ userSlug: authUser.data.attributes.slug }}
               buttonStyle="text"
             >

@@ -57,7 +57,7 @@ const SeatsOverview = () => {
       alignItems="center"
     >
       <Box px="51px" maxWidth="1400px" w="100%">
-        <GoBackButton to="/$locale/admin/users" />
+        <GoBackButton to="/admin/users" />
         <Title>
           <FormattedMessage {...messages.seatsOverview} />
         </Title>
