@@ -227,7 +227,8 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            linkTo={`/events/${event.id}`}
+            to="/$locale/events/$eventId"
+            params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button
             // to provide context for screen readers. Using the same "Read more" text

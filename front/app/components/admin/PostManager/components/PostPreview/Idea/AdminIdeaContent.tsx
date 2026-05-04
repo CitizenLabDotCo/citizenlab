@@ -222,7 +222,8 @@ const AdminIdeaContent = ({
         </ButtonWithLink>
         {!isCommonGround && (
           <ButtonWithLink
-            linkTo={`/ideas/${idea.data.attributes.slug}`}
+            to="/$locale/ideas/$slug"
+            params={{ slug: idea.data.attributes.slug }}
             // We open in a new tab not lose state of the input manager
             openLinkInNewTab
             icon="eye"
