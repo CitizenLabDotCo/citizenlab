@@ -160,7 +160,8 @@ export const UserMenu = () => {
               </ItemMenu>
             )}
             <ItemMenu
-              linkTo={`/profile/${authUser.data.attributes.slug}`}
+              to="/$locale/profile/$userSlug"
+              params={{ userSlug: authUser.data.attributes.slug }}
               buttonStyle="text"
             >
               <Box display="flex" justifyContent="space-between" w="100%">

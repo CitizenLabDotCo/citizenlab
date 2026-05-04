@@ -68,7 +68,8 @@ const CustomPagesEditSettings = () => {
             title: localize(pageTitleMultiloc),
             rightSideCTA: (
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.data.attributes.slug}`}
+                to="/$locale/pages/$slug"
+                params={{ slug: customPage.data.attributes.slug }}
               />
             ),
           }}
