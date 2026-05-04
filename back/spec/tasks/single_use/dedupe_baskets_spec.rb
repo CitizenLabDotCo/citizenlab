@@ -116,6 +116,26 @@ describe 'single_use:dedupe_baskets rake task' do
         expect(draft_basket_phase2.reload.user_id).to be_nil
       end
     end
+
+    context 'when basket.update fails for an orphan' do
+      let!(:draft_basket) { create(:basket, user: user, phase: phase, submitted_at: nil) }
+
+      before do
+        create(:basket, user: user, phase: phase) # keeper, makes the draft a duplicate
+        # Simulate a validation/save failure on the detach update
+        allow_any_instance_of(Basket).to receive(:update).with(user_id: nil).and_return(false)
+      end
+
+      it 'leaves the failed orphan attached' do
+        run_task(execute: true)
+
+        expect(draft_basket.reload.user_id).to eq(user.id)
+      end
+
+      it 'logs an error to stdout' do
+        expect { run_task(execute: true) }.to output(/ERROR! Failed to detach basket/).to_stdout
+      end
+    end
   end
 end
 # rubocop:enable RSpec/DescribeClass
