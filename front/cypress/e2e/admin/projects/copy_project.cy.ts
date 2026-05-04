@@ -1,4 +1,3 @@
-import { data } from 'cypress/types/jquery';
 import { randomString } from '../../../support/commands';
 
 describe('Copy projects outside folder', () => {
