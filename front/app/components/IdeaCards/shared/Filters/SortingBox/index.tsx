@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IdeaSortMethod } from 'api/phases/types';
+import { IdeaSortMethod, ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
@@ -26,7 +26,8 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const { sort } = useSearch({ strict: false });
-  const currentSortType = sort || phaseDefaultSort || 'trending';
+  const sortFromUrl = ideaSortMethods.find((m) => m === sort);
+  const currentSortType = sortFromUrl || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>

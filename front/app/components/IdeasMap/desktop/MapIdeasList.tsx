@@ -4,6 +4,7 @@ import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -65,9 +66,16 @@ const MapIdeasList = memo<Props>(
 
     const { data: phase } = usePhase(phaseId);
 
+    const sortFromUrl = ideaSortMethods.find((m) => m === sortParam);
     const sort =
-      sortParam ?? phase?.data.attributes.ideas_order ?? IdeaSortMethodFallback;
-    const input_topics: string[] = topics ?? [];
+      sortFromUrl ??
+      phase?.data.attributes.ideas_order ??
+      IdeaSortMethodFallback;
+    const input_topics: string[] = Array.isArray(topics)
+      ? topics
+      : topics
+      ? [topics]
+      : [];
 
     const { data: ideaMarkers } = useIdeaMarkers({
       projectIds: [projectId],
