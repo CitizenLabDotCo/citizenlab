@@ -178,8 +178,8 @@ describe('Spae moderator: permissions', () => {
     cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
     cy.get('#e2e-project-title-setting-field').type(projectName);
 
-    // Select space
-    cy.dataCy('space-select').select(spaceId);
+    // Select root
+    cy.dataCy('project-context-root-radio').click();
 
     // Submit
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -188,6 +188,9 @@ describe('Spae moderator: permissions', () => {
     cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
       projectName
     );
+
+    cy.dataCy('space-name-project-header').should('not.exist');
+    cy.dataCy('e2e-request-approval').contains('Request approval');
   });
 
   after(() => {

@@ -110,6 +110,7 @@ export type Props = {
   isRequired?: boolean;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: () => void;
+  dataCy?: string;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -128,6 +129,7 @@ const Radio = ({
   onKeyDown,
   onChange: _onChange,
   onClick,
+  dataCy,
   ...rest
 }: Props) => {
   const theme = useTheme();
@@ -170,6 +172,7 @@ const Radio = ({
       display="flex"
       alignItems="flex-start"
       data-testid="radio-container"
+      data-cy={dataCy}
       {...rest}
     >
       <HiddenRadio
