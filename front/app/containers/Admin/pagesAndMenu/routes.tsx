@@ -49,6 +49,12 @@ export const adminCustomPageContentPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/content`;
 };
 
+export const adminCustomPageContentLink = (customPageId: string) =>
+  ({
+    to: '/$locale/admin/pages-menu/pages/$customPageId/content',
+    params: { customPageId },
+  } as const);
+
 export const adminCustomPageSettingsPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
