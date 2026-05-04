@@ -28,14 +28,15 @@ const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
     : undefined;
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const slug = notification.attributes.post_slug;
 
-  if (!isNilOrError(project)) {
+  if (!isNilOrError(project) && slug) {
     const inputTerm = getInputTerm(phases?.data);
 
     return (
       <NotificationWrapper
         to="/ideas/$slug"
-        params={{ slug: notification.attributes.post_slug ?? '' }}
+        params={{ slug }}
         timing={notification.attributes.created_at}
         icon="comments"
         isRead={!!notification.attributes.read_at}

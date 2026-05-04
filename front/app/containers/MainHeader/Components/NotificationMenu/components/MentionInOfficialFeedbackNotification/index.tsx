@@ -22,11 +22,14 @@ const MentionInCommentNotification = memo<Props>((props) => {
   const officialFeedbackAuthorMultiloc =
     notification.attributes.official_feedback_author;
   const userSlug = notification.attributes.initiating_user_slug;
+  const slug = notification.attributes.post_slug;
+
+  if (!slug) return null;
 
   return (
     <NotificationWrapper
       to="/ideas/$slug"
-      params={{ slug: notification.attributes.post_slug ?? '' }}
+      params={{ slug }}
       timing={notification.attributes.created_at}
       icon="mention"
       isRead={!!notification.attributes.read_at}
