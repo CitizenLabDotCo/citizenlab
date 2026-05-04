@@ -82,7 +82,7 @@ describe('Spae moderator: permissions', () => {
     );
   });
 
-  it.only('Can create folder in space', () => {
+  it('Can create folder in space', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit('/admin/projects/folders/new');
 
@@ -136,17 +136,59 @@ describe('Spae moderator: permissions', () => {
     cy.dataCy('space-select').should('have.value', spaceId);
   });
 
-  // it('Can create project in space', () => {
-  //   // TODO
-  // });
+  it('Can create project in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/new');
 
-  // it('Can create project in folder in space', () => {
-  //   // TODO
-  // });
+    // Add title
+    const projectName = randomString();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
 
-  // it('Can create project in root', () => {
-  //   // TODO
-  // });
+    // Select space
+    cy.dataCy('space-select').select(spaceId);
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    // Confirm we got redirected to project page
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      projectName
+    );
+
+    cy.dataCy('space-name-project-header').should('contain.text', spaceName);
+  });
+
+  it('Can create project in root', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/new');
+
+    // Add title
+    const projectName = randomString();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+
+    // Select space
+    cy.dataCy('space-select').select(spaceId);
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    // Confirm we got redirected to project page
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      projectName
+    );
+  });
 
   after(() => {
     cy.apiRemoveProject(projectId);
