@@ -54,7 +54,7 @@ const PageNotFound = () => {
           {formatMessage(messages.pageNotFoundDescription)}
         </Text>
         <ButtonWithLink
-          linkTo="/"
+          to="/$locale/"
           text={formatMessage(messages.goBackToHomePage)}
           icon="arrow-left"
         />

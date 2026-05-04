@@ -76,7 +76,7 @@ const Unauthorized = ({
                 {formatMessage(messages.notAuthorized)}
               </Text>
               <ButtonWithLink
-                linkTo="/"
+                to="/$locale/"
                 text={formatMessage(pageNotFoundMessages.goBackToHomePage)}
                 icon="arrow-left"
               />

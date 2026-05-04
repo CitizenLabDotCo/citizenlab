@@ -167,7 +167,7 @@ const UserHeader = ({ userSlug }: Props) => {
           )}
         {!isNilOrError(authUser) && authUser.data.id === user.data.id && (
           <ButtonWithLink
-            linkTo="/profile/edit"
+            to="/$locale/profile/edit"
             buttonStyle="text"
             icon="edit"
             className="e2e-edit-profile"

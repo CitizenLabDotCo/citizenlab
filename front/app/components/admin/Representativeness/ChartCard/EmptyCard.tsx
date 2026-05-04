@@ -87,7 +87,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             <ButtonWithLink
               width="164px"
               bgColor={colors.primary}
-              linkTo="/admin/dashboard/representation/edit-base-data"
+              to="/$locale/admin/dashboard/representation/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />
             </ButtonWithLink>

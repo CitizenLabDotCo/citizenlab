@@ -27,7 +27,7 @@ const ChartFilters = ({ projectId, onProjectFilter, noData }: Props) => (
     <ProjectFilter projectId={projectId} onProjectFilter={onProjectFilter} />
     {!noData && (
       <ButtonWithLink
-        linkTo="/admin/dashboard/representation/edit-base-data"
+        to="/$locale/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
         bgColor={colors.teal}
       />

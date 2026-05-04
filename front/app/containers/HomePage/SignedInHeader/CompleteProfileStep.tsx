@@ -69,7 +69,7 @@ const CompleteProfileStep = ({
               className="e2e-signed-in-header-complete-skip-btn"
             />
             <AcceptButton
-              linkTo="/profile/edit"
+              to="/$locale/profile/edit"
               className="e2e-signed-in-header-accept-btn"
               text={formatMessage(messages.completeProfile)}
             />
