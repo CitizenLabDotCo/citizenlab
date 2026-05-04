@@ -21,7 +21,7 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
@@ -96,7 +96,7 @@ const GenericBottomInfoSection = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             ...breadcrumbs,
             { label: formatMessage(messages.pageTitle) },
