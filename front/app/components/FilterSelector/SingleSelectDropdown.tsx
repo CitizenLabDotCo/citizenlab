@@ -48,7 +48,7 @@ interface Props extends SelectorProps {
   options: IFilterSelectorValue[];
 }
 
-const Combobox = ({
+const SingleSelectDropdown = ({
   options,
   width,
   opened,
@@ -166,8 +166,7 @@ const Combobox = ({
             ariaControls={baseID}
             // Needed to track aria-labelledby
             id={`${baseID}-label`}
-            role="combobox"
-            aria-haspopup="listbox"
+            ariaHasPopup="listbox"
             ariaLabel={
               typeof currentTitle === 'string' ? currentTitle : undefined
             }
@@ -240,4 +239,4 @@ const Combobox = ({
   );
 };
 
-export default Combobox;
+export default SingleSelectDropdown;

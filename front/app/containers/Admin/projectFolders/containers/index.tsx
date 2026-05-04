@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import { HighestRole } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,16 +15,10 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from './messages';
-
-const ALLOWED_HIGHEST_ROLES: (string | undefined)[] = [
-  'super_admin',
-  'admin',
-  'space_moderator',
-  'project_folder_moderator',
-] satisfies HighestRole[];
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams({ strict: false });
@@ -35,8 +28,16 @@ const AdminProjectFolderEdition = () => {
   const { formatMessage } = useIntl();
 
   if (!authUser || !projectFolder || !projectFolderId) return null;
-  const { highest_role } = authUser.data.attributes;
-  if (!ALLOWED_HIGHEST_ROLES.includes(highest_role)) return null;
+
+  if (
+    !userModeratesFolder(
+      authUser,
+      projectFolderId,
+      projectFolder.data.attributes.space_id
+    )
+  ) {
+    return null;
+  }
 
   const goBack = () => {
     clHistory.push('/admin/projects');

@@ -12,8 +12,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Combobox from './Combobox';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import SingleSelectDropdown from './SingleSelectDropdown';
 
 const Container = styled(Box)<{ mr?: string; ml?: string }>`
   display: inline-block;
@@ -267,7 +267,7 @@ const FilterSelector = ({
           {...sharedProps}
         />
       ) : (
-        <Combobox
+        <SingleSelectDropdown
           options={values}
           onChange={selectionChange}
           {...sharedProps}

@@ -81,8 +81,9 @@ class Phase < ApplicationRecord
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
   has_many_text_images from: :description_multiloc, as: :text_images
-  has_many_text_images from: :draft_description_multiloc, as: :draft_description_text_images
   accepts_nested_attributes_for :text_images
+
+  has_many_text_images from: :draft_description_multiloc, as: :draft_description_text_images
 
   belongs_to :project
 
