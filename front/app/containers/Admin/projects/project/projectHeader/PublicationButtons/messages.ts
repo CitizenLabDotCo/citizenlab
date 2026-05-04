@@ -73,9 +73,8 @@ export default defineMessages({
     defaultMessage: 'Draft',
   },
   changeStatusDraftBullet1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1',
-    defaultMessage:
-      'Accessible only to admins and assigned managers (space, folder, or project)',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet',
+    defaultMessage: 'Accessible only to admins and assigned managers',
   },
   changeStatusDraftBullet2: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22',
