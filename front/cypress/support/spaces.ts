@@ -8,7 +8,7 @@ export const createSpace = ({ title }: { title: string }) => {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/projects',
+      url: 'web_api/v1/spaces',
       body: {
         space: {
           title_multiloc: {
@@ -47,13 +47,28 @@ export function createModeratorForSpace({
           Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
-        url: `web_api/v1/projects/${spaceId}/moderators`,
+        url: `web_api/v1/spaces/${spaceId}/moderators`,
         body: {
           moderator: {
             user_id: userId,
           },
         },
       });
+    });
+  });
+}
+
+export function removeSpace(spaceId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/spaces/${spaceId}`,
     });
   });
 }
