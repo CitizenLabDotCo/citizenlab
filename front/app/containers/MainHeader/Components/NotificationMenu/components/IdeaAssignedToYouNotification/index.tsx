@@ -67,7 +67,8 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/${projectId}/ideas/${ideaId}`}
+      to="/$locale/admin/projects/$projectId/ideas/$ideaId"
+      params={{ projectId, ideaId }}
       timing={notification.attributes.created_at}
       icon="idea"
       isRead={!!notification.attributes.read_at}

@@ -21,7 +21,8 @@ const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/spaces/${spaceId}`}
+      to="/$locale/admin/projects/spaces/$spaceId"
+      params={{ spaceId }}
       timing={notification.attributes.created_at}
       icon="shield-checkered"
       isRead={!!notification.attributes.read_at}

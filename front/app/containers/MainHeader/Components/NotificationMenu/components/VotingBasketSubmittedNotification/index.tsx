@@ -16,7 +16,8 @@ const VotingBasketSubmittedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/projects/${notification.attributes.project_slug}`}
+      to="/$locale/projects/$slug"
+      params={{ slug: notification.attributes.project_slug }}
       timing={notification.attributes.created_at}
       icon="vote-ballot"
       isRead={!!notification.attributes.read_at}

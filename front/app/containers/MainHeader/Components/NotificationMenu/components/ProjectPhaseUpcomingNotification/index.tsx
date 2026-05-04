@@ -20,7 +20,8 @@ const ProjectPhaseUpcomingNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/projects/${notification.attributes.project_slug}`}
+      to="/$locale/projects/$slug"
+      params={{ slug: notification.attributes.project_slug }}
       timing={notification.attributes.created_at}
       icon="timeline"
       isRead={!!notification.attributes.read_at}
