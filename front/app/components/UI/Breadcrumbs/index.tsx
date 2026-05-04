@@ -1,23 +1,29 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+
+import Link, { typedStyled } from 'utils/cl-router/Link';
+
 import type { LinkProps } from '@tanstack/react-router';
-import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
-
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   color: ${colors.textSecondary};
   &:hover {
     border-bottom: 2px solid ${colors.textSecondary};
     color: inherit;
     margin-bottom: -2px;
   }
-` as typeof Link;
+`;
+
+type TBreadcrumbLink = {
+  to: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+};
 
 type TBreadcrumb = {
   label: string;
-  linkTo?: string;
+  link?: TBreadcrumbLink;
 };
 
 export type TBreadcrumbs = TBreadcrumb[];
@@ -33,7 +39,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
 
   return (
     <Box display="flex">
-      {breadcrumbs.map(({ label, linkTo }, index) => {
+      {breadcrumbs.map(({ label, link }, index) => {
         const isLastBreadcrumb = index === breadcrumbs.length - 1;
 
         return (
@@ -44,12 +50,14 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             color="textSecondary"
             data-cy={`breadcrumbs-${label}`}
           >
-            {linkTo && (
+            {link && (
               <Text fontSize="m" as="span">
-                <StyledLink to={linkTo as LinkProps['to']}>{label}</StyledLink>
+                <StyledLink {...(link as Parameters<typeof StyledLink>[0])}>
+                  {label}
+                </StyledLink>
               </Text>
             )}
-            {!linkTo && (
+            {!link && (
               <Text color="textSecondary" fontSize="m" as="span">
                 {label}
               </Text>
