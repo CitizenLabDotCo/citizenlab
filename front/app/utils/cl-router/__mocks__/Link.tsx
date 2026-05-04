@@ -24,4 +24,9 @@ const Link = ({
   return <a {...rest} href={href} />;
 };
 
+// Mirror the runtime helper so styled(Link) wrappers in tests don't crash.
+// Passes the component through unchanged — styling isn't asserted in unit
+// tests, so this is enough.
+export const typedStyled = (component: any) => () => component;
+
 export default Link;

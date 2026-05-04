@@ -151,7 +151,8 @@ const IdeaDetailView = ({ ideaId, onClose }: IdeaDetailViewProps) => {
         <ButtonWithLink
           width="100%"
           buttonStyle="primary"
-          linkTo={`/ideas/${idea.data.attributes.slug}`}
+          to="/ideas/$slug"
+          params={{ slug: idea.data.attributes.slug }}
           bgColor={colors.primary}
           onClick={() => {
             trackEventByName(tracks.clickedSimilarInputFromSuggestions);

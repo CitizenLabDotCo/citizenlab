@@ -30,10 +30,21 @@ const Analyses = ({
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  const projectLink =
+  const projectLink: {
+    to:
+      | '/admin/projects/$projectId/phases/$phaseId/ideas'
+      | '/admin/projects/$projectId/phases/$phaseId/insights';
+    params: Record<string, string>;
+  } =
     participationMethod === 'ideation'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/insights`;
+      ? {
+          to: '/admin/projects/$projectId/phases/$phaseId/ideas',
+          params: { projectId: projectId ?? '', phaseId: phaseId ?? '' },
+        }
+      : {
+          to: '/admin/projects/$projectId/phases/$phaseId/insights',
+          params: { projectId: projectId ?? '', phaseId: phaseId ?? '' },
+        };
 
   // Analyses related to specific survey questions are now handled in the Survey Question Widget
   const analysesWithoutMainCustomField = analyses?.data.filter(
@@ -47,7 +58,12 @@ const Analyses = ({
         <Text>{formatMessage(messages.noInsights)}</Text>
         <Box display="flex">
           <ButtonWithLink
-            linkTo={projectLink}
+            to={projectLink.to}
+            params={
+              projectLink.params as Parameters<
+                typeof ButtonWithLink
+              >[0]['params']
+            }
             buttonStyle="secondary-outlined"
             openLinkInNewTab
           >

@@ -73,7 +73,8 @@ const AdminProjectFolderEdition = () => {
           buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
-          linkTo={`/folders/${projectFolder.data.attributes.slug}`}
+          to="/folders/$slug"
+          params={{ slug: projectFolder.data.attributes.slug }}
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
         </ButtonWithLink>

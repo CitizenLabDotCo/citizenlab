@@ -5,6 +5,8 @@ import styled, { useTheme } from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+
 const StyledButton = styled(ButtonWithLink)`
   ${media.tablet`
   order: 1;
@@ -17,14 +19,22 @@ const StyledButton = styled(ButtonWithLink)`
 `}
 `;
 
-interface Props {
+interface Props extends TypedLinkProps {
   onClick?: () => void;
   linkTo?: string;
   className?: string;
   text: string;
 }
 
-const AcceptButton = ({ onClick, linkTo, className, text }: Props) => {
+const AcceptButton = ({
+  onClick,
+  to,
+  params,
+  search,
+  linkTo,
+  className,
+  text,
+}: Props) => {
   const theme = useTheme();
 
   return (
@@ -32,6 +42,9 @@ const AcceptButton = ({ onClick, linkTo, className, text }: Props) => {
       text={text}
       buttonStyle="primary-inverse"
       onClick={onClick}
+      to={to}
+      params={params}
+      search={search}
       linkTo={linkTo}
       textColor={theme.colors.tenantPrimary}
       textHoverColor={theme.colors.tenantPrimary}

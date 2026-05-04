@@ -55,7 +55,11 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
                 {...authProvidersMessages.iHaveReadAndAgreeToTerms}
                 values={{
                   link: (
-                    <Link target="_blank" to="/$locale/pages/$slug" params={{ slug: "terms-and-conditions" }}>
+                    <Link
+                      target="_blank"
+                      to="/pages/$slug"
+                      params={{ slug: 'terms-and-conditions' }}
+                    >
                       <FormattedMessage
                         {...authProvidersMessages.theTermsAndConditions}
                       />
@@ -78,7 +82,11 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
                 {...authProvidersMessages.iHaveReadAndAgreeToPrivacy}
                 values={{
                   link: (
-                    <Link target="_blank" to="/$locale/pages/$slug" params={{ slug: "privacy-policy" }}>
+                    <Link
+                      target="_blank"
+                      to="/pages/$slug"
+                      params={{ slug: 'privacy-policy' }}
+                    >
                       <FormattedMessage
                         {...authProvidersMessages.thePrivacyPolicy}
                       />

@@ -75,7 +75,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {canAccessAdmin && (
             <DropdownListItem
               id="admin-link"
-              linkTo={'/admin'}
+              to="/admin"
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -92,7 +92,8 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {isConfirmedUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
-              linkTo={`/profile/${authUser.data.attributes.slug}`}
+              to="/profile/$userSlug"
+              params={{ userSlug: authUser.data.attributes.slug }}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -109,7 +110,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {isConfirmedUser && (
             <DropdownListItem
               id="e2e-profile-edit-link"
-              linkTo={'/profile/edit'}
+              to="/profile/edit"
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

@@ -267,7 +267,7 @@ const SiteMap = () => {
                       return (
                         <li key={page.id}>
                           <Link
-                            to="/$locale/pages/$slug"
+                            to="/pages/$slug"
                             params={{ slug: page.attributes.slug }}
                           >
                             {localize(page.attributes.title_multiloc)}
@@ -278,7 +278,7 @@ const SiteMap = () => {
                     {/* Default cookie policy link if no custom one exists */}
                     {!hasStaticPageWithCode('cookie-policy') && (
                       <li key="default-cookie-policy">
-                        <Link to="/$locale/pages/cookie-policy">
+                        <Link to="/pages/cookie-policy">
                           <FormattedMessage
                             {...messages.cookiePolicyLinkTitle}
                           />
@@ -296,7 +296,7 @@ const SiteMap = () => {
                           <>
                             <li>
                               <Link
-                                to="/$locale/profile/$userSlug"
+                                to="/profile/$userSlug"
                                 params={{
                                   userSlug: authUser.data.attributes.slug,
                                 }}
@@ -305,7 +305,7 @@ const SiteMap = () => {
                               </Link>
                             </li>
                             <li>
-                              <Link to="/$locale/profile/edit">
+                              <Link to="/profile/edit">
                                 <FormattedMessage
                                   {...messages.profileSettings}
                                 />
@@ -331,7 +331,7 @@ const SiteMap = () => {
                           {customStaticPages.map((item) => (
                             <li key={item.id}>
                               <Link
-                                to="/$locale/pages/$slug"
+                                to="/pages/$slug"
                                 params={{ slug: item.attributes.slug }}
                               >
                                 {localize(item.attributes.title_multiloc)}

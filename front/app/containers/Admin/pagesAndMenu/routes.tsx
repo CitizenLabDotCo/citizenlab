@@ -45,13 +45,9 @@ const CustomPageHeroBannerForm = lazy(
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 
-export const adminCustomPageContentPath = (pageId: string) => {
-  return `/admin/pages-menu/pages/${pageId}/content`;
-};
-
 export const adminCustomPageContentLink = (customPageId: string) =>
   ({
-    to: '/$locale/admin/pages-menu/pages/$customPageId/content',
+    to: '/admin/pages-menu/pages/$customPageId/content',
     params: { customPageId },
   } as const);
 

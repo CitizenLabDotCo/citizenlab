@@ -174,7 +174,7 @@ const CampaignForm = ({
               <Text fontSize="l">
                 <FormattedMessage {...messages.allParticipantsInProject} />{' '}
                 <Link
-                  to="/$locale/admin/projects/$projectId"
+                  to="/admin/projects/$projectId"
                   params={{ projectId: project.data.id }}
                   target="_blank"
                 >

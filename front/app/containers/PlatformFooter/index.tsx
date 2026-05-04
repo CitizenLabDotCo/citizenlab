@@ -321,7 +321,7 @@ const PlatformFooter = ({ className }: Props) => {
                       </StyledA>
                     ) : (
                       <StyledLink
-                        to="/$locale/pages/$slug"
+                        to="/pages/$slug"
                         params={{ slug }}
                         className={index === 0 ? 'first' : ''}
                         scrollToTop={true}
@@ -339,7 +339,7 @@ const PlatformFooter = ({ className }: Props) => {
               </StyledButton>
             </PagesNavListItem>
             <PagesNavListItem>
-              <StyledLink to="/$locale/site-map" id="site-map-link">
+              <StyledLink to="/site-map" id="site-map-link">
                 <FormattedMessage {...messages.siteMap} />
               </StyledLink>
             </PagesNavListItem>

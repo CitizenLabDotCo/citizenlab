@@ -58,7 +58,7 @@ const PowerBITemplates = () => {
           {...messages.intro}
           values={{
             link: (
-              <Link to="/$locale/admin/tools/public-api-tokens">
+              <Link to="/admin/tools/public-api-tokens">
                 {formatMessage(messages.publicApiLinkText)}
               </Link>
             ),

@@ -135,7 +135,9 @@ const IdeaStatuses = ({
                 data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
-                linkTo={`/admin/settings/statuses/${variant}/new`}
+                {...(variant === 'ideation'
+                  ? { to: '/admin/settings/statuses/ideation/new' as const }
+                  : { to: '/admin/settings/statuses/proposals/new' as const })}
                 disabled={!customIdeaStatusesAllowed}
               >
                 <FormattedMessage {...messages.addIdeaStatus} />
@@ -181,7 +183,15 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/statuses/${variant}/${defaultStatus.id}`}
+                      {...(variant === 'ideation'
+                        ? {
+                            to: '/admin/settings/statuses/ideation/$statusId' as const,
+                            params: { statusId: defaultStatus.id },
+                          }
+                        : {
+                            to: '/admin/settings/statuses/proposals/$statusId' as const,
+                            params: { statusId: defaultStatus.id },
+                          })}
                     />
                   </Buttons>
                 </LockedRow>
@@ -231,7 +241,15 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/statuses/${variant}/${ideaStatus.id}`}
+                      {...(variant === 'ideation'
+                        ? {
+                            to: '/admin/settings/statuses/ideation/$statusId' as const,
+                            params: { statusId: ideaStatus.id },
+                          }
+                        : {
+                            to: '/admin/settings/statuses/proposals/$statusId' as const,
+                            params: { statusId: ideaStatus.id },
+                          })}
                     />
                   </Buttons>
                 </SortableRow>

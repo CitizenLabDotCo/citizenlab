@@ -25,7 +25,7 @@ const TimelineProject = ({ project }: Props) => {
     return (
       <li key={phases.data[0].id}>
         <Link
-          to="/$locale/projects/$slug/$phaseNumber"
+          to="/projects/$slug/$phaseNumber"
           params={{ slug: project.attributes.slug, phaseNumber: '1' }}
         >
           <T value={phases.data[0].attributes.title_multiloc} />
@@ -41,7 +41,7 @@ const TimelineProject = ({ project }: Props) => {
         {phases.data.map((phase, i) => (
           <li key={phase.id}>
             <Link
-              to="/$locale/projects/$slug/$phaseNumber"
+              to="/projects/$slug/$phaseNumber"
               params={{
                 slug: project.attributes.slug,
                 phaseNumber: String(i + 1),

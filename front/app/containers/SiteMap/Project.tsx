@@ -36,7 +36,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
         <ul>
           <li>
             <Link
-              to="/$locale/projects/$slug"
+              to="/projects/$slug"
               params={{ slug: project.data.attributes.slug }}
             >
               <FormattedMessage {...messages.projectInfo} />
@@ -47,7 +47,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
               <Link
-                to="/$locale/projects/$slug"
+                to="/projects/$slug"
                 params={{ slug: project.data.attributes.slug }}
                 hash="e2e-events-section-project-page"
               >

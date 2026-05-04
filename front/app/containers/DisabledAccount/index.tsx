@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useSearch } from 'utils/router';
 
 import ContentContainer from 'components/ContentContainer';
 import { Title } from 'components/smallForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -33,7 +33,10 @@ const DisabledAccount = () => {
               {...messages.text}
               values={{
                 TermsAndConditions: (
-                  <Link to="/$locale/pages/$slug" params={{ slug: "terms-and-conditions" }}>
+                  <Link
+                    to="/pages/$slug"
+                    params={{ slug: 'terms-and-conditions' }}
+                  >
                     <FormattedMessage {...messages.termsAndConditions} />
                   </Link>
                 ),

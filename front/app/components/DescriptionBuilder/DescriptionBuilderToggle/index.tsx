@@ -103,11 +103,11 @@ const DescriptionBuilderToggle = ({
   const linkProps =
     contentBuildableType === 'project'
       ? ({
-          to: '/$locale/admin/description-builder/projects/$projectId/description',
+          to: '/admin/description-builder/projects/$projectId/description',
           params: { projectId: contentBuildableId },
         } as const)
       : ({
-          to: '/$locale/admin/description-builder/folders/$folderId/description',
+          to: '/admin/description-builder/folders/$folderId/description',
           params: { folderId: contentBuildableId },
         } as const);
 

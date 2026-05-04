@@ -52,7 +52,9 @@ const NoInputsDisplay = ({
         <Button
           buttonStyle="secondary-outlined"
           width="auto"
-          linkTo={`/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+          to="/projects/$slug/ideas/new"
+          params={{ slug: project?.attributes.slug ?? '' }}
+          search={{ phase_id: phaseId }}
         >
           <FormattedMessage {...messages.createInput} />
         </Button>

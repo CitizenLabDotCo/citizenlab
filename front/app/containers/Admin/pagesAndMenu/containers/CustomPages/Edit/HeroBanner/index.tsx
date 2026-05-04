@@ -220,7 +220,10 @@ const EditCustomPageHeroBannerForm = ({
           }
           formStatus={formStatus}
           isLoading={isLoading}
-          linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
+          viewPageLink={{
+            to: '/pages/$slug',
+            params: { slug: customPage.data.attributes.slug },
+          }}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),

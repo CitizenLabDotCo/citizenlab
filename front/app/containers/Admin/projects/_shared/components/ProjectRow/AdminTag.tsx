@@ -27,7 +27,7 @@ const AdminTag = ({ userCanModerateProject, projectId }: Props) => {
     return (
       <Link
         data-cy="e2e-admins-only-permissions-tag"
-        to="/$locale/admin/projects/$projectId/general/access-rights"
+        to="/admin/projects/$projectId/general/access-rights"
         params={{ projectId }}
       >
         <StatusLabel />

@@ -207,13 +207,13 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
 
   return (
     <Container className={className}>
-      <MenuLink to="/$locale/admin/users" onlyActiveOnIndex>
+      <MenuLink to="/admin/users" onlyActiveOnIndex>
         <GroupName>
           <FormattedMessage {...messages.allUsers} />
         </GroupName>
         <MembersCount>{usersCount?.data.attributes.count}</MembersCount>
       </MenuLink>
-      <MenuLink to="/$locale/admin/users/admins">
+      <MenuLink to="/admin/users/admins">
         <GroupName>
           <FormattedMessage {...messages.admins} />
         </GroupName>
@@ -224,7 +224,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         )}
       </MenuLink>
       {spacesEnabled && (
-        <MenuLink to="/$locale/admin/users/space-moderators">
+        <MenuLink to="/admin/users/space-moderators">
           <GroupName>
             <FormattedMessage {...messages.spaceManagers} />
           </GroupName>
@@ -235,7 +235,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           )}
         </MenuLink>
       )}
-      <MenuLink to="/$locale/admin/users/folder-moderators">
+      <MenuLink to="/admin/users/folder-moderators">
         <GroupName>
           <FormattedMessage {...messages.folderManagers} />
         </GroupName>
@@ -245,7 +245,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </MembersCount>
         )}
       </MenuLink>
-      <MenuLink to="/$locale/admin/users/project-moderators">
+      <MenuLink to="/admin/users/project-moderators">
         <GroupName>
           <FormattedMessage {...messages.projectManagers} />
         </GroupName>
@@ -257,7 +257,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       </MenuLink>
       {isUserBlockingEnabled && (
         <MenuLink
-          to="/$locale/admin/users/blocked"
+          to="/admin/users/blocked"
           data-testid="blocked-users-link"
           onlyActiveOnIndex
         >
@@ -272,7 +272,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </MenuLink>
       )}
       <MenuLink
-        to="/$locale/admin/users/banned-emails"
+        to="/admin/users/banned-emails"
         data-testid="banned-emails-link"
       >
         <GroupName>
@@ -324,7 +324,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             >
               <MenuLink
                 key={group.id}
-                to="/$locale/admin/users/groups/$groupId"
+                to="/admin/users/groups/$groupId"
                 params={{ groupId: group.id }}
                 className={`${
                   highlightedGroups.has(group.id) ? 'highlight' : ''
@@ -346,7 +346,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       </GroupsList>
       <Box display="flex" flexGrow={1} />
       <ButtonWithLink
-        linkTo="/admin/users/invitations"
+        to="/admin/users/invitations"
         icon="email"
         className="intercom-users-invite-users-button"
       >

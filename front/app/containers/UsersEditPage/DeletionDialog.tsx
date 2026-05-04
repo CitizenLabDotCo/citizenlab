@@ -100,7 +100,11 @@ const DeletionDialog = ({
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                  <Link to="/$locale/pages/$slug" params={{ slug: "terms-and-conditions" }} target="_blank">
+                  <Link
+                    to="/pages/$slug"
+                    params={{ slug: 'terms-and-conditions' }}
+                    target="_blank"
+                  >
                     <FormattedMessage {...messages.conditionsLinkText} />
                   </Link>
                 ),

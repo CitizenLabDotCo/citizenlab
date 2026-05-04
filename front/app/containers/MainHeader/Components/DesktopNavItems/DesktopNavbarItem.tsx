@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import T from 'components/T';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -65,20 +65,29 @@ const StyledLink = typedStyled(Link)`
   }
 `;
 
-interface Props {
+interface Props extends TypedLinkProps {
   className?: string;
-  linkTo: string;
+  linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }
 
 const DesktopNavbarItem = ({
+  to,
+  params,
+  search,
   linkTo,
   navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex} scrollToTop>
+    <StyledLink
+      to={(to ?? linkTo) as Parameters<typeof StyledLink>[0]['to']}
+      params={params as Parameters<typeof StyledLink>[0]['params']}
+      search={search as Parameters<typeof StyledLink>[0]['search']}
+      onlyActiveOnIndex={onlyActiveOnIndex}
+      scrollToTop
+    >
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

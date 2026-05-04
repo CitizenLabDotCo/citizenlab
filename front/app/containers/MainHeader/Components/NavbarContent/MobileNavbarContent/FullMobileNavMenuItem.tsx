@@ -9,7 +9,7 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
@@ -33,8 +33,8 @@ const StyledLink = typedStyled(Link)`
   }
 `;
 
-interface Props {
-  linkTo: string;
+interface Props extends TypedLinkProps {
+  linkTo?: string;
   navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;
   onClick: () => void;
@@ -43,6 +43,9 @@ interface Props {
 }
 
 const FullMobileNavMenuItem = ({
+  to,
+  params,
+  search,
   linkTo,
   navigationItemTitle,
   onClick,
@@ -56,7 +59,9 @@ const FullMobileNavMenuItem = ({
     {iconName && <Icon name={iconName} height="20px" />}
     <StyledLink
       onClick={onClick}
-      to={linkTo}
+      to={(to ?? linkTo) as Parameters<typeof StyledLink>[0]['to']}
+      params={params as Parameters<typeof StyledLink>[0]['params']}
+      search={search as Parameters<typeof StyledLink>[0]['search']}
       onlyActiveOnIndex={onlyActiveOnIndex}
       scrollToTop={scrollToTop}
     >

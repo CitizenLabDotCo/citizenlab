@@ -47,7 +47,10 @@ const TopInfoSection = () => {
           link: adminCustomPageContentLink(customPageId),
         },
       ]}
-      linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
+      viewPageLink={{
+        to: '/pages/$slug',
+        params: { slug: customPage.data.attributes.slug },
+      }}
     />
   );
 };

@@ -106,7 +106,7 @@ const ReferenceLink = ({
     >
       <Box display="inline">
         <StyledLink
-          to="/$locale/admin/projects/$projectId/analysis/$analysisId"
+          to="/admin/projects/$projectId/analysis/$analysisId"
           params={{ projectId, analysisId }}
           search={{ phase_id: phaseId, selected_input_id: match }}
           className={selectedInputId === match ? 'active' : undefined}

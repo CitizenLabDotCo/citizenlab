@@ -61,11 +61,11 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
       ? ({
-          to: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form',
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form',
           params: downloadFormParams,
         } as const)
       : ({
-          to: '/$locale/admin/projects/$projectId/phases/$phaseId/form',
+          to: '/admin/projects/$projectId/phases/$phaseId/form',
           params: downloadFormParams,
         } as const);
 

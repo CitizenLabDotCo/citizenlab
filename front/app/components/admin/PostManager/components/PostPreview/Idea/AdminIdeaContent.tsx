@@ -222,7 +222,8 @@ const AdminIdeaContent = ({
         </ButtonWithLink>
         {!isCommonGround && (
           <ButtonWithLink
-            linkTo={`/ideas/${idea.data.attributes.slug}`}
+            to="/ideas/$slug"
+            params={{ slug: idea.data.attributes.slug }}
             // We open in a new tab not lose state of the input manager
             openLinkInNewTab
             icon="eye"
@@ -249,7 +250,7 @@ const AdminIdeaContent = ({
                 projectLink: (
                   <ProjectLink
                     className="e2e-project-link"
-                    to="/$locale/projects/$slug"
+                    to="/projects/$slug"
                     params={{ slug: project.data.attributes.slug }}
                   >
                     <T value={project.data.attributes.title_multiloc} />

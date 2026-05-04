@@ -13,13 +13,13 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import { trackEventByName } from 'utils/analytics';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
 
-const Container = styled(Link)`
+const Container = typedStyled(Link)`
   display: flex;
   text-align: left;
   cursor: pointer;
@@ -97,25 +97,33 @@ type Props = {
   icon?: IconNames;
   timing?: string;
   children: React.ReactNode;
-  linkTo: string;
+  linkTo?: string;
   isRead: boolean;
-};
+} & TypedLinkProps;
 
 const NotificationWrapper = ({
   icon,
   children,
   timing,
   isRead,
+  to,
+  params,
+  search,
   linkTo,
 }: Props) => {
   const locale = useLocale();
   const track = () => {
-    trackEventByName(tracks.clickNotification, { linkTo });
+    trackEventByName(tracks.clickNotification, { linkTo: to ?? linkTo });
   };
 
   if (!isNilOrError(locale)) {
     return (
-      <Container to={linkTo} onClick={track}>
+      <Container
+        to={(to ?? linkTo) as Parameters<typeof Container>[0]['to']}
+        params={params as Parameters<typeof Container>[0]['params']}
+        search={search as Parameters<typeof Container>[0]['search']}
+        onClick={track}
+      >
         <IconContainer>
           {icon && <StyledIcon name={icon} isRead={isRead} />}
         </IconContainer>

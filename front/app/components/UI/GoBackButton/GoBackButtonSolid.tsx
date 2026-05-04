@@ -6,10 +6,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-interface Props {
+interface Props extends TypedLinkProps {
   text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
@@ -20,6 +21,9 @@ const GoBackButtonSolid = ({
   text,
   iconSize = '28px',
   onClick,
+  to,
+  params,
+  search,
   linkTo,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -43,6 +47,9 @@ const GoBackButtonSolid = ({
       textDecorationHover="underline"
       whiteSpace="normal"
       onClick={handleClick}
+      to={to}
+      params={params}
+      search={search}
       linkTo={linkTo}
       text={text}
     >

@@ -18,7 +18,8 @@ const VotingLastChanceNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/projects/${notification.attributes.project_slug}`}
+      to="/projects/$slug"
+      params={{ slug: notification.attributes.project_slug }}
       timing={notification.attributes.created_at}
       icon="vote-ballot"
       isRead={!!notification.attributes.read_at}

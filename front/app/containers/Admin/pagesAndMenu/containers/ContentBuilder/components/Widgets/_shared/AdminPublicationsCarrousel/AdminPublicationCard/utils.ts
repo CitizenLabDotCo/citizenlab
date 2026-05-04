@@ -6,12 +6,12 @@ export const getPublicationLinkProps = (publication: IAdminPublicationData) => {
 
   if (publicationType === 'folder') {
     return {
-      to: '/$locale/folders/$slug',
+      to: '/folders/$slug',
       params: { slug: publication_slug },
     } as const;
   }
   return {
-    to: '/$locale/projects/$slug',
+    to: '/projects/$slug',
     params: { slug: publication_slug },
   } as const;
 };

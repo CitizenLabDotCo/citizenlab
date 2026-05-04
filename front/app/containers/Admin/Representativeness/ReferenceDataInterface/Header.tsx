@@ -17,7 +17,7 @@ const Header = () => (
         {...messages.pageDescription}
         values={{
           userRegistrationLink: (
-            <Link to="/$locale/admin/settings/registration">
+            <Link to="/admin/settings/registration">
               <FormattedMessage {...messages.userRegistrationLink} />
             </Link>
           ),

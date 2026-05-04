@@ -226,7 +226,11 @@ const ProfileForm = () => {
                     {...commentsMessages.profanityError}
                     values={{
                       guidelinesLink: (
-                        <Link to="/$locale/pages/$slug" params={{ slug: "faq" }} target="_blank">
+                        <Link
+                          to="/pages/$slug"
+                          params={{ slug: 'faq' }}
+                          target="_blank"
+                        >
                           {formatMessage(commentsMessages.guidelinesLinkText)}
                         </Link>
                       ),

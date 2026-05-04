@@ -76,7 +76,7 @@ const AreaList = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          linkTo="/admin/settings/areas/new"
+          to="/admin/settings/areas/new"
         >
           <FormattedMessage {...messages.addAreaButton} />
         </ButtonWithLink>
@@ -162,7 +162,7 @@ const AreaListRow = ({
                     return (
                       <li key={staticPage.id}>
                         <StyledLink
-                          to="/$locale/admin/pages-menu/pages/$customPageId/settings"
+                          to="/admin/pages-menu/pages/$customPageId/settings"
                           params={{ customPageId: staticPage.id }}
                         >
                           {localize(staticPage.attributes.title_multiloc)}
@@ -185,7 +185,8 @@ const AreaListRow = ({
         <FormattedMessage {...messages.deleteButtonLabel} />
       </ButtonWithLink>
       <ButtonWithLink
-        linkTo={`/admin/settings/areas/${item.id}`}
+        to="/admin/settings/areas/$areaId"
+        params={{ areaId: item.id }}
         buttonStyle="secondary-outlined"
         icon="edit"
       >

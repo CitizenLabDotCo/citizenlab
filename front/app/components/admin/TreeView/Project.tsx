@@ -47,7 +47,7 @@ const Project = ({
           fill={lockedProjectTooltip ? colors.grey600 : colors.black}
         />
         <Link
-          to="/$locale/admin/projects/$projectId"
+          to="/admin/projects/$projectId"
           params={{ projectId: node.id }}
           color={lockedProjectTooltip ? colors.grey600 : colors.black}
         >

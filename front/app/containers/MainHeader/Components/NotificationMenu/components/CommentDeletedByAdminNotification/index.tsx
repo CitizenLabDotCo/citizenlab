@@ -16,7 +16,8 @@ interface Props {
 const CommentDeletedByAdminNotification = ({ notification }: Props) => {
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug: notification.attributes.post_slug ?? '' }}
       timing={notification.attributes.created_at}
       icon="comments"
       isRead={!!notification.attributes.read_at}

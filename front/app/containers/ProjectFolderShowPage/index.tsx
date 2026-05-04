@@ -7,7 +7,6 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -27,6 +26,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 import ProjectFolderDescription from './ProjectFolderDescription';
@@ -123,7 +123,8 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               >
                 <ButtonWithLink
                   icon="edit"
-                  linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                  to="/admin/projects/folders/$projectFolderId/settings"
+                  params={{ projectFolderId: projectFolder.id }}
                   buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >

@@ -125,7 +125,7 @@ const ProjectInfoSideBar = memo<Props>(
                             values={{
                               accessRightsLink: (
                                 <Link
-                                  to="/$locale/admin/projects/$projectId/general/access-rights"
+                                  to="/admin/projects/$projectId/general/access-rights"
                                   params={{ projectId }}
                                 >
                                   <FormattedMessage

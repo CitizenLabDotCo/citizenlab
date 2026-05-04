@@ -37,7 +37,7 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
         <H2 ref={projectsSectionRef} tabIndex={-1}>
           <FormattedMessage {...messages.projectsSection} />
         </H2>
-        <AllProjectsLink to="/$locale/projects" id="projects-section">
+        <AllProjectsLink to="/projects" id="projects-section">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
         {adminPublications.map((adminPublication) => (

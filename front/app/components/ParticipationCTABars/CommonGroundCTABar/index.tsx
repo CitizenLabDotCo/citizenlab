@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -20,6 +19,7 @@ import Button from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 
@@ -95,7 +95,9 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
                 textHoverColor={theme.colors.black}
                 padding="6px 12px"
                 fontSize="14px"
-                linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${currentPhase.id}`}
+                to="/projects/$slug/ideas/new"
+                params={{ slug: project.attributes.slug }}
+                search={{ phase_id: currentPhase.id }}
               >
                 <FormattedMessage {...messages.addInput} />
               </Button>

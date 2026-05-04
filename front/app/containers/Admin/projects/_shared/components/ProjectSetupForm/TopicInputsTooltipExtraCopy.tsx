@@ -13,7 +13,7 @@ const TopicInputsCopyProvider = () => {
         {...messages.topicInputsTooltipExtraCopy}
         values={{
           topicManagerLink: (
-            <Link to="/$locale/admin/settings/topics">
+            <Link to="/admin/settings/topics">
               <FormattedMessage {...messages.topicInputsTooltipLink} />
             </Link>
           ),

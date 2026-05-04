@@ -25,7 +25,8 @@ const MentionInCommentNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug: notification.attributes.post_slug ?? '' }}
       timing={notification.attributes.created_at}
       icon="mention"
       isRead={!!notification.attributes.read_at}
@@ -37,7 +38,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
             <DeletedUser />
           ) : (
             <Link
-              to="/$locale/profile/$userSlug"
+              to="/profile/$userSlug"
               params={{ userSlug }}
               onClick={stopPropagation}
             >
