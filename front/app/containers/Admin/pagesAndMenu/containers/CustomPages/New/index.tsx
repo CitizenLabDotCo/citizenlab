@@ -6,7 +6,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -34,7 +34,7 @@ const CustomPagesNewSettings = () => {
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             { label: formatMessage(messages.newCustomPagePageTitle) },
           ]}
