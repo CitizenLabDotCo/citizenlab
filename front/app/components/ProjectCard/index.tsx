@@ -36,14 +36,14 @@ import Image from 'components/UI/Image';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import getCTAMessage from './getCTAMessage';
 import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)`
+const Container = typedStyled(Link)`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@ const Container = styled(Link)`
   &.dynamic {
     border: 1px ${colors.grey300} solid;
   }
-` as typeof Link;
+`;
 
 const ProjectImageContainer = styled.div`
   width: 100%;
