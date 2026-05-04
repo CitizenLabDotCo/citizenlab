@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import AssigneeSelector from '../components/AssigneeSelector';
 
@@ -16,11 +16,11 @@ const InputAssignmentSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   &:hover {
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 interface Props {
   projectId: string;
