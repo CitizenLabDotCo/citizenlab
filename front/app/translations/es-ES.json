@@ -2439,6 +2439,7 @@
   "app.errors.password_blank": "Esto no puede estar vacío",
   "app.errors.password_invalid": "Compruebe de nuevo su contraseña actual.",
   "app.errors.password_too_short": "La contraseña debe tener al menos 8 caracteres",
+  "app.errors.phase_too_short": "La fase es demasiado corta. Debe durar al menos 24 horas.",
   "app.errors.resending_code_failed": "Algo ha fallado al enviar el código de confirmación.",
   "app.errors.slug_taken": "La URL de este proyecto ya existe. Por favor, cambie el slug del proyecto por otro.",
   "app.errors.something_went_wrong": "Algo ha ido mal. Ponte en contacto con nosotros si el problema persiste.",
