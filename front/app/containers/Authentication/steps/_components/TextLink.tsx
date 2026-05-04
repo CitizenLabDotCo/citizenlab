@@ -12,6 +12,6 @@ export const ClickableTextStyles = `
     text-decoration: underline;
   }
 `;
-export const StyledLink = typedStyled(Link)`${ClickableTextStyles}}`;
+export const StyledLink = typedStyled(Link)`${ClickableTextStyles}`;
 
 export default StyledLink;
