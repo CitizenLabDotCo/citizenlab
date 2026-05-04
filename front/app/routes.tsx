@@ -9,7 +9,6 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import * as yup from 'yup';
 
-import type { IdeaSortMethod } from 'api/phases/types';
 import { ideaSortMethods, presentationModes } from 'api/phases/types';
 
 import { createAdminRoutes } from 'containers/Admin/routes';
