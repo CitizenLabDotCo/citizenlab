@@ -58,7 +58,7 @@ const Space = ({
             fill={colors.black}
           />
           <Link
-            to="/$locale/admin/projects/spaces/$spaceId"
+            to="/admin/projects/spaces/$spaceId"
             params={{ spaceId: node.id }}
             color={colors.black}
           >

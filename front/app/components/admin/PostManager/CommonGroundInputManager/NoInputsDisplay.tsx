@@ -52,7 +52,7 @@ const NoInputsDisplay = ({
         <Button
           buttonStyle="secondary-outlined"
           width="auto"
-          to="/$locale/projects/$slug/ideas/new"
+          to="/projects/$slug/ideas/new"
           params={{ slug: project?.attributes.slug ?? '' }}
           search={{ phase_id: phaseId }}
         >

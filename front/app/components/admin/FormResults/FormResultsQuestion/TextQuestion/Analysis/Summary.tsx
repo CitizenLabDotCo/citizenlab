@@ -138,7 +138,7 @@ const Summary = ({
             id="e2e-explore-summary"
             buttonStyle="secondary-outlined"
             icon="eye"
-            to="/$locale/admin/projects/$projectId/analysis/$analysisId"
+            to="/admin/projects/$projectId/analysis/$analysisId"
             params={{ projectId, analysisId }}
             search={{
               ...convertFilterValuesToString(filters),

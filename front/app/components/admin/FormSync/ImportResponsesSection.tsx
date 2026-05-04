@@ -49,7 +49,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
   };
 
   const importerLink = {
-    to: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+    to: '/admin/projects/$projectId/phases/$phaseId/input-importer',
     params: { projectId: projectId ?? '', phaseId: phaseId ?? '' },
   } as const;
 

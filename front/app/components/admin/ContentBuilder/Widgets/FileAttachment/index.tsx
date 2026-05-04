@@ -196,7 +196,7 @@ const FileAttachmentSettings = () => {
       )}
 
       <ButtonWithLink
-        to="/$locale/admin/projects/$projectId/files"
+        to="/admin/projects/$projectId/files"
         params={{ projectId: projectId ?? '' }}
         buttonStyle="text"
         icon="upload-file"

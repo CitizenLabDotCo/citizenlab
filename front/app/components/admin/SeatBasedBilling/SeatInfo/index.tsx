@@ -127,7 +127,7 @@ const SeatInfo = ({ seatType, mb }: Props) => {
       </Box>
       {showLink && (
         <Box mt="12px">
-          <StyledLink target="_blank" to="/$locale/admin/users/seats">
+          <StyledLink target="_blank" to="/admin/users/seats">
             <Text variant="bodyXs" my="0px" color="coolGrey600">
               {formatMessage(messages.goToSeatsOverview)}
             </Text>
