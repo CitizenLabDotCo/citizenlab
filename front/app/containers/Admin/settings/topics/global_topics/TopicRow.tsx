@@ -128,7 +128,8 @@ const TopicRow = (props: Props) => {
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
         <ButtonWithLink
-          linkTo={`/admin/settings/topics/platform/${topic.id}/edit`}
+          to="/$locale/admin/settings/topics/platform/$topicId/edit"
+          params={{ topicId: topic.id }}
           buttonStyle="secondary-outlined"
           icon="edit"
           m="0px"
