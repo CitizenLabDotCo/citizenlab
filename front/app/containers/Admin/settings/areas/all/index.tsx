@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
@@ -24,20 +23,20 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../messages';
 
 import AreaTermConfig from './AreaTermConfig';
 
-export const StyledLink = styled(Link)`
+export const StyledLink = typedStyled(Link)`
   color: ${colors.white} !important;
   text-decoration: underline;
 
   &:hover {
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 const AreaList = () => {
   const { data: areas } = useAreas({ includeStaticPages: true });
