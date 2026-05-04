@@ -28,7 +28,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -84,7 +84,7 @@ const GroupsList = styled.div`
   overflow-y: auto;
 `;
 
-const MenuLink = styled(Link)`
+const MenuLink = typedStyled(Link)`
   color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   display: flex;
@@ -124,7 +124,7 @@ const MenuLink = styled(Link)`
       background-color: ${rgba(colors.success, 0)};
     }
   }
-` as typeof Link;
+`;
 
 const GroupName = styled.div`
   flex: 1;
