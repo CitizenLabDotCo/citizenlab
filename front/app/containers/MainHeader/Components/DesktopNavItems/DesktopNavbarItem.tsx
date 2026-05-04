@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import T from 'components/T';
 
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -20,7 +20,7 @@ const NavigationItemBorder = styled.div`
 
 const NavigationItem = styled.li``;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -63,7 +63,7 @@ const StyledLink = styled(Link)`
         theme.navbarActiveItemBorderColor || theme.colors.tenantPrimary};
     }
   }
-` as typeof Link;
+`;
 
 interface Props {
   className?: string;
