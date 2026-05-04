@@ -1048,10 +1048,10 @@ function apiCreateFolder({
             'fr-BE': title,
           },
           description_preview_multiloc: {
-            en: descriptionPreview,
-            'nl-BE': descriptionPreview,
-            'nl-NL': descriptionPreview,
-            'fr-BE': descriptionPreview,
+            en: descriptionPreview ?? description,
+            'nl-BE': descriptionPreview ?? description,
+            'nl-NL': descriptionPreview ?? description,
+            'fr-BE': descriptionPreview ?? description,
           },
           description_multiloc: {
             en: description,
