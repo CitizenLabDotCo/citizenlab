@@ -54,7 +54,7 @@ const ChildWrapper = styled.div`
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
 const UsersPage = () => {
-  const { mutate: addGroup } = useAddGroup();
+  const { mutateAsync: addGroup } = useAddGroup();
   const [groupCreationModal, setGroupCreationModal] =
     useState<GroupCreationModal>(false);
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
@@ -73,17 +73,11 @@ const UsersPage = () => {
     setGroupCreationModal(groupType);
   };
 
-  const handleSubmitForm = (
+  const handleSubmitForm = async (
     formValues: NormalFormValues & { membership_type: MembershipType }
   ) => {
-    addGroup(
-      { ...formValues },
-      {
-        onSuccess: () => {
-          closeGroupCreationModal();
-        },
-      }
-    );
+    await addGroup({ ...formValues });
+    closeGroupCreationModal();
   };
 
   const renderModalHeader = () => {

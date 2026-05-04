@@ -356,19 +356,25 @@ export const toBackendDateString = (date?: Date) => {
   return `${date.getFullYear()}-${month}-${day}`;
 };
 
-type FormatDateInTimezoneParams = {
-  date: string | null | undefined;
-  timeZone?: string;
-};
+// Calculate GMT offset based on selected date (or current date if none selected) - DST safe
+export const getGmtOffset = (
+  timeZone: string | undefined,
+  tenantTimeNow: Date,
+  selectedDate?: Date
+) => {
+  if (!timeZone) return '';
 
-export const formatDateInTimezone = ({
-  date,
-  timeZone = 'UTC',
-}: FormatDateInTimezoneParams): string | null => {
-  if (!date) return null;
+  const dateToCheck = selectedDate || tenantTimeNow;
+  const momentDate = moment.tz(
+    {
+      year: dateToCheck.getFullYear(),
+      month: dateToCheck.getMonth(),
+      day: dateToCheck.getDate(),
+    },
+    timeZone
+  );
 
-  const zonedDate = moment.tz(date, timeZone);
-  return zonedDate.format('M/D/YYYY h:mm A');
+  return momentDate.format('Z');
 };
 
 export const convertToTimeZoneISO = (

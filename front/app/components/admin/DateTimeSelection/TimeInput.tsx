@@ -5,6 +5,8 @@ import {
   Button,
   Box,
   colors,
+  InputContainer,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 
@@ -136,15 +138,12 @@ const TimeInput = ({
         </Box>
       }
     >
-      <Button
-        buttonStyle="secondary-outlined"
-        onClick={() => {
-          setVisible(true);
-        }}
-        textColor={colors.black}
-      >
-        {format(selectedTime, 'p', { locale: getLocale(locale) })}
-      </Button>
+      <InputContainer onClick={() => setVisible(true)}>
+        <Box mr="8px">
+          {format(selectedTime, 'p', { locale: getLocale(locale) })}
+        </Box>
+        <Icon name="clock" height="18px" />
+      </InputContainer>
     </Tooltip>
   );
 };
