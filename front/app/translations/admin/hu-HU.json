@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Rejtve az általános projektkeresés elől",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Csak a dedikált főoldali modulokban látható",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archivált",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Csak az adminisztrátorok és a kijelölt menedzserek számára érhető el (tér, mappa vagy projekt)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Bárki hozzáférhet, aki rendelkezik a megosztási előnézeti linkkel",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Piszkozat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Minden felhasználó vagy meghatározott csoportok számára elérhető, a projekt beállításaitól függően",

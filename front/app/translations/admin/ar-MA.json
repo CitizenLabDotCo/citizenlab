@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "مخفي من البحث العام عن المشاريع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "مرئي فقط في أقسام الصفحة الرئيسية المخصصة",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "مؤرشف",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "متاح فقط للمسؤولين والمديرين المعينين (فضاء، مجلد، أو مشروع)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "يمكن لأي شخص لديه رابط مشاركة المعاينة الوصول إليه أيضاً",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "مسودة",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "متاح لجميع المستخدمين أو لمجموعات محددة، حسب إعدادات المشروع",

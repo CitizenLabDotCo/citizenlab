@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "ਆਮ ਪ੍ਰੋਜੈਕਟ ਖੋਜ ਤੋਂ ਲੁਕਾਇਆ ਗਿਆ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "ਸਿਰਫ਼ ਸਮਰਪਿਤ ਹੋਮਪੇਜ ਮੋਡੀਊਲਾਂ ਵਿੱਚ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "ਆਰਕਾਈਵ ਕੀਤਾ ਗਿਆ",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "ਸਿਰਫ਼ ਐਡਮਿਨਾਂ ਅਤੇ ਨਿਯੁਕਤ ਕੀਤੇ ਮੈਨੇਜਰਾਂ (ਸਪੇਸ, ਫੋਲਡਰ, ਜਾਂ ਪ੍ਰੋਜੈਕਟ) ਲਈ ਪਹੁੰਚਯੋਗ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "ਕੋਈ ਵੀ ਵਿਅਕਤੀ ਜਿਸ ਕੋਲ ਸ਼ੇਅਰ ਪ੍ਰੀਵਿਊ ਲਿੰਕ ਹੈ, ਉਹ ਵੀ ਇਸ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦਾ ਹੈ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "ਡਰਾਫਟ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "ਪ੍ਰੋਜੈਕਟ ਸੈਟਿੰਗਾਂ ਦੇ ਆਧਾਰ 'ਤੇ, ਸਾਰੇ ਉਪਭੋਗਤਾਵਾਂ ਜਾਂ ਖਾਸ ਸਮੂਹਾਂ ਲਈ ਪਹੁੰਚਯੋਗ",

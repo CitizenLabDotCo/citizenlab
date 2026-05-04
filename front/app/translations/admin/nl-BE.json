@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Verborgen in de algemene projectzoekfunctie",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Alleen zichtbaar in specifieke modules op de startpagina",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Gearchiveerd",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Alleen toegankelijk voor beheerders en toegewezen managers (ruimte, map of project)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Iedereen met de link voor de voorbeeldweergave heeft ook toegang",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Concept",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Toegankelijk voor alle gebruikers of specifieke groepen, afhankelijk van de projectinstellingen",

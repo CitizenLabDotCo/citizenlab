@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Ukryty w ogólnej wyszukiwarce projektów",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Widoczny tylko w dedykowanych modułach strony głównej",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Zarchiwizowany",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Dostępne tylko dla administratorów i przypisanych menedżerów (obszaru, folderu lub projektu)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Każda osoba posiadająca link do podglądu również może uzyskać do niego dostęp",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Szkic",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Dostępny dla wszystkich użytkowników lub określonych grup, w zależności od ustawień projektu",

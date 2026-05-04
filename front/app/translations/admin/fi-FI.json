@@ -481,6 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Piilotettu yleisestä projektien hausta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Näkyvissä vain tietyissä etusivun moduuleissa",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arkistoitu",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Vain ylläpitäjien ja nimettyjen hallinnoijien käytettävissä (tila, kansio tai projekti)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Kaikki, joilla on esikatselun jakolinkki, pääsevät myös tarkastelemaan sitä",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Luonnos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Kaikkien käyttäjien tai tiettyjen ryhmien käytettävissä projektin asetuksista riippuen",
