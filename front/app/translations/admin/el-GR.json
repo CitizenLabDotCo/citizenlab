@@ -481,7 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Κρυφό από τη γενική αναζήτηση έργων",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Ορατό μόνο σε ειδικές ενότητες της αρχικής σελίδας",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Αρχειοθετημένο",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Προσβάσιμο μόνο σε διαχειριστές και στους ανατεθειμένους διαχειριστές έργου",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Προσβάσιμο μόνο σε διαχειριστές και ανατεθειμένους υπεύθυνους (χώρου, φακέλου ή έργου)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Οποιοσδήποτε διαθέτει τον σύνδεσμο κοινής χρήσης προεπισκόπησης μπορεί επίσης να έχει πρόσβαση",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Πρόχειρο",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Προσβάσιμο σε όλους τους χρήστες ή σε συγκεκριμένες ομάδες, ανάλογα με τις ρυθμίσεις του έργου",

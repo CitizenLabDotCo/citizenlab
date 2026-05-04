@@ -481,7 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "عام پراجیکٹ سرچ سے پوشیدہ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "صرف مخصوص ہوم پیج ماڈیولز میں نظر آتا ہے",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "آرکائیو شدہ",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "صرف ایڈمنز اور تفویض کردہ پراجیکٹ مینیجرز کے لیے قابل رسائی",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "صرف ایڈمنز اور تفویض کردہ مینیجرز کے لیے قابلِ رسائی (اسپیس، فولڈر، یا پروجیکٹ)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "شیئر پریویو لنک رکھنے والا کوئی بھی شخص بھی اس تک رسائی حاصل کر سکتا ہے",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "ڈرافٹ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "پراجیکٹ کی ترتیبات کے لحاظ سے، تمام صارفین یا مخصوص گروپس کے لیے قابل رسائی",

@@ -481,7 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Skjult fra den generelle projektsøgning",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Kun synlig i dedikerede moduler på startsiden",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arkiveret",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Kun tilgængelig for administratorer og tildelte projektledere",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Kun tilgængelig for administratorer og tildelte projektledere (område, mappe eller projekt)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Enhver med linket til forhåndsvisning kan også få adgang til det",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Kladde",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Tilgængelig for alle brugere eller for specifikke grupper, afhængigt af projektindstillingerne",

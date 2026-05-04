@@ -481,7 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Oculto da busca geral de projetos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Visível apenas em módulos dedicados da página inicial",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arquivado",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Acessível apenas para administradores e gerentes de projeto atribuídos",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Acessível apenas para administradores e gerentes atribuídos (espaço, pasta ou projeto)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Qualquer pessoa com o link de compartilhamento de pré-visualização também pode acessá-lo",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Rascunho",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Acessível a todos os usuários ou a grupos específicos, dependendo das configurações do projeto",

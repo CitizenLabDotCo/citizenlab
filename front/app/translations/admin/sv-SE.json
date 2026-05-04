@@ -481,7 +481,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Dold från den allmänna projektsökningen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Endast synligt i dedikerade moduler på startsidan",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arkiverat",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Endast tillgängligt för administratörer och tilldelade projektledare",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Endast tillgänglig för administratörer och tilldelade ansvariga (yta, mapp eller projekt)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Alla som har delningslänken för förhandsgranskning kan också få åtkomst",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Utkast",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Tillgängligt för alla användare eller för specifika grupper, beroende på projektinställningarna",
