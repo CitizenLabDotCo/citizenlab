@@ -37,23 +37,24 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   const { formatMessage } = useIntl();
   const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
+  const projectContextId = campaign.relationships.context?.data?.id;
   const statsLink: {
     to:
       | '/admin/messaging/emails/custom/$campaignId'
       | '/admin/projects/$projectId/messaging/$campaignId';
     params: Record<string, string>;
   } =
-    context === 'global'
+    context === 'project' && projectContextId
       ? {
-          to: '/admin/messaging/emails/custom/$campaignId',
-          params: { campaignId: campaign.id },
-        }
-      : {
           to: '/admin/projects/$projectId/messaging/$campaignId',
           params: {
-            projectId: campaign.relationships.context?.data?.id ?? '',
+            projectId: projectContextId,
             campaignId: campaign.id,
           },
+        }
+      : {
+          to: '/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
         };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
