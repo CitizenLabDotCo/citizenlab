@@ -5,9 +5,10 @@ import {
   ButtonProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
-import type { LinkProps } from '@tanstack/react-router';
 
 import Link from 'utils/cl-router/Link';
+
+import type { LinkProps } from '@tanstack/react-router';
 
 interface Props extends ButtonProps {
   linkTo?: string | null;
