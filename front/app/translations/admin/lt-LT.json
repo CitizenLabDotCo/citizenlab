@@ -481,7 +481,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Paslėpta nuo bendros projektų paieškos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Matoma tik specialiuose pagrindinio puslapio moduliuose",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archyvuota",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Pasiekiama tik administratoriams ir priskirtiems projektų vadovams",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Kiekvienas, turintis bendrinimo peržiūros nuorodą, taip pat gali jį pasiekti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Juodraštis",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Pasiekiama visiems naudotojams arba tam tikroms grupėms, priklausomai nuo projekto nustatymų",

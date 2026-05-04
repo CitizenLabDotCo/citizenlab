@@ -481,7 +481,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "In der allgemeinen Projektsuche ausgeblendet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Nur in speziellen Homepage-Modulen sichtbar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archiviert",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Nur für Admins und zugewiesene Projekt-Manager*innen zugänglich",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Jede Person mit dem Link zur Vorschaufreigabe kann ebenfalls darauf zugreifen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Entwurf",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Zugänglich für alle Nutzende oder bestimmte Gruppen, abhängig von den Projekteinstellungen",

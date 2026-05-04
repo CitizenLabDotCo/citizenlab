@@ -481,7 +481,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Paslēpts no vispārējās projektu meklēšanas",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Redzams tikai īpašos sākumlapas moduļos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arhivēts",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": "Pieejams tikai administratoriem un piesaistītajiem projektu vadītājiem",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Ikviens, kuram ir kopīgošanas priekšskatījuma saite, arī var tam piekļūt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Melnraksts",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Pieejams visiem lietotājiem vai konkrētām grupām atkarībā no projekta iestatījumiem",
