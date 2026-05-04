@@ -7,7 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
@@ -48,7 +48,7 @@ const EditNavbarItemForm = () => {
       breadcrumbs={[
         {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumbLinkTo,
+          link: pagesAndMenuBreadcrumbLink,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),
