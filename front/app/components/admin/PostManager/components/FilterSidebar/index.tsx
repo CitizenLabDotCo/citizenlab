@@ -82,12 +82,12 @@ const FilterSidebar = ({
       typeof projectId === 'string'
     ) {
       return {
-        to: '/$locale/admin/projects/$projectId/general/input-tags',
+        to: '/admin/projects/$projectId/general/input-tags',
         params: { projectId },
       } as const;
     } else if (isAdmin(authUser)) {
       // For admins we show the link to the platform-wide tag manager
-      return { to: '/$locale/admin/settings/topics' } as const;
+      return { to: '/admin/settings/topics' } as const;
     } else {
       // Don't show the link to the platform-wide tag manager if the user is not an admin.
       // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,

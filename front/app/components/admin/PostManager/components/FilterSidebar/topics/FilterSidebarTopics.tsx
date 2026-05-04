@@ -20,8 +20,8 @@ interface Props {
   onChangeTopicsFilter?: (topics: string[]) => void;
   linkToTagManager: {
     to:
-      | '/$locale/admin/projects/$projectId/general/input-tags'
-      | '/$locale/admin/settings/topics';
+      | '/admin/projects/$projectId/general/input-tags'
+      | '/admin/settings/topics';
     params?: Record<string, string>;
   } | null;
 }

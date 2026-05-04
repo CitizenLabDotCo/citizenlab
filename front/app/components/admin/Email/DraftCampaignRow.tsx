@@ -38,17 +38,17 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
 
   const editLink: {
     to:
-      | '/$locale/admin/messaging/emails/custom/$campaignId'
-      | '/$locale/admin/projects/$projectId/messaging/$campaignId';
+      | '/admin/messaging/emails/custom/$campaignId'
+      | '/admin/projects/$projectId/messaging/$campaignId';
     params: Record<string, string>;
   } =
     context === 'global'
       ? {
-          to: '/$locale/admin/messaging/emails/custom/$campaignId',
+          to: '/admin/messaging/emails/custom/$campaignId',
           params: { campaignId: campaign.id },
         }
       : {
-          to: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+          to: '/admin/projects/$projectId/messaging/$campaignId',
           params: {
             projectId: campaign.relationships.context?.data?.id ?? '',
             campaignId: campaign.id,
