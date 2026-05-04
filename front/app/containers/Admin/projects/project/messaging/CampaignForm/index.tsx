@@ -196,7 +196,7 @@ const CampaignForm = ({
                   {...messages.infoboxAdmin}
                   values={{
                     link: (
-                      <Link to="/$locale/admin/messaging/emails/custom">
+                      <Link to="/admin/messaging/emails/custom">
                         <FormattedMessage {...messages.infoboxLink} />
                       </Link>
                     ),

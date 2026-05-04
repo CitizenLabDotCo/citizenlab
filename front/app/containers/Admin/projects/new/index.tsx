@@ -56,7 +56,7 @@ const CreateProject = () => {
 
   return (
     <Box>
-      <GoBackButton to="/$locale/admin/projects" />
+      <GoBackButton to="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}
       </Title>

@@ -76,7 +76,7 @@ const FolderProjectDropdown = ({ folderId }: Props) => {
                   page.data.map((adminPublication) => (
                     <ButtonWithLink
                       key={adminPublication.id}
-                      to="/$locale/admin/projects/$projectId"
+                      to="/admin/projects/$projectId"
                       params={{
                         projectId:
                           adminPublication.relationships.publication.data.id,

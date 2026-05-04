@@ -504,7 +504,7 @@ const PhaseParticipationConfig = ({
                   {...projectMessages.needInspirationDescription}
                   values={{
                     inspirationHubLink: (
-                      <Link to="/$locale/admin/inspiration-hub" target="_blank">
+                      <Link to="/admin/inspiration-hub" target="_blank">
                         <FormattedMessage {...projectMessages.inspirationHub} />
                       </Link>
                     ),

@@ -137,7 +137,7 @@ const ProjectFolderRow = memo<Props>(
                       'en-GB'
                     ] || ''
                   }`}
-                  to="/$locale/admin/projects/folders/$projectFolderId"
+                  to="/admin/projects/folders/$projectFolderId"
                   params={{
                     projectFolderId:
                       publication.relationships.publication.data.id,

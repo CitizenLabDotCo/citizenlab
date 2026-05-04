@@ -63,7 +63,7 @@ const InputListItem = () => {
       {showManageInputButton && (
         <Box display="flex" justifyContent="flex-end">
           <ButtonWithLink
-            to="/$locale/admin/projects/$projectId/phases/$phaseId/ideas"
+            to="/admin/projects/$projectId/phases/$phaseId/ideas"
             params={{ projectId, phaseId }}
             search={{ selected_idea_id: selectedInputId }}
             openLinkInNewTab

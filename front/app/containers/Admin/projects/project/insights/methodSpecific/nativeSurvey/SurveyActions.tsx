@@ -272,7 +272,7 @@ const SurveyActions = ({ phase }: Props) => {
           />
         </Box>
         <ButtonWithLink
-          to="/$locale/projects/$slug/surveys/new"
+          to="/projects/$slug/surveys/new"
           params={{ slug: project.data.attributes.slug }}
           search={{ phase_id: phaseId }}
           buttonStyle="text"

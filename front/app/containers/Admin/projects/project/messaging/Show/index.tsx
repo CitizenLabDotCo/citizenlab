@@ -162,7 +162,7 @@ const Show = () => {
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
           <GoBackButton
-            to="/$locale/admin/projects/$projectId/messaging"
+            to="/admin/projects/$projectId/messaging"
             params={{ projectId }}
           />
           <Box display="flex" mb="20px">
@@ -201,7 +201,7 @@ const Show = () => {
               campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
-                  to="/$locale/admin/projects/$projectId/messaging/$campaignId/edit"
+                  to="/admin/projects/$projectId/messaging/$campaignId/edit"
                   params={{ projectId, campaignId: campaign.data.id }}
                   buttonStyle="secondary-outlined"
                 >

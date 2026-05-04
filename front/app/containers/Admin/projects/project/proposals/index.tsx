@@ -48,7 +48,7 @@ const AdminProjectProposals = () => {
           <Box display="flex" gap="8px">
             <ButtonWithLink
               width="auto"
-              to="/$locale/admin/projects/$projectId/phases/$phaseId/input-importer"
+              to="/admin/projects/$projectId/phases/$phaseId/input-importer"
               params={{ projectId, phaseId }}
               icon="page"
               buttonStyle="secondary-outlined"
@@ -59,7 +59,7 @@ const AdminProjectProposals = () => {
               <NewIdeaButton
                 participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
-                to="/$locale/projects/$slug/ideas/new"
+                to="/projects/$slug/ideas/new"
                 params={{ slug: project.data.attributes.slug }}
                 search={{ phase_id: phaseId }}
               />

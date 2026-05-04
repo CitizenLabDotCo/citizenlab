@@ -64,7 +64,7 @@ const VisibilitySection = ({ project, onClose }: Props) => {
         </Text>
         <ButtonWithLink
           buttonStyle="text"
-          to="/$locale/admin/projects/$projectId/general/access-rights"
+          to="/admin/projects/$projectId/general/access-rights"
           params={{ projectId }}
           onClick={() => onClose()}
           padding="0"

@@ -13,7 +13,7 @@ const NewCampaignButton = () => {
     <ButtonWithLink
       buttonStyle="admin-dark"
       icon="plus-circle"
-      to="/$locale/admin/projects/$projectId/messaging/new"
+      to="/admin/projects/$projectId/messaging/new"
       params={{ projectId: projectId ?? '' }}
     >
       <FormattedMessage {...messages.addCampaignButton} />

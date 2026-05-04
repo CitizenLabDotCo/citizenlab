@@ -174,7 +174,7 @@ const VotingInputs = ({
               values={{
                 optionsPageLink: (
                   <Link
-                    to="/$locale/admin/projects/$projectId/phases/$phaseId/ideas"
+                    to="/admin/projects/$projectId/phases/$phaseId/ideas"
                     params={{ projectId, phaseId }}
                     rel="noreferrer"
                   >

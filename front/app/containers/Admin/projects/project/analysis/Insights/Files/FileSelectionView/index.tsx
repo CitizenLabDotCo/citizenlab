@@ -133,7 +133,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
           <Box mt="24px">
             <ButtonWithLink
-              to="/$locale/admin/projects/$projectId/files"
+              to="/admin/projects/$projectId/files"
               params={{ projectId }}
               buttonStyle="text"
               icon="open-in-new"

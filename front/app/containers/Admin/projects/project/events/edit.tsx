@@ -625,7 +625,7 @@ const AdminProjectEventEdit = () => {
     <Box mt="44px" mx="44px">
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
         <GoBackButton
-          to="/$locale/admin/projects/$projectId/events"
+          to="/admin/projects/$projectId/events"
           params={{ projectId: projectId ?? '' }}
         />
         <Box ref={containerRef}>
