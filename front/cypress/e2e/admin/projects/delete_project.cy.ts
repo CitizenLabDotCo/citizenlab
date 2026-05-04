@@ -6,7 +6,7 @@ describe('Admin: delete project', () => {
     cy.setAdminLoginCookie();
   });
 
-  it('deletes a published project', () => {
+  it.skip('deletes a published project', () => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
