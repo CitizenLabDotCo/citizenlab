@@ -11,11 +11,8 @@ resource 'Project reviews' do
   context 'as an admin' do
     before do
       header 'Content-Type', 'application/json'
-      admin_header_token
-      admin_header_token
       @user = create(:admin)
       header_token_for(@user)
-      admin_header_token
     end
 
     post 'web_api/v1/projects/:project_id/review' do
