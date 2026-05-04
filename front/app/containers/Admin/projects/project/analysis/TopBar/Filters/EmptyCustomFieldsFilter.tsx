@@ -5,12 +5,12 @@ import { Toggle } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
 const EmptyCustomFieldsFilter = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
 

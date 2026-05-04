@@ -39,7 +39,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { useLocation, useSearchTanStack } from 'utils/router';
+import { useLocation, useSearch } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
 
 import { DEFAULT_Y_PADDING } from '../constants';
@@ -134,7 +134,7 @@ type Props = {
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/pages-menu/homepage-builder',
   });
   const locale = useLocale();
@@ -239,7 +239,7 @@ const HomepageBannerSettings = () => {
 
   const [errors, setErrors] = useState<ErrorType[]>([]);
   const [hasError, setHasError] = useState(false);
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/pages-menu/homepage-builder',
   });
   const { formatMessage } = useIntl();

@@ -9,7 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import {
   categoryColors,
@@ -38,7 +38,7 @@ const FormResults = (props: Props) => {
   const { data: project } = useProjectById(projectId);
 
   // Get the current year and quarter for the results
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
 

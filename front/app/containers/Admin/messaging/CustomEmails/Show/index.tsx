@@ -41,7 +41,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -116,7 +116,7 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/messaging/emails/custom/$campaignId',
   });
   const created = searchParams.created;

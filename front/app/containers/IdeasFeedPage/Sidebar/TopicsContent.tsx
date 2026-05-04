@@ -15,7 +15,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -42,7 +42,7 @@ const TopicsContent = ({
   isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas-feed',
   });
   const phaseId = searchParams.phase_id;

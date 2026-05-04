@@ -6,7 +6,7 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';
@@ -21,7 +21,7 @@ const HealthScoreChart = ({
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
   const { formatMessage } = useIntl();

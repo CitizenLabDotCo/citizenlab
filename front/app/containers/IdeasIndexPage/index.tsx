@@ -17,7 +17,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
@@ -76,7 +76,7 @@ const PageTitle = styled.h1`
 `;
 
 const IdeasIndexPage = () => {
-  const { sort, search, idea_status, topics } = useSearchTanStack({
+  const { sort, search, idea_status, topics } = useSearch({
     from: '/$locale/ideas',
   });
 

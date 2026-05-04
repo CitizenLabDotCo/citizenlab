@@ -20,7 +20,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
@@ -77,7 +77,7 @@ type ReportBuilderPageProps = {
 
 const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const { formatMessage } = useIntl();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/reporting/report-builder/',
   });
   const { data: me } = useAuthUser();

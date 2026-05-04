@@ -14,7 +14,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -50,7 +50,7 @@ const MapIdeasList = memo<Props>(
       sort: sortParam,
       search,
       topics,
-    } = useSearchTanStack({
+    } = useSearch({
       from: '/$locale/projects/$slug',
     });
     const isTabletOrSmaller = useBreakpoint('tablet');

@@ -24,7 +24,7 @@ import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -74,7 +74,7 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/$slug',
   });
   const [goBack] = useState(searchParams.go_back);

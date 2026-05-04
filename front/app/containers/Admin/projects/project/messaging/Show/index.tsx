@@ -39,7 +39,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -94,7 +94,7 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/messaging/$campaignId',
   });
   const created = searchParams.created;

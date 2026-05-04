@@ -9,7 +9,7 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 import CampaignConsentForm from 'components/CampaignConsentForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 import messages from './messages';
@@ -31,7 +31,7 @@ const EmailSettingPage = () => {
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const unsubscriptionToken = searchParams.unsubscription_token;
   const campaignId = searchParams.campaign_id;
 

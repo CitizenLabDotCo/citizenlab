@@ -6,7 +6,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import tracks from '../../tracks';
 import messages from '../messages';
@@ -26,7 +26,7 @@ const EngagementFilter = ({
   id,
 }: EngagementFilterProps) => {
   const { formatMessage } = useIntl();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
 

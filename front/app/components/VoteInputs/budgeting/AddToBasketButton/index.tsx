@@ -29,7 +29,7 @@ import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { isPhaseActive } from 'utils/projectUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -61,7 +61,7 @@ const AddToBasketButton = ({
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const isProcessing = searchParams.processing_vote === ideaId;
 
   if (!idea || !ideaBudget) {

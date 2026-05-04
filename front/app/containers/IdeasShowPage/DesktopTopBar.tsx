@@ -9,7 +9,7 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../IdeasShow/messages';
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const TopBar = ({ project }: Props) => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/$slug',
   });
   const goBackParameter = searchParams.go_back;

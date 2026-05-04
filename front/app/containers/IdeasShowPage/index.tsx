@@ -24,7 +24,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
@@ -58,7 +58,7 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/$slug',
   });
   const phaseContext = searchParams.phase_context;

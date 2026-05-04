@@ -9,7 +9,7 @@ import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsibl
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -25,7 +25,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { data: phase } = usePhase(phaseId);
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
-  const { sort } = useSearchTanStack({
+  const { sort } = useSearch({
     from: '/$locale/projects/$slug',
   });
   const currentSortType = sort || phaseDefaultSort || 'trending';

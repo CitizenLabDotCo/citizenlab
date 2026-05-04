@@ -11,7 +11,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
@@ -26,7 +26,7 @@ const InputListItem = () => {
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const [showAllQuestions, setShowAllQuestions] = useState(false);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
 

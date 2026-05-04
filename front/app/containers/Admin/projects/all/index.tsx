@@ -5,7 +5,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import Search from './_shared/FilterBar/Filters/Search';
 import Folders from './Folders';
@@ -43,7 +43,7 @@ const getSearchMessage = (
 };
 
 const AdminProjectsListNew = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/',
   });
   const { formatMessage } = useIntl();

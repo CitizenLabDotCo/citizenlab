@@ -17,7 +17,7 @@ import {
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import FileItem from '../FileItem';
 
@@ -60,7 +60,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const { formatMessage } = useIntl();

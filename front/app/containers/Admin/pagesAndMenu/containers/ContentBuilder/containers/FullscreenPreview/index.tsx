@@ -12,12 +12,12 @@ import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/pages-menu/homepage-builder/preview',
   });
   const selectedLocale = search.selected_locale || undefined;

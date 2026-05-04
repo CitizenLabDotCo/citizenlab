@@ -26,7 +26,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { useLocation, useSearchTanStack } from 'utils/router';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import AuthorField from '../Fields/AuthorField';
@@ -94,7 +94,7 @@ const IdeationPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =

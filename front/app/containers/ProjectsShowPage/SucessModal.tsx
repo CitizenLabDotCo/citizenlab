@@ -15,7 +15,7 @@ import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { isReady } from './utils';
 
@@ -27,7 +27,7 @@ const SuccessModal = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const queryParams = useSearchTanStack({ strict: false });
+  const queryParams = useSearch({ strict: false });
   const showModalParam = queryParams.show_modal !== undefined;
   const phaseIdParam = queryParams.phase_id;
   const [newIdeaIdParam] = useState(queryParams.new_idea_id);

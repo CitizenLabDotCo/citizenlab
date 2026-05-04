@@ -16,7 +16,7 @@ import {
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { geocode, Point, reverseGeocode } from 'utils/locationTools';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 interface Props extends LocationInputProps {
   name: string;
@@ -38,7 +38,7 @@ const LocationInput = ({
     watch,
   } = useFormContext();
   const locale = useLocale();
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const latitude = searchParams.lat;
   const longitude = searchParams.lng;
   const isTouched = !!touchedFields[name];

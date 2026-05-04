@@ -12,7 +12,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { keys } from 'utils/helperUtils';
 import { findSimilarLocale } from 'utils/i18n';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
@@ -31,7 +31,7 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
 export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/inspiration-hub/',
   });
 
@@ -60,7 +60,7 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
 ];
 
 export const useRansackParams = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/inspiration-hub/',
   });
   const indexed = searchParams as Record<string, string | undefined>;

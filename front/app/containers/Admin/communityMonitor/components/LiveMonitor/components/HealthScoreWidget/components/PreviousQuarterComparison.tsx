@@ -3,7 +3,7 @@ import React from 'react';
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
 
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
 

@@ -26,7 +26,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isPhaseActive } from 'utils/projectUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -54,7 +54,7 @@ const AssignSingleVoteButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const isProcessing = searchParams.processing_vote === ideaId;
 
   // TODO: Fix this the next time the file is edited.

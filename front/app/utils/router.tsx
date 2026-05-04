@@ -11,13 +11,13 @@ import {
   createRoute,
   useLocation,
   useParams,
-  useSearch as useSearchTanStack,
+  useSearch,
 } from '@tanstack/react-router';
 
 export {
   useLocation,
   useParams,
-  useSearchTanStack,
+  useSearch,
   Link,
   Outlet,
   RouterProvider,

@@ -22,7 +22,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlB
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import IdeasNewMeta from '../IdeasNewMeta';
 
@@ -57,7 +57,7 @@ const IdeasNewIdeationForm = ({
   const { data: phase } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas/new',
   });
   const selectedIdeaId = searchParams.selected_idea_id;

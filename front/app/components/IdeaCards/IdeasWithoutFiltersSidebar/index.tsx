@@ -26,7 +26,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import SelectSort from '../shared/Filters/SortFilterDropdown';
@@ -103,7 +103,7 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const selectedIdeaMarkerId = searchParams.idea_map_id;
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');

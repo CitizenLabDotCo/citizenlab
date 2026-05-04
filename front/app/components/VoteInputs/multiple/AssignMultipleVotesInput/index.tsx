@@ -25,7 +25,7 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import NumberInput from './NumberInput';
@@ -50,7 +50,7 @@ const AssignMultipleVotesInput = ({
   const { getVotes, setVotes, userHasVotesLeft, numberOfVotesCast } =
     useVoting();
   const votes = getVotes?.(ideaId);
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const isProcessing = searchParams.processing_vote === ideaId;
 
   // participation context

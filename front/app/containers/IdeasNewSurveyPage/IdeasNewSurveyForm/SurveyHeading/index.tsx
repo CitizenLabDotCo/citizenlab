@@ -23,7 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import { getLeaveFormDestination } from '../utils';
 
@@ -63,7 +63,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/surveys/new',
   });
 

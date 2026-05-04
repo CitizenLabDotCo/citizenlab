@@ -4,7 +4,7 @@ import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { TFilterMenu } from '.';
 
@@ -22,7 +22,7 @@ const useInputManagerSearchParams = (context: {
   projectId?: string | null;
   phaseId?: string;
 }) => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/phases',
   });
 

@@ -17,7 +17,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
@@ -76,7 +76,7 @@ const ROLES_THAT_CAN_SEE_FOLDERS: HighestRole[] = [
 ];
 
 const Tabs = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/',
   });
   const tab = searchParams.tab;

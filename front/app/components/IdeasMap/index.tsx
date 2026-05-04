@@ -50,7 +50,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
@@ -118,7 +118,7 @@ const IdeasMap = memo<Props>(
     const { formatMessage } = useIntl();
     const { data: phase } = usePhase(phaseId);
     const { data: authUser } = useAuthUser();
-    const searchParams = useSearchTanStack({ strict: false });
+    const searchParams = useSearch({ strict: false });
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
 

@@ -19,7 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { INSIGHTS_CHART_COLORS } from '../../constants';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
@@ -39,7 +39,7 @@ const VoteResults = ({ phaseId }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
   const { isPdfRenderMode } = usePdfExportContext();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/phases/$phaseId/insights',
   });
 

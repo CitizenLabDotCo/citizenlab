@@ -11,7 +11,7 @@ import useLocale from 'hooks/useLocale';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../../../../../messages';
 
@@ -24,7 +24,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
 

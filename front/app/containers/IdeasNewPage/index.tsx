@@ -19,7 +19,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
@@ -32,7 +32,7 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas/new',
   });
   const phaseIdFromSearchParams = searchParams.phase_id;

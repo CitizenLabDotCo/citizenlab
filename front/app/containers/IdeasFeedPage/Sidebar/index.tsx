@@ -15,7 +15,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import BottomSheet from '../BottomSheet';
 import messages from '../messages';
@@ -33,7 +33,7 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams({ from: '/$locale/projects/$slug' });
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas-feed',
   });
   const selectedTopicId = searchParams.topic ?? null;

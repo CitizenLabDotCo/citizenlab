@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { handleArraySearchParam } from '../util';
 
@@ -30,7 +30,7 @@ const STATIC_ARRAY_FILTERS: string[] = ['tag_ids'];
 /** Hook that extracts and returns all filter params used in the analysis,
  * extracted from the url */
 const useAnalysisFilterParams = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
 

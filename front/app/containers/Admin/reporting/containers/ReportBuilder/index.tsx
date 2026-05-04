@@ -21,7 +21,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useLocation, useParams, useSearchTanStack } from 'utils/router';
+import { useLocation, useParams, useSearch } from 'utils/router';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -179,7 +179,7 @@ const ReportBuilderWrapper = () => {
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/reporting/report-builder/$reportId/editor',
   });
   const [templateProjectId] = useState(search.templateProjectId ?? null);

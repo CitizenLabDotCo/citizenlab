@@ -22,7 +22,7 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -46,7 +46,7 @@ const SimilarIdeasList = ({
     slug?: string;
     projectId?: string;
   };
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const { ideaId: idea_id } = useParams({ strict: false });
   const ideaId = searchParams.idea_id || idea_id;
   const selectedIdeaId = searchParams.selected_idea_id;

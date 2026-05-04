@@ -10,7 +10,7 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import CopyLink from '../buttons/CopyLink';
 import Email from '../buttons/Email';
@@ -46,7 +46,7 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const phaseContext = searchParams.phase_context;
   const { data: appConfiguration } = useAppConfiguration();
   const isSharingEnabled =

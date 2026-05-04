@@ -20,7 +20,7 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -45,7 +45,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/edit/$ideaId',
   });
   const ideaSubmitted = searchParams.idea_id !== undefined;

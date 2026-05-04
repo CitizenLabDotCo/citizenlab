@@ -12,7 +12,7 @@ import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import IdeaNoteRow from './components/IdeaNoteRow';
 import LoaderRow from './components/LoaderRow';
@@ -98,7 +98,7 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas-feed',
   });
   const phaseId = searchParams.phase_id!;

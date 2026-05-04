@@ -16,7 +16,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlB
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
@@ -32,7 +32,7 @@ interface Props {
 const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/edit/$ideaId',
   });
   const selectedIdeaId = searchParams.selected_idea_id;

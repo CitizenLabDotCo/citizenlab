@@ -8,12 +8,12 @@ import { Title } from 'components/smallForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
 const DisabledAccount = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/disabled-account',
   });
   const parsedDate = moment(searchParams.date).format('LL');

@@ -7,7 +7,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isString } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import {
   pageContentMaxWidth,
@@ -75,7 +75,7 @@ const Container2 = ({
   handleContainerRef,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/ideas/$slug',
   });
   const ideaIdParameter = searchParams.new_idea_id;

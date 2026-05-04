@@ -21,7 +21,7 @@ import ReactionControl from 'components/ReactionControl';
 import Emoji from 'components/UI/Emoji';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 import { stripHtml } from 'utils/textUtils';
 
 export const NOTE_ASPECT_RATIO = 4 / 5;
@@ -99,7 +99,7 @@ const StickyNote: React.FC<Props> = ({
   centeredIdeaId,
   showReactions = true,
 }) => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/ideas-feed',
   });
   const phaseId = searchParams.phase_id || undefined;

@@ -11,7 +11,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { useLocalizeProjectLibrary } from '../utils';
 
@@ -21,7 +21,7 @@ import messages from './messages';
 import Phase from './Phase';
 
 const ProjectDrawer = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/inspiration-hub/',
   });
   const { data: appConfiguration } = useAppConfiguration();

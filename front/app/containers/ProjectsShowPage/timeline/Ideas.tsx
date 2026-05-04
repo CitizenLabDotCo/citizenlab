@@ -18,7 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
   projectId: string;
@@ -41,7 +41,7 @@ interface QueryParameters {
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const { slug } = useParams({ from: '/$locale/projects/$slug' });
-  const { sort, search, topics, idea_status } = useSearchTanStack({
+  const { sort, search, topics, idea_status } = useSearch({
     from: '/$locale/projects/$slug',
   });
   const config = getMethodConfig(phase.attributes.participation_method, {

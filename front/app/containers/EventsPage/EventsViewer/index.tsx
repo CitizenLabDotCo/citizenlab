@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -87,7 +87,7 @@ const EventsViewer = ({
     ongoing_page,
     past_page,
     time_period,
-  } = useSearchTanStack({ strict: false });
+  } = useSearch({ strict: false });
   const { formatMessage } = useIntl();
 
   const projectIdList = projectId

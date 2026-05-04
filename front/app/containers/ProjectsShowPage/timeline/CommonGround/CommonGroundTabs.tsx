@@ -14,7 +14,7 @@ import Tabs, { TabData } from 'components/UI/FilterTabs';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
 import CommonGroundStatements from './CommonGroundStatements';
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug',
   });
   const localize = useLocalize();

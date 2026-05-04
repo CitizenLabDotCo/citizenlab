@@ -21,7 +21,7 @@ import Feedback from 'components/HookForm/Feedback';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
-import { useLocation, useSearchTanStack } from 'utils/router';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
@@ -102,7 +102,7 @@ const SurveyPage = ({
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 

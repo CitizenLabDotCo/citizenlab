@@ -16,7 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import tracks from '../../tracks';
 import { handleArraySearchParam } from '../../util';
@@ -25,7 +25,7 @@ import messages from '../messages';
 const AuthorFilters = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const { data: customFields } = useUserCustomFields();

@@ -37,7 +37,7 @@ import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -171,7 +171,7 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
     if (searchParams.copy_from !== undefined) {

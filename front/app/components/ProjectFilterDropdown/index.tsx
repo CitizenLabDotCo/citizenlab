@@ -7,7 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { classNames } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 type Props = {
   title: string | JSX.Element;
@@ -35,7 +35,7 @@ const ProjectFilterDropdown = ({
     sort: 'new',
     removeAllUnlisted: true,
   });
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const projectIdsFromUrl =
     eventsTime === 'past'
       ? searchParams.past_events_project_ids

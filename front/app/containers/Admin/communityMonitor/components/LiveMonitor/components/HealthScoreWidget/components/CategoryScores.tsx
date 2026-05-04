@@ -10,7 +10,7 @@ import {
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
 
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { categoryColors, getYearFilter, getQuarterFilter } from '../utils';
@@ -22,7 +22,7 @@ type Props = {
 };
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
   const isMobileOrSmaller = useBreakpoint('phone');

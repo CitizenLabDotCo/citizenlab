@@ -4,13 +4,13 @@ import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
 const QuarterlyDatePicker = () => {
   const { formatMessage } = useIntl();
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
 

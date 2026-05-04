@@ -18,7 +18,7 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 import SurveyNotActiveNotice from './SurveyNotActiveNotice';
@@ -33,7 +33,7 @@ const IdeasNewSurveyPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/projects/$slug/surveys/new',
   });
   // If we reach this component by hitting surveys/new directly, without a phase_id,

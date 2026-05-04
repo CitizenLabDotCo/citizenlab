@@ -8,7 +8,7 @@ import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestio
 import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
@@ -19,7 +19,7 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/community-monitor/live-monitor',
   });
 

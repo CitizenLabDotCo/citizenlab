@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 const Context = createContext<{
   selectedInputId: string | null;
@@ -18,7 +18,7 @@ const Context = createContext<{
 
 const SelectedInputContext = ({ children }) => {
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const inputId = search.selected_input_id;

@@ -11,7 +11,7 @@ import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,7 +28,7 @@ interface QueryParameters {
 const Submissions = () => {
   const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
-  const { sort, search } = useSearchTanStack({
+  const { sort, search } = useSearch({
     from: '/$locale/profile/$userSlug',
   });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });

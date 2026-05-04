@@ -8,7 +8,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 import { useModalQueue } from 'containers/App/ModalQueue';
 
 import eventEmitter from 'utils/eventEmitter';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import {
   getConsent,
@@ -23,7 +23,7 @@ const ConsentManager = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const from = searchParams.from;
   const bypassCookieConsent = searchParams['yes-I-accept-cookies'] === 'true';
 

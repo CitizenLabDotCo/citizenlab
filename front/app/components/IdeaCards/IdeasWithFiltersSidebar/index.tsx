@@ -24,7 +24,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
@@ -95,7 +95,7 @@ const IdeasWithFiltersSidebar = ({
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 

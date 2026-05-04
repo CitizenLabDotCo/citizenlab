@@ -6,7 +6,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 export const PARAMS = [
   'status',
@@ -54,7 +54,7 @@ export const setParam = <ParamName extends Parameter>(
 export const useParam = <ParamName extends Parameter>(
   paramName: ParamName
 ): Parameters[ParamName] | undefined => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/',
   });
 
@@ -70,7 +70,7 @@ export const useParam = <ParamName extends Parameter>(
 };
 
 export const useParams = () => {
-  const searchParams = useSearchTanStack({
+  const searchParams = useSearch({
     from: '/$locale/admin/projects/',
   });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });

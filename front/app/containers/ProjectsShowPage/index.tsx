@@ -35,7 +35,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 import ProjectCTABar from './ProjectCTABar';
@@ -79,7 +79,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: phases } = usePhases(projectId);
 
-  const search = useSearchTanStack({
+  const search = useSearch({
     from: '/$locale/projects/$slug',
   });
   const scrollToStatusModule = search.scrollToStatusModule;

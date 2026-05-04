@@ -26,7 +26,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearchTanStack } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -46,7 +46,7 @@ const TruncatedTitle = styled(Title)`
 const TopBar = () => {
   const [showLaunchModal, setShowLaunchModal] = useState(false);
   const { data: authUser } = useAuthUser();
-  const urlParams = useSearchTanStack({
+  const urlParams = useSearch({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const phaseId = urlParams.phase_id || undefined;

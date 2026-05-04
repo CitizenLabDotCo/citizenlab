@@ -6,7 +6,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import { isPage } from 'utils/helperUtils';
-import { useLocation, useSearchTanStack } from 'utils/router';
+import { useLocation, useSearch } from 'utils/router';
 
 import { ParametersLive, Options } from './requestTypes';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -61,7 +61,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
-  const search = useSearchTanStack({ strict: false });
+  const search = useSearch({ strict: false });
 
   const { id: graphId } = useNode();
   const { reportId, phaseId } = useReportContext();

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { isSuperAdmin } from 'utils/permissions/roles';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 /**
  * Hook to check if we should be able to see super_admin (internal only) features in the interface.
@@ -12,7 +12,7 @@ import { useSearchTanStack } from 'utils/router';
  * If also logged in, the param can only enable super_admin features if the user is actually a super admin (.govocal.com email).
  */
 export default function useSuperAdmin() {
-  const searchParams = useSearchTanStack({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const { data: authUser } = useAuthUser();
 
   // Multiple possible param names for super admin - people forget the exact one sometimes!

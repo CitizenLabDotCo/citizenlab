@@ -17,7 +17,7 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -34,7 +34,7 @@ const AnalysisInsights = ({
   hasOtherResponses?: boolean;
   insights?: IInsights;
 }) => {
-  const search = useSearchTanStack({ strict: false });
+  const search = useSearch({ strict: false });
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 

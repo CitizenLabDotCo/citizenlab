@@ -16,7 +16,7 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/DescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { useSearchTanStack } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 type Props = {
   contentBuildableId: string;
@@ -29,7 +29,7 @@ export const FullScreenPreview = ({
   contentBuildableType,
   titleMultiloc,
 }: Props) => {
-  const search = useSearchTanStack({ strict: false });
+  const search = useSearch({ strict: false });
   const selectedLocale = search.selected_locale || undefined;
   const localize = useLocalize();
 
