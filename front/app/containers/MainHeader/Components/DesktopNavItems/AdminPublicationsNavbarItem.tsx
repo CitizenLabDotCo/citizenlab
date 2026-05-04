@@ -18,9 +18,9 @@ import useLocalize from 'hooks/useLocalize';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { useLocation } from 'utils/router';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import messages from '../../messages';
 import ProjectsListItem from '../ProjectsListItem';
@@ -111,7 +111,7 @@ const ProjectsList = styled.div`
   `}
 `;
 
-const ProjectsListFooter = styled(Link)`
+const ProjectsListFooter = typedStyled(Link)`
   width: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -132,7 +132,7 @@ const ProjectsListFooter = styled(Link)`
     background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
-` as typeof Link;
+`;
 
 interface Props {
   linkTo: string;
