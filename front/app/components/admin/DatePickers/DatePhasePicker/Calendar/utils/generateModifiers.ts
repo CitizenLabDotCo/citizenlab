@@ -348,7 +348,7 @@ const generateNoTimeAvailableModifiers = (disabledRanges: DateRange[]) => {
 
   return {
     ...(noTimeAvailableDays.length > 0
-      ? { isNoTimeAvailableDay: noTimeAvailableDays }
+      ? { isNoTimeAvailable: noTimeAvailableDays }
       : {}),
   };
 };
