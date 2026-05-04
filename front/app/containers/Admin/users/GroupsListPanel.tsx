@@ -346,7 +346,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       </GroupsList>
       <Box display="flex" flexGrow={1} />
       <ButtonWithLink
-        linkTo="/admin/users/invitations"
+        to="/$locale/admin/users/invitations"
         icon="email"
         className="intercom-users-invite-users-button"
       >

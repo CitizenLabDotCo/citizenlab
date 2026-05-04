@@ -76,7 +76,7 @@ const AreaList = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          linkTo="/admin/settings/areas/new"
+          to="/$locale/admin/settings/areas/new"
         >
           <FormattedMessage {...messages.addAreaButton} />
         </ButtonWithLink>
@@ -185,7 +185,8 @@ const AreaListRow = ({
         <FormattedMessage {...messages.deleteButtonLabel} />
       </ButtonWithLink>
       <ButtonWithLink
-        linkTo={`/admin/settings/areas/${item.id}`}
+        to="/$locale/admin/settings/areas/$areaId"
+        params={{ areaId: item.id }}
         buttonStyle="secondary-outlined"
         icon="edit"
       >

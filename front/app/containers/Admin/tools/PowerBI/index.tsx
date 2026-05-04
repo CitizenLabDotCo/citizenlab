@@ -63,7 +63,7 @@ const PowerBI = () => {
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/power-bi"
+              to="/$locale/admin/tools/power-bi"
               textColor="white"
               bgColor={colors.primary}
             >

@@ -238,7 +238,8 @@ const CustomFieldSettings = () => {
                       {!isHiddenField(field) && (
                         <ButtonWithLink
                           className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']} intercom-settings-tab-registration-fields-edit`}
-                          linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
+                          to="/$locale/admin/settings/registration/custom-fields/$userCustomFieldId/field-settings"
+                          params={{ userCustomFieldId: field.id }}
                           buttonStyle="secondary-outlined"
                           icon="edit"
                         >
@@ -258,7 +259,7 @@ const CustomFieldSettings = () => {
       <ButtonWithLink
         buttonStyle="admin-dark"
         icon="plus-circle"
-        linkTo="/admin/settings/registration/custom-fields/new"
+        to="/$locale/admin/settings/registration/custom-fields/new"
         className="intercom-settings-tab-registration-fields-new"
       >
         <FormattedMessage {...messages.addAQuestionButton} />

@@ -47,7 +47,7 @@ export const Webhooks = () => {
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/webhooks"
+              to="/$locale/admin/tools/webhooks"
               textColor="white"
               bgColor={colors.primary}
             >
