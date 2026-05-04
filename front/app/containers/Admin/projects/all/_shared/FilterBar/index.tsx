@@ -3,17 +3,28 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-
-import { isAdmin } from 'utils/permissions/roles';
+import { HighestRole, IUser } from 'api/users/types';
 
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
 import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
 
+const userCanApprove = (user: IUser) => {
+  const { highest_role } = user.data.attributes;
+
+  const allowedHighestRoles: (string | undefined)[] = [
+    'super_admin',
+    'admin',
+    'space_moderator',
+    'project_folder_moderator',
+  ] satisfies HighestRole[];
+  return allowedHighestRoles.includes(highest_role);
+};
+
 const Filters = () => {
   const { data: user } = useAuthUser();
-  const isUserAdmin = isAdmin(user);
+  if (!user) return null;
 
   return (
     <Box
@@ -25,9 +36,9 @@ const Filters = () => {
       className="intercom-product-tour-project-page-filters"
     >
       <Sort />
-      {isUserAdmin && <PendingApproval />}
+      {userCanApprove(user) && <PendingApproval />}
       <Dates />
-      <DynamicFilters isUserAdmin={isUserAdmin} />
+      <DynamicFilters />
     </Box>
   );
 };
