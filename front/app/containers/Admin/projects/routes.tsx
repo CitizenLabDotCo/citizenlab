@@ -83,6 +83,12 @@ export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
 
+export const adminProjectsProjectLink = (projectId: string) =>
+  ({
+    to: '/$locale/admin/projects/$projectId',
+    params: { projectId },
+  } as const);
+
 // --- Search parameter schemas ---
 
 // Survey form builder search schema
