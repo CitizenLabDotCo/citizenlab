@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Tooltip, Box } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import { IGlobalTopicData } from 'api/global_topics/types';
@@ -12,19 +11,19 @@ import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import { RowDescription, RowTitle } from './RowStyles';
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   text-decoration: underline;
 
   &:hover {
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 interface Props {
   topic: IGlobalTopicData | Error;
