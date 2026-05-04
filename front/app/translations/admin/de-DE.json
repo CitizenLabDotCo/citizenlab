@@ -1757,7 +1757,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges2": "Planen",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": "Planen",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch2": "Veröffentlichung planen",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "Die Zeitplanung ist in Ihrem aktuellen Paket nicht enthalten. Wenden Sie sich an Ihre Kundenbetreuerin oder Ihren Admin, um sie freizuschalten.",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "Die Zeitplanung ist in Ihrer aktuellen Lizenz nicht enthalten. Wenden Sie sich an Ihre Kundenbetreuerin oder Ihren Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail2": "E-Mail „Projekt veröffentlicht“ senden",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": "nicht gelistet",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "Wann",

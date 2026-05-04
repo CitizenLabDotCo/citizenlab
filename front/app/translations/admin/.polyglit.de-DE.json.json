@@ -8964,6 +8964,11 @@
     "verified_at": "2026-04-20T13:13:47.742629Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": {
+    "state": "verified",
+    "verified_at": "2026-05-04T08:17:56.658485Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": {
     "state": "verified",
     "verified_at": "2026-04-20T13:13:47.742629Z",
