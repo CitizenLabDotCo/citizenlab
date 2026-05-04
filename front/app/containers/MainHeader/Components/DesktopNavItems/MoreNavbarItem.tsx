@@ -12,11 +12,11 @@ import { Multiloc } from 'typings';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 
-const DropdownListItem = styled(Link)`
+const DropdownListItem = typedStyled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,7 +39,7 @@ const DropdownListItem = styled(Link)`
     background-color: ${colors.teal500};
     color: white;
   }
-` as typeof Link;
+`;
 
 const DropdownItemText = styled.span`
   overflow: hidden;
