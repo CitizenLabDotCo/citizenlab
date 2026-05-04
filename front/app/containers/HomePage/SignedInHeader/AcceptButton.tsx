@@ -5,7 +5,7 @@ import styled, { useTheme } from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import type { LinkProps } from '@tanstack/react-router';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 const StyledButton = styled(ButtonWithLink)`
   ${media.tablet`
@@ -19,11 +19,8 @@ const StyledButton = styled(ButtonWithLink)`
 `}
 `;
 
-interface Props {
+interface Props extends TypedLinkProps {
   onClick?: () => void;
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
   className?: string;
   text: string;

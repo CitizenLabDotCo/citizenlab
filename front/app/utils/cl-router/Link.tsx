@@ -7,6 +7,7 @@ import {
   type CreateLinkProps,
   type LinkComponent,
   type LinkComponentProps,
+  type LinkProps,
   type RegisteredRouter,
 } from '@tanstack/react-router';
 import styled from 'styled-components';
@@ -14,6 +15,16 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import { scrollToTop as scrollTop } from 'utils/scroll';
+
+// Shared shape for components that forward a typed-link target to Link or
+// ButtonWithLink. `to` is the typed-route literal (compile-checked against the
+// route tree); `params` and `search` are loose at this boundary because the
+// strict typing kicks in at the consuming Link callsite.
+export type TypedLinkProps = {
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+};
 
 // styled-components erases the generic-function shape of typed router
 // components like cl-router/Link, so `styled(Link)` drops route-aware typing.

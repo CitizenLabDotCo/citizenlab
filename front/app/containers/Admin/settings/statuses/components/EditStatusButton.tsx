@@ -5,17 +5,13 @@ import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-import type { LinkProps } from '@tanstack/react-router';
-
-interface Props {
+interface Props extends TypedLinkProps {
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
 }
 

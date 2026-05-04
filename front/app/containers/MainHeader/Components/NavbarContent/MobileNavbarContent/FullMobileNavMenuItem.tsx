@@ -9,9 +9,7 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
-
-import type { LinkProps } from '@tanstack/react-router';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
@@ -35,10 +33,7 @@ const StyledLink = typedStyled(Link)`
   }
 `;
 
-interface Props {
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
+interface Props extends TypedLinkProps {
   linkTo?: string;
   navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;

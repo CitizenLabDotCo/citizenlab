@@ -6,15 +6,11 @@ import {
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
 
-import Link from 'utils/cl-router/Link';
+import Link, { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import type { LinkProps } from '@tanstack/react-router';
 
-interface Props extends ButtonProps {
-  // Preferred: typed-route props mirroring cl-router/Link's shape.
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
+interface Props extends ButtonProps, TypedLinkProps {
   // Legacy/external/admin-supplied URL escape hatch. Prefer `to` for known
   // internal routes — this stays for arbitrary admin-configured URLs.
   linkTo?: string | null;

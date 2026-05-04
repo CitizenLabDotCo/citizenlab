@@ -7,9 +7,7 @@ import { Multiloc } from 'typings';
 
 import T from 'components/T';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
-
-import type { LinkProps } from '@tanstack/react-router';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -67,11 +65,8 @@ const StyledLink = typedStyled(Link)`
   }
 `;
 
-interface Props {
+interface Props extends TypedLinkProps {
   className?: string;
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;

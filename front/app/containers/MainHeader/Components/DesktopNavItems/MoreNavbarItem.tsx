@@ -12,11 +12,9 @@ import { Multiloc } from 'typings';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from '../../messages';
-
-import type { LinkProps } from '@tanstack/react-router';
 
 const DropdownListItem = typedStyled(Link)`
   display: flex;
@@ -70,10 +68,7 @@ const StyledButton = styled.button`
   }
 `;
 
-interface NavbarItemProps {
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
+interface NavbarItemProps extends TypedLinkProps {
   linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;

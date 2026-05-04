@@ -6,18 +6,14 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-import type { LinkProps } from '@tanstack/react-router';
-
-interface Props {
+interface Props extends TypedLinkProps {
   text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
 }
 

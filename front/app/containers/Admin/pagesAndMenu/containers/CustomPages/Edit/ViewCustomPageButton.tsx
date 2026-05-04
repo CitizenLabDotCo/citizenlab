@@ -5,15 +5,11 @@ import { WrappedComponentProps } from 'react-intl';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from '../messages';
 
-import type { LinkProps } from '@tanstack/react-router';
-
-interface Props {
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
+interface Props extends TypedLinkProps {
   linkTo?: string;
 }
 

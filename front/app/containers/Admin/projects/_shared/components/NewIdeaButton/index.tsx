@@ -6,18 +6,14 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
 import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
 
-import type { LinkProps } from '@tanstack/react-router';
-
-interface Props {
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
+interface Props extends TypedLinkProps {
   linkTo?: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;

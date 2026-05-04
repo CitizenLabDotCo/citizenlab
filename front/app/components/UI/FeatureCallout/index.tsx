@@ -12,16 +12,13 @@ import {
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import type { LinkProps } from '@tanstack/react-router';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
-interface Props {
+interface Props extends TypedLinkProps {
   icon: IconNames;
   title: ReactNode;
   description: ReactNode;
   linkText?: ReactNode;
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
   disabledTooltipContent?: ReactNode;
   tooltipDisabled?: boolean;

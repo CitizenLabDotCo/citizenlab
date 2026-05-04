@@ -13,13 +13,11 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import { trackEventByName } from 'utils/analytics';
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
-
-import type { LinkProps } from '@tanstack/react-router';
 
 const Container = typedStyled(Link)`
   display: flex;
@@ -99,12 +97,9 @@ type Props = {
   icon?: IconNames;
   timing?: string;
   children: React.ReactNode;
-  to?: LinkProps['to'];
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
   linkTo?: string;
   isRead: boolean;
-};
+} & TypedLinkProps;
 
 const NotificationWrapper = ({
   icon,
