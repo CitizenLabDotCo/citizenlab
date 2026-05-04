@@ -74,9 +74,7 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const searchParams = useSearch({
-    from: '/$locale/ideas/$slug',
-  });
+  const searchParams = useSearch({ strict: false });
   const [goBack] = useState(searchParams.go_back);
 
   useEffect(() => {

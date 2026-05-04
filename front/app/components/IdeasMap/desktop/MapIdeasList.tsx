@@ -46,13 +46,7 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const {
-      sort: sortParam,
-      search,
-      topics,
-    } = useSearch({
-      from: '/$locale/projects/$slug',
-    });
+    const { sort: sortParam, search, topics } = useSearch({ strict: false });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);

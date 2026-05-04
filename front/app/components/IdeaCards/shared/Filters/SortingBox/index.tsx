@@ -25,9 +25,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { data: phase } = usePhase(phaseId);
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
-  const { sort } = useSearch({
-    from: '/$locale/projects/$slug',
-  });
+  const { sort } = useSearch({ strict: false });
   const currentSortType = sort || phaseDefaultSort || 'trending';
 
   return (
