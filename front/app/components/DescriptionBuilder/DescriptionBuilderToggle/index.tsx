@@ -23,7 +23,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 // Messages
@@ -43,10 +43,10 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-bottom: 30px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   margin-top: -10px;
   font-size: ${fontSizes.base}px;
-` as typeof Link;
+`;
 
 const DescriptionBuilderToggle = ({
   intl: { formatMessage },
