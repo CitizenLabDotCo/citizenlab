@@ -51,6 +51,7 @@ interface Props {
   disabled?: boolean;
   children: React.ReactNode;
   className?: string;
+  ariaExpanded?: boolean;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -63,6 +64,7 @@ const InputContainer = ({
   disabled = false,
   children,
   className,
+  ariaExpanded,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -76,6 +78,7 @@ const InputContainer = ({
       disabled={disabled}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-expanded={ariaExpanded}
       onClick={(e) => {
         if (disabled) return;
         e.preventDefault();

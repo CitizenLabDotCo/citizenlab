@@ -55,6 +55,7 @@ const DateSinglePicker = ({
           id={id}
           disabled={disabled}
           selectedDate={selectedDate}
+          ariaExpanded={calendarOpen}
           onClick={() => setCalendarOpen(true)}
         />
       </Tooltip>
