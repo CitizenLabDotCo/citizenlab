@@ -1,15 +1,14 @@
 import React from 'react';
 
 import { colors, fontSizes, Text } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import BaseMainContent from '../BaseMainContent';
 import messages from '../messages';
 
-const TextLink = styled(Link)`
+const TextLink = typedStyled(Link)`
   font-size: ${fontSizes.base}px;
   color: ${colors.textPrimary};
   text-decoration: underline;
@@ -18,7 +17,7 @@ const TextLink = styled(Link)`
     color: ${colors.textPrimary};
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 const MainContent = () => {
   return (
