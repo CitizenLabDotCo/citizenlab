@@ -5,11 +5,13 @@ import {
   removeSpace,
 } from '../../../support/spaces';
 
-describe('Spae moderator: permissions', () => {
+describe('Space moderator: permissions', () => {
   const spaceName = randomString(10);
+  const newSpaceName = randomString(10);
   const spaceModEmail = randomEmail();
   const spaceModPassword = 'password';
   const folderName = randomString(10);
+  const newFolderName = randomString(10);
   let spaceId: string;
   let folderId: string;
   let projectId: string;
@@ -49,25 +51,23 @@ describe('Spae moderator: permissions', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit(`/admin/projects/spaces/${spaceId}/settings`);
 
-    cy.get('input#spaceName').clear().type('New space name');
+    cy.get('input#spaceName').clear().type(newSpaceName);
     cy.dataCy('space-name-save-button').click();
     cy.url().should('match', /\/admin\/projects\/spaces\/[a-zA-Z0-9]+/);
-    cy.get('.e2e-resource-header')
-      .find('h1')
-      .should('have.text', 'New space name');
+    cy.get('.e2e-resource-header').find('h1').should('have.text', newSpaceName);
   });
 
   it('Can moderate folder in space', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit(`/admin/projects/folders/${folderId}/settings`);
 
-    cy.get('input#project-folder-title').clear().type('New folder name');
+    cy.get('input#project-folder-title').clear().type(newFolderName);
     cy.get('.e2e-submit-wrapper-button > button').click();
     cy.get('.e2e-submit-wrapper-button').contains('Success!');
     cy.reload();
     cy.get('.e2e-resource-header')
       .find('h1')
-      .should('have.text', 'New folder name');
+      .should('have.text', newFolderName);
   });
 
   it('Can moderate project in space', () => {
@@ -83,7 +83,7 @@ describe('Spae moderator: permissions', () => {
     );
   });
 
-  it('Can create folder in space', () => {
+  it('Can create and delete folder in space', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit('/admin/projects/folders/new');
 
@@ -135,6 +135,22 @@ describe('Spae moderator: permissions', () => {
     // Confirm folder is in space
     cy.get('.intercom-admin-tab-settings').first().click();
     cy.dataCy('space-select').should('have.value', spaceId);
+
+    // Delete folder
+    cy.visit(`/admin/projects?tab=folders&search=${folderName}`);
+    cy.dataCy('projects-overview-folder-table-row')
+      .first()
+      .find('.e2e-more-actions')
+      .click();
+    cy.get('.e2e-more-actions-list')
+      .first()
+      .find('button')
+      .first()
+      .contains('Delete folder')
+      .click();
+    cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+    cy.dataCy('typed-confirmation-delete-button').click();
+    cy.dataCy('projects-overview-folder-table-row').should('not.exist');
   });
 
   const enterProjectName = (projectName: string) => {
@@ -147,7 +163,24 @@ describe('Spae moderator: permissions', () => {
     cy.get('#e2e-project-title-setting-field').type(projectName);
   };
 
-  it('Can create project in space', () => {
+  const deleteProject = (projectName: string) => {
+    cy.visit(`/admin/projects?search=${projectName}`);
+    cy.dataCy('projects-overview-table-row')
+      .first()
+      .find('.e2e-more-actions')
+      .click();
+    cy.get('.e2e-more-actions-list')
+      .first()
+      .find('button')
+      .eq(1)
+      .contains('Delete project')
+      .click();
+    cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+    cy.dataCy('typed-confirmation-delete-button').click();
+    cy.dataCy('projects-overview-table-row').should('not.exist');
+  };
+
+  it('Can create and delete project in space', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit('/admin/projects/new');
 
@@ -166,10 +199,12 @@ describe('Spae moderator: permissions', () => {
       projectName
     );
 
-    cy.dataCy('space-name-project-header').should('contain.text', spaceName);
+    cy.dataCy('space-name-project-header').should('contain.text', newSpaceName);
+
+    deleteProject(projectName);
   });
 
-  it('Can create project in folder in space', () => {
+  it('Can create and delete project in folder in space', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit('/admin/projects/new');
 
@@ -189,11 +224,16 @@ describe('Spae moderator: permissions', () => {
       projectName
     );
 
-    cy.dataCy('space-name-project-header').contains(spaceName);
-    cy.dataCy('e2e-folder-preview-open-projects-dropdown').contains(folderName);
+    cy.dataCy('space-name-project-header').contains(newSpaceName);
+    cy.dataCy('e2e-folder-preview-open-projects-dropdown').contains(
+      newFolderName
+    );
+    cy.wait(1000);
+
+    deleteProject(projectName);
   });
 
-  it('Can create project in root', () => {
+  it('Can create and delete project in root', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit('/admin/projects/new');
 
@@ -214,6 +254,8 @@ describe('Spae moderator: permissions', () => {
 
     cy.dataCy('space-name-project-header').should('not.exist');
     cy.dataCy('e2e-request-approval').contains('Request approval');
+
+    deleteProject(projectName);
   });
 
   after(() => {
