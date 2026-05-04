@@ -134,9 +134,7 @@ type Props = {
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const search = useSearch({
-    from: '/$locale/admin/pages-menu/homepage-builder',
-  });
+  const search = useSearch({ strict: false });
   const locale = useLocale();
   const isSmallerThanPhone = useBreakpoint('phone');
 
