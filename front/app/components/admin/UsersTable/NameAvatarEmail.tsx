@@ -8,12 +8,12 @@ import { IUserData } from 'api/users/types';
 import Avatar from 'components/Avatar';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   cursor: pointer;
   color: inherit;
 
@@ -21,7 +21,7 @@ const StyledLink = styled(Link)`
     color: inherit;
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 interface Props {
   user: IUserData;
