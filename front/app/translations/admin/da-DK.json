@@ -1757,7 +1757,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges2": "Planlæg",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": "Planlæg",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch2": "Planlæg offentliggørelse",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "Planlægning er ikke inkluderet i dit nuværende abonnement. Tal med din Government Success projektleder eller administrator for at låse op for det.",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "Planlægningsfunktionen er ikke inkluderet i dit nuværende abonnement. Tal med Søren Kielgast eller jeres administrator for at låse funktionen op.",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail2": "Send \"Projekt offentliggjort\" e-mail",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": "ikke på listen",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "Hvornår",
