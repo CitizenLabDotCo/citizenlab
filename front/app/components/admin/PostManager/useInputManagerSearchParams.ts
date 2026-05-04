@@ -4,7 +4,7 @@ import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import { TFilterMenu } from '.';
 
@@ -22,37 +22,38 @@ const useInputManagerSearchParams = (context: {
   projectId?: string | null;
   phaseId?: string;
 }) => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/phases',
+  });
 
   const params: Params = useMemo(() => {
-    const getParam = (name: string) => searchParams.get(name) || undefined;
+    const inputTopics = searchParams.topics
+      ? searchParams.topics.split(',')
+      : undefined;
 
-    const topicsRaw = searchParams.get('topics');
-    const inputTopics = topicsRaw ? topicsRaw.split(',') : undefined;
-
-    const projectsRaw = searchParams.get('projects');
-    const projectsFromUrl = projectsRaw ? projectsRaw.split(',') : undefined;
+    const projectsFromUrl = searchParams.projects
+      ? searchParams.projects.split(',')
+      : undefined;
     const defaultProjects = context.projectId ? [context.projectId] : undefined;
     const projects = projectsFromUrl ?? defaultProjects;
 
-    const pageRaw = searchParams.get('page');
-    const page = pageRaw
-      ? Math.max(1, parseInt(pageRaw, 10)) || undefined // avoid NaNs
+    const page = searchParams.page
+      ? Math.max(1, parseInt(searchParams.page, 10)) || undefined // avoid NaNs
       : undefined;
 
-    const phaseParam = getParam('phase');
+    const phaseParam = searchParams.phase;
 
     return {
       projects,
       input_topics: inputTopics,
-      feedback_needed: boolean(getParam('feedback_needed')),
+      feedback_needed: boolean(searchParams.feedback_needed),
       phase: phaseParam === 'all' ? undefined : phaseParam || context.phaseId,
-      sort: (getParam('sort') || 'new') as Sort,
-      tab: getParam('tab') as TFilterMenu | undefined,
-      search: getParam('search'),
-      idea_status: getParam('status'),
-      assignee: getParam('assignee'),
-      selected_idea_id: getParam('selected_idea_id'),
+      sort: (searchParams.sort || 'new') as Sort,
+      tab: searchParams.tab,
+      search: searchParams.search,
+      idea_status: searchParams.status,
+      assignee: searchParams.assignee,
+      selected_idea_id: searchParams.selected_idea_id,
       'page[number]': page,
     };
   }, [searchParams, context.projectId, context.phaseId]);

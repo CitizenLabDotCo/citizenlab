@@ -1,9 +1,9 @@
-import { useLocation, useSearch } from 'utils/router';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
+
+import { useLocation, useSearchTanStack } from 'utils/router';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
@@ -11,8 +11,8 @@ export default function useAuthConfig() {
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak
-  const [searchParams] = useSearch({ strict: false });
-  const providerForTest = searchParams.get('provider');
+  const searchParams = useSearchTanStack({ strict: false });
+  const providerForTest = searchParams.provider;
 
   // Allows super admins to sign in with password when password login is disabled
   // through hidden param (?super_admin) or cookie

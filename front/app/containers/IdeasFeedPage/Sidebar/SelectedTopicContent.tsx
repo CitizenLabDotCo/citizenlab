@@ -19,7 +19,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -46,8 +46,10 @@ const SelectedTopicContent = ({
   topicCounts,
   onBack,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const selectedSubtopicId = searchParams.get('subtopic');
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedSubtopicId = searchParams.subtopic;
 
   const { data: topic } = useInputTopicById(topicId);
   const { data: subtopics } = useInputTopics(projectId, {

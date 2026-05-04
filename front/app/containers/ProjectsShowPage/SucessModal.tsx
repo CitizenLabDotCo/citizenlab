@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
-import { useSearch } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -16,6 +15,7 @@ import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
+import { useSearchTanStack } from 'utils/router';
 
 import { isReady } from './utils';
 
@@ -27,12 +27,10 @@ const SuccessModal = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const [queryParams] = useSearch({ strict: false });
-  const showModalParam = !!queryParams.get('show_modal');
-  const phaseIdParam = queryParams.get('phase_id');
-  const [newIdeaIdParam] = useState(
-    queryParams.get('new_idea_id') ?? undefined
-  );
+  const queryParams = useSearchTanStack({ strict: false });
+  const showModalParam = queryParams.show_modal !== undefined;
+  const phaseIdParam = queryParams.phase_id;
+  const [newIdeaIdParam] = useState(queryParams.new_idea_id);
   const { data: idea } = useIdeaById(newIdeaIdParam);
 
   const [showModal, setShowModal] = useState<boolean>(false);

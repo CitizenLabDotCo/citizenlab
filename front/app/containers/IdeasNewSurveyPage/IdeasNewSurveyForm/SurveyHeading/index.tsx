@@ -9,7 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
@@ -24,6 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import { getLeaveFormDestination } from '../utils';
 
@@ -63,9 +63,11 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
 
-  const hasBeenSubmitted = !!searchParams.get('idea_id');
+  const hasBeenSubmitted = searchParams.idea_id !== undefined;
 
   if (!project) return null;
 

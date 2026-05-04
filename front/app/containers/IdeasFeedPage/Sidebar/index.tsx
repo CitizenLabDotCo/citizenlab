@@ -15,7 +15,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearch } from 'utils/router';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import BottomSheet from '../BottomSheet';
 import messages from '../messages';
@@ -33,11 +33,13 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams({ from: '/$locale/projects/$slug' });
-  const [searchParams] = useSearch({ strict: false });
-  const selectedTopicId = searchParams.get('topic');
-  const selectedIdeaId = searchParams.get('idea_id');
-  const phaseId = searchParams.get('phase_id');
-  const sheetOpen = searchParams.get('sheet_open');
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedTopicId = searchParams.topic ?? null;
+  const selectedIdeaId = searchParams.idea_id;
+  const phaseId = searchParams.phase_id;
+  const sheetOpen = searchParams.sheet_open;
   const isMobile = useBreakpoint('phone');
 
   useEffect(() => {

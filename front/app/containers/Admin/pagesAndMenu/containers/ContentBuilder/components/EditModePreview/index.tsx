@@ -6,7 +6,7 @@ import useLocale from 'hooks/useLocale';
 
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 const HomapageBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
@@ -14,11 +14,13 @@ const HomapageBuilderEditModePreview = React.forwardRef<
     selectedLocale?: SupportedLocale | null;
   }
 >(({ selectedLocale }, ref) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
 
-  const variant = search.get('variant');
+  const variant = search.variant;
 
   return (
     <EditModePreview

@@ -8,7 +8,6 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearchTanStack } from 'utils/router';
 
 import { PublicationTab } from '../..';
 
@@ -134,20 +134,19 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({ strict: false });
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
   const { formatMessage } = useIntl();
 
   useEffect(() => {
-    const focusSearch = searchParams.get('focusSearch');
     // the value from the query param is a string, not a boolean
-    if (focusSearch === 'true' && searchInputRef) {
+    if (searchParams.focusSearch === 'true' && searchInputRef) {
       searchInputRef.focus();
       clHistory.replace('/projects');
     }
-  }, [searchParams, searchInputRef]);
+  }, [searchParams.focusSearch, searchInputRef]);
 
   const handleOnSearchChange = React.useCallback(
     (search: string | null) => {

@@ -6,7 +6,6 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';
@@ -18,6 +17,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearchTanStack } from 'utils/router';
 
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
@@ -76,8 +76,8 @@ const PageTitle = styled.h1`
 `;
 
 const IdeasIndexPage = () => {
-  const { sort, search, idea_status, topics } = useSearch({
-    strict: false,
+  const { sort, search, idea_status, topics } = useSearchTanStack({
+    from: '/$locale/ideas',
   });
 
   const ideasQueryParameters = useMemo<IdeaQueryParameters>(

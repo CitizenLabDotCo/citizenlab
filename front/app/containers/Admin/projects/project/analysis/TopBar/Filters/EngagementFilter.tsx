@@ -6,7 +6,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import tracks from '../../tracks';
 import messages from '../messages';
@@ -26,9 +26,11 @@ const EngagementFilter = ({
   id,
 }: EngagementFilterProps) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
-  const selectValue = searchParams.get(to) ? to : from;
+  const selectValue = searchParams[to] ? to : from;
 
   return (
     <>
@@ -47,8 +49,7 @@ const EngagementFilter = ({
               },
             ]}
             onChange={({ value }) => {
-              const existingValue =
-                searchParams.get(from) || searchParams.get(to);
+              const existingValue = searchParams[from] || searchParams[to];
               removeSearchParams([from, to]);
               value && updateSearchParams({ [value]: existingValue || 5 });
             }}
@@ -58,7 +59,7 @@ const EngagementFilter = ({
         <Input
           id={id}
           type="number"
-          value={searchParams.get(from) || searchParams.get(to)}
+          value={searchParams[from] || searchParams[to]}
           onChange={(value) => {
             removeSearchParams([from, to]);
             value && updateSearchParams({ [selectValue]: value });

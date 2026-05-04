@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -19,6 +18,7 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 import SurveyNotActiveNotice from './SurveyNotActiveNotice';
@@ -33,10 +33,12 @@ const IdeasNewSurveyPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
   // If we reach this component by hitting surveys/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
-  const phaseIdFromSearchParams = searchParams.get('phase_id');
+  const phaseIdFromSearchParams = searchParams.phase_id;
   const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*

@@ -21,7 +21,6 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import { CSSTransition } from 'react-transition-group';
 import styled, { useTheme } from 'styled-components';
 
@@ -51,6 +50,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
+import { useSearchTanStack } from 'utils/router';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
@@ -118,7 +118,7 @@ const IdeasMap = memo<Props>(
     const { formatMessage } = useIntl();
     const { data: phase } = usePhase(phaseId);
     const { data: authUser } = useAuthUser();
-    const [searchParams] = useSearch({ strict: false });
+    const searchParams = useSearchTanStack({ strict: false });
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
 
@@ -137,7 +137,7 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdeaId = searchParams.get('idea_map_id');
+    const selectedIdeaId = searchParams.idea_map_id ?? null;
 
     const ideaData = ideaMarkers?.data.find(
       (idea) => idea.id === selectedIdeaId

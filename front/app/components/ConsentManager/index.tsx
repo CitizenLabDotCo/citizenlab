@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -10,6 +8,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 import { useModalQueue } from 'containers/App/ModalQueue';
 
 import eventEmitter from 'utils/eventEmitter';
+import { useSearchTanStack } from 'utils/router';
 
 import {
   getConsent,
@@ -24,10 +23,9 @@ const ConsentManager = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  const [searchParams] = useSearch({ strict: false });
-  const from = searchParams.get('from');
-  const bypassCookieConsent =
-    searchParams.get('yes-I-accept-cookies') === 'true';
+  const searchParams = useSearchTanStack({ strict: false });
+  const from = searchParams.from;
+  const bypassCookieConsent = searchParams['yes-I-accept-cookies'] === 'true';
 
   const isConsentRequired = useConsentRequired();
 

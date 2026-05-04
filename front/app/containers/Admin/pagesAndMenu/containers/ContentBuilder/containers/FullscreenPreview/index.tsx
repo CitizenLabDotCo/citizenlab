@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { SupportedLocale } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
@@ -13,15 +12,15 @@ import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
-  const [search] = useSearch({ strict: false });
-  const selectedLocale =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    (search.get('selected_locale') as SupportedLocale) || undefined;
+  const search = useSearchTanStack({
+    from: '/$locale/admin/pages-menu/homepage-builder/preview',
+  });
+  const selectedLocale = search.selected_locale || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
   const { data: homepage, isLoading } = useContentBuilderLayout('homepage');

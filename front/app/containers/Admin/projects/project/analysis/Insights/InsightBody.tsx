@@ -17,7 +17,7 @@ import {
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import FileItem from '../FileItem';
 
@@ -60,7 +60,9 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
@@ -77,7 +79,7 @@ const InsightBody = ({
     ? getErrorMessage(task.data.attributes.failure_reason, formatMessage)
     : null;
 
-  const selectedInputId = search.get('selected_input_id') || undefined;
+  const selectedInputId = search.selected_input_id || undefined;
 
   return (
     <>

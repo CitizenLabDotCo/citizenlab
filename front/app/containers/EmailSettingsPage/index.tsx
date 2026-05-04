@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Title, colors } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -10,6 +9,7 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 import CampaignConsentForm from 'components/CampaignConsentForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useSearchTanStack } from 'utils/router';
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 import messages from './messages';
@@ -31,9 +31,9 @@ const EmailSettingPage = () => {
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
 
-  const [searchParams] = useSearch({ strict: false });
-  const unsubscriptionToken = searchParams.get('unsubscription_token');
-  const campaignId = searchParams.get('campaign_id');
+  const searchParams = useSearchTanStack({ strict: false });
+  const unsubscriptionToken = searchParams.unsubscription_token;
+  const campaignId = searchParams.campaign_id;
 
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 

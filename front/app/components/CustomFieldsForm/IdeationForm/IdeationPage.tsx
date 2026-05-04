@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -27,6 +26,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useLocation, useSearchTanStack } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import AuthorField from '../Fields/AuthorField';
@@ -94,8 +94,8 @@ const IdeationPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const [searchParams] = useSearch({ strict: false });
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearchTanStack({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -115,7 +115,7 @@ const IdeationPage = ({
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
-      const phaseId = searchParams.get('phase_id');
+      const phaseId = searchParams.phase_id;
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;

@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearch } from 'utils/router';
 
 import {
   IFlatCreateCustomField,
@@ -35,8 +34,10 @@ import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -170,12 +171,11 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({ strict: false });
 
   const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
+    if (searchParams.copy_from !== undefined) {
+      updateSearchParams({ copy_from: undefined });
     }
   };
 

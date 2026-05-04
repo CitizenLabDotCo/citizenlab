@@ -1,11 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -16,6 +14,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 
@@ -47,7 +46,13 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const { sort: sortParam, search, topics } = useSearch({ strict: false });
+    const {
+      sort: sortParam,
+      search,
+      topics,
+    } = useSearchTanStack({
+      from: '/$locale/projects/$slug',
+    });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);
@@ -67,9 +72,7 @@ const MapIdeasList = memo<Props>(
     const { data: phase } = usePhase(phaseId);
 
     const sort =
-      (sortParam as IdeaSortMethod | null) ??
-      phase?.data.attributes.ideas_order ??
-      IdeaSortMethodFallback;
+      sortParam ?? phase?.data.attributes.ideas_order ?? IdeaSortMethodFallback;
     const input_topics: string[] = topics ?? [];
 
     const { data: ideaMarkers } = useIdeaMarkers({

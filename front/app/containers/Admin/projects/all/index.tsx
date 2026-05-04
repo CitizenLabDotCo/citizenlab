@@ -5,7 +5,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import Search from './_shared/FilterBar/Filters/Search';
 import Folders from './Folders';
@@ -19,11 +19,11 @@ const Calendar = React.lazy(() => import('./Calendar'));
 const Spaces = React.lazy(() => import('./Spaces'));
 
 const getSearchMessage = (
-  tab: string | null,
+  tab: string | undefined,
   calendarViewEnabled: boolean,
   spacesEnabled: boolean
 ) => {
-  if (tab === null) {
+  if (tab === undefined) {
     return messages.searchProjects;
   }
 
@@ -43,9 +43,11 @@ const getSearchMessage = (
 };
 
 const AdminProjectsListNew = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/',
+  });
   const { formatMessage } = useIntl();
-  const tab = searchParams.get('tab');
+  const tab = searchParams.tab;
   const calendarViewEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
   });
@@ -86,7 +88,7 @@ const AdminProjectsListNew = () => {
           )}
         </Box>
         <Box mt="20px">
-          {tab === null && <Projects />}
+          {tab === undefined && <Projects />}
           {tab === 'folders' && <Folders />}
           {tab === 'calendar' && (
             <Suspense>

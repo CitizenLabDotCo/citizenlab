@@ -28,7 +28,8 @@ export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc
 type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
-export type PublicationStatus = 'draft' | 'published' | 'archived';
+export const publicationStatuses = ['draft', 'published', 'archived'] as const;
+export type PublicationStatus = (typeof publicationStatuses)[number];
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -157,7 +158,8 @@ export interface IProjectData {
   };
 }
 
-export type Visibility = 'public' | 'groups' | 'admins';
+export const visibilities = ['public', 'groups', 'admins'] as const;
+export type Visibility = (typeof visibilities)[number];
 type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {

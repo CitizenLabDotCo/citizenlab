@@ -19,36 +19,39 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
-export type Sort =
-  | 'random'
-  | 'new'
-  | '-new'
-  | 'trending'
-  | '-trending'
-  | 'popular'
-  | '-popular'
-  | 'author_name'
-  | '-author_name'
-  | 'likes_count'
-  | '-likes_count'
-  | 'dislikes_count'
-  | '-dislikes_count'
-  | 'baskets_count'
-  | '-baskets_count'
-  | 'status'
-  | '-status'
-  | 'votes_count'
-  | '-votes_count'
-  | 'total_votes'
-  | '-total_votes'
-  | 'total_baskets'
-  | '-total_baskets'
-  | 'manual_votes_amount'
-  | '-manual_votes_amount'
-  | 'comments_count'
-  | '-comments_count'
-  | 'budget'
-  | '-budget';
+export const ideaSortValues = [
+  'random',
+  'new',
+  '-new',
+  'trending',
+  '-trending',
+  'popular',
+  '-popular',
+  'author_name',
+  '-author_name',
+  'likes_count',
+  '-likes_count',
+  'dislikes_count',
+  '-dislikes_count',
+  'baskets_count',
+  '-baskets_count',
+  'status',
+  '-status',
+  'votes_count',
+  '-votes_count',
+  'total_votes',
+  '-total_votes',
+  'total_baskets',
+  '-total_baskets',
+  'manual_votes_amount',
+  '-manual_votes_amount',
+  'comments_count',
+  '-comments_count',
+  'budget',
+  '-budget',
+] as const;
+
+export type Sort = (typeof ideaSortValues)[number];
 
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }

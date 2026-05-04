@@ -5,22 +5,22 @@ import { Toggle } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 
 const EmptyCustomFieldsFilter = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const { formatMessage } = useIntl();
   return (
     <Toggle
       label={formatMessage(messages.filterOutEmptyCustomFields)}
-      checked={
-        searchParams.get('input_custom_field_no_empty_values') === 'true'
-      }
+      checked={searchParams.input_custom_field_no_empty_values === 'true'}
       onChange={() => {
-        if (searchParams.get('input_custom_field_no_empty_values') === 'true') {
+        if (searchParams.input_custom_field_no_empty_values === 'true') {
           removeSearchParams(['input_custom_field_no_empty_values']);
         } else {
           updateSearchParams({ input_custom_field_no_empty_values: true });

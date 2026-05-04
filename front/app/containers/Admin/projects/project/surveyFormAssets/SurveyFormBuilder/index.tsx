@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { useSearch } from '@tanstack/react-router';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
-import { useParams } from 'utils/router';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
@@ -19,7 +17,9 @@ const SurveyFormBuilder = ({
   projectId: string;
   phaseId: string;
 }) => {
-  const { copy_from: copyFrom } = useSearch({ strict: false });
+  const { copy_from: copyFrom } = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form/edit',
+  });
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
 

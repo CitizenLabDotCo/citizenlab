@@ -1,5 +1,9 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
+import { supportedLocales } from 'containers/App/constants';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
@@ -80,9 +84,15 @@ const navigationSettingsRoute = createRoute({
   ),
 });
 
+const homepageBuilderSearchSchema = yup.object({
+  variant: yup.string().oneOf(['signedIn', 'signedOut']).optional(),
+});
+
 const homepageBuilderRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
   path: 'homepage-builder',
+  validateSearch: (search: Record<string, unknown>) =>
+    homepageBuilderSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <ContentBuilder />
@@ -90,9 +100,17 @@ const homepageBuilderRoute = createRoute({
   ),
 });
 
+const homepageBuilderPreviewSearchSchema = yup.object({
+  selected_locale: yup.string().oneOf(supportedLocales).optional(),
+});
+
 const homepageBuilderPreviewRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
   path: 'homepage-builder/preview',
+  validateSearch: (search: Record<string, unknown>) =>
+    homepageBuilderPreviewSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
   component: () => (
     <PageLoading>
       <FullScreenPreview />

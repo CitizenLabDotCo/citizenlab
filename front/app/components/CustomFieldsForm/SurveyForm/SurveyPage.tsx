@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -22,6 +21,7 @@ import Feedback from 'components/HookForm/Feedback';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
+import { useLocation, useSearchTanStack } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
@@ -102,8 +102,8 @@ const SurveyPage = ({
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
 
-  const [searchParams] = useSearch({ strict: false });
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearchTanStack({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 
   const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({

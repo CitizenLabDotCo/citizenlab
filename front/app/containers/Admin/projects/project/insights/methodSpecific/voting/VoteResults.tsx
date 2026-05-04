@@ -19,7 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import { INSIGHTS_CHART_COLORS } from '../../constants';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
@@ -39,10 +39,12 @@ const VoteResults = ({ phaseId }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
   const { isPdfRenderMode } = usePdfExportContext();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/insights',
+  });
 
   // Read clusterBy from URL so it persists across PDF export
-  const clusterBy = searchParams.get('votingClusterBy') || '';
+  const clusterBy = searchParams.votingClusterBy || '';
 
   const handleClusterByChange = (option: IOption) => {
     updateSearchParams({

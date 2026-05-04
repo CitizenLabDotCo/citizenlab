@@ -18,7 +18,7 @@ import useLocale from 'hooks/useLocale';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import CategoryScores from './components/CategoryScores';
 import HealthScoreChart from './components/HealthScoreChart';
@@ -45,7 +45,9 @@ const HealthScoreWidget = ({
   ...props
 }: Props & AccessibilityProps) => {
   const locale = useLocale();
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -53,8 +55,8 @@ const HealthScoreWidget = ({
     useCommunityMonitorSentimentScores(phaseId);
 
   // Get current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Transform the sentiment score data into a more usable format
   const sentimentScores = filterDataBySelectedQuarter(

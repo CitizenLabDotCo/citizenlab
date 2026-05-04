@@ -8,7 +8,7 @@ import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestio
 import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
@@ -19,11 +19,13 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
 
   // Get the current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(

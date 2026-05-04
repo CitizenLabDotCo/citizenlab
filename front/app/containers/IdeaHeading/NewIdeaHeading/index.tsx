@@ -9,7 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -22,6 +21,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 
@@ -49,8 +49,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [searchParams] = useSearch({ strict: false });
-  const ideaSubmitted = searchParams.get('idea_id') !== null;
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const ideaSubmitted = searchParams.idea_id !== undefined;
 
   const openModal = () => {
     setShowLeaveModal(true);

@@ -12,7 +12,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { keys } from 'utils/helperUtils';
 import { findSimilarLocale } from 'utils/i18n';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
@@ -31,13 +31,17 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
 export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/inspiration-hub/',
+  });
 
-  const paramValue = searchParams.get(paramName);
+  const paramValue = (searchParams as Record<string, string | undefined>)[
+    paramName
+  ];
 
   if (paramName.endsWith('in]')) {
     return (
-      paramValue === null ? [] : JSON.parse(paramValue)
+      paramValue === undefined ? [] : JSON.parse(paramValue)
     ) as RansackParams[typeof paramName];
   }
 
@@ -56,13 +60,16 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
 ];
 
 export const useRansackParams = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/inspiration-hub/',
+  });
+  const indexed = searchParams as Record<string, string | undefined>;
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        let value = searchParams.get(paramName);
+        let value = indexed[paramName];
 
-        if (value === null) {
+        if (value === undefined) {
           return acc;
         }
 
@@ -75,7 +82,7 @@ export const useRansackParams = () => {
           [paramName]: value as RansackParams[typeof paramName],
         };
       }, {} as RansackParams),
-    [searchParams]
+    [indexed]
   );
 };
 

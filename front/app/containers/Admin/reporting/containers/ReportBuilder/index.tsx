@@ -21,7 +21,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useLocation, useParams, useSearch } from 'utils/router';
+import { useLocation, useParams, useSearchTanStack } from 'utils/router';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -179,20 +179,24 @@ const ReportBuilderWrapper = () => {
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
-  const [search] = useSearch({ strict: false });
-  const [templateProjectId] = useState(search.get('templateProjectId'));
-  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+  const search = useSearchTanStack({
+    from: '/$locale/admin/reporting/report-builder/$reportId/editor',
+  });
+  const [templateProjectId] = useState(search.templateProjectId ?? null);
+  const [templatePhaseId] = useState(search.templatePhaseId ?? null);
   const [startDatePlatformReport] = useState(
-    search.get('startDatePlatformReport')
+    search.startDatePlatformReport ?? null
   );
 
-  const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
+  const [endDatePlatformReport] = useState(
+    search.endDatePlatformReport ?? null
+  );
 
   const [templateYear] = useState(
-    report?.data.attributes.year?.toString() || search.get('year')
+    report?.data.attributes.year?.toString() || search.year || null
   );
   const [templateQuarter] = useState(
-    report?.data.attributes.quarter?.toString() || search.get('quarter')
+    report?.data.attributes.quarter?.toString() || search.quarter || null
   );
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
 
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
@@ -15,10 +15,12 @@ type Props = {
 };
 
 const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
 
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   const thisPeriodIndex = sentimentScores?.overallHealthScores.findIndex(
     (value) => value.period === `${year}-${quarter}`

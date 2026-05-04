@@ -16,7 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import tracks from '../../tracks';
 import { handleArraySearchParam } from '../../util';
@@ -25,7 +25,9 @@ import messages from '../messages';
 const AuthorFilters = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: customFields } = useUserCustomFields();
 
   const genderField = customFields?.data.find(
@@ -63,13 +65,11 @@ const AuthorFilters = () => {
   );
 
   const selectedGenderOptions = handleArraySearchParam(
-    searchParams,
-    genderUrlQueryParamKey
+    searchParams[genderUrlQueryParamKey]
   );
 
   const selectedDomicileOptions = handleArraySearchParam(
-    searchParams,
-    domicileUrlQueryParamKey
+    searchParams[domicileUrlQueryParamKey]
   );
 
   const toggleOptionInArray = (array: string[] | undefined, option: string) => {
@@ -185,7 +185,7 @@ const AuthorFilters = () => {
                     type: 'birthyear',
                   });
                 }}
-                value={searchParams.get(birthyearUrlQueryParamFromKey)}
+                value={searchParams[birthyearUrlQueryParamFromKey]}
               />
             </Box>
             <Box w="50%">
@@ -201,7 +201,7 @@ const AuthorFilters = () => {
                     type: 'birthyear',
                   });
                 }}
-                value={searchParams.get(birthyearUrlQueryParamToKey)}
+                value={searchParams[birthyearUrlQueryParamToKey]}
               />
             </Box>
           </Box>

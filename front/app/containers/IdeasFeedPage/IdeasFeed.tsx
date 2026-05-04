@@ -12,7 +12,7 @@ import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import IdeaNoteRow from './components/IdeaNoteRow';
 import LoaderRow from './components/LoaderRow';
@@ -98,9 +98,11 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
+  const searchParams = useSearchTanStack({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const phaseId = searchParams.phase_id!;
+  const initialIdeaId = searchParams.initial_idea_id || undefined;
 
   const isMobile = useBreakpoint('phone');
 

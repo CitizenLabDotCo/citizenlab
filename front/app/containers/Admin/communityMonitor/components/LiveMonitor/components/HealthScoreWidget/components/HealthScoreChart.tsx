@@ -6,7 +6,7 @@ import LineChart from 'components/admin/Graphs/LineChart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';
@@ -21,7 +21,9 @@ const HealthScoreChart = ({
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -52,7 +54,7 @@ const HealthScoreChart = ({
 
   // Generate an empty chart object if there are no scores for the selected time period.
   if (timeSeries?.length === 0) {
-    timeSeries = generateEmptyChartData(search);
+    timeSeries = generateEmptyChartData(search.year, search.quarter);
   }
 
   const lineConfig = {

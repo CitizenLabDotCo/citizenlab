@@ -6,6 +6,8 @@ import * as yup from 'yup';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import { supportedLocales } from 'containers/App/constants';
+
 import PageLoading from 'components/UI/PageLoading';
 import Unauthorized from 'components/Unauthorized';
 
@@ -155,9 +157,17 @@ const projectDescriptionRoute = createRoute({
   component: () => <ProjectDescriptionBuilderComponent />,
 });
 
+const descriptionBuilderPreviewSearchSchema = yup.object({
+  selected_locale: yup.string().oneOf(supportedLocales).optional(),
+});
+
 const projectPreviewRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'description-builder/projects/$projectId/preview',
+  validateSearch: (search: Record<string, unknown>) =>
+    descriptionBuilderPreviewSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
   component: () => <ProjectFullscreenPreview />,
 });
 
@@ -170,6 +180,10 @@ const folderDescriptionRoute = createRoute({
 const folderPreviewRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'description-builder/folders/$folderId/preview',
+  validateSearch: (search: Record<string, unknown>) =>
+    descriptionBuilderPreviewSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
   component: () => <FolderFullscreenPreview />,
 });
 

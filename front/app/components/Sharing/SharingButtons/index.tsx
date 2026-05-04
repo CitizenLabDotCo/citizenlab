@@ -6,11 +6,11 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useSearchTanStack } from 'utils/router';
 
 import CopyLink from '../buttons/CopyLink';
 import Email from '../buttons/Email';
@@ -46,8 +46,8 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const phaseContext = searchParams.get('phase_context');
+  const searchParams = useSearchTanStack({ strict: false });
+  const phaseContext = searchParams.phase_context;
   const { data: appConfiguration } = useAppConfiguration();
   const isSharingEnabled =
     appConfiguration?.data.attributes.settings.core.allow_sharing;

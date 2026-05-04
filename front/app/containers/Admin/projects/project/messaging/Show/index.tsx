@@ -39,7 +39,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { useParams, useSearch } from 'utils/router';
+import { useParams, useSearchTanStack } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -94,9 +94,11 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
-  const [searchParams] = useSearch({ strict: false });
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );

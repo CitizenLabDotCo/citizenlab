@@ -21,7 +21,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { useParams, useSearch } from 'utils/router';
+import { useParams, useSearchTanStack } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -42,7 +42,7 @@ const Analysis = ({
   hasOtherResponses,
   ...props
 }: Props) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({ strict: false });
   const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
@@ -99,7 +99,8 @@ const Analysis = ({
   const insights = isCommunityMonitor
     ? filterForCommunityMonitorQuarter({
         insights: insightsData,
-        search,
+        yearParam: search.year,
+        quarterParam: search.quarter,
         analysisSummaries,
       })
     : insightsData;

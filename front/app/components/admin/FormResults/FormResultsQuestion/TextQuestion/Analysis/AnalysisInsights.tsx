@@ -7,7 +7,6 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -18,6 +17,7 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -34,7 +34,7 @@ const AnalysisInsights = ({
   hasOtherResponses?: boolean;
   insights?: IInsights;
 }) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({ strict: false });
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 
@@ -71,8 +71,14 @@ const AnalysisInsights = ({
           analysisId: analysis.id,
           filters: {
             input_custom_field_no_empty_values: true,
-            published_at_from: getPublishedAtFromFilter(search),
-            published_at_to: getPublishedAtToFilter(search),
+            published_at_from: getPublishedAtFromFilter(
+              search.year,
+              search.quarter
+            ),
+            published_at_to: getPublishedAtToFilter(
+              search.year,
+              search.quarter
+            ),
           },
         },
         {
@@ -83,8 +89,14 @@ const AnalysisInsights = ({
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
-                published_at_from: getPublishedAtFromFilter(search),
-                published_at_to: getPublishedAtToFilter(search),
+                published_at_from: getPublishedAtFromFilter(
+                  search.year,
+                  search.quarter
+                ),
+                published_at_to: getPublishedAtToFilter(
+                  search.year,
+                  search.quarter
+                ),
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
               if (hasOtherResponses && customFieldId) {

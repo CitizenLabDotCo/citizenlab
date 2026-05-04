@@ -6,11 +6,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
-export type Parameter = keyof Parameters;
-
-export const PARAMS: Parameter[] = [
+export const PARAMS = [
   'status',
   'managers',
   'search',
@@ -24,7 +22,9 @@ export const PARAMS: Parameter[] = [
   'discoverability',
   'review_state',
   'space_ids',
-];
+] as const satisfies (keyof Parameters)[];
+
+export type Parameter = (typeof PARAMS)[number];
 
 const MULTISELECT_PARAMS = new Set<string>([
   'status',
@@ -54,34 +54,36 @@ export const setParam = <ParamName extends Parameter>(
 export const useParam = <ParamName extends Parameter>(
   paramName: ParamName
 ): Parameters[ParamName] | undefined => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/',
+  });
 
-  const paramValue = searchParams.get(paramName);
+  const paramValue = searchParams[paramName];
 
   if (MULTISELECT_PARAMS.has(paramName)) {
     return (
-      paramValue === null ? [] : JSON.parse(paramValue)
+      paramValue === undefined ? [] : JSON.parse(paramValue)
     ) as Parameters[typeof paramName];
   }
 
-  return (paramValue ?? undefined) as Parameters[typeof paramName] | undefined;
+  return paramValue as Parameters[typeof paramName] | undefined;
 };
 
 export const useParams = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/projects/',
+  });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   return useMemo(() => {
-    let params = PARAMS;
-
-    if (!spacesEnabled) {
-      params = params.filter((param) => param !== 'space_ids');
-    }
+    const params: readonly Parameter[] = spacesEnabled
+      ? PARAMS
+      : PARAMS.filter((param) => param !== 'space_ids');
 
     return params.reduce((acc, paramName) => {
-      let value = searchParams.get(paramName);
+      let value: string | undefined = searchParams[paramName];
 
-      if (value === null) {
+      if (value === undefined) {
         return acc;
       }
 

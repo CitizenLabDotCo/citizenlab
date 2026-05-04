@@ -36,9 +36,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { useLocation, useSearch } from 'utils/router';
+import { useLocation, useSearchTanStack } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
 
 import { DEFAULT_Y_PADDING } from '../constants';
@@ -133,14 +134,16 @@ type Props = {
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const [search] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const locale = useLocale();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
   const showSignedInHeader =
     (isHomepage && authUser?.data !== undefined) ||
-    search.get('variant') === 'signedIn';
+    search.variant === 'signedIn';
 
   return (
     <Box
@@ -236,7 +239,9 @@ const HomepageBannerSettings = () => {
 
   const [errors, setErrors] = useState<ErrorType[]>([]);
   const [hasError, setHasError] = useState(false);
-  const [search, setSearchParams] = useSearch({ strict: false });
+  const search = useSearchTanStack({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const { formatMessage } = useIntl();
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
@@ -453,9 +458,9 @@ const HomepageBannerSettings = () => {
       >
         <Button
           onClick={() => {
-            setSearchParams({ variant: 'signedOut' });
+            updateSearchParams({ variant: 'signedOut' });
           }}
-          buttonStyle={search.get('variant') !== 'signedIn' ? 'white' : 'text'}
+          buttonStyle={search.variant !== 'signedIn' ? 'white' : 'text'}
           fontSize="14px"
           id="e2e-signed-out-button"
           whiteSpace="wrap"
@@ -465,9 +470,9 @@ const HomepageBannerSettings = () => {
 
         <Button
           onClick={() => {
-            setSearchParams({ variant: 'signedIn' });
+            updateSearchParams({ variant: 'signedIn' });
           }}
-          buttonStyle={search.get('variant') === 'signedIn' ? 'white' : 'text'}
+          buttonStyle={search.variant === 'signedIn' ? 'white' : 'text'}
           fontSize="14px"
           id="e2e-signed-in-button"
           whiteSpace="wrap"
@@ -476,7 +481,7 @@ const HomepageBannerSettings = () => {
         </Button>
       </Box>
 
-      {search.get('variant') !== 'signedIn' && (
+      {search.variant !== 'signedIn' && (
         <>
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedOutDescription)}
@@ -679,7 +684,7 @@ const HomepageBannerSettings = () => {
         </>
       )}
 
-      {search.get('variant') === 'signedIn' && (
+      {search.variant === 'signedIn' && (
         <>
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedInDescription)}

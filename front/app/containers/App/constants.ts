@@ -104,7 +104,11 @@ export const appLocalePairs = {
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
   'ur-PK': 'اردو (Urdu)',
-};
+} as const;
+
+export const supportedLocales = Object.keys(appLocalePairs) as Array<
+  keyof typeof appLocalePairs
+>;
 
 export const appGraphqlLocalePairs = {
   arMa: 'ar-MA',

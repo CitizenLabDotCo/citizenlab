@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -25,6 +24,7 @@ import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearchTanStack } from 'utils/router';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -74,8 +74,10 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [searchParams] = useSearch({ strict: false });
-  const [goBack] = useState(searchParams.get('go_back'));
+  const searchParams = useSearchTanStack({
+    from: '/$locale/ideas/$slug',
+  });
+  const [goBack] = useState(searchParams.go_back);
 
   useEffect(() => {
     removeSearchParams(['go_back']);

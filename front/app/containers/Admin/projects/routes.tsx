@@ -2,6 +2,10 @@ import React, { lazy } from 'react';
 
 import * as yup from 'yup';
 
+import { reviewStates } from 'api/admin_publications/types';
+import { ideaSortValues } from 'api/ideas/types';
+import { projectSortableParams } from 'api/projects_mini_admin/types';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
@@ -114,10 +118,36 @@ const projectsRoute = createRoute({
   ),
 });
 
-// Projects index (list)
+// Projects index (list) - filter params for the project list page.
+// Multiselect params (status, managers, etc.) are stored as JSON-encoded
+// strings in the URL; the useParam/useParams hooks in _shared/params.ts
+// handle parsing.
+const projectsIndexSearchSchema = yup.object({
+  tab: yup
+    .string()
+    .oneOf(['calendar', 'folders', 'spaces', 'ordering'])
+    .optional(),
+  sort: yup.string().oneOf(projectSortableParams).optional(),
+  review_state: yup.string().oneOf(reviewStates).optional(),
+  search: yup.string().optional(),
+  min_start_date: yup.string().optional(),
+  max_start_date: yup.string().optional(),
+  // JSON-encoded array params (parsed by useParam/useParams hooks)
+  status: yup.string().optional(),
+  managers: yup.string().optional(),
+  participation_states: yup.string().optional(),
+  folder_ids: yup.string().optional(),
+  participation_methods: yup.string().optional(),
+  visibility: yup.string().optional(),
+  discoverability: yup.string().optional(),
+  space_ids: yup.string().optional(),
+});
+
 const projectsIndexRoute = createRoute({
   getParentRoute: () => projectsRoute,
   path: '/',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectsIndexSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminProjectsList />
@@ -284,9 +314,18 @@ const projectMessagingEditRoute = createRoute({
   ),
 });
 
+const projectMessagingShowSearchSchema = yup.object({
+  created: yup.string().optional(),
+  updated: yup.string().optional(),
+});
+
 const projectMessagingShowRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'messaging/$campaignId',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectMessagingShowSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
   component: () => (
     <PageLoading>
       <ProjectMessagingShow />
@@ -295,9 +334,39 @@ const projectMessagingShowRoute = createRoute({
 });
 
 // --- Analysis route ---
+// Analysis filter params. The schema is permissive (no stripUnknown) because
+// the URL also carries dynamic keys like `author_custom_<uuid>` and
+// `input_custom_<uuid>_(from|to)` that can't be enumerated in advance.
+const projectAnalysisSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  selected_input_id: yup.string().optional(),
+  search: yup.string().optional(),
+  published_at_from: yup.string().optional(),
+  published_at_to: yup.string().optional(),
+  reactions_from: yup.string().optional(),
+  reactions_to: yup.string().optional(),
+  votes_from: yup.string().optional(),
+  votes_to: yup.string().optional(),
+  comments_from: yup.string().optional(),
+  comments_to: yup.string().optional(),
+  limit: yup.string().optional(),
+  input_custom_field_no_empty_values: yup
+    .string()
+    .oneOf(['true', 'false'])
+    .optional(),
+  tag_ids: yup.string().optional(),
+  reset_filters: yup.string().optional(),
+  from: yup.string().optional(),
+});
+
 const projectAnalysisRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'analysis/$analysisId',
+  // Don't strip unknown — the URL also carries dynamic keys like
+  // `author_custom_<uuid>` and `input_custom_<uuid>_(from|to)` that we want
+  // to keep but can't enumerate in the schema.
+  validateSearch: (search: Record<string, unknown>) =>
+    projectAnalysisSearchSchema.validateSync(search),
   component: () => (
     <PageLoading>
       <AdminProjectAnalysis />
@@ -348,9 +417,30 @@ const projectEventsEditRoute = createRoute({
 });
 
 // --- Phases layout ---
+// Input manager search params (used by PostManager on ideas/proposals tabs).
+// These are raw string params; the hook useInputManagerSearchParams parses them.
+const phasesSearchSchema = yup.object({
+  sort: yup.string().oneOf(ideaSortValues).optional(),
+  page: yup.string().optional(),
+  search: yup.string().optional(),
+  status: yup.string().optional(),
+  topics: yup.string().optional(),
+  assignee: yup.string().optional(),
+  feedback_needed: yup.string().oneOf(['true', 'false']).optional(),
+  phase: yup.string().optional(),
+  projects: yup.string().optional(),
+  tab: yup
+    .string()
+    .oneOf(['topics', 'phases', 'projects', 'statuses'])
+    .optional(),
+  selected_idea_id: yup.string().optional(),
+});
+
 const projectPhasesRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'phases',
+  validateSearch: (search: Record<string, unknown>) =>
+    phasesSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminProjectPhaseIndex />
@@ -592,9 +682,15 @@ const phaseReportRoute = createRoute({
   ),
 });
 
+const phaseInsightsSearchSchema = yup.object({
+  votingClusterBy: yup.string().optional(),
+});
+
 const phaseInsightsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: '$phaseId/insights',
+  validateSearch: (search: Record<string, unknown>) =>
+    phaseInsightsSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminPhaseInsights />

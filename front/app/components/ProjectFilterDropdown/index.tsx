@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import useProjects from 'api/projects/useProjects';
 
 import useLocalize from 'hooks/useLocalize';
@@ -9,6 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { classNames } from 'utils/helperUtils';
+import { useSearchTanStack } from 'utils/router';
 
 type Props = {
   title: string | JSX.Element;
@@ -36,15 +35,11 @@ const ProjectFilterDropdown = ({
     sort: 'new',
     removeAllUnlisted: true,
   });
-  const [searchParams] = useSearch({ strict: false });
-  const projectIdsParam =
+  const searchParams = useSearchTanStack({ strict: false });
+  const projectIdsFromUrl =
     eventsTime === 'past'
-      ? searchParams.get('past_events_project_ids')
-      : searchParams.get('ongoing_events_project_ids');
-
-  const projectIdsFromUrl: string[] = projectIdsParam
-    ? JSON.parse(projectIdsParam)
-    : null;
+      ? searchParams.past_events_project_ids
+      : searchParams.ongoing_events_project_ids;
 
   const [selectedValues, setSelectedValues] = useState<string[]>(
     // TODO: Fix this the next time the file is edited.

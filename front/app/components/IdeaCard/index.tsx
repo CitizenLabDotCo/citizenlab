@@ -19,7 +19,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { useSearch } from 'utils/router';
+import { useSearchTanStack } from 'utils/router';
 
 import Body from './Body';
 import CardImage from './CardImage';
@@ -88,8 +88,8 @@ const IdeaCard = ({
       setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
   }, [ideaTitle]);
-  const [searchParams] = useSearch({ strict: false });
-  const scrollToCardParam = searchParams.get('scroll_to_card');
+  const searchParams = useSearchTanStack({ strict: false });
+  const scrollToCardParam = searchParams.scroll_to_card;
 
   // Scroll to this card if it matches the scroll_to_card search param
   const shouldScrollToCard =

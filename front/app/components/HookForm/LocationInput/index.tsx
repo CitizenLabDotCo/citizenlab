@@ -3,7 +3,6 @@ import React, { useCallback, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSearch } from 'utils/router';
 import { CLError, RHFErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
@@ -15,7 +14,9 @@ import {
   Option,
 } from 'components/UI/LocationInput';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { geocode, Point, reverseGeocode } from 'utils/locationTools';
+import { useSearchTanStack } from 'utils/router';
 
 interface Props extends LocationInputProps {
   name: string;
@@ -37,9 +38,9 @@ const LocationInput = ({
     watch,
   } = useFormContext();
   const locale = useLocale();
-  const [searchParams] = useSearch({ strict: false });
-  const latitude = searchParams.get('lat');
-  const longitude = searchParams.get('lng');
+  const searchParams = useSearchTanStack({ strict: false });
+  const latitude = searchParams.lat;
+  const longitude = searchParams.lng;
   const isTouched = !!touchedFields[name];
 
   const errors = get(formContextErrors, name) as RHFErrors;
@@ -139,8 +140,7 @@ const LocationInput = ({
 
               // Address has been manually changed.
               // Clear any latitude/longitude from the searchParams.
-              searchParams.delete('lat');
-              searchParams.delete('lng');
+              updateSearchParams({ lat: undefined, lng: undefined });
             }}
           />
         )}

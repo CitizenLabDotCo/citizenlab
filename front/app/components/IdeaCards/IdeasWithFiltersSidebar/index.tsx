@@ -9,7 +9,6 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -25,6 +24,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
@@ -95,15 +95,14 @@ const IdeasWithFiltersSidebar = ({
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearchTanStack({ strict: false });
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 
   // Get data from searchParams
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const selectedView =
-    (searchParams.get('view') as PresentationMode | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView);
+    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView);
 
   // Fetch ideas list & filter counts
   const {

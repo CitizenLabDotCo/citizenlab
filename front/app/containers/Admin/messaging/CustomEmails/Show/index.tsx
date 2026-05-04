@@ -41,7 +41,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams, useSearch } from 'utils/router';
+import { useParams, useSearchTanStack } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -116,9 +116,11 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
-  const [searchParams] = useSearch({});
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearchTanStack({
+    from: '/$locale/admin/messaging/emails/custom/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );

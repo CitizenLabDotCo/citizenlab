@@ -10,6 +10,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import * as yup from 'yup';
 
 import type { IdeaSortMethod } from 'api/phases/types';
+import { ideaSortMethods, presentationModes } from 'api/phases/types';
 
 import { createAdminRoutes } from 'containers/Admin/routes';
 import App from 'containers/App';
@@ -70,6 +71,27 @@ const rootSearchSchema = yup.object({
   sso_verification_id: yup.string(),
   sso_verification_type: yup.string(),
   error_code: yup.string(),
+  // Super admin can be multiple possible params (as people forget the exact one)
+  super_admin: yup.string().optional(),
+  'super-admin': yup.string().optional(),
+  superadmin: yup.string().optional(),
+  super_user: yup.string().optional(),
+  // Cookie consent params
+  from: yup.string().optional(),
+  'yes-I-accept-cookies': yup.string().optional(),
+  // Phase context (used by sharing buttons, idea cards)
+  phase_context: yup.string().optional(),
+  // SSO provider testing param
+  provider: yup.string().optional(),
+  // Used by IdeaCard across many routes to scroll to a specific card
+  scroll_to_card: yup.string().optional(),
+  // Used by vote inputs after auth flow completes
+  processing_vote: yup.string().optional(),
+  // Used by project cards topbar to auto-focus search
+  focusSearch: yup.string().optional(),
+  // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
+  lat: yup.string().optional(),
+  lng: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
@@ -188,9 +210,16 @@ const changeEmailRoute = createRoute({
 });
 
 // Ideas routes
+const ideasEditSearchSchema = yup.object({
+  idea_id: yup.string().optional(),
+  selected_idea_id: yup.string().optional(),
+});
+
 const ideasEditRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'ideas/edit/$ideaId',
+  validateSearch: (search: Record<string, unknown>) =>
+    ideasEditSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasEditPage />
@@ -199,20 +228,12 @@ const ideasEditRoute = createRoute({
 });
 
 const ideasIndexSearchSchema = yup.object({
-  sort: yup
-    .string()
-    .oneOf<IdeaSortMethod>([
-      'trending',
-      'comments_count',
-      'random',
-      'popular',
-      'new',
-      '-new',
-    ])
-    .default('trending'),
+  sort: yup.string().oneOf(ideaSortMethods).default('trending'),
   search: yup.string().optional(),
   idea_status: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
+  idea_map_id: yup.string().optional(),
+  view: yup.string().oneOf(presentationModes).optional(),
 });
 
 export type IdeasIndexSearchParams = {
@@ -234,9 +255,17 @@ const ideasIndexRoute = createRoute({
   ),
 });
 
+const ideasShowSearchSchema = yup.object({
+  phase_context: yup.string().optional(),
+  go_back: yup.string().optional(),
+  new_idea_id: yup.string().optional(),
+});
+
 const ideasShowRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'ideas/$slug',
+  validateSearch: (search: Record<string, unknown>) =>
+    ideasShowSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasShowPage />
@@ -245,9 +274,17 @@ const ideasShowRoute = createRoute({
 });
 
 // Project idea/survey new routes
+const projectIdeaNewSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  idea_id: yup.string().optional(),
+  selected_idea_id: yup.string().optional(),
+});
+
 const projectIdeaNewRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug/ideas/new',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectIdeaNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasNewPage />
@@ -255,9 +292,16 @@ const projectIdeaNewRoute = createRoute({
   ),
 });
 
+const projectSurveyNewSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  idea_id: yup.string().optional(),
+});
+
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug/surveys/new',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectSurveyNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
@@ -293,9 +337,26 @@ const projectsIndexRoute = createRoute({
   ),
 });
 
+const projectShowSearchSchema = yup.object({
+  show_modal: yup.string().optional(),
+  phase_id: yup.string().optional(),
+  new_idea_id: yup.string().optional(),
+  tab: yup.string().oneOf(['statements', 'results']).optional(),
+  scrollToStatusModule: yup.string().optional(),
+  scrollToIdeas: yup.string().optional(),
+  sort: yup.string().oneOf(ideaSortMethods).optional(),
+  search: yup.string().optional(),
+  topics: yup.array().of(yup.string().required()).optional(),
+  idea_status: yup.string().optional(),
+  idea_map_id: yup.string().optional(),
+  view: yup.string().oneOf(presentationModes).optional(),
+});
+
 const projectShowRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectShowSearchSchema.validateSync(search, { stripUnknown: true }),
   component: Outlet,
 });
 
@@ -320,9 +381,20 @@ const projectPhaseRoute = createRoute({
 });
 
 // Ideas feed route
+const ideasFeedSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  initial_idea_id: yup.string().optional(),
+  topic: yup.string().optional(),
+  subtopic: yup.string().optional(),
+  sheet_open: yup.string().oneOf(['true']).optional(),
+  idea_id: yup.string().optional(),
+});
+
 const projectIdeasFeedRoute = createRoute({
   getParentRoute: () => projectShowRoute,
   path: 'ideas-feed',
+  validateSearch: (search: Record<string, unknown>) =>
+    ideasFeedSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasFeedPage />
@@ -449,9 +521,16 @@ const subscriptionEndedRoute = createRoute({
   ),
 });
 
+const emailSettingsSearchSchema = yup.object({
+  unsubscription_token: yup.string().optional(),
+  campaign_id: yup.string().optional(),
+});
+
 const emailSettingsRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'email-settings',
+  validateSearch: (search: Record<string, unknown>) =>
+    emailSettingsSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <EmailSettingsPage />
@@ -469,9 +548,15 @@ const reportPrintRoute = createRoute({
   ),
 });
 
+const disabledAccountSearchSchema = yup.object({
+  date: yup.string().optional(),
+});
+
 const disabledAccountRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'disabled-account',
+  validateSearch: (search: Record<string, unknown>) =>
+    disabledAccountSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <DisabledAccount />

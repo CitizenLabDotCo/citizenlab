@@ -7,14 +7,13 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import { IdeaSortMethod } from 'api/phases/types';
+import { IdeaSortMethod, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
@@ -27,6 +26,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearchTanStack } from 'utils/router';
 
 import messages from '../messages';
 import SelectSort from '../shared/Filters/SortFilterDropdown';
@@ -103,17 +103,16 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const searchParams = useSearchTanStack({ strict: false });
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
 
   const selectedView =
-    (searchParams.get('view') as 'card' | 'map' | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
 
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
+  const setSelectedView = useCallback((view: PresentationMode) => {
     updateSearchParams({ view });
   }, []);
 
