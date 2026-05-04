@@ -20,6 +20,8 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
         px="4px"
         buttonStyle="text"
         onClick={openPreferencesScreen}
+        // Do not remove id, it is used for custom even tracking in GTM
+        id="manage-preferences-btn"
         data-testid="manage-preferences-btn"
         data-cy="e2e-manage-preferences-btn"
       >
@@ -28,6 +30,8 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
       <Button
         buttonStyle="primary"
         onClick={onClose}
+        // Do not remove id, it is used for custom even tracking in GTM
+        id="reject-cookies-btn"
         data-testid="reject-cookies-btn"
       >
         <FormattedMessage {...messages.reject} />
@@ -36,6 +40,8 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
         buttonStyle="primary"
         onClick={onAccept}
         autoFocus
+        // Do not remove id, it is used for custom even tracking in GTM
+        id="accept-cookies-btn"
         data-testid="accept-cookies-btn"
         data-cy="e2e-accept-cookies-btn"
       >

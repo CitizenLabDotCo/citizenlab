@@ -19,6 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import { isPDFUploadSupported } from '../ReviewSection/utils';
 
 import ImportButtons from './ImportButtons';
 import { getBackLink } from './utils';
@@ -81,6 +82,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         <ImportButtons
           onClickPDFImport={onClickPDFImport}
           onClickExcelImport={onClickExcelImport}
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
         />
       </Box>
     </Box>

@@ -12,7 +12,7 @@ export default defineMessages({
   hasReachedOrIsOverLimit: {
     id: 'app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit',
     defaultMessage:
-      'You have reached the limit of included seats within your plan, 1 additional seat will be added.',
+      'You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.',
   },
   buyAdditionalSeats: {
     id: 'app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1',

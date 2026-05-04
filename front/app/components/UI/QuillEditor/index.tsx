@@ -31,6 +31,7 @@ export interface Props {
   noVideos?: boolean;
   noAlign?: boolean;
   noLinks?: boolean;
+  withGifSupport?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -53,6 +54,7 @@ const QuillEditor = ({
   noImages = false,
   noVideos = false,
   noLinks = false,
+  withGifSupport,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -100,6 +102,7 @@ const QuillEditor = ({
       noVideos,
       noAlign,
       noLinks,
+      withGifSupport,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,

@@ -7,10 +7,7 @@ import { Keys } from 'utils/cl-react-query/types';
 import projectFoldersKeys from './keys';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
-export interface IQueryParameters {
-  pageNumber?: number;
-  pageSize?: number;
-}
+
 export interface IProjectFolders {
   data: IProjectFolderData[];
 }

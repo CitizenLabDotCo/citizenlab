@@ -236,6 +236,7 @@ const CampaignForm = ({
                 firstName: '{{first_name}}',
                 lastName: '{{last_name}}',
               })}
+              withGifSupport
               noVideos
               noAlign
             />

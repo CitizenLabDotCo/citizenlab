@@ -929,15 +929,35 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.DatePhasePicker.Input.endTime": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:04:47.956648Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.DatePhasePicker.Input.openEnded": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.DatePhasePicker.Input.sameDaySelection": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:04:47.956648Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.admin.DatePhasePicker.Input.sameDaySelectionWarning2": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:13:46.569773Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.DatePhasePicker.Input.selectDate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.DatePhasePicker.Input.startTime": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:04:47.956648Z",
+    "verified_by": "Adrien"
   },
   "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": {
     "state": "verified",
@@ -4209,6 +4229,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.alreadyManager": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:14:57.220313Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.assign": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -4488,6 +4513,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.selectPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:14:16.862882Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.Users.selectPublications": {
     "state": "verified",
@@ -6278,6 +6308,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:13:06.659918Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root2": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:14:57.220313Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
     "state": "verified",
@@ -8124,6 +8164,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile3": {
+    "state": "verified",
+    "verified_at": "2026-04-21T12:41:08.091687Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -8179,10 +8224,20 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5": {
+    "state": "verified",
+    "verified_at": "2026-04-29T14:49:08.261758Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3": {
+    "state": "verified",
+    "verified_at": "2026-04-29T14:49:08.261758Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": {
     "state": "verified",
@@ -9793,6 +9848,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.surveyFormTab.importResponses1": {
+    "state": "verified",
+    "verified_at": "2026-04-21T12:41:08.091687Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.surveyFormTab.inputFormDescription": {
     "state": "verified",
@@ -14388,6 +14448,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectIdeaForm.importResponses": {
+    "state": "verified",
+    "verified_at": "2026-04-21T12:41:08.091687Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.ProjectIdeaForm.inputForm": {
     "state": "verified",

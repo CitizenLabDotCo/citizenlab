@@ -15,6 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
 import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
@@ -179,9 +180,11 @@ const SurveyPage = ({
   }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
-    // Go to the project page if this is the last page
+    // Go to the project page if this is the last page.
+    // Use replace to remove the survey URL from browser history,
+    // preventing back/forward navigation back into a completed survey.
     if (currentPageIndex === lastPageIndex) {
-      clHistory.push({
+      clHistory.replace({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
       return;
@@ -342,6 +345,10 @@ const SurveyPage = ({
                   <Box p="24px" w="100%">
                     <Box display="flex" flexDirection="column">
                       <PageTitle page={page} />
+
+                      {page.key === 'user_page' && (
+                        <CustomFieldsSignupHelperText />
+                      )}
 
                       <CustomFields
                         questions={pageQuestions}
