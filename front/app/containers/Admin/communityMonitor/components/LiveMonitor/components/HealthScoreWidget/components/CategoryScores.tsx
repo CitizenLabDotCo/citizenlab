@@ -22,9 +22,7 @@ type Props = {
 };
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearch({
-    from: '/$locale/admin/community-monitor/live-monitor',
-  });
+  const search = useSearch({ strict: false });
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Extract year and quarter from search params or defaults

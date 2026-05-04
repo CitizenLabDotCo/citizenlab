@@ -21,9 +21,7 @@ const HealthScoreChart = ({
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
-  const search = useSearch({
-    from: '/$locale/admin/community-monitor/live-monitor',
-  });
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 

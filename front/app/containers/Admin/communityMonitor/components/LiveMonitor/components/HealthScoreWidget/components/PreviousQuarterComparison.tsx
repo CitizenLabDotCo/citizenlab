@@ -15,9 +15,7 @@ type Props = {
 };
 
 const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearch({
-    from: '/$locale/admin/community-monitor/live-monitor',
-  });
+  const search = useSearch({ strict: false });
 
   const year = props.year || getYearFilter(search.year);
   const quarter = props.quarter || getQuarterFilter(search.quarter);

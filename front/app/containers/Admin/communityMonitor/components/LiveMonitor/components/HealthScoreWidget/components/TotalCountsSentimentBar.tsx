@@ -19,9 +19,7 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const search = useSearch({
-    from: '/$locale/admin/community-monitor/live-monitor',
-  });
+  const search = useSearch({ strict: false });
 
   // Get the current year/quarter filter
   const year = props.year || getYearFilter(search.year);
