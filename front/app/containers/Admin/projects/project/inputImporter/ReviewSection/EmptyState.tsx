@@ -11,24 +11,32 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
-import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
-import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
+import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
 import messages from './messages';
-import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
+import { isPDFUploadSupported } from './utils';
 
-const EmptyState = () => {
+interface Props {
+  onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
+}
+
+const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const { phaseId } = useParams() as {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
-
+  const formType =
+    participationMethod &&
+    ['native_survey', 'community_monitor_survey'].includes(participationMethod)
+      ? 'survey'
+      : 'input_form';
   const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   return (
@@ -42,7 +50,7 @@ const EmptyState = () => {
     >
       <Box
         w="100%"
-        maxWidth="700px"
+        maxWidth="1000px"
         bgColor={colors.white}
         borderRadius={stylingConsts.borderRadius}
         boxShadow={`0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)`}
@@ -53,28 +61,19 @@ const EmptyState = () => {
           <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>
-          <FormattedMessage
-            {...(pdfImportSupported
-              ? messages.noIdeasYet
-              : messages.noIdeasYetNoPdf)}
-            values={{
-              importFile: <FormattedMessage {...sharedMessages.importFile} />,
-            }}
-          />
-        </Text>
-        <Box display="flex">
-          {pdfImportSupported && (
-            <DownloadPDFButtonWithModal
-              formType={
-                supportsNativeSurvey(participationMethod)
-                  ? 'survey'
-                  : 'input_form'
-              }
-              mr="8px"
-              phaseId={phaseId}
-            />
+          {pdfImportSupported ? (
+            <FormattedMessage {...messages.noIdeasYet} />
+          ) : (
+            <FormattedMessage {...messages.noIdeasYetNoPdf} />
           )}
-          <ExcelDownloadButton phaseId={phaseId} />
+        </Text>
+        <Box mt="24px">
+          <ImportInputsSection
+            formType={formType}
+            onClickPDFImport={onClickPDFImport}
+            onClickExcelImport={onClickExcelImport}
+            pdfImportSupported={pdfImportSupported}
+          />
         </Box>
       </Box>
     </Box>

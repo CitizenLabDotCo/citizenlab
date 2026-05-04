@@ -4,10 +4,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
-import ImportResponsesSection from 'components/admin/FormSync/ImportResponsesSection';
+import usePhase from 'api/phases/usePhase';
+
+import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { isPDFUploadSupported } from '../inputImporter/ReviewSection/utils';
 
 import DuplicateSurveyButtonWithModal from './DuplicateSurveyButtonWithModal';
 import EditButtonWithWarningModal from './EditButtonWithWarningModal';
@@ -21,6 +25,8 @@ const TabPanel = ({
   phaseId: string;
 }) => {
   const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
+  const { data: phase } = usePhase(phaseId);
+  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <Box maxWidth="1200px">
@@ -40,7 +46,14 @@ const TabPanel = ({
           editFormLink={editFormLink}
         />
       </Box>
-      <ImportResponsesSection formType="survey" />
+
+      <Box mt="32px">
+        <ImportInputsSection
+          formType="survey"
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
+          showTitle
+        />
+      </Box>
     </Box>
   );
 };
