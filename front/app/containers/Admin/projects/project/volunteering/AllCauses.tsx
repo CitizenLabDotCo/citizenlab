@@ -144,7 +144,8 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </ButtonWithLink>
                 <ButtonWithLink
-                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
+                  to="/$locale/admin/projects/$projectId/phases/$phaseId/volunteering/causes/$causeId"
+                  params={{ projectId, phaseId, causeId: cause.id }}
                   icon="edit"
                   buttonStyle="secondary-outlined"
                 >

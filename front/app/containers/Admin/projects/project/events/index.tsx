@@ -94,7 +94,8 @@ const AdminProjectEventsIndex = () => {
           <AddButton
             buttonStyle="admin-dark"
             icon="plus-circle"
-            linkTo={`/admin/projects/${projectId}/events/new`}
+            to="/$locale/admin/projects/$projectId/events/new"
+            params={{ projectId }}
           >
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
@@ -192,7 +193,8 @@ const AdminProjectEventsIndex = () => {
                       <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         icon="edit"
-                        linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                        to="/$locale/admin/projects/$projectId/events/$id"
+                        params={{ projectId, id: event.id }}
                       >
                         <FormattedMessage {...messages.editButtonLabel} />
                       </ButtonWithLink>

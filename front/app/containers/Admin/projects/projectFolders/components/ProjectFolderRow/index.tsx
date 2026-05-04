@@ -137,7 +137,11 @@ const ProjectFolderRow = memo<Props>(
                       'en-GB'
                     ] || ''
                   }`}
-                  linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
+                  to="/$locale/admin/projects/folders/$projectFolderId"
+                  params={{
+                    projectFolderId:
+                      publication.relationships.publication.data.id,
+                  }}
                   buttonStyle="secondary-outlined"
                   icon="edit"
                   disabled={

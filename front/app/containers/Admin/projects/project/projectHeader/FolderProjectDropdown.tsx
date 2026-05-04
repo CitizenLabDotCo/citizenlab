@@ -76,7 +76,11 @@ const FolderProjectDropdown = ({ folderId }: Props) => {
                   page.data.map((adminPublication) => (
                     <ButtonWithLink
                       key={adminPublication.id}
-                      linkTo={`/admin/projects/${adminPublication.relationships.publication.data.id}`}
+                      to="/$locale/admin/projects/$projectId"
+                      params={{
+                        projectId:
+                          adminPublication.relationships.publication.data.id,
+                      }}
                       openLinkInNewTab={true}
                       buttonStyle="text"
                       p="4px"

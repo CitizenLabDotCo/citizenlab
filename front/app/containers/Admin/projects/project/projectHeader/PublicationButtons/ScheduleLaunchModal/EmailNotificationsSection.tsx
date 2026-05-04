@@ -86,7 +86,8 @@ const EmailNotificationsSection = ({
             </Text>
             <ButtonWithLink
               buttonStyle="text"
-              linkTo={`/admin/projects/${projectId}/general`}
+              to="/$locale/admin/projects/$projectId/general"
+              params={{ projectId }}
               onClick={onCloseModal}
               padding="0"
               fontSize="14px"
