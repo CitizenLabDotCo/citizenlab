@@ -37,7 +37,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -76,7 +76,7 @@ const BelongsToProject = styled.p`
   margin-bottom: 10px;
 `;
 
-const ProjectLink = styled(Link)`
+const ProjectLink = typedStyled(Link)`
   color: inherit;
   font-weight: 400;
   font-size: inherit;
@@ -89,7 +89,7 @@ const ProjectLink = styled(Link)`
     color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
-` as typeof Link;
+`;
 
 const IdeaImage = styled.img`
   width: 100%;
