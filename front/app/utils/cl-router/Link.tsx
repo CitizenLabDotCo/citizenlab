@@ -9,10 +9,24 @@ import {
   type LinkComponentProps,
   type RegisteredRouter,
 } from '@tanstack/react-router';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
 import { scrollToTop as scrollTop } from 'utils/scroll';
+
+// styled-components erases the generic-function shape of typed router
+// components like cl-router/Link, so `styled(Link)` drops route-aware typing.
+// Use `typedStyled(Link)` instead of casting `as typeof Link` to preserve the
+// wrapped component's full type.
+export function typedStyled<C>(component: C) {
+  return styled(
+    component as unknown as React.ComponentType<unknown>
+  ) as unknown as (
+    strings: TemplateStringsArray,
+    ...interpolations: unknown[]
+  ) => C;
+}
 
 interface ExtraProps {
   scrollToTop?: boolean;
