@@ -485,7 +485,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Iedereen met de link voor de voorbeeldweergave heeft ook toegang",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Concept",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Toegankelijk voor alle gebruikers of specifieke groepen, afhankelijk van de projectinstellingen",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet2": "Zichtbaar in de projectenlijst en in de zoekfunctie, tenzij ingesteld als niet-vermeld",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet2": "Zichtbaar in de projectenlijst en in de zoekfunctie, tenzij ingesteld als onvindbaar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedTitle": "Gepubliceerd",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.close": "Sluiten",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Concept",
