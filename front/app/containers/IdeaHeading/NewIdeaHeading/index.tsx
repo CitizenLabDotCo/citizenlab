@@ -9,7 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -22,6 +21,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -67,7 +67,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
     !isSmallerThanPhone &&
     canModerateProject(project.data, authUser) &&
     !isCommonGround;
-  const linkToFormBuilder = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
+  const linkToFormBuilder = {
+    to: '/admin/projects/$projectId/phases/$phaseId/form/edit',
+    params: { projectId: project.data.id, phaseId },
+  } as const;
 
   const onClickClose = () => {
     const pathname = isCommonGround
@@ -112,7 +115,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
           {showEditFormButton && (
             <ButtonWithLink
               icon="edit"
-              linkTo={linkToFormBuilder}
+              {...linkToFormBuilder}
               buttonStyle="primary-inverse"
               textDecorationHover="underline"
               mr="12px"

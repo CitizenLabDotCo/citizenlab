@@ -282,7 +282,7 @@ const SurveyActions = ({ phase }: Props) => {
           {formatMessage(messages.newSubmission)}
         </ButtonWithLink>
         <ButtonWithLink
-          linkTo={inputImporterLink}
+          {...inputImporterLink}
           icon="page"
           iconSize="20px"
           buttonStyle="secondary-outlined"

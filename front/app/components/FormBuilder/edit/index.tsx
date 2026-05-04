@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearch } from 'utils/router';
 
 import {
   IFlatCreateCustomField,
@@ -35,8 +34,10 @@ import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -65,7 +66,7 @@ type FormEditProps = {
   };
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: string;
+  viewFormLink: TypedLinkProps;
   phase: IPhaseData;
 };
 
@@ -393,7 +394,7 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: string;
+  viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
