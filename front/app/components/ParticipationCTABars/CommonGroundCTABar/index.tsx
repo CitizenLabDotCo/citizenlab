@@ -95,7 +95,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
                 textHoverColor={theme.colors.black}
                 padding="6px 12px"
                 fontSize="14px"
-                to="/$locale/projects/$slug/ideas/new"
+                to="/projects/$slug/ideas/new"
                 params={{ slug: project.attributes.slug }}
                 search={{ phase_id: currentPhase.id }}
               >

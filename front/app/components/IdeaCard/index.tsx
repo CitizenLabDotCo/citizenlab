@@ -146,7 +146,7 @@ const IdeaCard = ({
           }
         >
           <Link
-            to="/$locale/ideas/$slug"
+            to="/ideas/$slug"
             params={{ slug }}
             search={{ go_back: 'true' }}
             onClick={handleClick}

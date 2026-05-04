@@ -81,10 +81,7 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink
-            to="/$locale/events/$eventId"
-            params={{ eventId: event.id }}
-          >
+          <PrimaryLink to="/events/$eventId" params={{ eventId: event.id }}>
             <Title
               variant="h3"
               fontSize="l"
@@ -227,7 +224,7 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            to="/$locale/events/$eventId"
+            to="/events/$eventId"
             params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button

@@ -191,7 +191,7 @@ const UserName = ({
 
     const linkedNamelement = (
       <Link
-        to="/$locale/profile/$userSlug"
+        to="/profile/$userSlug"
         params={{ userSlug }}
         className={`e2e-author-link ${className || ''}`}
         scrollToTop

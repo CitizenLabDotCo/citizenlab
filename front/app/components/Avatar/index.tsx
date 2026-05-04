@@ -139,11 +139,7 @@ const Avatar = memo(
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link
-          to="/$locale/profile/$userSlug"
-          params={{ userSlug: slug }}
-          scrollToTop
-        >
+        <Link to="/profile/$userSlug" params={{ userSlug: slug }} scrollToTop>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.titleForAccessibility}
