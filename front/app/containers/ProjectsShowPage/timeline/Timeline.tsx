@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  FormEvent,
-  KeyboardEvent,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import React, { KeyboardEvent, useRef, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -17,12 +10,13 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled, { css, keyframes } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -37,7 +31,6 @@ import Link from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import PhaseDescription from './PhaseDescription';
-import setPhaseURL from './setPhaseURL';
 import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 44;
@@ -299,8 +292,9 @@ const Timeline = ({
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
-  const tabsRef = useRef<HTMLElement[]>([]);
+  const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const { search } = useLocation();
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
@@ -315,21 +309,7 @@ const Timeline = ({
     return () => clearTimeout(timeout);
   }, [phases]);
 
-  const handleOnPhaseSelection = useCallback(
-    (phase: IPhaseData | undefined) => (event: FormEvent) => {
-      trackEventByName(tracks.clickOnPhase);
-
-      // In the front office, the tab is rendered as a real <a> link to the
-      // phase URL, so we let the browser/router handle navigation.
-      if (!isBackoffice) return;
-
-      event.preventDefault();
-      if (phase && phases && project) {
-        setPhaseURL(phase, phases.data, project.data, isBackoffice);
-      }
-    },
-    [isBackoffice, phases, project]
-  );
+  const trackPhaseClick = () => trackEventByName(tracks.clickOnPhase);
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
     const arrowLeftPressed = e.key === 'ArrowLeft';
@@ -400,45 +380,13 @@ const Timeline = ({
                   .filter((className) => className)
                   .join(' ');
                 const showArrow = !(phaseIndex === phases.data.length - 1);
-                const phaseUrl: RouteType | null =
-                  !isBackoffice && project
-                    ? `/projects/${project.data.attributes.slug}/${phaseNumber}`
-                    : null;
-
-                const phaseBarContent = (
-                  <>
-                    {isCurrentPhase && (
-                      <BlinkingDot isSelected={isSelectedPhase} />
-                    )}
-                    <span aria-hidden>{phaseNumber}</span>
-                    <ScreenReaderOnly>
-                      <FormattedMessage
-                        {...messages.a11y_phase}
-                        values={{
-                          phaseNumber,
-                          phaseTitle,
-                        }}
-                      />
-                    </ScreenReaderOnly>
-                    {showArrow && <PhaseArrow />}
-                  </>
-                );
-
-                const commonPhaseBarProps = {
-                  onMouseDown: removeFocusAfterMouseClick,
-                  onKeyDown: handleTabListOnKeyDown,
-                  onClick: handleOnPhaseSelection(phase),
-                  'aria-current': isCurrentPhase,
-                  // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
-                  'aria-selected': isSelectedPhase,
-                  'aria-controls': `phase-description-panel-${phaseNumber}`,
-                  role: 'tab',
-                  tabIndex: isSelectedPhase ? 0 : -1,
-                  id: `phase-tab-${phaseNumber}`,
-                  $showArrow: showArrow,
-                  $isCurrentPhase: isCurrentPhase,
-                  className: `intercom-project-timeline-phase-${phaseNumber}`,
-                };
+                const phaseUrl: RouteType | null = project
+                  ? isBackoffice
+                    ? `/admin/projects/${project.data.id}/phases/${
+                        phase.id
+                      }/${getPhaseLandingTab(phase)}`
+                    : `/projects/${project.data.attributes.slug}/${phaseNumber}`
+                  : null;
 
                 return (
                   <PhaseContainer
@@ -448,26 +396,42 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last={isLast}
                   >
-                    {phaseUrl ? (
+                    {phaseUrl && (
                       <PhaseBar
                         as={Link}
-                        to={phaseUrl}
+                        to={{ pathname: phaseUrl, search }}
                         scrollToTop={false}
                         ref={(el: HTMLAnchorElement | null) =>
                           el && (tabsRef.current[phaseIndex] = el)
                         }
-                        {...commonPhaseBarProps}
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onKeyDown={handleTabListOnKeyDown}
+                        onClick={trackPhaseClick}
+                        aria-current={isCurrentPhase}
+                        // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                        aria-selected={isSelectedPhase}
+                        aria-controls={`phase-description-panel-${phaseNumber}`}
+                        role="tab"
+                        tabIndex={isSelectedPhase ? 0 : -1}
+                        id={`phase-tab-${phaseNumber}`}
+                        $showArrow={showArrow}
+                        $isCurrentPhase={isCurrentPhase}
+                        className={`intercom-project-timeline-phase-${phaseNumber}`}
                       >
-                        {phaseBarContent}
-                      </PhaseBar>
-                    ) : (
-                      <PhaseBar
-                        ref={(el: HTMLButtonElement | null) =>
-                          el && (tabsRef.current[phaseIndex] = el)
-                        }
-                        {...commonPhaseBarProps}
-                      >
-                        {phaseBarContent}
+                        {isCurrentPhase && (
+                          <BlinkingDot isSelected={isSelectedPhase} />
+                        )}
+                        <span aria-hidden>{phaseNumber}</span>
+                        <ScreenReaderOnly>
+                          <FormattedMessage
+                            {...messages.a11y_phase}
+                            values={{
+                              phaseNumber,
+                              phaseTitle,
+                            }}
+                          />
+                        </ScreenReaderOnly>
+                        {showArrow && <PhaseArrow />}
                       </PhaseBar>
                     )}
                     <PhaseText
