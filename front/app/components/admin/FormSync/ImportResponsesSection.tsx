@@ -48,9 +48,11 @@ const ImportResponsesSection = ({ formType }: Props) => {
     saveAs(blob, 'example.xlsx');
   };
 
+  if (!projectId || !phaseId) return null;
+
   const importerLink = {
     to: '/admin/projects/$projectId/phases/$phaseId/input-importer',
-    params: { projectId: projectId ?? '', phaseId: phaseId ?? '' },
+    params: { projectId, phaseId },
   } as const;
 
   return (
@@ -164,14 +166,12 @@ const ImportResponsesSection = ({ formType }: Props) => {
         </Box>
       </Box>
 
-      {phaseId && (
-        <PDFExportModal
-          open={exportModalOpen}
-          formType={formType}
-          onClose={() => setExportModalOpen(false)}
-          phaseId={phaseId}
-        />
-      )}
+      <PDFExportModal
+        open={exportModalOpen}
+        formType={formType}
+        onClose={() => setExportModalOpen(false)}
+        phaseId={phaseId}
+      />
     </Box>
   );
 };

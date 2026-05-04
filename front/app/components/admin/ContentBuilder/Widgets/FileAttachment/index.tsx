@@ -195,15 +195,17 @@ const FileAttachmentSettings = () => {
         />
       )}
 
-      <ButtonWithLink
-        to="/admin/projects/$projectId/files"
-        params={{ projectId: projectId ?? '' }}
-        buttonStyle="text"
-        icon="upload-file"
-        openLinkInNewTab={true}
-      >
-        {formatMessage(messages.uploadFiles)}
-      </ButtonWithLink>
+      {projectId && (
+        <ButtonWithLink
+          to="/admin/projects/$projectId/files"
+          params={{ projectId }}
+          buttonStyle="text"
+          icon="upload-file"
+          openLinkInNewTab={true}
+        >
+          {formatMessage(messages.uploadFiles)}
+        </ButtonWithLink>
+      )}
     </Box>
   );
 };

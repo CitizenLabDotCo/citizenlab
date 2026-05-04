@@ -9,12 +9,13 @@ import messages from '../messages';
 
 const NewCampaignButton = () => {
   const { projectId } = useParams({ strict: false });
+  if (!projectId) return null;
   return (
     <ButtonWithLink
       buttonStyle="admin-dark"
       icon="plus-circle"
       to="/admin/projects/$projectId/messaging/new"
-      params={{ projectId: projectId ?? '' }}
+      params={{ projectId }}
     >
       <FormattedMessage {...messages.addCampaignButton} />
     </ButtonWithLink>

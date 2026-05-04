@@ -63,7 +63,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
               />
             </SectionField>
           )}
-          {field.input_type === 'topic_ids' && (
+          {field.input_type === 'topic_ids' && projectId && (
             <Text>
               <FormattedMessage
                 {...messages.manageTagsExplanation}
@@ -71,7 +71,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
                   inputTagsLink: (
                     <Link
                       to="/admin/projects/$projectId/general/input-tags"
-                      params={{ projectId: projectId ?? '' }}
+                      params={{ projectId }}
                       target="_blank"
                     >
                       <FormattedMessage {...messages.inputTagsPage} />
