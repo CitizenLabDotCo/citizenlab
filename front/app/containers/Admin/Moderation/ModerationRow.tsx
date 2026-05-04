@@ -27,7 +27,7 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import DeleteModerationComment from './DeleteModeration/DeleteModerationComment';
 import messages from './messages';
@@ -61,14 +61,14 @@ const GoToLinkWrapper = styled.div`
   height: 18px;
 `;
 
-const GoToLink = styled(Link)`
+const GoToLink = typedStyled(Link)`
   width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
   border: none;
   cursor: pointer;
-` as typeof Link;
+`;
 
 const GoToIcon = styled(Icon)`
   &:hover {
