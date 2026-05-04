@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 import OriginalLink from 'utils/cl-router/Link';
 
-type LinkProps = Parameters<typeof OriginalLink>[0] & { color?: string };
-
 const StyledLink = styled(OriginalLink)<{
   color: string;
 }>`
@@ -19,9 +17,20 @@ const StyledLink = styled(OriginalLink)<{
   }
 ` as typeof OriginalLink;
 
-const Link: typeof OriginalLink = ((props: LinkProps) => {
-  const { color = colors.black, ...rest } = props;
-  return <StyledLink {...rest} color={color} />;
+// Internal props are intentionally loose: the public signature comes from
+// `: typeof OriginalLink` on the export, which preserves typed-route checking
+// at the call site.
+const Link: typeof OriginalLink = ((
+  props: { color?: string } & Record<string, unknown>
+) => {
+  const { color = colors.black, ...rest } = props as {
+    color?: string;
+  } & Record<string, unknown>;
+  const StyledLinkAny = StyledLink as unknown as React.ComponentType<{
+    color: string;
+    [key: string]: unknown;
+  }>;
+  return <StyledLinkAny {...rest} color={color} />;
 }) as typeof OriginalLink;
 
 export default Link;
