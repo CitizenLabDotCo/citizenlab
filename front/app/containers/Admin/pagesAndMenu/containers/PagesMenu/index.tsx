@@ -76,7 +76,7 @@ const PagesMenu = () => {
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 id="create-custom-page"
-                to="/$locale/admin/pages-menu/pages/new"
+                to="/admin/pages-menu/pages/new"
                 className="intercom-admin-pages-menu-add-page"
                 disabled={!canCreateCustomPages}
               >

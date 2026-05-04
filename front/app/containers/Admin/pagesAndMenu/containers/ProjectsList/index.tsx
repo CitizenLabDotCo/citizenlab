@@ -60,7 +60,7 @@ const ProjectList = () => {
         ]}
         rightSideCTA={
           <ViewCustomPageButton
-            to="/$locale/pages/$slug"
+            to="/pages/$slug"
             params={{ slug: customPage.data.attributes.slug }}
           />
         }

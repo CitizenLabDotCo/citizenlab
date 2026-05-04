@@ -68,7 +68,7 @@ const ProjectsSettings = () => {
           {...messages.projectsDescription}
           values={{
             link: (
-              <Link to="/$locale/admin/projects" target="_blank">
+              <Link to="/admin/projects" target="_blank">
                 <FormattedMessage {...messages.projectsDescriptionLink} />
               </Link>
             ),

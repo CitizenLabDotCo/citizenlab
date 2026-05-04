@@ -92,7 +92,7 @@ const BuilderTopBar = ({
           px="11px"
           py="6px"
           ml="32px"
-          to="/$locale/"
+          to="/"
           openLinkInNewTab
         />
         <SaveButton
