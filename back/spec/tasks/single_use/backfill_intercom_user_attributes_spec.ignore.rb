@@ -19,8 +19,7 @@ describe 'single_use:backfill_intercom_user_attributes rake task' do
   after { task.reenable }
 
   # Build a contact's current custom_attributes hash from what the service
-  # would write — keeps the test in sync with TrackIntercomService and the
-  # MultiTenancy patch (which adds tenantId, tenantHost, etc.).
+  # would write — keeps the test in sync with TrackIntercomService.
   def populated_attrs_for(user)
     TrackIntercomService.new.user_attributes(user).transform_keys(&:to_s)
   end

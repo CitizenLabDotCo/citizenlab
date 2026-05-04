@@ -547,16 +547,30 @@ RSpec.describe UserRoles do
       expect(user.project_moderator?('123')).to be true
     end
 
-    it 'returns true when user is project moderator through folder moderation' do
+    it 'returns false when user is project moderator through folder moderation' do
       folder = create(:project_folder)
       project = create(:project, folder: folder)
       user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id }])
-      expect(user.project_moderator?(project.id)).to be true
+      expect(user.project_moderator?(project.id)).to be false
     end
 
     it 'returns false when checking project user does not moderate' do
       user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
       expect(user.project_moderator?('456')).to be false
+    end
+
+    it 'return false if user is space moderator and can indirectly moderate project, but is not a direct moderator (specific project)' do
+      space = create(:space)
+      project = create(:project, space: space)
+      user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      expect(user.project_moderator?(project.id)).to be false
+    end
+
+    it 'return false if user is space moderator and can indirectly moderate project, but is not a direct moderator (no specific project)' do
+      space = create(:space)
+      create(:project, space: space)
+      user = build(:user, roles: [{ 'type' => 'space_moderator', 'space_id' => space.id }])
+      expect(user.project_moderator?).to be false
     end
   end
 

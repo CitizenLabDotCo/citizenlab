@@ -9,7 +9,9 @@ describe IdeaPolicy do
   let(:editing_idea_disabled_reason) { Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('editing_idea') }
 
   context 'on an idea in a public project' do
-    let(:project) { create(:single_phase_ideation_project) }
+    let!(:space) { create(:space) }
+    let(:project) { create(:single_phase_ideation_project, space: space) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
     context 'for a visitor' do
@@ -95,9 +97,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a moderator' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
+    shared_examples 'moderator on public idea in their scope' do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
@@ -108,6 +108,55 @@ describe IdeaPolicy do
 
         expect(scope.resolve.size).to eq 1
       end
+    end
+
+    shared_examples 'moderator on public idea outside their scope' do
+      it do
+        is_expected.to permit(:show)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+        is_expected.not_to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it_behaves_like 'moderator on public idea in their scope'
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'moderator on public idea outside their scope'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'moderator on public idea in their scope'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'moderator on public idea outside their scope'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'moderator on public idea in their scope'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'moderator on public idea outside their scope'
     end
 
     context 'when there is a posting idea disabled reason' do
@@ -212,8 +261,10 @@ describe IdeaPolicy do
 
   context 'on a published native survey response in a public project' do
     let!(:proposed_status) { create(:idea_status_proposed) }
-    let(:idea) { create(:native_survey_response) }
-    let(:project) { idea.project }
+    let!(:space) { create(:space) }
+    let(:project) { create(:single_phase_native_survey_project, space: space) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
+    let(:idea) { create(:native_survey_response, project: project) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -283,9 +334,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a moderator' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
+    shared_examples 'moderator on native survey response in their scope' do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
@@ -296,10 +345,60 @@ describe IdeaPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    shared_examples 'moderator on native survey response outside their scope' do
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it_behaves_like 'moderator on native survey response in their scope'
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'moderator on native survey response outside their scope'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'moderator on native survey response in their scope'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'moderator on native survey response outside their scope'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'moderator on native survey response in their scope'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'moderator on native survey response outside their scope'
+    end
   end
 
   context 'on idea in a private admins project' do
-    let(:project) { create(:private_admins_project) }
+    let!(:space) { create(:space) }
+    let(:project) { create(:private_admins_project, space: space) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:idea) { create(:idea, project: project) }
 
     context 'for a visitor' do
@@ -350,9 +449,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a moderator' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
+    shared_examples 'moderator on private admins idea in their scope' do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
@@ -363,6 +460,55 @@ describe IdeaPolicy do
 
         expect(scope.resolve.size).to eq 1
       end
+    end
+
+    shared_examples 'moderator on private admins idea outside their scope' do
+      it do
+        is_expected.not_to permit(:show)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+        is_expected.not_to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it_behaves_like 'moderator on private admins idea in their scope'
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'moderator on private admins idea outside their scope'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'moderator on private admins idea in their scope'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'moderator on private admins idea outside their scope'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'moderator on private admins idea in their scope'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'moderator on private admins idea outside their scope'
     end
   end
 
@@ -722,8 +868,10 @@ describe IdeaPolicy do
   end
 
   context 'on a common ground input in a public project' do
-    let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
-    let(:project) { phase.project }
+    let!(:space) { create(:space) }
+    let(:project) { create(:project, space: space) }
+    let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true, project: project) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:idea) { create(:common_ground_input, :with_author, phase: phase) }
 
     context 'for a visitor' do
@@ -816,9 +964,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a moderator that moderates the project' do
-      let(:user) { create(:project_moderator, projects: [project]) }
-
+    shared_examples 'moderator on common ground input in their scope' do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
@@ -832,9 +978,7 @@ describe IdeaPolicy do
       end
     end
 
-    context 'for a moderator that does not moderate the project' do
-      let(:user) { create(:project_moderator, projects: [create(:project)]) }
-
+    shared_examples 'moderator on common ground input outside their scope' do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
@@ -849,6 +993,42 @@ describe IdeaPolicy do
 
         expect(scope.resolve.size).to eq 1
       end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it_behaves_like 'moderator on common ground input in their scope'
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'moderator on common ground input outside their scope'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'moderator on common ground input in their scope'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'moderator on common ground input outside their scope'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'moderator on common ground input in their scope'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'moderator on common ground input outside their scope'
     end
   end
 end
