@@ -12,13 +12,25 @@ import { useLocation } from 'utils/router';
 import messages from './messages';
 import tracks from './tracks';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 interface Props {
-  linkTo: string;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+  linkTo?: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;
 }
 
-const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
+const NewIdeaButton = ({
+  to,
+  params,
+  search,
+  linkTo,
+  inputTerm,
+  participationMethod,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const buttonText =
@@ -49,6 +61,9 @@ const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
       id="e2e-new-idea"
       buttonStyle="admin-dark"
       icon="plus"
+      to={to}
+      params={params}
+      search={search}
       linkTo={linkTo}
       onClick={() => {
         trackEventByName(tracks.clickNewIdea.name, {

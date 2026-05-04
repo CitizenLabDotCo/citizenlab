@@ -9,6 +9,8 @@ import T from 'components/T';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 const NavigationItemBorder = styled.div`
   height: 6px;
   position: absolute;
@@ -67,18 +69,30 @@ const StyledLink = typedStyled(Link)`
 
 interface Props {
   className?: string;
-  linkTo: string;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+  linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }
 
 const DesktopNavbarItem = ({
+  to,
+  params,
+  search,
   linkTo,
   navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex} scrollToTop>
+    <StyledLink
+      to={(to ?? linkTo) as Parameters<typeof StyledLink>[0]['to']}
+      params={params as Parameters<typeof StyledLink>[0]['params']}
+      search={search as Parameters<typeof StyledLink>[0]['search']}
+      onlyActiveOnIndex={onlyActiveOnIndex}
+      scrollToTop
+    >
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

@@ -8,15 +8,23 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 interface Props {
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
-  linkTo: string;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+  linkTo?: string;
 }
 
 const EditStatusButton = ({
   buttonDisabled,
   tooltipContent,
+  to,
+  params,
+  search,
   linkTo,
 }: Props) => {
   const tooltipDisabled = !buttonDisabled;
@@ -31,6 +39,9 @@ const EditStatusButton = ({
     >
       <Box>
         <ButtonWithLink
+          to={to}
+          params={params}
+          search={search}
           linkTo={linkTo}
           buttonStyle="secondary-outlined"
           icon="edit"

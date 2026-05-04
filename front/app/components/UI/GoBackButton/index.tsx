@@ -8,6 +8,8 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 const Container = styled.div`
   display: inline-block;
 `;
@@ -16,6 +18,9 @@ type Props = {
   onClick?: (arg: FormEvent) => void;
   className?: string;
   customMessage?: MessageDescriptor;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
   linkTo?: string;
   showGoBackText?: boolean;
 } & ButtonProps;
@@ -24,6 +29,9 @@ const GoBackButton = ({
   onClick,
   className,
   customMessage,
+  to,
+  params,
+  search,
   linkTo,
   showGoBackText = true,
   buttonStyle = 'text',
@@ -42,6 +50,9 @@ const GoBackButton = ({
           ) : undefined
         }
         data-testid="goBackButton"
+        to={to}
+        params={params}
+        search={search}
         linkTo={linkTo}
         buttonStyle={buttonStyle}
         {...buttonProps}

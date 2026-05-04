@@ -16,6 +16,8 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 const DropdownListItem = typedStyled(Link)`
   display: flex;
   align-items: center;
@@ -69,7 +71,10 @@ const StyledButton = styled.button`
 `;
 
 interface NavbarItemProps {
-  linkTo: string;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+  linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }
@@ -112,7 +117,21 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
             {overflowItems.map((item, index) => (
               <DropdownListItem
                 key={index}
-                to={item.linkTo}
+                to={
+                  (item.to ?? item.linkTo) as Parameters<
+                    typeof DropdownListItem
+                  >[0]['to']
+                }
+                params={
+                  item.params as Parameters<
+                    typeof DropdownListItem
+                  >[0]['params']
+                }
+                search={
+                  item.search as Parameters<
+                    typeof DropdownListItem
+                  >[0]['search']
+                }
                 onlyActiveOnIndex={item.onlyActiveOnIndex}
                 onClick={closeDropdown}
                 scrollToTop

@@ -11,6 +11,8 @@ import styled from 'styled-components';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
   display: flex;
@@ -34,7 +36,10 @@ const StyledLink = typedStyled(Link)`
 `;
 
 interface Props {
-  linkTo: string;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
+  linkTo?: string;
   navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;
   onClick: () => void;
@@ -43,6 +48,9 @@ interface Props {
 }
 
 const FullMobileNavMenuItem = ({
+  to,
+  params,
+  search,
   linkTo,
   navigationItemTitle,
   onClick,
@@ -56,7 +64,9 @@ const FullMobileNavMenuItem = ({
     {iconName && <Icon name={iconName} height="20px" />}
     <StyledLink
       onClick={onClick}
-      to={linkTo}
+      to={(to ?? linkTo) as Parameters<typeof StyledLink>[0]['to']}
+      params={params as Parameters<typeof StyledLink>[0]['params']}
+      search={search as Parameters<typeof StyledLink>[0]['search']}
       onlyActiveOnIndex={onlyActiveOnIndex}
       scrollToTop={scrollToTop}
     >

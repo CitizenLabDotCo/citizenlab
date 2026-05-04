@@ -9,10 +9,15 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 interface Props {
   text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
+  to?: LinkProps['to'];
+  params?: Record<string, string>;
+  search?: Record<string, unknown>;
   linkTo?: string;
 }
 
@@ -20,6 +25,9 @@ const GoBackButtonSolid = ({
   text,
   iconSize = '28px',
   onClick,
+  to,
+  params,
+  search,
   linkTo,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -43,6 +51,9 @@ const GoBackButtonSolid = ({
       textDecorationHover="underline"
       whiteSpace="normal"
       onClick={handleClick}
+      to={to}
+      params={params}
+      search={search}
       linkTo={linkTo}
       text={text}
     >
