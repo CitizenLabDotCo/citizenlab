@@ -85,7 +85,7 @@ export function adminProjectsProjectPath(projectId: string) {
 
 export const adminProjectsProjectLink = (projectId: string) =>
   ({
-    to: '/$locale/admin/projects/$projectId',
+    to: '/admin/projects/$projectId',
     params: { projectId },
   } as const);
 

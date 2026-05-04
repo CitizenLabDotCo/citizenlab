@@ -5,5 +5,5 @@ export const pagesAndMenuBreadcrumb = {
 };
 
 export const pagesAndMenuBreadcrumbLink = {
-  to: '/$locale/admin/pages-menu',
+  to: '/admin/pages-menu',
 } as const;

@@ -13,7 +13,7 @@ import projectsKeys from './keys';
 
 export function getProjectLinkProps(slug: string) {
   return {
-    to: '/$locale/projects/$slug',
+    to: '/projects/$slug',
     params: { slug },
   } as const;
 }
