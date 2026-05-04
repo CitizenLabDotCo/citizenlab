@@ -48,7 +48,10 @@ const ImportResponsesSection = ({ formType }: Props) => {
     saveAs(blob, 'example.xlsx');
   };
 
-  const importerPath = `/admin/projects/${projectId}/phases/${phaseId}/input-importer`;
+  const importerLink = {
+    to: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+    params: { projectId: projectId ?? '', phaseId: phaseId ?? '' },
+  } as const;
 
   return (
     <Box mt="28px">
@@ -94,7 +97,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
               <ButtonWithLink
                 buttonStyle="admin-dark"
                 icon="form-sync"
-                linkTo={importerPath}
+                {...importerLink}
               >
                 <FormattedMessage {...messages.importScans} />
               </ButtonWithLink>
@@ -153,7 +156,7 @@ const ImportResponsesSection = ({ formType }: Props) => {
             <ButtonWithLink
               buttonStyle="text"
               icon="upload-file"
-              linkTo={importerPath}
+              {...importerLink}
             >
               <FormattedMessage {...messages.importFile} />
             </ButtonWithLink>

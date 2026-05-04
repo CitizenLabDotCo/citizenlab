@@ -46,8 +46,8 @@ const StatusFilters = ({
 
   const linkToStatusSettings =
     type === 'AllIdeas' || type === 'ProjectIdeas'
-      ? '/admin/settings/statuses/ideation'
-      : '/admin/settings/statuses/proposals';
+      ? ('/$locale/admin/settings/statuses/ideation' as const)
+      : ('/$locale/admin/settings/statuses/proposals' as const);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -62,7 +62,7 @@ const StatusFilters = ({
             buttonStyle="text"
             icon="edit"
             pl="12px"
-            linkTo={linkToStatusSettings}
+            to={linkToStatusSettings}
             iconPos="right"
             iconSize="14px"
           >

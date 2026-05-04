@@ -18,7 +18,12 @@ interface Props {
   selectableTopics: IInputTopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
-  linkToTagManager: string | null;
+  linkToTagManager: {
+    to:
+      | '/$locale/admin/projects/$projectId/general/input-tags'
+      | '/$locale/admin/settings/topics';
+    params?: Record<string, string>;
+  } | null;
 }
 
 const FilterSidebarTopics = ({
@@ -61,14 +66,14 @@ const FilterSidebarTopics = ({
         labelContent={<FormattedMessage {...messages.allTopics} />}
       />
       <Divider />
-      {typeof linkToTagManager === 'string' && (
+      {linkToTagManager && (
         <Box display="inline-flex">
           <ButtonWithLink
             data-cy="e2e-post-manager-topic-filters-edit-tags"
             buttonStyle="text"
             icon="edit"
             pl="12px"
-            linkTo={linkToTagManager}
+            {...linkToTagManager}
             iconPos="right"
             iconSize="14px"
           >

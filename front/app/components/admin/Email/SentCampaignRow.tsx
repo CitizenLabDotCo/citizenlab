@@ -37,10 +37,24 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   const { formatMessage } = useIntl();
   const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
-  const statsLink =
+  const statsLink: {
+    to:
+      | '/$locale/admin/messaging/emails/custom/$campaignId'
+      | '/$locale/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
     context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+      ? {
+          to: '/$locale/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        }
+      : {
+          to: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: campaign.relationships.context?.data?.id ?? '',
+            campaignId: campaign.id,
+          },
+        };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
@@ -118,7 +132,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.clicked} />
           </Text>
         </Box>
-        <ButtonWithLink linkTo={statsLink} icon="chart-bar" buttonStyle="text">
+        <ButtonWithLink {...statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
         </ButtonWithLink>
       </Box>

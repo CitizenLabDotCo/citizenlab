@@ -36,10 +36,24 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
   );
   const localize = useLocalize();
 
-  const editLink =
+  const editLink: {
+    to:
+      | '/$locale/admin/messaging/emails/custom/$campaignId'
+      | '/$locale/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
     context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+      ? {
+          to: '/$locale/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        }
+      : {
+          to: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: campaign.relationships.context?.data?.id ?? '',
+            campaignId: campaign.id,
+          },
+        };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
   return (
@@ -83,7 +97,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
         <ButtonWithLink
-          linkTo={editLink}
+          {...editLink}
           buttonStyle="secondary-outlined"
           icon="edit"
         >
