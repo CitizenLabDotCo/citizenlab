@@ -21,7 +21,7 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -43,7 +43,7 @@ const Container = styled.div`
   `}
 `;
 
-const PostLink = styled(Link)`
+const PostLink = typedStyled(Link)`
   background: ${colors.background};
   display: flex;
   flex-direction: row;
@@ -56,7 +56,7 @@ const PostLink = styled(Link)`
   &:focus {
     background: ${darken(0.02, colors.background)};
   }
-` as typeof Link;
+`;
 
 const PostLinkLeft = styled.div`
   display: flex;
