@@ -20,7 +20,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -37,7 +37,7 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const PrimaryLink = styled(Link)`
+const PrimaryLink = typedStyled(Link)`
   // For reference:
   // https://kittygiraudel.com/2022/04/02/accessible-cards/
   // https://inclusive-components.design/cards/
@@ -53,7 +53,7 @@ const PrimaryLink = styled(Link)`
 
   // Place the pseudo-element on top of the whole card.
   z-index: 1; /* 3 */
-` as typeof Link;
+`;
 
 interface Props {
   event: IEventData;
