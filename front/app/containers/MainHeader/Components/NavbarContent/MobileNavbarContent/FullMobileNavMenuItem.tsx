@@ -9,7 +9,7 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
@@ -18,7 +18,7 @@ const MenuItem = styled.li`
   align-items: center;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   color: ${colors.textPrimary};
   padding: 20px 10px;
   border-radius: 5px;
@@ -31,7 +31,7 @@ const StyledLink = styled(Link)`
   &.active {
     color: ${(props) => props.theme.colors.tenantPrimary};
   }
-` as typeof Link;
+`;
 
 interface Props {
   linkTo: string;
