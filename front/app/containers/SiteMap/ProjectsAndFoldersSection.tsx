@@ -1,11 +1,9 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -14,10 +12,10 @@ import ProjectFolderSiteMapItem from './ProjectFolderSiteMapItem';
 
 import { H2 } from '.';
 
-const AllProjectsLink = styled(Link)`
+const AllProjectsLink = typedStyled(Link)`
   display: block;
   margin-bottom: 20px;
-` as typeof Link;
+`;
 
 interface Props {
   projectsSectionRef: any;
