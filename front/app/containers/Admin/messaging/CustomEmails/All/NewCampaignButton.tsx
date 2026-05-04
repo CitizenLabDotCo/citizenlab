@@ -11,7 +11,7 @@ const NewCampaignButton = () => {
     <ButtonWithLink
       buttonStyle="admin-dark"
       icon="plus-circle"
-      to="/$locale/admin/messaging/emails/custom/new"
+      to="/admin/messaging/emails/custom/new"
     >
       <FormattedMessage {...messages.addCampaignButton} />
     </ButtonWithLink>

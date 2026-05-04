@@ -254,7 +254,7 @@ const Show = () => {
             campaign.data.attributes.scheduled_at) && (
             <Buttons>
               <ButtonWithLink
-                to="/$locale/admin/messaging/emails/custom/$campaignId/edit"
+                to="/admin/messaging/emails/custom/$campaignId/edit"
                 params={{ campaignId: campaign.data.id }}
                 buttonStyle="secondary-outlined"
               >
@@ -329,7 +329,7 @@ const Show = () => {
                   <span>
                     <FormattedMessage {...messages.allParticipantsInProject} />{' '}
                     <Link
-                      to="/$locale/admin/projects/$projectId"
+                      to="/admin/projects/$projectId"
                       params={{ projectId: project.data.id }}
                       target="_blank"
                     >
@@ -407,7 +407,7 @@ const Show = () => {
             <ButtonsWrapper>
               <ButtonWithLink
                 buttonStyle="secondary-outlined"
-                to="/$locale/admin/messaging/emails/custom/$campaignId/edit"
+                to="/admin/messaging/emails/custom/$campaignId/edit"
                 params={{ campaignId: campaign.data.id }}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />

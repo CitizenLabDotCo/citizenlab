@@ -73,7 +73,7 @@ const AdminProjectFolderEdition = () => {
           buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
-          to="/$locale/folders/$slug"
+          to="/folders/$slug"
           params={{ slug: projectFolder.data.attributes.slug }}
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />

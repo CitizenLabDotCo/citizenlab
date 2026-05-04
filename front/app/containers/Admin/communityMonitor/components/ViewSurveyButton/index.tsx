@@ -19,7 +19,7 @@ const ViewSurveyButton = ({ ...props }: ButtonProps) => {
 
   return (
     <ButtonWithLink
-      to="/$locale/projects/$slug/surveys/new"
+      to="/projects/$slug/surveys/new"
       params={{ slug: project.data.attributes.slug }}
       search={{ phase_id: phaseId }}
       icon="eye"

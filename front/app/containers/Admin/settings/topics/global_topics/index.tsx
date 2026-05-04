@@ -77,7 +77,7 @@ const AllTopics = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          to="/$locale/admin/settings/topics/platform/new"
+          to="/admin/settings/topics/platform/new"
           id="e2e-add-custom-topic-button"
         >
           <FormattedMessage {...messages.addTopicButton} />

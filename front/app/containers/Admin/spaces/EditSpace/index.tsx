@@ -53,7 +53,7 @@ const EditSpace = () => {
 
   return (
     <Box>
-      <GoBackButton to="/$locale/admin/projects" search={{ tab: 'spaces' }} />
+      <GoBackButton to="/admin/projects" search={{ tab: 'spaces' }} />
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>

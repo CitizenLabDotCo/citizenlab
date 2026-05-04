@@ -143,7 +143,7 @@ const DefaultInputTopics = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          to="/$locale/admin/settings/topics/input/new"
+          to="/admin/settings/topics/input/new"
           id="e2e-add-default-input-topic-button"
         >
           <FormattedMessage {...messages.addDefaultInputTopicButton} />
@@ -173,7 +173,7 @@ const DefaultInputTopics = () => {
                   <Box display="flex" alignItems="center" gap="16px">
                     {nestedInputTopicsActive && isRootTopic && (
                       <ButtonWithLink
-                        to="/$locale/admin/settings/topics/input/new"
+                        to="/admin/settings/topics/input/new"
                         search={{ parent_id: topic.id }}
                         buttonStyle="secondary-outlined"
                         icon="plus-circle"
@@ -184,7 +184,7 @@ const DefaultInputTopics = () => {
                       </ButtonWithLink>
                     )}
                     <ButtonWithLink
-                      to="/$locale/admin/settings/topics/input/$defaultInputTopicId/edit"
+                      to="/admin/settings/topics/input/$defaultInputTopicId/edit"
                       params={{ defaultInputTopicId: topic.id }}
                       buttonStyle="secondary-outlined"
                       icon="edit"

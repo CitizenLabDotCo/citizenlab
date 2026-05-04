@@ -34,7 +34,7 @@ const PoliciesTab = () => {
           {...messages.policiesSubtitle}
           values={{
             navigationLink: (
-              <StyledLink to="/$locale/admin/pages-menu">
+              <StyledLink to="/admin/pages-menu">
                 <FormattedMessage {...pagesAndMenuMessages.pagesAndMenuTitle} />
               </StyledLink>
             ),

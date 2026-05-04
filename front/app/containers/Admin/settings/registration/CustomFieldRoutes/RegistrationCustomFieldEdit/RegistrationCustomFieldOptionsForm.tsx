@@ -81,7 +81,7 @@ const RegistrationCustomFieldOptionsForm = ({
 
           <ButtonWithLink
             buttonStyle="text"
-            to="/$locale/admin/settings/registration/custom-fields/$userCustomFieldId/options"
+            to="/admin/settings/registration/custom-fields/$userCustomFieldId/options"
             params={{ userCustomFieldId }}
           >
             {formatMessage(messages.optionCancelButton)}

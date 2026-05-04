@@ -63,7 +63,7 @@ const Esri = () => {
               icon={isEsriEnabled ? 'arrow-right' : 'lock'}
               iconPos="right"
               width="fit-content"
-              to="/$locale/admin/tools/esri-integration"
+              to="/admin/tools/esri-integration"
             >
               {formatMessage(messages.esriIntegrationButton)}
             </ButtonWithLink>

@@ -47,7 +47,7 @@ export const PublicAPI = () => {
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              to="/$locale/admin/tools/public-api-tokens"
+              to="/admin/tools/public-api-tokens"
               textColor="white"
               bgColor={colors.primary}
             >

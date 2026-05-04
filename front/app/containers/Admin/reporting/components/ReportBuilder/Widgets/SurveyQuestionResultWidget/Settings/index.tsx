@@ -243,7 +243,7 @@ const Settings = () => {
             mb="16px"
           >
             <ButtonWithLink
-              to="/$locale/admin/projects/$projectId/analysis/$analysisId"
+              to="/admin/projects/$projectId/analysis/$analysisId"
               params={{ projectId, analysisId: analysis.id }}
               search={{ phase_id: phaseId }}
             >

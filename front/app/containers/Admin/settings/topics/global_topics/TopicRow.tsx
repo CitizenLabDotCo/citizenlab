@@ -62,7 +62,7 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
         {staticPages.map((staticPage) => (
           <li key={staticPage.id}>
             <StyledLink
-              to="/$locale/admin/pages-menu/pages/$customPageId/settings"
+              to="/admin/pages-menu/pages/$customPageId/settings"
               params={{ customPageId: staticPage.id }}
             >
               {localize(staticPage.attributes.title_multiloc)}
@@ -128,7 +128,7 @@ const TopicRow = (props: Props) => {
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
         <ButtonWithLink
-          to="/$locale/admin/settings/topics/platform/$topicId/edit"
+          to="/admin/settings/topics/platform/$topicId/edit"
           params={{ topicId: topic.id }}
           buttonStyle="secondary-outlined"
           icon="edit"
