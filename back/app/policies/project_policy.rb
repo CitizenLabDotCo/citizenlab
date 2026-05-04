@@ -120,10 +120,7 @@ class ProjectPolicy < ApplicationPolicy
     return true if active_admin?
     return active_moderator? unless record.folder_changed? || record.space_changed?
 
-    return false if record.folder_changed? && !can_moderate_folder?
-    return false if space_moderation_required? && !can_moderate_space?
-
-    true
+    can_moderate_before_and_after_change?
   end
 
   def refresh_preview_token?
@@ -219,7 +216,7 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    can_moderate_folder? || can_moderate_space? || record.ever_published? || record.review&.approved?
+    active_admin? || can_moderate_folder? || can_moderate_space? || record.ever_published? || record.review&.approved?
   end
 
   def can_moderate_folder?
@@ -230,11 +227,12 @@ class ProjectPolicy < ApplicationPolicy
     record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
   end
 
-  def space_moderation_required?
-    # A space change that mirrors the target folder's space is a side-effect of
-    # Project#folder_id= and rides on the folder-move authorization.
-    # No separate space-moderation check is needed in that case.
-    record.space_changed? && !(record.folder_changed? && record.folder&.space_id == record.space_id)
+  def can_moderate_before_and_after_change?
+    return false unless active?
+
+    service = UserRoleService.new
+    service.can_moderate_project?(context[:prior_record], user) &&
+      service.can_moderate_project?(record, user)
   end
 
   def project_preview?

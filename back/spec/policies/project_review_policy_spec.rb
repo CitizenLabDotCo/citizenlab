@@ -5,8 +5,9 @@ require 'rails_helper'
 RSpec.describe ProjectReviewPolicy do
   subject { described_class.new(user, project_review) }
 
-  let_it_be(:project) { create(:project) }
-  let_it_be(:folder) { create(:project_folder, projects: [project]).tap { project.reload } }
+  let_it_be(:space) { create(:space) }
+  let_it_be(:project) { create(:project, space:) }
+  let_it_be(:folder) { create(:project_folder, space:, projects: [project]).tap { project.reload } }
 
   context 'when the user is not the requester/reviewer' do
     let(:project_review) { create(:project_review, project: project) }
@@ -121,6 +122,15 @@ RSpec.describe ProjectReviewPolicy do
 
     context 'and is an admin' do
       let(:user) { create(:admin) }
+
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+
+    context 'and is a space moderator of the space where the project is in' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
 
       it { is_expected.not_to permit(:create) }
       it { is_expected.to permit(:show) }

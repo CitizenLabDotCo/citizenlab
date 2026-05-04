@@ -197,8 +197,8 @@ module MultiTenancy
               allowed: true
             },
             intercom: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             segment: {
               enabled: false,

@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isAdmin } from 'utils/permissions/roles';
 
 import { useParams, setParam } from '../params';
 
@@ -16,11 +19,10 @@ import { FILTER_KEYS, FilterKey } from './constants';
 import messages from './messages';
 import tracks from './tracks';
 
-interface Props {
-  isUserAdmin: boolean;
-}
+const DynamicFilters = () => {
+  const { data: authUser } = useAuthUser();
+  const isUserAdmin = isAdmin(authUser);
 
-const DynamicFilters = ({ isUserAdmin }: Props) => {
   const params = useParams();
   const { formatMessage } = useIntl();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });

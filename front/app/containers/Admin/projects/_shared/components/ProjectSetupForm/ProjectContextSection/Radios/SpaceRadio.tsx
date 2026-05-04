@@ -44,7 +44,7 @@ const SpaceRadio = ({
             spaceId={space_id}
             spaces={spaces.data}
             onChange={(space_id) => {
-              onChangeSpace(space_id);
+              onChangeSpace({ space_id, folder_id: null });
             }}
           />
           {error && <Error text={formatMessage(messages.spaceError)} />}

@@ -11,6 +11,7 @@ interface Params {
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
   noLinks: boolean;
+  withGifSupport?: boolean;
   onBlur?: () => void;
   altTextLabel?: string;
   imageTitleLabel?: string;
@@ -26,6 +27,7 @@ export const createQuill = (
     noImages,
     noVideos,
     noLinks,
+    withGifSupport,
     withCTAButton,
     onBlur,
     altTextLabel,
@@ -86,6 +88,11 @@ export const createQuill = (
           },
         },
       },
+      ...(withGifSupport && {
+        uploader: {
+          mimetypes: ['image/png', 'image/jpeg', 'image/gif'],
+        },
+      }),
       clipboard: {
         matchVisual: false,
       },
@@ -117,7 +124,12 @@ export const createQuill = (
       if (!fileInput) {
         fileInput = document.createElement('input');
         fileInput.setAttribute('type', 'file');
-        fileInput.setAttribute('accept', 'image/png, image/jpeg');
+        fileInput.setAttribute(
+          'accept',
+          withGifSupport
+            ? 'image/png, image/jpeg, image/gif'
+            : 'image/png, image/jpeg'
+        );
         fileInput.classList.add('ql-image');
         fileInput.style.display = 'none';
         quill.container.appendChild(fileInput);

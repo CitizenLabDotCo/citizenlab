@@ -14,7 +14,9 @@ export const validateProjectContext = (
   }
 
   if (projectContext === 'folder') {
-    return !!folder_id && !space_id;
+    // In this case, a folder_id is possibly present,
+    // depending on if the folder is also in a space.
+    return !!folder_id;
   }
 
   return !!space_id && !folder_id;
