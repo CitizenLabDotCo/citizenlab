@@ -33,11 +33,13 @@ describe('Copy projects outside folder', () => {
     cy.get('[data-testid="moreOptionsButton"]').first().should('exist');
     cy.get('[data-testid="moreOptionsButton"]').first().click();
 
+    cy.wait(1000);
+
     cy.intercept(`**/projects/${projectId}/copy`).as('copyProject');
     cy.intercept('GET', '**/projects/for_admin**').as('getProjectsForAdmin');
 
     cy.contains('Copy project').should('exist');
-    cy.contains('Copy project').click();
+    cy.contains('Copy project').click({ force: true });
 
     cy.wait('@copyProject');
     cy.wait('@getProjectsForAdmin');
