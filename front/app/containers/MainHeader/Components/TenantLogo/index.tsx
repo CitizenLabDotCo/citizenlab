@@ -29,7 +29,7 @@ const TenantLogo = () => {
     if (tenantLogo) {
       return (
         <Link
-          to="/$locale/"
+          to="/"
           onlyActiveOnIndex={true}
           /* The aria-label here is used when there is no clear
            * 'text-like' element as a child of the Link component,

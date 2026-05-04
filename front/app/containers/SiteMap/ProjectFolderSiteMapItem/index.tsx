@@ -48,7 +48,7 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
         <ul>
           <li>
             <Link
-              to="/$locale/folders/$slug"
+              to="/folders/$slug"
               params={{ slug: folder.data.attributes.slug }}
             >
               <FormattedMessage {...messages.folderInfo} />

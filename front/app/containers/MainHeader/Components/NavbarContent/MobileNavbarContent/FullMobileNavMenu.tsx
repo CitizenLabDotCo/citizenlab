@@ -127,7 +127,7 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
             return null;
           })}
           <FullMobileNavMenuItem
-            to="/$locale/projects"
+            to="/projects"
             search={{ focusSearch: true }}
             navigationItemTitle={formatMessage(messages.search)}
             onClick={handleOnMenuItemClick('/projects?focusSearch=true')}

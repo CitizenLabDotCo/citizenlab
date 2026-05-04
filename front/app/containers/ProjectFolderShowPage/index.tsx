@@ -123,7 +123,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               >
                 <ButtonWithLink
                   icon="edit"
-                  to="/$locale/admin/projects/folders/$projectFolderId/settings"
+                  to="/admin/projects/folders/$projectFolderId/settings"
                   params={{ projectFolderId: projectFolder.id }}
                   buttonStyle="secondary-outlined"
                   padding="6px 12px"

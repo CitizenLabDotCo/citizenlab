@@ -220,7 +220,7 @@ const AdminPublicationsNavbarItem = ({
                   <React.Fragment key={item.id}>
                     {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
-                        to="/$locale/projects/$slug"
+                        to="/projects/$slug"
                         params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
@@ -229,7 +229,7 @@ const AdminPublicationsNavbarItem = ({
                     )}
                     {item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
-                        to="/$locale/folders/$slug"
+                        to="/folders/$slug"
                         params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
@@ -248,7 +248,7 @@ const AdminPublicationsNavbarItem = ({
           <>
             {totalProjectsListLength > 9 && (
               <ProjectsListFooter
-                to="/$locale/projects"
+                to="/projects"
                 id="e2e-all-projects-link"
                 scrollToTop
               >

@@ -145,7 +145,7 @@ const PostCommentGroup = ({ comments, userId, postId }: Props) => {
         <FormattedMessage {...messages.a11y_postCommentPostedIn} />
       </ScreenReaderOnly>
       <PostLink
-        to="/$locale/ideas/$slug"
+        to="/ideas/$slug"
         params={{ slug }}
         search={{ go_back: 'true' }}
       >

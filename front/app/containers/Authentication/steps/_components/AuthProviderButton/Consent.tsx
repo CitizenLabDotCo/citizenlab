@@ -99,7 +99,11 @@ const Consent = memo(
               {...messages.iHaveReadAndAgreeToVienna}
               values={{
                 link: (
-                  <Link target="_blank" to="/$locale/pages/$slug" params={{ slug: "privacy-policy" }}>
+                  <Link
+                    target="_blank"
+                    to="/pages/$slug"
+                    params={{ slug: 'privacy-policy' }}
+                  >
                     <FormattedMessage {...messages.viennaDataProtection} />
                   </Link>
                 ),
@@ -123,7 +127,11 @@ const Consent = memo(
                     {...messages.iHaveReadAndAgreeToTerms}
                     values={{
                       link: (
-                        <Link target="_blank" to="/$locale/pages/$slug" params={{ slug: "terms-and-conditions" }}>
+                        <Link
+                          target="_blank"
+                          to="/pages/$slug"
+                          params={{ slug: 'terms-and-conditions' }}
+                        >
                           <FormattedMessage
                             {...messages.theTermsAndConditions}
                           />
@@ -155,7 +163,11 @@ const Consent = memo(
                     {...messages.iHaveReadAndAgreeToPrivacy}
                     values={{
                       link: (
-                        <Link target="_blank" to="/$locale/pages/$slug" params={{ slug: "privacy-policy" }}>
+                        <Link
+                          target="_blank"
+                          to="/pages/$slug"
+                          params={{ slug: 'privacy-policy' }}
+                        >
                           <FormattedMessage {...messages.thePrivacyPolicy} />
                         </Link>
                       ),

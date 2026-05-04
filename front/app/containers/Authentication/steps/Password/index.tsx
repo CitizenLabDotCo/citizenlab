@@ -150,7 +150,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
         </Box>
       </form>
       <Box mt="32px">
-        <TextLink to="/$locale/password-recovery" onClick={onClose}>
+        <TextLink to="/password-recovery" onClick={onClose}>
           {formatMessage(sharedMessages.forgotPassword)}
         </TextLink>
       </Box>
