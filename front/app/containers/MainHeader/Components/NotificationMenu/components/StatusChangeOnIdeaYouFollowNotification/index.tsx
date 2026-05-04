@@ -18,7 +18,7 @@ const StatusChangeOnIdeaYouFollowNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      to="/$locale/ideas/$slug"
+      to="/ideas/$slug"
       params={{ slug: notification.attributes.post_slug }}
       timing={notification.attributes.created_at}
       icon="label"

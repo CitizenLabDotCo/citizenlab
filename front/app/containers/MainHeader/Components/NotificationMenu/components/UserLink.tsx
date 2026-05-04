@@ -25,7 +25,7 @@ const UserLink = ({ userName, userSlug }) => {
     <DeletedUser />
   ) : (
     <Link
-      to="/$locale/profile/$userSlug"
+      to="/profile/$userSlug"
       params={{ userSlug }}
       onClick={stopPropagation}
     >

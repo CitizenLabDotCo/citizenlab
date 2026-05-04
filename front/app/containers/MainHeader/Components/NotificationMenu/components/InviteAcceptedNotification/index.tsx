@@ -17,7 +17,7 @@ const InviteAcceptedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      to="/$locale/admin/users/invitations"
+      to="/admin/users/invitations"
       timing={notification.attributes.created_at}
       icon="user-check"
       isRead={!!notification.attributes.read_at}

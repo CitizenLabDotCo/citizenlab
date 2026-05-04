@@ -23,7 +23,7 @@ const ProjectFolderModerationRightsReceivedNotification = ({
 
   return (
     <NotificationWrapper
-      to="/$locale/admin/projects/folders/$projectFolderId"
+      to="/admin/projects/folders/$projectFolderId"
       params={{ projectFolderId }}
       timing={notification.attributes.created_at}
       icon="folder-solid"
@@ -34,7 +34,7 @@ const ProjectFolderModerationRightsReceivedNotification = ({
         values={{
           folderLink: (
             <Link
-              to="/$locale/admin/projects/folders/$projectFolderId"
+              to="/admin/projects/folders/$projectFolderId"
               params={{ projectFolderId }}
               onClick={stopPropagation}
             >

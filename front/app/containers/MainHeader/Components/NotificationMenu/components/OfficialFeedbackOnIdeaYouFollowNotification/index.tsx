@@ -35,7 +35,7 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
 
     return (
       <NotificationWrapper
-        to="/$locale/ideas/$slug"
+        to="/ideas/$slug"
         params={{ slug }}
         timing={notification.attributes.created_at}
         icon="comments"
@@ -64,7 +64,7 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
               <T value={notification.attributes.official_feedback_author} />
             ),
             idea: (
-              <Link to="/$locale/ideas/$slug" params={{ slug }}>
+              <Link to="/ideas/$slug" params={{ slug }}>
                 <T value={notification.attributes.post_title_multiloc} />
               </Link>
             ),

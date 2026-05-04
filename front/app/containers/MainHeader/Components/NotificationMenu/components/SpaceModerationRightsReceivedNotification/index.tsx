@@ -21,7 +21,7 @@ const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      to="/$locale/admin/projects/spaces/$spaceId"
+      to="/admin/projects/spaces/$spaceId"
       params={{ spaceId }}
       timing={notification.attributes.created_at}
       icon="shield-checkered"
@@ -32,7 +32,7 @@ const SpaceModerationRightsReceivedNotification = memo<Props>((props) => {
         values={{
           spaceLink: (
             <Link
-              to="/$locale/admin/projects/spaces/$spaceId"
+              to="/admin/projects/spaces/$spaceId"
               params={{ spaceId }}
               onClick={stopPropagation}
             >
