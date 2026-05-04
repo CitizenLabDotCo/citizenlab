@@ -1629,6 +1629,18 @@
         }
       },
 
+      "phase_datetime_setup": {
+        "type": "object",
+        "title": "Phase datetime setup",
+        "description": "Allow to set up the start and end datetimes of a phase in the project timeline, in addition to just the dates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "enhanced_user_profile_privacy": {
         "type": "object",
         "title": "Enhanced user profile privacy",
