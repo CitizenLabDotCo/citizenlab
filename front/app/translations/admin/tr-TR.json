@@ -486,7 +486,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Genel proje aramasından gizlendi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Yalnızca özel ana sayfa modüllerinde görünür",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arşivlendi",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Sadece yöneticiler ve atanmış yöneticiler tarafından erişilebilir (alan, klasör veya proje)",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": "Sadece yöneticiler ve atanmış yöneticiler tarafından erişilebilir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Önizleme paylaşım bağlantısına sahip olan herkes de erişebilir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Taslak",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Proje ayarlarına bağlı olarak tüm kullanıcılara veya belirli gruplara erişilebilir",

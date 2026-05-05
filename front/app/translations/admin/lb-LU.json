@@ -486,7 +486,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Vun der allgemenger Projektsich verstoppt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Nëmmen a speziellen Homepage-Moduler ze gesinn",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archivéiert",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Nëmmen zougänglech fir Administrateuren an zougewisen Manageren (Space, Dossier oder Projet)",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": "Nëmme fir Adminen a zougewisen Manageren zougänglech.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Jiddereen mat dem Link fir d'Virschau ka sou och dorop zougräifen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Entworf",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Zougänglech fir all Benotzer oder fir spezifesch Gruppen, jee no de Projet-Astellungen",
