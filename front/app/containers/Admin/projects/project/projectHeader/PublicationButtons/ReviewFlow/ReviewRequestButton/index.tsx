@@ -35,6 +35,7 @@ const ReviewRequestButton = ({
         disabled={!approvalPending}
       >
         <Button
+          type="button"
           buttonStyle="admin-dark"
           icon="send"
           onClick={() => setIsProjectReviewDropdownOpened(true)}
