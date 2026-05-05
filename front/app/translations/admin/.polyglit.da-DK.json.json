@@ -2559,6 +2559,11 @@
     "verified_at": "2026-05-04T10:07:05.329608Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": {
+    "state": "verified",
+    "verified_at": "2026-05-05T17:03:09.821897Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": {
     "state": "verified",
     "verified_at": "2026-05-04T10:07:05.329608Z",
