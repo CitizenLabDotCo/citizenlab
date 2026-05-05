@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   Icon,
@@ -37,24 +37,6 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const PrimaryLink = styled(Link)`
-  // For reference:
-  // https://kittygiraudel.com/2022/04/02/accessible-cards/
-  // https://inclusive-components.design/cards/
-  ::before {
-    // Use a pseudo-element to expand the hitbox of the link over the whole card.
-    content: ''; /* 1 */
-
-  position: relative;
-
-  // Expand the hitbox over the whole card.
-  position: absolute; /* 2 */
-  inset: 0; /* 2 */
-
-  // Place the pseudo-element on top of the whole card.
-  z-index: 1; /* 3 */
-`;
-
 interface Props {
   event: IEventData;
 }
@@ -64,6 +46,7 @@ const EventInformation = ({ event }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const registrantCountMessage = useRegistrantCountMessage(event);
+  const ariaId = useId();
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -81,7 +64,7 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink to={`/events/${event.id}`}>
+          <Link to={`/events/${event.id}`} aria-describedby={ariaId}>
             <Title
               variant="h3"
               fontSize="l"
@@ -93,7 +76,7 @@ const EventInformation = ({ event }: Props) => {
             >
               <T value={event.attributes.title_multiloc} />
             </Title>
-          </PrimaryLink>
+          </Link>
 
           <DateBlocks
             startAtMoment={startAtMoment}
@@ -103,7 +86,14 @@ const EventInformation = ({ event }: Props) => {
           />
         </Box>
 
-        <Box my="16px" pt="12px" pb="4px" background={colors.grey100} px="16px">
+        <Box
+          my="16px"
+          pt="12px"
+          pb="4px"
+          background={colors.grey100}
+          px="16px"
+          id={ariaId}
+        >
           <Box
             display="flex"
             mb="12px"
@@ -115,7 +105,7 @@ const EventInformation = ({ event }: Props) => {
                 fill={theme.colors.tenantPrimary}
                 name="clock"
                 title={formatMessage(messages.eventDateTimeIcon)}
-                ariaHidden={false}
+                ariaHidden={true}
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
