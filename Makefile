@@ -20,6 +20,9 @@ build:
 	cd front && npm install
 
 reset-dev-env:
+	# Ensure .docker_web_bash_history is a file, not a directory (Docker creates a directory if it doesn't exist)
+	[ -d .docker_web_bash_history ] && rm -rf .docker_web_bash_history || true
+	touch .docker_web_bash_history
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
 	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
