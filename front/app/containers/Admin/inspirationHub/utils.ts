@@ -35,14 +35,10 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
     from: '/$locale/admin/inspiration-hub/',
   });
 
-  const paramValue = (searchParams as Record<string, string | undefined>)[
-    paramName
-  ];
+  const paramValue = (searchParams as Record<string, unknown>)[paramName];
 
   if (paramName.endsWith('in]')) {
-    return (
-      paramValue === undefined ? [] : JSON.parse(paramValue)
-    ) as RansackParams[typeof paramName];
+    return (paramValue ?? []) as RansackParams[typeof paramName];
   }
 
   return paramValue as RansackParams[typeof paramName];
@@ -63,18 +59,14 @@ export const useRansackParams = () => {
   const searchParams = useSearch({
     from: '/$locale/admin/inspiration-hub/',
   });
-  const indexed = searchParams as Record<string, string | undefined>;
+  const indexed = searchParams as Record<string, unknown>;
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        let value = indexed[paramName];
+        const value = indexed[paramName];
 
         if (value === undefined) {
           return acc;
-        }
-
-        if (paramName.endsWith('in]')) {
-          value = JSON.parse(value);
         }
 
         return {
