@@ -38,11 +38,13 @@ const FormResults = (props: Props) => {
   const { data: project } = useProjectById(projectId);
 
   // Get the current year and quarter for the results
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
 
   // Get the year and quarter
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = getYearFilter(search.year);
+  const quarter = getQuarterFilter(search.quarter);
 
   // Fetch the form results
   const { data: formResults } = useSurveyResults({

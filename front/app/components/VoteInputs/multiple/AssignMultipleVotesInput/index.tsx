@@ -50,8 +50,8 @@ const AssignMultipleVotesInput = ({
   const { getVotes, setVotes, userHasVotesLeft, numberOfVotesCast } =
     useVoting();
   const votes = getVotes?.(ideaId);
-  const [searchParams] = useSearch({ strict: false });
-  const isProcessing = searchParams.get('processing_vote') === ideaId;
+  const searchParams = useSearch({ strict: false });
+  const isProcessing = searchParams.processing_vote === ideaId;
 
   // participation context
   // TODO: Fix this the next time the file is edited.

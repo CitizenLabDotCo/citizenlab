@@ -11,8 +11,8 @@ export default function useAuthConfig() {
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak
-  const [searchParams] = useSearch({ strict: false });
-  const providerForTest = searchParams.get('provider');
+  const searchParams = useSearch({ strict: false });
+  const providerForTest = searchParams.provider;
 
   // Allows super admins to sign in with password when password login is disabled
   // through hidden param (?super_admin) or cookie

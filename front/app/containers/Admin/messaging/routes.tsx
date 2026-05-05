@@ -61,9 +61,16 @@ const customEmailsNewRoute = createRoute({
   ),
 });
 
+const customEmailsShowSearchSchema = yup.object({
+  created: yup.string().optional(),
+  updated: yup.string().optional(),
+});
+
 const customEmailsShowRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: 'emails/custom/$campaignId',
+  validateSearch: (search: Record<string, unknown>) =>
+    customEmailsShowSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <CustomEmailsShow />

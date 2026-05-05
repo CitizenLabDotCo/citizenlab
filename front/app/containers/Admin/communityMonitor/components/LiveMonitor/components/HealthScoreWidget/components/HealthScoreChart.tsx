@@ -21,7 +21,7 @@ const HealthScoreChart = ({
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -52,7 +52,7 @@ const HealthScoreChart = ({
 
   // Generate an empty chart object if there are no scores for the selected time period.
   if (timeSeries?.length === 0) {
-    timeSeries = generateEmptyChartData(search);
+    timeSeries = generateEmptyChartData(search.year, search.quarter);
   }
 
   const lineConfig = {

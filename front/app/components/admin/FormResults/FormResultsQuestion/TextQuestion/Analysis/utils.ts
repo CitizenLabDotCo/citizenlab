@@ -6,6 +6,7 @@ import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';
 import { ISummary } from 'api/analysis_summaries/types';
 
+import { Quarter } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/types';
 import {
   getQuarterFilter,
   getYearFilter,
@@ -27,7 +28,8 @@ export const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
 
 type FilterForQuarterArgs = {
   insights?: IInsights;
-  search: URLSearchParams;
+  yearParam: string | undefined;
+  quarterParam: Quarter | undefined;
   analysisSummaries?: UseQueryResult<ISummary, unknown>[];
 };
 
@@ -38,13 +40,14 @@ type FilterForQuarterArgs = {
 export const filterForCommunityMonitorQuarter = ({
   analysisSummaries,
   insights,
-  search,
+  yearParam,
+  quarterParam,
 }: FilterForQuarterArgs) => {
-  const year = getYearFilter(search)
-    ? parseInt(getYearFilter(search), 10)
+  const year = getYearFilter(yearParam)
+    ? parseInt(getYearFilter(yearParam), 10)
     : null;
-  const quarter = getQuarterFilter(search)
-    ? parseInt(getQuarterFilter(search), 10)
+  const quarter = getQuarterFilter(quarterParam)
+    ? parseInt(getQuarterFilter(quarterParam), 10)
     : null;
 
   if (!year || !quarter) {
@@ -82,10 +85,13 @@ export const filterForCommunityMonitorQuarter = ({
 
 // getPublishedAtFromFilter
 // Description: This function generates a "published_at_from" date from the URL quarter parameters.
-export const getPublishedAtFromFilter = (search: URLSearchParams) => {
+export const getPublishedAtFromFilter = (
+  yearParam: string | undefined,
+  quarterParam: Quarter | undefined
+) => {
   // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
+  const yearFilter = getYearFilter(yearParam);
+  const quarterFilter = getQuarterFilter(quarterParam);
 
   // Parse quarter and year filters
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
@@ -99,10 +105,13 @@ export const getPublishedAtFromFilter = (search: URLSearchParams) => {
 
 // getPublishedAtToFilter
 // Description: This function generates a "published_at_to" date from the URL quarter parameters.
-export const getPublishedAtToFilter = (search: URLSearchParams) => {
+export const getPublishedAtToFilter = (
+  yearParam: string | undefined,
+  quarterParam: Quarter | undefined
+) => {
   // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
+  const yearFilter = getYearFilter(yearParam);
+  const quarterFilter = getQuarterFilter(quarterParam);
 
   // Parse quarter and year filters
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;

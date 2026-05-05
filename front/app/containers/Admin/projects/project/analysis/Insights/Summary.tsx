@@ -31,7 +31,9 @@ type Props = {
 
 const Summary = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [searchParams, setSearchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { formatMessage } = useIntl();
   const { analysisId, projectId } = useParams({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
@@ -66,10 +68,10 @@ const Summary = ({ insight }: Props) => {
 
   if (!summary) return null;
 
-  const phaseId = searchParams.get('phase_id') || undefined;
+  const phaseId = searchParams.phase_id || undefined;
 
   const handleRestoreFilters = () => {
-    setSearchParams({
+    updateSearchParams({
       ...(phaseId
         ? {
             phase_id: phaseId,

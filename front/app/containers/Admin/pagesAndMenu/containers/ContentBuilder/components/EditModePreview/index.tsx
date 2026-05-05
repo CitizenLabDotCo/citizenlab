@@ -14,11 +14,13 @@ const HomapageBuilderEditModePreview = React.forwardRef<
     selectedLocale?: SupportedLocale | null;
   }
 >(({ selectedLocale }, ref) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
 
-  const variant = search.get('variant');
+  const variant = search.variant;
 
   return (
     <EditModePreview

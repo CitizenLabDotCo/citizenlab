@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -19,6 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
   projectId: string;
@@ -41,7 +41,9 @@ interface QueryParameters {
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const { slug } = useParams({ from: '/$locale/projects/$slug' });
-  const { sort, search, topics, idea_status } = useSearch({ strict: false });
+  const { sort, search, topics, idea_status } = useSearch({
+    from: '/$locale/projects/$slug',
+  });
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });

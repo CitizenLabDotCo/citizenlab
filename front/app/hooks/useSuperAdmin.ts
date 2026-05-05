@@ -12,15 +12,15 @@ import { useSearch } from 'utils/router';
  * If also logged in, the param can only enable super_admin features if the user is actually a super admin (.govocal.com email).
  */
 export default function useSuperAdmin() {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const { data: authUser } = useAuthUser();
 
   // Multiple possible param names for super admin - people forget the exact one sometimes!
   const hasSuperAdminParam =
-    searchParams.has('super_admin') ||
-    searchParams.has('super-admin') ||
-    searchParams.has('superadmin') ||
-    searchParams.has('super_user');
+    searchParams.super_admin !== undefined ||
+    searchParams['super-admin'] !== undefined ||
+    searchParams.superadmin !== undefined ||
+    searchParams.super_user !== undefined;
 
   // Set cookie for 1 day if URL param is present
   useEffect(() => {

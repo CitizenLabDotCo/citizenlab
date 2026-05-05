@@ -134,20 +134,19 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
   const { formatMessage } = useIntl();
 
   useEffect(() => {
-    const focusSearch = searchParams.get('focusSearch');
     // the value from the query param is a string, not a boolean
-    if (focusSearch === 'true' && searchInputRef) {
+    if (searchParams.focusSearch === 'true' && searchInputRef) {
       searchInputRef.focus();
       clHistory.replace('/projects');
     }
-  }, [searchParams, searchInputRef]);
+  }, [searchParams.focusSearch, searchInputRef]);
 
   const handleOnSearchChange = React.useCallback(
     (search: string | null) => {

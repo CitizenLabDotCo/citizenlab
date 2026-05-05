@@ -27,12 +27,10 @@ const SuccessModal = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const [queryParams] = useSearch({ strict: false });
-  const showModalParam = !!queryParams.get('show_modal');
-  const phaseIdParam = queryParams.get('phase_id');
-  const [newIdeaIdParam] = useState(
-    queryParams.get('new_idea_id') ?? undefined
-  );
+  const queryParams = useSearch({ strict: false });
+  const showModalParam = queryParams.show_modal !== undefined;
+  const phaseIdParam = queryParams.phase_id;
+  const [newIdeaIdParam] = useState(queryParams.new_idea_id);
   const { data: idea } = useIdeaById(newIdeaIdParam);
 
   const [showModal, setShowModal] = useState<boolean>(false);

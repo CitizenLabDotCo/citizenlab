@@ -118,9 +118,7 @@ const VotingInputs = ({
   voteTerm,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams({
-    from: '/$locale/admin/projects/$projectId/phases/$phaseId/setup',
-  });
+  const { projectId, phaseId } = useParams({ strict: false });
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {
@@ -168,7 +166,7 @@ const VotingInputs = ({
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
           </SubSectionTitleWithDescription>
-          {phaseId ? (
+          {phaseId && projectId ? (
             <FormattedMessage
               {...messages.optionsToVoteOnDescription}
               values={{

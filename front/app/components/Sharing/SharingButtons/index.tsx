@@ -46,8 +46,8 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const phaseContext = searchParams.get('phase_context');
+  const searchParams = useSearch({ strict: false });
+  const phaseContext = searchParams.phase_context;
   const { data: appConfiguration } = useAppConfiguration();
   const isSharingEnabled =
     appConfiguration?.data.attributes.settings.core.allow_sharing;

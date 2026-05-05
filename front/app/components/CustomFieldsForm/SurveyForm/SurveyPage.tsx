@@ -103,8 +103,8 @@ const SurveyPage = ({
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
 
-  const [searchParams] = useSearch({ strict: false });
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearch({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 
   const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({

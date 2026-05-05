@@ -95,15 +95,14 @@ const IdeasWithFiltersSidebar = ({
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 
   // Get data from searchParams
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const selectedView =
-    (searchParams.get('view') as PresentationMode | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView);
+    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView);
 
   // Fetch ideas list & filter counts
   const {

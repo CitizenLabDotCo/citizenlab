@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import { IdeaSortMethod } from 'api/phases/types';
+import { ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -16,6 +15,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -66,11 +66,16 @@ const MapIdeasList = memo<Props>(
 
     const { data: phase } = usePhase(phaseId);
 
+    const sortFromUrl = ideaSortMethods.find((m) => m === sortParam);
     const sort =
-      (sortParam as IdeaSortMethod | null) ??
+      sortFromUrl ??
       phase?.data.attributes.ideas_order ??
       IdeaSortMethodFallback;
-    const input_topics: string[] = topics ?? [];
+    const input_topics: string[] = Array.isArray(topics)
+      ? topics
+      : topics
+      ? [topics]
+      : [];
 
     const { data: ideaMarkers } = useIdeaMarkers({
       projectIds: [projectId],

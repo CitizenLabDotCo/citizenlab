@@ -35,15 +35,11 @@ const ProjectFilterDropdown = ({
     sort: 'new',
     removeAllUnlisted: true,
   });
-  const [searchParams] = useSearch({ strict: false });
-  const projectIdsParam =
+  const searchParams = useSearch({ strict: false });
+  const projectIdsFromUrl =
     eventsTime === 'past'
-      ? searchParams.get('past_events_project_ids')
-      : searchParams.get('ongoing_events_project_ids');
-
-  const projectIdsFromUrl: string[] = projectIdsParam
-    ? JSON.parse(projectIdsParam)
-    : null;
+      ? searchParams.past_events_project_ids
+      : searchParams.ongoing_events_project_ids;
 
   const [selectedValues, setSelectedValues] = useState<string[]>(
     // TODO: Fix this the next time the file is edited.

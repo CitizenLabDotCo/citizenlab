@@ -95,8 +95,8 @@ const IdeationPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const [searchParams] = useSearch({ strict: false });
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearch({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -116,7 +116,7 @@ const IdeationPage = ({
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
-      const phaseId = searchParams.get('phase_id');
+      const phaseId = searchParams.phase_id;
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;

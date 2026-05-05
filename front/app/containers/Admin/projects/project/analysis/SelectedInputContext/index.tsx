@@ -18,8 +18,10 @@ const Context = createContext<{
 
 const SelectedInputContext = ({ children }) => {
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
-  const [search] = useSearch({ strict: false });
-  const inputId = search.get('selected_input_id');
+  const search = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
+  const inputId = search.selected_input_id;
 
   useEffect(() => {
     if (inputId) {

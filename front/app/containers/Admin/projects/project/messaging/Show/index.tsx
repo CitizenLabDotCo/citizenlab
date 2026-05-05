@@ -94,9 +94,11 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
-  const [searchParams] = useSearch({ strict: false });
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );

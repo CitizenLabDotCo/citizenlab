@@ -35,6 +35,7 @@ import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useSearch } from 'utils/router';
@@ -171,12 +172,11 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
+    if (searchParams.copy_from !== undefined) {
+      updateSearchParams({ copy_from: undefined });
     }
   };
 

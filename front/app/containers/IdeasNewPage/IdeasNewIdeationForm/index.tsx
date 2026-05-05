@@ -57,8 +57,10 @@ const IdeasNewIdeationForm = ({
   const { data: phase } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
-  const [searchParams] = useSearch({ strict: false });
-  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const selectedIdeaId = searchParams.selected_idea_id;
   const participationMethodConfig = getConfig(phase?.data, phases);
 
   const handleCloseDetail = () => {

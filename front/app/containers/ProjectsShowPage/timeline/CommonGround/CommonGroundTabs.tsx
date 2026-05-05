@@ -13,6 +13,7 @@ import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
@@ -20,7 +21,6 @@ import CommonGroundStatements from './CommonGroundStatements';
 import messages from './messages';
 
 const tabs = ['statements', 'results'];
-type TabKey = (typeof tabs)[number];
 
 interface Props {
   phaseId: string;
@@ -29,13 +29,12 @@ interface Props {
 }
 
 const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
-  const [searchParams, setSearchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug',
+  });
   const localize = useLocalize();
-  const currentTabParam = searchParams.get('tab') as TabKey;
   const defaultTab = isPastPhase ? 'results' : 'statements';
-  const currentTab = tabs.includes(currentTabParam)
-    ? currentTabParam
-    : defaultTab;
+  const currentTab = searchParams.tab ?? defaultTab;
   const { enabled, disabled_reason } =
     project.attributes.action_descriptors.reacting_idea;
   const disabledMessage =
@@ -59,7 +58,7 @@ const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
   };
 
   const onChangeTab = (tab: string) => {
-    setSearchParams({ tab });
+    updateSearchParams({ tab });
   };
 
   // When the phase has ended, show the warning message and results only.

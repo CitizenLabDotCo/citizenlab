@@ -79,9 +79,11 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: phases } = usePhases(projectId);
 
-  const [search] = useSearch({ strict: false });
-  const scrollToStatusModule = search.get('scrollToStatusModule');
-  const scrollToIdeas = search.get('scrollToIdeas');
+  const search = useSearch({
+    from: '/$locale/projects/$slug',
+  });
+  const scrollToStatusModule = search.scrollToStatusModule;
+  const scrollToIdeas = search.scrollToIdeas;
 
   const { data: events } = useEvents({
     projectIds: [projectId],

@@ -1,11 +1,15 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
 import { createRoute } from 'utils/router';
 
 import { adminRoute } from '../routes';
+
+import { quarters } from './components/LiveMonitor/components/HealthScoreWidget/types';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
 const Reports = lazy(() => import('./components/Reports'));
@@ -52,9 +56,16 @@ const communityMonitorIndexRoute = createRoute({
   ),
 });
 
+const liveMonitorSearchSchema = yup.object({
+  year: yup.string().optional(),
+  quarter: yup.string().oneOf(quarters).optional(),
+});
+
 const liveMonitorRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
   path: 'live-monitor',
+  validateSearch: (search: Record<string, unknown>) =>
+    liveMonitorSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <LiveMonitor />

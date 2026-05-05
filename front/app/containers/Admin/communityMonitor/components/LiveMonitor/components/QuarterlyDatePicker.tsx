@@ -3,17 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
 const QuarterlyDatePicker = () => {
   const { formatMessage } = useIntl();
-  const [search, setSearchParams] = useSearch({ strict: false });
+  const search = useSearch({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
 
   // Check if initial year and quarter set in URL
-  const initialYear = search.get('year');
-  const initialQuarter = search.get('quarter');
+  const initialYear = search.year;
+  const initialQuarter = search.quarter;
 
   // Initialize year and quarter state
   const [year, setYear] = useState(
@@ -27,8 +30,8 @@ const QuarterlyDatePicker = () => {
 
   // When the user selects a new time period, update the URL
   useEffect(() => {
-    setSearchParams({ year: year.toString(), quarter: quarter.toString() });
-  }, [year, quarter, setSearchParams]);
+    updateSearchParams({ year: year.toString(), quarter: quarter.toString() });
+  }, [year, quarter]);
 
   // Function to handle quarter navigation
   const changeQuarter = (direction: number) => {

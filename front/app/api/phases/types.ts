@@ -176,13 +176,16 @@ export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
 export type VoteTerm = 'vote' | 'point' | 'token' | 'credit' | 'percent';
 
-export type IdeaSortMethod =
-  | 'trending'
-  | 'comments_count'
-  | 'random'
-  | 'popular'
-  | 'new'
-  | '-new';
+export const ideaSortMethods = [
+  'trending',
+  'comments_count',
+  'random',
+  'popular',
+  'new',
+  '-new',
+] as const;
+
+export type IdeaSortMethod = (typeof ideaSortMethods)[number];
 
 export type InputTerm =
   | 'idea'
@@ -201,6 +204,7 @@ export type InputTerm =
   | 'post'
   | 'story';
 
-export type PresentationMode = 'card' | 'map' | 'feed';
+export const presentationModes = ['card', 'map', 'feed'] as const;
+export type PresentationMode = (typeof presentationModes)[number];
 
 export type PrescreeningMode = 'flagged_only' | 'all';

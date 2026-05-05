@@ -75,8 +75,8 @@ const Container2 = ({
   handleContainerRef,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const [searchParams] = useSearch({ strict: false });
-  const ideaIdParameter = searchParams.get('new_idea_id');
+  const searchParams = useSearch({ strict: false });
+  const ideaIdParameter = searchParams.new_idea_id;
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const timeout = useRef<NodeJS.Timeout>();
 

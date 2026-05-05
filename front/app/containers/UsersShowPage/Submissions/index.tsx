@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
@@ -12,6 +11,7 @@ import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,7 +28,9 @@ interface QueryParameters {
 const Submissions = () => {
   const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
-  const { sort, search } = useSearch({ strict: false });
+  const { sort, search } = useSearch({
+    from: '/$locale/profile/$userSlug',
+  });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');
   const ideaQueryParameters = useMemo<QueryParameters>(

@@ -98,9 +98,11 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const phaseId = searchParams.phase_id!;
+  const initialIdeaId = searchParams.initial_idea_id || undefined;
 
   const isMobile = useBreakpoint('phone');
 

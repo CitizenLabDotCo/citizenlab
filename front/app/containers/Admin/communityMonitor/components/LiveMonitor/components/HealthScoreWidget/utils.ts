@@ -12,9 +12,12 @@ export const categoryColors = {
   other: colors.coolGrey500,
 };
 
-export const generateEmptyChartData = (search: URLSearchParams) => {
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+export const generateEmptyChartData = (
+  yearParam: string | undefined,
+  quarterParam: string | undefined
+) => {
+  const year = getYearFilter(yearParam);
+  const quarter = getQuarterFilter(quarterParam);
 
   return [
     {
@@ -77,8 +80,7 @@ export function transformSentimentScoreData(
 
 // getYearFilter:
 // Get the current year based on the date. If a year is provided in the URL, use that instead.
-export const getYearFilter = (search?: URLSearchParams) => {
-  const year = search?.get('year');
+export const getYearFilter = (year?: string) => {
   if (year) {
     return year;
   }
@@ -89,8 +91,7 @@ export const getYearFilter = (search?: URLSearchParams) => {
 
 // getQuarterFilter:
 // Get the current quarter based on the date. If a quarter is provided in the URL, use that instead.
-export const getQuarterFilter = (search?: URLSearchParams) => {
-  const quarter = search?.get('quarter');
+export const getQuarterFilter = (quarter?: string) => {
   if (quarter) {
     return quarter;
   }

@@ -61,8 +61,8 @@ const AddToBasketButton = ({
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const [searchParams] = useSearch({ strict: false });
-  const isProcessing = searchParams.get('processing_vote') === ideaId;
+  const searchParams = useSearch({ strict: false });
+  const isProcessing = searchParams.processing_vote === ideaId;
 
   if (!idea || !ideaBudget) {
     return null;

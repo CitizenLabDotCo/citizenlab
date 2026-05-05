@@ -63,9 +63,11 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
 
-  const hasBeenSubmitted = !!searchParams.get('idea_id');
+  const hasBeenSubmitted = searchParams.idea_id !== undefined;
 
   if (!project) return null;
 

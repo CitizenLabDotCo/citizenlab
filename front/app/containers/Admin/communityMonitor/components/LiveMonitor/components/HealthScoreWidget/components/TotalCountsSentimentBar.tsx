@@ -19,11 +19,11 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({ strict: false });
 
   // Get the current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(

@@ -46,8 +46,10 @@ const SelectedTopicContent = ({
   topicCounts,
   onBack,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const selectedSubtopicId = searchParams.get('subtopic');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedSubtopicId = searchParams.subtopic;
 
   const { data: topic } = useInputTopicById(topicId);
   const { data: subtopics } = useInputTopics(projectId, {

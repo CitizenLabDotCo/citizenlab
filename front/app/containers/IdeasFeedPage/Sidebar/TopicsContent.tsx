@@ -42,8 +42,10 @@ const TopicsContent = ({
   isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams] = useSearch({ strict: false });
-  const phaseId = searchParams.get('phase_id');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const phaseId = searchParams.phase_id;
   const { data: phase } = usePhase(phaseId);
   const projectId = project?.data.id;
 

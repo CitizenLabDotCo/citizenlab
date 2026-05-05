@@ -11,14 +11,16 @@ import { useSearch } from 'utils/router';
 import tracks from '../../tracks';
 
 const TimeFilter = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
-  const endAtMoment = searchParams.get('published_at_to')
-    ? moment(searchParams.get('published_at_to'))
+  const endAtMoment = searchParams.published_at_to
+    ? moment(searchParams.published_at_to)
     : moment();
 
-  const startAtMoment = searchParams.get('published_at_from')
-    ? moment(searchParams.get('published_at_from'))
+  const startAtMoment = searchParams.published_at_from
+    ? moment(searchParams.published_at_from)
     : undefined;
 
   return (

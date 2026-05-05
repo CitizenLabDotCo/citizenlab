@@ -32,8 +32,10 @@ interface Props {
 const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [searchParams] = useSearch({ strict: false });
-  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const searchParams = useSearch({
+    from: '/$locale/ideas/edit/$ideaId',
+  });
+  const selectedIdeaId = searchParams.selected_idea_id;
 
   const projectId = idea?.data.relationships.project.data.id;
   const [usingMapView, setUsingMapView] = useState(false);

@@ -31,9 +31,9 @@ const EmailSettingPage = () => {
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
 
-  const [searchParams] = useSearch({ strict: false });
-  const unsubscriptionToken = searchParams.get('unsubscription_token');
-  const campaignId = searchParams.get('campaign_id');
+  const searchParams = useSearch({ strict: false });
+  const unsubscriptionToken = searchParams.unsubscription_token;
+  const campaignId = searchParams.campaign_id;
 
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 

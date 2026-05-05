@@ -61,7 +61,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({ strict: false });
 
   const { id: graphId } = useNode();
   const { reportId, phaseId } = useReportContext();
@@ -69,7 +69,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   const showLiveData = checkIfLiveDataShouldBeShown({
     isPhaseContext: !!phaseId,
     pathname,
-    hasPreviewParam: search.get('preview') === 'true',
+    hasPreviewParam: search.preview === 'true',
   });
 
   const {

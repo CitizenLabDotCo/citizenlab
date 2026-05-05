@@ -118,7 +118,7 @@ const IdeasMap = memo<Props>(
     const { formatMessage } = useIntl();
     const { data: phase } = usePhase(phaseId);
     const { data: authUser } = useAuthUser();
-    const [searchParams] = useSearch({ strict: false });
+    const searchParams = useSearch({ strict: false });
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
 
@@ -137,7 +137,7 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdeaId = searchParams.get('idea_map_id');
+    const selectedIdeaId = searchParams.idea_map_id ?? null;
 
     const ideaData = ideaMarkers?.data.find(
       (idea) => idea.id === selectedIdeaId

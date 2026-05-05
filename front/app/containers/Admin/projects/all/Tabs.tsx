@@ -76,8 +76,10 @@ const ROLES_THAT_CAN_SEE_FOLDERS: HighestRole[] = [
 ];
 
 const Tabs = () => {
-  const [searchParams] = useSearch({ strict: false });
-  const tab = searchParams.get('tab');
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/',
+  });
+  const tab = searchParams.tab;
   const { data: user } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
@@ -99,7 +101,7 @@ const Tabs = () => {
       <Tab
         message={messages.projects}
         icon="projects"
-        active={tab === null}
+        active={tab === undefined}
         dataCy="projects-overview-projects-tab"
         onClick={() => {
           if (tab === 'folders') {
@@ -117,7 +119,7 @@ const Tabs = () => {
           active={tab === 'folders'}
           dataCy="projects-overview-folders-tab"
           onClick={() => {
-            if ([null, 'calendar'].includes(tab)) {
+            if (tab === undefined || tab === 'calendar') {
               removeSearchParams(PROJECT_PARAMS);
             }
 

@@ -74,8 +74,8 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [searchParams] = useSearch({ strict: false });
-  const [goBack] = useState(searchParams.get('go_back'));
+  const searchParams = useSearch({ strict: false });
+  const [goBack] = useState(searchParams.go_back);
 
   useEffect(() => {
     removeSearchParams(['go_back']);

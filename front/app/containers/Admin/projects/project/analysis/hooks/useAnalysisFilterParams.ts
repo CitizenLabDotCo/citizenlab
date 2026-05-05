@@ -6,7 +6,7 @@ import { useSearch } from 'utils/router';
 
 import { handleArraySearchParam } from '../util';
 
-const STATIC_NUMBER_FILTERS = [
+const STATIC_NUMBER_FILTERS: string[] = [
   'reactions_from',
   'reactions_to',
   'votes_from',
@@ -16,25 +16,25 @@ const STATIC_NUMBER_FILTERS = [
   'limit',
 ];
 
-const STATIC_SCALAR_FILTERS = [
+const STATIC_SCALAR_FILTERS: string[] = [
   ...STATIC_NUMBER_FILTERS,
   'search',
   'published_at_from',
   'published_at_to',
 ];
 
-const STATIC_BOOLEAN_FILTERS = ['input_custom_field_no_empty_values'];
+const STATIC_BOOLEAN_FILTERS: string[] = ['input_custom_field_no_empty_values'];
 
-const STATIC_ARRAY_FILTERS = ['tag_ids'];
+const STATIC_ARRAY_FILTERS: string[] = ['tag_ids'];
 
 /** Hook that extracts and returns all filter params used in the analysis,
  * extracted from the url */
 const useAnalysisFilterParams = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
-  const allParams = Object.fromEntries(searchParams.entries());
-
-  const filters = Object.entries(allParams).reduce(
+  const filters = Object.entries(searchParams).reduce(
     (accumulator, [key, value]) => {
       if (STATIC_BOOLEAN_FILTERS.includes(key)) {
         accumulator[key] = value === 'true' ? true : false;
@@ -42,7 +42,7 @@ const useAnalysisFilterParams = () => {
         key.match(/^(author|input)_custom_([a-f0-9-]+)$/) ||
         STATIC_ARRAY_FILTERS.includes(key)
       ) {
-        accumulator[key] = handleArraySearchParam(searchParams, key);
+        accumulator[key] = handleArraySearchParam(value);
       } else if (
         key.match(/^(author|input)_custom_([a-f0-9-]+)_(from|to)$/) ||
         STATIC_SCALAR_FILTERS.includes(key)

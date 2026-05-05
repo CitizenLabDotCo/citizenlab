@@ -21,11 +21,13 @@ import messages from './messages';
 import Phase from './Phase';
 
 const ProjectDrawer = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/inspiration-hub/',
+  });
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  const projectId = searchParams.get('project_id') ?? undefined;
+  const projectId = searchParams.project_id ?? undefined;
   const { data: project } = useProjectLibraryProject(projectId);
   const localizeProjectLibrary = useLocalizeProjectLibrary();
 

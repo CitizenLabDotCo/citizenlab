@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { Multiloc, SupportedLocale } from 'typings';
+import { Multiloc } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
@@ -29,11 +29,8 @@ export const FullScreenPreview = ({
   contentBuildableType,
   titleMultiloc,
 }: Props) => {
-  const [search] = useSearch({ strict: false });
-  const selectedLocale =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    (search.get('selected_locale') as SupportedLocale) || undefined;
+  const search = useSearch({ strict: false });
+  const selectedLocale = search.selected_locale || undefined;
   const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();

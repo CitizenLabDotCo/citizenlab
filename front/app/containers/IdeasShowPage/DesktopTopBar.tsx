@@ -18,8 +18,10 @@ interface Props {
 }
 
 const TopBar = ({ project }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
-  const goBackParameter = searchParams.get('go_back');
+  const searchParams = useSearch({
+    from: '/$locale/ideas/$slug',
+  });
+  const goBackParameter = searchParams.go_back;
   const [goBack] = useState(goBackParameter === 'true');
   const { formatMessage } = useIntl();
 

@@ -26,9 +26,11 @@ const InputListItem = () => {
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
   const [showAllQuestions, setShowAllQuestions] = useState(false);
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
-  const phaseId = searchParams.get('phase_id');
+  const phaseId = searchParams.phase_id;
 
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();

@@ -49,8 +49,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [searchParams] = useSearch({ strict: false });
-  const ideaSubmitted = searchParams.get('idea_id') !== null;
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const ideaSubmitted = searchParams.idea_id !== undefined;
 
   const openModal = () => {
     setShowLeaveModal(true);

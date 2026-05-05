@@ -45,7 +45,7 @@ const HealthScoreWidget = ({
   ...props
 }: Props & AccessibilityProps) => {
   const locale = useLocale();
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -53,8 +53,8 @@ const HealthScoreWidget = ({
     useCommunityMonitorSentimentScores(phaseId);
 
   // Get current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Transform the sentiment score data into a more usable format
   const sentimentScores = filterDataBySelectedQuarter(

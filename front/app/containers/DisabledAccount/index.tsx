@@ -13,8 +13,10 @@ import { useSearch } from 'utils/router';
 import messages from './messages';
 
 const DisabledAccount = () => {
-  const [searchParams] = useSearch({ strict: false });
-  const parsedDate = moment(searchParams.get('date')).format('LL');
+  const searchParams = useSearch({
+    from: '/$locale/disabled-account',
+  });
+  const parsedDate = moment(searchParams.date).format('LL');
 
   return (
     <main>

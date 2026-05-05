@@ -60,7 +60,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const [search] = useSearch({ strict: false });
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
@@ -77,7 +77,7 @@ const InsightBody = ({
     ? getErrorMessage(task.data.attributes.failure_reason, formatMessage)
     : null;
 
-  const selectedInputId = search.get('selected_input_id') || undefined;
+  const selectedInputId = search.selected_input_id || undefined;
 
   return (
     <>

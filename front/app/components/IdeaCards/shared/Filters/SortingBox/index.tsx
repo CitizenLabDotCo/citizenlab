@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
 
-import { IdeaSortMethod } from 'api/phases/types';
+import { IdeaSortMethod, ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -26,8 +26,8 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const { sort } = useSearch({ strict: false });
-  const currentSortType =
-    (sort as IdeaSortMethod | undefined) || phaseDefaultSort || 'trending';
+  const sortFromUrl = ideaSortMethods.find((m) => m === sort);
+  const currentSortType = sortFromUrl || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>

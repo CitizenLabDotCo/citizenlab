@@ -32,8 +32,10 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const [searchParams] = useSearch({ strict: false });
-  const phaseIdFromSearchParams = searchParams.get('phase_id');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const phaseIdFromSearchParams = searchParams.phase_id;
   // If we reach this component by hitting ideas/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
   const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;

@@ -54,8 +54,8 @@ const AssignSingleVoteButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const [searchParams] = useSearch({ strict: false });
-  const isProcessing = searchParams.get('processing_vote') === ideaId;
+  const searchParams = useSearch({ strict: false });
+  const isProcessing = searchParams.processing_vote === ideaId;
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

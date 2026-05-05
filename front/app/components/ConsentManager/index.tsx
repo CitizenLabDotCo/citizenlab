@@ -23,10 +23,9 @@ const ConsentManager = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  const [searchParams] = useSearch({ strict: false });
-  const from = searchParams.get('from');
-  const bypassCookieConsent =
-    searchParams.get('yes-I-accept-cookies') === 'true';
+  const searchParams = useSearch({ strict: false });
+  const from = searchParams.from;
+  const bypassCookieConsent = searchParams['yes-I-accept-cookies'] === 'true';
 
   const isConsentRequired = useConsentRequired();
 

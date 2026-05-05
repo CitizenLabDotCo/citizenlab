@@ -1,6 +1,9 @@
 import React, { lazy } from 'react';
 
 import { localeRoute } from 'routes';
+import * as yup from 'yup';
+
+import { ideaSortMethods } from 'api/phases/types';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -25,9 +28,16 @@ export enum userShowPageRoutes {
 
 // Factory function to create routes with parent
 export const createUserShowPageRoutes = () => {
+  const profileSearchSchema = yup.object({
+    sort: yup.string().oneOf(ideaSortMethods).optional(),
+    search: yup.string().optional(),
+  });
+
   const profileRoute = createRoute({
     getParentRoute: () => localeRoute,
     path: userShowPageRoutes.profileUserSlug,
+    validateSearch: (search: Record<string, unknown>) =>
+      profileSearchSchema.validateSync(search, { stripUnknown: true }),
     component: () => (
       <PageLoading>
         <UsersShowPage />

@@ -116,9 +116,11 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
-  const [searchParams] = useSearch({});
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearch({
+    from: '/$locale/admin/messaging/emails/custom/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );

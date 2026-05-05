@@ -31,14 +31,14 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
 export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/inspiration-hub/',
+  });
 
-  const paramValue = searchParams.get(paramName);
+  const paramValue = (searchParams as Record<string, unknown>)[paramName];
 
   if (paramName.endsWith('in]')) {
-    return (
-      paramValue === null ? [] : JSON.parse(paramValue)
-    ) as RansackParams[typeof paramName];
+    return (paramValue ?? []) as RansackParams[typeof paramName];
   }
 
   return paramValue as RansackParams[typeof paramName];
@@ -56,18 +56,17 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
 ];
 
 export const useRansackParams = () => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/inspiration-hub/',
+  });
+  const indexed = searchParams as Record<string, unknown>;
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        let value = searchParams.get(paramName);
+        const value = indexed[paramName];
 
-        if (value === null) {
+        if (value === undefined) {
           return acc;
-        }
-
-        if (paramName.endsWith('in]')) {
-          value = JSON.parse(value);
         }
 
         return {
@@ -75,7 +74,7 @@ export const useRansackParams = () => {
           [paramName]: value as RansackParams[typeof paramName],
         };
       }, {} as RansackParams),
-    [searchParams]
+    [indexed]
   );
 };
 

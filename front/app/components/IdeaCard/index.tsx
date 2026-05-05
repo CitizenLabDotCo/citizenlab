@@ -88,8 +88,8 @@ const IdeaCard = ({
       setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
   }, [ideaTitle]);
-  const [searchParams] = useSearch({ strict: false });
-  const scrollToCardParam = searchParams.get('scroll_to_card');
+  const searchParams = useSearch({ strict: false });
+  const scrollToCardParam = searchParams.scroll_to_card;
 
   // Scroll to this card if it matches the scroll_to_card search param
   const shouldScrollToCard =

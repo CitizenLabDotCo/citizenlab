@@ -24,7 +24,7 @@ describe('getPublishedAtFromFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2025');
     (getQuarterFilter as jest.Mock).mockReturnValue('1');
 
-    const result = getPublishedAtFromFilter(new URLSearchParams());
+    const result = getPublishedAtFromFilter(undefined, undefined);
     expect(result).toBe('2025-01-01');
   });
 
@@ -32,7 +32,7 @@ describe('getPublishedAtFromFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2024');
     (getQuarterFilter as jest.Mock).mockReturnValue('3');
 
-    const result = getPublishedAtFromFilter(new URLSearchParams());
+    const result = getPublishedAtFromFilter(undefined, undefined);
     expect(result).toBe('2024-07-01');
   });
 
@@ -40,7 +40,7 @@ describe('getPublishedAtFromFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue(null);
     (getQuarterFilter as jest.Mock).mockReturnValue('2');
 
-    const result = getPublishedAtFromFilter(new URLSearchParams());
+    const result = getPublishedAtFromFilter(undefined, undefined);
     expect(result).toBeUndefined();
   });
 
@@ -48,7 +48,7 @@ describe('getPublishedAtFromFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2024');
     (getQuarterFilter as jest.Mock).mockReturnValue(null);
 
-    const result = getPublishedAtFromFilter(new URLSearchParams());
+    const result = getPublishedAtFromFilter(undefined, undefined);
     expect(result).toBeUndefined();
   });
 });
@@ -58,7 +58,7 @@ describe('getPublishedAtToFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2025');
     (getQuarterFilter as jest.Mock).mockReturnValue('1');
 
-    const result = getPublishedAtToFilter(new URLSearchParams());
+    const result = getPublishedAtToFilter(undefined, undefined);
     expect(result).toBe('2025-03-31');
   });
 
@@ -66,7 +66,7 @@ describe('getPublishedAtToFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2023');
     (getQuarterFilter as jest.Mock).mockReturnValue('4');
 
-    const result = getPublishedAtToFilter(new URLSearchParams());
+    const result = getPublishedAtToFilter(undefined, undefined);
     expect(result).toBe('2023-12-31');
   });
 
@@ -74,7 +74,7 @@ describe('getPublishedAtToFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue(null);
     (getQuarterFilter as jest.Mock).mockReturnValue('2');
 
-    const result = getPublishedAtToFilter(new URLSearchParams());
+    const result = getPublishedAtToFilter(undefined, undefined);
     expect(result).toBeUndefined();
   });
 
@@ -82,7 +82,7 @@ describe('getPublishedAtToFilter', () => {
     (getYearFilter as jest.Mock).mockReturnValue('2024');
     (getQuarterFilter as jest.Mock).mockReturnValue(null);
 
-    const result = getPublishedAtToFilter(new URLSearchParams());
+    const result = getPublishedAtToFilter(undefined, undefined);
     expect(result).toBeUndefined();
   });
 });

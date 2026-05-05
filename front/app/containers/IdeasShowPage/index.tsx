@@ -58,8 +58,10 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const [searchParams] = useSearch({ strict: false });
-  const phaseContext = searchParams.get('phase_context');
+  const searchParams = useSearch({
+    from: '/$locale/ideas/$slug',
+  });
+  const phaseContext = searchParams.phase_context;
 
   if (!project) return <PageNotFound />;
 

@@ -24,10 +24,12 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   // Get phase and project from URL
-  const phaseId = searchParams.get('phase_id') || '';
+  const phaseId = searchParams.phase_id || '';
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });

@@ -46,10 +46,10 @@ const SimilarIdeasList = ({
     slug?: string;
     projectId?: string;
   };
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
   const { ideaId: idea_id } = useParams({ strict: false });
-  const ideaId = searchParams.get('idea_id') || idea_id;
-  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const ideaId = searchParams.idea_id || idea_id;
+  const selectedIdeaId = searchParams.selected_idea_id;
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const projectId = idea?.data.relationships.project.data.id || urlProjectId;
   const projectById = useProjectById(projectId);
@@ -89,7 +89,7 @@ const SimilarIdeasList = ({
     lastClickedIdeaRef.current = clickedElement;
     updateSearchParams({
       selected_idea_id:
-        searchParams.get('selected_idea_id') === ideaId ? undefined : ideaId,
+        searchParams.selected_idea_id === ideaId ? undefined : ideaId,
     });
   };
   const { data: ideas, isLoading } = useSimilarIdeas(

@@ -8,6 +8,13 @@ import { useSearch } from 'utils/router';
 
 import { TFilterMenu } from '.';
 
+const filterMenuTabs = [
+  'topics',
+  'phases',
+  'projects',
+  'statuses',
+] as const satisfies readonly TFilterMenu[];
+
 type Params = IIdeaQueryParameters & {
   tab?: TFilterMenu;
   selected_idea_id?: string;
@@ -22,37 +29,45 @@ const useInputManagerSearchParams = (context: {
   projectId?: string | null;
   phaseId?: string;
 }) => {
-  const [searchParams] = useSearch({ strict: false });
+  const searchParams = useSearch({ strict: false });
 
   const params: Params = useMemo(() => {
-    const getParam = (name: string) => searchParams.get(name) || undefined;
+    const topicsParam = searchParams.topics;
+    const inputTopics = Array.isArray(topicsParam)
+      ? topicsParam
+      : topicsParam
+      ? topicsParam.split(',')
+      : undefined;
 
-    const topicsRaw = searchParams.get('topics');
-    const inputTopics = topicsRaw ? topicsRaw.split(',') : undefined;
-
-    const projectsRaw = searchParams.get('projects');
-    const projectsFromUrl = projectsRaw ? projectsRaw.split(',') : undefined;
+    const projectsParam = searchParams.projects;
+    const projectsFromUrl = Array.isArray(projectsParam)
+      ? projectsParam
+      : projectsParam
+      ? projectsParam.split(',')
+      : undefined;
     const defaultProjects = context.projectId ? [context.projectId] : undefined;
     const projects = projectsFromUrl ?? defaultProjects;
 
-    const pageRaw = searchParams.get('page');
-    const page = pageRaw
-      ? Math.max(1, parseInt(pageRaw, 10)) || undefined // avoid NaNs
+    const page = searchParams.page
+      ? Math.max(1, parseInt(searchParams.page, 10)) || undefined // avoid NaNs
       : undefined;
 
-    const phaseParam = getParam('phase');
+    const phaseParam = searchParams.phase;
 
     return {
       projects,
       input_topics: inputTopics,
-      feedback_needed: boolean(getParam('feedback_needed')),
+      feedback_needed: boolean(searchParams.feedback_needed),
       phase: phaseParam === 'all' ? undefined : phaseParam || context.phaseId,
-      sort: (getParam('sort') || 'new') as Sort,
-      tab: getParam('tab') as TFilterMenu | undefined,
-      search: getParam('search'),
-      idea_status: getParam('status'),
-      assignee: getParam('assignee'),
-      selected_idea_id: getParam('selected_idea_id'),
+      sort: (searchParams.sort || 'new') as Sort,
+      tab: filterMenuTabs.find((t) => t === searchParams.tab),
+      search: searchParams.search,
+      idea_status:
+        typeof searchParams.status === 'string'
+          ? searchParams.status
+          : undefined,
+      assignee: searchParams.assignee,
+      selected_idea_id: searchParams.selected_idea_id,
       'page[number]': page,
     };
   }, [searchParams, context.projectId, context.phaseId]);
@@ -185,9 +200,12 @@ const useInputManagerSearchParams = (context: {
   return { params, setParams, resetParams };
 };
 
-function boolean(string: string | null | undefined) {
-  if (string?.toLowerCase() === 'true') return true;
-  if (string?.toLowerCase() === 'false') return false;
+function boolean(value: unknown) {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
   return undefined;
 }
 

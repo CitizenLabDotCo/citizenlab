@@ -32,12 +32,14 @@ const PageContainer = styled.div`
 const IdeasFeedPage = () => {
   const { slug } = useParams({ from: '/$locale/projects/$slug' });
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams] = useSearch({ strict: false });
-  const selectedTopicId = searchParams.get('topic');
-  const selectedSubtopicId = searchParams.get('subtopic');
-  const phaseId = searchParams.get('phase_id');
-  const initialIdeaId = searchParams.get('initial_idea_id');
-  const sheetOpen = searchParams.get('sheet_open');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedTopicId = searchParams.topic;
+  const selectedSubtopicId = searchParams.subtopic;
+  const phaseId = searchParams.phase_id;
+  const initialIdeaId = searchParams.initial_idea_id;
+  const sheetOpen = searchParams.sheet_open;
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Use subtopic if selected, otherwise use topic
