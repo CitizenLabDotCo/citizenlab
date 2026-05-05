@@ -3,7 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { HighestRole, IUser } from 'api/users/types';
+import { IUser } from 'api/users/types';
+
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
@@ -11,15 +14,9 @@ import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
 
 const userCanApprove = (user: IUser) => {
-  const { highest_role } = user.data.attributes;
-
-  const allowedHighestRoles: (string | undefined)[] = [
-    'super_admin',
-    'admin',
-    'space_moderator',
-    'project_folder_moderator',
-  ] satisfies HighestRole[];
-  return allowedHighestRoles.includes(highest_role);
+  return (
+    isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user)
+  );
 };
 
 const Filters = () => {

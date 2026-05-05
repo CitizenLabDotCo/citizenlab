@@ -111,6 +111,7 @@ export type Props = {
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: () => void;
   dataCy?: string;
+  autoFocus?: boolean;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -130,6 +131,7 @@ const Radio = ({
   onChange: _onChange,
   onClick,
   dataCy,
+  autoFocus,
   ...rest
 }: Props) => {
   const theme = useTheme();
@@ -187,6 +189,7 @@ const Radio = ({
         required={isRequired}
         readOnly
         onKeyDown={onKeyDown}
+        autoFocus={autoFocus}
       />
       <CustomRadio
         className={`${inputFocused ? 'focused' : ''}
