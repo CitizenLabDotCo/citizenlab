@@ -4,8 +4,9 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import Navigate from 'utils/cl-router/Navigate';
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
-import { createRoute, Navigate } from 'utils/router';
+import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -83,6 +84,12 @@ export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
 
+export const adminProjectsProjectLink = (projectId: string) =>
+  ({
+    to: '/admin/projects/$projectId',
+    params: { projectId },
+  } as const);
+
 // --- Search parameter schemas ---
 
 // Survey form builder search schema
@@ -101,6 +108,16 @@ const inputImporterSearchSchema = yup.object({
 
 export type InputImporterSearchParams = yup.InferType<
   typeof inputImporterSearchSchema
+>;
+
+// Project analysis search schema
+const projectAnalysisSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  selected_input_id: yup.string().optional(),
+});
+
+export type ProjectAnalysisSearchParams = yup.InferType<
+  typeof projectAnalysisSearchSchema
 >;
 
 // --- Projects layout route ---
@@ -159,10 +176,23 @@ const projectRoute = createRoute({
 });
 
 // Project index redirect
+const ProjectIndexRedirect = () => {
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId',
+  });
+  return (
+    <Navigate
+      to="/admin/projects/$projectId/phases/setup"
+      params={{ projectId }}
+      replace
+    />
+  );
+};
+
 const projectIndexRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/',
-  component: () => <Navigate to="phases/setup" replace />,
+  component: ProjectIndexRedirect,
 });
 
 // --- General settings layout ---
@@ -298,6 +328,10 @@ const projectMessagingShowRoute = createRoute({
 const projectAnalysisRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'analysis/$analysisId',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectAnalysisSearchParams =>
+    projectAnalysisSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminProjectAnalysis />

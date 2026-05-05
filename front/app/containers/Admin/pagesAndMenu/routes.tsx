@@ -2,7 +2,8 @@ import React, { lazy } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -45,9 +46,11 @@ const CustomPageHeroBannerForm = lazy(
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 
-export const adminCustomPageContentPath = (pageId: string) => {
-  return `/admin/pages-menu/pages/${pageId}/content`;
-};
+export const adminCustomPageContentLink = (customPageId: string) =>
+  ({
+    to: '/admin/pages-menu/pages/$customPageId/content',
+    params: { customPageId },
+  } as const);
 
 export const adminCustomPageSettingsPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
@@ -120,10 +123,22 @@ const customPageRoute = createRoute({
   component: () => <EditCustomPageIndex />,
 });
 
+const CustomPageIndexRedirect = () => {
+  const { customPageId } = useParams({
+    from: '/$locale/admin/pages-menu/pages/$customPageId',
+  });
+  return (
+    <Navigate
+      to="/admin/pages-menu/pages/$customPageId/settings"
+      params={{ customPageId }}
+    />
+  );
+};
+
 const customPageIndexRoute = createRoute({
   getParentRoute: () => customPageRoute,
   path: '/',
-  component: () => <Navigate to="settings" />,
+  component: CustomPageIndexRedirect,
 });
 
 const customPageSettingsRoute = createRoute({

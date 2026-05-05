@@ -2,7 +2,8 @@ import React, { lazy } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate, Outlet as RouterOutlet } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute, Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -41,10 +42,22 @@ const projectFoldersIdRoute = createRoute({
   ),
 });
 
+const ProjectFoldersIdDefaultRedirect = () => {
+  const { projectFolderId } = useParams({
+    from: '/$locale/admin/projects/folders/$projectFolderId',
+  });
+  return (
+    <Navigate
+      to="/admin/projects/folders/$projectFolderId/projects"
+      params={{ projectFolderId }}
+    />
+  );
+};
+
 const projectFoldersIdDefaultRoute = createRoute({
   getParentRoute: () => projectFoldersIdRoute,
   path: '/',
-  component: () => <Navigate to="projects" />,
+  component: ProjectFoldersIdDefaultRedirect,
 });
 
 const projectFoldersIdProjectsRoute = createRoute({

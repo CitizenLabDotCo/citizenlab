@@ -11,14 +11,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
@@ -220,15 +220,18 @@ const EditCustomPageHeroBannerForm = ({
           }
           formStatus={formStatus}
           isLoading={isLoading}
-          linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
+          viewPageLink={{
+            to: '/pages/$slug',
+            params: { slug: customPage.data.attributes.slug },
+          }}
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             {
               label: localize(customPage.data.attributes.title_multiloc),
-              linkTo: adminCustomPageContentPath(customPageId),
+              link: adminCustomPageContentLink(customPageId),
             },
             { label: formatMessage(messages.heroBannerTitle) },
           ]}

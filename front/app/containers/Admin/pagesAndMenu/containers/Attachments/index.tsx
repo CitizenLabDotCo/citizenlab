@@ -21,7 +21,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import { SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
@@ -36,7 +36,7 @@ import { useParams } from 'utils/router';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
@@ -162,11 +162,11 @@ const AttachmentsForm = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumbLinkTo,
+                link: pagesAndMenuBreadcrumbLink,
               },
               {
                 label: localize(customPage.data.attributes.title_multiloc),
-                linkTo: adminCustomPageContentPath(customPageId),
+                link: adminCustomPageContentLink(customPageId),
               },
               {
                 label: formatMessage(messages.pageTitle),
@@ -174,7 +174,8 @@ const AttachmentsForm = ({
             ]}
             rightSideCTA={
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.data.attributes.slug}`}
+                to="/pages/$slug"
+                params={{ slug: customPage.data.attributes.slug }}
               />
             }
           >

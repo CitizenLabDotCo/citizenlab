@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useProjectById from 'api/projects/useProjectById';
 
 import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
+import { useParams } from 'utils/router';
 
 const ProjectDescriptionBuilderPage = () => {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
@@ -18,7 +18,10 @@ const ProjectDescriptionBuilderPage = () => {
       contentBuildableId={projectId}
       contentBuildableType="project"
       backPath={`/admin/projects/${projectId}/general`}
-      previewPath={`/projects/${project.data.attributes.slug}`}
+      previewLink={{
+        to: '/projects/$slug',
+        params: { slug: project.data.attributes.slug },
+      }}
       titleMultiloc={project.data.attributes.title_multiloc}
     />
   );

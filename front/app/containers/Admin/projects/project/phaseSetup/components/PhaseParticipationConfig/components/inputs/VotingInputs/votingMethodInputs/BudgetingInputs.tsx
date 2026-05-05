@@ -6,8 +6,8 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../../../../../messages';
 import { LabelBudgetingInput } from '../../../../../../../../_shared/components/labels';
+import messages from '../../../../../../../messages';
 import {
   BudgetingAmountInput,
   VotingAmountInputError,

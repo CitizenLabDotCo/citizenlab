@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 /* eslint-disable no-restricted-imports */
 import {
   type AnyRoute,
+  type LinkComponent,
   type LinkProps,
-  Navigate as TanstackNavigate,
+  type RegisteredRouter,
   Link,
   Outlet,
   RouterProvider,
@@ -16,7 +17,7 @@ import {
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
 export { useLocation, useParams, Link, Outlet, RouterProvider, createRoute };
-export type { AnyRoute, LinkProps };
+export type { AnyRoute, LinkComponent, LinkProps, RegisteredRouter };
 
 export const useSearch = (_options: any) => {
   const { searchStr } = useLocation();
@@ -29,8 +30,4 @@ export const useSearch = (_options: any) => {
       ],
     [searchStr]
   );
-};
-
-export const Navigate = (props: any) => {
-  return <TanstackNavigate {...props} />;
 };

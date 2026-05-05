@@ -7,7 +7,6 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -25,6 +24,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';

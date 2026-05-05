@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -28,6 +27,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import AuthorField from '../Fields/AuthorField';

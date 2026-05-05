@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
-import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -17,6 +15,7 @@ import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -121,9 +120,12 @@ const Question = ({
           <ButtonWithLink
             buttonStyle="secondary-outlined"
             icon="eye"
-            linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-              { ...convertFilterValuesToString(filters), phase_id: phaseId }
-            )}`}
+            to="/admin/projects/$projectId/analysis/$analysisId"
+            params={{ projectId, analysisId }}
+            search={{
+              ...convertFilterValuesToString(filters),
+              phase_id: phaseId,
+            }}
           >
             {formatMessage(messages.explore)}
           </ButtonWithLink>

@@ -18,6 +18,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -34,7 +35,7 @@ type DescriptionBuilderTopBarProps = {
   contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
   backPath: string;
-  previewPath: string;
+  previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
 };
 
@@ -48,7 +49,7 @@ const DescriptionBuilderTopBar = ({
   contentBuildableId,
   contentBuildableType,
   backPath,
-  previewPath,
+  previewLink,
   titleMultiloc,
 }: DescriptionBuilderTopBarProps) => {
   const { query } = useEditor();
@@ -115,7 +116,7 @@ const DescriptionBuilderTopBar = ({
           ml="32px"
           disabled={!titleMultiloc}
           openLinkInNewTab
-          linkTo={previewPath}
+          {...previewLink}
         />
         <SaveButton
           isDisabled={disableSave}

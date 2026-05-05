@@ -117,7 +117,8 @@ const ProjectHeader = ({ projectId }: Props) => {
             className="intercom-projects-project-header-buttons"
           >
             <ButtonWithLink
-              linkTo={`/projects/${project.data.attributes.slug}`}
+              to="/projects/$slug"
+              params={{ slug: project.data.attributes.slug }}
               buttonStyle="secondary-outlined"
               icon="eye"
               size="s"
@@ -140,7 +141,8 @@ const ProjectHeader = ({ projectId }: Props) => {
         </Box>
         <Box display="flex" gap="8px">
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -160,7 +162,8 @@ const ProjectHeader = ({ projectId }: Props) => {
             ·
           </Text>
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"

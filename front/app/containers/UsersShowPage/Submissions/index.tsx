@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
@@ -10,7 +11,6 @@ import useUserBySlug from 'api/users/useUserBySlug';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { useParams, useSearch } from '@tanstack/react-router';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../messages';

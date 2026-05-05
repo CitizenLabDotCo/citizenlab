@@ -7,7 +7,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -19,6 +18,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import { isValidPhase } from '../phaseParam';
 

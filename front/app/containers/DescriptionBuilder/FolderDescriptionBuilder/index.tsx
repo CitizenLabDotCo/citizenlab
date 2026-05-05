@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
+import { useParams } from 'utils/router';
 
 const FolderDescriptionBuilderPage = () => {
   const { folderId } = useParams({ strict: false }) as { folderId: string };
@@ -18,7 +18,10 @@ const FolderDescriptionBuilderPage = () => {
       contentBuildableId={folderId}
       contentBuildableType="folder"
       backPath={`/admin/projects/folders/${folderId}/settings`}
-      previewPath={`/folders/${folder.data.attributes.slug}`}
+      previewLink={{
+        to: '/folders/$slug',
+        params: { slug: folder.data.attributes.slug },
+      }}
       titleMultiloc={folder.data.attributes.title_multiloc}
     />
   );

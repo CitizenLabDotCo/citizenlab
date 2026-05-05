@@ -19,12 +19,12 @@ interface Props {
 const ProjectFolderModerationRightsReceivedNotification = ({
   notification,
 }: Props) => {
-  const folderPath =
-    `/admin/projects/folders/${notification.attributes.project_folder_id}` as const;
+  const projectFolderId = notification.attributes.project_folder_id;
 
   return (
     <NotificationWrapper
-      linkTo={folderPath}
+      to="/admin/projects/folders/$projectFolderId"
+      params={{ projectFolderId }}
       timing={notification.attributes.created_at}
       icon="folder-solid"
       isRead={!!notification.attributes.read_at}
@@ -33,7 +33,11 @@ const ProjectFolderModerationRightsReceivedNotification = ({
         {...messages.youveReceivedFolderManagerRights}
         values={{
           folderLink: (
-            <Link to={folderPath} onClick={stopPropagation}>
+            <Link
+              to="/admin/projects/folders/$projectFolderId"
+              params={{ projectFolderId }}
+              onClick={stopPropagation}
+            >
               <T
                 value={notification.attributes.project_folder_title_multiloc}
               />

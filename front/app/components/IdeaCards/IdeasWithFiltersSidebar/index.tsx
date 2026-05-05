@@ -9,7 +9,6 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -25,6 +24,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';

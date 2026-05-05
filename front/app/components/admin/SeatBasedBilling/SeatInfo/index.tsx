@@ -7,7 +7,6 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useSeats from 'api/seats/useSeats';
@@ -15,7 +14,7 @@ import useSeats from 'api/seats/useSeats';
 import useTotalSeats from 'hooks/useTotalSeats';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
 
@@ -39,7 +38,7 @@ const TOTAL_SEAT_MESSAGES = {
 
 const SEATS_OVERVIEW_PAGE = '/admin/users/seats';
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   text-decoration: underline;
 
   &:hover {
@@ -128,7 +127,7 @@ const SeatInfo = ({ seatType, mb }: Props) => {
       </Box>
       {showLink && (
         <Box mt="12px">
-          <StyledLink target="_blank" to={SEATS_OVERVIEW_PAGE}>
+          <StyledLink target="_blank" to="/admin/users/seats">
             <Text variant="bodyXs" my="0px" color="coolGrey600">
               {formatMessage(messages.goToSeatsOverview)}
             </Text>

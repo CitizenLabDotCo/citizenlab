@@ -1,15 +1,14 @@
 import React from 'react';
 
 import { colors, fontSizes, Text } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import BaseMainContent from '../BaseMainContent';
 import messages from '../messages';
 
-const TextLink = styled(Link)`
+const TextLink = typedStyled(Link)`
   font-size: ${fontSizes.base}px;
   color: ${colors.textPrimary};
   text-decoration: underline;
@@ -30,7 +29,8 @@ const MainContent = () => {
             linkToCookiePolicy: (
               <TextLink
                 target="_blank"
-                to="/pages/cookie-policy?from=cookie-modal"
+                to="/pages/cookie-policy"
+                search={{ from: 'cookie-modal' }}
               >
                 <FormattedMessage {...messages.linkToCookiePolicyText} />
               </TextLink>

@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react';
 import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -24,6 +23,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useLocation } from 'utils/router';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';

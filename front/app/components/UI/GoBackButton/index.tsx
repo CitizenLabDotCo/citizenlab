@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ButtonWithLink, { ButtonProps } from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -18,12 +19,16 @@ type Props = {
   customMessage?: MessageDescriptor;
   linkTo?: string;
   showGoBackText?: boolean;
-} & ButtonProps;
+} & ButtonProps &
+  TypedLinkProps;
 
 const GoBackButton = ({
   onClick,
   className,
   customMessage,
+  to,
+  params,
+  search,
   linkTo,
   showGoBackText = true,
   buttonStyle = 'text',
@@ -42,6 +47,9 @@ const GoBackButton = ({
           ) : undefined
         }
         data-testid="goBackButton"
+        to={to}
+        params={params}
+        search={search}
         linkTo={linkTo}
         buttonStyle={buttonStyle}
         {...buttonProps}

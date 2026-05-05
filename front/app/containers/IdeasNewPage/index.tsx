@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -20,6 +19,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
@@ -112,7 +112,9 @@ const IdeasNewPage = () => {
   if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${phaseId}`}
+        to="/projects/$slug/surveys/new"
+        params={{ slug }}
+        search={{ phase_id: phaseId }}
         replace
       />
     );

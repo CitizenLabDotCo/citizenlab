@@ -65,7 +65,8 @@ const RegistrationCustomFieldOptions = memo(
             <ButtonWithLink
               buttonStyle="admin-dark"
               icon="plus-circle"
-              linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
+              to="/admin/settings/registration/custom-fields/$userCustomFieldId/options/new"
+              params={{ userCustomFieldId }}
             >
               {formatMessage(messages.addOption)}
             </ButtonWithLink>
@@ -102,7 +103,11 @@ const RegistrationCustomFieldOptions = memo(
                           )}
                         </TextCell>
                         <ButtonWithLink
-                          linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
+                          to="/admin/settings/registration/custom-fields/$userCustomFieldId/options/$userCustomFieldOptionId"
+                          params={{
+                            userCustomFieldId,
+                            userCustomFieldOptionId,
+                          }}
                           buttonStyle="secondary-outlined"
                           icon="edit"
                         >

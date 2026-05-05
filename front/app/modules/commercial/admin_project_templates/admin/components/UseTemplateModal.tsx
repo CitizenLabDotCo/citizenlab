@@ -30,7 +30,6 @@ import Modal from 'components/UI/Modal';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { useParams } from 'utils/router';
 import eventEmitter from 'utils/eventEmitter';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
@@ -38,6 +37,7 @@ import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
+import { useParams } from 'utils/router';
 
 import tracks from '../../tracks';
 import useApplyProjectTemplate from '../api/useApplyProjectTemplate';

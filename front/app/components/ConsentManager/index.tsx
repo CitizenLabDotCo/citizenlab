@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import { useSearch } from 'utils/router';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -10,6 +8,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 import { useModalQueue } from 'containers/App/ModalQueue';
 
 import eventEmitter from 'utils/eventEmitter';
+import { useSearch } from 'utils/router';
 
 import {
   getConsent,

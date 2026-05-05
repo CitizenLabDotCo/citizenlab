@@ -7,7 +7,6 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -18,6 +17,7 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../../../messages';
 

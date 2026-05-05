@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'utils/router';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -17,6 +16,7 @@ import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
@@ -63,16 +63,15 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
               />
             </SectionField>
           )}
-          {field.input_type === 'topic_ids' && (
+          {field.input_type === 'topic_ids' && projectId && (
             <Text>
               <FormattedMessage
                 {...messages.manageTagsExplanation}
                 values={{
                   inputTagsLink: (
                     <Link
-                      to={`/admin/projects/${
-                        projectId ?? ''
-                      }/general/input-tags`}
+                      to="/admin/projects/$projectId/general/input-tags"
+                      params={{ projectId }}
                       target="_blank"
                     >
                       <FormattedMessage {...messages.inputTagsPage} />

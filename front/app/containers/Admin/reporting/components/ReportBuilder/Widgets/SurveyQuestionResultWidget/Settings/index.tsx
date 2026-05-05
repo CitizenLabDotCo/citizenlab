@@ -243,7 +243,9 @@ const Settings = () => {
             mb="16px"
           >
             <ButtonWithLink
-              linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}?phase_id=${phaseId}`}
+              to="/admin/projects/$projectId/analysis/$analysisId"
+              params={{ projectId, analysisId: analysis.id }}
+              search={{ phase_id: phaseId }}
             >
               {formatMessage(messages.openAIAnalysis)}
             </ButtonWithLink>

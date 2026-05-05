@@ -9,7 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
@@ -24,6 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import { getLeaveFormDestination } from '../utils';
 
@@ -71,10 +71,21 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: string =
+  const linkToSurveyBuilder: {
+    to:
+      | '/admin/community-monitor/projects/$projectId/phases/$phaseId/survey/edit'
+      | '/admin/projects/$projectId/phases/$phaseId/survey-form/edit';
+    params: Record<string, string>;
+  } =
     phaseParticipationMethod === 'community_monitor_survey'
-      ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
-      : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;
+      ? {
+          to: '/admin/community-monitor/projects/$projectId/phases/$phaseId/survey/edit',
+          params: { projectId: project.data.id, phaseId },
+        }
+      : {
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form/edit',
+          params: { projectId: project.data.id, phaseId },
+        };
 
   const leaveForm = () => {
     const leaveFormDestination = getLeaveFormDestination(
@@ -135,7 +146,12 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             <ButtonWithLink
               data-cy="e2e-edit-survey-link"
               icon="edit"
-              linkTo={linkToSurveyBuilder}
+              to={linkToSurveyBuilder.to}
+              params={
+                linkToSurveyBuilder.params as Parameters<
+                  typeof ButtonWithLink
+                >[0]['params']
+              }
               buttonStyle="primary-inverse"
               textDecorationHover="underline"
               mr="12px"

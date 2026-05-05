@@ -3,7 +3,6 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useLocation } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -25,13 +24,15 @@ import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionB
 import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 type Props = {
   contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
   backPath: string;
-  previewPath: string;
+  previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
 };
 
@@ -39,7 +40,7 @@ const DescriptionBuilderPage = ({
   contentBuildableId,
   contentBuildableType,
   backPath,
-  previewPath,
+  previewLink,
   titleMultiloc,
 }: Props) => {
   const locale = useLocale();
@@ -149,7 +150,7 @@ const DescriptionBuilderPage = ({
             contentBuildableId={contentBuildableId}
             contentBuildableType={contentBuildableType}
             backPath={backPath}
-            previewPath={previewPath}
+            previewLink={previewLink}
             titleMultiloc={titleMultiloc}
           />
           <Box

@@ -47,7 +47,7 @@ const Header = () => {
               <Button
                 data-cy="e2e-new-space-button"
                 className="intercom-admin-projects-new-space-button"
-                linkTo={'/admin/projects/spaces/new'}
+                to="/admin/projects/spaces/new"
                 buttonStyle="secondary-outlined"
                 icon="spaces"
                 iconSize="20px"
@@ -71,7 +71,7 @@ const Header = () => {
           <Box>
             <Button
               data-cy="e2e-new-project-folder-button"
-              linkTo={'/admin/projects/folders/new'}
+              to="/admin/projects/folders/new"
               buttonStyle="secondary-outlined"
               icon="folder-add"
               disabled={!userCanAddFolders}
@@ -84,7 +84,7 @@ const Header = () => {
           <Button
             data-cy="e2e-new-project-button"
             className="intercom-admin-projects-new-project-button"
-            linkTo={'/admin/projects/new'}
+            to="/admin/projects/new"
             icon="plus-circle"
             buttonStyle="admin-dark"
           >

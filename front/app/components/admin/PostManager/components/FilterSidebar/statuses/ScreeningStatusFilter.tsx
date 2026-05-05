@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -14,6 +13,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 

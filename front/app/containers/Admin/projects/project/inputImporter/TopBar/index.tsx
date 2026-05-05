@@ -22,7 +22,7 @@ import messages from '../messages';
 import { isPDFUploadSupported } from '../ReviewSection/utils';
 
 import ImportButtons from './ImportButtons';
-import { getBackPath } from './utils';
+import { getBackLink } from './utils';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -45,10 +45,10 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
 
   const participationMethod = phase?.data.attributes.participation_method;
 
-  const backPath =
-    projectId &&
-    phaseId &&
-    getBackPath(projectId, phaseId, participationMethod);
+  const backLink =
+    projectId && phaseId
+      ? getBackLink(projectId, phaseId, participationMethod)
+      : undefined;
 
   return (
     <Box
@@ -64,7 +64,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
       px="24px"
     >
       <Box display="flex" alignItems="center">
-        <GoBackButton linkTo={backPath} />
+        <GoBackButton {...backLink} />
         <Box ml="24px">
           <Box display="flex" gap="8px" alignItems="center">
             <Text m="0px" color="textSecondary">

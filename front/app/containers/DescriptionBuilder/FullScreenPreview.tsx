@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useSearch } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -17,6 +16,7 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/DescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 type Props = {
   contentBuildableId: string;

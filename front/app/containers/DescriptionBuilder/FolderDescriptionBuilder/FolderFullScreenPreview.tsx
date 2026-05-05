@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
-
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import FullScreenPreview from 'containers/DescriptionBuilder/FullScreenPreview';
+
+import { useParams } from 'utils/router';
 
 export const FolderFullScreenPreview = () => {
   const { folderId } = useParams({ strict: false }) as { folderId: string };

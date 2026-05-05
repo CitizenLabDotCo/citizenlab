@@ -8,7 +8,6 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 

@@ -23,7 +23,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 // Messages
@@ -43,7 +43,7 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-bottom: 30px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   margin-top: -10px;
   font-size: ${fontSizes.base}px;
 `;
@@ -100,7 +100,16 @@ const DescriptionBuilderToggle = ({
     });
   };
 
-  const route = `/admin/description-builder/${contentBuildableType}s/${contentBuildableId}/description`;
+  const linkProps =
+    contentBuildableType === 'project'
+      ? ({
+          to: '/admin/description-builder/projects/$projectId/description',
+          params: { projectId: contentBuildableId },
+        } as const)
+      : ({
+          to: '/admin/description-builder/folders/$folderId/description',
+          params: { folderId: contentBuildableId },
+        } as const);
 
   return (
     <Box data-testid="descriptionBuilderToggle">
@@ -121,7 +130,7 @@ const DescriptionBuilderToggle = ({
 
       {descriptionBuilderLinkVisible && (
         <>
-          <StyledLink id="e2e-project-description-builder-link" to={route}>
+          <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
             {formatMessage(messages.linkText)}
           </StyledLink>
           <Box mt="10px">

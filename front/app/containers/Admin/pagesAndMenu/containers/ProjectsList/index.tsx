@@ -12,11 +12,11 @@ import { useParams } from 'utils/router';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import { adminCustomPageContentPath } from '../../routes';
+import { adminCustomPageContentLink } from '../../routes';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 import messages from './messages';
@@ -48,11 +48,11 @@ const ProjectList = () => {
         breadcrumbs={[
           {
             label: formatMessage(pagesAndMenuBreadcrumb.label),
-            linkTo: pagesAndMenuBreadcrumbLinkTo,
+            link: pagesAndMenuBreadcrumbLink,
           },
           {
             label: localize(customPage.data.attributes.title_multiloc),
-            linkTo: adminCustomPageContentPath(customPageId),
+            link: adminCustomPageContentLink(customPageId),
           },
           {
             label: formatMessage(messages.pageTitle),
@@ -60,7 +60,8 @@ const ProjectList = () => {
         ]}
         rightSideCTA={
           <ViewCustomPageButton
-            linkTo={`/pages/${customPage.data.attributes.slug}`}
+            to="/pages/$slug"
+            params={{ slug: customPage.data.attributes.slug }}
           />
         }
       >

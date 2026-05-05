@@ -6,11 +6,11 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import CopyLink from '../buttons/CopyLink';
 import Email from '../buttons/Email';

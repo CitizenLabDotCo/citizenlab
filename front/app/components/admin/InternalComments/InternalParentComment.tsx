@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { useLocation } from 'utils/router';
 import styled, { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -14,6 +13,7 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import InternalChildCommentForm from './InternalChildCommentForm';
 import InternalComment from './InternalComment';

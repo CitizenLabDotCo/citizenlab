@@ -234,9 +234,16 @@ const ideasIndexRoute = createRoute({
   ),
 });
 
+const ideasShowSearchSchema = yup.object({
+  go_back: yup.string().optional(),
+});
+type IdeasShowSearchParams = yup.InferType<typeof ideasShowSearchSchema>;
+
 const ideasShowRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'ideas/$slug',
+  validateSearch: (search: Record<string, unknown>): IdeasShowSearchParams =>
+    ideasShowSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasShowPage />
@@ -255,9 +262,22 @@ const projectIdeaNewRoute = createRoute({
   ),
 });
 
+const projectSurveyNewSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  idea_id: yup.string().optional(),
+});
+
+type ProjectSurveyNewSearchParams = yup.InferType<
+  typeof projectSurveyNewSearchSchema
+>;
+
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug/surveys/new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectSurveyNewSearchParams =>
+    projectSurveyNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
@@ -388,9 +408,16 @@ const eventShowRoute = createRoute({
 });
 
 // Pages routes
+const cookiePolicySearchSchema = yup.object({
+  from: yup.string().optional(),
+});
+type CookiePolicySearchParams = yup.InferType<typeof cookiePolicySearchSchema>;
+
 const cookiePolicyRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'pages/cookie-policy',
+  validateSearch: (search: Record<string, unknown>): CookiePolicySearchParams =>
+    cookiePolicySearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <CookiePolicy />

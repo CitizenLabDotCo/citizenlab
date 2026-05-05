@@ -88,7 +88,8 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
           icon="edit"
           buttonStyle="secondary-outlined"
           disabled={isLoading || !canEdit}
-          linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
+          to="/admin/reporting/report-builder/$reportId/editor"
+          params={{ reportId }}
         >
           {formatMessage(messages.edit)}
         </BaseButton>

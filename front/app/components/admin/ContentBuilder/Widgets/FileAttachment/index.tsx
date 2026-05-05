@@ -8,7 +8,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
-import { useParams } from 'utils/router';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFileById from 'api/files/useFileById';
@@ -19,6 +18,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
@@ -195,14 +195,17 @@ const FileAttachmentSettings = () => {
         />
       )}
 
-      <ButtonWithLink
-        linkTo={`/admin/projects/${projectId}/files`}
-        buttonStyle="text"
-        icon="upload-file"
-        openLinkInNewTab={true}
-      >
-        {formatMessage(messages.uploadFiles)}
-      </ButtonWithLink>
+      {projectId && (
+        <ButtonWithLink
+          to="/admin/projects/$projectId/files"
+          params={{ projectId }}
+          buttonStyle="text"
+          icon="upload-file"
+          openLinkInNewTab={true}
+        >
+          {formatMessage(messages.uploadFiles)}
+        </ButtonWithLink>
+      )}
     </Box>
   );
 };

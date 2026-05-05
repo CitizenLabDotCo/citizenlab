@@ -18,7 +18,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -136,7 +136,7 @@ const linkStyle = css`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   ${linkStyle}
 `;
 
@@ -321,7 +321,8 @@ const PlatformFooter = ({ className }: Props) => {
                       </StyledA>
                     ) : (
                       <StyledLink
-                        to={`/pages/${slug}`}
+                        to="/pages/$slug"
+                        params={{ slug }}
                         className={index === 0 ? 'first' : ''}
                         scrollToTop={true}
                       >

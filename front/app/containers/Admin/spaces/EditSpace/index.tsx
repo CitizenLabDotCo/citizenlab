@@ -53,7 +53,7 @@ const EditSpace = () => {
 
   return (
     <Box>
-      <GoBackButton linkTo={'/admin/projects?tab=spaces' as any} />
+      <GoBackButton to="/admin/projects" search={{ tab: 'spaces' }} />
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>

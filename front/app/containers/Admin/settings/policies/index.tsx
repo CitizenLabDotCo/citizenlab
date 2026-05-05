@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { EDITABLE_POLICY_PAGES } from 'api/custom_pages/types';
 
@@ -10,12 +9,12 @@ import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from './messages';
 import PageEditor from './PageEditor';
 
-export const StyledLink = styled(Link)`
+export const StyledLink = typedStyled(Link)`
   color: ${colors.textSecondary};
   text-decoration: underline;
 

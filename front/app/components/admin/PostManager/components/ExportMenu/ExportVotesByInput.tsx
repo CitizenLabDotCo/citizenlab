@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { fontSizes, Button } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
-import { useParams } from 'utils/router';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -10,6 +9,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 

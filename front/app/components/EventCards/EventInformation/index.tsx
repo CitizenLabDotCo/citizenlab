@@ -20,7 +20,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -37,7 +37,7 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const PrimaryLink = styled(Link)`
+const PrimaryLink = typedStyled(Link)`
   // For reference:
   // https://kittygiraudel.com/2022/04/02/accessible-cards/
   // https://inclusive-components.design/cards/
@@ -81,7 +81,7 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink to={`/events/${event.id}`}>
+          <PrimaryLink to="/events/$eventId" params={{ eventId: event.id }}>
             <Title
               variant="h3"
               fontSize="l"
@@ -224,7 +224,8 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            linkTo={`/events/${event.id}`}
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button
             // to provide context for screen readers. Using the same "Read more" text

@@ -8,7 +8,6 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
@@ -26,6 +25,7 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import NumberInput from './NumberInput';

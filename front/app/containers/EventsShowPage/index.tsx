@@ -7,7 +7,6 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useEventImage from 'api/event_images/useEventImage';
@@ -22,6 +21,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';

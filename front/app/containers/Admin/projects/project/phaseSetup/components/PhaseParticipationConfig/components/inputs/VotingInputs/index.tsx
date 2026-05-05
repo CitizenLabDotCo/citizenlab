@@ -174,7 +174,8 @@ const VotingInputs = ({
               values={{
                 optionsPageLink: (
                   <Link
-                    to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
+                    to="/admin/projects/$projectId/phases/$phaseId/ideas"
+                    params={{ projectId, phaseId }}
                     rel="noreferrer"
                   >
                     <FormattedMessage {...messages.optionsPageText} />

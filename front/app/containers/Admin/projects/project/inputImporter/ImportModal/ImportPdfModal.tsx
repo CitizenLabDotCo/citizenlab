@@ -54,10 +54,20 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   });
   const { data: phase } = usePhase(phaseId);
 
-  const downloadFormPath =
+  const downloadFormParams = { projectId, phaseId } as {
+    projectId: string;
+    phaseId: string;
+  };
+  const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
-      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
+      ? ({
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form',
+          params: downloadFormParams,
+        } as const)
+      : ({
+          to: '/admin/projects/$projectId/phases/$phaseId/form',
+          params: downloadFormParams,
+        } as const);
 
   const defaultValues = {
     locale,
@@ -152,7 +162,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
                       <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                     ),
                     hereLink: (
-                      <Link to={{ pathname: downloadFormPath }}>
+                      <Link {...downloadFormLink}>
                         <FormattedMessage
                           {...messages.formCanBeDownloadedHere}
                         />

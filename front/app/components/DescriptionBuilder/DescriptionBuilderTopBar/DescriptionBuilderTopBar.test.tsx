@@ -108,7 +108,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -127,7 +127,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -147,7 +147,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -175,7 +175,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -197,7 +197,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -219,7 +219,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -244,7 +244,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -268,7 +268,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -289,7 +289,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -311,7 +311,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -342,7 +342,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );

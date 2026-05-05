@@ -16,12 +16,13 @@ import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
@@ -38,7 +39,7 @@ interface Props {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToViewPage?: string;
+  viewPageLink?: TypedLinkProps;
 }
 
 interface FormValues {
@@ -51,7 +52,7 @@ const GenericBottomInfoSection = ({
   updatePageAndEnableSection,
   breadcrumbs,
   intl: { formatMessage },
-  linkToViewPage,
+  viewPageLink,
 }: WrappedComponentProps & Props) => {
   const theme = useTheme();
 
@@ -96,7 +97,7 @@ const GenericBottomInfoSection = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             ...breadcrumbs,
             { label: formatMessage(messages.pageTitle) },
@@ -108,9 +109,7 @@ const GenericBottomInfoSection = ({
             />
           }
           rightSideCTA={
-            linkToViewPage ? (
-              <ViewCustomPageButton linkTo={linkToViewPage} />
-            ) : null
+            viewPageLink ? <ViewCustomPageButton {...viewPageLink} /> : null
           }
         >
           <Feedback successMessage={formatMessage(messages.messageSuccess)} />
