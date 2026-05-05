@@ -58,12 +58,12 @@ namespace :single_use do
           end
 
           if execute
-            unless basket.update(user_id: nil)
-              reporter.add_error(
-                basket.errors.details,
-                context: { tenant: tenant.host, basket_id: basket.id }
-              )
-              puts "ERROR! Failed to detach basket #{basket.id}: #{basket.errors.full_messages.join(', ')}"
+            begin
+              basket.update!(user_id: nil)
+            rescue StandardError => e
+              reporter.add_error(e.message, context: { tenant: tenant.host, basket_id: basket.id })
+              puts "ERROR! Failed to detach basket #{basket.id}: #{e.message}"
+              basket.reload # update! assigns in-memory before validating; reload to reflect actual DB state
             end
             user_phase_baskets_after << basket.attributes.symbolize_keys
             next

@@ -117,23 +117,14 @@ describe 'single_use:dedupe_baskets rake task' do
       end
     end
 
-    context 'when basket.update fails' do
-      let!(:draft_basket) { create(:basket, user: user, phase: phase, submitted_at: nil) }
+    context 'when basket.update! raises' do
+      it 'leaves the basket attached and logs an error' do
+        draft_basket = create(:basket, user: user, phase: phase, submitted_at: nil)
+        create(:basket, user: user, phase: phase) # submitted basket, makes the draft a duplicate
+        allow_any_instance_of(Basket).to receive(:update!).with(user_id: nil).and_raise('Error updating basket')
 
-      before do
-        create(:basket, user: user, phase: phase) # keeper, makes the draft a duplicate
-        # Simulate a validation/save failure on the detach update
-        allow_any_instance_of(Basket).to receive(:update).with(user_id: nil).and_return(false)
-      end
-
-      it 'leaves the basket attached' do
-        run_task(execute: true)
-
-        expect(draft_basket.reload.user_id).to eq(user.id)
-      end
-
-      it 'logs an error to stdout' do
         expect { run_task(execute: true) }.to output(/ERROR! Failed to detach basket/).to_stdout
+        expect(draft_basket.reload.user_id).to eq(user.id)
       end
     end
   end
