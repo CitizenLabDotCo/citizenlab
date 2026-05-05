@@ -132,15 +132,16 @@ const projectsIndexSearchSchema = yup.object({
   search: yup.string().optional(),
   min_start_date: yup.string().optional(),
   max_start_date: yup.string().optional(),
-  // JSON-encoded array params (parsed by useParam/useParams hooks)
-  status: yup.string().optional(),
-  managers: yup.string().optional(),
-  participation_states: yup.string().optional(),
-  folder_ids: yup.string().optional(),
-  participation_methods: yup.string().optional(),
-  visibility: yup.string().optional(),
-  discoverability: yup.string().optional(),
-  space_ids: yup.string().optional(),
+  // Array params encoded as ?key=["a","b"] in the URL — TanStack's default
+  // parser turns them into arrays before validation.
+  status: yup.array().of(yup.string().required()).optional(),
+  managers: yup.array().of(yup.string().required()).optional(),
+  participation_states: yup.array().of(yup.string().required()).optional(),
+  folder_ids: yup.array().of(yup.string().required()).optional(),
+  participation_methods: yup.array().of(yup.string().required()).optional(),
+  visibility: yup.array().of(yup.string().required()).optional(),
+  discoverability: yup.array().of(yup.string().required()).optional(),
+  space_ids: yup.array().of(yup.string().required()).optional(),
 });
 
 const projectsIndexRoute = createRoute({
@@ -354,7 +355,7 @@ const projectAnalysisSearchSchema = yup.object({
     .string()
     .oneOf(['true', 'false'])
     .optional(),
-  tag_ids: yup.string().optional(),
+  tag_ids: yup.array().of(yup.string().required()).optional(),
   reset_filters: yup.string().optional(),
   from: yup.string().optional(),
 });

@@ -26,17 +26,6 @@ export const PARAMS = [
 
 export type Parameter = (typeof PARAMS)[number];
 
-const MULTISELECT_PARAMS = new Set<string>([
-  'status',
-  'managers',
-  'participation_states',
-  'folder_ids',
-  'participation_methods',
-  'visibility',
-  'discoverability',
-  'space_ids',
-] satisfies Parameter[]);
-
 export const setParam = <ParamName extends Parameter>(
   paramName: ParamName,
   paramValue: Parameters[ParamName]
@@ -58,15 +47,7 @@ export const useParam = <ParamName extends Parameter>(
     from: '/$locale/admin/projects/',
   });
 
-  const paramValue = searchParams[paramName];
-
-  if (MULTISELECT_PARAMS.has(paramName)) {
-    return (
-      paramValue === undefined ? [] : JSON.parse(paramValue)
-    ) as Parameters[typeof paramName];
-  }
-
-  return paramValue as Parameters[typeof paramName] | undefined;
+  return searchParams[paramName] as Parameters[typeof paramName] | undefined;
 };
 
 export const useParams = () => {
@@ -81,14 +62,10 @@ export const useParams = () => {
       : PARAMS.filter((param) => param !== 'space_ids');
 
     return params.reduce((acc, paramName) => {
-      let value: string | undefined = searchParams[paramName];
+      const value = searchParams[paramName];
 
       if (value === undefined) {
         return acc;
-      }
-
-      if (MULTISELECT_PARAMS.has(paramName)) {
-        value = JSON.parse(value);
       }
 
       return {

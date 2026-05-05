@@ -8,6 +8,13 @@ import { useSearch } from 'utils/router';
 
 import { TFilterMenu } from '.';
 
+const filterMenuTabs = [
+  'topics',
+  'phases',
+  'projects',
+  'statuses',
+] as const satisfies readonly TFilterMenu[];
+
 type Params = IIdeaQueryParameters & {
   tab?: TFilterMenu;
   selected_idea_id?: string;
@@ -22,17 +29,21 @@ const useInputManagerSearchParams = (context: {
   projectId?: string | null;
   phaseId?: string;
 }) => {
-  const searchParams = useSearch({
-    from: '/$locale/admin/projects/$projectId/phases',
-  });
+  const searchParams = useSearch({ strict: false });
 
   const params: Params = useMemo(() => {
-    const inputTopics = searchParams.topics
-      ? searchParams.topics.split(',')
+    const topicsParam = searchParams.topics;
+    const inputTopics = Array.isArray(topicsParam)
+      ? topicsParam
+      : topicsParam
+      ? topicsParam.split(',')
       : undefined;
 
-    const projectsFromUrl = searchParams.projects
-      ? searchParams.projects.split(',')
+    const projectsParam = searchParams.projects;
+    const projectsFromUrl = Array.isArray(projectsParam)
+      ? projectsParam
+      : projectsParam
+      ? projectsParam.split(',')
       : undefined;
     const defaultProjects = context.projectId ? [context.projectId] : undefined;
     const projects = projectsFromUrl ?? defaultProjects;
@@ -49,9 +60,12 @@ const useInputManagerSearchParams = (context: {
       feedback_needed: boolean(searchParams.feedback_needed),
       phase: phaseParam === 'all' ? undefined : phaseParam || context.phaseId,
       sort: (searchParams.sort || 'new') as Sort,
-      tab: searchParams.tab,
+      tab: filterMenuTabs.find((t) => t === searchParams.tab),
       search: searchParams.search,
-      idea_status: searchParams.status,
+      idea_status:
+        typeof searchParams.status === 'string'
+          ? searchParams.status
+          : undefined,
       assignee: searchParams.assignee,
       selected_idea_id: searchParams.selected_idea_id,
       'page[number]': page,

@@ -77,9 +77,7 @@ type ReportBuilderPageProps = {
 
 const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const { formatMessage } = useIntl();
-  const searchParams = useSearch({
-    from: '/$locale/admin/reporting/report-builder/',
-  });
+  const searchParams = useSearch({ strict: false });
   const { data: me } = useAuthUser();
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();

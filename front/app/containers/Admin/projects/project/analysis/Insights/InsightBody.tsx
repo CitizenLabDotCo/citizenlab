@@ -60,9 +60,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const search = useSearch({
-    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
-  });
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,

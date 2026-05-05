@@ -99,9 +99,7 @@ const StickyNote: React.FC<Props> = ({
   centeredIdeaId,
   showReactions = true,
 }) => {
-  const searchParams = useSearch({
-    from: '/$locale/projects/$slug/ideas-feed',
-  });
+  const searchParams = useSearch({ strict: false });
   const phaseId = searchParams.phase_id || undefined;
   const { data: phase } = usePhase(phaseId);
 

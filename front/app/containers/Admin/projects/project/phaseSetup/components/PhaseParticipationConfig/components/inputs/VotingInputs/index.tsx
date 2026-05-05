@@ -118,9 +118,7 @@ const VotingInputs = ({
   voteTerm,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams({
-    from: '/$locale/admin/projects/$projectId/phases/$phaseId/setup',
-  });
+  const { projectId, phaseId } = useParams({ strict: false });
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {
