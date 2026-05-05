@@ -21,7 +21,12 @@ const SpaceName = ({ spaceId }: Props) => {
   const localize = useLocalize();
 
   return (
-    <Box display="flex" alignItems="center" gap="4px">
+    <Box
+      display="flex"
+      alignItems="center"
+      gap="4px"
+      data-cy="space-name-project-header"
+    >
       <Icon name="spaces" fill={colors.coolGrey600} width="14px" />
       <Text color="coolGrey600" m="0px" fontSize="s" p="0">
         {truncate(localize(space?.data.attributes.title_multiloc), 40)}
