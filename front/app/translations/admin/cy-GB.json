@@ -486,7 +486,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Wedi'i guddio o'r chwiliad prosiectau cyffredinol",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Gweladwy yn unig mewn modiwlau penodol ar yr hafan",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archifwyd",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet1": "Yn hygyrch i weinyddwyr a rheolwyr penodedig yn unig (gofod, ffolder, neu brosiect)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Gall unrhyw un sydd â'r ddolen rhagolwg Rhannu gael mynediad ato hefyd",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Drafft",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Hygyrch i bob defnyddiwr neu i grwpiau penodol, yn dibynnu ar osodiadau'r prosiect",
