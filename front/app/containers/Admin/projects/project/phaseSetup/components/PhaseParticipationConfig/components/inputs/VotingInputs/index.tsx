@@ -166,7 +166,7 @@ const VotingInputs = ({
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
           </SubSectionTitleWithDescription>
-          {phaseId ? (
+          {phaseId && projectId ? (
             <FormattedMessage
               {...messages.optionsToVoteOnDescription}
               values={{
