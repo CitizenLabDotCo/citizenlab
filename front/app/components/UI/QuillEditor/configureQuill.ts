@@ -9,6 +9,12 @@ import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
 
+let embeddedVideoTitle = 'Embedded video';
+
+export const setEmbeddedVideoTitle = (title: string) => {
+  embeddedVideoTitle = title;
+};
+
 export const configureQuill = () => {
   // Pre-register imageAlign and iframeAlign formats so they exist in the
   // registry when Quill validates the "formats" whitelist during construction.
@@ -46,6 +52,8 @@ export const configureQuill = () => {
   class VideoFormat extends Video {
     static create(url: string) {
       const node = super.create(url);
+
+      node.setAttribute('title', embeddedVideoTitle);
 
       // Add referrer policy to YouTube video embeds
       if (isYouTubeEmbedLink(url)) {
