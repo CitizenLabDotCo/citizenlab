@@ -486,7 +486,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Masqué de la recherche générale de projets",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Visible uniquement dans les modules dédiés de la page d'accueil",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Archivé",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": "Accessible uniquement aux administrateurs et aux gestionnaires assignés.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": "Accessible uniquement aux administrateurs et aux gestionnaires assignés",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Toute personne disposant du lien de prévisualisation partagé peut également y accéder.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Brouillon",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Accessible à tous les utilisateurs ou à des groupes spécifiques, selon les paramètres du projet",
