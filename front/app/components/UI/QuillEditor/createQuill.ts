@@ -190,5 +190,14 @@ export const createQuill = (
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
 
+  // add aria-labels to dropdown items for a11y
+  const pickerItems = document.querySelectorAll('.ql-picker-item');
+  pickerItems.forEach((item) => {
+    const label = item.getAttribute('data-label');
+    if (label) {
+      item.setAttribute('aria-label', label);
+    }
+  });
+
   return quill;
 };
