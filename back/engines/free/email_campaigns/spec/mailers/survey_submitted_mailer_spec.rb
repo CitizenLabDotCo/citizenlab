@@ -59,9 +59,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
     end
 
     it 'does not include the idea id when "hide_submission_removal_text" is turned on' do
-      configuration = AppConfiguration.instance
-      configuration.settings['hide_submission_removal_text'] = { 'enabled' => true, 'allowed' => true }
-      configuration.save!
+      SettingsService.new.activate_feature! 'hide_submission_removal_text'
       expect(body).not_to include(input.id)
     end
 
