@@ -93,8 +93,8 @@ const rootSearchSchema = yup.object({
   // Used by project cards topbar to auto-focus search
   focusSearch: yup.string().optional(),
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
-  lat: yup.string().optional(),
-  lng: yup.string().optional(),
+  lat: yup.number().optional(),
+  lng: yup.number().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
