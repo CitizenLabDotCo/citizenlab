@@ -200,9 +200,12 @@ const useInputManagerSearchParams = (context: {
   return { params, setParams, resetParams };
 };
 
-function boolean(string: string | null | undefined) {
-  if (string?.toLowerCase() === 'true') return true;
-  if (string?.toLowerCase() === 'false') return false;
+function boolean(value: unknown) {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
   return undefined;
 }
 

@@ -281,6 +281,8 @@ const projectIdeaNewSearchSchema = yup.object({
   phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
+  lat: yup.number().optional(),
+  lng: yup.number().optional(),
 });
 
 const projectIdeaNewRoute = createRoute({
