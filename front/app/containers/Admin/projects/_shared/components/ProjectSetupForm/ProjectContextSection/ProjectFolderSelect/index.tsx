@@ -66,6 +66,7 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
       value={folder_id || defaultFolderSelectOptionValue}
       options={folderOptions}
       onChange={handleSelectFolderChange}
+      dataCy="project-folder-select"
     />
   );
 };
