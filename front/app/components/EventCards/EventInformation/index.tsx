@@ -20,7 +20,6 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -35,24 +34,6 @@ const EventInformationContainer = styled.div`
   flex-direction: column;
   justify-content: space-between; // pushes button to bottom
   height: 100%;
-`;
-
-const PrimaryLink = styled(Link)`
-  // For reference:
-  // https://kittygiraudel.com/2022/04/02/accessible-cards/
-  // https://inclusive-components.design/cards/
-  ::before {
-    // Use a pseudo-element to expand the hitbox of the link over the whole card.
-    content: ''; /* 1 */
-
-  position: relative;
-
-  // Expand the hitbox over the whole card.
-  position: absolute; /* 2 */
-  inset: 0; /* 2 */
-
-  // Place the pseudo-element on top of the whole card.
-  z-index: 1; /* 3 */
 `;
 
 interface Props {
@@ -81,19 +62,17 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink to={`/events/${event.id}`}>
-            <Title
-              variant="h3"
-              fontSize="l"
-              pr="8px"
-              color="tenantText"
-              m="0px"
-              mt="auto"
-              mb="auto"
-            >
-              <T value={event.attributes.title_multiloc} />
-            </Title>
-          </PrimaryLink>
+          <Title
+            variant="h3"
+            fontSize="l"
+            pr="8px"
+            color="tenantText"
+            m="0px"
+            mt="auto"
+            mb="auto"
+          >
+            <T value={event.attributes.title_multiloc} />
+          </Title>
 
           <DateBlocks
             startAtMoment={startAtMoment}
