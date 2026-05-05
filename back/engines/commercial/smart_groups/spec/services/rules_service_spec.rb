@@ -99,6 +99,7 @@ describe SmartGroups::RulesService do
       end
 
       it 'filters out users who have voted in at least one of the projects' do
+        # 2 baskets, 2 users have voted in at least one project
         create(:basket, phase: project1.phases.first, user: User.first)
         create(:basket, phase: project2.phases.first, user: User.last)
 
