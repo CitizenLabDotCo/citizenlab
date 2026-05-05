@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 /* eslint-disable no-restricted-imports */
 import {
@@ -6,7 +6,6 @@ import {
   type LinkComponent,
   type LinkProps,
   type RegisteredRouter,
-  Navigate as TanstackNavigate,
   Link,
   Outlet,
   RouterProvider,
@@ -31,8 +30,4 @@ export const useSearch = (_options: any) => {
       ],
     [searchStr]
   );
-};
-
-export const Navigate = (props: any) => {
-  return <TanstackNavigate {...props} />;
 };
