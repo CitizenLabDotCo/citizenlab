@@ -31,7 +31,7 @@ class AnonymousNameService
   end
 
   def name_key
-    @user.email || @user.unique_code || @user.id
+    @user.email || @user.unique_code || @user.id || SecureRandom.hex(8)
   end
 
   def scheme

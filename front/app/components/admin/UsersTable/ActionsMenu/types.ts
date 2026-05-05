@@ -3,7 +3,8 @@ export type ModalName =
   | 'unblock-user'
   | 'delete-user'
   | 'set-moderator'
-  | 'seat-limit-reached';
+  | 'seat-limit-reached-admin'
+  | 'seat-limit-reached-moderator';
 
 export type Action =
   | 'unblock-user'

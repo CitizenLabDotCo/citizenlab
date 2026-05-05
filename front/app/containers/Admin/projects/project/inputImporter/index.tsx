@@ -4,8 +4,6 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
-
 import ImportExcelModal from './ImportModal/ImportExcelModal';
 import ImportPdfModal from './ImportModal/ImportPdfModal';
 import ReviewSection from './ReviewSection';
@@ -14,8 +12,6 @@ import TopBar from './TopBar';
 const InputImporter = () => {
   const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
-
-  const [importJobs, setImportJobs] = useState<IBackgroundJobData[]>([]);
 
   const openImportPdfModal = () => setImportPdfModalOpen(true);
   const closeImportPdfModal = () => setImportPdfModalOpen(false);
@@ -43,20 +39,18 @@ const InputImporter = () => {
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
-            <ReviewSection importJobs={importJobs} />
+            <ReviewSection
+              onClickPDFImport={openImportPdfModal}
+              onClickExcelImport={openImportExcelModal}
+            />
           </Box>
         </FocusOn>
       </Box>
       <ImportExcelModal
         open={importExcelModalOpen}
         onClose={closeImportExcelModal}
-        onImport={(jobs: IBackgroundJobData[]) => setImportJobs(jobs)}
       />
-      <ImportPdfModal
-        open={importPdfModalOpen}
-        onClose={closeImportPdfModal}
-        onImport={(jobs: IBackgroundJobData[]) => setImportJobs(jobs)}
-      />
+      <ImportPdfModal open={importPdfModalOpen} onClose={closeImportPdfModal} />
     </>
   );
 };

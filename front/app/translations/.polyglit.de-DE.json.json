@@ -2114,6 +2114,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -4078,6 +4083,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:21:33.397032Z",
+    "verified_by": "Jelena"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -9689,6 +9699,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-15T14:46:55.319599Z",
@@ -12194,6 +12205,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.343531Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -12544,6 +12560,7 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
     "state": "verified",
     "verified_at": "2026-04-15T14:46:55.319599Z",
@@ -13303,6 +13320,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",

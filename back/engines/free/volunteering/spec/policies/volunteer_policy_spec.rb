@@ -8,9 +8,31 @@ describe Volunteering::VolunteerPolicy do
   let(:scope) { described_class::Scope.new(user, cause.volunteers) }
 
   context 'on volunteer in a public project' do
-    let(:project) { create(:single_phase_volunteering_project) }
+    let!(:space) { create(:space) }
+    let(:project) { create(:single_phase_volunteering_project, space: space) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let(:cause) { create(:cause, phase: project.phases.first) }
     let!(:volunteer) { create(:volunteer, cause: cause) }
+
+    shared_examples 'has moderator volunteer access' do
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+
+      it 'indexes the volunteer' do
+        expect(scope.resolve).to include(volunteer)
+      end
+    end
+
+    shared_examples 'has out-of-scope moderator volunteer access' do
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+
+      it 'does not index the volunteer' do
+        expect(scope.resolve).not_to include(volunteer)
+      end
+    end
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -39,25 +61,43 @@ describe Volunteering::VolunteerPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.to permit(:index_xlsx) }
-
-      it 'indexes the volunteer' do
-        expect(scope.resolve.size).to eq 1
-      end
+      it_behaves_like 'has moderator volunteer access'
     end
 
-    context 'for a project moderator' do
-      let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.to permit(:index_xlsx) }
+      it_behaves_like 'has moderator volunteer access'
+    end
 
-      it 'indexes the volunteer' do
-        expect(scope.resolve.size).to eq 1
-      end
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'has out-of-scope moderator volunteer access'
+    end
+
+    context 'for a folder moderator who can moderate' do
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it_behaves_like 'has moderator volunteer access'
+    end
+
+    context 'for a folder moderator who cannot moderate' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'has out-of-scope moderator volunteer access'
+    end
+
+    context 'for a space moderator who can moderate' do
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it_behaves_like 'has moderator volunteer access'
+    end
+
+    context 'for a space moderator who cannot moderate' do
+      let(:user) { create(:space_moderator) }
+
+      it_behaves_like 'has out-of-scope moderator volunteer access'
     end
 
     context 'for the volunteer' do

@@ -384,18 +384,6 @@
         }
       },
 
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "project_preview_link" : {
         "type": "object",
         "title": "Project Preview Link",
@@ -1605,18 +1593,6 @@
         }
       },
 
-      "phase_insights": {
-        "type": "object",
-        "title": "Phase insights",
-        "description": "Phase insights dashboard. Metrics and insights about a project phase where participation is/was possible.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "draft_phase_description": {
         "type": "object",
         "title": "Draft phase description",
@@ -1653,6 +1629,18 @@
         }
       },
 
+      "phase_datetime_setup": {
+        "type": "object",
+        "title": "Phase datetime setup",
+        "description": "Allow to set up the start and end datetimes of a phase in the project timeline, in addition to just the dates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "enhanced_user_profile_privacy": {
         "type": "object",
         "title": "Enhanced user profile privacy",
@@ -1662,6 +1650,66 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "custom_smtp": {
+        "type": "object",
+        "title": "Custom SMTP Server",
+        "description": "Allows the tenant to use a custom SMTP server for sending emails instead of Mailgun. NOTE: No email stats will be available when using this option.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["address"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "address": {
+            "type": "string",
+            "title": "SMTP Address",
+            "description": "Hostname of the SMTP server",
+            "private": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "SMTP Port",
+            "description": "Port of the SMTP server",
+            "default": 587,
+            "private": true
+          },
+          "domain": {
+            "type": "string",
+            "title": "HELO Domain",
+            "private": true
+          },
+          "user_name": {
+            "type": "string",
+            "title": "SMTP Username",
+            "private": true
+          },
+          "password": {
+            "type": "string",
+            "title": "SMTP Password",
+            "private": true
+          },
+          "authentication_type": {
+            "type": "string",
+            "title": "Authentication method",
+            "enum": ["plain", "login", "cram_md5"],
+            "default": "plain",
+            "private": true
+          },
+          "enable_starttls_auto": {
+            "type": "boolean",
+            "title": "Enable STARTTLS",
+            "default": true,
+            "private": true
+          },
+          "openssl_verify_mode": {
+            "type": "string",
+            "title": "OpenSSL Verify Mode",
+            "enum": ["none", "peer"],
+            "private": true
+          }
         }
       }
     },

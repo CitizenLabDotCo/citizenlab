@@ -2114,6 +2114,16 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.native_survey_not_submitted.submissions_close_at_time": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:27:35.787021Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "email_campaigns.native_survey_not_submitted.submissions_close_on_date": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:27:35.787021Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.native_survey_not_submitted.title": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",

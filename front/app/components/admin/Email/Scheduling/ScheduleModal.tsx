@@ -16,6 +16,7 @@ import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getGmtOffset } from 'utils/dateUtils';
 
 import messages from './messages';
 import { getDefaultTime, getNextHourTime } from './utils';
@@ -37,17 +38,28 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const now = timeZone ? moment().tz(timeZone) : moment();
+  const tenantTimeNow = timeZone
+    ? new Date(now.year(), now.month(), now.date(), now.hour(), now.minute())
+    : new Date();
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
+
+  const gmtOffset = getGmtOffset(timeZone, tenantTimeNow, selectedDate);
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
-        .tz(timeZone)
-        .toDate();
+      const m = moment.tz(campaign.data.attributes.scheduled_at, timeZone);
+      // We don't use m.toDate() because it changes the time to the browser timezone.
+      const scheduledDate = new Date(
+        m.year(),
+        m.month(),
+        m.date(),
+        m.hour(),
+        m.minute()
+      );
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -56,9 +68,15 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
 
-    // if the selected date is today, set the default time to the next hour in tenant timezone
+    // if the selected date is today, check if selected time is in the past
     if (isSameDay(date, tenantTimeNow)) {
-      setSelectedTime(getNextHourTime(tenantTimeNow));
+      const selectedDateTime = new Date(date);
+      selectedDateTime.setHours(selectedTime.getHours());
+      selectedDateTime.setMinutes(selectedTime.getMinutes());
+      selectedDateTime.setSeconds(0);
+      if (selectedDateTime <= tenantTimeNow) {
+        setSelectedTime(getNextHourTime(tenantTimeNow));
+      }
     }
   };
 
@@ -70,9 +88,25 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     e.preventDefault();
     if (!selectedDate || !timeZone) return;
 
-    const combined = new Date(selectedDate);
-    combined.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-    const scheduledAt = moment.tz(combined, timeZone).toISOString();
+    const scheduledDateTime = new Date(selectedDate);
+    scheduledDateTime.setHours(selectedTime.getHours());
+    scheduledDateTime.setMinutes(selectedTime.getMinutes());
+    scheduledDateTime.setSeconds(0);
+    const scheduledAt = moment
+      .tz(
+        {
+          year: scheduledDateTime.getFullYear(),
+          month: scheduledDateTime.getMonth(),
+          day: scheduledDateTime.getDate(),
+          hour: scheduledDateTime.getHours(),
+          minute: scheduledDateTime.getMinutes(),
+          second: 0,
+        },
+        timeZone
+      )
+      .utc()
+      .toISOString();
+
     updateCampaign(
       {
         id: campaign.data.id,
@@ -120,7 +154,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
               <Text fontSize="l">GMT{gmtOffset}</Text>
             </Box>
             <Warning mb="12px">
-              <Text fontSize="m">
+              <Text fontSize="m" m="0px">
                 <FormattedMessage {...messages.scheduleSendWarning} />
               </Text>
             </Warning>

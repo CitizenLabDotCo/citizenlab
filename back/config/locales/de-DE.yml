@@ -168,7 +168,7 @@ de-DE:
       last_name: Nachname
       line_print_description: Bitte zeichnen Sie eine Route auf der Karte unten ein.
       linear_scale_print_description: Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}
-      logic_go_to_section: Gehen Sie als Nächstes zu <strong>%{section}</strong>.
+      logic_go_to_section: Als Nächstes zu <strong>%{section}</strong> gehen.
       logic_if_answered_end: Wenn Sie <strong>%{option}</strong> bei Frage %{question} geantwortet haben, müssen Sie <strong>keine</strong> weiteren Fragen beantworten.
       logic_if_answered_go_to: Wenn Sie <strong>%{option}</strong> bei Frage %{question} geantwortet haben, gehen Sie als Nächstes zu <strong>%{section}</strong>.
       logic_no_further_questions: Basierend auf Ihren Antworten müssen Sie <strong>keine</strong> weiteren Fragen beantworten.

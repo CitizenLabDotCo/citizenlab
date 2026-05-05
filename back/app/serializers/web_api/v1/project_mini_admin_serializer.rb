@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
-  attributes(:title_multiloc, :visible_to, :listed, :space_id)
+  attributes(:title_multiloc, :visible_to, :listed)
 
   attribute :publication_status do |object|
     object.admin_publication.effective_publication_status
@@ -36,6 +36,8 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   has_one :folder
+
+  has_one :space
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 

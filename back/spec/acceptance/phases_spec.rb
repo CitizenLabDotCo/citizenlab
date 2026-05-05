@@ -314,25 +314,10 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
-        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_date.iso8601
-        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_date&.iso8601
+        expect(json_response.dig(:data, :attributes, :start_at)).to eq phase_in_db.start_at.as_json
+        expect(json_response.dig(:data, :attributes, :end_at)).to eq phase_in_db.end_at.as_json
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-      end
-
-      describe 'with date strings (backward compatibility)' do
-        let(:start_at) { '2025-06-01' }
-        let(:end_at) { '2025-07-15' }
-
-        example 'Create a phase with date strings', document: false do
-          do_request
-          assert_status 201
-
-          phase_in_db = Phase.find(response_data[:id])
-          expect(phase_in_db.start_at).to eq start_at.in_time_zone
-          # end_at shifted +1 day for exclusive end boundary
-          expect(phase_in_db.end_at).to eq end_at.in_time_zone + 1.day
-        end
       end
 
       describe do
@@ -645,21 +630,6 @@ resource 'Phases' do
         )
       end
 
-      describe 'with date strings (backward compatibility)' do
-        let(:start_at) { '2025-06-01' }
-        let(:end_at) { '2025-07-15' }
-
-        example 'Update a phase with date strings', document: false do
-          do_request
-          assert_status 200
-
-          phase.reload
-          expect(phase.start_at).to eq start_at.in_time_zone
-          # end_at shifted +1 day for exclusive end boundary
-          expect(phase.end_at).to eq end_at.in_time_zone + 1.day
-        end
-      end
-
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
 
@@ -763,7 +733,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
           responses.each do |response|
             expect { response.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
@@ -778,7 +748,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
         end
       end
 
@@ -791,7 +761,7 @@ resource 'Phases' do
 
           do_request
 
-          expect { idea.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+          expect { idea.reload }.not_to raise_error
         end
       end
     end

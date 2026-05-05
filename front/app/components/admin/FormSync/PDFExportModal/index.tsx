@@ -22,7 +22,7 @@ import useLocale from 'hooks/useLocale';
 
 import { saveIdeaFormAsPDF } from 'containers/Admin/projects/project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
-import { saveSurveyAsPDF } from 'containers/Admin/projects/project/nativeSurvey/saveSurveyAsPDF';
+import { saveSurveyAsPDF } from 'containers/Admin/projects/project/surveyFormAssets/saveSurveyAsPDF';
 
 import { FormType } from 'components/FormBuilder/utils';
 import Feedback from 'components/HookForm/Feedback';

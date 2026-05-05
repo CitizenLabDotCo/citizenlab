@@ -9,10 +9,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
 import useProjectById from 'api/projects/useProjectById';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
