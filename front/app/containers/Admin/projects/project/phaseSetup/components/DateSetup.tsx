@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { format, parseISO, startOfDay } from 'date-fns';
 import { CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
@@ -16,12 +16,13 @@ import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { convertToTimeZoneISO, getDateInTimezone } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import { SubmitStateType, ValidationErrors } from '../typings';
 
-import { getDefaultMonth } from './utils';
+import { getDefaultMonth, adjustEndForDisplay } from './utils';
 
 interface Props {
   formData: IUpdatedPhaseProperties;
@@ -43,30 +44,41 @@ const DateSetup = ({
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
+
   const { start_at, end_at } = formData;
 
   const selectedRange = useMemo(() => {
     return {
-      from: start_at ? startOfDay(parseISO(start_at)) : undefined,
-      to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+      from: getDateInTimezone(start_at, timeZone),
+      to: getDateInTimezone(end_at, timeZone),
     };
-  }, [start_at, end_at]);
+  }, [start_at, end_at, timeZone]);
 
   const disabledRanges = useMemo(() => {
-    if (!phases) return undefined;
+    if (!phases || !timeZone) return [];
 
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
-    const disabledRanges = otherPhases.map(
-      ({ attributes: { start_at, end_at } }) => ({
-        from: startOfDay(parseISO(start_at)),
-        to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+    const disabledRanges = otherPhases
+      .map(({ attributes: { start_at, end_at } }) => {
+        const fromDate = getDateInTimezone(start_at, timeZone);
+        const toDate = end_at ? getDateInTimezone(end_at, timeZone) : undefined;
+
+        return {
+          from: fromDate,
+          to: toDate ? adjustEndForDisplay(toDate) : undefined,
+        };
       })
-    );
+      .filter(
+        (range): range is { from: Date; to: Date | undefined } =>
+          range.from !== undefined
+      );
 
     return patchDisabledRanges(selectedRange, disabledRanges);
-  }, [phases, phaseId, selectedRange]);
+  }, [phases, phaseId, selectedRange, timeZone]);
 
-  if (!phases || !disabledRanges) return null;
+  if (!phases) return null;
 
   const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
     selectedRange,
@@ -100,12 +112,13 @@ const DateSetup = ({
             ...prevState,
             phaseDateError: undefined,
           }));
+
+          const start_at = convertToTimeZoneISO(from, timeZone);
+          const end_at = to ? convertToTimeZoneISO(to, timeZone) : null;
           setFormData({
             ...formData,
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            start_at: from ? format(from, 'yyyy-MM-dd') : '',
-            end_at: to ? format(to, 'yyyy-MM-dd') : '',
+            start_at,
+            end_at,
           });
         }}
         className="intercom-admin-phase-date-setup"

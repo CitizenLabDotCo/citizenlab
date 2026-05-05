@@ -16,7 +16,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def show?
-    user && UserRoleService.new.can_moderate?(record, user)
+    active_admin? || user&.moderator?
   end
 
   def index?
@@ -28,7 +28,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def update?
-    active_admin?
+    can_moderate?
   end
 
   def destroy?

@@ -197,8 +197,8 @@ module MultiTenancy
               allowed: true
             },
             intercom: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             segment: {
               enabled: false,
@@ -587,6 +587,10 @@ module MultiTenancy
               allowed: false
             },
             email_scheduling: {
+              enabled: true,
+              allowed: true
+            },
+            phase_datetime_setup: {
               enabled: true,
               allowed: true
             }

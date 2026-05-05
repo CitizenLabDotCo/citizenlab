@@ -18,6 +18,7 @@ import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/Profi
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
 import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
@@ -274,6 +275,10 @@ const IdeationPage = ({
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
                     <PageTitle page={page} />
+
+                    {page.key === 'user_page' && (
+                      <CustomFieldsSignupHelperText />
+                    )}
 
                     {currentPageIndex === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
