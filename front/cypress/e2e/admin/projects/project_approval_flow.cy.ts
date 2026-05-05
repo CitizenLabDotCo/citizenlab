@@ -38,7 +38,11 @@ describe('Admin project approval flow', () => {
 
     cy.visit(`admin/projects/${projectId}`);
 
-    cy.dataCy('e2e-request-approval').click();
+    // Wait for project review status load to finish (button is in `processing`
+    // state until then and clicks are no-ops).
+    cy.dataCy('e2e-request-approval')
+      .should('not.have.class', 'processing')
+      .click();
     cy.get('#e2e-request-approval-confirm').click();
     cy.dataCy('e2e-request-approval').should('not.exist');
     cy.dataCy('e2e-request-approval-pending').should('exist');
