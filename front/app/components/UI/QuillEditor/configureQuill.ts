@@ -66,6 +66,9 @@ export const configureQuill = () => {
     static formats(domNode: Element) {
       return attributes.reduce(
         (formats: Record<string, string | null>, attribute) => {
+          // `title` is set dynamically from the current locale in `create`;
+          // skip it here so a stale title in saved HTML doesn't override it.
+          if (attribute === 'title') return formats;
           if (domNode.hasAttribute(attribute)) {
             formats[attribute] = domNode.getAttribute(attribute);
           }
@@ -75,6 +78,7 @@ export const configureQuill = () => {
       );
     }
     format(name: string, value: string) {
+      if (name === 'title') return;
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);
