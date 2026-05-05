@@ -44,8 +44,13 @@ describe InputStatusService do
         moderator = create(:project_moderator, projects: [phase.project])
         create_list(:reaction, 3, reactable: proposal, mode: 'up')
 
+        # Restrict job execution to LogActivityJob (creates the Activity and
+        # enqueues notification jobs) and MakeNotificationsForClassJob (creates
+        # the Notification records). Other jobs that LogActivityJob enqueues
+        # (Rabbit publish, Segment tracking) require external services that
+        # aren't available in CI.
         expect do
-          perform_enqueued_jobs do
+          perform_enqueued_jobs(only: [LogActivityJob, MakeNotificationsForClassJob]) do
             described_class.auto_transition_input!(proposal.reload)
           end
         end.to change { Notifications::ThresholdReachedForAdmin.where(recipient: moderator).count }.by(1)
