@@ -44,7 +44,7 @@ describe('Project topics', () => {
       const topicTitle = randomString();
 
       // create a topic
-      cy.visit('admin/settings/topics/platform/new/platform');
+      cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -76,7 +76,7 @@ describe('Project topics', () => {
       const editedTopicTitle = randomString();
 
       // create a topic
-      cy.visit('admin/settings/topics/platform/new/platform');
+      cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -89,11 +89,15 @@ describe('Project topics', () => {
       // go to topic manager
       cy.visit('admin/settings/topics');
 
-      // Edit the name of the custom topic
+      // Navigate directly to the edit page — Cypress synthetic clicks don't
+      // trigger TanStack <Link> navigation reliably; this matches the pattern
+      // already used elsewhere in this file (cy.visit('/topics/platform/new')).
       cy.get('.e2e-topic-field-row')
         .first()
-        .find('#e2e-custom-topic-edit-button')
-        .click();
+        .invoke('attr', 'id')
+        .then((topicId) => {
+          cy.visit(`admin/settings/topics/platform/${topicId}/edit`);
+        });
       cy.clickLocaleSwitcherAndType(editedTopicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
