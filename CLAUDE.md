@@ -2,42 +2,17 @@
 
 ## Project Overview
 
-Go Vocal is a **digital democracy platform** that facilitates community participation and co-creation, aimed at (mostly local) governments. It enables communities to post ideas, contribute to discussions, vote, and prioritize community projects through various participation methods including polls, participatory budgets, idea collection, and surveys. It allows admins to manage and process the results of these processes.
+Go Vocal is a **digital democracy platform** that facilitates community participation and co-creation, aimed at (mostly local) governments. It enables communities to post ideas, contribute to discussions, vote, and prioritize community projects through various participation methods including polls, participatory budgets, idea collection, and surveys. Admins and moderators (called "managers" in UI copy) manage and process the results.
 
 ## Repository Structure
 
-This is a monorepo containing:
+Monorepo:
 
-- **`front/`** - React/TypeScript frontend application (Vite-based)
-- **`back/`** - Ruby on Rails backend API (Rails 7.1+)
-- **`e2e/`** - End-to-end tests
-- **`.circleci/`** - CI/CD configuration
-
-## Key Technologies
-
-### Frontend (`front/`)
-
-The front-end is a Single Page Application handling both the front-office (citizen-facing) as the back-office (government-facing) side of the platform.
-
-- React 18.3 with TypeScript 5.3
-- Vite for build tooling
-- Styled Components for styling
-- React Query for data fetching
-- React Router for navigation
-- Component library in `front/app/component-library/`
-
-### Backend (`back/`)
-
-The back-end is purely an API layer, and in general not rendering HTML.
-
-- Ruby 3.3+ with Rails 7.1.5
-- PostgreSQL with PostGIS (spatial data)
-- Multi-tenant architecture (using ros-apartment gem)
-- Engine-based architecture (`engines/free/` and `engines/commercial/`)
-- Background jobs with Que
-- RabbitMQ for event messaging
-- Carrierwave + Fog for file uploads (S3)
-- Pundit for policies
+- **`front/`** — React/TypeScript SPA (citizen-facing front-office + admin back-office). See [`front/CLAUDE.md`](./front/CLAUDE.md) for FE-specific guidance.
+- **`back/`** — Rails REST API (multi-tenant, engine-based). See [`back/CLAUDE.md`](./back/CLAUDE.md) for BE-specific guidance.
+- **`e2e/`** — Cypress end-to-end tests.
+- **`.circleci/`** — CI/CD configuration.
+- **`env_files/`** — per-area environment files for local development.
 
 ## Getting Started
 
@@ -48,74 +23,41 @@ The back-end is purely an API layer, and in general not rendering HTML.
 
 ### Quick Start
 
-1. **Clone the repository**:
+1. Clone the repository:
 
    ```bash
    git clone <repository-url>
    cd citizenlab
    ```
 
-2. **Build and start the backend in docker compose**:
+2. From the repo root, build and seed the backend:
 
    ```bash
    make reset-dev-env
    ```
 
-   This builds Docker images and populates the database with seed data.
+3. In another terminal, install and start the frontend:
 
-3. **Install and start the frontend**:
    ```bash
    cd front
    npm install
    npm start
    ```
-   The frontend will be available at the default Vite dev server port.
 
-### Environment Configuration
+## Make Commands
 
-- Backend and frontend environment files are in `env_files/`
-- Use `docker-compose.yml` for local development orchestration
+The root `Makefile` defines convenience targets. Most are backend-oriented but **all `make` commands must be run from the repo root**, even when the underlying command operates inside `back/`.
 
-## Development Workflow
+Notable targets:
 
-### Backend Development
-
-**Run all rails commands in docker compose, no local execution**:
-
-```bash
-docker compose run --rm web <command>
-```
-
-## Make commands
-
-The root of the repository defines a Makefile with a bunch of useful make commands. Most apply to the back-end, so despite the code of the back-end living in `back/`, executing any make commands should be done through the root folder.
-
-### Frontend Development
-
-- **Start dev server**: `npm start` (in `front/`)
-- **Run tests**: `npm test`
-- **Build for production**: `npm run build`
-- **Lint code**: `npm run lint`
-
-### Testing
-
-- **Backend tests**: `docker compose run --rm web bin/rspec`
-- **Frontend unit tests**: `cd front && npm test`
-- **E2E tests**:
-  ```bash
-  make e2e-setup  # Backend setup
-  cd front && npm run cypress:open  # Run Cypress
-  ```
-
-## Additional Resources
-
-- Main README: [README.md](./README.md)
-- Frontend README: [front/README.md](./front/README.md)
-- Backend README: [back/README.md](./back/README.md)
-- Official Website: https://www.govocal.com
+- `make reset-dev-env` — rebuild backend images + reseed the database.
+- `make e2e-setup` — prepare the backend for a Cypress run; then `npm run cypress:open` from `front/`.
 
 ## CI/CD
 
-- CircleCI runs tests on all PRs and master branch commits
-- Config: `.circleci/config.yml`
-- Tests include: backend specs, frontend unit tests, E2E tests, linting
+CircleCI runs on every PR and on master. Config: `.circleci/config.yml`. Pipeline includes backend specs, frontend unit tests, E2E tests, and linting.
+
+## Additional Resources
+
+- [README.md](./README.md)
+- https://www.govocal.com

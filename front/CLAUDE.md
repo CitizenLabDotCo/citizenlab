@@ -38,23 +38,11 @@ front/
 └── vite.config.ts             # Vite configuration
 ```
 
-## Getting Started
+## Running
 
-### Prerequisites
+For initial bootstrap, see the [root `CLAUDE.md`](../CLAUDE.md). The backend must be running (default: `localhost:4000`) before the frontend will work.
 
-- Node.js
-- Backend must be running (default: localhost:4000)
-
-### Installation
-
-```bash
-cd front
-npm install
-```
-
-### Running the Development Server
-
-**Standard development**:
+**Standard development** (from `front/`):
 
 ```bash
 npm start
@@ -494,6 +482,7 @@ const Component = lazy(() => import('./Component'));
 
 ## Resources
 
+- [`front/README.md`](./README.md) — frontend README
 - React docs: https://react.dev
 - TypeScript docs: https://www.typescriptlang.org
 - Vite docs: https://vitejs.dev

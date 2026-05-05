@@ -54,38 +54,18 @@ back/
 
 ```
 
-## Getting Started
+## Running
 
-### Prerequisites
+For initial bootstrap, see the [root `CLAUDE.md`](../CLAUDE.md).
 
-- Docker and Docker Compose (latest versions)
-
-### Setup
-
-**Build and initialize database**:
-Run in the root repository folder (parent of back/)
-
-```bash
-make reset-dev-env
-```
-
-This will:
-1. Build Docker images
-2. Create and migrate database
-3. Load seed data
-
-### Running
-
-**Start all services**:
+**Start all services** (from repo root):
 ```bash
 docker compose up
 ```
 
 API available at: http://localhost:4000
 
-### Executing Commands
-
-All commands MUST be run through docker compose. The docker compose configuration lives at the root of the repository (parent of `back` folder), so any docker compose commands must be launched from there.
+**Executing backend commands**: all backend commands MUST be run through docker compose, from the **repo root** (where `docker-compose.yml` lives), never from `back/`.
 
 ```bash
 docker compose run --rm web <command>
@@ -93,24 +73,15 @@ docker compose run --rm web <command>
 
 ## Development
 
-### Commands
-
-The development environment is always run through docker compose. Never run the tests locally, but always run all commands through `docker compose run`.
-
 ### Handling Updates
 
-After `git pull`, if there are schema or seed changes:
+After `git pull`, if there are schema or seed changes, either rerun `make reset-dev-env` (root), or:
 
 ```bash
 docker compose down
 docker compose build web
 docker compose run --rm web bundle exec rake db:reset
 docker compose up
-```
-
-Or use the convenience script in the parent folder:
-```bash
-make reset-dev-env
 ```
 
 ### Environment Configuration
@@ -377,6 +348,7 @@ docker compose run --rm web rails my_namespace:my_task
 
 ## Resources
 
+- [`back/README.md`](./README.md) — backend README
 - Rails Guides: https://guides.rubyonrails.org
 - Ruby Docs: https://ruby-doc.org
 - RSpec: https://rspec.info
