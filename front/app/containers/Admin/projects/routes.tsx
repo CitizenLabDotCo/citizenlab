@@ -4,8 +4,9 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import Navigate from 'utils/cl-router/Navigate';
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
-import { createRoute, Navigate } from 'utils/router';
+import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -175,10 +176,23 @@ const projectRoute = createRoute({
 });
 
 // Project index redirect
+const ProjectIndexRedirect = () => {
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId',
+  });
+  return (
+    <Navigate
+      to="/admin/projects/$projectId/phases/setup"
+      params={{ projectId }}
+      replace
+    />
+  );
+};
+
 const projectIndexRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/',
-  component: () => <Navigate to="phases/setup" replace />,
+  component: ProjectIndexRedirect,
 });
 
 // --- General settings layout ---
