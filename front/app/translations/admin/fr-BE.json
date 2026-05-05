@@ -1780,7 +1780,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges2": "Programmer",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedule": "Programmer",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch2": "Programmer la publication",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "La programmation n'est pas incluse dans votre forfait actuel. Contactez votre gestionnaire Government Success ou votre administrateur pour la débloquer.",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip": "La programmation n'est pas incluse dans votre forfait actuel. Contactez votre gestionnaire Conseillère en participation ou votre administrateur pour la débloquer.",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail2": "Envoyer l'e-mail « Projet publié »",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": "non répertorié",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "Quand",
