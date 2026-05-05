@@ -112,7 +112,9 @@ const IdeasNewPage = () => {
   if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${phaseId}`}
+        to="/projects/$slug/surveys/new"
+        params={{ slug }}
+        search={{ phase_id: phaseId }}
         replace
       />
     );

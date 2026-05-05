@@ -7,7 +7,6 @@ import {
   type CreateLinkProps,
   type LinkComponent,
   type LinkComponentProps,
-  type LinkProps,
   type RegisteredRouter,
 } from '@tanstack/react-router';
 import styled from 'styled-components';
@@ -16,42 +15,9 @@ import useLocale from 'hooks/useLocale';
 
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
-// Strip the leading `/$locale` segment from a typed-route literal so callsites
-// can pass raw paths like `/admin/users` or `/projects/$slug`. The Link wrapper
-// auto-prepends `/$locale` at runtime, so consumers shouldn't have to write it.
-type StripLocale<T> = T extends '/$locale'
-  ? '/'
-  : T extends `/$locale/${infer Rest}`
-  ? `/${Rest}`
-  : T;
+import type { AddLocale, WithLocaleAwareParams } from './localeAware';
 
-// The set of `to` values the wrapper accepts. Includes both the stripped form
-// (preferred) and the original prefixed form (for transitional callsites and
-// any code that passes typed routes through unchanged).
-export type WrapperTo =
-  | StripLocale<NonNullable<LinkProps['to']>>
-  | LinkProps['to'];
-
-// Inverse of StripLocale — adds `/$locale` back so we feed TanStack the real
-// registered route literal for params/search type correlation when callsites
-// pass the stripped form.
-type AddLocale<T> = T extends `/$locale${string}`
-  ? T
-  : T extends '/'
-  ? '/$locale'
-  : T extends `/${infer Rest}`
-  ? `/$locale/${Rest}`
-  : T;
-
-// Shared shape for components that forward a typed-link target to Link or
-// ButtonWithLink. `to` is the typed-route literal (compile-checked against the
-// route tree); `params` and `search` are loose at this boundary because the
-// strict typing kicks in at the consuming Link callsite.
-export type TypedLinkProps = {
-  to?: WrapperTo;
-  params?: Record<string, string>;
-  search?: Record<string, unknown>;
-};
+export type { WrapperTo, TypedLinkProps } from './localeAware';
 
 // styled-components erases the generic-function shape of typed router
 // components like cl-router/Link, so `styled(Link)` drops route-aware typing.
@@ -91,40 +57,6 @@ const Inner = React.forwardRef<HTMLAnchorElement, InnerProps>(
 Inner.displayName = 'ClRouterLinkInner';
 
 const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
-
-// Make `locale` optional inside a resolved params object/reducer while keeping
-// every other key strictly typed against the route tree. Distributes over the
-// `true | object | (prev) => object` union that TanStack emits for `params`.
-type WithOptionalLocale<TP> = TP extends true
-  ? TP
-  : TP extends (...args: infer A) => infer R
-  ? (...args: A) => WithOptionalLocale<R>
-  : TP extends Record<string, unknown>
-  ? Omit<TP, 'locale'> & {
-      locale?: TP extends { locale: infer L } ? L : string;
-    }
-  : TP;
-
-// `never` if every key of T is optional, else the union of required keys.
-// Used to decide whether `params` itself can be demoted from required to
-// optional after `locale` is made optional within it.
-type RequiredKeysOf<T> = {
-  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
-}[keyof T];
-
-// Replace the resolved `params` shape on `LinkComponentProps` with a
-// locale-optional version. If `locale` was the only required param on the
-// route (so making it optional leaves no required keys), `params` itself is
-// also demoted to optional — otherwise required-ness is preserved.
-type WithLocaleAwareParams<P> = P extends { params: infer TP }
-  ? [
-      RequiredKeysOf<Extract<WithOptionalLocale<TP>, Record<string, unknown>>>
-    ] extends [never]
-    ? Omit<P, 'params'> & { params?: WithOptionalLocale<TP> }
-    : Omit<P, 'params'> & { params: WithOptionalLocale<TP> }
-  : P extends { params?: infer TP }
-  ? Omit<P, 'params'> & { params?: WithOptionalLocale<TP> }
-  : P;
 
 // Wrapper-specific Link signature: `to` accepts the stripped form (preferred,
 // e.g. `/admin/users`) or the prefixed form (e.g. `/$locale/admin/users`).
@@ -177,9 +109,13 @@ const Link = (props: LinkImplProps) => {
 
   // Auto-prepend `/$locale` to absolute internal paths that don't already have
   // it. Mirrors __mocks__/Link.tsx so test href assertions match runtime.
+  // `'/'` is special-cased to `'/$locale'` (no trailing slash) so the runtime
+  // string lines up with the type-level `AddLocale<'/'>`.
   const resolvedTo =
     typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
-      ? `/$locale${to}`
+      ? to === '/'
+        ? '/$locale'
+        : `/$locale${to}`
       : to;
 
   const mergedParams =

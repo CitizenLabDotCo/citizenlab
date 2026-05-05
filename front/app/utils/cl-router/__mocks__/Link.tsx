@@ -5,7 +5,11 @@ const buildHref = (
   params: Record<string, unknown> = {}
 ): string => {
   if (typeof to !== 'string') return '#';
-  const withLocale = to.startsWith('/$locale') ? to : `/$locale${to}`;
+  const withLocale = to.startsWith('/$locale')
+    ? to
+    : to === '/'
+    ? '/$locale'
+    : `/$locale${to}`;
   return withLocale.replace(/\$([a-zA-Z_][a-zA-Z0-9_]*)/g, (_match, key) => {
     const v = params[key];
     return v == null ? `$${key}` : String(v);

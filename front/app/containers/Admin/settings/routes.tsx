@@ -4,7 +4,8 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -72,7 +73,7 @@ export const settingsRoute = createRoute({
 const settingsIndexRoute = createRoute({
   getParentRoute: () => settingsRoute,
   path: '/',
-  component: () => <Navigate to="general" replace />,
+  component: () => <Navigate to="/admin/settings/general" replace />,
 });
 
 const generalRoute = createRoute({
@@ -216,7 +217,7 @@ const topicsRoute = createRoute({
 const topicsIndexRoute = createRoute({
   getParentRoute: () => topicsRoute,
   path: '/',
-  component: () => <Navigate to="platform" replace />,
+  component: () => <Navigate to="/admin/settings/topics/platform" replace />,
 });
 
 const platformRoute = createRoute({

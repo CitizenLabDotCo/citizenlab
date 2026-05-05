@@ -10,7 +10,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -18,6 +17,7 @@ import { FormType } from 'components/FormBuilder/utils';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import ExcelImportButton from './components/ExcelImportButton';
 import PDFImportButton from './components/PDFImportButton';
