@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
-import { roundToNearestMinutes, addDays } from 'date-fns';
 import moment from 'moment-timezone';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,6 +24,17 @@ import WhenSection from './WhenSection';
 
 type Mode = 'schedule' | 'now';
 
+// Default to the closest valid option in tenant TZ. TimeInput filters out
+// every slot whose hour is <= the current tenant hour when the selected day
+// is today, so the soonest available slot is (currentHour + 1):00. Computed
+// in tenant TZ so it lines up with what the dropdown renders. When it's
+// 23:xx, `add(1, 'hour')` naturally rolls over to tomorrow at 00:00.
+const computeDefaultDate = (tz?: string): Date => {
+  const now = tz ? moment.tz(tz) : moment();
+  const m = now.clone().minute(0).second(0).millisecond(0).add(1, 'hour');
+  return new Date(m.year(), m.month(), m.date(), m.hour(), m.minute());
+};
+
 interface Props {
   opened: boolean;
   project: IProjectData;
@@ -45,16 +55,15 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
     name: 'project_scheduling',
   });
 
-  const defaultDate = addDays(
-    roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-    1
-  );
-
   const [mode, setMode] = useState<Mode>(
     isProjectSchedulingEnabled ? 'schedule' : 'now'
   );
-  const [selectedDate, setSelectedDate] = useState<Date>(defaultDate);
-  const [selectedTime, setSelectedTime] = useState<Date>(defaultDate);
+  const [selectedDate, setSelectedDate] = useState<Date>(() =>
+    computeDefaultDate(tenantTimezone)
+  );
+  const [selectedTime, setSelectedTime] = useState<Date>(() =>
+    computeDefaultDate(tenantTimezone)
+  );
   const [sendEmail, setSendEmail] = useState(
     project.attributes.publication_email_enabled
   );
@@ -65,7 +74,8 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   // components match the tenant-TZ wall clock. This mirrors the email
   // scheduling modal's approach.
   useEffect(() => {
-    if (opened && project.attributes.scheduled_at && tenantTimezone) {
+    if (!opened) return;
+    if (project.attributes.scheduled_at && tenantTimezone) {
       const m = moment.tz(project.attributes.scheduled_at, tenantTimezone);
       const scheduled = new Date(
         m.year(),
@@ -76,6 +86,10 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
       );
       setSelectedDate(scheduled);
       setSelectedTime(scheduled);
+    } else {
+      const newDefault = computeDefaultDate(tenantTimezone);
+      setSelectedDate(newDefault);
+      setSelectedTime(newDefault);
     }
   }, [opened, project.attributes.scheduled_at, tenantTimezone]);
 
