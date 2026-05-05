@@ -8,6 +8,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
+// ts-prune-ignore-next — ts-prune misreads `satisfies` as an unused export
 export const PARAMS = [
   'status',
   'managers',
