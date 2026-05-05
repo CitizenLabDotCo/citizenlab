@@ -211,24 +211,10 @@ class Phase < ApplicationRecord
   validate :validate_phase_participation_method
 
   scope :published, lambda {
-    joined = includes(project: { admin_publication: :parent })
-    joined.where(
-      projects: {
-        admin_publications: {
-          publication_status: 'published',
-          parents_admin_publications: { publication_status: 'published' }
-        }
-      }
-    ).or(
-      joined.where(
-        projects: {
-          admin_publications: {
-            publication_status: 'published',
-            parent_id: nil
-          }
-        }
-      )
-    )
+    published_admin_pubs = AdminPublication.published.where(parent_id: nil)
+      .or(AdminPublication.published.where(parent_id: AdminPublication.published))
+    published_projects = Project.where(admin_publication: published_admin_pubs)
+    where(project: published_projects)
   }
 
   scope :current, lambda {

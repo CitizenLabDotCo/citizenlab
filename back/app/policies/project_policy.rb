@@ -45,10 +45,10 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
+      return scope.all if record.visible_to == 'public' && !record.admin_publication.draft?
 
       moderator_scope = UserRoleService.new.moderators_for_project record, scope
-      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
+      if record.visible_to == 'groups' && !record.admin_publication.draft?
         scope.in_any_group(record.groups).or(moderator_scope)
       else
         moderator_scope
@@ -186,7 +186,9 @@ class ProjectPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     shared_permitted_attributes.tap do |attrs|
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status]
+      })
     end
   end
 
@@ -195,7 +197,9 @@ class ProjectPolicy < ApplicationPolicy
       next unless update_status?
 
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status scheduled_status scheduled_at]
+      })
     end
   end
 
@@ -236,13 +240,13 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def project_preview?
-    return false unless record.admin_publication.publication_status == 'draft'
+    return false unless record.admin_publication.draft?
 
     context[:project_preview_token] && context[:project_preview_token] == record.preview_token
   end
 
   def project_published_or_archived?
-    %w[published archived].include?(record.admin_publication.publication_status)
+    record.admin_publication.published? || record.admin_publication.archived?
   end
 end
 

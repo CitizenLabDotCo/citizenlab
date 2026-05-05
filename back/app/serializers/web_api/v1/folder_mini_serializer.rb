@@ -8,7 +8,7 @@ class WebApi::V1::FolderMiniSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :publication_status do |object|
-    object.admin_publication.publication_status
+    object.admin_publication.effective_publication_status
   end
 
   has_many :moderators, serializer: ::WebApi::V1::UserSerializer do |object, params|
