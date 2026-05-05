@@ -109,9 +109,13 @@ const Link = (props: LinkImplProps) => {
 
   // Auto-prepend `/$locale` to absolute internal paths that don't already have
   // it. Mirrors __mocks__/Link.tsx so test href assertions match runtime.
+  // `'/'` is special-cased to `'/$locale'` (no trailing slash) so the runtime
+  // string lines up with the type-level `AddLocale<'/'>`.
   const resolvedTo =
     typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
-      ? `/$locale${to}`
+      ? to === '/'
+        ? '/$locale'
+        : `/$locale${to}`
       : to;
 
   const mergedParams =

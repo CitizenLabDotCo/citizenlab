@@ -56,10 +56,14 @@ const Navigate = (props: NavigateImplProps) => {
   const { to, params, ...rest } = props;
 
   // Auto-prepend `/$locale` to absolute internal paths that don't already have
-  // it. Mirrors the behavior of `cl-router/Link`.
+  // it. Mirrors the behavior of `cl-router/Link`. `'/'` is special-cased to
+  // `'/$locale'` (no trailing slash) so the runtime string lines up with the
+  // type-level `AddLocale<'/'>`.
   const resolvedTo =
     typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
-      ? `/$locale${to}`
+      ? to === '/'
+        ? '/$locale'
+        : `/$locale${to}`
       : to;
 
   const mergedParams =
