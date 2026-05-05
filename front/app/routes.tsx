@@ -262,9 +262,22 @@ const projectIdeaNewRoute = createRoute({
   ),
 });
 
+const projectSurveyNewSearchSchema = yup.object({
+  phase_id: yup.string().optional(),
+  idea_id: yup.string().optional(),
+});
+
+type ProjectSurveyNewSearchParams = yup.InferType<
+  typeof projectSurveyNewSearchSchema
+>;
+
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug/surveys/new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectSurveyNewSearchParams =>
+    projectSurveyNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
