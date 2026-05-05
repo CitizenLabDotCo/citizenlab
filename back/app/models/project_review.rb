@@ -68,7 +68,7 @@ class ProjectReview < ApplicationRecord
     return if reviewer.space_moderator?(project.space_id)
     return if reviewer.project_folder_moderator?(project.folder_id)
 
-    errors.add(:reviewer, 'must be an admin or a moderator of the project folder')
+    errors.add(:reviewer, 'must be an admin, a moderator of the project space, or a moderator of the project folder')
   end
 
   def validate_create
