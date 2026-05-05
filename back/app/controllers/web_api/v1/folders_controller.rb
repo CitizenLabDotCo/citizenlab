@@ -84,7 +84,7 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def update
-    process_due_transition(@project_folder)
+    process_due_status_transition(@project_folder)
     @project_folder.assign_attributes project_folder_params
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
@@ -105,9 +105,9 @@ class WebApi::V1::FoldersController < ApplicationController
     frozen_folder = nil
     frozen_projects = nil
 
-    process_due_transition(@project_folder)
+    process_due_status_transition(@project_folder)
     @project_folder.projects.each do |project|
-      process_due_transition(project)
+      process_due_status_transition(project)
       SideFxProjectService.new.before_destroy(project, current_user)
     end
 
@@ -133,11 +133,11 @@ class WebApi::V1::FoldersController < ApplicationController
     @sidefx ||= ProjectFolders::SideFxProjectFolderService.new
   end
 
-  def process_due_transition(publication)
+  def process_due_status_transition(publication)
     admin_pub = publication.admin_publication
-    return unless admin_pub.scheduled_at&.<=(Time.current)
+    return unless admin_pub.scheduled_at&.<(Time.current)
 
-    ProcessScheduledPublicationTransitionsJob.new.run(admin_pub)
+    ProcessScheduledPublicationTransitionsJob.perform_now(admin_pub)
   end
 
   def set_project_folder
@@ -159,7 +159,7 @@ class WebApi::V1::FoldersController < ApplicationController
   # Automatically set the scheduled_by_id according to the new scheduled status.
   def assign_scheduled_by(admin_publication_attrs)
     attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
-    return unless attrs.keys.present?
+    return if attrs.keys.blank?
 
     scheduling = attrs.values.any?
     admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil

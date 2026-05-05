@@ -5,7 +5,7 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { importedIdeasKeys } from './keys';
+import { importedIdeasKeys, importJobKeys } from './keys';
 
 interface RequestParams {
   phase_id: string;
@@ -43,6 +43,9 @@ const useAddOfflineIdeasAsync = () => {
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: importedIdeasKeys.list({ phaseId: params.phase_id }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: importJobKeys.list({ phaseId: params.phase_id }),
       });
     },
   });

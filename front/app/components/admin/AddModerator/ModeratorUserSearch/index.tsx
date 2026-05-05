@@ -81,7 +81,7 @@ const ModeratorUserSearch = ({
           onClick={handleOnAddModeratorsClick}
           disabled={!moderatorToAdd}
           processing={loading}
-          data-cy="e2e-add-project-moderator-button"
+          data-cy="e2e-add-moderator-button"
         />
       </Box>
     </Box>

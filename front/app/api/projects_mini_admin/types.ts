@@ -79,6 +79,9 @@ export type ProjectMiniAdminData = {
     folder?: {
       data: IRelationship | null;
     };
+    space?: {
+      data: IRelationship | null;
+    };
     phases?: {
       data: IRelationship[];
     };

@@ -9,10 +9,12 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { FormattedTime } from 'react-intl';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from 'containers/ProjectsShowPage/messages';
@@ -107,6 +109,9 @@ const PhaseTitle = ({
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
   const { formatMessage } = useIntl();
+  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
+    name: 'phase_datetime_setup',
+  });
 
   if (phase) {
     let phaseTitle = localize(phase.data.attributes.title_multiloc);
@@ -143,7 +148,28 @@ const PhaseTitle = ({
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
           </Title>
           <PhaseDate className={phaseStatus}>
-            {isOneDayPhase ? startDate : `${startDate} - ${endDate}`}
+            {isOneDayPhase ? (
+              startDate
+            ) : (
+              <>
+                {startDate}
+                {isPhaseDatetimeSetupEnabled && (
+                  <>
+                    {' '}
+                    <FormattedTime value={phase.data.attributes.start_at} />
+                  </>
+                )}
+                {' - '}
+                {endDate}
+                {isPhaseDatetimeSetupEnabled &&
+                  phase.data.attributes.end_at && (
+                    <>
+                      {' '}
+                      <FormattedTime value={phase.data.attributes.end_at} />
+                    </>
+                  )}
+              </>
+            )}
           </PhaseDate>
         </HeaderTitleWrapper>
       </Container>

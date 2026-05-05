@@ -2114,6 +2114,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:13:06.613681Z",
+    "verified_by": "Adrien"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -4078,6 +4083,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:30:27.408154Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -12194,6 +12204,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:13:46.512206Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -13303,6 +13318,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:13:06.613681Z",
+    "verified_by": "Adrien"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",

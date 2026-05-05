@@ -46,6 +46,9 @@
     "es-ES": "gestor",
     "fr-FR": "gestionnaire"
   },
+  "plan": {
+    "de-DE": "Lizenz"
+  },
   "recipients": {
     "de-DE": "Empfänger*innen"
   },

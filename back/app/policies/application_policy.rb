@@ -18,8 +18,8 @@ class ApplicationPolicy
       Pundit.policy_scope!(user_context, target_scope_or_klass)
     end
 
-    def can_moderate?
-      user && UserRoleService.new.can_moderate?(record, user)
+    def can_moderate?(target = nil)
+      user && active? && UserRoleService.new.can_moderate?(target || record, user)
     end
 
     def admin?

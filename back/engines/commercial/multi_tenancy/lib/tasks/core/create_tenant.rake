@@ -218,10 +218,6 @@ namespace :cl2_back do
             }
           ]
         },
-        project_folders: {
-          enabled: true,
-          allowed: true
-        },
         project_preview_link: {
           enabled: true,
           allowed: true
@@ -363,19 +359,19 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        phase_insights: {
-          enabled: true,
-          allowed: true
-        },
         participation_location_tracking: {
           enabled: false,
           allowed: false
         },
         spaces: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         email_scheduling: {
+          enabled: true,
+          allowed: true
+        },
+        phase_datetime_setup: {
           enabled: true,
           allowed: true
         }

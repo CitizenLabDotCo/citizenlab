@@ -351,8 +351,8 @@
   },
   "app.components.CityLogoSection.logoLinkAriaLabelExternal": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T13:03:23.900214Z",
+    "verified_by": "Jelena"
   },
   "app.components.CityLogoSection.logoLinkAriaLabelInternal": {
     "state": "verified",
@@ -1741,8 +1741,8 @@
   },
   "app.components.PagesForm.descriptionMissingOneLanguageError": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-23T12:33:26.887534Z",
+    "verified_by": "Jelena"
   },
   "app.components.PagesForm.editContent": {
     "state": "verified",
@@ -2336,8 +2336,8 @@
   },
   "app.components.PostComponents.SharingModalContent.postEmailSharingSubject": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T14:52:27.465099Z",
+    "verified_by": "Jelena"
   },
   "app.components.PostComponents.SharingModalContent.postWhatsAppMessage": {
     "state": "verified",
@@ -2376,8 +2376,8 @@
   },
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-04-24T14:52:09.518312Z",
+    "verified_by": "Jelena"
   },
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": {
     "state": "verified",
@@ -4083,6 +4083,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:21:33.501914Z",
+    "verified_by": "Jelena"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -12198,6 +12203,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.501380Z",
+    "verified_by": "Jelena"
   },
   "app.errors.resending_code_failed": {
     "state": "verified",

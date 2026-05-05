@@ -316,6 +316,7 @@ DROP INDEX IF EXISTS public.index_ideas_on_project_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
+DROP INDEX IF EXISTS public.index_ideas_on_creation_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
@@ -6254,6 +6255,13 @@ CREATE INDEX index_ideas_on_body_multiloc ON public.ideas USING gin (body_multil
 
 
 --
+-- Name: index_ideas_on_creation_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_creation_phase_id ON public.ideas USING btree (creation_phase_id);
+
+
+--
 -- Name: index_ideas_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8566,6 +8574,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260421105121'),
+('20260420120659'),
 ('20260408161034'),
 ('20260408131955'),
 ('20260323120000'),

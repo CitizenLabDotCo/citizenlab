@@ -62,7 +62,7 @@ describe('Admin: ideation analysis', () => {
   });
 
   it('creates an analysis from an ideation entry point', () => {
-    cy.intercept('GET', '**/insights', {
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_ideation.json',
     });
 
