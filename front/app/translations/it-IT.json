@@ -1257,7 +1257,7 @@
   "app.containers.App.SessionExpiryModal.signInAgain": "Accedi di nuovo",
   "app.containers.App.SessionExpiryModal.signOut": "Esci",
   "app.containers.App.SessionExpiryModal.staySignedOut": "Rimani disconnesso",
-  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": "Sessione in scadenza",
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": "La sessione sta per scadere",
   "app.containers.App.SessionExpiryModal.tabTitleSignedOut": "Disconnesso",
   "app.containers.App.appMetaDescription": "Benvenuti nella piattaforma partecipativa di {orgName}. \nEsplora i progetti locali e partecipa alla discussione!",
   "app.containers.App.loading": "Caricamento...",
