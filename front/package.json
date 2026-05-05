@@ -10,6 +10,10 @@
   },
   "main": "app/component-library/dist/index.js",
   "module": "app/component-library/dist/cl2-component-library.esm.js",
+  "engines": {
+    "node": ">=24.15.0",
+    "npm": ">=11.12.1"
+  },
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "build": "NODE_OPTIONS='--max-old-space-size=5120' vite build --mode production --logLevel info",
