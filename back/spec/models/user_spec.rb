@@ -26,6 +26,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
     it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
     it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
+    it { is_expected.to have_many(:scheduled_admin_publications).class_name('AdminPublication').with_foreign_key('scheduled_by_id').dependent(:nullify) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
