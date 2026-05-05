@@ -2337,6 +2337,7 @@
   "app.containers.footer.cookie-policy": "Cookie-szabályzat",
   "app.containers.footer.cookieSettings": "Cookie-beállítások",
   "app.containers.footer.feedbackEmptyError": "A visszajelzés mező nem lehet üres.",
+  "app.containers.footer.goVocalLogoTitle": "Go Vocal, korábban CitizenLab",
   "app.containers.footer.poweredBy": "Powered by",
   "app.containers.footer.privacy-policy": "Adatvédelmi szabályzat",
   "app.containers.footer.siteMap": "Oldaltérkép",

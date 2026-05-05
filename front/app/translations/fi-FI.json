@@ -2337,6 +2337,7 @@
   "app.containers.footer.cookie-policy": "Evästekäytäntö",
   "app.containers.footer.cookieSettings": "Evästeasetukset",
   "app.containers.footer.feedbackEmptyError": "Palautekenttä ei voi olla tyhjä.",
+  "app.containers.footer.goVocalLogoTitle": "Go Vocal, aiemmin CitizenLab",
   "app.containers.footer.poweredBy": "Yhteistyössä",
   "app.containers.footer.privacy-policy": "Tietosuojakäytäntö",
   "app.containers.footer.siteMap": "Sivustokartta",
