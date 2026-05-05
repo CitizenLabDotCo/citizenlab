@@ -8,7 +8,6 @@ namespace :single_use do
     puts "Mode: #{execute ? 'EXECUTE - changes WILL be applied' : 'Dry run - no changes will be applied'}\n\n"
 
     reporter = ScriptReporter.new
-    changes = []
 
     Tenant.safe_switch_each do |tenant|
       reporter.add_processed_tenant(tenant)
@@ -31,7 +30,6 @@ namespace :single_use do
 
       puts "Processing tenant: #{tenant.host} - #{grouped.size} duplicate set(s)"
 
-      tenant_changes = []
       grouped.each do |(user_id, phase_id), baskets|
         submitted_baskets = baskets.select(&:submitted?)
 
@@ -52,26 +50,28 @@ namespace :single_use do
         user_phase_baskets_after = []
 
         baskets.each do |basket|
-          snapshot = basket.attributes.symbolize_keys
-          user_phase_baskets_before << snapshot
+          user_phase_baskets_before << basket.attributes.symbolize_keys
 
           if basket.id == kept_basket.id
-            user_phase_baskets_after << snapshot
+            user_phase_baskets_after << basket.attributes.symbolize_keys
             next
           end
 
-          next unless execute
-          next if basket.update(user_id: nil)
+          if execute
+            unless basket.update(user_id: nil)
+              reporter.add_error(
+                basket.errors.details,
+                context: { tenant: tenant.host, basket_id: basket.id }
+              )
+              puts "ERROR! Failed to detach basket #{basket.id}: #{basket.errors.full_messages.join(', ')}"
+            end
+            user_phase_baskets_after << basket.attributes.symbolize_keys
+            next
+          end
 
-          reporter.add_error(
-            basket.errors.details,
-            context: { tenant: tenant.host, basket_id: basket.id }
-          )
-          puts "ERROR! Failed to detach basket #{basket.id}: #{basket.errors.full_messages.join(', ')}"
-          user_phase_baskets_after << snapshot # still attached because the update failed
+          # Dry run: simulate the detach
+          user_phase_baskets_after << basket.attributes.symbolize_keys.merge(user_id: nil)
         end
-
-        tenant_changes << { user_id: user_id, phase_id: phase_id, old: user_phase_baskets_before, new: user_phase_baskets_after }
 
         reporter.add_change(
           user_phase_baskets_before,
@@ -79,7 +79,6 @@ namespace :single_use do
           context: { tenant: tenant.host, user_id: user_id, phase_id: phase_id }
         )
       end
-      changes << { tenant: tenant.host, changes: tenant_changes }
     end
 
     # After all changes have been applied, print a summary of what should have happened
@@ -90,32 +89,35 @@ namespace :single_use do
     blank = '    '
     total_duplicates = 0
     total_detached = 0
-    changes.each do |change|
-      puts "Tenant: #{change[:tenant]} (#{change[:changes].size} duplicate set(s))"
+    changes_by_tenant = reporter.changes.group_by { |c| c[:context][:tenant] }
+    changes_by_tenant.each do |tenant_host, dup_sets|
+      puts "Tenant: #{tenant_host} (#{dup_sets.size} duplicate set(s))"
 
       tenant_duplicates = 0
       tenant_detached = 0
 
-      change[:changes].each_with_index do |dup_set, set_idx|
-        last_set = set_idx == change[:changes].size - 1
+      dup_sets.each_with_index do |dup_set, set_idx|
+        last_set = set_idx == dup_sets.size - 1
         set_branch = last_set ? corner : branch
         set_indent = last_set ? blank : vertical
 
-        puts "#{set_branch}user=#{dup_set[:user_id]} phase=#{dup_set[:phase_id]} (#{dup_set[:old].size} baskets)"
+        puts "#{set_branch}user=#{dup_set[:context][:user_id]} phase=#{dup_set[:context][:phase_id]} (#{dup_set[:old_value].size} baskets)"
 
-        new_ids = dup_set[:new].map { |b| b[:id] }
-        dup_set[:old].each_with_index do |b, b_idx|
-          last_basket = b_idx == dup_set[:old].size - 1
+        new_by_id = dup_set[:new_value].index_by { |b| b[:id] }
+        dup_set[:old_value].each_with_index do |b, b_idx|
+          last_basket = b_idx == dup_set[:old_value].size - 1
           basket_branch = last_basket ? corner : branch
 
-          marker = new_ids.include?(b[:id]) ? '[kept]    ' : '[detached]'
+          new_b = new_by_id[b[:id]]
+          detached = new_b && !b[:user_id].nil? && new_b[:user_id].nil?
+          marker = detached ? '[detached]' : '[kept]    '
           timing = b[:submitted_at] ? "submitted at #{b[:submitted_at].strftime('%Y-%m-%d %H:%M:%S')}" : "draft (updated #{b[:updated_at].strftime('%Y-%m-%d %H:%M:%S')})"
 
           puts "#{set_indent}#{basket_branch}#{marker} #{b[:id]}  #{timing}"
         end
 
-        tenant_duplicates += dup_set[:old].size
-        tenant_detached += dup_set[:old].size - dup_set[:new].size
+        tenant_duplicates += dup_set[:old_value].size
+        tenant_detached += dup_set[:new_value].count { |b| b[:user_id].nil? }
       end
 
       puts "Stats: #{tenant_duplicates} basket(s) in duplicate sets, #{tenant_detached} detached"
@@ -124,7 +126,7 @@ namespace :single_use do
       puts
     end
 
-    puts "Total across #{changes.size} tenant(s): #{total_duplicates} basket(s) in duplicate sets, #{total_detached} detached \n"
+    puts "Total across #{changes_by_tenant.size} tenant(s): #{total_duplicates} basket(s) in duplicate sets, #{total_detached} detached \n"
 
     reporter.report!('dedupe_baskets.json', verbose: false)
 
