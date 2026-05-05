@@ -18,9 +18,9 @@ import useLocalize from 'hooks/useLocalize';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { useLocation } from 'utils/router';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import messages from '../../messages';
 import ProjectsListItem from '../ProjectsListItem';
@@ -111,7 +111,7 @@ const ProjectsList = styled.div`
   `}
 `;
 
-const ProjectsListFooter = styled(Link)`
+const ProjectsListFooter = typedStyled(Link)`
   width: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -141,7 +141,6 @@ interface Props {
 }
 
 const AdminPublicationsNavbarItem = ({
-  linkTo,
   navigationItemTitle,
   onDropdownStateChange,
 }: Props) => {
@@ -221,7 +220,8 @@ const AdminPublicationsNavbarItem = ({
                   <React.Fragment key={item.id}>
                     {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
-                        to={`${linkTo}/${item.attributes.publication_slug}`}
+                        to="/projects/$slug"
+                        params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
@@ -229,7 +229,8 @@ const AdminPublicationsNavbarItem = ({
                     )}
                     {item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
-                        to={`/folders/${item.attributes.publication_slug}`}
+                        to="/folders/$slug"
+                        params={{ slug: item.attributes.publication_slug }}
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
@@ -247,7 +248,7 @@ const AdminPublicationsNavbarItem = ({
           <>
             {totalProjectsListLength > 9 && (
               <ProjectsListFooter
-                to={linkTo}
+                to="/projects"
                 id="e2e-all-projects-link"
                 scrollToTop
               >

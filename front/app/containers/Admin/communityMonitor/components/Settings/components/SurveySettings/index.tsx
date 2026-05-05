@@ -123,7 +123,7 @@ const SurveySettings = () => {
               />
             </Box>
             <ButtonWithLink
-              linkTo={inputImporterLink}
+              {...inputImporterLink}
               icon="page"
               iconSize="20px"
               buttonStyle="secondary-outlined"

@@ -35,7 +35,10 @@ const DisabledAccount = () => {
               {...messages.text}
               values={{
                 TermsAndConditions: (
-                  <Link to="/pages/terms-and-conditions">
+                  <Link
+                    to="/pages/$slug"
+                    params={{ slug: 'terms-and-conditions' }}
+                  >
                     <FormattedMessage {...messages.termsAndConditions} />
                   </Link>
                 ),

@@ -1,16 +1,24 @@
 import { ParticipationMethod } from 'api/phases/types';
 
-export const getBackPath = (
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+
+export const getBackLink = (
   projectId: string,
   phaseId: string,
   participationMethod?: ParticipationMethod
-): string => {
+): TypedLinkProps => {
   switch (participationMethod) {
     case 'native_survey':
-      return `/admin/projects/${projectId}/phases/${phaseId}/insights`;
+      return {
+        to: '/admin/projects/$projectId/phases/$phaseId/insights',
+        params: { projectId, phaseId },
+      };
     case 'community_monitor_survey':
-      return `/admin/community-monitor/settings`;
+      return { to: '/admin/community-monitor/settings' };
     default:
-      return `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
+      return {
+        to: '/admin/projects/$projectId/phases/$phaseId/ideas',
+        params: { projectId, phaseId },
+      };
   }
 };

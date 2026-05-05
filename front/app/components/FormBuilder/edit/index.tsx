@@ -34,6 +34,7 @@ import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -66,7 +67,7 @@ type FormEditProps = {
   };
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: string;
+  viewFormLink: TypedLinkProps;
   phase: IPhaseData;
 };
 
@@ -393,7 +394,7 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: string;
+  viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({

@@ -16,12 +16,13 @@ import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
@@ -36,7 +37,7 @@ interface Props {
     top_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToViewPage?: string;
+  viewPageLink?: TypedLinkProps;
 }
 
 interface FormValues {
@@ -48,7 +49,7 @@ const GenericTopInfoSection = ({
   updatePage,
   updatePageAndEnableSection,
   breadcrumbs,
-  linkToViewPage,
+  viewPageLink,
 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -101,16 +102,14 @@ const GenericTopInfoSection = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumbLinkTo,
+                link: pagesAndMenuBreadcrumbLink,
               },
               ...breadcrumbs,
               { label: formatMessage(messages.topInfoPageTitle) },
             ]}
             title={formatMessage(messages.topInfoPageTitle)}
             rightSideCTA={
-              linkToViewPage ? (
-                <ViewCustomPageButton linkTo={linkToViewPage} />
-              ) : null
+              viewPageLink ? <ViewCustomPageButton {...viewPageLink} /> : null
             }
           >
             <Feedback

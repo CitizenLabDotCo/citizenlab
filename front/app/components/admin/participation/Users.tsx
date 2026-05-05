@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import UserManager from 'containers/Admin/users/_shared/UserManager';
 import UsersHeader from 'containers/Admin/users/_shared/UsersHeader';
+
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -12,6 +11,7 @@ import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton
 
 import { useIntl } from 'utils/cl-intl';
 import { registerMapView, unregisterMapView } from 'utils/mapViewRegistry';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 import ExportGeoJSONButton from '../components/ExportGeoJSONButton';

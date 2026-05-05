@@ -31,9 +31,17 @@ const Analyses = ({
   });
 
   const projectLink =
-    participationMethod === 'ideation'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/insights`;
+    projectId && phaseId
+      ? participationMethod === 'ideation'
+        ? ({
+            to: '/admin/projects/$projectId/phases/$phaseId/ideas',
+            params: { projectId, phaseId },
+          } as const)
+        : ({
+            to: '/admin/projects/$projectId/phases/$phaseId/insights',
+            params: { projectId, phaseId },
+          } as const)
+      : undefined;
 
   // Analyses related to specific survey questions are now handled in the Survey Question Widget
   const analysesWithoutMainCustomField = analyses?.data.filter(
@@ -45,15 +53,22 @@ const Analyses = ({
       <Box id="e2e-report-buider-ai-no-analyses">
         <Divider />
         <Text>{formatMessage(messages.noInsights)}</Text>
-        <Box display="flex">
-          <ButtonWithLink
-            linkTo={projectLink}
-            buttonStyle="secondary-outlined"
-            openLinkInNewTab
-          >
-            {formatMessage(messages.openProject)}
-          </ButtonWithLink>
-        </Box>
+        {projectLink && (
+          <Box display="flex">
+            <ButtonWithLink
+              to={projectLink.to}
+              params={
+                projectLink.params as Parameters<
+                  typeof ButtonWithLink
+                >[0]['params']
+              }
+              buttonStyle="secondary-outlined"
+              openLinkInNewTab
+            >
+              {formatMessage(messages.openProject)}
+            </ButtonWithLink>
+          </Box>
+        )}
       </Box>
     );
   }

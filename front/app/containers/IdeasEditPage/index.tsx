@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 
@@ -11,6 +10,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { usePermission } from 'utils/permissions';
+import { useParams } from 'utils/router';
 
 import IdeasEditForm from './IdeasEditForm';
 

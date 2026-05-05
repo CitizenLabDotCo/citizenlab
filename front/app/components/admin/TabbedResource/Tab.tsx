@@ -12,6 +12,8 @@ import { ITab } from 'typings';
 import Link from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 // very similar to front/app/components/admin/NavigationTabs/Tab.tsx
 const Container = styled.div`
   list-style: none;
@@ -75,7 +77,7 @@ const Tab = ({
       className={`${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
-      <Link to={url}>
+      <Link to={url as LinkProps['to']}>
         {label}
         {statusLabel && (
           <Box ml="12px" display="inline">

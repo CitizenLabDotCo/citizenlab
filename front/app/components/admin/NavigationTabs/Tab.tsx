@@ -17,6 +17,8 @@ import {
   activeBorderSize,
 } from './tabsStyleConstants';
 
+import type { LinkProps } from '@tanstack/react-router';
+
 type ContainerProps = {
   active: boolean;
   disable?: boolean;
@@ -102,7 +104,11 @@ const Tab = ({
     }
   >
     <Container disable={!!disabledTooltipText} {...props}>
-      <Link to={url} onClick={handleClick} className={className ?? ''}>
+      <Link
+        to={url as LinkProps['to']}
+        onClick={handleClick}
+        className={className ?? ''}
+      >
         {label}
         {badge && <>{badge}</>}
       </Link>

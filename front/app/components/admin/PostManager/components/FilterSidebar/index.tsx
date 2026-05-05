@@ -7,7 +7,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'utils/router';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInputTopicData } from 'api/input_topics/types';
@@ -19,6 +18,7 @@ import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 
@@ -75,16 +75,19 @@ const FilterSidebar = ({
 
   if (!authUser) return null;
 
-  const getLinkToTagManager = (): string | null => {
+  const getLinkToTagManager = () => {
     // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
     if (
       (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
       typeof projectId === 'string'
     ) {
-      return `/admin/projects/${projectId}/general/input-tags`;
+      return {
+        to: '/admin/projects/$projectId/general/input-tags',
+        params: { projectId },
+      } as const;
     } else if (isAdmin(authUser)) {
       // For admins we show the link to the platform-wide tag manager
-      return '/admin/settings/topics';
+      return { to: '/admin/settings/topics' } as const;
     } else {
       // Don't show the link to the platform-wide tag manager if the user is not an admin.
       // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,

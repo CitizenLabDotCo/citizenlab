@@ -4,7 +4,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -28,6 +27,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 

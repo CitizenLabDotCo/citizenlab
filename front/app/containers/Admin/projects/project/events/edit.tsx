@@ -624,7 +624,12 @@ const AdminProjectEventEdit = () => {
   return (
     <Box mt="44px" mx="44px">
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
-        <GoBackButton linkTo={`/admin/projects/${projectId}/events`} />
+        {projectId && (
+          <GoBackButton
+            to="/admin/projects/$projectId/events"
+            params={{ projectId }}
+          />
+        )}
         <Box ref={containerRef}>
           <SectionTitle>
             {event && <FormattedMessage {...messages.editEventTitle} />}

@@ -34,7 +34,11 @@ const CommunityMonitorSurveyFormBuilder = () => {
         formCustomFields,
         goBackUrl: `/admin/community-monitor/settings`,
       }}
-      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+      viewFormLink={{
+        to: '/projects/$slug/surveys/new',
+        params: { slug: project.data.attributes.slug },
+        search: { phase_id: phase.data.id },
+      }}
     />
   );
 };

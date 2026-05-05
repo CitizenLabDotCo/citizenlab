@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Select, Label } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
@@ -21,6 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import tracks from '../../../../tracks';

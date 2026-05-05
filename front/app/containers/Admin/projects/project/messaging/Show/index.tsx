@@ -163,7 +163,10 @@ const Show = () => {
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-          <GoBackButton linkTo={`/admin/projects/${projectId}/messaging`} />
+          <GoBackButton
+            to="/admin/projects/$projectId/messaging"
+            params={{ projectId }}
+          />
           <Box display="flex" mb="20px">
             <Box display="flex" alignItems="center" mr="auto" gap="12px">
               <Title mr="12px">
@@ -200,7 +203,8 @@ const Show = () => {
               campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
-                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
+                  to="/admin/projects/$projectId/messaging/$campaignId/edit"
+                  params={{ projectId, campaignId: campaign.data.id }}
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />

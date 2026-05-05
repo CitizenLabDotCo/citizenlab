@@ -9,7 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -50,7 +50,7 @@ const CustomPagesEditSettings = () => {
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             { label: localize(pageTitleMultiloc) },
           ]}
@@ -68,7 +68,8 @@ const CustomPagesEditSettings = () => {
             title: localize(pageTitleMultiloc),
             rightSideCTA: (
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.data.attributes.slug}`}
+                to="/pages/$slug"
+                params={{ slug: customPage.data.attributes.slug }}
               />
             ),
           }}

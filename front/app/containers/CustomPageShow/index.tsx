@@ -7,7 +7,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -23,6 +22,7 @@ import PageNotFound from 'components/PageNotFound';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';

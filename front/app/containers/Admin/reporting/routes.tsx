@@ -4,7 +4,8 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute } from 'utils/router';
 
 import { quarters } from '../communityMonitor/components/LiveMonitor/components/HealthScoreWidget/types';
 import { adminRoute } from '../routes';
@@ -80,7 +81,7 @@ const reportEditorRoute = createRoute({
 const reportingRedirectRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'reporting',
-  component: () => <Navigate to="report-builder" />,
+  component: () => <Navigate to="/admin/reporting/report-builder" />,
 });
 
 const createAdminReportingRoutes = () => {

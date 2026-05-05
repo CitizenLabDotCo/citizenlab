@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 
-import { useParams } from 'utils/router';
-
 import useProjectById from 'api/projects/useProjectById';
 import { ResultUngrouped } from 'api/survey_results/types';
 import useFormResults from 'api/survey_results/useSurveyResults';
+
+import { useParams } from 'utils/router';
 
 export interface LogicConfig {
   toggleLogicIds: (logicId: string) => void;

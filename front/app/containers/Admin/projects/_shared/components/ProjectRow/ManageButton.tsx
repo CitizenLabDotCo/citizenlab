@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -18,7 +18,7 @@ const ManageButton = ({ isDisabled, publicationId }: Props) => {
       className={`
       e2e-admin-edit-publication intercom-admin-project-edit-button
     `}
-      linkTo={adminProjectsProjectPath(publicationId)}
+      {...adminProjectsProjectLink(publicationId)}
       buttonStyle="secondary-outlined"
       icon="edit"
       type="button"

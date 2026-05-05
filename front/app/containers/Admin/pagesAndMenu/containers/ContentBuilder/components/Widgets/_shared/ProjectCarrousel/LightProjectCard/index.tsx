@@ -4,7 +4,7 @@ import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import useProjectImage from 'api/project_images/useProjectImage';
-import { getProjectUrl } from 'api/projects/utils';
+import { getProjectLinkProps } from 'api/projects/utils';
 import { MiniProjectData } from 'api/projects_mini/types';
 import useReport from 'api/reports/useReport';
 
@@ -50,44 +50,46 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
   const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
-  const projectUrl = getProjectUrl(project.attributes.slug);
+  const projectLink = getProjectLinkProps(project.attributes.slug);
 
   return (
-    <CardContainer
-      as={Link}
+    <Link
       scrollToTop
-      tabIndex={0}
-      w={`${CARD_WIDTH}px`}
-      ml={ml}
-      mr={mr}
-      to={projectUrl}
-      display="block"
+      {...projectLink}
       onKeyDown={onKeyDown}
       data-cy="e2e-light-project-card"
     >
-      <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
-      <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
-        {title}
-      </Title>
-      <Box mt="8px">
-        <TimeIndicator
-          currentPhaseEndsAt={phase?.data.attributes.end_at}
-          projectStartsInDays={project.attributes.starts_days_from_now}
-          projectEndedDaysAgo={project.attributes.ended_days_ago}
-        />
-        {phase && (
-          <Text mt="2px" mb="0px" color="textSecondary">
-            {getCTAMessage({
-              phase: phase.data,
-              actionDescriptors: project.attributes.action_descriptors,
-              localize,
-              formatMessage,
-              hasPublicReport,
-            })}
-          </Text>
-        )}
-      </Box>
-    </CardContainer>
+      <CardContainer
+        tabIndex={0}
+        w={`${CARD_WIDTH}px`}
+        ml={ml}
+        mr={mr}
+        display="block"
+      >
+        <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
+        <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
+          {title}
+        </Title>
+        <Box mt="8px">
+          <TimeIndicator
+            currentPhaseEndsAt={phase?.data.attributes.end_at}
+            projectStartsInDays={project.attributes.starts_days_from_now}
+            projectEndedDaysAgo={project.attributes.ended_days_ago}
+          />
+          {phase && (
+            <Text mt="2px" mb="0px" color="textSecondary">
+              {getCTAMessage({
+                phase: phase.data,
+                actionDescriptors: project.attributes.action_descriptors,
+                localize,
+                formatMessage,
+                hasPublicReport,
+              })}
+            </Text>
+          )}
+        </Box>
+      </CardContainer>
+    </Link>
   );
 };
 

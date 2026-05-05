@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
@@ -16,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 

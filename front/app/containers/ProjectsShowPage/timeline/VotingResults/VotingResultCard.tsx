@@ -22,7 +22,7 @@ import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -35,7 +35,7 @@ const cardPadding = '17px';
 const cardInnerHeight = '162px';
 const cardInnerHeightExtended = '180px';
 
-const Container = styled(Link)`
+const Container = typedStyled(Link)`
   width: 100%;
   min-height: calc(${cardInnerHeight} + ${cardPadding} + ${cardPadding});
   display: flex;

@@ -11,11 +11,13 @@ import { supportedLocales } from 'containers/App/constants';
 import PageLoading from 'components/UI/PageLoading';
 import Unauthorized from 'components/Unauthorized';
 
+import clHistory from 'utils/cl-router/history';
+import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 import type { Routes } from 'utils/moduleUtils';
 import { usePermission } from 'utils/permissions';
-import { createRoute, Navigate, useLocation } from 'utils/router';
+import { createRoute, useLocation } from 'utils/router';
 
 import createAdminCommunityMonitorRoutes from './communityMonitor/routes';
 import createAdminDashboardRoutes from './dashboard/routes';
@@ -64,15 +66,16 @@ const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments[2] === 'templates' &&
   isUUID(urlSegments[3]);
 
-const getRedirectURL = (
-  appConfiguration: IAppConfigurationData,
-  pathname: string | undefined,
-  urlLocale: string | null
-) => {
-  const localeSegment = urlLocale ? `/${urlLocale}` : '';
+type UnauthorizedRedirect =
+  | { kind: 'subscriptionEnded' }
+  | { kind: 'templatePreview'; templateId: string };
 
+const getUnauthorizedRedirect = (
+  appConfiguration: IAppConfigurationData,
+  pathname: string | undefined
+): UnauthorizedRedirect | null => {
   if (appConfiguration.attributes.settings.core.lifecycle_stage === 'churned') {
-    return `${localeSegment}/subscription-ended`;
+    return { kind: 'subscriptionEnded' };
   }
 
   // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
@@ -82,9 +85,7 @@ const getRedirectURL = (
 
   // check if the unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
   if (urlSegments && isTemplatePreviewPage(urlSegments)) {
-    const templateId = urlSegments[3];
-    // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
-    return `${localeSegment}/templates/${templateId}`;
+    return { kind: 'templatePreview', templateId: urlSegments[3] };
   }
 
   return null;
@@ -92,7 +93,7 @@ const getRedirectURL = (
 
 const AdminLayoutElement = () => {
   const location = useLocation();
-  const { pathname, urlLocale } = removeLocale(location.pathname);
+  const { pathname } = removeLocale(location.pathname);
 
   const accessAuthorized = usePermission({
     item: { type: 'route', path: pathname },
@@ -103,14 +104,20 @@ const AdminLayoutElement = () => {
 
   if (!appConfiguration) return null;
 
-  const redirectURL = accessAuthorized
+  const redirect = accessAuthorized
     ? null
-    : getRedirectURL(appConfiguration.data, pathname, urlLocale);
+    : getUnauthorizedRedirect(appConfiguration.data, pathname);
 
-  if (!redirectURL && !accessAuthorized) {
+  if (!redirect && !accessAuthorized) {
     return <Unauthorized />;
-  } else if (redirectURL) {
-    return <Navigate to={redirectURL} />;
+  }
+
+  if (redirect?.kind === 'subscriptionEnded') {
+    return <Navigate to="/subscription-ended" />;
+  }
+
+  if (redirect?.kind === 'templatePreview') {
+    return <TemplatePreviewRedirect templateId={redirect.templateId} />;
   }
 
   return (
@@ -118,6 +125,18 @@ const AdminLayoutElement = () => {
       <AdminContainer />
     </PageLoading>
   );
+};
+
+// The citizen template-preview route (`/templates/:projectTemplateId`) is
+// registered by the `admin_project_templates` commercial module and isn't part
+// of the static typed route tree, so we can't pass it through the typed
+// `Navigate` wrapper. Push through `clHistory` (which auto-prepends the
+// locale) instead.
+const TemplatePreviewRedirect = ({ templateId }: { templateId: string }) => {
+  React.useEffect(() => {
+    clHistory.push(`/templates/${templateId}`);
+  }, [templateId]);
+  return null;
 };
 
 // Admin layout route - parent for all admin routes
@@ -133,7 +152,7 @@ const adminIndexRoute = createRoute({
   // Careful: moderators currently have access to the admin index route
   // Adjust isModerator in routePermissions.ts if needed.
   path: '/',
-  component: () => <Navigate to="dashboard/overview" />,
+  component: () => <Navigate to="/admin/dashboard/overview" />,
 });
 
 // Favicon route

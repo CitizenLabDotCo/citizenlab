@@ -4,7 +4,8 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -37,7 +38,7 @@ const messagingRoute = createRoute({
 const messagingIndexRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: '/',
-  component: () => <Navigate to="emails/custom" />,
+  component: () => <Navigate to="/admin/messaging/emails/custom" />,
 });
 
 const customEmailsRoute = createRoute({

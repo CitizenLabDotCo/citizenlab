@@ -7,6 +7,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useParams, useSearch } from 'utils/router';
@@ -63,10 +64,10 @@ const IdeasFeedPage = () => {
     // If sheet is open without subtopic -> handled by linkTo (exit to project)
   };
 
-  const getMobileBackLinkTo = (): string | undefined => {
+  const getMobileBackLink = (): TypedLinkProps | undefined => {
     // Only exit to project when sheet is open and no subtopic selected
     if (sheetOpen && !selectedSubtopicId) {
-      return `/projects/${slug}`;
+      return { to: '/projects/$slug', params: { slug } };
     }
     return undefined;
   };
@@ -82,10 +83,8 @@ const IdeasFeedPage = () => {
         {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
-              linkTo={getMobileBackLinkTo()}
-              onClick={
-                getMobileBackLinkTo() ? undefined : handleMobileBackClick
-              }
+              {...getMobileBackLink()}
+              onClick={getMobileBackLink() ? undefined : handleMobileBackClick}
               showGoBackText={false}
               buttonStyle="white"
             />

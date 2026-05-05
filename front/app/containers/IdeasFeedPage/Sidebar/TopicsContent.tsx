@@ -67,7 +67,8 @@ const TopicsContent = ({
     <>
       <Box px="16px" mb="16px">
         <GoBackButton
-          linkTo={`/projects/${slug}`}
+          to="/projects/$slug"
+          params={{ slug }}
           size="s"
           customMessage={messages.back}
           iconSize="20px"

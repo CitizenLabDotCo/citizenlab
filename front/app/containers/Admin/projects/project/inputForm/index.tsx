@@ -34,7 +34,8 @@ export const InputForm = () => {
       <Box display="flex" flexDirection="row">
         <ButtonWithLink
           mr="8px"
-          linkTo={`/admin/projects/${projectId}/phases/${phaseId}/form/edit`}
+          to="/admin/projects/$projectId/phases/$phaseId/form/edit"
+          params={{ projectId, phaseId }}
           width="auto"
           icon="edit"
           data-cy="e2e-edit-input-form"

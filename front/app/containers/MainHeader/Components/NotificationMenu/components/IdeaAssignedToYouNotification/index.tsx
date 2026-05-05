@@ -47,7 +47,10 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
             ...sharedValues,
             name: (
               <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
+                to="/profile/$userSlug"
+                params={{
+                  userSlug: notification.attributes.initiating_user_slug,
+                }}
                 onClick={onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}
@@ -64,7 +67,8 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/${projectId}/ideas/${ideaId}`}
+      to="/admin/projects/$projectId/ideas/$ideaId"
+      params={{ projectId, ideaId }}
       timing={notification.attributes.created_at}
       icon="idea"
       isRead={!!notification.attributes.read_at}

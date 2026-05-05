@@ -7,7 +7,8 @@ import { ideaSortMethods } from 'api/phases/types';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute, useParams } from 'utils/router';
 
 const UsersShowPage = lazy(() => import('./'));
 const Following = lazy(() => import('./Following'));
@@ -44,10 +45,23 @@ export const createUserShowPageRoutes = () => {
     ),
   });
 
+  const ProfileIndexRedirect = () => {
+    const { userSlug } = useParams({
+      from: '/$locale/profile/$userSlug',
+    });
+    return (
+      <Navigate
+        to="/profile/$userSlug/submissions"
+        params={{ userSlug }}
+        replace
+      />
+    );
+  };
+
   const profileIndexRoute = createRoute({
     getParentRoute: () => profileRoute,
     path: '/',
-    component: () => <Navigate to="submissions" replace />,
+    component: ProfileIndexRedirect,
   });
 
   const submissionsRoute = createRoute({

@@ -135,12 +135,11 @@ const Avatar = memo(
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const slug = user?.data.attributes.slug;
-    const profileLink = `/profile/${slug}`;
-    const hasValidProfileLink = profileLink !== '/profile/undefined';
+    const hasValidProfileLink = !!slug;
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink} scrollToTop>
+        <Link to="/profile/$userSlug" params={{ userSlug: slug }} scrollToTop>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.titleForAccessibility}

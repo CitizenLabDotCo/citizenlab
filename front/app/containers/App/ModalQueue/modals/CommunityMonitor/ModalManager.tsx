@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
 import { get } from 'js-cookie';
-import { useLocation } from 'utils/router';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';
@@ -10,6 +9,7 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import { useModalQueue } from '../..';
 

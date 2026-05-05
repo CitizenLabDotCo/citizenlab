@@ -4,7 +4,8 @@ import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -50,7 +51,9 @@ const communityMonitorRoute = createRoute({
 const communityMonitorIndexRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
   path: '/',
-  component: () => <Navigate to="live-monitor" replace />,
+  component: () => (
+    <Navigate to="/admin/community-monitor/live-monitor" replace />
+  ),
 });
 
 const liveMonitorSearchSchema = yup.object({
@@ -94,7 +97,9 @@ const settingsRoute = createRoute({
 const settingsIndexRoute = createRoute({
   getParentRoute: () => settingsRoute,
   path: '/',
-  component: () => <Navigate to="survey" replace />,
+  component: () => (
+    <Navigate to="/admin/community-monitor/settings/survey" replace />
+  ),
 });
 
 const settingsSurveyRoute = createRoute({

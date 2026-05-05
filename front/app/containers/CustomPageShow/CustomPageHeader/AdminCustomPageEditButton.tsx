@@ -4,7 +4,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -29,7 +29,7 @@ const AdminCustomPageEditButton = ({
   return userCanEditPage ? (
     <ButtonWithLink
       icon="edit"
-      linkTo={adminCustomPageContentPath(pageId)}
+      {...adminCustomPageContentLink(pageId)}
       buttonStyle="secondary-outlined"
       padding="5px 8px"
       position="absolute"

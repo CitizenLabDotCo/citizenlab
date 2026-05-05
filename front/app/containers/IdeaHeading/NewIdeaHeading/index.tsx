@@ -69,7 +69,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
     !isSmallerThanPhone &&
     canModerateProject(project.data, authUser) &&
     !isCommonGround;
-  const linkToFormBuilder = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
+  const linkToFormBuilder = {
+    to: '/admin/projects/$projectId/phases/$phaseId/form/edit',
+    params: { projectId: project.data.id, phaseId },
+  } as const;
 
   const onClickClose = () => {
     const pathname = isCommonGround
@@ -114,7 +117,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
           {showEditFormButton && (
             <ButtonWithLink
               icon="edit"
-              linkTo={linkToFormBuilder}
+              {...linkToFormBuilder}
               buttonStyle="primary-inverse"
               textDecorationHover="underline"
               mr="12px"

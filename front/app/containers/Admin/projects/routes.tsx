@@ -8,8 +8,9 @@ import { projectSortableParams } from 'api/projects_mini_admin/types';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import Navigate from 'utils/cl-router/Navigate';
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
-import { createRoute, Navigate } from 'utils/router';
+import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -87,6 +88,12 @@ export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
 
+export const adminProjectsProjectLink = (projectId: string) =>
+  ({
+    to: '/admin/projects/$projectId',
+    params: { projectId },
+  } as const);
+
 // --- Search parameter schemas ---
 
 // Survey form builder search schema
@@ -105,6 +112,10 @@ const inputImporterSearchSchema = yup.object({
 
 export type InputImporterSearchParams = yup.InferType<
   typeof inputImporterSearchSchema
+>;
+
+export type ProjectAnalysisSearchParams = yup.InferType<
+  typeof projectAnalysisSearchSchema
 >;
 
 // --- Projects layout route ---
@@ -190,10 +201,23 @@ const projectRoute = createRoute({
 });
 
 // Project index redirect
+const ProjectIndexRedirect = () => {
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId',
+  });
+  return (
+    <Navigate
+      to="/admin/projects/$projectId/phases/setup"
+      params={{ projectId }}
+      replace
+    />
+  );
+};
+
 const projectIndexRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/',
-  component: () => <Navigate to="phases/setup" replace />,
+  component: ProjectIndexRedirect,
 });
 
 // --- General settings layout ---
@@ -367,7 +391,9 @@ const projectAnalysisRoute = createRoute({
   // Don't strip unknown — the URL also carries dynamic keys like
   // `author_custom_<uuid>` and `input_custom_<uuid>_(from|to)` that we want
   // to keep but can't enumerate in the schema.
-  validateSearch: (search: Record<string, unknown>) =>
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectAnalysisSearchParams =>
     projectAnalysisSearchSchema.validateSync(search),
   component: () => (
     <PageLoading>
