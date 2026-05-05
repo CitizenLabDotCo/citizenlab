@@ -1,5 +1,7 @@
 import Quill, { Range } from 'quill';
 
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import type Toolbar from 'quill/modules/toolbar';
 
 interface Params {
@@ -186,7 +188,7 @@ export const createQuill = (
 
   editor.setAttribute('name', id);
   editor.setAttribute('id', id);
-  editor.setAttribute('aria-labelledby', id);
+  editor.setAttribute('aria-labelledby', `${sanitizeForClassname(id)}-label`);
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
 
