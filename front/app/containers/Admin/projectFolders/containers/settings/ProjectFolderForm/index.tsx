@@ -527,6 +527,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCardImage.remote
     : false;
 
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
+
   return (
     <form onSubmit={saveForm}>
       <Section>
@@ -579,7 +595,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
+        <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
@@ -607,9 +623,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}
           />
-          <Box mt="35px">
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
               name="textAreaMultiloc"
               onChange={getHandler(setShortDescriptionMultiloc)}
@@ -744,12 +759,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

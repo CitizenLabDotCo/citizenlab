@@ -28,11 +28,16 @@ class ProjectReviewPolicy < ApplicationPolicy
   private
 
   def can_approve?
-    admin? || can_moderate_folder?
+    admin? || can_moderate_space? || can_moderate_folder?
   end
 
   def can_moderate_project?
     UserRoleService.new.can_moderate?(record.project, user)
+  end
+
+  def can_moderate_space?
+    space = record.project.space
+    space.present? && UserRoleService.new.can_moderate?(space, user)
   end
 
   def can_moderate_folder?

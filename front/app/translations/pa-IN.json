@@ -2439,6 +2439,7 @@
   "app.errors.password_blank": "ਇਹ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ",
   "app.errors.password_invalid": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਮੌਜੂਦਾ ਪਾਸਵਰਡ ਦੀ ਦੁਬਾਰਾ ਜਾਂਚ ਕਰੋ।",
   "app.errors.password_too_short": "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
+  "app.errors.phase_too_short": "ਪੜਾਅ ਬਹੁਤ ਛੋਟਾ ਹੈ। ਇਹ ਘੱਟੋ-ਘੱਟ 24 ਘੰਟੇ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.errors.resending_code_failed": "ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਭੇਜਣ ਦੌਰਾਨ ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ।",
   "app.errors.slug_taken": "ਇਹ ਪ੍ਰੋਜੈਕਟ URL ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਪ੍ਰੋਜੈਕਟ ਸਲੱਗ ਨੂੰ ਕਿਸੇ ਹੋਰ ਚੀਜ਼ ਵਿੱਚ ਬਦਲੋ।",
   "app.errors.something_went_wrong": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਜੇਕਰ ਸਮੱਸਿਆ ਬਣੀ ਰਹਿੰਦੀ ਹੈ ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",

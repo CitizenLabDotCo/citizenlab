@@ -28,6 +28,7 @@ const SpaceRadio = ({
       <Radio
         name="space"
         value="space"
+        dataCy="project-context-space-radio"
         currentValue={projectContext}
         label={
           <LabelHeaderDescription
@@ -44,7 +45,7 @@ const SpaceRadio = ({
             spaceId={space_id}
             spaces={spaces.data}
             onChange={(space_id) => {
-              onChangeSpace(space_id);
+              onChangeSpace({ space_id, folder_id: null });
             }}
           />
           {error && <Error text={formatMessage(messages.spaceError)} />}

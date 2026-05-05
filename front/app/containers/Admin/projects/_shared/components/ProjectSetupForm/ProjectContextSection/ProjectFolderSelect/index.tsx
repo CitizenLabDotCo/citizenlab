@@ -9,11 +9,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { SpaceAndFolderId } from '../types';
+
 import messages from './messages';
 
 interface Props {
   folder_id?: string | null;
-  onChange: (folder_id: string | null) => void;
+  onChange: (spaceAndFolderId: SpaceAndFolderId) => void;
 }
 
 const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
@@ -43,9 +45,16 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
       ]
     : [];
 
-  const handleSelectFolderChange = ({ value }) => {
-    const folderId = value === noFolderId ? null : value;
-    onChange(folderId);
+  const handleSelectFolderChange = ({ value: folderId }) => {
+    if (folderId) {
+      const selectedFolder = flatFolders?.find(
+        (folder) => folder.id === folderId
+      );
+      const spaceId = selectedFolder?.attributes.space_id ?? null;
+      onChange({ space_id: spaceId, folder_id: folderId });
+    } else {
+      onChange({ space_id: null, folder_id: null });
+    }
   };
 
   if (folderOptions.length === 0) return null;
@@ -57,6 +66,7 @@ const ProjectFolderSelect = ({ folder_id, onChange }: Props) => {
       value={folder_id || defaultFolderSelectOptionValue}
       options={folderOptions}
       onChange={handleSelectFolderChange}
+      dataCy="project-folder-select"
     />
   );
 };

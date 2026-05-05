@@ -27,6 +27,7 @@ const FolderRadio = ({
       <Radio
         name="folder"
         value="folder"
+        dataCy="project-context-folder-radio"
         currentValue={projectContext}
         label={
           <LabelHeaderDescription
@@ -42,9 +43,7 @@ const FolderRadio = ({
           <Highlighter fragmentId={folderFragmentId}>
             <ProjectFolderSelect
               folder_id={folder_id}
-              onChange={(folder_id) => {
-                onChangeFolder(folder_id);
-              }}
+              onChange={onChangeFolder}
             />
           </Highlighter>
           {error && <Error text={formatMessage(messages.folderError)} />}

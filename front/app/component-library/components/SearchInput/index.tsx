@@ -145,7 +145,12 @@ const SearchInput = ({
   const isLabelFloating = isFocused || !!internalSearchTerm;
 
   return (
-    <Box className={className || ''} position="relative" data-cy={dataCy}>
+    <Box
+      className={className || ''}
+      position="relative"
+      data-cy={dataCy}
+      role="search"
+    >
       <StyledInputWrapper>
         {!hideLabel && (
           <StyledLabel
