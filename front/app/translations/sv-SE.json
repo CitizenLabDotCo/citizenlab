@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Lägg till knapp",
   "app.components.QuillEditor.customLinkPrompt": "Ange länk:",
   "app.components.QuillEditor.edit": "Redigera",
+  "app.components.QuillEditor.embeddedVideo": "Inbäddad video",
   "app.components.QuillEditor.image": "Ladda upp bild",
   "app.components.QuillEditor.imageTitleLabel": "Bildtitel",
   "app.components.QuillEditor.italic": "Kursiv",

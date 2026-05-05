@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Dodajte gumb",
   "app.components.QuillEditor.customLinkPrompt": "Unesite vezu:",
   "app.components.QuillEditor.edit": "Uredi",
+  "app.components.QuillEditor.embeddedVideo": "Ugrađeni videozapis",
   "app.components.QuillEditor.image": "Prenesite sliku",
   "app.components.QuillEditor.imageTitleLabel": "Naslov slike",
   "app.components.QuillEditor.italic": "Kurziv",

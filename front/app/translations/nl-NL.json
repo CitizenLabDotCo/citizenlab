@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Knop toevoegen",
   "app.components.QuillEditor.customLinkPrompt": "Geef de link in:",
   "app.components.QuillEditor.edit": "Bewerk",
+  "app.components.QuillEditor.embeddedVideo": "Ingebedde video",
   "app.components.QuillEditor.image": "Upload afbeelding",
   "app.components.QuillEditor.imageTitleLabel": "Titel afbeelding",
   "app.components.QuillEditor.italic": "Cursief",

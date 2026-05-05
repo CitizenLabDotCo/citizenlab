@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Toortaammik ilanngussigit",
   "app.components.QuillEditor.customLinkPrompt": "Link allaguk:",
   "app.components.QuillEditor.edit": "Aaqqissuuguk",
+  "app.components.QuillEditor.embeddedVideo": "Video ikunneqartoq",
   "app.components.QuillEditor.image": "Assimik nuussigit",
   "app.components.QuillEditor.imageTitleLabel": "Image Title",
   "app.components.QuillEditor.italic": "Uingasoq",

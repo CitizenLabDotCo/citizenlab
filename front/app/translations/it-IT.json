@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Aggiungi pulsante",
   "app.components.QuillEditor.customLinkPrompt": "Inserisci il link:",
   "app.components.QuillEditor.edit": "Modifica",
+  "app.components.QuillEditor.embeddedVideo": "Video incorporato",
   "app.components.QuillEditor.image": "Carica immagine",
   "app.components.QuillEditor.imageTitleLabel": "Titolo dell'immagine",
   "app.components.QuillEditor.italic": "Corsivo",

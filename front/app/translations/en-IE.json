@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Add button",
   "app.components.QuillEditor.customLinkPrompt": "Enter link:",
   "app.components.QuillEditor.edit": "Edit",
+  "app.components.QuillEditor.embeddedVideo": "Embedded video",
   "app.components.QuillEditor.image": "Upload image",
   "app.components.QuillEditor.imageTitleLabel": "Image Title",
   "app.components.QuillEditor.italic": "Italic",

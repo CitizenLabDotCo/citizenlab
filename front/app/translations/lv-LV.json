@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Pievienot pogu",
   "app.components.QuillEditor.customLinkPrompt": "Ievadīt saiti:",
   "app.components.QuillEditor.edit": "Rediģēt",
+  "app.components.QuillEditor.embeddedVideo": "Iegults video",
   "app.components.QuillEditor.image": "Augšupielādēt attēlu",
   "app.components.QuillEditor.imageTitleLabel": "Attēla nosaukums",
   "app.components.QuillEditor.italic": "Kursīvs",

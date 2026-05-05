@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Προσθήκη κουμπιού",
   "app.components.QuillEditor.customLinkPrompt": "Εισαγωγή συνδέσμου:",
   "app.components.QuillEditor.edit": "Επεξεργασία",
+  "app.components.QuillEditor.embeddedVideo": "Ενσωματωμένο βίντεο",
   "app.components.QuillEditor.image": "Αποστολή εικόνας",
   "app.components.QuillEditor.imageTitleLabel": "Τίτλος εικόνας",
   "app.components.QuillEditor.italic": "Πλάγια γραφή",
