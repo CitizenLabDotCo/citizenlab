@@ -17,6 +17,7 @@ const RootRadio = ({
     <Radio
       name="root"
       value="root"
+      dataCy="project-context-root-radio"
       currentValue={projectContext}
       label={
         <LabelHeaderDescription

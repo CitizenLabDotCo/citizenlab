@@ -28,6 +28,7 @@ const SpaceRadio = ({
       <Radio
         name="space"
         value="space"
+        dataCy="project-context-space-radio"
         currentValue={projectContext}
         label={
           <LabelHeaderDescription
