@@ -2554,6 +2554,11 @@
     "verified_at": "2026-05-04T12:35:25.720706Z",
     "verified_by": "Luuc"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:37:03.356430Z",
+    "verified_by": "Luuc"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet12": {
     "state": "verified",
     "verified_at": "2026-05-04T12:35:25.720706Z",
