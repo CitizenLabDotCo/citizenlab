@@ -2,7 +2,8 @@ import React, { lazy } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { createRoute, Navigate } from 'utils/router';
+import Navigate from 'utils/cl-router/Navigate';
+import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -122,10 +123,22 @@ const customPageRoute = createRoute({
   component: () => <EditCustomPageIndex />,
 });
 
+const CustomPageIndexRedirect = () => {
+  const { customPageId } = useParams({
+    from: '/$locale/admin/pages-menu/pages/$customPageId',
+  });
+  return (
+    <Navigate
+      to="/admin/pages-menu/pages/$customPageId/settings"
+      params={{ customPageId }}
+    />
+  );
+};
+
 const customPageIndexRoute = createRoute({
   getParentRoute: () => customPageRoute,
   path: '/',
-  component: () => <Navigate to="settings" />,
+  component: CustomPageIndexRedirect,
 });
 
 const customPageSettingsRoute = createRoute({
