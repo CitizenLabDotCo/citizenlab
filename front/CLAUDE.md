@@ -361,14 +361,20 @@ Key features:
 - Type checking (`vite-plugin-checker`)
 - Bundle analysis
 
-### Environment Variables
+### Environment Configuration
 
-- Development: Set in shell or `.env` files
-- Production: Injected during build
-- Key variables:
-  - `API_HOST`: Backend hostname
-  - `API_PORT`: Backend port
-  - `HTTPS_HOST`: HTTPS hostname for SSO
+Environment variables are in `../env_files/`:
+
+- `front-safe.env` - Safe to commit
+- `front-secret.env` - Secrets (gitignored)
+
+In production, variables are injected during build.
+
+Key variables:
+
+- `API_HOST`: Backend hostname
+- `API_PORT`: Backend port
+- `HTTPS_HOST`: HTTPS hostname for SSO
 
 ## Key Features & Modules
 
