@@ -486,6 +486,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet22": "Skriveno iz opće pretrage projekata",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32": "Vidljivo samo u namjenskim modulima na početnoj stranici",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedTitle2": "Arhivirano",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet": "Dostupno samo administratorima i dodijeljenim voditeljima",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftBullet22": "Svatko s poveznicom za dijeljenje pregleda također mu može pristupiti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusDraftTitle2": "Skica",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusPublishedBullet12": "Dostupno svim korisnicima ili određenim grupama, ovisno o postavkama projekta",
