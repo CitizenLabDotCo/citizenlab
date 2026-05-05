@@ -66,14 +66,16 @@ describe('Landing page - URL sign in/up', () => {
     cy.goToLandingPage();
     cy.acceptCookies();
 
+    // Both /sign-in and /sign-up now open the same email-first step
+    // (`email:start` -> beforeYouParticipate) — flow branches to Log in /
+    // Sign up only after the user submits an email.
     cy.visit('/sign-in');
-
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.contains('Log in').should('exist');
+    cy.get('[data-cy="email-flow-start"]').should('exist');
 
     cy.visit('/sign-up');
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.contains('Sign up').should('exist');
+    cy.get('[data-cy="email-flow-start"]').should('exist');
   });
 
   it('shows no authentication modal when already logged in', () => {
