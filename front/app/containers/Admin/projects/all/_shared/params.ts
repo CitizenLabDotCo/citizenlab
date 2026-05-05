@@ -8,7 +8,6 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
-// ts-prune-ignore-next — ts-prune misreads `satisfies` as an unused export
 export const PARAMS = [
   'status',
   'managers',
@@ -23,9 +22,15 @@ export const PARAMS = [
   'discoverability',
   'review_state',
   'space_ids',
-] as const satisfies (keyof Parameters)[];
+] as const;
 
 export type Parameter = (typeof PARAMS)[number];
+
+// Compile-time check that every PARAMS entry is a valid Parameters key.
+// (`satisfies` on the export line above confuses ts-prune 0.10.x.)
+type _ParamsCheck = Parameter extends keyof Parameters ? true : never;
+const _paramsCheck: _ParamsCheck = true;
+void _paramsCheck;
 
 export const setParam = <ParamName extends Parameter>(
   paramName: ParamName,
