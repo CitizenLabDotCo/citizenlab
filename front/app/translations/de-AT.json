@@ -2633,7 +2633,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Am Ende auf \"Senden\" klicken, um das Budget einzureichen.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Bevorzugte Optionen wählen, indem man auf \"Hinzufügen\" klickt.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Man hat insgesamt <b>{maxBudget} zur Verfügung, die man auf {optionCount} Optionen verteilen kann</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Herzlichen Glückwunsch, Ihr Budget wurde übermittelt!</b> Sie können Ihre Optionen unten jederzeit überprüfen oder sie vor dem <b>{endDate}</b> ändern.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Herzlichen Glückwunsch, dein Budget wurde übermittelt!</b> Du kannst deine Optionen unten jederzeit überprüfen oder sie vor dem <b>{endDate}</b> ändern.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Herzlichen Glückwunsch, Ihr Budget wurde eingereicht!</b> Sie können Ihre Optionen unten jederzeit überprüfen.",
   "app.utils.votingMethodUtils.castYourVote": "Abstimmen",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea1": "Man kann maximal {maxVotes, plural, one {# Guthaben} other {# Guthaben}} pro Option hinzufügen.",
