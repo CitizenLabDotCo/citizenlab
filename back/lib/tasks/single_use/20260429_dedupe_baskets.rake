@@ -9,76 +9,83 @@ namespace :single_use do
 
     reporter = ScriptReporter.new
 
-    Tenant.safe_switch_each do |tenant|
-      reporter.add_processed_tenant(tenant)
+    Tenant.all.find_each do |tenant|
+      next unless Apartment.connection.schema_exists?(tenant.schema_name)
 
-      # One fetch query: every basket that belongs to a (user_id, phase_id) duplicate set.
-      dup_pairs_sql = Basket.where.not(user_id: nil)
-        .group(:user_id, :phase_id)
-        .having('COUNT(*) > 1')
-        .select(:user_id, :phase_id)
-        .to_sql
+      tenant.switch do
+        reporter.add_processed_tenant(tenant)
 
-      all_dup_baskets = Basket
-        .joins("INNER JOIN (#{dup_pairs_sql}) dup ON baskets.user_id = dup.user_id AND baskets.phase_id = dup.phase_id")
-        .order(:user_id, :phase_id, :created_at)
-        .to_a
+        # One fetch query: every basket that belongs to a (user_id, phase_id) duplicate set.
+        dup_pairs_sql = Basket.where.not(user_id: nil)
+          .group(:user_id, :phase_id)
+          .having('COUNT(*) > 1')
+          .select(:user_id, :phase_id)
+          .to_sql
 
-      next if all_dup_baskets.empty?
+        all_dup_baskets = Basket
+          .joins("INNER JOIN (#{dup_pairs_sql}) dup ON baskets.user_id = dup.user_id AND baskets.phase_id = dup.phase_id")
+          .order(:user_id, :phase_id, :created_at)
+          .to_a
 
-      grouped = all_dup_baskets.group_by { |b| [b.user_id, b.phase_id] }
+        next if all_dup_baskets.empty?
 
-      puts "Processing tenant: #{tenant.host} - #{grouped.size} duplicate set(s)"
+        grouped = all_dup_baskets.group_by { |b| [b.user_id, b.phase_id] }
 
-      grouped.each do |(user_id, phase_id), baskets|
-        submitted_baskets = baskets.select(&:submitted?)
+        puts "Processing tenant: #{tenant.host} - #{grouped.size} duplicate set(s)"
 
-        # Selection policy:
-        # - 1 submitted, rest drafts -> keep the submitted one
-        # - >1 submitted             -> keep the EARLIEST submission
-        # - all drafts               -> keep the most-recently-updated draft
-        kept_basket =
-          if submitted_baskets.size == 1
-            submitted_baskets.first
-          elsif submitted_baskets.size > 1
-            submitted_baskets.min_by(&:submitted_at)
-          else
-            baskets.max_by(&:updated_at)
-          end
+        grouped.each do |(user_id, phase_id), baskets|
+          submitted_baskets = baskets.select(&:submitted?)
 
-        user_phase_baskets_before = []
-        user_phase_baskets_after = []
-
-        baskets.each do |basket|
-          user_phase_baskets_before << basket.attributes.symbolize_keys
-
-          if basket.id == kept_basket.id
-            user_phase_baskets_after << basket.attributes.symbolize_keys
-            next
-          end
-
-          if execute
-            begin
-              basket.update!(user_id: nil)
-            rescue StandardError => e
-              reporter.add_error(e.message, context: { tenant: tenant.host, basket_id: basket.id })
-              puts "ERROR! Failed to detach basket #{basket.id}: #{e.message}"
-              basket.reload # update! assigns in-memory before validating; reload to reflect actual DB state
+          # Selection policy:
+          # - 1 submitted, rest drafts -> keep the submitted one
+          # - >1 submitted             -> keep the EARLIEST submission
+          # - all drafts               -> keep the most-recently-updated draft
+          kept_basket =
+            if submitted_baskets.size == 1
+              submitted_baskets.first
+            elsif submitted_baskets.size > 1
+              submitted_baskets.min_by(&:submitted_at)
+            else
+              baskets.max_by(&:updated_at)
             end
-            user_phase_baskets_after << basket.attributes.symbolize_keys
-            next
+
+          user_phase_baskets_before = []
+          user_phase_baskets_after = []
+
+          baskets.each do |basket|
+            user_phase_baskets_before << basket.attributes.symbolize_keys
+
+            if basket.id == kept_basket.id
+              user_phase_baskets_after << basket.attributes.symbolize_keys
+              next
+            end
+
+            if execute
+              begin
+                basket.update!(user_id: nil)
+              rescue StandardError => e
+                reporter.add_error(e.message, context: { tenant: tenant.host, basket_id: basket.id })
+                puts "ERROR! Failed to detach basket #{basket.id}: #{e.message}"
+                basket.reload # update! assigns in-memory before validating; reload to reflect actual DB state
+              end
+              user_phase_baskets_after << basket.attributes.symbolize_keys
+              next
+            end
+
+            # Dry run: simulate the detach
+            user_phase_baskets_after << basket.attributes.symbolize_keys.merge(user_id: nil)
           end
 
-          # Dry run: simulate the detach
-          user_phase_baskets_after << basket.attributes.symbolize_keys.merge(user_id: nil)
+          reporter.add_change(
+            user_phase_baskets_before,
+            user_phase_baskets_after,
+            context: { tenant: tenant.host, user_id: user_id, phase_id: phase_id }
+          )
         end
-
-        reporter.add_change(
-          user_phase_baskets_before,
-          user_phase_baskets_after,
-          context: { tenant: tenant.host, user_id: user_id, phase_id: phase_id }
-        )
       end
+    rescue Apartment::TenantNotFound, StandardError => e
+      reporter.add_error(e.message, context: { tenant: tenant.host })
+      puts "ERROR! Failed to process tenant #{tenant.host}: #{e.message}"
     end
 
     DedupeBasketsTaskSummaryPrinter.print_summary(reporter)
