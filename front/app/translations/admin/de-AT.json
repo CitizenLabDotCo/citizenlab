@@ -3498,7 +3498,7 @@
   "app.containers.AdminPage.widgets.fieldFontDescription": "Dies muss eine vorhandene Schriftart aus {googleFontsLink} sein.",
   "app.containers.AdminPage.widgets.fieldFontSize": "Schriftgröße (px)",
   "app.containers.AdminPage.widgets.fieldHeaderSubText": "Kopfzeile Untertitel",
-  "app.containers.AdminPage.widgets.fieldHeaderSubTextDefault": "Sie können mitbestimmen",
+  "app.containers.AdminPage.widgets.fieldHeaderSubTextDefault": "Mitbestimmen",
   "app.containers.AdminPage.widgets.fieldHeaderText": "Überschrift Titel",
   "app.containers.AdminPage.widgets.fieldHeaderTextDefault": "Unsere Beteiligungsplattform",
   "app.containers.AdminPage.widgets.fieldHeight": "Höhe (px)",
