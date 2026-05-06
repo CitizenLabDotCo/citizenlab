@@ -98,21 +98,35 @@ function deleteUserByEmail(email: string) {
   });
 }
 
-// Recursively consume `@invitesImportPoll` matches until the bulk_create
-// import job reports completed_at. Mirrors the frontend's importJobComplete
-// check and stays inside Cypress's command queue — no native Promise or
-// setTimeout, so nothing leaks across tests.
-function waitForBulkCreateComplete(): Cypress.Chainable {
-  return cy
-    .wait('@invitesImportPoll', { timeout: 60000 })
-    .then((interception) => {
-      const attrs = interception.response?.body?.data?.attributes;
-      const isComplete =
-        !!attrs?.completed_at &&
-        typeof attrs.job_type === 'string' &&
-        attrs.job_type.includes('bulk_create');
-      return isComplete ? cy.wrap(null) : waitForBulkCreateComplete();
-    });
+// Poll the bulk-create import job directly until completed_at is set.
+// Bounded by `attemptsLeft` so the test fails fast if the job stalls in CI,
+// instead of hanging on an open-ended cy.wait. Stays inside Cypress's
+// command queue (no native Promise / setTimeout).
+function waitForImportJobComplete(
+  importId: string,
+  attemptsLeft = 60
+): Cypress.Chainable {
+  return adminAuthHeader().then((headers) =>
+    cy
+      .request({
+        headers,
+        method: 'GET',
+        url: `web_api/v1/invites_imports/${importId}`,
+      })
+      .then((res) => {
+        if (res.body?.data?.attributes?.completed_at) {
+          return cy.wrap(null);
+        }
+        if (attemptsLeft <= 0) {
+          throw new Error(
+            `Import job ${importId} did not complete within the polling budget`
+          );
+        }
+        return cy
+          .wait(2000)
+          .then(() => waitForImportJobComplete(importId, attemptsLeft - 1));
+      })
+  );
 }
 
 describe('Invitation authentication flow', () => {
@@ -126,8 +140,11 @@ describe('Invitation authentication flow', () => {
     deleteUserByEmail(FIXTURE_INVITED_EMAIL);
     deleteInvites();
 
-    cy.intercept('GET', '**/web_api/v1/invites_imports/*').as(
-      'invitesImportPoll'
+    // The bulk_create POST fires once (after the seat-count phase). Catching
+    // it gives us the job id deterministically; we then poll that specific
+    // job ourselves rather than relying on the frontend's polling continuing.
+    cy.intercept('POST', '**/web_api/v1/invites_imports/bulk_create_xlsx').as(
+      'bulkCreate'
     );
 
     cy.setAdminLoginCookie();
@@ -139,7 +156,11 @@ describe('Invitation authentication flow', () => {
       .should('not.have.class', 'disabled')
       .click();
 
-    waitForBulkCreateComplete();
+    cy.wait('@bulkCreate', { timeout: 60000 }).then((interception) => {
+      const importId = interception.response?.body?.data?.id;
+      expect(importId, 'bulk_create import id').to.be.a('string');
+      waitForImportJobComplete(importId);
+    });
 
     // Verify directly against the API — the source of truth — rather than
     // racing the React Query cache on /admin/users/invitations/all.
