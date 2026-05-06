@@ -1432,7 +1432,6 @@
   "app.containers.IdeaButton.takeTheSurvey": "Répondre à l'enquête",
   "app.containers.IdeaButton.verificationLinkText": "Vérifiez votre identité maintenant.",
   "app.containers.IdeaCard.readMore": "Lire la suite",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {aucun commentaire} one {1 commentaire} other {# commentaires}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {0 vote} one {1 vote} other {# votes}} sur {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Fermer le panneau des filtres",
   "app.containers.IdeaCards.a11y_totalItems": "Total des éléments : {ideasCount}",

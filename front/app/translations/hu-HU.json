@@ -1432,7 +1432,6 @@
   "app.containers.IdeaButton.takeTheSurvey": "Vegye ki a felmérést",
   "app.containers.IdeaButton.verificationLinkText": "Igazolja személyazonosságát most.",
   "app.containers.IdeaCard.readMore": "Olvass tovább",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nincs hozzászólás} one {1 megjegyzés} other {# megjegyzés}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nincs szavazat} one {1 szavazat} other {# szavazat}} / {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Zárja be a szűrőpanelt",
   "app.containers.IdeaCards.a11y_totalItems": "Összes hozzászólás: {ideasCount}",

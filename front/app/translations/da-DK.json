@@ -1432,7 +1432,6 @@
   "app.containers.IdeaButton.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.containers.IdeaButton.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.IdeaCard.readMore": "Læs mere",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {ingen kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ingen stemmer} one {1 stemme} other {# stemmer}} ud af {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Luk filterpanelet",
   "app.containers.IdeaCards.a11y_totalItems": "Idéer i alt: {ideasCount}",

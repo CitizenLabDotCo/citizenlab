@@ -1432,7 +1432,6 @@
   "app.containers.IdeaButton.takeTheSurvey": "Atlikite apklausą",
   "app.containers.IdeaButton.verificationLinkText": "Dabar patikrinkite savo tapatybę.",
   "app.containers.IdeaCard.readMore": "Skaityti daugiau",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {be komentarų} one {1 komentaras} other {# komentarai}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nėra balsų} one {1 balsas} other {# balsų}} iš {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Uždaryti filtrų skydelį",
   "app.containers.IdeaCards.a11y_totalItems": "Iš viso pranešimų: {ideasCount}",
