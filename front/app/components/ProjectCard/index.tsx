@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useId, useState } from 'react';
 
 import {
   Box,
@@ -34,6 +34,7 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
+import { joinAriaIds } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -415,6 +416,8 @@ const ProjectCard = memo<InputProps>(
     const localize = useLocalize();
     const { formatMessage } = useIntl();
     const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const descriptionPreviewId = `${useId()}-description-preview`;
+    const participantsId = `${useId()}-participants`;
 
     const [visible, setVisible] = useState(false);
 
@@ -589,11 +592,10 @@ const ProjectCard = memo<InputProps>(
               onClick={() => {
                 handleProjectTitleOnClick(project.data.id);
               }}
-              aria-describedby={
-                hasDescriptionPreview
-                  ? `${project.data.id}-description-preview`
-                  : undefined
-              }
+              aria-describedby={joinAriaIds(
+                hasDescriptionPreview && descriptionPreviewId,
+                showAvatarBubbles && participantsId
+              )}
             >
               <ProjectTitle
                 variant="h3"
@@ -612,7 +614,7 @@ const ProjectCard = memo<InputProps>(
                       <ProjectDescription
                         className="e2e-project-card-project-description-preview"
                         data-testid="project-card-project-description-preview"
-                        id={`${project.data.id}-description-preview`}
+                        id={descriptionPreviewId}
                       >
                         {description}
                       </ProjectDescription>
@@ -626,7 +628,12 @@ const ProjectCard = memo<InputProps>(
           </ContentBody>
 
           {showAvatarBubbles && (
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <Box
+              id={participantsId}
+              borderTop={`1px solid ${colors.divider}`}
+              pt="16px"
+              mt="30px"
+            >
               <ContentFooter className={size}>
                 <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles

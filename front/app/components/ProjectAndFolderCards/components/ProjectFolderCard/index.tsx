@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useId } from 'react';
 
 import {
   media,
@@ -31,7 +31,7 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
+import { joinAriaIds, ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -334,6 +334,8 @@ const ProjectFolderCard = memo<Props>(
     const { data: projectFolder } = useProjectFolderById(folderId);
     const localize = useLocalize();
     const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const descriptionPreviewId = `${useId()}-description-preview`;
+    const participantsId = `${useId()}-participants`;
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -464,11 +466,10 @@ const ProjectFolderCard = memo<Props>(
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}
-              aria-describedby={
-                hasDescriptionPreview
-                  ? `${publication.data.id}-folder-description-preview`
-                  : undefined
-              }
+              aria-describedby={joinAriaIds(
+                hasDescriptionPreview && descriptionPreviewId,
+                showAvatarBubbles && participantsId
+              )}
             >
               <FolderTitle
                 variant="h3"
@@ -491,7 +492,7 @@ const ProjectFolderCard = memo<Props>(
                   return (
                     <FolderDescription
                       className="e2e-folder-card-folder-description-preview"
-                      id={`${publication.data.id}-folder-description-preview`}
+                      id={descriptionPreviewId}
                     >
                       {description}
                     </FolderDescription>
@@ -503,7 +504,12 @@ const ProjectFolderCard = memo<Props>(
             </T>
           </ContentBody>
           {showAvatarBubbles && (
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <Box
+              id={participantsId}
+              borderTop={`1px solid ${colors.divider}`}
+              pt="16px"
+              mt="30px"
+            >
               <ContentFooter className={size}>
                 <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles
