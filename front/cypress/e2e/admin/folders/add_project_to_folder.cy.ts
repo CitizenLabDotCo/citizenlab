@@ -42,17 +42,6 @@ describe('Admin: add projects to folder', async () => {
             cy.wait(2000);
           });
 
-        // Add folder short description
-        cy.dataCy('e2e-project-folder-short-description')
-          .find('.e2e-localeswitcher')
-          .each((button) => {
-            cy.wrap(button).click();
-            cy.dataCy('e2e-project-folder-short-description').within(() => {
-              cy.get('textarea').type(folderShortDescription);
-              cy.wait(2000);
-            });
-          });
-
         // Add folder description
         cy.dataCy('e2e-project-folder-description')
           .find('.e2e-localeswitcher')
@@ -60,6 +49,17 @@ describe('Admin: add projects to folder', async () => {
             cy.wrap(button).click();
             cy.dataCy('e2e-project-folder-description').within(() => {
               cy.get('#description').type(folderShortDescription);
+              cy.wait(2000);
+            });
+          });
+
+        // Add folder short description
+        cy.dataCy('e2e-project-folder-short-description')
+          .find('.e2e-localeswitcher')
+          .each((button) => {
+            cy.wrap(button).click();
+            cy.dataCy('e2e-project-folder-short-description').within(() => {
+              cy.get('textarea').type(folderShortDescription);
               cy.wait(2000);
             });
           });

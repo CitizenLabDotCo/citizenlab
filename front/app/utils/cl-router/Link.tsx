@@ -84,7 +84,7 @@ type LocaleAwareLink<TComp> = <
       >
     >,
     'to'
-  > & { to?: TTo }
+  > & { to?: TTo; ref?: React.Ref<HTMLAnchorElement> }
 ) => React.ReactElement;
 
 // Implementation-side props: the public `LocaleAwareLink<>` signature is the
@@ -103,44 +103,60 @@ type LinkImplProps = ExtraProps &
     activeOptions?: ActiveOptions;
   };
 
-const Link = (props: LinkImplProps) => {
-  const locale = useLocale();
-  const { to, params, onlyActiveOnIndex, activeOptions, ...rest } = props;
+// forwardRef so consumers (e.g. styled `<PhaseBar as={Link} ref={...}>` in the
+// project timeline) can attach a ref to the rendered <a> for focus management.
+const Link = React.forwardRef<HTMLAnchorElement, LinkImplProps>(
+  (props, ref) => {
+    const locale = useLocale();
+    const { to, params, onlyActiveOnIndex, activeOptions, ...rest } = props;
 
-  // Auto-prepend `/$locale` to absolute internal paths that don't already have
-  // it. Mirrors __mocks__/Link.tsx so test href assertions match runtime.
-  // `'/'` is special-cased to `'/$locale'` (no trailing slash) so the runtime
-  // string lines up with the type-level `AddLocale<'/'>`.
-  const resolvedTo =
-    typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
-      ? to === '/'
-        ? '/$locale'
-        : `/$locale${to}`
-      : to;
+    // Auto-prepend `/$locale` to absolute internal paths that don't already have
+    // it. Mirrors __mocks__/Link.tsx so test href assertions match runtime.
+    // `'/'` is special-cased to `'/$locale'` (no trailing slash) so the runtime
+    // string lines up with the type-level `AddLocale<'/'>`.
+    const resolvedTo =
+      typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
+        ? to === '/'
+          ? '/$locale'
+          : `/$locale${to}`
+        : to;
 
-  const mergedParams =
-    typeof params === 'function'
-      ? (prev: unknown) => ({ locale, ...params(prev) })
-      : params && params !== true
-      ? { locale, ...params }
-      : { locale };
+    const mergedParams =
+      typeof params === 'function'
+        ? (prev: unknown) => ({ locale, ...params(prev) })
+        : params && params !== true
+        ? { locale, ...params }
+        : { locale };
 
-  const resolvedActiveOptions = onlyActiveOnIndex
-    ? { exact: true, ...activeOptions }
-    : activeOptions;
+    const resolvedActiveOptions = onlyActiveOnIndex
+      ? { exact: true, ...activeOptions }
+      : activeOptions;
 
-  // Single contained cast: the public `LocaleAwareLink<>` type already enforces
-  // the route-aware shape on callers; here we hand the resolved (locale-merged)
-  // props to `TypedLink`, whose generic param/search types we've intentionally
-  // erased to keep the wrapper non-generic.
-  const linkProps = {
-    ...rest,
-    to: resolvedTo,
-    params: mergedParams,
-    activeOptions: resolvedActiveOptions,
-  } as React.ComponentProps<typeof TypedLink>;
+    // Single contained cast: the public `LocaleAwareLink<>` type already enforces
+    // the route-aware shape on callers; here we hand the resolved (locale-merged)
+    // props to `TypedLink`, whose generic param/search types we've intentionally
+    // erased to keep the wrapper non-generic.
+    const linkProps = {
+      ...rest,
+      ref,
+      to: resolvedTo,
+      params: mergedParams,
+      activeOptions: resolvedActiveOptions,
+    } as React.ComponentProps<typeof TypedLink>;
 
-  return <TypedLink {...linkProps} />;
-};
+    return <TypedLink {...linkProps} />;
+  }
+);
+Link.displayName = 'ClRouterLink';
+
+// Escape hatch for use with styled-components `as={LinkAs}`. Styled-components'
+// `as` prop can't resolve the generic-function shape of the default export
+// (`LocaleAwareLink`), so it loses `children`/ref typing. This export is the
+// same runtime component, typed plainly so `as=` works. Only use this when
+// you need the styled-`as` pattern; for direct rendering, prefer the default
+// route-aware export.
+export const LinkAs = Link as unknown as React.ForwardRefExoticComponent<
+  LinkImplProps & React.RefAttributes<HTMLAnchorElement>
+>;
 
 export default Link as LocaleAwareLink<typeof Inner>;
