@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Iesniegt savu ideju",
   "app.containers.IdeaButton.takeTheSurvey": "Aizpildiet aptauju",
   "app.containers.IdeaButton.verificationLinkText": "Pārbaudiet savu identitāti tūlīt.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {nav komentāru} one { komentārs} other { komentāri}}",
   "app.containers.IdeaCard.readMore": "Lasīt vairāk",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {bez balsīm} one {1 balss} other {# balsis}} ārpus {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Aizvērt filtru paneli",

@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Cyflwyno'ch syniad",
   "app.containers.IdeaButton.takeTheSurvey": "Cymerwch yr arolwg",
   "app.containers.IdeaButton.verificationLinkText": "Gwiriwch eich hunaniaeth nawr.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {dim sylwadau} one { sylw} other { sylwadau}}",
   "app.containers.IdeaCard.readMore": "Darllen mwy",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {dim pleidleisiau} one {1 bleidlais} other {# pleidlais}} allan o {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Caewch y panel hidlwyr",

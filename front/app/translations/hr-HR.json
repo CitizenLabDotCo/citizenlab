@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Pošaljite svoju ideju",
   "app.containers.IdeaButton.takeTheSurvey": "Popunite upitnik",
   "app.containers.IdeaButton.verificationLinkText": "Potvrdite svoj identitet sad.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {nema komentara} one { komentar} few { komentara} other { komentara}}",
   "app.containers.IdeaCard.readMore": "Čitaj više",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nema glasova} one {1 glas} other {# glasova}} od {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Zatvori ploču s filtrima",

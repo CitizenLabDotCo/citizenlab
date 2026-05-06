@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "اپنا خیال پیش کریں۔",
   "app.containers.IdeaButton.takeTheSurvey": "سروے میں حصہ لیں۔",
   "app.containers.IdeaButton.verificationLinkText": "ابھی اپنی شناخت کی تصدیق کریں۔",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {کوئی تبصرہ نہیں} one { تبصرہ} other { تبصرے}}",
   "app.containers.IdeaCard.readMore": "مزید پڑھیں",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {کوئی ووٹ نہیں} one {1 ووٹ} other {# ووٹ}} {votingThreshold}میں سے",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "فلٹرز پینل بند کریں۔",

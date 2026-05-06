@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Enviar uma ideia",
   "app.containers.IdeaButton.takeTheSurvey": "Faça a pesquisa",
   "app.containers.IdeaButton.verificationLinkText": "Verifique o seu usuário agora",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {nenhum comentário} one { comentário} other { comentários}}",
   "app.containers.IdeaCard.readMore": "Leia mais",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nenhum voto} one {1 voto} other {# votos}} fora de {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Fechar o painel de filtros",

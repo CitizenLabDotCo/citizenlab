@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Zgłoś swój pomysł",
   "app.containers.IdeaButton.takeTheSurvey": "Weź udział w ankiecie",
   "app.containers.IdeaButton.verificationLinkText": "Zweryfikuj swoją tożsamość.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {brak komentarzy} one { komentarz} few { komentarze} many { komentarzy} other { komentarzy}}",
   "app.containers.IdeaCard.readMore": "Czytaj więcej",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {brak głosów} one {1 głos} other {# głosów}} poza {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Zamknij panel filtrów",

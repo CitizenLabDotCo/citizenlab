@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Υποβάλετε την ιδέα σας",
   "app.containers.IdeaButton.takeTheSurvey": "Πάρτε μέρος στην έρευνα",
   "app.containers.IdeaButton.verificationLinkText": "Επαληθεύστε την ταυτότητά σας τώρα.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {κανένα σχόλιο} one { σχόλιο} other { σχόλια}}",
   "app.containers.IdeaCard.readMore": "Διαβάστε περισσότερα",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {καμία ψήφος} one {1 ψήφος} other {# ψήφοι}} εκτός {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Κλείσιμο πίνακα φίλτρων",

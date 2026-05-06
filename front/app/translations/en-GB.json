@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Submit your idea",
   "app.containers.IdeaButton.takeTheSurvey": "{tenantName, select, westminster {Enter the challenge} other {Take the survey}}",
   "app.containers.IdeaButton.verificationLinkText": "Verify your identity now.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {no comments} one { comment} other { comments}}",
   "app.containers.IdeaCard.readMore": "Read more",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Close filters panel",

@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Envía tu idea",
   "app.containers.IdeaButton.takeTheSurvey": "Responde la consulta",
   "app.containers.IdeaButton.verificationLinkText": "Verifica tu identidad.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {sin comentarios} one { comentario} other { comentarios}}",
   "app.containers.IdeaCard.readMore": "Leer más",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {sin votos} one {1 voto} other {# votos}} fuera de {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Cerrar el panel de filtros",

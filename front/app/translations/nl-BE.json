@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Plaats je idee",
   "app.containers.IdeaButton.takeTheSurvey": "Naar de enquête",
   "app.containers.IdeaButton.verificationLinkText": "Verifieer nu je identiteit.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {geen reacties} one { reactie} other { reacties}}",
   "app.containers.IdeaCard.readMore": "Verder lezen",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {geen stemmen} one {1 stem} other {# stemmen}} van de {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Filters sluiten",

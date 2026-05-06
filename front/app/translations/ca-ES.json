@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Presenteu la vostra idea",
   "app.containers.IdeaButton.takeTheSurvey": "Fes l'enquesta",
   "app.containers.IdeaButton.verificationLinkText": "Verifiqueu ara la vostra identitat.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {cap comentari} one { comentari} other { comentaris}}",
   "app.containers.IdeaCard.readMore": "Llegeix més",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {sense vots} one {1 vot} other {# vots}} de {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Tanca el tauler de filtres",

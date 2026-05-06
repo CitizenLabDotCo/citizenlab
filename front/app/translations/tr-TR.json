@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Fikrinizi sunun",
   "app.containers.IdeaButton.takeTheSurvey": "Ankete katılın",
   "app.containers.IdeaButton.verificationLinkText": "Kimliğinizi şimdi doğrulayın.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {yorum yok} one { yorum} other { yorum}}",
   "app.containers.IdeaCard.readMore": "Daha fazla bilgi edinin",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {oy yok} one {1 oy} other {# oy}} {votingThreshold}dışında",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Filtreler panelini kapatın",

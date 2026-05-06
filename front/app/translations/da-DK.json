@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Beskriv din idé",
   "app.containers.IdeaButton.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.containers.IdeaButton.verificationLinkText": "Bekræft din konto nu.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {ingen kommentarer} one { kommentar} other { kommentarer}}",
   "app.containers.IdeaCard.readMore": "Læs mere",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ingen stemmer} one {1 stemme} other {# stemmer}} ud af {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Luk filterpanelet",

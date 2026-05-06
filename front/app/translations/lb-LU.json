@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Reecht Är Iddi an",
   "app.containers.IdeaButton.takeTheSurvey": "Un der Ëmfro deelhuelen",
   "app.containers.IdeaButton.verificationLinkText": "Iwwerpréift Är Identitéit elo.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {keng Kommentaren} one { Kommentar} other { Kommentaren}}",
   "app.containers.IdeaCard.readMore": "Liest méi",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {keng Stëmmen} one {1 Stëmmen} other {# Stëmmen}} aus {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Filter Panel zoumaachen",

@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "ਆਪਣਾ ਵਿਚਾਰ ਪੇਸ਼ ਕਰੋ",
   "app.containers.IdeaButton.takeTheSurvey": "ਸਰਵੇਖਣ ਲਵੋ",
   "app.containers.IdeaButton.verificationLinkText": "ਹੁਣੇ ਆਪਣੀ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {ਕੋਈ ਟਿੱਪਣੀ ਨਹੀਂ} one { ਟਿੱਪਣੀ} other { ਟਿੱਪਣੀਆਂ}}",
   "app.containers.IdeaCard.readMore": "ਹੋਰ ਪੜ੍ਹੋ",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ਕੋਈ ਵੋਟ ਨਹੀਂ} one {1 ਵੋਟ} other {# ਵੋਟਾਂ}} {votingThreshold}ਵਿੱਚੋਂ",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "ਫਿਲਟਰ ਪੈਨਲ ਬੰਦ ਕਰੋ",

@@ -1431,6 +1431,7 @@
   "app.containers.IdeaButton.submitYourIdea": "Cuir isteach do smaoineamh",
   "app.containers.IdeaButton.takeTheSurvey": "Glac an suirbhé",
   "app.containers.IdeaButton.verificationLinkText": "Fíoraigh do chéannacht anois.",
+  "app.containers.IdeaCard.comments": "{commentsCount, plural, =0 {gan aon trácht} one { trácht} other { tráchtanna}}",
   "app.containers.IdeaCard.readMore": "Léigh tuilleadh",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {gan vótaí} one {1 vóta} other {# vótaí}} as {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Dún painéal na scagairí",
