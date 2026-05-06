@@ -20,8 +20,9 @@ const usePurposes = () => {
   `;
 
   return useQuery({
-    queryKey: ['purposes'],
+    queryKey: ['purposes', graphqlTenantLocales],
     queryFn: () => graphqlFetcher({ query: PURPOSES_QUERY }),
+    enabled: graphqlTenantLocales !== null,
     select: (data) => data.purposes.nodes, // Transform to return just the nodes array
   });
 };

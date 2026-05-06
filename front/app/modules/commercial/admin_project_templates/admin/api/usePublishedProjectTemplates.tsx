@@ -14,7 +14,7 @@ interface PublishedProjectTemplatesArgs {
     | 'large_city'
     | 'generic'
     | null;
-  graphqlTenantLocales: string[];
+  graphqlTenantLocales: string[] | null;
 }
 
 type PublishedProjectTemplatesResponse = {
@@ -119,6 +119,7 @@ const usePublishedProjectTemplates = ({
         search,
         locales,
         organizationTypes,
+        graphqlTenantLocales,
       },
     ],
     queryFn: ({ pageParam = null }) =>
@@ -134,6 +135,7 @@ const usePublishedProjectTemplates = ({
           organizationTypes,
         },
       }),
+    enabled: graphqlTenantLocales !== null,
     getNextPageParam: (lastPage) =>
       lastPage.publishedProjectTemplates.pageInfo.hasNextPage
         ? lastPage.publishedProjectTemplates.pageInfo.endCursor

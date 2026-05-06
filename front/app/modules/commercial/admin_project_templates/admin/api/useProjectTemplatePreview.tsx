@@ -4,7 +4,7 @@ import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
 type ProjectTemplatePreviewArgs = {
   projectTemplateId: string | null | undefined;
-  graphqlTenantLocales: string[];
+  graphqlTenantLocales: string[] | null;
 };
 
 const useProjectTemplatePreview = ({
@@ -57,13 +57,13 @@ const useProjectTemplatePreview = ({
 `;
 
   return useQuery({
-    queryKey: ['projectTemplate', projectTemplateId],
+    queryKey: ['projectTemplate', projectTemplateId, graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: PROJECT_TEMPLATE_QUERY,
         variables: { id: projectTemplateId },
       }),
-    enabled: !!projectTemplateId,
+    enabled: !!projectTemplateId && graphqlTenantLocales !== null,
   });
 };
 

@@ -20,11 +20,12 @@ const useParticipationLevels = () => {
   `;
 
   return useQuery({
-    queryKey: ['participationLevels'],
+    queryKey: ['participationLevels', graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: PARTICIPATION_LEVELS_QUERY,
       }),
+    enabled: graphqlTenantLocales !== null,
     select: (data) => data.participationLevels.nodes, // Transform to return just the nodes array
   });
 };

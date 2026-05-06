@@ -17,13 +17,13 @@ const useTemplateTitle = (projectTemplateId?: string | null) => {
   `;
 
   return useQuery({
-    queryKey: ['projectTemplateTitle', projectTemplateId],
+    queryKey: ['projectTemplateTitle', projectTemplateId, graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: TEMPLATE_TITLE_QUERY,
         variables: { id: projectTemplateId },
       }),
-    enabled: !!projectTemplateId,
+    enabled: !!projectTemplateId && graphqlTenantLocales !== null,
   });
 };
 
