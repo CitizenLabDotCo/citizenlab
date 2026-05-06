@@ -34,6 +34,8 @@ const BaseMainContent = ({ id, children }: Props) => {
         as="h1"
         id={COOKIE_MODAL_TITLE_ID}
         variant={isSmallerThanPhone ? 'h4' : 'h3'}
+        tabIndex={-1}
+        data-autofocus
       >
         <FormattedMessage {...messages.cookieModalTitle} />
         {siteName && <> - {localize(siteName)}</>}
