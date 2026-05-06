@@ -94,6 +94,7 @@ da-DK:
         project_published: Projekt offentliggjort
         project_review_request: Moderator anmodede om en projektgennemgang
         project_review_state_change: Projektgodkender godkendte projektet
+        proposal_expired: Et forslag udløber uden at have nået tærsklen
         proposal_gets_reported_as_spam: Forslaget bliver rapporteret som spam
         proposal_is_assigned_to_admin: Forslaget er tildelt administrator
         proposal_is_published: Forslaget er offentliggjort
@@ -188,6 +189,7 @@ da-DK:
       project_published: Projekt offentliggjort
       project_review_request: Anmodning om projektgennemgang
       project_review_state_change: Projekt godkendt
+      proposal_expired_for_admin: Forslag udløbet uden at have nået stemmetærsklen
       screening_digest: Ugentlig påmindelse om screening
       space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
@@ -591,6 +593,11 @@ da-DK:
       preheader: '%{reviewerName} godkendte projektet "%{projectTitle}"'
       subject: '"%{projectTitle}" er blevet godkendt'
       title: '%{reviewerName} godkendte projektet "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Gennemse det udløbne input
+      preheader: Et input er udløbet uden at have nået tærsklen
+      subject: '"%{input_title}" er udløbet uden at have nået tærsklen'
+      title: Et input er udløbet uden at have nået stemmetærsklen
     schedules:
       quarterly: Kvartalsvis på den første dag i kvartalet
       weekly:

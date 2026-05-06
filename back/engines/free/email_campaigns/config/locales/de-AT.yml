@@ -94,6 +94,7 @@ de-AT:
         project_published: Projekt veröffentlicht
         project_review_request: Projektmanager*in hat eine Projektfreigabe beantragt
         project_review_state_change: Prüfer*in genehmigt das Projekt
+        proposal_expired: Ein Vorschlag läuft ab, ohne die Schwelle zu erreichen
         proposal_gets_reported_as_spam: Vorschlag wird als Spam markiert
         proposal_is_assigned_to_admin: Vorschlag wird Admin zugewiesen
         proposal_is_published: Vorschlag wird veröffentlicht
@@ -188,6 +189,7 @@ de-AT:
       project_published: Projekt veröffentlicht
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
+      proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
@@ -591,6 +593,11 @@ de-AT:
       preheader: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
+    proposal_expired_for_admin:
+      cta_button: Den abgelaufenen Beitrag überprüfen
+      preheader: Ein Beitrag ist abgelaufen, ohne die Schwelle zu erreichen
+      subject: '"%{input_title}" ist abgelaufen, ohne die Schwelle zu erreichen'
+      title: Ein Beitrag ist abgelaufen, ohne die Abstimmungsschwelle zu erreichen
     schedules:
       quarterly: Vierteljährlich, am ersten Tag des Quartals
       weekly:
