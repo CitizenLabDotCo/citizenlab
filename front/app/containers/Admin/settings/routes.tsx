@@ -28,6 +28,10 @@ const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
 // topics
 const TopicsMain = React.lazy(() => import('./topics/TopicsMain'));
+const AllTopicsComponent = lazy(() => import('./topics/global_topics'));
+const DefaultInputTopicsComponent = lazy(
+  () => import('./topics/default_input_topics')
+);
 const AdminTopicsNewComponent = lazy(
   () => import('./topics/global_topics/New')
 );
@@ -225,6 +229,16 @@ const platformRoute = createRoute({
   path: 'platform',
 });
 
+const platformIndexRoute = createRoute({
+  getParentRoute: () => platformRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AllTopicsComponent />
+    </PageLoading>
+  ),
+});
+
 const platformNewRoute = createRoute({
   getParentRoute: () => platformRoute,
   path: 'new',
@@ -248,6 +262,16 @@ const platformEditRoute = createRoute({
 const inputRoute = createRoute({
   getParentRoute: () => topicsRoute,
   path: 'input',
+});
+
+const inputIndexRoute = createRoute({
+  getParentRoute: () => inputRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <DefaultInputTopicsComponent />
+    </PageLoading>
+  ),
 });
 
 const inputNewRoute = createRoute({
@@ -286,8 +310,12 @@ const createAdminSettingsRoutes = () => {
     areasRoute.addChildren([areasIndexRoute, areasNewRoute, areasEditRoute]),
     topicsRoute.addChildren([
       topicsIndexRoute,
-      platformRoute.addChildren([platformNewRoute, platformEditRoute]),
-      inputRoute.addChildren([inputNewRoute, inputEditRoute]),
+      platformRoute.addChildren([
+        platformIndexRoute,
+        platformNewRoute,
+        platformEditRoute,
+      ]),
+      inputRoute.addChildren([inputIndexRoute, inputNewRoute, inputEditRoute]),
     ]),
     // TODO: Wire in module routes (admin.settings) after conversion
     // ...moduleConfiguration.routes['admin.settings'],
