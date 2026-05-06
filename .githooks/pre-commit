@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit — privacy guard for the citizenlab-claude overlay.
+#
+# Activated by setting `git config core.hooksPath .githooks` (done by bin/setup-claude).
+# Bypassable with `git commit --no-verify` only when truly intentional.
+
+set -e
+
+STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+# 1. Block private overlay paths from being staged.
+PRIVATE_PATHS="$(echo "$STAGED" | grep -E '^\.claude/(private|skills/private)' || true)"
+if [ -n "$PRIVATE_PATHS" ]; then
+  echo "ERROR: refusing to commit private Claude overlay paths:" >&2
+  echo "$PRIVATE_PATHS" | sed 's/^/  /' >&2
+  echo "These must remain gitignored. Bypass with --no-verify only if you really mean it." >&2
+  exit 1
+fi
+
+# 2. Block edits to public CLAUDE.md stubs. Once stubbed, all edits belong in the private overlay.
+CLAUDE_CHANGES="$(echo "$STAGED" | grep -E '(^|/)CLAUDE\.md$' || true)"
+if [ -n "$CLAUDE_CHANGES" ]; then
+  echo "ERROR: public CLAUDE.md stubs are frozen. Edit the private overlay instead:" >&2
+  echo "$CLAUDE_CHANGES" | sed 's/^/  /' >&2
+  echo "Bypass with --no-verify only for genuine stub maintenance (e.g. fixing the @import path)." >&2
+  exit 1
+fi
+
+# 3. Soft warning on .claude/settings.json — legitimately editable, but flag for intent.
+if echo "$STAGED" | grep -qE '^\.claude/settings\.json$'; then
+  echo "NOTE: .claude/settings.json is being modified."
+  echo "If you're adding a hook, consider whether it belongs in settings.local.json (private) instead."
+fi
+
+# 4. Chain to existing .git/hooks/pre-commit (e.g. husky's prettier check) so we don't disable it.
+if [ -x .git/hooks/pre-commit ]; then
+  exec .git/hooks/pre-commit "$@"
+fi
+
+exit 0

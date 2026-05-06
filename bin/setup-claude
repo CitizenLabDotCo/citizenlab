@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# bin/setup-claude — clone or update the citizenlab-claude private overlay
+# and create per-file symlinks under .claude/private/ in the public repo.
+#
+# Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
+# overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
+# the host shell directly, or in env_files/back-secret.env — the script
+# extracts just that one variable from the file without sourcing it whole, so
+# the docker-compose env file doesn't have to be bash-source-safe.
+# Override the default sibling clone location with CITIZENLAB_CLAUDE_DIR.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+# Look up CITIZENLAB_CLAUDE_GIT_REMOTE in env_files/back-secret.env if it isn't already set.
+if [ -z "${CITIZENLAB_CLAUDE_GIT_REMOTE:-}" ] && [ -f env_files/back-secret.env ]; then
+  line=$(grep -E "^(export[[:space:]]+)?CITIZENLAB_CLAUDE_GIT_REMOTE=" env_files/back-secret.env | tail -n 1 || true)
+  if [ -n "$line" ]; then
+    val="${line#*=}"
+    val="${val#\"}"; val="${val%\"}"
+    val="${val#\'}"; val="${val%\'}"
+    [ -n "$val" ] && export CITIZENLAB_CLAUDE_GIT_REMOTE="$val"
+  fi
+fi
+
+PRIVATE_REPO="${CITIZENLAB_CLAUDE_GIT_REMOTE:-}"
+if [ -z "$PRIVATE_REPO" ]; then
+  echo "Warning: CITIZENLAB_CLAUDE_GIT_REMOTE is not set." >&2
+  echo "Set it in your host shell rc, or add it to env_files/back-secret.env (gitignored) at the repo root." >&2
+  exit 1
+fi
+
+PARENT="$(dirname "$REPO_ROOT")"
+PRIVATE_DIR="${CITIZENLAB_CLAUDE_DIR:-$PARENT/citizenlab-claude}"
+
+if [ ! -d "$PRIVATE_DIR" ]; then
+  echo "Cloning private overlay into $PRIVATE_DIR ..."
+  git clone "$PRIVATE_REPO" "$PRIVATE_DIR"
+else
+  echo "Updating private overlay at $PRIVATE_DIR ..."
+  git -C "$PRIVATE_DIR" pull --ff-only
+fi
+
+mkdir -p .claude/private .claude/skills
+
+# Clean stale CLAUDE.md symlinks so files removed from the private repo disappear here too
+find .claude/private -type l -name 'CLAUDE.md' -delete 2>/dev/null || true
+
+# @import follows file symlinks but not directory symlinks, so mirror the
+# CLAUDE.md tree as per-file symlinks under a real .claude/private/ directory.
+while IFS= read -r -d '' src; do
+  rel="${src#$PRIVATE_DIR/}"
+  dst=".claude/private/$rel"
+  mkdir -p "$(dirname "$dst")"
+  ln -sfn "$src" "$dst"
+done < <(find "$PRIVATE_DIR" -type f -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
+
+# Skills directory symlink (TBD whether Claude follows it for skill discovery)
+ln -sfn "$PRIVATE_DIR/skills" .claude/skills/private
+
+# Private hook config / settings (only if present in the private repo)
+if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
+  ln -sfn "$PRIVATE_DIR/settings.local.json" .claude/settings.local.json
+fi
+
+# Install the privacy guard hooks (versioned at .githooks/)
+if [ -d .githooks ]; then
+  current="$(git config --get core.hooksPath || true)"
+  if [ "$current" != ".githooks" ]; then
+    git config core.hooksPath .githooks
+    echo "Set git core.hooksPath to .githooks (versioned hooks)."
+  fi
+fi
+
+echo "Claude private overlay installed at $PRIVATE_DIR"
