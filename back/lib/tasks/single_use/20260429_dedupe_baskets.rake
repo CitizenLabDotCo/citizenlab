@@ -88,9 +88,13 @@ namespace :single_use do
       puts "ERROR! Failed to process tenant #{tenant.host}: #{e.message}"
     end
 
-    DedupeBasketsTaskSummaryPrinter.print_summary(reporter)
-
-    reporter.report!('dedupe_baskets.json', verbose: false)
+    begin
+      DedupeBasketsTaskSummaryPrinter.print_summary(reporter)
+    rescue StandardError => e
+      puts "ERROR! Failed to print summary: #{e.message}"
+    ensure
+      reporter.report!('dedupe_baskets.json', verbose: false)
+    end
 
     puts "\n---------- FINISHED TASK: Dedupe baskets ----------\n\n"
   end
