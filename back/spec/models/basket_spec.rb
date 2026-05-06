@@ -21,7 +21,8 @@ RSpec.describe Basket do
       # Attempting to create a second basket for the same user and phase should fail
       duplicate_basket = build(:basket, user: user, phase: phase)
       expect(duplicate_basket.save).to be false
-      expect(duplicate_basket.errors[:user_id]).to be_present
+      expect(duplicate_basket.errors.details).to eq(user_id: [{ error: :taken, value: user.id }])                                                                                                                                                             
+      expect(duplicate_basket.errors.messages).to eq(user_id: ['has already been taken'])
     end
 
     it 'allows multiple baskets for the same user in different phases' do
