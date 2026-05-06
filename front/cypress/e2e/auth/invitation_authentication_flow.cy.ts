@@ -1,103 +1,167 @@
 import { randomString, randomEmail } from '../../support/commands';
 
-function getInvites() {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
+const ADMIN_EMAIL = 'admin@govocal.com';
+const ADMIN_PASSWORD = 'democracy2.0';
+const FIXTURE_INVITED_EMAIL = 'jack@johnson.com';
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'GET',
-      url: 'web_api/v1/invites',
-    });
-  });
+interface Invite {
+  id: string;
+  attributes: { token: string; [key: string]: unknown };
+  relationships: { invitee: { data: { id: string; type: 'user' } } };
+}
+
+interface IncludedUser {
+  id: string;
+  type: 'user';
+  attributes: { email: string | null; [key: string]: unknown };
+}
+
+interface InvitesResponse {
+  data: Invite[];
+  included?: Array<{ id: string; type: string; attributes: any }>;
+}
+
+type EnrichedInvite = { invite: Invite; email: string | null };
+
+function adminAuthHeader(): Cypress.Chainable<{
+  'Content-Type': string;
+  Authorization: string;
+}> {
+  return cy.apiLogin(ADMIN_EMAIL, ADMIN_PASSWORD).then(({ body }) => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${body.jwt}`,
+  }));
+}
+
+// Invite responses don't expose email directly — it lives on the included
+// `user` resource. Pair each invite with its invitee email up-front so call
+// sites can filter by email without traversing JSON:API on every use.
+function listInvitesWithEmail(): Cypress.Chainable<EnrichedInvite[]> {
+  return adminAuthHeader().then((headers) =>
+    cy
+      .request({
+        headers,
+        method: 'GET',
+        url: 'web_api/v1/invites?page[size]=100',
+      })
+      .then((res) => {
+        const body = res.body as InvitesResponse;
+        const usersById = new Map<string, IncludedUser>();
+        (body.included ?? [])
+          .filter((r): r is IncludedUser => r.type === 'user')
+          .forEach((u) => usersById.set(u.id, u));
+        return body.data.map((invite) => ({
+          invite,
+          email:
+            usersById.get(invite.relationships.invitee.data.id)?.attributes
+              .email ?? null,
+        }));
+      })
+  );
 }
 
 function deleteInvites() {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy
-      .request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'GET',
-        url: 'web_api/v1/invites',
-      })
-      .then((response) => {
-        const invites = response.body.data;
-
-        invites.forEach(({ id }: any) => {
-          cy.request({
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${adminJwt}`,
-            },
-            method: 'DELETE',
-            url: `web_api/v1/invites/${id}`,
-          });
+  return adminAuthHeader().then((headers) =>
+    listInvitesWithEmail().then((entries) => {
+      entries.forEach(({ invite }) => {
+        cy.request({
+          headers,
+          method: 'DELETE',
+          url: `web_api/v1/invites/${invite.id}`,
         });
       });
+    })
+  );
+}
+
+function deleteUserByEmail(email: string) {
+  return adminAuthHeader().then((headers) => {
+    cy.request({
+      headers,
+      method: 'GET',
+      url: `web_api/v1/users?search=${encodeURIComponent(email)}`,
+    }).then((res) => {
+      const match = (
+        res.body.data as Array<{
+          id: string;
+          attributes: { email: string | null };
+        }>
+      ).find((u) => u.attributes.email === email);
+      if (match) {
+        cy.request({
+          headers,
+          method: 'DELETE',
+          url: `web_api/v1/users/${match.id}`,
+        });
+      }
+    });
   });
 }
 
-function waitForInvites(minCount = 2, maxRetries = 10, delay = 1000) {
-  let attempts = 0;
-  function poll(
-    resolve: (value?: unknown) => void,
-    reject: (reason?: any) => void
-  ) {
-    getInvites().then((response) => {
-      const invites = response.body.data;
-      if (invites.length >= minCount) {
-        resolve(invites);
-      } else if (attempts < maxRetries) {
-        attempts++;
-        setTimeout(() => poll(resolve, reject), delay);
-      } else {
-        reject(new Error('Invites not found after polling'));
-      }
+// Recursively consume `@invitesImportPoll` matches until the bulk_create
+// import job reports completed_at. Mirrors the frontend's importJobComplete
+// check and stays inside Cypress's command queue — no native Promise or
+// setTimeout, so nothing leaks across tests.
+function waitForBulkCreateComplete(): Cypress.Chainable {
+  return cy
+    .wait('@invitesImportPoll', { timeout: 60000 })
+    .then((interception) => {
+      const attrs = interception.response?.body?.data?.attributes;
+      const isComplete =
+        !!attrs?.completed_at &&
+        typeof attrs.job_type === 'string' &&
+        attrs.job_type.includes('bulk_create');
+      return isComplete ? cy.wrap(null) : waitForBulkCreateComplete();
     });
-  }
-  return new Cypress.Promise(poll);
 }
 
 describe('Invitation authentication flow', () => {
-  before(() => {
-    deleteInvites();
-  });
-
+  // Cleanup inside the test (not a before hook) so retries restart from a
+  // clean slate — otherwise duplicate uploads from earlier attempts cascade
+  // into later assertions.
   it('has correct invitations', () => {
+    // Bulk-create skips an email if a User already has it. A leftover
+    // jack@johnson.com from a previous spec run would silently drop the
+    // second invite — purge it before uploading.
+    deleteUserByEmail(FIXTURE_INVITED_EMAIL);
+    deleteInvites();
+
+    cy.intercept('GET', '**/web_api/v1/invites_imports/*').as(
+      'invitesImportPoll'
+    );
+
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.wait(1000); // wait for the button to become enabled after file selection
-    cy.get('.e2e-submit-wrapper-button').click();
+    // The wrapper has the `disabled` CSS class while selectedFileBase64 is
+    // null (file still being read). Once it clears, the form is ready.
+    cy.get('.e2e-submit-wrapper-button')
+      .should('not.have.class', 'disabled')
+      .click();
 
-    waitForInvites().then(() => {
-      cy.visit('/admin/users/invitations/all');
-      cy.contains('jack@johnson.com');
-      cy.contains('Jack Johnson');
-      cy.contains('John Jackson');
-      cy.logout();
+    waitForBulkCreateComplete();
+
+    // Verify directly against the API — the source of truth — rather than
+    // racing the React Query cache on /admin/users/invitations/all.
+    listInvitesWithEmail().then((entries) => {
+      expect(entries).to.have.length(2);
+      const emails = entries.map((e) => e.email);
+      expect(emails).to.include(FIXTURE_INVITED_EMAIL);
+      expect(emails).to.include(null);
     });
   });
 
-  // TODO: remove user after this test
   it('is possible to create an account with invite route + token in url', () => {
-    waitForInvites().then((invites: any) => {
-      const inviteWithEmail = invites[1];
+    listInvitesWithEmail().then((entries) => {
+      const match = entries.find((e) => e.email === FIXTURE_INVITED_EMAIL);
+      expect(match, 'invite for jack@johnson.com').to.exist;
 
-      cy.visit(`/invite?token=${inviteWithEmail.attributes.token}`);
+      cy.visit(`/invite?token=${match!.invite.attributes.token}`);
 
       cy.get('#e2e-sign-up-email-password-container');
       cy.get('#firstName').should('have.value', 'Jack');
       cy.get('#lastName').should('have.value', 'Johnson');
-      cy.get('#email').should('have.value', 'jack@johnson.com');
+      cy.get('#email').should('have.value', FIXTURE_INVITED_EMAIL);
 
       const password = randomString();
       cy.get('#password').type(password).should('have.value', password);
@@ -108,16 +172,20 @@ describe('Invitation authentication flow', () => {
 
       cy.get('#e2e-success-continue-button').click();
     });
+
+    // Cleanup so re-running the spec doesn't collide with the existing user.
+    deleteUserByEmail(FIXTURE_INVITED_EMAIL);
   });
 
-  // TODO: remove user after this test
   it('is possible to create an account if invitee does not have email', () => {
-    waitForInvites().then((invites: any) => {
-      const inviteWithoutEmail = invites[0];
+    const email = randomEmail();
+
+    listInvitesWithEmail().then((entries) => {
+      const match = entries.find((e) => e.email === null);
+      expect(match, 'invite without email').to.exist;
 
       cy.visit('/invite');
-
-      cy.get('input#token').type(inviteWithoutEmail.attributes.token);
+      cy.get('input#token').type(match!.invite.attributes.token);
       cy.get('#e2e-invite-submit-button').click();
 
       cy.get('#e2e-sign-up-email-password-container');
@@ -125,9 +193,7 @@ describe('Invitation authentication flow', () => {
       cy.get('#lastName').should('have.value', 'Jackson');
       cy.get('#email').should('be.empty');
 
-      const email = randomEmail();
       const password = randomString();
-
       cy.get('#email').type(email).should('have.value', email);
       cy.get('#password').type(password).should('have.value', password);
 
@@ -137,5 +203,7 @@ describe('Invitation authentication flow', () => {
 
       cy.get('#e2e-success-continue-button').click();
     });
+
+    deleteUserByEmail(email);
   });
 });
