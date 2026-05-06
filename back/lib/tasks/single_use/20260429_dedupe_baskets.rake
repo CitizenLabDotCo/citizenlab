@@ -81,12 +81,22 @@ namespace :single_use do
       end
     end
 
-    # After all changes have been applied, print a summary of what should have happened
+    DedupeBasketsTaskSummaryPrinter.print_summary(reporter)
+
+    reporter.report!('dedupe_baskets.json', verbose: false)
+
+    puts "\n---------- FINISHED TASK: Dedupe baskets ----------\n\n"
+  end
+end
+
+class DedupeBasketsTaskSummaryPrinter
+  BRANCH = '|-- '
+  CORNER = '`-- '
+  VERTICAL = '|   '
+  BLANK = '    '
+
+  def self.print_summary(reporter)
     puts "\nSummary of changes:"
-    branch = '|-- '
-    corner = '`-- '
-    vertical = '|   '
-    blank = '    '
     total_duplicates = 0
     total_detached = 0
     changes_by_tenant = reporter.changes.group_by { |c| c[:context][:tenant] }
@@ -98,15 +108,15 @@ namespace :single_use do
 
       dup_sets.each_with_index do |dup_set, set_idx|
         last_set = set_idx == dup_sets.size - 1
-        set_branch = last_set ? corner : branch
-        set_indent = last_set ? blank : vertical
+        set_branch = last_set ? CORNER : BRANCH
+        set_indent = last_set ? BLANK : VERTICAL
 
         puts "#{set_branch}user=#{dup_set[:context][:user_id]} phase=#{dup_set[:context][:phase_id]} (#{dup_set[:old_value].size} baskets)"
 
         new_by_id = dup_set[:new_value].index_by { |b| b[:id] }
         dup_set[:old_value].each_with_index do |b, b_idx|
           last_basket = b_idx == dup_set[:old_value].size - 1
-          basket_branch = last_basket ? corner : branch
+          basket_branch = last_basket ? CORNER : BRANCH
 
           new_b = new_by_id[b[:id]]
           detached = new_b && !b[:user_id].nil? && new_b[:user_id].nil?
@@ -127,9 +137,5 @@ namespace :single_use do
     end
 
     puts "Total across #{changes_by_tenant.size} tenant(s): #{total_duplicates} basket(s) in duplicate sets, #{total_detached} detached \n"
-
-    reporter.report!('dedupe_baskets.json', verbose: false)
-
-    puts "\n---------- FINISHED TASK: Dedupe baskets ----------\n\n"
   end
 end
