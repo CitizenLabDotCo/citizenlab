@@ -44,7 +44,7 @@ describe('Project topics', () => {
       const topicTitle = randomString();
 
       // create a topic
-      cy.visit('admin/settings/topics/platform/new/platform');
+      cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -76,7 +76,7 @@ describe('Project topics', () => {
       const editedTopicTitle = randomString();
 
       // create a topic
-      cy.visit('admin/settings/topics/platform/new/platform');
+      cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
