@@ -252,6 +252,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
   },
+  a11y_ctaForProject: {
+    id: 'app.components.ProjectCard.a11y_ctaForProject',
+    defaultMessage: '{cta} on project {projectTitle}',
+  },
   readTheReport: {
     id: 'app.components.ProjectCard.readTheReport',
     defaultMessage: 'Read the report',

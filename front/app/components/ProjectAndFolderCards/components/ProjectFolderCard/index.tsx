@@ -39,7 +39,7 @@ import Link from 'utils/cl-router/Link';
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)`
+const Container = styled.div`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -248,12 +248,24 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
+const FolderTitleLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+`;
+
 const FolderTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
-  &:hover {
+  ${FolderTitleLink}:hover & {
     text-decoration: underline;
   }
 `;
@@ -386,6 +398,11 @@ const ProjectFolderCard = memo<Props>(
       : null;
 
     const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
+    const hasDescriptionPreview = !isEmpty(
+      localize(
+        publication.data.attributes.publication_description_preview_multiloc
+      )
+    );
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 
@@ -416,37 +433,15 @@ const ProjectFolderCard = memo<Props>(
       </ContentHeader>
     );
 
-    const screenReaderContent = (
-      <ScreenReaderOnly>
-        <FolderTitle variant="h3">
-          <FormattedMessage {...messages.a11y_folderTitle} />
-          <T value={publication.data.attributes.publication_title_multiloc} />
-        </FolderTitle>
-
-        <FolderDescription>
-          <FormattedMessage {...messages.a11y_folderDescription} />
-          <T
-            value={
-              publication.data.attributes
-                .publication_description_preview_multiloc
-            }
-          />
-        </FolderDescription>
-      </ScreenReaderOnly>
-    );
-
     return (
       <Container
         className={`${className} ${layout} ${size} e2e-folder-card e2e-admin-publication-card`}
-        to={folderUrl}
-        scrollToTop
         onClick={() => {
           handleProjectCardOnClick(
             publication.data.relationships.publication.data.id
           );
         }}
       >
-        {screenReaderContent}
         {size !== 'large' && contentHeader}
 
         <FolderImageContainer className={size}>
@@ -462,18 +457,28 @@ const ProjectFolderCard = memo<Props>(
         <FolderContent className={size}>
           {size === 'large' && contentHeader}
 
-          <ContentBody className={size} aria-hidden>
-            <FolderTitle
-              variant="h3"
+          <ContentBody className={size}>
+            <FolderTitleLink
+              to={folderUrl}
+              scrollToTop
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}
-              className="e2e-folder-card-folder-title"
+              aria-describedby={
+                hasDescriptionPreview
+                  ? `${publication.data.id}-folder-description-preview`
+                  : undefined
+              }
             >
-              <T
-                value={publication.data.attributes.publication_title_multiloc}
-              />
-            </FolderTitle>
+              <FolderTitle
+                variant="h3"
+                className="e2e-folder-card-folder-title"
+              >
+                <T
+                  value={publication.data.attributes.publication_title_multiloc}
+                />
+              </FolderTitle>
+            </FolderTitleLink>
 
             <T
               value={
@@ -484,7 +489,10 @@ const ProjectFolderCard = memo<Props>(
               {(description) => {
                 if (!isEmpty(description)) {
                   return (
-                    <FolderDescription className="e2e-folder-card-folder-description-preview">
+                    <FolderDescription
+                      className="e2e-folder-card-folder-description-preview"
+                      id={`${publication.data.id}-folder-description-preview`}
+                    >
                       {description}
                     </FolderDescription>
                   );

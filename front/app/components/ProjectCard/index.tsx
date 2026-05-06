@@ -34,7 +34,6 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -44,7 +43,7 @@ import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
+const Container = styled.div<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -189,6 +188,11 @@ const ContentHeaderHeight = 39;
 const ContentHeaderBottomMargin = 13;
 
 const ContentHeader = styled.div`
+  /*
+    Rendered last in the DOM (after the title) so the title link comes first in
+    tab/screen-reader order. order: -1 pulls it back to the top visually.
+  */
+  order: -1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -250,7 +254,11 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled.button`
+const ProjectLabel = styled(Link)`
+  /* Sit above ProjectTitleLink's overlay so this stays independently clickable */
+  position: relative;
+  z-index: 2;
+  display: inline-block;
   color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
@@ -260,6 +268,7 @@ const ProjectLabel = styled.button`
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   background: transparent;
+  text-decoration: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -283,12 +292,31 @@ const ContentBody = styled.div`
   }
 `;
 
+const ProjectTitleLink = styled(Link)`
+  /*
+    Accessible card pattern: a single primary link whose ::before pseudo-element
+    expands the hitbox over the entire card, so mouse users can click anywhere
+    while keyboard users have only one tab stop per card.
+    https://kittygiraudel.com/2022/04/02/accessible-cards/
+    https://inclusive-components.design/cards/
+  */
+  text-decoration: none;
+  color: inherit;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+`;
+
 const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
 
-  &:hover {
+  ${ProjectTitleLink}:hover & {
     text-decoration: underline;
   }
 `;
@@ -412,6 +440,9 @@ const ProjectCard = memo<InputProps>(
     );
 
     const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
+    const hasDescriptionPreview =
+      !hideDescriptionPreview &&
+      !isEmpty(localize(project.data.attributes.description_preview_multiloc));
     const isFinished = project.data.attributes.timeline_active === 'past';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
@@ -502,9 +533,15 @@ const ProjectCard = memo<InputProps>(
             className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
           >
             <ProjectLabel
+              to={projectUrl}
+              scrollToTop
               onClick={() => {
                 handleCTAOnClick(project.data.id);
               }}
+              aria-label={formatMessage(messages.a11y_ctaForProject, {
+                cta: ctaMessage,
+                projectTitle: localize(project.data.attributes.title_multiloc),
+              })}
               className="e2e-project-card-cta"
             >
               {ctaMessage}
@@ -512,20 +549,6 @@ const ProjectCard = memo<InputProps>(
           </Box>
         )}
       </ContentHeader>
-    );
-
-    const screenReaderContent = (
-      <ScreenReaderOnly>
-        <ProjectTitle variant="h3">
-          <FormattedMessage {...messages.a11y_projectTitle} />
-          <T value={project.data.attributes.title_multiloc} />
-        </ProjectTitle>
-
-        <ProjectDescription>
-          <FormattedMessage {...messages.a11y_projectDescription} />
-          <T value={project.data.attributes.description_preview_multiloc} />
-        </ProjectDescription>
-      </ScreenReaderOnly>
     );
 
     return (
@@ -541,16 +564,11 @@ const ProjectCard = memo<InputProps>(
         ]
           .filter((item) => item)
           .join(' ')}
-        to={projectUrl}
-        scrollToTop
         onClick={() => {
           handleProjectCardOnClick(project.data.id);
         }}
         data-cy="e2e-project-card"
       >
-        {screenReaderContent}
-        {size !== 'large' && contentHeader}
-
         <ProjectImageContainer className={size}>
           {imageUrl ? (
             <ProjectImage
@@ -564,19 +582,27 @@ const ProjectCard = memo<InputProps>(
         </ProjectImageContainer>
 
         <ProjectContent className={size}>
-          {size === 'large' && contentHeader}
-
-          <ContentBody className={size} aria-hidden>
-            <ProjectTitle
-              variant="h3"
-              className="e2e-project-card-project-title"
-              data-testid="project-card-project-title"
+          <ContentBody className={size}>
+            <ProjectTitleLink
+              to={projectUrl}
+              scrollToTop
               onClick={() => {
                 handleProjectTitleOnClick(project.data.id);
               }}
+              aria-describedby={
+                hasDescriptionPreview
+                  ? `${project.data.id}-description-preview`
+                  : undefined
+              }
             >
-              <T value={project.data.attributes.title_multiloc} />
-            </ProjectTitle>
+              <ProjectTitle
+                variant="h3"
+                className="e2e-project-card-project-title"
+                data-testid="project-card-project-title"
+              >
+                <T value={project.data.attributes.title_multiloc} />
+              </ProjectTitle>
+            </ProjectTitleLink>
 
             {!hideDescriptionPreview && (
               <T value={project.data.attributes.description_preview_multiloc}>
@@ -586,6 +612,7 @@ const ProjectCard = memo<InputProps>(
                       <ProjectDescription
                         className="e2e-project-card-project-description-preview"
                         data-testid="project-card-project-description-preview"
+                        id={`${project.data.id}-description-preview`}
                       >
                         {description}
                       </ProjectDescription>
@@ -612,7 +639,11 @@ const ProjectCard = memo<InputProps>(
               </ContentFooter>
             </Box>
           )}
+
+          {size === 'large' && contentHeader}
         </ProjectContent>
+
+        {size !== 'large' && contentHeader}
       </Container>
     );
   }
