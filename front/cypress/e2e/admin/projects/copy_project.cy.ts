@@ -49,10 +49,8 @@ describe('Copy projects outside folder', () => {
     cy.reload();
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
 
-    cy.dataCy('projects-overview-table-row')
-      .first()
-      .contains(`${projectTitle} - Copy`);
+    cy.dataCy('projects-overview-table-row').contains(`${projectTitle} - Copy`);
 
-    cy.dataCy('projects-overview-table-row').first().contains('Draft');
+    cy.dataCy('projects-overview-table-row').contains('Draft');
   });
 });
