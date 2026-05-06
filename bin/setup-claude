@@ -35,6 +35,23 @@ fi
 PARENT="$(dirname "$REPO_ROOT")"
 PRIVATE_DIR="${CITIZENLAB_CLAUDE_DIR:-$PARENT/citizenlab-claude}"
 
+# Compute a relative path from anchor dir (arg 2, absolute) to target (arg 1, absolute).
+# Used so committed symlinks (if ever force-staged) don't reveal a dev's home dir layout.
+relpath() {
+  local target="$1"
+  local anchor="$2"
+  local up=""
+  while [ "${target#$anchor/}" = "$target" ] && [ "$target" != "$anchor" ]; do
+    anchor="$(dirname "$anchor")"
+    up="../$up"
+  done
+  if [ "$target" = "$anchor" ]; then
+    echo "${up%/}"
+  else
+    echo "${up}${target#$anchor/}"
+  fi
+}
+
 if [ ! -d "$PRIVATE_DIR" ]; then
   echo "Cloning private overlay into $PRIVATE_DIR ..."
   git clone "$PRIVATE_REPO" "$PRIVATE_DIR"
@@ -54,15 +71,33 @@ while IFS= read -r -d '' src; do
   rel="${src#$PRIVATE_DIR/}"
   dst=".claude/private/$rel"
   mkdir -p "$(dirname "$dst")"
-  ln -sfn "$src" "$dst"
+  ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
 done < <(find "$PRIVATE_DIR" -type f -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
 
-# Skills directory symlink (TBD whether Claude follows it for skill discovery)
-ln -sfn "$PRIVATE_DIR/skills" .claude/skills/private
+# Skills: per-file symlinks under real per-skill directories.
+# Claude Code's skill discovery only walks top-level .claude/skills/<name>/ and
+# doesn't follow dir symlinks (verified empirically), so we mirror each skill
+# as a real directory with file symlinks for SKILL.md and any other contents.
+mkdir -p .claude/skills
+
+# Remove obsolete top-level dir symlink from the earlier design, if present
+[ -L .claude/skills/private ] && rm .claude/skills/private
+
+# Clean stale per-skill file symlinks (depth >= 2, type symlink) so files
+# removed from the private repo disappear here too
+find .claude/skills -mindepth 2 -type l -delete 2>/dev/null || true
+
+# Mirror each skill's contents as file symlinks under a real per-skill directory
+while IFS= read -r -d '' src; do
+  rel="${src#$PRIVATE_DIR/skills/}"
+  dst=".claude/skills/$rel"
+  mkdir -p "$(dirname "$dst")"
+  ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
+done < <(find "$PRIVATE_DIR/skills" -mindepth 2 -type f -not -path '*/.git/*' -print0)
 
 # Private hook config / settings (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
-  ln -sfn "$PRIVATE_DIR/settings.local.json" .claude/settings.local.json
+  ln -sfn "$(relpath "$PRIVATE_DIR/settings.local.json" "$REPO_ROOT/.claude")" .claude/settings.local.json
 fi
 
 # Install the privacy guard hooks (versioned at .githooks/)

@@ -9,7 +9,7 @@ set -e
 STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
 
 # 1. Block private overlay paths from being staged.
-PRIVATE_PATHS="$(echo "$STAGED" | grep -E '^\.claude/(private|skills/private)' || true)"
+PRIVATE_PATHS="$(echo "$STAGED" | grep -E '^\.claude/(private(/|$)|skills/)' || true)"
 if [ -n "$PRIVATE_PATHS" ]; then
   echo "ERROR: refusing to commit private Claude overlay paths:" >&2
   echo "$PRIVATE_PATHS" | sed 's/^/  /' >&2

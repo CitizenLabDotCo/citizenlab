@@ -9,7 +9,7 @@ set -euo pipefail
 errors=0
 
 # 1. No tracked files under the private overlay paths.
-LEAKED="$(git ls-files .claude/private .claude/skills/private 2>/dev/null || true)"
+LEAKED="$(git ls-files .claude/private .claude/skills 2>/dev/null || true)"
 if [ -n "$LEAKED" ]; then
   echo "ERROR: tracked files under private overlay paths:" >&2
   echo "$LEAKED" | sed 's/^/  /' >&2
