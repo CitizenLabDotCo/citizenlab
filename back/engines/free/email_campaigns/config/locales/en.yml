@@ -588,10 +588,10 @@ en:
       subject: '"%{projectTitle}" has been approved'
       title: '%{reviewerName} approved the project "%{projectTitle}"'
     proposal_expired_for_admin:
-      cta_button: Review the expired proposal
-      preheader: A proposal closed without reaching the threshold
+      cta_button: Review the expired input
+      preheader: An input expired without reaching the threshold
       subject: '"%{input_title}" expired without reaching the threshold'
-      title: A proposal expired without reaching the voting threshold
+      title: An input expired without reaching the voting threshold
     schedules:
       quarterly: Quarterly, on the first day of the quarter
       weekly:
