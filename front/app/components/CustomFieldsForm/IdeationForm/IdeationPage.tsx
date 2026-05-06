@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
@@ -107,6 +107,12 @@ const IdeationPage = ({
   useEffect(() => {
     trackFormPageView(currentPageIndex, lastPageIndex);
   }, [currentPageIndex, lastPageIndex]);
+
+  useEffect(() => {
+    if (pageRef.current) {
+      pageRef.current.focus();
+    }
+  }, [currentPageIndex]);
 
   // allow moderators also to edit BudgetField
   const isAdminOrModerator =
@@ -259,6 +265,9 @@ const IdeationPage = ({
               overflowY="auto"
               overflowX="hidden"
               ref={pageRef}
+              tabIndex={0}
+              role="region"
+              aria-labelledby={`page-${currentPageIndex + 1}-title`}
             >
               {showFormFeedback && <Feedback />}
 
@@ -274,7 +283,10 @@ const IdeationPage = ({
               >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    <PageTitle page={page} />
+                    <PageTitle
+                      page={page}
+                      id={`page-${currentPageIndex + 1}-title`}
+                    />
 
                     {page.key === 'user_page' && (
                       <CustomFieldsSignupHelperText />
