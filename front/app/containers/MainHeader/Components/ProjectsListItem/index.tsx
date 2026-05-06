@@ -10,7 +10,7 @@ const ProjectsListItem = styled(Link)`
   line-height: 21px;
   text-decoration: none;
   padding: 10px;
-  margin-bottom: 4px;
+  display: block;
   background: transparent;
   border-radius: ${(props) => props.theme.borderRadius};
 
