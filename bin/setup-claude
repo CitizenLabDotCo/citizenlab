@@ -79,6 +79,7 @@ done < <(find "$PRIVATE_DIR" -type f \
   -not -name 'README.md' \
   -not -name '.gitignore' \
   -not -name 'settings.local.json' \
+  -not -name '.claude-readme.md' \
   -print0)
 
 # Skills: per-file symlinks under real per-skill directories.
@@ -105,6 +106,11 @@ done < <(find "$PRIVATE_DIR/skills" -mindepth 2 -type f -not -path '*/.git/*' -p
 # Private hook config / settings (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/settings.local.json" "$REPO_ROOT/.claude")" .claude/settings.local.json
+fi
+
+# Local README explaining the .claude/ layout (only if present in the private repo)
+if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
 fi
 
 # Install the privacy guard hooks (versioned at .githooks/)

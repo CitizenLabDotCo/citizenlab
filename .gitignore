@@ -24,6 +24,7 @@ CLAUDE.local.md
 .claude/settings.local.json
 .claude/private
 .claude/skills
+.claude/README.md
 
 # MCP local files
 .serena/
