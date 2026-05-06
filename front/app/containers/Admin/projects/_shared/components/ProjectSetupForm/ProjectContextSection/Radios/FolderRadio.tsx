@@ -27,6 +27,7 @@ const FolderRadio = ({
       <Radio
         name="folder"
         value="folder"
+        dataCy="project-context-folder-radio"
         currentValue={projectContext}
         label={
           <LabelHeaderDescription

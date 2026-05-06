@@ -595,7 +595,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
+        <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
@@ -623,9 +623,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}
           />
-          <Box mt="35px">
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
               name="textAreaMultiloc"
               onChange={getHandler(setShortDescriptionMultiloc)}

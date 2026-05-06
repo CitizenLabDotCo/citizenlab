@@ -51,7 +51,6 @@ const GoBackButtonSolid = ({
       params={params}
       search={search}
       linkTo={linkTo}
-      text={text}
     >
       <Box
         as="span"
