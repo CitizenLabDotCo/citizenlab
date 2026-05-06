@@ -23,7 +23,7 @@ node_modules
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/private
-.claude/skills/*
+.claude/skills
 
 # MCP local files
 .serena/

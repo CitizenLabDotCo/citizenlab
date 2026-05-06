@@ -62,17 +62,24 @@ fi
 
 mkdir -p .claude/private .claude/skills
 
-# Clean stale CLAUDE.md symlinks so files removed from the private repo disappear here too
-find .claude/private -type l -name 'CLAUDE.md' -delete 2>/dev/null || true
+# Clean stale file symlinks so files removed from the private repo disappear here too
+find .claude/private -type l -delete 2>/dev/null || true
 
-# @import follows file symlinks but not directory symlinks, so mirror the
-# CLAUDE.md tree as per-file symlinks under a real .claude/private/ directory.
+# Mirror everything from the private repo (CLAUDE.md files, hook scripts, etc.)
+# as per-file symlinks under a real .claude/private/ directory. Skills and the
+# settings.local.json are handled separately below.
 while IFS= read -r -d '' src; do
   rel="${src#$PRIVATE_DIR/}"
   dst=".claude/private/$rel"
   mkdir -p "$(dirname "$dst")"
   ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
-done < <(find "$PRIVATE_DIR" -type f -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
+done < <(find "$PRIVATE_DIR" -type f \
+  -not -path '*/.git/*' \
+  -not -path "$PRIVATE_DIR/skills/*" \
+  -not -name 'README.md' \
+  -not -name '.gitignore' \
+  -not -name 'settings.local.json' \
+  -print0)
 
 # Skills: per-file symlinks under real per-skill directories.
 # Claude Code's skill discovery only walks top-level .claude/skills/<name>/ and
