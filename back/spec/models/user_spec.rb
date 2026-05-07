@@ -872,7 +872,6 @@ RSpec.describe User do
 
     it 'returns false when the user requires confirmation' do
       u = create(:user)
-      binding.pry
       expect(u.active?).to be false
     end
 
