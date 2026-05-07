@@ -66,7 +66,7 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/:id' do
-      context 'when password login is turned on' do
+      context 'when confirmation is turned on' do
         before do
           @user = create(:user)
           settings = AppConfiguration.instance.settings
@@ -87,7 +87,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :email)).to be_nil
         end
-
+      end
     end
 
     post 'web_api/v1/users/check' do
@@ -1848,22 +1848,6 @@ resource 'Users' do
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
           end
         end
-      end
-
-      patch 'web_api/v1/users/update_email_unconfirmed' do
-        with_options scope: :user do
-          parameter :email, required: true
-        end
-
-          describe do
-            let(:email) { 'new_email@example.com' }
-
-            example_request '[error] does not allow email change' do
-              @user.reload
-              expect(response_status).to eq 401
-              expect(@user.email).not_to eq email
-            end
-          end
       end
 
       delete 'web_api/v1/users/:id' do

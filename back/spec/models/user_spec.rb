@@ -236,27 +236,26 @@ RSpec.describe User do
   end
 
   describe 'authentication without password' do
-      it 'is allowed if the user has no password and confirmation is required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        expect(!!u.authenticate('')).to be(true)
-      end
+    it 'is allowed if the user has no password and confirmation is required' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      expect(!!u.authenticate('')).to be(true)
+    end
 
-      it 'is not allowed if a password has been supplied in the request' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        expect(!!u.authenticate('any_string')).to be(false)
-      end
+    it 'is not allowed if a password has been supplied in the request' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      expect(!!u.authenticate('any_string')).to be(false)
+    end
 
-      it 'is not allowed if a password has been set' do
-        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-        expect(!!u.authenticate('')).to be(false)
-      end
+    it 'is not allowed if a password has been set' do
+      u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+      expect(!!u.authenticate('')).to be(false)
+    end
 
-      it 'is not allowed if confirmation is not required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        u.confirm
-        expect(!!u.authenticate('')).to be(false)
-      end
-
+    it 'is not allowed if confirmation is not required' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      u.confirm
+      expect(!!u.authenticate('')).to be(false)
+    end
   end
 
   describe 'email' do
@@ -887,30 +886,29 @@ RSpec.describe User do
   end
 
   describe 'registration_completed_at' do
-      it 'is not set when a user is created' do
-        u = create(:user_with_confirmation)
-        expect(u.registration_completed_at).to be_nil
-      end
+    it 'is not set when a user is created' do
+      u = create(:user_with_confirmation)
+      expect(u.registration_completed_at).to be_nil
+    end
 
-      it 'is set when a user is confirmed' do
-        u = create(:user_with_confirmation)
-        u.confirm!
-        expect(u.registration_completed_at).not_to be_nil
-      end
+    it 'is set when a user is confirmed' do
+      u = create(:user_with_confirmation)
+      u.confirm!
+      expect(u.registration_completed_at).not_to be_nil
+    end
 
-      it 'is set when an invited user accepts the invite' do
-        u = create(:invited_user)
-        u.update!(invite_status: 'accepted')
-        expect(u.registration_completed_at).not_to be_nil
-      end
+    it 'is set when an invited user accepts the invite' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted')
+      expect(u.registration_completed_at).not_to be_nil
+    end
 
-      it 'is set when an SSO user is created' do
-        u = create(:user)
-        facebook_identity = create(:facebook_identity)
-        u.identities << facebook_identity
-        expect(u.registration_completed_at).not_to be_nil
-      end
-
+    it 'is set when an SSO user is created' do
+      u = create(:user)
+      facebook_identity = create(:facebook_identity)
+      u.identities << facebook_identity
+      expect(u.registration_completed_at).not_to be_nil
+    end
   end
 
   describe 'groups and group_ids' do

@@ -51,27 +51,27 @@ describe AuthenticationService do
   describe '#prevent_user_account_hijacking' do
     let(:password) { 'supersecret' }
 
-      let!(:user) { create(:user, password: password) }
+    let!(:user) { create(:user, password: password) }
 
-      context 'when the user is not confirmed' do
-        before { user.update_columns(confirmation_required: true, email_confirmed_at: nil) }
+    context 'when the user is not confirmed' do
+      before { user.update_columns(confirmation_required: true, email_confirmed_at: nil) }
 
-        it 'removes the user account' do
-          user_id = user.id
-          expect(service.prevent_user_account_hijacking(user)).to be_nil
-          expect(User.exists?(user_id)).to be false
-        end
+      it 'removes the user account' do
+        user_id = user.id
+        expect(service.prevent_user_account_hijacking(user)).to be_nil
+        expect(User.exists?(user_id)).to be false
       end
+    end
 
-      context 'when the user is confirmed' do
-        before { user.reset_confirmation_code! }
+    context 'when the user is confirmed' do
+      before { user.reset_confirmation_code! }
 
-        it 'preserves the user account' do
-          user_id = user.id
-          expect(service.prevent_user_account_hijacking(user)).to eq user
-          expect(User.exists?(user_id)).to be true
-          expect(user.authenticate(password)).to eq user
-        end
+      it 'preserves the user account' do
+        user_id = user.id
+        expect(service.prevent_user_account_hijacking(user)).to eq user
+        expect(User.exists?(user_id)).to be true
+        expect(user.authenticate(password)).to eq user
       end
+    end
   end
 end

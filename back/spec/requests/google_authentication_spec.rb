@@ -196,36 +196,35 @@ describe 'google authentication' do
       })
     end
 
-      it 'creates confirmed user' do
+    it 'creates confirmed user' do
+      get '/auth/google'
+      follow_redirect!
+      user = User.find_by(email: 'boris.brompton@orange.uk')
+      expect(user.confirmation_required?).to be(false)
+    end
+
+    context 'when email is not verified' do
+      let(:email_verified) { false }
+
+      it 'creates unconfirmed user' do
         get '/auth/google'
         follow_redirect!
         user = User.find_by(email: 'boris.brompton@orange.uk')
-        expect(user.confirmation_required?).to be(false)
+        expect(user.confirmation_required?).to be(true)
       end
 
-      context 'when email is not verified' do
-        let(:email_verified) { false }
+      it "does not log 'registration_completed' activity job" do
+        get '/auth/google'
+        follow_redirect!
 
-        it 'creates unconfirmed user' do
-          get '/auth/google'
-          follow_redirect!
-          user = User.find_by(email: 'boris.brompton@orange.uk')
-          expect(user.confirmation_required?).to be(true)
-        end
-
-        it "does not log 'registration_completed' activity job" do
-          get '/auth/google'
-          follow_redirect!
-
-          expect(LogActivityJob).not_to have_been_enqueued.with(
-            anything,
-            'completed_registration',
-            anything,
-            anything
-          )
-        end
+        expect(LogActivityJob).not_to have_been_enqueued.with(
+          anything,
+          'completed_registration',
+          anything,
+          anything
+        )
       end
-
+    end
   end
 
   it 'successfully registers an invitee' do # TODO: Why is an invitee being classed as a 'signup'?
