@@ -32,7 +32,7 @@ module SafeUploadAllowlist
 
     json geojson kml kmz gpx
     dwg dxf
-    shp dbf shx prj
+    shp dbf shx prj cpg
   ].freeze
 
   CONTENT_TYPES = [

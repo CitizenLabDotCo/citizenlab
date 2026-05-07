@@ -7,8 +7,6 @@ RSpec.describe Files::FileUploader do
   let(:model) { build_stubbed(:global_file) }
   let(:uploader) { described_class.new(model, :content) }
 
-  let(:fixture) { ->(name) { Rails.root.join('spec/fixtures', name) } }
-
   def tempfile_with(name, content)
     file = Tempfile.new([File.basename(name, '.*'), File.extname(name)])
     file.binmode
@@ -29,19 +27,19 @@ RSpec.describe Files::FileUploader do
 
   describe 'happy paths' do
     it 'accepts a PDF' do
-      expect { uploader.cache!(fixture.call('minimal_pdf.pdf').open) }.not_to raise_error
+      expect { uploader.cache!(file_fixture('minimal_pdf.pdf').open) }.not_to raise_error
     end
 
     it 'accepts a JPEG' do
-      expect { uploader.cache!(fixture.call('header.jpg').open) }.not_to raise_error
+      expect { uploader.cache!(file_fixture('header.jpg').open) }.not_to raise_error
     end
 
     it 'accepts a docx' do
-      expect { uploader.cache!(fixture.call('david.docx').open) }.not_to raise_error
+      expect { uploader.cache!(file_fixture('david.docx').open) }.not_to raise_error
     end
 
     it 'accepts an xlsx' do
-      expect { uploader.cache!(fixture.call('example.xlsx').open) }.not_to raise_error
+      expect { uploader.cache!(file_fixture('example.xlsx').open) }.not_to raise_error
     end
 
     it 'accepts a zip with valid magic bytes' do
@@ -53,13 +51,13 @@ RSpec.describe Files::FileUploader do
 
   describe 'AD1 bypass attempts' do
     it 'rejects the literal pentest payload (eicar.txt.exe)' do
-      file = fixture.call('keylogger.exe').open
+      file = file_fixture('keylogger.exe').open
       file.define_singleton_method(:original_filename) { 'eicar.txt.exe' }
       expect { uploader.cache!(file) }.to raise_error(CarrierWave::IntegrityError)
     end
 
     it 'rejects an executable renamed to .pdf (extension passes, content-type fails)' do
-      file = fixture.call('keylogger.exe').open
+      file = file_fixture('keylogger.exe').open
       file.define_singleton_method(:original_filename) { 'payload.pdf' }
       expect { uploader.cache!(file) }.to raise_error(CarrierWave::IntegrityError)
     end
