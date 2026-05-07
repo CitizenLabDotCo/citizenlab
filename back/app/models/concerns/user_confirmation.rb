@@ -4,15 +4,11 @@ module UserConfirmation
   extend ActiveSupport::Concern
 
   included do
-    with_options do
-      before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
-    end
+    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
 
-    with_options do
-      validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
-      validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-      validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-    end
+    validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+    validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+    validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
   end
 
   # true if the user has not yet confirmed their email address and the platform requires it
