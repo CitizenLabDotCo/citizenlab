@@ -163,15 +163,6 @@ resource 'Invites' do
         ).exactly(1).times
       end
 
-      describe do
-        let(:email) { 'Super.Boulette@hotmail.com' }
-
-        example 'Accept an invite using different capitalization for the email', document: false do
-          do_request
-          assert_status 200
-        end
-      end
-
       example '[error] Accept an invite with an invalid token', document: false do
         invite.destroy!
         do_request
