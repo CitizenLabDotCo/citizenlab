@@ -13,10 +13,10 @@ import * as yup from 'yup';
 // Usage:
 //   sort: permissiveOneOf(ideaSortMethods).default('trending'),
 //   view: permissiveOneOf(presentationModes).optional(),
-export const permissiveOneOf = <T extends readonly string[]>(values: T) =>
+export const permissiveOneOf = <T extends string>(values: readonly T[]) =>
   yup
-    .string<T[number]>()
-    .transform((v) =>
+    .string<T>()
+    .transform((v: unknown) =>
       typeof v === 'string' && (values as readonly string[]).includes(v)
         ? v
         : undefined
