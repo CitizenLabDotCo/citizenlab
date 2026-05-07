@@ -239,8 +239,8 @@ export default function useSteps() {
         transition(currentStep, 'START_INVITE_FLOW')(window.location.search);
       }
 
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
+      // Remove all parameters from URL as they've already been captured.
+      clHistory.replace('/');
       return;
     }
 
@@ -269,8 +269,8 @@ export default function useSteps() {
 
         transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signup');
       }
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
+      // Remove all parameters from URL as they've already been captured.
+      clHistory.replace('/');
       return;
     }
 
