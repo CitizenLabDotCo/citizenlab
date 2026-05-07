@@ -94,7 +94,7 @@ da-DK:
         project_published: Projekt offentliggjort
         project_review_request: Moderator anmodede om en projektgennemgang
         project_review_state_change: Projektgodkender godkendte projektet
-        proposal_expired: Et forslag udløber uden at have nået tærsklen
+        proposal_expired: Et forslag udløber uden at have nået tærsklen for antal stemmer
         proposal_gets_reported_as_spam: Forslaget bliver rapporteret som spam
         proposal_is_assigned_to_admin: Forslaget er tildelt administrator
         proposal_is_published: Forslaget er offentliggjort
