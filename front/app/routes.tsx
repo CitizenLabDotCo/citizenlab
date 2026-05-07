@@ -21,6 +21,7 @@ import { createUserShowPageRoutes } from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
 const HomePage = lazy(() => import('containers/HomePage'));
@@ -231,7 +232,7 @@ const ideasEditRoute = createRoute({
 });
 
 const ideasIndexSearchSchema = yup.object({
-  sort: yup.string().oneOf(ideaSortMethods).default('trending'),
+  sort: permissiveOneOf(ideaSortMethods).default('trending'),
   search: yup.string().optional(),
   idea_status: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
