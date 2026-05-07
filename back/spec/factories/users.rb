@@ -19,10 +19,10 @@ FactoryBot.define do
     avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
     invite_status { nil }
 
+    after(:build, &:confirm)
+
     factory :admin do
       roles { [{ type: 'admin' }] }
-
-      after(:build, &:confirm)
 
       factory :super_admin do
         sequence(:email) do |n|
