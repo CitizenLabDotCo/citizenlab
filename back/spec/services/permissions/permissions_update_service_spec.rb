@@ -5,10 +5,6 @@ require 'rails_helper'
 describe Permissions::PermissionsUpdateService do
   let(:service) { described_class.new }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
-
   describe '#update_all_permissions' do
     let(:project) { create(:project) }
     let!(:invalid_permission) do

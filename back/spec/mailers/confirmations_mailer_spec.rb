@@ -8,10 +8,6 @@ RSpec.describe ConfirmationsMailer do
     let_it_be(:mailer) { described_class.with(user: user) }
     let_it_be(:message) { mailer.send_confirmation_code.deliver_now }
 
-    before do
-      SettingsService.new.activate_feature! 'user_confirmation'
-    end
-
     describe 'mailgun_headers' do
       it 'includes X-Mailgun-Variables and cl_tenant_id' do
         # We need to do this as we cannot directly access the true mailer instance

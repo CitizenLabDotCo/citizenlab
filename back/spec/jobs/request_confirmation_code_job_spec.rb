@@ -8,17 +8,6 @@ RSpec.describe RequestConfirmationCodeJob do
   describe '#perform' do
     let(:user) { create(:user) }
 
-    describe 'when confirmation is turned off' do
-      before { SettingsService.new.deactivate_feature! 'user_confirmation' }
-
-      it 'raises an error' do
-        expect { job.perform(user) }.to raise_error(RuntimeError)
-      end
-    end
-
-    describe 'when confirmation is turned on' do
-      before { SettingsService.new.activate_feature! 'user_confirmation' }
-
       context 'when the user signs up with an email' do
         let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
 
@@ -146,6 +135,6 @@ RSpec.describe RequestConfirmationCodeJob do
           expect(user.errors.details).to eq({ email_confirmation_code_reset_count: [{ error: :less_than_or_equal_to, value: 6, count: 5 }] })
         end
       end
-    end
+
   end
 end

@@ -51,9 +51,6 @@ describe AuthenticationService do
   describe '#prevent_user_account_hijacking' do
     let(:password) { 'supersecret' }
 
-    context 'user confirmation is enabled' do
-      before { SettingsService.new.activate_feature! 'user_confirmation' }
-
       let!(:user) { create(:user, password: password) }
 
       context 'when the user is not confirmed' do
@@ -76,19 +73,5 @@ describe AuthenticationService do
           expect(user.authenticate(password)).to eq user
         end
       end
-    end
-
-    context 'user confirmation is disabled' do
-      before { SettingsService.new.deactivate_feature! 'user_confirmation' }
-
-      let!(:user) { create(:user, password: password) }
-
-      it 'clears the password of the user account' do
-        user_id = user.id
-        expect(service.prevent_user_account_hijacking(user)).to eq user
-        expect(User.exists?(user_id)).to be true
-        expect(user.authenticate(password)).to be false
-      end
-    end
   end
 end

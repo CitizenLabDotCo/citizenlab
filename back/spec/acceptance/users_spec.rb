@@ -66,10 +66,9 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/:id' do
-      context 'when confirmation is turned on' do
+      context 'when password login is turned on' do
         before do
           @user = create(:user)
-          SettingsService.new.activate_feature! 'user_confirmation'
           settings = AppConfiguration.instance.settings
           settings['password_login'] = {
             'allowed' => true,
@@ -88,7 +87,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :email)).to be_nil
         end
-      end
+
     end
 
     post 'web_api/v1/users/check' do
@@ -96,9 +95,8 @@ resource 'Users' do
         parameter :email, 'E-mail address to check', required: true
       end
 
-      context 'when confirmation is turned on' do
+      context 'when password_login is turned on' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
         end
 
@@ -228,37 +226,8 @@ resource 'Users' do
         end
       end
 
-      context 'when user confirmation is turned off' do
-        before do
-          SettingsService.new.deactivate_feature! 'user_confirmation'
-          SettingsService.new.activate_feature! 'password_login'
-        end
-
-        let(:email) { 'test@test.com' }
-
-        example_request 'returns "terms" when user does not exist' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
-        end
-
-        example 'returns "password" when user exists with a password' do
-          create(:user, email: 'test@test.com')
-          do_request
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('password')
-        end
-
-        example 'returns "token" when user exists without a password' do
-          create(:user, email: 'test2@email.com', password: nil)
-          do_request(user: { email: 'test2@email.com' })
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('token')
-        end
-      end
-
       context 'when password_login is turned off' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.deactivate_feature! 'password_login'
         end
 
@@ -271,7 +240,6 @@ resource 'Users' do
 
       context 'when the email domain has SSO enforced' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['azure_ad_login'] = {
@@ -305,7 +273,6 @@ resource 'Users' do
 
       context 'when the email domain has SSO enforced' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['azure_ad_login'] = {
@@ -324,9 +291,8 @@ resource 'Users' do
         end
       end
 
-      context 'when confirmation is turned on' do
+      context 'when password_login is turned on' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
           allow(RequestConfirmationCodeJob).to receive(:perform_now)
         end
@@ -1889,11 +1855,6 @@ resource 'Users' do
           parameter :email, required: true
         end
 
-        context 'when user_confirmation is enabled' do
-          before do
-            SettingsService.new.activate_feature! 'user_confirmation'
-          end
-
           describe do
             let(:email) { 'new_email@example.com' }
 
@@ -1903,23 +1864,6 @@ resource 'Users' do
               expect(@user.email).not_to eq email
             end
           end
-        end
-
-        context 'when user_confirmation is disabled' do
-          before do
-            SettingsService.new.deactivate_feature! 'user_confirmation'
-          end
-
-          describe do
-            let(:email) { 'new_email@example.com' }
-
-            example_request 'It allows email change' do
-              @user.reload
-              expect(response_status).to eq 200
-              expect(@user.email).to eq email
-            end
-          end
-        end
       end
 
       delete 'web_api/v1/users/:id' do

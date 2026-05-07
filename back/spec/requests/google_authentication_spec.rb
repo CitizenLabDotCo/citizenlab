@@ -110,7 +110,6 @@ describe 'google authentication' do
   end
 
   it 'deletes the previous user if unverified with password and verification is enabled' do
-    SettingsService.new.activate_feature! 'user_confirmation'
     user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
     user.update_columns(confirmation_required: true, email_confirmed_at: nil)
     user_id = user.id
@@ -119,16 +118,6 @@ describe 'google authentication' do
     follow_redirect!
 
     expect(User.exists?(user_id)).to be false
-  end
-
-  it 'clears the password if verification is disabled' do
-    SettingsService.new.deactivate_feature! 'user_confirmation'
-    user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
-
-    get '/auth/google?random-passthrough-param=somevalue'
-    follow_redirect!
-
-    expect(user.reload.authenticate('supersecret')).to be false
   end
 
   it 'updates the avatar when re-authenticating an existing user without an avatar' do
@@ -207,9 +196,6 @@ describe 'google authentication' do
       })
     end
 
-    context 'when user confirmation is enabled' do
-      before { SettingsService.new.activate_feature!('user_confirmation') }
-
       it 'creates confirmed user' do
         get '/auth/google'
         follow_redirect!
@@ -239,7 +225,7 @@ describe 'google authentication' do
           )
         end
       end
-    end
+
   end
 
   it 'successfully registers an invitee' do # TODO: Why is an invitee being classed as a 'signup'?

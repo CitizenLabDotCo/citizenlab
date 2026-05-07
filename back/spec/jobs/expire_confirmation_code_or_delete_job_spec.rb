@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   before do
-    SettingsService.new.activate_feature! 'user_confirmation'
     ActiveJob::Base.queue_adapter.enqueued_jobs.clear
   end
 

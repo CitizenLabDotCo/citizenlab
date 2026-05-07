@@ -6,7 +6,6 @@ RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
   before do
-    SettingsService.new.activate_feature! 'user_confirmation'
     RequestConfirmationCodeJob.perform_now user
   end
 

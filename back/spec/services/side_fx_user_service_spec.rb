@@ -64,8 +64,6 @@ describe SideFxUserService do
     end
 
     context 'when user is an invitee' do
-      before { SettingsService.new.activate_feature!('user_confirmation') }
-
       let(:invitee) { create(:user_with_confirmation, invite_status: 'pending') }
 
       it 'does not send a confirmation code email' do
@@ -88,8 +86,6 @@ describe SideFxUserService do
       end
 
       context 'when confirmation is required' do
-        before { SettingsService.new.activate_feature!('user_confirmation') }
-
         let(:user) { create(:user_with_confirmation) }
 
         it 'marks tokens as pending' do
