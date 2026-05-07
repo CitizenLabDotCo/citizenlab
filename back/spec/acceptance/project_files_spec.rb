@@ -120,19 +120,6 @@ resource 'File attachment as legacy ProjectFile' do
       expect(attachment.file.projects).to contain_exactly(project)
     end
 
-    # [TODO] Currently, the +Files::FileUploader+ allows all file extensions.
-    describe 'Add a file with an unsupported file extension', pending: <<~REASON do
-      Currently, the +Files::FileUploader+ allows all file extensions.
-    REASON
-      let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
-      let(:name) { 'keylogger.exe' }
-
-      example_request '[error]' do
-        assert_status 422
-        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
-      end
-    end
-
     describe 'Add a file that is too large' do
       example '[error]' do
         # Mock the `size_range` method of `Files::FileUploader` to set the maximum size to 3 bytes.

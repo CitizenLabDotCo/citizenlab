@@ -15,9 +15,74 @@ RSpec.describe Files::File do
     it { is_expected.to validate_presence_of(:category).with_message('is not included in the list') }
     it { is_expected.to validate_inclusion_of(:ai_processing_allowed).in_array([true, false]) }
 
-    it 'is valid for all file extensions' do
-      file = build(:file, name: 'filename.unknown_ext')
-      expect(file).to be_valid
+    describe 'extension' do
+      let(:project) { create(:project) }
+
+      context 'when user is admin' do
+        let(:user) { create(:admin) }
+
+        it 'allows any extension' do
+          file = build(:file, name: 'keylogger.exe', uploader: user, projects: [project])
+          expect { file.save! }.not_to raise_error
+        end
+      end
+
+      context 'when user is moderator of the project' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'allows any extension' do
+          file = build(:file, name: 'keylogger.exe', uploader: user, projects: [project])
+          expect { file.save! }.not_to raise_error
+        end
+      end
+
+      context 'when user is moderator of a different project' do
+        let(:user) { create(:project_moderator) }
+
+        it 'allows safe file types' do
+          file = build(:file, name: 'document.pdf', uploader: user, projects: [project])
+          expect { file.save! }.not_to raise_error
+        end
+
+        it 'blocks dangerous file types' do
+          file = build(:file, name: 'keylogger.exe', uploader: user, projects: [project])
+          expect { file.save! }.to raise_error(ActiveRecord::RecordInvalid)
+          expect(file.errors.details[:content])
+            .to include(hash_including(error: :extension_whitelist_error))
+        end
+      end
+
+      context 'when user is regular user' do
+        let(:user) { create(:user) }
+
+        it 'allows safe file types' do
+          file = build(:file, name: 'document.pdf', uploader: user, projects: [project])
+          expect { file.save! }.not_to raise_error
+        end
+
+        it 'blocks dangerous file types' do
+          file = build(:file, name: 'keylogger.exe', uploader: user, projects: [project])
+          expect { file.save! }.to raise_error(ActiveRecord::RecordInvalid)
+          expect(file.errors.details[:content])
+            .to include(hash_including(error: :extension_whitelist_error))
+        end
+      end
+
+      context 'when file has no associated project' do
+        let(:user) { create(:user) }
+
+        it 'allows safe file types' do
+          file = build(:global_file, name: 'document.pdf', uploader: user)
+          expect { file.save! }.not_to raise_error
+        end
+
+        it 'blocks dangerous file types' do
+          file = build(:global_file, name: 'keylogger.exe', uploader: user)
+          expect { file.save! }.to raise_error(ActiveRecord::RecordInvalid)
+          expect(file.errors.details[:content])
+            .to include(hash_including(error: :extension_whitelist_error))
+        end
+      end
     end
 
     describe 'description_multiloc' do
