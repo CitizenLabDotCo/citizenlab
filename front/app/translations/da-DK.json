@@ -1477,7 +1477,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} bidrag} one {{ideasCount} bidrag} other {{ideasCount} bidrag}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ~ ideer} one {{ideasCount} ide} other {{ideasCount} ideer}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} initiativer} one {{ideasCount} initiativ} other {{ideasCount} initiativer}}",
-  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} udfordring} one {{ideasCount} udfordring} other {{ideasCount} udfordringer}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} input} one {{ideasCount} input} other {{ideasCount} input}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} muligheder} one {{ideasCount} mulighed} other {{ideasCount} muligheder}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} afstemninger} one {{ideasCount} afstemning} other {{ideasCount} afstemninger}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} opslag} one {{ideasCount} opslag} other {{ideasCount} opslag}}",
