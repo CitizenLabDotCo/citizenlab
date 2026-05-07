@@ -41,6 +41,7 @@ export interface Props {
   onBlur?: () => void;
   maxCharCount?: number;
   minCharCount?: number;
+  ariaLabelledBy?: string;
 }
 
 configureQuill();
@@ -64,6 +65,7 @@ const QuillEditor = ({
   onFocus,
   maxCharCount,
   minCharCount,
+  ariaLabelledBy,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -108,6 +110,7 @@ const QuillEditor = ({
       onBlur: onBlurRef.current,
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
+      ariaLabelledBy,
     });
 
     setHTML(quill, value);

@@ -6,6 +6,16 @@ dotenv.config({
   path: path.join(process.cwd(), 'cypress.env'),
 });
 
+dotenv.config({
+  path: path.join(process.cwd(), '../env_files/front-safe.env'),
+});
+
+dotenv.config({
+  path: path.join(process.cwd(), '../env_files/front-secret.env'),
+});
+
+const PORT = Number(process.env.PORT) || 3000;
+
 export default defineConfig({
   viewportWidth: 1400,
   viewportHeight: 800,
@@ -25,6 +35,6 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config);
     },
-    baseUrl: 'http://localhost:3000',
+    baseUrl: `http://localhost:${PORT}`,
   },
 });

@@ -637,7 +637,7 @@ de-AT:
       preheader: Details zur Einreichung.
       subject: '%{organizationName}: Vielen Dank für Ihre Antwort! 🎉'
       title: Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!
-      you_can_use_this_id: Sie können diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls Sie möchten, dass Ihr Beitrag entfernt wird.
+      you_can_use_this_id: Du kannst diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls du möchtest, dass dein Beitrag entfernt wird.
       your_submission_has_id: 'Ihr Beitrag hat die folgende eindeutige Kennung:'
     threshold_reached_for_admin:
       cta_button: Nächste Schritte für diesen Vorschlag

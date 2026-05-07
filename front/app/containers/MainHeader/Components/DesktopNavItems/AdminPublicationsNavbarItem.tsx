@@ -103,13 +103,19 @@ const NavigationDropdownItemIcon = styled(Icon)`
   `}
 `;
 
-const ProjectsList = styled.div`
+const ProjectsList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   ${isRtl`
     text-align: right;
   `}
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+const ListItemWrapper = styled.li`
+  list-style: none;
 `;
 
 const ProjectsListFooter = styled(Link)`
@@ -219,7 +225,7 @@ const AdminPublicationsNavbarItem = ({
             {adminPublications ? (
               <>
                 {adminPublications.map((item) => (
-                  <React.Fragment key={item.id}>
+                  <ListItemWrapper key={item.id}>
                     {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
                         to={
@@ -238,7 +244,7 @@ const AdminPublicationsNavbarItem = ({
                         {localize(item.attributes.publication_title_multiloc)}
                       </ProjectsListItem>
                     )}
-                  </React.Fragment>
+                  </ListItemWrapper>
                 ))}
               </>
             ) : (

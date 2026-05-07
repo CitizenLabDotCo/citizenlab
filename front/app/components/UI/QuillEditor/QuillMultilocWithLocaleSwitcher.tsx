@@ -16,6 +16,7 @@ import QuillEditor, {
 } from 'components/UI/QuillEditor';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const Container = styled.div``;
 
@@ -97,7 +98,10 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     <Container id={props.id}>
       <LabelContainer>
         {label && (
-          <StyledLabel htmlFor={id}>
+          <StyledLabel
+            id={`${sanitizeForClassname(props.id)}-label`}
+            htmlFor={id}
+          >
             <span>{label}</span>
             {labelTooltipText && (
               <StyledIconTooltip
@@ -124,6 +128,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
       <QuillEditor
         {...quillProps}
         id={id}
+        ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
         value={valueMultiloc?.[selectedLocale]}
         onChange={handleValueOnChange}
         maxCharCount={maxCharCount}
