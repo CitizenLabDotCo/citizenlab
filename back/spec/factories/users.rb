@@ -43,6 +43,7 @@ FactoryBot.define do
     factory :invited_user do
       invite_status { 'pending' }
       registration_completed_at { nil }
+      password_digest { nil }
 
       after(:create) do |user, _evaluator|
         create(:invite, invitee: user)
