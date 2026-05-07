@@ -49,15 +49,23 @@ FactoryBot.define do
         create(:invite, invitee: user)
       end
     end
+  end
 
-    factory :user_with_confirmation, parent: :user do
-      invite_status { nil }
-      registration_completed_at { nil }
-
-      after(:create) do |user, _evaluator|
-        user.reset_confirmation_code!
-      end
+  factory :user_with_confirmation, class: 'User' do
+    first_name { nil }
+    last_name { nil }
+    sequence(:email) do |n|
+      name, domain = Faker::Internet.email.split('@')
+      "#{name}#{n}@#{domain}"
     end
+    password { nil }
+    roles { [] }
+    locale { 'en' }
+    registration_completed_at { nil }
+    # Although the avatar is not part of the minimal model, generating it
+    # really slows down the tests, so we fix it here
+    avatar { nil }
+    invite_status { nil }
   end
 
   factory :user_no_password, class: 'User' do
