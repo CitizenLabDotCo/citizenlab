@@ -62,9 +62,11 @@ describe AuthenticationService do
         expect(User.exists?(user_id)).to be false
       end
     end
-
+  
     context 'when the user is confirmed' do
-      before { user.reset_confirmation_code! }
+      before do
+        user.confirm!
+      end
 
       it 'preserves the user account' do
         user_id = user.id

@@ -56,6 +56,6 @@ class AuthenticationService
       return nil
     end
 
-    user.tap { |tapped_user| tapped_user.update!(password: nil) }
+    user
   end
 end
