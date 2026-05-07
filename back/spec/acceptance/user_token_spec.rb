@@ -264,16 +264,4 @@ resource 'User Token' do
       end
     end
   end
-
-  post 'web_api/v1/user_token/unconfirmed' do
-    with_options scope: :auth do
-      parameter :email, required: true
-    end
-
-    example 'user has no password' do
-      user = create(:user_no_password)
-      do_request(auth: { email: user.email })
-      expect(status).to eq(404)
-    end
-  end
 end
