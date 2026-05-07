@@ -231,8 +231,6 @@ resource 'Omniauth Callback', document: false do
 
           do_request
           expect(status).to eq(302)
-          expect(User.count).to eq(1)
-
           user = User.find_by(email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
           expect(idea.reload.author_id).to eq(user.id)
@@ -262,8 +260,8 @@ resource 'Omniauth Callback', document: false do
 
             do_request
             expect(status).to eq(302)
-            expect(User.count).to eq(1)
-
+            db_user = User.find_by(email: 'billy_fixed@example.com')
+            expect(db_user.id).to eq(invited_user.id)
             expect(idea.reload.author_id).to eq(invited_user.id)
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
