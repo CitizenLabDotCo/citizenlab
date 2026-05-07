@@ -185,7 +185,7 @@ const AuthorFilters = () => {
                     type: 'birthyear',
                   });
                 }}
-                value={searchParams[birthyearUrlQueryParamFromKey]}
+                value={searchParams[birthyearUrlQueryParamFromKey]?.toString()}
               />
             </Box>
             <Box w="50%">
@@ -201,7 +201,7 @@ const AuthorFilters = () => {
                     type: 'birthyear',
                   });
                 }}
-                value={searchParams[birthyearUrlQueryParamToKey]}
+                value={searchParams[birthyearUrlQueryParamToKey]?.toString()}
               />
             </Box>
           </Box>

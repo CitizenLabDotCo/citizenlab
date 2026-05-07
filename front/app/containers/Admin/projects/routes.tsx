@@ -114,9 +114,24 @@ export type InputImporterSearchParams = yup.InferType<
   typeof inputImporterSearchSchema
 >;
 
+// Dynamic-key shape: the analysis route preserves these by not stripping
+// unknown (see projectAnalysisRoute below). Custom-field UUIDs aren't known
+// at compile time, so we model them as a template-literal index signature.
+// Values come back via TanStack's default JSON-parsing search parser, so they
+// may be string/number/array — typed as `unknown` to force callers to coerce.
+type ProjectAnalysisDynamicKeys = {
+  [K in
+    | `author_custom_${string}`
+    | `author_custom_${string}_from`
+    | `author_custom_${string}_to`
+    | `input_custom_${string}_from`
+    | `input_custom_${string}_to`]?: unknown;
+};
+
 export type ProjectAnalysisSearchParams = yup.InferType<
   typeof projectAnalysisSearchSchema
->;
+> &
+  ProjectAnalysisDynamicKeys;
 
 // --- Projects layout route ---
 const projectsRoute = createRoute({
