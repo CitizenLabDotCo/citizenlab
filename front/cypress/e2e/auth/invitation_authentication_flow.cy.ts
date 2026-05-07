@@ -129,17 +129,42 @@ function waitForImportJobComplete(
   );
 }
 
+// Seed invites directly via the bulk_create_xlsx endpoint, bypassing the UI.
+// Used by the token-based signup tests so they don't depend on the UI test.
+function seedInvitesViaXlsxApi(): Cypress.Chainable<EnrichedInvite[]> {
+  return cy.fixture('invites.xlsx', 'base64').then((base64) =>
+    adminAuthHeader().then((headers) =>
+      cy
+        .request({
+          headers,
+          method: 'POST',
+          url: 'web_api/v1/invites_imports/bulk_create_xlsx',
+          body: {
+            invites: {
+              xlsx: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`,
+              locale: 'en',
+            },
+          },
+        })
+        .then((res) => {
+          const importId = res.body?.data?.id;
+          expect(importId, 'seed import id').to.be.a('string');
+          return waitForImportJobComplete(importId).then(() =>
+            listInvitesWithEmail()
+          );
+        })
+    )
+  );
+}
+
 describe('Invitation authentication flow', () => {
-  // Cleanup inside the test (not a before hook) so retries restart from a
-  // clean slate — otherwise duplicate uploads from earlier attempts cascade
-  // into later assertions.
-  it('has correct invitations', () => {
-    // Bulk-create skips an email if a User already has it. A leftover
-    // jack@johnson.com from a previous spec run would silently drop the
-    // second invite — purge it before uploading.
+  // Run on every retry so attempts don't inherit each other's state.
+  beforeEach(() => {
     deleteUserByEmail(FIXTURE_INVITED_EMAIL);
     deleteInvites();
+  });
 
+  it('has correct invitations', () => {
     // The bulk_create POST fires once (after the seat-count phase). Catching
     // it gives us the job id deterministically; we then poll that specific
     // job ourselves rather than relying on the frontend's polling continuing.
@@ -150,11 +175,7 @@ describe('Invitation authentication flow', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    // The wrapper has the `disabled` CSS class while selectedFileBase64 is
-    // null (file still being read). Once it clears, the form is ready.
-    cy.get('.e2e-submit-wrapper-button')
-      .should('not.have.class', 'disabled')
-      .click();
+    cy.get('.e2e-submit-wrapper-button').should('not.be.disabled').click();
 
     cy.wait('@bulkCreate', { timeout: 60000 }).then((interception) => {
       const importId = interception.response?.body?.data?.id;
@@ -173,7 +194,7 @@ describe('Invitation authentication flow', () => {
   });
 
   it('is possible to create an account with invite route + token in url', () => {
-    listInvitesWithEmail().then((entries) => {
+    seedInvitesViaXlsxApi().then((entries) => {
       const match = entries.find((e) => e.email === FIXTURE_INVITED_EMAIL);
       expect(match, 'invite for jack@johnson.com').to.exist;
 
@@ -201,7 +222,7 @@ describe('Invitation authentication flow', () => {
   it('is possible to create an account if invitee does not have email', () => {
     const email = randomEmail();
 
-    listInvitesWithEmail().then((entries) => {
+    seedInvitesViaXlsxApi().then((entries) => {
       const match = entries.find((e) => e.email === null);
       expect(match, 'invite without email').to.exist;
 
