@@ -1,5 +1,4 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
-import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
@@ -119,8 +118,6 @@ const requiredBuiltInFields = (
 
 export const handleSubmitEmail = async (
   email: string,
-  getAuthenticationData: () => AuthenticationData,
-  getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState
 ) => {
@@ -141,27 +138,6 @@ export const handleSubmitEmail = async (
     if (action === 'confirm') {
       updateState({ flow: 'signin' });
       setCurrentStep('email:confirmation');
-    }
-
-    if (action === 'token') {
-      updateState({ flow: 'signin' });
-      await getUserTokenUnconfirmed(email);
-
-      const { requirements } = await getRequirements();
-      const authenticationData = getAuthenticationData();
-      const missingDataStep = checkMissingData(
-        requirements,
-        authenticationData,
-        'signin',
-        true
-      );
-
-      if (missingDataStep) {
-        setCurrentStep(missingDataStep);
-        return;
-      }
-
-      setCurrentStep('success');
     }
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {

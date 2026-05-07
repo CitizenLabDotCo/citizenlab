@@ -76,13 +76,7 @@ export const getStepConfig = (
 
       SUBMIT_EMAIL: async (email: string) => {
         updateState({ email });
-        await handleSubmitEmail(
-          email,
-          getAuthenticationData,
-          getRequirements,
-          setCurrentStep,
-          updateState
-        );
+        await handleSubmitEmail(email, setCurrentStep, updateState);
       },
 
       CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {
