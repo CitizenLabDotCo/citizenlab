@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} ਪੁਸ਼ਟੀਕਰਨ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "ਖਾਤਾ ਬਣਾਉਣਾ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਆਪਣੇ ਨਾਮ, ਪੁਸ਼ਟੀ ਕੀਤੀ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਨਾਲ ਇੱਕ ਪੂਰਾ ਖਾਤਾ ਬਣਾਉਣ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਆਪਣੇ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਨਾਲ ਇੱਕ ਪੂਰਾ ਖਾਤਾ ਬਣਾਉਣ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "ਪ੍ਰਮਾਣਿਕਤਾ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "ਉਪਭੋਗਤਾਵਾਂ ਤੋਂ ਪੁੱਛੇ ਗਏ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "ਸੰਪਾਦਿਤ ਕਰੋ",
