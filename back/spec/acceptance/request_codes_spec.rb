@@ -6,7 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Request codes' do
   before do
     set_api_content_type
-    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   post 'web_api/v1/user/request_code_unauthenticated' do

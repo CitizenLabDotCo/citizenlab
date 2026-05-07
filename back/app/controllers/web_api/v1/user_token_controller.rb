@@ -4,27 +4,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   include EnforceUserSso
 
   TOKEN_LIFETIME = 1.day
-  before_action :sso_enforced?, only: %i[create user_token_unconfirmed]
-  before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
-  skip_before_action :authenticate, only: [:user_token_unconfirmed]
-
-  # This endpoint is only used when user_confirmation is disabled.
-  def user_token_unconfirmed
-    user = User.find_by_cimail(user_token_unconfirmed_params[:email])
-
-    raise ActiveRecord::RecordNotFound if user.blank?
-
-    if user.password_digest.present? || user.sso?
-      render(
-        json: { errors: { base: [{ error: 'cannot_have_password' }] } },
-        status: :unprocessable_entity
-      )
-    else
-      ClaimTokenService.claim(user, nil)
-      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
-      render json: auth_token, status: :created
-    end
-  end
+  before_action :sso_enforced?, only: %i[create]
 
   def create
     ClaimTokenService.claim(entity, auth_params[:claim_tokens])
@@ -48,17 +28,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     [:remember_me, { claim_tokens: [] }]
   end
 
-  def user_token_unconfirmed_params
-    params.require(:auth).permit id_param
-  end
-
   def email_param
     params.dig(:auth, :email)
-  end
-
-  def authenticate_user_token_unconfirmed
-    return unless AppConfiguration.instance.feature_activated?('user_confirmation')
-
-    raise ActiveRecord::RecordNotFound
   end
 end

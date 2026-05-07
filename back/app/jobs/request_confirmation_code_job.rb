@@ -7,7 +7,6 @@ class RequestConfirmationCodeJob < ApplicationJob
 
   def run(user, new_email: nil)
     @user = user
-    raise 'User confirmation is disabled.' if !AppConfiguration.instance.feature_activated?('user_confirmation')
 
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
 

@@ -261,18 +261,10 @@ context 'federa verification' do
         configuration.save!
       end
 
-      context 'email confirmation enabled' do
         before do
           # Register with no email from Federa
           auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
           OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
-
-          configuration = AppConfiguration.instance
-          configuration.settings['user_confirmation'] = {
-            'enabled' => true,
-            'allowed' => true
-          }
-          configuration.save!
         end
 
         it 'creates user that can add and confirm her email' do
@@ -314,36 +306,7 @@ context 'federa verification' do
           expect(user.confirmation_required?).to be(false)
           expect(user.active?).to be(true)
         end
-      end
 
-      context 'email confirmation disabled' do
-        before do
-          auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
-          OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
-
-          configuration = AppConfiguration.instance
-          configuration.settings['user_confirmation'] = {
-            'enabled' => false,
-            'allowed' => false
-          }
-          configuration.save!
-        end
-
-        it 'creates user that can update her email' do
-          get '/auth/federa'
-          follow_redirect!
-
-          user = User.order(created_at: :asc).last
-          expect_user_to_be_verified_and_identified(user)
-
-          token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-          headers = { 'Authorization' => "Bearer #{token}" }
-          patch '/web_api/v1/users/update_email_unconfirmed', params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
-          expect(response).to have_http_status(:ok)
-          expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
-          expect(user.confirmation_required?).to be(false)
-        end
-      end
     end
   end
 

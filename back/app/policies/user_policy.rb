@@ -99,13 +99,6 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id)
   end
 
-  def update_email_unconfirmed?
-    app_configuration = AppConfiguration.instance
-    return false if app_configuration.feature_activated?('user_confirmation')
-
-    user&.active? && (record.id == user.id)
-  end
-
   def view_private_attributes?
     # When the policy was created with a class
     # instead of an instance, record is set to

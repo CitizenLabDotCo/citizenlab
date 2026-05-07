@@ -8,7 +8,6 @@ resource 'Confirmations' do
 
   before do
     set_api_content_type
-    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   shared_examples 'confirmation code validation' do

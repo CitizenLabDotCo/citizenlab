@@ -248,16 +248,6 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       end
     end
 
-    context 'email confirmation enabled' do
-      before do
-        configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          'enabled' => true,
-          'allowed' => true
-        }
-        configuration.save!
-      end
-
       it 'creates user that can add & confirm her email' do
         get '/auth/keycloak'
         follow_redirect!
@@ -306,36 +296,6 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
         expect(ActionMailer::Base.deliveries).to be_empty
       end
-    end
 
-    context 'email confirmation disabled' do
-      before do
-        configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          'enabled' => false,
-          'allowed' => false
-        }
-        configuration.save!
-
-        create(:custom_field, key: 'birthdate')
-        create(:custom_field, key: 'birthyear', input_type: 'number')
-        create(:custom_field, key: 'municipality_code')
-      end
-
-      it 'creates user that can update her email' do
-        get '/auth/keycloak'
-        follow_redirect!
-
-        user = User.order(created_at: :asc).last
-        expect_user_to_be_verified_and_identified(user)
-
-        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-        headers = { 'Authorization' => "Bearer #{token}" }
-        patch '/web_api/v1/users/update_email_unconfirmed', params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
-        expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
-        expect(user.confirmation_required?).to be(false)
-      end
-    end
   end
 end

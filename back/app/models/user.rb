@@ -365,8 +365,7 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? && # see #allows_empty_email?
-                  user_confirmation_enabled?
+                  email_was.present? # see #allows_empty_email?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation

@@ -154,9 +154,6 @@ class WebApi::V1::UsersController < ApplicationController
         else
           render json: raw_json({ action: 'password' })
         end
-      elsif !app_configuration.feature_activated?('user_confirmation')
-        # Only triggered for new users - at this point they have no password
-        render json: raw_json({ action: 'token' })
       else
         if @user.email_confirmation_code_reset_count == 0
           # If the reset count is zero, we are in the following situation:
@@ -293,19 +290,6 @@ class WebApi::V1::UsersController < ApplicationController
       end
     else
       render json: { errors: { current_password: [{ error: 'invalid' }] } }, status: :unprocessable_entity
-    end
-  end
-
-  # This endpoint is only used when user_confirmation is disabled.
-  def update_email_unconfirmed
-    authorize(current_user)
-    if current_user.update(email: params[:user][:email])
-      render json: WebApi::V1::UserSerializer.new(
-        current_user,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    else
-      render json: { errors: current_user.errors.details }, status: :unprocessable_entity
     end
   end
 

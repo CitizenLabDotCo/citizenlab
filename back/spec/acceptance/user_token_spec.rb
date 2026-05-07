@@ -22,7 +22,6 @@ resource 'User Token' do
 
     context 'when the email domain has SSO enforced' do
       before do
-        SettingsService.new.activate_feature! 'user_confirmation'
         settings = AppConfiguration.instance.settings
         settings['azure_ad_login'] = {
           'allowed' => true, 'enabled' => true,
@@ -40,11 +39,6 @@ resource 'User Token' do
         expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('sso_enforced_for_domain')
       end
     end
-
-    context 'when user_confirmation is enabled' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
 
       context 'when user is confirmed' do
         let(:email) { 'test@email.com' }
@@ -269,71 +263,7 @@ resource 'User Token' do
           end
         end
       end
-    end
 
-    context 'when user_confirmation is disabled' do
-      before do
-        SettingsService.new.deactivate_feature! 'user_confirmation'
-      end
-
-      context 'when the user is unconfirmed' do
-        let(:email) { 'test@email.com' }
-        let(:password) { '12345678' }
-        let(:remember_me) { false }
-
-        let!(:user) { create(:user_with_confirmation, email: email, password: password) }
-
-        before do
-          allow(Time).to receive(:now).and_return(Time.now)
-        end
-
-        example_request 'Create JWT token creates expected payload' do
-          assert_status 201
-
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-
-          expect(jwt['sub']).to eq(user.id)
-          expect(jwt['highest_role']).to eq('user')
-          expect(jwt['cluster']).to eq('local')
-          expect(jwt['tenant']).to eq(Tenant.current.id)
-          expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
-        end
-      end
-
-      context 'when the user is an invited user' do
-        let(:email) { 'test@email.com' }
-        let(:password) { '12345678' }
-
-        before do
-          create(:invited_user, email: email, password: password)
-        end
-
-        example_request '[error] no JWT token is returned' do
-          assert_status 404
-        end
-      end
-
-      context 'when no password is used' do
-        let(:email) { 'test@email.com' }
-        let(:password) { '' }
-
-        context 'when user has password' do
-          let!(:user) { create(:user, email: email, password: 'other_password') }
-
-          example_request '[error] no JWT token is returned' do
-            assert_status 404
-          end
-        end
-
-        context 'when user has no password' do
-          let!(:user) { create(:user_no_password, email: email) }
-
-          example_request '[error] no JWT token is returned' do
-            assert_status 404
-          end
-        end
-      end
-    end
   end
 
   post 'web_api/v1/user_token/unconfirmed' do
@@ -341,47 +271,11 @@ resource 'User Token' do
       parameter :email, required: true
     end
 
-    context 'when user_confirmation is enabled' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
-
       example 'user has no password' do
         user = create(:user_no_password)
         do_request(auth: { email: user.email })
         expect(status).to eq(404)
       end
-    end
 
-    context 'when user_confirmation is disabled' do
-      before do
-        SettingsService.new.deactivate_feature! 'user_confirmation'
-      end
-
-      example 'user has no password' do
-        user = create(:user_no_password)
-        do_request(auth: { email: user.email })
-        expect(status).to eq(201)
-
-        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-
-        expect(jwt['sub']).to eq(user.id)
-        expect(jwt['highest_role']).to eq('user')
-        expect(jwt['cluster']).to eq('local')
-        expect(jwt['tenant']).to eq(Tenant.current.id)
-        expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
-      end
-
-      example 'when user has password' do
-        user = create(:user)
-        do_request(auth: { email: user.email })
-        expect(status).to eq(422)
-      end
-
-      example 'when user does not exist' do
-        do_request(auth: { email: 'random@email.com' })
-        expect(status).to eq(404)
-      end
-    end
   end
 end

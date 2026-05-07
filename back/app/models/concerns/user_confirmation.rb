@@ -4,11 +4,11 @@ module UserConfirmation
   extend ActiveSupport::Concern
 
   included do
-    with_options if: -> { user_confirmation_enabled? } do
+    with_options do
       before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
     end
 
-    with_options if: -> { user_confirmation_enabled? } do
+    with_options do
       validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
       validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
       validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
@@ -23,7 +23,7 @@ module UserConfirmation
     # If they haven't, we will regard them as not requiring confirmation.
     is_verified_sso_user_without_email = sso? && verified && email.nil? && new_email.nil?
 
-    user_confirmation_enabled? && confirmation_required && !is_verified_sso_user_without_email
+    confirmation_required && !is_verified_sso_user_without_email
   end
 
   def confirm
@@ -85,12 +85,6 @@ module UserConfirmation
 
     self.email = new_email
     self.new_email = nil
-  end
-
-  def user_confirmation_enabled?
-    return @user_confirmation_enabled if defined?(@user_confirmation_enabled)
-
-    @user_confirmation_enabled = AppConfiguration.instance.feature_activated?('user_confirmation')
   end
 
   def generate_confirmation_code

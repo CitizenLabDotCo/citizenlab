@@ -256,7 +256,6 @@ resource 'Permissions' do
 
       context "'everyone_confirmed_email' permissions" do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'everyone_confirmed_email')
           create(:custom_field_birthyear, required: true)

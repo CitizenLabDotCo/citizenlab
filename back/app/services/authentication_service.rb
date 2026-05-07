@@ -56,7 +56,7 @@ class AuthenticationService
       return nil
     end
 
-    return user.tap { |tapped_user| tapped_user.update!(password: nil) } unless AppConfiguration.instance.feature_activated? 'user_confirmation'
+    return user.tap { |tapped_user| tapped_user.update!(password: nil) }
 
     user
   end
