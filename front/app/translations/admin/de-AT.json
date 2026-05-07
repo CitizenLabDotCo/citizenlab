@@ -1773,7 +1773,7 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail": "E-Mail zur Projektveröffentlichung senden",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.unlisted": "nicht gelistet",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when": "Wann",
-  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": "Wer das Projekt finden kann",
+  "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject": "Wer das Projekt sehen kann",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phasenbericht",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Text über die Phase hinzufügen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein Text. Sie können ihn mit dem Editor im rechten Bereich bearbeiten und formatieren.",
