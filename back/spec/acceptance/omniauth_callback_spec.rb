@@ -205,12 +205,13 @@ resource 'Omniauth Callback', document: false do
       end
 
       example 'if there is a pending invite with this email: allow create account' do
-        create(:invited_user, email: 'billy_fixed@example.com')
+        invited_user = create(:invited_user, email: 'billy_fixed@example.com')
 
         do_request
 
         expect(status).to eq(302) # Redirect code
         db_user = User.find_by(email: 'billy_fixed@example.com')
+        expect(db_user.id).to eq(invited_user.id)
         expect(db_user).not_to be_nil
         expect(db_user.email_confirmed_at).to be_present
       end
@@ -230,6 +231,7 @@ resource 'Omniauth Callback', document: false do
 
           do_request
           expect(status).to eq(302)
+          expect(User.count).to eq(1)
 
           user = User.find_by(email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
@@ -245,7 +247,8 @@ resource 'Omniauth Callback', document: false do
 
             do_request
             expect(status).to eq(302)
-
+            db_user = User.find_by(email: 'billy_fixed@example.com')
+            expect(db_user.id).to eq(existing_user.id)
             expect(idea.reload.author_id).to eq(existing_user.id)
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
@@ -259,6 +262,7 @@ resource 'Omniauth Callback', document: false do
 
             do_request
             expect(status).to eq(302)
+            expect(User.count).to eq(1)
 
             expect(idea.reload.author_id).to eq(invited_user.id)
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
