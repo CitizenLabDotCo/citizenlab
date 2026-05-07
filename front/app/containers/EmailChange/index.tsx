@@ -108,7 +108,6 @@ const EmailChange = () => {
             <UpdateEmailForm
               updateSuccessful={updateSuccessful}
               setOpenConfirmationModal={setOpenConfirmationModal}
-              setUpdateSuccessful={setUpdateSuccessful}
               methods={methods}
               user={authUser}
             />
