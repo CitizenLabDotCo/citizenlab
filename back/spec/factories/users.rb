@@ -22,6 +22,8 @@ FactoryBot.define do
     factory :admin do
       roles { [{ type: 'admin' }] }
 
+      after(:build, &:confirm)
+
       factory :super_admin do
         sequence(:email) do |n|
           "#{Faker::Name.first_name}.#{Faker::Name.last_name}-#{n}@govocal.com"
