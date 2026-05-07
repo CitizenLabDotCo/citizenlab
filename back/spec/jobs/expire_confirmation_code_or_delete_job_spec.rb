@@ -8,7 +8,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   end
 
   context 'full users' do
-    let(:user) { create(:user_with_confirmation) }
+    let(:user) { create(:unconfirmed_user) }
 
     it 'changes the confirmation code of a user requiring confirmation' do
       old_code = user.email_confirmation_code

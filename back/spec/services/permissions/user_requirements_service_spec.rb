@@ -627,7 +627,7 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'a user is verified and has email, but is not confirmed' do
-        let(:user) { create(:user_with_confirmation, verified: true) }
+        let(:user) { create(:unconfirmed_user, verified: true) }
 
         it 'requires email confirmation' do
           expect(user.confirmation_required?).to be true

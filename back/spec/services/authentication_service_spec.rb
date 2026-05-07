@@ -62,7 +62,7 @@ describe AuthenticationService do
         expect(User.exists?(user_id)).to be false
       end
     end
-  
+
     context 'when the user is confirmed' do
       before do
         user.confirm!

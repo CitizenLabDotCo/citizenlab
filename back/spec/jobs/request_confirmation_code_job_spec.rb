@@ -9,7 +9,7 @@ RSpec.describe RequestConfirmationCodeJob do
     let(:user) { create(:user) }
 
     context 'when the user signs up with an email' do
-      let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
+      let(:user) { create(:unconfirmed_user, email: 'some_email@email.com') }
 
       it 'enqueues a "requested_confirmation_code" activity job' do
         expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything, payload: { new_email: nil })
@@ -82,7 +82,7 @@ RSpec.describe RequestConfirmationCodeJob do
         end
 
         it 'does not reset email_confirmation_code_reset_count' do
-          # Since the user here comes from the :user_with_confirmation factory,
+          # Since the user here comes from the :unconfirmed_user factory,
           # the reset count is already 1 at the start of this test
           job.perform(user, new_email: new_email)
           expect(user.email_confirmation_code_reset_count).to eq 2
@@ -125,7 +125,7 @@ RSpec.describe RequestConfirmationCodeJob do
 
     context 'when the user has made too many reset requests' do
       let(:user) do
-        create(:user_with_confirmation).tap { it.update!(email_confirmation_code_reset_count: 5) }
+        create(:unconfirmed_user).tap { it.update!(email_confirmation_code_reset_count: 5) }
       end
 
       it 'raises a too many resets on code error' do

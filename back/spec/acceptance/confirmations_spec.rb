@@ -88,7 +88,7 @@ resource 'Confirmations' do
     end
 
     context 'when email does not exist' do
-      let(:user) { create(:user_with_confirmation) }
+      let(:user) { create(:unconfirmed_user) }
       let(:email) { 'nonexistent@example.com' }
 
       before do
@@ -102,7 +102,7 @@ resource 'Confirmations' do
     end
 
     context 'when email exists' do
-      let(:user) { create(:user_with_confirmation, password: nil) }
+      let(:user) { create(:unconfirmed_user, password: nil) }
 
       before do
         RequestConfirmationCodeJob.perform_now user
@@ -126,7 +126,7 @@ resource 'Confirmations' do
       end
 
       example 'does not allow confirming a user with password that is already confirmed' do
-        user_with_password = create(:user_with_confirmation, password: 'password123')
+        user_with_password = create(:unconfirmed_user, password: 'password123')
         user_with_password.confirm
         expect(user_with_password).not_to be_confirmation_required
 
@@ -136,7 +136,7 @@ resource 'Confirmations' do
       end
 
       example 'allows confirming a user with password that requires confirmation' do
-        user_with_password = create(:user_with_confirmation, password: 'password123')
+        user_with_password = create(:unconfirmed_user, password: 'password123')
         RequestConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password).to be_confirmation_required
 

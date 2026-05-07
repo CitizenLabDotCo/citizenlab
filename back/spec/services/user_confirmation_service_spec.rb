@@ -96,7 +96,7 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when the user has a password' do
-      let(:user) { create(:user_with_confirmation) }
+      let(:user) { create(:unconfirmed_user) }
 
       it 'returns a user has password error' do
         expect(user.confirmation_required?).to be true

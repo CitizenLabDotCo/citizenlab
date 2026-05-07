@@ -865,18 +865,18 @@ RSpec.describe User do
 
   describe 'active?' do
     it 'returns true when the user has completed signup' do
-      u = create(:user_with_confirmation)
+      u = create(:unconfirmed_user)
       u.confirm!
       expect(u.active?).to be true
     end
 
     it 'returns false when the user requires confirmation' do
-      u = create(:user_with_confirmation)
+      u = create(:unconfirmed_user)
       expect(u.active?).to be false
     end
 
     it 'returns false when the user is blocked' do
-      u = create(:user_with_confirmation, block_end_at: 5.days.from_now)
+      u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
       u.confirm!
       expect(u.active?).to be false
     end
@@ -884,12 +884,12 @@ RSpec.describe User do
 
   describe 'registration_completed_at' do
     it 'is not set when a user is created' do
-      u = create(:user_with_confirmation)
+      u = create(:unconfirmed_user)
       expect(u.registration_completed_at).to be_nil
     end
 
     it 'is set when a user is confirmed' do
-      u = create(:user_with_confirmation)
+      u = create(:unconfirmed_user)
       u.confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
@@ -972,7 +972,7 @@ RSpec.describe User do
   end
 
   context 'user confirmation' do
-    subject(:user) { build(:user_with_confirmation) }
+    subject(:user) { build(:unconfirmed_user) }
 
     after do
       user.clear_changes_information
@@ -994,12 +994,12 @@ RSpec.describe User do
       end
 
       it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:user_with_confirmation, identities: [build(:franceconnect_identity)], email: nil, verified: true)
+        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
         expect(u.confirmation_required?).to be false
       end
 
       it 'returns true when the user is an unverified SSO user with no email' do
-        u = build(:user_with_confirmation, identities: [build(:facebook_identity)], email: nil)
+        u = build(:unconfirmed_user, identities: [build(:facebook_identity)], email: nil)
         expect(u.confirmation_required?).to be true
       end
     end

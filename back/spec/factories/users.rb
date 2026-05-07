@@ -51,7 +51,7 @@ FactoryBot.define do
     end
   end
 
-  factory :user_with_confirmation, class: 'User' do
+  factory :unconfirmed_user, class: 'User' do
     first_name { nil }
     last_name { nil }
     sequence(:email) do |n|
