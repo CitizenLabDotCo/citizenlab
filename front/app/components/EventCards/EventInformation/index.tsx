@@ -37,22 +37,16 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const PrimaryLink = typedStyled(Link)`
-  // For reference:
-  // https://kittygiraudel.com/2022/04/02/accessible-cards/
-  // https://inclusive-components.design/cards/
-  ::before {
-    // Use a pseudo-element to expand the hitbox of the link over the whole card.
-    content: ''; /* 1 */
+const EventTitleLink = typedStyled(Link)`
+  text-decoration: none;
+  color: inherit;
 
-  position: relative;
-
-  // Expand the hitbox over the whole card.
-  position: absolute; /* 2 */
-  inset: 0; /* 2 */
-
-  // Place the pseudo-element on top of the whole card.
-  z-index: 1; /* 3 */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
 `;
 
 interface Props {
@@ -82,7 +76,7 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink
+          <EventTitleLink
             to="/events/$eventId"
             params={{ eventId: event.id }}
             aria-describedby={ariaId}
@@ -98,7 +92,7 @@ const EventInformation = ({ event }: Props) => {
             >
               <T value={event.attributes.title_multiloc} />
             </Title>
-          </PrimaryLink>
+          </EventTitleLink>
 
           <DateBlocks
             startAtMoment={startAtMoment}

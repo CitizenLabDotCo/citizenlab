@@ -412,7 +412,7 @@ de-AT:
       preheader: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert
       subject: Ihr Konto wurde vorübergehend deaktiviert
       title_user_blocked: Ihr Konto wurde vorübergehend deaktiviert
-      you_can_sign_in_again_from: Sie können sich ab dem %{date} erneut anmelden
+      you_can_sign_in_again_from: Du kannst dich ab dem %{date} erneut anmelden
   voting_method:
     default_voting_term_plural: Stimmen
     default_voting_term_singular: Stimme
