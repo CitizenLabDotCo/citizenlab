@@ -76,10 +76,6 @@ export const getVerifiedDataList = (
   return allAttributes;
 };
 
-export const enabledSteps = (...stepsEnabled: boolean[]) => {
-  return stepsEnabled.filter((stepEnabled) => stepEnabled).length;
-};
-
 export const getVerificationFrequencyExplanation = (
   verificationExpiry: number | null,
   formatMessage: FormatMessage

@@ -2,7 +2,6 @@ import { SupportedLocale } from 'typings';
 
 import { confirmEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
@@ -30,8 +29,7 @@ export const emailFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State,
-  userConfirmationEnabled: boolean
+  state: State
 ) => {
   return {
     'email:start': {
@@ -76,30 +74,7 @@ export const emailFlow = (
         });
 
         if (result === 'account_created_successfully') {
-          if (userConfirmationEnabled) {
-            setCurrentStep('email:confirmation');
-          } else {
-            // If user confirmation is not enabled, we can
-            // request a JWT for the unconfirmed user and proceed
-            await getUserTokenUnconfirmed(email);
-
-            const { requirements } = await getRequirements();
-            const authenticationData = getAuthenticationData();
-
-            const missingDataStep = checkMissingData(
-              requirements,
-              authenticationData,
-              state.flow,
-              false
-            );
-
-            if (missingDataStep) {
-              setCurrentStep(missingDataStep);
-              return;
-            }
-
-            setCurrentStep('success');
-          }
+          setCurrentStep('email:confirmation');
         }
 
         if (result === 'email_taken') {

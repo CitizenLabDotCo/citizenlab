@@ -3,8 +3,6 @@ import React from 'react';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { useIntl } from 'utils/cl-intl';
 
 import { getNumberOfVerificationLockedItems } from '../../utils';
@@ -13,7 +11,6 @@ import Block from './Block';
 import Edge from './Edge';
 import messages from './messages';
 import SSOBlock from './SSOBlock';
-import { enabledSteps } from './utils';
 import VerificationBlock from './VerificationBlock';
 
 interface Props {
@@ -33,9 +30,6 @@ const Blocks = ({
   onChangeVerificationExpiry,
   userFieldsInForm,
 }: Props) => {
-  const emailConfirmationEnabled = useFeatureFlag({
-    name: 'user_confirmation',
-  });
   const { formatMessage } = useIntl();
 
   const numberOfVerificationLockedItems = getNumberOfVerificationLockedItems(
@@ -59,27 +53,19 @@ const Blocks = ({
     return (
       <>
         <Block number={1} text={formatMessage(messages.enterYourEmail)} />
-        {emailConfirmationEnabled && (
-          <>
-            <Edge />
-            <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-          </>
-        )}
+        <Edge />
+        <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
         {verificationEnabled && (
           <>
             <Edge />
-            <VerificationBlock
-              number={2 + enabledSteps(emailConfirmationEnabled)}
-            />
+            <VerificationBlock number={3} />
           </>
         )}
         {showCustomFields && userFieldsInForm === false && (
           <>
             <Edge />
             <Block
-              number={
-                2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
-              }
+              number={3 + Number(verificationEnabled)}
               text={formatMessage(
                 messages.completeTheDemographicQuestionsAbove
               )}
@@ -94,12 +80,8 @@ const Blocks = ({
     return (
       <>
         <Block number={1} text={formatMessage(messages.enterYourEmail)} />
-        {emailConfirmationEnabled && (
-          <>
-            <Edge />
-            <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-          </>
-        )}
+        <Edge />
+        <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
         <Edge />
         <Block
           number={3}
@@ -108,18 +90,14 @@ const Blocks = ({
         {verificationEnabled && (
           <>
             <Edge />
-            <VerificationBlock
-              number={3 + enabledSteps(emailConfirmationEnabled)}
-            />
+            <VerificationBlock number={4} />
           </>
         )}
         {showCustomFields && !userFieldsInForm && (
           <>
             <Edge />
             <Block
-              number={
-                3 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
-              }
+              number={4 + Number(verificationEnabled)}
               text={formatMessage(
                 messages.completeTheDemographicQuestionsAbove
               )}
