@@ -23,64 +23,52 @@ interface InvitesResponse {
 
 type EnrichedInvite = { invite: Invite; email: string | null };
 
-function adminAuthHeader(): Cypress.Chainable<{
-  'Content-Type': string;
-  Authorization: string;
-}> {
-  return cy.apiLogin(ADMIN_EMAIL, ADMIN_PASSWORD).then(({ body }) => ({
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${body.jwt}`,
-  }));
-}
+// Cached once per spec — re-authenticating on every helper / poll iteration
+// was the dominant source of CI slowness on this file.
+let authHeaders: { 'Content-Type': string; Authorization: string };
 
-// Invite responses don't expose email directly — it lives on the included
-// `user` resource. Pair each invite with its invitee email up-front so call
-// sites can filter by email without traversing JSON:API on every use.
 function listInvitesWithEmail(): Cypress.Chainable<EnrichedInvite[]> {
-  return adminAuthHeader().then((headers) =>
-    cy
-      .request({
-        headers,
-        method: 'GET',
-        url: 'web_api/v1/invites?page[size]=100',
-      })
-      .then((res) => {
-        const body = res.body as InvitesResponse;
-        const usersById = new Map<string, IncludedUser>();
-        (body.included ?? [])
-          .filter((r): r is IncludedUser => r.type === 'user')
-          .forEach((u) => usersById.set(u.id, u));
-        return body.data.map((invite) => ({
-          invite,
-          email:
-            usersById.get(invite.relationships.invitee.data.id)?.attributes
-              .email ?? null,
-        }));
-      })
-  );
+  return cy
+    .request({
+      headers: authHeaders,
+      method: 'GET',
+      url: 'web_api/v1/invites?page[size]=100',
+    })
+    .then((res) => {
+      const body = res.body as InvitesResponse;
+      const usersById = new Map<string, IncludedUser>();
+      (body.included ?? [])
+        .filter((r): r is IncludedUser => r.type === 'user')
+        .forEach((u) => usersById.set(u.id, u));
+      return body.data.map((invite) => ({
+        invite,
+        email:
+          usersById.get(invite.relationships.invitee.data.id)?.attributes
+            .email ?? null,
+      }));
+    });
 }
 
 function deleteInvites() {
-  return adminAuthHeader().then((headers) =>
-    listInvitesWithEmail().then((entries) => {
-      entries.forEach(({ invite }) => {
-        cy.request({
-          headers,
-          method: 'DELETE',
-          url: `web_api/v1/invites/${invite.id}`,
-        });
+  return listInvitesWithEmail().then((entries) => {
+    entries.forEach(({ invite }) => {
+      cy.request({
+        headers: authHeaders,
+        method: 'DELETE',
+        url: `web_api/v1/invites/${invite.id}`,
       });
-    })
-  );
+    });
+  });
 }
 
 function deleteUserByEmail(email: string) {
-  return adminAuthHeader().then((headers) => {
-    cy.request({
-      headers,
+  return cy
+    .request({
+      headers: authHeaders,
       method: 'GET',
       url: `web_api/v1/users?search=${encodeURIComponent(email)}`,
-    }).then((res) => {
+    })
+    .then((res) => {
       const match = (
         res.body.data as Array<{
           id: string;
@@ -89,13 +77,12 @@ function deleteUserByEmail(email: string) {
       ).find((u) => u.attributes.email === email);
       if (match) {
         cy.request({
-          headers,
+          headers: authHeaders,
           method: 'DELETE',
           url: `web_api/v1/users/${match.id}`,
         });
       }
     });
-  });
 }
 
 // Poll the bulk-create import job directly until completed_at is set.
@@ -106,58 +93,66 @@ function waitForImportJobComplete(
   importId: string,
   attemptsLeft = 60
 ): Cypress.Chainable {
-  return adminAuthHeader().then((headers) =>
-    cy
-      .request({
-        headers,
-        method: 'GET',
-        url: `web_api/v1/invites_imports/${importId}`,
-      })
-      .then((res) => {
-        if (res.body?.data?.attributes?.completed_at) {
-          return cy.wrap(null);
-        }
-        if (attemptsLeft <= 0) {
-          throw new Error(
-            `Import job ${importId} did not complete within the polling budget`
-          );
-        }
-        return cy
-          .wait(2000)
-          .then(() => waitForImportJobComplete(importId, attemptsLeft - 1));
-      })
-  );
+  return cy
+    .request({
+      headers: authHeaders,
+      method: 'GET',
+      url: `web_api/v1/invites_imports/${importId}`,
+    })
+    .then((res) => {
+      if (res.body?.data?.attributes?.completed_at) {
+        return cy.wrap(null);
+      }
+      if (attemptsLeft <= 0) {
+        throw new Error(
+          `Import job ${importId} did not complete within the polling budget`
+        );
+      }
+      cy.log(`waiting for import ${importId} (${attemptsLeft} attempts left)`);
+      return cy
+        .wait(2000)
+        .then(() => waitForImportJobComplete(importId, attemptsLeft - 1));
+    });
 }
 
 // Seed invites directly via the bulk_create_xlsx endpoint, bypassing the UI.
 // Used by the token-based signup tests so they don't depend on the UI test.
 function seedInvitesViaXlsxApi(): Cypress.Chainable<EnrichedInvite[]> {
   return cy.fixture('invites.xlsx', 'base64').then((base64) =>
-    adminAuthHeader().then((headers) =>
-      cy
-        .request({
-          headers,
-          method: 'POST',
-          url: 'web_api/v1/invites_imports/bulk_create_xlsx',
-          body: {
-            invites: {
-              xlsx: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`,
-              locale: 'en',
-            },
+    cy
+      .request({
+        headers: authHeaders,
+        method: 'POST',
+        url: 'web_api/v1/invites_imports/bulk_create_xlsx',
+        body: {
+          invites: {
+            xlsx: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`,
+            locale: 'en',
           },
-        })
-        .then((res) => {
-          const importId = res.body?.data?.id;
-          expect(importId, 'seed import id').to.be.a('string');
-          return waitForImportJobComplete(importId).then(() =>
-            listInvitesWithEmail()
-          );
-        })
-    )
+        },
+      })
+      .then((res) => {
+        const importId = res.body?.data?.id;
+        expect(importId, 'seed import id').to.be.a('string');
+        return waitForImportJobComplete(importId).then(() =>
+          listInvitesWithEmail()
+        );
+      })
   );
 }
 
 describe('Invitation authentication flow', () => {
+  // Authenticate once per spec. Test retries reuse the same JWT — fine since
+  // the token's lifetime far exceeds a single spec run.
+  before(() => {
+    cy.apiLogin(ADMIN_EMAIL, ADMIN_PASSWORD).then(({ body }) => {
+      authHeaders = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${body.jwt}`,
+      };
+    });
+  });
+
   // Run on every retry so attempts don't inherit each other's state.
   beforeEach(() => {
     deleteUserByEmail(FIXTURE_INVITED_EMAIL);
