@@ -17,7 +17,7 @@ FactoryBot.define do
     # Although the avatar is not part of the minimal model, generating it
     # really slows down the tests, so we fix it here
     avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
-    invite_status { 'accepted' }
+    invite_status { nil }
 
     factory :admin do
       roles { [{ type: 'admin' }] }

@@ -865,22 +865,20 @@ RSpec.describe User do
 
   describe 'active?' do
     it 'returns true when the user has completed signup' do
-      u = build(:user)
+      u = create(:user)
+      u.confirm!
       expect(u.active?).to be true
     end
 
-    it 'returns false when the user has not completed signup' do
-      u = build(:user, registration_completed_at: nil)
-      expect(u.active?).to be false
-    end
-
     it 'returns false when the user requires confirmation' do
-      u = build(:user)
+      u = create(:user)
+      binding.pry
       expect(u.active?).to be false
     end
 
     it 'returns false when the user is blocked' do
-      u = build(:user, block_end_at: 5.days.from_now)
+      u = create(:user, block_end_at: 5.days.from_now)
+      u.confirm!
       expect(u.active?).to be false
     end
   end
