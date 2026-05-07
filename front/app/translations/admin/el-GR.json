@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "Επαλήθευση {verificationMethod}",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Δημιουργία λογαριασμού",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Οι συμμετέχοντες πρέπει να δημιουργήσουν έναν πλήρη λογαριασμό με το όνομά τους, επιβεβαιωμένο email και κωδικό πρόσβασης.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Οι συμμετέχοντες πρέπει να δημιουργήσουν έναν πλήρη λογαριασμό με το όνομα, το email και τον κωδικό πρόσβασής τους.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Ταυτοποίηση",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "Δημογραφικές ερωτήσεις που τίθενται στους χρήστες",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Επεξεργασία",

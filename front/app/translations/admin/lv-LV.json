@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} pārbaude",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Konta izveide",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Dalībniekiem ir jāizveido pilns konts, norādot savu vārdu, apstiprinātu e-pasta adresi un paroli.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Dalībniekiem ir jāizveido pilns konts, norādot savu vārdu, e-pasta adresi un paroli.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Autentifikācija",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "Lietotājiem uzdotie demogrāfiskie jautājumi",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Rediģēt",

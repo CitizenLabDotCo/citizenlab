@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} Verifikation",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Oprettelse af konto",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Deltagerne skal oprette en fuld konto med deres navn, bekræftede e-mail og adgangskode.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Deltagerne skal oprette en fuld konto med deres navn, e-mail og adgangskode.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Autentificering",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "Demografiske spørgsmål stillet til brugerne",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Rediger",

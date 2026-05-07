@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} التحقق",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "إنشاء حساب",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "يجب على المشاركين إنشاء حساب كامل باسمهم والبريد الإلكتروني المؤكد وكلمة المرور.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "يجب على المشاركين إنشاء حساب كامل باسمهم والبريد الإلكتروني وكلمة المرور.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "المصادقة",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "الأسئلة الديموغرافية الموجهة للمستخدمين",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "يحرر",

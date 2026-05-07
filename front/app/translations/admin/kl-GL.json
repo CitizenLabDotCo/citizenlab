@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} uppernarsarneqarnera",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Kontomik pilersitsineq",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Peqataasussat atiminnik, e-mailimik uppernarsarneqarsimasumik isissutissamillu (password) atuisutut kontomik pilersitsissapput.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Peqataasut atiminnik, e-mailiminnik isissutissaminnillu atserlugu kontomik pilersitsissapput.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Uppernarsaaneq",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "Inoqassutsikkut apeqqutit atuisunut apeqquutigineqartut",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Aaqqissuuguk",

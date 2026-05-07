@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} توثیق",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "اکاؤنٹ بنانا",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "شرکاء کو اپنے نام، تصدیق شدہ ای میل اور پاس ورڈ کے ساتھ ایک مکمل اکاؤنٹ بنانا ہوگا۔",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "شرکاء کو اپنے نام، ای میل اور پاس ورڈ کے ساتھ ایک مکمل اکاؤنٹ بنانا ہوگا۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "تصدیق",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "صارفین سے پوچھے گئے آبادیاتی سوالات",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "ترمیم کریں۔",

@@ -1664,7 +1664,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "fíorú {verificationMethod}",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Cruthú cuntais",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Ní mór do rannpháirtithe cuntas iomlán a chruthú lena n-ainm, a seoladh ríomhphoist deimhnithe agus a bpasfhocal.",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Ní mór do rannpháirtithe cuntas iomlán a chruthú lena n-ainm, a seoladh ríomhphoist agus a bpasfhocal.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Fíordheimhniú",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2": "Ceisteanna déimeagrafacha a cuireadh ar úsáideoirí",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Cuir in Eagar",
