@@ -82,12 +82,10 @@ RSpec.describe RequestConfirmationCodeJob do
         end
 
         it 'does not reset email_confirmation_code_reset_count' do
-          # Since the user here comes from the :unconfirmed_user factory,
-          # the reset count is already 1 at the start of this test
+          job.perform(user, new_email: new_email)
+          expect(user.email_confirmation_code_reset_count).to eq 1
           job.perform(user, new_email: new_email)
           expect(user.email_confirmation_code_reset_count).to eq 2
-          job.perform(user, new_email: new_email)
-          expect(user.email_confirmation_code_reset_count).to eq 3
         end
 
         it 'sets confirmation_required to true' do
