@@ -178,12 +178,6 @@ RSpec.describe User do
       u.save!
       expect(u).to be_valid
     end
-
-    it 'is still valid if user confirmation is not turned on' do
-      u = described_class.new(email: 'test@test.com', locale: 'en')
-      u.save
-      expect(u).to be_valid
-    end
   end
 
   describe '.after_initialize' do
@@ -414,19 +408,10 @@ RSpec.describe User do
   end
 
   describe 'password' do
-    context 'user confirmation is turned on' do
-      it 'is valid when not supplied at all' do
-        # This is allowed to allow accounts without a password
-        u = build(:unconfirmed_user)
-        expect(u).to be_valid
-      end
-    end
-
-    context 'user confirmation is turned off' do
-      it 'is still valid when not supplied' do
-        u = build(:unconfirmed_user)
-        expect(u).to be_valid
-      end
+    it 'is valid when not supplied at all' do
+      # This is allowed to allow accounts without a password
+      u = build(:unconfirmed_user)
+      expect(u).to be_valid
     end
 
     it 'is valid when set to empty string' do
@@ -1072,25 +1057,23 @@ RSpec.describe User do
     describe '#email' do
       let(:email) { 'new_email@email.com' }
 
-      context 'user confirmation is turned on' do
-        it 'raises a taken error if email already exists' do
-          create(:user, email: 'new_email@email.com')
-          expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
+      it 'raises a taken error if email already exists' do
+        create(:user, email: 'new_email@email.com')
+        expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
 
-        it 'raises an invalid error if email is invalid' do
-          invalid_email = 'newemail_com'
-          expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
+      it 'raises an invalid error if email is invalid' do
+        invalid_email = 'newemail_com'
+        expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
 
-        context 'when form submitted' do
-          let(:save_options) { { context: :form_submission } }
+      context 'when form submitted' do
+        let(:save_options) { { context: :form_submission } }
 
-          it 'cannot change the email if the user is passwordless' do
-            user.update!(password: nil)
-            user.assign_attributes(email: email)
-            expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
-          end
+        it 'cannot change the email if the user is passwordless' do
+          user.update!(password: nil)
+          user.assign_attributes(email: email)
+          expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end
