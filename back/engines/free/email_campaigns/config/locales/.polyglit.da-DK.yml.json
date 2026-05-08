@@ -439,6 +439,11 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.proposal_expired": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.admin_labels.trigger.proposal_gets_reported_as_spam": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
@@ -893,6 +898,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.proposal_expired_for_admin": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.campaign_type_description.screening_digest": {
     "state": "verified",
@@ -2683,6 +2693,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.proposal_expired_for_admin.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "email_campaigns.proposal_expired_for_admin.preheader": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "email_campaigns.proposal_expired_for_admin.subject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "email_campaigns.proposal_expired_for_admin.title": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:26.471781Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.schedules.quarterly": {
     "state": "verified",
