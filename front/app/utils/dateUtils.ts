@@ -415,3 +415,49 @@ export const getDateInTimezone = (
     m.second()
   );
 };
+
+type SingleDateWithTimezone = { date: string; timeZone: string };
+type BeginAndEndDateWithTimezone = {
+  startDate: string;
+  endDate: string | null;
+  timeZone: string;
+};
+
+export function pastPresentOrFutureWithTimezone(
+  input: SingleDateWithTimezone | BeginAndEndDateWithTimezone
+) {
+  const timeZone = input.timeZone;
+
+  // Get current time in the specified timezone
+  const now = moment.tz(timeZone);
+
+  // Single date case
+  if ('date' in input) {
+    const targetDate = moment.tz(input.date, timeZone);
+
+    if (now.isSame(targetDate, 'day')) {
+      return 'present';
+    } else if (now.isAfter(targetDate, 'day')) {
+      return 'past';
+    }
+    return 'future';
+  }
+
+  // Date range case
+  const startDate = moment.tz(input.startDate, timeZone);
+
+  // No end date case
+  if (input.endDate === null) {
+    return now.isSameOrAfter(startDate) ? 'present' : 'future';
+  }
+
+  const endDate = moment.tz(input.endDate, timeZone);
+
+  if (now.isSameOrAfter(startDate) && now.isBefore(endDate)) {
+    return 'present';
+  } else if (now.isSameOrAfter(endDate)) {
+    return 'past';
+  }
+
+  return 'future';
+}

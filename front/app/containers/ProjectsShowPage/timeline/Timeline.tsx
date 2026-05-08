@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled, { css, keyframes } from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
@@ -295,6 +296,8 @@ const Timeline = ({
   const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const { search } = useLocation();
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
@@ -345,7 +348,7 @@ const Timeline = ({
   };
 
   if (phases && phases.data.length > 0) {
-    const currentPhase = getCurrentPhase(phases.data);
+    const currentPhase = getCurrentPhase(phases.data, timeZone);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
     const selectedPhaseId = selectedPhase?.id;
     const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
