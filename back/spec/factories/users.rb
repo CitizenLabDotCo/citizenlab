@@ -39,16 +39,6 @@ FactoryBot.define do
       gender { ['male', 'female', 'unspecified', nil][rand(4)] }
       birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
     end
-
-    factory :invited_user do
-      invite_status { 'pending' }
-      registration_completed_at { nil }
-      password_digest { nil }
-
-      after(:create) do |user, _evaluator|
-        create(:invite, invitee: user)
-      end
-    end
   end
 
   factory :unconfirmed_user, class: 'User' do
@@ -66,6 +56,20 @@ FactoryBot.define do
     # really slows down the tests, so we fix it here
     avatar { nil }
     invite_status { nil }
+  end
+
+  factory :invited_user do
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    sequence(:email) do |n|
+      name, domain = Faker::Internet.email.split('@')
+      "#{name}#{n}@#{domain}"
+    end
+    invite_status { 'pending' }
+
+    after(:create) do |user, _evaluator|
+      create(:invite, invitee: user)
+    end
   end
 
   factory :user_no_password, class: 'User' do
