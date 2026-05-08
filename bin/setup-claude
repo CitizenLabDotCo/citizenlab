@@ -60,7 +60,7 @@ else
   git -C "$PRIVATE_DIR" pull --ff-only
 fi
 
-mkdir -p .claude/private .claude/skills
+mkdir -p .claude/private .claude/skills .claude/commands
 
 # Clean stale file symlinks so files removed from the private repo disappear here too
 find .claude/private -type l -delete 2>/dev/null || true
@@ -76,6 +76,7 @@ while IFS= read -r -d '' src; do
 done < <(find "$PRIVATE_DIR" -type f \
   -not -path '*/.git/*' \
   -not -path "$PRIVATE_DIR/skills/*" \
+  -not -path "$PRIVATE_DIR/commands/*" \
   -not -name 'README.md' \
   -not -name '.gitignore' \
   -not -name 'settings.local.json' \
@@ -102,6 +103,21 @@ while IFS= read -r -d '' src; do
   mkdir -p "$(dirname "$dst")"
   ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
 done < <(find "$PRIVATE_DIR/skills" -mindepth 2 -type f -not -path '*/.git/*' -print0)
+
+# Slash commands: per-file symlinks at .claude/commands/<name>.md (and nested
+# subdirs for namespaced commands). Same constraint as skills — Claude Code
+# discovers commands at the exact path .claude/commands/, so they can't live
+# under .claude/private/. Skip the commands/ README, which exists only to
+# document the folder in the private repo.
+if [ -d "$PRIVATE_DIR/commands" ]; then
+  find .claude/commands -type l -delete 2>/dev/null || true
+  while IFS= read -r -d '' src; do
+    rel="${src#$PRIVATE_DIR/commands/}"
+    dst=".claude/commands/$rel"
+    mkdir -p "$(dirname "$dst")"
+    ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
+  done < <(find "$PRIVATE_DIR/commands" -type f -not -path '*/.git/*' -not -name 'README.md' -print0)
+fi
 
 # Private hook config / settings (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
