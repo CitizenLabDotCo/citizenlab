@@ -372,7 +372,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      resources :baskets, except: [:index] do
+      resources :baskets, except: %i[index create] do
         resources :baskets_ideas, shallow: true
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
