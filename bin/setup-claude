@@ -4,8 +4,7 @@
 # its config:
 #   - .claude/<rel>: hooks, skills, commands, settings.local.json, and
 #     anything else the private overlay tracks. Everything under .claude/
-#     is private (mirrored here) except .claude/settings.json, which is
-#     committed publicly.
+#     is private (mirrored here, gitignored).
 #   - <area>/CLAUDE.md (root + per-area): file symlinks pointing directly
 #     at the private content. Gitignored at any path via .gitignore.
 #     Claude Code's CLAUDE.md discovery follows file symlinks, so no
