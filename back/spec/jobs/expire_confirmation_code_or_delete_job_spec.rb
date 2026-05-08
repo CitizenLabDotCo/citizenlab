@@ -46,21 +46,21 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   end
 
   context 'confirmed users with no password' do
-    let(:user_no_password) { create(:user_no_password) }
+    let(:unconfirmed_user) { create(:unconfirmed_user) }
 
     it 'resets code and queues a user deletion job if user has not completed registration' do
-      old_code = user_no_password.email_confirmation_code
-      described_class.perform_now(user_no_password.id, user_no_password.email_confirmation_code)
-      expect(user_no_password.reload.email_confirmation_code).not_to eq(old_code)
-      expect(DeleteUserJob).to have_been_enqueued.with(user_no_password)
+      old_code = unconfirmed_user.email_confirmation_code
+      described_class.perform_now(unconfirmed_user.id, unconfirmed_user.email_confirmation_code)
+      expect(unconfirmed_user.reload.email_confirmation_code).not_to eq(old_code)
+      expect(DeleteUserJob).to have_been_enqueued.with(unconfirmed_user)
     end
 
     it 'only expires the code of a user that requires confirmation but has previously completed registration' do
-      user_no_password.update(registration_completed_at: Time.now)
-      old_code = user_no_password.email_confirmation_code
-      described_class.perform_now(user_no_password.id, user_no_password.email_confirmation_code)
-      expect(user_no_password.reload.email_confirmation_code).not_to eq(old_code)
-      expect(DeleteUserJob).not_to have_been_enqueued.with(user_no_password)
+      unconfirmed_user.update(registration_completed_at: Time.now)
+      old_code = unconfirmed_user.email_confirmation_code
+      described_class.perform_now(unconfirmed_user.id, unconfirmed_user.email_confirmation_code)
+      expect(unconfirmed_user.reload.email_confirmation_code).not_to eq(old_code)
+      expect(DeleteUserJob).not_to have_been_enqueued.with(unconfirmed_user)
     end
   end
 

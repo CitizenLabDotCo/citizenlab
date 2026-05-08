@@ -18,7 +18,7 @@ resource 'Request codes' do
     end
 
     example 'works if user has no password and has email confirmed' do
-      user = create(:user_no_password, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com')
       user.confirm
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be false
@@ -29,7 +29,7 @@ resource 'Request codes' do
     end
 
     example 'works if user has no password and does not have email confirmed' do
-      user = create(:user_no_password, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com')
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be true
 
@@ -61,7 +61,7 @@ resource 'Request codes' do
     end
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
-      user = create(:user_no_password, email_confirmation_code_reset_count: 4)
+      user = create(:unconfirmed_user, email_confirmation_code_reset_count: 4)
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
@@ -69,7 +69,7 @@ resource 'Request codes' do
     end
 
     example 'It does not work if new_email is present' do
-      user = create(:user_no_password, new_email: 'new@email.com')
+      user = create(:unconfirmed_user, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
 
       do_request(request_code: { email: user.email })

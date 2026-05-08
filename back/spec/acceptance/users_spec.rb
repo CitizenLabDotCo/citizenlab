@@ -112,7 +112,7 @@ resource 'Users' do
         context 'when a user exists without a password and has email confirmed', document: false do
           context 'when the user has not requested any codes yet' do
             before do
-              @user = create(:user_no_password, email: 'test@test.com')
+              @user = create(:unconfirmed_user, email: 'test@test.com')
               @user.confirm
               @user.save!
 
@@ -131,7 +131,7 @@ resource 'Users' do
 
           context 'when the user has already requested a code' do
             before do
-              @user = create(:user_no_password, email: 'test@test.com')
+              @user = create(:unconfirmed_user, email: 'test@test.com')
               @user.confirm
               @user.save!
 
@@ -152,7 +152,7 @@ resource 'Users' do
         end
 
         context 'when a user exists without a password and does not have email confirmed' do
-          before { @user = create(:user_no_password, email: 'test@email.com') }
+          before { @user = create(:unconfirmed_user, email: 'test@email.com') }
 
           let(:email) { 'test@email.com' }
 
@@ -333,7 +333,7 @@ resource 'Users' do
         describe 'When there is an existing user' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
-              existing_user = create(:user_no_password, email: email)
+              existing_user = create(:unconfirmed_user, email: email)
               existing_user.confirm!
 
               do_request
@@ -346,7 +346,7 @@ resource 'Users' do
               let(:first_name) { Faker::Name.first_name }
 
               example 'email taken error is returned and confirmation requirement is not reset' do
-                existing_user = create(:user_no_password, email: email)
+                existing_user = create(:unconfirmed_user, email: email)
                 existing_user.confirm!
 
                 do_request

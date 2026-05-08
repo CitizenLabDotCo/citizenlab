@@ -227,7 +227,7 @@ resource 'User Token' do
       end
 
       context 'when user has no password' do
-        let!(:user) { create(:user_no_password, email: email) }
+        let!(:user) { create(:unconfirmed_user, email: email) }
 
         example_request '[error] no JWT token is returned' do
           assert_status 404

@@ -78,7 +78,7 @@ RSpec.describe UserConfirmationService do
       SettingsService.new.activate_feature! 'password_login'
     end
 
-    let(:user) { create(:user_no_password) }
+    let(:user) { create(:unconfirmed_user) }
 
     include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!
 
@@ -108,7 +108,7 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when account already has a new_email' do
-      let(:user) { create(:user_no_password, new_email: 'some@email.com') }
+      let(:user) { create(:unconfirmed_user, new_email: 'some@email.com') }
 
       it 'returns a user has new email error' do
         result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)

@@ -103,7 +103,7 @@ RSpec.describe RequestConfirmationCodeJob do
     end
 
     context 'when the user is passwordless' do
-      let(:user) { create(:user_no_password, email: 'some_email@email.com') }
+      let(:user) { create(:unconfirmed_user, email: 'some_email@email.com') }
 
       context 'when setting a new email' do
         let(:new_email) { 'new@email.com' }

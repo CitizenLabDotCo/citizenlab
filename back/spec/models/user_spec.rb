@@ -417,14 +417,14 @@ RSpec.describe User do
     context 'user confirmation is turned on' do
       it 'is valid when not supplied at all' do
         # This is allowed to allow accounts without a password
-        u = build(:user_no_password)
+        u = build(:unconfirmed_user)
         expect(u).to be_valid
       end
     end
 
     context 'user confirmation is turned off' do
       it 'is still valid when not supplied' do
-        u = build(:user_no_password)
+        u = build(:unconfirmed_user)
         expect(u).to be_valid
       end
     end
