@@ -108,6 +108,19 @@ assert_path_missing() {
 # at ANCHOR to make a symlink resolve to TARGET. Used throughout
 # bin/setup-claude to keep symlink targets relative (so a force-staged
 # symlink wouldn't reveal a dev's home dir layout).
+#
+# The cases below exercise every shape of input the helper needs to handle:
+#
+#   - target nested below anchor → no `..`s in the output
+#   - anchor nested below target → enough `..`s to escape up to a shared
+#     parent, then descend
+#   - target equals anchor → empty path
+#   - sibling trees → single `..` to step across (this is the real-world
+#     case bin/setup-claude relies on, since citizenlab/ and
+#     citizenlab-claude/ are sibling clones under the same parent dir)
+#   - no common ancestor at all → defensive fallback that returns the
+#     absolute target (see the comment on that test case below for why
+#     this matters)
 
 echo "Unit tests: relpath"
 assert_eq "$(relpath /a/b/c     /a/b)"        "c"             "target one level deeper"
