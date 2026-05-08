@@ -17,8 +17,8 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import WidgetCode from '../WidgetCode';
-import WidgetPreview from '../WidgetPreview';
+import WidgetCode from './WidgetCode';
+import WidgetPreview from './WidgetPreview';
 
 const Container = styled.div`
   display: flex;
