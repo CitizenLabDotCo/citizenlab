@@ -48,14 +48,7 @@ FactoryBot.define do
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
     end
-    password { nil }
-    roles { [] }
     locale { 'en' }
-    registration_completed_at { nil }
-    # Although the avatar is not part of the minimal model, generating it
-    # really slows down the tests, so we fix it here
-    avatar { nil }
-    invite_status { nil }
   end
 
   factory :invited_user, class: 'User' do
