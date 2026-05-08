@@ -183,7 +183,13 @@ setup_fake_env() {
   # After this block, REMOTE has a single commit with the fixture content,
   # and FIXTURE_WT is a normal working tree we can use later in the
   # tests if we want to push more commits.
-  git clone -q "$REMOTE" "$FIXTURE_WT"
+  #
+  # `2>/dev/null` silences git's "warning: You appear to have cloned an
+  # empty repository" — REMOTE is genuinely empty at this moment, by
+  # design (we're about to populate it). The warning is harmless noise.
+  # If the clone really fails, `cd "$FIXTURE_WT"` below will error and
+  # the strict-mode `set -e` aborts the test run.
+  git clone -q "$REMOTE" "$FIXTURE_WT" 2>/dev/null
   # Parens `( ... )` create a SUBSHELL: any `cd` inside doesn't affect
   # the parent shell's working directory. We use this pattern throughout
   # so we can safely `cd` into a temp dir without having to cd back.
