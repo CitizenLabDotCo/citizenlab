@@ -60,6 +60,7 @@ ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
@@ -144,6 +145,7 @@ ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
+ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS fk_rails_2de8e52eff;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -253,6 +255,7 @@ DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
+DROP INDEX IF EXISTS public.index_notifications_on_space_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
@@ -313,6 +316,7 @@ DROP INDEX IF EXISTS public.index_ideas_on_project_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
+DROP INDEX IF EXISTS public.index_ideas_on_creation_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
@@ -461,6 +465,8 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
+DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_by_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -506,6 +512,7 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
+ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
@@ -1130,7 +1137,10 @@ CREATE TABLE public.admin_publications (
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
     children_count integer DEFAULT 0 NOT NULL,
-    first_published_at timestamp(6) without time zone
+    first_published_at timestamp(6) without time zone,
+    scheduled_status character varying,
+    scheduled_at timestamp(6) without time zone,
+    scheduled_by_id uuid
 );
 
 
@@ -1753,8 +1763,8 @@ CREATE TABLE public.phases (
     project_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    start_at date,
-    end_at date,
+    start_at timestamp(6) without time zone,
+    end_at timestamp(6) without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     participation_method character varying DEFAULT 'ideation'::character varying NOT NULL,
@@ -2017,7 +2027,7 @@ CREATE VIEW public.analytics_fact_posts AS
 CREATE VIEW public.analytics_fact_project_statuses AS
  WITH finished_statuses_for_timeline_projects AS (
          SELECT phases.project_id,
-            ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+            max(phases.end_at) AS "timestamp"
            FROM public.phases
           GROUP BY phases.project_id
          HAVING (max(phases.end_at) < now())
@@ -3239,7 +3249,8 @@ CREATE TABLE public.notifications (
     internal_comment_id uuid,
     basket_id uuid,
     cosponsorship_id uuid,
-    project_review_id uuid
+    project_review_id uuid,
+    space_id uuid
 );
 
 
@@ -4698,7 +4709,7 @@ ALTER TABLE ONLY public.phases
 --
 
 ALTER TABLE public.phases
-    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at <= end_at))) NOT VALID;
+    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at < end_at))) NOT VALID;
 
 
 --
@@ -4851,6 +4862,14 @@ ALTER TABLE ONLY public.report_builder_published_graph_data_units
 
 ALTER TABLE ONLY public.report_builder_reports
     ADD CONSTRAINT report_builder_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admin_publications scheduled_fields_both_or_neither; Type: CHECK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE public.admin_publications
+    ADD CONSTRAINT scheduled_fields_both_or_neither CHECK (((scheduled_status IS NULL) = (scheduled_at IS NULL))) NOT VALID;
 
 
 --
@@ -5183,6 +5202,20 @@ CREATE INDEX index_admin_publications_on_publication_type_and_publication_id ON 
 --
 
 CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING btree (rgt);
+
+
+--
+-- Name: index_admin_publications_on_scheduled_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_scheduled_by_id ON public.admin_publications USING btree (scheduled_by_id);
+
+
+--
+-- Name: index_admin_publications_on_scheduled_transition; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_scheduled_transition ON public.admin_publications USING btree (scheduled_at, scheduled_status) WHERE (scheduled_status IS NOT NULL);
 
 
 --
@@ -6222,6 +6255,13 @@ CREATE INDEX index_ideas_on_body_multiloc ON public.ideas USING gin (body_multil
 
 
 --
+-- Name: index_ideas_on_creation_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_creation_phase_id ON public.ideas USING btree (creation_phase_id);
+
+
+--
 -- Name: index_ideas_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6639,6 +6679,13 @@ CREATE INDEX index_notifications_on_recipient_id ON public.notifications USING b
 --
 
 CREATE INDEX index_notifications_on_recipient_id_and_read_at ON public.notifications USING btree (recipient_id, read_at);
+
+
+--
+-- Name: index_notifications_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_space_id ON public.notifications USING btree (space_id);
 
 
 --
@@ -7424,6 +7471,14 @@ ALTER TABLE ONLY public.cosponsorships
 
 
 --
+-- Name: admin_publications fk_rails_2de8e52eff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_publications
+    ADD CONSTRAINT fk_rails_2de8e52eff FOREIGN KEY (scheduled_by_id) REFERENCES public.users(id);
+
+
+--
 -- Name: webhooks_deliveries fk_rails_333f76f79b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8096,6 +8151,14 @@ ALTER TABLE ONLY public.official_feedbacks
 
 
 --
+-- Name: notifications fk_rails_b82ab32ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_b82ab32ac2 FOREIGN KEY (space_id) REFERENCES public.spaces(id);
+
+
+--
 -- Name: notifications fk_rails_b894d506a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8510,6 +8573,10 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260421105121'),
+('20260420120659'),
+('20260408161034'),
+('20260408131955'),
 ('20260323120000'),
 ('20260313160000'),
 ('20260313120000'),
@@ -8517,6 +8584,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260311100002'),
 ('20260311100001'),
 ('20260311100000'),
+('20260309120000'),
 ('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),

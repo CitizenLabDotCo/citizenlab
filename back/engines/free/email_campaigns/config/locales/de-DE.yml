@@ -52,8 +52,11 @@ de-DE:
         user_who_is_invited_to_cosponsor_a_proposal: Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen
         user_who_is_mentioned: Erwähnte Admins & Manager*innen
         user_who_is_receiving_admin_rights: Nutzer*in erhält Admin-Rechte
+        user_who_is_receiving_folder_manager_rights: Nutzer*in, der/die Ordner-Manager*innen-Rechte erhält
         user_who_is_receiving_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
+        user_who_is_receiving_project_manager_rights: Nutzer*in, der/die Projekt-Manager*innen-Rechte erhält
         user_who_is_receiving_project_moderator_rights: Nutzer*in erhält Projektmanagementrechte
+        user_who_is_receiving_space_manager_rights: Nutzer*in, der/die Space-Manager*innen-Rechte erhält
         user_who_published_the_input: Nutzer*in veröffentlicht Beitrag
         user_who_published_the_proposal: Nutzer*in veröffentlicht Vorschlag
         user_who_registers: 'Nutzer*in registriert sich '
@@ -91,6 +94,7 @@ de-DE:
         project_published: Projekt veröffentlicht
         project_review_request: Projektmanager*in hat eine Projektfreigabe beantragt
         project_review_state_change: Prüfer*in genehmigt das Projekt
+        proposal_expired: Ein Vorschlag läuft ab, ohne die Schwelle zu erreichen
         proposal_gets_reported_as_spam: Vorschlag wird als Spam markiert
         proposal_is_assigned_to_admin: Vorschlag wird Admin zugewiesen
         proposal_is_published: Vorschlag wird veröffentlicht
@@ -104,8 +108,11 @@ de-DE:
         user_comments_on_input: Kommentar wird veröffentlicht
         user_comments_on_proposal: Nutzer*in kommentiert Vorschlag
         user_is_given_admin_rights: Nutzer*in erhält Admin-Rechte
+        user_is_given_folder_manager_rights: Nutzer*in erhält Ordner-Manager*innen-Rechte
         user_is_given_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
+        user_is_given_project_manager_rights: Nutzer*in erhält Projekt-Manager*innen-Rechte
         user_is_given_project_moderator_rights: Nutzer*in erhält Projektmanagementrechte
+        user_is_given_space_manager_rights: Nutzer*in erhält Space-Manager*innen-Rechte
         user_is_invited_to_cosponsor_a_proposal: Nutzer*in ist eingeladen, einen Vorschlag zu unterstützen
         user_is_invited_to_platform: Benutzer ist zu Plattform eingeladen
         user_is_mentioned: Nutzer*in wird erwähnt
@@ -175,13 +182,16 @@ de-DE:
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
+      project_manager_rights_received: Projekt-Manager*innen-Rechte erhalten
       project_moderation_rights_received: Projektmanagementrechte erhalten
       project_phase_started: Neue Projektphase
       project_phase_upcoming: Anstehende Projektphase
       project_published: Projekt veröffentlicht
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
+      proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
+      space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
       survey_submitted: Umfrage eingereicht
       threshold_reached_for_admin: Vorschlag hat die Abstimmungsschwelle erreicht
@@ -457,6 +467,8 @@ de-DE:
       preheader: Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       submissions_close: Einsendeschluss ist %{phaseEndDate}.
+      submissions_close_at_time: Einreichungen enden um %{datetime}.
+      submissions_close_on_date: Einreichungen enden am %{date}.
       title: Fast fertig! Antwort einsenden nicht vergessen
     new_comment_for_admin:
       anonymous_user: Anonymer Teilnehmer
@@ -516,6 +528,7 @@ de-DE:
       project_description_preview: Dies ist ein Beispiel für Phaseninhalte, die zur Vorschau des Inhalts von E-Mails verwendet werden. Dies ist kein echter Inhalt.
       project_title: Beispielprojekt
       proposal_title: Beispiel-Vorschlag
+      space_title: Beispiel-Space
     project_folder_moderation_rights_received:
       cta_button: Diesen Ordner anzeigen
       event_description: 'Sie haben Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
@@ -580,6 +593,11 @@ de-DE:
       preheader: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
+    proposal_expired_for_admin:
+      cta_button: Den abgelaufenen Beitrag überprüfen
+      preheader: Ein Beitrag ist abgelaufen, ohne die Schwelle zu erreichen
+      subject: '"%{input_title}" ist abgelaufen, ohne die Schwelle zu erreichen'
+      title: Ein Beitrag ist abgelaufen, ohne die Abstimmungsschwelle zu erreichen
     schedules:
       quarterly: Vierteljährlich, am ersten Tag des Quartals
       weekly:
@@ -597,6 +615,21 @@ de-DE:
       preheader: Beiträge überprüfen für %{organizationName}
       subject: '%{count} Beiträge, die zur Überprüfung anstehen'
       title: '%{firstName}, Beiträge warten darauf, überprüft zu werden'
+    space_moderation_rights_received:
+      cta_button: Diesen Space verwalten
+      event_description: 'Ein*e Administrator*in der Beteiligungsplattform von %{organizationName} hat Sie soeben zum/zur Space-Manager*innen des folgenden Spaces ernannt:'
+      no_projects: Noch keine Projekte
+      preheader: Ein*e Administrator*in der Beteiligungsplattform von %{organizationName} hat Sie soeben zum/zur Space-Manager*innen des folgenden Spaces ernannt
+      subject: Sie sind jetzt Space-Manager*innen auf der Plattform von %{organizationName}
+      text_manage_space_settings: Sie können den Titel und die Beschreibung des Spaces bearbeiten, damit Teilnehmende und Ihre Manager*innen-Kolleg*innen sofort verstehen, worum es in Ihrem Space geht und wie er mit Ihrer Organisation zusammenhängt.
+      text_organize_projects_and_folders: Als Space-Manager*innen können Sie Projekte und Ordner in Ihrem Space verwalten, einschließlich der Zuweisung und Aufhebung von Management-Rollen für diese.
+      text_oversee_participation: Als Space-Manager*innen haben Sie Projekt-Manager*innen-Rechte für jedes Projekt in Ihrem Space, sodass Sie eingehende Beiträge im Blick behalten und Projekt-Manager*innen bei Bedarf unterstützen können.
+      title: Sie sind jetzt Space-Manager*innen
+      title_manage_space_settings: Space-Einstellungen verwalten
+      title_organize_projects_and_folders: Projekte und Ordner organisieren
+      title_oversee_participation: Beteiligung überblicken
+      title_what_can_you_do_space_manager: Was können Sie als Space-Manager*innen tun?
+      x_projects: '%{numberOfProjects} Projekte'
     status_change_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{organizationName} hat den Status des Beitrags '%{input_title}' auf Ihrer digitalen Beteiligungsplattform aktualisiert."

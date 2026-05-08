@@ -8,13 +8,13 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
 
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
+import PublicationStatusLabel from 'containers/Admin/projects/_shared/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
-} from 'containers/Admin/projects/components/StyledComponents';
+} from 'containers/Admin/projects/_shared/components/StyledComponents';
 
 import Error from 'components/UI/Error';
 

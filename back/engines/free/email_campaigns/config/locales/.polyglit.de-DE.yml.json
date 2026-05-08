@@ -234,15 +234,30 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_folder_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_folder_moderator_rights": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_project_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_project_moderator_rights": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_space_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.admin_labels.recipient_segment.user_who_published_the_input": {
     "state": "verified",
@@ -424,6 +439,11 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.proposal_expired": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.trigger.proposal_gets_reported_as_spam": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -489,15 +509,30 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.user_is_given_folder_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.trigger.user_is_given_folder_moderator_rights": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.user_is_given_project_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.trigger.user_is_given_project_moderator_rights": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.user_is_given_space_manager_rights": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.admin_labels.trigger.user_is_invited_to_cosponsor_a_proposal": {
     "state": "verified",
@@ -829,6 +864,11 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.project_manager_rights_received": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.campaign_type_description.project_moderation_rights_received": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -859,10 +899,20 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.proposal_expired_for_admin": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.campaign_type_description.screening_digest": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.space_moderation_rights_received": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.campaign_type_description.status_change_on_idea_you_follow": {
     "state": "verified",
@@ -2074,6 +2124,16 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.native_survey_not_submitted.submissions_close_at_time": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.516773Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.native_survey_not_submitted.submissions_close_on_date": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.516773Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.native_survey_not_submitted.title": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -2343,6 +2403,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.preview_data.space_title": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.project_folder_moderation_rights_received.cta_button": {
     "state": "verified",
@@ -2629,6 +2694,26 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.proposal_expired_for_admin.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.proposal_expired_for_admin.preheader": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.proposal_expired_for_admin.subject": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.proposal_expired_for_admin.title": {
+    "state": "verified",
+    "verified_at": "2026-05-06T13:53:36.291481Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.schedules.quarterly": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -2698,6 +2783,76 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.space_moderation_rights_received.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.event_description": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.no_projects": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.preheader": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.subject": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.text_manage_space_settings": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.text_organize_projects_and_folders": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.text_oversee_participation": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.title": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.title_manage_space_settings": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.title_organize_projects_and_folders": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.title_oversee_participation": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.title_what_can_you_do_space_manager": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.space_moderation_rights_received.x_projects": {
+    "state": "verified",
+    "verified_at": "2026-04-15T14:46:55.439462Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.status_change_on_idea_you_follow.cta_button": {
     "state": "verified",

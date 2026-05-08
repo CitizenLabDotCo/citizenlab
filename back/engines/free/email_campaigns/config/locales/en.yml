@@ -52,8 +52,9 @@ en:
         user_who_is_invited_to_cosponsor_a_proposal: User who is invited to co-sponsor a proposal
         user_who_is_mentioned: User who is mentioned
         user_who_is_receiving_admin_rights: User who is receiving admin rights
-        user_who_is_receiving_folder_moderator_rights: User who is receiving folder moderator rights
-        user_who_is_receiving_project_moderator_rights: User who is receiving project moderator rights
+        user_who_is_receiving_folder_manager_rights: User who is receiving folder manager rights
+        user_who_is_receiving_project_manager_rights: User who is receiving project manager rights
+        user_who_is_receiving_space_manager_rights: User who is receiving space manager rights
         user_who_published_the_input: User who published the input
         user_who_published_the_proposal: User who published the proposal
         user_who_registers: User who registers
@@ -91,6 +92,7 @@ en:
         project_published: Project published
         project_review_request: Moderator requested a project review
         project_review_state_change: Reviewer approved the project
+        proposal_expired: A proposal expires without reaching the threshold
         proposal_gets_reported_as_spam: Proposal gets reported as spam
         proposal_is_assigned_to_admin: Proposal is assigned to admin
         proposal_is_published: Proposal is published
@@ -104,8 +106,9 @@ en:
         user_comments_on_input: User comments on input
         user_comments_on_proposal: User comments on proposal
         user_is_given_admin_rights: User is given admin rights
-        user_is_given_folder_moderator_rights: User is given folder moderator rights
-        user_is_given_project_moderator_rights: User is given project moderator rights
+        user_is_given_folder_manager_rights: User is given folder manager rights
+        user_is_given_project_manager_rights: User is given project manager rights
+        user_is_given_space_manager_rights: User is given space manager rights
         user_is_invited_to_cosponsor_a_proposal: User is invited to co-sponsor a proposal
         user_is_invited_to_platform: User is invited to platform
         user_is_mentioned: User is mentioned
@@ -175,13 +178,15 @@ en:
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
       project_folder_moderation_rights_received: Folder manager rights received
-      project_moderation_rights_received: Project moderation rights received
+      project_manager_rights_received: Project manager rights received
       project_phase_started: New project phase
       project_phase_upcoming: Upcoming new project phase
       project_published: Project published
       project_review_request: Project review request
       project_review_state_change: Project approved
+      proposal_expired_for_admin: Proposal expired without reaching the voting threshold
       screening_digest: Weekly screening reminder
+      space_moderation_rights_received: Space manager rights received
       status_change_on_idea_you_follow: Status change of an input that you follow
       survey_submitted: Survey submitted
       threshold_reached_for_admin: Proposal reached the voting threshold
@@ -456,7 +461,8 @@ en:
       event_description: You started sharing your answers on %{phaseTitle} but didn't submit them. Click on the button below to continue where you left off.
       preheader: You didn't complete your survey response on the participation platform of %{organizationName}
       subject: '%{organizationName}: Almost there! Submit your answers'
-      submissions_close: Submissions will close on %{phaseEndDate}.
+      submissions_close_on_date: "Submissions close at the end of %{date}."
+      submissions_close_at_time: "Submissions will close on %{datetime}."
       title: Almost there! Submit your answers
     new_comment_for_admin:
       anonymous_user: Anonymous user
@@ -516,6 +522,7 @@ en:
       project_description_preview: This is some example phase content used for previewing the content of emails. This is not real content.
       project_title: Example project
       proposal_title: Example Proposal
+      space_title: Example space
     project_folder_moderation_rights_received:
       cta_button: View this folder
       event_description: "You've been given folder manager rights on %{organizationName}'s participation platform for the following folder:"
@@ -580,6 +587,11 @@ en:
       preheader: '%{reviewerName} approved the project "%{projectTitle}"'
       subject: '"%{projectTitle}" has been approved'
       title: '%{reviewerName} approved the project "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Review the expired input
+      preheader: An input expired without reaching the threshold
+      subject: '"%{input_title}" expired without reaching the threshold'
+      title: An input expired without reaching the voting threshold
     schedules:
       quarterly: Quarterly, on the first day of the quarter
       weekly:
@@ -597,6 +609,21 @@ en:
       preheader: Review inputs for %{organizationName}
       subject: '%{count} inputs awaiting review'
       title: '%{firstName}, inputs are waiting to be reviewed'
+    space_moderation_rights_received:
+      cta_button: Manage this space
+      event_description: 'An adminstrator of the participation platform of %{organizationName} just made you space manager of the following space:'
+      no_projects: No projects yet
+      preheader: An adminstrator of the participation platform of %{organizationName} just made you a space manager of the following space
+      subject: You became a space manager on the platform of %{organizationName}
+      text_organize_projects_and_folders: As a space manager, you can manage projects and folders within your space, including assigning and removing management roles for them.
+      text_manage_space_settings: You can edit the space title and description so participants and your fellow managers immediately understand what your space is about and how it relates to your organization.
+      text_oversee_participation: As a space manager, you have project manager rights over every project that lives within your space, so you can keep an eye on incoming input and assist project managers when needed.
+      title: You became a space manager
+      title_organize_projects_and_folders: Organize projects and folders
+      title_manage_space_settings: Manage space settings
+      title_oversee_participation: Oversee participation
+      title_what_can_you_do_space_manager: What can you do as a space manager?
+      x_projects: '%{numberOfProjects} projects'
     status_change_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{organizationName} updated the status of the input '%{input_title}' on their digital participation platform."

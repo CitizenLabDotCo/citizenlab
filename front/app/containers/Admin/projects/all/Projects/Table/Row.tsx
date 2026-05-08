@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import { IUserData } from 'api/users/types';
@@ -17,12 +18,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import ProjectMoreActionsMenu, {
   ActionType,
-} from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+} from 'containers/Admin/projects/_shared/components/ProjectRow/ProjectMoreActionsMenu';
 
 import Error from 'components/UI/Error';
 
 import Link from 'utils/cl-router/Link';
 import { parseBackendDateString } from 'utils/dateUtils';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
@@ -44,6 +46,7 @@ const Row = ({
   moderatorsById,
 }: Props) => {
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
 
   const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -81,6 +84,9 @@ const Row = ({
   };
 
   const folderId = project.relationships.folder?.data?.id;
+  const folderSpaceId = project.relationships.space?.data?.id;
+  const canModerateThisFolder =
+    !!folderId && userModeratesFolder(authUser, folderId, folderSpaceId);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -91,7 +97,7 @@ const Row = ({
   };
 
   const link =
-    hover === 'folder'
+    hover === 'folder' && canModerateThisFolder
       ? (`/admin/projects/folders/${folderId}` as const)
       : (`/admin/projects/${project.id}` as const);
 
@@ -135,9 +141,17 @@ const Row = ({
                 m="0"
                 fontSize="xs"
                 color="textSecondary"
-                textDecoration={hover === 'folder' ? 'underline' : 'none'}
-                onMouseEnter={() => setHover('folder')}
-                onMouseLeave={() => setHover('project')}
+                textDecoration={
+                  hover === 'folder' && canModerateThisFolder
+                    ? 'underline'
+                    : 'none'
+                }
+                onMouseEnter={
+                  canModerateThisFolder ? () => setHover('folder') : undefined
+                }
+                onMouseLeave={
+                  canModerateThisFolder ? () => setHover('project') : undefined
+                }
               >
                 {localize(folder_title_multiloc)}
               </Text>

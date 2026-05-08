@@ -27,8 +27,9 @@ nl:
       "new_idea_for_admin": Nieuw idee in een project dat ik modereer
       "official_feedback_on_idea_you_follow": Update over een idee dat je volgt
       "password_reset": Herstel wachtwoord
-      "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
+      "project_manager_rights_received": Projectbeheerdersrechten ontvangen
       "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
+      "space_moderation_rights_received": Ruimtebeheerdersrechten ontvangen
       "project_phase_started": Nieuwe projectfase
       "project_phase_upcoming": Opkomende nieuwe projectfase
       "project_published": Project gepubliceerd
@@ -382,6 +383,21 @@ nl:
       header: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
       header_message: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
       cta_go_to_project: "Ga naar projectinstellingen"
+    space_moderation_rights_received:
+      cta_button: 'Beheer deze ruimte'
+      event_description: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist ruimtebeheerder gemaakt van de volgende ruimte:'
+      no_projects: 'Nog geen projecten'
+      preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist ruimtebeheerder gemaakt van de volgende ruimte'
+      subject: 'Je bent nu ruimtebeheerder op het platform van %{organizationName}'
+      text_organize_projects_and_folders: 'Als ruimtebeheerder kan je projecten en mappen binnen jouw ruimte beheren, inclusief het toewijzen en intrekken van beheerrollen daarvoor.'
+      text_manage_space_settings: 'Je kan de titel en beschrijving van de ruimte aanpassen zodat deelnemers en je collega-beheerders meteen begrijpen waar jouw ruimte over gaat en hoe ze past binnen je organisatie.'
+      text_oversee_participation: 'Als ruimtebeheerder heb je projectbeheerdersrechten op elk project binnen jouw ruimte, zodat je de inkomende input kan opvolgen en projectbeheerders kan ondersteunen waar nodig.'
+      title_organize_projects_and_folders: 'Organiseer projecten en mappen'
+      title_manage_space_settings: 'Beheer ruimte-instellingen'
+      title_oversee_participation: 'Volg de participatie op'
+      title_what_can_you_do_space_manager: 'Wat kan je doen als ruimtebeheerder?'
+      title: 'Je werd net ruimtebeheerder'
+      x_projects: '%{numberOfProjects} projecten'
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
       event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
@@ -413,6 +429,11 @@ nl:
       title: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
+    proposal_expired_for_admin:
+      cta_button: 'Bekijk het verlopen voorstel'
+      title: 'Een voorstel is verlopen zonder het benodigd aantal stemmen te bereiken'
+      subject: '"%{input_title}" is verlopen zonder het benodigd aantal stemmen te bereiken'
+      preheader: 'Een voorstel is afgesloten zonder de drempel te bereiken'
     welcome:
       cta_button: 'Ontdek het platform'
       subject: 'Welkom op het platform van %{organizationName}'
@@ -544,8 +565,9 @@ nl:
         user_who_is_invited_to_cosponsor_a_proposal: 'Gebruiker die is uitgenodigd om een voorstel te steunen'
         user_who_is_mentioned: 'Gebruiker die genoemd wordt'
         user_who_is_receiving_admin_rights: 'Gebruiker die platformbeheerdersrechten krijgt'
-        user_who_is_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
-        user_who_is_receiving_project_moderator_rights: 'Gebruiker die projectbeheerdersrechten krijgt'
+        user_who_is_receiving_folder_manager_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
+        user_who_is_receiving_project_manager_rights: 'Gebruiker die projectbeheerdersrechten krijgt'
+        user_who_is_receiving_space_manager_rights: 'Gebruiker die ruimtebeheerdersrechten krijgt'
         user_who_published_the_input: 'Gebruiker die de bijdrage heeft gepubliceerd'
         user_who_published_the_proposal: 'Gebruiker die het voorstel heeft gepubliceerd'
         user_who_registers: 'Gebruiker die zich registreert'
@@ -609,8 +631,9 @@ nl:
         user_comments_on_input: 'Gebruiker reageert op bijdrage'
         user_comments_on_proposal: 'Gebruiker reageert op het voorstel'
         user_is_given_admin_rights: 'Gebruiker krijgt platformbeheerdersrechten'
-        user_is_given_folder_moderator_rights: 'Gebruiker krijgt mapbeheerdersrechten'
-        user_is_given_project_moderator_rights: 'Gebruiker krijgt projectbeheerdersrechten'
+        user_is_given_folder_manager_rights: 'Gebruiker krijgt mapbeheerdersrechten'
+        user_is_given_project_manager_rights: 'Gebruiker krijgt projectbeheerdersrechten'
+        user_is_given_space_manager_rights: 'Gebruiker krijgt ruimtebeheerdersrechten'
         user_is_invited_to_cosponsor_a_proposal: 'Gebruiker is uitgenodigd om een voorstel te steunen'
         user_is_mentioned: 'Gebruiker wordt genoemd'
         user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in interne reactie'

@@ -6,8 +6,6 @@ import { RouteType } from 'routes';
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
@@ -28,22 +26,15 @@ const Analyses = ({
   participationMethod?: ParticipationMethod;
 }) => {
   const { formatMessage } = useIntl();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
   const { data: analyses, isLoading } = useAnalyses({
     projectId: participationMethod === 'ideation' ? projectId : undefined,
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  // When phase_insights is disabled, use 'results' for native surveys
-  const nativeSurveyTab =
-    participationMethod === 'native_survey' && !phaseInsightsEnabled
-      ? 'results'
-      : 'insights';
-
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/${nativeSurveyTab}`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/insights`;
 
   // Analyses related to specific survey questions are now handled in the Survey Question Widget
   const analysesWithoutMainCustomField = analyses?.data.filter(

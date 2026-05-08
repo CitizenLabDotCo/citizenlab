@@ -218,10 +218,12 @@ resource 'Project', admin_api: true do
     with_options scope: :project do
       parameter :template_yaml, 'The yml template for the project to import', required: true
       parameter :folder_id, 'The folder id in which to import the project', required: false
+      parameter :user_id, 'The id of the user that triggered the import', required: true
     end
 
     let(:tenant) { create(:tenant) }
     let(:folder) { tenant.switch { create(:project_folder) } }
+    let(:user) { tenant.switch { create(:admin) } }
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
@@ -234,8 +236,8 @@ resource 'Project', admin_api: true do
         template_yaml = template.to_yaml
 
         expect do
-          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
-        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id)
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, user_id: user.id })
+        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, user.id, folder.id)
 
         expect(status).to eq(202)
       end

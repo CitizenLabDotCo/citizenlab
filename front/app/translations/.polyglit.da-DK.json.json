@@ -854,7 +854,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.continueEditing": {
     "state": "verified",
     "verified_at": "2026-03-27T11:35:57.044515Z",
@@ -955,7 +954,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.submitConfirmation": {
     "state": "verified",
     "verified_at": "2026-03-27T11:35:57.044515Z",
@@ -1046,7 +1044,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.yesSubmit": {
     "state": "verified",
     "verified_at": "2026-03-27T11:35:57.044515Z",
@@ -2116,6 +2113,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:27:35.572391Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
@@ -3632,7 +3634,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:30:39.834804Z",
@@ -3698,7 +3699,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:30:39.834804Z",
@@ -3719,7 +3719,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-30T15:31:21.570131Z",
@@ -3785,7 +3784,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:30:39.834804Z",
@@ -3801,7 +3799,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator": {
     "state": "verified",
     "verified_at": "2026-03-23T10:30:39.834804Z",
@@ -3812,7 +3809,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_space_moderator": {
     "state": "verified",
     "verified_at": "2026-03-30T15:31:21.570131Z",
@@ -4087,6 +4083,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-22T16:13:29.827729Z",
+    "verified_by": "Edwin Kato"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -9380,8 +9381,8 @@
   },
   "app.containers.NewAuthModal.steps.Success.allDone": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-24T10:50:26.324675Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": {
     "state": "verified",
@@ -9697,6 +9698,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NotificationMenu.spaceModerationRightsReceived": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:27:35.572391Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": {
     "state": "verified",
@@ -12198,6 +12204,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-23T11:24:37.724969Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -12547,6 +12558,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
+    "state": "verified",
+    "verified_at": "2026-05-01T08:27:35.572391Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": {
     "state": "verified",
@@ -13200,13 +13216,13 @@
   },
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea4": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-28T07:08:39.432093Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
   },
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": {
     "state": "verified",
@@ -13260,8 +13276,8 @@
   },
   "app.utils.votingMethodUtils.minSelectedOptionsMessage": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
   },
   "app.utils.votingMethodUtils.multipleVotingEnded1": {
     "state": "verified",
@@ -13305,8 +13321,8 @@
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-24T09:58:18.836927Z",
+    "verified_by": "KenVM"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",
@@ -13315,8 +13331,8 @@
   },
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-04-24T09:57:09.001319Z",
+    "verified_by": "KenVM"
   },
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": {
     "state": "verified",
@@ -13537,5 +13553,5 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
-  },
+  }
 }

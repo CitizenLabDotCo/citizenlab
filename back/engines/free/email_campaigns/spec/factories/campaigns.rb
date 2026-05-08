@@ -126,6 +126,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :space_moderation_rights_received_campaign, class: 'EmailCampaigns::Campaigns::SpaceModerationRightsReceived' do
+    enabled { true }
+  end
+
   factory :project_phase_started_campaign, class: 'EmailCampaigns::Campaigns::ProjectPhaseStarted' do
     enabled { true }
   end
@@ -155,6 +159,10 @@ FactoryBot.define do
   end
 
   factory :threshold_reached_for_admin_campaign, class: 'EmailCampaigns::Campaigns::ThresholdReachedForAdmin' do
+    enabled { true }
+  end
+
+  factory :proposal_expired_for_admin_campaign, class: 'EmailCampaigns::Campaigns::ProposalExpiredForAdmin' do
     enabled { true }
   end
 

@@ -57,16 +57,16 @@ kl-GL:
       new_ideas: Isumassarsiat nutaat
       new_inputs: Ilanngussat nutaat
       new_users: Atuisut nutaat
-      preheader: "%{organizationName}mut aqutsisutut nalunaarsuutit"
+      preheader: '%{organizationName}mut aqutsisutut nalunaarsuutit'
       reached_threshold: Killiffissaq anguneqarpoq
       subject: Illit sapaatip akunnikkaartumik allaffissornermi %{time} nalunaarutit
       text_introduction: Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit ilinnut katersorpavut. Platforminni susoqarnersoq paasiniaruk!
-      title: "%{firstName}, sapaatip akunneranut nalunaarusiat"
+      title: '%{firstName}, sapaatip akunneranut nalunaarusiat'
       title_activity_past_week: Sapaatip akunnerani kingullermi suliat
       title_initiatives_past_week: Sapaatip akunnerani kingullermi innuttaasunit siunnersuutit nutaat
       title_no_activity_past_week: Sapaatip akunnerani kingullermi suliaqanngilaq
       title_successful_initiatives_past_week: Innuttaasunit siunnersuut sapaatip akunnerani kingullermi taasiffissap killiganut anngussimasut
-      title_your_weekly_report: "%{firstName}, sapaatip akunnikkaartumik nalunaarusiat"
+      title_your_weekly_report: '%{firstName}, sapaatip akunnikkaartumik nalunaarusiat'
       today_by_author: Ullumi %{author}-mit
       x_days_ago_by_author: Ullut %{x} matuma siorna %{author}-mit
       yesterday_by_author: Ippassaq %{author}-mit
@@ -107,8 +107,11 @@ kl-GL:
         user_who_is_invited_to_cosponsor_a_proposal: Atuisoq siunnersuummut tapersersueqataasussatut aggersagaq
         user_who_is_mentioned: Atuisoq taaneqartoq
         user_who_is_receiving_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_folder_manager_rights: Atuisoq folderimi aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_is_receiving_folder_moderator_rights: Atuisoq mappip aqutsisuatut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_project_manager_rights: Atuisoq suliniutinik aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_is_receiving_project_moderator_rights: Atuisoq suliniutip aqutsisuatut pisinnaatitaaffilerneqartoq
+        user_who_is_receiving_space_manager_rights: Atuisoq immikkoortortami aqutsisutut pisinnaatitaaffilerneqartoq
         user_who_published_the_input: Atuisoq saqqummiussisoq
         user_who_published_the_proposal: Atuisoq siunnersuummik saqqummiussisoq
         user_who_registers: Atuisoq nalunaarsortoq
@@ -146,6 +149,7 @@ kl-GL:
         project_published: Suliniut saqqummiunneqarpoq
         project_review_request: Akunnermuliuttup suliassap misissorneqarnissaa piumasaraa
         project_review_state_change: Misissuisup suliassaq akueraa
+        proposal_expired: Siunnersuut piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu
         proposal_gets_reported_as_spam: Siunnersuut spamitut nalunaarutigineqarpoq
         proposal_is_assigned_to_admin: Siunnersuut aqutsisumut suliassanngortinneqarpoq
         proposal_is_published: Siunnersuut saqqummiunneqarpoq
@@ -159,8 +163,11 @@ kl-GL:
         user_comments_on_input: Atuisoq siunnersuummut oqaaseqaateqarpoq
         user_comments_on_proposal: Atuisoq siunnersuummut oqaaseqaateqarpoq
         user_is_given_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqarpoq
+        user_is_given_folder_manager_rights: Atuisoq folderimi aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_folder_moderator_rights: Atuisoq mappimi aqutsisutut pisinnaatitaaffilerneqarpoq
+        user_is_given_project_manager_rights: Atuisoq suliniutinik aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_project_moderator_rights: Atuisoq suliniutip nakkutilliisuatut pisinnaatitaaffilerneqarpoq
+        user_is_given_space_manager_rights: Atuisoq immikkoortortami aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_invited_to_cosponsor_a_proposal: Atuisoq siunnersuummut tapersersueqataasussatut qaaqquneqarpoq
         user_is_invited_to_platform: Atuisoq nittartakkamut qaaqquneqarpoq
         user_is_mentioned: Atuisoq taaneqarpoq
@@ -175,10 +182,10 @@ kl-GL:
     admin_rights_received:
       cta_button: Platformit aqutariuk
       cta_moderate_platform: Platformit tigujuk
-      event_description: "%{organizationName}-ip peqataanissamut nittartagaanut aqutsisutut pisinnaatitaaffilerneqarputit."
+      event_description: '%{organizationName}-ip peqataanissamut nittartagaanut aqutsisutut pisinnaatitaaffilerneqarputit.'
       message_you_became_administrator: Peqataasunut platformimut aqutsisutut pisinnaatitaalerputit
-      preheader: "%{organizationName}mut peqataasunut platformimut aqutsisutut pisinnaatitaalerputit"
-      subject: "%{organizationName}p platformiani aqutsisunngorputit"
+      preheader: '%{organizationName}mut peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
+      subject: '%{organizationName}p platformiani aqutsisunngorputit'
       text_create_participatory_process: Aqutsisutut nutaanik peqataasunut suliassanik suleqatigiissitsisinnaanermik pilersitsisinnaavutit. Pisut nalunaarsorneri ikiorsiullugit nutaanik fasenik ilanngussisinnaavutit. Taakku fase tamarmik immikkut pissuseqarsinnaapput isumassarsianik saqqummiinikkut, oqaaseqaateqarnikkut taasinikkullu.
       text_moderate_analyse_input: Suliat aallartinneqareerpata isumassarsiat siulliit takkussuutilissapput. Sammisanik pingaarnernik sapaatip akunnikkaartumik nalunaarsuutinik tigusaqartassaatit, taamaasillutit malinnaalluarnerussagavit. Isumassarsianik nalunaarsuutip paasissutissanik suleqatigiinnermilu suliarineranni ikiussavaatit.
       text_platform_setup: Aqutsisutut ilinnut peqataasunut platformimik pilersitsisinnaavutit. Ilisarnaatissannut, assinik qalipaatinillu toqqaagit, nittartakkannilu allagit, qaaqqusissutinik nassiussigit atuisunnillu suut paaserusunnerlugit nassuiaruk, ...
@@ -194,15 +201,15 @@ kl-GL:
       cta_manage_your_input: Siunnersuutitit aqukkit
       idea_section: Isumassarsiat
       initiative_section: Innuttaasunit siunnersuut
-      preheader: "%{organizationName}mut aallartitamit eqikkaaneq"
-      subject: "Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}"
-      title: "%{firstName}, innuttaasup saqqummiussaa qisuariarnissannut utaqqivoq"
+      preheader: '%{organizationName}mut aallartitamit eqikkaaneq'
+      subject: 'Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}'
+      title: '%{firstName}, innuttaasup saqqummiussaa qisuariarnissannut utaqqivoq'
       title_assignment_past_week: Isumassarsiat kingulliit ilinnut tunniunneqartut
       title_initiatives_past_week: Innuttaasunit siunnersuutit ilinnut tunniunneqartut
       title_no_assignment_past_week: Sapaatip akunnerani kingullermi ilinnut isumassarsianik nutaanik tunniussisoqanngilaq
       title_successful_initiatives_past_week: Innuttaasunit siunnersuutit ilinnut tunniunneqartut killigititamiittut
       title_successful_past_week: Illit suliassatut inissinneqartoq killiffimmut killeqarfimmut annguttoq
-      title_your_weekly_report: "%{firstName}, innuttaasunut paasissutissap utimut nalunaarnissat utaqqivaa"
+      title_your_weekly_report: '%{firstName}, innuttaasunut paasissutissap utimut nalunaarnissat utaqqivaa'
       today_by_author: Ullumi %{author}-mit
       x_days_ago_by_author: Ullut %{x} matuma siorna %{author}-mit
       x_inputs_need_your_feedback: isersaatit qisuariarnissannik pisariaqartitsipput
@@ -258,13 +265,16 @@ kl-GL:
       official_feedback_on_your_initiative: Innutaasutut siunnersuutigisimasannik nutarterineq
       password_reset: Kodemik isissutissamik allannguineq
       project_folder_moderation_rights_received: Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
+      project_manager_rights_received: Suliniutinik aqutsisutut pisinnaatitaaffiit tiguneqarput
       project_moderation_rights_received: Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
       project_phase_started: Suliniummut nikeriarfik nutaaq
       project_phase_upcoming: Suliniummut nikeriarfik nutaaq takkuttussaq
       project_published: Suliniut saqqummiunneqarpoq
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
+      proposal_expired_for_admin: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
+      space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
       status_change_of_commented_idea: Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
       status_change_of_commented_initiative: Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
       status_change_of_voted_idea: Isumassarsiap taasiffigisimasama killiffiani allanngorneq
@@ -286,78 +296,78 @@ kl-GL:
     comment_deleted_by_admin:
       cta_button: Isumassarsiaq takuuk
       cta_view: Isumassarsiaq una takujuk
-      event_description: "%{organizationName}p oqaaseqaat isumassarsiamut allatat peerpaa."
+      event_description: '%{organizationName}p oqaaseqaat isumassarsiamut allatat peerpaa.'
       inappropriate_reason: Oqaaseqaatit tulluutinngitsutut isigineqarpoq
       irrelevant_reason: Oqaaseqaatit ataatsimoortumi pisariaqanngitsutut isigineqarpoq
-      main_header: "%{organizationName} oqaaseqaatit peerpaa"
+      main_header: '%{organizationName} oqaaseqaatit peerpaa'
       no_reason: Peqqutissaqanngilaq
-      other_reason: "%{otherReason}"
+      other_reason: '%{otherReason}'
       preheader: Oqaaseqaatit peerneqarpoq
-      reason: "Oqaaseqaativit peerneqarneranut pissutaasoq:"
+      reason: 'Oqaaseqaativit peerneqarneranut pissutaasoq:'
       subject: Oqaaseqaatit %{organizationName}p platformiani peerneqarpoq
-      title: "%{organizationName}-p oqaaseqaatit piiarpaa"
+      title: '%{organizationName}-p oqaaseqaatit piiarpaa'
     comment_marked_as_spam:
       by_author: uannga %{authorName}
-      commented: "%{authorName} oqaaseqaateqarpoq:"
+      commented: '%{authorName} oqaaseqaateqarpoq:'
       cta_button: Oqaaseqaat misissuguk
       cta_review_comment: Oqaaseqaat misissoruk
-      days_ago: "%{numberOfDays} ullut matuma siorna"
+      days_ago: '%{numberOfDays} ullut matuma siorna'
       event_description: "Oqaaseqaat <strong> '%{post}'imut </strong> nassiunneqarpoq, nalunaarutigineqarpoq:"
       inappropriate_content: Oqaaseqaat tulluutinngilaq narrujuumminartuulluniluunniit
       preheader: Oqaaseqaammut spamitut nalunaarutigineqartumut qisuariarit
-      reported_this_because: "%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:"
-      subject: "%{organizationName}: %{firstName} %{lastName}p una oqaaseqaat spamitut nalunaarutigaa"
-      title: "%{firstName} %{lastName}-p oqaaseqaat una spamitut nalunaarutigaa"
-      title_comment_spam_report: "%{firstName} %{lastName}p una oqaaseqaat spamitut nalunaarutigaa"
+      reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
+      subject: '%{organizationName}: %{firstName} %{lastName}p una oqaaseqaat spamitut nalunaarutigaa'
+      title: '%{firstName} %{lastName}-p oqaaseqaat una spamitut nalunaarutigaa'
+      title_comment_spam_report: '%{firstName} %{lastName}p una oqaaseqaat spamitut nalunaarutigaa'
       today: Ullumikkut
       wrong_content: Oqaaseqaat pisariaqanngilaq.
       yesterday: Ippassaq
     comment_on_idea_you_follow:
-      cta_button: "%{commentAuthor}-mut akigit"
+      cta_button: '%{commentAuthor}-mut akigit'
       event_description: "%{authorNameFull}-ip '%{inputTitle}' qisuariarfigaa. %{authorName} oqaloqatigeqqissinnaajumallugu ataani toortagaq tooruk."
       main_header:
-        comment: "%{authorName}-ip oqaaseqaat malitat oqaaseqarfigaa"
-        contribution: "%{authorName} tapersiissummut malitannut oqaaseqaateqarpoq"
-        idea: "%{authorName} isumassarsiamut malittarissannut oqaaseqaateqarpoq"
-        initiative: "%{authorName} suliniut malitannut oqaaseqaateqarpoq"
-        issue: "%{authorName} suliassamut malinnaaffigisannut oqaaseqaateqarpoq"
-        option: "%{authorName} periarfissamut malittarissannut oqaaseqaateqarpoq"
-        petition: "%{authorName} atsiornernik katersinermut malinnaaffigisannut oqaaseqarpoq"
-        post: "%{authorName} malitannut oqaaseqaateqarpoq"
-        project: "%{authorName} suliniut malitannut oqaaseqaateqarpoq"
-        proposal: "%{authorName}-ip siunnersuut malitat oqaaseqarfigaa"
-        question: "%{authorName} apeqqummut malinnaaffigisannut oqaaseqarpoq"
-        response: "%{authorName} akissummut malitannut oqaaseqaateqarpoq"
-        story: "%{authorName} oqaluttuarisami malinnaaffigisanni oqaaseqaateqarpoq"
-        suggestion: "%{authorName} siunnersuummut malitannut oqaaseqaateqarpoq"
-        topic: "%{authorName} apeqqummi malinnaaffigisanni oqaaseqaateqarpoq"
-      preheader: "%{authorName} %{organizationName}-imi isumassarsiamut oqaaseqaateqarpoq"
-      subject: "\"%{input_title}\"-imut nutaamik oqaaseqaateqartoqarpoq"
-      title: "%{authorName} siunnersuummut malitannut oqaaseqaateqarpoq"
+        comment: '%{authorName}-ip oqaaseqaat malitat oqaaseqarfigaa'
+        contribution: '%{authorName} tapersiissummut malitannut oqaaseqaateqarpoq'
+        idea: '%{authorName} isumassarsiamut malittarissannut oqaaseqaateqarpoq'
+        initiative: '%{authorName} suliniut malitannut oqaaseqaateqarpoq'
+        issue: '%{authorName} suliassamut malinnaaffigisannut oqaaseqaateqarpoq'
+        option: '%{authorName} periarfissamut malittarissannut oqaaseqaateqarpoq'
+        petition: '%{authorName} atsiornernik katersinermut malinnaaffigisannut oqaaseqarpoq'
+        post: '%{authorName} malitannut oqaaseqaateqarpoq'
+        project: '%{authorName} suliniut malitannut oqaaseqaateqarpoq'
+        proposal: '%{authorName}-ip siunnersuut malitat oqaaseqarfigaa'
+        question: '%{authorName} apeqqummut malinnaaffigisannut oqaaseqarpoq'
+        response: '%{authorName} akissummut malitannut oqaaseqaateqarpoq'
+        story: '%{authorName} oqaluttuarisami malinnaaffigisanni oqaaseqaateqarpoq'
+        suggestion: '%{authorName} siunnersuummut malitannut oqaaseqaateqarpoq'
+        topic: '%{authorName} apeqqummi malinnaaffigisanni oqaaseqaateqarpoq'
+      preheader: '%{authorName} %{organizationName}-imi isumassarsiamut oqaaseqaateqarpoq'
+      subject: '"%{input_title}"-imut nutaamik oqaaseqaateqartoqarpoq'
+      title: '%{authorName} siunnersuummut malitannut oqaaseqaateqarpoq'
     comment_on_your_comment:
-      cta_button: "%{authorFirstName}-mut akigit"
-      cta_reply_to: "%{firstName}mut akissut"
-      event_description: "%{authorNameFull} oqaaseqaaternut \"%{post}\"mut peqataanermi platformimi akissuteqarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk."
-      main_header: "%{authorName} oqaaseqaatinnut qisuariarpoq"
-      preheader: "%{authorName} %{organizationName}p platformiani oqaaseqaatinnut akissuteqarpoq"
-      replied: "%{authorFirstName} akivoq:"
-      subject: "%{organizationName}mi platformimi oqaaseqaatinnut akissutisivutit"
-      title: "%{authorName}-p oqaaseqaatit akivaa"
+      cta_button: '%{authorFirstName}-mut akigit'
+      cta_reply_to: '%{firstName}mut akissut'
+      event_description: '%{authorNameFull} oqaaseqaaternut "%{post}"mut peqataanermi platformimi akissuteqarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk.'
+      main_header: '%{authorName} oqaaseqaatinnut qisuariarpoq'
+      preheader: '%{authorName} %{organizationName}p platformiani oqaaseqaatinnut akissuteqarpoq'
+      replied: '%{authorFirstName} akivoq:'
+      subject: '%{organizationName}mi platformimi oqaaseqaatinnut akissutisivutit'
+      title: '%{authorName}-p oqaaseqaatit akivaa'
     comment_on_your_idea:
       by_author: uannga %{authorName}
-      commented: "%{authorFirstName} allappoq:"
+      commented: '%{authorFirstName} allappoq:'
       cta_reply_to: Akissut %{commentAuthor}
-      event_description: "%{authorNameFull} isumassarsiannut \"%{ideaTitle}\" qisuariarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk."
-      main_header: "%{authorName}p isumassarsiat oqaaseqarfigaa"
-      preheader: "%{authorName} isumassarsianni %{organizationName}mi oqaaseqaateqarpoq"
-      subject: "%{organizationName}p platformiani oqaaseqaammik tigusaqarputit"
+      event_description: '%{authorNameFull} isumassarsiannut "%{ideaTitle}" qisuariarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk.'
+      main_header: '%{authorName}p isumassarsiat oqaaseqarfigaa'
+      preheader: '%{authorName} isumassarsianni %{organizationName}mi oqaaseqaateqarpoq'
+      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
     comment_on_your_initiative:
-      commented: "%{authorFirstName} allappoq:"
+      commented: '%{authorFirstName} allappoq:'
       cta_reply_to: Akissut %{commentAuthor}
-      event_description: "%{authorNameFull} innuttaasunut siunnersuutinnut\"%{initiativeTitle}\" qisuariarpoq. %{authorName} ingerlateqqinniarukku ataaniittoq tuugassaq tooruk."
-      main_header: "%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa"
-      preheader: "%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq"
-      subject: "%{organizationName}p platformiani oqaaseqaammik tigusaqarputit"
+      event_description: '%{authorNameFull} innuttaasunut siunnersuutinnut"%{initiativeTitle}" qisuariarpoq. %{authorName} ingerlateqqinniarukku ataaniittoq tuugassaq tooruk.'
+      main_header: '%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa'
+      preheader: '%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq'
+      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
     community_monitor_report:
       cta_button: Nalunaarusiaq takuuk
       event_description: Kvartalimut kingullermut inuiaqatigiit nakkutilliinerannut nalunaarusiaq suliarineqarpoq. Toqqortaq ataaniittoq toorlugu iserlutillu takusinnaavat.
@@ -368,9 +378,9 @@ kl-GL:
     cosponsor_of_your_idea:
       cta_button: Siunnersuutit takuuk
       event_description: Pilluarit! %{cosponsorName}-p siunnersuummut tapersersueqataanissat akueraa.
-      preheader: "%{cosponsorName}-p siunnersuummut tapersersueqataanissat akueraa"
-      subject: "%{cosponsorName}-p siunnersuutinnut tapersersueqataanissani akueraa"
-      title: "%{cosponsorName}-ip siunnersuummut tapersersueqataanissannut qaaqqussutit akueraa"
+      preheader: '%{cosponsorName}-p siunnersuummut tapersersueqataanissat akueraa'
+      subject: '%{cosponsorName}-p siunnersuutinnut tapersersueqataanissani akueraa'
+      title: '%{cosponsorName}-ip siunnersuummut tapersersueqataanissannut qaaqqussutit akueraa'
     event_registration_confirmation:
       cta_add_to_calendar: Ullorsiutinnut ilannguguk
       cta_button: Pisussaq takuuk
@@ -381,24 +391,24 @@ kl-GL:
           location: Sumiiffik
           online_link: Online-mut linki
           project: Suliniut
-      preheader: "%{firstName}, %{eventTitle}-mut nalunaarnernut qujanaq"
+      preheader: '%{firstName}, %{eventTitle}-mut nalunaarnernut qujanaq'
       subject: Ilaavutit! "%{eventTitle}"-imut nalunaarsornerit uppernarsarneqarpoq
-      title: "%{firstName}, nalunaarsimaninnut qujanaq uunga"
+      title: '%{firstName}, nalunaarsimaninnut qujanaq uunga'
     first_idea_published:
-      action_add_image: "%{addImageLink} takuneqarsinnaanera allisarlugu"
-      action_comment: "%{textComment} isumassarsianut pioreersunut"
+      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
+      action_comment: '%{textComment} isumassarsianut pioreersunut'
       action_published_idea: Isumassarsiaq saqqummeriigaq
       action_send_email: Atassuteqarfitit %{sendEmailLink}mik nassikkit
       action_share_fb: Ikinngutitit %{fbLink}miittut oqaluttuutikkit
-      action_share_link: "%{link} assilineratigut kanaalini tamani siammarteruk"
+      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
       action_share_twitter: Malinnitsitit %{twitterLink}kkut paasitikkit
       add_image: Assimik ilanngussigit
       cta_view_idea: Isumassarsiannukarit
-      event_description: "%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiat inuit ilannguffigippassuk nalunaarfigineqassaatit. Iliuusissavit tullia sunaanersoq paasiniaruk."
+      event_description: '%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiat inuit ilannguffigippassuk nalunaarfigineqassaatit. Iliuusissavit tullia sunaanersoq paasiniaruk.'
       link: Innersuussaq
-      main_header: "%{firstName}, Isumassarsiat siulleq saqqummiuppat!"
+      main_header: '%{firstName}, Isumassarsiat siulleq saqqummiuppat!'
       message_get_votes: Isumassarsiannik inuit amerlanerit angukkit.
-      preheader: "%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq."
+      preheader: '%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
       see_you: Platformimi takus!
       send_email: e-maili
       subject: Plaftormimi %{organizationName}mut isumassarsiat siulleq
@@ -414,7 +424,7 @@ kl-GL:
       unsubscribe_statement: Siunissami e-mailinik taamaattunik tigusaqarusunngikkuit %{unsubscribeLink} darsinnaavat.
       unsubscribe_text: atuisuujunnaarit
     general:
-      author_wrote: "%{authorName} allappoq:"
+      author_wrote: '%{authorName} allappoq:'
       by_author: uannga %{authorName}
       cta_goto:
         comment: Oqaaseqaammut uunga iserit
@@ -459,20 +469,20 @@ kl-GL:
       preheader: Spamimik nalunaarut iliuuseqarfigiuk
       report_inappropriate_offensive_content: Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.
       report_not_an_idea: Uuma imaa isumassarsiaanngilaq uungalu tulluuttuunani.
-      reported_this_because: "%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:"
+      reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
       subject: Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit
-      title: "%{firstName} %{lastName}-p spamitut nalunaarutigaa"
-      title_spam_report: "%{firstName} %{lastName} spam nalunaarutigaa"
+      title: '%{firstName} %{lastName}-p spamitut nalunaarutigaa'
+      title_spam_report: '%{firstName} %{lastName} spam nalunaarutigaa'
     idea_published:
-      action_add_image: "%{addImageLink} takuneqarsinnaanera allisarlugu"
+      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
       action_published_idea: Isumassarsiaq saqqummeriigaq
       action_send_email: Atassuteqarfitit %{sendEmailLink}mik nassikkit
       action_share_fb: Ikinngutitit %{fbLink}miittut oqaluttuutikkit
-      action_share_link: "%{link} assilineratigut kanaalini tamani siammarteruk"
+      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
       action_share_twitter: Malinnitsitit %{twitterLink}kkut paasitikkit
       add_image: Assimik ilanngussigit
       cta_view_idea: Isumassarsiannukarit
-      event_description: "%{firstName}, isumassarsiat %{organizationName}ip peqataasunut platformimi saqqummersinneqarpoq. Inummit isumassarsiat sunniuteqarfigineqarpat nalunaarfigineqassaatit. Paasiniaruk ataani suna tulliusinnaanersoq."
+      event_description: '%{firstName}, isumassarsiat %{organizationName}ip peqataasunut platformimi saqqummersinneqarpoq. Inummit isumassarsiat sunniuteqarfigineqarpat nalunaarfigineqassaatit. Paasiniaruk ataani suna tulliusinnaanersoq.'
       header_message: Atuarneqarnissaa qulakkeertigu.
       input_type_subject:
         comment: Oqaaseqaatit saqqummiunneqarpoq
@@ -493,18 +503,18 @@ kl-GL:
       link: Innersuussaq
       main_header: Isumassarsiamik saqqummiivutit! Atuarneqarnissaa qulakkeeriartigu.
       message_get_votes: Isumassarsiannik inuit amerlanerit angukkit.
-      message_next_steps: ""
-      preheader: "%{firstName}, pilluarit isumassarsiannik %{organizationName}p platformianut saqqummiigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq."
+      message_next_steps: ''
+      preheader: '%{firstName}, pilluarit isumassarsiannik %{organizationName}p platformianut saqqummiigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
       see_you: Platformimi takus!
       send_email: e-maili
-      subject: Isumassarsiat %{organizationName}p platformiani 
-      title: "\"%{input_title}\" ilannguppat"
+      subject: Isumassarsiat %{organizationName}p platformiani
+      title: '"%{input_title}" ilannguppat'
     initiative_assigned_to_you:
       by_author: uannga %{authorName}
-      cta_reply_to: "%{authorName} utertitsiffigiuk"
+      cta_reply_to: '%{authorName} utertitsiffigiuk'
       event_description_initiative: Innuttaasunit siunnersuut ilinnut tunniunneqartoq. Paasissutissat kingulliit ilanngullugit takussutissamik allannikkut imaluunniit killiffiata allanngorneratigut utertitsigit.
-      main_header: "%{firstName}, nutaamik tunineqarputit"
-      preheader_initiative: "%{authorName}p innuttaasunit siunnersuutaa ilinnut tunniunneqarpoq"
+      main_header: '%{firstName}, nutaamik tunineqarputit'
+      preheader_initiative: '%{authorName}p innuttaasunit siunnersuutaa ilinnut tunniunneqarpoq'
       subject: Platformimi %{organizationName}mi nutaamik tunineqarputit
     initiative_marked_as_spam:
       by_author: uannga %{authorName}
@@ -512,73 +522,73 @@ kl-GL:
       preheader: Spamimik nalunaarut iliuuseqarfigiuk
       report_inappropriate_offensive_content: Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.
       report_not_an_initiative: Imarisaq una siunnersuutaanngilaq uaniittussaananilu.
-      reported_this_because: "%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:"
+      reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
       subject: Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit
-      title_spam_report: "%{firstName} %{lastName} spam nalunaarutigaa"
+      title_spam_report: '%{firstName} %{lastName} spam nalunaarutigaa'
     initiative_published:
-      action_add_image: "%{addImageLink} takuneqarsinnaanera allisarlugu"
+      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
       action_published_initiative: Innuttaasunut siunnersuut saqqummersitaq
       action_send_email: Atassuteqarfitit %{sendEmailLink}mik nassikkit
       action_share_fb: Ikinngutitit %{fbLink}miittut oqaluttuutikkit
-      action_share_link: "%{link} assilineratigut kanaalini tamani siammarteruk"
+      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
       action_share_twitter: Malinnitsitit %{twitterLink}kkut paasitikkit
       cta_view_initiative: Innuttaasunut siunnersuutinnukarit
       link: Innersuussaq
       main_header: Innuttaasunut siunnersuummik saqqummiivutit! Tapersersortissaanik nassaariarta.
-      message_get_votes: "Taasinerup killissaa angujuk:"
-      message_next_steps: "%{userFirstName}, innuttaasunut siunnersuutit peqataasunut platformimi %{organizationName}-mi saqqummersinneqarpoq. Inuit innuttaasunut siunnersuutinnut qisuariarpata nalunaarfigineqassaatit. Iliuusissavit tullia ataani tulliuttumi paasiniaruk."
+      message_get_votes: 'Taasinerup killissaa angujuk:'
+      message_next_steps: '%{userFirstName}, innuttaasunut siunnersuutit peqataasunut platformimi %{organizationName}-mi saqqummersinneqarpoq. Inuit innuttaasunut siunnersuutinnut qisuariarpata nalunaarfigineqassaatit. Iliuusissavit tullia ataani tulliuttumi paasiniaruk.'
       preheader: Qujanaq innuttaasunut siunnersuutit siammarterakku, %{initiativeTitle}, uunga %{organizationName}. Innuttaasunut siunnersuutinnut taperserneqarnissamik tulliuttoq tassaavoq avatangiisinnut tamanut siaruarlugu.
       send_email: e-maili
       subject: Innuttaasunut siunnersuutit platformimi %{organizationName}mi saqqummersinneqarpoq
     internal_comment_on_idea_assigned_to_you:
-      cta_button: "%{firstName}-ip oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull}-ip ilanngussaq ilinnut suliassanngortitaq iluani oqaaseqarfigaa."
+      cta_button: '%{firstName}-ip oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull}-ip ilanngussaq ilinnut suliassanngortitaq iluani oqaaseqarfigaa.'
       preheader: "'%{post}'-imut iluani oqaaseqaat nutaaq"
       subject: "'%{post}'-imut ilumiut oqaaseqaat nutaaq"
       title: "'%{post}'-mut ilumiut oqaaseqaat nutaaq"
     internal_comment_on_idea_you_commented_internally_on:
-      cta_button: "%{firstName}-ip oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull} saqqummiussami iluani oqaaseqaateqarfigisanni iluani oqaaseqaateqarpoq."
+      cta_button: '%{firstName}-ip oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull} saqqummiussami iluani oqaaseqaateqarfigisanni iluani oqaaseqaateqarpoq.'
       preheader: "'%{post}'-imut iluani oqaaseqaat nutaaq"
       subject: "'%{post}'-imi iluani oqaaseqaat nutaaq"
       title: "'%{post}'-mut iluani oqaaseqaat nutaaq"
     internal_comment_on_idea_you_moderate:
-      cta_button: "%{firstName}-ip oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull} suliniut imaluunniit toqqorsivik aqutanni iluani oqaaseqaateqarpoq."
+      cta_button: '%{firstName}-ip oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull} suliniut imaluunniit toqqorsivik aqutanni iluani oqaaseqaateqarpoq.'
       preheader: "'%{post}'-imi ilumi oqaaseqaat nutaaq"
       subject: "'%{post}'-mut iluani oqaaseqaat nutaaq"
       title: "'%{post}'-imut ilumiut oqaaseqaat nutaaq"
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_button: "%{firstName}-p oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull} suliniummi aqunneqanngitsumi isumassarsiamut suli inissinneqanngitsumut ilumi oqaaseqarpoq."
+      cta_button: '%{firstName}-p oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull} suliniummi aqunneqanngitsumi isumassarsiamut suli inissinneqanngitsumut ilumi oqaaseqarpoq.'
       preheader: "'%{post}'-mut iluani oqaaseqaat nutaaq"
       subject: "'%{post}'-imi nutaamik iluani oqaaseqaat"
       title: "'%{post}'-imi iluani oqaaseqaat nutaaq"
     internal_comment_on_your_internal_comment:
-      cta_button: "%{firstName}-p oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull} iluani oqaaseqaatinnut oqaaseqaateqarpoq."
+      cta_button: '%{firstName}-p oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull} iluani oqaaseqaatinnut oqaaseqaateqarpoq.'
       preheader: "%{authorNameFull}-ip '%{post}'-imi ilumi oqaaseqaatit akivaa"
       subject: "'%{post}'-mi iluani oqaaseqaatinnut oqaaseqaateqarfigineqarputit"
       title: "'%{post}'-imi iluani oqaaseqaatinnut oqaaseqaammik tigusaqarputit"
     invitation_to_cosponsor_idea:
       cta_button: Siunnersuut una tapersersueqataaffigiuk
-      event_description: "%{authorName} nutaamik siunnersuuteqarpoq illillu tapersersoqataasussatut kissaatigalutit."
+      event_description: '%{authorName} nutaamik siunnersuuteqarpoq illillu tapersersoqataasussatut kissaatigalutit.'
       event_description_action: Siunnersuut atuarniarlugu ataani toqqaguk.
       event_description_before_action: Siunnersuut takuniarlugu qaaqqussullu akueriniarlugu, isersimasariaqarputit.
       event_description_cosponsoring: Siunnersuummut tapersersueqataanerup kinguneraa <strong>aqqit takutinneqassammat</strong> siunnersuummut tapersersueqataasut allat aqqi peqatigalugit.
-      preheader: "%{authorName}-p siunnersuutaanut tapersersueqataasussatut qaaqquneqarputit"
+      preheader: '%{authorName}-p siunnersuutaanut tapersersueqataasussatut qaaqquneqarputit'
       subject: Siunnersuummut tapersersueqataasussatut qaaqquneqarputit
       title: Siunnersuummut tapersersueqataanissannut qaaqquneqarputit
     invite_received:
-      added_a_message: "%{organizationName} imatut allappoq:"
+      added_a_message: '%{organizationName} imatut allappoq:'
       cta_accept_invitation: Qaaqqusissutit akueriuk
       cta_button: Qaaqqussut akueriuk
-      event_description: "%{organizationName}-ip peqataanissamut nittartagaatinnut qaaqquaatit."
+      event_description: '%{organizationName}-ip peqataanissamut nittartagaatinnut qaaqquaatit.'
       invitation_expiry_message: Qaaqqussut una ullut %{expiryDays} qaangiuppata atorunnaassaaq.
       invitation_header: Qaaqquneqarputit!
-      invitation_header_message: "%{organizationName}p peqataasunut plaformiminnut qaaqquaatsit."
-      preheader: "%{organizationName}p peqataasunut platformianut peqataanissannut qaaqqusissummik nassippaatsit."
-      subject: "%{organizationName}mi platformimi peqataanissannut qaaqqusaavutit"
+      invitation_header_message: '%{organizationName}p peqataasunut plaformiminnut qaaqquaatsit.'
+      preheader: '%{organizationName}p peqataasunut platformianut peqataanissannut qaaqqusissummik nassippaatsit.'
+      subject: '%{organizationName}mi platformimi peqataanissannut qaaqqusaavutit'
       title: Qaaqquneqarputit!
     invite_reminder:
       cta_accept_invitation: Qaaqqusissutit akueriuk
@@ -586,35 +596,35 @@ kl-GL:
       invitation_expiry_message: Qaaqqussut una ullut %{expiryDaysRemaining} missaanni qaangiutissaaq.
       invitation_header: Qaaqqusissutit utaqqineqarpoq
       preheader: Ullualuit matuma siorna peqataanermi platformiminni %{organizationName} qaaqqusissummik nassippaatsit.
-      subject: "%{organizationName}mi peqataanermi platformimi qaaqqusissut utaqqiinnartoq"
+      subject: '%{organizationName}mi peqataanermi platformimi qaaqqusissut utaqqiinnartoq'
       title: Qaaqqussutit suli utaqqivoq
     manual:
-      preheader: "%{organizationName}-mit allagarsivutit"
+      preheader: '%{organizationName}-mit allagarsivutit'
     manual_project_participants:
-      preheader: "%{organizationName}-mit e-mail-isiassaqarputit"
+      preheader: '%{organizationName}-mit e-mail-isiassaqarputit'
     mention_in_comment:
       by_author: uannga %{authorName}
-      commented: "%{commentAuthor} allappoq:"
+      commented: '%{commentAuthor} allappoq:'
       cta_reply_to: Akissut %{commentAuthor}
       event_description: "%{commentAuthorFull}p isumassarsiami '%{post}'imi taavaatit. Ataaniittoq linki tooruk %{commentAuthor}imik oqaloqatiginninnermik aallartitsiniaruit"
       main_header: Inuit eqqartorpaatsit
-      preheader: "%{commentAuthor}p oqaaseqaammi taavaatit"
-      subject: "%{organizationName}p platformiani atit taaneqarpoq"
+      preheader: '%{commentAuthor}p oqaaseqaammi taavaatit'
+      subject: '%{organizationName}p platformiani atit taaneqarpoq'
     mention_in_internal_comment:
-      cta_button: "%{firstName}-p oqaaseqaataa takuuk"
-      event_description: "%{authorNameFull}-ip ilumi oqaaseqaammi taavaatit."
-      preheader: "%{authorNameFull}-ip iluani oqaaseqaammi taavaatit."
-      subject: "%{firstName}-ip ilumi oqaaseqaammi taavaatit."
-      title: "%{firstName}-p iluani oqaaseqaammi taavaatit."
+      cta_button: '%{firstName}-p oqaaseqaataa takuuk'
+      event_description: '%{authorNameFull}-ip ilumi oqaaseqaammi taavaatit.'
+      preheader: '%{authorNameFull}-ip iluani oqaaseqaammi taavaatit.'
+      subject: '%{firstName}-ip ilumi oqaaseqaammi taavaatit.'
+      title: '%{firstName}-p iluani oqaaseqaammi taavaatit.'
     mention_in_official_feedback:
       by_author: uannga %{authorName}
-      commented: "%{organizationName} allappoq:"
-      cta_button: "%{organizationName}-mut akigit"
-      cta_reply_to: "%{organizationName}mut akissut"
+      commented: '%{organizationName} allappoq:'
+      cta_button: '%{organizationName}-mut akigit'
+      cta_reply_to: '%{organizationName}mut akissut'
       event_description: "%{organizationName} isumassarsiami '%{post}'mi oqaaseqaammini taavaatit. Linki ataaniittoq tooruk %{organizationName} oqaloqatiginiarukku"
       main_header: Taaneqarputit
-      preheader: "%{commentAuthor}ip oqaaseqaammini taavaatit"
-      subject: "%{organizationName}p oqaaseqaammini taavaatit"
+      preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
+      subject: '%{organizationName}p oqaaseqaammini taavaatit'
       title: Taaneqarputit
     moderator_digest:
       cta_button: Suliniutit aqqustigu
@@ -623,162 +633,164 @@ kl-GL:
       new_comments: Oqaaseqaatit nutaat
       new_ideas: Isumassarsiat nutaat
       new_users: Atuisut nutaat
-      preheader: "%{organizationName}mut suliami oqallinnermi aqutsinermi eqikkaaneq"
+      preheader: '%{organizationName}mut suliami oqallinnermi aqutsinermi eqikkaaneq'
       subject: Sapaatip akunnikkaartumik suliami oqallinnermi aqutsisutut %{time}
       text_introduction: Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit katersorpavut. Illit sulianni susoqarnersoq paasiniaruk!
-      title: "%{firstName}, sapaatip-akunneranut nalunaarusiat"
+      title: '%{firstName}, sapaatip-akunneranut nalunaarusiat'
       title_activity_past_week: Sapaatip akunnerani kingullermi suliat
       title_inputs_past_week: Sapaatip-akunnerani kingullermi isummat nutaat
       title_no_activity_past_week: Sapaatip akunnerani kingullermi suliaqanngilaq
       title_no_inputs_past_week: Sapaatip-akunnerani kingullermi nutaanik ilanngussisoqanngilaq
       title_threshold_reached: Sapaatip akunnerani kingullermi killiffik anguneqarpoq
-      title_your_weekly_report: "%{firstName}, sapaatip akunnikkaartumik nalunaarusiat"
+      title_your_weekly_report: '%{firstName}, sapaatip akunnikkaartumik nalunaarusiat'
       today_by_author: Ullumi %{author}-mit
       x_days_ago_by_author: Ullut %{x} matuma siorna %{author}-mit
       yesterday_by_author: Ippassaq %{author}-mit
     native_survey_not_submitted:
       cta_button: Misissuinermi akissutit nangiguk
-      event_description: "%{phaseTitle}-mi akissutitit allallugit aallartissimagaluarpatit nassiunnagilli. Toortagaq ataaniittoq tooruk sumut killinnerniit nanginniarlugu."
-      preheader: "%{organizationName}-ip peqataatitsinermut nittartagaani misissuinermut akissutit naammassinngilat"
-      subject: "%{organizationName}: Inerlavissat qanillivaat! Akissutitit nassiukkit"
+      event_description: '%{phaseTitle}-mi akissutitit allallugit aallartissimagaluarpatit nassiunnagilli. Toortagaq ataaniittoq tooruk sumut killinnerniit nanginniarlugu.'
+      preheader: '%{organizationName}-ip peqataatitsinermut nittartagaani misissuinermut akissutit naammassinngilat'
+      subject: '%{organizationName}: Inerlavissat qanillivaat! Akissutitit nassiukkit'
       submissions_close: Tunniussivissaq %{phaseEndDate} matussaaq.
+      submissions_close_at_time: Tunniussivissaq %{datetime} matussaaq.
+      submissions_close_on_date: Tunniussivissaq %{date} naanera ilanngullugu killeqarpoq.
       title: Tikilerpat! Akissutitit nassiukkit
     new_comment_for_admin:
       anonymous_user: Atuisoq kinaassutsiminik isertortoq
       by_author: uannga %{authorName}
-      commented: "%{authorFirstName} oqaaseqaateqarpoq:"
-      cta_button: "%{authorFirstName}-ip oqaaseqaataa takuuk"
-      cta_reply_to: "%{commentAuthor}p oqaaseqaataa takujuk"
-      days_ago: "%{numberOfDays} ullut matuma siorna"
-      event_description: "%{authorName} platforminnut oqaaseqaammik allappoq. Oqallinnermi peqataagit oqaloqatigiinnerlu ingerlatiguk!"
-      main_header: "%{firstName}, platforminni oqaaseqaammik nutaamik ikkussisoqarpoq"
-      preheader: "%{authorName} oqaaseqaateqarpoq"
-      subject: "%{organizationName}p platformiani nutaamik oqaaseqaateqartoqarpoq"
-      title: "%{firstName}, platforminni nutaamik oqaaseqaateqartoqarpoq"
+      commented: '%{authorFirstName} oqaaseqaateqarpoq:'
+      cta_button: '%{authorFirstName}-ip oqaaseqaataa takuuk'
+      cta_reply_to: '%{commentAuthor}p oqaaseqaataa takujuk'
+      days_ago: '%{numberOfDays} ullut matuma siorna'
+      event_description: '%{authorName} platforminnut oqaaseqaammik allappoq. Oqallinnermi peqataagit oqaloqatigiinnerlu ingerlatiguk!'
+      main_header: '%{firstName}, platforminni oqaaseqaammik nutaamik ikkussisoqarpoq'
+      preheader: '%{authorName} oqaaseqaateqarpoq'
+      subject: '%{organizationName}p platformiani nutaamik oqaaseqaateqartoqarpoq'
+      title: '%{firstName}, platforminni nutaamik oqaaseqaateqartoqarpoq'
       today: Ullumikkut
       yesterday: Ippassaq
     new_comment_on_commented_idea:
-      commented: "%{commentAuthor} allappoq:"
+      commented: '%{commentAuthor} allappoq:'
       cta_reply_to: Akissut %{commentAuthor}
-      event_description: "%{commentAuthorFull} %{organizationName}p peqataasunut platformimi isumassarsiamut \"%{ideaTitle}\"mut allapportaaq. Ataaniittoq tooruk %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit."
-      main_header: "%{commentAuthor} isumassarsiamut tassunga oqaaseqaammik allappoq"
-      preheader: "%{commentAuthor} aamma isumassarsiamut %{organizationName}mut oqaaseqaateqarpoq"
+      event_description: '%{commentAuthorFull} %{organizationName}p peqataasunut platformimi isumassarsiamut "%{ideaTitle}"mut allapportaaq. Ataaniittoq tooruk %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit.'
+      main_header: '%{commentAuthor} isumassarsiamut tassunga oqaaseqaammik allappoq'
+      preheader: '%{commentAuthor} aamma isumassarsiamut %{organizationName}mut oqaaseqaateqarpoq'
       subject: Isumassarsiamut oqaaseqarfigisannut oqaaseqaammik allamik takkuttoqarpoq
     new_comment_on_commented_initiative:
-      commented: "%{commentAuthor} allappoq:"
+      commented: '%{commentAuthor} allappoq:'
       cta_reply_to: Akissut %{commentAuthor}
-      event_description: "%{commentAuthorFull} innuttaasunut siunnersuummut \"%{initiativeTitle}\"mut aamma allappoq %{organizationName}mi peqataasunut platformimi. %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit ataaniittoq tuugassaq tooruk."
-      main_header: "%{commentAuthor} innuttaasunut siunnersuummut tassunga oqaaseqaammik allappoq"
-      preheader: "%{commentAuthor} aamma %{organizationName}mi innuttaasunut siunnersuummut oqaaseqaasiorpoq"
+      event_description: '%{commentAuthorFull} innuttaasunut siunnersuummut "%{initiativeTitle}"mut aamma allappoq %{organizationName}mi peqataasunut platformimi. %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit ataaniittoq tuugassaq tooruk.'
+      main_header: '%{commentAuthor} innuttaasunut siunnersuummut tassunga oqaaseqaammik allappoq'
+      preheader: '%{commentAuthor} aamma %{organizationName}mi innuttaasunut siunnersuummut oqaaseqaasiorpoq'
       subject: Innuttaasunut siunnersuummut oqaaseqaateqarfigisannut alla oqaaseqaasiorpoq
     new_comment_on_voted_idea:
-      commented: "%{commentAuthor} oqaaseqaatigaa:"
+      commented: '%{commentAuthor} oqaaseqaatigaa:'
       cta_reply_to: Akissut %{commentAuthor}
-      days_ago: "%{numberOfDays} ullut matuma siorna"
+      days_ago: '%{numberOfDays} ullut matuma siorna'
       event_description: "%{commentAuthor} isumassarsiamut '%{ideaTitle}'mut illit taasimasarnut oqaaseqaateqarpoq. %{organizationName}p platformiani oqallinnermut peqataagit!"
-      main_header: "%{firstName}, isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq! "
-      preheader: "%{commentAuthor} %{organizationName}p platformiani taasimasannut oqaaseqaateqarpoq"
-      subject: Isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq! 
+      main_header: '%{firstName}, isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq! '
+      preheader: '%{commentAuthor} %{organizationName}p platformiani taasimasannut oqaaseqaateqarpoq'
+      subject: Isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq!
       today: Ullumikkut
       yesterday: Ippassaq
     new_comment_on_voted_initiative:
-      commented: "%{commentAuthor} allappoq:"
+      commented: '%{commentAuthor} allappoq:'
       cta_reply_to: Una innuttaasunut siunnersuut takujuk
       event_description: "%{commentAuthor}ip innuttaasunut siunnersuummut '%{initiativeTitle}'mut taasimasannut, oqaaseqaateqarpoq. %{organizationName}p platformiani oqallinnermut peqataagit!"
-      main_header: "%{firstName}, innuttaasunut siunnersuummut taasimasannut nutaamik oqaaseqaateqarpoq"
-      preheader: "%{commentAuthor} %{organizationName}p platformiani innuttaasunut siunnersuut illit qinernikuusat oqaaseqaateqarfigaa"
+      main_header: '%{firstName}, innuttaasunut siunnersuummut taasimasannut nutaamik oqaaseqaateqarpoq'
+      preheader: '%{commentAuthor} %{organizationName}p platformiani innuttaasunut siunnersuut illit qinernikuusat oqaaseqaateqarfigaa'
       subject: Innuttaasunit siunnersuummut illit taanikuusannut nutaamik oqaaseqaateqarpoq
     new_idea_for_admin:
       by_author: uannga %{authorName}
-      commented: "%{authorFirstName} oqaaseqaateqarpoq:"
-      cta_reply_to: "%{authorName} utertitsiffigiuk"
-      days_ago: "%{numberOfDays} ullut matuma siorna"
-      event_description: "%{authorName} platforminni isumassarsiamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk !"
-      main_header: "%{firstName}, platforminni isumassarsiamik nutaamik tamanut saqqummiisoqarpoq"
-      preheader: "%{authorName} platforminni isumassarsiamik nutaamik tamanut saqqummiivoq"
+      commented: '%{authorFirstName} oqaaseqaateqarpoq:'
+      cta_reply_to: '%{authorName} utertitsiffigiuk'
+      days_ago: '%{numberOfDays} ullut matuma siorna'
+      event_description: '%{authorName} platforminni isumassarsiamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk !'
+      main_header: '%{firstName}, platforminni isumassarsiamik nutaamik tamanut saqqummiisoqarpoq'
+      preheader: '%{authorName} platforminni isumassarsiamik nutaamik tamanut saqqummiivoq'
       subject: Isumassarsiaq nutaaq %{organizationName}p platformiani tamanut saqqummiunneqarpoq
       today: Ullumikkut
       yesterday: Ippassaq
     new_idea_for_admin_prescreening:
       cta_button: Saqqummiussaq misissoruk
       days_ago: Ullut %{numberOfDays} matuma siorna
-      event_description: "%{authorName} platforminni nutaamik ilanngussaqarpoq."
+      event_description: '%{authorName} platforminni nutaamik ilanngussaqarpoq.'
       input_not_visible: <b>Siunnersuut takuneqarsinnaassanngilaq</b> inissisimanera allanngortitsinnagu.
-      preheader: "%{authorName} nittartakkassinni nutaamik siunnersuuteqarpoq"
+      preheader: '%{authorName} nittartakkassinni nutaamik siunnersuuteqarpoq'
       subject: Isersaat misissorneqartariaqarpoq
       title: Isumma misissorneqartariaqarpoq
       today: Ullumi
       yesterday: Ippassaq
     new_idea_for_admin_published:
-      cta_button: "%{authorName}-mut qisuariarit"
+      cta_button: '%{authorName}-mut qisuariarit'
       days_ago: Ullut %{numberOfDays} matuma siorna
-      event_description: "%{authorName} platforminni nutaamik siunnersuuteqarpoq. Maanna takuuk, oqaaseqarfigiuk imaluunniit inissisimanera allanngortiguk!"
-      preheader: "%{authorName} platforminni nutaamik isersaammik saqqummiussivoq"
+      event_description: '%{authorName} platforminni nutaamik siunnersuuteqarpoq. Maanna takuuk, oqaaseqarfigiuk imaluunniit inissisimanera allanngortiguk!'
+      preheader: '%{authorName} platforminni nutaamik isersaammik saqqummiussivoq'
       subject: Platforminni nutaamik isummanik saqqummiussisoqarpoq
       title: Platforminni nutaamik ilanngussaqartoqarpoq
       today: Ullumi
       yesterday: Ippassaq
     new_initiative_for_admin:
       by_author: uannga %{authorName}
-      commented: "%{authorFirstName} allappoq:"
-      cta_reply_to: "%{authorName} utertitsiffigiuk"
-      event_description: "%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk!"
-      main_header: "%{firstName}, platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiisoqarpoq"
-      preheader: "%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq"
+      commented: '%{authorFirstName} allappoq:'
+      cta_reply_to: '%{authorName} utertitsiffigiuk'
+      event_description: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk!'
+      main_header: '%{firstName}, platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiisoqarpoq'
+      preheader: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq'
       subject: Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq
     official_feedback_on_commented_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit
       event_description: "%{officialName} isumassarsiamut '%{ideaTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName} oqaloqatigiinnermut peqataaniarlutit ataaniittoq tuugassaq tooruk."
       main_header: Isumassarsiamut oqaaseqarfiginikuusannut paasissutissanik kingulliit ilanngullugit takussutissiisoqarpoq
-      preheader: "%{officialName} isumassarsiamut oqaaseqaateqarfiginikuusarnut tamanut paasissutissat kingulliit ilanngullugit takussutissiaqarpoq."
+      preheader: '%{officialName} isumassarsiamut oqaaseqaateqarfiginikuusarnut tamanut paasissutissat kingulliit ilanngullugit takussutissiaqarpoq.'
       subject: Isumassarsiaq %{organizationName}p platformiani oqaaseqarfigisimasat tamanut paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq
-      updated: "%{officialName} allappoq:"
+      updated: '%{officialName} allappoq:'
     official_feedback_on_commented_initiative:
       by_author: uannga %{authorName}
       cta_view: Uunga innuttaasunit siunnersuummukarit
       event_description: "%{officialName} innuttaanut siunnersuummut '%{initiativeTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk."
       main_header: Innuttaasunit siunnersuut oqaaseqarfiginikuusat pillugu kingulliit ilanngullugit takussutissiisoqarpoq
-      preheader: "%{officialName} innuttaasunut siunnersuummut oqaaseqarfiginikuusannut utertitsivoq"
+      preheader: '%{officialName} innuttaasunut siunnersuummut oqaaseqarfiginikuusannut utertitsivoq'
       subject: Innuttaasunut siunnersuut oqaaseqarfiginikuusat peqataanermi platformimi %{organizationName}miittoq kingulliit ilanngullugit takussutissiarineqarpoq
-      updated: "%{officialName} allappoq:"
+      updated: '%{officialName} allappoq:'
     official_feedback_on_idea_you_follow:
       cta_button: Ilanngussaq uunga iserfigiuk
       event_description: "%{feedback_author_name} '%{input_title}' pillugu nutaarsiassaqarpoq."
       preheader: Siunnersuummut malitannut nutaarsiassaqarpoq
-      subject: "\"%{input_title}\"-mut pisortatigoortumik akissuteqartoqarpoq"
-      title: "\"%{input_title}\"-mi nutaarsiassaqarpoq"
+      subject: '"%{input_title}"-mut pisortatigoortumik akissuteqartoqarpoq'
+      title: '"%{input_title}"-mi nutaarsiassaqarpoq'
     official_feedback_on_voted_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit
       event_description: "%{officialName} isumassarsiamut '%{ideaTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName} oqaloqatigiinnermut peqataaniarlutit ataaniittoq tuugassaq tooruk."
-      main_header: ""
+      main_header: ''
       preheader: Isumassarsiaq taasimasat %{officialName}ip paasissutissat kingulliit ilanngullugit takussutissiivoq
       subject: Isumassarsiaq taasimasat %{organizationName}p platformimi paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq
-      updated: "%{officialName} allappoq:"
+      updated: '%{officialName} allappoq:'
     official_feedback_on_voted_initiative:
       by_author: uannga %{authorName}
       cta_view: Uunga innuttaasunit siunnersuummukarit
       event_description: "%{officialName} innuttaanut siunnersuummut '%{initiativeTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk."
       main_header: Innuttaasunut siunnersuummut taanikuusannut paasissutissat kingulliit ilanngullugit takussutissiisoqarpoq
-      preheader: "%{officialName} innuttaasunut siunnersuummut taanikuusannut utertitsivoq"
+      preheader: '%{officialName} innuttaasunut siunnersuummut taanikuusannut utertitsivoq'
       subject: Innuttaasunut siunnersuut taanikuusat peqataanermi platformimi %{organizationName}miittoq paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq
-      updated: "%{officialName} allappoq:"
+      updated: '%{officialName} allappoq:'
     official_feedback_on_your_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiannukarit
       event_description: "%{officialName} isumassarsiarnut '%{ideaTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName}i oqallinnermik aallartitsiffiginiarlugu ataaniittoq tuugassaq tooruk."
-      main_header: "%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit"
-      preheader: "%{officialName} isumassarsiannut tamanut paasissutissat kingulliit ilanngullugit takussutissamik ilanngussivoq"
-      subject: "%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit"
-      updated: "%{officialName} allappoq:"
+      main_header: '%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit'
+      preheader: '%{officialName} isumassarsiannut tamanut paasissutissat kingulliit ilanngullugit takussutissamik ilanngussivoq'
+      subject: '%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit'
+      updated: '%{officialName} allappoq:'
     official_feedback_on_your_initiative:
       cta_view: Innuttaasunut siunnersuutinnukarit
       event_description: "%{officialName} innuttaasunut siunnersuutinnut '%{initiativeTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk."
-      main_header: "%{officialName}mit paasissutissat kingulliit ilanngullugit takussutissinneqarputit"
-      preheader: "%{officialName} innuttaasunut siunnersuutinnut tamanut paasissutissat kingulliit ilanngullugit takussutissiivoq"
-      subject: "%{organizationName}mi peqataasunut platformimi paasissutissat kingulliit ilanngullugit takussutissinneqarputit"
-      updated: "%{officialName} allappoq:"
+      main_header: '%{officialName}mit paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
+      preheader: '%{officialName} innuttaasunut siunnersuutinnut tamanut paasissutissat kingulliit ilanngullugit takussutissiivoq'
+      subject: '%{organizationName}mi peqataasunut platformimi paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
+      updated: '%{officialName} allappoq:'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -801,155 +813,176 @@ kl-GL:
       project_description_preview: Una tassaavoq immikkoortup imarisaanut assersuut e-mailit imarisaannik takunnissinnaanermut atorneqartoq. Una imarisaavinnik imaqanngilaq.
       project_title: Suliniut assersuut
       proposal_title: Siunnersuut assersuut
+      space_title: Immikkoortortaq assersuut
     project_folder_moderation_rights_received:
       cta_button: Toqqorsivik una takuuk
-      cta_view_folder_button: Mappi nuisiuguk 
-      event_description: "%{organizationName}-ip peqataatitsinermut nittartagaani mappimut tulliuttumut aqutsisutut pisinnaatitaaffilerneqarputit:"
-      message_added_as_folderadmin: "%{organizationName}-ip peqataasitsinermut nittartagaani mappimut tulliuttumut aqutsinissannut pisinnaatitaaffeqalerputit:"
+      cta_view_folder_button: Mappi nuisiuguk
+      event_description: '%{organizationName}-ip peqataatitsinermut nittartagaani mappimut tulliuttumut aqutsisutut pisinnaatitaaffilerneqarputit:'
+      message_added_as_folderadmin: '%{organizationName}-ip peqataasitsinermut nittartagaani mappimut tulliuttumut aqutsinissannut pisinnaatitaaffeqalerputit:'
       no_projects: Suli projekteqanngilaq
       preheader: Peqataasitsinermut nittartakkami %{organizationName}imi ingerlatsisup mappimut tulliuttumut aqutsisunngortippaatit
       subject: Peqataasitsinermut nittartakkami %{organizationName}imi projekt mappinut aqutsisunngorputit
-      text_design_participatory_process: Mappinni peqataasitsinermut projektit assigiinngitsut aqussinnaavatit – peqataasitsinermik periuutsimik sanallutit, projektip nassuiarneqarneranut ilasillutit, assinik ikkussillutit pisunullu attuumassuteqartunut attaveqartitsillutit. Peqataasut projektinnut qanoq atuinerat aammaaqussinnaavat, soorlu kikkut isersinnaatitaanersut aaqqissorlugit, ikkussisarneq ilusilersorlugu, inissitsitikkanik toqqaallutit oqaasertaliillutillu.  
+      text_design_participatory_process: Mappinni peqataasitsinermut projektit assigiinngitsut aqussinnaavatit – peqataasitsinermik periuutsimik sanallutit, projektip nassuiarneqarneranut ilasillutit, assinik ikkussillutit pisunullu attuumassuteqartunut attaveqartitsillutit. Peqataasut projektinnut qanoq atuinerat aammaaqussinnaavat, soorlu kikkut isersinnaatitaanersut aaqqissorlugit, ikkussisarneq ilusilersorlugu, inissitsitikkanik toqqaallutit oqaasertaliillutillu.
       text_manage_folder: Mappi peqataasitsinermut suliutinut arlalinnut aaqqissuussiffiuvoq. Mappimik aqutsisutut mappi aaqqissorsinnaavat, allamik atserlugu allanillu projektiliorlutit (projektimik piigaqarniaruit nittartakkami ingerlatsisoq attavigiuk). Aammalu projektit mappimiittut tamarmik aqutsisuuffigisinnaatitaavatit, taamatullu aamma projektinik aaqqissuisinnaallutit, emailikkullu peqataasut ikkussaannik aqutsillutit.
-      text_moderate_analyse_input: Projektit ingerlaleriarpata ikkussat siulliit puttussuukkumaarput. Susoqarneranik malinnaanissat pillugu sapaatip akunneri tamaasa pingaarnersuinikkut killiffik pillugu saqqumiiffigineqartarumaarputit. ‘Manage Platform’-inni Input Manageri atorlugu ikkussat takusunnaavatit aqullugillu, tamatuma saniatigut aamma allaaserisat kiminngaaneernersut aaqqissorlugit, ikkussanut oqaaseqaatinullu akisinnaalersillutit. 
+      text_moderate_analyse_input: Projektit ingerlaleriarpata ikkussat siulliit puttussuukkumaarput. Susoqarneranik malinnaanissat pillugu sapaatip akunneri tamaasa pingaarnersuinikkut killiffik pillugu saqqumiiffigineqartarumaarputit. ‘Manage Platform’-inni Input Manageri atorlugu ikkussat takusunnaavatit aqullugillu, tamatuma saniatigut aamma allaaserisat kiminngaaneernersut aaqqissorlugit, ikkussanut oqaaseqaatinullu akisinnaalersillutit.
       title: Folder-imut aqutsisutut ilanngunneqarputit
       title_added_as_folderadmin: Mappinik aqutsisussatut ilanngunneqarputit
       title_design_participatory_process: Peqataanissamut ingerlariusissaq aaqqissuuguk
       title_manage_folder: Mappimi inissitsitigaq aaqqisoruk, nutaanillu projektiliorlutit
       title_moderate_analyse_input: Nassiunneqartut aqukkit misissuataarlugillu
       title_what_can_you_do_folderadmin: Mappinik aqutsisutut suna suliarisinnaaviuk?
-      x_projects: Projektit %{numberOfProjects}it 
+      x_projects: Projektit %{numberOfProjects}it
     project_moderation_rights_received:
       cta_button: Suliniut una aqutariuk
       cta_moderate_project: Suliniut una tigujuk
-      event_description: "%{organizationName}-mi peqataatitsivimmi aqutsisup pilersaarummi uani pilersaarummut aqutsisunngortippaatit:"
-      message_you_became_moderator: "%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:"
+      event_description: '%{organizationName}-mi peqataatitsivimmi aqutsisup pilersaarummi uani pilersaarummut aqutsisunngortippaatit:'
+      message_you_became_moderator: '%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:'
       no_ideas: Suli isumassarsiaqanngilaq
-      preheader: "%{organizationName}p platformimi ilaasortanut aqutsisup suliniutit ukua ilinnut tunniuppai"
+      preheader: '%{organizationName}p platformimi ilaasortanut aqutsisup suliniutit ukua ilinnut tunniuppai'
       subject: Platformimi suliniutit ukua aqutsisuuffigilerpatit %{organizationName}
       text_design_participatory_process: Suliniummut akisussaasutut suliniummut atuisut qanoq atuissanersut aalajangersinnaavat. Piffissaliussat atorlugit fasenik nutaanik ilanngussisinnaavutit. Fase uku tamarmik immikkut ingerlaaseqarsinnaapput isumassarsianik saqqummiussinermi, oqaaseqaateqarnermi taasinermilu.
       text_moderate_analyse_input: Suliniut saqqummiunneqareerpat isumassarsiatit siulliit takkutissapput. Sapaatip akunnikkaartumik nalunaarusianik sammisassanik pingaarutilinnik tamanik imalinnik tigusisassaatit, tamakkiisumik malinnaaniassagavit. Suliami oqallinnermi aqutsisuuffigisavit nalunaarsuutaata isumassarsiatut qulequtsiussanni isumassarsiat sorliit aap- aamma naamik-mik taaneqarnerunersut ikiussavaatit.
-      text_share_project_information: "Isumassarsiat tigusatit pitsaanerpaatinniarlugit pingaaruteqarpoq paasissutissanik naammattunik avitseqateqarnissat: suliap allaaserineqarnera ilannguguk, assinik ilanngussigit (ilusilersukkanik pilersaarutinillu) pisimasunillu attuumassuteqarsinnaasunik tamanik oqaluttuutikkit. Eqqaamajuk: paasissutissiilluarneq peqataarusutsitsilersarpoq!"
+      text_share_project_information: 'Isumassarsiat tigusatit pitsaanerpaatinniarlugit pingaaruteqarpoq paasissutissanik naammattunik avitseqateqarnissat: suliap allaaserineqarnera ilannguguk, assinik ilanngussigit (ilusilersukkanik pilersaarutinillu) pisimasunillu attuumassuteqarsinnaasunik tamanik oqaluttuutikkit. Eqqaamajuk: paasissutissiilluarneq peqataarusutsitsilersarpoq!'
       title: Suliniutinik aqutsisunngorputit
       title_design_participatory_process: Peqataanissamut ingerlariusissaq aaqqissuuguk
       title_moderate_analyse_input: Nassiunneqartut aqukkit misissuataarlugillu
       title_share_project_information: Suliniummut paasissutissat immersukkit
       title_what_can_you_do_moderator: Suliami aqutsisutut qanoq iliuuseqarsinnaavit?
       title_you_became_moderator: Aqutsisunngorputit
-      x_ideas: "%{numberOfIdeas} isumassarsiat"
+      x_ideas: '%{numberOfIdeas} isumassarsiat'
     project_phase_started:
       cta_button: Immikkoortoq nutaaq una misissuguk
       cta_view_phase: Fase nutaaq paasiuk
       event_description: Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit
-      main_header: "\"%{projectName}\"mi fase nutaaq aallartippoq"
+      main_header: '"%{projectName}"mi fase nutaaq aallartippoq'
       new_phase: Suliniut fasemut "%{phaseTitle}" killippoq
-      preheader: "%{projectName}mut fase nutaaq aallartippoq"
-      subject: "%{projectName} fasemut nutaamut pivoq"
-      subtitle: About '%{projectName}'
-      title: Pilersaarummi '%{projectName}'-mi immikkoortoq nutaaq aallartippoq
+      preheader: '%{projectName}mut fase nutaaq aallartippoq'
+      subject: '%{projectName} fasemut nutaamut pivoq'
+      subtitle: "About '%{projectName}'"
+      title: "Pilersaarummi '%{projectName}'-mi immikkoortoq nutaaq aallartippoq"
     project_phase_upcoming:
       cta_button: Immikkoortoq nutaaq una aaqqissuuguk
       cta_view_phase: Fase una nutaaq inissititeruk
-      event_description: "Suliaq\"%{projectName}\" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?"
-      main_header: "%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq"
-      new_phase: Suliniut fasemut '%{phaseTitle}' pivoq
-      preheader: "%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq "
-      subject: "%{projectName}mi fasemut nutaamut piareersarit"
-      subtitle: About '%{projectName}'
-      title: "%{firstName}, suliniut piaartumik immikkoortumut nutaamut ikaassaaq"
+      event_description: 'Suliaq"%{projectName}" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?'
+      main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
+      new_phase: "Suliniut fasemut '%{phaseTitle}' pivoq"
+      preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '
+      subject: '%{projectName}mi fasemut nutaamut piareersarit'
+      subtitle: "About '%{projectName}'"
+      title: '%{firstName}, suliniut piaartumik immikkoortumut nutaamut ikaassaaq'
     project_published:
       cta_button: Suliniummut uunga iserit
-      event_description: "%{organizationName}-p peqataatitsinermut platformia suliniut una saqqummersippaa:"
+      event_description: '%{organizationName}-p peqataatitsinermut platformia suliniut una saqqummersippaa:'
       preheader: Suliniummik nutaamik saqqummertoqarpoq
-      subject: "%{organizationName}-ip peqataatitsiviani suliniut nutaaq saqqummiunneqarpoq"
+      subject: '%{organizationName}-ip peqataatitsiviani suliniut nutaaq saqqummiunneqarpoq'
       title: Suliassaq nutaaq saqqummiunneqarpoq
     project_review_request:
       cta_button: Suliassaq misissuguk
       event_description: Maannakkut suliniut missingiutaavoq atuisunullu takuneqarsinnaanani. Misissoreerlugu akuerigukku, aaqqissuisup saqqummiussinnaalissavaa.
-      preheader: "%{requesterName}-ip suliniut \"%{projectTitle}\" nalilersussallugu qaaqquvaatit"
-      subject: "Nalilersueqqusissut: Suliniut akuerineqarnissaminut utaqqivoq."
-      title: "%{requesterName}-p suliniut \"%{projectTitle}\" misissoqqullugu qaaqquvaatit"
+      preheader: '%{requesterName}-ip suliniut "%{projectTitle}" nalilersussallugu qaaqquvaatit'
+      subject: 'Nalilersueqqusissut: Suliniut akuerineqarnissaminut utaqqivoq.'
+      title: '%{requesterName}-p suliniut "%{projectTitle}" misissoqqullugu qaaqquvaatit'
     project_review_state_change:
       cta_button: Suliassap aaqqissuunneranut iserit
       event_description: Suliniut maanna saqqummiunneqarsinnaalerpoq. Piareeruit saqqummiussinnaavat!
-      preheader: "%{reviewerName}-p suliniut \"%{projectTitle}\" akueraa"
-      subject: "\"%{projectTitle}\" akuerineqarpoq"
-      title: "%{reviewerName}-ip suliniut \"%{projectTitle}\" akueraa"
+      preheader: '%{reviewerName}-p suliniut "%{projectTitle}" akueraa'
+      subject: '"%{projectTitle}" akuerineqarpoq'
+      title: '%{reviewerName}-ip suliniut "%{projectTitle}" akueraa'
+    proposal_expired_for_admin:
+      cta_button: Siunnersuut piffissaa qaangiuttoq misissoruk
+      preheader: Siunnersuut piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu
+      subject: '"%{input_title}" piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu'
+      title: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
     schedules:
       quarterly: Ukiup sisamararterutikkaarlugu, sisamararterutip ulluani siullermi
       weekly:
-        0: Sapaatit tamaasa, nal. %{hourOfDay}
-        1: Sapaatip-akunneranut ataasinngornermi nal. %{hourOfDay}
-        2: Sapaatip-akunnikkaarlugu, marlunngornikkut nal. %{hourOfDay}
-        3: Sapaatit akunneri tamaasa, pingasunngornermi nal. %{hourOfDay}
-        4: Sapaatip akunneranut, sisamanngornikkut nal. %{hourOfDay}
-        5: Sapaatit akunneranoortumik, tallimanngornermi nal. %{hourOfDay}
-        6: Sapaatit akunneranoortumik, arfininngornermi nal. %{hourOfDay}
+        '0': Sapaatit tamaasa, nal. %{hourOfDay}
+        '1': Sapaatip-akunneranut ataasinngornermi nal. %{hourOfDay}
+        '2': Sapaatip-akunnikkaarlugu, marlunngornikkut nal. %{hourOfDay}
+        '3': Sapaatit akunneri tamaasa, pingasunngornermi nal. %{hourOfDay}
+        '4': Sapaatip akunneranut, sisamanngornikkut nal. %{hourOfDay}
+        '5': Sapaatit akunneranoortumik, tallimanngornermi nal. %{hourOfDay}
+        '6': Sapaatit akunneranoortumik, arfininngornermi nal. %{hourOfDay}
     screening_digest:
       cta_button: Saaffiginnissutit misissukkit
       event_description: Ilanngussat tamakku tamanit takuneqarsinnaannginneranni akuerineqaqqaartariaqarput. Atortumi tamarmiusumi Ilanngussanik Aqutsivimmi imaluunniit immikkoortut ataasiakkaat Ilanngussanik Aqutsiviini misissorsinnaavatit.
       inputs_awaiting_screening: ilanngussat misissorneqartussat
-      preheader: "%{organizationName}-imut ilanngussat misissukkit"
+      preheader: '%{organizationName}-imut ilanngussat misissukkit'
       subject: Isersaatit %{count} misissorneqarnissartik utaqqiigaat
-      title: "%{firstName}, siunnersuutit misissorneqarnissartik utaqqiigaat"
+      title: '%{firstName}, siunnersuutit misissorneqarnissartik utaqqiigaat'
+    space_moderation_rights_received:
+      cta_button: Immikkoortortaq una aqutariuk
+      event_description: '%{organizationName}-ip peqataatitsinermut platformiani aqutsisup matuma kinguninngua immikkoortortami uani aqutsisunngortippaatit:'
+      no_projects: Suli suliniuteqanngilaq
+      preheader: '%{organizationName}-ip peqataatitsinermut platformiani aqutsisup matuma kinguninngua immikkoortortami uani aqutsisunngortippaatit'
+      subject: '%{organizationName}-ip platformiani immikkoortortami aqutsisuunngorputit'
+      text_manage_space_settings: Immikkoortortap qulequtaa nassuiaataalu aaqqissuussinnaavatit, taamaalillutit peqataasut aqutsiseqatitillu immikkoortortap suunera aamma suliffeqarfinnut qanoq attuumassuteqarnera pillugu paasinnissinnaaniassammata.
+      text_organize_projects_and_folders: Immikkoortortami aqutsisutut, immikkoortortanni suliniutit folderillu aqutarisinnaavatit, matumunnga ilanngullugit aqutsisutut inissisimanernik tunniussineq peernerlu.
+      text_oversee_participation: Immikkoortortami aqutsisutut, immikkoortortanni suliniutinut tamanut suliniutinik aqutsisutut pisinnaatitaaffeqarputit, taamaalillutit isumassarsianik takkuttunik malinnaasinnaavutit pisariaqarfianilu suliniutinik aqutsisut ikiorserlugit.
+      title: Immikkoortortami aqutsisuunngorputit
+      title_manage_space_settings: Immikkoortortap inissinneri aqutariuk
+      title_organize_projects_and_folders: Suliniutit folderillu aaqqissuussikkit
+      title_oversee_participation: Peqataaneq nakkutigiuk
+      title_what_can_you_do_space_manager: Immikkoortortami aqutsisutut suna suliarisinnaaviuk?
+      x_projects: Suliniutit %{numberOfProjects}
     status_change_of_commented_idea:
       cta_view_idea: Isumassarsiamukarit
       event_description: "%{organizationName}p isumassarsiaq '%{ideaTitle}' namminneq peqataasunut platformiminni nutaanik ilaartuivoq."
       main_header: Isumassarsiaq taasat nutaamik killiffeqarpoq
-      preheader: "%{organizationName}p isumassarsiap oqaaseqarfigisavit killiffia allanngortippaa"
-      status_change: Isumassarsiamut killiffik nutaaq tassaavoq '%{ideaStatus}'
+      preheader: '%{organizationName}p isumassarsiap oqaaseqarfigisavit killiffia allanngortippaa'
+      status_change: "Isumassarsiamut killiffik nutaaq tassaavoq '%{ideaStatus}'"
       subject: Isumassarsiap oqaaseqarfigisavit killiffia allanngortinneqarpoq
     status_change_of_commented_initiative:
       cta_view_initiative: Uunga innuttaasunit siunnersuummukarit
-      event_description: Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.
+      event_description: "Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq."
       main_header: Innuttaasunut siunnersuut oqaaseqarfiginikuusat, nutaamik killiffeqalerpoq
       preheader: Innuttaasunut siunnersuutip oqaaseqarfigisavit killiffia allanngortinneqarpoq
-      status_change: Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq '%{initiativeStatus}'
+      status_change: "Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq '%{initiativeStatus}'"
       subject: Innuttaasunut siunnersuutip oqaaseqarfigisavit killiffia allanngortinneqarpoq
     status_change_of_voted_idea:
       cta_view_idea: Isumassarsiamukarit
       event_description: "%{organizationName}p isumassarsiaq '%{ideaTitle}' namminneq peqataasunut platformiminni nutaanik ilaartuivoq."
       main_header: Isumassarsiaq taasat nutaamik killiffeqarpoq
-      preheader: "%{organizationName} isumassarsiami taasanni killiffimmik allannguivoq"
-      status_change: Isumassarsiamut killiffik nutaaq tassaavoq '%{ideaStatus}'
+      preheader: '%{organizationName} isumassarsiami taasanni killiffimmik allannguivoq'
+      status_change: "Isumassarsiamut killiffik nutaaq tassaavoq '%{ideaStatus}'"
       subject: Isumassarsiami taasanni killiffik allanngortinneqarpoq
     status_change_of_voted_initiative:
       cta_view_initiative: Uunga innuttaasunit siunnersuummukarit
-      event_description: Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.
+      event_description: "Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq."
       main_header: Innuttaasunut siunnersuut taasat nutaamik killiffeqalerpoq
       preheader: Innuttaasunut siunnersuutip taanikuusavit killiffia allanngortinneqarpoq
-      status_change: Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq '%{initiativeStatus}'
+      status_change: "Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq '%{initiativeStatus}'"
       subject: Innuttaasunut siunnersuutip taanikuusavit killiffia allanngortinneqarpoq
     status_change_of_your_idea:
       cta_view_idea: Isumassarsiannukarit
       event_description: "%{organizationName} peqataasunut platformimi isumassarsiarnut '%{ideaTitle}'mut paasissutissat kingulliit ilanngullugit takussutissiipput."
       main_header: Isumassarsiat nutaamut killippoq
-      preheader: "%{organizationName} isumassarsiannut killiffimmik allannguivoq"
-      status_change: Isumassarsiannut killiffik nutaaq tassaavoq '%{ideaStatus}'
+      preheader: '%{organizationName} isumassarsiannut killiffimmik allannguivoq'
+      status_change: "Isumassarsiannut killiffik nutaaq tassaavoq '%{ideaStatus}'"
       subject: Isumassarsianni killiffik allanngortinneqarpoq
     status_change_of_your_initiative:
       cta_view_initiative: Innuttaasunut siunnersuutinnukarit
-      event_description: Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.
+      event_description: "Innuttaasunut siunnersuummut '%{initiativeTitle}' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq."
       main_header: Innuttaasunut siunnersuutit nutaamik killiffeqalerpoq
       preheader: Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq
-      status_change: Innuttaasunut siunnersuutivit killiffia nutaaq tassaavoq '%{initiativeStatus}'
+      status_change: "Innuttaasunut siunnersuutivit killiffia nutaaq tassaavoq '%{initiativeStatus}'"
       subject: Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq
     status_change_on_idea_you_follow:
       cta_button: Siunnersuummut uunga iserit
       event_description: "%{organizationName}-ip peqataatitsivimmini '%{input_title}'-ip inissisimanera nutarterpaa."
       preheader: Siunnersuut malitavit inissisimanera nutaamik allannguuteqarpoq
-      status_change: Siunnersuutip inissisimanera nutaaq tassaavoq '%{status}'
-      subject: "\"%{input_title}\"-ip inissisimanera allanngorpoq"
+      status_change: "Siunnersuutip inissisimanera nutaaq tassaavoq '%{status}'"
+      subject: '"%{input_title}"-ip inissisimanera allanngorpoq'
       title: Ilanngussaq malitavit inissisimanera allanngorpoq
     survey_submitted:
       cta_button: Akissutitit aakkit
-      event_description: "\"%{projectName}\"-mut siunnersuutit iluatsittumik nassiunneqarpoq."
+      event_description: '"%{projectName}"-mut siunnersuutit iluatsittumik nassiunneqarpoq.'
       if_you_would_like_to_review: Tunniussatit misissoqqikkusukkukkit, akissutitit ataani aasinnaavatit.
       preheader: Nassiussatit pillugit paasissutissat uaniipput.
-      subject: "%{organizationName}: Akissutinnut qujanaq! 🎉"
-      title: "\"%{projectName}\" pillugu isummanik avitseqateqarnernut qujanaq!"
+      subject: '%{organizationName}: Akissutinnut qujanaq! 🎉'
+      title: '"%{projectName}" pillugu isummanik avitseqateqarnernut qujanaq!'
       you_can_use_this_id: Kinaassusersaat una atorlugu aqutsisut attavigisinnaavatit ilanngussat piiarneqarnissaa kissaatigigukku.
-      your_submission_has_id: "Tunniussat ima immikkut ilisarnaateqarpoq:"
+      your_submission_has_id: 'Tunniussat ima immikkut ilisarnaateqarpoq:'
     threshold_reached_for_admin:
       by_author: uannga %{authorName}
       cta_button: Siunnersuut una tullianut ingerlateqqiguk
@@ -960,18 +993,18 @@ kl-GL:
       subject: Platforminni suliniutip taasinermi killiffissani anguaa
       title: Siunnersuut taasivigineqarnissamut killiffimmut anguivoq!
     user_digest:
-      commented: "%{authorFirstName} oqaaseqaateqarpoq:"
+      commented: '%{authorFirstName} oqaaseqaateqarpoq:'
       cta_button: Platformimut iserit
       cta_go_to_the_platform: Platformi pulaaruk
       event_description: Maani takusinnaavat %{organizationName}-p peqataatitsinermut nittartagaani sunik pisoqarsimaneranik eqikkaaneq.
       intro_text: Here's a summary of what happened on the participation platform of %{organizationName}.
-      multiple_notifications: "%{notifCount} notifications"
+      multiple_notifications: '%{notifCount} notifications'
       no_notifications: No notifications
       no_unread_notifications: You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening.
       one_notification: 1 notification
       preheader: Sapaatip akunnikkaartumik %{organizationName}mut nalunaarsuutit
       proposals_started_text: Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!
-      subject: "%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq"
+      subject: '%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq'
       successful_proposals_text: These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next.
       successful_proposals_title: Killiffissaq anguneqarpoq
       title: Sapaatip-akunnerani kingullermi pisut paasikkit
@@ -990,38 +1023,38 @@ kl-GL:
     voting_basket_not_submitted:
       cta_button: Periarfissat takukkit taasiartorlutillu
       cta_message: Toqqakkavit nassiunnissaannut ataani toortagaq tooruk
-      event_description: "%{contextTitle}-mut periarfissat arlallit toqqarpatit, toqqakkatilli nassiutinngilatit."
-      preheader: "%{organizationName}-ip peqataatitsinermut nittartagaani taasinerit nassiutinngilatit"
-      subject: "%{organizationName}: Taasinerit nassiutinngilatit"
+      event_description: '%{contextTitle}-mut periarfissat arlallit toqqarpatit, toqqakkatilli nassiutinngilatit.'
+      preheader: '%{organizationName}-ip peqataatitsinermut nittartagaani taasinerit nassiutinngilatit'
+      subject: '%{organizationName}: Taasinerit nassiutinngilatit'
       title: Taasinerit nassiunngilatit
     voting_basket_submitted:
       cta_button: Taasinerit nassiunneqartut takukkit
       cta_message: Peqataaniarlutit ataani toortagaq tooruk
       event_description: Peqataagavit qujanaq. Taasinerit nalunaarsorneqarput. %{organizationName}-p platformia alakkaruk taasinerit takuniarlugit aqutarniarlugillu.
-      preheader: "%{organizationName}-ip peqataatitsiviani iluatsittumik taasivutit"
-      subject: "%{organizationName}: Iluatsittumik taasivutit"
+      preheader: '%{organizationName}-ip peqataatitsiviani iluatsittumik taasivutit'
+      subject: '%{organizationName}: Iluatsittumik taasivutit'
       title: Iluatsittumik taasipputit
     voting_last_chance:
       cta_button: Taasiarit
       event_description: <p>Suliniummi %{projectTitle}-mi taasineq aqagu unnuap-qeqqanut naassaaq.</p><p>Piffissaq nungulerpoq, takusinnaavarpullu suli taasimanngitsutit! Maannakkut taasigit ataani toortagaq toorlugu.</p><p>Taamaaliornikkut periarfissat assigiinngitsut takusinnaalissavatit isumallu saqqummiullugu, tamanna suliniutip siunissaanut pingaaruteqarpoq.</p>
-      preheader: "%{organizationName}-p peqataatitsinermut platformiani %{phaseTitle}-mut taasinissamut periarfissaq kingulleq"
-      subject: "%{organizationName}: %{phaseTitle}-mut taasinissamut periarfissaq kingulleq"
-      title: "%{phaseTitle}-mut taasinissamut periarfissaq kingulleq"
+      preheader: '%{organizationName}-p peqataatitsinermut platformiani %{phaseTitle}-mut taasinissamut periarfissaq kingulleq'
+      subject: '%{organizationName}: %{phaseTitle}-mut taasinissamut periarfissaq kingulleq'
+      title: '%{phaseTitle}-mut taasinissamut periarfissaq kingulleq'
     voting_phase_started:
       cta_button: Platformimut taasiffissamut iserit
       cta_message: Peqataajumallutit ataani toortagaq tooruk
-      event_description: "Suliniutip \"%{projectName}\"-p toqqagassat %{numIdeas} akornanni taasitikkusuppaatit:"
-      preheader: "%{projectName}-imut taasineq %{organizationName}-p peqataatitsinermut nittartagaani aallartippoq"
-      subject: "%{organizationName}: %{projectName}-imi taasineq aallartippoq"
-      title: "%{projectName}"
+      event_description: 'Suliniutip "%{projectName}"-p toqqagassat %{numIdeas} akornanni taasitikkusuppaatit:'
+      preheader: '%{projectName}-imut taasineq %{organizationName}-p peqataatitsinermut nittartagaani aallartippoq'
+      subject: '%{organizationName}: %{projectName}-imi taasineq aallartippoq'
+      title: '%{projectName}'
     voting_results:
       body_1: Angusat takkupput!
-      body_2: "%{phaseTitle}-mi taasinermi inernerit %{organizationName}-mi saqqummiunneqarput!"
+      body_2: '%{phaseTitle}-mi taasinermi inernerit %{organizationName}-mi saqqummiunneqarput!'
       body_3: Inernerit nalilersussallugit kaammattorpatsigit tullianillu sunik pisoqarnissaanut malinnaallutit.
       cta_button: Platformimi inerneri takukkit
-      preheader: "%{phaseTitle}-imi taasinermi inernerit %{organizationName}-ip peqataatitsiviani saqqummiunneqarput"
-      subject: "%{organizationName}: %{phaseTitle}-mi taasinerit inerneri saqqummiunneqarput!"
-      title: "%{phaseTitle}-imi taasinermi inernerit saqqummiunneqarput!"
+      preheader: '%{phaseTitle}-imi taasinermi inernerit %{organizationName}-ip peqataatitsiviani saqqummiunneqarput'
+      subject: '%{organizationName}: %{phaseTitle}-mi taasinerit inerneri saqqummiunneqarput!'
+      title: '%{phaseTitle}-imi taasinermi inernerit saqqummiunneqarput!'
     welcome:
       cta_button: Platformi paasisaqarfigiuk
       cta_join_platform: Platformi misissuataaruk
@@ -1029,16 +1062,16 @@ kl-GL:
       main_header: Tikilluarit!
       message_welcome: Pilluarit, %{organizationName}-mi platformimi peqataanissamut nalunaarsimavutit. Ilisimasat, isumassarsiat isummatillu siaruartikkit platformilu misissuataaruk. Eqqaamajuk, aamma assitaliisinnaagavit naatsumillu kinaanerit oqaluttuaralugu.
       preheader: Uani %{organizationName} platformimi taamaaliorsinnaavutit
-      subject: "%{organizationName}-mut platformimut tikilluarit"
+      subject: '%{organizationName}-mut platformimut tikilluarit'
       title: Tikilluarit!
     your_input_in_screening:
-      event_description: "\"%{input_title}\" allanut takuneqarsinnaalissaaq misissorneqareeruni akuerineqareerunilu."
+      event_description: '"%{input_title}" allanut takuneqarsinnaalissaaq misissorneqareeruni akuerineqareerunilu.'
       main_header:
         comment: Oqaaseqaatit "%{prescreening_status_title}"-miippoq
         contribution: Ilanngussat "%{prescreening_status_title}"-miippoq
         idea: Isumassarsiat uunga inissisimavoq "%{prescreening_status_title}"
         initiative: Suliniutit "%{prescreening_status_title}"-imiippoq
-        issue: "Suliassat uaniippoq: \"%{prescreening_status_title}\""
+        issue: 'Suliassat uaniippoq: "%{prescreening_status_title}"'
         option: Toqqagassat uunga inissisimavoq "%{prescreening_status_title}"
         petition: Akerliussutsimik ersersitsiniutit "%{prescreening_status_title}"-imiippoq
         post: Ilanngussat "%{prescreening_status_title}"-imiippoq
@@ -1050,7 +1083,7 @@ kl-GL:
         suggestion: Siunnersuutit "%{prescreening_status_title}"-miippoq
         topic: Sammisat ima inissisimavoq "%{prescreening_status_title}"
       preheader: Maannakkut %{prescreening_status_title}-miippoq
-      subject: "\"%{input_title}\" saqqummersinneqangajalerpoq"
+      subject: '"%{input_title}" saqqummersinneqangajalerpoq'
     your_proposed_initiatives_digest:
       cta_see_your_initiative: Innuttaasunut siunnersuutinnukarit
       new_votes: Taasinerit nutaat

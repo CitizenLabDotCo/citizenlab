@@ -149,7 +149,9 @@ type AdminModeratorCampaignName =
   | 'new_idea_for_admin'
   | 'project_folder_moderation_rights_received'
   | 'project_moderation_rights_received'
+  | 'space_moderation_rights_received'
   | 'threshold_reached_for_admin'
+  | 'proposal_expired_for_admin'
   | InternalCommentType;
 
 export type CampaignName =

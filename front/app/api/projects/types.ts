@@ -91,12 +91,16 @@ export interface IProjectAttributes {
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  scheduled_status?: PublicationStatus | null;
+  scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
+  publication_email_enabled: boolean;
+  global_publication_email_enabled: boolean;
   space_id?: string | null;
 }
 
@@ -174,6 +178,7 @@ export interface IUpdatedProjectProperties {
   // This oddity needs to be dealt with
   projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -191,6 +196,8 @@ export interface IUpdatedProjectProperties {
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   publication_status?: PublicationStatus;
   voting_min_total?: number | null;
@@ -209,4 +216,6 @@ export interface IUpdatedProjectProperties {
   listed?: boolean;
   live_auto_input_topics_enabled?: boolean;
   space_id?: string | null;
+  scheduled_at?: string | null;
+  publication_email_enabled?: boolean;
 }

@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean, number } from 'yup';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddImportedIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
@@ -44,10 +43,9 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (jobs: IBackgroundJobData[]) => void;
 }
 
-const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
+const ImportPdfModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
@@ -112,7 +110,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     if (!phaseId) return;
 
     try {
-      const response = await addOfflineIdeas({
+      await addOfflineIdeas({
         phase_id: phaseId,
         file: file?.base64,
         format: 'pdf',
@@ -121,7 +119,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         pages_per_form: multiple_forms ? pages_per_form : undefined,
       });
 
-      onImport(response.data);
       onClose();
       methods.reset();
     } catch (e) {
@@ -170,7 +167,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".pdf" />
+              <SingleFileUploader name="file" accept=".pdf" shouldUnregister />
             </Box>
 
             <Box mt="24px">

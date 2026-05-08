@@ -73,7 +73,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 49
+        expect(response_data.size).to eq 51
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -550,6 +550,13 @@ resource 'Campaigns' do
         do_request
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'no_recipients')
+      end
+
+      example '[error] Send a campaign that has already been sent' do
+        create(:delivery, campaign: campaign)
+        do_request
+        assert_status 422
+        expect(json_response_body).to include_response_error(:base, 'already_sent')
       end
     end
 

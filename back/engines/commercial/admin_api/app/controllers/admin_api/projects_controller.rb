@@ -35,7 +35,8 @@ module AdminApi
     def template_import
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      job = CopyProjectJob.perform_later(template_yaml, folder_id)
+      user_id = template_import_params[:user_id]
+      job = CopyProjectJob.perform_later(template_yaml, user_id, folder_id)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
@@ -66,7 +67,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id)
+      params.require(:project).permit(:template_yaml, :folder_id, :user_id)
     end
 
     def template_export_params

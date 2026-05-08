@@ -146,8 +146,8 @@ module EmailCampaigns
 
     def users_to_projects
       res = {}
-      Project.left_outer_joins(:admin_publication)
-        .where(admin_publications: { publication_status: 'published' })
+      Project
+        .where(admin_publication: AdminPublication.published)
         .map do |project|
         ProjectPolicy::InverseScope.new(project, User).resolve.ids.each do |user_id|
           res[user_id] ||= []

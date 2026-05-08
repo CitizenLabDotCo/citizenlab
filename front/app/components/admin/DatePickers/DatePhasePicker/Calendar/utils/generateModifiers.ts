@@ -1,4 +1,10 @@
-import { differenceInDays, addDays } from 'date-fns';
+import {
+  differenceInDays,
+  addDays,
+  isSameDay,
+  differenceInHours,
+  startOfDay,
+} from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -29,9 +35,22 @@ export const generateModifiers = ({
 
   const disabledModifiers = generateDisabledModifiers(disabledRanges);
 
+  const boundaryModifiers = generateBoundaryModifiers({
+    selectedRange,
+    disabledRanges,
+  });
+  const fullOccupiedModifiers =
+    generateFullOccupiedDayModifiers(disabledRanges);
+
+  const noTimeAvailableModifires =
+    generateNoTimeAvailableModifiers(disabledRanges);
+
   return {
     ...selectedModifiers,
     ...disabledModifiers,
+    ...boundaryModifiers,
+    ...fullOccupiedModifiers,
+    ...noTimeAvailableModifires,
   };
 };
 
@@ -41,6 +60,19 @@ const generateSelectedModifiers = ({
 }: GenerateModifiersParams) => {
   if (from === undefined) {
     return {};
+  }
+
+  if (
+    to &&
+    from.getHours() === 0 &&
+    from.getMinutes() === 0 &&
+    to.getHours() === 0 &&
+    to.getMinutes() === 0 &&
+    differenceInHours(to, from) === 24
+  ) {
+    return {
+      isSelectedSingleDay: [from],
+    };
   }
 
   if (to !== undefined) {
@@ -129,12 +161,19 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
 };
 
 const generateMiddleRange = ({ from, to }: ClosedDateRange) => {
-  const diff = differenceInDays(to, from);
+  // Calculate days including partial days
+  const fromDate = new Date(from);
+  fromDate.setHours(0, 0, 0, 0);
+  const toDate = new Date(to);
+  toDate.setHours(0, 0, 0, 0);
+
+  const diff = differenceInDays(toDate, fromDate);
+
   if (diff < 2) return undefined;
-  if (diff === 2) return addDays(from, 1);
+  if (diff === 2) return addDays(fromDate, 1);
   return {
-    from: addDays(from, 1),
-    to: addDays(to, -1),
+    from: addDays(fromDate, 1),
+    to: addDays(toDate, -1),
   };
 };
 
@@ -152,12 +191,51 @@ const generateDisabledMiddleRange = (disabledRanges: ClosedDateRange[]) => {
   }, []);
 };
 
+const generateBoundaryModifiers = ({
+  selectedRange: { from, to },
+  disabledRanges,
+}: GenerateModifiersParams) => {
+  const disabledEndSelectedStart: Date[] = [];
+  const disabledStartSelectedEnd: Date[] = [];
+  const disabledEndDisabledStart: Date[] = [];
+
+  for (const range of disabledRanges) {
+    if (from && range.to && isSameDay(range.to, from)) {
+      disabledEndSelectedStart.push(from);
+    }
+    if (to && isSameDay(range.from, to)) {
+      disabledStartSelectedEnd.push(to);
+    }
+  }
+
+  // Detect boundaries between two disabled ranges on the same day
+  for (let i = 0; i < disabledRanges.length - 1; i++) {
+    const current = disabledRanges[i];
+    const next = disabledRanges[i + 1];
+    if (current.to && isSameDay(current.to, next.from)) {
+      disabledEndDisabledStart.push(current.to);
+    }
+  }
+
+  return {
+    ...(disabledEndSelectedStart.length > 0
+      ? { isBoundaryDisabledEndSelectedStart: disabledEndSelectedStart }
+      : {}),
+    ...(disabledStartSelectedEnd.length > 0
+      ? { isBoundaryDisabledStartSelectedEnd: disabledStartSelectedEnd }
+      : {}),
+    ...(disabledEndDisabledStart.length > 0
+      ? { isBoundaryDisabledEndDisabledStart: disabledEndDisabledStart }
+      : {}),
+  };
+};
+
 const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
   const disabledRangesWithoutSingleDayRanges: ClosedDateRange[] = [];
   const singleDayRanges: ClosedDateRange[] = [];
 
   for (const range of disabledRanges) {
-    if (range.to.getTime() === range.from.getTime()) {
+    if (isSameDay(range.from, range.to)) {
       singleDayRanges.push(range);
     } else {
       disabledRangesWithoutSingleDayRanges.push(range);
@@ -204,5 +282,73 @@ const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
       disabledRangesWithoutSingleDayRanges
     ),
     isDisabledEnd: disabledRangesWithoutSingleDayRanges.map(({ to }) => to),
+  };
+};
+
+// max 1 start and 1 end per day
+const generateFullOccupiedDayModifiers = (disabledRanges: DateRange[]) => {
+  const fullOccupiedDays: Date[] = [];
+  const allDays = new Set<number>();
+
+  for (const range of disabledRanges) {
+    allDays.add(startOfDay(range.from).getTime());
+    if (range.to) allDays.add(startOfDay(range.to).getTime());
+  }
+
+  for (const dayTs of allDays) {
+    let startCount = 0;
+    let endCount = 0;
+    const day = new Date(dayTs);
+
+    for (const range of disabledRanges) {
+      if (isSameDay(range.from, day)) startCount += 1;
+      if (range.to && isSameDay(range.to, day)) endCount += 1;
+    }
+
+    if (startCount >= 1 && endCount >= 1) {
+      fullOccupiedDays.push(day);
+    }
+  }
+
+  return {
+    ...(fullOccupiedDays.length > 0
+      ? { isFullOccupiedDay: fullOccupiedDays }
+      : {}),
+  };
+};
+
+// if the phase start at 00:00 Or the end is at 11:59 ( there will be no more time available on that day)
+const generateNoTimeAvailableModifiers = (disabledRanges: DateRange[]) => {
+  const noTimeAvailableDays: Date[] = [];
+  const allDays = new Set<number>();
+
+  for (const range of disabledRanges) {
+    allDays.add(startOfDay(range.from).getTime());
+    if (range.to) allDays.add(startOfDay(range.to).getTime());
+  }
+
+  for (const dayTs of allDays) {
+    const day = new Date(dayTs);
+
+    const isNoTime = disabledRanges.some(
+      (range) =>
+        (isSameDay(range.from, day) &&
+          range.from.getHours() === 0 &&
+          range.from.getMinutes() === 0) ||
+        (range.to &&
+          isSameDay(range.to, day) &&
+          range.to.getHours() === 23 &&
+          range.to.getMinutes() === 59)
+    );
+
+    if (isNoTime) {
+      noTimeAvailableDays.push(day);
+    }
+  }
+
+  return {
+    ...(noTimeAvailableDays.length > 0
+      ? { isNoTimeAvailable: noTimeAvailableDays }
+      : {}),
   };
 };

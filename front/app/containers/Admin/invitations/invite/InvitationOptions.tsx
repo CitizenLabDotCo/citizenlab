@@ -254,7 +254,7 @@ const InvitationOptions = ({
         </SectionField>
 
         <SectionField>
-          <Label>
+          <Label id="invite-text-label">
             <FormattedMessage {...messages.inviteTextLabel} />
           </Label>
           <QuillEditor
@@ -264,6 +264,7 @@ const InvitationOptions = ({
             limitedTextFormatting
             noVideos
             withCTAButton
+            ariaLabelledBy="invite-text-label"
           />
         </SectionField>
       </Box>

@@ -95,7 +95,7 @@ class Project < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
-  has_one :admin_publication, as: :publication, dependent: :destroy
+  has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
   after_destroy :remove_moderators
@@ -133,7 +133,11 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_global_topics, (proc do |topic_ids|
-    joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
+    with_dups =
+      joins(:projects_global_topics)
+      .where(projects_global_topics: { global_topic_id: topic_ids })
+
+    where(id: with_dups)
   end)
 
   scope :ordered, lambda {
@@ -141,16 +145,12 @@ class Project < ApplicationRecord
   }
 
   scope :draft, lambda {
-    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+    draft_admin_pubs = AdminPublication.draft.where(publication_type: 'Project')
+    where(id: draft_admin_pubs.select(:publication_id))
   }
 
-  scope :not_draft, lambda {
-    where.not(id: draft)
-  }
-
-  scope :publicly_visible, lambda {
-    where(visible_to: 'public')
-  }
+  scope :not_draft, -> { where.not(id: draft) }
+  scope :publicly_visible, -> { where(visible_to: 'public') }
 
   scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
 
@@ -184,9 +184,13 @@ class Project < ApplicationRecord
   }
 
   scope :not_in_draft_folder, lambda {
-    joins(:admin_publication)
-      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
-      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+    draft_folders = AdminPublication.draft.where(children_allowed: true)
+
+    joined = joins(:admin_publication)
+    top_level = joined.where(admin_publications: { parent_id: nil })
+    in_folder = joined.where.not(admin_publications: { parent_id: draft_folders })
+
+    top_level.or(in_folder)
   }
 
   scope :with_participation_count, lambda {

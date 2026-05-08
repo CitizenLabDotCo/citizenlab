@@ -12,8 +12,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Combobox from './Combobox';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import SingleSelectDropdown from './SingleSelectDropdown';
 
 const Container = styled(Box)<{ mr?: string; ml?: string }>`
   display: inline-block;
@@ -210,6 +210,11 @@ const FilterSelector = ({
     if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
       toggleValuesList();
+      return;
+    }
+    if (event.key === 'Escape' && opened) {
+      event.preventDefault();
+      closeExpanded();
     }
   };
 
@@ -237,6 +242,7 @@ const FilterSelector = ({
     filterSelectorStyle,
     minWidth,
     toggleValuesList,
+    closeExpanded,
     textColor,
     currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
     handleKeyDown,
@@ -261,7 +267,7 @@ const FilterSelector = ({
           {...sharedProps}
         />
       ) : (
-        <Combobox
+        <SingleSelectDropdown
           options={values}
           onChange={selectionChange}
           {...sharedProps}

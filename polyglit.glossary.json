@@ -9,13 +9,23 @@
     "de-DE": "Papier-Scans"
   },
   "GovSuccess Manager": {
+    "de-DE": "Kundenbetreuerin",
     "fr-FR": "Spécialiste en participation Go Vocal"
   },
   "Government Success Manager": {
     "de-DE": "Kundenbetreuerin"
   },
+  "Space (i.e. The container for folders and projects)": {
+    "da-DK": "Rum"
+  },
+  "Space Manager": {
+    "da-DK": "Rumadministrator"
+  },
   "admin": {
     "de-DE": "Admin"
+  },
+  "approve": {
+    "de-DE": "freigeben"
   },
   "email": {
     "da-DK": "e-mail",
@@ -36,6 +46,12 @@
     "es-ES": "gestor",
     "fr-FR": "gestionnaire"
   },
+  "plan": {
+    "de-DE": "Lizenz"
+  },
+  "recipients": {
+    "de-DE": "Empfänger*innen"
+  },
   "save": {
     "da-DK": "gem",
     "fr-FR": "enregistrer"
@@ -52,5 +68,8 @@
   },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
+  },
+  "users": {
+    "de-DE": "Nutzende"
   }
 }

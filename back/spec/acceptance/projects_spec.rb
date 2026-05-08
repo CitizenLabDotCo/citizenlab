@@ -29,7 +29,21 @@ resource 'Projects' do
     end
 
     with_options scope: %i[project admin_publication_attributes] do
-      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+      parameter :publication_status, <<~DESC.squish
+        The publication status of the project. 
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Defaults to published.
+      DESC
+
+      parameter :scheduled_status, <<~DESC.squish
+        The publication status that the project is scheduled to transition to.
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Must be set together with `scheduled_at`.
+        Set to null to cancel the schedule.
+      DESC
+
+      parameter :scheduled_at, <<~DESC.squish
+        The time at which the project is scheduled to transition to `scheduled_status`.
+        Must be set together with `scheduled_status`. Set to null to cancel the schedule.
+      DESC
     end
 
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -681,6 +695,117 @@ resource 'Projects' do
             .with(@project, 'published', anything, anything, anything)
         end
       end
+
+      context 'scheduled transitions', document: false do
+        let(:project) { create(:project) }
+        let(:admin_publication) { project.admin_publication }
+        let(:id) { project.id }
+
+        example 'Schedule a status transition' do
+          scheduled_at = 1.day.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from(nil).to('draft')
+            .and change { admin_publication.reload.scheduled_at }.from(nil).to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.from(nil).to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: 'draft',
+            scheduled_at: scheduled_at
+          )
+        end
+
+        example 'Cancel a scheduled transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Reschedule a transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          scheduled_at = 3.days.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { admin_publication.reload.scheduled_at }.to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(scheduled_at: scheduled_at)
+        end
+
+        example 'Immediate status change cancels schedule', document: false do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
+          )
+
+          expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }
+            .to change { admin_publication.reload.publication_status }.from('published').to('draft')
+            .and change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            publication_status: 'draft',
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Updates materializes due status transition first' do
+          project.admin_publication.update_columns(
+            publication_status: 'draft',
+            scheduled_status: 'published',
+            scheduled_at: 1.hour.ago,
+            scheduled_by_id: @user.id
+          )
+
+          admin_publication_attributes = { publication_status: 'archived' }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to enqueue_job(LogActivityJob).with(project, 'published', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(project, 'changed', anything, anything, anything).twice
+
+          assert_status 200
+
+          admin_publication.reload
+          expect(admin_publication.first_published_at).to be_present
+
+          expect(admin_publication.publication_status).to eq('archived')
+          expect(admin_publication.scheduled_status).to be_nil
+          expect(admin_publication.scheduled_at).to be_nil
+          expect(admin_publication.scheduled_by).to be_nil
+        end
+      end
     end
 
     delete 'web_api/v1/projects/:id' do
@@ -802,8 +927,8 @@ resource 'Projects' do
           :phase,
           project: project,
           participation_method: 'ideation',
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago,
+          end_at: 30.days.ago
         )
       end
 
@@ -811,8 +936,8 @@ resource 'Projects' do
         create(
           :volunteering_phase,
           project: project,
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago
         )
       end
 
@@ -820,8 +945,8 @@ resource 'Projects' do
         create(
           :poll_phase,
           project: project,
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: volunteering_phase.end_at,
+          end_at: 10.days.ago
         )
       end
 
@@ -927,70 +1052,68 @@ resource 'Projects' do
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
-      let(:project) { create(:project) }
-      let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
-      let(:ideation_phase) do
-        create(
+      before_all do
+        @project = create(:project)
+        project_form = create(:custom_form, :with_default_fields, participation_context: @project)
+        @extra_idea_field = create(:custom_field, resource: project_form)
+
+        ideation_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'ideation',
           title_multiloc: { 'en' => 'Phase 1: Ideation' },
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago, end_at: 30.days.ago
         )
-      end
-      let(:native_survey_phase) do
-        create(
+
+        native_survey_phase = create(
           :native_survey_phase,
-          project: project,
+          project: @project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days),
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago,
           with_permissions: true
         )
-      end
-      let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }
-      let!(:linear_scale_field) { create(:custom_field_linear_scale, resource: survey_form) }
-      let(:information_phase) do
-        create(
+        survey_form = create(:custom_form, participation_context: native_survey_phase)
+        @linear_scale_field = create(:custom_field_linear_scale, resource: survey_form)
+
+        information_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'information',
           title_multiloc: { 'en' => 'Phase 3: Information' },
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: native_survey_phase.end_at,
+          end_at: 10.days.ago
         )
-      end
-      let(:single_voting_phase) do
-        create(
-          :single_voting_phase,
-          project: project,
-          title_multiloc: { 'en' => 'Phase 4: Voting' },
-          start_at: (Time.zone.today - 10.days),
-          end_at: (Time.zone.today + 2.days)
-        )
-      end
-      let(:id) { project.id }
 
-      let!(:ideation_response) do
-        create(
+        single_voting_phase = create(
+          :single_voting_phase,
+          project: @project,
+          title_multiloc: { 'en' => 'Phase 4: Voting' },
+          start_at: information_phase.end_at,
+          end_at: 2.days.from_now
+        )
+
+        @ideation_response = create(
           :idea,
-          project: project,
-          custom_field_values: { extra_idea_field.key => 'Answer' },
+          custom_field_values: { @extra_idea_field.key => 'Answer' },
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
-      end
-      let!(:survey_response) do
-        create(
+
+        @survey_response = create(
           :idea,
-          project: project,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_values: { linear_scale_field.key => 2 }
+          custom_field_values: { @linear_scale_field.key => 2 }
         )
       end
+
+      let(:project) { @project }
+      let(:id) { project.id }
+      let(:ideation_response) { @ideation_response }
+      let(:survey_response) { @survey_response }
+      let(:linear_scale_field) { @linear_scale_field }
+      let(:extra_idea_field) { @extra_idea_field }
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
         assert_status 200
@@ -1729,11 +1852,39 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       describe do
-        let(:project) { create(:project) }
         let(:id) { project.id }
 
-        example_request 'It does not authorize the folder moderator' do
-          assert_status 401
+        context 'when project is outside their folder' do
+          let(:project) { create(:project) }
+
+          example_request 'It does not authorize a folder moderator to update project outside their folder' do
+            assert_status 401
+          end
+        end
+
+        context 'when project is in a folder they moderate' do
+          let(:project) { create(:project, folder: project_folder) }
+
+          example 'It allows FM to move a project to another folder they moderate' do
+            project_folder2 = create(:project_folder)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
+
+          example 'It allows FM to move a project to another folder they moderate, even if that project is in a space they cannot moderate' do
+            other_space = create(:space)
+            project_folder2 = create(:project_folder, space: other_space)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
         end
       end
     end
@@ -1804,6 +1955,18 @@ resource 'Projects' do
 
       example '[Unauthorized] Delete a project that has been published', document: false do
         project.admin_publication.update!(first_published_at: Time.zone.now)
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
+
+      example '[Unauthorized] Delete a project with a due scheduled publish', document: false do
+        project.admin_publication.update_columns(
+          scheduled_status: 'published', scheduled_at: 1.hour.ago,
+          scheduled_by_id: moderator.id
+        )
 
         do_request
 
@@ -2011,9 +2174,15 @@ resource 'Projects' do
       end
 
       context 'when neither space_id nor folder_id is provided' do
-        example '[Unauthorized] Cannot create project without space_id or folder_id', document: false do
+        example 'Can create project without space_id or folder_id', document: false do
           do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
-          assert_status 401
+          assert_status 201
+        end
+
+        example 'Can create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
+          create(:project, space: space)
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 201
         end
       end
     end
