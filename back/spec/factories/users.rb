@@ -58,13 +58,14 @@ FactoryBot.define do
     invite_status { nil }
   end
 
-  factory :invited_user do
+  factory :invited_user, class: 'User' do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     sequence(:email) do |n|
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
     end
+    locale { 'en' }
     invite_status { 'pending' }
 
     after(:create) do |user, _evaluator|
