@@ -254,7 +254,7 @@ export default defineMessages({
   },
   a11y_ctaForProject: {
     id: 'app.components.ProjectCard.a11y_ctaForProject',
-    defaultMessage: '{cta} on project {projectTitle}',
+    defaultMessage: '{cta}. Project {projectTitle}',
   },
   readTheReport: {
     id: 'app.components.ProjectCard.readTheReport',
