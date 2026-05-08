@@ -17834,6 +17834,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.fieldDestinationLink": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.widgets.fieldFolders": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.widgets.fieldFont": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -17883,6 +17893,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.fieldProjectsLimit": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.widgets.fieldRelativeLink": {
     "state": "verified",
@@ -17949,6 +17964,26 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.projectSortEndingSoon": {
+    "state": "verified",
+    "verified_at": "2026-04-20T15:10:23.773755Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.widgets.projectSortMostParticipants": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.widgets.projectSortNewest": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.widgets.projectSortPlatformOrder": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.widgets.settingsTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -17974,15 +18009,35 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.tabIdeas": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.widgets.tabProjects": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.widgets.title": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.widgets.titleContent": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.widgets.titleDimensions": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.widgets.titleHeaderAndButton": {
+    "state": "verified",
+    "verified_at": "2026-04-07T15:09:21.721877Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": {
     "state": "verified",
