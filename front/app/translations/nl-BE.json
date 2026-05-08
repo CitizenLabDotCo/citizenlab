@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Je kan niet langer deelnemen aan dit project omdat het gearchiveerd is",
   "app.components.ProjectArchivedIndicator.previewProject": "Conceptproject:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Alleen zichtbaar voor moderators en degenen met een voorbeeldlink.",
+  "app.components.ProjectCard.a11y_ctaForProject1": "{cta}. Project {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Projectbeschrijving:",
   "app.components.ProjectCard.a11y_projectTitle": "Titel van het project:",
   "app.components.ProjectCard.addYourOption": "Voeg een optie toe",

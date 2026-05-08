@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Tyvärr kan du inte delta i det här projektet längre eftersom det har arkiverats",
   "app.components.ProjectArchivedIndicator.previewProject": "Utkast till projekt:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Synlig endast för moderatorer och de som har en förhandsgranskningslänk.",
+  "app.components.ProjectCard.a11y_ctaForProject1": "{cta}. Projekt {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Projektbeskrivning:",
   "app.components.ProjectCard.a11y_projectTitle": "Projekttitel:",
   "app.components.ProjectCard.addYourOption": "Lägg till ditt alternativ",
