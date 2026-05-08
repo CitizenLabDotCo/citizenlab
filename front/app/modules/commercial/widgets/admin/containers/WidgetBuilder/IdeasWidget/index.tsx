@@ -6,11 +6,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { useIntl } from 'utils/cl-intl';
 
-import WidgetBuilder from '../WidgetBuilder';
-import {
-  sharedSchemaFields,
-  getSharedDefaultValues,
-} from '../WidgetBuilder/shared';
+import WidgetBuilder from '..';
+import { sharedSchemaFields, getSharedDefaultValues } from '../shared';
 
 import Form from './Form';
 import tracks from './tracks';

@@ -15,8 +15,8 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
-import IdeasWidget from './IdeasWidget';
-import ProjectsWidget from './ProjectsWidget';
+import IdeasWidget from './WidgetBuilder/IdeasWidget';
+import ProjectsWidget from './WidgetBuilder/ProjectsWidget';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 20px;

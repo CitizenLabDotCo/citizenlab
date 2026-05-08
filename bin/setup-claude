@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # bin/setup-claude — clone or update the citizenlab-claude private overlay
-# and create per-file symlinks under .claude/private/ in the public repo.
+# and create per-file symlinks under .claude/ in the public repo. Everything
+# under .claude/ is private (mirrored here) except .claude/settings.json,
+# which is committed publicly.
 #
 # Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
 # overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
@@ -60,48 +62,38 @@ else
   git -C "$PRIVATE_DIR" pull --ff-only
 fi
 
-mkdir -p .claude/private .claude/skills
+mkdir -p .claude
 
-# Clean stale file symlinks so files removed from the private repo disappear here too
-find .claude/private -type l -delete 2>/dev/null || true
+# Clean stale file symlinks under .claude/ so files removed from the private
+# repo disappear here too. Doesn't touch .claude/settings.json (regular file,
+# committed) or any non-symlink entry.
+find .claude -type l -delete 2>/dev/null || true
 
-# Mirror everything from the private repo (CLAUDE.md files, hook scripts, etc.)
-# as per-file symlinks under a real .claude/private/ directory. Skills and the
-# settings.local.json are handled separately below.
+# One-shot migration cleanup for devs upgrading from earlier .claude/
+# layouts that this script no longer produces. Each line is idempotent
+# (the test guards make it a no-op on fresh clones), so it's safe to
+# leave indefinitely — and safe to delete once every active dev has
+# run setup-claude at least once after the relevant layout change.
+[ -d .claude/private ] && rm -rf .claude/private             # pre-flatten nested-private/ namespace
+[ -L .claude/skills/private ] && rm .claude/skills/private   # original single-dir-symlink design (predates per-file symlinks)
+
+# Mirror every tracked file from the private repo as a per-file symlink at
+# .claude/<same-relative-path>. Per-file (not directory) symlinks because
+# Claude Code's `@import` and skill/command discovery don't follow directory
+# symlinks. Skipped: the private repo's own README/.gitignore, the per-folder
+# README docs, and the two files that have special destinations below.
 while IFS= read -r -d '' src; do
   rel="${src#$PRIVATE_DIR/}"
-  dst=".claude/private/$rel"
+  dst=".claude/$rel"
   mkdir -p "$(dirname "$dst")"
   ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
 done < <(find "$PRIVATE_DIR" -type f \
   -not -path '*/.git/*' \
-  -not -path "$PRIVATE_DIR/skills/*" \
   -not -name 'README.md' \
   -not -name '.gitignore' \
   -not -name 'settings.local.json' \
   -not -name '.claude-readme.md' \
   -print0)
-
-# Skills: per-file symlinks under real per-skill directories.
-# Claude Code's skill discovery only walks top-level .claude/skills/<name>/ and
-# doesn't follow dir symlinks (verified empirically), so we mirror each skill
-# as a real directory with file symlinks for SKILL.md and any other contents.
-mkdir -p .claude/skills
-
-# Remove obsolete top-level dir symlink from the earlier design, if present
-[ -L .claude/skills/private ] && rm .claude/skills/private
-
-# Clean stale per-skill file symlinks (depth >= 2, type symlink) so files
-# removed from the private repo disappear here too
-find .claude/skills -mindepth 2 -type l -delete 2>/dev/null || true
-
-# Mirror each skill's contents as file symlinks under a real per-skill directory
-while IFS= read -r -d '' src; do
-  rel="${src#$PRIVATE_DIR/skills/}"
-  dst=".claude/skills/$rel"
-  mkdir -p "$(dirname "$dst")"
-  ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
-done < <(find "$PRIVATE_DIR/skills" -mindepth 2 -type f -not -path '*/.git/*' -print0)
 
 # Private hook config / settings (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
