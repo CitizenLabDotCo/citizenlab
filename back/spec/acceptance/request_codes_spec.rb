@@ -51,7 +51,7 @@ resource 'Request codes' do
     # This is an edge case related to legacy users, where a user has a password set
     # but has not confirmed their email yet. This should not be possible anymore.
     example 'works if user has password and does not have email confirmed' do
-      user = create(:unconfirmed_user, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be true
 
