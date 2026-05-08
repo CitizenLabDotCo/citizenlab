@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaFeed::TopicModelingService do
-  let(:service) { described_class.new(phase) }
+  let(:service) { described_class.new(project) }
 
   describe '#rebalance_topics!' do
     let!(:project) { create(:project) }
@@ -145,7 +145,7 @@ describe IdeaFeed::TopicModelingService do
           .and change { old_topics[0].reload.title_multiloc['en'] }.from('Parking areas').to('Parking')
           .and change { old_topics[0].reload.description_multiloc['fr-FR'] }.from(nil).to('Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.')
           .and have_enqueued_job(LogActivityJob).at_least(:once).with(kind_of(InputTopic), 'created', nil, anything, project_id: kind_of(String))
-          .and have_enqueued_job(LogActivityJob).at_least(:once).with(phase, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
+          .and have_enqueued_job(LogActivityJob).at_least(:once).with(project, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
             update_log: [{ topic_id: old_topics[0].id, title_multiloc: { old: { 'en' => 'Parking areas' }, new: { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } }, description_multiloc: { old: { 'en' => 'Ideas about depositing your car' }, new: { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } } }],
             input_count: 1,
             creation_log: [{ topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' }, icon: nil }],
@@ -169,7 +169,7 @@ describe IdeaFeed::TopicModelingService do
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
           .and have_enqueued_job(LogActivityJob).twice.with(kind_of(InputTopic), 'created', nil, anything, project_id: kind_of(String))
-          .and have_enqueued_job(LogActivityJob).at_least(:once).with(phase, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
+          .and have_enqueued_job(LogActivityJob).at_least(:once).with(project, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
             update_log: [],
             input_count: 1,
             creation_log: [
