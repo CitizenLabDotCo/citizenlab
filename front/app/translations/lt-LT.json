@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Deja, šiame projekte nebegalite dalyvauti, nes jis buvo archyvuotas.",
   "app.components.ProjectArchivedIndicator.previewProject": "Projekto projektas:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Matomas tik moderatoriams ir tiems, kurie turi peržiūros nuorodą.",
+  "app.components.ProjectCard.a11y_ctaForProject": "{cta} projekte {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Projekto aprašymas:",
   "app.components.ProjectCard.a11y_projectTitle": "Projekto pavadinimas:",
   "app.components.ProjectCard.addYourOption": "Pridėkite savo parinktį",

@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Niestety, nie możesz już uczestniczyć w tym projekcie, ponieważ został on zarchiwizowany",
   "app.components.ProjectArchivedIndicator.previewProject": "Projekt wstępny:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Widoczne tylko dla moderatorów i osób z linkiem podglądu.",
+  "app.components.ProjectCard.a11y_ctaForProject": "{cta} w projekcie {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Opis projektu:",
   "app.components.ProjectCard.a11y_projectTitle": "Tytuł projektu:",
   "app.components.ProjectCard.addYourOption": "Dodaj swoją opcję",

@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Ar an drochuair, ní féidir leat páirt a ghlacadh sa tionscadal seo a thuilleadh mar go bhfuil sé cartlannaithe.",
   "app.components.ProjectArchivedIndicator.previewProject": "Dréacht-thionscadal:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Le feiceáil ag modhnóirí agus ag daoine a bhfuil nasc réamhamhairc acu amháin.",
+  "app.components.ProjectCard.a11y_ctaForProject": "{cta} ar an tionscadal {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Cur síos ar an tionscadal:",
   "app.components.ProjectCard.a11y_projectTitle": "Teideal an tionscadail:",
   "app.components.ProjectCard.addYourOption": "Cuir do rogha leis",

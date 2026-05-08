@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Δυστυχώς, δεν μπορείτε πλέον να συμμετέχετε σε αυτό το έργο, επειδή έχει αρχειοθετηθεί",
   "app.components.ProjectArchivedIndicator.previewProject": "Σχέδιο έργου:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Ορατό μόνο στους συντονιστές και σε όσους έχουν σύνδεσμο προεπισκόπησης.",
+  "app.components.ProjectCard.a11y_ctaForProject": "{cta} στο έργο {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Περιγραφή έργου:",
   "app.components.ProjectCard.a11y_projectTitle": "Τίτλος έργου:",
   "app.components.ProjectCard.addYourOption": "Προσθέστε την επιλογή σας",

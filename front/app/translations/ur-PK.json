@@ -496,6 +496,7 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "بدقسمتی سے، آپ اس پروجیکٹ میں مزید حصہ نہیں لے سکتے کیونکہ اسے آرکائیو کر دیا گیا ہے۔",
   "app.components.ProjectArchivedIndicator.previewProject": "ڈرافٹ پروجیکٹ:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "صرف ماڈریٹرز اور پیش نظارہ لنک والے افراد کے لیے مرئی۔",
+  "app.components.ProjectCard.a11y_ctaForProject": "پراجیکٹ {projectTitle} پر {cta}",
   "app.components.ProjectCard.a11y_projectDescription": "پروجیکٹ کی تفصیل:",
   "app.components.ProjectCard.a11y_projectTitle": "پروجیکٹ کا عنوان:",
   "app.components.ProjectCard.addYourOption": "اپنا اختیار شامل کریں۔",
