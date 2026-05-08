@@ -2489,6 +2489,11 @@
     "verified_at": "2026-05-07T09:37:02.958346Z",
     "verified_by": "Jelena"
   },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T07:08:24.141901Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
