@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 # bin/setup-claude — clone or update the citizenlab-claude private overlay
-# and create per-file symlinks under .claude/ in the public repo. Everything
-# under .claude/ is private (mirrored here) except .claude/settings.json,
-# which is committed publicly.
+# and create per-file symlinks in the public repo so Claude Code can find
+# its config:
+#   - .claude/<rel>: hooks, skills, commands, settings.local.json, and
+#     anything else the private overlay tracks. Everything under .claude/
+#     is private (mirrored here) except .claude/settings.json, which is
+#     committed publicly.
+#   - <area>/CLAUDE.md (root + per-area): file symlinks pointing directly
+#     at the private content. Gitignored at any path via .gitignore.
+#     Claude Code's CLAUDE.md discovery follows file symlinks, so no
+#     committed stub or @import indirection is needed.
 #
 # Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
 # overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
@@ -81,7 +88,8 @@ find .claude -type l -delete 2>/dev/null || true
 # .claude/<same-relative-path>. Per-file (not directory) symlinks because
 # Claude Code's `@import` and skill/command discovery don't follow directory
 # symlinks. Skipped: the private repo's own README/.gitignore, the per-folder
-# README docs, and the two files that have special destinations below.
+# README docs, the files with special destinations handled below, and any
+# CLAUDE.md (those are materialized as top-level symlinks, see further down).
 while IFS= read -r -d '' src; do
   rel="${src#$PRIVATE_DIR/}"
   dst=".claude/$rel"
@@ -93,7 +101,12 @@ done < <(find "$PRIVATE_DIR" -type f \
   -not -name '.gitignore' \
   -not -name 'settings.local.json' \
   -not -name '.claude-readme.md' \
+  -not -name 'CLAUDE.md' \
   -print0)
+
+# Remove any empty directories under .claude/ left behind after the CLAUDE.md
+# exclusion (e.g. .claude/back/ / .claude/front/ from the previous design).
+find .claude -mindepth 1 -type d -empty -delete 2>/dev/null || true
 
 # Private hook config / settings (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
@@ -104,6 +117,42 @@ fi
 if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
 fi
+
+# Top-level CLAUDE.md symlinks: Claude Code's CLAUDE.md discovery walks up
+# from the CWD looking for files at fixed paths. We put a file symlink at
+# each <area>/CLAUDE.md (and root) pointing directly at the private content,
+# so Claude Code reads the private content without any committed stub or
+# @import indirection.
+
+# Clean up stale top-level CLAUDE.md symlinks before recreating from the
+# current private state. We own all CLAUDE.md anywhere in the public repo
+# (gitignored everywhere via .gitignore), so it's safe to wipe and recreate.
+# Skip vendor / vcs dirs and .claude/ (handled by its own cleanup above).
+find . -type l -name 'CLAUDE.md' \
+  -not -path '*/.git/*' \
+  -not -path '*/.claude/*' \
+  -not -path '*/node_modules/*' \
+  -delete 2>/dev/null || true
+
+# Create a top-level CLAUDE.md symlink for every CLAUDE.md in the private
+# repo. Skip paths whose parent directory doesn't exist in the public repo —
+# this avoids materializing phantom area directories from a stale private
+# entry. ln -sfn overwrites any leftover regular file (e.g. a committed stub
+# from the previous layout that hasn't been removed by `git pull` yet).
+while IFS= read -r -d '' src; do
+  rel="${src#$PRIVATE_DIR/}"
+  parent="$(dirname "$rel")"
+  if [ "$parent" = "." ] || [ -d "$parent" ]; then
+    # Avoid passing "$REPO_ROOT/." to relpath (trailing /. throws off the
+    # prefix-strip loop and produces an extra ../).
+    if [ "$parent" = "." ]; then
+      anchor="$REPO_ROOT"
+    else
+      anchor="$REPO_ROOT/$parent"
+    fi
+    ln -sfn "$(relpath "$src" "$anchor")" "$rel"
+  fi
+done < <(find "$PRIVATE_DIR" -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
 
 # Install the privacy guard hooks (versioned at .githooks/)
 if [ -d .githooks ]; then

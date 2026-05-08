@@ -16,15 +16,14 @@ if [ -n "$LEAKED" ]; then
   errors=$((errors + 1))
 fi
 
-# 2. Every public CLAUDE.md must reference a private overlay via @import,
-#    so that accidental stripping of the import line is caught.
-while IFS= read -r f; do
-  [ -z "$f" ] && continue
-  if ! grep -qE '^@\.{0,2}/?\.claude/' "$f"; then
-    echo "ERROR: $f is missing the expected '@.../.claude/...' import line." >&2
-    errors=$((errors + 1))
-  fi
-done < <(git ls-files '*/CLAUDE.md' 'CLAUDE.md')
+# 2. No CLAUDE.md should be tracked at any path. They're all gitignored
+#    file symlinks materialized by bin/setup-claude.
+TRACKED_CLAUDE_MD="$(git ls-files '*/CLAUDE.md' 'CLAUDE.md' 2>/dev/null || true)"
+if [ -n "$TRACKED_CLAUDE_MD" ]; then
+  echo "ERROR: tracked CLAUDE.md files (should be gitignored symlinks instead):" >&2
+  echo "$TRACKED_CLAUDE_MD" | sed 's/^/  /' >&2
+  errors=$((errors + 1))
+fi
 
 if [ "$errors" -gt 0 ]; then
   echo "" >&2

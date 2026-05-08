@@ -18,12 +18,16 @@ if [ -n "$PRIVATE_PATHS" ]; then
   exit 1
 fi
 
-# 2. Block edits to public CLAUDE.md stubs. Once stubbed, all edits belong in the private overlay.
+# 2. Block any CLAUDE.md from being staged. They're all gitignored file
+#    symlinks materialized by bin/setup-claude — no CLAUDE.md should ever
+#    be committed. Edits to CLAUDE.md content belong in citizenlab-claude.
 CLAUDE_CHANGES="$(echo "$STAGED" | grep -E '(^|/)CLAUDE\.md$' || true)"
 if [ -n "$CLAUDE_CHANGES" ]; then
-  echo "ERROR: public CLAUDE.md stubs are frozen. Edit the private overlay instead:" >&2
+  echo "ERROR: refusing to commit a CLAUDE.md file:" >&2
   echo "$CLAUDE_CHANGES" | sed 's/^/  /' >&2
-  echo "Bypass with --no-verify only for genuine stub maintenance (e.g. fixing the @import path)." >&2
+  echo "All CLAUDE.md files are gitignored symlinks managed by bin/setup-claude;" >&2
+  echo "edit content in the citizenlab-claude private overlay instead." >&2
+  echo "Bypass with --no-verify only if you really mean it." >&2
   exit 1
 fi
 
