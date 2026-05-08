@@ -7,6 +7,8 @@ import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import { useFocusFirstInvalid } from 'hooks/useFocusFirstInvalid';
+
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -69,6 +71,8 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
+
+  useFocusFirstInvalid(methods.formState.errors, methods.formState.submitCount);
 
   if (isNilOrError(appConfiguration)) return null;
 

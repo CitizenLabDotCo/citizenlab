@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
 import { FontSize } from 'component-library/components/Title';
 import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
+import { useFormState } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { useFocusFirstInvalid } from 'hooks/useFocusFirstInvalid';
 
 import Error, {
   ErrorProps,
@@ -22,10 +24,12 @@ import messages from './messages';
 import SuccessFeedback from './SuccessFeedback';
 
 type FeedbackProps = {
+  apiErrors?: any[];
   successMessage?: string;
   onlyShowErrors?: boolean;
   showErrorTitle?: boolean;
   fontSize?: FontSize;
+  className?: string;
 };
 
 const Feedback = ({
@@ -33,21 +37,17 @@ const Feedback = ({
   onlyShowErrors,
   showErrorTitle = true,
   fontSize = 'base',
+  className,
   ...errorProps
 }: FeedbackProps & ErrorProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const { data: appConfiguration } = useAppConfiguration();
 
-  const {
-    formState: {
-      errors: formContextErrors,
-      isSubmitSuccessful,
-      isSubmitted,
-      submitCount,
-    },
-    setFocus,
-  } = useFormContext();
+  const { errors: formContextErrors, submitCount } = useFormState();
+
+  // Automatically focus first invalid field when form is submitted with errors
+  useFocusFirstInvalid(formContextErrors, submitCount);
 
   useEffect(() => {
     if (submitCount > 0) {
@@ -55,16 +55,6 @@ const Feedback = ({
       setSuccessMessageIsVisible(true);
     }
   }, [submitCount]);
-  useEffect(() => {
-    if (!isSubmitted) return;
-
-    const firstField = Object.keys(formContextErrors)[0];
-    if (!firstField) return;
-
-    requestAnimationFrame(() => {
-      setFocus(firstField as any, { shouldSelect: true });
-    });
-  }, [submitCount, formContextErrors, isSubmitted, setFocus]);
   const getAllErrorMessages = () => {
     const errorMessages: Array<{
       field: string;
@@ -111,13 +101,18 @@ const Feedback = ({
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const errorMessageIsShown =
     (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
-    !isSubmitSuccessful;
-  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
+    !successMessageIsVisible;
+  const successMessageIsShown = successMessageIsVisible && successMessage;
 
   return (
     <>
-      {isSubmitted && (
-        <Box id="feedback" data-testid="feedback" key={submitCount}>
+      {submitCount > 0 && (
+        <Box
+          id="feedback"
+          data-testid="feedback"
+          key={submitCount}
+          className={className}
+        >
           {successMessageIsShown && onlyShowErrors !== true && (
             <SuccessFeedback
               successMessage={
