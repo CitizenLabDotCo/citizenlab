@@ -69,9 +69,13 @@ mkdir -p .claude
 # committed) or any non-symlink entry.
 find .claude -type l -delete 2>/dev/null || true
 
-# Remove obsolete artifacts from the previous nested-`private/` layout.
-[ -d .claude/private ] && rm -rf .claude/private
-[ -L .claude/skills/private ] && rm .claude/skills/private
+# One-shot migration cleanup for devs upgrading from earlier .claude/
+# layouts that this script no longer produces. Each line is idempotent
+# (the test guards make it a no-op on fresh clones), so it's safe to
+# leave indefinitely — and safe to delete once every active dev has
+# run setup-claude at least once after the relevant layout change.
+[ -d .claude/private ] && rm -rf .claude/private             # pre-flatten nested-private/ namespace
+[ -L .claude/skills/private ] && rm .claude/skills/private   # original single-dir-symlink design (predates per-file symlinks)
 
 # Mirror every tracked file from the private repo as a per-file symlink at
 # .claude/<same-relative-path>. Per-file (not directory) symlinks because
