@@ -21,11 +21,8 @@ node_modules
 
 # Claude Code local files
 CLAUDE.local.md
-.claude/settings.local.json
-.claude/private
-.claude/skills
-.claude/commands
-.claude/README.md
+.claude/*
+!.claude/settings.json
 
 # MCP local files
 .serena/
