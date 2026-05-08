@@ -160,7 +160,7 @@ jobs:
           name: Verify no Claude private overlay content has leaked into the public repo
           command: bin/check-claude-privacy
 
-  claude-setup-test:
+  claude-tests:
     resource_class: small
     docker:
       - image: cimg/base:stable
@@ -168,8 +168,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run bin/setup-claude tests (unit + integration via tmpdir fixtures)
-          command: bin/setup-claude.test.sh
+          name: Run Claude private overlay test scripts (setup-claude, privacy check, pre-commit hook)
+          command: |
+            bin/setup-claude.test.sh
+            bin/check-claude-privacy.test.sh
+            .githooks/pre-commit.test.sh
 
   changelogger:
     resource_class: small
@@ -903,7 +906,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - claude-setup-test:
+      - claude-tests:
           filters:
             branches:
               ignore:
