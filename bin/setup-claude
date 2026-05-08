@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # bin/setup-claude — clone or update the citizenlab-claude private overlay
-# and create per-file symlinks under .claude/private/ in the public repo.
+# and create per-file symlinks under .claude/private/, .claude/skills/, and
+# .claude/commands/ in the public repo.
 #
 # Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
 # overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
