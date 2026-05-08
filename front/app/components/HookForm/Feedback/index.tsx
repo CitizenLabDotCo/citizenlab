@@ -46,6 +46,7 @@ const Feedback = ({
       isSubmitted,
       submitCount,
     },
+    setFocus,
   } = useFormContext();
 
   useEffect(() => {
@@ -54,7 +55,16 @@ const Feedback = ({
       setSuccessMessageIsVisible(true);
     }
   }, [submitCount]);
+  useEffect(() => {
+    if (!isSubmitted) return;
 
+    const firstField = Object.keys(formContextErrors)[0];
+    if (!firstField) return;
+
+    requestAnimationFrame(() => {
+      setFocus(firstField as any, { shouldSelect: true });
+    });
+  }, [submitCount, formContextErrors, isSubmitted, setFocus]);
   const getAllErrorMessages = () => {
     const errorMessages: Array<{
       field: string;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import {
   Box,
@@ -19,6 +19,7 @@ import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -140,6 +141,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  submitCount?: number;
 }
 
 export interface TFieldNameMap {
@@ -239,9 +241,12 @@ const findErrorFromAppConfig = (
 
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const previousSubmitCountRef = useRef<number | undefined>(undefined);
+  const announcementKeyRef = useRef(0);
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const [announcement, setAnnouncement] = useState('');
 
   const {
     text,
@@ -255,6 +260,7 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    submitCount,
   } = props;
 
   useEffect(() => {
@@ -267,90 +273,177 @@ const Error = (props: ErrorProps) => {
     }
   }, [scrollIntoView]);
 
-  if (!appConfiguration) return null;
-
   const dedupApiErrors =
     apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
       ? uniqBy(apiErrors, 'error')
       : undefined;
 
+  useEffect(() => {
+    if (!appConfiguration) {
+      return;
+    }
+
+    if (!text && !apiErrors) {
+      previousSubmitCountRef.current = undefined;
+      announcementKeyRef.current = 0;
+      setAnnouncement('');
+      return;
+    }
+
+    const isNewSubmission = submitCount !== previousSubmitCountRef.current;
+    previousSubmitCountRef.current = submitCount;
+
+    if (!isNewSubmission) {
+      return;
+    }
+
+    let message = '';
+
+    if (typeof text === 'string') {
+      message = text;
+    }
+
+    if (!message && dedupApiErrors?.length) {
+      const firstError = dedupApiErrors[0];
+
+      const errorMessageDescriptor = findErrorMessageDescriptor(
+        fieldName,
+        firstError.error
+      );
+
+      const values = getApiErrorValues(firstError, appConfiguration);
+
+      const customErrorMessage = findErrorFromAppConfig(
+        firstError.error,
+        appConfiguration,
+        localize
+      );
+
+      message = customErrorMessage
+        ? customErrorMessage
+        : errorMessageDescriptor
+        ? formatMessage(errorMessageDescriptor, values)
+        : '';
+    }
+
+    if (!message) {
+      return;
+    }
+
+    // Increment key to force re-announcement even if same message
+    announcementKeyRef.current += 1;
+
+    // Add invisible zero-width spaces to make each announcement unique
+    // Screen readers will announce the message but won't read the invisible characters
+    const invisibleSuffix = '\u200B'.repeat(announcementKeyRef.current);
+    const uniqueMessage = `${message}${invisibleSuffix}`;
+
+    setAnnouncement('');
+    const timeoutId = setTimeout(() => {
+      setAnnouncement(uniqueMessage);
+      console.log('Announcement set:', message);
+    }, 50);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [
+    text,
+    apiErrors,
+    dedupApiErrors,
+    fieldName,
+    appConfiguration,
+    localize,
+    formatMessage,
+    submitCount,
+  ]);
+
+  if (!appConfiguration) return null;
+
   return (
-    <CSSTransition
-      classNames="error"
-      in={!!(text || apiErrors)}
-      timeout={timeout}
-      mountOnEnter={true}
-      unmountOnExit={true}
-      enter={animate}
-      exit={animate}
-    >
-      <Container
-        className={`e2e-error-message ${className}`}
-        id={id}
-        marginTop={marginTop}
-        marginBottom={marginBottom}
-        role="alert"
-        data-testid="error-message"
+    <>
+      <CSSTransition
+        classNames="error"
+        in={!!(text || apiErrors)}
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={animate}
+        exit={animate}
       >
-        <ContainerInner
-          ref={containerRef}
-          showBackground={showBackground}
-          className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
+        <Container
+          className={`e2e-error-message ${className}`}
+          id={id}
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          role="alert"
+          data-testid="error-message"
         >
-          {showIcon && (
-            <ErrorIcon
-              name="alert-circle"
-              fill={colors.error}
-              data-testid="error-icon"
-            />
-          )}
+          <ContainerInner
+            ref={containerRef}
+            showBackground={showBackground}
+            className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
+          >
+            {showIcon && (
+              <ErrorIcon
+                name="alert-circle"
+                fill={colors.error}
+                data-testid="error-icon"
+              />
+            )}
 
-          <ErrorMessageText data-testid="error-message-text">
-            <Box py="16px">
-              {text}
-              {dedupApiErrors &&
-                isArray(dedupApiErrors) &&
-                !isEmpty(dedupApiErrors) && (
-                  <ErrorList>
-                    {dedupApiErrors.map((error, index) => {
-                      // If we have multiple possible errors for a certain input field,
-                      // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findErrorMessageDescriptor for details
-                      const errorMessageDescriptor = findErrorMessageDescriptor(
-                        fieldName,
-                        error.error
-                      );
-                      const values = getApiErrorValues(error, appConfiguration);
+            <ErrorMessageText data-testid="error-message-text">
+              <Box py="16px">
+                {text}
+                {dedupApiErrors &&
+                  isArray(dedupApiErrors) &&
+                  !isEmpty(dedupApiErrors) && (
+                    <ErrorList>
+                      {dedupApiErrors.map((error, index) => {
+                        // If we have multiple possible errors for a certain input field,
+                        // we can 'group' them in the messages.js file using the fieldName as a prefix
+                        // Check the implementation of findErrorMessageDescriptor for details
+                        const errorMessageDescriptor =
+                          findErrorMessageDescriptor(fieldName, error.error);
+                        const values = getApiErrorValues(
+                          error,
+                          appConfiguration
+                        );
 
-                      const customErrorMessage = findErrorFromAppConfig(
-                        error.error,
-                        appConfiguration,
-                        localize
-                      );
+                        const customErrorMessage = findErrorFromAppConfig(
+                          error.error,
+                          appConfiguration,
+                          localize
+                        );
 
-                      const errorMessage = customErrorMessage
-                        ? customErrorMessage
-                        : errorMessageDescriptor &&
-                          formatMessage(errorMessageDescriptor, values);
+                        const errorMessage = customErrorMessage
+                          ? customErrorMessage
+                          : errorMessageDescriptor &&
+                            formatMessage(errorMessageDescriptor, values);
 
-                      if (!errorMessage) return null;
+                        if (!errorMessage) return null;
 
-                      return (
-                        <ErrorListItem key={index}>
-                          {dedupApiErrors.length > 1 && (
-                            <Bullet aria-hidden>•</Bullet>
-                          )}
-                          {errorMessage}
-                        </ErrorListItem>
-                      );
-                    })}
-                  </ErrorList>
-                )}
-            </Box>
-          </ErrorMessageText>
-        </ContainerInner>
-      </Container>
-    </CSSTransition>
+                        return (
+                          <ErrorListItem key={index}>
+                            {dedupApiErrors.length > 1 && (
+                              <Bullet aria-hidden>•</Bullet>
+                            )}
+                            {errorMessage}
+                          </ErrorListItem>
+                        );
+                      })}
+                    </ErrorList>
+                  )}
+              </Box>
+            </ErrorMessageText>
+          </ContainerInner>
+        </Container>
+      </CSSTransition>
+
+      <ScreenReaderOnly role="alert" aria-live="assertive" aria-atomic="true">
+        {announcement}
+      </ScreenReaderOnly>
+    </>
   );
 };
 

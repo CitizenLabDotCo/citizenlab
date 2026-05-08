@@ -25,7 +25,7 @@ const Input = ({
   ...rest
 }: Props) => {
   const {
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, submitCount },
     control,
   } = useFormContext();
 
@@ -37,19 +37,20 @@ const Input = ({
 
   const ariaInvalid = validationError || apiError ? true : undefined;
   const ariaDescribedBy =
-    validationError || apiError ? `${name}-error` : undefined;
+    validationError || apiError ? `${name}-error-${submitCount}` : undefined;
 
   return (
     <Box width="100%">
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
+        render={({ field: { ref, ...field } }) => (
           <InputComponent
             id={name}
             type={type}
             ariaInvalid={ariaInvalid}
             ariaDescribedBy={ariaDescribedBy}
+            setRef={ref}
             {...field}
             {...rest}
           />
@@ -57,7 +58,8 @@ const Input = ({
       />
       {validationError && (
         <Error
-          id={`${name}-error`}
+          id={`${name}-error-${submitCount}`}
+          submitCount={submitCount}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
