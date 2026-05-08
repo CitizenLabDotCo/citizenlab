@@ -106,7 +106,6 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         collection do
@@ -120,7 +119,6 @@ Rails.application.routes.draw do
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
           post 'check'
-          patch 'update_email_unconfirmed'
 
           get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
