@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
-    let_it_be(:user) do 
+    let_it_be(:user) do
       user = create(:unconfirmed_user, email: 'some_email@email.com')
       user.reset_confirmation_code!
       user

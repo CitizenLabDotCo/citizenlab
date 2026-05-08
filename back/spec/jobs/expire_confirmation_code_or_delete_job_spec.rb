@@ -8,7 +8,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   end
 
   context 'full users who reset confirmation code' do
-    let(:user) do 
+    let(:user) do
       user = create(:user)
       user.reset_confirmation_code!
       user
@@ -65,7 +65,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   end
 
   context 'unconfirmed users' do
-    let(:user) do 
+    let(:user) do
       user = create(:unconfirmed_user)
       user.reset_confirmation_code!
       user
