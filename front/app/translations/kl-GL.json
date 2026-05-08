@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Ajoraluartumik uunga nunarsuaq tamakkerlugu anguniakkanut peqataasinnaajunnaarputit, toqqorneqarmat} other {Ajoraluartumik uunga suliamut peqataasinnaajunnaarputit, toqqorneqarmat}}",
   "app.components.ProjectArchivedIndicator.previewProject": "Draft project:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Visible only to moderators and those with a preview link.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} suliniummi {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Suliassap allaaserineqarnera:",
   "app.components.ProjectCard.a11y_projectTitle": "Suliniutip taaguutaa",
   "app.components.ProjectCard.addYourOption": "Qinigassiamik suliannik ilanngussigit",

@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Ne yazık ki, arşivlendiği için artık bu projeye katılamazsınız",
   "app.components.ProjectArchivedIndicator.previewProject": "Taslak proje:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Yalnızca moderatörler ve önizleme bağlantısı olanlar tarafından görülebilir.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{projectTitle} projesinde {cta}",
   "app.components.ProjectCard.a11y_projectDescription": "Proje açıklaması:",
   "app.components.ProjectCard.a11y_projectTitle": "Proje başlığı:",
   "app.components.ProjectCard.addYourOption": "Seçeneğinizi ekleyin",

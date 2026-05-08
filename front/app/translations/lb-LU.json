@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Leider kënnt Dir net méi un dësem Projet deelhuelen well en archivéiert gouf en well e gouf archivéiert",
   "app.components.ProjectArchivedIndicator.previewProject": "Entworf Projet:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Siichtbar nëmme fir Moderatoren an déi mat engem Virschaulink.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} beim Projet {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Beschreiwung vum Projet",
   "app.components.ProjectCard.a11y_projectTitle": "Titel vum Projet",
   "app.components.ProjectCard.addYourOption": "Füügt Är Optioun bäi",

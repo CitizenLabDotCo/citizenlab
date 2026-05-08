@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Sajnos már nem vehet részt ebben a projektben, mert archiválva lett",
   "app.components.ProjectArchivedIndicator.previewProject": "Projekttervezet:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Csak a moderátorok és az előnézeti linkkel rendelkezők láthatják.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} a(z) {projectTitle} projektben",
   "app.components.ProjectCard.a11y_projectDescription": "Projekt leírása:",
   "app.components.ProjectCard.a11y_projectTitle": "Projekt címe:",
   "app.components.ProjectCard.addYourOption": "Adja hozzá a lehetőséget",

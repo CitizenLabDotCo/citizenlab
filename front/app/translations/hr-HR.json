@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Nažalost, više ne možete sudjelovati u ovom projektu jer je arhiviran",
   "app.components.ProjectArchivedIndicator.previewProject": "Nacrt projekta:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Vidljivo samo moderatorima i onima s vezom za pregled.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} na projektu {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Opis projekta:",
   "app.components.ProjectCard.a11y_projectTitle": "Naziv projekta:",
   "app.components.ProjectCard.addYourOption": "Dodajte svoju opciju",

@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Valitettavasti et voi enää osallistua tähän projektiin, koska se on arkistoitu",
   "app.components.ProjectArchivedIndicator.previewProject": "Projektiluonnos:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Näkyy vain valvojille ja niille, joilla on esikatselulinkki.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} projektissa {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Hankkeen kuvaus:",
   "app.components.ProjectCard.a11y_projectTitle": "Projektin nimi:",
   "app.components.ProjectCard.addYourOption": "Lisää vaihtoehtosi",

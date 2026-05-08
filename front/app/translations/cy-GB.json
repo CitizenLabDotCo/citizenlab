@@ -496,7 +496,6 @@
   "app.components.ProjectArchivedIndicator.archivedProject": "Yn anffodus, ni allwch gymryd rhan yn y prosiect hwn bellach oherwydd ei fod wedi'i archifo",
   "app.components.ProjectArchivedIndicator.previewProject": "Prosiect drafft:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Yn weladwy i gymedrolwyr a'r rhai sydd â dolen rhagolwg yn unig.",
-  "app.components.ProjectCard.a11y_ctaForProject": "{cta} ar brosiect {projectTitle}",
   "app.components.ProjectCard.a11y_projectDescription": "Disgrifiad o'r prosiect:",
   "app.components.ProjectCard.a11y_projectTitle": "Teitl y prosiect:",
   "app.components.ProjectCard.addYourOption": "Ychwanegwch eich opsiwn",
