@@ -131,7 +131,7 @@ assert_exit_code "$(attempt_commit)" "1" "blocks commit when a nested CLAUDE.md 
 
 # ----------------------------------------------------------------------------
 # Test: blocks commit when a file under .claude/ is staged. Hooks,
-# skills, commands, and settings.local.json all live under .claude/
+# skills, commands, and settings.json all live under .claude/
 # and should never be committed.
 # ----------------------------------------------------------------------------
 setup_test_repo
