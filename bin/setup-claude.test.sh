@@ -229,7 +229,7 @@ SKILL
     echo '# test command' > commands/test.md
     echo '# sample plan body' > plans/sample-plan.md
     echo '# plans folder README — should be excluded from the symlink mirror' > plans/README.md
-    echo '{}' > settings.local.json
+    echo '{}' > settings.json
     echo '# private overlay README' > .claude-readme.md
     echo 'private repo own README' > README.md
     # `-c user.email=...` sets the value just for this one git command,
@@ -312,7 +312,7 @@ assert_symlink_to "$PUBLIC/.claude/plans/sample-plan.md"       "../../../private
 # assertion guards against someone adding a future exclusion that
 # accidentally drops the whole plans/ directory along with its README.
 assert_path_missing "$PUBLIC/.claude/plans/README.md"          "plans/README.md excluded (README.md exclusion applies in plans/ too)"
-assert_symlink_to "$PUBLIC/.claude/settings.local.json"        "../../private/settings.local.json"               "settings.local.json → private"
+assert_symlink_to "$PUBLIC/.claude/settings.json"              "../../private/settings.json"                     "settings.json → private"
 
 # Special case: the file named `.claude-readme.md` in the private overlay
 # is renamed to `README.md` when it lands under .claude/. This makes the
@@ -437,6 +437,23 @@ fi
 # And the symlinks should still resolve afterward — the script ran the
 # mirror loop using the local working tree, even without a pull.
 assert_symlink_to "$PUBLIC/CLAUDE.md" "../private/CLAUDE.md" "no-upstream branch: symlinks still resolve"
+
+
+# ----------------------------------------------------------------------------
+# Test: a regular file at .claude/settings.local.json (a dev's personal CC
+# settings, in the slot Claude Code conventionally reserves for per-machine
+# personal entries) must survive setup-claude untouched. The script doesn't
+# materialise that path — the team's settings file lives at .claude/settings.json
+# — and the symlink-cleanup at the top of setup-claude only deletes symlinks,
+# never regular files. Guards against a future change that accidentally
+# clobbers the personal slot.
+# ----------------------------------------------------------------------------
+mkdir -p "$PUBLIC/.claude"
+PERSONAL_CONTENT='{"personal":"config"}'
+echo "$PERSONAL_CONTENT" > "$PUBLIC/.claude/settings.local.json"
+run_setup
+preserved="$(cat "$PUBLIC/.claude/settings.local.json" 2>/dev/null || true)"
+assert_eq "$preserved" "$PERSONAL_CONTENT" "personal .claude/settings.local.json regular file preserved by setup-claude"
 
 
 # ============================================================================

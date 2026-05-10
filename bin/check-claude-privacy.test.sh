@@ -134,7 +134,7 @@ assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a nested tracked CLAU
 # ----------------------------------------------------------------------------
 # Test: fails when something under `.claude/` is tracked. Same threat
 # model as the CLAUDE.md cases — `.claude/` content (hooks, skills,
-# commands, settings.local.json) should always be gitignored symlinks
+# commands, settings.json) should always be gitignored symlinks
 # materialized at runtime, never committed.
 # ----------------------------------------------------------------------------
 setup_test_repo

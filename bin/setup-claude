@@ -2,7 +2,7 @@
 # bin/setup-claude — clone or update the citizenlab-claude private overlay
 # and create per-file symlinks in the public repo so Claude Code can find
 # its config:
-#   - .claude/<rel>: hooks, skills, commands, settings.local.json, and
+#   - .claude/<rel>: hooks, skills, commands, settings.json, and
 #     anything else the private overlay tracks. Everything under .claude/
 #     is private (mirrored here, gitignored).
 #   - <area>/CLAUDE.md (root + per-area): file symlinks pointing directly
@@ -120,7 +120,7 @@ done < <(find "$PRIVATE_DIR" -type f \
   -not -path '*/.git/*' \
   -not -name 'README.md' \
   -not -name '.gitignore' \
-  -not -name 'settings.local.json' \
+  -not -name 'settings.json' \
   -not -name '.claude-readme.md' \
   -not -name 'CLAUDE.md' \
   -print0)
@@ -129,9 +129,13 @@ done < <(find "$PRIVATE_DIR" -type f \
 # exclusion (e.g. .claude/back/ / .claude/front/ from the previous design).
 find .claude -mindepth 1 -type d -empty -delete 2>/dev/null || true
 
-# Private hook config / settings (only if present in the private repo)
-if [ -f "$PRIVATE_DIR/settings.local.json" ]; then
-  ln -sfn "$(relpath "$PRIVATE_DIR/settings.local.json" "$REPO_ROOT/.claude")" .claude/settings.local.json
+# Private hook config / settings (only if present in the private repo).
+# Symlinks the team's `settings.json` from the overlay into the public repo.
+# Per Claude Code's convention, the `.local.json` slot is left free for each
+# dev's personal entries (a regular file they create themselves at
+# `.claude/settings.local.json`, gitignored, untouched by this script).
+if [ -f "$PRIVATE_DIR/settings.json" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/settings.json" "$REPO_ROOT/.claude")" .claude/settings.json
 fi
 
 # Local README explaining the .claude/ layout (only if present in the private repo)
