@@ -208,7 +208,7 @@ setup_fake_env() {
   # so we can safely `cd` into a temp dir without having to cd back.
   (
     cd "$FIXTURE_WT"
-    mkdir -p back front hooks skills/test-skill commands
+    mkdir -p back front hooks skills/test-skill commands plans
     echo '# root context'  > CLAUDE.md
     echo '# back context'  > back/CLAUDE.md
     echo '# front context' > front/CLAUDE.md
@@ -227,6 +227,8 @@ description: test
 ---
 SKILL
     echo '# test command' > commands/test.md
+    echo '# sample plan body' > plans/sample-plan.md
+    echo '# plans folder README — should be excluded from the symlink mirror' > plans/README.md
     echo '{}' > settings.local.json
     echo '# private overlay README' > .claude-readme.md
     echo 'private repo own README' > README.md
@@ -304,6 +306,12 @@ assert_symlink_to "$PUBLIC/front/CLAUDE.md"                    "../../private/fr
 assert_symlink_to "$PUBLIC/.claude/hooks/test-hook.sh"         "../../../private/hooks/test-hook.sh"             "hook script → private"
 assert_symlink_to "$PUBLIC/.claude/skills/test-skill/SKILL.md" "../../../../private/skills/test-skill/SKILL.md"  "skill SKILL.md → private"
 assert_symlink_to "$PUBLIC/.claude/commands/test.md"           "../../../private/commands/test.md"               "command → private"
+assert_symlink_to "$PUBLIC/.claude/plans/sample-plan.md"       "../../../private/plans/sample-plan.md"           "plan → private"
+# Per-folder README.md is excluded from the symlink mirror (same rule that
+# excludes hooks/README.md, skills/README.md, commands/README.md). This
+# assertion guards against someone adding a future exclusion that
+# accidentally drops the whole plans/ directory along with its README.
+assert_path_missing "$PUBLIC/.claude/plans/README.md"          "plans/README.md excluded (README.md exclusion applies in plans/ too)"
 assert_symlink_to "$PUBLIC/.claude/settings.local.json"        "../../private/settings.local.json"               "settings.local.json → private"
 
 # Special case: the file named `.claude-readme.md` in the private overlay
@@ -404,6 +412,31 @@ mkdir -p "$PUBLIC/front"   # restore the area dir we removed in an earlier test
 )
 run_setup
 assert_path_missing "$PUBLIC/front/CLAUDE.md" "stale front/CLAUDE.md symlink cleaned up after private content removal"
+
+
+# ----------------------------------------------------------------------------
+# Test: setup-claude succeeds when the current branch in the private overlay
+# has no upstream. Common scenario: a dev is on a fresh feature branch in
+# citizenlab-claude that hasn't been pushed yet, so `git pull --ff-only`
+# would fail without a guard. The local working tree is the source of truth
+# for the symlink loop, so the script should skip the pull rather than abort.
+# ----------------------------------------------------------------------------
+git -C "$PRIVATE" checkout -q -b orphan-branch-no-upstream
+# Use `if` so a failing setup-claude is captured as a test failure rather
+# than aborting the test script via `set -e`.
+if (
+  cd "$PUBLIC"
+  CITIZENLAB_CLAUDE_GIT_REMOTE="$REMOTE" \
+  CITIZENLAB_CLAUDE_DIR="$PRIVATE" \
+    bash "$SCRIPT_TO_TEST" >/dev/null 2>&1
+); then
+  pass "no-upstream branch: setup-claude does not abort"
+else
+  fail "no-upstream branch: setup-claude does not abort"
+fi
+# And the symlinks should still resolve afterward — the script ran the
+# mirror loop using the local working tree, even without a pull.
+assert_symlink_to "$PUBLIC/CLAUDE.md" "../private/CLAUDE.md" "no-upstream branch: symlinks still resolve"
 
 
 # ============================================================================

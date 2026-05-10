@@ -79,7 +79,15 @@ if [ ! -d "$PRIVATE_DIR" ]; then
   git clone "$PRIVATE_REPO" "$PRIVATE_DIR"
 else
   echo "Updating private overlay at $PRIVATE_DIR ..."
-  git -C "$PRIVATE_DIR" pull --ff-only
+  # Skip the pull when the current branch has no upstream — common when a
+  # dev is on a fresh feature branch in citizenlab-claude that hasn't been
+  # pushed yet. The local working tree is the source of truth for the
+  # symlink loop below either way, so a missing pull doesn't matter.
+  if git -C "$PRIVATE_DIR" rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    git -C "$PRIVATE_DIR" pull --ff-only
+  else
+    echo "  (current branch has no upstream — skipping pull, using local working tree)"
+  fi
 fi
 
 mkdir -p .claude
