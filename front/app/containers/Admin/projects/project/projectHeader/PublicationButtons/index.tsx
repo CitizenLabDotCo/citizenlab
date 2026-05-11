@@ -46,9 +46,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
-  const isApproved =
-    !isProjectReviewEnabled ||
-    projectReview?.data.attributes.state === 'approved';
+  const isApproved = projectReview?.data.attributes.state === 'approved';
 
   const canModerate = usePermission({ item: project, action: 'moderate' });
   const canPublish = usePermission({
