@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Button, Box, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
@@ -46,13 +46,12 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
 
   const { data: projectReview } = useProjectReview(project.id);
-  const isApproved = projectReview?.data.attributes.state === 'approved';
 
   const canModerate = usePermission({ item: project, action: 'moderate' });
   const canPublish = usePermission({
     item: project,
     action: 'publish',
-    context: isApproved,
+    context: projectReview?.data.attributes.state === 'approved',
   });
 
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
@@ -62,7 +61,6 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
 
   const { publication_status, scheduled_at } = project.attributes;
   const isDraft = publication_status === 'draft';
-  const showPublishButton = !isDraft || canPublish;
 
   const publicationButton = getPublicationButton({
     publicationStatus: publication_status,
@@ -79,20 +77,33 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     }
   };
 
+  const showPublishButton = !isDraft || !isProjectReviewEnabled || canPublish;
+  const publishButtonDisabled =
+    isDraft && !canPublish && !project.attributes.first_published_at;
   return (
     <Box display="flex" gap="8px">
       {showPublishButton && (
-        <Button
-          buttonStyle="admin-dark"
-          icon={publicationButton.icon}
-          onClick={handleEntryClick}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
-          id="e2e-publish"
+        <Tooltip
+          content={formatMessage(
+            messages.onlyAdminsAndFolderManagersCanPublish,
+            { inFolder: !!project.attributes.folder_id }
+          )}
+          placement="bottom"
+          disabled={!publishButtonDisabled}
         >
-          {formatMessage(publicationButton.text)}
-        </Button>
+          <Button
+            buttonStyle="admin-dark"
+            icon={publicationButton.icon}
+            onClick={handleEntryClick}
+            size="s"
+            padding="4px 8px"
+            iconSize="20px"
+            id="e2e-publish"
+            disabled={publishButtonDisabled}
+          >
+            {formatMessage(publicationButton.text)}
+          </Button>
+        </Tooltip>
       )}
 
       {isProjectReviewEnabled && <ReviewFlow project={project} />}
