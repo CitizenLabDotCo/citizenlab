@@ -43,7 +43,9 @@ const WhenSection = ({
     tenantNow.date()
   );
   const gmtOffset = timezone ? tenantNow.format('Z') : '';
-
+  const browserTimezone = moment.tz.guess();
+  const browserOffset = moment().tz(browserTimezone).format('Z');
+  const showGmtOffset = timezone && gmtOffset !== browserOffset;
   return (
     <Box mb="8px">
       <Text fontWeight="bold" mb="12px">
@@ -68,7 +70,7 @@ const WhenSection = ({
           selectedDate={selectedDate}
           currentTimeInTz={tenantTimeNow}
         />
-        {timezone && (
+        {showGmtOffset && (
           <Text color="grey600" fontSize="s">
             GMT{gmtOffset}
           </Text>
