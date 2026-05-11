@@ -163,6 +163,9 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
+  "rank": {
+    "nl-NL": "rang"
+  },
   "proposals": {
     "nl-NL": "voorstellen"
   },
