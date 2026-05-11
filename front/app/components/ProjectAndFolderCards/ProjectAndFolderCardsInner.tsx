@@ -1,9 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -34,7 +38,9 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => void;
+  onLoadMore?: () => Promise<
+    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
+  >;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }
@@ -75,9 +81,32 @@ const ProjectAndFolderCardsInner = ({
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
-  const showMore = () => {
+  const showMore = async () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    onLoadMore && onLoadMore();
+    const list = document.querySelector<HTMLElement>(
+      '.e2e-projects-list.active-tab'
+    );
+    const previousCount =
+      list?.querySelectorAll('.e2e-admin-publication-card').length ?? 0;
+
+    await onLoadMore?.();
+
+    if (!list) return;
+    // Each new card mounts only after its own useProjectById query resolves,
+    // so adminPublications.length growing doesn't mean the cards are in the
+    // DOM yet. Watch the list container and focus the first new card the
+    // moment it actually appears.
+    const observer = new MutationObserver(() => {
+      const cards = list.querySelectorAll<HTMLElement>(
+        '.e2e-admin-publication-card'
+      );
+      if (cards.length > previousCount) {
+        cards[previousCount].focus();
+        observer.disconnect();
+      }
+    });
+    observer.observe(list, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 10000);
   };
 
   const handleChangeTopics = (topics: string[]) => {
