@@ -69,14 +69,28 @@ class OmniauthCallbackController < ApplicationController
       return
     end
 
+    email_confirmed_authver = authver_method.email_confirmed?(auth)
+
     if @user
-      if @user.invite_pending? && auth.dig('info', 'email_verified') == false
-        # If the user is invited but the SSO email is not verified, we cannot proceed
+      user_email_came_from_authver = user_attrs[:email].present? && user_attrs[:email] == @user.email
+      user_has_email_confirmed_by_authver = email_confirmed_authver && user_email_came_from_authver
+
+      if @user.invite_pending? && !user_has_email_confirmed_by_authver
+        # If the user is invited, we need to reject in the following cases:
+        # - The email returned by authver method does not match the email of the invited user (rare/impossible, but just to be safe)
+        # - The authver method returned an email but said that it was not confirmed yet
         signin_failure_redirect
         return
       end
 
       @identity.update(user: @user) unless @identity.user
+
+      # Same as above, but for non-invite users: 
+      # If the user's email came from/matches the authver one,
+      # and the provider says it was confirmed: we mark the user's email as confirmed.
+      if user_has_email_confirmed_by_authver
+        @user.confirm!
+      end
 
       if @user.invite_pending?
         @invite = @user.invitee_invite
@@ -113,10 +127,8 @@ class OmniauthCallbackController < ApplicationController
       end
 
     else # New user
-      confirm = authver_method.email_confirmed?(auth)
       user_locale = get_user_locale(omniauth_params, user_attrs)
-
-      @user = UserService.build_in_sso(user_attrs, confirm, user_locale)
+      @user = UserService.build_in_sso(user_attrs, email_confirmed_authver, user_locale)
 
       @user.identities << @identity
       begin
