@@ -143,5 +143,8 @@
     "da-DK": "gem",
     "fr-FR": "enregistrer",
     "nl-NL": "opslaan"
+  },
+  "traffic sources": {
+    "nl-NL": "kanalen"
   }
 }
