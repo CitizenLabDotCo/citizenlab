@@ -56,6 +56,9 @@
   "survey": {
     "nl-NL": "vragenlijst"
   },
+  "survey responses": {
+    "nl-NL": "vragenlijstreacties"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
