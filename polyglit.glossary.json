@@ -24,7 +24,8 @@
     "nl-NL": "Ruimte"
   },
   "Space Manager": {
-    "da-DK": "Rumadministrator"
+    "da-DK": "Rumadministrator",
+    "nl-NL": "Ruimtebeheerder"
   },
   "admin": {
     "de-DE": "Admin"
