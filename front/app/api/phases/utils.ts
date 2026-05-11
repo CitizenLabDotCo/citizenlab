@@ -18,7 +18,7 @@ export function canContainIdeas(phase: IPhaseData) {
 
 export function getCurrentPhase(
   phases: IPhaseData[] | undefined,
-  timeZone: string | 'UTC'
+  timeZone?: string
 ) {
   if (!isNilOrError(phases)) {
     const currentPhase = phases.find(
@@ -26,7 +26,7 @@ export function getCurrentPhase(
         pastPresentOrFutureWithTimezone({
           startDate: phase.attributes.start_at,
           endDate: phase.attributes.end_at,
-          timeZone,
+          timeZone: timeZone || 'UTC',
         }) === 'present'
     );
 
