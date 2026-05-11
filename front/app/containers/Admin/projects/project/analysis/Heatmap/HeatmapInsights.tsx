@@ -9,10 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
+
+import Warning from 'components/UI/Warning';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -43,11 +46,14 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
 
   const { analysisId } = useParams() as { analysisId: string };
 
-  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
-    analysisId,
-    maxPValue: 0.05,
-    pageSize: 25,
-  });
+  const { data: analysis } = useAnalysis(analysisId);
+
+  const { data: analysisHeatmapCells, isLoading: isLoadingCells } =
+    useAnalysisHeatmapCells({
+      analysisId,
+      maxPValue: 0.05,
+      pageSize: 25,
+    });
 
   const selectedCell = analysisHeatmapCells?.data.find(
     (cell) => cell.id === selectedInsightId
@@ -77,26 +83,20 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     }
   }, [analysisHeatmapCells]);
 
-  if (!analysisHeatmapCells) return null;
+  // The backend returns 204 No Content when no heatmap cells exist, which
+  // makes `analysisHeatmapCells` null. Treat that as the empty state so the
+  // too-many-fields warning / fallback button still renders.
+  if (isLoadingCells) return null;
 
-  const handleChangeInsight = (offset: number) => {
-    trackEventByName(tracks.useAutoInsightsCarrousel);
-    setSelectedInsightId((currentId) => {
-      const insights = analysisHeatmapCells.data;
-      const currentIndex = insights.findIndex(
-        (field) => field.id === currentId
+  const cells = analysisHeatmapCells?.data ?? [];
+
+  if (cells.length === 0) {
+    if (analysis?.data.attributes.auto_insights_too_many_fields) {
+      return (
+        <Warning>{formatMessage(messages.autoInsightsTooManyFields)}</Warning>
       );
-      const length = insights.length;
+    }
 
-      // Calculate new index with wraparound
-      let newIndex = (currentIndex + offset) % length;
-      if (newIndex < 0) newIndex += length;
-
-      return insights[newIndex].id;
-    });
-  };
-
-  if (analysisHeatmapCells.data.length === 0) {
     return (
       <Box display="flex" justifyContent="center">
         <Button
@@ -117,6 +117,20 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     );
   }
 
+  const handleChangeInsight = (offset: number) => {
+    trackEventByName(tracks.useAutoInsightsCarrousel);
+    setSelectedInsightId((currentId) => {
+      const currentIndex = cells.findIndex((field) => field.id === currentId);
+      const length = cells.length;
+
+      // Calculate new index with wraparound
+      let newIndex = (currentIndex + offset) % length;
+      if (newIndex < 0) newIndex += length;
+
+      return cells[newIndex].id;
+    });
+  };
+
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -132,10 +146,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           />
           {selectedInsightId && (
             <Text mx="8px">
-              {analysisHeatmapCells.data.findIndex(
-                (cell) => cell.id === selectedInsightId
-              ) + 1}
-              /{analysisHeatmapCells.data.length}
+              {cells.findIndex((cell) => cell.id === selectedInsightId) + 1}/
+              {cells.length}
             </Text>
           )}
           <IconButton

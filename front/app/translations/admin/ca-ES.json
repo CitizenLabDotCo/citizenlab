@@ -3458,6 +3458,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Mostra només les entrades amb aquest valor",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Amagar les respostes sense contestar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Insights automàtics",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Les percepcions automàtiques no estan disponibles perquè aquesta anàlisi inclou més de 50 preguntes. Amb tantes preguntes, les correlacions automatitzades deixen de ser fiables, així que no les mostrem.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Valors de la columna",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Hi ha {count} instàncies d'aquesta combinació.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Vots negatius",
