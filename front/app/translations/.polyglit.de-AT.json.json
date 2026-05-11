@@ -2909,6 +2909,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T11:41:00.809248Z",
+    "verified_by": "Jelena"
+  },
   "app.components.QuillEditor.image": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13175,11 +13180,6 @@
     "verified_by": "Edwin Kato"
   },
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": {
-    "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
-  },
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"

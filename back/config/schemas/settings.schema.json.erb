@@ -993,6 +993,18 @@
         }
       },
 
+      "project_widget": {
+        "type": "object",
+        "title": "Project Widget",
+        "description": "Admins can generate a projects widget to embed on external websites.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "pages": {
         "type": "object",
         "title": "Custom Pages",
@@ -1710,6 +1722,18 @@
             "enum": ["none", "peer"],
             "private": true
           }
+        }
+      },
+
+      "hide_submission_removal_text": {
+        "type": "object",
+        "title": "Hide submission removal text",
+        "description": "Do not give users the option to remove survey submissions (post survey & in email confirmation). WARNING: Should only be used where GPDR does not apply.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       }
     },

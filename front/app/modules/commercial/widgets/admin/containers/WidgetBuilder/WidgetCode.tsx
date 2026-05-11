@@ -11,7 +11,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const CodeSnippet = styled.textarea`
   word-wrap: break-word;

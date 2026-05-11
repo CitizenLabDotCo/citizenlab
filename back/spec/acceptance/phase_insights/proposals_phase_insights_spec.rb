@@ -54,7 +54,12 @@ resource 'Phase insights' do
       idea3 = create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
-      # Activities
+      # Statuses (needed for the current 'changed_status' activity format below)
+      proposed_status = create(:proposals_status, code: 'proposed')
+      threshold_status = create(:proposal_status_threshold_reached)
+
+      # Activities — idea2 uses the legacy 'changed_input_status' format to assert
+      # the service still interprets activity rows logged before TAN-7658.
       create(
         :activity,
         item: idea2,
@@ -66,15 +71,14 @@ resource 'Phase insights' do
         }
       )
 
+      # idea3 uses the current 'changed_status' format emitted by both manual
+      # changes and (post-TAN-7658) automatic transitions.
       create(
         :activity,
         item: idea3,
-        action: 'changed_input_status',
+        action: 'changed_status',
         acted_at: 3.days.ago,
-        payload: {
-          input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached'
-        }
+        payload: { change: [proposed_status.id, threshold_status.id] }
       )
 
       # Comments

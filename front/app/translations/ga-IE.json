@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Cuir cnaipe leis",
   "app.components.QuillEditor.customLinkPrompt": "Cuir isteach nasc:",
   "app.components.QuillEditor.edit": "Cuir in Eagar",
+  "app.components.QuillEditor.embeddedVideo": "Físeán leabaithe",
   "app.components.QuillEditor.image": "Uaslódáil íomhá",
   "app.components.QuillEditor.imageTitleLabel": "Teideal na hÍomhá",
   "app.components.QuillEditor.italic": "Iodálach",
