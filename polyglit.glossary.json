@@ -48,7 +48,8 @@
   "inputs": {
     "da-DK": "input",
     "de-DE": "Beiträge",
-    "fr-FR": "contributions"
+    "fr-FR": "contributions",
+    "nl-NL": "bijdragen"
   },
   "manager": {
     "da-DK": "projektleder",
