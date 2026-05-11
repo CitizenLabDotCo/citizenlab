@@ -35,6 +35,9 @@
     "de-DE": "freigeben",
     "nl-NL": "Goedkeuren"
   },
+  "attendees (events)": {
+    "nl-NL": "aanwezigen"
+  },
   "co-sponsors": {
     "nl-NL": "ondersteuners"
   },
