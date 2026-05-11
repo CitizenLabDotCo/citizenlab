@@ -188,5 +188,8 @@
   },
   "traffic sources": {
     "nl-NL": "kanalen"
+  },
+  "petition": {
+    "nl-NL": "petitie"
   }
 }
