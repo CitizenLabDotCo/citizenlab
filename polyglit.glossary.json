@@ -121,6 +121,9 @@
   "document annotation": {
     "nl-NL": "feedback op een document"
   },
+  "topics / tags": {
+    "nl-NL": "tags"
+  },
   "seat": {
     "da-DK": "plads",
     "de-DE": "Zugang",
