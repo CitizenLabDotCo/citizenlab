@@ -42,7 +42,8 @@
   },
   "input": {
     "de-DE": "Beitrag",
-    "fr-FR": "contribution"
+    "fr-FR": "contribution",
+    "nl-NL": "bijdrage"
   },
   "inputs": {
     "da-DK": "input",
