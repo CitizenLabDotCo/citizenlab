@@ -72,8 +72,8 @@ class OmniauthCallbackController < ApplicationController
     email_confirmed_authver = authver_method.email_confirmed?(auth)
 
     if @user
-      user_email_came_from_authver = user_attrs[:email].present? && user_attrs[:email] == @user.email
-      user_has_email_confirmed_by_authver = email_confirmed_authver && user_email_came_from_authver
+      user_email_matches_email_from_authver = user_attrs[:email].present? && user_attrs[:email] == @user.email
+      user_has_email_confirmed_by_authver = email_confirmed_authver && user_email_matches_email_from_authver
 
       if @user.invite_pending? && !user_has_email_confirmed_by_authver
         # If the user is invited, we need to reject in the following cases:
