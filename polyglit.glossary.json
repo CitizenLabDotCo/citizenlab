@@ -37,7 +37,8 @@
   },
   "email": {
     "da-DK": "e-mail",
-    "es-ES": "correo"
+    "es-ES": "correo",
+    "nl-NL": "e-mail"
   },
   "input": {
     "de-DE": "Beitrag",
