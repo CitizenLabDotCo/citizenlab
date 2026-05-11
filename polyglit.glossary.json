@@ -77,6 +77,9 @@
   "response (input term)": {
     "nl-NL": "reactie"
   },
+  "auto-insights": {
+    "nl-NL": "auto-inzichten"
+  },
   "review (project)": {
     "nl-NL": "beoordelen (project)"
   },
