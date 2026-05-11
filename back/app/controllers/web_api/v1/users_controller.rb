@@ -104,6 +104,18 @@ class WebApi::V1::UsersController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
+  def ping
+    skip_authorization
+
+    # Allows us to return a different response when a user hits an admin route in the front-end
+    if params[:admin].present? && current_user&.normal_user?
+      head :forbidden
+      return
+    end
+
+    head :ok
+  end
+
   def me
     @user = current_user
     skip_authorization

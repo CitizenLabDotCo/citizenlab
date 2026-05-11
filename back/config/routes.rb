@@ -111,6 +111,7 @@ Rails.application.routes.draw do
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
+          get 'me/ping', action: 'ping'
           get :seats
           get :billed_admins
           get :billed_moderators
