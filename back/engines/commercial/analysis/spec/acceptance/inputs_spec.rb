@@ -198,7 +198,6 @@ resource 'Inputs' do
         assert_status 200
         expect(json_response_body[:included].first.dig(:attributes, :first_name)).not_to be_nil
         expect(json_response_body[:included].first.dig(:attributes, :last_name)).not_to be_nil
-        expect(json_response_body[:included].first.dig(:attributes, :slug)).not_to be_nil
       end
 
       example 'get one survey response in the analysis by id when private attributes are turned off', document: false do
@@ -210,7 +209,6 @@ resource 'Inputs' do
         assert_status 200
         expect(json_response_body[:included].first.dig(:attributes, :first_name)).to be_nil
         expect(json_response_body[:included].first.dig(:attributes, :last_name)).to be_nil
-        expect(json_response_body[:included].first.dig(:attributes, :slug)).to be_nil
       end
     end
 

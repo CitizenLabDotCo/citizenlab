@@ -149,6 +149,21 @@ jobs:
       - shallow-clone
       - run: danger ci
 
+  claude-tests-and-privacy-check:
+    resource_class: small
+    docker:
+      - image: cimg/base:stable
+    working_directory: ~/citizenlab
+    steps:
+      - checkout
+      - run:
+          name: Run Claude private overlay test scripts and verify no overlay content has leaked into the public repo
+          command: |
+            bin/setup-claude.test.sh
+            bin/check-claude-privacy.test.sh
+            .githooks/pre-commit.test.sh
+            bin/check-claude-privacy
+
   changelogger:
     resource_class: small
     docker:
@@ -875,6 +890,12 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+      - claude-tests-and-privacy-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - changelogger:
           filters:
             branches:

@@ -94,6 +94,7 @@ cy-GB:
         project_published: Cyhoeddi'r prosiect
         project_review_request: Gofynnodd y safonwr am adolygiad o'r prosiect
         project_review_state_change: Cymeradwyodd yr adolygydd y prosiect
+        proposal_expired: Mae cynnig yn dod i ben heb gyrraedd y trothwy
         proposal_gets_reported_as_spam: Mae'r cynnig yn cael ei adrodd fel sbam
         proposal_is_assigned_to_admin: Cynnig yn cael ei neilltuo i weinyddol
         proposal_is_published: Cynnig yn cael ei gyhoeddi
@@ -188,6 +189,7 @@ cy-GB:
       project_published: Cyhoeddi'r prosiect
       project_review_request: Cais am adolygiad prosiect
       project_review_state_change: Prosiect wedi'i gymeradwyo
+      proposal_expired_for_admin: Cynnig wedi dod i ben heb gyrraedd y trothwy pleidleisio
       screening_digest: Nodyn atgoffa sgrinio wythnosol
       space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
@@ -591,6 +593,11 @@ cy-GB:
       preheader: "%{reviewerName} wedi cymeradwyo'r prosiect \"%{projectTitle}\""
       subject: '"%{projectTitle}" wedi ei gymeradwyo'
       title: '%{reviewerName} cymeradwyodd y prosiect "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Adolygu'r mewnbwn sydd wedi dod i ben
+      preheader: Daeth mewnbwn i ben heb gyrraedd y trothwy
+      subject: Daeth "%{input_title}" i ben heb gyrraedd y trothwy
+      title: Daeth mewnbwn i ben heb gyrraedd y trothwy pleidleisio
     schedules:
       quarterly: Chwarterol, ar y dydd cyntaf o'r chwarter
       weekly:

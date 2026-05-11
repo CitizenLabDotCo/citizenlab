@@ -303,6 +303,24 @@ resource 'Files' do
           type: 'file_preview'
         })
       end
+
+      # AD1 / TAN-7631: replays the literal pentest payload (eicar.txt.exe with
+      # base64 EICAR bytes). Both the extension and the content-type allowlists
+      # should reject it before the file is persisted.
+      example 'rejects a file upload with a disallowed extension/content-type', document: false do
+        eicar_b64 = Base64.strict_encode64('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*')
+
+        expect do
+          do_request(file: {
+            name: 'eicar.txt.exe',
+            content: "data:application/octet-stream;base64,#{eicar_b64}",
+            project: project
+          })
+        end.not_to change(Files::File, :count)
+
+        assert_status 422
+        expect(json_response_body[:errors]).to be_present
+      end
     end
   end
 

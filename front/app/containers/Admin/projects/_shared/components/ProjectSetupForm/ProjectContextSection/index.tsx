@@ -7,7 +7,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isProjectModerator } from 'utils/permissions/roles';
 
 import Inner from './Inner';
 import messages from './messages';
@@ -21,7 +20,9 @@ const ProjectContextSection = (
   const { data: authUser } = useAuthUser();
 
   if (!authUser) return null;
-  if (isProjectModerator(authUser)) return null;
+  if (authUser.data.attributes.highest_role === 'project_moderator') {
+    return null;
+  }
 
   return (
     <Box mb="40px">

@@ -66,6 +66,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1',
     defaultMessage: 'Published - Finished',
   },
+  scheduled: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduledStatus',
+    defaultMessage: 'Scheduled',
+  },
   draftStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
     defaultMessage: 'Draft',

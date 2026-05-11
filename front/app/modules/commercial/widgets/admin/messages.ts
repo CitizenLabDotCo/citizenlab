@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  tabWidgets: {
-    id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
-    defaultMessage: 'Widgets',
-  },
-  title: {
-    id: 'app.containers.AdminPage.widgets.title',
-    defaultMessage: 'Widgets',
-  },
   titleWidgets: {
     id: 'app.containers.AdminPage.widgets.titleWidgets',
     defaultMessage: 'Widgets',
@@ -18,9 +10,17 @@ export default defineMessages({
     defaultMessage:
       'Generate as many widgets as you like, and add the html-code to your website.',
   },
-  titleInputSelection: {
-    id: 'app.containers.AdminPage.widgets.titleInputSelection',
-    defaultMessage: 'Input selection',
+  tabIdeas: {
+    id: 'app.containers.AdminPage.widgets.tabIdeas',
+    defaultMessage: 'Ideas',
+  },
+  tabProjects: {
+    id: 'app.containers.AdminPage.widgets.tabProjects',
+    defaultMessage: 'Projects',
+  },
+  titleContent: {
+    id: 'app.containers.AdminPage.widgets.titleContent',
+    defaultMessage: 'Content',
   },
   titleDimensions: {
     id: 'app.containers.AdminPage.widgets.titleDimensions',
@@ -30,9 +30,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.titleStyle',
     defaultMessage: 'Style',
   },
-  titleHeaderAndFooter: {
-    id: 'app.containers.AdminPage.widgets.titleHeaderAndFooter',
-    defaultMessage: 'Header & Footer',
+  titleHeaderAndButton: {
+    id: 'app.containers.AdminPage.widgets.titleHeaderAndButton',
+    defaultMessage: 'Header & Button',
   },
   fieldWidth: {
     id: 'app.containers.AdminPage.widgets.fieldWidth',
@@ -71,9 +71,9 @@ export default defineMessages({
     defaultMessage:
       'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
   },
-  fieldRelativeLink: {
-    id: 'app.containers.AdminPage.widgets.fieldRelativeLink',
-    defaultMessage: 'Links to',
+  fieldDestinationLink: {
+    id: 'app.containers.AdminPage.widgets.fieldDestinationLink',
+    defaultMessage: 'Destination link',
   },
   fieldShowHeader: {
     id: 'app.containers.AdminPage.widgets.fieldShowHeader',
@@ -138,6 +138,30 @@ export default defineMessages({
   fieldInputsLimit: {
     id: 'app.containers.AdminPage.widgets.fieldInputsLimit',
     defaultMessage: 'Number of inputs',
+  },
+  fieldFolders: {
+    id: 'app.containers.AdminPage.widgets.fieldFolders',
+    defaultMessage: 'Folders',
+  },
+  fieldProjectsLimit: {
+    id: 'app.containers.AdminPage.widgets.fieldProjectsLimit',
+    defaultMessage: 'Number of projects',
+  },
+  projectSortNewest: {
+    id: 'app.containers.AdminPage.widgets.projectSortNewest',
+    defaultMessage: 'Newest',
+  },
+  projectSortEndingSoon: {
+    id: 'app.containers.AdminPage.widgets.projectSortEndingSoon',
+    defaultMessage: 'Ending soon',
+  },
+  projectSortMostParticipants: {
+    id: 'app.containers.AdminPage.widgets.projectSortMostParticipants',
+    defaultMessage: 'Most participants',
+  },
+  projectSortPlatformOrder: {
+    id: 'app.containers.AdminPage.widgets.projectSortPlatformOrder',
+    defaultMessage: 'Platform order',
   },
   settingsTitle: {
     id: 'app.containers.AdminPage.widgets.settingsTitle',

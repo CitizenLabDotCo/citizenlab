@@ -5,7 +5,7 @@ require 'rails_helper'
 describe IdeaFeed::TopicModelingScheduler do
   let(:project) { create(:project) }
   let(:phase) { create(:idea_feed_phase, project:) }
-  let(:scheduler) { described_class.new(phase) }
+  let(:scheduler) { described_class.new(project) }
   let(:timezone) { AppConfiguration.timezone }
 
   before do
@@ -34,7 +34,7 @@ describe IdeaFeed::TopicModelingScheduler do
       it 'returns nil' do
         create_list(:idea, 5, project:, phases: [phase])
         travel_to time_at_hour(4) do
-          create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 3 })
+          create(:activity, item: project, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 3 })
           expect(scheduler.on_every_hour).to be_nil
         end
       end
@@ -62,7 +62,7 @@ describe IdeaFeed::TopicModelingScheduler do
       it 'returns nil' do
         create_list(:idea, 10, project:, phases: [phase])
         travel_to time_at_hour(4) do
-          create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 10 })
+          create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 10 })
           expect(scheduler.on_every_hour).to be_nil
         end
       end
@@ -72,8 +72,8 @@ describe IdeaFeed::TopicModelingScheduler do
       it 'enqueues TopicModelingJob when input increase is >= 10%' do
         create_list(:idea, 6, project:, phases: [phase])
         travel_to time_at_hour(4) do
-          create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
-          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+          create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
+          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
         end
       end
     end
@@ -85,7 +85,7 @@ describe IdeaFeed::TopicModelingScheduler do
 
       it 'enqueues TopicModelingJob' do
         travel_to time_at_hour(4) do
-          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
         end
       end
     end
@@ -94,8 +94,8 @@ describe IdeaFeed::TopicModelingScheduler do
       it 'enqueues TopicModelingJob' do
         create_list(:idea, 3, project:, phases: [phase])
         travel_to time_at_hour(4) do
-          create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
-          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+          create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
+          expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
         end
       end
     end
@@ -115,7 +115,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when a recent run happened less than MINIMUM_INTERVAL_BETWEEN_RUNS ago' do
       before do
         create_list(:idea, 7, project:, phases: [phase])
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 5 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 5 })
       end
 
       it 'returns nil' do
@@ -126,7 +126,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when input increase since last run is less than INSTANT_INPUT_INCREASE (30%)' do
       before do
         create_list(:idea, 6, project:, phases: [phase])
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
       end
 
       it 'returns nil when increase is 20%' do
@@ -137,11 +137,11 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when all conditions are met' do
       before do
         create_list(:idea, 7, project:, phases: [phase])
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
       end
 
       it 'enqueues TopicModelingJob when input increase is >= 30%' do
-        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
       end
     end
 
@@ -151,18 +151,18 @@ describe IdeaFeed::TopicModelingScheduler do
       end
 
       it 'enqueues TopicModelingJob' do
-        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
       end
     end
 
     context 'when previous run had 0 inputs' do
       before do
         create_list(:idea, 3, project:, phases: [phase])
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
       end
 
       it 'enqueues TopicModelingJob' do
-        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
+        expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(project)
       end
     end
   end
@@ -173,7 +173,7 @@ describe IdeaFeed::TopicModelingScheduler do
         create_list(:idea, 10, project:, phases: [phase])
         travel_to time_at_hour(4) do
           # 10 ideas now, 9 at last run = 11.1% increase (just over 10%)
-          create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 9 })
+          create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 9 })
           expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob)
         end
       end
@@ -181,7 +181,7 @@ describe IdeaFeed::TopicModelingScheduler do
       it 'does not enqueue job via on_new_input (needs 30%)' do
         create_list(:idea, 10, project:, phases: [phase])
         # 10 ideas now, 9 at last run = 11.1% increase (under 30%)
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 9 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 9 })
         expect(scheduler.on_new_input).to be_nil
       end
     end
@@ -190,7 +190,7 @@ describe IdeaFeed::TopicModelingScheduler do
       before do
         create_list(:idea, 10, project:, phases: [phase])
         # 10 ideas now, 7 at last run = 42.8% increase (over 30%)
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 7 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 7 })
       end
 
       it 'enqueues job via on_new_input' do
@@ -204,12 +204,12 @@ describe IdeaFeed::TopicModelingScheduler do
       end
 
       it 'allows job when exactly 20 minutes have passed' do
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 20.minutes.ago, payload: { 'input_count' => 3 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 20.minutes.ago, payload: { 'input_count' => 3 })
         expect { scheduler.on_new_input }.to have_enqueued_job(IdeaFeed::TopicModelingJob)
       end
 
       it 'blocks job when just under 20 minutes have passed' do
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 19.minutes.ago, payload: { 'input_count' => 3 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 19.minutes.ago, payload: { 'input_count' => 3 })
         expect(scheduler.on_new_input).to be_nil
       end
     end
@@ -217,8 +217,8 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when multiple previous run activities exist' do
       before do
         create_list(:idea, 8, project:, phases: [phase])
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 2.days.ago, payload: { 'input_count' => 3 })
-        create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 2.days.ago, payload: { 'input_count' => 3 })
+        create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
       end
 
       it 'uses the most recent activity for calculations' do

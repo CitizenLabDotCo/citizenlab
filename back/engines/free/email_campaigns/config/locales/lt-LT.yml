@@ -94,6 +94,7 @@ lt-LT:
         project_published: Paskelbtas projektas
         project_review_request: Moderatorius paprašė peržiūrėti projektą
         project_review_state_change: Recenzentas patvirtino projektą
+        proposal_expired: Pasiūlymo galiojimo laikas pasibaigia nepasiekus slenksčio
         proposal_gets_reported_as_spam: Apie pasiūlymą pranešama kaip apie šlamštą
         proposal_is_assigned_to_admin: Pasiūlymas priskirtas admin
         proposal_is_published: Pasiūlymas skelbiamas
@@ -188,6 +189,7 @@ lt-LT:
       project_published: Paskelbtas projektas
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
+      proposal_expired_for_admin: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
       screening_digest: Savaitinis priminimas apie patikrą
       space_moderation_rights_received: Suteiktos erdvės valdytojo teisės
       status_change_on_idea_you_follow: Įvesties, kurią sekate, būsenos pasikeitimas
@@ -591,6 +593,11 @@ lt-LT:
       preheader: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
       subject: '"%{projectTitle}" buvo patvirtintas'
       title: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Peržiūrėti pasibaigusio galiojimo pasiūlymą
+      preheader: Pasiūlymo galiojimo laikas pasibaigė nepasiekus slenksčio
+      subject: „%{input_title}“ galiojimo laikas pasibaigė nepasiekus slenksčio
+      title: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
     schedules:
       quarterly: Kas ketvirtį, pirmąją ketvirčio dieną
       weekly:
