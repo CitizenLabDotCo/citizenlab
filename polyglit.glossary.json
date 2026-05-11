@@ -35,6 +35,9 @@
     "de-DE": "freigeben",
     "nl-NL": "Goedkeuren"
   },
+  "draft": {
+    "nl-NL": "concept"
+  },
   "email": {
     "da-DK": "e-mail",
     "es-ES": "correo",
