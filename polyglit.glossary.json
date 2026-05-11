@@ -52,6 +52,9 @@
     "es-ES": "correo",
     "nl-NL": "e-mail"
   },
+  "event": {
+    "nl-NL": "activiteit"
+  },
   "finished": {
     "nl-NL": "afgelopen"
   },
