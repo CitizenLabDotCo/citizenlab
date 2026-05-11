@@ -93,8 +93,9 @@ fi
 mkdir -p .claude
 
 # Clean stale file symlinks under .claude/ so files removed from the private
-# repo disappear here too. Doesn't touch .claude/settings.json (regular file,
-# committed) or any non-symlink entry.
+# repo disappear here too. -type l only deletes symlinks; personal regular
+# files a dev has added (e.g. .claude/settings.local.json, personal hooks)
+# are untouched.
 find .claude -type l -delete 2>/dev/null || true
 
 # One-shot migration cleanup for devs upgrading from earlier .claude/
