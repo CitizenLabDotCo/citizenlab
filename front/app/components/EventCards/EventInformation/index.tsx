@@ -7,7 +7,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
@@ -21,7 +21,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { getEventDateString } from 'utils/dateUtils';
+import { getEventDateString, userTimezone } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
 import messages from '../messages';
@@ -60,8 +60,8 @@ const EventInformation = ({ event }: Props) => {
   const registrantCountMessage = useRegistrantCountMessage(event);
   const ariaId = useId();
 
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
+  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
+  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
 
   const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event.attributes.address_1;

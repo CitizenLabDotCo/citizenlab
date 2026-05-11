@@ -279,21 +279,25 @@ export function showDotAfterDay(locale: SupportedLocale) {
   return locale === 'de-DE';
 }
 
-// Function used to get the event dates in a localized string format
+// Function used to get the event dates in a localized string format,
+// converted to the viewer's local timezone with a timezone label.
 export function getEventDateString(event: IEventData) {
-  const startMoment = moment(event.attributes.start_at);
-  const endMoment = moment(event.attributes.end_at);
+  const startMoment = moment.tz(event.attributes.start_at, userTimezone);
+  const endMoment = moment.tz(event.attributes.end_at, userTimezone);
+  const tzLabel = startMoment.format('z');
 
   const isEventMultipleDays =
     startMoment.dayOfYear() !== endMoment.dayOfYear() ||
     startMoment.year() !== endMoment.year(); // Added in case the event is exactly 1 year long
 
   if (isEventMultipleDays) {
-    return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;
+    return `${startMoment.format('LLL')} - ${endMoment.format(
+      'LLL'
+    )} ${tzLabel}`;
   } else {
     return `${startMoment.format('LL')} • ${startMoment.format(
       'LT'
-    )} - ${endMoment.format('LT')}`;
+    )} - ${endMoment.format('LT')} ${tzLabel}`;
   }
 }
 
