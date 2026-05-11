@@ -94,6 +94,7 @@ pl-PL:
         project_published: Projekt opublikowany
         project_review_request: Moderator zażądał przeglądu projektu
         project_review_state_change: Recenzent zatwierdził projekt
+        proposal_expired: Propozycja wygasa bez osiągnięcia progu
         proposal_gets_reported_as_spam: Propozycja zostaje zgłoszona jako spam
         proposal_is_assigned_to_admin: Propozycja jest przypisana do administratora
         proposal_is_published: Wniosek został opublikowany
@@ -188,6 +189,7 @@ pl-PL:
       project_published: Projekt opublikowany
       project_review_request: Żądanie przeglądu projektu
       project_review_state_change: Projekt zatwierdzony
+      proposal_expired_for_admin: Propozycja wygasła bez osiągnięcia progu głosowania
       screening_digest: Cotygodniowe przypomnienie o badaniu przesiewowym
       space_moderation_rights_received: Otrzymano uprawnienia menedżera obszaru
       status_change_on_idea_you_follow: Zmiana statusu pomysłu, za którym podążasz
@@ -591,6 +593,11 @@ pl-PL:
       preheader: '%{reviewerName} zatwierdził projekt "%{projectTitle}"'
       subject: '"%{projectTitle}" został zatwierdzony'
       title: '%{reviewerName} zatwierdził projekt "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Przejrzyj wygasłe zgłoszenie
+      preheader: Zgłoszenie wygasło bez osiągnięcia progu
+      subject: '%{input_title} wygasło bez osiągnięcia progu'
+      title: Zgłoszenie wygasło bez osiągnięcia progu głosowania
     schedules:
       quarterly: Kwartalnie, pierwszego dnia kwartału
       weekly:

@@ -993,6 +993,18 @@
         }
       },
 
+      "project_widget": {
+        "type": "object",
+        "title": "Project Widget",
+        "description": "Admins can generate a projects widget to embed on external websites.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "pages": {
         "type": "object",
         "title": "Custom Pages",

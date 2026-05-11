@@ -251,21 +251,17 @@ class SideFxIdeaService
 
   def notify_topic_modeling_scheduler(idea)
     return unless idea.project.live_auto_input_topics_enabled
+    return unless idea.creation_phase.nil?
 
-    current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase.pmethod.supports_input_topics?
-
-    IdeaFeed::TopicModelingScheduler.new(current_phase).on_new_input
+    IdeaFeed::TopicModelingScheduler.new(idea.project).on_new_input
   end
 
   def enqueue_topic_classification_job(idea)
     return unless idea.project.live_auto_input_topics_enabled
     return if idea.input_topics.any?
+    return unless idea.creation_phase.nil?
 
-    current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase.pmethod.supports_input_topics?
-
-    IdeaFeed::BatchTopicClassificationJob.set(priority: 10).perform_later(current_phase, [idea.id])
+    IdeaFeed::BatchTopicClassificationJob.set(priority: 10).perform_later(idea.project, [idea.id])
   end
 end
 

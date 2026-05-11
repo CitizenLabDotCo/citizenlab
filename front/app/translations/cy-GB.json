@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Ychwanegu botwm",
   "app.components.QuillEditor.customLinkPrompt": "Rhowch ddolen:",
   "app.components.QuillEditor.edit": "Golygu",
+  "app.components.QuillEditor.embeddedVideo": "Fideo wedi'i fewnosod",
   "app.components.QuillEditor.image": "Uwchlwytho delwedd",
   "app.components.QuillEditor.imageTitleLabel": "Teitl y Delwedd",
   "app.components.QuillEditor.italic": "Italaidd",
