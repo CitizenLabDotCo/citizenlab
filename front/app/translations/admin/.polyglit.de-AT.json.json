@@ -14634,6 +14634,11 @@
     "verified_at": "2026-04-23T07:52:10.271290Z",
     "verified_by": "Jelena"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-11T14:24:14.224326Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
     "state": "verified",
     "verified_at": "2026-04-23T07:52:10.271290Z",
