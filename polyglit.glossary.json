@@ -104,6 +104,9 @@
     "de-DE": "Übersicht der Zugänge",
     "nl-NL": "overzicht accounts"
   },
+  "stale": {
+    "nl-NL": "inactief"
+  },
   "tag": {
     "nl-NL": "tag"
   },
