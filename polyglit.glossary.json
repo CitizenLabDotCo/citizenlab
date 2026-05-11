@@ -38,6 +38,9 @@
     "es-ES": "asientos",
     "nl-NL": "accounts"
   },
+  "drop pin": {
+    "nl-NL": "pin prikken"
+  },
   "preview link": {
     "nl-NL": "voorbeeldlink"
   },
