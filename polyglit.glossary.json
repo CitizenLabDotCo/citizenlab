@@ -50,6 +50,9 @@
   "review (project)": {
     "nl-NL": "beoordelen (project)"
   },
+  "voting": {
+    "nl-NL": "stemming"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
