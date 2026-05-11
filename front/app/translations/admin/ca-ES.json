@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grups",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Ocult",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Votants fora de línia",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Només els administradors{inFolder, select, true { o els gestors de la carpeta} other {}} poden publicar el projecte",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 participant al projecte} other {{participantsCount} participants al projecte}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participants en mètodes inserits (p. ex., enquestes externes)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Seguidors d'un projecte",

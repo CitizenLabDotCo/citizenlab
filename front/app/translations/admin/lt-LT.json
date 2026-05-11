@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupės",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Paslėptas",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Neprisijungę rinkėjai",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Tik administratoriai{inFolder, select, true { arba aplankų tvarkytojai} other {}} gali paskelbti projektą",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projekto dalyvis} other {{participantsCount} projekto dalyviai}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Įterptųjų metodų (pvz., išorinių apklausų) dalyviai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projekto sekėjai",

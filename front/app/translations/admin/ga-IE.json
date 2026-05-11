@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grúpaí",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "I bhfolach",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Vótálaithe as líne",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Ní féidir ach le riarthóirí{inFolder, select, true { nó na Bainisteoirí Fillteán} other {}} an tionscadal a fhoilsiú",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 rannpháirtí tionscadail} other {{participantsCount} rannpháirtithe tionscadail}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Rannpháirtithe i modhanna leabaithe (m.sh., suirbhéanna seachtracha)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Leantóirí tionscadail",

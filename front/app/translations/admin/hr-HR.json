@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "grupe",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Skriven",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline birači",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Samo administratori{inFolder, select, true { ili upravitelji mapa} other {}} mogu objaviti projekt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 sudionik projekta} other {{participantsCount} sudionici projekta}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Sudionici u ugrađenim metodama (npr. vanjske ankete)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Sljedbenici projekta",

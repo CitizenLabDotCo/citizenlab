@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupas",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Slēptais",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Bezsaistes balsotāji",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Tikai administratori{inFolder, select, true { vai mapes pārvaldnieki} other {}} var publicēt projektu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projekta dalībnieks} other {{participantsCount} projekta dalībnieki}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Iegulto metožu (piemēram, ārējo aptauju) dalībnieki.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projekta sekotāji",

@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grwpiau",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Cudd",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Pleidleiswyr all-lein",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Dim ond gweinyddwyr{inFolder, select, true { neu Reolwyr y Ffolder} other {}} sy'n gallu cyhoeddi'r prosiect",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 cyfranogwr prosiect} other {{participantsCount} cyfranogwyr prosiect}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Cyfranogwyr mewn dulliau sydd wedi'u gwreiddio (ee arolygon allanol)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Dilynwyr prosiect",
