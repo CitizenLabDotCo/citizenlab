@@ -66,28 +66,27 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/:id' do
-        before do
-          @user = create(:user)
-          create(:idea, author: @user) # without participation the user cannot be seen
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'allowed' => true,
-            'enabled' => true,
-            'enable_signup' => true,
-            'minimum_length' => 6
-          }
-        end
+      before do
+        @user = create(:user)
+        create(:idea, author: @user) # without participation the user cannot be seen
+        settings = AppConfiguration.instance.settings
+        settings['password_login'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'enable_signup' => true,
+          'minimum_length' => 6
+        }
+      end
 
-        let(:id) { @user.id }
+      let(:id) { @user.id }
 
-        example 'Get a non-authenticated user does not expose the email', document: false do
-          do_request
+      example 'Get a non-authenticated user does not expose the email', document: false do
+        do_request
 
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :email)).to be_nil
-        end
-
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :email)).to be_nil
+      end
     end
 
     post 'web_api/v1/users/check' do
