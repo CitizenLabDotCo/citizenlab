@@ -94,6 +94,7 @@ fi-FI:
         project_published: Projekti julkaistu
         project_review_request: Moderaattori pyysi projektin tarkistusta
         project_review_state_change: Arvioija hyväksyi hankkeen
+        proposal_expired: Ehdotus vanhentuu saavuttamatta kynnystä
         proposal_gets_reported_as_spam: Ehdotus ilmoitetaan roskapostiksi
         proposal_is_assigned_to_admin: Ehdotus on annettu järjestelmänvalvojalle
         proposal_is_published: Ehdotus on julkaistu
@@ -188,6 +189,7 @@ fi-FI:
       project_published: Projekti julkaistu
       project_review_request: Hankearviointipyyntö
       project_review_state_change: Projekti hyväksytty
+      proposal_expired_for_admin: Ehdotus vanhentui saavuttamatta äänestyskynnystä
       screening_digest: Viikoittainen seulontamuistutus
       space_moderation_rights_received: Tilan hallinnointioikeudet vastaanotettu
       status_change_on_idea_you_follow: Seuraamasi idean tilanmuutos
@@ -591,6 +593,11 @@ fi-FI:
       preheader: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
       subject: '"%{projectTitle}" on hyväksytty'
       title: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Tarkista vanhentunut ehdotus
+      preheader: Ehdotus vanhentui saavuttamatta kynnystä
+      subject: '"%{input_title}" vanhentui saavuttamatta kynnystä'
+      title: Ehdotus vanhentui saavuttamatta äänestyskynnystä
     schedules:
       quarterly: Neljännesvuosittain, neljänneksen ensimmäisenä päivänä
       weekly:

@@ -21,7 +21,10 @@ node_modules
 
 # Claude Code local files
 CLAUDE.local.md
-.claude/settings.local.json
+.claude/*
+# CLAUDE.md files are gitignored at any path: the citizenlab-claude private
+# overlay materializes them as file symlinks via bin/setup-claude.
+**/CLAUDE.md
 
 # MCP local files
 .serena/

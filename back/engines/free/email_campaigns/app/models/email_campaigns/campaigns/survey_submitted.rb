@@ -97,7 +97,8 @@ module EmailCampaigns
           idea_id: idea.id,
           project_title_multiloc: project.title_multiloc,
           profile_url: Frontend::UrlService.new.profile_surveys_url(recipient.id),
-          has_password: !recipient.no_password?
+          has_password: !recipient.no_password?,
+          hide_submission_removal_text: AppConfiguration.instance.feature_activated?('hide_submission_removal_text')
         }
       }]
     end

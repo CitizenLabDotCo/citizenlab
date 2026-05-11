@@ -869,6 +869,7 @@ function apiCreateProject({
   publicationStatus = 'published',
   assigneeId,
   visibleTo,
+  folderId,
 }: {
   title: string;
   descriptionPreview?: string;
@@ -876,6 +877,7 @@ function apiCreateProject({
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
+  folderId?: string;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -908,6 +910,7 @@ function apiCreateProject({
           },
           default_assignee_id: assigneeId,
           visible_to: visibleTo,
+          folder_id: folderId,
         },
       },
     });
@@ -1015,11 +1018,13 @@ function apiCreateFolder({
   descriptionPreview,
   description,
   publicationStatus = 'published',
+  spaceId,
 }: {
   title: string;
   descriptionPreview?: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
+  spaceId?: string;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1039,15 +1044,22 @@ function apiCreateFolder({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
-            en: descriptionPreview,
-            'nl-BE': descriptionPreview,
+            en: descriptionPreview ?? description,
+            'nl-BE': descriptionPreview ?? description,
+            'nl-NL': descriptionPreview ?? description,
+            'fr-BE': descriptionPreview ?? description,
           },
           description_multiloc: {
             en: description,
             'nl-BE': description,
+            'nl-NL': description,
+            'fr-BE': description,
           },
+          space_id: spaceId,
         },
       },
     });

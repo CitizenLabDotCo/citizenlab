@@ -45,6 +45,8 @@ export interface IAdminPublicationData {
     ordering: number;
     depth: number;
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;
     publication_description_multiloc: Multiloc;

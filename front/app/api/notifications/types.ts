@@ -311,6 +311,16 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
+export interface IProposalExpiredForAdminNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'proposal_expired_for_admin';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
 export interface ISpaceModerationRightsReceivedNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -411,6 +421,7 @@ export interface INotificationDataMap {
   IProjectReviewStateChangeNotificationData: IProjectReviewStateChangeNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
+  IProposalExpiredForAdminNotificationData: IProposalExpiredForAdminNotificationData;
   ISpaceModerationRightsReceivedNotificationData: ISpaceModerationRightsReceivedNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;

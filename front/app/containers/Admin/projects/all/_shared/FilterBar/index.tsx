@@ -3,17 +3,25 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { IUser } from 'api/users/types';
 
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
 import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
 
+const userCanApprove = (user: IUser) => {
+  return (
+    isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user)
+  );
+};
+
 const Filters = () => {
   const { data: user } = useAuthUser();
-  const isUserAdmin = isAdmin(user);
+  if (!user) return null;
 
   return (
     <Box
@@ -25,9 +33,9 @@ const Filters = () => {
       className="intercom-product-tour-project-page-filters"
     >
       <Sort />
-      {isUserAdmin && <PendingApproval />}
+      {userCanApprove(user) && <PendingApproval />}
       <Dates />
-      <DynamicFilters isUserAdmin={isUserAdmin} />
+      <DynamicFilters />
     </Box>
   );
 };

@@ -284,6 +284,30 @@ resource BasketsIdea do
           assert_status 404
         end
       end
+
+      context 'a concurrent request creates the basket between find_or_initialize_by and save' do
+        let(:votes) { 1 }
+        let!(:concurrent_basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
+
+        before do
+          racing_basket = Basket.new(phase: project.phases.first, user: user)
+          allow(Basket).to receive(:find_or_initialize_by)
+            .with(phase: project.phases.first, user: user)
+            .and_return(racing_basket)
+          allow(racing_basket).to receive(:save).and_raise(ActiveRecord::RecordNotUnique)
+        end
+
+        example 'Recover from the race and attach the vote to the winning basket', document: false do
+          expect_any_instance_of(SideFxBasketService).not_to receive(:after_create)
+          do_request
+          assert_status 200
+          expect(response_data.dig(:relationships, :basket, :data, :id)).to eq concurrent_basket.id
+          baskets_idea = BasketsIdea.find_by(basket: concurrent_basket, idea: idea)
+          expect(baskets_idea).to be_present
+          expect(baskets_idea.votes).to eq 1
+          expect(Basket.where(user: user, phase: project.phases.first).count).to eq 1
+        end
+      end
     end
   end
 

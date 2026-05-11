@@ -19,16 +19,24 @@ RSpec.describe ProjectReview do
         expect(project_review.errors[:requester]).to include('must be present')
       end
 
-      it 'is invalid if the reviewer is not an admin or a moderator of the project folder' do
+      it 'is invalid if the reviewer is not an admin, a space moderator, or a folder moderator' do
         project_review = build(:project_review)
         project_review.reviewer = create(:user)
         expect(project_review).not_to be_valid
-        expect(project_review.errors[:reviewer]).to include('must be an admin or a moderator of the project folder')
+        expect(project_review.errors[:reviewer]).to include('must be an admin, a moderator of the project space, or a moderator of the project folder')
       end
 
       it 'valid if the reviewer is an admin' do
         project_review = build_stubbed(:project_review)
         project_review.reviewer = create(:admin)
+        expect(project_review).to be_valid
+      end
+
+      it 'valid if the reviewer is a moderator of the project space' do
+        space = create(:space)
+        project = create(:project, space: space)
+        project_review = build(:project_review, project: project)
+        project_review.reviewer = create(:space_moderator, spaces: [space])
         expect(project_review).to be_valid
       end
 
@@ -132,11 +140,11 @@ RSpec.describe ProjectReview do
         .with_message('Validation failed: Reviewer must be present when approving')
     end
 
-    it 'fails if the reviewer is not an admin or a moderator of the project folder' do
+    it 'fails if the reviewer is not an admin, a space moderator, or a folder moderator' do
       review = create(:project_review)
       expect { review.approve!(create(:user)) }
         .to raise_error(ActiveRecord::RecordInvalid)
-        .with_message('Validation failed: Reviewer must be an admin or a moderator of the project folder')
+        .with_message('Validation failed: Reviewer must be an admin, a moderator of the project space, or a moderator of the project folder')
     end
   end
 end

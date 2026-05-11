@@ -26,7 +26,13 @@ import messages from './messages';
 import PDFViewer from './PDFViewer';
 import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
-const ReviewSection = () => {
+const ReviewSection = ({
+  onClickPDFImport,
+  onClickExcelImport,
+}: {
+  onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
+}) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -74,8 +80,14 @@ const ReviewSection = () => {
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
+
   if (!importing && !importHasErrors && numIdeas === 0) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        onClickPDFImport={onClickPDFImport}
+        onClickExcelImport={onClickExcelImport}
+      />
+    );
   }
 
   const handleSelectIdea = (ideaId: string) => {

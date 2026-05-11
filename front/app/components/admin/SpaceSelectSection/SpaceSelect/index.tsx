@@ -44,6 +44,7 @@ const SpaceSelect = ({ spaceId, spaces, onChange }: Props) => {
     <Select
       value={value}
       options={spaceOptions}
+      dataCy="space-select"
       onChange={(option) => {
         const { value } = option;
         const nilValue = value === '' || value === NO_SPACE_ID;
