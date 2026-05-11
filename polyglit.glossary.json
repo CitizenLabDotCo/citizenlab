@@ -62,7 +62,8 @@
     "de-DE": "Lizenz"
   },
   "recipients": {
-    "de-DE": "Empfänger*innen"
+    "de-DE": "Empfänger*innen",
+    "nl-NL": "ontvangers"
   },
   "save": {
     "da-DK": "gem",
