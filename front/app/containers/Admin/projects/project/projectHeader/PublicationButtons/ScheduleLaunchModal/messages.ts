@@ -2,12 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   scheduleLaunch: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch',
-    defaultMessage: 'Schedule launch',
-  },
-  reviewSubtitle: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.reviewSubtitle',
-    defaultMessage: 'Review what happens when this project goes live',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.scheduleLaunch2',
+    defaultMessage: 'Schedule publication',
   },
   when: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.when',
@@ -22,8 +18,8 @@ export default defineMessages({
     defaultMessage: 'Now',
   },
   whoCanFindProject: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject',
-    defaultMessage: 'Who can find the project',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject2',
+    defaultMessage: 'Who can see this project?',
   },
   everyone: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.everyone',
@@ -38,24 +34,24 @@ export default defineMessages({
     defaultMessage: 'Edit',
   },
   sendProjectPublishedEmail: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail',
-    defaultMessage: 'Send project published email',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.sendProjectPublishedEmail2',
+    defaultMessage: 'Send "Project published" email',
   },
   approximateRecipients: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.approximateRecipients2',
     defaultMessage: '≈ {count, plural, one {# recipient} other {# recipients}}',
   },
   editRecipients: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients',
-    defaultMessage: 'Edit recipients',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.editRecipients2',
+    defaultMessage: 'Edit settings',
   },
   cancelSchedule: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.cancelSchedule',
     defaultMessage: 'Cancel schedule',
   },
   saveChanges: {
-    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges',
-    defaultMessage: 'Save changes',
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.saveChanges2',
+    defaultMessage: 'Schedule',
   },
   publishNow: {
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.publishNow',
@@ -83,5 +79,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.emailNotificationsDisabledGlobally',
     defaultMessage:
       'Email notifications for project launches have been disabled platform-wide.',
+  },
+  schedulingNotIncludedTooltip: {
+    id: 'app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.schedulingNotIncludedTooltip',
+    defaultMessage:
+      'Scheduling is not included on your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
 });

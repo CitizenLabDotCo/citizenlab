@@ -23,6 +23,8 @@ interface Props {
   onChange: (newDate: Date) => void;
   selectedDate?: Date;
   currentTimeInTz?: Date;
+  minTime?: Date;
+  maxTime?: Date;
 }
 
 const TimeInput = ({
@@ -30,6 +32,8 @@ const TimeInput = ({
   onChange,
   selectedDate = undefined,
   currentTimeInTz = undefined,
+  minTime,
+  maxTime,
 }: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -38,19 +42,6 @@ const TimeInput = ({
   const h = selectedTime.getHours();
   const m = selectedTime.getMinutes();
 
-  // In theory the Math.floor should not be necessary,
-  // but just in case we will floor it to avoid
-  // getting a floating point value.
-  const timeIndex = Math.floor(h * 4 + m / 15);
-
-  // This is necessary to be able to use the timeIndex
-  // in the next useEffect block without making it
-  // a dependency of the useEffect.
-  const timeIndexRef = useRef(timeIndex);
-  useLayoutEffect(() => {
-    timeIndexRef.current = timeIndex;
-  });
-
   // Check if selected date is today - use tenant timezone if provided
   const referenceTime = currentTimeInTz || new Date();
   const isToday = selectedDate
@@ -58,21 +49,51 @@ const TimeInput = ({
     : false;
 
   // Filter times based on whether it's today - use tenant timezone
-  const availableTimes = isToday
-    ? TIMES.filter((time) => {
-        const currentHour = referenceTime.getHours();
-        const timeHour = time.getHours();
-        return timeHour > currentHour;
-      })
-    : TIMES;
+  const availableTimes = TIMES.filter((time) => {
+    const timeHour = time.getHours();
+    const timeMinute = time.getMinutes();
+    const timeInMinutes = timeHour * 60 + timeMinute;
+
+    if (isToday) {
+      const currentHour = referenceTime.getHours();
+      if (timeHour <= currentHour) return false;
+    }
+
+    if (minTime) {
+      const minInMinutes = minTime.getHours() * 60 + minTime.getMinutes();
+      if (timeInMinutes < minInMinutes) return false;
+    }
+
+    if (maxTime) {
+      const maxInMinutes = maxTime.getHours() * 60 + maxTime.getMinutes();
+      if (timeInMinutes > maxInMinutes) return false;
+    }
+
+    return true;
+  });
+
+  // Index of the selected time within the *rendered* list, not the full TIMES
+  // array. Using the TIMES index would land us past the end of availableTimes
+  // whenever the list is filtered (today's slots, minTime/maxTime), and the
+  // browser would clamp scrollTop to the bottom.
+  const selectedIndex = availableTimes.findIndex(
+    (time) => time.getHours() === h && time.getMinutes() === m
+  );
+
+  // Read inside the visibility effect via a ref so we don't re-scroll every
+  // time the user picks a new time — only when the dropdown opens.
+  const selectedIndexRef = useRef(selectedIndex);
+  useLayoutEffect(() => {
+    selectedIndexRef.current = selectedIndex;
+  });
 
   // Make sure the selected time is centered inside
   // of the scroll container
   useEffect(() => {
     if (!visible) return;
     if (!scrollContainerRef.current) return;
-    scrollContainerRef.current.scrollTop =
-      Math.max(timeIndexRef.current - 2, 0) * BUTTON_HEIGHT;
+    const idx = Math.max(selectedIndexRef.current, 0);
+    scrollContainerRef.current.scrollTop = Math.max(idx - 2, 0) * BUTTON_HEIGHT;
   }, [visible]);
 
   const handleButtonClick = (time: Date) => {
@@ -110,6 +131,11 @@ const TimeInput = ({
                 bgColor={isSelected ? colors.teal700 : 'white'}
                 textColor={isSelected ? 'white' : colors.black}
                 bgHoverColor={isSelected ? colors.teal700 : colors.teal100}
+                // Prevent focus from leaving the time input's trigger button
+                // when a slot is clicked. Otherwise the button briefly takes
+                // focus, then unmounts as the tooltip closes, and the modal's
+                // focus trap recovers by jumping focus to the date picker.
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleButtonClick(time)}
               >
                 {format(time, 'p', { locale: getLocale(locale) })}

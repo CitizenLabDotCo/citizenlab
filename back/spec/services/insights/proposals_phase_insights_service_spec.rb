@@ -137,74 +137,141 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
   end
 
   describe '#threshold_reached_at' do
+    let!(:threshold_status) { create(:proposal_status_threshold_reached) }
+
     it 'returns nil when idea has no threshold_reached status change' do
       threshold_reached_at = service.send(:threshold_reached_at, idea2)
 
       expect(threshold_reached_at).to be_nil
     end
 
-    it 'returns the acted_at time when idea reached threshold' do
-      activity_time = 8.days.ago
-      create(
-        :activity,
-        item: idea2,
-        action: 'changed_input_status',
-        acted_at: activity_time,
-        payload: {
-          input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached'
-        }
-      )
+    # The 'changed_status' activity is the format emitted by both manual status
+    # changes and (post-TAN-7658) automatic transitions.
+    context "with current 'changed_status' activity format" do
+      it 'returns the acted_at time when idea reached threshold' do
+        proposed_status = create(:proposals_status, code: 'proposed')
+        activity_time = 8.days.ago
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_status',
+          acted_at: activity_time,
+          payload: { change: [proposed_status.id, threshold_status.id] }
+        )
 
-      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
 
-      expect(threshold_reached_at).to be_within(1.second).of(activity_time)
+        expect(threshold_reached_at).to be_within(1.second).of(activity_time)
+      end
+
+      it 'returns the threshold_reached time even when status changed again after' do
+        proposed_status = create(:proposals_status, code: 'proposed')
+        accepted_status = create(:proposals_status, code: 'accepted')
+        threshold_time = 8.days.ago
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_status',
+          acted_at: threshold_time,
+          payload: { change: [proposed_status.id, threshold_status.id] }
+        )
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_status',
+          acted_at: 5.days.ago,
+          payload: { change: [threshold_status.id, accepted_status.id] }
+        )
+
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+        expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
+      end
+
+      it 'returns nil when idea has other status changes but not threshold_reached' do
+        proposed_status = create(:proposals_status, code: 'proposed')
+        accepted_status = create(:proposals_status, code: 'accepted')
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_status',
+          acted_at: 8.days.ago,
+          payload: { change: [proposed_status.id, accepted_status.id] }
+        )
+
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+        expect(threshold_reached_at).to be_nil
+      end
     end
 
-    it 'returns the threshold_reached time even when status changed again after' do
-      threshold_time = 8.days.ago
-      create(
-        :activity,
-        item: idea2,
-        action: 'changed_input_status',
-        acted_at: threshold_time,
-        payload: {
-          input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached'
-        }
-      )
+    # Pre-TAN-7658, automatic transitions emitted a separate 'changed_input_status'
+    # activity. Old activity rows still need to be interpreted by this service so
+    # historical insights remain accurate after the deploy.
+    context "with legacy 'changed_input_status' activity format (backwards compatibility)" do
+      it 'returns the acted_at time when idea reached threshold' do
+        activity_time = 8.days.ago
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_input_status',
+          acted_at: activity_time,
+          payload: {
+            input_status_from_code: 'proposed',
+            input_status_to_code: 'threshold_reached'
+          }
+        )
 
-      create(
-        :activity,
-        item: idea2,
-        action: 'changed_input_status',
-        acted_at: 5.days.ago,
-        payload: {
-          input_status_from_code: 'threshold_reached',
-          input_status_to_code: 'accepted'
-        }
-      )
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
 
-      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+        expect(threshold_reached_at).to be_within(1.second).of(activity_time)
+      end
 
-      expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
-    end
+      it 'returns the threshold_reached time even when status changed again after' do
+        threshold_time = 8.days.ago
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_input_status',
+          acted_at: threshold_time,
+          payload: {
+            input_status_from_code: 'proposed',
+            input_status_to_code: 'threshold_reached'
+          }
+        )
 
-    it 'returns nil when idea has other status changes but not threshold_reached' do
-      create(
-        :activity,
-        item: idea2,
-        action: 'changed_input_status',
-        acted_at: 8.days.ago,
-        payload: {
-          input_status_from_code: 'proposed',
-          input_status_to_code: 'accepted'
-        }
-      )
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_input_status',
+          acted_at: 5.days.ago,
+          payload: {
+            input_status_from_code: 'threshold_reached',
+            input_status_to_code: 'accepted'
+          }
+        )
 
-      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
 
-      expect(threshold_reached_at).to be_nil
+        expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
+      end
+
+      it 'returns nil when idea has other status changes but not threshold_reached' do
+        create(
+          :activity,
+          item: idea2,
+          action: 'changed_input_status',
+          acted_at: 8.days.ago,
+          payload: {
+            input_status_from_code: 'proposed',
+            input_status_to_code: 'accepted'
+          }
+        )
+
+        threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+        expect(threshold_reached_at).to be_nil
+      end
     end
   end
 

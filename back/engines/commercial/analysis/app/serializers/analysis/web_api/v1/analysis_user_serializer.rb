@@ -11,10 +11,6 @@ module Analysis
 
         attributes :locale, :created_at, :updated_at
 
-        attribute :slug do |object, params|
-          object.slug if params[:view_private_attributes]
-        end
-
         attribute :last_name do |object, params|
           name_service = UserDisplayNameService.new(params[:app_configuration], current_user(params))
           name_service.last_name(object) if params[:view_private_attributes]

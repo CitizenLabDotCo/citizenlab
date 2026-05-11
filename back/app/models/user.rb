@@ -66,6 +66,8 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
+  # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
+  # It will be removed in the near future when we are sure there is no further use for it.
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
   class << self
@@ -170,6 +172,7 @@ class User < ApplicationRecord
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
+  has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
@@ -308,23 +311,7 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
-  def self.enhanced_user_profile_privacy?
-    AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
-  end
-
-  # Find a user by slug or by id when the id is used as slug
-  def self.by_slug!(slug)
-    enhanced_user_profile_privacy? ? find(slug) : find_by!(slug:)
-  end
-
-  def slug
-    self.class.enhanced_user_profile_privacy? && id ? id : super
-  end
-
   def show_public_profile?
-    return true unless self.class.enhanced_user_profile_privacy?
-
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods.
     # This is to avoid exposing personal data of users who have not actively used the platform.

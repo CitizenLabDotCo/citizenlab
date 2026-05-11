@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaFeed::TopicClassificationService do
-  let(:service) { described_class.new(phase) }
+  let(:service) { described_class.new(project) }
 
   describe '#classify_topics!' do
     let_it_be(:project) { create(:project) }

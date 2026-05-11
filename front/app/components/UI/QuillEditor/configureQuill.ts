@@ -1,12 +1,19 @@
 import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 import Quill from 'quill';
 import QuillInline from 'quill/blots/inline';
+import Bold from 'quill/formats/bold';
 import QuillLink from 'quill/formats/link';
 import Video from 'quill/formats/video';
 
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
+
+let embeddedVideoTitle = 'Embedded video';
+
+export const setEmbeddedVideoTitle = (title: string) => {
+  embeddedVideoTitle = title;
+};
 
 export const configureQuill = () => {
   // Pre-register imageAlign and iframeAlign formats so they exist in the
@@ -37,10 +44,16 @@ export const configureQuill = () => {
 
   Quill.register('modules/blotFormatter', BlotFormatter);
 
+  class CustomBold extends Bold {}
+  CustomBold.tagName = ['B'];
+  Quill.register('formats/bold', CustomBold, true);
+
   // BEGIN allow video resizing styles
   class VideoFormat extends Video {
     static create(url: string) {
       const node = super.create(url);
+
+      node.setAttribute('title', embeddedVideoTitle);
 
       // Add referrer policy to YouTube video embeds
       if (isYouTubeEmbedLink(url)) {
@@ -53,6 +66,9 @@ export const configureQuill = () => {
     static formats(domNode: Element) {
       return attributes.reduce(
         (formats: Record<string, string | null>, attribute) => {
+          // `title` is set dynamically from the current locale in `create`;
+          // skip it here so a stale title in saved HTML doesn't override it.
+          if (attribute === 'title') return formats;
           if (domNode.hasAttribute(attribute)) {
             formats[attribute] = domNode.getAttribute(attribute);
           }
@@ -62,6 +78,7 @@ export const configureQuill = () => {
       );
     }
     format(name: string, value: string) {
+      if (name === 'title') return;
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);

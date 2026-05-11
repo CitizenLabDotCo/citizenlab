@@ -6249,6 +6249,56 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:16:00.850334Z",
+    "verified_by": "Roger"
+  },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -9694,7 +9744,6 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
-
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-20T15:02:01.635768Z",
@@ -12200,6 +12249,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:22:42.095535Z",
+    "verified_by": "Roger"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -12550,7 +12605,6 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
-
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderManagerRights": {
     "state": "verified",
     "verified_at": "2026-04-20T15:02:01.635768Z",

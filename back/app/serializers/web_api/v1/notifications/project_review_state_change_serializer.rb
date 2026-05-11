@@ -19,7 +19,7 @@ class WebApi::V1::Notifications::ProjectReviewStateChangeSerializer < WebApi::V1
       .last_name!(object.initiating_user)
   end
 
-  attribute :initiating_user_slug do |object|
-    object.initiating_user&.slug
+  attribute :initiating_user_id do |object|
+    object.initiating_user_id
   end
 end

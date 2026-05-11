@@ -94,6 +94,7 @@ hu-HU:
         project_published: A projekt megjelent
         project_review_request: A moderátor a projekt felülvizsgálatát kérte
         project_review_state_change: A bíráló jóváhagyta a projektet
+        proposal_expired: Egy javaslat lejár a küszöbérték elérése nélkül
         proposal_gets_reported_as_spam: Az ajánlatot spamként jelentik be
         proposal_is_assigned_to_admin: Az ajánlat adminisztrátorhoz van rendelve
         proposal_is_published: A javaslat közzétételre került
@@ -188,6 +189,7 @@ hu-HU:
       project_published: A projekt megjelent
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
+      proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
       screening_digest: Heti szűrővizsgálati emlékeztető
       space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
@@ -591,6 +593,11 @@ hu-HU:
       preheader: '%{reviewerName} jóváhagyta a(z) "%{projectTitle}" projektet'
       subject: '"%{projectTitle}" jóváhagyva'
       title: '%{reviewerName} jóváhagyta a(z) "%{projectTitle}" projektet'
+    proposal_expired_for_admin:
+      cta_button: A lejárt javaslat áttekintése
+      preheader: Egy javaslat lejárt a küszöbérték elérése nélkül
+      subject: '"%{input_title}" lejárt a küszöbérték elérése nélkül'
+      title: Egy javaslat lejárt a szavazati küszöb elérése nélkül
     schedules:
       quarterly: Negyedévenként, a negyedév első napján
       weekly:

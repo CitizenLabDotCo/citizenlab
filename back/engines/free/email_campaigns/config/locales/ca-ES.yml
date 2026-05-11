@@ -94,6 +94,7 @@ ca-ES:
         project_published: Projecte publicat
         project_review_request: El moderador ha sol·licitat una revisió del projecte
         project_review_state_change: El revisor va aprovar el projecte
+        proposal_expired: Una proposta caduca sense assolir el llindar
         proposal_gets_reported_as_spam: La proposta s'informa com a correu brossa
         proposal_is_assigned_to_admin: "La proposta s'assigna a l'administrador"
         proposal_is_published: Es publica la proposta
@@ -188,6 +189,7 @@ ca-ES:
       project_published: Projecte publicat
       project_review_request: Sol·licitud de revisió del projecte
       project_review_state_change: Projecte aprovat
+      proposal_expired_for_admin: La proposta ha caducat sense assolir el llindar de votació
       screening_digest: Recordatori de cribratge setmanal
       space_moderation_rights_received: Drets de gestor d'espai rebuts
       status_change_on_idea_you_follow: "Canvi d'estat d'una idea que segueixes"
@@ -591,6 +593,11 @@ ca-ES:
       preheader: '%{reviewerName} ha aprovat el projecte "%{projectTitle}"'
       subject: "\"%{projectTitle}\" s'ha aprovat"
       title: '%{reviewerName} va aprovar el projecte "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Revisa l'aportació caducada
+      preheader: Una aportació ha caducat sense assolir el llindar
+      subject: '"%{input_title}" ha caducat sense assolir el llindar'
+      title: Una aportació ha caducat sense assolir el llindar de votació
     schedules:
       quarterly: Trimestral, el primer dia del trimestre
       weekly:

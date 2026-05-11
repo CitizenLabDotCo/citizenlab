@@ -16,6 +16,7 @@ import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteI
 
 import useLocalize from 'hooks/useLocalize';
 
+import { formatCommentContent } from 'components/PostShowComponents/utils';
 import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -62,6 +63,10 @@ const Body = styled.div`
     &:hover {
       color: ${colors.teal700};
     }
+  }
+
+  .cl-mention-user {
+    font-style: italic;
   }
 `;
 
@@ -187,11 +192,7 @@ const OfficialFeedbackPost = ({
 
   const getPostBodyText = (postBodyMultiloc: Multiloc) => {
     const postBodyText = localize(postBodyMultiloc);
-    const processedPostBodyText = postBodyText.replace(
-      /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-      '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-    );
-    return processedPostBodyText;
+    return formatCommentContent(postBodyText);
   };
 
   const { body_multiloc, author_multiloc, created_at, updated_at } =

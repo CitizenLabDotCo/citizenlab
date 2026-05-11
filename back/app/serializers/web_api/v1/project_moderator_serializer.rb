@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectModeratorSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :last_name, :slug, :roles
+  attributes :first_name, :last_name, :roles
 
   attribute :email, if: proc { |object, params|
     view_private_attributes? object, params

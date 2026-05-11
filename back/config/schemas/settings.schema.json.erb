@@ -993,6 +993,18 @@
         }
       },
 
+      "project_widget": {
+        "type": "object",
+        "title": "Project Widget",
+        "description": "Admins can generate a projects widget to embed on external websites.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "pages": {
         "type": "object",
         "title": "Custom Pages",
@@ -1629,10 +1641,10 @@
         }
       },
 
-      "enhanced_user_profile_privacy": {
+      "phase_datetime_setup": {
         "type": "object",
-        "title": "Enhanced user profile privacy",
-        "description": "Turn on for privacy/security reasons to use user ID as the slug of user profiles instead of name eg /profile/joe-bloggs. Also prevents profiles being public unless users have posted publicly.",
+        "title": "Phase datetime setup",
+        "description": "Allow to set up the start and end datetimes of a phase in the project timeline, in addition to just the dates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1698,6 +1710,18 @@
             "enum": ["none", "peer"],
             "private": true
           }
+        }
+      },
+
+      "hide_submission_removal_text": {
+        "type": "object",
+        "title": "Hide submission removal text",
+        "description": "Do not give users the option to remove survey submissions (post survey & in email confirmation). WARNING: Should only be used where GPDR does not apply.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       }
     },

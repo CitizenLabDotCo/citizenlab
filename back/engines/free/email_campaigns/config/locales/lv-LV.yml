@@ -94,6 +94,7 @@ lv-LV:
         project_published: Publicēts projekts
         project_review_request: Moderators pieprasīja projekta pārskatīšanu
         project_review_state_change: Recenzents apstiprināja projektu
+        proposal_expired: Priekšlikuma termiņš beidzas, nesasniedzot slieksni
         proposal_gets_reported_as_spam: Par priekšlikumu tiek ziņots kā par surogātpastu
         proposal_is_assigned_to_admin: Priekšlikums ir piešķirts admin
         proposal_is_published: Priekšlikums ir publicēts
@@ -188,6 +189,7 @@ lv-LV:
       project_published: Publicēts projekts
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
+      proposal_expired_for_admin: Priekšlikuma termiņš ir beidzies, nesasniedzot balsošanas slieksni
       screening_digest: Iknedēļas skrīninga atgādinājums
       space_moderation_rights_received: Saņemtas telpas pārvaldnieka tiesības
       status_change_on_idea_you_follow: Idejas statusa maiņa, kurai jūs sekojat
@@ -591,6 +593,11 @@ lv-LV:
       preheader: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
       subject: '"%{projectTitle}" ir apstiprināts'
       title: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Pārskatīt iesniegumu, kura termiņš ir beidzies
+      preheader: Iesnieguma termiņš ir beidzies, nesasniedzot slieksni
+      subject: '"%{input_title}" termiņš ir beidzies, nesasniedzot slieksni'
+      title: Iesnieguma termiņš ir beidzies, nesasniedzot balsošanas slieksni
     schedules:
       quarterly: Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā
       weekly:

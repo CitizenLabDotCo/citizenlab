@@ -45,16 +45,11 @@ class InputStatusService
   private
 
   private_class_method def self.apply_transition!(input, code_to)
-    code_from = input.idea_status.code
     status_to = IdeaStatus.find_by(code: code_to, participation_method: input.participation_method_on_creation.class.method_str)
+    sfx = SideFxIdeaService.new
+    sfx.before_update(input, nil)
     input.update!(idea_status: status_to)
-    LogActivityJob.perform_later(
-      input,
-      'changed_input_status',
-      nil,
-      Time.zone.now.to_i,
-      payload: { input_status_from_code: code_from, input_status_to_code: code_to }
-    )
+    sfx.after_update(input, nil)
   end
 
   private_class_method def self.threshold_reached_condition?(input)

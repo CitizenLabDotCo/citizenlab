@@ -13,7 +13,7 @@ interface ICommentReplyClicked {
   parentCommentId: string | null;
   authorFirstName?: string | null;
   authorLastName?: string | null;
-  authorSlug?: string | null;
+  authorId?: string | null;
 }
 
 export const commentReplyButtonClicked = (eventValue: ICommentReplyClicked) =>

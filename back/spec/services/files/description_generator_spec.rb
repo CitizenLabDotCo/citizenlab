@@ -63,8 +63,13 @@ RSpec.describe Files::DescriptionGenerator do
     end
 
     # UnsupportedAttachmentError is raised when a file is detected as an unsupported type
-    # before the request is sent to the LLM.
+    # before the request is sent to the LLM. We bypass the upload allowlist for this
+    # test so an .exe can be persisted; the point is to exercise RubyLLM's own
+    # type-rejection, not the uploader's.
     it 'raises RubyLLM::UnsupportedAttachmentError for unsupported file' do
+      allow_any_instance_of(Files::FileUploader).to receive(:extension_allowlist).and_return(nil)
+      allow_any_instance_of(Files::FileUploader).to receive(:content_type_allowlist).and_return(nil)
+
       file = create_ai_file(name: 'keylogger.exe')
 
       expect { service.generate_descriptions!(file) }

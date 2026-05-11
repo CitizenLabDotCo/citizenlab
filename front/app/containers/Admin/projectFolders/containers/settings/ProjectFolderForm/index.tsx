@@ -108,13 +108,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       name: 'project_description_builder',
     }) && projectFolder; // description builder cannot be used when creating a folder
 
-  const { data: authUser } = useAuthUser();
-
   /*
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -148,6 +148,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -243,6 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleSpaceIdChange = (spaceId: string | null) => {
     setSubmitState('enabled');
+    setSpaceIdError(false);
     setSpaceId(spaceId);
   };
 
@@ -324,6 +326,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
     if (isSpaceModerator(authUser) && !spaceId) {
       valid = false;
+      setSpaceIdError(true);
     }
 
     if (!valid) {
@@ -524,6 +527,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCardImage.remote
     : false;
 
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
+
   return (
     <form onSubmit={saveForm}>
       <Section>
@@ -576,7 +595,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
+        <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
@@ -604,9 +623,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}
           />
-          <Box mt="35px">
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
               name="textAreaMultiloc"
               onChange={getHandler(setShortDescriptionMultiloc)}
@@ -642,7 +660,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
 
-        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>
@@ -737,12 +759,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />
