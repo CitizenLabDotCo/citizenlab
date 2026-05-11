@@ -210,6 +210,9 @@
     "de-DE": "Kundenbetreuerin",
     "nl-NL": "Government Success Manager"
   },
+  "statement": {
+    "nl-NL": "stelling"
+  },
   "comment (input term)": {
     "nl-NL": "opmerking"
   },
