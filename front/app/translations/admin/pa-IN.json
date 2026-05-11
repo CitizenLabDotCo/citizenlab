@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "ਤਬਦੀਲੀਆਂ ਨੂੰ ਰੱਦ ਕਰੋ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ਡਰਾਫਟ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "ਤੁਸੀਂ ਇੱਕ ਡਰਾਫਟ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰ ਰਹੇ ਹੋ। ਇਸਨੂੰ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਦਿਖਾਉਣ ਲਈ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰੋ, ਜਾਂ ਪੁਰਾਣੀ ਸਥਿਤੀ 'ਤੇ ਵਾਪਸ ਜਾਣ ਲਈ ਰੱਦ ਕਰੋ।",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "ਪੜਾਅ ਦਾ ਵੇਰਵਾ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "ਪ੍ਰਕਾਸ਼ਿਤ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "ਇਹ ਵਰਤਮਾਨ ਵਿੱਚ ਪ੍ਰਕਾਸ਼ਿਤ ਵੇਰਵਾ ਹੈ ਜੋ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ। ਸੰਪਾਦਿਤ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "ਡਰਾਫਟ ਸੰਭਾਲਿਆ ਗਿਆ",

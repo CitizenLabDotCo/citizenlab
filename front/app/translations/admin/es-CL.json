@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Descartar cambios",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "BORRADOR",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Estás editando un borrador. Publícalo para que sea visible para los participantes o descártalo para revertir los cambios.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Publicar descripción de la fase",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICADO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Esta es la descripción publicada actualmente y visible para los participantes. Haz clic para editar.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Borrador guardado",

@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Änderungen verwerfen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ENTWURF",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Du bearbeitest einen Entwurf. Veröffentliche ihn, um ihn für Teilnehmende sichtbar zu machen, oder verwerfe ihn, um die Änderungen rückgängig zu machen.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Phasenbeschreibung veröffentlichen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "VERÖFFENTLICHT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dies ist die aktuell veröffentlichte Beschreibung, die für Teilnehmende sichtbar ist. Zum Bearbeiten klicken.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Entwurf gespeichert",

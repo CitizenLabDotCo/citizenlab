@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Descarta els canvis",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ESBORRANY",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Estàs editant un esborrany. Publica'l perquè sigui visible per als participants, o descarta'l per revertir els canvis.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Publicar la descripció de la fase",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICAT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Aquesta és la descripció publicada actualment i visible per als participants. Fes clic per editar-la.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Esborrany desat",

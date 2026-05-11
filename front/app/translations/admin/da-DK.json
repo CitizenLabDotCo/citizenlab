@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Kassér ændringer",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "KLADDE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Du redigerer en kladde. Udgiv den for at gøre den synlig for deltagere, eller kassér ændringerne for at fortryde.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Offentliggør fasebeskrivelse",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "UDGIVET",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dette er den nuværende udgivne beskrivelse, som er synlig for deltagere. Klik for at redigere.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Udkast gemt",

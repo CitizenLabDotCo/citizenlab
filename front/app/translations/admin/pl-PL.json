@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odrzuć zmiany",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "WERSJA ROBOCZA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Edytujesz wersję roboczą. Opublikuj ją, aby była widoczna dla uczestników, lub odrzuć zmiany, aby przywrócić poprzednią wersję.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Opublikuj opis etapu",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "OPUBLIKOWANO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "To jest aktualnie opublikowany opis widoczny dla uczestników. Kliknij, aby edytować.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Zapisano wersję roboczą",

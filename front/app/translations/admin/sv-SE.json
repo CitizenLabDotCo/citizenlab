@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Släng ändringar",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "UTKAST",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Du redigerar ett utkast. Publicera för att göra det synligt för deltagare, eller släng för att återställa.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Publicera fasbeskrivning",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLICERAD",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Detta är den nuvarande publicerade beskrivningen som är synlig för deltagare. Klicka för att redigera.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Utkast sparat",

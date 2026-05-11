@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Απόρριψη αλλαγών",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ΠΡΟΣΧΕΔΙΟ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Επεξεργάζεστε ένα προσχέδιο. Δημοσιεύστε το για να γίνει ορατό στους συμμετέχοντες ή απορρίψτε τις αλλαγές για επαναφορά.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Δημοσίευση περιγραφής φάσης",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "ΔΗΜΟΣΙΕΥΜΕΝΟ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Αυτή είναι η τρέχουσα δημοσιευμένη περιγραφή που είναι ορατή στους συμμετέχοντες. Κάντε κλικ για επεξεργασία.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Το προσχέδιο αποθηκεύτηκε",

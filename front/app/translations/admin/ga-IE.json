@@ -2881,6 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Diúltaigh do na hathruithe",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRÉACHT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Tá dréacht á chur in eagar agat. Foilsigh é chun go mbeidh sé le feiceáil ag rannpháirtithe, nó diúltaigh do na hathruithe chun filleadh ar an mbunleagan.",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Foilsigh cur síos ar an gcéim",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "FOILSITHE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Seo é an cur síos foilsithe atá le feiceáil ag rannpháirtithe faoi láthair. Cliceáil chun é a chur in eagar.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Dréacht sábháilte",
