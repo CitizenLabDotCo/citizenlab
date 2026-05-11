@@ -81,43 +81,35 @@ const ProjectAndFolderCardsInner = ({
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
-  const showMore = async () => {
+  const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     const list = document.querySelector<HTMLElement>(
       '.e2e-projects-list.active-tab'
     );
-    const previousCount =
-      list?.querySelectorAll('.e2e-admin-publication-card').length ?? 0;
 
-    await onLoadMore?.();
-
-    if (!list) return;
-
-    const focusFirstNewCard = () => {
-      const cards = list.querySelectorAll<HTMLElement>(
+    if (list) {
+      const previousCount = list.querySelectorAll(
         '.e2e-admin-publication-card'
-      );
-      if (cards.length > previousCount) {
-        cards[previousCount].focus();
-        return true;
-      }
-      return false;
-    };
+      ).length;
+      // Each new card mounts only after its own useProjectById query resolves,
+      // so adminPublications.length growing doesn't mean the cards are in the
+      // DOM yet. Watch the list and focus the first new card the moment it
+      // appears. Attach before triggering the fetch so we can't miss any
+      // mutations that race in between.
+      const observer = new MutationObserver(() => {
+        const cards = list.querySelectorAll<HTMLElement>(
+          '.e2e-admin-publication-card'
+        );
+        if (cards.length > previousCount) {
+          cards[previousCount].focus();
+          observer.disconnect();
+        }
+      });
+      observer.observe(list, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 10000);
+    }
 
-    // Each new card mounts only after its own useProjectById query resolves,
-    // so adminPublications.length growing doesn't mean the cards are in the
-    // DOM yet. Re-check immediately after loading more in case the first new
-    // card was already inserted before an observer could be attached, and
-    // only fall back to observing the list when it is still not present.
-    if (focusFirstNewCard()) return;
-
-    const observer = new MutationObserver(() => {
-      if (focusFirstNewCard()) {
-        observer.disconnect();
-      }
-    });
-    observer.observe(list, { childList: true, subtree: true });
-    setTimeout(() => observer.disconnect(), 10000);
+    onLoadMore?.();
   };
 
   const handleChangeTopics = (topics: string[]) => {
