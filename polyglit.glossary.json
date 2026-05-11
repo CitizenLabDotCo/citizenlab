@@ -58,6 +58,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "poll": {
+    "nl-NL": "peiling"
+  },
   "custom content": {
     "nl-NL": "aangepaste inhoud"
   },
