@@ -92,16 +92,27 @@ const ProjectAndFolderCardsInner = ({
     await onLoadMore?.();
 
     if (!list) return;
-    // Each new card mounts only after its own useProjectById query resolves,
-    // so adminPublications.length growing doesn't mean the cards are in the
-    // DOM yet. Watch the list container and focus the first new card the
-    // moment it actually appears.
-    const observer = new MutationObserver(() => {
+
+    const focusFirstNewCard = () => {
       const cards = list.querySelectorAll<HTMLElement>(
         '.e2e-admin-publication-card'
       );
       if (cards.length > previousCount) {
         cards[previousCount].focus();
+        return true;
+      }
+      return false;
+    };
+
+    // Each new card mounts only after its own useProjectById query resolves,
+    // so adminPublications.length growing doesn't mean the cards are in the
+    // DOM yet. Re-check immediately after loading more in case the first new
+    // card was already inserted before an observer could be attached, and
+    // only fall back to observing the list when it is still not present.
+    if (focusFirstNewCard()) return;
+
+    const observer = new MutationObserver(() => {
+      if (focusFirstNewCard()) {
         observer.disconnect();
       }
     });
