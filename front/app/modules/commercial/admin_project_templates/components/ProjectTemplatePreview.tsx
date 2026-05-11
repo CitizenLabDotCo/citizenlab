@@ -8,10 +8,10 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import * as clipboard from 'clipboard-polyfill';
-import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
@@ -318,13 +318,13 @@ export interface Props {
 const ProjectTemplatePreview = memo<Props>(
   ({ projectTemplateId, className }) => {
     const localize = useLocalize();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
+    const locale = useLocale();
 
     const [linkCopied, setLinkCopied] = useState(false);
 
     const { data, isLoading: loading } = useProjectTemplatePreview({
       projectTemplateId,
-      graphqlTenantLocales,
+      locale,
     });
 
     const copyLink = useCallback(() => {

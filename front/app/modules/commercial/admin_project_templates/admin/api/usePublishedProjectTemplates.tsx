@@ -1,4 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { SupportedLocale } from 'typings';
+
+import { convertToGraphqlLocale } from 'utils/helperUtils';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
@@ -14,7 +17,7 @@ interface PublishedProjectTemplatesArgs {
     | 'large_city'
     | 'generic'
     | null;
-  graphqlTenantLocales: string[];
+  locale: SupportedLocale;
 }
 
 type PublishedProjectTemplatesResponse = {
@@ -51,8 +54,11 @@ const usePublishedProjectTemplates = ({
   search,
   locales,
   organizationTypes,
-  graphqlTenantLocales,
+  locale,
 }: PublishedProjectTemplatesArgs) => {
+  const graphqlLocale = convertToGraphqlLocale(locale);
+  const localeFields = graphqlLocale === 'en' ? 'en' : `${graphqlLocale} en`;
+
   const PUBLISHED_PROJECT_TEMPLATES_QUERY = `
     query PublishedProjectTemplates(
       $departments: [ID!]
@@ -77,27 +83,27 @@ const usePublishedProjectTemplates = ({
           id
           cardImage
           titleMultiloc {
-            ${graphqlTenantLocales}
+            ${localeFields}
           }
           subtitleMultiloc {
-            ${graphqlTenantLocales}
+            ${localeFields}
           }
           departments {
             id
             titleMultiloc {
-              ${graphqlTenantLocales}
+              ${localeFields}
             }
           }
           purposes {
             id
             titleMultiloc {
-              ${graphqlTenantLocales}
+              ${localeFields}
             }
           }
           participationLevels {
             id
             titleMultiloc {
-              ${graphqlTenantLocales}
+              ${localeFields}
             }
           }
         }
@@ -119,6 +125,7 @@ const usePublishedProjectTemplates = ({
         search,
         locales,
         organizationTypes,
+        locale,
       },
     ],
     queryFn: ({ pageParam = null }) =>
