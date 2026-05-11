@@ -157,6 +157,9 @@
   "registrants (events)": {
     "nl-NL": "geregistreerden"
   },
+  "post (input term)": {
+    "nl-NL": "bericht"
+  },
   "reactions (on inputs)": {
     "nl-NL": "likes / dislikes"
   },
