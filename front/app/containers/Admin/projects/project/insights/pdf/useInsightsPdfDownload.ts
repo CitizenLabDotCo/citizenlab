@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
@@ -16,27 +16,30 @@ interface UseInsightsPdfDownloadReturn {
   error: string | null;
   status: PdfExportStatus;
   progress: { completed: number; total: number };
-  skippedSections: number;
+  skippedSections: string[];
 }
 
 const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
 const PAGE_MARGIN_MM = 15;
 const SECTION_GAP_MM = 4;
-const CAPTURE_SCALE = 1.5;
+const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
-const IMAGE_TIMEOUT_MS = 8_000;
+const FONTS_READY_TIMEOUT_MS = 3_000;
+const CHARTS_READY_TIMEOUT_MS = 3_000;
+const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
+const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
 
 const sliceCanvas = (
   source: HTMLCanvasElement,
   sourceY: number,
   sliceHeightPx: number
-): HTMLCanvasElement => {
+): HTMLCanvasElement | null => {
   const slice = document.createElement('canvas');
   slice.width = source.width;
   slice.height = sliceHeightPx;
   const ctx = slice.getContext('2d');
-  if (!ctx) return slice;
+  if (!ctx) return null;
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, slice.width, slice.height);
   ctx.drawImage(
@@ -70,15 +73,69 @@ const captureWithTimeout = async (
   }
 };
 
+const sectionLabel = (section: HTMLElement, index: number): string => {
+  const heading = section.querySelector('h1, h2, h3, h4');
+  const text = heading?.textContent?.trim();
+  if (text) return text.slice(0, 80);
+  return `Section ${index + 1}`;
+};
+
+// `setIsDownloading(true)` triggers a re-render that mounts the hidden
+// container, but the DOM node is not present until React commits. Poll for it.
+const waitForContainer = (
+  containerId: string,
+  maxMs: number
+): Promise<HTMLElement | null> =>
+  new Promise((resolve) => {
+    const start = performance.now();
+    const tick = () => {
+      const el = document.getElementById(containerId);
+      if (el) {
+        resolve(el);
+      } else if (performance.now() - start > maxMs) {
+        resolve(null);
+      } else {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+
+// Recharts ResponsiveContainer can briefly report -1 x -1 during the first
+// paints after mount; capturing then yields a 0 x 0 canvas and the section
+// is silently dropped. Wait until every chart and section measures non-zero.
+const waitForLayout = (container: HTMLElement, maxMs: number): Promise<void> =>
+  new Promise((resolve) => {
+    const start = performance.now();
+    const tick = () => {
+      const charts = container.querySelectorAll<HTMLElement>(
+        '.recharts-responsive-container'
+      );
+      const chartsReady = Array.from(charts).every(
+        (el) => el.clientWidth > 0 && el.clientHeight > 0
+      );
+      const sections = container.querySelectorAll<HTMLElement>(
+        '[data-pdf-section="true"]'
+      );
+      const sectionsReady = Array.from(sections).every((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+      if ((chartsReady && sectionsReady) || performance.now() - start > maxMs) {
+        resolve();
+      } else {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+
 /**
- * Hook for downloading insights tab content as a PDF.
- *
- * Captures each `[data-pdf-section="true"]` element inside the hidden offscreen
- * container as its own canvas via html2canvas, then assembles the canvases into
- * a paginated A4 PDF with jsPDF. Per-section capture is necessary because a
- * single html2canvas call on the whole tree can exceed Chromium's ~16,384 px
- * canvas dimension limit and silently return a blank canvas (which manifested
- * as a multi-page PDF of blank pages on heavy phases — TAN-7597).
+ * Per-section capture avoids Chromium's ~16,384 px canvas dimension limit,
+ * which produced blank multi-page PDFs on heavy phases (TAN-7597). snapDOM
+ * is used over html2canvas because it renders via SVG `<foreignObject>`,
+ * which is faster on heavy DOM and lets Recharts measure correctly during
+ * capture (html2canvas's iframe clone reported `-1 x -1` and dropped charts).
  */
 export default function useInsightsPdfDownload({
   errorMessage,
@@ -89,31 +146,67 @@ export default function useInsightsPdfDownload({
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<PdfExportStatus>('idle');
   const [progress, setProgress] = useState({ completed: 0, total: 0 });
-  const [skippedSections, setSkippedSections] = useState(0);
+  const [skippedSections, setSkippedSections] = useState<string[]>([]);
+
+  const isMountedRef = useRef(true);
+  const isDownloadingRef = useRef(false);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  const safeSetIsDownloading = (v: boolean) => {
+    if (isMountedRef.current) setIsDownloading(v);
+  };
+  const safeSetError = (v: string | null) => {
+    if (isMountedRef.current) setError(v);
+  };
+  const safeSetStatus = (v: PdfExportStatus) => {
+    if (isMountedRef.current) setStatus(v);
+  };
+  const safeSetProgress = (v: { completed: number; total: number }) => {
+    if (isMountedRef.current) setProgress(v);
+  };
+  const safeSetSkippedSections = (v: string[]) => {
+    if (isMountedRef.current) setSkippedSections(v);
+  };
 
   const downloadPdf = useCallback(async () => {
-    setIsDownloading(true);
-    setError(null);
-    setStatus('preparing');
-    setProgress({ completed: 0, total: 0 });
-    setSkippedSections(0);
+    if (isDownloadingRef.current) return;
+    isDownloadingRef.current = true;
+
+    safeSetIsDownloading(true);
+    safeSetError(null);
+    safeSetStatus('preparing');
+    safeSetProgress({ completed: 0, total: 0 });
+    safeSetSkippedSections([]);
+
+    const skippedLabels: string[] = [];
 
     try {
-      // Allow React to render the hidden PDF container; Recharts ResponsiveContainer
-      // needs time to measure dimensions. Animation is disabled in PDF mode so
-      // layout settle is enough — we don't have to wait for chart animations.
-      await new Promise((resolve) => setTimeout(resolve, 150));
-      await document.fonts.ready;
+      const containerPromise = waitForContainer(
+        hiddenContainerId,
+        CONTAINER_MOUNT_TIMEOUT_MS
+      );
 
-      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
-        import('html2canvas'),
-        import('jspdf'),
+      await Promise.race([
+        document.fonts.ready,
+        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
       ]);
 
-      const container = document.getElementById(hiddenContainerId);
+      const [{ snapdom }, { default: jsPDF }, container] = await Promise.all([
+        import('@zumer/snapdom'),
+        import('jspdf'),
+        containerPromise,
+      ]);
+
       if (!container) {
         throw new Error(`Element with id "${hiddenContainerId}" not found`);
       }
+
+      await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
@@ -132,8 +225,8 @@ export default function useInsightsPdfDownload({
         throw new Error('No PDF sections found in hidden container');
       }
 
-      setStatus('capturing');
-      setProgress({ completed: 0, total: sections.length });
+      safeSetStatus('capturing');
+      safeSetProgress({ completed: 0, total: sections.length });
 
       const pdf = new jsPDF({
         unit: 'mm',
@@ -147,40 +240,43 @@ export default function useInsightsPdfDownload({
       const pageBottomMm = A4_HEIGHT_MM - PAGE_MARGIN_MM;
       let cursorY = PAGE_MARGIN_MM;
       let pageStarted = false;
-      let skipped = 0;
 
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        const rect = section.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) {
-          skipped += 1;
-          setProgress({ completed: i + 1, total: sections.length });
-          continue;
-        }
-
-        const canvas = await captureWithTimeout(
+      const captureSection = (section: HTMLElement) =>
+        captureWithTimeout(
           () =>
-            html2canvas(section, {
+            snapdom.toCanvas(section, {
               scale: CAPTURE_SCALE,
-              useCORS: true,
-              logging: false,
               backgroundColor: colors.white,
-              imageTimeout: IMAGE_TIMEOUT_MS,
+              embedFonts: true,
             }),
           SECTION_TIMEOUT_MS
         );
 
-        setProgress({ completed: i + 1, total: sections.length });
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const label = sectionLabel(section, i);
+        const rect = section.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) {
+          skippedLabels.push(label);
+          safeSetProgress({ completed: i + 1, total: sections.length });
+          continue;
+        }
+
+        let canvas = await captureSection(section);
 
         if (!canvas || canvas.width === 0 || canvas.height === 0) {
-          skipped += 1;
-          // eslint-disable-next-line no-console
-          console.warn(
-            `[InsightsPdf] Skipped section ${i + 1}/${
-              sections.length
-            } (timeout or empty)`,
-            section
+          // Recharts can transiently measure to 0 on the first capture pass
+          // even when the live DOM looks settled; retry once.
+          await new Promise((resolve) =>
+            setTimeout(resolve, EMPTY_CAPTURE_RETRY_DELAY_MS)
           );
+          canvas = await captureSection(section);
+        }
+
+        safeSetProgress({ completed: i + 1, total: sections.length });
+
+        if (!canvas || canvas.width === 0 || canvas.height === 0) {
+          skippedLabels.push(label);
           continue;
         }
 
@@ -215,11 +311,20 @@ export default function useInsightsPdfDownload({
           const pageHeightPx = Math.floor(
             (usableHeightMm / usableWidthMm) * canvas.width
           );
+          if (pageHeightPx <= 0) {
+            skippedLabels.push(label);
+            continue;
+          }
           let srcY = 0;
           let lastSliceHeightMm = 0;
+          let sliceFailed = false;
           while (srcY < canvas.height) {
             const sliceHeightPx = Math.min(pageHeightPx, canvas.height - srcY);
             const slice = sliceCanvas(canvas, srcY, sliceHeightPx);
+            if (!slice) {
+              sliceFailed = true;
+              break;
+            }
             const sliceMmHeight =
               (sliceHeightPx / canvas.width) * usableWidthMm;
             pdf.addImage(
@@ -238,13 +343,25 @@ export default function useInsightsPdfDownload({
               pdf.addPage();
             }
           }
+          if (sliceFailed) {
+            skippedLabels.push(label);
+            continue;
+          }
           cursorY = PAGE_MARGIN_MM + lastSliceHeightMm + SECTION_GAP_MM;
           pageStarted = true;
         }
       }
 
-      setStatus('generating');
-      setSkippedSections(skipped);
+      safeSetStatus('generating');
+      safeSetSkippedSections(skippedLabels);
+
+      if (skippedLabels.length > 0) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[InsightsPdf] Skipped ${skippedLabels.length}/${sections.length} section(s):`,
+          skippedLabels
+        );
+      }
 
       const timestamp = new Date()
         .toISOString()
@@ -252,11 +369,13 @@ export default function useInsightsPdfDownload({
         .slice(0, 19);
       pdf.save(`${filename}-${timestamp}.pdf`);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('PDF download error:', err);
-      setError(errorMessage);
+      safeSetError(errorMessage);
     } finally {
-      setIsDownloading(false);
-      setStatus('idle');
+      isDownloadingRef.current = false;
+      safeSetIsDownloading(false);
+      safeSetStatus('idle');
     }
   }, [hiddenContainerId, filename, errorMessage]);
 
