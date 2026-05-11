@@ -26,6 +26,9 @@
   "event": {
     "nl-NL": "activiteit"
   },
+  "rating": {
+    "nl-NL": "beoordeling"
+  },
   "information (participation method)": {
     "nl-NL": "informatie delen"
   },
