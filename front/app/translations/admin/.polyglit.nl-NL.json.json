@@ -14779,6 +14779,11 @@
     "verified_at": "2026-03-30T13:29:45.161964Z",
     "verified_by": "Luuc"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-11T16:58:40.837040Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
     "state": "verified",
     "verified_at": "2026-03-30T13:29:45.161964Z",
