@@ -11,6 +11,9 @@
     "de-DE": "Admin",
     "nl-NL": "Platformbeheerder"
   },
+  "posts": {
+    "nl-NL": "bijdragen"
+  },
   "draft": {
     "nl-NL": "concept"
   },
