@@ -16,6 +16,8 @@ const folderPublication: IAdminPublicationData = {
     ordering: 0,
     depth: 0,
     publication_status: 'published',
+    scheduled_status: null,
+    scheduled_at: null,
     visible_children_count: 0,
     publication_title_multiloc: {},
     publication_description_multiloc: {},
