@@ -79,7 +79,8 @@
   "seats": {
     "da-DK": "pladser",
     "de-DE": "Zugänge",
-    "es-ES": "asientos"
+    "es-ES": "asientos",
+    "nl-NL": "accounts"
   },
   "seats overview": {
     "de-DE": "Übersicht der Zugänge"
