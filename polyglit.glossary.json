@@ -177,6 +177,9 @@
     "fr-FR": "enregistrer",
     "nl-NL": "opslaan"
   },
+  "issue (input term)": {
+    "nl-NL": "probleem"
+  },
   "traffic sources": {
     "nl-NL": "kanalen"
   }
