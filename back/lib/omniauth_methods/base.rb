@@ -50,6 +50,7 @@ module OmniauthMethods
     end
 
     def email_confirmed?(_auth)
+      # TODO (Luuc): should we set this to be auth.extra.raw_info.email_verified? by default?
       true
     end
 
