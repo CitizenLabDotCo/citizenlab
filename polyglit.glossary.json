@@ -151,6 +151,9 @@
     "fr-FR": "Spécialiste en participation Go Vocal",
     "nl-NL": "GovSuccess Manager"
   },
+  "sort": {
+    "nl-NL": "sorteer"
+  },
   "Beta": {
     "fr-FR": "Bêta"
   },
