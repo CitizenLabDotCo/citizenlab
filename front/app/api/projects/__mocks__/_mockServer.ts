@@ -28,6 +28,8 @@ export const project1: IProjectData = {
     updated_at: '2023-03-22T08:36:22.662Z',
     folder_id: null,
     publication_status: 'published',
+    scheduled_status: null,
+    scheduled_at: null,
     description_multiloc: {
       en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
     },
@@ -179,6 +181,8 @@ export const project2: IProjectData = {
     updated_at: '2023-05-03T11:18:43.979Z',
     folder_id: null,
     publication_status: 'published',
+    scheduled_status: null,
+    scheduled_at: null,
     description_multiloc: {},
     header_bg: {
       large: null,
@@ -330,6 +334,8 @@ const votingProject: IProject = {
       updated_at: '2023-10-19T10:25:13.230Z',
       folder_id: null,
       publication_status: 'published',
+      scheduled_status: null,
+      scheduled_at: null,
       description_multiloc: {},
       header_bg: {
         large: null,

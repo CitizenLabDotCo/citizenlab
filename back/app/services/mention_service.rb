@@ -4,7 +4,7 @@ class MentionService
   # @param [User] user
   # @return [String] mention
   def user_to_mention(user)
-    "@#{user.slug}"
+    "@#{user.id}"
   end
 
   # @param [String] text
@@ -26,7 +26,7 @@ class MentionService
     name_service = UserDisplayNameService.new(AppConfiguration.instance)
     text.gsub(
       /#{mention}/i,
-      "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"
+      "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-link-profile=\"#{user.show_public_profile?}\">@#{name_service.display_name(user)}</span>"
     )
   end
 
@@ -39,11 +39,11 @@ class MentionService
   def process_mentions(text)
     users_mentioned_before = extract_expanded_mention_users(text)
     cleaned_text = remove_expanded_mentions(text)
-    mention_candidates = extract_mentions(cleaned_text)
+    mention_candidates = extract_mention_ids(cleaned_text)
 
     return [text, []] if mention_candidates.empty?
 
-    users_mentioned_now = User.where(slug: mention_candidates)
+    users_mentioned_now = User.where(id: mention_candidates)
     new_users_mentioned = (users_mentioned_now - users_mentioned_before).map(&:id)
 
     new_text = users_mentioned_now.all.inject(cleaned_text) do |memo, user|
@@ -86,19 +86,19 @@ class MentionService
   end
 
   # @param [String] text
-  # @return [Array<String>] list of slugs
-  def extract_mentions(text)
-    full_mentions = text.scan(/(@\w+-[\w-]+)/).flatten
+  # @return [Array<String>] list of ids
+  def extract_mention_ids(text)
+    full_mentions = text.scan(/(@[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i).flatten
     full_mentions.map do |fm|
-      mention_to_slug(fm)
+      mention_to_id(fm)
     end
   end
 
   private
 
   # @param [String] mention
-  # @return [String] slug
-  def mention_to_slug(mention)
+  # @return [String] id
+  def mention_to_id(mention)
     mention[1..]
   end
 end

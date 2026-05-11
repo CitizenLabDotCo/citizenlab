@@ -9,6 +9,12 @@ import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
 
+let embeddedVideoTitle = 'Embedded video';
+
+export const setEmbeddedVideoTitle = (title: string) => {
+  embeddedVideoTitle = title;
+};
+
 export const configureQuill = () => {
   // Pre-register imageAlign and iframeAlign formats so they exist in the
   // registry when Quill validates the "formats" whitelist during construction.
@@ -47,6 +53,8 @@ export const configureQuill = () => {
     static create(url: string) {
       const node = super.create(url);
 
+      node.setAttribute('title', embeddedVideoTitle);
+
       // Add referrer policy to YouTube video embeds
       if (isYouTubeEmbedLink(url)) {
         node.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
@@ -58,6 +66,9 @@ export const configureQuill = () => {
     static formats(domNode: Element) {
       return attributes.reduce(
         (formats: Record<string, string | null>, attribute) => {
+          // `title` is set dynamically from the current locale in `create`;
+          // skip it here so a stale title in saved HTML doesn't override it.
+          if (attribute === 'title') return formats;
           if (domNode.hasAttribute(attribute)) {
             formats[attribute] = domNode.getAttribute(attribute);
           }
@@ -67,6 +78,7 @@ export const configureQuill = () => {
       );
     }
     format(name: string, value: string) {
+      if (name === 'title') return;
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);

@@ -11,8 +11,8 @@ module IdeaAssignment
       name_service.last_name!(object.initiating_user)
     end
 
-    attribute :initiating_user_slug do |object|
-      object.initiating_user&.slug
+    attribute :initiating_user_id do |object|
+      object.initiating_user_id
     end
 
     attribute :post_title_multiloc do |object|

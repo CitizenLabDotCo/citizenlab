@@ -94,6 +94,7 @@ hr-HR:
         project_published: Projekt objavljen
         project_review_request: Moderator je zatražio pregled projekta
         project_review_state_change: Recenzent je odobrio projekt
+        proposal_expired: Prijedlog istječe bez dostizanja praga
         proposal_gets_reported_as_spam: Prijedlog se prijavljuje kao neželjena pošta
         proposal_is_assigned_to_admin: Prijedlog je dodijeljen adminu
         proposal_is_published: Prijedlog je objavljen
@@ -188,6 +189,7 @@ hr-HR:
       project_published: Projekt objavljen
       project_review_request: Zahtjev za pregled projekta
       project_review_state_change: Projekt odobren
+      proposal_expired_for_admin: Prijedlog je istekao bez dostizanja praga za glasovanje
       screening_digest: Podsjetnik na tjedni pregled
       space_moderation_rights_received: Primljena prava voditelja prostora
       status_change_on_idea_you_follow: Promjena statusa ideje koju slijedite
@@ -591,6 +593,11 @@ hr-HR:
       preheader: '%{reviewerName} je odobrio/la projekt "%{projectTitle}"'
       subject: '"%{projectTitle}" je odobren'
       title: '%{reviewerName} odobrio/la je projekt "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Pregledajte istekli unos
+      preheader: Unos je istekao bez dostizanja praga
+      subject: '"%{input_title}" je istekao bez dostizanja praga'
+      title: Unos je istekao bez dostizanja praga za glasovanje
     schedules:
       quarterly: Tromjesečno, prvog dana tromjesečja
       weekly:

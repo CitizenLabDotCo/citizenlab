@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveySubmissions';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import Unauthorized from 'components/Unauthorized';
 
@@ -25,8 +25,8 @@ const Container = styled.div`
 const Surveys = () => {
   const { data: authUser } = useAuthUser();
 
-  const { userSlug } = useParams();
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams();
+  const { data: user } = useUserById(userId);
 
   const { data: surveySubmissions } = useUserSurveySubmissions();
 
