@@ -73,7 +73,8 @@
   "seat": {
     "da-DK": "plads",
     "de-DE": "Zugang",
-    "es-ES": "asiento"
+    "es-ES": "asiento",
+    "nl-NL": "account"
   },
   "seats": {
     "da-DK": "pladser",
