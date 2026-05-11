@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "مجموعات",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "مخفي",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "المصوتون خارج الإنترنت",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "غير المشرفين{inFolder, select, true { أو مسيري المجلدات} other {}} اللي يقدروا ينشروا المشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {مشارك واحد في المشروع} other {{participantsCount} مشارك في المشروع}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "المشاركون في الطرق المضمنة (مثل الاستطلاعات الخارجية)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "المتابعين ديال المشروع",

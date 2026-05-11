@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruppit",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Toqqortaq",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline-mik taasissutit",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Aqutsisut kisimiit{inFolder, select, true { imaluunniit Toqqorsivimmi aqutsisut} other {}} pilersaarut saqqummersissinnaavaat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {Suliniummi peqataasoq 1} other {Suliniummi peqataasut {participantsCount}}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Periutsini ilanngunneqartuni peqataasut (soorlu: misissuinerni avataaneersuni)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Pilersaarummik malinnaasut",

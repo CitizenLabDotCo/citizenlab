@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupper",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Dolda",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline väljare",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Endast administratörer{inFolder, select, true { eller mappansvariga} other {}} kan publicera projektet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projektdeltagare} other {{participantsCount} projektdeltagare}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Deltagare i inbäddade metoder (t.ex. externa enkäter)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Följare av ett projekt",

@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Ryhmät",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Piilotettu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline-äänestäjät",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Vain ylläpitäjät{inFolder, select, true { tai kansion hallinnoijat} other {}} voivat julkaista projektin.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projektiin osallistuja} other {{participantsCount} projektin osallistujat}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Osallistujat sulautettuihin menetelmiin (esim. ulkoisiin tutkimuksiin)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projektin seuraajia",

@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruppen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Verstoppt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline-Wieler",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Nëmmen Administrateuren{inFolder, select, true { oder d'Dossiersmanager} other {}} kënnen de Projet publizéieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 Projetsparticipant} other {{participantsCount} Projetsparticipanten}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participanten an agebonnene Methoden (z. B. extern Emfroen)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Follower vun engem Projet",

@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Oculto",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Eleitores off-line",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Apenas administradores{inFolder, select, true { ou os gestores de pasta} other {}} podem publicar o projeto",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 participante do projeto} other {{participantsCount} participantes do projeto}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participantes de métodos incorporados (por exemplo, pesquisas externas)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Seguidores de um projeto",
