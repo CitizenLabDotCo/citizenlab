@@ -1,22 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { SupportedLocale } from 'typings';
-
-import { convertToGraphqlLocale } from 'utils/helperUtils';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
 type ProjectTemplatePreviewArgs = {
   projectTemplateId: string | null | undefined;
-  locale: SupportedLocale;
+  graphqlTenantLocales: string[];
 };
 
 const useProjectTemplatePreview = ({
   projectTemplateId,
-  locale,
+  graphqlTenantLocales,
 }: ProjectTemplatePreviewArgs) => {
-  const graphqlLocale = convertToGraphqlLocale(locale);
-  const localeFields = graphqlLocale === 'en' ? 'en' : `${graphqlLocale} en`;
-
   const PROJECT_TEMPLATE_QUERY = `
   query ProjectTemplate($id: ID!) {
     projectTemplate(id: $id) {
@@ -25,29 +19,29 @@ const useProjectTemplatePreview = ({
       departments {
         id
         titleMultiloc {
-          ${localeFields}
+          ${graphqlTenantLocales}
         }
       }
       participationLevels {
         id
         titleMultiloc {
-          ${localeFields}
+          ${graphqlTenantLocales}
         }
       }
       phases {
-        ${localeFields}
+        ${graphqlTenantLocales}
       }
       purposes {
         id
         titleMultiloc {
-          ${localeFields}
+          ${graphqlTenantLocales}
         }
       }
       titleMultiloc {
-        ${localeFields}
+        ${graphqlTenantLocales}
       }
       subtitleMultiloc {
-        ${localeFields}
+        ${graphqlTenantLocales}
       }
       descriptionMultilocs {
         content
@@ -63,7 +57,7 @@ const useProjectTemplatePreview = ({
 `;
 
   return useQuery({
-    queryKey: ['projectTemplate', projectTemplateId, locale],
+    queryKey: ['projectTemplate', projectTemplateId, graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: PROJECT_TEMPLATE_QUERY,

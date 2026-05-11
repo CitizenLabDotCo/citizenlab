@@ -1,28 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-
-import useLocale from 'hooks/useLocale';
-
-import { convertToGraphqlLocale } from 'utils/helperUtils';
+import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
 const useTemplateTitle = (projectTemplateId?: string | null) => {
-  const locale = useLocale();
-  const graphqlLocale = convertToGraphqlLocale(locale);
-  const localeFields = graphqlLocale === 'en' ? 'en' : `${graphqlLocale} en`;
+  const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const TEMPLATE_TITLE_QUERY = `
     query ProjectTemplateTitle($id: ID!) {
       projectTemplate(id: $id) {
         titleMultiloc {
-          ${localeFields}
+          ${graphqlTenantLocales}
         }
       }
     }
   `;
 
   return useQuery({
-    queryKey: ['projectTemplateTitle', projectTemplateId, locale],
+    queryKey: ['projectTemplateTitle', projectTemplateId, graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: TEMPLATE_TITLE_QUERY,
