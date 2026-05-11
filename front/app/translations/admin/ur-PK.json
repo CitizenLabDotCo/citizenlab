@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "گروپس",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "پوشیدہ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "آف لائن ووٹرز",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "صرف ایڈمنز{inFolder, select, true { یا فولڈر مینیجرز} other {}} ہی پروجیکٹ شائع کر سکتے ہیں",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 پروجیکٹ شریک} other {{participantsCount} پروجیکٹ کے شرکاء}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "سرایت شدہ طریقوں میں حصہ لینے والے (مثال کے طور پر، بیرونی سروے)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "کسی پروجیکٹ کے پیروکار",

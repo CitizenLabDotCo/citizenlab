@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Ομάδες",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Κρυφό",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Ψηφοφόροι εκτός σύνδεσης",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Μόνο οι διαχειριστές{inFolder, select, true { ή οι Διαχειριστές Φακέλου} other {}} μπορούν να δημοσιεύσουν το έργο",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 συμμετέχων στο έργο} other {{participantsCount} συμμετέχοντες στο έργο}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Συμμετέχοντες σε ενσωματωμένες μεθόδους (π.χ. εξωτερικές έρευνες)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Ακόλουθοι ενός έργου",

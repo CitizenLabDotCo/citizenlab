@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruplar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Gizli",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Çevrimdışı seçmenler",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Projeyi sadece yöneticiler{inFolder, select, true { veya Klasör Yöneticileri} other {}} yayınlayabilir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 proje katılımcısı} other {{participantsCount} proje katılımcıları}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Yerleşik yöntemlere katılanlar (örn. harici anketler)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Bir projenin takipçileri",

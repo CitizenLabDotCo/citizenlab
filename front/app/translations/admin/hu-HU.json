@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Csoportok",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Rejtett",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline szavazók",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Csak az adminisztrátorok{inFolder, select, true { vagy a mappakezelők} other {}} tehetik közzé a projektet.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projektrésztvevő} other {{participantsCount} projektrésztvevő}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Beágyazott módszerek (pl. külső felmérések) résztvevői",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Egy projekt követői",

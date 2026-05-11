@@ -500,6 +500,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Groepen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Verborgen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline stemmers",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Alleen beheerders{inFolder, select, true { of de mapbeheerders} other {}} kunnen het project publiceren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2": "{participantsCount, plural, one {1 projectdeelnemer} other {{participantsCount} projectdeelnemers}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Deelnemers aan ingesloten methoden (bijv. externe onderzoeken)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Volgers van een project",
