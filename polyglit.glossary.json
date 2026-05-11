@@ -68,6 +68,9 @@
   "voting": {
     "nl-NL": "stemming"
   },
+  "draw area": {
+    "nl-NL": "gebied tekenen"
+  },
   "survey": {
     "nl-NL": "vragenlijst"
   },
