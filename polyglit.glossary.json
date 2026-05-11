@@ -97,6 +97,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "file upload questions": {
+    "nl-NL": "bestand upload vragen"
+  },
   "mapping questions": {
     "nl-NL": "kaart-gerelateerde vragen"
   },
