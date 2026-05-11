@@ -62,6 +62,9 @@
     "de-DE": "Übersicht der Zugänge",
     "nl-NL": "overzicht accounts"
   },
+  "embedded": {
+    "nl-NL": "ingesloten"
+  },
   "response (input term)": {
     "nl-NL": "reactie"
   },
