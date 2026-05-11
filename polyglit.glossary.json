@@ -114,6 +114,9 @@
   "comments (on inputs)": {
     "nl-NL": "reacties"
   },
+  "profanity": {
+    "nl-NL": "vulgair taalgebruik"
+  },
   "recipients": {
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
