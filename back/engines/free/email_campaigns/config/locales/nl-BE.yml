@@ -94,6 +94,7 @@ nl-BE:
         project_published: Project gepubliceerd
         project_review_request: Moderator heeft een projectbeoordeling aangevraagd
         project_review_state_change: Reviewer heeft het project goedgekeurd
+        proposal_expired: Een voorstel verloopt zonder de drempel te bereiken
         proposal_gets_reported_as_spam: Voorstel wordt gerapporteerd als spam
         proposal_is_assigned_to_admin: Voorstel is toegewezen aan platformbeheerder
         proposal_is_published: Voorstel is gepubliceerd
@@ -188,6 +189,7 @@ nl-BE:
       project_published: Project gepubliceerd
       project_review_request: Projectbeoordelingsverzoek
       project_review_state_change: Project goedgekeurd
+      proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
       screening_digest: Wekelijkse screeningherinnering
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
       status_change_on_idea_you_follow: Statuswijziging van een idee dat je volgt
@@ -592,6 +594,11 @@ nl-BE:
       preheader: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
       subject: '"%{projectTitle}" is goedgekeurd'
       title: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
+    proposal_expired_for_admin:
+      cta_button: Bekijk de verlopen bijdrage
+      preheader: Een bijdrage is verlopen zonder de drempel te bereiken
+      subject: '"%{input_title}" is verlopen zonder de drempel te bereiken'
+      title: Een bijdrage is verlopen zonder de stemdrempel te bereiken
     schedules:
       quarterly: Per kwartaal, op de eerste dag van het kwartaal
       weekly:

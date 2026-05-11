@@ -149,6 +149,7 @@ kl-GL:
         project_published: Suliniut saqqummiunneqarpoq
         project_review_request: Akunnermuliuttup suliassap misissorneqarnissaa piumasaraa
         project_review_state_change: Misissuisup suliassaq akueraa
+        proposal_expired: Siunnersuut piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu
         proposal_gets_reported_as_spam: Siunnersuut spamitut nalunaarutigineqarpoq
         proposal_is_assigned_to_admin: Siunnersuut aqutsisumut suliassanngortinneqarpoq
         proposal_is_published: Siunnersuut saqqummiunneqarpoq
@@ -271,6 +272,7 @@ kl-GL:
       project_published: Suliniut saqqummiunneqarpoq
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
+      proposal_expired_for_admin: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
       space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
       status_change_of_commented_idea: Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
@@ -886,6 +888,11 @@ kl-GL:
       preheader: '%{reviewerName}-p suliniut "%{projectTitle}" akueraa'
       subject: '"%{projectTitle}" akuerineqarpoq'
       title: '%{reviewerName}-ip suliniut "%{projectTitle}" akueraa'
+    proposal_expired_for_admin:
+      cta_button: Siunnersuut piffissaa qaangiuttoq misissoruk
+      preheader: Siunnersuut piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu
+      subject: '"%{input_title}" piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu'
+      title: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
     schedules:
       quarterly: Ukiup sisamararterutikkaarlugu, sisamararterutip ulluani siullermi
       weekly:

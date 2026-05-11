@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 class BasketPolicy < ApplicationPolicy
-  def create?
-    user&.active? &&
-      (record.user_id == user.id) &&
-      record.phase &&
-      policy_for(record.phase.project).show? &&
-      !voting_disabled_reason(record, user)
-  end
-
   def show?
     user&.active? && record.user_id == user.id
   end

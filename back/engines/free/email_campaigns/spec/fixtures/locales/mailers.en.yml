@@ -429,6 +429,11 @@ en:
       title: 'A proposal reached the voting threshold!'
       subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
+    proposal_expired_for_admin:
+      cta_button: 'Review the expired proposal'
+      title: 'A proposal expired without reaching the voting threshold'
+      subject: '"%{input_title}" expired without reaching the threshold'
+      preheader: 'A proposal closed without reaching the threshold'
     welcome:
       cta_button: 'Discover the platform'
       subject: 'Welcome to the platform of %{organizationName}'

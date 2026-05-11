@@ -11,11 +11,11 @@ class StatReactionPolicy < ApplicationPolicy
     private
 
     def resolve_for_active
-      user.admin? ? scope.all : resolve_for_project_moderator
+      user.admin? ? scope.all : resolve_for_moderator
     end
 
-    def resolve_for_project_moderator
-      return scope.none unless user.project_moderator?
+    def resolve_for_moderator
+      return scope.none unless user.moderator?
 
       moderated_ideas = Idea.where(project_id: user.moderatable_project_ids)
       scope.where(reactable: moderated_ideas)
@@ -51,6 +51,6 @@ class StatReactionPolicy < ApplicationPolicy
   end
 
   def show_stats_to_active?
-    user.admin? || user.project_moderator?
+    user.admin? || user.moderator?
   end
 end

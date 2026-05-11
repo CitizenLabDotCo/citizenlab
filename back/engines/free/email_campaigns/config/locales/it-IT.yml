@@ -94,6 +94,7 @@ it-IT:
         project_published: Progetto pubblicato
         project_review_request: Il moderatore ha richiesto una revisione del progetto
         project_review_state_change: Il revisore ha approvato il progetto
+        proposal_expired: Una proposta scade senza raggiungere la soglia
         proposal_gets_reported_as_spam: La proposta viene segnalata come spam
         proposal_is_assigned_to_admin: La proposta è assegnata all'amministratore
         proposal_is_published: La proposta viene pubblicata
@@ -188,6 +189,7 @@ it-IT:
       project_published: Progetto pubblicato
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
+      proposal_expired_for_admin: Proposta scaduta senza raggiungere la soglia di voto
       screening_digest: Promemoria settimanale per lo screening
       space_moderation_rights_received: Permessi di manager d'area ricevuti
       status_change_on_idea_you_follow: Cambiamento di status di un contributo che seguo
@@ -591,6 +593,11 @@ it-IT:
       preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
       subject: '"%{projectTitle}" è stato approvato'
       title: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Esamina il contributo scaduto
+      preheader: Un contributo è scaduto senza raggiungere la soglia
+      subject: '"%{input_title}" è scaduto senza raggiungere la soglia'
+      title: Un contributo è scaduto senza raggiungere la soglia di voto
     schedules:
       quarterly: Trimestralmente, il primo giorno del trimestre
       weekly:

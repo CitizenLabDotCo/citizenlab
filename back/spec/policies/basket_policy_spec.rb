@@ -12,7 +12,6 @@ describe BasketPolicy do
     let(:user) { nil }
 
     it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -21,7 +20,6 @@ describe BasketPolicy do
     let(:user) { create(:user) }
 
     it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -30,7 +28,6 @@ describe BasketPolicy do
     let(:user) { basket.user }
 
     it { is_expected.to permit(:show)    }
-    it { is_expected.to permit(:create)  }
     it { is_expected.to permit(:update)  }
     it { is_expected.to permit(:destroy) }
   end
@@ -46,7 +43,6 @@ describe BasketPolicy do
     let(:user) { create(:admin) }
 
     it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -57,7 +53,6 @@ describe BasketPolicy do
     let!(:basket) { create(:basket, user: user, phase: project.phases.first) }
 
     it { is_expected.to     permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -68,7 +63,6 @@ describe BasketPolicy do
     let!(:basket) { create(:basket, user: user, phase: project.phases.first) }
 
     it { is_expected.to permit(:show)    }
-    it { is_expected.to permit(:create)  }
     it { is_expected.to permit(:update)  }
     it { is_expected.to permit(:destroy) }
   end
@@ -77,7 +71,6 @@ describe BasketPolicy do
     let(:user) { create(:project_moderator, projects: [basket.phase.project]) }
 
     it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -86,7 +79,6 @@ describe BasketPolicy do
     let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
     it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -96,7 +88,6 @@ describe BasketPolicy do
     let(:context) { create(:budgeting_phase, end_at: Date.yesterday) }
 
     it { is_expected.not_to permit(:show) }
-    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
   end
@@ -109,7 +100,6 @@ describe BasketPolicy do
     end
 
     it { is_expected.to permit(:show) }
-    it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end

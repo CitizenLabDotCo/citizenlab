@@ -11,10 +11,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  spaceId: string | null;
+  spaceId?: string | null;
   spaces: SpaceData[];
-  isProjectInsideFolder?: boolean;
-  role: 'admin' | 'space_moderator';
   onChange: (spaceId: string | null) => void;
 }
 
@@ -23,32 +21,14 @@ interface Props {
 // inside of the Select component
 const NO_SPACE_ID = '/';
 
-const SpaceSelect = ({
-  spaceId,
-  spaces,
-  isProjectInsideFolder = false,
-  role,
-  onChange,
-}: Props) => {
+const SpaceSelect = ({ spaceId, spaces, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const getNoSpaceMessage = () => {
-    if (isProjectInsideFolder) {
-      return messages.sameSpaceAsFolder;
-    }
-
-    if (role === 'space_moderator') {
-      return messages.pleaseSelectASpace;
-    }
-
-    return messages.noSpaceLabel;
+  const noSpaceOption = {
+    value: NO_SPACE_ID,
+    label: formatMessage(messages.noSpaceLabel),
   };
-
-  const noSpaceMessage = getNoSpaceMessage();
-
-  const noSpaceLabel = formatMessage(noSpaceMessage);
-  const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
   const spaceOptions = [
     noSpaceOption,
@@ -64,12 +44,12 @@ const SpaceSelect = ({
     <Select
       value={value}
       options={spaceOptions}
+      dataCy="space-select"
       onChange={(option) => {
         const { value } = option;
         const nilValue = value === '' || value === NO_SPACE_ID;
         onChange(nilValue ? null : value);
       }}
-      disabled={isProjectInsideFolder}
     />
   );
 };

@@ -12249,6 +12249,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:22:42.095535Z",
+    "verified_by": "Roger"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
