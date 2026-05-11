@@ -20,7 +20,6 @@ describe('Follow idea', () => {
   let ideaSlug2: string;
   let projectId: string;
   let projectSlug: string;
-  let userSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -67,7 +66,6 @@ describe('Follow idea', () => {
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
     });
   });
 

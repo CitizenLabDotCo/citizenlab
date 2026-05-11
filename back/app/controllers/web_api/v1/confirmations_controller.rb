@@ -22,6 +22,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       payload = user.to_token_payload
+      payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
       auth_token = AuthToken::AuthToken.new payload: payload
 
       render json: raw_json({ auth_token: })

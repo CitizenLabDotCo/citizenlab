@@ -25,14 +25,6 @@ import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
 import { ItemMenu, StyledBox, StyledText } from './styles';
 
-const ROLE_MESSAGES: Record<Exclude<HighestRole, 'user'>, MessageDescriptor> = {
-  super_admin: messages.administrator,
-  admin: messages.administrator,
-  space_moderator: messages.spaceManager,
-  project_folder_moderator: messages.folderManager,
-  project_moderator: messages.projectManager,
-};
-
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
@@ -160,7 +152,7 @@ export const UserMenu = () => {
               </ItemMenu>
             )}
             <ItemMenu
-              linkTo={`/profile/${authUser.data.attributes.slug}`}
+              linkTo={`/profile/${authUser.data.id}`}
               buttonStyle="text"
             >
               <Box display="flex" justifyContent="space-between" w="100%">
@@ -189,4 +181,12 @@ export const UserMenu = () => {
       />
     </StyledBox>
   );
+};
+
+const ROLE_MESSAGES: Record<Exclude<HighestRole, 'user'>, MessageDescriptor> = {
+  super_admin: messages.administrator,
+  admin: messages.administrator,
+  space_moderator: messages.spaceManager,
+  project_folder_moderator: messages.folderManager,
+  project_moderator: messages.projectManager,
 };

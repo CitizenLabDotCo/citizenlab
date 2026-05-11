@@ -219,7 +219,7 @@ const UserNavbar = memo<Props>(({ user }) => {
     }
     const nextTab = tabs[nextTabIndex];
 
-    clHistory.push(`/profile/${user.attributes.slug}/${nextTab.path}`);
+    clHistory.push(`/profile/${user.id}/${nextTab.path}`);
     tabsRef.current[nextTab.path].focus();
   };
 
@@ -229,9 +229,7 @@ const UserNavbar = memo<Props>(({ user }) => {
         <UserNavbarButton
           key={tab.path}
           onMouseDown={removeFocusAfterMouseClick}
-          onClick={() =>
-            clHistory.push(`/profile/${user.attributes.slug}/${tab.path}`)
-          }
+          onClick={() => clHistory.push(`/profile/${user.id}/${tab.path}`)}
           className={`${tab.className || ''} ${tab.active ? 'active' : ''}`}
           role="tab"
           aria-selected={tab.active}

@@ -12,9 +12,9 @@ import useLocale from 'hooks/useLocale';
 
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import {
-  getCommentContent,
-  getEditableCommentContent,
-} from 'components/PostShowComponents/Comments/utils';
+  formatCommentContent,
+  formatEditableCommentContent,
+} from 'components/PostShowComponents/utils';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -30,6 +30,10 @@ const CommentWrapper = styled.div`
 
 export const CommentText = styled.div`
   display: inline;
+
+  .cl-mention-user {
+    font-style: italic;
+  }
 `;
 
 const StyledForm = styled.form`
@@ -80,9 +84,9 @@ const InternalCommentBody = ({
 
   useEffect(() => {
     if (comment && !commentContent) {
-      setCommentContent(getCommentContent(comment.data.attributes.body));
+      setCommentContent(formatCommentContent(comment.data.attributes.body));
       setEditableCommentContent(
-        getEditableCommentContent(comment.data.attributes.body)
+        formatEditableCommentContent(comment.data.attributes.body)
       );
     }
   }, [comment, commentContent]);
@@ -156,7 +160,7 @@ const InternalCommentBody = ({
   const cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
     setEditableCommentContent(
-      getEditableCommentContent(comment.data.attributes.body)
+      formatEditableCommentContent(comment.data.attributes.body)
     );
     onCancelEditing();
   };

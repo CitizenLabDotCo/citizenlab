@@ -107,7 +107,7 @@ const ActionsMenu = ({ user }: Props) => {
   const getActions = () => {
     const showProfileAction = {
       handler: () => {
-        clHistory.push(`/profile/${user.attributes.slug}`);
+        clHistory.push(`/profile/${user.id}`);
       },
       label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
