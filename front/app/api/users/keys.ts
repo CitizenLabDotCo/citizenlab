@@ -9,11 +9,11 @@ const usersKeys = {
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id, slug }: { id?: string | null; slug?: string | null }) => [
+  item: ({ id }: { id?: string | null }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id, slug },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;
