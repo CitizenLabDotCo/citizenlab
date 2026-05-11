@@ -85,15 +85,15 @@ module Analysis
       ([main_custom_field] + additional_custom_fields).compact
     end
 
-    def submission_custom_fields
-      associated_custom_fields.select(&:supports_submission?)
-    end
-
     def auto_insights_too_many_fields?
       submission_custom_fields.size > AUTO_INSIGHTS_FIELD_LIMIT
     end
 
     private
+
+    def submission_custom_fields
+      associated_custom_fields.select(&:supports_submission?)
+    end
 
     def project_xor_phase_present
       return if phase.present? ^ project.present? # ^ on booleans is XOR
