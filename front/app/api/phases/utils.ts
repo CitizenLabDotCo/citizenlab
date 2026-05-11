@@ -86,7 +86,7 @@ export function getLastPastPhase(
 
 export function getLatestRelevantPhase(
   phases: IPhaseData[],
-  timeZone: string | 'UTC'
+  timeZone: string = 'UTC'
 ) {
   const currentPhase = getCurrentPhase(phases, timeZone);
   const firstPhase = getFirstPhase(phases);
@@ -150,8 +150,8 @@ export const hideTimelineUI = (
 
 export function getInputTerm(
   phases: IPhaseData[] | undefined,
-  timeZone: string | 'UTC',
-  phase?: IPhaseData | undefined | null | Error
+  phase?: IPhaseData | undefined | null | Error,
+  timeZone: string = 'UTC'
 ) {
   // (2020/12/9): When a new timeline project is created, phases will initially
   // be []. To make sure we don't break copy that depends on an input_term,
