@@ -95,6 +95,9 @@
     "de-DE": "Übersicht der Zugänge",
     "nl-NL": "overzicht accounts"
   },
+  "tag": {
+    "nl-NL": "tag"
+  },
   "users": {
     "de-DE": "Nutzende",
     "nl-NL": "gebruikers"
