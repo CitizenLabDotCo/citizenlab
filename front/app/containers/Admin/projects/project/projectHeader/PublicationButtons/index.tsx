@@ -77,9 +77,9 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     }
   };
 
-  const showPublishButton = !isDraft || !isProjectReviewEnabled || canPublish;
+  const showPublishButton = !isProjectReviewEnabled || canPublish;
   const publishButtonDisabled =
-    isDraft && !canPublish && !project.attributes.first_published_at;
+    !canPublish && !project.attributes.first_published_at;
   return (
     <Box display="flex" gap="8px">
       {showPublishButton && (
