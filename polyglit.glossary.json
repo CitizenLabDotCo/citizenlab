@@ -130,6 +130,9 @@
   "mapping questions": {
     "nl-NL": "kaart-gerelateerde vragen"
   },
+  "input manager": {
+    "nl-NL": "beheer bijdragen-pagina"
+  },
   "poll": {
     "nl-NL": "peiling"
   },
