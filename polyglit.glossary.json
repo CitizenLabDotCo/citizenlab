@@ -35,6 +35,9 @@
     "de-DE": "freigeben",
     "nl-NL": "Goedkeuren"
   },
+  "custom content": {
+    "nl-NL": "aangepaste inhoud"
+  },
   "draft": {
     "nl-NL": "concept"
   },
