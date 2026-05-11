@@ -32,7 +32,8 @@
     "nl-NL": "Platformbeheerder"
   },
   "approve": {
-    "de-DE": "freigeben"
+    "de-DE": "freigeben",
+    "nl-NL": "Goedkeuren"
   },
   "email": {
     "da-DK": "e-mail",
