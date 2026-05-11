@@ -83,7 +83,8 @@
     "nl-NL": "accounts"
   },
   "seats overview": {
-    "de-DE": "Übersicht der Zugänge"
+    "de-DE": "Übersicht der Zugänge",
+    "nl-NL": "overzicht accounts"
   },
   "users": {
     "de-DE": "Nutzende"
