@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Allannguutit taamaatiuk",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "MISSINGIUT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Missingiut aaqqissuatat. Saqqummiuguk peqataasunit takuneqarsinnaanngortillugu, imaluunniit taamaatiuk siornatigutut ilerseqqillugu.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Saqqummiuguk",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "SAQQUMMIUNNEQARPOQ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Una nassuiaat maanna saqqummiunneqarsimasoq peqataasunit takuneqarsinnaavoq. Toqqaruk aaqqissuunniarlugu.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Missingiut toqqorneqarpoq",

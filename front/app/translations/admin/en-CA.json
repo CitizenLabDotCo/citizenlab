@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Discard changes",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRAFT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "You are editing a draft. Publish to make it visible to participants, or discard to revert.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Publish",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLISHED",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "This is the currently published description visible to participants. Click to edit.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Draft saved",

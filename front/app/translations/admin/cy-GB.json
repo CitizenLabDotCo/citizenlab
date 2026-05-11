@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Gwaredu newidiadau",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "DRAFFT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Rydych chi'n golygu drafft. Cyhoeddwch er mwyn ei wneud yn weladwy i gyfranogwyr, neu gwaredwch i ddychwelyd.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Cyhoeddi",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "CYHOEDDWYD",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Hwn yw'r disgrifiad cyhoeddedig presennol sy'n weladwy i gyfranogwyr. Cliciwch i olygu.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Drafft wedi'i gadw",

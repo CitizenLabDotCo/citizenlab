@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Odbaci promjene",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "NACRT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Uređujete nacrt. Objavite ga kako bi bio vidljiv sudionicima ili ga odbacite za povratak na prethodno stanje.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Objavi",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "OBJAVLJENO",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Ovo je trenutačno objavljeni opis vidljiv sudionicima. Kliknite za uređivanje.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Nacrt je spremljen",

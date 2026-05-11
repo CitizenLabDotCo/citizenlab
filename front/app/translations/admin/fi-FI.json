@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Hylkää muutokset",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "LUONNOS",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Muokkaat luonnosta. Julkaise se, jotta se näkyy osallistujille, tai hylkää muutokset palataksesi takaisin.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Julkaise",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "JULKAISTU",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Tämä on tällä hetkellä julkaistu kuvaus, joka näkyy osallistujille. Klikkaa muokataksesi.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Luonnos tallennettu",

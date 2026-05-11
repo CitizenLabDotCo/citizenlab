@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Módosítások elvetése",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "PISZKOZAT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Egy piszkozatot szerkeszt. Tegye közzé, hogy láthatóvá váljon a résztvevők számára, vagy vesse el a módosításokat a visszaállításhoz.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Közzététel",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "KÖZZÉTÉVE",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Ez a jelenleg közzétett leírás, amely látható a résztvevők számára. Kattintson a szerkesztéshez.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Piszkozat mentve",

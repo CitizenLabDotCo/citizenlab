@@ -2881,7 +2881,6 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Abandonner les modifications",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "BROUILLON",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Vous modifiez un brouillon. Publiez-le pour le rendre visible aux participants, ou abandonnez les modifications pour revenir à la version précédente.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": "Publier",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "PUBLIÉ",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Il s'agit de la description actuellement publiée et visible par les participants. Cliquez pour modifier.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Brouillon enregistré",
