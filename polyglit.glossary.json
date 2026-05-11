@@ -71,6 +71,9 @@
   "survey responses": {
     "nl-NL": "vragenlijstreacties"
   },
+  "topic (input term)": {
+    "nl-NL": "thema"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
