@@ -24,7 +24,7 @@ interface PdfExportContextValue {
   isPdfRenderMode: boolean;
   status: PdfExportStatus;
   progress: { completed: number; total: number };
-  skippedSections: number;
+  skippedSections: string[];
 }
 
 const PdfExportContext = createContext<PdfExportContextValue>({
@@ -34,7 +34,7 @@ const PdfExportContext = createContext<PdfExportContextValue>({
   isPdfRenderMode: false,
   status: 'idle',
   progress: { completed: 0, total: 0 },
-  skippedSections: 0,
+  skippedSections: [],
 });
 
 interface PdfExportProviderProps {
