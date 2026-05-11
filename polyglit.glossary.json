@@ -109,6 +109,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "widget": {
+    "nl-NL": "widget"
+  },
   "file upload questions": {
     "nl-NL": "bestand upload vragen"
   },
