@@ -2754,6 +2754,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Search for a location",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Link upcoming events to this projects and show them on the project's event page.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo": "Events must be added in the timezone of the platform ({timezone}). End users will see the date in their own timezone.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Title and dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
