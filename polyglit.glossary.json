@@ -118,6 +118,9 @@
   "custom content": {
     "nl-NL": "aangepaste inhoud"
   },
+  "map layers": {
+    "nl-NL": "kaartlagen"
+  },
   "email": {
     "da-DK": "e-mail",
     "es-ES": "correo",
