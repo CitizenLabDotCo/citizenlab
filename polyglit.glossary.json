@@ -227,6 +227,9 @@
   "early access": {
     "nl-NL": "vroege toegang"
   },
+  "required": {
+    "nl-NL": "vereist"
+  },
   "ideation": {
     "nl-NL": "ideeënvorming"
   },
