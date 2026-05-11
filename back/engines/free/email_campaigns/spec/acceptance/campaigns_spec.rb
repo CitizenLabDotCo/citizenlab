@@ -73,7 +73,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 50
+        expect(response_data.size).to eq 51
       end
 
       example 'List all manual campaigns when one has been sent' do

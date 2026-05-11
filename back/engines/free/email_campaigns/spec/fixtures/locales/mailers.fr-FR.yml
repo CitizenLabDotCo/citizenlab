@@ -430,6 +430,11 @@ fr-FR:
       title: 'Une proposition a atteint le nombre de voix requis!'
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
+    proposal_expired_for_admin:
+      cta_button: 'Consulter la proposition expirée'
+      title: 'Une proposition a expiré sans atteindre le seuil de vote'
+      subject: '"%{input_title}" a expiré sans atteindre le seuil'
+      preheader: 'Une proposition s''est terminée sans atteindre le seuil'
     welcome:
       cta_button: 'Découvrir la plateforme'
       subject: 'Bienvenue sur la plateforme de %{organizationName}'

@@ -82,7 +82,11 @@ const Calendar = () => {
       start: project.attributes.current_phase_start_date,
       end: project.attributes.current_phase_end_date,
     },
-    color: getStatusColor(project.attributes.publication_status),
+    color: getStatusColor(
+      project.attributes.publication_status,
+      project.attributes.publication_status === 'draft' &&
+        !!project.attributes.scheduled_at
+    ),
     icon: project.attributes.folder_title_multiloc ? 'folder-solid' : undefined,
   }));
 

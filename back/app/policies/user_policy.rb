@@ -49,10 +49,6 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || active_admin_or_moderator? || record.show_public_profile?
   end
 
-  def by_slug?
-    show?
-  end
-
   def by_invite?
     record&.invite_pending?
   end

@@ -292,9 +292,7 @@ const SiteMap = () => {
                         <ul>
                           <>
                             <li>
-                              <Link
-                                to={`/profile/${authUser.data.attributes.slug}`}
-                              >
+                              <Link to={`/profile/${authUser.data.id}`}>
                                 <FormattedMessage {...messages.profilePage} />
                               </Link>
                             </li>

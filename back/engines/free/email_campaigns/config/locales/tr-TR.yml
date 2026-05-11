@@ -94,6 +94,7 @@ tr-TR:
         project_published: Proje yayınlandı
         project_review_request: Moderatör proje incelemesi talep etti
         project_review_state_change: Gözden geçiren projeyi onayladı
+        proposal_expired: Bir öneri eşiğe ulaşamadan süresi doluyor
         proposal_gets_reported_as_spam: Teklif spam olarak bildiriliyor
         proposal_is_assigned_to_admin: Teklif yöneticiye atanır
         proposal_is_published: Teklif yayınlandı
@@ -188,6 +189,7 @@ tr-TR:
       project_published: Proje yayınlandı
       project_review_request: Proje inceleme talebi
       project_review_state_change: Proje onaylandı
+      proposal_expired_for_admin: Öneri oylama eşiğine ulaşamadan süresi doldu
       screening_digest: Haftalık tarama hatırlatması
       space_moderation_rights_received: Alan yöneticisi yetkileri alındı
       status_change_on_idea_you_follow: Takip ettiğiniz bir fikrin durum değişikliği
@@ -591,6 +593,11 @@ tr-TR:
       preheader: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
       subject: '"%{projectTitle}" onaylanmıştır'
       title: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
+    proposal_expired_for_admin:
+      cta_button: Süresi dolan girdiyi inceleyin
+      preheader: Bir girdi eşiğe ulaşamadan süresi doldu
+      subject: '"%{input_title}" eşiğe ulaşamadan süresi doldu'
+      title: Bir girdi oylama eşiğine ulaşamadan süresi doldu
     schedules:
       quarterly: Üç ayda bir, üç aylık dönemin ilk gününde
       weekly:

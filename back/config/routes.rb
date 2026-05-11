@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
+          get 'me/ping', action: 'ping'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -120,7 +121,6 @@ Rails.application.routes.draw do
           post 'update_password'
           post 'check'
 
-          get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
           get :check_if_exceeds_seats
@@ -368,7 +368,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      resources :baskets, except: [:index] do
+      resources :baskets, except: %i[index create] do
         resources :baskets_ideas, shallow: true
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'

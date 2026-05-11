@@ -56,7 +56,7 @@ export interface ICommentMarkedAsSpamNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -70,7 +70,7 @@ export interface ICommentOnYourCommentNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -84,7 +84,7 @@ export interface ICommentOnIdeaYouFollowNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -98,7 +98,7 @@ export interface ICosponsorOfYourIdeaNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
   };
 }
@@ -111,7 +111,7 @@ export interface IIdeaAssignedToYouNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_title_multiloc: Multiloc;
     post_slug: string;
   };
@@ -125,7 +125,7 @@ export interface IIdeaMarkedAsSpamNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_title_multiloc: Multiloc;
     post_slug: string;
   };
@@ -138,7 +138,7 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
   };
 }
 export interface IInvitationToCosponsorIdeaNotificationData
@@ -149,7 +149,7 @@ export interface IInvitationToCosponsorIdeaNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
   };
 }
@@ -162,7 +162,7 @@ export interface IMentionInCommentNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -176,7 +176,7 @@ export interface IInternalCommentNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     idea_id: string;
@@ -193,7 +193,7 @@ export interface IMentionInOfficialFeedbackNotificationData
     created_at: string;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
     official_feedback_author: Multiloc;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
@@ -270,7 +270,7 @@ export interface IProjectReviewRequestNotificationData
     project_title_multiloc: Multiloc;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
   };
 }
 
@@ -284,7 +284,7 @@ export interface IProjectReviewStateChangeNotificationData
     project_title_multiloc: Multiloc;
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
+    initiating_user_id: string | null;
   };
 }
 
@@ -311,6 +311,16 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
+export interface IProposalExpiredForAdminNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'proposal_expired_for_admin';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
 export interface ISpaceModerationRightsReceivedNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -321,7 +331,6 @@ export interface ISpaceModerationRightsReceivedNotificationData
     space_title_multiloc: Multiloc;
   };
 }
-
 export interface IProjectFolderModerationRightsReceivedNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -412,6 +421,7 @@ export interface INotificationDataMap {
   IProjectReviewStateChangeNotificationData: IProjectReviewStateChangeNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
+  IProposalExpiredForAdminNotificationData: IProposalExpiredForAdminNotificationData;
   ISpaceModerationRightsReceivedNotificationData: ISpaceModerationRightsReceivedNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
