@@ -46,6 +46,9 @@
     "es-ES": "correo",
     "nl-NL": "e-mail"
   },
+  "finished": {
+    "nl-NL": "afgelopen"
+  },
   "input": {
     "de-DE": "Beitrag",
     "fr-FR": "contribution",
