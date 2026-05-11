@@ -53,7 +53,7 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def auth_callback(verify: false, authver_method: nil)
+  def auth_callback(verify: false, authver_method: nil) # rubocop:disable Metrics/MethodLength
     auth = request.env['omniauth.auth']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
@@ -85,7 +85,7 @@ class OmniauthCallbackController < ApplicationController
 
       @identity.update(user: @user) unless @identity.user
 
-      # Same as above, but for non-invite users: 
+      # Same as above, but for non-invite users:
       # If the user's email came from/matches the authver one,
       # and the provider says it was confirmed: we mark the user's email as confirmed.
       if user_has_email_confirmed_by_authver
