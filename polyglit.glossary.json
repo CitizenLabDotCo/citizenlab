@@ -67,7 +67,8 @@
   },
   "save": {
     "da-DK": "gem",
-    "fr-FR": "enregistrer"
+    "fr-FR": "enregistrer",
+    "nl-NL": "opslaan"
   },
   "seat": {
     "da-DK": "plads",
