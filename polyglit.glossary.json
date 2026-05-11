@@ -55,7 +55,8 @@
     "da-DK": "projektleder",
     "de-DE": "Manager*innen",
     "es-ES": "gestor",
-    "fr-FR": "gestionnaire"
+    "fr-FR": "gestionnaire",
+    "nl-NL": "beheerder"
   },
   "plan": {
     "de-DE": "Lizenz"
