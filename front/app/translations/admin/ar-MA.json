@@ -2881,7 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "تجاهل التغييرات",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "مسودة",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "أنت بصدد تعديل مسودة. قم بالنشر لتصبح مرئية للمشاركين، أو تجاهل التغييرات للرجوع.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "نشر وصف المرحلة",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "وصف مرحلة النشر",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "منشور",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "هذا هو الوصف المنشور حالياً والذي يظهر للمشاركين. اضغط للتعديل.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "تم حفظ المسودة",

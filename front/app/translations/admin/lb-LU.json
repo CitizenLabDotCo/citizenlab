@@ -2881,7 +2881,7 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Ännerunge verwerfen",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "ENTWURRF",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Dir editéiert en Entworf. Verëffentlecht en, fir en fir d'Participante siichtbar ze maachen, oder verwerft d'Ännerungen, fir se réckgängeg ze maachen.",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Phas-Beschreiwung verëffentlechen",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Beschreiwung vun der Verëffentlechungsphas",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": "VERËFFENTLECHT",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1": "Dëst ass déi aktuell verëffentlecht Beschreiwung, déi fir d'Participante siichtbar ass. Klickt fir ze editéieren.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionSaved": "Entworf gespäichert",
