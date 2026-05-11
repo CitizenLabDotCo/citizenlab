@@ -128,7 +128,9 @@ const Meta = () => {
           property="og:image:height"
           content={`${imageSizes.headerBg.large[1]}`}
         />
-        <meta property="og:url" content={`${url}/${locale}`} />
+        {/* og:url must reflect the current page, not the homepage — otherwise FB
+            follows it back to the homepage when scraping non-home shares. */}
+        <meta property="og:url" content={`${url}${pathname}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
