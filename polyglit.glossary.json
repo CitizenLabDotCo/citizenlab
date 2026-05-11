@@ -115,6 +115,9 @@
   "attendees (events)": {
     "nl-NL": "aanwezigen"
   },
+  "chart": {
+    "nl-NL": "grafiek"
+  },
   "registrants (events)": {
     "nl-NL": "geregistreerden"
   },
