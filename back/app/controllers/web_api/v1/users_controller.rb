@@ -7,7 +7,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -104,6 +104,18 @@ class WebApi::V1::UsersController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
+  def ping
+    skip_authorization
+
+    # Allows us to return a different response when a user hits an admin route in the front-end
+    if params[:admin].present? && current_user&.normal_user?
+      head :forbidden
+      return
+    end
+
+    head :ok
+  end
+
   def me
     @user = current_user
     skip_authorization
@@ -118,12 +130,6 @@ class WebApi::V1::UsersController < ApplicationController
 
   def show
     render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-  end
-
-  def by_slug
-    @user = User.by_slug!(params[:slug])
-    authorize @user
-    show
   end
 
   def by_invite

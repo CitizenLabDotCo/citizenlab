@@ -71,7 +71,7 @@ resource 'Phases' do
         expect(phase1_response.dig(:attributes, :votes_count)).to eq 2
         expect(phase1_response.dig(:attributes, :total_votes_amount)).to eq 10
         expect(phase1_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to eq admin.id
-        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :email)).to eq admin.email
         expect(phase1_response.dig(:attributes, :manual_voters_last_updated_at)).to be_present
 
         phase2_response = json_response_body[:data].find { |i| i[:id] == phase2.id }

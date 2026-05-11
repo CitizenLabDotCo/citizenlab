@@ -35,7 +35,6 @@ describe('Admin project approval flow', () => {
 
   it('should be possible for a project moderator to request approval for a project', () => {
     cy.setLoginCookie(email, password);
-
     cy.visit(`admin/projects/${projectId}`);
 
     cy.dataCy('e2e-request-approval').click();
@@ -57,10 +56,13 @@ describe('Admin project approval flow', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`admin/projects/${projectId}`);
 
+    // Publishing now goes through the Schedule Launch modal: open it,
+    // toggle to "Now" mode, then submit.
     cy.get('#e2e-publish').click();
-    cy.get('#e2e-publish').should('not.exist');
+    cy.dataCy('e2e-mode-toggle-now').click();
+    cy.get('#e2e-schedule-launch-submit').click();
 
-    // Once the project is published, the publication status dropdown should be visible
-    cy.get('#e2e-admin-edit-publication-status').should('exist');
+    // Once published, the entry button reflects the Published status.
+    cy.get('#e2e-publish').should('contain', 'Published');
   });
 });

@@ -159,7 +159,7 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const profileLink: RouteType = `/profile/${user.data.attributes.slug}`;
+    const profileLink: RouteType = `/profile/${user.data.id}`;
 
     const classNames = `
       ${className || ''}
