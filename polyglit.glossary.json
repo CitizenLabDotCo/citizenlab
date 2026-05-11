@@ -130,6 +130,9 @@
   "registrants (events)": {
     "nl-NL": "geregistreerden"
   },
+  "reactions (on inputs)": {
+    "nl-NL": "likes / dislikes"
+  },
   "approve": {
     "de-DE": "freigeben",
     "nl-NL": "Goedkeuren"
