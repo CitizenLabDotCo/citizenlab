@@ -103,6 +103,9 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
+  "proposals": {
+    "nl-NL": "voorstellen"
+  },
   "attendees (events)": {
     "nl-NL": "aanwezigen"
   },
