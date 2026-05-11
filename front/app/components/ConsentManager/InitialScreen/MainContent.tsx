@@ -23,10 +23,7 @@ const TextLink = styled(Link)`
 const MainContent = () => {
   const { formatMessage } = useIntl();
   const descriptionPlainText = formatMessage(
-    messages.cookieModalInitialScreenDescription,
-    {
-      linkToCookiePolicy: formatMessage(messages.linkToCookiePolicyText),
-    }
+    messages.cookieModalInitialScreenDescriptionWithoutLink
   );
 
   return (
