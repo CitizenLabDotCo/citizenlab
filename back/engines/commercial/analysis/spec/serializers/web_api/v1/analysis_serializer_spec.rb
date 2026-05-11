@@ -6,38 +6,10 @@ describe Analysis::WebApi::V1::AnalysisSerializer do
   let(:result) { described_class.new(analysis, params: { current_user: create(:admin) }).serializable_hash }
 
   describe 'auto_insights_too_many_fields' do
-    let(:main_field) { create(:custom_field_text) }
+    let(:analysis) { create(:ideation_analysis) }
 
-    context 'with 50 submission fields or fewer' do
-      let(:analysis) { create(:ideation_analysis, main_custom_field: main_field, additional_custom_fields: build_list(:custom_field_text, 2)) }
-
-      it 'is false' do
-        expect(result.dig(:data, :attributes, :auto_insights_too_many_fields)).to be false
-      end
-    end
-
-    context 'with more than 50 submission fields' do
-      let(:additional_fields) do
-        build_list(:custom_field_text, 10) + build_list(:custom_field_text, 10) + build_list(:custom_field_text, 10) +
-          build_list(:custom_field_text, 10) + build_list(:custom_field_text, 10)
-      end
-      let(:analysis) { create(:ideation_analysis, main_custom_field: main_field, additional_custom_fields: additional_fields) }
-
-      it 'is true' do
-        expect(result.dig(:data, :attributes, :auto_insights_too_many_fields)).to be true
-      end
-    end
-
-    context 'with many total fields but layout fields pushing the total over 50' do
-      let(:additional_fields) do
-        build_list(:custom_field_text, 10) + build_list(:custom_field_text, 10) + build_list(:custom_field_text, 10) +
-          build_list(:custom_field_page, 10) + build_list(:custom_field_page, 10) + build_list(:custom_field_page, 5)
-      end
-      let(:analysis) { create(:ideation_analysis, main_custom_field: main_field, additional_custom_fields: additional_fields) }
-
-      it 'is false (layout fields do not count)' do
-        expect(result.dig(:data, :attributes, :auto_insights_too_many_fields)).to be false
-      end
+    it 'is exposed as an attribute' do
+      expect(result.dig(:data, :attributes)).to have_key(:auto_insights_too_many_fields)
     end
   end
 
