@@ -82,7 +82,7 @@ export interface InputProps {
   onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: (arg: FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: FormEvent<HTMLInputElement>) => void;
-  setRef?: (arg: HTMLInputElement) => void | undefined;
+  setRef?: (arg: HTMLInputElement | null) => void;
   onKeyDown?: (event: KeyboardEvent) => void;
   onMultilinePaste?: (lines: string[]) => void;
   autoFocus?: boolean;
@@ -110,7 +110,7 @@ export interface InputProps {
   'data-cy'?: string;
 }
 
-class Input extends PureComponent<InputProps> {
+class InputComponent extends PureComponent<InputProps> {
   handleOnChange = (event: FormEvent<HTMLInputElement>) => {
     const { maxCharCount, onChange, locale } = this.props;
 
@@ -130,10 +130,6 @@ class Input extends PureComponent<InputProps> {
     if (onBlur) {
       onBlur(event);
     }
-  };
-
-  handleRef = (element: HTMLInputElement) => {
-    this.props.setRef && this.props.setRef(element);
   };
 
   render() {
@@ -214,11 +210,10 @@ class Input extends PureComponent<InputProps> {
           onChange={this.handleOnChange}
           onFocus={onFocus}
           onBlur={this.handleOnBlur}
-          ref={this.handleRef}
+          ref={this.props.setRef as React.Ref<HTMLInputElement>}
           min={min}
           max={max}
           step={step}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           disabled={disabled}
           readOnly={readOnly}
@@ -269,4 +264,4 @@ class Input extends PureComponent<InputProps> {
   }
 }
 
-export default Input;
+export default InputComponent;

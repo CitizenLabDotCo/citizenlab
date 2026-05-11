@@ -30,9 +30,10 @@ const usePageForm = ({
   });
 
   const methods = useForm({
-    mode: 'onBlur',
+    mode: 'all',
     resolver: yupResolver(schema),
     defaultValues,
+    shouldFocusError: true,
   });
 
   return {

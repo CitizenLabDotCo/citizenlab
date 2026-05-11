@@ -68,6 +68,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
+    shouldFocusError: true,
   });
 
   if (isNilOrError(appConfiguration)) return null;

@@ -42,6 +42,8 @@ export interface Props {
   maxCharCount?: number;
   minCharCount?: number;
   ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  ariaInvalid?: boolean;
 }
 
 configureQuill();
@@ -66,6 +68,8 @@ const QuillEditor = ({
   maxCharCount,
   minCharCount,
   ariaLabelledBy,
+  ariaDescribedBy,
+  ariaInvalid,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -209,6 +213,25 @@ const QuillEditor = ({
   }, [editor]);
 
   const className = focussed ? 'focus' : '';
+
+  // Update aria attributes dynamically when they change
+  useEffect(() => {
+    if (!editor) return;
+
+    const editorElement = editor.root;
+
+    if (ariaInvalid) {
+      editorElement.setAttribute('aria-invalid', String(ariaInvalid));
+    } else {
+      editorElement.removeAttribute('aria-invalid');
+    }
+
+    if (ariaDescribedBy) {
+      editorElement.setAttribute('aria-describedby', ariaDescribedBy);
+    } else {
+      editorElement.removeAttribute('aria-describedby');
+    }
+  }, [editor, ariaInvalid, ariaDescribedBy]);
 
   return (
     <StyleContainer
