@@ -89,6 +89,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "registrants (events)": {
+    "nl-NL": "geregistreerden"
+  },
   "review (project)": {
     "nl-NL": "beoordelen (project)"
   },
