@@ -304,16 +304,13 @@ const InsightsContent = () => {
                     {exportError}
                   </Text>
                 )}
-                {captureWarnings.length > 0 && !isDownloading && (
-                  <Text fontSize="s" color="orange500" m="0px">
-                    {formatMessage(wordMessages.exportCaptureWarning)}
-                  </Text>
-                )}
-                {pdfSkippedSections > 0 && !isDownloading && (
-                  <Text fontSize="s" color="orange500" m="0px">
-                    {formatMessage(wordMessages.exportCaptureWarning)}
-                  </Text>
-                )}
+                {(captureWarnings.length > 0 ||
+                  pdfSkippedSections.length > 0) &&
+                  !isDownloading && (
+                    <Text fontSize="s" color="orange500" m="0px">
+                      {formatMessage(wordMessages.exportCaptureWarning)}
+                    </Text>
+                  )}
               </Box>
             )}
           </Box>
