@@ -187,6 +187,9 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
+  "community monitor": {
+    "nl-NL": "gemeenschapsmonitor"
+  },
   "rank": {
     "nl-NL": "rang"
   },
