@@ -87,6 +87,7 @@
     "nl-NL": "overzicht accounts"
   },
   "users": {
-    "de-DE": "Nutzende"
+    "de-DE": "Nutzende",
+    "nl-NL": "gebruikers"
   }
 }
