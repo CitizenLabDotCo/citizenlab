@@ -64,6 +64,9 @@
   "plan": {
     "de-DE": "Lizenz"
   },
+  "preview link": {
+    "nl-NL": "voorbeeldlink"
+  },
   "recipients": {
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
