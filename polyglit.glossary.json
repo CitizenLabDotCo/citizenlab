@@ -56,6 +56,9 @@
     "de-DE": "Übersicht der Zugänge",
     "nl-NL": "overzicht accounts"
   },
+  "response (input term)": {
+    "nl-NL": "reactie"
+  },
   "review (project)": {
     "nl-NL": "beoordelen (project)"
   },
