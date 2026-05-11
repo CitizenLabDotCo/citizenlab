@@ -53,6 +53,9 @@
   "voting": {
     "nl-NL": "stemming"
   },
+  "survey": {
+    "nl-NL": "vragenlijst"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
