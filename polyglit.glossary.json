@@ -91,6 +91,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "mapping questions": {
+    "nl-NL": "kaart-gerelateerde vragen"
+  },
   "poll": {
     "nl-NL": "peiling"
   },
