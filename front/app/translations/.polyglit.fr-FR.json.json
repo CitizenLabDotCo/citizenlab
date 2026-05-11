@@ -2909,6 +2909,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T13:00:15.150761Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.QuillEditor.image": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",

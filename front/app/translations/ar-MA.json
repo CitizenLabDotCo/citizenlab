@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "أضِف زرًا",
   "app.components.QuillEditor.customLinkPrompt": "أدخل الرابط:",
   "app.components.QuillEditor.edit": "تعديل",
+  "app.components.QuillEditor.embeddedVideo": "فيديو مضمن",
   "app.components.QuillEditor.image": "تحميل صورة",
   "app.components.QuillEditor.imageTitleLabel": "عنوان الصورة",
   "app.components.QuillEditor.italic": "مائل",

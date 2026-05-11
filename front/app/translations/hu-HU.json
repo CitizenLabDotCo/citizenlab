@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Hozzáadás gomb",
   "app.components.QuillEditor.customLinkPrompt": "Írja be a linket:",
   "app.components.QuillEditor.edit": "Szerkesztés",
+  "app.components.QuillEditor.embeddedVideo": "Beágyazott videó",
   "app.components.QuillEditor.image": "Kép feltöltése",
   "app.components.QuillEditor.imageTitleLabel": "Kép címe",
   "app.components.QuillEditor.italic": "Dőlt",

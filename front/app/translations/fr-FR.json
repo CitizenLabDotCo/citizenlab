@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Ajouter un bouton",
   "app.components.QuillEditor.customLinkPrompt": "Entrer le lien :",
   "app.components.QuillEditor.edit": "Editer",
+  "app.components.QuillEditor.embeddedVideo": "Vidéo intégrée",
   "app.components.QuillEditor.image": "Charger une image",
   "app.components.QuillEditor.imageTitleLabel": "Titre de l'image",
   "app.components.QuillEditor.italic": "Italique",

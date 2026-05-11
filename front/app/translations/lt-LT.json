@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Pridėti mygtuką",
   "app.components.QuillEditor.customLinkPrompt": "Įveskite nuorodą:",
   "app.components.QuillEditor.edit": "Redaguoti",
+  "app.components.QuillEditor.embeddedVideo": "Įterptas vaizdo įrašas",
   "app.components.QuillEditor.image": "Įkelti paveikslėlį",
   "app.components.QuillEditor.imageTitleLabel": "Vaizdo pavadinimas",
   "app.components.QuillEditor.italic": "Kursyvu",
