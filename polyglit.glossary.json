@@ -68,6 +68,9 @@
   "voting": {
     "nl-NL": "stemming"
   },
+  "ranking": {
+    "nl-NL": "rangschikking"
+  },
   "draw area": {
     "nl-NL": "gebied tekenen"
   },
