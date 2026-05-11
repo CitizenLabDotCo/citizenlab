@@ -69,6 +69,9 @@
     "da-DK": "Rumadministrator",
     "nl-NL": "Ruimtebeheerder"
   },
+  "liked": {
+    "nl-NL": "geliked"
+  },
   "comments (on inputs)": {
     "nl-NL": "reacties"
   },
