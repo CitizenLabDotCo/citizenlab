@@ -28,7 +28,8 @@
     "nl-NL": "Ruimtebeheerder"
   },
   "admin": {
-    "de-DE": "Admin"
+    "de-DE": "Admin",
+    "nl-NL": "Platformbeheerder"
   },
   "approve": {
     "de-DE": "freigeben"
