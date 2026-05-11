@@ -164,6 +164,7 @@ const DemographicsSection = ({ phase }: Props) => {
     return (
       <WordExportableInsight exportId="demographics">
         <Box
+          data-pdf-section="true"
           background="white"
           borderRadius="8px"
           display="flex"
@@ -190,6 +191,7 @@ const DemographicsSection = ({ phase }: Props) => {
     return (
       <WordExportableInsight exportId="demographics">
         <Box
+          data-pdf-section="true"
           background="white"
           borderRadius="8px"
           display="flex"
@@ -213,6 +215,7 @@ const DemographicsSection = ({ phase }: Props) => {
     return (
       <WordExportableInsight exportId="demographics">
         <Box
+          data-pdf-section="true"
           background="white"
           borderRadius="8px"
           display="flex"
@@ -246,7 +249,7 @@ const DemographicsSection = ({ phase }: Props) => {
           role="region"
           aria-label={formatMessage(messages.demographicsAndAudience)}
         >
-          <PageBreakBox>
+          <PageBreakBox data-pdf-section="true">
             <Box display="flex" flexDirection="column" gap="24px">
               <Box
                 display="flex"
@@ -267,7 +270,7 @@ const DemographicsSection = ({ phase }: Props) => {
           </PageBreakBox>
 
           {fields.slice(1).map((field) => (
-            <PageBreakBox key={field.field_id}>
+            <PageBreakBox key={field.field_id} data-pdf-section="true">
               <Box>
                 <DemographicFieldContent field={field} showExportMenu={false} />
               </Box>

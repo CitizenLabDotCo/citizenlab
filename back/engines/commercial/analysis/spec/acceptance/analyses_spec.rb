@@ -63,7 +63,8 @@ resource 'Analyses' do
         participation_method: 'ideation',
         updated_at: kind_of(String),
         created_at: kind_of(String),
-        show_insights: true
+        show_insights: true,
+        auto_insights_too_many_fields: false
       })
       expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
       expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to eq [additional_field.id]
