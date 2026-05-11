@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Dodaj przycisk",
   "app.components.QuillEditor.customLinkPrompt": "Podaj link:",
   "app.components.QuillEditor.edit": "Edycja",
+  "app.components.QuillEditor.embeddedVideo": "Osadzone wideo",
   "app.components.QuillEditor.image": "Prześlij obrazek",
   "app.components.QuillEditor.imageTitleLabel": "Tytuł obrazu",
   "app.components.QuillEditor.italic": "Kursywa",

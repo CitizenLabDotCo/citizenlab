@@ -581,6 +581,7 @@
   "app.components.QuillEditor.customLink": "Tilføj knap",
   "app.components.QuillEditor.customLinkPrompt": "Indtast link:",
   "app.components.QuillEditor.edit": "Rediger",
+  "app.components.QuillEditor.embeddedVideo": "Indlejret video",
   "app.components.QuillEditor.image": "Overfør billede",
   "app.components.QuillEditor.imageTitleLabel": "Billedets titel",
   "app.components.QuillEditor.italic": "Kursiv",
