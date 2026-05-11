@@ -1,70 +1,67 @@
 {
-  "Beta": {
-    "fr-FR": "Bêta"
-  },
-  "Common Ground": {
-    "de-DE": "ZusammenFinden",
-    "nl-NL": "Raakvlakkenmethode"
-  },
-  "FormSync": {
-    "de-DE": "Papier-Scans",
-    "nl-NL": "FormSync"
-  },
-  "GovSuccess Manager": {
-    "de-DE": "Kundenbetreuerin",
-    "fr-FR": "Spécialiste en participation Go Vocal",
-    "nl-NL": "GovSuccess Manager"
-  },
-  "Government Success Manager": {
-    "de-DE": "Kundenbetreuerin",
-    "nl-NL": "Government Success Manager"
-  },
-  "Space (i.e. The container for folders and projects)": {
-    "da-DK": "Rum",
-    "nl-NL": "Ruimte"
-  },
-  "Space Manager": {
-    "da-DK": "Rumadministrator",
-    "nl-NL": "Ruimtebeheerder"
-  },
-  "admin": {
-    "de-DE": "Admin",
-    "nl-NL": "Platformbeheerder"
-  },
-  "approve": {
-    "de-DE": "freigeben",
-    "nl-NL": "Goedkeuren"
-  },
-  "attendees (events)": {
-    "nl-NL": "aanwezigen"
-  },
   "co-sponsors": {
     "nl-NL": "ondersteuners"
-  },
-  "custom content": {
-    "nl-NL": "aangepaste inhoud"
-  },
-  "document annotation": {
-    "nl-NL": "feedback op een document"
-  },
-  "draft": {
-    "nl-NL": "concept"
-  },
-  "email": {
-    "da-DK": "e-mail",
-    "es-ES": "correo",
-    "nl-NL": "e-mail"
-  },
-  "event": {
-    "nl-NL": "activiteit"
-  },
-  "finished": {
-    "nl-NL": "afgelopen"
   },
   "input": {
     "de-DE": "Beitrag",
     "fr-FR": "contribution",
     "nl-NL": "bijdrage"
+  },
+  "admin": {
+    "de-DE": "Admin",
+    "nl-NL": "Platformbeheerder"
+  },
+  "draft": {
+    "nl-NL": "concept"
+  },
+  "event": {
+    "nl-NL": "activiteit"
+  },
+  "seats": {
+    "da-DK": "pladser",
+    "de-DE": "Zugänge",
+    "es-ES": "asientos",
+    "nl-NL": "accounts"
+  },
+  "preview link": {
+    "nl-NL": "voorbeeldlink"
+  },
+  "users": {
+    "de-DE": "Nutzende",
+    "nl-NL": "gebruikers"
+  },
+  "finished": {
+    "nl-NL": "afgelopen"
+  },
+  "Space (i.e. The container for folders and projects)": {
+    "da-DK": "Rum",
+    "nl-NL": "Ruimte"
+  },
+  "seats overview": {
+    "de-DE": "Übersicht der Zugänge",
+    "nl-NL": "overzicht accounts"
+  },
+  "review (project)": {
+    "nl-NL": "beoordelen (project)"
+  },
+  "plan": {
+    "de-DE": "Lizenz"
+  },
+  "Space Manager": {
+    "da-DK": "Rumadministrator",
+    "nl-NL": "Ruimtebeheerder"
+  },
+  "recipients": {
+    "de-DE": "Empfänger*innen",
+    "nl-NL": "ontvangers"
+  },
+  "custom content": {
+    "nl-NL": "aangepaste inhoud"
+  },
+  "email": {
+    "da-DK": "e-mail",
+    "es-ES": "correo",
+    "nl-NL": "e-mail"
   },
   "inputs": {
     "da-DK": "input",
@@ -79,26 +76,20 @@
     "fr-FR": "gestionnaire",
     "nl-NL": "beheerder"
   },
-  "plan": {
-    "de-DE": "Lizenz"
+  "Common Ground": {
+    "de-DE": "ZusammenFinden",
+    "nl-NL": "Raakvlakkenmethode"
   },
-  "preview link": {
-    "nl-NL": "voorbeeldlink"
+  "GovSuccess Manager": {
+    "de-DE": "Kundenbetreuerin",
+    "fr-FR": "Spécialiste en participation Go Vocal",
+    "nl-NL": "GovSuccess Manager"
   },
-  "recipients": {
-    "de-DE": "Empfänger*innen",
-    "nl-NL": "ontvangers"
+  "Beta": {
+    "fr-FR": "Bêta"
   },
-  "registrants (events)": {
-    "nl-NL": "geregistreerden"
-  },
-  "review (project)": {
-    "nl-NL": "beoordelen (project)"
-  },
-  "save": {
-    "da-DK": "gem",
-    "fr-FR": "enregistrer",
-    "nl-NL": "opslaan"
+  "document annotation": {
+    "nl-NL": "feedback op een document"
   },
   "seat": {
     "da-DK": "plads",
@@ -106,15 +97,18 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
-  "seats": {
-    "da-DK": "pladser",
-    "de-DE": "Zugänge",
-    "es-ES": "asientos",
-    "nl-NL": "accounts"
+  "attendees (events)": {
+    "nl-NL": "aanwezigen"
   },
-  "seats overview": {
-    "de-DE": "Übersicht der Zugänge",
-    "nl-NL": "overzicht accounts"
+  "registrants (events)": {
+    "nl-NL": "geregistreerden"
+  },
+  "approve": {
+    "de-DE": "freigeben",
+    "nl-NL": "Goedkeuren"
+  },
+  "ideation": {
+    "nl-NL": "ideeënvorming"
   },
   "stale": {
     "nl-NL": "inactief"
@@ -122,8 +116,17 @@
   "tag": {
     "nl-NL": "tag"
   },
-  "users": {
-    "de-DE": "Nutzende",
-    "nl-NL": "gebruikers"
+  "Government Success Manager": {
+    "de-DE": "Kundenbetreuerin",
+    "nl-NL": "Government Success Manager"
+  },
+  "FormSync": {
+    "de-DE": "Papier-Scans",
+    "nl-NL": "FormSync"
+  },
+  "save": {
+    "da-DK": "gem",
+    "fr-FR": "enregistrer",
+    "nl-NL": "opslaan"
   }
 }
