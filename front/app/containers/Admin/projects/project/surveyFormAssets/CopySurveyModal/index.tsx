@@ -105,14 +105,11 @@ const CopySurveyModal = ({
             buttonStyle="admin-dark"
             disabled={!phaseId}
             onClick={() => {
-              const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
-              clHistory.push(url);
-
-              // clHistory.push with a query-only change doesn't reliably
-              // trigger a React Router re-render, so force a full reload.
-              if (window.location.pathname.includes(editFormLink)) {
-                window.location.reload();
-              }
+              clHistory.push({
+                pathname: editFormLink,
+                search: `?copy_from=${phaseId}`,
+              });
+              setShowCopySurveyModal(false);
             }}
             data-cy="e2e-copy-survey-modal-duplicate"
           >

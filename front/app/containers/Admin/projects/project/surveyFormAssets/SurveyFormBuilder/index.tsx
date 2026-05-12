@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -27,13 +27,31 @@ const SurveyFormBuilder = ({
   const [startFromScratch, setStartFromScratch] = useState(false);
   const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
 
-  const { data: formCustomFields } = useFormCustomFields({
-    projectId,
-    phaseId: copyFrom ? copyFrom : phaseId,
-    copy: copyFrom ? true : false,
-  });
+  // Keep the FormBuilder key stable once a copy has been initiated. We only
+  // want a remount when copy_from is added (to load the copied data), not
+  // when it's removed (e.g. on save), since the form state already reflects
+  // the copied questions.
+  const lastCopyFromRef = useRef<string | null>(null);
+  if (copyFrom) {
+    lastCopyFromRef.current = copyFrom;
+  }
+  const formBuilderKey = lastCopyFromRef.current || 'new-form';
 
-  if (!phase || !project || !formCustomFields) return null;
+  const { data: formCustomFields, isFetching: isFetchingFields } =
+    useFormCustomFields({
+      projectId,
+      phaseId: copyFrom ? copyFrom : phaseId,
+      copy: copyFrom ? true : false,
+    });
+
+  if (
+    !phase ||
+    !project ||
+    !formCustomFields ||
+    (isFetchingFields && copyFrom)
+  ) {
+    return null;
+  }
 
   // Reset option and statement IDs if this is a new or copied form
   const isFormPersisted = copyFrom
@@ -59,6 +77,7 @@ const SurveyFormBuilder = ({
   return (
     <>
       <FormBuilder
+        key={formBuilderKey}
         builderConfig={{
           ...nativeSurveyConfig,
           formCustomFields: newCustomFields,
