@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  ButtonProps,
   Dropdown,
   DropdownListItem,
   Icon,
@@ -19,12 +18,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import PDFExportModal from './PDFExportModal';
 
-interface Props extends ButtonProps {
+interface Props {
   formType: FormType;
   phaseId: string;
+  mr?: string;
 }
 
-const PaperFormDropdown = ({ formType, phaseId, ...buttonProps }: Props) => {
+const PaperFormDropdown = ({ formType, phaseId, mr }: Props) => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { projectId } = useParams() as { projectId: string };
@@ -37,7 +37,7 @@ const PaperFormDropdown = ({ formType, phaseId, ...buttonProps }: Props) => {
         buttonStyle="secondary-outlined"
         icon="form-sync"
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        {...buttonProps}
+        mr={mr}
       >
         <FormattedMessage {...messages.paperForm} />
       </Button>
