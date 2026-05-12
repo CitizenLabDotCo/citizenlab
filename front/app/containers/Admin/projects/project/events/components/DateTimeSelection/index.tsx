@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
+import moment from 'moment-timezone';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IEventProperties } from 'api/events/types';
@@ -11,6 +12,7 @@ import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import ErrorComponent from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+import { getGmtOffset } from 'utils/dateUtils';
 
 import messages from './messages';
 import { ErrorType } from './types';
@@ -34,6 +36,36 @@ const DateTimeSelection = ({
     appConfig?.data.attributes.settings.core.timezone ?? '';
   const startAtDate = new Date(startAt);
   const endAtDate = new Date(endAt);
+
+  const now = platformTimezone ? moment().tz(platformTimezone) : moment();
+  const tenantTimeNow = new Date(
+    now.year(),
+    now.month(),
+    now.date(),
+    now.hour(),
+    now.minute()
+  );
+  const browserTimezone = moment.tz.guess();
+  const startGmtOffset = getGmtOffset(
+    platformTimezone,
+    tenantTimeNow,
+    startAtDate
+  );
+  const startBrowserOffset = getGmtOffset(
+    browserTimezone,
+    tenantTimeNow,
+    startAtDate
+  );
+  const showStartGmtOffset =
+    !!platformTimezone && startGmtOffset !== startBrowserOffset;
+  const endGmtOffset = getGmtOffset(platformTimezone, tenantTimeNow, endAtDate);
+  const endBrowserOffset = getGmtOffset(
+    browserTimezone,
+    tenantTimeNow,
+    endAtDate
+  );
+  const showEndGmtOffset =
+    !!platformTimezone && endGmtOffset !== endBrowserOffset;
 
   const updateStartAt = (date: Date) => {
     const currentDifference = endAtDate.getTime() - startAtDate.getTime();
@@ -80,7 +112,7 @@ const DateTimeSelection = ({
           <Box ml="12px">
             <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
           </Box>
-          {platformTimezone && (
+          {showStartGmtOffset && (
             <Text
               m="0px"
               ml="8px"
@@ -88,7 +120,7 @@ const DateTimeSelection = ({
               color="coolGrey600"
               fontWeight="semi-bold"
             >
-              {platformTimezone.replace(/_/g, ' ')}
+              GMT{startGmtOffset}
             </Text>
           )}
         </Box>
@@ -111,7 +143,7 @@ const DateTimeSelection = ({
           <Box ml="12px">
             <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
           </Box>
-          {platformTimezone && (
+          {showEndGmtOffset && (
             <Text
               m="0px"
               ml="8px"
@@ -119,7 +151,7 @@ const DateTimeSelection = ({
               color="coolGrey600"
               fontWeight="semi-bold"
             >
-              {platformTimezone.replace(/_/g, ' ')}
+              GMT{endGmtOffset}
             </Text>
           )}
         </Box>
@@ -136,6 +168,7 @@ const DateTimeSelection = ({
         >
           {formatMessage(messages.timezoneInfo, {
             timezone: platformTimezone.replace(/_/g, ' '),
+            gmtOffset: getGmtOffset(platformTimezone, tenantTimeNow),
           })}
         </Text>
       )}

@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'End date & time',
   },
   timezoneInfo: {
-    id: 'app.containers.AdminPage.ProjectEvents.timezoneInfo',
+    id: 'app.containers.AdminPage.ProjectEvents.timezoneInfo1',
     defaultMessage:
-      'Events must be added in the timezone of the platform ({timezone}). End users will see the date in their own timezone.',
+      'Events must be added in the timezone of the platform ({timezone}, GMT{gmtOffset}). End users will see the date in their own timezone.',
   },
 });
