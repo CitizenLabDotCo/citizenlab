@@ -2332,6 +2332,7 @@
   "app.containers.app.navbar.more": "Mer om",
   "app.containers.app.navbar.myProfile": "Min aktivitet",
   "app.containers.app.navbar.search": "Sök",
+  "app.containers.app.navbar.showMobileNavMenu": "Visa mobil navigeringsmeny",
   "app.containers.app.navbar.signOut": "Logga ut",
   "app.containers.eventspage.errorWhenFetchingEvents": "Ett fel uppstod när evenemang laddades. Försök ladda om sidan.",
   "app.containers.eventspage.events": "Händelser",

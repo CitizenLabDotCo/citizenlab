@@ -2332,6 +2332,7 @@
   "app.containers.app.navbar.more": "Altro",
   "app.containers.app.navbar.myProfile": "La mia attività",
   "app.containers.app.navbar.search": "Cerca",
+  "app.containers.app.navbar.showMobileNavMenu": "Mostra il menu di navigazione mobile",
   "app.containers.app.navbar.signOut": "Disconnettiti",
   "app.containers.eventspage.errorWhenFetchingEvents": "Si è verificato un errore durante il caricamento degli eventi. Per favore, prova a ricaricare la pagina.",
   "app.containers.eventspage.events": "Eventi",

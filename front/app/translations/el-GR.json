@@ -2332,6 +2332,7 @@
   "app.containers.app.navbar.more": "Περισσότερα",
   "app.containers.app.navbar.myProfile": "Η δραστηριότητά μου",
   "app.containers.app.navbar.search": "Αναζήτηση",
+  "app.containers.app.navbar.showMobileNavMenu": "Εμφάνιση μενού πλοήγησης για κινητά",
   "app.containers.app.navbar.signOut": "Αποσύνδεση",
   "app.containers.eventspage.errorWhenFetchingEvents": "Προέκυψε σφάλμα κατά τη φόρτωση των εκδηλώσεων. Προσπαθήστε να επαναφορτώσετε τη σελίδα.",
   "app.containers.eventspage.events": "Εκδηλώσεις",

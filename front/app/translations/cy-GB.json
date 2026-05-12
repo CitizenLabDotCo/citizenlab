@@ -2332,6 +2332,7 @@
   "app.containers.app.navbar.more": "Mwy",
   "app.containers.app.navbar.myProfile": "Fy ngweithgaredd",
   "app.containers.app.navbar.search": "Chwiliwch",
+  "app.containers.app.navbar.showMobileNavMenu": "Dangos dewislen llywio symudol",
   "app.containers.app.navbar.signOut": "Arwyddo allan",
   "app.containers.eventspage.errorWhenFetchingEvents": "Bu gwall wrth lwytho digwyddiadau. Ceisiwch ail-lwytho'r dudalen.",
   "app.containers.eventspage.events": "Digwyddiadau",

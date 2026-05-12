@@ -2332,6 +2332,7 @@
   "app.containers.app.navbar.more": "Więcej",
   "app.containers.app.navbar.myProfile": "Mój profil",
   "app.containers.app.navbar.search": "Szukaj",
+  "app.containers.app.navbar.showMobileNavMenu": "Pokaż mobilne menu nawigacyjne",
   "app.containers.app.navbar.signOut": "Wyloguj się",
   "app.containers.eventspage.errorWhenFetchingEvents": "Wystąpił błąd podczas ładowania wydarzeń. Proszę spróbować ponownie załadować stronę.",
   "app.containers.eventspage.events": "Wydarzenia",
