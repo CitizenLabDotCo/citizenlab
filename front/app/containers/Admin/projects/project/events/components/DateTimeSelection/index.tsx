@@ -7,12 +7,12 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IEventProperties } from 'api/events/types';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
+import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import ErrorComponent from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import TimeInput from './TimeInput';
 import { ErrorType } from './types';
 
 interface Props {
