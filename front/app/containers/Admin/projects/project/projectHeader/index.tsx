@@ -125,10 +125,6 @@ const ProjectHeader = ({ projectId }: Props) => {
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
             />
-            <PublicationStatus
-              className="intercom-product-tour-project-publication-status-dropdown"
-              project={project}
-            />
             <ShareLink
               projectId={project.data.id}
               projectSlug={project.data.attributes.slug}
@@ -269,6 +265,10 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Box>
             </>
           )}
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+            ·
+          </Text>
+          <PublicationStatus project={project.data} />
         </Box>
       </Box>
     </NavigationTabs>

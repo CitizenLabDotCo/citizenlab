@@ -4,7 +4,8 @@
 module AuthToken
   class AuthToken
     TOKEN_SIGNATURE_ALGORITHM = 'RS256'
-    TOKEN_LIFETIME = 30.days
+    TOKEN_DEFAULT_LIFETIME = 30.days
+    TOKEN_SHORT_LIFETIME = 1.day
     TOKEN_PUBLIC_KEY = OpenSSL::PKey::RSA.new(ENV.fetch('JWT_RS256_PUBLIC_KEY').gsub('\n', "\n"))
     TOKEN_SECRET_SIGNATURE_KEY = -> { OpenSSL::PKey::RSA.new(ENV.fetch('JWT_RS256_PRIVATE_KEY').gsub('\n', "\n")) }
 
@@ -15,7 +16,7 @@ module AuthToken
         @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
         @token = token
       else
-        @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
+        @payload = { exp: TOKEN_DEFAULT_LIFETIME.from_now.to_i }.merge(payload)
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
       end
     end

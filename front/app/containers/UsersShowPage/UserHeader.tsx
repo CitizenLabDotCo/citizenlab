@@ -14,7 +14,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -50,12 +50,12 @@ const Bio = styled.div`
 `;
 
 interface Props {
-  userSlug: string | null;
+  userId: string | null;
 }
 
-const UserHeader = ({ userSlug }: Props) => {
+const UserHeader = ({ userId }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { data: user } = useUserBySlug(userSlug);
+  const { data: user } = useUserById(userId);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
   const isUserBlockingEnabled = useFeatureFlag({

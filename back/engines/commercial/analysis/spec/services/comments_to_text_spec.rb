@@ -20,7 +20,7 @@ describe Analysis::CommentsToText do
       it { is_expected.not_to be_nil }
 
       it 'does not include original author names' do
-        pii_items = User.all.flat_map { |u| [u.id, u.first_name, u.last_name, u.slug] }
+        pii_items = User.all.flat_map { |u| [u.id, u.first_name, u.last_name] }
         expect(text).not_to include(*pii_items)
       end
     end
@@ -29,7 +29,7 @@ describe Analysis::CommentsToText do
       let!(:comments) { create_list(:comment_with_mentions, 2, idea: input) }
 
       it 'does not include the originally mentioned names' do
-        pii_items = User.all.flat_map { |u| [u.id, u.first_name, u.last_name, u.slug] }
+        pii_items = User.all.flat_map { |u| [u.id, u.first_name, u.last_name] }
         expect(text).not_to include(*pii_items)
       end
     end

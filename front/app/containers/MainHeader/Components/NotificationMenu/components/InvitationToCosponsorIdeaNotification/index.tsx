@@ -60,7 +60,7 @@ const InvitationToCosponsorIdeaNotification = memo<Props>((props) => {
             name: (
               <UserLink
                 userName={notification.attributes.initiating_user_first_name}
-                userSlug={notification.attributes.initiating_user_slug}
+                userId={notification.attributes.initiating_user_id}
               />
             ),
           }}

@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
@@ -26,8 +26,8 @@ interface QueryParameters {
 }
 
 const Submissions = () => {
-  const { userSlug } = useParams() as { userSlug: string };
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams() as { userId: string };
+  const { data: user } = useUserById(userId);
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });

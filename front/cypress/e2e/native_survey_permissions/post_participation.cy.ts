@@ -103,9 +103,18 @@ describe('Post Participation Signup: survey', () => {
     // Make sure we get redirected to project
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
 
-    // Check and confirm that user has submission
-    cy.visit(`/en/profile/${firstName}-${lastName}/surveys`);
-    cy.get(`a[href="/en/projects/${projectSlug}"]`).should('exist');
+    // Get user ID from JWT cookie and check profile
+    cy.getCookie('cl2_jwt').then((cookie) => {
+      const jwt = cookie?.value;
+      if (jwt) {
+        const payload = JSON.parse(atob(jwt.split('.')[1]));
+        userId = payload.sub;
+      }
+
+      // Check and confirm that user has submission
+      cy.visit(`/en/profile/${userId}/surveys`);
+      cy.get(`a[href="/en/projects/${projectSlug}"]`).should('exist');
+    });
 
     // Confirm user's profile has been updated with correct custom field values
     confirmUserCustomFieldHasValue({
