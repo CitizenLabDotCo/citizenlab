@@ -589,6 +589,7 @@ const ProjectCard = memo<InputProps>(
             <ProjectTitleLink
               to={projectUrl}
               scrollToTop
+              className="e2e-card-title-link"
               onClick={() => {
                 handleProjectTitleOnClick(project.data.id);
               }}

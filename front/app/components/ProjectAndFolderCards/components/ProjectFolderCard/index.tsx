@@ -463,6 +463,7 @@ const ProjectFolderCard = memo<Props>(
             <FolderTitleLink
               to={folderUrl}
               scrollToTop
+              className="e2e-card-title-link"
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}

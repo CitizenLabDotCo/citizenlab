@@ -93,15 +93,19 @@ const ProjectAndFolderCardsInner = ({
       ).length;
       // Each new card mounts only after its own useProjectById query resolves,
       // so adminPublications.length growing doesn't mean the cards are in the
-      // DOM yet. Watch the list and focus the first new card the moment it
-      // appears. Attach before triggering the fetch so we can't miss any
-      // mutations that race in between.
+      // DOM yet. Watch the list and focus the first new card's title link the
+      // moment it appears — the card root is a non-focusable div under the
+      // accessible-card pattern. Attach before triggering the fetch so we
+      // can't miss any mutations that race in between.
       const observer = new MutationObserver(() => {
         const cards = list.querySelectorAll<HTMLElement>(
           '.e2e-admin-publication-card'
         );
         if (cards.length > previousCount) {
-          cards[previousCount].focus();
+          const titleLink = cards[previousCount].querySelector<HTMLElement>(
+            '.e2e-card-title-link'
+          );
+          titleLink?.focus();
           observer.disconnect();
         }
       });
