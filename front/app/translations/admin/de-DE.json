@@ -1611,7 +1611,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Es gibt bereits ein Konto, das mit dieser E-Mail verknüpft ist. Diese Eingabe wird zu diesem hinzugefügt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Zustimmung des/der Nutzer*in (Nutzer*innenkonto erstellen)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Freigeben",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Alle Beiträge genehmigen ({numIdeas})",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs2": "Alle Beiträge freigeben ({numIdeas})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Alle Beiträge freigeben?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Dies wird alle {numIdeas} importierten Beiträge auf einmal freigeben und veröffentlichen. Sie können sie anschließend weiterhin im Beitrags-Manager finden.",
