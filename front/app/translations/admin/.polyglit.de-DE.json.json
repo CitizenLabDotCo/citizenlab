@@ -464,6 +464,11 @@
     "verified_at": "2026-04-15T14:48:15.170123Z",
     "verified_by": "Jelena"
   },
+  "app.components.FormSync.importInputs1": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FormSync.importResponses1": {
     "state": "verified",
     "verified_at": "2026-04-15T14:48:15.170123Z",
@@ -472,6 +477,11 @@
   "app.components.FormSync.importScans1": {
     "state": "verified",
     "verified_at": "2026-04-15T14:48:15.170123Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormSync.paperForm1": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
     "verified_by": "Jelena"
   },
   "app.components.FormSync.paperFormsOCR1": {
@@ -13778,6 +13788,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExisting": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExistingDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent3": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratch": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratchDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:50:02.444137Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": {
     "state": "verified",
