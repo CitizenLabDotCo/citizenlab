@@ -120,6 +120,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
         <Box>
           <PasswordInput
             id="e2e-password-input"
+            autocomplete="current-password"
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}
