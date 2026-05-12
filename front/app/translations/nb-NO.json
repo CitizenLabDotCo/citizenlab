@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLETT",
   "app.components.TypedConfirmationModal.typeToConfirm1": "For å bekrefte slettingen av {entityName}, skriv inn {confirmationWord} nedenfor:",
   "app.components.TypedConfirmationModal.warning": "Denne handlingen er permanent og kan ikke gjøres ugjort.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Last ned fil {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Utvid bildet",
   "app.components.UI.MoreActionsMenu.moreOptions": "Flere alternativer",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",

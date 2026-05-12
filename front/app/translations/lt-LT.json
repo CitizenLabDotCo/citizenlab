@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Norėdami patvirtinti {entityName}ištrynimą, toliau įveskite {confirmationWord} :",
   "app.components.TypedConfirmationModal.warning": "Šis veiksmas yra nuolatinis ir negali būti atšauktas.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Atsisiųsti failą {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Išplėsti vaizdą",
   "app.components.UI.MoreActionsMenu.moreOptions": "Daugiau galimybių",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Rodyti daugiau veiksmų",

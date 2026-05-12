@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "VERWIJDEREN",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Om de verwijdering van {entityName} te bevestigen, typ je hieronder {confirmationWord}:",
   "app.components.TypedConfirmationModal.warning": "Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Bestand {fileName} downloaden, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Afbeelding vergroten",
   "app.components.UI.MoreActionsMenu.moreOptions": "Meer opties",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Meer acties tonen",

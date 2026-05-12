@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Για να επιβεβαιώσετε τη διαγραφή του {entityName}, πληκτρολογήστε {confirmationWord} παρακάτω:",
   "app.components.TypedConfirmationModal.warning": "Αυτή η ενέργεια είναι μόνιμη και δεν μπορεί να αναιρεθεί.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Λήψη αρχείου {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Αναπτύξτε την εικόνα",
   "app.components.UI.MoreActionsMenu.moreOptions": "Περισσότερες επιλογές",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Εμφάνιση περισσότερων ενεργειών",

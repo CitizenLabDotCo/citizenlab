@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SİL",
   "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}adresinin silinmesini onaylamak için aşağıya {confirmationWord} yazın:",
   "app.components.TypedConfirmationModal.warning": "Bu işlem kalıcıdır ve geri alınamaz.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "{fileName} dosyasını indir, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Resmi genişlet",
   "app.components.UI.MoreActionsMenu.moreOptions": "Daha fazla seçenek",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Daha fazla eylem göster",

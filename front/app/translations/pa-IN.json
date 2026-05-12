@@ -633,6 +633,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "ਮਿਟਾਓ",
   "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}ਨੂੰ ਮਿਟਾਉਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ, ਹੇਠਾਂ {confirmationWord} ਟਾਈਪ ਕਰੋ:",
   "app.components.TypedConfirmationModal.warning": "ਇਹ ਕਾਰਵਾਈ ਸਥਾਈ ਹੈ ਅਤੇ ਇਸਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "ਫ਼ਾਈਲ {fileName} ਡਾਊਨਲੋਡ ਕਰੋ, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "ਚਿੱਤਰ ਦਾ ਵਿਸਤਾਰ ਕਰੋ",
   "app.components.UI.MoreActionsMenu.moreOptions": "ਹੋਰ ਵਿਕਲਪ",
   "app.components.UI.MoreActionsMenu.showMoreActions": "ਹੋਰ ਕਾਰਵਾਈਆਂ ਦਿਖਾਓ",
