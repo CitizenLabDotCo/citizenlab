@@ -464,6 +464,11 @@
     "verified_at": "2026-04-15T15:12:09.138840Z",
     "verified_by": "Luuc"
   },
+  "app.components.FormSync.importInputs1": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
   "app.components.FormSync.importResponses1": {
     "state": "verified",
     "verified_at": "2026-04-15T15:12:09.138840Z",
@@ -472,6 +477,11 @@
   "app.components.FormSync.importScans1": {
     "state": "verified",
     "verified_at": "2026-04-15T15:12:09.138840Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormSync.paperForm1": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
     "verified_by": "Luuc"
   },
   "app.components.FormSync.paperFormsOCR1": {
@@ -8249,25 +8259,21 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
@@ -8288,7 +8294,6 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts": {
     "state": "verified",
     "verified_at": "2026-04-24T18:39:53.111057Z",
@@ -8334,7 +8339,6 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress": {
     "state": "verified",
     "verified_at": "2026-04-24T18:39:53.111057Z",
@@ -8415,7 +8419,6 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
     "state": "verified",
     "verified_at": "2026-04-22T11:58:15.875102Z",
@@ -8426,13 +8429,11 @@
     "verified_at": "2026-03-27T12:42:38.349026Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-22T11:58:15.875102Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
@@ -13742,6 +13743,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExisting": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExistingDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent3": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratch": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratchDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-12T17:18:50.275855Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": {
     "state": "verified",
