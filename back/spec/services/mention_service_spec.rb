@@ -5,52 +5,41 @@ require 'rails_helper'
 describe MentionService do
   let(:service) { described_class.new }
 
-  describe 'extract_mentions' do
+  describe 'extract_mention_ids' do
     it "return an empty array when there's no mention" do
-      result = service.send(:extract_mentions, 'There is no mention in this text')
+      result = service.send(:extract_mention_ids, 'There is no mention in this text')
       expect(result).to eq []
     end
 
     it "returns an empty array when there's a standalone @ sign" do
-      result = service.send(:extract_mentions, 'This @ should not trigger anything')
+      result = service.send(:extract_mention_ids, 'This @ should not trigger anything')
       expect(result).to eq []
     end
 
-    it "returns an empty array when there's a an @ with less than 3 following chars" do
-      result = service.send(:extract_mentions, 'This @ab should not trigger anything')
+    it 'returns an empty array when the mention is not a uuid' do
+      result = service.send(:extract_mention_ids, 'This @koengremmelprez should not trigger')
       expect(result).to eq []
     end
 
-    it "returns no mention when there's no dash in it" do
-      result = service.send(:extract_mentions, 'This @koengremmelprez should trigger')
-      expect(result).to eq []
-    end
-
-    it "returns a mention when it's in most common firstname-lastname form" do
-      result = service.send(:extract_mentions, 'This @koen-gremmelprez should trigger')
-      expect(result).to eq ['koen-gremmelprez']
-    end
-
-    it "returns a mention when it's got more than 2 segments" do
-      result = service.send(:extract_mentions, 'This @marcus-d-amore should trigger')
-      expect(result).to eq ['marcus-d-amore']
+    it 'returns a mention when it is a uuid' do
+      result = service.send(:extract_mention_ids, 'This @9e0380e4-26cf-4661-8f54-9fdfca78e3cf should trigger')
+      expect(result).to eq ['9e0380e4-26cf-4661-8f54-9fdfca78e3cf']
     end
 
     it 'returns multiple valid mentions' do
-      result = service.send(:extract_mentions, 'This @koen-gremmelprez should trigger and @jan-jansens too')
-      expect(result).to eq %w[koen-gremmelprez jan-jansens]
+      result = service.send(:extract_mention_ids, 'This @9e0380e4-26cf-4621-8f54-9fdfca78e4cf should trigger and @04db8880-25ee-4f9c-8518-171ba265432a too')
+      expect(result).to eq %w[9e0380e4-26cf-4621-8f54-9fdfca78e4cf 04db8880-25ee-4f9c-8518-171ba265432a]
     end
   end
 
   describe 'add_span_around' do
     it 'Adds a span tag' do
       u = User.create(first_name: 'Koen', last_name: 'Gremmelprez')
-      id = u.id
       result = service.add_span_around(
-        '<p>This is a html text with a mention to @koen-gremmelprez</p>',
+        "<p>This is a html text with a mention to @#{u.id}</p>",
         u
       )
-      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{id}\" data-user-slug=\"koen-gremmelprez\">@Koen Gremmelprez</span></p>"
+      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{u.id}\" data-link-profile=\"false\">@Koen Gremmelprez</span></p>"
     end
   end
 
@@ -72,7 +61,13 @@ describe MentionService do
 
     it 'processes a single mention as it should' do
       result = service.process_mentions(@u1_mention)
-      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-user-slug=\"#{@u1.slug}\">@#{@u1.full_name}</span>", [@u1.id]]
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-link-profile=\"false\">@#{@u1.full_name}</span>", [@u1.id]]
+    end
+
+    it 'processes a single mention of a user with a public profile' do
+      create(:idea, author: @u1) # Profile is public if the user has authored an idea or comment
+      result = service.process_mentions(@u1_mention)
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-link-profile=\"true\">@#{@u1.full_name}</span>", [@u1.id]]
     end
 
     it 'processes multiple mentions as it should' do
@@ -91,8 +86,8 @@ describe MentionService do
     it 'removes the expanded mentions' do
       user = create(:user, first_name: 'Jos', last_name: 'Joossens')
       expanded_mention = service.add_span_around(service.user_to_mention(user), user)
-      result = service.send(:remove_expanded_mentions, "There is one unexpanded mention: @koen-gremmelprez. But also one expanded mention #{expanded_mention}")
-      expect(result).to eq 'There is one unexpanded mention: @koen-gremmelprez. But also one expanded mention @jos-joossens'
+      result = service.send(:remove_expanded_mentions, "There is one unexpanded mention: @9e0380e4-26cf-4621-8f54-9fdfca78e4cf. But also one expanded mention #{expanded_mention}")
+      expect(result).to eq "There is one unexpanded mention: @9e0380e4-26cf-4621-8f54-9fdfca78e4cf. But also one expanded mention @#{user.id}"
     end
   end
 
@@ -103,12 +98,12 @@ describe MentionService do
     end
 
     it 'adds a span tag' do
-      result = service.add_span_around("<p>This is an html text with a mention to @#{@jane.slug}</p>", @jane)
-      expect(result).to eq "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-user-slug=\"#{@jane.slug}\">@Jane D.</span></p>"
+      result = service.add_span_around("<p>This is an html text with a mention to @#{@jane.id}</p>", @jane)
+      expect(result).to eq "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-link-profile=\"false\">@Jane D.</span></p>"
     end
 
     it 'extract expanded mentions' do
-      text = "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-user-slug=\"#{@jane.slug}\">@Jane D.</span></p>"
+      text = "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-link-profile=\"false\">@Jane D.</span></p>"
       result = service.extract_expanded_mention_users(text)
       expect(result).to contain_exactly(@jane)
     end

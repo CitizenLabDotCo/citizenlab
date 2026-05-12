@@ -13,9 +13,10 @@
 #
 # Indexes
 #
-#  index_baskets_on_phase_id      (phase_id)
-#  index_baskets_on_submitted_at  (submitted_at)
-#  index_baskets_on_user_id       (user_id)
+#  index_baskets_on_phase_id                     (phase_id)
+#  index_baskets_on_submitted_at                 (submitted_at)
+#  index_baskets_on_user_id                      (user_id)
+#  index_baskets_on_user_id_and_phase_id_unique  (user_id,phase_id) UNIQUE WHERE (user_id IS NOT NULL)
 #
 # Foreign Keys
 #
@@ -32,6 +33,7 @@ class Basket < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   validates :phase, presence: true
+  validates :user_id, uniqueness: { scope: :phase_id }, allow_nil: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }

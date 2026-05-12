@@ -4,8 +4,8 @@ module IdeaFeed
   # to keep the topics up to date with the latest ideas. It tries to strike a
   # balance between accuracy and stability of the clusters.
   class TopicModelingService
-    def initialize(phase)
-      @phase = phase
+    def initialize(project)
+      @project = project
       @llm = LLMSelector.new.llm_class_for_use_case('idea_feed_live_topic_model').new
     end
 
@@ -14,7 +14,7 @@ module IdeaFeed
     # extent, but also reshuffles them if needed.
     def rebalance_topics!
       # Only root topics participate in mapping - subtopics are always recreated
-      old_root_topics = @phase.project.input_topics.roots.to_a
+      old_root_topics = @project.input_topics.roots.to_a
 
       # Run the topic model from scratch on the current set of inputs
       new_topics = run_topic_model
@@ -55,10 +55,16 @@ module IdeaFeed
       form.custom_fields.reject { |f| f.key == 'topic_ids' }
     end
 
-    def run_topic_model
-      inputs = @phase.ideas.published
+    def topic_modeling_inputs
+      @project.ideas.where(creation_phase: nil).published
+    end
 
-      prompt = topic_model_prompt(inputs)
+    def custom_form
+      @project.custom_form || CustomForm.new(participation_context: @project)
+    end
+
+    def run_topic_model
+      prompt = topic_model_prompt(topic_modeling_inputs)
 
       @llm.chat(prompt, response_schema: topic_model_response_schema)
     end
@@ -133,16 +139,15 @@ module IdeaFeed
     end
 
     def topic_model_prompt(inputs)
-      form = @phase.pmethod.custom_form
-      input_texts = Analysis::InputToText.new(custom_fields_without_topics(form)).format_all(
+      input_texts = Analysis::InputToText.new(custom_fields_without_topics(custom_form)).format_all(
         inputs.order(Arel.sql('RANDOM()')).limit(500),
         truncate_values: 256
       )
       ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_topic_modeling',
         multiloc_service: MultilocService.new,
         project_description:,
-        project: @phase.project,
-        custom_fields: custom_fields_without_topics(form),
+        project: @project,
+        custom_fields: custom_fields_without_topics(custom_form),
         inputs_text: input_texts)
     end
 
@@ -150,7 +155,7 @@ module IdeaFeed
       ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_topic_mapping',
         multiloc_service: MultilocService.new,
         project_description:,
-        project: @phase.project,
+        project: @project,
         old_topics:,
         new_topics:)
     end
@@ -223,7 +228,7 @@ module IdeaFeed
 
           (new_topic['problems'] || []).each do |subtopic|
             subtopic_record = InputTopic.create!(
-              project: @phase.project,
+              project: @project,
               parent: old_topic,
               title_multiloc: subtopic['title_multiloc'],
               description_multiloc: subtopic['description_multiloc']
@@ -242,7 +247,7 @@ module IdeaFeed
         .each_value do |new_topic|
           InputTopic.transaction do
             topic = InputTopic.create!(
-              project: @phase.project,
+              project: @project,
               title_multiloc: new_topic['title_multiloc'],
               description_multiloc: new_topic['description_multiloc'],
               icon: new_topic['icon']
@@ -258,7 +263,7 @@ module IdeaFeed
 
             (new_topic['problems'] || []).each do |subtopic|
               subtopic_record = InputTopic.create!(
-                project: @phase.project,
+                project: @project,
                 parent: topic,
                 title_multiloc: subtopic['title_multiloc'],
                 description_multiloc: subtopic['description_multiloc']
@@ -295,22 +300,22 @@ module IdeaFeed
     end
 
     def project_description
-      description_multiloc = if (layout = ContentBuilder::Layout.find_by(content_buildable: @phase.project, code: 'project_description', enabled: true))
+      description_multiloc = if (layout = ContentBuilder::Layout.find_by(content_buildable: @project, code: 'project_description', enabled: true))
         ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract_and_join
       else
-        @phase.project.description_multiloc
+        @project.description_multiloc
       end
       multiloc_service.t(description_multiloc)
     end
 
     def log_topics_rebalanced_activity(update_log: [], creation_log: [], removal_log: [])
       LogActivityJob.perform_later(
-        @phase,
+        @project,
         'topics_rebalanced',
         nil,
         Time.now.to_i,
         payload: {
-          input_count: @phase.ideas.published.count,
+          input_count: topic_modeling_inputs.count,
           update_log:,
           creation_log:,
           removal_log:

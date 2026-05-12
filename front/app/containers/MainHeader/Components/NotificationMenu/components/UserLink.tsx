@@ -18,13 +18,13 @@ export const DeletedUser = () => (
   </DeletedUserSpan>
 );
 
-const UserLink = ({ userName, userSlug }) => {
-  const deletedUser = isNilOrError(userName) || isNilOrError(userSlug);
+const UserLink = ({ userName, userId }) => {
+  const deletedUser = isNilOrError(userName) || isNilOrError(userId);
 
   return deletedUser ? (
     <DeletedUser />
   ) : (
-    <Link to={`/profile/${userSlug}`} onClick={stopPropagation}>
+    <Link to={`/profile/${userId}`} onClick={stopPropagation}>
       {userName}
     </Link>
   );

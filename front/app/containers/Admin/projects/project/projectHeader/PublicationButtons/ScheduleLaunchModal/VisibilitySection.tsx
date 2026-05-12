@@ -8,6 +8,9 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { projectVisibilityFragmentId } from 'containers/Admin/projects/project/permissions/Project';
+
+import { createHighlighterLink } from 'components/Highlighter';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -64,7 +67,9 @@ const VisibilitySection = ({ project, onClose }: Props) => {
         </Text>
         <ButtonWithLink
           buttonStyle="text"
-          linkTo={`/admin/projects/${projectId}/general/access-rights`}
+          linkTo={createHighlighterLink(
+            `/admin/projects/${projectId}/general/access-rights#${projectVisibilityFragmentId}`
+          )}
           onClick={() => onClose()}
           padding="0"
           fontSize="14px"

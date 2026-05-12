@@ -278,6 +278,7 @@ const CustomFields = ({
             'matrix_linear_scale',
             'sentiment_linear_scale',
             'ranking',
+            'html_multiloc',
           ];
           const htmlFor = nonLabelableTypes.includes(question.input_type)
             ? undefined

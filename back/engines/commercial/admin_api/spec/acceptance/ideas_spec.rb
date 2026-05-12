@@ -61,6 +61,17 @@ resource 'Idea', admin_api: true do
       expect(json_response[:ideas].size).to eq 2
     end
 
+    example 'Filter ideas by topic' do
+      topic = create(:input_topic)
+      create(:ideas_input_topic, idea: @idea_new, input_topic: topic)
+
+      do_request(sort: 'trending', topics: [topic.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:ideas].size).to eq 1
+      expect(json_response[:ideas].first[:id]).to eq @idea_new.id
+    end
+
     example 'Ideas include images' do
       do_request
       expect(status).to eq 200

@@ -30,7 +30,7 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
       postTitle: <T value={notification.attributes.post_title_multiloc} />,
     };
 
-    if (isNilOrError(notification.attributes.initiating_user_slug)) {
+    if (isNilOrError(notification.attributes.initiating_user_id)) {
       return (
         <FormattedMessage
           {...messages.postAssignedToYou}
@@ -47,7 +47,7 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
             ...sharedValues,
             name: (
               <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
+                to={`/profile/${notification.attributes.initiating_user_id}`}
                 onClick={onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}

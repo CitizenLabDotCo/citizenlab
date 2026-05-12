@@ -222,8 +222,8 @@ de-AT:
     ca-ES: Katalanisch
     cy-GB: Walisisch
     da-DK: Dänisch
-    de-AT: Deutsch (Österreich)
-    de-DE: Deutsch
+    de-AT: Deutsch (duzen)
+    de-DE: Deutsch (siezen)
     el-GR: Griechisch
     en: Englisch
     en-CA: Englisch (Kanada)
@@ -268,7 +268,7 @@ de-AT:
     proposals:
       title: Vorschläge
   phases:
-    community_monitor_title: Gemeinschaftspuls
+    community_monitor_title: Stimmungsbarometer
     native_survey_button: Umfrage ausfüllen
     native_survey_title: Umfrage
     open_idea_phase_title: Aktuelle Phase
@@ -412,7 +412,7 @@ de-AT:
       preheader: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert
       subject: Ihr Konto wurde vorübergehend deaktiviert
       title_user_blocked: Ihr Konto wurde vorübergehend deaktiviert
-      you_can_sign_in_again_from: Sie können sich ab dem %{date} erneut anmelden
+      you_can_sign_in_again_from: Du kannst dich ab dem %{date} erneut anmelden
   voting_method:
     default_voting_term_plural: Stimmen
     default_voting_term_singular: Stimme

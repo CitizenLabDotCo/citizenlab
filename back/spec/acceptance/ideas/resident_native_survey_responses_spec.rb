@@ -72,9 +72,7 @@ resource 'Ideas' do
       let(:project_id) { project.id }
 
       context 'with two file upload fields' do
-        # Note the "notwhitelisted" file extension. It is here to validate
-        # that no file extension validation is done.
-        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename1) { 'afvalkalender2022.pdf' }
         let(:filename2) { 'afvalkalender2023.pdf' }
         let(:fixture_filename) { 'afvalkalender.pdf' }
         let(:fixture_mime_type) { 'application/pdf' }
@@ -160,9 +158,7 @@ resource 'Ideas' do
       end
 
       context 'with two shapefile upload fields' do
-        # Note the "notwhitelisted" file extension. It is here to validate
-        # that no file extension validation is done.
-        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename1) { 'afvalkalender2022.zip' }
         let(:filename2) { 'afvalkalender2023.pdf' }
         let(:fixture_filename) { 'afvalkalender.pdf' }
         let(:fixture_mime_type) { 'application/pdf' }

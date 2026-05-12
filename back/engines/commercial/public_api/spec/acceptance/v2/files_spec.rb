@@ -161,7 +161,7 @@ resource 'Files' do
       parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)', required: false, type: :boolean
     end
 
-    let(:name) { 'Test File' }
+    let(:name) { 'Test File.pdf' }
     let(:project_id) { project.id }
     let(:content) { file_as_base64('minimal_pdf.pdf', 'application/pdf') }
     let(:category) { 'meeting' }
@@ -171,7 +171,7 @@ resource 'Files' do
     example_request 'Uploads a file' do
       assert_status 201
       expect(json_response_body[:file]).to include({
-        name: 'Test File',
+        name: 'Test File.pdf',
         category: 'meeting',
         uploader_id: nil,
         description: 'Test file description',

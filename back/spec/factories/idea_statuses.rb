@@ -40,6 +40,11 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'Threshold reached' } }
     end
 
+    factory :proposal_status_expired, traits: [:proposals] do
+      code { 'expired' }
+      title_multiloc { { 'en' => 'Expired' } }
+    end
+
     factory :proposals_status, traits: [:proposals]
     factory :idea_status_proposed, traits: %i[ideation proposed]
     factory :idea_status_prescreening, traits: %i[ideation prescreening]

@@ -429,6 +429,11 @@ nl:
       title: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
+    proposal_expired_for_admin:
+      cta_button: 'Bekijk het verlopen voorstel'
+      title: 'Een voorstel is verlopen zonder het benodigd aantal stemmen te bereiken'
+      subject: '"%{input_title}" is verlopen zonder het benodigd aantal stemmen te bereiken'
+      preheader: 'Een voorstel is afgesloten zonder de drempel te bereiken'
     welcome:
       cta_button: 'Ontdek het platform'
       subject: 'Welkom op het platform van %{organizationName}'

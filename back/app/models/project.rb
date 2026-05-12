@@ -152,6 +152,31 @@ class Project < ApplicationRecord
   scope :not_draft, -> { where.not(id: draft) }
   scope :publicly_visible, -> { where(visible_to: 'public') }
 
+  scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
+
+  scope :newest, -> { order(created_at: :desc) }
+
+  scope :ending_soon, lambda {
+    joins(<<~SQL.squish)
+      INNER JOIN LATERAL (
+        SELECT phases.end_at AS current_phase_end_at
+        FROM phases
+        WHERE phases.project_id = projects.id
+          AND phases.start_at <= #{connection.quote(Time.zone.now)}
+          AND (phases.end_at >= #{connection.quote(Time.zone.now)} OR phases.end_at IS NULL)
+        ORDER BY phases.end_at ASC NULLS LAST
+        LIMIT 1
+      ) AS current_phase ON true
+    SQL
+      .order('current_phase.current_phase_end_at ASC NULLS LAST')
+  }
+
+  scope :by_participation_count, lambda { |direction = :desc|
+    dir = direction.to_s.upcase == 'ASC' ? 'ASC' : 'DESC'
+    with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{dir}, projects.id ASC"))
+  }
+
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
     project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)

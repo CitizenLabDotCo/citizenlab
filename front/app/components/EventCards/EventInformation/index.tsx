@@ -37,6 +37,18 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
+const EventTitleLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+`;
+
 interface Props {
   event: IEventData;
 }
@@ -64,7 +76,7 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <Link to={`/events/${event.id}`} aria-describedby={ariaId}>
+          <EventTitleLink to={`/events/${event.id}`} aria-describedby={ariaId}>
             <Title
               variant="h3"
               fontSize="l"
@@ -76,7 +88,7 @@ const EventInformation = ({ event }: Props) => {
             >
               <T value={event.attributes.title_multiloc} />
             </Title>
-          </Link>
+          </EventTitleLink>
 
           <DateBlocks
             startAtMoment={startAtMoment}
