@@ -637,7 +637,7 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
-    erb (5.0.2)
+    erb (6.0.1.1)
     erubi (1.13.1)
     event_stream_parser (1.0.0)
     excon (0.111.0)
