@@ -157,7 +157,7 @@ de-AT:
       comment_marked_as_spam: Kommentar wird als Spam markiert
       comment_on_idea_you_follow: Ein Kommentar zu einer Idee, der Sie folgen
       comment_on_your_comment: Antwort auf einen Kommentar
-      community_monitor_report: Gemeinschaftspuls-Bericht
+      community_monitor_report: Stimmungsbarometer-Bericht
       cosponsor_of_your_idea: Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       event_registration_confirmation: Anmeldebestätigung für Veranstaltungen
       idea_marked_as_spam: Beitrag wird als Spam gekennzeichnet
@@ -259,11 +259,11 @@ de-AT:
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
     community_monitor_report:
       cta_button: Bericht ansehen
-      event_description: Ein Gemeinschaftspuls-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
-      preheader: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      report_name: Gemeinschaftspuls-Bericht
-      subject: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      title: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
+      event_description: Ein Stimmungsbarometer-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
+      preheader: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      report_name: Stimmungsbarometer-Bericht
+      subject: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      title: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
     cosponsor_of_your_idea:
       cta_button: Vorschlag ansehen
       event_description: Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.

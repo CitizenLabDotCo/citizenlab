@@ -39,6 +39,7 @@ import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import wordMessages from '../../word/messages';
 import { useWordExportContext } from '../../word/WordExportContext';
 
 interface Props {
@@ -51,9 +52,20 @@ const SurveyActions = ({ phase }: Props) => {
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
 
-  const { downloadPdf, isDownloading: isDownloadingPdf } =
-    usePdfExportContext();
-  const { downloadWord, isDownloadingWord } = useWordExportContext();
+  const {
+    downloadPdf,
+    isDownloading: isDownloadingPdf,
+    status: pdfStatus,
+    progress: pdfProgress,
+    skippedSections: pdfSkippedSections,
+  } = usePdfExportContext();
+  const {
+    downloadWord,
+    isDownloadingWord,
+    exportStatus,
+    exportProgress,
+    captureWarnings,
+  } = useWordExportContext();
 
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -182,120 +194,180 @@ const SurveyActions = ({ phase }: Props) => {
     setDropdownOpened(false);
   };
 
+  const getPdfStatusText = () => {
+    switch (pdfStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: pdfProgress.completed,
+          total: pdfProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
+  const getWordStatusText = () => {
+    switch (exportStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: exportProgress.completed,
+          total: exportProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
+  const isAnyDownloading =
+    isDownloadingXlsx || isDownloadingPdf || isDownloadingWord;
+  const exportStatusText =
+    (isDownloadingPdf && getPdfStatusText()) ||
+    (isDownloadingWord && getWordStatusText()) ||
+    null;
+  const showCaptureWarning =
+    !isAnyDownloading &&
+    (pdfSkippedSections.length > 0 || captureWarnings.length > 0);
+
   return (
     <>
-      <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
-        {(isDownloadingXlsx || isDownloadingPdf || isDownloadingWord) && (
-          <Spinner size="24px" />
-        )}
-        <Box position="relative">
-          <Button
-            icon="dots-horizontal"
-            iconColor={colors.textSecondary}
-            iconHoverColor={colors.textSecondary}
-            boxShadow="none"
-            boxShadowHover="none"
-            bgColor="transparent"
-            bgHoverColor="transparent"
-            pr="0"
-            data-cy="e2e-more-survey-actions-button"
-            onClick={toggleDropdown}
-          />
-          <Dropdown
-            opened={isDropdownOpened}
-            onClickOutside={closeDropdown}
-            className="dropdown"
-            width="max-content"
-            right="12px"
-            top="45px"
-            zIndex="10000"
-            content={
-              <Box style={{ whiteSpace: 'nowrap' }}>
-                <DropdownListItem
-                  onClick={async () => {
-                    setDropdownOpened(false);
-                    await captureAllMapScreenshots();
-                    downloadPdf();
-                  }}
-                >
-                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                  <Text my="0px">
-                    {formatMessage(messages.downloadInsightsPdf)}
-                  </Text>
-                </DropdownListItem>
-                <DropdownListItem
-                  onClick={async () => {
-                    setDropdownOpened(false);
-                    await captureAllMapScreenshots();
-                    downloadWord();
-                  }}
-                >
-                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                  <Box display="flex" alignItems="center" gap="6px">
-                    <Text my="0px">{formatMessage(messages.downloadWord)}</Text>
-                    <Badge color={colors.coolGrey600} className="inverse">
-                      {formatMessage(projectFilesMessages.beta)}
-                    </Badge>
-                  </Box>
-                </DropdownListItem>
-                <DropdownListItem
-                  onClick={handleDownloadXlsx}
-                  data-cy="e2e-download-survey-results"
-                >
-                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                  <Text my="0px">
-                    {formatMessage(messages.downloadSurveyResults)} (.xlsx)
-                  </Text>
-                </DropdownListItem>
-                {haveSubmissionsComeIn && (
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="4px"
+        alignItems="flex-end"
+        data-pdf-exclude="true"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          {isAnyDownloading && <Spinner size="24px" />}
+          <Box position="relative">
+            <Button
+              icon="dots-horizontal"
+              iconColor={colors.textSecondary}
+              iconHoverColor={colors.textSecondary}
+              boxShadow="none"
+              boxShadowHover="none"
+              bgColor="transparent"
+              bgHoverColor="transparent"
+              pr="0"
+              data-cy="e2e-more-survey-actions-button"
+              onClick={toggleDropdown}
+            />
+            <Dropdown
+              opened={isDropdownOpened}
+              onClickOutside={closeDropdown}
+              className="dropdown"
+              width="max-content"
+              right="12px"
+              top="45px"
+              zIndex="10000"
+              content={
+                <Box style={{ whiteSpace: 'nowrap' }}>
                   <DropdownListItem
-                    onClick={openDeleteModal}
-                    data-cy="e2e-delete-survey-results"
+                    onClick={async () => {
+                      setDropdownOpened(false);
+                      await captureAllMapScreenshots();
+                      downloadPdf();
+                    }}
                   >
-                    <Icon name="delete" fill={colors.red600} mr="8px" />
-                    <Text color="red600" my="0px">
-                      {formatMessage(messages.deleteSurveyResults)}
+                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                    <Text my="0px">
+                      {formatMessage(messages.downloadInsightsPdf)}
                     </Text>
                   </DropdownListItem>
-                )}
-              </Box>
-            }
-          />
+                  <DropdownListItem
+                    onClick={async () => {
+                      setDropdownOpened(false);
+                      await captureAllMapScreenshots();
+                      downloadWord();
+                    }}
+                  >
+                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                    <Box display="flex" alignItems="center" gap="6px">
+                      <Text my="0px">
+                        {formatMessage(messages.downloadWord)}
+                      </Text>
+                      <Badge color={colors.coolGrey600} className="inverse">
+                        {formatMessage(projectFilesMessages.beta)}
+                      </Badge>
+                    </Box>
+                  </DropdownListItem>
+                  <DropdownListItem
+                    onClick={handleDownloadXlsx}
+                    data-cy="e2e-download-survey-results"
+                  >
+                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                    <Text my="0px">
+                      {formatMessage(messages.downloadSurveyResults)} (.xlsx)
+                    </Text>
+                  </DropdownListItem>
+                  {haveSubmissionsComeIn && (
+                    <DropdownListItem
+                      onClick={openDeleteModal}
+                      data-cy="e2e-delete-survey-results"
+                    >
+                      <Icon name="delete" fill={colors.red600} mr="8px" />
+                      <Text color="red600" my="0px">
+                        {formatMessage(messages.deleteSurveyResults)}
+                      </Text>
+                    </DropdownListItem>
+                  )}
+                </Box>
+              }
+            />
+          </Box>
+          <Box flexShrink={0} style={{ whiteSpace: 'nowrap' }}>
+            <Toggle
+              checked={postingEnabled}
+              label={formatMessage(messages.openForResponses)}
+              onChange={() => {
+                togglePostingEnabled();
+              }}
+            />
+          </Box>
+          <ButtonWithLink
+            linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
+            buttonStyle="text"
+            width="auto"
+            openLinkInNewTab
+          >
+            {formatMessage(messages.newSubmission)}
+          </ButtonWithLink>
+          <ButtonWithLink
+            linkTo={inputImporterLink}
+            icon="page"
+            iconSize="20px"
+            buttonStyle="secondary-outlined"
+            width="auto"
+          >
+            {formatMessage(messages.import)}
+          </ButtonWithLink>
+          <Button
+            buttonStyle="primary"
+            icon="stars"
+            onClick={goToAnalysis}
+            processing={isAddLoading || isUpdateLoading}
+          >
+            {formatMessage(messages.aiAnalysis)}
+          </Button>
         </Box>
-        <Box flexShrink={0} style={{ whiteSpace: 'nowrap' }}>
-          <Toggle
-            checked={postingEnabled}
-            label={formatMessage(messages.openForResponses)}
-            onChange={() => {
-              togglePostingEnabled();
-            }}
-          />
-        </Box>
-        <ButtonWithLink
-          linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
-          buttonStyle="text"
-          width="auto"
-          openLinkInNewTab
-        >
-          {formatMessage(messages.newSubmission)}
-        </ButtonWithLink>
-        <ButtonWithLink
-          linkTo={inputImporterLink}
-          icon="page"
-          iconSize="20px"
-          buttonStyle="secondary-outlined"
-          width="auto"
-        >
-          {formatMessage(messages.import)}
-        </ButtonWithLink>
-        <Button
-          buttonStyle="primary"
-          icon="stars"
-          onClick={goToAnalysis}
-          processing={isAddLoading || isUpdateLoading}
-        >
-          {formatMessage(messages.aiAnalysis)}
-        </Button>
+        {exportStatusText && (
+          <Text fontSize="s" color="textSecondary" m="0px">
+            {exportStatusText}
+          </Text>
+        )}
+        {showCaptureWarning && (
+          <Text fontSize="s" color="orange500" m="0px">
+            {formatMessage(wordMessages.exportCaptureWarning)}
+          </Text>
+        )}
       </Box>
       <DeleteModal
         showDeleteModal={showDeleteModal}

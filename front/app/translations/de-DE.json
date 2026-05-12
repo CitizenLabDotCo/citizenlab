@@ -698,7 +698,7 @@
   "app.components.admin.UserFilterConditions.field_event_attendance": "Veranstaltungsanmeldungen",
   "app.components.admin.UserFilterConditions.field_follow": "Folgen",
   "app.components.admin.UserFilterConditions.field_lives_in": "Wohnhaft in ",
-  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Gemeinschaftspuls-Umfrage",
+  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Stimmungsbarometer-Umfrage",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Hat mit einem Beitrag mit Status interagiert",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Zum Projekt beigetragen",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Zum Thema beigetragen",

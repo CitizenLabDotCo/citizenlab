@@ -5,6 +5,14 @@ require 'rails_helper'
 describe Analysis::WebApi::V1::AnalysisSerializer do
   let(:result) { described_class.new(analysis, params: { current_user: create(:admin) }).serializable_hash }
 
+  describe 'auto_insights_too_many_fields' do
+    let(:analysis) { create(:ideation_analysis) }
+
+    it 'is exposed as an attribute' do
+      expect(result.dig(:data, :attributes)).to have_key(:auto_insights_too_many_fields)
+    end
+  end
+
   describe 'all_custom_fields' do
     context 'with custom form' do
       let(:project) { create(:project_with_active_native_survey_phase) }

@@ -97,4 +97,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.changeStatusArchivedBullet32',
     defaultMessage: 'Visible only in dedicated homepage modules',
   },
+  onlyAdminsAndFolderManagersCanPublish: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2',
+    defaultMessage:
+      'Only admins{inFolder, select, true { or the Folder Managers} other {}} can publish the project',
+  },
 });
