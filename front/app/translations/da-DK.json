@@ -2332,7 +2332,6 @@
   "app.containers.app.navbar.more": "Mere",
   "app.containers.app.navbar.myProfile": "Min aktivitet",
   "app.containers.app.navbar.search": "Søg",
-  "app.containers.app.navbar.showFullMenu": "Vis hele menuen",
   "app.containers.app.navbar.signOut": "Log ud",
   "app.containers.eventspage.errorWhenFetchingEvents": "Der opstod en fejl under indlæsning af begivenheder. Prøv venligst at genindlæse siden.",
   "app.containers.eventspage.events": "Begivenheder",

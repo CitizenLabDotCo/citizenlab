@@ -2332,7 +2332,6 @@
   "app.containers.app.navbar.more": "Vairāk",
   "app.containers.app.navbar.myProfile": "Mana darbība",
   "app.containers.app.navbar.search": "Meklēt",
-  "app.containers.app.navbar.showFullMenu": "Rādīt pilnu izvēlni",
   "app.containers.app.navbar.signOut": "Izrakstīties",
   "app.containers.eventspage.errorWhenFetchingEvents": "Ielādējot notikumus, radās kļūda. Lūdzu, mēģiniet pārlādēt lapu.",
   "app.containers.eventspage.events": "Notikumi",

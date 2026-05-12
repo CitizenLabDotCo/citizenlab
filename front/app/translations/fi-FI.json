@@ -2332,7 +2332,6 @@
   "app.containers.app.navbar.more": "Lisää",
   "app.containers.app.navbar.myProfile": "Minun toimintaani",
   "app.containers.app.navbar.search": "Hae",
-  "app.containers.app.navbar.showFullMenu": "Näytä koko valikko",
   "app.containers.app.navbar.signOut": "Kirjaudu ulos",
   "app.containers.eventspage.errorWhenFetchingEvents": "Tapahtumia ladattaessa tapahtui virhe. Yritä ladata sivu uudelleen.",
   "app.containers.eventspage.events": "Tapahtumat",

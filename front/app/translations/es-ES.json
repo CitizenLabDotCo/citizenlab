@@ -2332,7 +2332,6 @@
   "app.containers.app.navbar.more": "Más",
   "app.containers.app.navbar.myProfile": "Mi perfil",
   "app.containers.app.navbar.search": "Búsqueda",
-  "app.containers.app.navbar.showFullMenu": "Mostrar menú completo",
   "app.containers.app.navbar.signOut": "Cerrar sesión",
   "app.containers.eventspage.errorWhenFetchingEvents": "Se ha producido un error al cargar los eventos. Por favor, intente recargar la página.",
   "app.containers.eventspage.events": "Eventos",

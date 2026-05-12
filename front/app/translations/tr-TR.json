@@ -2332,7 +2332,6 @@
   "app.containers.app.navbar.more": "Daha fazla",
   "app.containers.app.navbar.myProfile": "Etkinliklerim",
   "app.containers.app.navbar.search": "Arama",
-  "app.containers.app.navbar.showFullMenu": "Tam menüyü göster",
   "app.containers.app.navbar.signOut": "Çıkış yap",
   "app.containers.eventspage.errorWhenFetchingEvents": "Etkinlikler yüklenirken bir hata oluştu. Lütfen sayfayı yeniden yüklemeyi deneyin.",
   "app.containers.eventspage.events": "Etkinlikler",
