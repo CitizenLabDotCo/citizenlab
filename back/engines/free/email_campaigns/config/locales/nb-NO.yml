@@ -94,6 +94,7 @@ nb-NO:
         project_published: Prosjekt publisert
         project_review_request: Moderator ba om en prosjektgjennomgang
         project_review_state_change: Kritikeren godkjente prosjektet
+        proposal_expired: Et forslag utløper uten å nå terskelen
         proposal_gets_reported_as_spam: Forslaget blir rapportert som søppelpost
         proposal_is_assigned_to_admin: Forslaget er tildelt administrator
         proposal_is_published: Forslaget er publisert
@@ -188,6 +189,7 @@ nb-NO:
       project_published: Prosjekt publisert
       project_review_request: Forespørsel om prosjektgjennomgang
       project_review_state_change: Prosjektet er godkjent
+      proposal_expired_for_admin: Forslag utløpt uten å nå stemmeterskelen
       screening_digest: Ukentlig påminnelse om screening
       space_moderation_rights_received: Rettigheter som områdeansvarlig mottatt
       status_change_on_idea_you_follow: Statusendring for en inngang som du følger
@@ -591,6 +593,11 @@ nb-NO:
       preheader: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
       subject: '"%{projectTitle}" har blitt godkjent'
       title: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Se over det utløpte innspillet
+      preheader: Et innspill utløp uten å nå terskelen
+      subject: '"%{input_title}" utløp uten å nå terskelen'
+      title: Et innspill utløp uten å nå stemmeterskelen
     schedules:
       quarterly: Kvartalsvis, på den første dagen i kvartalet
       weekly:

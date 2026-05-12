@@ -6,6 +6,10 @@ class WebApi::V1::SpacesController < ApplicationController
     @spaces = policy_scope(Space)
     @spaces = paginate @spaces
 
+    if params[:search].present?
+      @spaces = @spaces.search_by_title(params[:search])
+    end
+
     moderators_per_space = UserRoleService.new.moderators_per_space(
       @spaces.pluck(:id)
     )

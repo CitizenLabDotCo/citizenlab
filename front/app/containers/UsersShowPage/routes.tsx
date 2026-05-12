@@ -14,7 +14,7 @@ const UserEvents = lazy(() => import('./UserEvents'));
 enum userShowPageRoutes {
   profile = 'profile',
   default = '',
-  profileUserSlug = `profile/:userSlug`,
+  profileUserId = `profile/:userId`,
   submissions = 'submissions',
   comments = 'comments',
   following = 'following',
@@ -32,7 +32,7 @@ export type userShowPageRouteTypes =
   | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.events}`;
 
 export default () => ({
-  path: userShowPageRoutes.profileUserSlug,
+  path: userShowPageRoutes.profileUserId,
   element: (
     <PageLoading>
       <UsersShowPage />

@@ -23,20 +23,19 @@ const MainContent = ({
   return (
     <BaseMainContent id="e2e-preference-dialog">
       {Object.keys(categoryDestinations)
-        .filter((category: TCategory) => {
-          return categoryDestinations[category].length > 0;
-        })
-        .map((category: TCategory) => {
-          return (
-            <CategoryCard
-              key={category}
-              category={category}
-              destinations={categoryDestinations[category]}
-              checked={!!preferences[category]}
-              onChange={onChange}
-            />
-          );
-        })}
+        .filter(
+          (category: TCategory) => categoryDestinations[category].length > 0
+        )
+        .map((category: TCategory, idx: number) => (
+          <CategoryCard
+            key={category}
+            category={category}
+            destinations={categoryDestinations[category]}
+            checked={!!preferences[category]}
+            onChange={onChange}
+            autoFocus={idx === 0}
+          />
+        ))}
       <CategoryCard
         key={'required'}
         category={'required'}

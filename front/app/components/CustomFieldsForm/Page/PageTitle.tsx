@@ -9,7 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const PageTitle = ({ page }: { page: IFlatCustomField }) => {
+const PageTitle = ({ page, id }: { page: IFlatCustomField; id?: string }) => {
   const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
   const theme = useTheme();
@@ -26,6 +26,7 @@ const PageTitle = ({ page }: { page: IFlatCustomField }) => {
           m="0"
           mb="20px"
           color="tenantPrimary"
+          id={id}
         >
           {localize(page.title_multiloc)}
         </Title>

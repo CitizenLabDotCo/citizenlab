@@ -79,7 +79,11 @@ const UserSelect = ({
         />
       )}
       onInputChange={setSearchValue}
-      onMenuScrollToBottom={() => fetchNextPage()}
+      onMenuScrollToBottom={() => {
+        if (hasNextPage) {
+          fetchNextPage();
+        }
+      }}
       onChange={handleChange}
       onMenuOpen={handleChange}
     />

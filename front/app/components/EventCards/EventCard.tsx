@@ -13,8 +13,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import Image from 'components/UI/Image';
 
-import clHistory from 'utils/cl-router/history';
-
 import EventInformation from './EventInformation';
 
 /*
@@ -70,22 +68,8 @@ const EventCard = memo<Props>(({ event, className, id }) => {
     eventImage?.data.attributes.alt_text_multiloc
   );
 
-  const navigateToEventPage = () => {
-    clHistory.push(`/events/${event.id}`, { scrollToTop: true });
-  };
-
   return (
-    <Container
-      className={className || ''}
-      id={id}
-      onKeyDown={(e) => {
-        // We want this to trigger when the user interacts with the card itself, not its children. The buttons inside the card for example should not trigger this.
-        if (e.target === e.currentTarget && e.key === 'Enter') {
-          navigateToEventPage();
-        }
-      }}
-      tabIndex={0}
-    >
+    <Container className={className || ''} id={id}>
       {mediumImage && (
         <AspectRatioBox>
           <EventCardImage

@@ -51,6 +51,20 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(home_attributes['title_multiloc']).to be_blank
     end
 
+    it 'preserves nav bar item references to project folders' do
+      folder = create(:project_folder, title_multiloc: { 'en' => 'My folder' })
+      create(:nav_bar_item, project_folder: folder, static_page: nil, title_multiloc: { 'en' => 'Folder link' })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        nav_bar_item = NavBarItem.find_by(title_multiloc: { 'en' => 'Folder link' })
+        expect(nav_bar_item.project_folder.title_multiloc).to eq({ 'en' => 'My folder' })
+      end
+    end
+
     it 'can deal with nested admin publications in projects' do
       create(:project, title_multiloc: { 'en' => 'top-project' })
       create(

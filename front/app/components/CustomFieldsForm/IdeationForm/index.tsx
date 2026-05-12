@@ -72,13 +72,21 @@ const IdeationForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
-      const { translatedTitle, translatedBody, weglotData } =
-        await weglotTranslateIdeaSubmission(
-          formValues.title_multiloc?.[locale],
-          formValues.body_multiloc?.[locale],
-          locale,
-          appConfiguration?.data.attributes.settings.core.weglot_api_key
-        );
+      // Common ground lets admins enter the statement in every platform locale,
+      // so the full multiloc hash must be preserved and auto-translation is skipped.
+      const isCommonGround = participationMethod === 'common_ground';
+      const { translatedTitle, translatedBody, weglotData } = isCommonGround
+        ? {
+            translatedTitle: undefined,
+            translatedBody: undefined,
+            weglotData: {},
+          }
+        : await weglotTranslateIdeaSubmission(
+            formValues.title_multiloc?.[locale],
+            formValues.body_multiloc?.[locale],
+            locale,
+            appConfiguration?.data.attributes.settings.core.weglot_api_key
+          );
       const translatedFormValues = {
         ...formValues,
         ...(translatedTitle !== undefined && {

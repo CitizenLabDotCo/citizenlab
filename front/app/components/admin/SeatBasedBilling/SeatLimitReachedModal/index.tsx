@@ -75,7 +75,10 @@ const SeatLimitReachedModal = ({
           data-cy="seat-limit-reached-body"
         >
           <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
-            <FormattedMessage {...messages.hasReachedOrIsOverLimit} />
+            <FormattedMessage
+              {...messages.hasReachedOrIsOverLimit}
+              values={{ noOfSeats: 1 }}
+            />
           </Text>
           <Box mb="24px">
             <SeatInfo seatType={seatType} />

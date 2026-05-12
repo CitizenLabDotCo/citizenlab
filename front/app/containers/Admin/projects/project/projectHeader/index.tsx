@@ -15,6 +15,7 @@ import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
@@ -30,6 +31,7 @@ import messages from './messages';
 import PublicationButtons from './PublicationButtons';
 import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
+import SpaceName from './SpaceName';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -52,10 +54,13 @@ const ProjectHeader = ({ projectId }: Props) => {
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!project) return null;
 
   const folderId = project.data.attributes.folder_id;
+  const spaceId = project.data.attributes.space_id;
+
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
   switch (project.data.attributes.visible_to) {
@@ -119,10 +124,6 @@ const ProjectHeader = ({ projectId }: Props) => {
               padding="4px 8px"
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
-            />
-            <PublicationStatus
-              className="intercom-product-tour-project-publication-status-dropdown"
-              project={project}
             />
             <ShareLink
               projectId={project.data.id}
@@ -233,6 +234,14 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
+          {typeof spaceId === 'string' && spacesEnabled && (
+            <>
+              <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+                ·
+              </Text>
+              <SpaceName spaceId={spaceId} />
+            </>
+          )}
           {typeof folderId === 'string' && (
             <>
               <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
@@ -256,6 +265,10 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Box>
             </>
           )}
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+            ·
+          </Text>
+          <PublicationStatus project={project.data} />
         </Box>
       </Box>
     </NavigationTabs>

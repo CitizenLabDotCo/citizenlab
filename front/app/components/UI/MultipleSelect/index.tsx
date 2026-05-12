@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useRef } from 'react';
 
 import {
   Box,
@@ -6,7 +6,7 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import ReactSelect from 'react-select';
+import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -40,6 +40,7 @@ const MultipleSelect = ({
   isSearchable,
 }: Props) => {
   const theme = useTheme();
+  const selectRef = useRef<SelectInstance<IOption, true>>(null);
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
   };
@@ -74,10 +75,26 @@ const MultipleSelect = ({
       event.stopPropagation();
     }
   };
+
+  const handleSelectKeyDown = (event: KeyboardEvent) => {
+    preventModalCloseOnEscape(event);
+
+    if (event.key !== 'Enter') return;
+
+    const select = selectRef.current;
+    const focusedValue = select?.state.focusedValue;
+    if (!select || !focusedValue) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    select.removeValue(focusedValue);
+  };
+
   return (
     <Box onKeyDown={handleKeyDown}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <ReactSelect
+        ref={selectRef}
         id={id}
         inputId={inputId}
         className={className}
@@ -117,7 +134,7 @@ const MultipleSelect = ({
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
-        onKeyDown={preventModalCloseOnEscape}
+        onKeyDown={handleSelectKeyDown}
       />
     </Box>
   );

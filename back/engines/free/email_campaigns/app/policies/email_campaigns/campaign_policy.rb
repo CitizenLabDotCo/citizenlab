@@ -35,7 +35,7 @@ module EmailCampaigns
     end
 
     def do_send?
-      update?
+      can_access_and_modify?
     end
 
     def send_preview?

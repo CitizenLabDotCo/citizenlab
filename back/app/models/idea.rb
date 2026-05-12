@@ -45,6 +45,7 @@
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
 #  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
+#  index_ideas_on_creation_phase_id                (creation_phase_id)
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
@@ -211,10 +212,9 @@ class Idea < ApplicationRecord
       .where(ideas_phases: { phase_id: phase_id })
   end)
 
-  scope :with_project_publication_status, (proc do |publication_status|
-    joins(project: [:admin_publication])
-      .where(projects: { admin_publications: { publication_status: publication_status } })
-  end)
+  scope :with_project_publication_status, lambda { |status|
+    where(project: Project.where(admin_publication: AdminPublication.with_status(status)))
+  }
 
   scope :order_new, ->(direction = :desc) { order(published_at: direction) }
   scope :order_random, lambda { |user|

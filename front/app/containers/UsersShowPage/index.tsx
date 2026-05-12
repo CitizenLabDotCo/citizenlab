@@ -4,7 +4,7 @@ import { media, colors } from '@citizenlab/cl2-component-library';
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -35,8 +35,8 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const UsersShowPage = () => {
-  const { userSlug } = useParams() as { userSlug: string };
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams() as { userId: string };
+  const { data: user } = useUserById(userId);
 
   if (!user) return null;
 
@@ -49,7 +49,7 @@ const UsersShowPage = () => {
       <UsersShowPageMeta user={user.data} />
       <main id="e2e-usersshowpage">
         <Container>
-          <UserHeader userSlug={user.data.attributes.slug} />
+          <UserHeader userId={user.data.id} />
           <UserNavbar user={user.data} />
           <StyledContentContainer maxWidth={maxPageWidth}>
             <RouterOutlet />

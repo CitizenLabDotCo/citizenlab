@@ -530,6 +530,7 @@ export interface Props extends ButtonContainerProps {
   as?: React.ElementType;
   tabIndex?: number;
   dataCy?: string;
+  ariaHasPopup?: string;
 }
 export type Ref = HTMLButtonElement;
 
@@ -606,6 +607,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     tabIndex,
     as,
     dataCy,
+    ariaHasPopup,
     ...rest
   } = props;
 
@@ -714,6 +716,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
         tabIndex={tabIndex}
         ref={ref}
         data-cy={dataCy}
+        aria-haspopup={ariaHasPopup}
       >
         {childContent}
       </StyledButton>

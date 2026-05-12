@@ -4,11 +4,11 @@ import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExcelImportButton from 'components/admin/FormSync/components/ExcelImportButton';
 import formSyncMessages from 'components/admin/FormSync/messages';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
 interface Props {
   onClickPDFImport: () => void;
   onClickExcelImport: () => void;
@@ -31,14 +31,10 @@ const ImportButtons = ({
   return (
     <Box display="flex" gap="8px">
       <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
-        <Button
-          buttonStyle="text"
-          icon="upload-file"
-          onClick={onClickExcelImport}
-          disabled={!inputImporterAllowed}
-        >
-          <FormattedMessage {...formSyncMessages.importFile} />
-        </Button>
+        <ExcelImportButton
+          onClickExcelImport={onClickExcelImport}
+          inputImporterAllowed={inputImporterAllowed}
+        />
       </UpsellTooltip>
       {pdfImportSupported && (
         <>

@@ -439,6 +439,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.proposal_expired": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.admin_labels.trigger.proposal_gets_reported_as_spam": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -893,6 +898,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.proposal_expired_for_admin": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.campaign_type_description.screening_digest": {
     "state": "verified",
@@ -2673,6 +2683,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.proposal_expired_for_admin.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.proposal_expired_for_admin.preheader": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.proposal_expired_for_admin.subject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.proposal_expired_for_admin.title": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:56:46.272287Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.schedules.quarterly": {
     "state": "verified",

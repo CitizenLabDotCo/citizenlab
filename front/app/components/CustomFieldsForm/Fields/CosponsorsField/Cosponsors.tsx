@@ -38,7 +38,6 @@ const CosponsorsInner = ({ question, users, onChange }: InnerProps) => {
       name="cosponsor_ids"
       rows={1}
       trigger=""
-      userReferenceType="id"
       padding="8px 8px 12px"
       onChange={setCosponsorsText}
       onChangeMentions={(mentions: MentionItem[]) => {

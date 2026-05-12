@@ -8,21 +8,30 @@ import {
 } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+import useProjectById from 'api/projects/useProjectById';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
 import ProjectHeader from './projectHeader';
 
-const AdminProjectsProjectIndex = () => {
+const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+  const projectId = project.id;
+
+  if (!canModerateProject(project, authUser)) {
+    return null;
+  }
 
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
@@ -92,4 +101,13 @@ const AdminProjectsProjectIndex = () => {
   );
 };
 
-export default AdminProjectsProjectIndex;
+const AdminProjectsProjectIndexWrapper = () => {
+  const { projectId } = useParams();
+  const { data: project } = useProjectById(projectId);
+
+  if (!project) return null;
+
+  return <AdminProjectsProjectIndex project={project.data} />;
+};
+
+export default AdminProjectsProjectIndexWrapper;

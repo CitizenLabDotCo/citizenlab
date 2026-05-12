@@ -18,6 +18,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import SubmissionIdContainer from './SubmissionIdContainer';
 import { getMailLink } from './utils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   inputId: string;
@@ -30,6 +31,11 @@ const SubmissionReference = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+
+  const hideSubmissionRemovalText = useFeatureFlag({
+    name: 'hide_submission_removal_text',
+  });
+  if (hideSubmissionRemovalText) return null;
 
   return (
     <Box

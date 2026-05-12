@@ -11,7 +11,7 @@ import messages from '../messages';
 interface Props {
   printedFormsEnabled: boolean;
   onClickPDFImport?: () => void;
-  importerPath: string;
+  importerPath?: string;
 }
 
 const PDFImportButton = ({
@@ -50,7 +50,7 @@ const PDFImportButton = ({
     );
   }
 
-  return (
+  return importerPath ? (
     <ButtonWithLink
       buttonStyle="admin-dark"
       icon="form-sync"
@@ -58,7 +58,7 @@ const PDFImportButton = ({
     >
       <FormattedMessage {...messages.importScans} />
     </ButtonWithLink>
-  );
+  ) : null;
 };
 
 export default PDFImportButton;

@@ -20,6 +20,12 @@ module Jobs
       end
     end
 
+    def complete_if_done!
+      return unless tracked?
+
+      tracker.complete! if tracker.progress >= tracker.total
+    end
+
     private
 
     def track_progress(progress = 1, error_count = 0)

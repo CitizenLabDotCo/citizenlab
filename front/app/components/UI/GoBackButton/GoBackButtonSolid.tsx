@@ -45,7 +45,6 @@ const GoBackButtonSolid = ({
       whiteSpace="normal"
       onClick={handleClick}
       linkTo={linkTo}
-      text={text}
     >
       <Box
         as="span"

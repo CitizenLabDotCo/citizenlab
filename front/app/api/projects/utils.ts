@@ -6,6 +6,7 @@ import areasKeys from 'api/areas/keys';
 import globalTopicsKeys from 'api/global_topics/keys';
 import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
+import publicationRecipientCountKeys from 'api/project_publication_recipient_count/keys';
 import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 import spacesKeys from 'api/spaces/keys';
 
@@ -36,5 +37,8 @@ export const invalidateOnCRUD = () => {
   });
   queryClient.invalidateQueries({
     queryKey: spacesKeys.all(),
+  });
+  queryClient.invalidateQueries({
+    queryKey: publicationRecipientCountKeys.all(),
   });
 };

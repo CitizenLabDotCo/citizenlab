@@ -31,6 +31,7 @@ module BulkImportIdeas::Importers
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_input_topics idea_row, idea_attributes
+      add_proposed_budget idea_row, idea_attributes
       add_custom_fields idea_row, idea_attributes
       user_created = add_author idea_row, idea_attributes
 
@@ -176,6 +177,10 @@ module BulkImportIdeas::Importers
       end.compact_blank.map(&:id).uniq
 
       idea_attributes[:input_topic_ids] = input_topics_ids
+    end
+
+    def add_proposed_budget(idea_row, idea_attributes)
+      idea_attributes[:proposed_budget] = idea_row[:proposed_budget] if idea_row[:proposed_budget].present?
     end
 
     def add_custom_fields(idea_row, idea_attributes)

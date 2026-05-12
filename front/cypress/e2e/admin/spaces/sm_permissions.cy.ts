@@ -1,0 +1,266 @@
+import { randomString, randomEmail } from '../../../support/commands';
+import {
+  createModeratorForSpace,
+  createSpace,
+  removeSpace,
+} from '../../../support/spaces';
+
+describe('Space moderator: permissions', () => {
+  const spaceName = randomString(10);
+  const newSpaceName = randomString(10);
+  const spaceModEmail = randomEmail();
+  const spaceModPassword = 'password';
+  const folderName = randomString(10);
+  const newFolderName = randomString(10);
+  let spaceId: string;
+  let folderId: string;
+  let projectId: string;
+
+  before(() => {
+    createSpace({ title: spaceName }).then((response) => {
+      spaceId = response.body.data.id;
+
+      cy.apiCreateFolder({
+        title: folderName,
+        description: randomString(),
+        spaceId,
+      }).then((response) => {
+        folderId = response.body.data.id;
+
+        cy.apiCreateProject({
+          title: randomString(),
+          description: randomString(),
+          publicationStatus: 'published',
+          folderId,
+        }).then((response) => {
+          projectId = response.body.data.id;
+
+          createModeratorForSpace({
+            firstName: 'Space',
+            lastName: 'Moderator',
+            email: spaceModEmail,
+            password: spaceModPassword,
+            spaceId,
+          });
+        });
+      });
+    });
+  });
+
+  it('Can moderate space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit(`/admin/projects/spaces/${spaceId}/settings`);
+
+    cy.get('input#spaceName').clear().type(newSpaceName);
+    cy.dataCy('space-name-save-button').click();
+    cy.url().should('match', /\/admin\/projects\/spaces\/[a-zA-Z0-9]+/);
+    cy.get('.e2e-resource-header').find('h1').should('have.text', newSpaceName);
+  });
+
+  it('Can moderate folder in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit(`/admin/projects/folders/${folderId}/settings`);
+
+    cy.get('input#project-folder-title').clear().type(newFolderName);
+    cy.get('.e2e-submit-wrapper-button > button').click();
+    cy.get('.e2e-submit-wrapper-button').contains('Success!');
+    cy.reload();
+    cy.get('.e2e-resource-header')
+      .find('h1')
+      .should('have.text', newFolderName);
+  });
+
+  it('Can moderate project in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit(`/admin/projects/${projectId}/general`);
+
+    cy.get('#e2e-project-title-setting-field').clear().type('New project name');
+    cy.get('.e2e-submit-wrapper-button > button').click();
+    cy.get('.e2e-submit-wrapper-button').contains('Success!');
+    cy.reload();
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      'New project name'
+    );
+  });
+
+  it('Can create and delete folder in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/folders/new');
+
+    const folderName = randomString();
+    const folderDescription = randomString();
+
+    // Add title
+    cy.dataCy('e2e-project-folder-title')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.get('#project-folder-title').type(folderName);
+        cy.wait(300);
+      });
+
+    // Add folder description
+    cy.dataCy('e2e-project-folder-description')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.dataCy('e2e-project-folder-description').within(() => {
+          cy.get('#description').type(folderDescription);
+          cy.wait(300);
+        });
+      });
+
+    // Add folder short description
+    cy.dataCy('e2e-project-folder-short-description')
+      .find('.e2e-localeswitcher')
+      .each((button) => {
+        cy.wrap(button).click();
+        cy.wait(300);
+        cy.dataCy('e2e-project-folder-short-description').within(() => {
+          cy.get('textarea').type(folderDescription);
+          cy.wait(300);
+        });
+      });
+
+    // Select space
+    cy.dataCy('space-select').select(spaceId);
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click({ force: true });
+
+    // Confirm  we got redirected to folder page
+    cy.get('.e2e-resource-header').should('be.visible');
+    cy.get('.e2e-resource-header').contains(folderName);
+
+    // Confirm folder is in space
+    cy.get('.intercom-admin-tab-settings').first().click();
+    cy.dataCy('space-select').should('have.value', spaceId);
+
+    // Delete folder
+    cy.visit(`/admin/projects?tab=folders&search=${folderName}`);
+    cy.dataCy('projects-overview-folder-table-row')
+      .first()
+      .find('.e2e-more-actions')
+      .click();
+    cy.get('.e2e-more-actions-list')
+      .first()
+      .find('button')
+      .first()
+      .contains('Delete folder')
+      .click();
+    cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+    cy.dataCy('typed-confirmation-delete-button').click();
+    cy.dataCy('projects-overview-folder-table-row').should('not.exist');
+  });
+
+  const enterProjectName = (projectName: string) => {
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+    cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
+    cy.get('#e2e-project-title-setting-field').type(projectName);
+  };
+
+  const deleteProject = (projectName: string) => {
+    cy.visit(`/admin/projects?search=${projectName}`);
+    cy.dataCy('projects-overview-table-row')
+      .first()
+      .find('.e2e-more-actions')
+      .click();
+    cy.get('.e2e-more-actions-list')
+      .first()
+      .find('button')
+      .eq(1)
+      .contains('Delete project')
+      .click();
+    cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+    cy.dataCy('typed-confirmation-delete-button').click();
+    cy.dataCy('projects-overview-table-row').should('not.exist');
+  };
+
+  it('Can create and delete project in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/new');
+
+    // Add title
+    const projectName = randomString();
+    enterProjectName(projectName);
+
+    // Select space
+    cy.dataCy('space-select').select(spaceId);
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    // Confirm we got redirected to project page
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      projectName
+    );
+
+    cy.dataCy('space-name-project-header').should('contain.text', newSpaceName);
+
+    deleteProject(projectName);
+  });
+
+  it('Can create and delete project in folder in space', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/new');
+
+    // Add title
+    const projectName = randomString();
+    enterProjectName(projectName);
+
+    // Select folder
+    cy.dataCy('project-context-folder-radio').click();
+    cy.dataCy('project-folder-select').select(folderId);
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    // Confirm we got redirected to project page
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      projectName
+    );
+
+    cy.dataCy('space-name-project-header').contains(newSpaceName);
+    cy.dataCy('e2e-folder-preview-open-projects-dropdown').contains(
+      newFolderName
+    );
+    cy.wait(1000);
+
+    deleteProject(projectName);
+  });
+
+  it('Can create and delete project in root', () => {
+    cy.setLoginCookie(spaceModEmail, spaceModPassword);
+    cy.visit('/admin/projects/new');
+
+    // Add title
+    const projectName = randomString();
+    enterProjectName(projectName);
+
+    // Select root
+    cy.dataCy('project-context-root-radio').click();
+
+    // Submit
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    // Confirm we got redirected to project page
+    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
+      projectName
+    );
+
+    cy.dataCy('space-name-project-header').should('not.exist');
+    cy.dataCy('e2e-request-approval').contains('Request approval');
+
+    deleteProject(projectName);
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveFolder(folderId);
+    removeSpace(spaceId);
+  });
+});

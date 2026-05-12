@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -34,6 +34,13 @@ const IdeasNewSurveyPage = () => {
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const [searchParams] = useSearchParams();
+
+  // If idea_id is present in the URL when this component first mounts,
+  // it means the user is navigating back to a previously submitted survey
+  // (via browser back/forward). The idea_id is added via history.replace
+  // after submission, so it persists in the browser history entry.
+  const [hadIdeaIdOnMount] = useState(() => !!searchParams.get('idea_id'));
+
   // If we reach this component by hitting surveys/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
   const phaseIdFromSearchParams = searchParams.get('phase_id');
@@ -76,17 +83,17 @@ const IdeasNewSurveyPage = () => {
   // Please replace this text and add a comment if you know.
   const userCannotViewSurvey =
     !canModerateProject(project.data, authUser) &&
-    /* Something I could deduct: when this code was added, we made the (wrong) 
-    assumption that `phase_id` was always a string (we were type casting the phase_id param). 
+    /* Something I could deduct: when this code was added, we made the (wrong)
+    assumption that `phase_id` was always a string (we were type casting the phase_id param).
     So I _think_ we are checking here whether phase_id from the search params is differnet from
     currentPhase?.id when both are strings.
-    
+
     I've added back undefined as a fallback, so the check remains the same as when we were using parse
     to get the phase_id from the search params.
     */
     (phaseIdFromSearchParams || undefined) !== currentPhase?.id;
 
-  if (disabledReason === 'posting_limited_max_reached') {
+  if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
     return <SurveySubmittedNotice project={project.data} />;
   } else if (userCannotViewSurvey) {
     return <SurveyNotActiveNotice project={project.data} />;

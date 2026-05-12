@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  FormEvent,
-  KeyboardEvent,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import React, { KeyboardEvent, useRef, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -17,11 +10,13 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled, { css, keyframes } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -32,10 +27,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import PhaseDescription from './PhaseDescription';
-import setPhaseURL from './setPhaseURL';
 import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 44;
@@ -103,8 +98,8 @@ const BlinkingDot = styled.span<{ isSelected: boolean }>`
 `;
 
 const PhaseBar = styled.button<{
-  showArrow: boolean;
-  isCurrentPhase?: boolean;
+  $showArrow: boolean;
+  $isCurrentPhase?: boolean;
 }>`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
@@ -122,6 +117,7 @@ const PhaseBar = styled.button<{
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  text-decoration: none;
 
   &::before {
     content: '';
@@ -130,10 +126,10 @@ const PhaseBar = styled.button<{
     left: 0;
     right: 0;
     height: 1px;
-    background-color: ${({ isCurrentPhase }) =>
-      isCurrentPhase ? darkGreen : colors.coolGrey700};
+    background-color: ${({ $isCurrentPhase }) =>
+      $isCurrentPhase ? darkGreen : colors.coolGrey700};
     ${(props) =>
-      props.showArrow
+      props.$showArrow
         ? 'clip-path: polygon(0 0, calc(100% - 10px) 0, calc(100% - 10px) 100%, 0 100%);'
         : ''};
   }
@@ -296,8 +292,9 @@ const Timeline = ({
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
-  const tabsRef = useRef<HTMLButtonElement[]>([]);
+  const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const { search } = useLocation();
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
@@ -312,17 +309,7 @@ const Timeline = ({
     return () => clearTimeout(timeout);
   }, [phases]);
 
-  const handleOnPhaseSelection = useCallback(
-    (phase: IPhaseData | undefined) => (event: FormEvent) => {
-      trackEventByName(tracks.clickOnPhase);
-      event.preventDefault();
-
-      if (phase && phases && project) {
-        setPhaseURL(phase, phases.data, project.data, isBackoffice);
-      }
-    },
-    [isBackoffice, phases, project]
-  );
+  const trackPhaseClick = () => trackEventByName(tracks.clickOnPhase);
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
     const arrowLeftPressed = e.key === 'ArrowLeft';
@@ -393,6 +380,13 @@ const Timeline = ({
                   .filter((className) => className)
                   .join(' ');
                 const showArrow = !(phaseIndex === phases.data.length - 1);
+                const phaseUrl: RouteType | null = project
+                  ? isBackoffice
+                    ? `/admin/projects/${project.data.id}/phases/${
+                        phase.id
+                      }/${getPhaseLandingTab(phase)}`
+                    : `/projects/${project.data.attributes.slug}/${phaseNumber}`
+                  : null;
 
                 return (
                   <PhaseContainer
@@ -402,37 +396,44 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last={isLast}
                   >
-                    <PhaseBar
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onKeyDown={handleTabListOnKeyDown}
-                      onClick={handleOnPhaseSelection(phase)}
-                      aria-current={isCurrentPhase}
-                      // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
-                      aria-selected={isSelectedPhase}
-                      aria-controls={`phase-description-panel-${phaseNumber}`}
-                      role="tab"
-                      ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
-                      tabIndex={isSelectedPhase ? 0 : -1}
-                      id={`phase-tab-${phaseNumber}`}
-                      showArrow={showArrow}
-                      isCurrentPhase={isCurrentPhase}
-                      className={`intercom-project-timeline-phase-${phaseNumber}`}
-                    >
-                      {isCurrentPhase && (
-                        <BlinkingDot isSelected={isSelectedPhase} />
-                      )}
-                      <span aria-hidden>{phaseNumber}</span>
-                      <ScreenReaderOnly>
-                        <FormattedMessage
-                          {...messages.a11y_phase}
-                          values={{
-                            phaseNumber,
-                            phaseTitle,
-                          }}
-                        />
-                      </ScreenReaderOnly>
-                      {showArrow && <PhaseArrow />}
-                    </PhaseBar>
+                    {phaseUrl && (
+                      <PhaseBar
+                        as={Link}
+                        to={{ pathname: phaseUrl, search }}
+                        scrollToTop={false}
+                        ref={(el: HTMLAnchorElement | null) =>
+                          el && (tabsRef.current[phaseIndex] = el)
+                        }
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onKeyDown={handleTabListOnKeyDown}
+                        onClick={trackPhaseClick}
+                        aria-current={isCurrentPhase}
+                        // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                        aria-selected={isSelectedPhase}
+                        aria-controls={`phase-description-panel-${phaseNumber}`}
+                        role="tab"
+                        tabIndex={isSelectedPhase ? 0 : -1}
+                        id={`phase-tab-${phaseNumber}`}
+                        $showArrow={showArrow}
+                        $isCurrentPhase={isCurrentPhase}
+                        className={`intercom-project-timeline-phase-${phaseNumber}`}
+                      >
+                        {isCurrentPhase && (
+                          <BlinkingDot isSelected={isSelectedPhase} />
+                        )}
+                        <span aria-hidden>{phaseNumber}</span>
+                        <ScreenReaderOnly>
+                          <FormattedMessage
+                            {...messages.a11y_phase}
+                            values={{
+                              phaseNumber,
+                              phaseTitle,
+                            }}
+                          />
+                        </ScreenReaderOnly>
+                        {showArrow && <PhaseArrow />}
+                      </PhaseBar>
+                    )}
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
@@ -472,7 +473,7 @@ const Timeline = ({
                         }}
                         role="tab"
                         id="new-phase"
-                        showArrow={false}
+                        $showArrow={false}
                         className="intercom-timeline-add-new-phase-button"
                       >
                         <span

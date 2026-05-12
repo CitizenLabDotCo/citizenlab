@@ -154,12 +154,14 @@ const ImportInputsSection = ({
         </Box>
       </Box>
 
-      <PDFExportModal
-        open={exportModalOpen}
-        formType={formType}
-        onClose={() => setExportModalOpen(false)}
-        phaseId={phaseId}
-      />
+      {pdfImportSupported && (
+        <PDFExportModal
+          open={exportModalOpen}
+          formType={formType}
+          onClose={() => setExportModalOpen(false)}
+          phaseId={phaseId}
+        />
+      )}
     </Box>
   );
 };

@@ -31,6 +31,7 @@ const CustomEmails = () => {
   const { data: campaigns, fetchNextPage } = useCampaigns({
     context: { projectId },
     pageSize: 10,
+    manual: true,
   });
 
   const campaignsList = campaigns?.pages[currentPage - 1];

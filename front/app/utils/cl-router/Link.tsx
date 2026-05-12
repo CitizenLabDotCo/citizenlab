@@ -27,28 +27,34 @@ export type Props = {
 /*
  * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
  */
-const Link = ({
-  to,
-  onlyActiveOnIndex,
-  scrollToTop,
-  onClick,
-  active: _active,
-  ...otherProps
-}: Props) => {
-  const locale = useLocale();
-  return (
-    <RouterLink
-      end={onlyActiveOnIndex}
-      to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
-      onClick={(event) => {
-        onClick && onClick(event);
-        if (scrollToTop) {
-          scrollTop('link');
-        }
-      }}
-      {...otherProps}
-    />
-  );
-};
+const Link = React.forwardRef<HTMLAnchorElement, Props>(
+  (
+    {
+      to,
+      onlyActiveOnIndex,
+      scrollToTop,
+      onClick,
+      active: _active,
+      ...otherProps
+    },
+    ref
+  ) => {
+    const locale = useLocale();
+    return (
+      <RouterLink
+        ref={ref}
+        end={onlyActiveOnIndex}
+        to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
+        onClick={(event) => {
+          onClick && onClick(event);
+          if (scrollToTop) {
+            scrollTop('link');
+          }
+        }}
+        {...otherProps}
+      />
+    );
+  }
+);
 
 export default Link;

@@ -20,6 +20,7 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
@@ -64,6 +65,9 @@ interface Props {
 }
 
 export const PhaseHeader = ({ phase, tabs }: Props) => {
+  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
+    name: 'phase_datetime_setup',
+  });
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { pathname } = useLocation();
@@ -85,9 +89,13 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     return null;
   }
 
-  const startAt = moment(phase.attributes.start_at).format('LL');
+  const startAt = moment(phase.attributes.start_at).format(
+    isPhaseDatetimeSetupEnabled ? 'LLL' : 'LL'
+  );
   const endAt = phase.attributes.end_at
-    ? moment(phase.attributes.end_at).format('LL')
+    ? moment(phase.attributes.end_at).format(
+        isPhaseDatetimeSetupEnabled ? 'LLL' : 'LL'
+      )
     : formatMessage(messages.noEndDate);
 
   const toggleDropdown = () => {
