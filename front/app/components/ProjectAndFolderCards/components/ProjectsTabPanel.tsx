@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -42,17 +41,13 @@ const ProjectsTabPanel = ({
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isLargerThanTablet = !isSmallerThanTablet;
-  const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
-
-  useEffect(() => {
-    if (list.length > 0 && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list.length, isLargerThanTablet);
-
-      if (!isEqual(cardSizes, newCardSizes)) {
-        setCardSizes(newCardSizes);
-      }
-    }
-  }, [list.length, layout, cardSizes, isLargerThanTablet]);
+  const cardSizes = useMemo<TCardSize[]>(
+    () =>
+      list.length > 0 && layout === 'dynamic'
+        ? getCardSizes(list.length, isLargerThanTablet)
+        : [],
+    [list.length, layout, isLargerThanTablet]
+  );
   return (
     // The id, aria-labelledby, hidden and hide are necessary
     // for the tab system to work well with screen readers.
