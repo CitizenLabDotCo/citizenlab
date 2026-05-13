@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Richtlinn ofleenen a Banner zoumaachen",
   "app.components.ConsentManager.Banner.close": "Zoumaachen",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "D'Akzeptéiere vu Cookien hëlleft eis, dës Plattform ze verbesseren. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Cookien unzehuelen hëlleft eis, dës Plattform ze verbesseren.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Är Cookie-Astellungen",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Liest eis Cookie-Politik",
   "app.components.ConsentManager.Banner.manage": "Beaarbechten",

@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Ablehnen und Banner schließen",
   "app.components.ConsentManager.Banner.close": "Schließen",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Durch das Akzeptieren von Cookies können wir diese Plattform verbessern. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Das Akzeptieren von Cookies hilft uns, diese Plattform zu verbessern.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Ihre Cookie-Einstellungen",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Unsere Cookie-Richtlinie lesen",
   "app.components.ConsentManager.Banner.manage": "Bearbeiten",
