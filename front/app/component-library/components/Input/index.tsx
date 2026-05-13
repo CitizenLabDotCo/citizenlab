@@ -76,7 +76,7 @@ export interface InputProps {
   labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search';
+  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search' | 'hidden';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
