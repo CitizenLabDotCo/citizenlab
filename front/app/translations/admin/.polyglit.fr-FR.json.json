@@ -14689,6 +14689,11 @@
     "verified_at": "2026-03-31T07:23:46.906710Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:36:00.701208Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
     "state": "verified",
     "verified_at": "2026-03-31T07:23:46.906710Z",
