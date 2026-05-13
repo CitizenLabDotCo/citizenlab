@@ -286,6 +286,27 @@ resource 'Ideas' do
           end
         end
 
+        describe 'clearing location_point_geojson' do
+          let(:input) do
+            create(
+              :idea,
+              project: project,
+              phases: project.phases,
+              location_description: 'Old address',
+              location_point_geojson: { 'type' => 'Point', 'coordinates' => [1.0, 2.0] }
+            )
+          end
+          let(:location_description) { nil }
+          let(:location_point_geojson) { nil }
+
+          example 'admin clears the location by sending null for both attributes', document: false do
+            do_request idea: { location_description: nil, location_point_geojson: nil }
+            assert_status 200
+            expect(input.reload.location_description).to be_nil
+            expect(input.reload.location_point_geojson).to be_nil
+          end
+        end
+
         describe 'profanity blocking on update' do
           before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
