@@ -189,6 +189,9 @@ const generateYupSchema = ({
       }
 
       case 'number': {
+        const mustBeNumber = formatMessage(messages.mustBeNumber, {
+          fieldName: title,
+        });
         if (key === 'proposed_budget') {
           schema[key] =
             required && enabled
@@ -196,11 +199,13 @@ const generateYupSchema = ({
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
                   )
+                  .typeError(mustBeNumber)
                   .required(fieldRequired)
               : number()
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
                   )
+                  .typeError(mustBeNumber)
                   .nullable();
         } else if (key === 'birthyear') {
           schema[key] = required
@@ -208,6 +213,7 @@ const generateYupSchema = ({
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
                 )
+                .typeError(mustBeNumber)
                 .min(1900, formatMessage(messages.birthyearTooLow))
                 .max(
                   new Date().getFullYear(),
@@ -218,6 +224,7 @@ const generateYupSchema = ({
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
                 )
+                .typeError(mustBeNumber)
                 .min(1900, formatMessage(messages.birthyearTooLow))
                 .max(
                   new Date().getFullYear(),
@@ -230,11 +237,13 @@ const generateYupSchema = ({
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
                 )
+                .typeError(mustBeNumber)
                 .required(fieldRequired)
             : number()
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
                 )
+                .typeError(mustBeNumber)
                 .nullable();
         }
         break;

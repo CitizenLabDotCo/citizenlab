@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import generateYupValidationSchema from '../generateYupSchema';
+import messages from '../messages';
 
 import { FormValues } from './types';
 
@@ -28,10 +29,29 @@ const usePageForm = ({
     formatMessage,
     localize,
   });
+  const baseResolver = yupResolver(schema);
 
   const methods = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    // Yup can't see "bad input" in <input type="number"> (browser reports value="" while validity.badInput=true, and React's value-tracker suppresses the change event for the empty→invalid transition). Sweep the DOM after Yup runs and override the error for any number field whose input is in that state.
+    resolver: (async (values, context, options) => {
+      const result = await baseResolver(values, context, options);
+      pageQuestions.forEach((question) => {
+        if (question.input_type !== 'number') return;
+        const el = document.querySelector<HTMLInputElement>(
+          `input[name="${CSS.escape(question.key)}"]`
+        );
+        if (el?.validity.badInput) {
+          (result.errors as Record<string, unknown>)[question.key] = {
+            type: 'badInput',
+            message: formatMessage(messages.mustBeNumber, {
+              fieldName: localize(question.title_multiloc),
+            }),
+          };
+        }
+      });
+      return result;
+    }) as typeof baseResolver,
     defaultValues,
   });
 

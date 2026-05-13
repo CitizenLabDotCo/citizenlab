@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.fieldRequired',
     defaultMessage: 'The field "{fieldName}" is required',
   },
+  mustBeNumber: {
+    id: 'app.components.CustomFieldsForm.mustBeNumber',
+    defaultMessage: 'The field "{fieldName}" must be a number',
+  },
   fieldMaximum: {
     id: 'app.components.CustomFieldsForm.fieldMaximumItems',
     defaultMessage:

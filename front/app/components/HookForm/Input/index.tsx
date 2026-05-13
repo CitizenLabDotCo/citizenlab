@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
   Input as InputComponent,
@@ -28,6 +28,7 @@ const Input = ({
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -44,7 +45,7 @@ const Input = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
+        render={({ field: { ref: _ref, onChange, ...field } }) => (
           <InputComponent
             id={name}
             type={type}
@@ -52,6 +53,16 @@ const Input = ({
             ariaDescribedBy={ariaDescribedBy}
             {...field}
             {...rest}
+            setRef={(el) => {
+              inputRef.current = el;
+            }}
+            onChange={(value, locale) => {
+              // Skip when `<input type="number">` reports validity.badInput — writing back to RHF causes React to resync input.value and wipe the visible bad-input text. The form's resolver scans the DOM and surfaces the error.
+              if (type === 'number' && inputRef.current?.validity.badInput) {
+                return;
+              }
+              onChange(value, locale);
+            }}
           />
         )}
       />

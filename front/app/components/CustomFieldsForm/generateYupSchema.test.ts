@@ -65,4 +65,44 @@ describe('generateYupSchema', () => {
       ).toBe(true);
     });
   });
+
+  describe('number field', () => {
+    const buildSchema = (required: boolean, key = 'number_q') =>
+      generateYupSchema({
+        pageQuestions: [
+          { input_type: 'number', required, key, enabled: true },
+        ] as any,
+        formatMessage,
+        localize,
+      });
+
+    it('accepts a valid number when required', () => {
+      expect(buildSchema(true).isValidSync({ number_q: 42 })).toBe(true);
+    });
+
+    it('rejects an empty value when required', () => {
+      expect(buildSchema(true).isValidSync({ number_q: '' })).toBe(false);
+    });
+
+    it('accepts an empty value when optional', () => {
+      expect(buildSchema(false).isValidSync({ number_q: '' })).toBe(true);
+      expect(buildSchema(false).isValidSync({})).toBe(true);
+    });
+
+    it('rejects NaN (bad input) whether required or optional', () => {
+      expect(buildSchema(true).isValidSync({ number_q: NaN })).toBe(false);
+      expect(buildSchema(false).isValidSync({ number_q: NaN })).toBe(false);
+    });
+
+    it('rejects NaN for birthyear and proposed_budget too', () => {
+      expect(
+        buildSchema(true, 'birthyear').isValidSync({ birthyear: NaN })
+      ).toBe(false);
+      expect(
+        buildSchema(true, 'proposed_budget').isValidSync({
+          proposed_budget: NaN,
+        })
+      ).toBe(false);
+    });
+  });
 });
