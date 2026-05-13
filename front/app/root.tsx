@@ -40,6 +40,7 @@ Sentry.init({
 const Root = () => {
   useEffect(() => {
     prefetchData();
+    modules.afterMountApplication();
   }, []);
 
   return (
@@ -47,9 +48,7 @@ const Root = () => {
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <div>
-              <RouterProvider router={router} />
-            </div>
+            <RouterProvider router={router} />
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
