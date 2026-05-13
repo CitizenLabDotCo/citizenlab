@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Laster inn kommentarer...",
   "app.containers.UsersShowPage.loadingEvents": "Laster inn arrangementer...",
   "app.containers.UsersShowPage.memberSince": "Medlem siden {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profilside for {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Denne personen har ikke lagt inn noen kommentarer ennå.",
   "app.containers.UsersShowPage.noCommentsForYou": "Det er ingen kommentarer her ennå.",
   "app.containers.UsersShowPage.noEventsForUser": "Du har ikke deltatt på noen arrangementer ennå.",

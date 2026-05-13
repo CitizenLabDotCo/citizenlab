@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Kommentare lueden...",
   "app.containers.UsersShowPage.loadingEvents": "Lueden Eventer ...",
   "app.containers.UsersShowPage.memberSince": "Member säit {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profil Säit vun {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Dëse Benotzer huet nach kee Kommentar gepost.",
   "app.containers.UsersShowPage.noCommentsForYou": "Momentan ginn et nach keng Kommentaren",
   "app.containers.UsersShowPage.noEventsForUser": "Dir hutt nach keng Eventer deelgeholl.",

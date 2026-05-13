@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Notiek komentāru ielāde...",
   "app.containers.UsersShowPage.loadingEvents": "Notikumu ielādēšana...",
   "app.containers.UsersShowPage.memberSince": "Dalībnieks kopš {datums}",
-  "app.containers.UsersShowPage.metaTitle1": "Profila lapa {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Šī persona vēl nav publicējusi komentārus.",
   "app.containers.UsersShowPage.noCommentsForYou": "Šeit vēl nav komentāru.",
   "app.containers.UsersShowPage.noEventsForUser": "Jūs vēl neesat apmeklējis nevienu pasākumu.",

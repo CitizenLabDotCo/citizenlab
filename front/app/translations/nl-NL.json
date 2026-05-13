@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Reacties laden...",
   "app.containers.UsersShowPage.loadingEvents": "Activiteiten aan het laden...",
   "app.containers.UsersShowPage.memberSince": "Lid sinds {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profielpagina van {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Deze persoon heeft nog geen reacties geplaatst.",
   "app.containers.UsersShowPage.noCommentsForYou": "Er zijn hier nog geen reacties.",
   "app.containers.UsersShowPage.noEventsForUser": "Je hebt nog geen activiteiten bijgewoond.",

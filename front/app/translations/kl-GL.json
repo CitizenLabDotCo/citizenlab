@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Oqaaseqaatit aaneqarput...",
   "app.containers.UsersShowPage.loadingEvents": "Loading events...",
   "app.containers.UsersShowPage.memberSince": "Ilaasortanut qupperneq {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profile page of {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Inuk una suli oqaaseqarsimanngilaq.",
   "app.containers.UsersShowPage.noCommentsForYou": "Uani suli oqaaseqartoqarsimanngilaq.",
   "app.containers.UsersShowPage.noEventsForUser": "You have not attended any events yet.",

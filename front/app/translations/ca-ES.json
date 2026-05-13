@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "S'estan carregant els comentaris...",
   "app.containers.UsersShowPage.loadingEvents": "Carregant esdeveniments...",
   "app.containers.UsersShowPage.memberSince": "Membre des del {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Pàgina de perfil de {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Aquesta persona encara no ha publicat cap comentari.",
   "app.containers.UsersShowPage.noCommentsForYou": "Encara no hi ha comentaris aquí.",
   "app.containers.UsersShowPage.noEventsForUser": "Encara no has assistit a cap esdeveniment.",

@@ -2297,7 +2297,6 @@
   "app.containers.UsersShowPage.loadingComments": "Ag lódáil tuairimí...",
   "app.containers.UsersShowPage.loadingEvents": "Ag lódáil imeachtaí...",
   "app.containers.UsersShowPage.memberSince": "Ball ó {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Leathanach próifíle {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Níl aon trácht curtha suas ag an duine seo go fóill.",
   "app.containers.UsersShowPage.noCommentsForYou": "Níl aon tuairimí anseo go fóill.",
   "app.containers.UsersShowPage.noEventsForUser": "Níl tú i láthair ag aon imeachtaí go fóill.",

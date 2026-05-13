@@ -2272,7 +2272,6 @@
   "app.containers.UsersShowPage.loadingComments": "Учитавање коментара...",
   "app.containers.UsersShowPage.loadingEvents": "Учитавање догађаја...",
   "app.containers.UsersShowPage.memberSince": "Члан од {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profile page of {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Ова особа још увек није поставила ниједан коментар.",
   "app.containers.UsersShowPage.noCommentsForYou": "Овде још нема коментара.",
   "app.containers.UsersShowPage.noEventsForUser": "Још нисте присуствовали ниједном догађају.",
