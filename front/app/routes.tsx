@@ -6,7 +6,6 @@ import {
   createRouter,
   Outlet,
 } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import * as yup from 'yup';
 
 import {
@@ -63,6 +62,17 @@ const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
+const PageNotFound = lazy(() => import('components/PageNotFound'));
+
+// Static NODE_ENV check lets the bundler tree-shake the devtools import in prod.
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null
+    : lazy(() =>
+        import('@tanstack/react-router-devtools').then((mod) => ({
+          default: mod.TanStackRouterDevtools,
+        }))
+      );
 
 // Root search schema — SSO/auth callback params that can appear on any route
 const rootSearchSchema = yup.object({
@@ -107,8 +117,15 @@ const rootRoute = createRootRoute({
   component: () => (
     <App>
       <Outlet />
-      <TanStackRouterDevtools />
+      <React.Suspense fallback={null}>
+        <TanStackRouterDevtools />
+      </React.Suspense>
     </App>
+  ),
+  notFoundComponent: () => (
+    <PageLoading>
+      <PageNotFound />
+    </PageLoading>
   ),
 });
 
