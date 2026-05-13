@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰ ਲਿਆ ਗਿਆ ਹੈ।",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "ਕਿਸੇ ਟਿਕਾਣੇ ਦੀ ਖੋਜ ਕਰੋ",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "ਆਗਾਮੀ ਸਮਾਗਮਾਂ ਨੂੰ ਇਸ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਲਿੰਕ ਕਰੋ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਦੇ ਇਵੈਂਟ ਪੰਨੇ 'ਤੇ ਦਿਖਾਓ।",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "ਈਵੈਂਟ ਪਲੇਟਫਾਰਮ ਦੇ ਟਾਈਮਜ਼ੋਨ ({timezone}, GMT{gmtOffset}) ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤੇ ਜਾਣੇ ਚਾਹੀਦੇ ਹਨ। ਅੰਤਿਮ ਉਪਭੋਗਤਾ ਮਿਤੀ ਨੂੰ ਆਪਣੇ ਖੁਦ ਦੇ ਟਾਈਮਜ਼ੋਨ ਵਿੱਚ ਦੇਖਣਗੇ।",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "ਸਿਰਲੇਖ ਅਤੇ ਮਿਤੀਆਂ",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "ਪ੍ਰੋਜੈਕਟ ਇਵੈਂਟਸ",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "ਘਟਨਾ ਦਾ ਨਾਮ",

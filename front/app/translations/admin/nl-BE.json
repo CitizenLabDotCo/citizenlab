@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Je wijzigingen zijn opgeslagen.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Zoeken naar een locatie",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Voeg offline activiteiten, bijeenkomsten of vergaderingen toe die gerelateerd zijn aan dit project.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Activiteiten moeten worden toegevoegd in de tijdzone van het platform ({timezone}, GMT{gmtOffset}). Eindgebruikers zien de datum in hun eigen tijdzone.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titel en data",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projectactiviteiten",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Naam van de activiteit",

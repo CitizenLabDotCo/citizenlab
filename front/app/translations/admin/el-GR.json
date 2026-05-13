@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Αναζήτηση τοποθεσίας",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Συνδέστε τις επερχόμενες εκδηλώσεις με αυτό το έργο και εμφανίστε τις στη σελίδα εκδηλώσεων του έργου.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Οι εκδηλώσεις πρέπει να προστίθενται στη ζώνη ώρας της πλατφόρμας ({timezone}, GMT{gmtOffset}). Οι τελικοί χρήστες θα βλέπουν την ημερομηνία στη δική τους ζώνη ώρας.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Τίτλος και ημερομηνίες",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Εκδηλώσεις έργου",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Όνομα εκδήλωσης",

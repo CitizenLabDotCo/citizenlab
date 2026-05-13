@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "تم حفظ التغييرات.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "ابحث عن موقع",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "اربط الأحداث القادمة بهذا المشروع واعرضها على صفحة الأحداث الخاصة بالمشروع.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "يجب إضافة الفعاليات بالمنطقة الزمنية للمنصة ({timezone}، GMT{gmtOffset}). سيرى المستخدمون النهائيون التاريخ بمنطقتهم الزمنية الخاصة.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "العنوان والتواريخ",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "أحداث المشروع",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "اسم المشروع",

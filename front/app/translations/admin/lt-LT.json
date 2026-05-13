@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Pakeitimai buvo išsaugoti.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Vietos paieška",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Susiekite būsimus renginius su šiuo projektu ir rodykite juos projekto renginių puslapyje.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Renginiai turi būti pridedami platformos laiko juostoje ({timezone}, GMT{gmtOffset}). Galutiniai naudotojai matys datą savo laiko juostoje.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Pavadinimas ir datos",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projekto renginiai",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Įvykio pavadinimas",

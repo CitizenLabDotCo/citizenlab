@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "No enger Plaz sichen",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Link upcoming events to this projects and show them on the project's event page.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Eventer musse bäigefüügt ginn an der Zäitzon vun der Plattform ({timezone}, GMT{gmtOffset}). D'Endnotzer gesinn den Datum an hirer eegener Zäitzon.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Title and dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",

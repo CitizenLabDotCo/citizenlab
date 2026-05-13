@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Muutoksesi on tallennettu.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Etsi sijainti",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Linkitä tulevat tapahtumat tähän projektiin ja näytä ne projektin tapahtumasivulla.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Tapahtumat on lisättävä alustan aikavyöhykkeellä ({timezone}, GMT{gmtOffset}). Loppukäyttäjät näkevät päivämäärän omalla aikavyöhykkeellään.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Otsikko ja päivämäärät",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projektitapahtumat",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Tapahtuman nimi",

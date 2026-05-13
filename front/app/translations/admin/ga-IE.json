@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Tá do chuid athruithe sábháilte.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Cuardaigh suíomh",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Nasc imeachtaí atá le teacht leis na tionscadail seo agus taispeáin iad ar leathanach imeachtaí an tionscadail.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Ní mór imeachtaí a chur leis i gcrios ama an ardáin ({timezone}, GMT{gmtOffset}). Feicfidh úsáideoirí deiridh an dáta ina gcrios ama féin.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Teideal agus dátaí",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Imeachtaí tionscadail",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Ainm an imeachta",

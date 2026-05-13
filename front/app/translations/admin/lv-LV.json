@@ -2771,6 +2771,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Jūsu veiktās izmaiņas ir saglabātas.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Atrast atrašanās vietas meklēšana",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Sasaistiet gaidāmos pasākumus ar šo projektu un parādiet tos projekta notikumu lapā.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Pasākumi ir jāpievieno platformas laika joslā ({timezone}, GMT{gmtOffset}). Galalietotāji redzēs datumu savā laika joslā.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Virsraksts un datumi",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projekta notikumi",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Notikuma nosaukums",
