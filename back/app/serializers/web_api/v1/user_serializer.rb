@@ -4,8 +4,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   PRIVATE = proc { |object, params| view_private_attributes? object, params }
 
   # Public attributes
-  attributes :slug,
-    :locale,
+  attributes :locale,
     :bio_multiloc,
     :invite_status, # Cannot be private as there is no current_user when an invite is accepted
     :registration_completed_at,

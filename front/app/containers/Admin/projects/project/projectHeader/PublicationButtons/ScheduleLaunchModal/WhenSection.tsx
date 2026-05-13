@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import moment from 'moment-timezone';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -28,13 +29,29 @@ const WhenSection = ({
   const { data: appConfiguration } = useAppConfiguration();
   const timezone =
     appConfiguration?.data.attributes.settings.core.timezone ?? '';
-
+  const tenantNow = timezone ? moment().tz(timezone) : moment();
+  const tenantTimeNow = new Date(
+    tenantNow.year(),
+    tenantNow.month(),
+    tenantNow.date(),
+    tenantNow.hour(),
+    tenantNow.minute()
+  );
+  const tenantTodayStart = new Date(
+    tenantNow.year(),
+    tenantNow.month(),
+    tenantNow.date()
+  );
+  const gmtOffset = timezone ? tenantNow.format('Z') : '';
+  const browserTimezone = moment.tz.guess();
+  const browserOffset = moment().tz(browserTimezone).format('Z');
+  const showGmtOffset = timezone && gmtOffset !== browserOffset;
   return (
     <Box mb="8px">
       <Text fontWeight="bold" mb="12px">
         {formatMessage(messages.when)}
       </Text>
-      <Box display="flex" gap="12px">
+      <Box display="flex" gap="12px" alignItems="center">
         <DateSinglePicker
           selectedDate={selectedDate}
           onChange={(date) => {
@@ -45,11 +62,17 @@ const WhenSection = ({
             onDateChange(date);
           }}
           placement="right"
+          disabledPast={{ before: tenantTodayStart }}
         />
-        <TimeInput selectedTime={selectedTime} onChange={onTimeChange} />
-        {timezone && (
+        <TimeInput
+          selectedTime={selectedTime}
+          onChange={onTimeChange}
+          selectedDate={selectedDate}
+          currentTimeInTz={tenantTimeNow}
+        />
+        {showGmtOffset && (
           <Text color="grey600" fontSize="s">
-            {timezone}
+            GMT{gmtOffset}
           </Text>
         )}
       </Box>

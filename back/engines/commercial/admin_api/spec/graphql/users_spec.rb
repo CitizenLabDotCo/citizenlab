@@ -21,7 +21,6 @@ RSpec.describe AdminApi::Schema do
             firstName
             lastName
             email
-            slug
             locale
           }
         }
@@ -38,7 +37,6 @@ RSpec.describe AdminApi::Schema do
         'firstName' => user.first_name,
         'lastName' => user.last_name,
         'email' => user.email,
-        'slug' => user.slug,
         'locale' => user.locale
       })
     end

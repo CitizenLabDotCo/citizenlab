@@ -94,6 +94,7 @@ pa-IN:
         project_published: ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
         project_review_request: ਸੰਚਾਲਕ ਨੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ ਕੀਤੀ
         project_review_state_change: ਸਮੀਖਿਅਕ ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ
+        proposal_expired: ਇੱਕ ਪ੍ਰਸਤਾਵ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਜਾਂਦਾ ਹੈ
         proposal_gets_reported_as_spam: ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ
         proposal_is_assigned_to_admin: ਪ੍ਰਸਤਾਵ ਐਡਮਿਨ ਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ
         proposal_is_published: ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
@@ -188,6 +189,7 @@ pa-IN:
       project_published: ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
       project_review_request: ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਬੇਨਤੀ
       project_review_state_change: ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
+      proposal_expired_for_admin: ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
       screening_digest: ਹਫ਼ਤਾਵਾਰੀ ਸਕ੍ਰੀਨਿੰਗ ਰੀਮਾਈਂਡਰ
       space_moderation_rights_received: ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       status_change_on_idea_you_follow: ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
@@ -591,6 +593,11 @@ pa-IN:
       preheader: '%{reviewerName} ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ "%{projectTitle}"'
       subject: '"%{projectTitle}" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ ਹੈ'
       title: '%{reviewerName} ਨੇ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ'
+    proposal_expired_for_admin:
+      cta_button: ਐਕਸਪਾਇਰ ਹੋਏ ਇਨਪੁਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ
+      preheader: ਇੱਕ ਇਨਪੁਟ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
+      subject: '"%{input_title}" ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ'
+      title: ਇੱਕ ਇਨਪੁਟ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
     schedules:
       quarterly: ਤਿਮਾਹੀ, ਤਿਮਾਹੀ ਦੇ ਪਹਿਲੇ ਦਿਨ
       weekly:

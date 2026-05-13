@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env migrate be-up be-up-debug fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -20,12 +20,17 @@ build:
 	cd front && npm install
 
 reset-dev-env:
+	# Best-effort: install the Claude private overlay if the dev has access. Fall through silently otherwise.
+	-@bin/setup-claude || echo "Skipping Claude private overlay (no access or setup failed). Continuing."
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
 	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
 	# https://citizenlabco.slack.com/archives/C016C2EHURY/p1644234622002569
 	docker compose run --rm web "bin/rails db:create && bin/rails db:reset"
 	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
+
+claude-setup:
+	@bin/setup-claude
 
 migrate:
 	docker compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated

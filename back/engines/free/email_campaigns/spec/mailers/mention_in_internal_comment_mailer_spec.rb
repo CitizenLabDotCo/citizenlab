@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::MentionInInternalCommentMailer do
           initiating_user_first_name: 'Matthias',
           initiating_user_last_name: 'Geeke',
           internal_comment_author_name: 'Matthias Geeke',
-          internal_comment_body: '<span class=\"cl-mention-user\" data-user-id=\"386d255e-2ff1-4192-8e50-b3022576be50\" data-user-slug=\"bernhard-coe\">@Bernhard Coe</span>  I mentioned you in this comment. Wowzers!',
+          internal_comment_body: '<span class=\"cl-mention-user\" data-user-id=\"386d255e-2ff1-4192-8e50-b3022576be50\" data-link-profile=\"true\">@Bernhard Coe</span>  I mentioned you in this comment. Wowzers!',
           internal_comment_url: 'http://localhost:3000/en/internal_comments/fake-url-comment-does-not-exist',
           idea_title_multiloc: { en: 'Permit paving of front gardens' },
           idea_body_multiloc: {

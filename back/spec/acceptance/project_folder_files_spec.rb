@@ -90,9 +90,7 @@ resource 'File attachment as legacy ProjectFolders::File' do
       )
     end
 
-    describe 'Add a file with an unsupported file extension', pending: <<~REASON do
-      Currently, the +Files::FileUploader+ allows all file extensions.
-    REASON
+    describe 'Add a file with an unsupported file extension' do
       let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
 

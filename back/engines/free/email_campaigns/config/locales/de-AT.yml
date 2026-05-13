@@ -94,6 +94,7 @@ de-AT:
         project_published: Projekt veröffentlicht
         project_review_request: Projektmanager*in hat eine Projektfreigabe beantragt
         project_review_state_change: Prüfer*in genehmigt das Projekt
+        proposal_expired: Ein Vorschlag läuft ab, ohne die Schwelle zu erreichen
         proposal_gets_reported_as_spam: Vorschlag wird als Spam markiert
         proposal_is_assigned_to_admin: Vorschlag wird Admin zugewiesen
         proposal_is_published: Vorschlag wird veröffentlicht
@@ -156,7 +157,7 @@ de-AT:
       comment_marked_as_spam: Kommentar wird als Spam markiert
       comment_on_idea_you_follow: Ein Kommentar zu einer Idee, der Sie folgen
       comment_on_your_comment: Antwort auf einen Kommentar
-      community_monitor_report: Gemeinschaftspuls-Bericht
+      community_monitor_report: Stimmungsbarometer-Bericht
       cosponsor_of_your_idea: Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       event_registration_confirmation: Anmeldebestätigung für Veranstaltungen
       idea_marked_as_spam: Beitrag wird als Spam gekennzeichnet
@@ -188,6 +189,7 @@ de-AT:
       project_published: Projekt veröffentlicht
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
+      proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
@@ -257,11 +259,11 @@ de-AT:
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
     community_monitor_report:
       cta_button: Bericht ansehen
-      event_description: Ein Gemeinschaftspuls-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
-      preheader: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      report_name: Gemeinschaftspuls-Bericht
-      subject: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      title: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
+      event_description: Ein Stimmungsbarometer-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
+      preheader: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      report_name: Stimmungsbarometer-Bericht
+      subject: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      title: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
     cosponsor_of_your_idea:
       cta_button: Vorschlag ansehen
       event_description: Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.
@@ -591,6 +593,11 @@ de-AT:
       preheader: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
+    proposal_expired_for_admin:
+      cta_button: Den abgelaufenen Beitrag überprüfen
+      preheader: Ein Beitrag ist abgelaufen, ohne die Schwelle zu erreichen
+      subject: '"%{input_title}" ist abgelaufen, ohne die Schwelle zu erreichen'
+      title: Ein Beitrag ist abgelaufen, ohne die Abstimmungsschwelle zu erreichen
     schedules:
       quarterly: Vierteljährlich, am ersten Tag des Quartals
       weekly:
@@ -637,7 +644,7 @@ de-AT:
       preheader: Details zur Einreichung.
       subject: '%{organizationName}: Vielen Dank für Ihre Antwort! 🎉'
       title: Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!
-      you_can_use_this_id: Sie können diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls Sie möchten, dass Ihr Beitrag entfernt wird.
+      you_can_use_this_id: Du kannst diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls du möchtest, dass dein Beitrag entfernt wird.
       your_submission_has_id: 'Ihr Beitrag hat die folgende eindeutige Kennung:'
     threshold_reached_for_admin:
       cta_button: Nächste Schritte für diesen Vorschlag

@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+# bin/setup-claude — clone or update the citizenlab-claude private overlay
+# and create per-file symlinks in the public repo so Claude Code can find
+# its config:
+#   - .claude/<rel>: hooks, skills, commands, settings.json, and
+#     anything else the private overlay tracks. Everything under .claude/
+#     is private (mirrored here, gitignored).
+#   - <area>/CLAUDE.md (root + per-area): file symlinks pointing directly
+#     at the private content. Gitignored at any path via .gitignore.
+#     Claude Code's CLAUDE.md discovery follows file symlinks, so no
+#     committed stub or @import indirection is needed.
+#
+# Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
+# overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
+# the host shell directly, or in env_files/back-secret.env — the script
+# extracts just that one variable from the file without sourcing it whole, so
+# the docker-compose env file doesn't have to be bash-source-safe.
+# Override the default sibling clone location with CITIZENLAB_CLAUDE_DIR.
+
+set -euo pipefail
+
+# Compute a relative path from anchor dir (arg 2, absolute) to target (arg 1, absolute).
+# Used so committed symlinks (if ever force-staged) don't reveal a dev's home dir layout.
+relpath() {
+  local target="$1"
+  local anchor="$2"
+  local up=""
+  while [ "${target#$anchor/}" = "$target" ] && [ "$target" != "$anchor" ]; do
+    local new_anchor; new_anchor="$(dirname "$anchor")"
+    if [ "$new_anchor" = "$anchor" ]; then
+      # Reached filesystem root with no common ancestor — paths share no
+      # prefix string-wise (e.g. /var/X vs /private/var/X on macOS where
+      # one was canonicalized but the other wasn't). Fall back to the
+      # absolute target rather than infinite-loop.
+      echo "$target"
+      return
+    fi
+    anchor="$new_anchor"
+    up="../$up"
+  done
+  if [ "$target" = "$anchor" ]; then
+    echo "${up%/}"
+  else
+    echo "${up}${target#$anchor/}"
+  fi
+}
+
+# Library mode: when sourced for testing (BIN_SETUP_CLAUDE_LIBRARY=1), stop
+# here. Tests get access to the helpers above without running the main
+# script. See bin/setup-claude.test.sh.
+[ "${BIN_SETUP_CLAUDE_LIBRARY:-}" = "1" ] && return 0
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+# Look up CITIZENLAB_CLAUDE_GIT_REMOTE in env_files/back-secret.env if it isn't already set.
+if [ -z "${CITIZENLAB_CLAUDE_GIT_REMOTE:-}" ] && [ -f env_files/back-secret.env ]; then
+  line=$(grep -E "^(export[[:space:]]+)?CITIZENLAB_CLAUDE_GIT_REMOTE=" env_files/back-secret.env | tail -n 1 || true)
+  if [ -n "$line" ]; then
+    val="${line#*=}"
+    val="${val#\"}"; val="${val%\"}"
+    val="${val#\'}"; val="${val%\'}"
+    [ -n "$val" ] && export CITIZENLAB_CLAUDE_GIT_REMOTE="$val"
+  fi
+fi
+
+PRIVATE_REPO="${CITIZENLAB_CLAUDE_GIT_REMOTE:-}"
+if [ -z "$PRIVATE_REPO" ]; then
+  echo "Warning: CITIZENLAB_CLAUDE_GIT_REMOTE is not set." >&2
+  echo "Set it in your host shell rc, or add it to env_files/back-secret.env (gitignored) at the repo root." >&2
+  exit 1
+fi
+
+PARENT="$(dirname "$REPO_ROOT")"
+PRIVATE_DIR="${CITIZENLAB_CLAUDE_DIR:-$PARENT/citizenlab-claude}"
+
+if [ ! -d "$PRIVATE_DIR" ]; then
+  echo "Cloning private overlay into $PRIVATE_DIR ..."
+  git clone "$PRIVATE_REPO" "$PRIVATE_DIR"
+else
+  echo "Updating private overlay at $PRIVATE_DIR ..."
+  # Skip the pull when the current branch has no upstream — common when a
+  # dev is on a fresh feature branch in citizenlab-claude that hasn't been
+  # pushed yet. The local working tree is the source of truth for the
+  # symlink loop below either way, so a missing pull doesn't matter.
+  if git -C "$PRIVATE_DIR" rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    git -C "$PRIVATE_DIR" pull --ff-only
+  else
+    echo "  (current branch has no upstream — skipping pull, using local working tree)"
+  fi
+fi
+
+mkdir -p .claude
+
+# Clean stale file symlinks under .claude/ so files removed from the private
+# repo disappear here too. -type l only deletes symlinks; personal regular
+# files a dev has added (e.g. .claude/settings.local.json, personal hooks)
+# are untouched.
+find .claude -type l -delete 2>/dev/null || true
+
+# One-shot migration cleanup for devs upgrading from earlier .claude/
+# layouts that this script no longer produces. Each line is idempotent
+# (the test guards make it a no-op on fresh clones), so it's safe to
+# leave indefinitely — and safe to delete once every active dev has
+# run setup-claude at least once after the relevant layout change.
+[ -d .claude/private ] && rm -rf .claude/private             # pre-flatten nested-private/ namespace
+[ -L .claude/skills/private ] && rm .claude/skills/private   # original single-dir-symlink design (predates per-file symlinks)
+
+# Mirror every tracked file from the private repo as a per-file symlink at
+# .claude/<same-relative-path>. Per-file (not directory) symlinks because
+# Claude Code's `@import` and skill/command discovery don't follow directory
+# symlinks. Skipped: the private repo's own README/.gitignore, the per-folder
+# README docs, the files with special destinations handled below, and any
+# CLAUDE.md (those are materialized as top-level symlinks, see further down).
+while IFS= read -r -d '' src; do
+  rel="${src#$PRIVATE_DIR/}"
+  dst=".claude/$rel"
+  mkdir -p "$(dirname "$dst")"
+  ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
+done < <(find "$PRIVATE_DIR" -type f \
+  -not -path '*/.git/*' \
+  -not -name 'README.md' \
+  -not -name '.gitignore' \
+  -not -name 'settings.json' \
+  -not -name '.claude-readme.md' \
+  -not -name 'CLAUDE.md' \
+  -print0)
+
+# Remove any empty directories under .claude/ left behind after the CLAUDE.md
+# exclusion (e.g. .claude/back/ / .claude/front/ from the previous design).
+find .claude -mindepth 1 -type d -empty -delete 2>/dev/null || true
+
+# Private hook config / settings (only if present in the private repo).
+# Symlinks the team's `settings.json` from the overlay into the public repo.
+# Per Claude Code's convention, the `.local.json` slot is left free for each
+# dev's personal entries (a regular file they create themselves at
+# `.claude/settings.local.json`, gitignored, untouched by this script).
+if [ -f "$PRIVATE_DIR/settings.json" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/settings.json" "$REPO_ROOT/.claude")" .claude/settings.json
+fi
+
+# Local README explaining the .claude/ layout (only if present in the private repo)
+if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
+fi
+
+# Top-level CLAUDE.md symlinks: Claude Code's CLAUDE.md discovery walks up
+# from the CWD looking for files at fixed paths. We put a file symlink at
+# each <area>/CLAUDE.md (and root) pointing directly at the private content,
+# so Claude Code reads the private content without any committed stub or
+# @import indirection.
+
+# Clean up stale top-level CLAUDE.md symlinks before recreating from the
+# current private state. We own all CLAUDE.md anywhere in the public repo
+# (gitignored everywhere via .gitignore), so it's safe to wipe and recreate.
+# Skip vendor / vcs dirs and .claude/ (handled by its own cleanup above).
+find . -type l -name 'CLAUDE.md' \
+  -not -path '*/.git/*' \
+  -not -path '*/.claude/*' \
+  -not -path '*/node_modules/*' \
+  -delete 2>/dev/null || true
+
+# Create a top-level CLAUDE.md symlink for every CLAUDE.md in the private
+# repo. Skip paths whose parent directory doesn't exist in the public repo —
+# this avoids materializing phantom area directories from a stale private
+# entry. ln -sfn overwrites any leftover regular file (e.g. a committed stub
+# from the previous layout that hasn't been removed by `git pull` yet).
+while IFS= read -r -d '' src; do
+  rel="${src#$PRIVATE_DIR/}"
+  parent="$(dirname "$rel")"
+  if [ "$parent" = "." ] || [ -d "$parent" ]; then
+    # Avoid passing "$REPO_ROOT/." to relpath (trailing /. throws off the
+    # prefix-strip loop and produces an extra ../).
+    if [ "$parent" = "." ]; then
+      anchor="$REPO_ROOT"
+    else
+      anchor="$REPO_ROOT/$parent"
+    fi
+    ln -sfn "$(relpath "$src" "$anchor")" "$rel"
+  fi
+done < <(find "$PRIVATE_DIR" -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
+
+# Install the privacy guard hooks (versioned at .githooks/)
+if [ -d .githooks ]; then
+  current="$(git config --get core.hooksPath || true)"
+  if [ "$current" != ".githooks" ]; then
+    git config core.hooksPath .githooks
+    echo "Set git core.hooksPath to .githooks (versioned hooks)."
+  fi
+fi
+
+echo "Claude private overlay installed at $PRIVATE_DIR"

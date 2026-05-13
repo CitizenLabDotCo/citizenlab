@@ -2,7 +2,7 @@ import { stringify } from 'qs';
 
 import clHistory from 'utils/cl-router/history';
 
-export const removeSearchParams = (paramsToBeDeleted: string[]) => {
+export const removeSearchParams = (paramsToBeDeleted: readonly string[]) => {
   const searchString = window.location.search;
   const searchParams = new URLSearchParams(searchString);
 

@@ -29,7 +29,10 @@ const AccessRightsNotice = ({
   const { formatMessage } = useIntl();
 
   const accessRightsSettingsLink = (
-    <Link to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}>
+    <Link
+      to="/admin/projects/$projectId/phases/$phaseId/access-rights"
+      params={{ projectId, phaseId }}
+    >
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );

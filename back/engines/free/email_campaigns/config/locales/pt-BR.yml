@@ -94,6 +94,7 @@ pt-BR:
         project_published: Projeto publicado
         project_review_request: O moderador solicitou uma revisão do projeto
         project_review_state_change: O revisor aprovou o projeto
+        proposal_expired: Uma proposta expira sem atingir o limiar
         proposal_gets_reported_as_spam: A proposta foi denunciada como spam
         proposal_is_assigned_to_admin: A proposta está atribuída ao administrador
         proposal_is_published: A proposta foi publicada
@@ -188,6 +189,7 @@ pt-BR:
       project_published: Projeto publicado
       project_review_request: Solicitação de revisão do projeto
       project_review_state_change: Projeto aprovado
+      proposal_expired_for_admin: Proposta expirou sem atingir o limiar de votação
       screening_digest: Lembrete semanal de triagem
       space_moderation_rights_received: Direitos de gerente de espaço recebidos
       status_change_on_idea_you_follow: Mudança de status de uma ideia que você segue
@@ -591,6 +593,11 @@ pt-BR:
       preheader: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
       subject: '"%{projectTitle}" " foi aprovado'
       title: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Revisar a contribuição expirada
+      preheader: Uma contribuição expirou sem atingir o limiar
+      subject: '"%{input_title}" expirou sem atingir o limiar'
+      title: Uma contribuição expirou sem atingir o limiar de votação
     schedules:
       quarterly: Trimestralmente, no primeiro dia do trimestre
       weekly:

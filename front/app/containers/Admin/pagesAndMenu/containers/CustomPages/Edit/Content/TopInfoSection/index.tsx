@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
@@ -9,13 +7,17 @@ import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useLocalize from 'hooks/useLocalize';
 
 import GenericTopInfoSection from 'containers/Admin/pagesAndMenu/containers/GenericTopInfoSection';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 const TopInfoSection = () => {
   const localize = useLocalize();
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
   if (isNilOrError(customPage)) {
     return null;
@@ -42,10 +44,13 @@ const TopInfoSection = () => {
       breadcrumbs={[
         {
           label: localize(customPage.data.attributes.title_multiloc),
-          linkTo: `/admin/pages-menu/pages/${customPageId}/content`,
+          link: adminCustomPageContentLink(customPageId),
         },
       ]}
-      linkToViewPage={`/pages/${customPage.data.attributes.slug}`}
+      viewPageLink={{
+        to: '/pages/$slug',
+        params: { slug: customPage.data.attributes.slug },
+      }}
     />
   );
 };
