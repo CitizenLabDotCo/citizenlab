@@ -162,6 +162,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :proposal_expired_for_admin_campaign, class: 'EmailCampaigns::Campaigns::ProposalExpiredForAdmin' do
+    enabled { true }
+  end
+
   factory :welcome_campaign, class: 'EmailCampaigns::Campaigns::Welcome' do
     enabled { true }
   end

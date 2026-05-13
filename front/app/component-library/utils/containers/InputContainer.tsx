@@ -71,6 +71,7 @@ const InputContainer = ({
 }: Props) => {
   return (
     <Container
+      type="button"
       id={id}
       className={className}
       disabled={disabled}

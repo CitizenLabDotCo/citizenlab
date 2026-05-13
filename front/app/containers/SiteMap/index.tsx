@@ -296,9 +296,9 @@ const SiteMap = () => {
                           <>
                             <li>
                               <Link
-                                to="/profile/$userSlug"
+                                to="/profile/$userId"
                                 params={{
-                                  userSlug: authUser.data.attributes.slug,
+                                  userId: authUser.data.id,
                                 }}
                               >
                                 <FormattedMessage {...messages.profilePage} />

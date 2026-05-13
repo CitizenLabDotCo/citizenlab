@@ -427,6 +427,7 @@ DROP INDEX IF EXISTS public.index_claim_tokens_on_pending_claimer_id;
 DROP INDEX IF EXISTS public.index_claim_tokens_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_claim_tokens_on_expires_at;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
+DROP INDEX IF EXISTS public.index_baskets_on_user_id_and_phase_id_unique;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
@@ -5485,6 +5486,13 @@ CREATE INDEX index_baskets_on_user_id ON public.baskets USING btree (user_id);
 
 
 --
+-- Name: index_baskets_on_user_id_and_phase_id_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_baskets_on_user_id_and_phase_id_unique ON public.baskets USING btree (user_id, phase_id) WHERE (user_id IS NOT NULL);
+
+
+--
 -- Name: index_campaigns_groups; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8573,6 +8581,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
 ('20260408161034'),

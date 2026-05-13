@@ -14,7 +14,7 @@ import styled, { useTheme } from 'styled-components';
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -58,8 +58,8 @@ const MessageContainer = styled.div`
 `;
 
 export const UserComments = () => {
-  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams({ from: '/$locale/profile/$userId' });
+  const { data: user } = useUserById(userId);
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
   const isSmallerThanPhone = useBreakpoint('phone');

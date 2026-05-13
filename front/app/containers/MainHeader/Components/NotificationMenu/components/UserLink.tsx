@@ -18,17 +18,19 @@ export const DeletedUser = () => (
   </DeletedUserSpan>
 );
 
-const UserLink = ({ userName, userSlug }) => {
-  const deletedUser = isNilOrError(userName) || isNilOrError(userSlug);
+const UserLink = ({
+  userName,
+  userId,
+}: {
+  userName: string | null | undefined;
+  userId: string | null | undefined;
+}) => {
+  const deletedUser = isNilOrError(userName) || isNilOrError(userId);
 
   return deletedUser ? (
     <DeletedUser />
   ) : (
-    <Link
-      to="/profile/$userSlug"
-      params={{ userSlug }}
-      onClick={stopPropagation}
-    >
+    <Link to="/profile/$userId" params={{ userId }} onClick={stopPropagation}>
       {userName}
     </Link>
   );

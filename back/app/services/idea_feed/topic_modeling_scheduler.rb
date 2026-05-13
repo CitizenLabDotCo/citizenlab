@@ -14,10 +14,10 @@ module IdeaFeed
     MINIMUM_INPUTS = 10
     MINIMUM_INTERVAL_BETWEEN_RUNS = 20.minutes
 
-    attr_reader :phase
+    attr_reader :project
 
-    def initialize(phase)
-      @phase = phase
+    def initialize(project)
+      @project = project
     end
 
     def on_every_hour
@@ -40,15 +40,19 @@ module IdeaFeed
     private
 
     def shared_conditions_for_scheduling_met?
-      return false if phase.ideas.published.count < MINIMUM_INPUTS
+      return false if classifiable_inputs.count < MINIMUM_INPUTS
       return false if !first_run? && time_since_last_run < MINIMUM_INTERVAL_BETWEEN_RUNS
 
       true
     end
 
+    def classifiable_inputs
+      project.ideas.where(creation_phase: nil).published
+    end
+
     def last_run_activity
       @last_run_activity ||= Activity.where(
-        item: phase,
+        item: project,
         action: 'topics_rebalanced'
       ).order(acted_at: :desc).first
     end
@@ -59,7 +63,7 @@ module IdeaFeed
       inputs_at_last_run = last_run_activity.payload['input_count']
       return Float::INFINITY if inputs_at_last_run == 0
 
-      inputs_now = phase.ideas.published.count
+      inputs_now = classifiable_inputs.count
 
       (inputs_now - inputs_at_last_run) / inputs_at_last_run.to_f
     end
@@ -75,7 +79,7 @@ module IdeaFeed
     end
 
     def schedule_job!
-      TopicModelingJob.perform_later(phase)
+      TopicModelingJob.perform_later(project)
     end
   end
 end

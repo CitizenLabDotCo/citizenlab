@@ -92,8 +92,8 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {isConfirmedUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
-              to="/profile/$userSlug"
-              params={{ userSlug: authUser.data.attributes.slug }}
+              to="/profile/$userId"
+              params={{ userId: authUser.data.id }}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

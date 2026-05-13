@@ -5,7 +5,7 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
@@ -26,10 +26,10 @@ interface QueryParameters {
 }
 
 const Submissions = () => {
-  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
-  const { data: user } = useUserBySlug(userSlug);
+  const { userId } = useParams({ from: '/$locale/profile/$userId' });
+  const { data: user } = useUserById(userId);
   const { sort, search } = useSearch({
-    from: '/$locale/profile/$userSlug',
+    from: '/$locale/profile/$userId',
   });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');

@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
@@ -37,6 +42,7 @@ const ProjectContentViewer = ({
   enabled,
 }: ProjectContentViewerProps) => {
   const localize = useLocalize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -64,7 +70,10 @@ const ProjectContentViewer = ({
           <Title color="tenantText" variant="h1">
             {localize(projectTitle)}
           </Title>
-          <Box id={`project-description-${projectId}`}>
+          <Box
+            id={`project-description-${projectId}`}
+            mx={isSmallerThanTablet ? '-20px' : '0px'}
+          >
             <ContentBuilderLayoutProvider
               layoutId={descriptionBuilderLayout.data.id}
             >

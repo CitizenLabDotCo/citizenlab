@@ -2114,6 +2114,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-04-29T22:13:06.613681Z",
@@ -2908,6 +2909,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T13:00:15.150761Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -6253,6 +6260,56 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.190962Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
@@ -12204,6 +12261,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.errors.phase_too_short": {
     "state": "verified",
     "verified_at": "2026-04-21T16:13:46.512206Z",
@@ -13319,6 +13377,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
     "verified_at": "2026-04-29T22:13:06.613681Z",

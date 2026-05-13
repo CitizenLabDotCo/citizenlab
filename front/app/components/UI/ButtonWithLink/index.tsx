@@ -16,6 +16,7 @@ interface Props extends ButtonProps, TypedLinkProps {
   linkTo?: string | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
+  hash?: string;
 }
 
 type Ref = HTMLButtonElement;
@@ -26,6 +27,7 @@ const ButtonWithLink = forwardRef<Ref, Props>(
       to,
       params,
       search,
+      hash,
       linkTo,
       openLinkInNewTab,
       disabled,
@@ -52,6 +54,7 @@ const ButtonWithLink = forwardRef<Ref, Props>(
             to={to}
             params={params as Parameters<typeof Link>[0]['params']}
             search={search as Parameters<typeof Link>[0]['search']}
+            hash={hash}
             target={openLinkInNewTab ? '_blank' : undefined}
             rel="noreferrer"
             scrollToTop={scrollToTop}

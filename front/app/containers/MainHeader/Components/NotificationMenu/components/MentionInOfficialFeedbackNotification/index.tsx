@@ -21,7 +21,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
 
   const officialFeedbackAuthorMultiloc =
     notification.attributes.official_feedback_author;
-  const userSlug = notification.attributes.initiating_user_slug;
+  const userId = notification.attributes.initiating_user_id;
   const slug = notification.attributes.post_slug;
 
   if (!slug) return null;
@@ -37,12 +37,12 @@ const MentionInCommentNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.mentionInOfficialFeedback}
         values={{
-          officialName: !userSlug ? (
+          officialName: !userId ? (
             <DeletedUser />
           ) : (
             <Link
-              to="/profile/$userSlug"
-              params={{ userSlug }}
+              to="/profile/$userId"
+              params={{ userId }}
               onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />

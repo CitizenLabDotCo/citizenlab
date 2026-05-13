@@ -158,7 +158,7 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const userSlug = user.data.attributes.slug;
+    const userId = user.data.id;
 
     const classNames = `
       ${className || ''}
@@ -191,8 +191,8 @@ const UserName = ({
 
     const linkedNamelement = (
       <Link
-        to="/profile/$userSlug"
-        params={{ userSlug }}
+        to="/profile/$userId"
+        params={{ userId }}
         className={`e2e-author-link ${className || ''}`}
         scrollToTop
       >

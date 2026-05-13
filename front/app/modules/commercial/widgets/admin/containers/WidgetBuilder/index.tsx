@@ -1,25 +1,24 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
-import { string, object, number, boolean, array } from 'yup';
+import { ObjectSchema } from 'yup';
+
+import useLocale from 'hooks/useLocale';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import WidgetCode from '../WidgetCode';
-import WidgetPreview from '../WidgetPreview';
-
-import Form, { FormValues } from './Form';
-import tracks from './tracks';
+import WidgetCode from './WidgetCode';
+import WidgetPreview from './WidgetPreview';
 
 const Container = styled.div`
   display: flex;
@@ -39,72 +38,42 @@ const StyledWidgetPreview = styled(WidgetPreview)`
   margin-bottom: 40px;
 `;
 
-const schema = object({
-  width: number().required(),
-  height: number().required(),
-  siteBgColor: string().required(),
-  bgColor: string().required(),
-  textColor: string().required(),
-  accentColor: string().required(),
-  font: string().required().nullable(),
-  fontSize: number().required(),
-  relativeLink: string().required(),
-  showHeader: boolean().required(),
-  showLogo: boolean().required(),
-  headerText: string().required(),
-  headerSubText: string().required(),
-  showFooter: boolean().required(),
-  buttonText: string().required(),
-  sort: string().oneOf(['trending', 'popular', 'newest']).required(),
-  topics: array().of(string().required()).required(),
-  projects: array().of(string().required()).required(),
-  limit: number().required(),
-});
+interface Props {
+  widgetPath: string;
+  schema: ObjectSchema<any>;
+  defaultValues: Record<string, any>;
+  trackEventName: string;
+  children: ReactNode;
+}
 
-const IdeasWidget = () => {
-  const { formatMessage } = useIntl();
+const WidgetBuilder = ({
+  widgetPath,
+  schema,
+  defaultValues,
+  trackEventName,
+  children,
+}: Props) => {
+  const locale = useLocale();
   const [codeModalOpened, setCodeModalOpened] = useState(false);
   const [widgetParams, setWidgetParams] = useState('');
 
-  const initialValues = {
-    width: 320,
-    height: 400,
-    siteBgColor: '#ffffff',
-    bgColor: '#ffffff',
-    textColor: '#666666',
-    accentColor: '#2233aa',
-    font: null,
-    fontSize: 15,
-    relativeLink: '/',
-    showHeader: true,
-    showLogo: true,
-    headerText: formatMessage(messages.fieldHeaderTextDefault),
-    headerSubText: formatMessage(messages.fieldHeaderSubTextDefault),
-    showFooter: true,
-    buttonText: formatMessage(messages.fieldButtonTextDefault),
-    sort: 'trending' as const,
-    projects: [],
-    topics: [],
-    limit: 5,
-  };
-
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues: initialValues,
+    defaultValues,
     resolver: yupResolver(schema),
   });
 
   const formValues = methods.watch();
 
   const getWidgetParams = useMemo(() => {
-    return debounce((formValues: FormValues) => {
+    return debounce((formValues: Record<string, any>) => {
       const cleanedParams = omitBy(
         formValues,
         (v) => isNil(v) || (isString(v) && isEmpty(v))
       );
-      setWidgetParams(stringify(cleanedParams));
+      setWidgetParams(stringify({ ...cleanedParams, locale }));
     }, 500);
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     getWidgetParams(formValues);
@@ -116,7 +85,7 @@ const IdeasWidget = () => {
 
   const handleShowCodeClick = () => {
     setCodeModalOpened(true);
-    trackEventByName(tracks.clickAdminExportHTML);
+    trackEventByName(trackEventName);
   };
 
   return (
@@ -126,9 +95,7 @@ const IdeasWidget = () => {
           <FormattedMessage {...messages.settingsTitle} />
         </WidgetTitle>
         <FormProvider {...methods}>
-          <form>
-            <Form />
-          </form>
+          <form>{children}</form>
         </FormProvider>
       </WidgetConfigWrapper>
       <WidgetPreviewWrapper>
@@ -136,7 +103,7 @@ const IdeasWidget = () => {
           <FormattedMessage {...messages.previewTitle} />
         </WidgetTitle>
         <StyledWidgetPreview
-          path={`/ideas?${widgetParams}`}
+          path={`${widgetPath}?${widgetParams}`}
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
@@ -159,7 +126,7 @@ const IdeasWidget = () => {
           <FormattedMessage {...messages.htmlCodeTitle} />
         </ScreenReaderOnly>
         <WidgetCode
-          path={`/ideas?${widgetParams}`}
+          path={`${widgetPath}?${widgetParams}`}
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
@@ -168,4 +135,4 @@ const IdeasWidget = () => {
   );
 };
 
-export default IdeasWidget;
+export default WidgetBuilder;

@@ -21,6 +21,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { Section } from 'components/admin/Section';
+import { formatEditableCommentContent } from 'components/PostShowComponents/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -141,9 +142,8 @@ const OfficialFeedbackForm = ({
 
       if (feedback) {
         forOwn(feedback.attributes.body_multiloc, (bodyText, locale) => {
-          formValues.bodyMultiloc[locale] = (bodyText || '').replace(
-            /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-            '@[$3]($2)'
+          formValues.bodyMultiloc[locale] = formatEditableCommentContent(
+            bodyText || ''
           );
         });
       }

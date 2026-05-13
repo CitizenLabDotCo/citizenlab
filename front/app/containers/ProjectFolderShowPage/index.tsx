@@ -110,7 +110,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
 
   return (
-    <>
+    <main id="e2e-folder-page">
       <StyledContentContainer maxWidth={maxPageWidth}>
         <Box display="flex" width="100%">
           <Box ml="auto" display="flex">
@@ -148,7 +148,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
           </Box>
         </Box>
       </StyledContentContainer>
-      <main id="e2e-folder-page">
+      <Box>
         {descriptionBuilderEnabled ? (
           <StyledContentContainer maxWidth={maxPageWidth}>
             <ProjectFolderHeader projectFolder={projectFolder} />
@@ -195,8 +195,8 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
             )}
           </>
         )}
-      </main>
-    </>
+      </Box>
+    </main>
   );
 };
 

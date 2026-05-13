@@ -18,7 +18,7 @@ const UserComments = lazy(() => import('./UserComments'));
 const UserEvents = lazy(() => import('./UserEvents'));
 
 export enum userShowPageRoutes {
-  profileUserSlug = 'profile/$userSlug',
+  profileUserId = 'profile/$userId',
   submissions = 'submissions',
   comments = 'comments',
   following = 'following',
@@ -35,7 +35,7 @@ export const createUserShowPageRoutes = () => {
 
   const profileRoute = createRoute({
     getParentRoute: () => localeRoute,
-    path: userShowPageRoutes.profileUserSlug,
+    path: userShowPageRoutes.profileUserId,
     validateSearch: (search: Record<string, unknown>) =>
       profileSearchSchema.validateSync(search, { stripUnknown: true }),
     component: () => (
@@ -46,15 +46,11 @@ export const createUserShowPageRoutes = () => {
   });
 
   const ProfileIndexRedirect = () => {
-    const { userSlug } = useParams({
-      from: '/$locale/profile/$userSlug',
+    const { userId } = useParams({
+      from: '/$locale/profile/$userId',
     });
     return (
-      <Navigate
-        to="/profile/$userSlug/submissions"
-        params={{ userSlug }}
-        replace
-      />
+      <Navigate to="/profile/$userId/submissions" params={{ userId }} replace />
     );
   };
 

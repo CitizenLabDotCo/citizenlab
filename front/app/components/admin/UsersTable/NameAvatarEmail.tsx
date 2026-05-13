@@ -36,10 +36,7 @@ const NameAvatarEmail = ({ user }: Props) => {
     <Box display="flex" alignItems="center" gap="8px">
       <Avatar userId={user.id} size={30} />
       <Box>
-        <StyledLink
-          to="/profile/$userSlug"
-          params={{ userSlug: user.attributes.slug }}
-        >
+        <StyledLink to="/profile/$userId" params={{ userId: user.id }}>
           {user.attributes.first_name && user.attributes.last_name ? (
             <>{getFullName(user)}</>
           ) : (

@@ -183,7 +183,7 @@ describe SideFxIdeaService do
       idea.project.update!(live_auto_input_topics_enabled: true)
       expect { service.after_create(idea, user, phase) }
         .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
-        .with(idea.phases.first, [idea.id])
+        .with(idea.project, [idea.id])
         .exactly(1).times
     end
 
@@ -485,7 +485,7 @@ describe SideFxIdeaService do
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
-        .with(idea.phases.first, [idea.id])
+        .with(idea.project, [idea.id])
         .exactly(1).times
     end
 

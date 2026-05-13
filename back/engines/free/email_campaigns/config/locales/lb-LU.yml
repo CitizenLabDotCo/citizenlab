@@ -94,6 +94,7 @@ lb-LU:
         project_published: Projet publizéiert
         project_review_request: Moderator gefrot e Projet review
         project_review_state_change: Rezensor huet de Projet guttgeheescht
+        proposal_expired: Eng Propositioun leeft of, ouni de Seuil ze erreechen
         proposal_gets_reported_as_spam: Propositioun gëtt als Spam gemellt
         proposal_is_assigned_to_admin: Propositioun ass dem Administrateur zougewisen
         proposal_is_published: Propositioun ass publizéiert
@@ -190,6 +191,7 @@ lb-LU:
       project_published: Projet publizéiert
       project_review_request: Projet review Ufro
       project_review_state_change: Projet guttgeheescht
+      proposal_expired_for_admin: Propositioun ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
       screening_digest: Wëchentlech Screening-Erënnerung
       space_moderation_rights_received: Space-Manager-Rechter kritt
       status_change_on_idea_you_follow: Status Ännerung vun enger Iddi déi Dir verfollegt
@@ -595,6 +597,11 @@ lb-LU:
       preheader: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
       subject: '"%{projectTitle}" gouf guttgeheescht'
       title: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
+    proposal_expired_for_admin:
+      cta_button: Iwwerpréift den ofgelafene Bäitrag
+      preheader: E Bäitrag ass ofgelaf, ouni de Seuil ze erreechen
+      subject: '"%{input_title}" ass ofgelaf, ouni de Seuil ze erreechen'
+      title: E Bäitrag ass ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
     schedules:
       quarterly: Trimester, um éischten Dag vum Véierel
       weekly:

@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.QuillEditor.video',
     defaultMessage: 'Add video',
   },
+  embeddedVideo: {
+    id: 'app.components.QuillEditor.embeddedVideo',
+    defaultMessage: 'Embedded video',
+  },
   link: {
     id: 'app.components.QuillEditor.link',
     defaultMessage: 'Add link',

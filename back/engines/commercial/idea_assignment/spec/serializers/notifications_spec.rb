@@ -9,9 +9,9 @@ describe WebApi::V1::Notifications::NotificationSerializer do
 
     hash = serializer_class.new(notification, params: { current_user: user2 })
     last_name = hash.serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
-    slug = hash.serializable_hash.dig(:data, :attributes, :initiating_user_slug)
+    user_id = hash.serializable_hash.dig(:data, :attributes, :initiating_user_id)
     expect(last_name).to eq "#{user1.last_name[0]}."
-    expect(slug.downcase).not_to include(user1.last_name.downcase)
+    expect(user_id).to eq user1.id
 
     last_name = serializer_class
       .new(notification, params: { current_user: user1 })

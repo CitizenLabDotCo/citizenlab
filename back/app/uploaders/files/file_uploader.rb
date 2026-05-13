@@ -25,7 +25,11 @@ module Files
     end
 
     def extension_allowlist
-      # All file types are allowed.
+      SafeUploadAllowlist::EXTENSIONS
+    end
+
+    def content_type_allowlist
+      SafeUploadAllowlist::CONTENT_TYPES
     end
 
     def size_range

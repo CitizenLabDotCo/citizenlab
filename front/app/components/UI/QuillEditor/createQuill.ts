@@ -15,6 +15,7 @@ interface Params {
   onBlur?: () => void;
   altTextLabel?: string;
   imageTitleLabel?: string;
+  ariaLabelledBy?: string;
 }
 
 export const createQuill = (
@@ -32,6 +33,7 @@ export const createQuill = (
     onBlur,
     altTextLabel,
     imageTitleLabel,
+    ariaLabelledBy,
   }: Params
 ) => {
   const quill = new Quill(editorContainer, {
@@ -186,9 +188,20 @@ export const createQuill = (
 
   editor.setAttribute('name', id);
   editor.setAttribute('id', id);
-  editor.setAttribute('aria-labelledby', id);
+  if (ariaLabelledBy) {
+    editor.setAttribute('aria-labelledby', ariaLabelledBy);
+  }
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
+
+  // add aria-labels to dropdown items for a11y
+  const pickerItems = document.querySelectorAll('.ql-picker-item');
+  pickerItems.forEach((item) => {
+    const label = item.getAttribute('data-label');
+    if (label) {
+      item.setAttribute('aria-label', label);
+    }
+  });
 
   return quill;
 };
