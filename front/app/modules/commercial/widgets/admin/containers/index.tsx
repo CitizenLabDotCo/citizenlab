@@ -25,8 +25,6 @@ type WidgetTab = 'ideas' | 'projects';
 
 const AdminSettingsWidgets = () => {
   const { formatMessage } = useIntl();
-  // TanStack Router's useLocation doesn't have `.key` — assume there's a back link.
-  const hasGoBackLink = true;
   const projectWidgetEnabled = useFeatureFlag({ name: 'project_widget' });
   const [selectedTab, setSelectedTab] = useState<WidgetTab>('ideas');
 
