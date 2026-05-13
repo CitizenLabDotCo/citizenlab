@@ -232,6 +232,7 @@
   "app.components.EventAttendanceButton.registered": "Registered",
   "app.components.EventAttendanceButton.seeYouThere": "See you there!",
   "app.components.EventAttendanceButton.seeYouThereName": "See you there, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "You have been unregistered from {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Less event information became visible.",
   "app.components.EventCard.a11y_moreContentVisible": "More event information became visible.",
   "app.components.EventCard.a11y_readMore": "Read more about the \"{eventTitle}\" event.",
