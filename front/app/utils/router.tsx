@@ -34,7 +34,9 @@ export const Navigate = (props: any) => {
 
 // Drop-in for the old `react-router-dom` MemoryRouter — TanStack has no
 // equivalent. Children are read via a ref so re-renders don't rebuild the
-// router (which would lose location state).
+// router (which would lose location state). Used by .storybook/preview.tsx,
+// which is outside the app/tsconfig.json scope ts-prune scans.
+// ts-prune-ignore-next
 export const MemoryRouter = ({
   children,
   initialEntries = ['/'],
