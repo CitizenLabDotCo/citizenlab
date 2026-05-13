@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
+import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
@@ -49,6 +49,7 @@ const AdminCustomPageEditButton = ({
         icon="edit"
         linkTo={adminCustomPageContentPath(pageId)}
         buttonStyle="secondary-outlined"
+        bgColor={colors.white}
         padding="5px 8px"
       >
         {formatMessage(messages.editPage)}
