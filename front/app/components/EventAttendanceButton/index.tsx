@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
 import {
   Button,
@@ -24,6 +24,7 @@ import { triggerPostActionEvents } from 'containers/App/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import {
   getPermissionsDisabledMessage,
   isFixableByAuthentication,
@@ -44,6 +45,9 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
+  // Flips the button label in the same render as the announcement, so the focused-element name change doesn't cut off the live-region speech.
+  const [optimisticallyUnregistered, setOptimisticallyUnregistered] =
+    useState(false);
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId(user?.data.id);
@@ -57,6 +61,14 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     (eventAttending) => eventAttending.id === event.id
   );
   const userIsAttending = !!userAttendingEventObject;
+  const effectivelyAttending = userIsAttending && !optimisticallyUnregistered;
+
+  useEffect(() => {
+    if (optimisticallyUnregistered && !userIsAttending) {
+      setOptimisticallyUnregistered(false);
+    }
+  }, [optimisticallyUnregistered, userIsAttending]);
+
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
   const customButtonText = event.attributes.attend_button_multiloc
@@ -96,8 +108,14 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       return;
     }
 
-    if (userIsAttending && attendanceId) {
-      deleteEventAttendance({ attendanceId });
+    if (effectivelyAttending && attendanceId) {
+      setOptimisticallyUnregistered(true);
+      deleteEventAttendance(
+        { attendanceId },
+        {
+          onError: () => setOptimisticallyUnregistered(false),
+        }
+      );
       return;
     }
 
@@ -177,33 +195,30 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   return (
     <>
-      {userIsAttending ? (
+      <Tooltip
+        disabled={effectivelyAttending || !buttonDisabled}
+        placement="bottom"
+        content={disabledMessage}
+        useContentWrapper={false}
+      >
         <Button
           {...buttonProps}
-          icon={event.attributes.using_url ? undefined : 'check'}
+          icon={
+            event.attributes.using_url
+              ? undefined
+              : effectivelyAttending
+              ? 'check'
+              : 'plus-circle'
+          }
+          disabled={!effectivelyAttending && buttonDisabled}
         >
           {customButtonText && event.attributes.using_url
             ? customButtonText
-            : formatMessage(messages.registered)}
+            : formatMessage(
+                effectivelyAttending ? messages.registered : messages.register
+              )}
         </Button>
-      ) : (
-        <Tooltip
-          disabled={!buttonDisabled}
-          placement="bottom"
-          content={disabledMessage}
-          useContentWrapper={false}
-        >
-          <Button
-            {...buttonProps}
-            icon={event.attributes.using_url ? undefined : 'plus-circle'}
-            disabled={buttonDisabled}
-          >
-            {customButtonText && event.attributes.using_url
-              ? customButtonText
-              : formatMessage(messages.register)}
-          </Button>
-        </Tooltip>
-      )}
+      </Tooltip>
       <ConfirmationModal
         opened={confirmationModalVisible}
         event={event}
@@ -212,6 +227,15 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           triggerPostActionEvents({});
         }}
       />
+      <ScreenReaderOnly aria-live="assertive" role="alert">
+        {optimisticallyUnregistered && (
+          <span>
+            {formatMessage(messages.unregisteredAnnouncement, {
+              eventTitle: localize(event.attributes.title_multiloc),
+            })}
+          </span>
+        )}
+      </ScreenReaderOnly>
     </>
   );
 };
