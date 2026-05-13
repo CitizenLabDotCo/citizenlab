@@ -41,6 +41,10 @@ describe('Admin project approval flow', () => {
 
   it('should be possible for a project moderator to request approval for a project', () => {
     cy.setLoginCookie(email, password);
+
+    cy.intercept('GET', `**/projects/${projectId}/review`).as('getReview');
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
+
     cy.visit(`admin/projects/${projectId}`);
 
     cy.location('pathname').should(
