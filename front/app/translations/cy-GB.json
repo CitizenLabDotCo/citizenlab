@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Gwrthod y polisi a chau'r faner",
   "app.components.ConsentManager.Banner.close": "Cau",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Mae derbyn cwcis yn ein helpu i wella'r platfform hwn. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Mae derbyn cwcis yn ein helpu i wella'r platfform hwn.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Eich dewisiadau cwcis",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Darllenwch ein polisi cwcis",
   "app.components.ConsentManager.Banner.manage": "Rheoli",
