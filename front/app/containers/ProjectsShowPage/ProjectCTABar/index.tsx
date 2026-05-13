@@ -6,6 +6,7 @@ import {
   colors,
   stylingConsts,
   useBreakpoint,
+  useWindowSize,
 } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
@@ -23,11 +24,12 @@ type ProjectCTABarProps = {
 
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const viewportHeight = window.innerHeight;
+  const { windowHeight } = useWindowSize();
+
   // Only stick on height over 400, to prevent a11y issues on very small viewports
   const sticksToBottom =
     isSmallerThanTablet &&
-    viewportHeight > MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS;
+    windowHeight > MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS;
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
