@@ -176,8 +176,8 @@ const PoweredByText = styled.span`
   line-height: normal;
   margin-right: 8px;
   ${media.tablet`
-    display: none;
-    margin-bottom: 10px;
+    margin-right: 0;
+    margin-bottom: 4px;
   `}
 `;
 
