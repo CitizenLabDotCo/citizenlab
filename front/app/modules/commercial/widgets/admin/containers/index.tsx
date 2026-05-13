@@ -48,11 +48,9 @@ const AdminSettingsWidgets = () => {
 
   return (
     <>
-      {hasGoBackLink && (
-        <Box w="100%">
-          <GoBackButton onClick={goBack} />
-        </Box>
-      )}
+      <Box w="100%">
+        <GoBackButton onClick={goBack} />
+      </Box>
       <SectionTitle>
         <FormattedMessage {...messages.titleWidgets} />
       </SectionTitle>
