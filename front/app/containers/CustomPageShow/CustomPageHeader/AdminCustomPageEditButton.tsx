@@ -1,6 +1,8 @@
 import React from 'react';
 
+import { media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -13,6 +15,21 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
+
+// Absolutely positioned at top-right on wider viewports, but switches to
+// in-flow on narrow viewports / 400% zoom so the button doesn't overlap
+// the page heading (WCAG 1.4.10 Reflow).
+const PositionWrapper = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 30px;
+
+  ${media.tablet`
+    position: static;
+    width: fit-content;
+    margin-top: 16px;
+  `}
+`;
 
 interface Props {
   pageId: string;
@@ -27,17 +44,16 @@ const AdminCustomPageEditButton = ({
   const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
 
   return userCanEditPage ? (
-    <ButtonWithLink
-      icon="edit"
-      linkTo={adminCustomPageContentPath(pageId)}
-      buttonStyle="secondary-outlined"
-      padding="5px 8px"
-      position="absolute"
-      top="30px"
-      right="30px"
-    >
-      {formatMessage(messages.editPage)}
-    </ButtonWithLink>
+    <PositionWrapper>
+      <ButtonWithLink
+        icon="edit"
+        linkTo={adminCustomPageContentPath(pageId)}
+        buttonStyle="secondary-outlined"
+        padding="5px 8px"
+      >
+        {formatMessage(messages.editPage)}
+      </ButtonWithLink>
+    </PositionWrapper>
   ) : null;
 };
 
