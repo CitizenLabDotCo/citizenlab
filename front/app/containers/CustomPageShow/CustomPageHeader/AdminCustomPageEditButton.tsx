@@ -48,7 +48,7 @@ const AdminCustomPageEditButton = ({
       <ButtonWithLink
         icon="edit"
         linkTo={adminCustomPageContentPath(pageId)}
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         bgColor={colors.white}
         padding="5px 8px"
       >
