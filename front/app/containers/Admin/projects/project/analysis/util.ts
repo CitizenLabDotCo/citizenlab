@@ -1,16 +1,12 @@
 import { IInputsData } from 'api/analysis_inputs/types';
 
 export const handleArraySearchParam = (
-  searchParams: URLSearchParams,
-  paramName: string
-) => {
-  const result: string[] | undefined =
-    searchParams.get(paramName) &&
-    typeof searchParams.get(paramName) === 'string'
-      ? JSON.parse(searchParams.get(paramName) as string)
-      : undefined;
-
-  return result;
+  paramValue: unknown
+): string[] | undefined => {
+  if (Array.isArray(paramValue)) return paramValue;
+  if (typeof paramValue === 'string' && paramValue.length > 0)
+    return [paramValue];
+  return undefined;
 };
 
 export const getRelatedTextAnswer = (

@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import { removeJwt } from 'utils/auth/jwt';
@@ -9,6 +7,7 @@ import {
   invalidateQueryCache,
   resetMeQuery,
 } from 'utils/cl-react-query/resetQueryCache';
+import { useLocation } from 'utils/router';
 
 import SessionExpiredModal from './SessionExpiredModal';
 import SessionExpiringSoonModal from './SessionExpiringSoonModal';

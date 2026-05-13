@@ -9,7 +9,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -26,6 +25,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { useParams } from 'utils/router';
 
 import { ViewOptions } from '..';
 import { getLayerColor, getLayerIcon } from '../../../../utils/mapUtils/map';
@@ -99,7 +99,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     setView,
     localize,
   }) => {
-    const { projectId } = useParams() as {
+    const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
 
