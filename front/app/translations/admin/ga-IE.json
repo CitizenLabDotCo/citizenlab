@@ -3458,6 +3458,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Taispeáin ionchuir leis an luach seo amháin",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Folaigh freagraí gan freagra",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Léargais uathoibríocha",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Níl léargais uathoibríocha ar fáil toisc go bhfuil níos mó ná 50 ceist san anailís seo. Leis an oiread sin ceisteanna, éiríonn comhchoibhnis uathoibríocha neamhiontaofa, mar sin ní thaispeánaimid iad.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Luachanna colún",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Tá {count} samplaí den teaglaim seo ann.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Ní maith liom",

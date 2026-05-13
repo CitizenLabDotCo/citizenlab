@@ -61,7 +61,7 @@ const CreateProject = () => {
 
   return (
     <Box>
-      <GoBackButton linkTo="/admin/projects" />
+      <GoBackButton to="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}
       </Title>

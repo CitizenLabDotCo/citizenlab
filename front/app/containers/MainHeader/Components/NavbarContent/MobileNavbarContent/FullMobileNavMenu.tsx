@@ -127,7 +127,8 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
             return null;
           })}
           <FullMobileNavMenuItem
-            linkTo={'/projects?focusSearch=true'}
+            to="/projects"
+            search={{ focusSearch: true }}
             navigationItemTitle={formatMessage(messages.search)}
             onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
             iconName="search"

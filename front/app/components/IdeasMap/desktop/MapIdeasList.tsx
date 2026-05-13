@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import { IdeaSortMethod } from 'api/phases/types';
+import { ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -16,6 +15,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -47,7 +47,7 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const [searchParams] = useSearchParams();
+    const { sort: sortParam, search, topics } = useSearch({ strict: false });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);
@@ -66,13 +66,16 @@ const MapIdeasList = memo<Props>(
 
     const { data: phase } = usePhase(phaseId);
 
+    const sortFromUrl = ideaSortMethods.find((m) => m === sortParam);
     const sort =
-      (searchParams.get('sort') as IdeaSortMethod | null) ??
+      sortFromUrl ??
       phase?.data.attributes.ideas_order ??
       IdeaSortMethodFallback;
-    const search = searchParams.get('search');
-    const topicsParam = searchParams.get('topics');
-    const input_topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+    const input_topics: string[] = Array.isArray(topics)
+      ? topics
+      : topics
+      ? [topics]
+      : [];
 
     const { data: ideaMarkers } = useIdeaMarkers({
       projectIds: [projectId],

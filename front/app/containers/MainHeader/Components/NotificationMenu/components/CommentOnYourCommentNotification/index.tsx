@@ -16,10 +16,14 @@ interface Props {
 
 const CommentOnYourCommentNotification = memo<Props>((props) => {
   const { notification } = props;
+  const slug = notification.attributes.post_slug;
+
+  if (!slug) return null;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug }}
       timing={notification.attributes.created_at}
       icon="comments"
       isRead={!!notification.attributes.read_at}

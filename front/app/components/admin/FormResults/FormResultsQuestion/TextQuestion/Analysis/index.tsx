@@ -9,7 +9,6 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -22,6 +21,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -42,7 +42,7 @@ const Analysis = ({
   hasOtherResponses,
   ...props
 }: Props) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
@@ -50,7 +50,9 @@ const Analysis = ({
     useAddAnalysis();
   const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
 
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };
@@ -97,7 +99,8 @@ const Analysis = ({
   const insights = isCommunityMonitor
     ? filterForCommunityMonitorQuarter({
         insights: insightsData,
-        search,
+        yearParam: search.year,
+        quarterParam: search.quarter,
         analysisSummaries,
       })
     : insightsData;

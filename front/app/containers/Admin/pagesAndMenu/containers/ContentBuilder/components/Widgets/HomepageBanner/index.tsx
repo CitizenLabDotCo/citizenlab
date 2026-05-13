@@ -12,8 +12,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
@@ -38,8 +36,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { useLocation, useSearch } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
 
 import { DEFAULT_Y_PADDING } from '../constants';
@@ -96,7 +96,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
-  banner_cta_signed_out_url: RouteType | null;
+  banner_cta_signed_out_url: string | null;
   // signed_in
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_in_header_overlay_color?: string | null;
@@ -115,7 +115,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: RouteType | null;
+  banner_cta_signed_in_url: string | null;
   header_bg?: ImageSizes | null;
 }
 
@@ -134,14 +134,14 @@ type Props = {
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const locale = useLocale();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
   const showSignedInHeader =
     (isHomepage && authUser?.data !== undefined) ||
-    search.get('variant') === 'signedIn';
+    search.variant === 'signedIn';
 
   return (
     <Box
@@ -237,7 +237,9 @@ const HomepageBannerSettings = () => {
 
   const [errors, setErrors] = useState<ErrorType[]>([]);
   const [hasError, setHasError] = useState(false);
-  const [search, setSearchParams] = useSearchParams();
+  const search = useSearch({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const { formatMessage } = useIntl();
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
@@ -301,9 +303,7 @@ const HomepageBannerSettings = () => {
     field: 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url'
   ) => {
     const validation = isValidUrl(value);
-    setProp(
-      (props: Props) => (props.homepageSettings[field] = value as RouteType)
-    );
+    setProp((props: Props) => (props.homepageSettings[field] = value));
 
     if (!validation) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -456,9 +456,9 @@ const HomepageBannerSettings = () => {
       >
         <Button
           onClick={() => {
-            setSearchParams({ variant: 'signedOut' });
+            updateSearchParams({ variant: 'signedOut' });
           }}
-          buttonStyle={search.get('variant') !== 'signedIn' ? 'white' : 'text'}
+          buttonStyle={search.variant !== 'signedIn' ? 'white' : 'text'}
           fontSize="14px"
           id="e2e-signed-out-button"
           whiteSpace="wrap"
@@ -468,9 +468,9 @@ const HomepageBannerSettings = () => {
 
         <Button
           onClick={() => {
-            setSearchParams({ variant: 'signedIn' });
+            updateSearchParams({ variant: 'signedIn' });
           }}
-          buttonStyle={search.get('variant') === 'signedIn' ? 'white' : 'text'}
+          buttonStyle={search.variant === 'signedIn' ? 'white' : 'text'}
           fontSize="14px"
           id="e2e-signed-in-button"
           whiteSpace="wrap"
@@ -479,7 +479,7 @@ const HomepageBannerSettings = () => {
         </Button>
       </Box>
 
-      {search.get('variant') !== 'signedIn' && (
+      {search.variant !== 'signedIn' && (
         <>
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedOutDescription)}
@@ -682,7 +682,7 @@ const HomepageBannerSettings = () => {
         </>
       )}
 
-      {search.get('variant') === 'signedIn' && (
+      {search.variant === 'signedIn' && (
         <>
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedInDescription)}

@@ -3458,6 +3458,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Prikaži samo unose s ovom vrijednošću",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Sakrij odgovore bez odgovora",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatski uvidi",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Automatski uvidi nisu dostupni jer ova analiza sadrži više od 50 pitanja. Uz toliki broj pitanja, automatske korelacije postaju nepouzdane pa ih ne prikazujemo.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Vrijednosti stupaca",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Postoji {count} primjeraka ove kombinacije.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nesviđanja",

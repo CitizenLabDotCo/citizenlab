@@ -65,8 +65,9 @@ const StyledTitle = styled(Box)<TitleProps>`
     textAlign,
     fontWeight,
   }: TitleProps) => css`
-    color: ${({ theme }: { theme: MainThemeProps }) =>
-      color ? theme.colors[color] : colors.textPrimary};
+    color: ${({ theme }: { theme: MainThemeProps }) => {
+      return color ? theme.colors[color] : colors.textPrimary;
+    }};
     font-style: ${fontStyle ? fontStyle : 'normal'};
     font-weight: ${getFontWeightCSS(fontWeight || 'bold')};
     line-height: 1.3;

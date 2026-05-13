@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
+import { useParams } from 'utils/router';
+
 import { communityMonitorConfig } from './utils';
 
 const CommunityMonitorSurveyFormBuilder = () => {
-  const { phaseId, projectId } = useParams() as {
+  const { phaseId, projectId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -34,7 +34,11 @@ const CommunityMonitorSurveyFormBuilder = () => {
         formCustomFields,
         goBackUrl: `/admin/community-monitor/settings`,
       }}
-      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+      viewFormLink={{
+        to: '/projects/$slug/surveys/new',
+        params: { slug: project.data.attributes.slug },
+        search: { phase_id: phase.data.id },
+      }}
     />
   );
 };

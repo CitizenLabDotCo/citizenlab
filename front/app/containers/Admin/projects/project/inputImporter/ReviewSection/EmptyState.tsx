@@ -7,13 +7,13 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import sharedMessages from '../messages';
 
@@ -26,9 +26,9 @@ interface Props {
 }
 
 const EmptyState = ({ onClickPDFImport, onClickExcelImport }: Props) => {
-  const { phaseId } = useParams() as {
-    phaseId: string;
-  };
+  const { phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
