@@ -68,6 +68,7 @@ type FormEditProps = {
   totalSubmissions: number;
   viewFormLink: RouteType;
   phase: IPhaseData;
+  emptyStateContent?: React.ReactNode;
 };
 
 const FormEdit = ({
@@ -76,6 +77,7 @@ const FormEdit = ({
   totalSubmissions,
   viewFormLink,
   phase,
+  emptyStateContent,
 }: FormEditProps) => {
   const phaseId = phase.id;
   const projectId = phase.relationships.project.data.id;
@@ -352,22 +354,30 @@ const FormEdit = ({
                     px="30px"
                   >
                     <Box mt="16px">
-                      <FormStatus
-                        successMessageIsVisible={successMessageIsVisible}
-                        setSuccessMessageIsVisible={setSuccessMessageIsVisible}
-                        isSubmitting={isSubmitting}
-                        builderConfig={builderConfig}
-                        projectId={projectId}
-                        phaseId={phaseId}
-                      />
-                      <FormFields
-                        onEditField={setSelectedField}
-                        selectedFieldId={selectedField?.id}
-                        handleDragEnd={reorderFields}
-                        builderConfig={builderConfig}
-                        closeSettings={closeSettings}
-                        fieldArrayOperations={{ insert, move, remove }}
-                      />
+                      {emptyStateContent ? (
+                        emptyStateContent
+                      ) : (
+                        <>
+                          <FormStatus
+                            successMessageIsVisible={successMessageIsVisible}
+                            setSuccessMessageIsVisible={
+                              setSuccessMessageIsVisible
+                            }
+                            isSubmitting={isSubmitting}
+                            builderConfig={builderConfig}
+                            projectId={projectId}
+                            phaseId={phaseId}
+                          />
+                          <FormFields
+                            onEditField={setSelectedField}
+                            selectedFieldId={selectedField?.id}
+                            handleDragEnd={reorderFields}
+                            builderConfig={builderConfig}
+                            closeSettings={closeSettings}
+                            fieldArrayOperations={{ insert, move, remove }}
+                          />
+                        </>
+                      )}
                     </Box>
                   </Box>
                   <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
@@ -395,11 +405,13 @@ const FormEdit = ({
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
   viewFormLink: RouteType;
+  emptyStateContent?: React.ReactNode;
 };
 
 const FormBuilderPage = ({
   builderConfig,
   viewFormLink,
+  emptyStateContent,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { phaseId } = useParams();
@@ -426,6 +438,7 @@ const FormBuilderPage = ({
           builderConfig={builderConfig}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
+          emptyStateContent={emptyStateContent}
         />,
         modalPortalElement
       )

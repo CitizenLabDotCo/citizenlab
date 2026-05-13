@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ExcelImportButton from 'components/admin/FormSync/components/ExcelImportButton';
-import PDFImportButton from 'components/admin/FormSync/components/PDFImportButton';
+import formSyncMessages from 'components/admin/FormSync/messages';
 import UpsellTooltip from 'components/UpsellTooltip';
 
+import { FormattedMessage } from 'utils/cl-intl';
 interface Props {
   onClickPDFImport: () => void;
   onClickExcelImport: () => void;
@@ -36,10 +37,35 @@ const ImportButtons = ({
         />
       </UpsellTooltip>
       {pdfImportSupported && (
-        <PDFImportButton
-          printedFormsEnabled={printedFormsEnabled}
-          onClickPDFImport={onClickPDFImport}
-        />
+        <>
+          {printedFormsEnabled ? (
+            <Button
+              buttonStyle="admin-dark"
+              icon="form-sync"
+              onClick={onClickPDFImport}
+            >
+              <FormattedMessage {...formSyncMessages.importScans} />
+            </Button>
+          ) : (
+            <Tooltip
+              content={
+                <Box display="flex" flexDirection="column" gap="8px">
+                  <FormattedMessage
+                    {...formSyncMessages.unlockScanningTooltip1}
+                  />
+                  <FormattedMessage
+                    {...formSyncMessages.unlockScanningTooltip2}
+                  />
+                </Box>
+              }
+              theme="dark"
+            >
+              <Button buttonStyle="admin-dark" icon="lock" disabled>
+                <FormattedMessage {...formSyncMessages.unlockScanning} />
+              </Button>
+            </Tooltip>
+          )}
+        </>
       )}
     </Box>
   );

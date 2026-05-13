@@ -95,8 +95,11 @@ const SurveyActions = ({ phase }: Props) => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
-  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
-    getFormActionsConfig(project.data, updatePhase, phase);
+  const { postingEnabled, togglePostingEnabled } = getFormActionsConfig(
+    project.data,
+    updatePhase,
+    phase
+  );
 
   const inputCustomFieldsIds = inputCustomFields?.data.map(
     (customField) => customField.id
@@ -339,15 +342,6 @@ const SurveyActions = ({ phase }: Props) => {
             openLinkInNewTab
           >
             {formatMessage(messages.newSubmission)}
-          </ButtonWithLink>
-          <ButtonWithLink
-            linkTo={inputImporterLink}
-            icon="page"
-            iconSize="20px"
-            buttonStyle="secondary-outlined"
-            width="auto"
-          >
-            {formatMessage(messages.import)}
           </ButtonWithLink>
           <Button
             buttonStyle="primary"

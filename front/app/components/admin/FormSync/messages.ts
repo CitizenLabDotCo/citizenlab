@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF2',
     defaultMessage: 'Download PDF',
   },
+  paperForm: {
+    id: 'app.components.FormSync.paperForm1',
+    defaultMessage: 'Paper form',
+  },
+  importInputs: {
+    id: 'app.components.FormSync.importInputs1',
+    defaultMessage: 'Import inputs',
+  },
   downloadExcelTemplateTooltip: {
     id: 'app.components.FormSync.downloadExcelTemplateTooltip3',
     defaultMessage:

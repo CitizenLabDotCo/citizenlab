@@ -31,11 +31,7 @@ const PDFImportButton = ({
         theme="dark"
       >
         {/* Empty button used to match designs, as this is admin-only it is fine */}
-        <Button
-          buttonStyle="admin-dark"
-          icon="lock"
-          style={{ cursor: 'not-allowed' }}
-        >
+        <Button buttonStyle="admin-dark" icon="lock" disabled>
           <FormattedMessage {...messages.unlockScanning} />
         </Button>
       </Tooltip>

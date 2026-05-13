@@ -17,7 +17,7 @@ resource 'Ideas' do
     )
 
     @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
-    @custom_field = @custom_form.custom_fields.find_by(input_type: 'select')
+    @custom_field = create(:custom_field_select, :with_options, resource: @custom_form)
 
     # Create registration (demographic) question and
     # add to permission

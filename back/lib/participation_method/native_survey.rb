@@ -47,27 +47,6 @@ module ParticipationMethod
       multiloc_service = MultilocService.new
       [
         start_page_field(custom_form),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: CustomFieldService.new.generate_key(
-            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first
-          ),
-          resource: custom_form,
-          input_type: 'select',
-          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
-          options: [
-            CustomFieldOption.new(
-              id: SecureRandom.uuid,
-              key: 'option1',
-              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option1')
-            ),
-            CustomFieldOption.new(
-              id: SecureRandom.uuid,
-              key: 'option2',
-              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
-            )
-          ]
-        ),
         end_page_field(custom_form, multiloc_service)
       ]
     end
