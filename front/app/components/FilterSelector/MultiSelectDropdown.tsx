@@ -13,10 +13,13 @@ import {
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import messages from './messages';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
 
@@ -123,6 +126,7 @@ const MultiSelectDropdown = ({
   handleKeyDown,
   isLoading,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const triggerRef = useRef<HTMLDivElement>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -276,7 +280,7 @@ const MultiSelectDropdown = ({
                         Enter/Space to the native <input type="checkbox"> inside
                         it instead of the <li role="checkbox"> that has the
                         keyboard handlers. pointerEvents: 'none' ensures clicks
-                        go through the <li>'s onClick handler. 
+                        go through the <li>'s onClick handler.
                     */}
                     <Box aria-hidden="true" pointerEvents="none">
                       <Checkbox
@@ -300,6 +304,28 @@ const MultiSelectDropdown = ({
           </Box>
         }
       />
+      {opened && (
+        <button
+          onFocus={() => {
+            closeExpanded();
+            focusTrigger();
+          }}
+          onClick={closeExpanded}
+          style={{
+            position: 'absolute',
+            width: 1,
+            height: 1,
+            padding: 0,
+            margin: -1,
+            overflow: 'hidden',
+            clip: 'rect(0, 0, 0, 0)',
+            whiteSpace: 'nowrap',
+            border: 0,
+          }}
+        >
+          {formatMessage(messages.closeMenu)}
+        </button>
+      )}
     </Box>
   );
 };
