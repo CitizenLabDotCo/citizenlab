@@ -19,6 +19,9 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
 
   if (!participation_method) return null;
 
+  const noop = () => {};
+  noop();
+
   const { action } = permissionData.attributes;
 
   const showSurveyForm =
