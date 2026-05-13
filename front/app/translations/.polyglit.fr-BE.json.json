@@ -7164,6 +7164,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:41:27.147129Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
