@@ -17569,6 +17569,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:17:04.992712Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",

@@ -119,6 +119,7 @@ const usePublishedProjectTemplates = ({
         search,
         locales,
         organizationTypes,
+        graphqlTenantLocales,
       },
     ],
     queryFn: ({ pageParam = null }) =>
