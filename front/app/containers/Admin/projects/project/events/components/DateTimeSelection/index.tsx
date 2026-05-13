@@ -34,8 +34,39 @@ const DateTimeSelection = ({
   const { data: appConfig } = useAppConfiguration();
   const platformTimezone =
     appConfig?.data.attributes.settings.core.timezone ?? '';
-  const startAtDate = new Date(startAt);
-  const endAtDate = new Date(endAt);
+
+  // Pickers operate on JS Dates in the *browser* tz. To make them display
+  // wall-clock values in the platform tz, we project the stored UTC instant
+  // into the platform tz and rebuild a Date whose browser-tz components
+  // match those platform-tz wall-clock values.
+  const toPickerDate = (iso: string) => {
+    if (!platformTimezone) return new Date(iso);
+    const m = moment.tz(iso, platformTimezone);
+    return new Date(m.year(), m.month(), m.date(), m.hour(), m.minute());
+  };
+
+  // Inverse of toPickerDate: treat the picker Date's wall-clock components
+  // as platform-tz values and return the corresponding UTC ISO string.
+  const fromPickerDate = (date: Date) => {
+    if (!platformTimezone) return date.toISOString();
+    return moment
+      .tz(
+        {
+          year: date.getFullYear(),
+          month: date.getMonth(),
+          day: date.getDate(),
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          second: 0,
+        },
+        platformTimezone
+      )
+      .utc()
+      .toISOString();
+  };
+
+  const startAtDate = toPickerDate(startAt);
+  const endAtDate = toPickerDate(endAt);
 
   const now = platformTimezone ? moment().tz(platformTimezone) : moment();
   const tenantTimeNow = new Date(
@@ -68,28 +99,40 @@ const DateTimeSelection = ({
     !!platformTimezone && endGmtOffset !== endBrowserOffset;
 
   const updateStartAt = (date: Date) => {
-    const currentDifference = endAtDate.getTime() - startAtDate.getTime();
+    // Preserve real (UTC) duration so DST transitions don't stretch/shrink the event
+    const currentDurationMs = moment.utc(endAt).diff(moment.utc(startAt));
+
+    const newStartIso = fromPickerDate(date);
+    const newEndIso = moment
+      .utc(newStartIso)
+      .add(currentDurationMs, 'ms')
+      .toISOString();
 
     setAttributeDiff((prev) => ({
       ...prev,
-      start_at: date.toISOString(),
-      end_at: new Date(date.getTime() + currentDifference).toISOString(),
+      start_at: newStartIso,
+      end_at: newEndIso,
     }));
   };
 
   const updateEndAt = (date: Date) => {
-    let newStartAtDate = new Date(startAtDate);
-    const newEndAtDateIsBeforeStartDate = date < startAtDate;
+    const newEndIso = fromPickerDate(date);
+    const newEndUtc = moment.utc(newEndIso);
+    const oldStartUtc = moment.utc(startAt);
 
-    if (newEndAtDateIsBeforeStartDate) {
-      const currentDifference = endAtDate.getTime() - startAtDate.getTime();
-      newStartAtDate = new Date(date.getTime() - currentDifference);
+    let newStartIso = startAt;
+    if (newEndUtc.isBefore(oldStartUtc)) {
+      const currentDurationMs = moment.utc(endAt).diff(oldStartUtc);
+      newStartIso = newEndUtc
+        .clone()
+        .subtract(currentDurationMs, 'ms')
+        .toISOString();
     }
 
     setAttributeDiff((prev) => ({
       ...prev,
-      start_at: newStartAtDate.toISOString(),
-      end_at: date.toISOString(),
+      start_at: newStartIso,
+      end_at: newEndIso,
     }));
   };
 
