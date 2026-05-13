@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -20,11 +19,12 @@ import Navigate from 'utils/cl-router/Navigate';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
 const IdeasNewPage = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
   const {
     data: project,
     status: projectStatus,
@@ -32,8 +32,10 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const [searchParams] = useSearchParams();
-  const phaseIdFromSearchParams = searchParams.get('phase_id');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const phaseIdFromSearchParams = searchParams.phase_id;
   // If we reach this component by hitting ideas/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
   const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
@@ -112,7 +114,9 @@ const IdeasNewPage = () => {
   if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${phaseId}`}
+        to="/projects/$slug/surveys/new"
+        params={{ slug }}
+        search={{ phase_id: phaseId }}
         replace
       />
     );

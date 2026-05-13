@@ -8,7 +8,6 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
@@ -20,6 +19,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -46,8 +46,10 @@ const SelectedTopicContent = ({
   topicCounts,
   onBack,
 }: Props) => {
-  const [searchParams] = useSearchParams();
-  const selectedSubtopicId = searchParams.get('subtopic');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedSubtopicId = searchParams.subtopic;
 
   const { data: topic } = useInputTopicById(topicId);
   const { data: subtopics } = useInputTopics(projectId, {

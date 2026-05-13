@@ -9,8 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
@@ -25,6 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import { getLeaveFormDestination } from '../utils';
 
@@ -44,9 +43,11 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
-  const location = useLocation();
+  // const location = useLocation();
 
-  const { slug: projectSlug } = useParams();
+  const { slug: projectSlug } = useParams({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
@@ -62,18 +63,31 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
 
-  const hasBeenSubmitted = !!searchParams.get('idea_id');
+  const hasBeenSubmitted = searchParams.idea_id !== undefined;
 
   if (!project) return null;
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: RouteType =
+  const linkToSurveyBuilder: {
+    to:
+      | '/admin/community-monitor/projects/$projectId/phases/$phaseId/survey/edit'
+      | '/admin/projects/$projectId/phases/$phaseId/survey-form/edit';
+    params: Record<string, string>;
+  } =
     phaseParticipationMethod === 'community_monitor_survey'
-      ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
-      : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;
+      ? {
+          to: '/admin/community-monitor/projects/$projectId/phases/$phaseId/survey/edit',
+          params: { projectId: project.data.id, phaseId },
+        }
+      : {
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form/edit',
+          params: { projectId: project.data.id, phaseId },
+        };
 
   const leaveForm = () => {
     const leaveFormDestination = getLeaveFormDestination(
@@ -83,7 +97,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
     switch (leaveFormDestination) {
       case 'go-back':
         // If there is a back history, go back, otherwise go to the homepage
-        location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        // location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
         break;
       case 'project-page':
         clHistory.push(`/projects/${projectSlug}`);
@@ -134,7 +148,12 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             <ButtonWithLink
               data-cy="e2e-edit-survey-link"
               icon="edit"
-              linkTo={linkToSurveyBuilder}
+              to={linkToSurveyBuilder.to}
+              params={
+                linkToSurveyBuilder.params as Parameters<
+                  typeof ButtonWithLink
+                >[0]['params']
+              }
               buttonStyle="primary-inverse"
               textDecorationHover="underline"
               mr="12px"

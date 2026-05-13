@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -11,6 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 import { Top } from 'components/admin/PostManager/components/PostPreview';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -25,7 +25,7 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
-  const { phaseId: phaseIdFromUrl } = useParams() as { phaseId?: string };
+  const { phaseId: phaseIdFromUrl } = useParams({ strict: false });
   const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
 

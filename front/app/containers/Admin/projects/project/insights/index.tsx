@@ -10,7 +10,6 @@ import {
   Badge,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -26,6 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
+import { useParams } from 'utils/router';
 
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
 
@@ -66,7 +66,7 @@ const hiddenContainerStyle: React.CSSProperties = {
 
 // Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -355,7 +355,7 @@ const InsightsContent = () => {
 
 // Main component that wraps with PdfExportProvider
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

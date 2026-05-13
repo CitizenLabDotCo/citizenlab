@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
@@ -12,6 +11,7 @@ import PastEvents from 'containers/EventsPage/PastEvents';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 export const UserEvents = () => {
-  const { userId } = useParams() as { userId: string };
+  const { userId } = useParams({ from: '/$locale/profile/$userId' });
   const { data: user } = useUserById(userId);
   const { data: events } = useEventsByUserId(user?.data.id);
   const isPhoneOrSmaller = useBreakpoint('phone');

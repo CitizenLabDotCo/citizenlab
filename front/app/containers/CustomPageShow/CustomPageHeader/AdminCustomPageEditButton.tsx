@@ -1,35 +1,24 @@
 import React from 'react';
 
-import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import styled from 'styled-components';
+import { colors, media } from '@citizenlab/cl2-component-library';
 
 // Absolutely positioned at top-right on wider viewports, but switches to
 // in-flow on narrow viewports / 400% zoom so the button doesn't overlap
 // the page heading (WCAG 1.4.10 Reflow).
-const PositionWrapper = styled.div`
-  position: absolute;
-  top: 50px;
-  right: 30px;
-
-  ${media.tablet`
-    position: static;
-    width: fit-content;
-    margin-top: 16px;
-  `}
-`;
 
 interface Props {
   pageId: string;
@@ -47,7 +36,7 @@ const AdminCustomPageEditButton = ({
     <PositionWrapper>
       <ButtonWithLink
         icon="edit"
-        linkTo={adminCustomPageContentPath(pageId)}
+        {...adminCustomPageContentLink(pageId)}
         buttonStyle="secondary"
         bgColor={colors.white}
         padding="5px 8px"
@@ -59,3 +48,15 @@ const AdminCustomPageEditButton = ({
 };
 
 export default injectIntl(AdminCustomPageEditButton);
+
+const PositionWrapper = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 30px;
+
+  ${media.tablet`
+    position: static;
+    width: fit-content;
+    margin-top: 16px;
+  `}
+`;

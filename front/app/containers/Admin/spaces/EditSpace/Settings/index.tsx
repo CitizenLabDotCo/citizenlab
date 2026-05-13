@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
@@ -15,12 +14,13 @@ import ModeratorsTable from 'components/admin/ModeratorsTable';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import SpaceNameForm from '../../_shared/SpaceNameForm';
 import messages from '../messages';
 
 const Settings = () => {
-  const { spaceId } = useParams();
+  const { spaceId } = useParams({ strict: false });
   const { data: space } = useSpace(spaceId);
   const { mutateAsync: updateSpace } = useUpdateSpace();
   const { mutateAsync: addSpaceModerator } = useAddSpaceModerator();

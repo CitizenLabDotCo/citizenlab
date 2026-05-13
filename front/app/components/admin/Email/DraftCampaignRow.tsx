@@ -8,7 +8,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
@@ -37,10 +36,25 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
   );
   const localize = useLocalize();
 
-  const editLink: RouteType =
-    context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const projectContextId = campaign.relationships.context?.data?.id;
+  const editLink: {
+    to:
+      | '/admin/messaging/emails/custom/$campaignId'
+      | '/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
+    context === 'project' && projectContextId
+      ? {
+          to: '/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: projectContextId,
+            campaignId: campaign.id,
+          },
+        }
+      : {
+          to: '/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
   return (
@@ -84,7 +98,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
         <ButtonWithLink
-          linkTo={editLink}
+          {...editLink}
           buttonStyle="secondary-outlined"
           icon="edit"
         >
