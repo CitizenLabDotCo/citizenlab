@@ -139,15 +139,16 @@ const IdeaCard = ({
               }
               overflow={hideTextOverflow ? 'hidden' : undefined}
             >
-              <Box
-                display={hideTextOverflow ? 'block' : 'none'}
-                position="absolute"
-                mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
-                height={`${MEDIUM_LINE_HEIGHT * 2}px`}
-                width={`${textContainerRef.current?.clientWidth ?? 0}px`}
-              >
-                <Image src={GradientSrc} alt="" width="100%" height="100%" />
-              </Box>
+              {hideTextOverflow && (
+                <Box
+                  position="absolute"
+                  mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
+                  height={`${MEDIUM_LINE_HEIGHT * 2}px`}
+                  width={`${textContainerRef.current?.clientWidth ?? 0}px`}
+                >
+                  <Image src={GradientSrc} alt="" width="100%" height="100%" />
+                </Box>
+              )}
               <Box mt="12px">
                 <QuillEditedContent textColor={colors.textPrimary} fontSize="m">
                   <IdeaText
