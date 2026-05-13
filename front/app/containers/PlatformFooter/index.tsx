@@ -176,7 +176,7 @@ const PoweredByText = styled.span`
   line-height: normal;
   margin-right: 8px;
   ${media.tablet`
-    display: none;
+    margin-right: 0;
     margin-bottom: 10px;
   `}
 `;
@@ -237,7 +237,7 @@ const PlatformFooter = ({ className }: Props) => {
     eventEmitter.emit('openConsentManager');
   };
 
-  /* 
+  /*
     Likely not the most reliable way to determine if the bar is present.
     Context would probably be better, but this is a quick fix.
   */
