@@ -2,11 +2,12 @@ import React from 'react';
 
 import { HighestRole, IUser } from 'api/users/types';
 
-import { render, screen } from 'utils/testUtils/rtl';
 import { TRole } from 'utils/permissions/roles';
+import { render, screen } from 'utils/testUtils/rtl';
+
+import { Props } from './types';
 
 import ProjectContextSection from '.';
-import { Props } from './types';
 
 jest.mock('./Inner', () => () => <div data-testid="project-context-inner" />);
 
