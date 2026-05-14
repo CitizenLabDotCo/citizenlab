@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useId } from 'react';
 
 import {
   Box,
@@ -134,9 +134,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
     const [visible, setVisible] = useState(false);
 
     // Generate a unique ID for aria-labelledby
-    const labelId = `more-options-label-${Math.random()
-      .toString(36)
-      .slice(2, 11)}`;
+    const labelId = useId();
 
     const hide = () => {
       setVisible(false);
