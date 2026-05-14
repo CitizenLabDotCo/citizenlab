@@ -2297,6 +2297,7 @@
   "app.containers.UsersShowPage.loadingComments": "Wrthi'n llwytho sylwadau...",
   "app.containers.UsersShowPage.loadingEvents": "Wrthi'n llwytho digwyddiadau...",
   "app.containers.UsersShowPage.memberSince": "Aelod ers {date}",
+  "app.containers.UsersShowPage.metaTitle2": "Proffil a gweithgaredd ar gyfer {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Nid yw'r person hwn wedi postio unrhyw sylwadau eto.",
   "app.containers.UsersShowPage.noCommentsForYou": "Does dim sylwadau yma eto.",
   "app.containers.UsersShowPage.noEventsForUser": "Nid ydych wedi mynychu unrhyw ddigwyddiadau eto.",

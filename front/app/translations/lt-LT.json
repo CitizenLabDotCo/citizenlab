@@ -2297,6 +2297,7 @@
   "app.containers.UsersShowPage.loadingComments": "Įkeliami komentarai...",
   "app.containers.UsersShowPage.loadingEvents": "Įkeliami įvykiai...",
   "app.containers.UsersShowPage.memberSince": "Narys nuo {date}",
+  "app.containers.UsersShowPage.metaTitle2": "{firstName} {lastName} profilis ir veikla | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Šis asmuo dar neparašė jokių komentarų.",
   "app.containers.UsersShowPage.noCommentsForYou": "Komentarų čia dar nėra.",
   "app.containers.UsersShowPage.noEventsForUser": "Dar nedalyvavote nė viename renginyje.",

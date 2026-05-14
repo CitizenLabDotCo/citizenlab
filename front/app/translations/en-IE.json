@@ -2297,6 +2297,7 @@
   "app.containers.UsersShowPage.loadingComments": "Loading comments...",
   "app.containers.UsersShowPage.loadingEvents": "Loading events...",
   "app.containers.UsersShowPage.memberSince": "Member since {date}",
+  "app.containers.UsersShowPage.metaTitle2": "Profile and activity for {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "This person hasn't posted any comments yet.",
   "app.containers.UsersShowPage.noCommentsForYou": "There are no comments here yet.",
   "app.containers.UsersShowPage.noEventsForUser": "You have not attended any events yet.",

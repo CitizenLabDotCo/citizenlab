@@ -2297,6 +2297,7 @@
   "app.containers.UsersShowPage.loadingComments": "تحميل التعليقات جارٍ...",
   "app.containers.UsersShowPage.loadingEvents": "جارٍ تحميل الأحداث ...",
   "app.containers.UsersShowPage.memberSince": "عضو منذ {date}",
+  "app.containers.UsersShowPage.metaTitle2": "الملف الشخصي والنشاط لـ {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "لم يقم هذا الشخص بنشر أي تعليقات بعد.",
   "app.containers.UsersShowPage.noCommentsForYou": "لا توجد تعليقات هنا بعد.",
   "app.containers.UsersShowPage.noEventsForUser": "لم تحضر أي أحداث حتى الآن.",
