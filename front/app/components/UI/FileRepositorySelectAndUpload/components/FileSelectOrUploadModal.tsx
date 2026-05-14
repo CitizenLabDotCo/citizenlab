@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -11,6 +10,7 @@ import useFiles from 'api/files/useFiles';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import FileInput from '../../FileUploader/FileInput';
 
@@ -36,7 +36,7 @@ const FileSelectOrUploadModal = ({
   const { formatMessage } = useIntl();
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],

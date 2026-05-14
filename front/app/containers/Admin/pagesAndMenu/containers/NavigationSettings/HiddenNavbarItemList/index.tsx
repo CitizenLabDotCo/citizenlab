@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import { RouteType } from 'routes';
 
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -80,7 +79,7 @@ const HiddenNavbarItemList = ({
     }
   };
 
-  const getViewButtonLink = (item: IItemNotInNavbar): RouteType | null => {
+  const getViewButtonLink = (item: IItemNotInNavbar): string | null => {
     if (item.type === 'page') {
       return `/pages/${item.slug}`;
     }

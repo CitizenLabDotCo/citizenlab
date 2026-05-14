@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useProjectById from 'api/projects/useProjectById';
 import { ResultUngrouped } from 'api/survey_results/types';
 import useFormResults from 'api/survey_results/useSurveyResults';
+
+import { useParams } from 'utils/router';
 
 export interface LogicConfig {
   toggleLogicIds: (logicId: string) => void;
@@ -28,7 +28,9 @@ const useSurveyResultsData = ({
   projectId: projectIdProp,
   phaseId: phaseIdProp,
 }: UseSurveyResultsDataProps): UseSurveyResultsDataReturn => {
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };

@@ -9,7 +9,6 @@ import {
   Image,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -159,7 +158,7 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const profileLink: RouteType = `/profile/${user.data.id}`;
+    const userId = user.data.id;
 
     const classNames = `
       ${className || ''}
@@ -192,7 +191,8 @@ const UserName = ({
 
     const linkedNamelement = (
       <Link
-        to={profileLink}
+        to="/profile/$userId"
+        params={{ userId }}
         className={`e2e-author-link ${className || ''}`}
         scrollToTop
       >

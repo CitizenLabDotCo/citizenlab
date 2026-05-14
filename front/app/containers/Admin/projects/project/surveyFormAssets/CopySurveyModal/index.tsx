@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 
 // components
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import { IOption } from 'typings';
 
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
@@ -22,7 +21,7 @@ import messages from './messages';
 type Props = {
   showCopySurveyModal: boolean;
   setShowCopySurveyModal: (show: boolean) => void;
-  editFormLink: RouteType;
+  editFormLink: string;
   surveyFormPersisted: boolean;
 };
 
@@ -106,7 +105,7 @@ const CopySurveyModal = ({
             buttonStyle="admin-dark"
             disabled={!phaseId}
             onClick={() => {
-              const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
+              const url = `${editFormLink}?copy_from=${phaseId}`;
               clHistory.push(url);
             }}
             data-cy="e2e-copy-survey-modal-duplicate"

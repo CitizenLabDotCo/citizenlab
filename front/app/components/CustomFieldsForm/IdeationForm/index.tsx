@@ -119,12 +119,21 @@ const IdeationForm = ({
         // as they are handled via separate API calls
         const { idea_files_attributes: _, ...formValuesWithoutFiles } =
           translatedFormValues;
+        const requestBody = {
+          ...formValuesWithoutFiles,
+          weglot_data: weglotData,
+        };
+        // Keep location_point_geojson consistent with location_description:
+        // if there is no description, force the geojson to null so a stale
+        // value from the idea's initial state can't ride through unchanged
+        // (e.g. when the location field is disabled in the form config and
+        // the LocationInput never mounts to clear it).
+        if (!requestBody.location_description) {
+          requestBody.location_point_geojson = null;
+        }
         await updateIdea({
           id: idea.id,
-          requestBody: {
-            ...formValuesWithoutFiles,
-            weglot_data: weglotData,
-          },
+          requestBody,
         });
         updateSearchParams({ idea_id: idea.id });
       }

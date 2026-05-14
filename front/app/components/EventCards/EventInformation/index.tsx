@@ -20,7 +20,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { getEventDateString, userTimezone } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -37,7 +37,7 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const EventTitleLink = styled(Link)`
+const EventTitleLink = typedStyled(Link)`
   text-decoration: none;
   color: inherit;
 
@@ -76,7 +76,11 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <EventTitleLink to={`/events/${event.id}`} aria-describedby={ariaId}>
+          <EventTitleLink
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
+            aria-describedby={ariaId}
+          >
             <Title
               variant="h3"
               fontSize="l"
@@ -226,7 +230,8 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            linkTo={`/events/${event.id}`}
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button
             // to provide context for screen readers. Using the same "Read more" text

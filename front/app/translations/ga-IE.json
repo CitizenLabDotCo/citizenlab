@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Diúltaigh don pholasaí agus dún an meirge",
   "app.components.ConsentManager.Banner.close": "Dún",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Cuidíonn glacadh le fianáin linn an t-ardán seo a fheabhsú. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Cabhraíonn glacadh le fianáin linn an t-ardán seo a fheabhsú.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Do chuid sainroghanna fianán",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Léigh ár mbeartas fianán",
   "app.components.ConsentManager.Banner.manage": "Bainistigh",

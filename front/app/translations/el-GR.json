@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Απορρίψτε την πολιτική και κλείστε το πανό",
   "app.components.ConsentManager.Banner.close": "Κλείσιμο",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Η αποδοχή των cookies μας βοηθά να βελτιώσουμε αυτή την πλατφόρμα. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Η αποδοχή των cookies μάς βοηθά να βελτιώσουμε αυτή την πλατφόρμα.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Οι προτιμήσεις σας για τα cookies",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Διαβάστε την πολιτική μας για τα cookies",
   "app.components.ConsentManager.Banner.manage": "Διαχείριση",
