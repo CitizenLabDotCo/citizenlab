@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Avvis policyen og lukk banneret",
   "app.components.ConsentManager.Banner.close": "Lukk",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Å godta informasjonskapsler hjelper oss med å forbedre denne plattformen. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Å godta informasjonskapsler hjelper oss med å forbedre denne plattformen.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Dine preferanser for informasjonskapsler",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Les våre retningslinjer for informasjonskapsler",
   "app.components.ConsentManager.Banner.manage": "Administrer",

@@ -53,7 +53,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 
 const MenuItems = styled.ul`
   margin: 0;
-  padding: 0;
+  padding: 0px;
   text-align: center;
 `;
 

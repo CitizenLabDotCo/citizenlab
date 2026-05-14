@@ -35,7 +35,6 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
-import DateTimeSelection from 'components/admin/DateTimeSelection';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -59,6 +58,7 @@ import { geocode } from 'utils/locationTools';
 import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
 import { SubmitState, ErrorType, ApiErrorType } from './types';
 import { initializeEventTimes } from './utils';
