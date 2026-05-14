@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Hylkää käytäntö ja sulje banneri",
   "app.components.ConsentManager.Banner.close": "kiinni",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Evästeiden hyväksyminen auttaa meitä parantamaan tätä alustaa. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Evästeiden hyväksyminen auttaa meitä parantamaan tätä alustaa.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Evästeasetuksesi",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Lue evästekäytäntömme",
   "app.components.ConsentManager.Banner.manage": "Muokkaa",

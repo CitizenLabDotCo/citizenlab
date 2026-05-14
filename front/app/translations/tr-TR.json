@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Politikayı reddet ve başlığı kapat",
   "app.components.ConsentManager.Banner.close": "Kapat",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Çerezleri kabul etmek bu platformu geliştirmemize yardımcı olur. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Çerezleri kabul etmek bu platformu geliştirmemize yardımcı olur.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Çerez tercihleriniz",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Çerez politikamızı okuyun",
   "app.components.ConsentManager.Banner.manage": "Yönet",

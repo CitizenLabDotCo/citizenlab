@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rejeitar a política e fechar a bandeira",
   "app.components.ConsentManager.Banner.close": "Fechar",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "A aceitação de cookies nos ajuda a melhorar esta plataforma. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Aceitar cookies nos ajuda a melhorar esta plataforma.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Suas preferências de cookies",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Leia nossa política de cookies",
   "app.components.ConsentManager.Banner.manage": "Gerenciar   ",

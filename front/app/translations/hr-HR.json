@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Odbaci pravila i zatvori banner",
   "app.components.ConsentManager.Banner.close": "Zatvori",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Prihvaćanje kolačića nam pomaže poboljšati ovu platformu. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Prihvaćanje kolačića pomaže nam poboljšati ovu platformu.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Vaše postavke kolačića",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Pročitajte našu politiku kolačića",
   "app.components.ConsentManager.Banner.manage": "Upravljanje",
