@@ -4,8 +4,9 @@ export const handleArraySearchParam = (
   paramValue: unknown
 ): string[] | undefined => {
   if (Array.isArray(paramValue)) return paramValue;
-  if (typeof paramValue === 'string' && paramValue.length > 0)
+  if (typeof paramValue === 'string' && paramValue.length > 0) {
     return [paramValue];
+  }
   return undefined;
 };
 

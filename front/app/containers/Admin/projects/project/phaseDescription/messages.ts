@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage: 'Discard changes',
   },
   draftDescriptionPublish: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish',
-    defaultMessage: 'Publish',
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1',
+    defaultMessage: 'Publish phase description',
   },
   draftDescriptionPublishedTooltip: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1',
