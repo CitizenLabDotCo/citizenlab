@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "آپ کی تبدیلیاں محفوظ ہو گئی ہیں۔",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "ایک مقام تلاش کریں۔",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "آنے والے ایونٹس کو اس پروجیکٹس سے لنک کریں اور انہیں پروجیکٹ کے ایونٹ پیج پر دکھائیں۔",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "تقریبات کو پلیٹ فارم کے ٹائم زون ({timezone}, GMT{gmtOffset}) میں شامل کرنا ضروری ہے۔ صارفین تاریخ کو اپنے ٹائم زون میں دیکھیں گے۔",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "عنوان اور تاریخیں۔",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "پروجیکٹ کے واقعات",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "واقعہ کا نام",

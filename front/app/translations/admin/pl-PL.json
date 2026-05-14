@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Twoje zmiany zostały zapisane.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Wyszukaj lokalizację",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Powiąż nadchodzące wydarzenia z tym projektem i pokaż je w zakładce wydarzeń projektu.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Wydarzenia należy dodawać w strefie czasowej platformy ({timezone}, GMT{gmtOffset}). Użytkownicy końcowi zobaczą datę w swojej strefie czasowej.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Tytuł i daty",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Wydarzenia w projekcie",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nazwa zdarzenia",
