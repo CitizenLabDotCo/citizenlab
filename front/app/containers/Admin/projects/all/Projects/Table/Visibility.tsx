@@ -35,7 +35,9 @@ const Visibility = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const { publication_status, visible_to, listed } = project.attributes;
+  const { publication_status, visible_to, listed, scheduled_at } =
+    project.attributes;
+  const isScheduled = publication_status === 'draft' && !!scheduled_at;
   const groupIds = project.relationships.groups.data.map((group) => group.id);
 
   const groupsData = useGroupsByIds(groupIds);
@@ -119,15 +121,22 @@ const Visibility = ({ project }: Props) => {
     >
       <Box display="flex">
         <GanttItemIconBar
-          color={getStatusColor(publication_status)}
+          color={getStatusColor(publication_status, isScheduled)}
           rowHeight={32}
           ml="0"
           mr="8px"
         />
         <Box>
-          <Text m="0" fontSize="s" display="inline-block">
-            {formatMessage(PUBLICATION_STATUSES[publication_status])}
-          </Text>
+          <Box display="flex" alignItems="center" gap="4px">
+            <Text m="0" fontSize="s">
+              {formatMessage(PUBLICATION_STATUSES[publication_status])}
+            </Text>
+            {isScheduled && (
+              <Text m="0" fontSize="s">
+                ({formatMessage(sharedMessages.scheduled)})
+              </Text>
+            )}
+          </Box>
           <Text m="0" fontSize="xs" color="textSecondary">
             {visible_to === 'groups' ? (
               <>

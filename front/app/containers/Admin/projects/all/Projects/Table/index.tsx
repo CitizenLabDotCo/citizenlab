@@ -9,7 +9,6 @@ import {
   Tbody,
   colors,
   stylingConsts,
-  Spinner,
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
@@ -24,6 +23,7 @@ import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResour
 import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
+import LoadingComponents from '../../_shared/LoadingComponents';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
 import { getParticipationMethods } from '../../_shared/utils';
@@ -77,6 +77,11 @@ const Table = () => {
     rootMargin: '0px 0px 100px 0px',
   });
 
+  // True when loading the initial data,
+  // or when loading new (i.e. a new combination of filters) data
+  const isLoadingNewData = isLoading || (isFetching && !isFetchingNextPage);
+  const isLoadingData = isLoadingNewData || isFetchingNextPage;
+
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
       return sharedMessages.loadingMore;
@@ -86,12 +91,17 @@ const Table = () => {
       return sharedMessages.scrollDownToLoadMore;
     }
 
+    if (projects.length === 0 && !isLoadingData) {
+      return messages.noProjectsFound;
+    }
+
     if (status === 'success') {
       return sharedMessages.allProjectsHaveLoaded;
     }
 
     return null;
   };
+
   const sentinelMessage = getSentinelMessage();
 
   return (
@@ -121,63 +131,32 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {projects.length === 0 && (
+          {isLoadingNewData && (
             <>
               <EmptyRow />
               <EmptyRow />
               <EmptyRow />
             </>
           )}
-          {projects.map((project, i) => (
-            <Row
-              key={project.id}
-              project={project}
-              participantsCount={participantsCounts[project.id]}
-              firstRow={i === 0}
-              moderatorsById={moderatorsById}
-            />
-          ))}
+          {!isLoadingNewData &&
+            projects.map((project, i) => (
+              <Row
+                key={project.id}
+                project={project}
+                participantsCount={participantsCounts[project.id]}
+                firstRow={i === 0}
+                moderatorsById={moderatorsById}
+              />
+            ))}
         </Tbody>
       </TableComponent>
 
-      <Box
-        ref={loadMoreRef}
-        mt="12px"
-        display="flex"
-        justifyContent="center"
-        color={colors.textPrimary}
-      >
-        {sentinelMessage && formatMessage(sentinelMessage)}
-      </Box>
-
-      {isFetchingNextPage && (
-        <Box
-          w="100%"
-          p="4px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner />
-        </Box>
-      )}
-
-      {(isLoading || (isFetching && !isFetchingNextPage)) && (
-        <Box
-          position="absolute"
-          left="0"
-          top="0"
-          w="100%"
-          h="100%"
-          display="flex"
-          justifyContent="center"
-          pt="80px"
-          bgColor={colors.white}
-          opacity={0.5}
-        >
-          <Spinner />
-        </Box>
-      )}
+      <LoadingComponents
+        sentinel={sentinelMessage ? formatMessage(sentinelMessage) : undefined}
+        loadMoreRef={loadMoreRef}
+        isLoadingNewData={isLoadingNewData}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </Box>
   );
 };

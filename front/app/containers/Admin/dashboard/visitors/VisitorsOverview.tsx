@@ -4,6 +4,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 import { IOption } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
 
@@ -15,7 +17,6 @@ import { START_DATE_SESSION_DATA_COLLECTION } from '../constants';
 
 import Charts from './Charts';
 import messages from './messages';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   defaultStartDate: Moment;

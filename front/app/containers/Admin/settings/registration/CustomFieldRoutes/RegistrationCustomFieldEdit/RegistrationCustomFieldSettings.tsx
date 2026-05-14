@@ -1,19 +1,21 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import { useParams } from 'utils/router';
 
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
 
 const RegistrationCustomFieldSettings = () => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
   const { data: customField } = useUserCustomField(userCustomFieldId);
-  const { mutate: updateCustomFieldForUsers } = useUpdateUserCustomField();
+  const { mutateAsync: updateCustomFieldForUsers } = useUpdateUserCustomField();
 
   if (!customField) return null;
 
@@ -31,8 +33,8 @@ const RegistrationCustomFieldSettings = () => {
     );
   };
 
-  const handleSubmit = (values: FormValues) => {
-    updateCustomFieldForUsers({
+  const handleSubmit = async (values: FormValues) => {
+    await updateCustomFieldForUsers({
       customFieldId: customField.data.id,
       ...values,
     });

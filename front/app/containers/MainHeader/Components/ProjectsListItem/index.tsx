@@ -1,9 +1,8 @@
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
-const ProjectsListItem = styled(Link)`
+const ProjectsListItem = typedStyled(Link)`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -11,6 +10,7 @@ const ProjectsListItem = styled(Link)`
   text-decoration: none;
   padding: 10px;
   margin-bottom: 4px;
+  display: block;
   background: transparent;
   border-radius: ${(props) => props.theme.borderRadius};
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IGroupData, MembershipType } from 'api/groups/types';
@@ -14,6 +13,7 @@ import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import GroupCreationStep1 from './_shared/GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './_shared/NormalGroupForm';
@@ -54,7 +54,7 @@ const ChildWrapper = styled.div`
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
 const UsersPage = () => {
-  const { mutate: addGroup } = useAddGroup();
+  const { mutateAsync: addGroup } = useAddGroup();
   const [groupCreationModal, setGroupCreationModal] =
     useState<GroupCreationModal>(false);
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
@@ -73,17 +73,11 @@ const UsersPage = () => {
     setGroupCreationModal(groupType);
   };
 
-  const handleSubmitForm = (
+  const handleSubmitForm = async (
     formValues: NormalFormValues & { membership_type: MembershipType }
   ) => {
-    addGroup(
-      { ...formValues },
-      {
-        onSuccess: () => {
-          closeGroupCreationModal();
-        },
-      }
-    );
+    await addGroup({ ...formValues });
+    closeGroupCreationModal();
   };
 
   const renderModalHeader = () => {

@@ -109,9 +109,9 @@ const ChildCommentForm = ({
           })
         )
         .subscribe(({ eventValue }) => {
-          const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          if (authorFirstName && authorLastName && authorSlug) {
-            const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+          const { authorFirstName, authorLastName, authorId } = eventValue;
+          if (authorFirstName && authorLastName && authorId) {
+            const tag = `@[${authorFirstName} ${authorLastName}](${authorId}) `;
             setTagValue(tag);
             setInputValue(tag);
           }

@@ -32,8 +32,6 @@ import {
   ICosponsorOfYourIdeaNotificationData,
 } from 'api/notifications/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Outlet from 'components/Outlet';
 
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
@@ -51,7 +49,6 @@ import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
 import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
-import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
@@ -59,6 +56,7 @@ import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotificatio
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import ProjectReviewRequestNotification from '../ProjectReviewRequestNotification';
 import ProjectReviewStateChangeNotification from '../ProjectReviewStateChangeNotification';
+import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
@@ -70,8 +68,6 @@ type Props = {
 };
 
 const Notification = ({ notification }: Props) => {
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
   switch (notification.attributes.type) {
     case 'admin_rights_received':
       return (
@@ -228,17 +224,13 @@ const Notification = ({ notification }: Props) => {
         />
       );
     case 'project_folder_moderation_rights_received':
-      if (isProjectFoldersEnabled) {
-        return (
-          <ProjectFolderModerationRightsReceivedNotification
-            notification={
-              notification as IProjectFolderModerationRightsReceivedNotificationData
-            }
-          />
-        );
-      } else {
-        return null;
-      }
+      return (
+        <ProjectFolderModerationRightsReceivedNotification
+          notification={
+            notification as IProjectFolderModerationRightsReceivedNotificationData
+          }
+        />
+      );
     case 'voting_basket_submitted':
       return (
         <VotingBasketSubmittedNotification

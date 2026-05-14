@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage: 'Discard changes',
   },
   draftDescriptionPublish: {
-    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish',
-    defaultMessage: 'Publish',
+    id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1',
+    defaultMessage: 'Publish phase description',
   },
   draftDescriptionPublishedTooltip: {
     id: 'app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedTooltip1',
@@ -47,5 +47,9 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
     defaultMessage:
       'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
+  },
+  descriptionSave: {
+    id: 'app.containers.AdminPage.ProjectTimeline.descriptionSave',
+    defaultMessage: 'Save',
   },
 });

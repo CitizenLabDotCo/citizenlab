@@ -45,10 +45,10 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
+      return scope.all if record.visible_to == 'public' && !record.admin_publication.draft?
 
       moderator_scope = UserRoleService.new.moderators_for_project record, scope
-      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
+      if record.visible_to == 'groups' && !record.admin_publication.draft?
         scope.in_any_group(record.groups).or(moderator_scope)
       else
         moderator_scope
@@ -81,7 +81,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def index_for_admin?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def votes_by_user_xlsx?
@@ -101,9 +101,8 @@ class ProjectPolicy < ApplicationPolicy
     elsif record.space
       UserRoleService.new.can_moderate?(record.space, user)
     else
-      # PMs and FMs can create projects, which then need to be approved.
-      # SMs can't for now.
-      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+      # Moderators can create draft projects, which then need to be approved.
+      record.admin_publication.draft? && user.moderator?
     end
   end
 
@@ -118,7 +117,10 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    active_moderator?
+    return true if active_admin?
+    return active_moderator? unless record.folder_changed? || record.space_changed?
+
+    can_moderate_before_and_after_change?
   end
 
   def refresh_preview_token?
@@ -130,9 +132,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless active?
-
-    admin? || (active_moderator? && record.never_published?)
+    active_admin? || can_moderate_space? || (active_moderator? && record.never_published?)
   end
 
   def copy?
@@ -148,7 +148,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def participant_counts?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def shared_permitted_attributes
@@ -169,6 +169,7 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
+    shared << :folder_id if user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
     shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
@@ -185,7 +186,9 @@ class ProjectPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     shared_permitted_attributes.tap do |attrs|
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status]
+      })
     end
   end
 
@@ -194,7 +197,9 @@ class ProjectPolicy < ApplicationPolicy
       next unless update_status?
 
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status scheduled_status scheduled_at]
+      })
     end
   end
 
@@ -215,25 +220,33 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    admin_like? || record.ever_published? || record.review&.approved?
+    active_admin? || can_moderate_folder? || can_moderate_space? || record.ever_published? || record.review&.approved?
   end
 
-  def admin_like?
-    admin? || folder_moderator?
+  def can_moderate_folder?
+    record.folder && active? && UserRoleService.new.can_moderate?(record.folder, user)
   end
 
-  def folder_moderator?
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  def can_moderate_space?
+    record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
+  end
+
+  def can_moderate_before_and_after_change?
+    return false unless active?
+
+    service = UserRoleService.new
+    service.can_moderate_project?(context[:prior_record], user) &&
+      service.can_moderate_project?(record, user)
   end
 
   def project_preview?
-    return false unless record.admin_publication.publication_status == 'draft'
+    return false unless record.admin_publication.draft?
 
     context[:project_preview_token] && context[:project_preview_token] == record.preview_token
   end
 
   def project_published_or_archived?
-    %w[published archived].include?(record.admin_publication.publication_status)
+    record.admin_publication.published? || record.admin_publication.archived?
   end
 end
 

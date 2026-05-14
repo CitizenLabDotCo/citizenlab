@@ -373,6 +373,10 @@ export default defineMessages({
     id: 'app.components.form.controls.rankingInstructions',
     defaultMessage: 'Drag and drop to rank options.',
   },
+  rankingDragHandleLabel: {
+    id: 'app.components.form.controls.rankingDragHandleLabel',
+    defaultMessage: 'Drag to reorder {label}',
+  },
   optionalParentheses: {
     id: 'app.components.form.controls.optionalParentheses',
     defaultMessage: '(optional)',

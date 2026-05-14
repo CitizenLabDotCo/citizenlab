@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
@@ -14,6 +13,7 @@ import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isEmptyMultiloc } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,7 +28,7 @@ interface Props {
 
 const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
@@ -75,7 +75,7 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
               buttonStyle="admin-dark"
               processing={methods.formState.isSubmitting}
             >
-              {formatMessage(messages.draftDescriptionPublish)}
+              {formatMessage(messages.descriptionSave)}
             </Button>
           </Box>
         </Box>

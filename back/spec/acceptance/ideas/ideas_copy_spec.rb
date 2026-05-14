@@ -60,7 +60,8 @@ resource 'Ideas' do
             total: 3,
             completed_at: nil,
             created_at: be_a(String),
-            updated_at: be_a(String)
+            updated_at: be_a(String),
+            errors: []
           },
           relationships: {
             owner: { data: { id: current_user.id, type: 'user' } },
@@ -85,7 +86,8 @@ resource 'Ideas' do
             total: 3,
             completed_at: nil,
             created_at: nil,
-            updated_at: nil
+            updated_at: nil,
+            errors: []
           },
           relationships: {
             owner: { data: { id: current_user.id, type: 'user' } },

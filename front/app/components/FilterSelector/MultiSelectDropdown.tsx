@@ -83,6 +83,7 @@ export interface SelectorProps {
   filterSelectorStyle?: 'button' | 'text';
   minWidth?: string;
   toggleValuesList: () => void;
+  closeExpanded: () => void;
   textColor?: string;
   currentTitle: string | JSX.Element;
   handleKeyDown?: (event: KeyboardEvent) => void;
@@ -116,13 +117,19 @@ const MultiSelectDropdown = ({
   filterSelectorStyle,
   minWidth,
   toggleValuesList,
+  closeExpanded,
   textColor,
   currentTitle,
   handleKeyDown,
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
+
+  const focusTrigger = () => {
+    triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
+  };
 
   const handleOnToggleCheckbox =
     (entry: IFilterSelectorValue) => (_event: React.ChangeEvent) => {
@@ -143,14 +150,19 @@ const MultiSelectDropdown = ({
           return;
         }
         event.preventDefault();
-        // navigate to next item (circular 0,1,2,3,...,0)
-        tabsRef.current[(index + 1) % totalItems]?.focus();
+        // From the trigger (no data-index), jump into the list at item 0.
+        // From a list item, navigate to next (circular 0,1,2,3,...,0).
+        tabsRef.current[isNaN(index) ? 0 : (index + 1) % totalItems]?.focus();
         break;
 
       case 'ArrowUp':
+        if (!opened) return;
         event.preventDefault();
-        // navigate to previous item (circular ...,3,2,1,0,4)
-        tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
+        // From the trigger, jump to the last item.
+        // From a list item, navigate to previous (circular ...,3,2,1,0,3).
+        tabsRef.current[
+          isNaN(index) ? totalItems - 1 : (index - 1 + totalItems) % totalItems
+        ]?.focus();
         break;
 
       case 'Enter':
@@ -161,9 +173,17 @@ const MultiSelectDropdown = ({
         }
         break;
 
+      case 'Escape':
+        if (opened) {
+          event.preventDefault();
+          closeExpanded();
+          focusTrigger();
+        }
+        break;
+
       case 'Tab':
         if (opened) {
-          toggleValuesList();
+          closeExpanded();
         }
         break;
     }
@@ -175,7 +195,7 @@ const MultiSelectDropdown = ({
 
   return (
     <Box>
-      <Box id={selectorId}>
+      <Box id={selectorId} ref={triggerRef}>
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}

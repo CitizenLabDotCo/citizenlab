@@ -8,7 +8,6 @@ import styled, { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import getMentions from 'api/mentions/getMentions';
-import { MentionRoles } from 'api/mentions/types';
 
 import Error from 'components/UI/Error';
 
@@ -71,13 +70,10 @@ export interface Props {
   background?: string;
   ariaLabel?: string;
   children?: React.ReactNode;
-  roles?: MentionRoles[];
+  adminsAndModerators?: boolean;
   trigger?: string;
   showUniqueUsers?: boolean;
   onChangeMentions?: (mentions: MentionItem[]) => void;
-  // Determines whether we get back the user id or slug
-  // in mention of onChangeMentions
-  userReferenceType?: 'slug' | 'id';
 }
 
 const MentionsTextArea = ({
@@ -106,9 +102,8 @@ const MentionsTextArea = ({
   name,
   error,
   children,
-  roles,
+  adminsAndModerators,
   trigger = '@',
-  userReferenceType = 'slug',
   showUniqueUsers = false,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -220,7 +215,7 @@ const MentionsTextArea = ({
       const queryParameters = {
         mention: query.toLowerCase(),
         idea_id: postId,
-        roles,
+        admins_and_moderators: adminsAndModerators,
       };
 
       const response = await getMentions(queryParameters);
@@ -232,7 +227,7 @@ const MentionsTextArea = ({
           display: `${user.attributes.first_name} ${
             user.attributes.last_name ? user.attributes.last_name : ''
           }`,
-          id: userReferenceType === 'slug' ? user.attributes.slug : user.id,
+          id: user.id,
         }));
       }
 

@@ -72,13 +72,21 @@ const IdeationForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
-      const { translatedTitle, translatedBody, weglotData } =
-        await weglotTranslateIdeaSubmission(
-          formValues.title_multiloc?.[locale],
-          formValues.body_multiloc?.[locale],
-          locale,
-          appConfiguration?.data.attributes.settings.core.weglot_api_key
-        );
+      // Common ground lets admins enter the statement in every platform locale,
+      // so the full multiloc hash must be preserved and auto-translation is skipped.
+      const isCommonGround = participationMethod === 'common_ground';
+      const { translatedTitle, translatedBody, weglotData } = isCommonGround
+        ? {
+            translatedTitle: undefined,
+            translatedBody: undefined,
+            weglotData: {},
+          }
+        : await weglotTranslateIdeaSubmission(
+            formValues.title_multiloc?.[locale],
+            formValues.body_multiloc?.[locale],
+            locale,
+            appConfiguration?.data.attributes.settings.core.weglot_api_key
+          );
       const translatedFormValues = {
         ...formValues,
         ...(translatedTitle !== undefined && {
@@ -111,12 +119,21 @@ const IdeationForm = ({
         // as they are handled via separate API calls
         const { idea_files_attributes: _, ...formValuesWithoutFiles } =
           translatedFormValues;
+        const requestBody = {
+          ...formValuesWithoutFiles,
+          weglot_data: weglotData,
+        };
+        // Keep location_point_geojson consistent with location_description:
+        // if there is no description, force the geojson to null so a stale
+        // value from the idea's initial state can't ride through unchanged
+        // (e.g. when the location field is disabled in the form config and
+        // the LocationInput never mounts to clear it).
+        if (!requestBody.location_description) {
+          requestBody.location_point_geojson = null;
+        }
         await updateIdea({
           id: idea.id,
-          requestBody: {
-            ...formValuesWithoutFiles,
-            weglot_data: weglotData,
-          },
+          requestBody,
         });
         updateSearchParams({ idea_id: idea.id });
       }

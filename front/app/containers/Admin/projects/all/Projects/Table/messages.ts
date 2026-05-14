@@ -108,4 +108,8 @@ export default defineMessages({
     defaultMessage:
       'This column uses cached participant data. To see the latest numbers, check the "Participants" tab of the project.',
   },
+  noProjectsFound: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.noProjectsFound',
+    defaultMessage: 'No projects found',
+  },
 });

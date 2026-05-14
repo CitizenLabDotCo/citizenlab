@@ -18,15 +18,15 @@ import {
 } from 'components/smallForm';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
 import { FormValues } from '.';
-import { isAdmin } from 'utils/permissions/roles';
-import Warning from 'components/UI/Warning';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;

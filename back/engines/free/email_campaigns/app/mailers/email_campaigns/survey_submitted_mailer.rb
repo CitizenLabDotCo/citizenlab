@@ -22,8 +22,9 @@ module EmailCampaigns
         event_payload: {
           idea_id: data.idea.id,
           project_title_multiloc: data.project.title_multiloc,
-          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys",
-          has_password: true
+          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.id}/surveys",
+          has_password: true,
+          hide_submission_removal_text: AppConfiguration.instance.feature_activated?('hide_submission_removal_text')
         }
       }
     end

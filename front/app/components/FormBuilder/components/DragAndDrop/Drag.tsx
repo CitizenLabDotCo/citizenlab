@@ -1,15 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Draggable,
   type DraggableProvided,
+  type DraggableProvidedDragHandleProps,
   type DraggableStateSnapshot,
 } from '@hello-pangea/dnd';
 
+export type DragHandleProps =
+  | (DraggableProvidedDragHandleProps & { 'aria-describedby'?: string })
+  | null
+  | undefined;
+
+type DragChildren =
+  | React.ReactNode
+  | ((props: { dragHandleProps: DragHandleProps }) => React.ReactNode);
+
 type DraggableItemProps = {
   id: string;
-  children: React.ReactNode;
+  children: DragChildren;
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
   useBorder: boolean;
@@ -24,31 +34,29 @@ const DraggableItem = ({
   useBorder,
   onDraggingChange,
 }: DraggableItemProps) => {
-  const draggableRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     onDraggingChange(snapshot.isDragging);
   }, [snapshot.isDragging, onDraggingChange]);
 
-  useEffect(() => {
-    // Since we provide an alternative way to reorder items using select dropdowns,
-    // we want to override the @hello-pangea/dnd aria description for the drag handle to reduce confusion.
-    draggableRef.current?.setAttribute('aria-describedby', '');
-  }, []);
+  // Override the library's aria-describedby so the default drag-and-drop
+  // screen reader instructions aren't announced — we provide an alternative
+  // select-based UI for keyboard users.
+  const dragHandleProps: DragHandleProps = provided.dragHandleProps
+    ? { ...provided.dragHandleProps, 'aria-describedby': '' }
+    : provided.dragHandleProps;
+
+  const border =
+    snapshot.isDragging && useBorder ? `1px solid ${colors.teal}` : undefined;
 
   return (
     <div ref={provided.innerRef} id={id} {...provided.draggableProps}>
-      <div ref={draggableRef} {...provided.dragHandleProps}>
-        <Box
-          border={
-            snapshot.isDragging && useBorder
-              ? `1px solid ${colors.teal}`
-              : undefined
-          }
-        >
-          {children}
-        </Box>
-      </div>
+      {typeof children === 'function' ? (
+        <Box border={border}>{children({ dragHandleProps })}</Box>
+      ) : (
+        <div {...dragHandleProps}>
+          <Box border={border}>{children}</Box>
+        </div>
+      )}
     </div>
   );
 };
@@ -56,7 +64,7 @@ const DraggableItem = ({
 type DragProps = {
   id: string;
   index: number;
-  children: React.ReactNode;
+  children: DragChildren;
   useBorder?: boolean;
   isDragDisabled?: boolean;
   keepElementsWhileDragging?: boolean;
@@ -74,7 +82,9 @@ export const Drag = ({
 
   return (
     <>
-      {isDragging && keepElementsWhileDragging && <>{children}</>}
+      {isDragging &&
+        keepElementsWhileDragging &&
+        typeof children !== 'function' && <>{children}</>}
 
       <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
         {(provided, snapshot) => (

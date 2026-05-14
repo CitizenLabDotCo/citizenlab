@@ -1,11 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import adminProjectTemplatesConfiguration, {
-  projectTemplateRouteTypes,
-} from './commercial/admin_project_templates';
-import bulkIdeaImportConfiguration, {
-  bulkIdeaImportRouteTypes,
-} from './commercial/bulk_idea_import';
+import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -35,12 +30,7 @@ import posthogConfiguration from './commercial/posthog_integration';
 import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import satismeterConfiguration from './commercial/satismeter';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
-
-export type moduleRouteTypes =
-  | projectTemplateRouteTypes
-  | bulkIdeaImportRouteTypes
-  | widgetsRouteTypes;
+import widgetsConfiguration from './commercial/widgets';
 
 export default loadModules([
   {
@@ -72,9 +62,6 @@ export default loadModules([
   },
   {
     configuration: ideaAssignmentConfiguration,
-  },
-  {
-    configuration: bulkIdeaImportConfiguration,
   },
   {
     configuration: adminProjectTemplatesConfiguration,

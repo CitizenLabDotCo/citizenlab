@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from '@tanstack/react-router';
 
 import { IDefaultInputTopicAdd } from 'api/default_input_topics/types';
 import useAddDefaultInputTopic from 'api/default_input_topics/useAddDefaultInputTopic';
@@ -15,22 +15,15 @@ import DefaultInputTopicForm from './DefaultInputTopicForm';
 import messages from './messages';
 
 const New = () => {
-  const [searchParams] = useSearchParams();
-  const parentId = searchParams.get('parent_id');
-  const { mutate: addDefaultInputTopic } = useAddDefaultInputTopic();
+  const { parent_id: parentId } = useSearch({ strict: false });
+  const { mutateAsync: addDefaultInputTopic } = useAddDefaultInputTopic();
 
   const handleSubmit = async (values: IDefaultInputTopicAdd) => {
-    addDefaultInputTopic(
-      {
-        ...values,
-        parent_id: parentId || undefined,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/topics/input');
-        },
-      }
-    );
+    await addDefaultInputTopic({
+      ...values,
+      parent_id: parentId || undefined,
+    });
+    clHistory.push('/admin/settings/topics/input');
   };
 
   const goBack = () => {

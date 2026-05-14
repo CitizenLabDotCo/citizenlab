@@ -7,23 +7,22 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import { isPDFUploadSupported } from '../ReviewSection/utils';
 
 import ImportButtons from './ImportButtons';
-import { getBackPath } from './utils';
+import { getBackLink } from './utils';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -32,14 +31,12 @@ interface Props {
 
 const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const localize = useLocalize();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const topBarTitle =
     localize(project?.data.attributes.title_multiloc) + // TODO: Fix this the next time the file is edited.
@@ -48,10 +45,10 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
 
   const participationMethod = phase?.data.attributes.participation_method;
 
-  const backPath: RouteType =
-    projectId &&
-    phaseId &&
-    getBackPath(projectId, phaseId, participationMethod, phaseInsightsEnabled);
+  const backLink =
+    projectId && phaseId
+      ? getBackLink(projectId, phaseId, participationMethod)
+      : undefined;
 
   return (
     <Box
@@ -67,7 +64,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
       px="24px"
     >
       <Box display="flex" alignItems="center">
-        <GoBackButton linkTo={backPath} />
+        <GoBackButton {...backLink} />
         <Box ml="24px">
           <Box display="flex" gap="8px" alignItems="center">
             <Text m="0px" color="textSecondary">
@@ -85,6 +82,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         <ImportButtons
           onClickPDFImport={onClickPDFImport}
           onClickExcelImport={onClickExcelImport}
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
         />
       </Box>
     </Box>

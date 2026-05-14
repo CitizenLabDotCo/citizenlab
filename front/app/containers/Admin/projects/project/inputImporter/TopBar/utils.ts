@@ -1,22 +1,24 @@
-import { RouteType } from 'routes';
-
 import { ParticipationMethod } from 'api/phases/types';
 
-export const getBackPath = (
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+
+export const getBackLink = (
   projectId: string,
   phaseId: string,
-  participationMethod?: ParticipationMethod,
-  phaseInsightsEnabled = true
-): RouteType => {
+  participationMethod?: ParticipationMethod
+): TypedLinkProps => {
   switch (participationMethod) {
     case 'native_survey':
-      // When phase_insights is disabled, redirect to old 'results' tab
-      return phaseInsightsEnabled
-        ? `/admin/projects/${projectId}/phases/${phaseId}/insights`
-        : `/admin/projects/${projectId}/phases/${phaseId}/results`;
+      return {
+        to: '/admin/projects/$projectId/phases/$phaseId/insights',
+        params: { projectId, phaseId },
+      };
     case 'community_monitor_survey':
-      return `/admin/community-monitor/settings`;
+      return { to: '/admin/community-monitor/settings' };
     default:
-      return `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
+      return {
+        to: '/admin/projects/$projectId/phases/$phaseId/ideas',
+        params: { projectId, phaseId },
+      };
   }
 };

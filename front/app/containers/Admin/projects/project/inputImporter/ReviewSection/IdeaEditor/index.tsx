@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -24,6 +23,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -42,19 +42,19 @@ import {
 interface Props {
   ideaId: string | null;
   setIdeaId: (ideaId: null | string) => void;
+  onIdeaApproved: (approved: { id: string; title: string }) => void;
 }
 
 type FormValues = Record<string, any>;
 
-const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
+const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
   const localize = useLocalize();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const [userFormStatePerIdea, setUserFormStatePerIdea] = useState<
     Record<string, UserFormData>
@@ -120,10 +120,16 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  // Auto-save form edits to the backend so that "Approve All" picks up changes
+  // Auto-save form edits to the backend so that "Approve All" picks up changes.
+  // Strip publication_status: the form's defaultValues carry the idea's current
+  // status, so sending it back can race with an Approve for another idea and
+  // flip an already-approved idea back to 'draft' — producing a persistent
+  // desync where the idea reappears in IdeaList while still in the approved
+  // list. Only Approve/Undo should ever touch publication_status.
   const autoSave = useCallback(
     (id: string, formData: FormValues) => {
-      updateIdea({ id, requestBody: formData, skipRefetchCounts: true });
+      const { publication_status: _omit, ...rest } = formData;
+      updateIdea({ id, requestBody: rest, skipRefetchCounts: true });
     },
     [updateIdea]
   );
@@ -196,6 +202,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
             : {}),
         },
       });
+
+      const approvedTitle = localize(idea?.data.attributes.title_multiloc);
+      onIdeaApproved({ id: ideaId, title: approvedTitle });
 
       setUserFormStatePerIdea((userFormState) => {
         const clone = { ...userFormState };

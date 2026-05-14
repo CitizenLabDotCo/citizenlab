@@ -11,7 +11,7 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import moment from 'moment';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
@@ -40,8 +40,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { formatDateInTimezone } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -61,7 +61,6 @@ const FromTo = styled.div`
 const FromToHeader = styled.span`
   font-weight: bold;
 `;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -97,9 +96,8 @@ const SendNowWarning = styled.div`
   margin-bottom: 30px;
 `;
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
 const Show = () => {
-  const { campaignId } = useParams() as { campaignId: string };
+  const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
@@ -118,9 +116,11 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearch({
+    from: '/$locale/admin/messaging/emails/custom/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );
@@ -245,10 +245,9 @@ const Show = () => {
                   text={<FormattedMessage {...messages.scheduled} />}
                 />
                 <Text fontSize="base" whiteSpace="nowrap">
-                  {formatDateInTimezone({
-                    date: campaign.data.attributes.scheduled_at,
-                    timeZone,
-                  })}
+                  {moment(campaign.data.attributes.scheduled_at)
+                    .tz(timeZone)
+                    .format('LLL')}
                 </Text>
               </>
             )}
@@ -257,7 +256,8 @@ const Show = () => {
             campaign.data.attributes.scheduled_at) && (
             <Buttons>
               <ButtonWithLink
-                linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
+                to="/admin/messaging/emails/custom/$campaignId/edit"
+                params={{ campaignId: campaign.data.id }}
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
@@ -331,7 +331,8 @@ const Show = () => {
                   <span>
                     <FormattedMessage {...messages.allParticipantsInProject} />{' '}
                     <Link
-                      to={`/admin/projects/${project.data.id}`}
+                      to="/admin/projects/$projectId"
+                      params={{ projectId: project.data.id }}
                       target="_blank"
                     >
                       {localize(project.data.attributes.title_multiloc)}
@@ -408,7 +409,8 @@ const Show = () => {
             <ButtonsWrapper>
               <ButtonWithLink
                 buttonStyle="secondary-outlined"
-                linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
+                to="/admin/messaging/emails/custom/$campaignId/edit"
+                params={{ campaignId: campaign.data.id }}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />
               </ButtonWithLink>

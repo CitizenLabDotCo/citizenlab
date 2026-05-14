@@ -22,17 +22,17 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import ChangePasswordSuccess from './ChangePasswordSuccess';
 import messages from './messages';
-import Warning from 'components/UI/Warning';
-import { isAdmin } from 'utils/permissions/roles';
 
 type FormValues = {
   current_password: string;

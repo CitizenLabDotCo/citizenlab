@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { InsertConfigurationOptions } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -31,6 +33,7 @@ export interface ITabNamesMap {
 export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const CreateProject = () => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
@@ -54,9 +57,11 @@ const CreateProject = () => {
       return insertConfiguration({ ...data, insertAfterName: 'scratch' })(tabs);
     });
 
+  if (!authUser) return null;
+
   return (
     <Box>
-      <GoBackButton linkTo="/admin/projects" />
+      <GoBackButton to="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}
       </Title>
@@ -85,7 +90,9 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}
         />
-        {selectedTabValue === 'scratch' && <ProjectSetupForm />}
+        {selectedTabValue === 'scratch' && (
+          <ProjectSetupForm authUser={authUser} />
+        )}
       </Box>
     </Box>
   );

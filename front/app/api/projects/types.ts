@@ -28,7 +28,8 @@ export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc
 type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
-export type PublicationStatus = 'draft' | 'published' | 'archived';
+export const publicationStatuses = ['draft', 'published', 'archived'] as const;
+export type PublicationStatus = (typeof publicationStatuses)[number];
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -91,12 +92,16 @@ export interface IProjectAttributes {
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  scheduled_status?: PublicationStatus | null;
+  scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
+  publication_email_enabled: boolean;
+  global_publication_email_enabled: boolean;
   space_id?: string | null;
 }
 
@@ -155,7 +160,8 @@ export interface IProjectData {
   };
 }
 
-export type Visibility = 'public' | 'groups' | 'admins';
+export const visibilities = ['public', 'groups', 'admins'] as const;
+export type Visibility = (typeof visibilities)[number];
 type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {
@@ -192,6 +198,8 @@ export interface IUpdatedProjectProperties {
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   publication_status?: PublicationStatus;
   voting_min_total?: number | null;
@@ -210,4 +218,6 @@ export interface IUpdatedProjectProperties {
   listed?: boolean;
   live_auto_input_topics_enabled?: boolean;
   space_id?: string | null;
+  scheduled_at?: string | null;
+  publication_email_enabled?: boolean;
 }

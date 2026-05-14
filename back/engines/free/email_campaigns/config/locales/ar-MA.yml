@@ -94,6 +94,7 @@ ar-MA:
         project_published: تم نشر المشروع
         project_review_request: طلب المنسق مراجعة المشروع
         project_review_state_change: وافق المراجع على المشروع
+        proposal_expired: تنتهي صلاحية مقترح دون الوصول إلى العتبة
         proposal_gets_reported_as_spam: تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا
         proposal_is_assigned_to_admin: يتم تعيين الاقتراح إلى المسؤول
         proposal_is_published: تم نشر الاقتراح
@@ -188,6 +189,7 @@ ar-MA:
       project_published: تم نشر المشروع
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
+      proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى عتبة التصويت
       screening_digest: تذكير بالفحص الأسبوعي
       space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
@@ -591,6 +593,11 @@ ar-MA:
       preheader: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
       subject: تمت الموافقة على "%{projectTitle}"
       title: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: مراجعة المساهمة التي انتهت صلاحيتها
+      preheader: انتهت صلاحية مساهمة دون الوصول إلى العتبة
+      subject: انتهت صلاحية "%{input_title}" دون الوصول إلى العتبة
+      title: انتهت صلاحية مساهمة دون الوصول إلى عتبة التصويت
     schedules:
       quarterly: ربع سنوي، في اليوم الأول من الربع
       weekly:

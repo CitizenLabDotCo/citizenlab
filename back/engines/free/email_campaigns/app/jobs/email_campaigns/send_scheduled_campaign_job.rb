@@ -13,11 +13,7 @@ module EmailCampaigns
                 campaign.scheduled_at.blank? ||
                 campaign.scheduled_at != expected_scheduled_at
 
-      campaign.with_lock do
-        campaign.clear_scheduled_at!
-        DeliveryService.new.send_now(campaign)
-      end
-      SideFxCampaignService.new.after_send(campaign, campaign.author)
+      SendManualCampaignService.new.call(campaign, campaign.author)
     end
   end
 end

@@ -9,7 +9,7 @@ module Polls
     end
 
     def create?
-      user&.active? && (user&.admin? || user&.project_moderator?(record.phase.project.id))
+      can_moderate?(record.phase.project)
     end
 
     def show?
@@ -17,7 +17,7 @@ module Polls
     end
 
     def update?
-      user&.active? && (user&.admin? || user&.project_moderator?(record.phase.project.id))
+      can_moderate?(record.phase.project)
     end
 
     def reorder?

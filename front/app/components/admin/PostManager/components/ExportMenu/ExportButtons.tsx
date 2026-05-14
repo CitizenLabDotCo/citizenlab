@@ -37,7 +37,6 @@ const ExportButtons = ({
 }: Props) => {
   return (
     // TODO: use DropdownListItem instead of custom styles in Container.
-    // E.g., see front/app/containers/Admin/projects/project/nativeSurvey/index.tsx
     <Container className={className}>
       <ExportIdeasButton
         exportType={exportType}

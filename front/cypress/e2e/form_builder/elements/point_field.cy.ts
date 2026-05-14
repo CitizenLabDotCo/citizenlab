@@ -105,7 +105,7 @@ describe('Form builder point field', () => {
     cy.url().should('include', `projects/${projectSlug}`);
 
     // Check results in back office
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/results`);
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
     cy.contains(questionTitle).should('exist');
     // Open the legend and check the correct data is shown
     cy.get('.esri-ui-bottom-right .esri-expand__toggle').click();

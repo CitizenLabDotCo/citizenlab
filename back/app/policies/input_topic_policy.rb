@@ -8,11 +8,11 @@ class InputTopicPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
+    can_moderate?(Project.find(record.project_id))
   end
 
   def update?
-    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
+    can_moderate?(Project.find(record.project_id))
   end
 
   def move?

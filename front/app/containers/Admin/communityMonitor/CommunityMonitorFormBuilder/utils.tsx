@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import AccessRightsNotice from 'containers/Admin/projects/project/nativeSurvey/AccessRightsNotice';
-import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
+import AccessRightsNotice from 'containers/Admin/projects/project/surveyFormAssets/AccessRightsNotice';
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/surveyFormAssets/UserFieldsInFormNotice';
 
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';

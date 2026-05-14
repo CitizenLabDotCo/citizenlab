@@ -10,7 +10,7 @@ import {
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignFormValues } from 'api/campaigns/types';
@@ -29,14 +29,13 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { formatDateInTimezone } from 'utils/dateUtils';
+import { useParams } from 'utils/router';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
-
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams() as {
+  const { campaignId } = useParams({ strict: false }) as {
     campaignId: string;
   };
   const { data: tenant } = useAppConfiguration();
@@ -98,10 +97,9 @@ const Edit = ({ campaignType }: EditProps) => {
                 text={<FormattedMessage {...messages.scheduled} />}
               />
               <Text fontSize="base" whiteSpace="nowrap">
-                {formatDateInTimezone({
-                  date: campaign.data.attributes.scheduled_at,
-                  timeZone,
-                })}
+                {moment(campaign.data.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
               </Text>
             </>
           )}

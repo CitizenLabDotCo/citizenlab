@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
-import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -36,6 +35,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
+import { useParams, useSearch } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 import ProjectCTABar from './ProjectCTABar';
@@ -79,9 +79,11 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: phases } = usePhases(projectId);
 
-  const [search] = useSearchParams();
-  const scrollToStatusModule = search.get('scrollToStatusModule');
-  const scrollToIdeas = search.get('scrollToIdeas');
+  const search = useSearch({
+    from: '/$locale/projects/$slug',
+  });
+  const scrollToStatusModule = search.scrollToStatusModule;
+  const scrollToIdeas = search.scrollToIdeas;
 
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -179,7 +181,10 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const { slug, phaseNumber } = useParams();
+  const { slug, phaseNumber } = useParams({ strict: false }) as {
+    slug: string;
+    phaseNumber?: string;
+  };
   const {
     data: project,
     status: statusProject,

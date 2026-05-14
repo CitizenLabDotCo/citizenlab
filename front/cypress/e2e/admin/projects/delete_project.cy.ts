@@ -17,11 +17,8 @@ describe('Admin: delete project', () => {
       publicationStatus: 'published',
     }).then((project) => {
       const projectId = project.body.data.id;
-      cy.visit('/admin/projects');
+      cy.visit(`/admin/projects?search=${projectTitle}`);
 
-      cy.dataCy('projects-overview-sort-select').select(
-        'recently_created_desc'
-      );
       cy.dataCy('projects-overview-table-row').first().contains(projectTitle);
 
       cy.get('[data-testid="moreOptionsButton"]').first().should('exist');
@@ -50,8 +47,7 @@ describe('Admin: delete project', () => {
         folder.body.data.attributes.title_multiloc['en'];
       const folderId = folder.body.data.id;
 
-      cy.visit('/admin/projects');
-      cy.dataCy('projects-overview-folders-tab').click();
+      cy.visit(`/admin/projects?tab=folders&search=${folderTitleToDelete}`);
 
       cy.contains(folderTitleToDelete).should('exist');
 

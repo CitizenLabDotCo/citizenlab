@@ -13,18 +13,12 @@ import messages from '../messages';
 import TopicForm from '../TopicForm';
 
 const New = () => {
-  const { mutate: addTopic } = useAddGlobalTopic();
+  const { mutateAsync: addTopic } = useAddGlobalTopic();
   const handleSubmit = async (values: IGlobalTopicAdd) => {
-    addTopic(
-      {
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push('/admin/settings/topics/platform');
-        },
-      }
-    );
+    await addTopic({
+      ...values,
+    });
+    clHistory.push('/admin/settings/topics/platform');
   };
 
   const goBack = () => {

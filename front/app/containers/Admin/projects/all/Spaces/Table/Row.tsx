@@ -17,7 +17,7 @@ import ActionsMenu from './ActionsMenu';
 const StyledTd = styled(Td)`
   &:hover {
     cursor: pointer;
-    .project-table-row-title {
+    .space-table-row-title {
       text-decoration: underline;
     }
   }
@@ -39,7 +39,7 @@ const Row = ({ space, spaceModeratorsById }: Props) => {
     : [];
 
   return (
-    <Tr dataCy="projects-overview-folder-table-row">
+    <Tr dataCy="spaces-overview-folder-table-row">
       <StyledTd
         background={colors.grey50}
         onClick={() => {
@@ -50,7 +50,7 @@ const Row = ({ space, spaceModeratorsById }: Props) => {
           m="0"
           fontSize="s"
           color="black"
-          className="project-table-row-title"
+          className="space-table-row-title"
         >
           {localize(space.attributes.title_multiloc)}
         </Text>

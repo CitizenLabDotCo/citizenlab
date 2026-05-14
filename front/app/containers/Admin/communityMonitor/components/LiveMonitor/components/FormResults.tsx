@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
 import useSurveyResults from 'api/survey_results/useSurveyResults';
@@ -9,6 +8,8 @@ import useSurveyResults from 'api/survey_results/useSurveyResults';
 import useLocalize from 'hooks/useLocalize';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
+
+import { useParams, useSearch } from 'utils/router';
 
 import {
   categoryColors,
@@ -25,7 +26,9 @@ const FormResults = (props: Props) => {
   const localize = useLocalize();
 
   // Get the projectId and phaseId from the URL
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };
@@ -35,11 +38,13 @@ const FormResults = (props: Props) => {
   const { data: project } = useProjectById(projectId);
 
   // Get the current year and quarter for the results
-  const [search] = useSearchParams();
+  const search = useSearch({
+    from: '/$locale/admin/community-monitor/live-monitor',
+  });
 
   // Get the year and quarter
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = getYearFilter(search.year);
+  const quarter = getQuarterFilter(search.quarter);
 
   // Fetch the form results
   const { data: formResults } = useSurveyResults({

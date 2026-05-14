@@ -1,8 +1,6 @@
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
-
-import { getTimelineTab } from 'containers/Admin/projects/project/phaseSetup/utils';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -10,8 +8,7 @@ export default function setPhaseURL(
   selectedPhase: IPhaseData,
   phases: IPhaseData[],
   project: IProjectData,
-  isBackoffice?: boolean,
-  phaseInsightsEnabled = true
+  isBackoffice?: boolean
 ) {
   const selectedPhaseId = selectedPhase.id;
   const phaseNumber =
@@ -20,7 +17,7 @@ export default function setPhaseURL(
   const currentPhase = getCurrentPhase(phases);
   const currentPhaseId = currentPhase?.id;
   const search = window.location.search;
-  const redirectTab = getTimelineTab(selectedPhase, phaseInsightsEnabled);
+  const redirectTab = getPhaseLandingTab(selectedPhase);
 
   if (isBackoffice) {
     const backOfficeProjectURL = `/admin/projects/${project.id}`;

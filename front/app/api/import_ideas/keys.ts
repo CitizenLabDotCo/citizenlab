@@ -24,3 +24,14 @@ export const importedIdeaMetadataKeys = {
     { ...baseImportedIdeaMetadataKey, operation: 'item', parameters },
   ],
 } satisfies QueryKeys;
+
+const baseImportJobKey = {
+  type: 'import_job',
+};
+
+export const importJobKeys = {
+  all: () => [baseImportJobKey],
+  list: (parameters: { phaseId: string }) => [
+    { ...baseImportJobKey, operation: 'list', parameters },
+  ],
+} satisfies QueryKeys;

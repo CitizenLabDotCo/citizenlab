@@ -26,6 +26,8 @@ export const project: IProjectData = {
     updated_at: '2023-03-22T08:36:22.662Z',
     folder_id: null,
     publication_status: 'published',
+    scheduled_status: null,
+    scheduled_at: null,
     listed: true,
     description_multiloc: {
       en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
@@ -93,6 +95,8 @@ export const project: IProjectData = {
     baskets_count: 0,
     votes_count: 0,
     live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {

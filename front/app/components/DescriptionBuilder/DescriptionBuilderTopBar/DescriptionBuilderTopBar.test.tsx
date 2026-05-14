@@ -49,19 +49,20 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 
 const mockParams = { projectId: 'id' };
 
-jest.mock('utils/cl-router/withRouter', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} params={mockParams} />;
-      };
-    },
-  };
-});
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('@tanstack/react-router', () => ({
+  ...jest.requireActual('@tanstack/react-router'),
   useParams: () => mockParams,
+  useLocation: jest.fn(() => ({
+    pathname: '/',
+    search: '',
+    hash: '',
+    href: '/',
+    state: {},
+  })),
+  useNavigate: jest.fn(() => jest.fn()),
+  useRouterState: jest.fn(() => ({
+    location: { pathname: '/', search: '', hash: '', href: '/', state: {} },
+  })),
 }));
 
 jest.mock('api/projects/useProjectById', () => {
@@ -107,7 +108,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -126,7 +127,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -146,7 +147,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -174,7 +175,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -196,7 +197,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -218,7 +219,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -243,7 +244,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -267,7 +268,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -288,7 +289,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -310,7 +311,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );
@@ -341,7 +342,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
-          previewPath="/projects/preview"
+          previewLink={{ to: '/projects/preview' } as any}
         />
       </Editor>
     );

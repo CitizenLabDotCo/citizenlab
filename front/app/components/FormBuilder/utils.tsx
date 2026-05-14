@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
 import {
@@ -64,7 +63,7 @@ export type FormBuilderConfig = {
   each survey phase within a project can have a different form */
   isFormPhaseSpecific: boolean;
 
-  goBackUrl?: RouteType;
+  goBackUrl?: string;
 
   getDeletionNotice?: (projectId: string) => React.JSX.Element;
   getWarningNotice?: () => React.JSX.Element;

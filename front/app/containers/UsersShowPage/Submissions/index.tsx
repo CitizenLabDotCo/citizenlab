@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserBySlug from 'api/users/useUserBySlug';
+import useUserById from 'api/users/useUserById';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -26,22 +26,22 @@ interface QueryParameters {
 }
 
 const Submissions = () => {
-  const { userSlug } = useParams() as { userSlug: string };
-  const { data: user } = useUserBySlug(userSlug);
-  const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
+  const { userId } = useParams({ from: '/$locale/profile/$userId' });
+  const { data: user } = useUserById(userId);
+  const { sort, search } = useSearch({
+    from: '/$locale/profile/$userId',
+  });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const searchParam = searchParams.get('search');
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 24,
       author: user?.data.id || '',
-      sort: sortParam ?? IdeaSortMethodFallback,
-      search: searchParam ?? undefined,
+      sort: sort ?? IdeaSortMethodFallback,
+      search: search ?? undefined,
     }),
-    [user, sortParam, searchParam]
+    [user, sort, search]
   );
 
   return (

@@ -9,7 +9,6 @@ import {
   Tbody,
   colors,
   stylingConsts,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
@@ -21,9 +20,11 @@ import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResour
 import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
+import LoadingComponents from '../../_shared/LoadingComponents';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
 
+import EmptyRow from './EmptyRow';
 import messages from './messages';
 import Row from './Row';
 
@@ -35,6 +36,7 @@ const Table = () => {
 
   const {
     data,
+    isLoading,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
@@ -54,6 +56,11 @@ const Table = () => {
     return moderatorsById;
   }, [data?.pages]);
 
+  // True when loading the initial data,
+  // or when loading new (i.e. a new combination of filters) data
+  const isLoadingNewData = isLoading || (isFetching && !isFetchingNextPage);
+  const isLoadingData = isLoadingNewData || isFetchingNextPage;
+
   const { loadMoreRef } = useInfiniteScroll({
     isLoading: isFetchingNextPage,
     hasNextPage: !!hasNextPage,
@@ -68,6 +75,10 @@ const Table = () => {
 
     if (hasNextPage) {
       return sharedMessages.scrollDownToLoadMore;
+    }
+
+    if (folders.length === 0 && !isLoadingData) {
+      return messages.noFoldersFound;
     }
 
     if (status === 'success') {
@@ -94,37 +105,30 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {folders.map((folder) => (
-            <Row
-              key={folder.id}
-              folder={folder}
-              moderatorsById={moderatorsById}
-            />
-          ))}
+          {isLoadingNewData && (
+            <>
+              <EmptyRow />
+              <EmptyRow />
+              <EmptyRow />
+            </>
+          )}
+          {!isLoadingNewData &&
+            folders.map((folder) => (
+              <Row
+                key={folder.id}
+                folder={folder}
+                moderatorsById={moderatorsById}
+              />
+            ))}
         </Tbody>
       </TableComponent>
 
-      <Box
-        ref={loadMoreRef}
-        mt="12px"
-        display="flex"
-        justifyContent="center"
-        color={colors.textPrimary}
-      >
-        {sentinelMessage && formatMessage(sentinelMessage)}
-      </Box>
-
-      {(isFetching || status === 'loading') && (
-        <Box
-          w="100%"
-          p="4px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner />
-        </Box>
-      )}
+      <LoadingComponents
+        sentinel={sentinelMessage ? formatMessage(sentinelMessage) : undefined}
+        loadMoreRef={loadMoreRef}
+        isLoadingNewData={isLoadingNewData}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </Box>
   );
 };

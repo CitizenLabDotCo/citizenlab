@@ -7,7 +7,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
+import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
@@ -21,7 +21,6 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { formatDateInTimezone } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -37,10 +36,25 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
   );
   const localize = useLocalize();
 
-  const editLink: RouteType =
-    context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const projectContextId = campaign.relationships.context?.data?.id;
+  const editLink: {
+    to:
+      | '/admin/messaging/emails/custom/$campaignId'
+      | '/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
+    context === 'project' && projectContextId
+      ? {
+          to: '/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: projectContextId,
+            campaignId: campaign.id,
+          },
+        }
+      : {
+          to: '/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
   return (
@@ -52,16 +66,16 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
         <Box display="flex" alignItems="center" gap="12px">
           {campaign.attributes.scheduled_at && (
             <>
-              <Text fontSize="base">
-                {formatDateInTimezone({
-                  date: campaign.attributes.scheduled_at,
-                  timeZone,
-                })}
-              </Text>
               <StatusLabel
                 backgroundColor={colors.teal500}
                 text={<FormattedMessage {...messages.scheduled} />}
               />
+
+              <Text as="span" fontSize="base" m="0px" color="textSecondary">
+                {moment(campaign.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
+              </Text>
             </>
           )}
           {isDraft(campaign) && (
@@ -84,7 +98,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
         <ButtonWithLink
-          linkTo={editLink}
+          {...editLink}
           buttonStyle="secondary-outlined"
           icon="edit"
         >

@@ -100,22 +100,21 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       : null
   );
   const tenantLocales = useAppConfigurationLocales();
-  const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
-    useAddProjectFolder();
-  const { mutate: updateProjectFolder } = useUpdateProjectFolder();
+  const { mutateAsync: addProjectFolder } = useAddProjectFolder();
+  const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
 
   const showDescriptionBuilder =
     useFeatureFlag({
       name: 'project_description_builder',
     }) && projectFolder; // description builder cannot be used when creating a folder
 
-  const { data: authUser } = useAuthUser();
-
   /*
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -149,6 +148,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -244,6 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleSpaceIdChange = (spaceId: string | null) => {
     setSubmitState('enabled');
+    setSpaceIdError(false);
     setSpaceId(spaceId);
   };
 
@@ -325,6 +326,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
     if (isSpaceModerator(authUser) && !spaceId) {
       valid = false;
+      setSpaceIdError(true);
     }
 
     if (!valid) {
@@ -351,56 +353,42 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             descriptionMultiloc &&
             shortDescriptionMultiloc
           ) {
-            addProjectFolder(
-              {
-                title_multiloc: titleMultiloc,
-                slug,
-                description_multiloc: descriptionMultiloc,
-                description_preview_multiloc: shortDescriptionMultiloc,
-                header_bg: headerBgBase64,
-                header_bg_alt_text_multiloc: headerImageAltText,
-                admin_publication_attributes: {
-                  publication_status: publicationStatus,
-                },
-                space_id: spaceId,
+            const projectFolder = await addProjectFolder({
+              title_multiloc: titleMultiloc,
+              slug,
+              description_multiloc: descriptionMultiloc,
+              description_preview_multiloc: shortDescriptionMultiloc,
+              header_bg: headerBgBase64,
+              header_bg_alt_text_multiloc: headerImageAltText,
+              admin_publication_attributes: {
+                publication_status: publicationStatus,
               },
-              {
-                onSuccess: async (projectFolder) => {
-                  if (
-                    !isAddProjectFolderLoading &&
-                    !isNilOrError(projectFolder)
-                  ) {
-                    const cardImageToAddPromise = croppedFolderCardBase64
-                      ? addProjectFolderImage({
-                          folderId: projectFolder.data.id,
-                          base64: croppedFolderCardBase64,
-                          alt_text_multiloc: folderCardImageAltText,
-                        })
-                      : null;
+              space_id: spaceId,
+            });
 
-                    const filesToAddPromises = projectFolderFiles.map((file) =>
-                      addProjectFolderFile({
-                        projectFolderId: projectFolder.data.id,
-                        file: file.base64,
-                        name: file.name,
-                      })
-                    );
+            const cardImageToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage({
+                  folderId: projectFolder.data.id,
+                  base64: croppedFolderCardBase64,
+                  alt_text_multiloc: folderCardImageAltText,
+                })
+              : null;
 
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    (cardImageToAddPromise || filesToAddPromises) &&
-                      (await Promise.all<any>([
-                        cardImageToAddPromise,
-                        ...filesToAddPromises,
-                      ]));
-                    clHistory.push(
-                      `/admin/projects/folders/${projectFolder.data.id}`
-                    );
-                  }
-                },
-              }
+            const filesToAddPromises = projectFolderFiles.map((file) =>
+              addProjectFolderFile({
+                projectFolderId: projectFolder.data.id,
+                file: file.base64,
+                name: file.name,
+              })
             );
+
+            await Promise.all<any>([
+              cardImageToAddPromise,
+              ...filesToAddPromises,
+            ]);
+
             setSubmitState('success');
+            clHistory.push(`/admin/projects/folders/${projectFolder.data.id}`);
           }
         } catch (errors) {
           setErrors(errors.errors);
@@ -498,35 +486,25 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               changedPublicationStatus ||
               changedSpaceId
             ) {
-              updateProjectFolder(
-                {
-                  projectFolderId: projectFolder.data.id,
-                  title_multiloc: changedTitleMultiloc
-                    ? titleMultiloc
-                    : undefined,
-                  slug: changedSlug ? slug : undefined,
-                  description_multiloc: changedDescriptionMultiloc
-                    ? descriptionMultiloc
-                    : undefined,
-                  description_preview_multiloc: changedShortDescriptionMultiloc
-                    ? shortDescriptionMultiloc
-                    : undefined,
-                  header_bg: changedHeaderBg ? headerBgBase64 : undefined,
-                  header_bg_alt_text_multiloc: headerImageAltText,
-                  admin_publication_attributes: {
-                    publication_status: publicationStatus,
-                  },
-                  space_id: spaceId,
+              await updateProjectFolder({
+                projectFolderId: projectFolder.data.id,
+                title_multiloc: changedTitleMultiloc
+                  ? titleMultiloc
+                  : undefined,
+                slug: changedSlug ? slug : undefined,
+                description_multiloc: changedDescriptionMultiloc
+                  ? descriptionMultiloc
+                  : undefined,
+                description_preview_multiloc: changedShortDescriptionMultiloc
+                  ? shortDescriptionMultiloc
+                  : undefined,
+                header_bg: changedHeaderBg ? headerBgBase64 : undefined,
+                header_bg_alt_text_multiloc: headerImageAltText,
+                admin_publication_attributes: {
+                  publication_status: publicationStatus,
                 },
-                {
-                  onError: async () => {
-                    setSubmitState('apiError');
-                  },
-                  onSuccess: async () => {
-                    setSubmitState('success');
-                  },
-                }
-              );
+                space_id: spaceId,
+              });
             }
             setProjectFolderFilesToRemove([]);
             setSubmitState('success');
@@ -548,6 +526,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const folderCardImageShouldBeSaved = folderCardImage
     ? !folderCardImage.remote
     : false;
+
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
 
   return (
     <form onSubmit={saveForm}>
@@ -601,7 +595,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
+        <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
@@ -629,9 +623,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}
           />
-          <Box mt="35px">
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
               name="textAreaMultiloc"
               onChange={getHandler(setShortDescriptionMultiloc)}
@@ -667,7 +660,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
 
-        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>
@@ -762,12 +759,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

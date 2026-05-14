@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import { IUserData } from 'api/users/types';
@@ -23,6 +24,7 @@ import Error from 'components/UI/Error';
 
 import Link from 'utils/cl-router/Link';
 import { parseBackendDateString } from 'utils/dateUtils';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
@@ -44,6 +46,7 @@ const Row = ({
   moderatorsById,
 }: Props) => {
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
 
   const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -81,6 +84,9 @@ const Row = ({
   };
 
   const folderId = project.relationships.folder?.data?.id;
+  const folderSpaceId = project.relationships.space?.data?.id;
+  const canModerateThisFolder =
+    !!folderId && userModeratesFolder(authUser, folderId, folderSpaceId);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -90,10 +96,21 @@ const Row = ({
     }
   };
 
-  const link =
-    hover === 'folder'
-      ? (`/admin/projects/folders/${folderId}` as const)
-      : (`/admin/projects/${project.id}` as const);
+  const link: {
+    to:
+      | '/admin/projects/folders/$projectFolderId'
+      | '/admin/projects/$projectId';
+    params: Record<string, string>;
+  } =
+    hover === 'folder' && canModerateThisFolder
+      ? {
+          to: '/admin/projects/folders/$projectFolderId',
+          params: { projectFolderId: folderId },
+        }
+      : {
+          to: '/admin/projects/$projectId',
+          params: { projectId: project.id },
+        };
 
   return (
     <Tr dataCy="projects-overview-table-row">
@@ -110,45 +127,53 @@ const Row = ({
             : undefined
         }
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          w="100%"
-          h="100%"
-          as={Link}
-          to={link}
+        <Link
+          to={link.to}
+          params={link.params as Parameters<typeof Link>[0]['params']}
         >
-          <RowImage
-            imageUrl={imageUrl ?? undefined}
-            alt={localize(title_multiloc)}
-          />
-          <Box ml="8px">
-            <Text
-              m="0"
-              fontSize="s"
-              textDecoration={hover === 'project' ? 'underline' : 'none'}
-            >
-              {localize(title_multiloc)}
-            </Text>
-            {folder_title_multiloc && (
+          <Box display="flex" alignItems="center" w="100%" h="100%">
+            <RowImage
+              imageUrl={imageUrl ?? undefined}
+              alt={localize(title_multiloc)}
+            />
+            <Box ml="8px">
               <Text
                 m="0"
-                fontSize="xs"
-                color="textSecondary"
-                textDecoration={hover === 'folder' ? 'underline' : 'none'}
-                onMouseEnter={() => setHover('folder')}
-                onMouseLeave={() => setHover('project')}
+                fontSize="s"
+                textDecoration={hover === 'project' ? 'underline' : 'none'}
               >
-                {localize(folder_title_multiloc)}
+                {localize(title_multiloc)}
               </Text>
+              {folder_title_multiloc && (
+                <Text
+                  m="0"
+                  fontSize="xs"
+                  color="textSecondary"
+                  textDecoration={
+                    hover === 'folder' && canModerateThisFolder
+                      ? 'underline'
+                      : 'none'
+                  }
+                  onMouseEnter={
+                    canModerateThisFolder ? () => setHover('folder') : undefined
+                  }
+                  onMouseLeave={
+                    canModerateThisFolder
+                      ? () => setHover('project')
+                      : undefined
+                  }
+                >
+                  {localize(folder_title_multiloc)}
+                </Text>
+              )}
+            </Box>
+            {(isBeingCopyied || isBeingDeleted) && (
+              <Box ml="12px">
+                <Spinner size="20px" color={colors.grey400} />
+              </Box>
             )}
           </Box>
-          {(isBeingCopyied || isBeingDeleted) && (
-            <Box ml="12px">
-              <Spinner size="20px" color={colors.grey400} />
-            </Box>
-          )}
-        </Box>
+        </Link>
         {error && (
           <Box mt="8px">
             <Error text={error} />

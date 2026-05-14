@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded',
     defaultMessage: 'All folders have been loaded',
   },
+  noFoldersFound: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.noFoldersFound',
+    defaultMessage: 'No folders found',
+  },
 });

@@ -2114,6 +2114,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -2903,6 +2908,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T11:41:00.688981Z",
+    "verified_by": "Jelena"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -4078,6 +4089,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.form.controls.rankingDragHandleLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-21T08:21:33.397032Z",
+    "verified_by": "Jelena"
   },
   "app.components.form.controls.rankingInstructions": {
     "state": "verified",
@@ -6243,6 +6259,56 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.718288Z",
+    "verified_by": "Jelena"
   },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
@@ -12194,6 +12260,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.343531Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -13303,6 +13375,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-22T11:27:40.387033Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",

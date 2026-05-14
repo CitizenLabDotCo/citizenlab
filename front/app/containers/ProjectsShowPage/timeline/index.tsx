@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box, colors, isRtl, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -9,7 +8,6 @@ import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import messages from 'containers/ProjectsShowPage/messages';
@@ -21,6 +19,7 @@ import StatusModule from 'components/StatusModule';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { useParams } from 'utils/router';
 
 import { isValidPhase } from '../phaseParam';
 
@@ -61,11 +60,12 @@ interface Props {
 }
 
 const ProjectTimelineContainer = ({ projectId, className }: Props) => {
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const currentLocale = useLocale();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -84,13 +84,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases) return;
-    setPhaseURL(
-      phase,
-      phases.data,
-      project.data,
-      undefined,
-      phaseInsightsEnabled
-    );
+    setPhaseURL(phase, phases.data, project.data);
   };
 
   if (selectedPhase) {

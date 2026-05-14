@@ -7,7 +7,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -15,12 +14,11 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'containers/ProjectsShowPage/messages';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import { isValidPhase } from '../phaseParam';
 
@@ -68,9 +66,10 @@ interface Props {
 const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -88,15 +87,9 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const selectPhase = useCallback(
     (phase: IPhaseData) => {
       if (!phases || !project) return;
-      setPhaseURL(
-        phase,
-        phases.data,
-        project.data,
-        undefined,
-        phaseInsightsEnabled
-      );
+      setPhaseURL(phase, phases.data, project.data);
     },
-    [phases, project, phaseInsightsEnabled]
+    [phases, project]
   );
 
   const goToNextPhase = useCallback(() => {

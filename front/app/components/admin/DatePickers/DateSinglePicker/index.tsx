@@ -43,6 +43,7 @@ const DateSinglePicker = ({
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (!date) return;
                 onChange(date);
+                setCalendarOpen(false);
               }}
             />
           </Box>

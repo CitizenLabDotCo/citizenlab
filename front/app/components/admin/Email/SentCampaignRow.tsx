@@ -7,12 +7,13 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
-import { RouteType } from 'routes';
+import moment from 'moment';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
@@ -34,11 +35,29 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
-  const statsLink: RouteType =
-    context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const projectContextId = campaign.relationships.context?.data?.id;
+  const statsLink: {
+    to:
+      | '/admin/messaging/emails/custom/$campaignId'
+      | '/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
+    context === 'project' && projectContextId
+      ? {
+          to: '/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: projectContextId,
+            campaignId: campaign.id,
+          },
+        }
+      : {
+          to: '/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        };
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
   return (
     <Row id={campaign.id}>
@@ -47,23 +66,26 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <Text m="0px" fontSize="s">
-            <FormattedDate value={campaign.attributes.updated_at} />
-            &nbsp;
-            <FormattedTime value={campaign.attributes.updated_at} />
-          </Text>
           <StatusLabel
             backgroundColor={colors.success}
             text={<FormattedMessage {...messages.sent} />}
           />
+
+          <Text as="span" fontSize="base" mb="0px" color="textSecondary">
+            {moment(campaign.attributes.updated_at).tz(timeZone).format('LLL')}
+          </Text>
+
           {/* Only display project name in the global messaging tab */}
           {context === 'global' && project && (
-            <Text m="0px" fontSize="s">
-              {formatMessage(messages.project)}:{' '}
-              {/* TODO: Fix this the next time the file is edited. */}
-              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-              {localize(project?.data.attributes.title_multiloc)}
-            </Text>
+            <>
+              <Text as="span" mb="0px" color="textSecondary">
+                &bull;
+              </Text>
+              <Text as="span" fontSize="base" mb="0px" color="textSecondary">
+                {formatMessage(messages.project)}:{' '}
+                {localize(project.data.attributes.title_multiloc)}
+              </Text>
+            </>
           )}
         </Box>
       </Box>
@@ -75,7 +97,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
         gap="40px"
         alignItems="center"
       >
-        <Box display="flex" flexDirection="column" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          style={isCustomSmtp ? { opacity: 0.4 } : undefined}
+        >
           <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.opened || 0) /
@@ -88,7 +115,12 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.opened} />
           </Text>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          style={isCustomSmtp ? { opacity: 0.4 } : undefined}
+        >
           <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.clicked || 0) /
@@ -101,7 +133,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.clicked} />
           </Text>
         </Box>
-        <ButtonWithLink linkTo={statsLink} icon="chart-bar" buttonStyle="text">
+        <ButtonWithLink {...statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
         </ButtonWithLink>
       </Box>

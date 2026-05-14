@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   Icon,
@@ -20,7 +20,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -37,22 +37,16 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const PrimaryLink = styled(Link)`
-  // For reference:
-  // https://kittygiraudel.com/2022/04/02/accessible-cards/
-  // https://inclusive-components.design/cards/
-  ::before {
-    // Use a pseudo-element to expand the hitbox of the link over the whole card.
-    content: ''; /* 1 */
+const EventTitleLink = typedStyled(Link)`
+  text-decoration: none;
+  color: inherit;
 
-  position: relative;
-
-  // Expand the hitbox over the whole card.
-  position: absolute; /* 2 */
-  inset: 0; /* 2 */
-
-  // Place the pseudo-element on top of the whole card.
-  z-index: 1; /* 3 */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
 `;
 
 interface Props {
@@ -64,6 +58,7 @@ const EventInformation = ({ event }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const registrantCountMessage = useRegistrantCountMessage(event);
+  const ariaId = useId();
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -81,7 +76,11 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <PrimaryLink to={`/events/${event.id}`}>
+          <EventTitleLink
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
+            aria-describedby={ariaId}
+          >
             <Title
               variant="h3"
               fontSize="l"
@@ -93,7 +92,7 @@ const EventInformation = ({ event }: Props) => {
             >
               <T value={event.attributes.title_multiloc} />
             </Title>
-          </PrimaryLink>
+          </EventTitleLink>
 
           <DateBlocks
             startAtMoment={startAtMoment}
@@ -103,7 +102,14 @@ const EventInformation = ({ event }: Props) => {
           />
         </Box>
 
-        <Box my="16px" pt="12px" pb="4px" background={colors.grey100} px="16px">
+        <Box
+          my="16px"
+          pt="12px"
+          pb="4px"
+          background={colors.grey100}
+          px="16px"
+          id={ariaId}
+        >
           <Box
             display="flex"
             mb="12px"
@@ -115,7 +121,7 @@ const EventInformation = ({ event }: Props) => {
                 fill={theme.colors.tenantPrimary}
                 name="clock"
                 title={formatMessage(messages.eventDateTimeIcon)}
-                ariaHidden={false}
+                ariaHidden={true}
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
@@ -224,7 +230,8 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            linkTo={`/events/${event.id}`}
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button
             // to provide context for screen readers. Using the same "Read more" text

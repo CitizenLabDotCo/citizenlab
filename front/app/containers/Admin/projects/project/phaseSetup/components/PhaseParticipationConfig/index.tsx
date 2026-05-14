@@ -28,8 +28,8 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import FeatureCallout from 'components/UI/FeatureCallout';
 import Error from 'components/UI/Error';
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

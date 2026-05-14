@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useParams,
-  useLocation,
-} from 'react-router-dom';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -19,9 +14,9 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import { getTimelineTab } from '../phaseSetup/utils';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
@@ -48,9 +43,6 @@ const AdminProjectPhaseIndex = ({
     }),
     report_builder_enabled: useFeatureFlag({
       name: 'report_builder',
-    }),
-    phase_insights_enabled: useFeatureFlag({
-      name: 'phase_insights',
     }),
   };
 
@@ -97,7 +89,7 @@ const AdminProjectPhaseIndex = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };
@@ -112,7 +104,6 @@ export default () => {
     undefined
   );
   const { pathname } = useLocation();
-  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     if (!phases) return;
@@ -135,22 +126,14 @@ export default () => {
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
-      const redirectTab = getTimelineTab(phaseShown, phaseInsightsEnabled);
+      const redirectTab = getPhaseLandingTab(phaseShown);
       clHistory.replace(
         `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 
     setSelectedPhase(phaseShown);
-  }, [
-    phaseId,
-    phases,
-    projectId,
-    pathname,
-    isLoadingPhases,
-    isFetchingPhases,
-    phaseInsightsEnabled,
-  ]);
+  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (
