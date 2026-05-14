@@ -304,27 +304,25 @@ const MultiSelectDropdown = ({
           </Box>
         }
       />
-      {opened && (
-        <button
-          onFocus={() => {
-            closeExpanded();
-          }}
-          onClick={closeExpanded}
-          style={{
-            position: 'absolute',
-            width: 1,
-            height: 1,
-            padding: 0,
-            margin: -1,
-            overflow: 'hidden',
-            clip: 'rect(0, 0, 0, 0)',
-            whiteSpace: 'nowrap',
-            border: 0,
-          }}
-        >
-          {formatMessage(messages.closeMenu)}
-        </button>
-      )}
+      <button
+        tabIndex={opened ? 0 : -1}
+        aria-hidden={!opened}
+        onFocus={() => closeExpanded()}
+        onClick={closeExpanded}
+        style={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {formatMessage(messages.closeMenu)}
+      </button>
     </Box>
   );
 };
