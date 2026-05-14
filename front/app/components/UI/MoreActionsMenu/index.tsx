@@ -116,6 +116,7 @@ export interface Props {
   color?: string;
   id?: string;
   'data-cy'?: string;
+  ariaLabel?: string;
   onClick?: (event: React.MouseEvent) => void;
 }
 
@@ -128,6 +129,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
       labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
       className,
       id,
+      ariaLabel,
       onClick,
     } = props;
     const { formatMessage } = useIntl();
@@ -213,7 +215,9 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
             data-testid="moreOptionsButton"
             aria-labelledby={showLabel ? labelId : undefined}
             aria-label={
-              !showLabel ? formatMessage(messages.moreOptions) : undefined
+              !showLabel
+                ? ariaLabel ?? formatMessage(messages.moreOptions)
+                : undefined
             }
           >
             <MoreOptionsIcon name="dots-horizontal" color={color} />
