@@ -121,9 +121,14 @@ export default () => {
       }
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
+    // Without this guard, navigating to a sibling tab re-runs the effect
+    // (pathname is in deps) and yanks the user back to /phases/new before the
+    // route unmounts.
+    const stillOnPhasesPath = pathname.includes(
+      `/admin/projects/${projectId}/phases`
+    );
+
+    if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getPhaseLandingTab(phaseShown);
@@ -133,7 +138,7 @@ export default () => {
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
+  }, [phaseId, phases, projectId, pathname, isFetchingPhases]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (
