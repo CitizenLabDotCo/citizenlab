@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Mae eich newidiadau wedi'u cadw.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Chwilio am leoliad",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Cysylltwch ddigwyddiadau sydd ar ddod â'r prosiectau hyn a'u dangos ar dudalen digwyddiadau'r prosiect.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Rhaid ychwanegu digwyddiadau ym mharth amser y platfform ({timezone}, GMT{gmtOffset}). Bydd defnyddwyr terfynol yn gweld y dyddiad yn eu parth amser eu hunain.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Teitl a dyddiadau",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Digwyddiadau prosiect",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Enw'r digwyddiad",

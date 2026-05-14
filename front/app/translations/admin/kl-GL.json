@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Sumiiffimmik ujaarlerit",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Piffissami aggersumi pisussat suliniummut atassusikkit suliniummullu quppernermi nuisillugit.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Pisussat platformip piffissaa malillugu ({timezone}, GMT{gmtOffset}) ilanngunneqassapput. Atuisut ulloq namminneq piffissartik malillugu takussavaat.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Qulequtaq ullullu",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Suliniummi pisussat",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Pisussap aqqa",

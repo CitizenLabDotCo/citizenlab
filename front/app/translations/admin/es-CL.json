@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Los cambios han sido guardados.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Buscar una ubicación",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Añadir eventos offline o reuniones que están vinculados al proyecto. ",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Los eventos deben añadirse en la zona horaria de la plataforma ({timezone}, GMT{gmtOffset}). Los usuarios finales verán la fecha en su propia zona horaria.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Título y fechas",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Eventos de proyecto",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nombre del evento",

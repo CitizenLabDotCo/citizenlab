@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Dine ændringer er blevet gemt.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Søg efter en placering",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Link kommende begivenheder til dette projekt, og vis dem på projektets begivenhedsside.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Begivenheder skal tilføjes i platformens tidszone ({timezone}, GMT{gmtOffset}). Slutbrugere vil se datoen i deres egen tidszone.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titel og datoer",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projektets begivenheder",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Navn på begivenhed",

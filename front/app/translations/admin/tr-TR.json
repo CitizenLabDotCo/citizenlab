@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Yaptığınız değişiklikler kaydedildi.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Bir konum arayın",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Yaklaşan etkinlikleri bu projelere bağlayın ve projenin etkinlik sayfasında gösterin.",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Etkinlikler platformun saat diliminde ({timezone}, GMT{gmtOffset}) eklenmelidir. Son kullanıcılar tarihi kendi saat dilimlerinde görecektir.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Başlık ve tarihler",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Proje etkinlikleri",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Etkinlik adı",
