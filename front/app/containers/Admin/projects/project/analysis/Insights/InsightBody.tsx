@@ -106,7 +106,7 @@ const InsightBody = ({
         />
       ) : (
         <>
-          <StyledInsightsText as="div">
+          <StyledInsightsText>
             {replaceIdRefsWithLinks({
               insight: isLoading ? deleteTrailingIncompleteIDs(text) : text,
               analysisId,
