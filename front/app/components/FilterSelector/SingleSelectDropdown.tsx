@@ -245,7 +245,6 @@ const SingleSelectDropdown = ({
         <button
           onFocus={() => {
             closeExpanded();
-            focusTrigger();
           }}
           onClick={closeExpanded}
           style={{

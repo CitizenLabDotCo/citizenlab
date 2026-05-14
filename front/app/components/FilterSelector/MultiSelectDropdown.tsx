@@ -308,7 +308,6 @@ const MultiSelectDropdown = ({
         <button
           onFocus={() => {
             closeExpanded();
-            focusTrigger();
           }}
           onClick={closeExpanded}
           style={{
