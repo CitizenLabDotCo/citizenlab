@@ -1,6 +1,8 @@
 import React from 'react';
 
+import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -9,12 +11,10 @@ import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
-import styled from 'styled-components';
-import { colors, media } from '@citizenlab/cl2-component-library';
 
 // Absolutely positioned at top-right on wider viewports, but switches to
 // in-flow on narrow viewports / 400% zoom so the button doesn't overlap

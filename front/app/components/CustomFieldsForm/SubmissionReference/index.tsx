@@ -11,6 +11,8 @@ import {
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -18,7 +20,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import SubmissionIdContainer from './SubmissionIdContainer';
 import { getMailLink } from './utils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   inputId: string;
