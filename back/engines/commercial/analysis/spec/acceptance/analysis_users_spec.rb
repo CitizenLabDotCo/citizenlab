@@ -27,7 +27,6 @@ resource 'Analysis users' do
           attributes: {
             first_name: user.first_name,
             last_name: user.last_name,
-            slug: user.slug,
             locale: 'en',
             created_at: kind_of(String),
             updated_at: kind_of(String),
@@ -57,7 +56,6 @@ resource 'Analysis users' do
           attributes: {
             first_name: nil,
             last_name: nil,
-            slug: nil,
             locale: 'en',
             created_at: kind_of(String),
             updated_at: kind_of(String),

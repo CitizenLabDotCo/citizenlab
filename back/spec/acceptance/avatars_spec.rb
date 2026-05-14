@@ -122,10 +122,20 @@ resource 'Avatars' do
     describe do
       let(:id) { user.id }
 
-      example_request 'Get a single avatar' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq id
+      context 'when the user has no participation' do
+        example_request 'Avatar cannot be found' do
+          assert_status 401
+        end
+      end
+
+      context 'when the user has participation' do
+        before { create(:idea, author: user) }
+
+        example_request 'Get a single avatar' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq id
+        end
       end
     end
   end

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
@@ -15,6 +14,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 
@@ -32,7 +32,7 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: variant },
   });
-  const { statusId } = useParams() as { statusId: string };
+  const { statusId } = useParams({ strict: false }) as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
   const { mutateAsync: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();

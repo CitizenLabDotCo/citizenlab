@@ -7,7 +7,6 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -25,6 +24,7 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
@@ -50,7 +50,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 `;
 
 const IdeasShowPage = () => {
-  const { slug } = useParams() as { slug: string };
+  const { slug } = useParams({ from: '/$locale/ideas/$slug' });
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: project } = useProjectById(
@@ -58,8 +58,10 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const [searchParams] = useSearchParams();
-  const phaseContext = searchParams.get('phase_context');
+  const searchParams = useSearch({
+    from: '/$locale/ideas/$slug',
+  });
+  const phaseContext = searchParams.phase_context;
 
   if (!project) return <PageNotFound />;
 
@@ -90,39 +92,39 @@ const IdeasShowPage = () => {
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
-      <VotingContext
-        projectId={project.data.id}
-        phaseId={phaseContext || phase?.id}
-      >
-        <Box background={colors.white}>
-          {isSmallerThanTablet ? (
-            <IdeaShowPageTopBar idea={idea.data} phase={phase} />
-          ) : (
-            // 64px is the height of the CTA bar (see ParticipationCTAContent)
-            <Box mt={showCTABar ? '64px' : undefined}>
-              <DesktopTopBar project={project.data} />
-            </Box>
-          )}
-          <Box mb="8px">
-            <main id="e2e-idea-show">
+      <main id="e2e-idea-show">
+        <VotingContext
+          projectId={project.data.id}
+          phaseId={phaseContext || phase?.id}
+        >
+          <Box background={colors.white}>
+            {isSmallerThanTablet ? (
+              <IdeaShowPageTopBar idea={idea.data} phase={phase} />
+            ) : (
+              // 64px is the height of the CTA bar (see ParticipationCTAContent)
+              <Box mt={showCTABar ? '64px' : undefined}>
+                <DesktopTopBar project={project.data} />
+              </Box>
+            )}
+            <Box mb="8px">
               <StyledIdeasShow
                 ideaId={idea.data.id}
                 projectId={idea.data.relationships.project.data.id}
                 compact={isSmallerThanTablet}
               />
-            </main>
+            </Box>
           </Box>
-        </Box>
-        {showCTABar && (
-          <Box
-            position="fixed"
-            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-            width="100vw"
-          >
-            <ProjectCTABar projectId={project.data.id} />
-          </Box>
-        )}
-      </VotingContext>
+          {showCTABar && (
+            <Box
+              position="fixed"
+              bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+              width="100vw"
+            >
+              <ProjectCTABar projectId={project.data.id} />
+            </Box>
+          )}
+        </VotingContext>
+      </main>
     </>
   );
 };

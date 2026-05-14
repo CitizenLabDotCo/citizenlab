@@ -7,7 +7,6 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -27,6 +26,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 import ProjectFolderDescription from './ProjectFolderDescription';
@@ -110,7 +110,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
 
   return (
-    <>
+    <main id="e2e-folder-page">
       <StyledContentContainer maxWidth={maxPageWidth}>
         <Box display="flex" width="100%">
           <Box ml="auto" display="flex">
@@ -123,7 +123,8 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               >
                 <ButtonWithLink
                   icon="edit"
-                  linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                  to="/admin/projects/folders/$projectFolderId/settings"
+                  params={{ projectFolderId: projectFolder.id }}
                   buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
@@ -147,7 +148,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
           </Box>
         </Box>
       </StyledContentContainer>
-      <main id="e2e-folder-page">
+      <Box>
         {descriptionBuilderEnabled ? (
           <StyledContentContainer maxWidth={maxPageWidth}>
             <ProjectFolderHeader projectFolder={projectFolder} />
@@ -194,13 +195,13 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
             )}
           </>
         )}
-      </main>
-    </>
+      </Box>
+    </main>
   );
 };
 
 const ProjectFolderShowPageWrapper = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/folders/$slug' });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
   if (status === 'loading') {

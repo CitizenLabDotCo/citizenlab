@@ -10,8 +10,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled, { css, keyframes } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -28,7 +26,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
+import { LinkAs } from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import PhaseDescription from './PhaseDescription';
@@ -295,7 +293,6 @@ const Timeline = ({
   const localize = useLocalize();
   const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const { search } = useLocation();
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
@@ -383,7 +380,7 @@ const Timeline = ({
                   .filter((className) => className)
                   .join(' ');
                 const showArrow = !(phaseIndex === phases.data.length - 1);
-                const phaseUrl: RouteType | null = project
+                const phaseUrl: string | null = project
                   ? isBackoffice
                     ? `/admin/projects/${project.data.id}/phases/${
                         phase.id
@@ -401,8 +398,8 @@ const Timeline = ({
                   >
                     {phaseUrl && (
                       <PhaseBar
-                        as={Link}
-                        to={{ pathname: phaseUrl, search }}
+                        as={LinkAs}
+                        to={phaseUrl}
                         scrollToTop={false}
                         ref={(el: HTMLAnchorElement | null) =>
                           el && (tabsRef.current[phaseIndex] = el)

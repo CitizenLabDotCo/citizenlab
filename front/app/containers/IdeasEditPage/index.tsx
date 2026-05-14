@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 
@@ -11,11 +10,12 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { usePermission } from 'utils/permissions';
+import { useParams } from 'utils/router';
 
 import IdeasEditForm from './IdeasEditForm';
 
 const IdeasEditPage = () => {
-  const { ideaId } = useParams() as { ideaId: string };
+  const { ideaId } = useParams({ from: '/$locale/ideas/edit/$ideaId' });
   const { status, error, data: idea } = useIdeaById(ideaId);
   const ideaEditPermission = usePermission({
     item: idea?.data || null,

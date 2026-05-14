@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -17,11 +16,12 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from './messages';
 
 const AdminProjectFolderEdition = () => {
-  const { projectFolderId } = useParams();
+  const { projectFolderId } = useParams({ strict: false });
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();
@@ -74,7 +74,8 @@ const AdminProjectFolderEdition = () => {
           buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
-          linkTo={`/folders/${projectFolder.data.attributes.slug}`}
+          to="/folders/$slug"
+          params={{ slug: projectFolder.data.attributes.slug }}
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
         </ButtonWithLink>

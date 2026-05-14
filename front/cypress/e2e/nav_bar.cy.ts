@@ -15,7 +15,7 @@ describe('nav bar', () => {
     cy.get('li[data-testid="desktop-navbar-item"]').first().click();
 
     // Assert we're back on the landing page
-    cy.location('pathname').should('eq', '/en/');
+    cy.location('pathname').should('eq', '/en');
     cy.get('#e2e-landing-page');
   }
 

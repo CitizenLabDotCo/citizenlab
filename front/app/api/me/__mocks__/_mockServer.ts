@@ -6,7 +6,6 @@ export const mockAuthUserData: IUserData = {
   id: 'dd3f228f-26dc-4844-8315-8277e8f7676e',
   type: 'user',
   attributes: {
-    slug: 'sylvester-kalinoski',
     locale: 'en',
     roles: [{ type: 'admin' }],
     highest_role: 'admin',

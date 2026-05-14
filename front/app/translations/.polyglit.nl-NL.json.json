@@ -2909,6 +2909,12 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T14:19:17.805484Z",
+    "verified_by": "Luuc"
+  },
   "app.components.QuillEditor.image": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6253,6 +6259,56 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
   },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
@@ -12204,6 +12260,7 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+
   "app.errors.phase_too_short": {
     "state": "verified",
     "verified_at": "2026-04-22T12:03:40.488282Z",

@@ -14,7 +14,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -106,7 +106,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                   {userCanEditProject && (
                     <EditButton
                       icon="edit"
-                      linkTo={adminProjectsProjectPath(project.data.id)}
+                      {...adminProjectsProjectLink(project.data.id)}
                       buttonStyle="secondary-outlined"
                       padding="6px 12px"
                     >

@@ -222,8 +222,8 @@ de-AT:
     ca-ES: Katalanisch
     cy-GB: Walisisch
     da-DK: Dänisch
-    de-AT: Deutsch (Österreich)
-    de-DE: Deutsch
+    de-AT: Deutsch (duzen)
+    de-DE: Deutsch (siezen)
     el-GR: Griechisch
     en: Englisch
     en-CA: Englisch (Kanada)
@@ -268,7 +268,7 @@ de-AT:
     proposals:
       title: Vorschläge
   phases:
-    community_monitor_title: Gemeinschaftspuls
+    community_monitor_title: Stimmungsbarometer
     native_survey_button: Umfrage ausfüllen
     native_survey_title: Umfrage
     open_idea_phase_title: Aktuelle Phase

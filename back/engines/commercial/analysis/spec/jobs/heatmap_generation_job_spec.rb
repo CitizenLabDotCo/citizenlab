@@ -237,6 +237,67 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     end
   end
 
+  describe '50-field cap on submission custom fields' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:users) do
+      create_list(:user, 10) +
+        create_list(:user, 10) +
+        create_list(:user, 10)
+    end
+    let!(:inputs) do
+      users[0...10].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
+    let!(:likes) do
+      users[10...20].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user)
+      end
+    end
+    let!(:dislikes) do
+      users[20...30].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
+      end
+    end
+    # A registration custom field with options feeds detect_user_custom_fields
+    # so there's something to correlate tags against (same setup as the
+    # top-level passing test).
+    let!(:correlatable_user_field) { create(:custom_field_select, :with_options) }
+
+    context 'when submission fields exceed the cap' do
+      let(:additional_fields) do
+        create_list(:custom_field_text, 10) + create_list(:custom_field_text, 10) + create_list(:custom_field_text, 10) +
+          create_list(:custom_field_text, 10) + create_list(:custom_field_text, 10)
+      end
+      let(:analysis) do
+        create(:analysis, project: project, additional_custom_fields: additional_fields)
+      end
+
+      it 'does not generate the heatmap' do
+        expect { described_class.perform_now(analysis.reload) }
+          .not_to change { analysis.heatmap_cells.count }
+      end
+    end
+
+    context 'when total fields exceed the cap but submission fields do not (layout fields excluded)' do
+      let(:additional_fields) do
+        create_list(:custom_field_text, 10) + create_list(:custom_field_text, 10) + create_list(:custom_field_text, 10) +
+          create_list(:custom_field_text, 10) + create_list(:custom_field_text, 9) +
+          create_list(:custom_field_page, 10)
+      end
+      let(:analysis) do
+        create(:analysis, project: project, additional_custom_fields: additional_fields)
+      end
+      let(:tags) { create_list(:tag, 2, analysis: analysis) }
+      let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+
+      it 'generates the heatmap' do
+        expect { described_class.perform_now(analysis.reload) }
+          .to change { analysis.heatmap_cells.count }.from(0)
+      end
+    end
+  end
+
   describe 'do not perform if there is already a logged activity and there has been no change in the input count, participants count or the date of the latest input' do
     let(:project) { create(:single_phase_ideation_project) }
     let(:analysis) { create(:analysis, project: project) }

@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
-import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import useUserById from 'api/users/useUserById';
@@ -120,7 +119,7 @@ export interface Props {
 }
 
 const Avatar = memo(
-  ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
+  ({ isLinkToProfile, authorHash, userId, ...props }: Props) => {
     const { data: user } = useUserById(userId);
     if (isNilOrError(user)) {
       return (
@@ -133,15 +132,11 @@ const Avatar = memo(
       );
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const slug = user?.data.attributes.slug;
-    const profileLink: RouteType = `/profile/${slug}`;
-    const hasValidProfileLink = profileLink !== '/profile/undefined';
+    const hasValidProfileLink = !!userId;
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink} scrollToTop>
+        <Link to="/profile/$userId" params={{ userId }} scrollToTop>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.titleForAccessibility}
@@ -172,8 +167,8 @@ const AvatarInner = ({
   showModeratorStyles,
   className,
   addVerificationBadge,
-  userId,
   authorHash,
+  userId,
   ...props
 }: Props) => {
   const { data: user } = useUserById(userId);
@@ -218,12 +213,8 @@ const AvatarInner = ({
     }
   }
 
-  // In dev mode, slug is sometimes undefined,
-  // while !isNilOrError(user) passes... To be solved properly
-  const { slug, avatar, verified } = user.data.attributes;
-  const profileLink = `/profile/${slug}`;
-  const hasValidProfileLink = profileLink !== '/profile/undefined';
-  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+  const { avatar, verified } = user.data.attributes;
+  const hasHoverEffect = (isLinkToProfile && !!userId) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
 
   return (

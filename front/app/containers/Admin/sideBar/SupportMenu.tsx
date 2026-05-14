@@ -8,7 +8,6 @@ import {
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -88,7 +87,7 @@ export const SupportMenu = () => {
         content={
           <Box>
             <ItemMenu
-              linkTo={formatMessage(messages.linkToSupport) as RouteType}
+              linkTo={formatMessage(messages.linkToSupport)}
               buttonStyle="text"
               openLinkInNewTab
             >
@@ -100,7 +99,7 @@ export const SupportMenu = () => {
               </Box>
             </ItemMenu>
             <ItemMenu
-              linkTo={formatMessage(messages.linkToChangelog2) as RouteType}
+              linkTo={formatMessage(messages.linkToChangelog2)}
               buttonStyle="text"
               openLinkInNewTab
             >
@@ -112,9 +111,7 @@ export const SupportMenu = () => {
               </Box>
             </ItemMenu>
             <ItemMenu
-              linkTo={
-                formatMessage(messages.linkToCommunityPlatform) as RouteType
-              }
+              linkTo={formatMessage(messages.linkToCommunityPlatform) as string}
               buttonStyle="text"
               openLinkInNewTab
             >

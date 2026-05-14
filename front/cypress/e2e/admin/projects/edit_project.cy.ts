@@ -53,16 +53,18 @@ describe('Admin: edit project', () => {
     project.contains(projectTitle);
     project.click();
 
-    // Set publication status to draft
-    cy.get('#e2e-admin-edit-publication-status').click();
-    cy.get('.e2e-projectstatus-draft').click();
+    // Project starts 'published'. Open the Change Status modal
+    // and move it to archived.
+    cy.get('#e2e-publish').click();
+    cy.get('.e2e-projectstatus-archived').click();
+    cy.get('#e2e-change-status-submit').click();
 
-    cy.visit('/admin/projects?status=%5B"draft"%5D');
+    cy.visit('/admin/projects?status=%5B"archived"%5D');
 
     // Set sort again
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
 
-    // Project should appear on top of the projects list. Click it
+    // Project should appear on top of the archived list. Click it
     const project2 = cy
       .dataCy('projects-overview-table-row')
       .first()
@@ -71,11 +73,12 @@ describe('Admin: edit project', () => {
     project2.contains(projectTitle);
     project2.click();
 
-    // Set publication status to archived
-    cy.get('#e2e-admin-edit-publication-status').click();
-    cy.get('.e2e-projectstatus-archived').click();
+    // Move it to draft via the Change Status modal
+    cy.get('#e2e-publish').click();
+    cy.get('.e2e-projectstatus-draft').click();
+    cy.get('#e2e-change-status-submit').click();
 
-    cy.visit('/admin/projects?status=%5B"archived"%5D');
+    cy.visit('/admin/projects?status=%5B"draft"%5D');
 
     // Set sort again
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
