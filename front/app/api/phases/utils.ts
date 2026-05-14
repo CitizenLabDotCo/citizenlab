@@ -5,7 +5,7 @@ import { SupportedLocale } from 'typings';
 import { IIdeaData } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 
-import { pastPresentOrFutureWithTimezone } from 'utils/dateUtils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
 
@@ -16,18 +16,14 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'voting';
 }
 
-export function getCurrentPhase(
-  phases: IPhaseData[] | undefined,
-  timeZone?: string
-) {
+export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const currentPhase = phases.find(
       (phase) =>
-        pastPresentOrFutureWithTimezone({
-          startDate: phase.attributes.start_at,
-          endDate: phase.attributes.end_at,
-          timeZone: timeZone || 'UTC',
-        }) === 'present'
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) === 'present'
     );
 
     return currentPhase;
@@ -60,18 +56,14 @@ export function getLastPhase(phases: IPhaseData[] | undefined) {
   return;
 }
 
-export function getLastPastPhase(
-  phases: IPhaseData[] | undefined,
-  timeZone: string
-) {
+export function getLastPastPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases) && phases.length > 0) {
     const pastPhases = phases.filter(
       (phase) =>
-        pastPresentOrFutureWithTimezone({
-          startDate: phase.attributes.start_at,
-          endDate: phase.attributes.end_at,
-          timeZone,
-        }) === 'past'
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) === 'past'
     );
 
     const lastPastActivePhase = last(
@@ -84,34 +76,29 @@ export function getLastPastPhase(
   return null;
 }
 
-export function getLatestRelevantPhase(
-  phases: IPhaseData[],
-  timeZone: string = 'UTC'
-) {
-  const currentPhase = getCurrentPhase(phases, timeZone);
+export function getLatestRelevantPhase(phases: IPhaseData[]) {
+  const currentPhase = getCurrentPhase(phases);
   const firstPhase = getFirstPhase(phases);
   const lastPhase = getLastPhase(phases);
-  const lastPastPhase = getLastPastPhase(phases, timeZone);
+  const lastPastPhase = getLastPastPhase(phases);
 
   if (currentPhase) {
     return currentPhase;
   } else if (
     firstPhase &&
-    pastPresentOrFutureWithTimezone({
-      startDate: firstPhase.attributes.start_at,
-      endDate: firstPhase.attributes.end_at,
-      timeZone,
-    }) === 'future'
+    pastPresentOrFuture([
+      firstPhase.attributes.start_at,
+      firstPhase.attributes.end_at,
+    ]) === 'future'
   ) {
     return firstPhase;
   } else if (
     lastPastPhase &&
     lastPhase &&
-    pastPresentOrFutureWithTimezone({
-      startDate: lastPhase.attributes.start_at,
-      endDate: lastPhase.attributes.end_at,
-      timeZone,
-    }) === 'future'
+    pastPresentOrFuture([
+      lastPhase.attributes.start_at,
+      lastPhase.attributes.end_at,
+    ]) === 'future'
   ) {
     return lastPastPhase;
   } else {
@@ -150,20 +137,15 @@ export const hideTimelineUI = (
 
 export function getInputTerm(
   phases: IPhaseData[] | undefined,
-  phase?: IPhaseData | undefined | null | Error,
-  timeZone: string = 'UTC'
+  phase?: IPhaseData | undefined | null | Error
 ) {
   // (2020/12/9): When a new timeline project is created, phases will initially
   // be []. To make sure we don't break copy that depends on an input_term,
   // we have the fallback to idea here in that case.
   if (!isNilOrError(phase)) {
-    return (
-      getLatestRelevantPhase([phase], timeZone)?.attributes.input_term || 'idea'
-    );
+    return getLatestRelevantPhase([phase])?.attributes.input_term || 'idea';
   } else if (phases && phases.length > 0) {
-    return (
-      getLatestRelevantPhase(phases, timeZone)?.attributes.input_term || 'idea'
-    );
+    return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
   }
   return 'idea';
 }

@@ -155,45 +155,27 @@ export function timeAgo(dateInput: number, locale: SupportedLocale) {
   return undefined;
 }
 
-// this function is exclusively used to compare phase start/ends,
-// which are created and stored with the YYYY-MM-DD format (no time of day)
+// Compares phase start/end timestamps against now at millisecond precision.
+// Phase start_at/end_at are full ISO datetimes (timestamp without time zone
+// on the backend, serialized with a Z offset), so day-granularity comparison
+// would incorrectly treat a phase still as "present" between its end time
+// and midnight.
 type SingleDate = string;
 type BeginAndEndDate = [string, string | null];
 export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
-  const currentIsoDate = getIsoDateForToday();
-  const momentCurrentDate = moment(currentIsoDate, 'YYYY-MM-DD');
+  const now = moment();
 
-  // if input is a string representing one date
   if (isString(input)) {
-    const isoDate = getIsoDateUtc(input);
-
-    if (isoDate === currentIsoDate) {
-      return 'present';
-    } else if (momentCurrentDate.isAfter(isoDate)) {
-      return 'past';
-    }
-
-    return 'future';
+    const target = moment(input);
+    if (now.isBefore(target)) return 'future';
+    return now.isSame(target) ? 'present' : 'past';
   }
 
-  // if input is an array with start and end dates
-  const startIsoDate = getIsoDateUtc(input[0]);
-
-  if (input[1] === null) {
-    const isPresent =
-      momentCurrentDate.isAfter(startIsoDate) ||
-      momentCurrentDate.isSame(startIsoDate);
-    return isPresent ? 'present' : 'future';
-  }
-  const endIsoDate = getIsoDateUtc(input[1]);
-
-  if (momentCurrentDate.isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
-    return 'present';
-  } else if (momentCurrentDate.isAfter(endIsoDate)) {
-    return 'past';
-  }
-
-  return 'future';
+  const [startAt, endAt] = input;
+  const start = moment(startAt);
+  if (now.isBefore(start)) return 'future';
+  if (endAt === null) return 'present';
+  return now.isBefore(moment(endAt)) ? 'present' : 'past';
 }
 
 // this is used to display event start/end times, which are stored in UTC time
@@ -419,49 +401,3 @@ export const getDateInTimezone = (
     m.second()
   );
 };
-
-type SingleDateWithTimezone = { date: string; timeZone: string };
-type BeginAndEndDateWithTimezone = {
-  startDate: string;
-  endDate: string | null;
-  timeZone: string;
-};
-
-export function pastPresentOrFutureWithTimezone(
-  input: SingleDateWithTimezone | BeginAndEndDateWithTimezone
-) {
-  const timeZone = input.timeZone;
-
-  // Get current time in the specified timezone
-  const now = moment.tz(timeZone);
-
-  // Single date case
-  if ('date' in input) {
-    const targetDate = moment.tz(input.date, timeZone);
-
-    if (now.isSame(targetDate, 'day')) {
-      return 'present';
-    } else if (now.isAfter(targetDate, 'day')) {
-      return 'past';
-    }
-    return 'future';
-  }
-
-  // Date range case
-  const startDate = moment.tz(input.startDate, timeZone);
-
-  // No end date case
-  if (input.endDate === null) {
-    return now.isSameOrAfter(startDate) ? 'present' : 'future';
-  }
-
-  const endDate = moment.tz(input.endDate, timeZone);
-
-  if (now.isSameOrAfter(startDate) && now.isBefore(endDate)) {
-    return 'present';
-  } else if (now.isSameOrAfter(endDate)) {
-    return 'past';
-  }
-
-  return 'future';
-}
