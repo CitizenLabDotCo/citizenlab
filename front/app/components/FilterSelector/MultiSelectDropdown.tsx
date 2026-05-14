@@ -13,13 +13,11 @@ import {
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
 import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-import messages from './messages';
+import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
 
@@ -126,7 +124,6 @@ const MultiSelectDropdown = ({
   handleKeyDown,
   isLoading,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const triggerRef = useRef<HTMLDivElement>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -304,25 +301,7 @@ const MultiSelectDropdown = ({
           </Box>
         }
       />
-      <button
-        tabIndex={opened ? 0 : -1}
-        aria-hidden={!opened}
-        onFocus={() => closeExpanded()}
-        onClick={closeExpanded}
-        style={{
-          position: 'absolute',
-          width: 1,
-          height: 1,
-          padding: 0,
-          margin: -1,
-          overflow: 'hidden',
-          clip: 'rect(0, 0, 0, 0)',
-          whiteSpace: 'nowrap',
-          border: 0,
-        }}
-      >
-        {formatMessage(messages.closeMenu)}
-      </button>
+      <DropdownFocusSentinel opened={opened} onClose={closeExpanded} />
     </Box>
   );
 };

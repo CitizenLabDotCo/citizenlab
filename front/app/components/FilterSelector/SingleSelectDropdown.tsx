@@ -10,9 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
+import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { SelectorProps } from './MultiSelectDropdown';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
@@ -75,7 +73,6 @@ const SingleSelectDropdown = ({
   currentTitle,
   handleKeyDown,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const listboxRef = useRef<HTMLUListElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -211,55 +208,35 @@ const SingleSelectDropdown = ({
         opened={opened}
         onClickOutside={onClickOutside}
         content={
-          <>
-            <List
-              ref={listboxRef}
-              role="listbox"
-              aria-labelledby={`${baseID}-label`}
-              aria-activedescendant={
-                focusedIndex !== null ? `option-${focusedIndex}` : undefined
-              }
-              onKeyDown={onKeyDown}
-              tabIndex={0}
-            >
-              {options.map((option, index) => (
-                <ListItem
-                  key={index}
-                  id={`e2e-item-${option.value}`}
-                  role="option"
-                  aria-selected={selected.includes(option.value)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    onChange(option.value);
-                  }}
-                  tabIndex={-1}
-                >
-                  <ListItemText>{option.text}</ListItemText>
-                </ListItem>
-              ))}
-            </List>
-          </>
+          <List
+            ref={listboxRef}
+            role="listbox"
+            aria-labelledby={`${baseID}-label`}
+            aria-activedescendant={
+              focusedIndex !== null ? `option-${focusedIndex}` : undefined
+            }
+            onKeyDown={onKeyDown}
+            tabIndex={0}
+          >
+            {options.map((option, index) => (
+              <ListItem
+                key={index}
+                id={`e2e-item-${option.value}`}
+                role="option"
+                aria-selected={selected.includes(option.value)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onChange(option.value);
+                }}
+                tabIndex={-1}
+              >
+                <ListItemText>{option.text}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
         }
       />
-      <button
-        tabIndex={opened ? 0 : -1}
-        aria-hidden={!opened}
-        onFocus={() => closeExpanded()}
-        onClick={closeExpanded}
-        style={{
-          position: 'absolute',
-          width: 1,
-          height: 1,
-          padding: 0,
-          margin: -1,
-          overflow: 'hidden',
-          clip: 'rect(0, 0, 0, 0)',
-          whiteSpace: 'nowrap',
-          border: 0,
-        }}
-      >
-        {formatMessage(messages.closeMenu)}
-      </button>
+      <DropdownFocusSentinel opened={opened} onClose={closeExpanded} />
     </Box>
   );
 };
