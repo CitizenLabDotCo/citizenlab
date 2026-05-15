@@ -30,7 +30,7 @@ module UserConfirmation
   end
 
   def confirm!
-    return unless confirmation_required?
+    return unless confirmation_required? || new_email.present?
 
     confirm_new_email if new_email.present?
     confirm
@@ -51,7 +51,6 @@ module UserConfirmation
     self.email_confirmation_code = generate_confirmation_code
     self.email_confirmation_code_reset_count += 1
     self.email_confirmation_retry_count = 0
-    self.confirmation_required = true
     save!
   end
 
