@@ -9,41 +9,37 @@ namespace :single_use do
 
     reporter = ScriptReporter.new
 
-    Tenant.all.find_each do |tenant|
-      next unless Apartment.connection.schema_exists?(tenant.schema_name)
+    Tenant.safe_switch_each do |tenant|
+      reporter.add_processed_tenant(tenant)
 
-      tenant.switch do
-        reporter.add_processed_tenant(tenant)
+      users = User.where("first_name LIKE '%@%' OR last_name LIKE '%@%'").to_a
+      next if users.empty?
 
-        users = User.where("first_name LIKE '%@%' OR last_name LIKE '%@%'").to_a
-        next if users.empty?
+      puts "Processing tenant: #{tenant.host} - #{users.size} affected user(s)"
 
-        puts "Processing tenant: #{tenant.host} - #{users.size} affected user(s)"
+      users.each do |user|
+        new_attrs = {}
+        new_attrs[:first_name] = nil if user.first_name.to_s.include?('@')
+        new_attrs[:last_name]  = nil if user.last_name.to_s.include?('@')
+        next if new_attrs.empty?
 
-        users.each do |user|
-          new_attrs = {}
-          new_attrs[:first_name] = nil if user.first_name.to_s.include?('@')
-          new_attrs[:last_name]  = nil if user.last_name.to_s.include?('@')
-          next if new_attrs.empty?
+        before = { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name }
+        after  = before.merge(new_attrs)
 
-          before = { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name }
-          after  = before.merge(new_attrs)
-
-          if execute
-            begin
-              user.update!(new_attrs)
-            rescue StandardError => e
-              reporter.add_error(e.message, context: { tenant: tenant.host, user_id: user.id })
-              puts "ERROR! Failed to update user #{user.id}: #{e.message}"
-              user.reload
-              next
-            end
+        if execute
+          begin
+            user.update!(new_attrs)
+          rescue StandardError => e
+            reporter.add_error(e.message, context: { tenant: tenant.host, user_id: user.id })
+            puts "ERROR! Failed to update user #{user.id}: #{e.message}"
+            user.reload
+            next
           end
-
-          reporter.add_change(before, after, context: { tenant: tenant.host, user_id: user.id })
         end
+
+        reporter.add_change(before, after, context: { tenant: tenant.host, user_id: user.id })
       end
-    rescue Apartment::TenantNotFound, StandardError => e
+    rescue StandardError => e
       reporter.add_error(e.message, context: { tenant: tenant.host })
       puts "ERROR! Failed to process tenant #{tenant.host}: #{e.message}"
     end
