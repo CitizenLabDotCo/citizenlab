@@ -97,10 +97,10 @@ describe 'single_use:nullify_email_like_user_names rake task' do
       end
     end
 
-    context 'when user.update! raises' do
+    context 'when user.save! raises' do
       it 'leaves the user unchanged and logs an error' do
         user = create(:user, first_name: 'John', last_name: 'john@example.com')
-        allow_any_instance_of(User).to receive(:update!).and_raise('Boom')
+        allow_any_instance_of(User).to receive(:save!).and_raise('Boom')
 
         expect { run_task(execute: true) }.to output(/ERROR! Failed to update user/).to_stdout
 

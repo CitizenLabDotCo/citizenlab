@@ -18,23 +18,24 @@ namespace :single_use do
       puts "Processing tenant: #{tenant.host} - #{users.size} affected user(s)"
 
       users.each do |user|
-        new_attrs = {}
-        new_attrs[:first_name] = nil if user.first_name.to_s.include?('@')
-        new_attrs[:last_name]  = nil if user.last_name.to_s.include?('@')
-        next if new_attrs.empty?
+        before = user.attributes.symbolize_keys
 
-        before = { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name }
-        after  = before.merge(new_attrs)
+        user.first_name = nil if user.first_name.to_s.include?('@')
+        user.last_name  = nil if user.last_name.to_s.include?('@')
+        next unless user.changed?
 
         if execute
           begin
-            user.update!(new_attrs)
+            user.save!
           rescue StandardError => e
             reporter.add_error(e.message, context: { tenant: tenant.host, user_id: user.id })
             puts "ERROR! Failed to update user #{user.id}: #{e.message}"
             user.reload
             next
           end
+          after = user.reload.attributes.symbolize_keys
+        else
+          after = user.attributes.symbolize_keys
         end
 
         reporter.add_change(before, after, context: { tenant: tenant.host, user_id: user.id })
