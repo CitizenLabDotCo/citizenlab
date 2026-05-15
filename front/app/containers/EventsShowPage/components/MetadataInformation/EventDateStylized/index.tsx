@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
 import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
+
+import { userTimezone } from 'utils/dateUtils';
 
 import SingleDateStylized from './SingleDateStylized';
 
@@ -16,15 +18,16 @@ interface Props {
 
 const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
+  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
+  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
   const startDateMonth = startAtMoment.format('MMM');
   const endDateMonth = endAtMoment.format('MMM');
+  const tzLabel = startAtMoment.format('z');
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
   const oneDayEventTime = `${startAtMoment.format('LT')} - ${endAtMoment.format(
     'LT'
-  )}`;
+  )} ${tzLabel}`;
 
   return (
     <Box
@@ -44,7 +47,7 @@ const EventDateStylized = ({ event }: Props) => {
           month={startDateMonth}
           time={
             isEventMultipleDays
-              ? `${startAtMoment.format('LT')}`
+              ? `${startAtMoment.format('LT')} ${tzLabel}`
               : oneDayEventTime
           }
         />
@@ -60,7 +63,7 @@ const EventDateStylized = ({ event }: Props) => {
             <SingleDateStylized
               day={endAtMoment.format('DD')}
               month={endDateMonth}
-              time={`${endAtMoment.format('LT')}`}
+              time={`${endAtMoment.format('LT')} ${tzLabel}`}
             />
           </div>
         </>

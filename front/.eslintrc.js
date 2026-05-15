@@ -138,10 +138,10 @@ module.exports = {
       {
         paths: [
           {
-            name: 'react-router-dom',
+            name: '@tanstack/react-router',
             importNames: ['Link', 'useNavigate', 'NavLink'],
             message:
-              "Import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
+              "Import the Link or useNavigate from utils/cl-router instead of directly from '@tanstack/react-router'",
           },
           {
             name: 'react-intl',

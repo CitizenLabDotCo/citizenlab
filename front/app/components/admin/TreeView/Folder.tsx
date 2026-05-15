@@ -58,7 +58,8 @@ const Folder = ({
             fill={lockedFolderTooltip ? colors.grey600 : colors.black}
           />
           <Link
-            to={`/admin/projects/folders/${node.id}`}
+            to="/admin/projects/folders/$projectFolderId"
+            params={{ projectFolderId: node.id }}
             color={lockedFolderTooltip ? colors.grey600 : colors.black}
           >
             {localize(node.title_multiloc)}

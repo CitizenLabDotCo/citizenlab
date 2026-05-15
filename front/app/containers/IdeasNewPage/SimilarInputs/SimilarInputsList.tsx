@@ -7,7 +7,6 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -23,6 +22,7 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from './messages';
 
@@ -40,16 +40,16 @@ const SimilarIdeasList = ({
   const selectedIdeaRef = useRef<HTMLDivElement>(null);
   const lastClickedIdeaRef = useRef<HTMLElement | null>(null);
   const ideaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
-  const { slug: projectSlug, projectId: urlProjectId } = useParams() as {
+  const { slug: projectSlug, projectId: urlProjectId } = useParams({
+    strict: false,
+  }) as {
     slug?: string;
     projectId?: string;
   };
-  const [searchParams] = useSearchParams();
-  const { ideaId: idea_id } = useParams<{
-    ideaId?: string;
-  }>();
-  const ideaId = searchParams.get('idea_id') || idea_id;
-  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const searchParams = useSearch({ strict: false });
+  const { ideaId: idea_id } = useParams({ strict: false });
+  const ideaId = searchParams.idea_id || idea_id;
+  const selectedIdeaId = searchParams.selected_idea_id;
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const projectId = idea?.data.relationships.project.data.id || urlProjectId;
   const projectById = useProjectById(projectId);
@@ -89,7 +89,7 @@ const SimilarIdeasList = ({
     lastClickedIdeaRef.current = clickedElement;
     updateSearchParams({
       selected_idea_id:
-        searchParams.get('selected_idea_id') === ideaId ? undefined : ideaId,
+        searchParams.selected_idea_id === ideaId ? undefined : ideaId,
     });
   };
   const { data: ideas, isLoading } = useSimilarIdeas(

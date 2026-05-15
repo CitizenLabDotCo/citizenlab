@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rebutja la política i tanca el banner",
   "app.components.ConsentManager.Banner.close": "Tancar",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Acceptar les galetes ens ajuda a millorar aquesta plataforma. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Acceptar les galetes ens ajuda a millorar aquesta plataforma.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Les teves preferències de cookies",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Llegeix la nostra política de cookies",
   "app.components.ConsentManager.Banner.manage": "Gestionar",

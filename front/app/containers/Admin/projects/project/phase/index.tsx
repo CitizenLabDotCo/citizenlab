@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useParams,
-  useLocation,
-} from 'react-router-dom';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -19,6 +14,7 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
@@ -93,7 +89,7 @@ const AdminProjectPhaseIndex = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };
@@ -125,9 +121,14 @@ export default () => {
       }
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
+    // Without this guard, navigating to a sibling tab re-runs the effect
+    // (pathname is in deps) and yanks the user back to /phases/new before the
+    // route unmounts.
+    const stillOnPhasesPath = pathname.includes(
+      `/admin/projects/${projectId}/phases`
+    );
+
+    if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getPhaseLandingTab(phaseShown);
@@ -137,7 +138,7 @@ export default () => {
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
+  }, [phaseId, phases, projectId, pathname, isFetchingPhases]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (

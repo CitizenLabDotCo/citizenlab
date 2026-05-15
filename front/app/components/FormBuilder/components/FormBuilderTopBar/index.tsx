@@ -11,8 +11,6 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -34,6 +32,8 @@ import Modal from 'components/UI/Modal';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import tracks from '../tracks';
@@ -49,7 +49,7 @@ const StyledStatusLabel = styled(StatusLabel)`
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
@@ -67,7 +67,7 @@ const FormBuilderTopBar = ({
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 
@@ -194,7 +194,7 @@ const FormBuilderTopBar = ({
           icon="eye"
           mr="20px"
           disabled={!project}
-          linkTo={viewFormLink}
+          {...viewFormLink}
           openLinkInNewTab
           data-cy="e2e-preview-form-button"
         >

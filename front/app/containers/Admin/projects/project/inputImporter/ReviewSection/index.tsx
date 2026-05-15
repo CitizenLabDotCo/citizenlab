@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -17,6 +16,7 @@ import Error from 'components/UI/Error';
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
@@ -33,7 +33,7 @@ const ReviewSection = ({
   onClickPDFImport: () => void;
   onClickExcelImport: () => void;
 }) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

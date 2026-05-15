@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import { Section } from 'components/admin/Section';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -28,7 +28,7 @@ interface Props {
   bannerHeaderFieldsComponent: ReactElement;
   ctaButtonFieldsComponent: ReactElement;
   badge: JSX.Element;
-  linkToViewPage: RouteType;
+  viewPageLink: TypedLinkProps;
 }
 
 const GenericHeroBannerForm = ({
@@ -43,7 +43,7 @@ const GenericHeroBannerForm = ({
   layoutSettingFieldComponent,
   ctaButtonFieldsComponent,
   badge,
-  linkToViewPage,
+  viewPageLink,
 }: Props) => {
   return (
     <>
@@ -68,11 +68,7 @@ const GenericHeroBannerForm = ({
             secondaryButtonSaveMessage={messages.saveAndEnable}
           />
         }
-        rightSideCTA={
-          linkToViewPage ? (
-            <ViewCustomPageButton linkTo={linkToViewPage} />
-          ) : null
-        }
+        rightSideCTA={<ViewCustomPageButton {...viewPageLink} />}
       >
         <Section key={'header'}>
           {/*

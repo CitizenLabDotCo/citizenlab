@@ -1,12 +1,10 @@
-import { RouteType } from 'routes';
-
 import { addFollower } from 'api/follow_unfollow/useAddFollower';
 
 import clHistory from 'utils/cl-router/history';
 
 export interface FollowProjectAndRedirectParams {
   projectId: string;
-  path: RouteType;
+  path: string;
 }
 
 export const followProjectAndRedirect = ({

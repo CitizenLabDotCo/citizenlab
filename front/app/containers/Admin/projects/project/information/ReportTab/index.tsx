@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 import useReport from 'api/reports/useReport';
@@ -15,13 +14,16 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { useParams } from 'utils/router';
 
 import EmptyState from './EmptyState';
 import messages from './messages';
 import ReportPreview from './ReportPreview';
 
 const ReportTab = () => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/report',
+  });
   const { data: phase } = usePhase(phaseId);
   const { data: report } = useReport(
     phase?.data.relationships.report?.data?.id
