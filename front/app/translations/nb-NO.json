@@ -2336,7 +2336,7 @@
   "app.containers.app.navbar.more": "Mer",
   "app.containers.app.navbar.myProfile": "Min aktivitet",
   "app.containers.app.navbar.search": "Søk",
-  "app.containers.app.navbar.showFullMenu": "Vis hele menyen",
+  "app.containers.app.navbar.showMobileNavMenu": "Vis mobil navigasjonsmeny",
   "app.containers.app.navbar.signOut": "Logg av",
   "app.containers.eventspage.errorWhenFetchingEvents": "Det oppstod en feil under innlasting av arrangementer. Prøv å laste inn siden på nytt.",
   "app.containers.eventspage.events": "Arrangementer",

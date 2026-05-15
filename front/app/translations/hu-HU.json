@@ -2336,7 +2336,7 @@
   "app.containers.app.navbar.more": "Több",
   "app.containers.app.navbar.myProfile": "Az én tevékenységem",
   "app.containers.app.navbar.search": "Keresés",
-  "app.containers.app.navbar.showFullMenu": "Teljes menü megjelenítése",
+  "app.containers.app.navbar.showMobileNavMenu": "Mobil navigációs menü megjelenítése",
   "app.containers.app.navbar.signOut": "Jelentkezzen ki",
   "app.containers.eventspage.errorWhenFetchingEvents": "Hiba történt az események betöltése közben. Kérjük, próbálja meg újratölteni az oldalt.",
   "app.containers.eventspage.events": "Események",

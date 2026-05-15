@@ -2336,7 +2336,7 @@
   "app.containers.app.navbar.more": "مزید",
   "app.containers.app.navbar.myProfile": "میری سرگرمی",
   "app.containers.app.navbar.search": "تلاش کریں۔",
-  "app.containers.app.navbar.showFullMenu": "مکمل مینو دکھائیں۔",
+  "app.containers.app.navbar.showMobileNavMenu": "موبائل نیویگیشن مینو دکھائیں",
   "app.containers.app.navbar.signOut": "سائن آؤٹ کریں۔",
   "app.containers.eventspage.errorWhenFetchingEvents": "ایونٹس لوڈ کرتے وقت ایک خرابی پیش آگئی۔ براہ کرم صفحہ کو دوبارہ لوڈ کرنے کی کوشش کریں۔",
   "app.containers.eventspage.events": "واقعات",

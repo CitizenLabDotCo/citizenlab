@@ -2336,7 +2336,7 @@
   "app.containers.app.navbar.more": "أكثر",
   "app.containers.app.navbar.myProfile": "نشاطي",
   "app.containers.app.navbar.search": "بحث",
-  "app.containers.app.navbar.showFullMenu": "عرض القائمة الكاملة",
+  "app.containers.app.navbar.showMobileNavMenu": "إظهار قائمة التنقل للجوال",
   "app.containers.app.navbar.signOut": "تسجيل الخروج",
   "app.containers.eventspage.errorWhenFetchingEvents": "حدث خطأ أثناء تحميل الأحداث. يرجى إعادة تحميل الصفحة.",
   "app.containers.eventspage.events": "الأحداث",
