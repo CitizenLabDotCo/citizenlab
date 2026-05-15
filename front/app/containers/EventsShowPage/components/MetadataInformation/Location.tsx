@@ -8,10 +8,11 @@ import useLocale from 'hooks/useLocale';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 const LocationMap = lazy(() => import('./LocationMap'));
