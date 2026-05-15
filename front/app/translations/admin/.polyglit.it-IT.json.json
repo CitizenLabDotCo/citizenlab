@@ -464,6 +464,11 @@
     "verified_at": "2026-04-20T15:38:06.291071Z",
     "verified_by": "Roger"
   },
+  "app.components.FormSync.importInputs1": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
   "app.components.FormSync.importResponses1": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.291071Z",
@@ -472,6 +477,11 @@
   "app.components.FormSync.importScans1": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.291071Z",
+    "verified_by": "Roger"
+  },
+  "app.components.FormSync.paperForm1": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
     "verified_by": "Roger"
   },
   "app.components.FormSync.paperFormsOCR1": {
@@ -13613,6 +13623,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExisting": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.duplicateExistingDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.planningInPersonEvent3": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratch": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectEdit.survey.newSurveyEmptyState.startFromScratchDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:35:18.197599Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": {
     "state": "verified",
