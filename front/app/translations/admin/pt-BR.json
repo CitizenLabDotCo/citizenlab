@@ -2772,6 +2772,7 @@
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Suas alterações foram salvas.",
   "app.containers.AdminPage.ProjectEvents.searchForLocation": "Procurar um local",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Vincule os próximos eventos a esses projetos e mostre-os na página de eventos do projeto",
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": "Os eventos devem ser adicionados no fuso horário da plataforma ({timezone}, GMT{gmtOffset}). Os usuários finais verão a data em seu próprio fuso horário.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Título e data",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Eventos de projeto",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nome do projeto",
