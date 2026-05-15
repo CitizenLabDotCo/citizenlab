@@ -5,10 +5,9 @@ import { Text } from '@citizenlab/cl2-component-library';
 import { IEventData } from 'api/events/types';
 
 import useRegistrantCountMessage from 'components/EventCards/EventInformation/useRegistrantCountMessage';
+import messages from 'components/EventCards/messages';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
