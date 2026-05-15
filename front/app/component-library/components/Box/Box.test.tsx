@@ -475,4 +475,42 @@ describe('<Box />', () => {
       });
     });
   });
+  describe('Box style props do not leak to DOM attributes', () => {
+    it('does not forward display to the DOM', () => {
+      render(<Box display="flex">Test box</Box>);
+      expect(screen.getByText('Test box')).not.toHaveAttribute('display');
+    });
+    it('does not forward color/width/height to the DOM (collide with HTML attrs)', () => {
+      render(
+        <Box color="red" width="100px" height="40px">
+          Test box
+        </Box>
+      );
+      const el = screen.getByText('Test box');
+      expect(el).not.toHaveAttribute('color');
+      expect(el).not.toHaveAttribute('width');
+      expect(el).not.toHaveAttribute('height');
+    });
+    it('does not leak style props when rendered as a non-div via `as`', () => {
+      render(
+        <Box as="button" display="flex" gap="8px" m="4px">
+          Test button
+        </Box>
+      );
+      const el = screen.getByRole('button', { name: 'Test button' });
+      expect(el).not.toHaveAttribute('display');
+      expect(el).not.toHaveAttribute('gap');
+      expect(el).not.toHaveAttribute('m');
+    });
+    it('still forwards valid DOM attributes', () => {
+      render(
+        <Box id="my-box" aria-label="hello" data-testid="x">
+          Test box
+        </Box>
+      );
+      const el = screen.getByTestId('x');
+      expect(el).toHaveAttribute('id', 'my-box');
+      expect(el).toHaveAttribute('aria-label', 'hello');
+    });
+  });
 });
