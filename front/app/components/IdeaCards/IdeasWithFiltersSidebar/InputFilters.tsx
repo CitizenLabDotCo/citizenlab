@@ -10,7 +10,7 @@ import usePhase from 'api/phases/usePhase';
 import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
@@ -51,6 +51,7 @@ const InputFilters = ({
   onChangeTopics,
   handleSortOnChange,
 }: InputFiltersProps) => {
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const participationMethod =
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
@@ -77,6 +78,7 @@ const InputFilters = ({
             onChange={onSearch}
             debounce={1500}
             a11y_numberOfSearchResults={numberOfSearchResults}
+            placeholder={formatMessage(messages.searchPosts)}
           />
         </Box>
       )}
