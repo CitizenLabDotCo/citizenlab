@@ -133,11 +133,11 @@ export default defineMessages({
   },
   invalid_first_name: {
     id: 'app.errors.invalid_first_name',
-    defaultMessage: "First name '{value}' in row {row} is not valid",
+    defaultMessage: 'First name {value} in row {row} is not valid',
   },
   invalid_last_name: {
     id: 'app.errors.invalid_last_name',
-    defaultMessage: "Last name '{value}' in row {row} is not valid",
+    defaultMessage: 'Last name {value} in row {row} is not valid',
   },
   is_not_timeline_project: {
     id: 'app.errors.is_not_timeline_project',
