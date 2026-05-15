@@ -69,7 +69,7 @@ const ProjectAndFolderCards = ({
         rootLevelOnly,
         removeNotAllowedParents: true,
         remove_all_unlisted: true,
-        topicIds,
+        globalTopicIds: topicIds,
         areaIds,
         search,
       },
