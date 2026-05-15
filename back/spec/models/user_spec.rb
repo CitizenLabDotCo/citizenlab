@@ -1215,6 +1215,28 @@ RSpec.describe User do
       user.validate
       expect(user.first_name).to eq 'Terry'
     end
+
+    it 'is invalid when it contains @' do
+      user = build(:user, first_name: 'foo@example.com')
+      expect(user).not_to be_valid
+      expect(user.errors[:first_name]).to include('is invalid')
+    end
+
+    it 'is invalid when @ appears anywhere in the value' do
+      user = build(:user, first_name: 'Bob@home')
+      expect(user).not_to be_valid
+      expect(user.errors[:first_name]).to include('is invalid')
+    end
+
+    it 'is valid when nil' do
+      user = build(:user, first_name: nil)
+      expect(user).to be_valid
+    end
+
+    it 'is valid when blank' do
+      user = build(:user, first_name: '')
+      expect(user).to be_valid
+    end
   end
 
   describe '#last_name' do
@@ -1230,6 +1252,28 @@ RSpec.describe User do
       user.first_name = 'Smith'
       user.validate
       expect(user.first_name).to eq 'Smith'
+    end
+
+    it 'is invalid when it contains @' do
+      user = build(:user, last_name: 'foo@example.com')
+      expect(user).not_to be_valid
+      expect(user.errors[:last_name]).to include('is invalid')
+    end
+
+    it 'is invalid when @ appears anywhere in the value' do
+      user = build(:user, last_name: 'Smith@home')
+      expect(user).not_to be_valid
+      expect(user.errors[:last_name]).to include('is invalid')
+    end
+
+    it 'is valid when nil' do
+      user = build(:user, last_name: nil)
+      expect(user).to be_valid
+    end
+
+    it 'is valid when blank' do
+      user = build(:user, last_name: '')
+      expect(user).to be_valid
     end
   end
 end
