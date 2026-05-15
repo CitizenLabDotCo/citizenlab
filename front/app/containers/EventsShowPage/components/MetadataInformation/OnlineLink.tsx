@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
+import sharedIconMessages from 'components/EventCards/messages';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
@@ -19,7 +21,7 @@ const OnlineLink = ({ link }: Props) => {
     <Container id="e2e-event-online-link">
       <StyledIcon
         name="link"
-        title={formatMessage(messages.onlineLinkIconAltText)}
+        title={formatMessage(sharedIconMessages.onlineLinkIconAltText)}
         ariaHidden={false}
       />
       <Content>
