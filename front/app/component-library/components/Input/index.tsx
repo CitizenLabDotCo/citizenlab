@@ -110,7 +110,7 @@ export interface InputProps {
   'data-cy'?: string;
 }
 
-class InputComponent extends PureComponent<InputProps> {
+class Input extends PureComponent<InputProps> {
   handleOnChange = (event: FormEvent<HTMLInputElement>) => {
     const { maxCharCount, onChange, locale } = this.props;
 
@@ -264,4 +264,4 @@ class InputComponent extends PureComponent<InputProps> {
   }
 }
 
-export default InputComponent;
+export default Input;
