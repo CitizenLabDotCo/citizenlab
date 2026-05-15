@@ -246,7 +246,7 @@
   "app.components.admin.PostManager.components.goToProposalManager": "Vai a gestione proposte",
   "app.components.admin.PostManager.contributionFormTitle": "Modifica contributo",
   "app.components.admin.PostManager.cost": "Costo",
-  "app.components.admin.PostManager.createInput": "Crea l'input",
+  "app.components.admin.PostManager.createInput": "Crea contributo",
   "app.components.admin.PostManager.createInputsDescription": "Crea un nuovo insieme di contributi da un progetto passato",
   "app.components.admin.PostManager.currentLat": "Latitudine del centro",
   "app.components.admin.PostManager.currentLng": "Longitudine del centro",
