@@ -10,6 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
 
 import messages from '../../messages';
+
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 export interface Props {
