@@ -464,6 +464,40 @@ describe Invites::Service do
       end
     end
 
+    context 'with @ in first_name' do
+      let(:hash_array) do
+        [
+          { email: 'a@example.com', first_name: 'bad@name', last_name: 'Smith' }
+        ]
+      end
+
+      it 'fails with invalid_first_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_first_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'bad@name'
+      end
+    end
+
+    context 'with @ in last_name' do
+      let(:hash_array) do
+        [
+          { email: 'b@example.com', first_name: 'Alice', last_name: 'also@bad' }
+        ]
+      end
+
+      it 'fails with invalid_last_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_last_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'also@bad'
+      end
+    end
+
     context 'with a banned email' do
       before { EmailBan.ban!('banned.user@gmail.com') }
 
