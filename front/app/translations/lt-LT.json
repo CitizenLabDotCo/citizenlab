@@ -2333,7 +2333,7 @@
   "app.containers.app.navbar.more": "Daugiau",
   "app.containers.app.navbar.myProfile": "Mano veikla",
   "app.containers.app.navbar.search": "Paieška",
-  "app.containers.app.navbar.showFullMenu": "Rodyti visą meniu",
+  "app.containers.app.navbar.showMobileNavMenu": "Rodyti mobilųjį navigacijos meniu",
   "app.containers.app.navbar.signOut": "Atsijungti",
   "app.containers.eventspage.errorWhenFetchingEvents": "Įkeliant įvykius įvyko klaida. Pabandykite iš naujo įkelti puslapį.",
   "app.containers.eventspage.events": "Renginiai",

@@ -2333,7 +2333,7 @@
   "app.containers.app.navbar.more": "Tuilleadh",
   "app.containers.app.navbar.myProfile": "Mo ghníomhaíocht",
   "app.containers.app.navbar.search": "Cuardaigh",
-  "app.containers.app.navbar.showFullMenu": "Taispeáin an roghchlár iomlán",
+  "app.containers.app.navbar.showMobileNavMenu": "Taispeáin an roghchlár nascleanúna soghluaiste",
   "app.containers.app.navbar.signOut": "Sínigh amach",
   "app.containers.eventspage.errorWhenFetchingEvents": "Tharla earráid agus imeachtaí á lódáil. Déan iarracht an leathanach a athlódáil.",
   "app.containers.eventspage.events": "Imeachtaí",
