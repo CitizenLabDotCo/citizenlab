@@ -6,12 +6,11 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
+import messages from 'components/EventCards/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import messages from '../../messages';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
