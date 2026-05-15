@@ -480,16 +480,25 @@ describe('<Box />', () => {
       render(<Box display="flex">Test box</Box>);
       expect(screen.getByText('Test box')).not.toHaveAttribute('display');
     });
-    it('does not forward color/width/height to the DOM (collide with HTML attrs)', () => {
+    it('does not forward color/opacity to the DOM (collide with HTML attrs but invalid on div)', () => {
       render(
-        <Box color="red" width="100px" height="40px">
+        <Box color="red" opacity={0.5}>
           Test box
         </Box>
       );
       const el = screen.getByText('Test box');
       expect(el).not.toHaveAttribute('color');
-      expect(el).not.toHaveAttribute('width');
-      expect(el).not.toHaveAttribute('height');
+      expect(el).not.toHaveAttribute('opacity');
+    });
+    it('forwards width/height (legitimate HTML attrs on img/canvas/etc. and used by jsdom layout mock)', () => {
+      render(
+        <Box width="100px" height="40px">
+          Test box
+        </Box>
+      );
+      const el = screen.getByText('Test box');
+      expect(el).toHaveAttribute('width', '100px');
+      expect(el).toHaveAttribute('height', '40px');
     });
     it('does not leak style props when rendered as a non-div via `as`', () => {
       render(

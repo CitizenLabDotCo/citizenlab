@@ -227,10 +227,9 @@ export type BoxProps = BoxColorProps &
   React.HTMLAttributes<HTMLDivElement> &
   React.HTMLAttributes<HTMLQuoteElement>;
 
-// Style-only props consumed by Box's CSS interpolations. They must not be
-// forwarded to the DOM — some collide with valid HTML attributes (color,
-// width, height, cite, etc.) and others become invalid attributes when Box
-// is rendered as a non-div element via the `as` prop.
+// CSS-only props that must not leak to the DOM. `width`/`height` are
+// intentionally omitted — they're valid HTML attributes and the jsdom
+// ResizeObserver mock (internals/jest/setup.js) reads them.
 const styleOnlyProps = new Set<string>([
   'color',
   'bgColor',
@@ -265,11 +264,9 @@ const styleOnlyProps = new Set<string>([
   'mx',
   'marginY',
   'my',
-  'height',
   'h',
   'maxHeight',
   'minHeight',
-  'width',
   'w',
   'maxWidth',
   'minWidth',
