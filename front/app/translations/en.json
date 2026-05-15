@@ -2436,6 +2436,8 @@
   "app.errors.has_other_overlapping_phases": "Projects cannot have overlapping phases.",
   "app.errors.invalid_email": "The email {value} found in row {row} is not a valid email address",
   "app.errors.invalid_row": "An unknown error occurred while trying to process row {row}",
+  "app.errors.invalid_first_name": "First name '{value}' in row {row} is not valid",
+  "app.errors.invalid_last_name": "Last name '{value}' in row {row} is not valid",
   "app.errors.is_not_timeline_project": "The current project does not support phases.",
   "app.errors.key_invalid": "The key can only contain letters, numbers and underscores(_)",
   "app.errors.last_name_blank": "This cannot be empty",
