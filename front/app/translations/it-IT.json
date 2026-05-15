@@ -1349,7 +1349,7 @@
   "app.containers.Comments.loadMoreComments": "Carica altri commenti",
   "app.containers.Comments.loadingComments": "Caricamento dei commenti...",
   "app.containers.Comments.loadingMoreComments": "Caricando più commenti...",
-  "app.containers.Comments.notVisibleToUsersPlaceholder": "Questo commento non è visibile agli utenti abituali",
+  "app.containers.Comments.notVisibleToUsersPlaceholder": "Questo commento non è visibile agli utenti normali",
   "app.containers.Comments.postInternalComment": "Invia un commento interno",
   "app.containers.Comments.postPublicComment": "Invia un commento pubblico",
   "app.containers.Comments.profanityError": "Ops! Sembra che il tuo post contenga un linguaggio che non soddisfa {guidelinesLink}. Cerchiamo di mantenere questo spazio sicuro per tutti. Per favore, modifica il tuo messaggio e prova di nuovo.",
