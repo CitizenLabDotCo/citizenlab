@@ -75,7 +75,7 @@ RSpec.describe User do
     let(:user) { build(:user) }
 
     it 'generates a slug based on the first and last name' do
-      user.update!(first_name: 'Not Really_%40)', last_name: '286^$@sluggable')
+      user.update!(first_name: 'Not Really_%40)', last_name: '286^$&sluggable')
       expect(user.slug).to eq 'not-really-40-286-sluggable'
     end
 
