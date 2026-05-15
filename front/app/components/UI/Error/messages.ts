@@ -311,6 +311,11 @@ export default defineMessages({
     defaultMessage:
       'The total number of pages in the PDF must be evenly divisible by the specified number of pages per form.',
   },
+  bulk_import_user_not_valid: {
+    id: 'app.errors.bulk_import_user_not_valid',
+    defaultMessage:
+      'A user could not be created from the import data: {value}. This issue occurs in the row with ID {row}.',
+  },
   uncaught_error: {
     id: 'app.errors.uncaught_error',
     defaultMessage: 'An unknown error occurred.',
