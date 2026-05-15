@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useProjectById from 'api/projects/useProjectById';
 
 import FullScreenPreview from 'containers/DescriptionBuilder/FullScreenPreview';
 
+import { useParams } from 'utils/router';
+
 export const ProjectFullScreenPreview = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
 
   if (!project) return null;

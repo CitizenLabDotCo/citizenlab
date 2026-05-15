@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean, number } from 'yup';
 
@@ -27,6 +26,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
@@ -49,16 +49,25 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    strict: false,
+  });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
 
-  const downloadFormPath =
+  const downloadFormParams = { projectId, phaseId } as {
+    projectId: string;
+    phaseId: string;
+  };
+  const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
-      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
+      ? ({
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form',
+          params: downloadFormParams,
+        } as const)
+      : ({
+          to: '/admin/projects/$projectId/phases/$phaseId/form',
+          params: downloadFormParams,
+        } as const);
 
   const defaultValues = {
     locale,
@@ -153,7 +162,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
                       <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                     ),
                     hereLink: (
-                      <Link to={{ pathname: downloadFormPath }}>
+                      <Link {...downloadFormLink}>
                         <FormattedMessage
                           {...messages.formCanBeDownloadedHere}
                         />

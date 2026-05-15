@@ -14259,6 +14259,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:26:24.515838Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -14822,6 +14827,11 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": {
     "state": "verified",
     "verified_at": "2026-03-30T13:26:35.826768Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-11T14:24:14.056725Z",
     "verified_by": "Jelena"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
@@ -17733,6 +17743,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": {
+    "state": "verified",
+    "verified_at": "2026-04-27T11:35:54.777309Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": {
     "state": "verified",

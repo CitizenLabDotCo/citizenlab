@@ -10,7 +10,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { projectVisibilityFragmentId } from 'containers/Admin/projects/project/permissions/Project';
 
-import { createHighlighterLink } from 'components/Highlighter';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -67,9 +66,9 @@ const VisibilitySection = ({ project, onClose }: Props) => {
         </Text>
         <ButtonWithLink
           buttonStyle="text"
-          linkTo={createHighlighterLink(
-            `/admin/projects/${projectId}/general/access-rights#${projectVisibilityFragmentId}`
-          )}
+          to="/admin/projects/$projectId/general/access-rights"
+          params={{ projectId }}
+          hash={projectVisibilityFragmentId}
           onClick={() => onClose()}
           padding="0"
           fontSize="14px"

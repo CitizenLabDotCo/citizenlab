@@ -10,7 +10,6 @@ import {
   Badge,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -26,6 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
+import { useParams } from 'utils/router';
 
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
 
@@ -66,7 +66,7 @@ const hiddenContainerStyle: React.CSSProperties = {
 
 // Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -78,6 +78,9 @@ const InsightsContent = () => {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     error: pdfError,
+    status: pdfStatus,
+    progress: pdfProgress,
+    skippedSections: pdfSkippedSections,
   } = usePdfExportContext();
 
   const {
@@ -101,6 +104,22 @@ const InsightsContent = () => {
         return formatMessage(wordMessages.exportCapturing, {
           completed: exportProgress.completed,
           total: exportProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
+  const getPdfStatusText = () => {
+    switch (pdfStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: pdfProgress.completed,
+          total: pdfProgress.total,
         });
       case 'generating':
         return formatMessage(wordMessages.exportGenerating);
@@ -275,16 +294,23 @@ const InsightsContent = () => {
                     {getExportStatusText()}
                   </Text>
                 )}
+                {isDownloadingPdf && getPdfStatusText() && (
+                  <Text fontSize="s" color="textSecondary" m="0px">
+                    {getPdfStatusText()}
+                  </Text>
+                )}
                 {exportError && (
                   <Text fontSize="s" color="error" m="0px">
                     {exportError}
                   </Text>
                 )}
-                {captureWarnings.length > 0 && !isDownloading && (
-                  <Text fontSize="s" color="orange500" m="0px">
-                    {formatMessage(wordMessages.exportCaptureWarning)}
-                  </Text>
-                )}
+                {(captureWarnings.length > 0 ||
+                  pdfSkippedSections.length > 0) &&
+                  !isDownloading && (
+                    <Text fontSize="s" color="orange500" m="0px">
+                      {formatMessage(wordMessages.exportCaptureWarning)}
+                    </Text>
+                  )}
               </Box>
             )}
           </Box>
@@ -329,7 +355,7 @@ const InsightsContent = () => {
 
 // Main component that wraps with PdfExportProvider
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

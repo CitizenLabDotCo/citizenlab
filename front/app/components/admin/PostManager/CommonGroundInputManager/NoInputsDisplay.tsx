@@ -32,6 +32,7 @@ const NoInputsDisplay = ({
   phaseId,
   setShowPastInputsModal,
 }: Props) => {
+  const slug = project?.attributes.slug;
   return (
     <NoPostPage>
       <Icon name="sidebar-pages-menu" />
@@ -52,7 +53,10 @@ const NoInputsDisplay = ({
         <Button
           buttonStyle="secondary-outlined"
           width="auto"
-          linkTo={`/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+          to={slug ? '/projects/$slug/ideas/new' : undefined}
+          params={slug ? { slug } : undefined}
+          search={{ phase_id: phaseId }}
+          disabled={!slug}
         >
           <FormattedMessage {...messages.createInput} />
         </Button>

@@ -28,6 +28,11 @@ module Analysis
   class Analysis < ApplicationRecord
     include Files::FileAttachable
 
+    # Arbitrary limit to avoid the curse of dimensionality when generating the
+    # auto-insights heatmap. Counts only fields that support submissions, so
+    # layout-only fields (pages/sections) do not push an analysis over the cap.
+    AUTO_INSIGHTS_FIELD_LIMIT = 50
+
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 
@@ -80,7 +85,15 @@ module Analysis
       ([main_custom_field] + additional_custom_fields).compact
     end
 
+    def auto_insights_too_many_fields?
+      submission_custom_fields.size > AUTO_INSIGHTS_FIELD_LIMIT
+    end
+
     private
+
+    def submission_custom_fields
+      associated_custom_fields.select(&:supports_submission?)
+    end
 
     def project_xor_phase_present
       return if phase.present? ^ project.present? # ^ on booleans is XOR

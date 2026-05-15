@@ -122,6 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Atmesti politiką ir uždaryti reklaminį skydelį",
   "app.components.ConsentManager.Banner.close": "Uždaryti",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Slapukų priėmimas padeda mums tobulinti šią platformą. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Slapukų priėmimas padeda mums tobulinti šią platformą.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Jūsų slapukų parinktys",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Perskaitykite mūsų slapukų politiką",
   "app.components.ConsentManager.Banner.manage": "Tvarkykite",

@@ -2,7 +2,6 @@ import React, { MouseEvent } from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { RouteType } from 'routes';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -19,7 +18,12 @@ interface Props {
   selectableTopics: IInputTopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
-  linkToTagManager: RouteType | null;
+  linkToTagManager: {
+    to:
+      | '/admin/projects/$projectId/general/input-tags'
+      | '/admin/settings/topics';
+    params?: Record<string, string>;
+  } | null;
 }
 
 const FilterSidebarTopics = ({
@@ -62,14 +66,14 @@ const FilterSidebarTopics = ({
         labelContent={<FormattedMessage {...messages.allTopics} />}
       />
       <Divider />
-      {typeof linkToTagManager === 'string' && (
+      {linkToTagManager && (
         <Box display="inline-flex">
           <ButtonWithLink
             data-cy="e2e-post-manager-topic-filters-edit-tags"
             buttonStyle="text"
             icon="edit"
             pl="12px"
-            linkTo={linkToTagManager}
+            {...linkToTagManager}
             iconPos="right"
             iconSize="14px"
           >

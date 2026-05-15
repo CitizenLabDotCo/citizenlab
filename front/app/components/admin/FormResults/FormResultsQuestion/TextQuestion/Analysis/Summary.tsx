@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -21,6 +19,7 @@ import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
@@ -40,7 +39,7 @@ const Summary = ({
     onlyCheckAllowed: true,
   });
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -139,9 +138,12 @@ const Summary = ({
             id="e2e-explore-summary"
             buttonStyle="secondary-outlined"
             icon="eye"
-            linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-              { ...convertFilterValuesToString(filters), phase_id: phaseId }
-            )}`}
+            to="/admin/projects/$projectId/analysis/$analysisId"
+            params={{ projectId, analysisId }}
+            search={{
+              ...convertFilterValuesToString(filters),
+              phase_id: phaseId,
+            }}
           >
             {formatMessage(messages.explore)}
           </ButtonWithLink>
