@@ -9,6 +9,10 @@ import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable from '../../_shared/A11yTable';
+import messages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
@@ -43,6 +47,8 @@ const Wide = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
+
   return (
     <Box
       width="100%"
@@ -108,6 +114,24 @@ const Wide = ({
           {...accessibilityProps}
         />
       </Box>
+      <A11yTable
+        columns={[
+          {
+            key: 'date',
+            label: formatMessage(messages.dateColumn),
+          },
+          {
+            key: 'visitors',
+            label: formatMessage(messages.visitorsColumn),
+          },
+          {
+            key: 'visits',
+            label: formatMessage(messages.visitsColumn),
+          },
+        ]}
+        data={timeSeries || []}
+        caption={formatMessage(messages.visitorsCaption)}
+      />
     </Box>
   );
 };

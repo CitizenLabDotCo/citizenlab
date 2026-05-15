@@ -9,7 +9,11 @@ import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
+import messages from '../messages';
 import { Stats } from '../typings';
 
 import {
@@ -39,49 +43,67 @@ const Wide = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
   return (
-    <Box
-      width="100%"
-      height="260px"
-      pb="8px"
-      className="e2e-registrations-timeline-widget"
-      display="flex"
-      flexDirection="row"
-    >
-      {!hideStatistics && (
-        <Box>
-          <RegistrationsStatistic stats={stats} previousDays={previousDays} />
-          <Box mt="32px">
-            <RegistrationRateStatistic
-              stats={stats}
-              previousDays={previousDays}
-            />
-          </Box>
-        </Box>
-      )}
-
+    <Box width="100%" pb="8px" display="flex" flexDirection="column">
       <Box
-        flexGrow={1}
+        width="100%"
+        height="260px"
+        className="e2e-registrations-timeline-widget"
         display="flex"
-        justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
-        mt="8x"
-        maxWidth="800px"
-        h="100%"
+        flexDirection="row"
       >
-        <Chart
-          timeSeries={timeSeries}
-          startAtMoment={startAt ? moment(startAt) : null}
-          endAtMoment={endAt ? moment(endAt) : null}
-          resolution={currentResolution}
-          yaxis={hideStatistics ? { orientation: 'right' } : undefined}
-          margin={
-            hideStatistics
-              ? { top: 0, right: -16, bottom: 0, left: 0 }
-              : undefined
-          }
-          {...accessibilityProps}
-        />
+        {!hideStatistics && (
+          <Box>
+            <RegistrationsStatistic stats={stats} previousDays={previousDays} />
+            <Box mt="32px">
+              <RegistrationRateStatistic
+                stats={stats}
+                previousDays={previousDays}
+              />
+            </Box>
+          </Box>
+        )}
+
+        <Box
+          flexGrow={1}
+          display="flex"
+          justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
+          mt="8x"
+          maxWidth="800px"
+          h="100%"
+        >
+          <Chart
+            timeSeries={timeSeries}
+            startAtMoment={startAt ? moment(startAt) : null}
+            endAtMoment={endAt ? moment(endAt) : null}
+            resolution={currentResolution}
+            yaxis={hideStatistics ? { orientation: 'right' } : undefined}
+            margin={
+              hideStatistics
+                ? { top: 0, right: -16, bottom: 0, left: 0 }
+                : undefined
+            }
+            {...accessibilityProps}
+          />
+        </Box>
       </Box>
+
+      <A11yTable
+        columns={[
+          {
+            key: 'date',
+            label: formatMessage(messages.dateColumn),
+            render: (value) => moment(value).format('MMM DD, YYYY'),
+          },
+          {
+            key: 'registrations',
+            label: formatMessage(messages.registrationsColumn),
+          },
+        ]}
+        data={timeSeries || []}
+        caption={formatMessage(messages.registrationCaption)}
+      />
     </Box>
   );
 };

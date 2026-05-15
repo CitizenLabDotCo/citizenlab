@@ -118,4 +118,29 @@ export default defineMessages({
     defaultMessage:
       'Use these fields to provide a clear text description so users who rely on assistive technologies can understand the chart’s meaning.',
   },
+  reffererColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn',
+    defaultMessage: 'Referrer',
+  },
+  visitsColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn',
+    defaultMessage: 'Visits',
+  },
+  visitorsColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn',
+    defaultMessage: 'Visitors',
+  },
+  dateColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn',
+    defaultMessage: 'Date',
+  },
+  visitorsTrafficSourcesCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption',
+    defaultMessage:
+      'Traffic sources data table showing referrer, visits, and visitors',
+  },
+  visitorsCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption',
+    defaultMessage: 'Visitors data table showing date, visitors, and visits',
+  },
 });

@@ -7,6 +7,9 @@ import { ParticipationType } from 'api/graph_data_units/requestTypes';
 
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable from '../../_shared/A11yTable';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import messages from '../messages';
 
@@ -31,6 +34,37 @@ const Narrow = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
+
+  const columns = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      render: (value) => moment(value).format('MMM DD, YYYY'),
+    },
+  ];
+  if (show('inputs')) {
+    columns.push({
+      key: 'inputs',
+      label: formatMessage(messages.inputs),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+  if (show('comments')) {
+    columns.push({
+      key: 'comments',
+      label: formatMessage(messages.comments),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+  if (show('votes')) {
+    columns.push({
+      key: 'votes',
+      label: formatMessage(messages.votes),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && stats && (
@@ -88,6 +122,11 @@ const Narrow = ({
           {...accessibilityProps}
         />
       </Box>
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.participantsCaption)}
+      />
     </Box>
   );
 };

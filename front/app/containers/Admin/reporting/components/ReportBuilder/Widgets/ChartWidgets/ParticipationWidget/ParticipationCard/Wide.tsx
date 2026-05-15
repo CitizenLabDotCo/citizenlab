@@ -9,6 +9,9 @@ import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable from '../../_shared/A11yTable';
 import { getDaysInRange, formatLargeNumber } from '../../utils';
 import messages from '../messages';
 import { CombinedTimeSeriesRow, Stats } from '../typings';
@@ -42,6 +45,37 @@ const Wide = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
+
+  const columns = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      render: (value) => moment(value).format('MMM DD, YYYY'),
+    },
+  ];
+  if (show('inputs')) {
+    columns.push({
+      key: 'inputs',
+      label: formatMessage(messages.inputs),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+  if (show('comments')) {
+    columns.push({
+      key: 'comments',
+      label: formatMessage(messages.comments),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+  if (show('votes')) {
+    columns.push({
+      key: 'votes',
+      label: formatMessage(messages.votes),
+      render: (value) => (value != null ? value.toString() : ''),
+    });
+  }
+
   return (
     <Box
       width="100%"
@@ -103,6 +137,12 @@ const Wide = ({
           {...accessibilityProps}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.participantsCaption)}
+      />
     </Box>
   );
 };

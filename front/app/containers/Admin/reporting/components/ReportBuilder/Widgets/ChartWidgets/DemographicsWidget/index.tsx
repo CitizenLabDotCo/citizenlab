@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
+import A11yTable from '../_shared/A11yTable';
 import { DescriptionText } from '../_shared/DescriptionText';
 import chartWidgetMessages from '../messages';
 
@@ -110,6 +111,18 @@ const DemographicsWidget = ({
       <DescriptionText
         description={description}
         descriptionId={descriptionId}
+      />
+      <A11yTable
+        columns={[
+          { key: 'category', label: formatMessage(messages.categoryColumn) },
+          {
+            key: 'participants',
+            label: formatMessage(messages.participantsColumn),
+          },
+          { key: 'count', label: formatMessage(messages.countColumn) },
+        ]}
+        data={chartData}
+        caption={formatMessage(messages.demographicsTableCaption)}
       />
     </Card>
   );

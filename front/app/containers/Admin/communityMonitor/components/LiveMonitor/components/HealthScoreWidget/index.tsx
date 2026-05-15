@@ -16,6 +16,8 @@ import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/use
 
 import useLocale from 'hooks/useLocale';
 
+import A11yTable from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
+
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
@@ -38,6 +40,7 @@ type Props = {
   quarter?: string;
   year?: string;
 };
+
 const HealthScoreWidget = ({
   phaseId,
   ariaDescribedBy,
@@ -74,6 +77,48 @@ const HealthScoreWidget = ({
   const currentOverallHealthScore = sentimentScores?.overallHealthScores.find(
     (score) => score.period === `${year}-${quarter}`
   );
+
+  // Build columns dynamically based on periods for A11yTable
+  const periods =
+    sentimentScores?.overallHealthScores.map((s) => s.period) || [];
+  const columns = [
+    {
+      key: 'category',
+      label: formatMessage(messages.categoryColumn),
+    },
+    ...periods.map((period) => ({
+      key: period,
+      label: period.replace('-', ` ${formatMessage(messages.quarter)} `), // Replace dash with " Quarter "
+      render: (value) =>
+        value !== undefined && value !== null ? value.toFixed(1) : '—',
+    })),
+  ];
+  // Build table data for A11yTable
+  const A11ytableData: Array<Record<string, any>> = [];
+
+  // Add overall health score row
+  const overallRow = {
+    category: formatMessage(messages.overallHealthScore),
+  };
+  periods.forEach((period) => {
+    const score = sentimentScores?.overallHealthScores.find(
+      (s) => s.period === period
+    );
+    overallRow[period] = score?.score;
+  });
+  A11ytableData.push(overallRow);
+
+  // Add category rows
+  sentimentScores?.categoryHealthScores.forEach((categoryScore) => {
+    const row = {
+      category: categoryScore.localizedLabel,
+    };
+    periods.forEach((period) => {
+      const score = categoryScore.scores.find((s) => s.period === period);
+      row[period] = score?.score;
+    });
+    A11ytableData.push(row);
+  });
 
   return (
     <Box
@@ -154,6 +199,12 @@ const HealthScoreWidget = ({
           quarter={quarter}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={A11ytableData}
+        caption={formatMessage(messages.healthScoreTableCaption)}
+      />
     </Box>
   );
 };

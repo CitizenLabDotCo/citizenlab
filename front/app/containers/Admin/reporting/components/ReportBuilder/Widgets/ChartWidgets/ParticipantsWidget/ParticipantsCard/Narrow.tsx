@@ -6,8 +6,12 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
 
+import messages from './messages';
 import {
   ParticipantsStatistic,
   ParticipationRateStatistic,
@@ -27,10 +31,32 @@ const Narrow = ({
 }: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
 
+  const { formatMessage } = useIntl();
   const accessibilityProps = {
     ariaLabel,
     ariaDescribedBy,
   };
+
+  // Build columns dynamically based on showVisitors
+  const columns = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      render: (value) => moment(value).format('MMM DD, YYYY'),
+    },
+    {
+      key: 'participants',
+      label: formatMessage(messages.participantsColumn),
+    },
+  ];
+
+  if (showVisitors) {
+    columns.push({
+      key: 'visitors',
+      label: formatMessage(messages.visitorsColumn),
+    });
+  }
+
   return (
     <Box
       w="100%"
@@ -68,6 +94,12 @@ const Narrow = ({
           {...accessibilityProps}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.participantsCaption)}
+      />
     </Box>
   );
 };
