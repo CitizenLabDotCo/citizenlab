@@ -12,13 +12,14 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';
 
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+import messages2 from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ const CommentsMoreActions = ({
   className,
   ideaId,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -177,6 +179,7 @@ const CommentsMoreActions = ({
       <Container className={className || ''}>
         <MoreActionsMenu
           showLabel={false}
+          ariaLabel={formatMessage(messages2.showMoreActions)}
           actions={actions}
           ref={moreActionsButtonRef}
         />
