@@ -9,6 +9,7 @@ import useRegistrantCountMessage from 'components/EventCards/EventInformation/us
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
+
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 export interface Props {
