@@ -3,6 +3,8 @@
 require 'faker'
 
 FactoryBot.define do
+  # This is a user that has already filled out the main fields
+  # and confirmed their email etc. The most commonly used user in tests.
   factory :user, aliases: %i[author recipient initiating_user] do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
@@ -41,6 +43,10 @@ FactoryBot.define do
     end
   end
 
+  # This is an unconfirmed user. This is basically the state that a user is in
+  # after entering their email, while they have not yet confirmed their email,
+  # and have not yet filled out any other fields. This is used in tests that need to verify the
+  # auth flow for email users.
   factory :unconfirmed_user, class: 'User' do
     first_name { nil }
     last_name { nil }
