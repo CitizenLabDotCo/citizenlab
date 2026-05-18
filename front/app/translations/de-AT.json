@@ -636,6 +636,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "LÖSCHEN",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Um die Löschung von {entityName} zu bestätigen, gebe {confirmationWord} ein:",
   "app.components.TypedConfirmationModal.warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Datei {fileName} herunterladen, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Bild vergrößern",
   "app.components.UI.MoreActionsMenu.moreOptions": "Weitere Optionen",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Weitere Aktionen anzeigen",

@@ -636,6 +636,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Para confirmar a exclusão de {entityName}, digite {confirmationWord} abaixo:",
   "app.components.TypedConfirmationModal.warning": "Essa ação é permanente e não pode ser desfeita.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Baixar arquivo {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Expandir imagem",
   "app.components.UI.MoreActionsMenu.moreOptions": "Mais opções",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Mostrar mais acções",

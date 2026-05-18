@@ -3179,6 +3179,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:10:36.086469Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

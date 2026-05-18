@@ -636,6 +636,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "حذف کریں۔",
   "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}کو حذف کرنے کی تصدیق کرنے کے لیے، نیچے {confirmationWord} ٹائپ کریں:",
   "app.components.TypedConfirmationModal.warning": "یہ عمل مستقل ہے اور اسے کالعدم نہیں کیا جا سکتا۔",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "فائل {fileName}، {fileSize} ڈاؤن لوڈ کریں",
   "app.components.UI.FullscreenImage.expandImage": "تصویر کو پھیلائیں۔",
   "app.components.UI.MoreActionsMenu.moreOptions": "مزید اختیارات",
   "app.components.UI.MoreActionsMenu.showMoreActions": "مزید کارروائیاں دکھائیں۔",

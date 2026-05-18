@@ -636,6 +636,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Lai apstiprinātu {entityName}dzēšanu, tālāk ievadiet {confirmationWord} :",
   "app.components.TypedConfirmationModal.warning": "Šī darbība ir neatgriezeniska un nav atceļama.",
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Lejupielādēt failu {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Izvērst attēlu",
   "app.components.UI.MoreActionsMenu.moreOptions": "Vairāk iespēju",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Rādīt vairāk darbību",
