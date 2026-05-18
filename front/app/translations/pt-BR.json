@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Mostrar tudo ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tópicos",
+  "app.components.FilterSelector.closeMenu": "Fechar menu",
   "app.components.FiltersModal.filters": "Filtros",
   "app.components.FolderFolderCard.a11y_folderDescription": "Descrição da pasta:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Título da pasta:",

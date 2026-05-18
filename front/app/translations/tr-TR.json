@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Hepsini göster ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Durum",
   "app.components.FilterBoxes.topicsTitle": "Etiketler",
+  "app.components.FilterSelector.closeMenu": "Menüyü kapat",
   "app.components.FiltersModal.filters": "Filtreler",
   "app.components.FolderFolderCard.a11y_folderDescription": "Klasör açıklaması:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Klasör başlığı:",

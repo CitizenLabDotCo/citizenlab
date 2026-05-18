@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Toon alles ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tags",
+  "app.components.FilterSelector.closeMenu": "Menu sluiten",
   "app.components.FiltersModal.filters": "Filters",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mapbeschrijving:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",

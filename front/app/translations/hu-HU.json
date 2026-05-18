@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Az összes megjelenítése ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Állapot",
   "app.components.FilterBoxes.topicsTitle": "Címkék",
+  "app.components.FilterSelector.closeMenu": "Menü bezárása",
   "app.components.FiltersModal.filters": "Szűrők",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappa leírása:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappa címe:",

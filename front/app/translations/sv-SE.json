@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Visa alla ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Ämnen",
+  "app.components.FilterSelector.closeMenu": "Stäng meny",
   "app.components.FiltersModal.filters": "Filter",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappbeskrivning:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapptitel:",

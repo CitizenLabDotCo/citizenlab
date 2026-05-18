@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Mostrar todo ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Estado",
   "app.components.FilterBoxes.topicsTitle": "Temas",
+  "app.components.FilterSelector.closeMenu": "Cerrar menú",
   "app.components.FiltersModal.filters": "Filtros",
   "app.components.FolderFolderCard.a11y_folderDescription": "Descripción de la carpeta:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Título de la carpeta:",

@@ -268,6 +268,7 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Vis alle ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tagger",
+  "app.components.FilterSelector.closeMenu": "Lukk meny",
   "app.components.FiltersModal.filters": "Filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappebeskrivelse:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
