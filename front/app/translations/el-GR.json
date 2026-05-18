@@ -335,7 +335,6 @@
   "app.components.IdeasShow.deletePost": "Διαγραφή",
   "app.components.IdeasShow.editPost": "Επεξεργασία",
   "app.components.IdeasShow.goBack": "Επιστροφή",
-  "app.components.IdeasShow.moreOptions": "Περισσότερες επιλογές",
   "app.components.IdeasShow.or": "ή",
   "app.components.IdeasShow.proposedBudgetTitle": "Προτεινόμενος προϋπολογισμός",
   "app.components.IdeasShow.reportAsSpam": "Αναφορά ως spam",

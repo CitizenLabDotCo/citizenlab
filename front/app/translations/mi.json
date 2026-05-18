@@ -99,7 +99,6 @@
   "app.components.IdeasShow.deletePost": "Delete",
   "app.components.IdeasShow.editPost": "Edit",
   "app.components.IdeasShow.goBack": "Go back",
-  "app.components.IdeasShow.moreOptions": "More options",
   "app.components.IdeasShow.or": "or",
   "app.components.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.components.IdeasShow.reportAsSpam": "Report as spam",

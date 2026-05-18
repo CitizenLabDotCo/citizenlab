@@ -335,7 +335,6 @@
   "app.components.IdeasShow.deletePost": "Supprimer",
   "app.components.IdeasShow.editPost": "Modifier",
   "app.components.IdeasShow.goBack": "Retour",
-  "app.components.IdeasShow.moreOptions": "Plus d’options",
   "app.components.IdeasShow.or": "ou",
   "app.components.IdeasShow.proposedBudgetTitle": "Budget proposé",
   "app.components.IdeasShow.reportAsSpam": "Signaler",

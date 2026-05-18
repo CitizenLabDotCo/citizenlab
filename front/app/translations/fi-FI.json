@@ -335,7 +335,6 @@
   "app.components.IdeasShow.deletePost": "Poistaa",
   "app.components.IdeasShow.editPost": "Muokata",
   "app.components.IdeasShow.goBack": "Mene takaisin",
-  "app.components.IdeasShow.moreOptions": "Lisää vaihtoehtoja",
   "app.components.IdeasShow.or": "tai",
   "app.components.IdeasShow.proposedBudgetTitle": "Ehdotettu budjetti",
   "app.components.IdeasShow.reportAsSpam": "Ilmoita roskapostiksi",
