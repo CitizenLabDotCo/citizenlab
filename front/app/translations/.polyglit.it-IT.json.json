@@ -1129,6 +1129,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:17:25.765619Z",
+    "verified_by": "Roger"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
