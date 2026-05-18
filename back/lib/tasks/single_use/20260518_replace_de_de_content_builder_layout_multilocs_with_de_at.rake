@@ -1,5 +1,33 @@
 # frozen_string_literal: true
 
+# Renames `de-DE` multiloc keys to `de-AT` in the craftjs_json of every
+# ContentBuilder::Layout of a single tenant, keeping a duplicate of the value.
+#
+# What it does:
+#   - Targets one tenant, identified by the `host` argument.
+#   - Only runs if that tenant has the `de-AT` locale in use AND does not have
+#     the `de-DE` locale in use - otherwise it is a no-op.
+#   - Walks the full craftjs_json of each layout (any nesting depth) and, for
+#     every multiloc with a `de-DE` key, moves the value to a `de-AT` key.
+#   - Writes a JSON report with the before/after craftjs_json of edited layouts.
+#
+# What it does NOT do:
+#   - It does not translate content - the `de-AT` value is an exact copy of the
+#     `de-DE` value.
+#   - It does not touch a multiloc that already has a `de-AT` key; such cases
+#     are reported and skipped (the `de-DE` entry is left in place).
+#   - It does not change tenant locale settings, nor any non-craftjs_json data.
+#   - It does not run across multiple tenants - one `host` per invocation.
+#
+# Example commands (run from the repo root):
+#   Dry run (no changes applied, just reports what would happen):
+#     docker compose run --rm web bundle exec rake \
+#       single_use:replace_de_DE_content_builder_layout_multilocs_with_de_AT[example.com]
+#
+#   Execute (applies the changes):
+#     docker compose run --rm web bundle exec rake \
+#       single_use:replace_de_DE_content_builder_layout_multilocs_with_de_AT[example.com,execute]
+
 namespace :single_use do
   desc 'For a tenant using de-AT (and not de-DE), rename de-DE multiloc keys to de-AT in all content builder layouts.'
   task :replace_de_DE_content_builder_layout_multilocs_with_de_AT, %i[host execute] => [:environment] do |_t, args|
