@@ -233,6 +233,7 @@
   "app.components.EventAttendanceButton.registered": "Προστέθηκε",
   "app.components.EventAttendanceButton.seeYouThere": "Τα λέμε εκεί!",
   "app.components.EventAttendanceButton.seeYouThereName": "Μπήκε στη λίστα σου, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Έχετε απεγγραφεί από το {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Λιγότερες πληροφορίες για την εκδήλωση έγιναν ορατές.",
   "app.components.EventCard.a11y_moreContentVisible": "Περισσότερες πληροφορίες για την εκδήλωση έγιναν ορατές.",
   "app.components.EventCard.a11y_readMore": "Διαβάστε περισσότερα για την εκδήλωση \"{eventTitle}\".",

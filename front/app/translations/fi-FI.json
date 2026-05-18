@@ -233,6 +233,7 @@
   "app.components.EventAttendanceButton.registered": "Rekisteröity",
   "app.components.EventAttendanceButton.seeYouThere": "Nähdään siellä!",
   "app.components.EventAttendanceButton.seeYouThereName": "Nähdään siellä, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Ilmoittautumisesi tapahtumaan {eventTitle} on peruttu",
   "app.components.EventCard.a11y_lessContentVisible": "Tapahtumatietoa näkyi vähemmän.",
   "app.components.EventCard.a11y_moreContentVisible": "Lisää tietoa tapahtumasta tuli näkyviin.",
   "app.components.EventCard.a11y_readMore": "Lue lisää \"{eventTitle}\"-tapahtumasta.",

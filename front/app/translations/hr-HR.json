@@ -233,6 +233,7 @@
   "app.components.EventAttendanceButton.registered": "Registriran",
   "app.components.EventAttendanceButton.seeYouThere": "Vidimo se tamo!",
   "app.components.EventAttendanceButton.seeYouThereName": "Vidimo se tamo, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Odjavljeni ste s događaja {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Vidljivo je manje podataka o događaju.",
   "app.components.EventCard.a11y_moreContentVisible": "Vidljivo je više podataka o događaju.",
   "app.components.EventCard.a11y_readMore": "Pročitajte više o događaju \"{eventTitle}\".",

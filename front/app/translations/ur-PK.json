@@ -233,6 +233,7 @@
   "app.components.EventAttendanceButton.registered": "رجسٹرڈ",
   "app.components.EventAttendanceButton.seeYouThere": "وہاں ملتے ہیں!",
   "app.components.EventAttendanceButton.seeYouThereName": "وہاں ملتے ہیں، {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "آپ کو {eventTitle} سے غیر رجسٹر کر دیا گیا ہے",
   "app.components.EventCard.a11y_lessContentVisible": "واقعہ کی کم معلومات نظر آنے لگیں۔",
   "app.components.EventCard.a11y_moreContentVisible": "مزید واقعہ کی معلومات مرئی ہو گئیں۔",
   "app.components.EventCard.a11y_readMore": "\"{eventTitle}\" ایونٹ کے بارے میں مزید پڑھیں۔",

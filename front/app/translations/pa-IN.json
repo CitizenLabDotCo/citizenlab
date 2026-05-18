@@ -233,6 +233,7 @@
   "app.components.EventAttendanceButton.registered": "ਰਜਿਸਟਰਡ",
   "app.components.EventAttendanceButton.seeYouThere": "ਉੱਥੇ ਮਿਲਦੇ ਹਾਂ!",
   "app.components.EventAttendanceButton.seeYouThereName": "ਉੱਥੇ ਮਿਲਦੇ ਹਾਂ, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "ਤੁਸੀਂ {eventTitle} ਤੋਂ ਅਨਰਜਿਸਟਰ ਹੋ ਗਏ ਹੋ।",
   "app.components.EventCard.a11y_lessContentVisible": "ਘੱਟ ਘਟਨਾ ਦੀ ਜਾਣਕਾਰੀ ਦਿਖਾਈ ਦੇਣ ਲੱਗੀ।",
   "app.components.EventCard.a11y_moreContentVisible": "ਹੋਰ ਘਟਨਾ ਦੀ ਜਾਣਕਾਰੀ ਦਿਸਦੀ ਹੋ ਗਈ.",
   "app.components.EventCard.a11y_readMore": "\"{eventTitle}\" ਘਟਨਾ ਬਾਰੇ ਹੋਰ ਪੜ੍ਹੋ।",
