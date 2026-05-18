@@ -5,6 +5,7 @@ import * as yup from 'yup';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { supportedLocales } from 'containers/App/constants';
 
@@ -17,6 +18,7 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 import type { Routes } from 'utils/moduleUtils';
 import { usePermission } from 'utils/permissions';
+import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { createRoute, useLocation } from 'utils/router';
 
 import createAdminCommunityMonitorRoutes from './communityMonitor/routes';
@@ -146,13 +148,23 @@ export const adminRoute = createRoute({
   component: AdminLayoutElement,
 });
 
-// Admin index route - redirects to dashboard
+// Moderators don't have access to /admin/dashboard/overview.
+const AdminIndexRedirect = () => {
+  const { data: authUser } = useAuthUser();
+
+  if (!authUser) return null;
+
+  if (!isAdmin(authUser) && isModerator(authUser)) {
+    return <Navigate to="/admin/projects" />;
+  }
+
+  return <Navigate to="/admin/dashboard/overview" />;
+};
+
 const adminIndexRoute = createRoute({
   getParentRoute: () => adminRoute,
-  // Careful: moderators currently have access to the admin index route
-  // Adjust isModerator in routePermissions.ts if needed.
   path: '/',
-  component: () => <Navigate to="/admin/dashboard/overview" />,
+  component: AdminIndexRedirect,
 });
 
 // Favicon route

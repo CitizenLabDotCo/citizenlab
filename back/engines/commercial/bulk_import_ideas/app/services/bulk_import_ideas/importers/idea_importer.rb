@@ -86,11 +86,14 @@ module BulkImportIdeas::Importers
             email: idea_row[:user_email]
           }
           author = UserService.build_in_input_importer(user_params)
-          if author.save
-            @imported_users << author
-          else
-            author = nil
+          unless author.save
+            raise BulkImportIdeas::Error.new(
+              'bulk_import_user_not_valid',
+              value: author.errors.full_messages.join('; '),
+              row: idea_row[:id]
+            )
           end
+          @imported_users << author
         end
       end
 

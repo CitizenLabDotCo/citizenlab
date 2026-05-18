@@ -7,7 +7,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
-import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import Sidebar from './sideBar/';
@@ -95,22 +94,10 @@ const AdminPage = memo<Props>(({ className }) => {
   });
 
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
+    if (authUser && !userCanViewPath) {
       clHistory.push('/');
     }
-
-    if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
-      if (isAdmin(authUser)) {
-        clHistory.push('/admin/dashboard/overview');
-      }
-
-      if (isModerator(authUser)) {
-        clHistory.push('/admin/projects');
-      }
-    }
-  }, [authUser, userCanViewPath, pathname]);
+  }, [authUser, userCanViewPath]);
 
   if (!userCanViewPath) {
     return null;
