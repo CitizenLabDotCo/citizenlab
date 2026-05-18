@@ -486,6 +486,56 @@ describe 'single_use:replace_de_DE_content_builder_layout_multilocs_with_de_AT r
     end
   end
 
+  context 'when a node has a de-DE multiloc nested deeply' do
+    before { configure_locales(%w[en fr-FR de-AT]) }
+
+    # The de-DE multiloc sits seven levels below the craftjs_json root, reached
+    # through both nested hashes and an array.
+    let!(:deeply_nested_layout) do
+      create(
+        :layout,
+        craftjs_json: {
+          'ROOT' => {
+            'type' => 'div',
+            'nodes' => ['deepNode'],
+            'props' => {},
+            'custom' => {},
+            'hidden' => false,
+            'isCanvas' => true,
+            'displayName' => 'div',
+            'linkedNodes' => {}
+          },
+          'deepNode' => {
+            'type' => { 'resolvedName' => 'Container' },
+            'nodes' => [],
+            'props' => {
+              'config' => {
+                'sections' => [
+                  { 'block' => { 'content' => { 'de-DE' => '<p>Tief verschachtelter Text</p>' } } }
+                ]
+              }
+            },
+            'custom' => {},
+            'hidden' => false,
+            'parent' => 'ROOT',
+            'isCanvas' => false,
+            'displayName' => 'Container',
+            'linkedNodes' => {}
+          }
+        }
+      )
+    end
+
+    it 'replaces the de-DE key regardless of nesting depth' do
+      run_task(execute: true)
+
+      multiloc = deeply_nested_layout.reload.craftjs_json
+        .dig('deepNode', 'props', 'config', 'sections', 0, 'block', 'content')
+      expect(multiloc).not_to have_key('de-DE')
+      expect(multiloc['de-AT']).to eq('<p>Tief verschachtelter Text</p>')
+    end
+  end
+
   context 'when the tenant does not use de-AT' do
     before { configure_locales(%w[en fr-FR nl-NL]) }
 
