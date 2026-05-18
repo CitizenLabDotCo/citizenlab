@@ -35,11 +35,6 @@ const TitleButton = styled.button`
     }
   }
 
-  &:focus-visible {
-    outline: 2px solid black;
-    border-radius: ${({ theme }) => theme.borderRadius};
-  }
-
   ${isRtl`
     text-align: right;
     direction: rtl;
