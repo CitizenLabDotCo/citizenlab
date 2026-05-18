@@ -496,6 +496,7 @@
   "app.components.PostComponents.linkToHomePage": "Link to home page",
   "app.components.PostComponents.readMore": "Read more...",
   "app.components.PostComponents.topics": "Topics",
+  "app.components.PostShowComponents.Comments.Comment.showMoreActions": "Show more actions related to this comment",
   "app.components.ProjectArchivedIndicator.archivedProject": "Unfortunately, you can't participate in this project anymore because it has been archived",
   "app.components.ProjectArchivedIndicator.previewProject": "Draft project:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Visible only to moderators and those with a preview link.",
