@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:47:15.967695Z",
+    "verified_by": "Roger"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -2814,6 +2819,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -2903,6 +2913,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:47:15.967695Z",
+    "verified_by": "Roger"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -7364,6 +7379,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
+  },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -11668,6 +11693,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:39:50.160219Z",
+    "verified_by": "Roger"
   },
   "app.containers.app.navbar.signOut": {
     "state": "verified",

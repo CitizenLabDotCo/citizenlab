@@ -2307,7 +2307,6 @@
   "app.containers.app.navbar.more": "More",
   "app.containers.app.navbar.myProfile": "Moja aktivnost",
   "app.containers.app.navbar.search": "Pretraga",
-  "app.containers.app.navbar.showFullMenu": "Show full menu",
   "app.containers.app.navbar.signOut": "Odjava",
   "app.containers.eventspage.errorWhenFetchingEvents": "Došlo je do greške pri učitavanju događaja. Pokušajte ponovo učitati stranicu.",
   "app.containers.eventspage.events": "Events",

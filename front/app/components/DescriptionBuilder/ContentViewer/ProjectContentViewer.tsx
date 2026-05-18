@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Spinner, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
@@ -65,7 +70,10 @@ const ProjectContentViewer = ({
           <Title color="tenantText" variant="h1">
             {localize(projectTitle)}
           </Title>
-          <Box id={`project-description-${projectId}`} mx={isSmallerThanTablet ? '-20px' : '0px'}>
+          <Box
+            id={`project-description-${projectId}`}
+            mx={isSmallerThanTablet ? '-20px' : '0px'}
+          >
             <ContentBuilderLayoutProvider
               layoutId={descriptionBuilderLayout.data.id}
             >

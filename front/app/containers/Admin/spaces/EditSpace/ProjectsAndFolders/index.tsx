@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { SpaceNode } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
@@ -13,11 +12,12 @@ import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isSpaceModerator } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
 const ProjectsAndFolders = () => {
-  const { spaceId } = useParams();
+  const { spaceId } = useParams({ strict: false });
   const { data: treeView } = useTreeView();
   const { mutate: updateFolder } = useUpdateProjectFolder();
   const { mutate: updateProject } = useUpdateProject();

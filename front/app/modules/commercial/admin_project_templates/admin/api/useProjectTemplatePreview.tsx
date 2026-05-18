@@ -57,7 +57,7 @@ const useProjectTemplatePreview = ({
 `;
 
   return useQuery({
-    queryKey: ['projectTemplate', projectTemplateId],
+    queryKey: ['projectTemplate', projectTemplateId, graphqlTenantLocales],
     queryFn: () =>
       graphqlFetcher({
         query: PROJECT_TEMPLATE_QUERY,

@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -2818,6 +2823,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
@@ -7374,6 +7384,16 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11679,6 +11699,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -12039,6 +12064,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -12178,6 +12208,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
   },
   "app.errors.invalid_row": {
     "state": "verified",

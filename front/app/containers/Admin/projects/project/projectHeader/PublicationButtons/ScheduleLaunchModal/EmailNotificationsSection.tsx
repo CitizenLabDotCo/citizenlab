@@ -7,7 +7,6 @@ import {
   IconTooltip,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
 import useProjectById from 'api/projects/useProjectById';
@@ -15,6 +14,7 @@ import useProjectById from 'api/projects/useProjectById';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -30,7 +30,7 @@ const EmailNotificationsSection = ({
   onCloseModal,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const { data: recipientCount } =
     useProjectPublicationRecipientCount(projectId);
@@ -86,7 +86,8 @@ const EmailNotificationsSection = ({
             </Text>
             <ButtonWithLink
               buttonStyle="text"
-              linkTo={`/admin/projects/${projectId}/general`}
+              to="/admin/projects/$projectId/general"
+              params={{ projectId }}
               onClick={onCloseModal}
               padding="0"
               fontSize="14px"

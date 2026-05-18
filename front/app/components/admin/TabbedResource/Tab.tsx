@@ -6,11 +6,13 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
 import Link from 'utils/cl-router/Link';
+import { useLocation } from 'utils/router';
+
+import type { LinkProps } from '@tanstack/react-router';
 
 // very similar to front/app/components/admin/NavigationTabs/Tab.tsx
 const Container = styled.div`
@@ -63,8 +65,7 @@ const Tab = ({
     return (
       typeof active === 'function'
         ? active(pathname)
-        : active ||
-          (pathname && getRegularExpression(url).test(location.pathname))
+        : active || (pathname && getRegularExpression(url).test(pathname))
     )
       ? 'active'
       : '';
@@ -76,7 +77,7 @@ const Tab = ({
       className={`${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
-      <Link to={url}>
+      <Link to={url as LinkProps['to']}>
         {label}
         {statusLabel && (
           <Box ml="12px" display="inline">

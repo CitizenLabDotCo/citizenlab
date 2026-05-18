@@ -32,12 +32,23 @@ describe('Project description builder navigation', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('navigates to project description builder when edit project description link clicked', () => {
+  // The toggle's upsert mutation invalidates several queries on success, which
+  // re-renders the parent and detaches the link from the DOM mid-click. Wait
+  // for the upsert to land before resolving and clicking the link.
+  const enableBuilderAndWait = () => {
+    cy.intercept(
+      'POST',
+      '**/content_builder_layouts/project_description/upsert'
+    ).as('enableBuilder');
     cy.dataCy('e2e-toggle-enable-project-description-builder').click();
-    // When the toggle is clicked, the project description builder is enabled and the link should appear.
+    cy.wait('@enableBuilder');
+  };
 
-    cy.get('#e2e-project-description-builder-link').as('link').wait(1000);
-    cy.get('@link').should('be.visible').click();
+  it('navigates to project description builder when edit project description link clicked', () => {
+    enableBuilderAndWait();
+    cy.get('#e2e-project-description-builder-link')
+      .should('be.visible')
+      .click();
     cy.url().should(
       'eq',
       `${
@@ -47,8 +58,7 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project settings when content builder goBack clicked', () => {
-    cy.dataCy('e2e-toggle-enable-project-description-builder').click();
-    // When the toggle is clicked, the project description builder is enabled and the link should appear.
+    enableBuilderAndWait();
     cy.get('#e2e-project-description-builder-link')
       .should('be.visible')
       .click();

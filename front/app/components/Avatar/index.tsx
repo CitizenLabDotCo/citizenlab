@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
-import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import useUserById from 'api/users/useUserById';
@@ -133,12 +132,11 @@ const Avatar = memo(
       );
     }
 
-    const profileLink: RouteType = `/profile/${userId}`;
     const hasValidProfileLink = !!userId;
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink} scrollToTop>
+        <Link to="/profile/$userId" params={{ userId }} scrollToTop>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.titleForAccessibility}

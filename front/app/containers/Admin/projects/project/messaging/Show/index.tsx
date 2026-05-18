@@ -12,7 +12,6 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -40,6 +39,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -69,7 +69,7 @@ const Buttons = styled.div`
 `;
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
 const Show = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };
@@ -94,9 +94,11 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );
@@ -161,7 +163,10 @@ const Show = () => {
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-          <GoBackButton linkTo={`/admin/projects/${projectId}/messaging`} />
+          <GoBackButton
+            to="/admin/projects/$projectId/messaging"
+            params={{ projectId }}
+          />
           <Box display="flex" mb="20px">
             <Box display="flex" alignItems="center" mr="auto" gap="12px">
               <Title mr="12px">
@@ -198,7 +203,8 @@ const Show = () => {
               campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
-                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
+                  to="/admin/projects/$projectId/messaging/$campaignId/edit"
+                  params={{ projectId, campaignId: campaign.data.id }}
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
