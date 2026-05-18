@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
@@ -19,7 +19,7 @@ type AboutBoxProps = {
 };
 
 const AboutBox = ({ hideParticipationAvatars }: AboutBoxProps) => {
-  const { projectId, slug } = useParams() as {
+  const { projectId, slug } = useParams({ strict: false }) as {
     projectId: string;
     slug: string;
   };

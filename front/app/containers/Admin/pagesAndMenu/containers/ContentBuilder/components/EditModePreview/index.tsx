@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
+
+import { useSearch } from 'utils/router';
 
 const HomapageBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
@@ -13,11 +14,13 @@ const HomapageBuilderEditModePreview = React.forwardRef<
     selectedLocale?: SupportedLocale | null;
   }
 >(({ selectedLocale }, ref) => {
-  const [search] = useSearchParams();
+  const search = useSearch({
+    from: '/$locale/admin/pages-menu/homepage-builder',
+  });
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
 
-  const variant = search.get('variant');
+  const variant = search.variant;
 
   return (
     <EditModePreview

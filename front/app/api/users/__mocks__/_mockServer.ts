@@ -11,7 +11,6 @@ export const usersData: IUserData[] = [
     attributes: {
       first_name: 'Test',
       last_name: 'Go Vocal',
-      slug: 'test-govocal',
       locale: 'en',
       avatar: {
         small: null,
@@ -41,7 +40,6 @@ export const usersData: IUserData[] = [
     id: 'ac3669cf-f1c2-45dd-a8c0-4baf672a6998',
     type: 'user',
     attributes: {
-      slug: 'jordan-schimmel',
       locale: 'en',
       roles: [{ type: 'admin' }],
       highest_role: 'admin',

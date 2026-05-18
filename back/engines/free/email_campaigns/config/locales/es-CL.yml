@@ -94,6 +94,7 @@ es-CL:
         project_published: Proyecto publicado
         project_review_request: El moderador solicitó la revisión del proyecto
         project_review_state_change: El revisor aprobó el proyecto
+        proposal_expired: Una propuesta caduca sin alcanzar el umbral
         proposal_gets_reported_as_spam: La propuesta es denunciada como spam
         proposal_is_assigned_to_admin: La propuesta está asignada al administrador
         proposal_is_published: Se publica la propuesta
@@ -188,6 +189,7 @@ es-CL:
       project_published: Proyecto publicado
       project_review_request: Solicitud de revisión del proyecto
       project_review_state_change: Proyecto aprobado
+      proposal_expired_for_admin: La propuesta ha caducado sin alcanzar el umbral de votación
       screening_digest: Recordatorio de evaluación semanal
       space_moderation_rights_received: Permisos de gestor de espacio recibidos
       status_change_on_idea_you_follow: Cambio de estado de una idea que sigues
@@ -591,6 +593,11 @@ es-CL:
       preheader: '%{reviewerName} aprobó el proyecto "%{projectTitle}"'
       subject: '"%{projectTitle}" ha sido aprobado'
       title: '%{reviewerName} aprobó el proyecto "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Revisar la aportación caducada
+      preheader: Una aportación ha caducado sin alcanzar el umbral
+      subject: '"%{input_title}" ha caducado sin alcanzar el umbral'
+      title: Una aportación ha caducado sin alcanzar el umbral de votación
     schedules:
       quarterly: Trimestralmente, el primer día del trimestre
       weekly:

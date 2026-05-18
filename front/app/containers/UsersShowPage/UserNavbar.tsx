@@ -8,7 +8,6 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -219,7 +219,7 @@ const UserNavbar = memo<Props>(({ user }) => {
     }
     const nextTab = tabs[nextTabIndex];
 
-    clHistory.push(`/profile/${user.attributes.slug}/${nextTab.path}`);
+    clHistory.push(`/profile/${user.id}/${nextTab.path}`);
     tabsRef.current[nextTab.path].focus();
   };
 
@@ -229,9 +229,7 @@ const UserNavbar = memo<Props>(({ user }) => {
         <UserNavbarButton
           key={tab.path}
           onMouseDown={removeFocusAfterMouseClick}
-          onClick={() =>
-            clHistory.push(`/profile/${user.attributes.slug}/${tab.path}`)
-          }
+          onClick={() => clHistory.push(`/profile/${user.id}/${tab.path}`)}
           className={`${tab.className || ''} ${tab.active ? 'active' : ''}`}
           role="tab"
           aria-selected={tab.active}

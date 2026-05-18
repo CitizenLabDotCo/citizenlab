@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Tooltip } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
@@ -15,6 +14,7 @@ import customPageMessages from 'containers/Admin/pagesAndMenu/containers/CustomP
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import AddProjectOrFolderNavbarItemModal from '../AddProjectOrFolderNavbarItemModal';
 
@@ -76,7 +76,7 @@ const PagesMenu = () => {
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 id="create-custom-page"
-                linkTo={'/admin/pages-menu/pages/new'}
+                to="/admin/pages-menu/pages/new"
                 className="intercom-admin-pages-menu-add-page"
                 disabled={!canCreateCustomPages}
               >

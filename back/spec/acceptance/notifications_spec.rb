@@ -34,7 +34,7 @@ resource 'Notifications' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].map { |d| d.dig(:attributes, :read_at) }.uniq).to eq [nil]
-      expect(json_response[:data].first.dig(:attributes, :initiating_user_slug)).to be_present
+      expect(json_response[:data].first.dig(:attributes, :initiating_user_id)).to be_present
     end
 
     describe do

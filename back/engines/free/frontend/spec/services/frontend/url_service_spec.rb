@@ -52,18 +52,18 @@ describe Frontend::UrlService do
 
     context 'when the followable has no visitable page' do
       let(:followable) { create(:topic) }
-      let(:user) { create(:user, locale: 'fr-FR', slug: 'user-slug') }
+      let(:user) { create(:user, locale: 'fr-FR') }
 
       it 'returns the profile following URL' do
-        expect(url).to eq 'http://example.org/fr-FR/profile/user-slug/following'
+        expect(url).to eq "http://example.org/fr-FR/profile/#{user.id}/following"
       end
     end
 
     context 'when there is no followable' do
-      let(:user) { create(:user, locale: 'en', slug: 'user-slug') }
+      let(:user) { create(:user, locale: 'en') }
 
       it 'returns the profile following URL' do
-        expect(url).to eq 'http://example.org/en/profile/user-slug/following'
+        expect(url).to eq "http://example.org/en/profile/#{user.id}/following"
       end
     end
   end

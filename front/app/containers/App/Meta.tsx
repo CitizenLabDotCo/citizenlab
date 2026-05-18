@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
@@ -16,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -128,7 +128,9 @@ const Meta = () => {
           property="og:image:height"
           content={`${imageSizes.headerBg.large[1]}`}
         />
-        <meta property="og:url" content={`${url}/${locale}`} />
+        {/* og:url must reflect the current page, not the homepage — otherwise FB
+            follows it back to the homepage when scraping non-home shares. */}
+        <meta property="og:url" content={`${url}${pathname}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />

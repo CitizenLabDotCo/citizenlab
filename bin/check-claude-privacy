@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# bin/check-claude-privacy — privacy guard for the citizenlab-claude overlay.
+#
+# Runs in CI (and can be run locally). Exits non-zero if anything looks like a leak.
+# Pre-commit hook at .githooks/pre-commit catches the same cases on commit.
+
+set -euo pipefail
+
+errors=0
+
+# 1. No tracked files under .claude/. Everything there is private and
+#    materialized at runtime by bin/setup-claude.
+LEAKED="$(git ls-files .claude/ 2>/dev/null || true)"
+if [ -n "$LEAKED" ]; then
+  echo "ERROR: tracked files under private overlay paths:" >&2
+  echo "$LEAKED" | sed 's/^/  /' >&2
+  errors=$((errors + 1))
+fi
+
+# 2. No CLAUDE.md should be tracked at any path. They're all gitignored
+#    file symlinks materialized by bin/setup-claude.
+TRACKED_CLAUDE_MD="$(git ls-files '*/CLAUDE.md' 'CLAUDE.md' 2>/dev/null || true)"
+if [ -n "$TRACKED_CLAUDE_MD" ]; then
+  echo "ERROR: tracked CLAUDE.md files (should be gitignored symlinks instead):" >&2
+  echo "$TRACKED_CLAUDE_MD" | sed 's/^/  /' >&2
+  errors=$((errors + 1))
+fi
+
+if [ "$errors" -gt 0 ]; then
+  echo "" >&2
+  echo "Privacy check failed with $errors error(s)." >&2
+  exit 1
+fi
+
+echo "Claude privacy check passed."

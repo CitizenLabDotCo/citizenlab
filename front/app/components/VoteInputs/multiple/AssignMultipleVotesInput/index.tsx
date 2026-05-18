@@ -8,7 +8,6 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
@@ -26,6 +25,7 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import NumberInput from './NumberInput';
@@ -50,8 +50,8 @@ const AssignMultipleVotesInput = ({
   const { getVotes, setVotes, userHasVotesLeft, numberOfVotesCast } =
     useVoting();
   const votes = getVotes?.(ideaId);
-  const [searchParams] = useSearchParams();
-  const isProcessing = searchParams.get('processing_vote') === ideaId;
+  const searchParams = useSearch({ strict: false });
+  const isProcessing = searchParams.processing_vote === ideaId;
 
   // participation context
   // TODO: Fix this the next time the file is edited.

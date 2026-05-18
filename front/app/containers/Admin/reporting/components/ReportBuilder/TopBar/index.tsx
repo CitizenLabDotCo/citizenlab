@@ -11,7 +11,6 @@ import {
   Badge,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -121,7 +120,7 @@ const ContentBuilderTopBar = ({
       return;
     }
 
-    const goBackUrl: RouteType =
+    const goBackUrl =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';

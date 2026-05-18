@@ -10,7 +10,6 @@ export const makeUser = (attributes = {}, id?: string): IUser => {
       attributes: {
         first_name: 'Test',
         last_name: 'Go Vocal',
-        slug: 'test-govocal',
         locale: 'en',
         avatar: {
           small: null,

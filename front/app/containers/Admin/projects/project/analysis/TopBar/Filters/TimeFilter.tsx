@@ -1,24 +1,26 @@
 import React from 'react';
 
 import moment from 'moment';
-import { useSearchParams } from 'react-router-dom';
 
 import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import tracks from '../../tracks';
 
 const TimeFilter = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
-  const endAtMoment = searchParams.get('published_at_to')
-    ? moment(searchParams.get('published_at_to'))
+  const endAtMoment = searchParams.published_at_to
+    ? moment(searchParams.published_at_to)
     : moment();
 
-  const startAtMoment = searchParams.get('published_at_from')
-    ? moment(searchParams.get('published_at_from'))
+  const startAtMoment = searchParams.published_at_from
+    ? moment(searchParams.published_at_from)
     : undefined;
 
   return (

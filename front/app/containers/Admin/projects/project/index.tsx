@@ -1,11 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -18,6 +13,7 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import messages from './messages';
 import ProjectHeader from './projectHeader';
@@ -102,7 +98,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 };
 
 const AdminProjectsProjectIndexWrapper = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: project } = useProjectById(projectId);
 
   if (!project) return null;

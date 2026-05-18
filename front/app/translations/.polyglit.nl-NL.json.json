@@ -2819,6 +2819,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:55:45.461995Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -2908,6 +2913,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T14:19:17.805484Z",
+    "verified_by": "Luuc"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -6254,6 +6264,56 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-05T12:25:53.674717Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -7318,6 +7378,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:55:45.461995Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:55:45.461995Z",
+    "verified_by": "Luuc"
   },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
@@ -11623,6 +11693,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:56:51.556422Z",
+    "verified_by": "Luuc"
   },
   "app.containers.app.navbar.signOut": {
     "state": "verified",

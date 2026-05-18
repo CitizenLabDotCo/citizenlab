@@ -28,7 +28,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -84,7 +84,7 @@ const GroupsList = styled.div`
   overflow-y: auto;
 `;
 
-const MenuLink = styled(Link)`
+const MenuLink = typedStyled(Link)`
   color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   display: flex;
@@ -324,10 +324,11 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             >
               <MenuLink
                 key={group.id}
-                to={`/admin/users/groups/${group.id}`}
-                className={() =>
-                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-                }
+                to="/admin/users/groups/$groupId"
+                params={{ groupId: group.id }}
+                className={`${
+                  highlightedGroups.has(group.id) ? 'highlight' : ''
+                }`}
               >
                 <Outlet
                   id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
@@ -345,7 +346,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       </GroupsList>
       <Box display="flex" flexGrow={1} />
       <ButtonWithLink
-        linkTo="/admin/users/invitations"
+        to="/admin/users/invitations"
         icon="email"
         className="intercom-users-invite-users-button"
       >

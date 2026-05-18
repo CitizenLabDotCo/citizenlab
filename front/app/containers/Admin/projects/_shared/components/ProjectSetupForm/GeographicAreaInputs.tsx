@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { IOption, isIOption } from 'typings';
 
 import { IAreaData } from 'api/areas/types';
@@ -15,6 +14,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isString } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { TOnProjectAttributesDiffChangeFunction } from '../../../project/general';
 import messages from '../../../project/general/messages';
@@ -33,7 +33,9 @@ const GeographicAreaInputs = ({
   areaIds,
   onProjectAttributesDiffChange,
 }: Props) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({
+    strict: false,
+  });
   const { data: areas } = useAreas({});
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();

@@ -75,7 +75,7 @@ RSpec.describe User do
     let(:user) { build(:user) }
 
     it 'generates a slug based on the first and last name' do
-      user.update!(first_name: 'Not Really_%40)', last_name: '286^$@sluggable')
+      user.update!(first_name: 'Not Really_%40)', last_name: '286^$&sluggable')
       expect(user.slug).to eq 'not-really-40-286-sluggable'
     end
 
@@ -85,83 +85,48 @@ RSpec.describe User do
     end
   end
 
-  describe '#slug' do
-    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
-
-    context 'when enhanced_user_profile_privacy feature is not active' do
-      it 'returns the normal slug' do
-        expect(user.slug).to eq 'bob-smith'
-      end
-    end
-
-    context 'when enhanced_user_profile_privacy feature is active' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
-        AppConfiguration.instance.update!(settings: settings)
-      end
-
-      it 'returns the user id instead of the slug' do
-        expect(user.slug).to eq user.id
-      end
-    end
-  end
-
   describe '#show_public_profile?' do
     let(:user) { create(:user) }
 
-    context 'when enhanced_user_profile_privacy is not active' do
-      it 'returns true' do
-        expect(user.show_public_profile?).to be true
-      end
+    before { create(:idea_status_proposed) }
+
+    it 'returns false when user has no ideas or comments' do
+      expect(user.show_public_profile?).to be false
     end
 
-    context 'when enhanced_user_profile_privacy is active' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
-        AppConfiguration.instance.update!(settings: settings)
-        create(:idea_status_proposed)
-      end
+    it 'returns true when user has posted an idea in an ideation phase' do
+      create(:idea, author: user)
+      expect(user.show_public_profile?).to be true
+    end
 
-      it 'returns false when user has no ideas or comments' do
-        expect(user.show_public_profile?).to be false
-      end
+    it 'returns false when user has only posted anonymous ideas' do
+      create(:idea, author: user, anonymous: true)
+      expect(user.show_public_profile?).to be false
+    end
 
-      it 'returns true when user has posted an idea in an ideation phase' do
-        create(:idea, author: user)
-        expect(user.show_public_profile?).to be true
-      end
+    it 'returns true when user has posted an idea in a proposals phase' do
+      create(:proposal, author: user)
+      expect(user.show_public_profile?).to be true
+    end
 
-      it 'returns false when user has only posted anonymous ideas' do
-        create(:idea, author: user, anonymous: true)
-        expect(user.show_public_profile?).to be false
-      end
+    it 'returns false when user has only posted anonymous ideas in a proposals phase' do
+      create(:proposal, author: user, anonymous: true)
+      expect(user.show_public_profile?).to be false
+    end
 
-      it 'returns true when user has posted an idea in a proposals phase' do
-        create(:proposal, author: user)
-        expect(user.show_public_profile?).to be true
-      end
+    it 'returns false when user only has ideas in a native survey phase' do
+      create(:native_survey_response, author: user)
+      expect(user.show_public_profile?).to be false
+    end
 
-      it 'returns false when user has only posted anonymous ideas in a proposals phase' do
-        create(:proposal, author: user, anonymous: true)
-        expect(user.show_public_profile?).to be false
-      end
+    it 'returns true when user has comments' do
+      create(:comment, author: user)
+      expect(user.show_public_profile?).to be true
+    end
 
-      it 'returns false when user only has ideas in a native survey phase' do
-        create(:native_survey_response, author: user)
-        expect(user.show_public_profile?).to be false
-      end
-
-      it 'returns true when user has comments' do
-        create(:comment, author: user)
-        expect(user.show_public_profile?).to be true
-      end
-
-      it 'returns false when user has only posted anonymous comments' do
-        create(:comment, author: user, anonymous: true)
-        expect(user.show_public_profile?).to be false
-      end
+    it 'returns false when user has only posted anonymous comments' do
+      create(:comment, author: user, anonymous: true)
+      expect(user.show_public_profile?).to be false
     end
   end
 
@@ -1250,6 +1215,28 @@ RSpec.describe User do
       user.validate
       expect(user.first_name).to eq 'Terry'
     end
+
+    it 'is invalid when it contains @' do
+      user = build(:user, first_name: 'foo@example.com')
+      expect(user).not_to be_valid
+      expect(user.errors[:first_name]).to include('is invalid')
+    end
+
+    it 'is invalid when @ appears anywhere in the value' do
+      user = build(:user, first_name: 'Bob@home')
+      expect(user).not_to be_valid
+      expect(user.errors[:first_name]).to include('is invalid')
+    end
+
+    it 'is valid when nil' do
+      user = build(:user, first_name: nil)
+      expect(user).to be_valid
+    end
+
+    it 'is valid when blank' do
+      user = build(:user, first_name: '')
+      expect(user).to be_valid
+    end
   end
 
   describe '#last_name' do
@@ -1265,6 +1252,28 @@ RSpec.describe User do
       user.first_name = 'Smith'
       user.validate
       expect(user.first_name).to eq 'Smith'
+    end
+
+    it 'is invalid when it contains @' do
+      user = build(:user, last_name: 'foo@example.com')
+      expect(user).not_to be_valid
+      expect(user.errors[:last_name]).to include('is invalid')
+    end
+
+    it 'is invalid when @ appears anywhere in the value' do
+      user = build(:user, last_name: 'Smith@home')
+      expect(user).not_to be_valid
+      expect(user.errors[:last_name]).to include('is invalid')
+    end
+
+    it 'is valid when nil' do
+      user = build(:user, last_name: nil)
+      expect(user).to be_valid
+    end
+
+    it 'is valid when blank' do
+      user = build(:user, last_name: '')
+      expect(user).to be_valid
     end
   end
 end
