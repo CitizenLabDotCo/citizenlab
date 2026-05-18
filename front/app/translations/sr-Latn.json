@@ -1420,7 +1420,6 @@
   "app.containers.IdeaButton.takeTheSurvey": "Popunite upitnik",
   "app.containers.IdeaButton.verificationLinkText": "Potvrdite svoj identitet.",
   "app.containers.IdeaCard.readMore": "Опширније",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nema komentara} one {1 komentar} other {# komentara}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}",
   "app.containers.IdeaCards.a11y_closeFilterPanel": "Close filters panel",
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno unosa: {ideasCount}",

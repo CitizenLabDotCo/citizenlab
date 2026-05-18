@@ -7224,6 +7224,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:40:31.289747Z",
+    "verified_by": "Roger"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",

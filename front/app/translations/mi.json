@@ -413,7 +413,6 @@
   "app.containers.IdeaButton.signUpLinkText": "waitohu",
   "app.containers.IdeaButton.submitYourIdea": "Submit your idea",
   "app.containers.IdeaButton.verificationLinkText": "Verify your identity now.",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}",
   "app.containers.IdeaCards.a11y_totalItems": "Total posts: {ideasCount}",
   "app.containers.IdeaCards.all": "All",
   "app.containers.IdeaCards.list": "List",
