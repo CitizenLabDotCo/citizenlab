@@ -1169,6 +1169,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-18T14:49:35.872284Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
