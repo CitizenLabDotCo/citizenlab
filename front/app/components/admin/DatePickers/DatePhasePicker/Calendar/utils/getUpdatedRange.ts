@@ -1,4 +1,4 @@
-import { addDays, isSameDay } from 'date-fns';
+import { addDays, isSameDay, startOfDay } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -90,6 +90,10 @@ const rangeOverlapsWithDisabledRange = (
   disabledRanges: ClosedDateRange[]
 ) => {
   return disabledRanges.some((disabledRange) => {
-    return range.from <= disabledRange.to && range.to >= disabledRange.from;
+    const rangeFromDay = startOfDay(range.from);
+    const rangeToDay = startOfDay(range.to);
+    const disabledFromDay = startOfDay(disabledRange.from);
+    const disabledToDay = startOfDay(disabledRange.to);
+    return rangeFromDay < disabledToDay && rangeToDay > disabledFromDay;
   });
 };

@@ -94,6 +94,7 @@ ur-PK:
         project_published: پروجیکٹ شائع ہوا۔
         project_review_request: ماڈریٹر نے پروجیکٹ کے جائزے کی درخواست کی۔
         project_review_state_change: جائزہ لینے والے نے منصوبے کی منظوری دے دی۔
+        proposal_expired: حد تک پہنچے بغیر ایک تجویز کی میعاد ختم ہو جاتی ہے
         proposal_gets_reported_as_spam: تجویز کو اسپام کے طور پر رپورٹ کیا جاتا ہے۔
         proposal_is_assigned_to_admin: تجویز ایڈمن کو سونپی گئی ہے۔
         proposal_is_published: تجویز شائع کی گئی ہے۔
@@ -188,6 +189,7 @@ ur-PK:
       project_published: پروجیکٹ شائع ہوا۔
       project_review_request: پروجیکٹ کا جائزہ لینے کی درخواست
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
+      proposal_expired_for_admin: ووٹنگ کی حد تک پہنچے بغیر تجویز کی میعاد ختم ہو گئی
       screening_digest: ہفتہ وار اسکریننگ کی یاد دہانی
       space_moderation_rights_received: اسپیس مینیجر کے اختیارات موصول ہو گئے
       status_change_on_idea_you_follow: کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
@@ -591,6 +593,11 @@ ur-PK:
       preheader: '%{reviewerName} نے پروجیکٹ کی منظوری دے دی "%{projectTitle}"'
       subject: '"%{projectTitle}" کو منظور کر لیا گیا ہے۔'
       title: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: میعاد ختم ہونے والے ان پٹ کا جائزہ لیں
+      preheader: حد تک پہنچے بغیر ایک ان پٹ کی میعاد ختم ہو گئی
+      subject: '"%{input_title}" حد تک پہنچے بغیر ایکسپائر ہو گیا'
+      title: ووٹنگ کی حد تک پہنچے بغیر ایک ان پٹ کی میعاد ختم ہو گئی
     schedules:
       quarterly: سہ ماہی، سہ ماہی کے پہلے دن
       weekly:

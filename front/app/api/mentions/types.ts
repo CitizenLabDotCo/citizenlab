@@ -5,7 +5,6 @@ import { Keys } from 'utils/cl-react-query/types';
 import mentionsKeys from './keys';
 
 export type MentionsKeys = Keys<typeof mentionsKeys>;
-
 export type IQueryParameters = {
   mention: string;
   idea_id?: string;
@@ -18,7 +17,6 @@ export interface IMentionData {
   attributes: {
     first_name: string;
     last_name: string;
-    slug: string;
     avatar: ImageSizes;
   };
 }

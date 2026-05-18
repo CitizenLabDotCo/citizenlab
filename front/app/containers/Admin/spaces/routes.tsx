@@ -1,70 +1,71 @@
 import React, { lazy } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Outlet } from 'utils/router';
+
+import { adminRoute } from '../routes';
 
 const NewSpace = lazy(() => import('./NewSpace'));
 const EditSpace = lazy(() => import('./EditSpace'));
 const ProjectsAndFolders = lazy(() => import('./EditSpace/ProjectsAndFolders'));
 const Settings = lazy(() => import('./EditSpace/Settings'));
 
-export enum spacesRoutes {
-  spaces = 'projects/spaces',
-  new = 'new',
-  spaceId = ':spaceId',
-  settings = 'settings',
-}
-
-export type spaceRouteTypes =
-  | AdminRoute<spacesRoutes.spaces>
-  | AdminRoute<`${spacesRoutes.spaces}/${spacesRoutes.new}`>
-  | AdminRoute<`${spacesRoutes.spaces}/${string}`>
-  | AdminRoute<`${spacesRoutes.spaces}/${string}/${spacesRoutes.settings}`>;
-
-export default () => ({
-  path: spacesRoutes.spaces,
-  element: (
+const spacesRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'projects/spaces',
+  component: () => (
     <PageLoading>
-      <RouterOutlet />
+      <Outlet />
     </PageLoading>
   ),
-  children: [
-    {
-      path: spacesRoutes.new,
-      element: (
-        <PageLoading>
-          <NewSpace />
-        </PageLoading>
-      ),
-    },
-    {
-      path: spacesRoutes.spaceId,
-      element: (
-        <PageLoading>
-          <EditSpace />
-        </PageLoading>
-      ),
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <ProjectsAndFolders />
-            </PageLoading>
-          ),
-        },
-        {
-          path: spacesRoutes.settings,
-          element: (
-            <PageLoading>
-              <Settings />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-  ],
 });
+
+const newSpaceRoute = createRoute({
+  getParentRoute: () => spacesRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <NewSpace />
+    </PageLoading>
+  ),
+});
+
+const editSpaceRoute = createRoute({
+  getParentRoute: () => spacesRoute,
+  path: '$spaceId',
+  component: () => (
+    <PageLoading>
+      <EditSpace />
+    </PageLoading>
+  ),
+});
+
+const editSpaceIndexRoute = createRoute({
+  getParentRoute: () => editSpaceRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <ProjectsAndFolders />
+    </PageLoading>
+  ),
+});
+
+const editSpaceSettingsRoute = createRoute({
+  getParentRoute: () => editSpaceRoute,
+  path: 'settings',
+  component: () => (
+    <PageLoading>
+      <Settings />
+    </PageLoading>
+  ),
+});
+
+const createAdminSpacesRoutes = () => {
+  return spacesRoute.addChildren([
+    newSpaceRoute,
+    editSpaceRoute.addChildren([editSpaceIndexRoute, editSpaceSettingsRoute]),
+  ]);
+};
+
+export default createAdminSpacesRoutes;

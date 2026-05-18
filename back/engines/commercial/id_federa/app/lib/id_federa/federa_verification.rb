@@ -17,7 +17,7 @@ module IdFedera
     end
 
     def config_parameters
-      %i[environment spid_level private_key enabled_for_verified_actions]
+      %i[environment spid_level certificate private_key enabled_for_verified_actions]
     end
 
     def config_parameters_schema
@@ -37,6 +37,11 @@ module IdFedera
           enum: %w[1 2 3],
           default: '1',
           private: true
+        },
+        certificate: {
+          private: true,
+          type: 'string',
+          description: 'SP X.509 certificate for inclusion in SP metadata. Should start with "-----BEGIN CERTIFICATE-----". Must correspond to the private key.'
         },
         private_key: {
           private: true,

@@ -105,6 +105,7 @@ const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
               filterValue={value}
               predicate={predicate}
               isEditable={isEditable}
+              analysisId={analysisId}
             />
           );
         } else if (subject === 'author') {

@@ -15,8 +15,8 @@ class ProjectsFinderService
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
   def participation_possible
     subquery = @projects
-      .not_in_draft_folder # This includes a LEFT OUTER JOIN with admin_publications
-      .where(admin_publications: { publication_status: 'published' })
+      .not_in_draft_folder
+      .where(admin_publication: AdminPublication.published)
 
     # Projects with active participatory (not information) phase & include the phases.end_at column
     subquery = projects_with_active_phase(subquery)
@@ -143,38 +143,28 @@ class ProjectsFinderService
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
-  # => [Project]
+  # @return [Project::ActiveRecord_Relation]
   def finished_or_archived
-    base_scope = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .joins('INNER JOIN phases ON phases.project_id = projects.id')
-      .not_in_draft_folder
+    return @projects unless @filter_by.in? %w[finished archived finished_and_archived]
 
-    include_finished = %w[finished finished_and_archived].include?(@filter_by)
-    include_archived = %w[archived finished_and_archived].include?(@filter_by)
+    result = @projects.none
+    base_scope = @projects.joins(:phases).not_in_draft_folder
 
-    if include_finished
-      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-      finished_scope = joins_last_phases_with_reports(finished_scope)
-        .where(
-          '(last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true))' \
-          "AND admin_publications.publication_status = 'published'",
-          Time.zone.now
-        )
+    if @filter_by.in? %w[finished finished_and_archived]
+      published_scope = base_scope.where(admin_publication: AdminPublication.published)
+      finished_scope = joins_last_phases_with_reports(published_scope).where(<<~SQL.squish, Time.zone.now)
+        last_phases.last_phase_end_at <= ? OR (reports.id IS NOT NULL AND reports.visible = true)
+      SQL
+      result = result.or(finished_scope)
     end
 
-    if include_archived
-      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+    if @filter_by.in? %w[archived finished_and_archived]
+      archived_scope = base_scope.where(admin_publication: AdminPublication.archived)
       archived_scope = joins_last_phases_with_reports(archived_scope)
+      result = result.or(archived_scope)
     end
 
-    if include_finished && include_archived
-      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
-    end
-
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
-
-    order_by_created_at_and_id_with_distinct_on(archived_scope)
+    order_by_created_at_and_id_with_distinct_on(result)
   end
 
   private

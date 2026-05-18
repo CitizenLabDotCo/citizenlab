@@ -95,7 +95,7 @@ class Project < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
-  has_one :admin_publication, as: :publication, dependent: :destroy
+  has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
   after_destroy :remove_moderators
@@ -133,7 +133,11 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_global_topics, (proc do |topic_ids|
-    joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
+    with_dups =
+      joins(:projects_global_topics)
+      .where(projects_global_topics: { global_topic_id: topic_ids })
+
+    where(id: with_dups)
   end)
 
   scope :ordered, lambda {
@@ -141,15 +145,36 @@ class Project < ApplicationRecord
   }
 
   scope :draft, lambda {
-    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+    draft_admin_pubs = AdminPublication.draft.where(publication_type: 'Project')
+    where(id: draft_admin_pubs.select(:publication_id))
   }
 
-  scope :not_draft, lambda {
-    where.not(id: draft)
+  scope :not_draft, -> { where.not(id: draft) }
+  scope :publicly_visible, -> { where(visible_to: 'public') }
+
+  scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
+
+  scope :newest, -> { order(created_at: :desc) }
+
+  scope :ending_soon, lambda {
+    joins(<<~SQL.squish)
+      INNER JOIN LATERAL (
+        SELECT phases.end_at AS current_phase_end_at
+        FROM phases
+        WHERE phases.project_id = projects.id
+          AND phases.start_at <= #{connection.quote(Time.zone.now)}
+          AND (phases.end_at >= #{connection.quote(Time.zone.now)} OR phases.end_at IS NULL)
+        ORDER BY phases.end_at ASC NULLS LAST
+        LIMIT 1
+      ) AS current_phase ON true
+    SQL
+      .order('current_phase.current_phase_end_at ASC NULLS LAST')
   }
 
-  scope :publicly_visible, lambda {
-    where(visible_to: 'public')
+  scope :by_participation_count, lambda { |direction = :desc|
+    dir = direction.to_s.upcase == 'ASC' ? 'ASC' : 'DESC'
+    with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{dir}, projects.id ASC"))
   }
 
   scope :user_groups_visible, lambda { |user|
@@ -159,9 +184,13 @@ class Project < ApplicationRecord
   }
 
   scope :not_in_draft_folder, lambda {
-    joins(:admin_publication)
-      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
-      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+    draft_folders = AdminPublication.draft.where(children_allowed: true)
+
+    joined = joins(:admin_publication)
+    top_level = joined.where(admin_publications: { parent_id: nil })
+    in_folder = joined.where.not(admin_publications: { parent_id: draft_folders })
+
+    top_level.or(in_folder)
   }
 
   scope :with_participation_count, lambda {

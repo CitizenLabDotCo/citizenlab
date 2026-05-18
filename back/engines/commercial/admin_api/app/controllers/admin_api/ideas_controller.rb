@@ -9,7 +9,9 @@ module AdminApi
         .published
 
       ideas = sort_ideas(ideas)
-      ideas = ideas.with_some_input_topics(InputTopic.where(id: params[:topics])) if params[:topics].present?
+      if params[:topics].present?
+        ideas = ideas.where(id: IdeasInputTopic.where(input_topic_id: params[:topics]).select(:idea_id))
+      end
       ideas = ideas.where(project_id: params[:projects]) if params[:projects].present?
       ideas = ideas.limit(params[:limit]&.to_i || 5)
 

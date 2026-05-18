@@ -11,11 +11,11 @@ class StatIdeaPolicy < ApplicationPolicy
     private
 
     def resolve_for_active
-      user.admin? ? scope.all : resolve_for_project_moderator
+      user.admin? ? scope.all : resolve_for_moderator
     end
 
-    def resolve_for_project_moderator
-      return scope.none unless user.project_moderator?
+    def resolve_for_moderator
+      return scope.none unless user.moderator?
 
       projects = ::UserRoleService.new.moderatable_projects user
       scope.where(project: projects)
@@ -47,6 +47,6 @@ class StatIdeaPolicy < ApplicationPolicy
   end
 
   def show_stats_to_active?
-    admin? || user.project_moderator?
+    admin? || user.moderator?
   end
 end

@@ -2,37 +2,86 @@
 
 require 'rails_helper'
 
-RSpec.describe StatReactionPolicy do
+describe StatReactionPolicy do
+  subject { described_class.new(user, nil) }
+
   let(:scope) { described_class::Scope.new(user, Reaction) }
 
-  let_it_be(:liked_idea) { create(:idea) }
-  let_it_be(:reactions) do
-    [
-      create_list(:reaction, 2, reactable: liked_idea),
-      create(:dislike),
-      create(:comment_reaction)
-    ].flatten
+  let!(:space) { create(:space) }
+  let!(:project) { create(:single_phase_ideation_project, space: space) }
+  let!(:folder) { create(:project_folder, projects: [project], space: space) }
+  let!(:idea) { create(:idea, project: project, phases: project.phases) }
+  let!(:idea_reaction) { create(:reaction, reactable: idea) }
+  let!(:other_idea_reaction) { create(:reaction) }
+  let!(:comment_reaction) { create(:comment_reaction) }
+
+  shared_examples 'is denied stats access' do
+    it { is_expected.not_to permit(:reactions_count) }
+    it { is_expected.not_to permit(:reactions_by_topic) }
+    it { is_expected.not_to permit(:reactions_by_project) }
+    it { is_expected.not_to permit(:reactions_by_topic_as_xlsx) }
+    it { is_expected.not_to permit(:reactions_by_project_as_xlsx) }
   end
 
-  context 'for an admin' do
-    let(:user) { create(:admin) }
-
-    it { expect(scope.resolve.count).to eq(reactions.count) }
+  shared_examples 'is granted stats access' do
+    it { is_expected.to permit(:reactions_count) }
+    it { is_expected.to permit(:reactions_by_topic) }
+    it { is_expected.to permit(:reactions_by_project) }
+    it { is_expected.to permit(:reactions_by_topic_as_xlsx) }
+    it { is_expected.to permit(:reactions_by_project_as_xlsx) }
   end
 
-  context 'for a resident' do
-    let(:user) { create(:user) }
+  shared_examples 'sees the reaction in the moderated project' do
+    include_examples 'is granted stats access'
 
-    it { expect(scope.resolve).to be_empty }
+    it 'includes the reaction on the moderated idea' do
+      expect(scope.resolve).to include(idea_reaction)
+    end
+
+    it 'excludes reactions outside the moderated projects' do
+      expect(scope.resolve).not_to include(other_idea_reaction, comment_reaction)
+    end
+  end
+
+  shared_examples 'does not see the reaction outside their moderation' do
+    include_examples 'is granted stats access'
+
+    it 'excludes the reaction on the unmoderated idea' do
+      expect(scope.resolve).not_to include(idea_reaction)
+    end
   end
 
   context 'for a visitor' do
     let(:user) { nil }
 
-    it { expect(scope.resolve).to be_empty }
+    it_behaves_like 'is denied stats access'
+
+    it 'returns no reactions in scope' do
+      expect(scope.resolve).to be_empty
+    end
   end
 
-  context 'for an admin who is also project moderator' do
+  context 'for a resident' do
+    let(:user) { create(:user) }
+
+    it_behaves_like 'is denied stats access'
+
+    it 'returns no reactions in scope' do
+      expect(scope.resolve).to be_empty
+    end
+  end
+
+  context 'for an admin' do
+    let(:user) { create(:admin) }
+
+    it_behaves_like 'is granted stats access'
+
+    it 'returns all reactions in scope' do
+      expect(scope.resolve).to contain_exactly(idea_reaction, other_idea_reaction, comment_reaction)
+    end
+  end
+
+  context 'for an admin who is also a project moderator' do
     let(:user) do
       create(:project_moderator).tap do |user|
         user.roles << { type: 'admin' }
@@ -40,12 +89,46 @@ RSpec.describe StatReactionPolicy do
       end
     end
 
-    it { expect(scope.resolve.count).to eq(reactions.count) }
+    it_behaves_like 'is granted stats access'
+
+    it 'returns all reactions in scope' do
+      expect(scope.resolve).to contain_exactly(idea_reaction, other_idea_reaction, comment_reaction)
+    end
   end
 
-  context 'for a project moderator' do
-    let(:user) { create(:project_moderator, project_ids: [liked_idea.project_id]) }
+  context 'for a project moderator who can moderate' do
+    let(:user) { create(:project_moderator, projects: [project]) }
 
-    it { expect(scope.resolve.count).to eq(2) }
+    it_behaves_like 'sees the reaction in the moderated project'
+  end
+
+  context 'for a project moderator who cannot moderate' do
+    let(:user) { create(:project_moderator) }
+
+    it_behaves_like 'does not see the reaction outside their moderation'
+  end
+
+  context 'for a folder moderator who can moderate' do
+    let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+    it_behaves_like 'sees the reaction in the moderated project'
+  end
+
+  context 'for a folder moderator who cannot moderate' do
+    let(:user) { create(:project_folder_moderator) }
+
+    it_behaves_like 'does not see the reaction outside their moderation'
+  end
+
+  context 'for a space moderator who can moderate' do
+    let(:user) { create(:space_moderator, spaces: [space]) }
+
+    it_behaves_like 'sees the reaction in the moderated project'
+  end
+
+  context 'for a space moderator who cannot moderate' do
+    let(:user) { create(:space_moderator) }
+
+    it_behaves_like 'does not see the reaction outside their moderation'
   end
 end

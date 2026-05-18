@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# NOTE: Apr 2026 - Slug is still generated for users but no longer used in the codebase.
+# It will be removed in the near future when we are sure there is no further use for it.
 class UserSlugService
   def generate_slug(user, string)
     return SecureRandom.uuid if abbreviated_user_names? || string == ''

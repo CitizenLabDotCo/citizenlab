@@ -496,6 +496,26 @@ resource 'Comments' do
           end
         end
       end
+
+      describe 'profanity blocking on update' do
+        before { SettingsService.new.activate_feature! 'blocking_profanity' }
+
+        context 'author toggles anonymous on a comment whose stored body contains a blocked word' do
+          let(:allow_anonymous_participation) { true }
+          let(:comment) do
+            create(:comment, author: @user, idea: @idea, body_multiloc: { 'nl-BE' => 'Wat een mietje.' })
+          end
+          let(:body_multiloc) { comment.body_multiloc }
+          let(:anonymous) { true }
+
+          before { @idea.project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
+
+          example_request 'succeeds — unchanged body_multiloc is not re-validated' do
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+          end
+        end
+      end
     end
 
     ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)

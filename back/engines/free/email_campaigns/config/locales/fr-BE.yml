@@ -94,6 +94,7 @@ fr-BE:
         project_published: Publication d'un projet
         project_review_request: Demande d'approbation pour publier un projet
         project_review_state_change: Le projet a été approuvé
+        proposal_expired: Une proposition expire sans atteindre le seuil
         proposal_gets_reported_as_spam: Proposition marquée comme spam
         proposal_is_assigned_to_admin: Une proposition est assignée à un administrateur
         proposal_is_published: Une proposition est publiée
@@ -190,6 +191,7 @@ fr-BE:
       project_published: Projet publié
       project_review_request: Demande de révision d'un projet
       project_review_state_change: Projet approuvé
+      proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
       screening_digest: Rappel hebdomadaire de modération
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
       status_change_on_idea_you_follow: Changement de statut d'une idée que vous suivez
@@ -593,6 +595,11 @@ fr-BE:
       preheader: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
       subject: '"%{projectTitle}" a été approuvé'
       title: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
+    proposal_expired_for_admin:
+      cta_button: Consulter la contribution expirée
+      preheader: Une contribution a expiré sans atteindre le seuil
+      subject: '"%{input_title}" a expiré sans atteindre le seuil'
+      title: Une contribution a expiré sans atteindre le seuil de vote
     schedules:
       quarterly: Le premier jour de chaque trimestre
       weekly:

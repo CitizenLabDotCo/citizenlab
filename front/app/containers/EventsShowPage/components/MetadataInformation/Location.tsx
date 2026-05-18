@@ -6,19 +6,22 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
+import messages from 'components/EventCards/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-const LocationMap = lazy(() => import('./LocationMap'));
-
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
+
+const LocationMap = lazy(() => import('./LocationMap'));
 
 export interface Props {
   event: IEventData | null;
 }
 
 const Location = ({ event }: Props) => {
+  const { formatMessage } = useIntl();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
@@ -37,7 +40,11 @@ const Location = ({ event }: Props) => {
   if (address1) {
     return (
       <Container>
-        <StyledIcon name="position" ariaHidden />
+        <StyledIcon
+          name="position"
+          title={formatMessage(messages.locationIconAltText)}
+          ariaHidden={false}
+        />
         <Content>
           {position ? (
             <Box display="flex">

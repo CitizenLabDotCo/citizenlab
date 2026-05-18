@@ -42,7 +42,7 @@ const TimeIndicator = ({
     );
   }
 
-  if (projectStartsInDays) {
+  if (projectStartsInDays !== null) {
     if (projectStartsInDays > 13) {
       const weeks = Math.floor(projectStartsInDays / 7);
       return (
@@ -67,7 +67,7 @@ const TimeIndicator = ({
     );
   }
 
-  if (projectEndedDaysAgo) {
+  if (projectEndedDaysAgo !== null) {
     if (projectEndedDaysAgo > 13) {
       const weeks = Math.floor(projectEndedDaysAgo / 7);
       return (

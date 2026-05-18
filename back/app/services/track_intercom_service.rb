@@ -32,7 +32,7 @@ class TrackIntercomService
   def track_user?(user)
     return false if user.super_admin?
 
-    user.admin? || user.project_moderator?
+    UserRoleService.new.moderates_something?(user)
   end
 
   def identify_tenant(tenant)
@@ -80,6 +80,8 @@ class TrackIntercomService
       isAdmin: user.admin?,
       isSuperAdmin: user.super_admin?,
       isProjectModerator: user.project_moderator?,
+      isProjectFolderModerator: user.project_folder_moderator?,
+      isSpaceModerator: user.space_moderator?,
       highestRole: user.highest_role.to_s
     }
   end

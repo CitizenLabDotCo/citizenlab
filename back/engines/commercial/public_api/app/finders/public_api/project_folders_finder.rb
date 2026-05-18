@@ -10,9 +10,7 @@ module PublicApi
     def execute
       return @scope unless @publication_status
 
-      @scope
-        .joins(:admin_publication)
-        .where(admin_publications: { publication_status: @publication_status })
+      @scope.where(admin_publication: AdminPublication.with_status(@publication_status))
     end
   end
 end

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -19,6 +18,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -34,8 +34,8 @@ type DescriptionBuilderTopBarProps = {
   }) => void;
   contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
-  backPath: RouteType;
-  previewPath: RouteType;
+  backPath: string;
+  previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
 };
 
@@ -49,7 +49,7 @@ const DescriptionBuilderTopBar = ({
   contentBuildableId,
   contentBuildableType,
   backPath,
-  previewPath,
+  previewLink,
   titleMultiloc,
 }: DescriptionBuilderTopBarProps) => {
   const { query } = useEditor();
@@ -116,7 +116,7 @@ const DescriptionBuilderTopBar = ({
           ml="32px"
           disabled={!titleMultiloc}
           openLinkInNewTab
-          linkTo={previewPath}
+          {...previewLink}
         />
         <SaveButton
           isDisabled={disableSave}

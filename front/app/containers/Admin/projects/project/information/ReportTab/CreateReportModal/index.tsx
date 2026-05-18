@@ -8,7 +8,6 @@ import {
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -92,7 +91,7 @@ const CreateReportModal = ({
             template === 'phase' && templatePhaseId
               ? `?templatePhaseId=${templatePhaseId}`
               : '';
-          const url = `${path}${params}` as RouteType;
+          const url = `${path}${params}`;
 
           clHistory.push(url);
         },

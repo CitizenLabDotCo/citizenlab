@@ -6,8 +6,6 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -21,6 +19,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearch } from 'utils/router';
 
 import Body from './Body';
 import CardImage from './CardImage';
@@ -89,8 +88,8 @@ const IdeaCard = ({
       setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
   }, [ideaTitle]);
-  const [searchParams] = useSearchParams();
-  const scrollToCardParam = searchParams.get('scroll_to_card');
+  const searchParams = useSearch({ strict: false });
+  const scrollToCardParam = searchParams.scroll_to_card;
 
   // Scroll to this card if it matches the scroll_to_card search param
   const shouldScrollToCard =
@@ -110,7 +109,7 @@ const IdeaCard = ({
     if (phaseId) {
       ideaUrl += `&phase_context=${phaseId}`;
     }
-    clHistory.push(ideaUrl as RouteType, {
+    clHistory.push(ideaUrl, {
       scrollToTop: true,
     });
   };
@@ -146,7 +145,12 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+          <Link
+            to="/ideas/$slug"
+            params={{ slug }}
+            search={{ go_back: 'true' }}
+            onClick={handleClick}
+          >
             <Tooltip
               content={ideaTitle}
               disabled={!isTitleClamped}

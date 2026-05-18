@@ -39,6 +39,12 @@ const Tab = styled.button<{ active: boolean; fullWidth: boolean }>`
       cursor: pointer;
     `}
 
+  &.focus-visible,
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
+    outline-offset: -2px;
+  }
+
   ${media.phone`
     font-size: ${fontSizes.base}px;
     padding: 14px 9px 14px;

@@ -49,7 +49,6 @@ import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
 import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
-import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
@@ -57,6 +56,7 @@ import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotificatio
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import ProjectReviewRequestNotification from '../ProjectReviewRequestNotification';
 import ProjectReviewStateChangeNotification from '../ProjectReviewStateChangeNotification';
+import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';

@@ -9,8 +9,6 @@ import {
   ClickOutside,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -28,6 +26,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -47,12 +46,13 @@ const TruncatedTitle = styled(Title)`
 const TopBar = () => {
   const [showLaunchModal, setShowLaunchModal] = useState(false);
   const { data: authUser } = useAuthUser();
-  const [urlParams] = useSearchParams();
-  const phaseId = urlParams.get('phase_id') || undefined;
-  const { projectId, analysisId } = useParams() as {
-    projectId: string;
-    analysisId: string;
-  };
+  const urlParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
+  const phaseId = urlParams.phase_id || undefined;
+  const { projectId, analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const cookieName =
     authUser &&
@@ -67,7 +67,7 @@ const TopBar = () => {
     }
   }, [cookieName, analysisId]);
 
-  const resetFilters = urlParams.get('reset_filters') === 'true';
+  const resetFilters = urlParams.reset_filters === 'true';
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -87,7 +87,7 @@ const TopBar = () => {
   const { formatMessage } = useIntl();
 
   const goBack = () => {
-    const fromInsights = urlParams.get('from') === 'insights';
+    const fromInsights = urlParams.from === 'insights';
     const participationMethod = analysis?.data.attributes.participation_method;
 
     if (participationMethod === 'community_monitor_survey') {
@@ -160,10 +160,10 @@ const TopBar = () => {
         <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
-            key={urlParams.get('reset_filters')}
+            key={urlParams.reset_filters}
             onChange={handleSearch}
             // TODO: add a11y number of search results
-            defaultValue={urlParams.get('search') || ''}
+            defaultValue={urlParams.search || ''}
             a11y_numberOfSearchResults={0}
           />
         </Box>
@@ -172,7 +172,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink2) as RouteType}
+          linkTo={formatMessage(messages.supportArticleLink2)}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}

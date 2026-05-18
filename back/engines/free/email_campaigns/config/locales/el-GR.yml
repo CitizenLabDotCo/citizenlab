@@ -94,6 +94,7 @@ el-GR:
         project_published: Δημοσιευμένο έργο
         project_review_request: Ο συντονιστής ζήτησε επανεξέταση του έργου
         project_review_state_change: Ο κριτής ενέκρινε το έργο
+        proposal_expired: Μια πρόταση λήγει χωρίς να συμπληρώσει το όριο
         proposal_gets_reported_as_spam: Η πρόταση αναφέρεται ως spam
         proposal_is_assigned_to_admin: Η πρόταση ανατίθεται στον admin
         proposal_is_published: Η πρόταση δημοσιεύεται
@@ -188,6 +189,7 @@ el-GR:
       project_published: Δημοσιευμένο έργο
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
+      proposal_expired_for_admin: Η πρόταση έληξε χωρίς να συμπληρώσει το όριο ψήφων
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
       space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
@@ -591,6 +593,11 @@ el-GR:
       preheader: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
       subject: '"%{projectTitle}" έχει εγκριθεί'
       title: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Ελέγξτε τη συμμετοχή που έληξε
+      preheader: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο
+      subject: Το "%{input_title}" έληξε χωρίς να συμπληρώσει το όριο
+      title: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο ψήφων
     schedules:
       quarterly: Τριμηνιαία, την πρώτη ημέρα του τριμήνου
       weekly:
