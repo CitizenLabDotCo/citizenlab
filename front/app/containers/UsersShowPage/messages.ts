@@ -125,4 +125,8 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.surveyResponses',
     defaultMessage: 'Responses ({responses})',
   },
+  showMoreActionsRelatedToUser: {
+    id: 'app.containers.UsersShowPage.showMoreActionsRelatedToUser',
+    defaultMessage: 'Show more actions related to this user',
+  },
 });

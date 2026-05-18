@@ -140,6 +140,7 @@ const UserHeader = ({ userId }: Props) => {
           {isCurrentUserAdmin && canBlock && (
             <MoreActionsMenu
               showLabel={false}
+              ariaLabel={formatMessage(messages.showMoreActionsRelatedToUser)}
               actions={userBlockingRelatedActions}
             />
           )}
