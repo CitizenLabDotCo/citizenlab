@@ -1817,7 +1817,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.ChartWidgetSettings.showActiveStats": "Aktive Nutzer*innen anzeigen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.InternalAdoptionCaption": "Datentabelle zur internen Akzeptanz mit Datum, aktiven Admins, aktiven Moderierenden und insgesamt aktiven Nutzenden",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeAdminColumn": "Aktive Admins",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeModeratorColumn": "Aktive Moderierende",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeModeratorColumn": "Aktive Projektmanager*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.dateColumn": "Datum",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.totalActiveColumn": "Insgesamt aktiv",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": "Archiviert",
