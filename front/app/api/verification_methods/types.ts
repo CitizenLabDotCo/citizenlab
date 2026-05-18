@@ -178,5 +178,6 @@ export type TVerificationMethod =
   | IDCriiptoMethod
   | IDKeycloakMethod
   | IDTwodayMethod
+  | IDAcmMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
