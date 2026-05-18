@@ -542,7 +542,6 @@
   "app.containers.IdeaButton.submitYourIdea": "Trimite-ți ideea",
   "app.containers.IdeaButton.takeTheSurvey": "Completează chestionarul",
   "app.containers.IdeaButton.verificationLinkText": "Confirmați-vă identitatea acum.",
-  "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}",
   "app.containers.IdeaCards.a11y_totalItems": "Total postări: {ideasCount}",
   "app.containers.IdeaCards.all": "Toate",
   "app.containers.IdeaCards.list": "Listă",

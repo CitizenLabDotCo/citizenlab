@@ -1,4 +1,9 @@
 {
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-18T09:20:44.936951Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "EmailSettingsPage.emailSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -613,6 +618,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-18T10:00:12.018242Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
@@ -3173,6 +3183,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-18T09:27:01.539602Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7223,6 +7238,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-18T09:24:07.194868Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
@@ -12054,6 +12074,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-18T10:00:12.018242Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -12193,6 +12218,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T10:00:12.018242Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T10:00:12.018242Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.errors.invalid_row": {
     "state": "verified",

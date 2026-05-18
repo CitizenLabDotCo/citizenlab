@@ -614,6 +614,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -1124,6 +1129,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T10:11:13.163981Z",
+    "verified_by": "Jelena"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -1338,6 +1348,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T14:40:57.957104Z",
+    "verified_by": "Jelena"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -3173,6 +3188,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:10:36.086469Z",
+    "verified_by": "Jelena"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7223,6 +7243,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-06T12:48:50.513291Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
@@ -11689,6 +11714,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12049,6 +12079,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12188,6 +12223,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
   },
   "app.errors.invalid_row": {
     "state": "verified",
@@ -13248,6 +13293,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:12:08.658146Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": {
     "state": "verified",

@@ -1129,6 +1129,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:17:25.765619Z",
+    "verified_by": "Roger"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -3173,6 +3178,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:41:04.701029Z",
+    "verified_by": "Roger"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7223,6 +7233,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:40:31.289747Z",
+    "verified_by": "Roger"
   },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
