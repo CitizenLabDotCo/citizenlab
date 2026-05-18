@@ -620,7 +620,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
-    date (3.4.1)
+    date (3.5.1)
     debug (1.11.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
@@ -868,7 +868,7 @@ GEM
       activerecord (>= 7)
     net-http (0.6.0)
       uri
-    net-imap (0.5.7)
+    net-imap (0.5.14)
       date
       net-protocol
     net-pop (0.1.2)
@@ -1273,7 +1273,7 @@ GEM
     tiktoken_ruby (0.0.12-arm64-darwin)
     tiktoken_ruby (0.0.12-x86_64-darwin)
     tiktoken_ruby (0.0.12-x86_64-linux)
-    timeout (0.4.4)
+    timeout (0.6.1)
     tomlrb (2.0.3)
     trailblazer-option (0.1.2)
     tsort (0.2.0)

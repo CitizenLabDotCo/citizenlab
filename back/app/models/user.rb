@@ -186,6 +186,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true

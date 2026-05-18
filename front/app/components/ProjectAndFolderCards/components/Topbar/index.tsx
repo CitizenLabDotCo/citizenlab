@@ -221,6 +221,7 @@ const Header = ({
           a11y_searchQuery={searchTerm ?? ''}
           a11y_filtersAppliedCount={filtersAppliedCount}
           setInputRef={handleSetSearchInputRef}
+          placeholder={formatMessage(messages.searchProjectsAndFolders)}
         />
       )}
 
