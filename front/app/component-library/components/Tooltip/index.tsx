@@ -67,7 +67,6 @@ const Tooltip = ({
   // Ignores activeElement === null (transient state from the document-level
   // handleOutsideClick) to avoid interfering with click-based toggling.
   useEffect(() => {
-    console.log(activeElement);
     const tooltip = document.getElementById(tooltipId.current);
     const tooltipContent = document.querySelector('.tippy-content');
     if (tooltip && tooltip.contains(activeElement)) {
