@@ -9,6 +9,8 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import SpamReportForm from 'containers/SpamReport';
 
 import Modal from 'components/UI/Modal';
@@ -22,6 +24,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
+
+import messages2 from './messages';
 
 const Container = styled.div``;
 
@@ -38,6 +42,7 @@ interface Props {
 
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const [isSpamModalVisible, setIsSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
@@ -115,9 +120,14 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           <MoreActionsMenuWrapper>
             <MoreActionsMenu
               id="e2e-idea-more-actions"
-              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
               showLabel={false}
               actions={actions}
+              ariaLabel={formatMessage(
+                messages2.showMoreActionsRelatedToInput,
+                {
+                  inputTitle: localize(idea.attributes.title_multiloc),
+                }
+              )}
               ref={moreActionsButtonRef}
             />
           </MoreActionsMenuWrapper>

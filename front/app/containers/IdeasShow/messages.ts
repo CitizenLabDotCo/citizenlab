@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.currentStatus',
     defaultMessage: 'Current status',
   },
-  moreOptions: {
-    id: 'app.components.IdeasShow.moreOptions',
-    defaultMessage: 'More options',
-  },
   reportAsSpam: {
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
