@@ -8249,25 +8249,21 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
@@ -8288,7 +8284,6 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts": {
     "state": "verified",
     "verified_at": "2026-04-24T14:10:48.306999Z",
@@ -8334,7 +8329,6 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress": {
     "state": "verified",
     "verified_at": "2026-04-24T14:10:48.306999Z",
@@ -8415,7 +8409,6 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
     "state": "verified",
     "verified_at": "2026-04-21T09:30:28.058347Z",
@@ -8426,13 +8419,11 @@
     "verified_at": "2026-03-26T08:11:05.718343Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-21T09:30:28.058347Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
@@ -14223,6 +14214,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T08:25:56.781674Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -14786,6 +14782,11 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": {
     "state": "verified",
     "verified_at": "2026-03-30T13:17:43.288594Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-18T10:00:12.083132Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {

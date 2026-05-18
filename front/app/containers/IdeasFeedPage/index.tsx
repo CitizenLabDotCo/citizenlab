@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import AddIdeaButton from './AddIdeaButton';
 import IdeasFeed from './IdeasFeed';
@@ -30,14 +30,16 @@ const PageContainer = styled.div`
 `;
 
 const IdeasFeedPage = () => {
-  const { slug } = useParams() as { slug: string };
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams] = useSearchParams();
-  const selectedTopicId = searchParams.get('topic');
-  const selectedSubtopicId = searchParams.get('subtopic');
-  const phaseId = searchParams.get('phase_id');
-  const initialIdeaId = searchParams.get('initial_idea_id');
-  const sheetOpen = searchParams.get('sheet_open');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedTopicId = searchParams.topic;
+  const selectedSubtopicId = searchParams.subtopic;
+  const phaseId = searchParams.phase_id;
+  const initialIdeaId = searchParams.initial_idea_id;
+  const sheetOpen = searchParams.sheet_open;
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Use subtopic if selected, otherwise use topic
@@ -62,10 +64,10 @@ const IdeasFeedPage = () => {
     // If sheet is open without subtopic -> handled by linkTo (exit to project)
   };
 
-  const getMobileBackLinkTo = (): RouteType | undefined => {
+  const getMobileBackLink = (): TypedLinkProps | undefined => {
     // Only exit to project when sheet is open and no subtopic selected
     if (sheetOpen && !selectedSubtopicId) {
-      return `/projects/${slug}`;
+      return { to: '/projects/$slug', params: { slug } };
     }
     return undefined;
   };
@@ -81,10 +83,8 @@ const IdeasFeedPage = () => {
         {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
-              linkTo={getMobileBackLinkTo()}
-              onClick={
-                getMobileBackLinkTo() ? undefined : handleMobileBackClick
-              }
+              {...getMobileBackLink()}
+              onClick={getMobileBackLink() ? undefined : handleMobileBackClick}
               showGoBackText={false}
               buttonStyle="white"
             />

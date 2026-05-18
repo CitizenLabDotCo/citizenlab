@@ -30,7 +30,6 @@ import Modal from 'components/UI/Modal';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import eventEmitter from 'utils/eventEmitter';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
@@ -38,6 +37,7 @@ import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
+import { useParams } from 'utils/router';
 
 import tracks from '../../tracks';
 import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
@@ -112,9 +112,8 @@ export interface Props {
 
 const noFolderOption = 'NO_FOLDER_OPTION';
 
-const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
+const UseTemplateModal = memo<Props & WrappedComponentProps>(
   ({
-    params,
     intl,
     projectTemplateId,
     opened,
@@ -122,6 +121,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     showGoBackLink,
     close,
   }) => {
+    const params = useParams({ strict: false });
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
@@ -400,4 +400,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(withRouter(UseTemplateModal));
+export default injectIntl(UseTemplateModal);

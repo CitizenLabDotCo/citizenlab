@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -10,6 +9,7 @@ import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposa
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
@@ -24,10 +24,9 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectProposals = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/proposals',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
@@ -49,7 +48,8 @@ const AdminProjectProposals = () => {
           <Box display="flex" gap="8px">
             <ButtonWithLink
               width="auto"
-              linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+              to="/admin/projects/$projectId/phases/$phaseId/input-importer"
+              params={{ projectId, phaseId }}
               icon="page"
               buttonStyle="secondary-outlined"
             >
@@ -59,7 +59,9 @@ const AdminProjectProposals = () => {
               <NewIdeaButton
                 participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
-                linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+                to="/projects/$slug/ideas/new"
+                params={{ slug: project.data.attributes.slug }}
+                search={{ phase_id: phaseId }}
               />
             )}
           </Box>

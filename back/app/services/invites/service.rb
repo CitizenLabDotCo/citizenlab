@@ -150,6 +150,10 @@ class Invites::Service
           add_error(:invalid_email, row: @current_row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:code] == 'zrb-43'
           add_error(:email_banned, row: @current_row, value: error_descriptor[:value], raw_error: e)
+        elsif field == :first_name && error_descriptor[:error] == :invalid
+          add_error(:invalid_first_name, row: @current_row, value: error_descriptor[:value], raw_error: e)
+        elsif field == :last_name && error_descriptor[:error] == :invalid
+          add_error(:invalid_last_name, row: @current_row, value: error_descriptor[:value], raw_error: e)
         # :taken and :taken_by_invite should not happen after 662da0dc85
         # ToDo: remove these two elsif branches and the `ignore` option of `add_error`.
         elsif field == :email && error_descriptor[:error] == :taken

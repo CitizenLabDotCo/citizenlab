@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -18,6 +17,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertToTimeZoneISO, getDateInTimezone } from 'utils/dateUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import { SubmitStateType, ValidationErrors } from '../typings';
@@ -41,7 +41,7 @@ const DateSetup = ({
   setSubmitState,
   setValidationErrors,
 }: Props) => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
   const { data: tenant } = useAppConfiguration();

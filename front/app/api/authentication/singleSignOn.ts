@@ -1,6 +1,5 @@
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
-import { RouteType } from 'routes';
 
 import { AUTH_PATH } from 'containers/App/constants';
 import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
@@ -36,7 +35,7 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 // All are optional as there may be cases the backend does not always return these
 export interface SSOParams {
   sso_flow?: 'signup' | 'signin';
-  sso_pathname?: RouteType;
+  sso_pathname?: string;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
@@ -62,7 +61,7 @@ export const redirectToSSOProvider = (
     );
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
-  localStorage.setItem('auth_path', window.location.pathname as RouteType);
+  localStorage.setItem('auth_path', window.location.pathname);
 
   // Track the SSO click as a pageView
   trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
@@ -79,7 +78,7 @@ function setHref(
 ) {
   const { context } = authenticationData;
 
-  const pathname = window.location.pathname as RouteType;
+  const pathname = window.location.pathname;
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup

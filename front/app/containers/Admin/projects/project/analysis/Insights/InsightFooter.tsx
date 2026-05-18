@@ -91,13 +91,14 @@ const InsightFooter = ({
       >
         <Box display="flex" gap="4px" alignItems="center">
           {largeSummariesAllowed ? (
-            <Icon
-              name="comment"
-              width="12px"
-              height="12px"
-              fill={colors.textPrimary}
-              transform="scaleX(-1)"
-            />
+            <Box style={{ transform: 'scaleX(-1)' }}>
+              <Icon
+                name="comment"
+                width="12px"
+                height="12px"
+                fill={colors.textPrimary}
+              />
+            </Box>
           ) : (
             <Icon name="alert-circle" fill={colors.orange500} />
           )}

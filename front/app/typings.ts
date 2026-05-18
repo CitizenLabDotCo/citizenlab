@@ -1,7 +1,6 @@
 import { MouseEvent, FC } from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { RouteType } from 'routes';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -52,7 +51,7 @@ export interface IRelationship {
 export interface ITab {
   name: string;
   label: React.ReactNode;
-  url: RouteType;
+  url: string;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;

@@ -7,7 +7,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -34,6 +33,7 @@ import {
   getUnnamedLayerTitleMultiloc,
   getGeojsonLayerType,
 } from 'utils/mapUtils/map';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -110,7 +110,7 @@ const getEditableTitleMultiloc = (
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
   ({ mapConfig, mapLayerId, className, onClose, intl: { formatMessage } }) => {
-    const { projectId } = useParams() as { projectId: string };
+    const { projectId } = useParams({ strict: false }) as { projectId: string };
     const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer(projectId);
     const tenantLocales = useAppConfigurationLocales();
 

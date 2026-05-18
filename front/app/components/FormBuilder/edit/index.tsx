@@ -10,8 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import {
   IFlatCreateCustomField,
@@ -36,8 +34,11 @@ import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -66,7 +67,7 @@ type FormEditProps = {
   };
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
   phase: IPhaseData;
 };
 
@@ -171,12 +172,11 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
+    if (searchParams.copy_from !== undefined) {
+      updateSearchParams({ copy_from: undefined });
     }
   };
 
@@ -394,7 +394,7 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
@@ -402,7 +402,7 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });
