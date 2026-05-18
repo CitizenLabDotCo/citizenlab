@@ -174,6 +174,20 @@ const Container = styled.div<{
   &.focus div.ql-container > div.ql-editor {
     border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  /* add text label for icon toolbar visible when CSS is
+     off so the controls remain meaningful. */
+  .ql-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 `;
 
 interface Props {
