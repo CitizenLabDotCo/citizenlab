@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 import {
   Button,
@@ -45,9 +45,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
-  // Flips the button label in the same render as the announcement, so the focused-element name change doesn't cut off the live-region speech.
-  const [optimisticallyUnregistered, setOptimisticallyUnregistered] =
-    useState(false);
+  const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId(user?.data.id);
@@ -61,14 +59,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     (eventAttending) => eventAttending.id === event.id
   );
   const userIsAttending = !!userAttendingEventObject;
-  const effectivelyAttending = userIsAttending && !optimisticallyUnregistered;
-
-  useEffect(() => {
-    if (optimisticallyUnregistered && !userIsAttending) {
-      setOptimisticallyUnregistered(false);
-    }
-  }, [optimisticallyUnregistered, userIsAttending]);
-
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
   const customButtonText = event.attributes.attend_button_multiloc
@@ -108,12 +98,16 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       return;
     }
 
-    if (effectivelyAttending && attendanceId) {
-      setOptimisticallyUnregistered(true);
+    if (userIsAttending && attendanceId) {
       deleteEventAttendance(
         { attendanceId },
         {
-          onError: () => setOptimisticallyUnregistered(false),
+          onSuccess: () =>
+            setScreenReaderAnnouncement(
+              formatMessage(messages.unregisteredAnnouncement, {
+                eventTitle: localize(event.attributes.title_multiloc),
+              })
+            ),
         }
       );
       return;
@@ -155,6 +149,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const registerAttendance = (userData: IUserData) => {
+    // Clear so a re-register -> unregister round-trip announces again.
+    setScreenReaderAnnouncement('');
     addEventAttendance({ eventId: event.id, attendeeId: userData.id });
     addFollower({
       followableId: event.relationships.project.data.id,
@@ -195,8 +191,14 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   return (
     <>
+      {/*
+        A single, always-mounted Button (kept wrapped in Tooltip even when
+        attending) so the DOM node is stable across the attending/not-attending
+        transition — otherwise focus is lost to <body> when unregistering.
+      */}
+
       <Tooltip
-        disabled={effectivelyAttending || !buttonDisabled}
+        disabled={userIsAttending || !buttonDisabled}
         placement="bottom"
         content={disabledMessage}
         useContentWrapper={false}
@@ -206,16 +208,16 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           icon={
             event.attributes.using_url
               ? undefined
-              : effectivelyAttending
+              : userIsAttending
               ? 'check'
               : 'plus-circle'
           }
-          disabled={!effectivelyAttending && buttonDisabled}
+          disabled={!userIsAttending && buttonDisabled}
         >
           {customButtonText && event.attributes.using_url
             ? customButtonText
             : formatMessage(
-                effectivelyAttending ? messages.registered : messages.register
+                userIsAttending ? messages.registered : messages.register
               )}
         </Button>
       </Tooltip>
@@ -227,14 +229,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           triggerPostActionEvents({});
         }}
       />
-      <ScreenReaderOnly aria-live="assertive" role="alert">
-        {optimisticallyUnregistered && (
-          <span>
-            {formatMessage(messages.unregisteredAnnouncement, {
-              eventTitle: localize(event.attributes.title_multiloc),
-            })}
-          </span>
-        )}
+      <ScreenReaderOnly aria-live="polite">
+        {screenReaderAnnouncement}
       </ScreenReaderOnly>
     </>
   );
