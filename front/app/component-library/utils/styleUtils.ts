@@ -191,7 +191,9 @@ export const defaultCardHoverStyle = css`
 `;
 
 export const defaultOutline = css`
-  border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
+  outline: 2px solid #000;
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 4px #fff;
 `;
 
 export const stylingConsts = {
