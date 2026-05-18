@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IEventData } from 'api/events/types';
@@ -31,7 +30,7 @@ interface Props {
 }
 
 const TopBar = ({ project, event }: Props) => {
-  const location = useLocation();
+  // const location = useLocation();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
@@ -41,7 +40,8 @@ const TopBar = ({ project, event }: Props) => {
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {
-            const hasGoBackLink = location.key !== 'default';
+            // const hasGoBackLink = location.key !== 'default';
+            const hasGoBackLink = Math.random() > 0;
             hasGoBackLink
               ? clHistory.goBack()
               : clHistory.push(`/projects/${project.attributes.slug}`);

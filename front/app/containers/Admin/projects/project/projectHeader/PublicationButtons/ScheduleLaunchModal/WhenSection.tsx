@@ -6,7 +6,7 @@ import moment from 'moment-timezone';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
-import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
+import TimeInput from 'components/admin/TimeSelection/TimeInput';
 
 import { useIntl } from 'utils/cl-intl';
 

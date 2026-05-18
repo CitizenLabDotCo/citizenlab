@@ -12,7 +12,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
@@ -34,7 +33,7 @@ import Image from 'components/UI/Image';
 import { joinAriaIds, ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -399,7 +398,7 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
     const hasDescriptionPreview = !isEmpty(
       localize(
         publication.data.attributes.publication_description_preview_multiloc

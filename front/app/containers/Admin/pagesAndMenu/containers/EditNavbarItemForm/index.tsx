@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
@@ -9,19 +7,22 @@ import useLocalize from 'hooks/useLocalize';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
 const EditNavbarItemForm = () => {
-  const { navbarItemId } = useParams() as { navbarItemId: string };
+  const { navbarItemId } = useParams({ strict: false }) as {
+    navbarItemId: string;
+  };
   const { formatMessage } = useIntl();
   const { data: navbarItems } = useNavbarItems();
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
@@ -47,7 +48,7 @@ const EditNavbarItemForm = () => {
       breadcrumbs={[
         {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumbLinkTo,
+          link: pagesAndMenuBreadcrumbLink,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),

@@ -245,4 +245,12 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.storyTerm',
     defaultMessage: 'Stories',
   },
+  searchContributions: {
+    id: 'app.containers.IdeaCards.searchContributions',
+    defaultMessage: 'Search contributions',
+  },
+  searchPosts: {
+    id: 'app.containers.IdeaCards.searchPosts',
+    defaultMessage: 'Search posts',
+  },
 });

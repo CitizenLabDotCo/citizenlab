@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 export interface Props {}
 

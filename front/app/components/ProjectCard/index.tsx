@@ -15,14 +15,13 @@ import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
-import { getProjectUrl } from 'api/projects/utils';
+import { getProjectLinkProps } from 'api/projects/utils';
 import useReport from 'api/reports/useReport';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -37,7 +36,7 @@ import Image from 'components/UI/Image';
 import { joinAriaIds } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import getCTAMessage from './getCTAMessage';
 import ImagePlaceholder from './ImagePlaceholder';
@@ -442,7 +441,7 @@ const ProjectCard = memo<InputProps>(
       projectImage?.data.attributes.alt_text_multiloc
     );
 
-    const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
+    const projectLink = getProjectLinkProps(project.data.attributes.slug);
     const hasDescriptionPreview =
       !hideDescriptionPreview &&
       !isEmpty(localize(project.data.attributes.description_preview_multiloc));
@@ -536,7 +535,7 @@ const ProjectCard = memo<InputProps>(
             className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
           >
             <ProjectLabel
-              to={projectUrl}
+              to={projectLink}
               scrollToTop
               onClick={() => {
                 handleCTAOnClick(project.data.id);
@@ -587,8 +586,7 @@ const ProjectCard = memo<InputProps>(
         <ProjectContent className={size}>
           <ContentBody className={size}>
             <ProjectTitleLink
-              to={projectUrl}
-              scrollToTop
+              {...projectLink}
               className="e2e-card-title-link"
               onClick={() => {
                 handleProjectTitleOnClick(project.data.id);

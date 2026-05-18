@@ -266,7 +266,10 @@ const SiteMap = () => {
                     {nonCustomStaticPages.map((page) => {
                       return (
                         <li key={page.id}>
-                          <Link to={`/pages/${page.attributes.slug}`}>
+                          <Link
+                            to="/pages/$slug"
+                            params={{ slug: page.attributes.slug }}
+                          >
                             {localize(page.attributes.title_multiloc)}
                           </Link>
                         </li>
@@ -292,7 +295,12 @@ const SiteMap = () => {
                         <ul>
                           <>
                             <li>
-                              <Link to={`/profile/${authUser.data.id}`}>
+                              <Link
+                                to="/profile/$userId"
+                                params={{
+                                  userId: authUser.data.id,
+                                }}
+                              >
                                 <FormattedMessage {...messages.profilePage} />
                               </Link>
                             </li>
@@ -322,7 +330,10 @@ const SiteMap = () => {
                           {/* Custom static pages */}
                           {customStaticPages.map((item) => (
                             <li key={item.id}>
-                              <Link to={`/pages/${item.attributes.slug}`}>
+                              <Link
+                                to="/pages/$slug"
+                                params={{ slug: item.attributes.slug }}
+                              >
                                 {localize(item.attributes.title_multiloc)}
                               </Link>
                             </li>

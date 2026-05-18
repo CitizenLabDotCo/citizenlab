@@ -286,6 +286,86 @@ resource 'Ideas' do
           end
         end
 
+        describe 'clearing location_point_geojson' do
+          let(:input) do
+            create(
+              :idea,
+              project: project,
+              phases: project.phases,
+              location_description: 'Old address',
+              location_point_geojson: { 'type' => 'Point', 'coordinates' => [1.0, 2.0] }
+            )
+          end
+          let(:location_description) { nil }
+          let(:location_point_geojson) { nil }
+
+          example 'admin clears the location by sending null for both attributes', document: false do
+            do_request idea: { location_description: nil, location_point_geojson: nil }
+            assert_status 200
+            expect(input.reload.location_description).to be_nil
+            expect(input.reload.location_point_geojson).to be_nil
+          end
+        end
+
+        describe 'profanity blocking on update' do
+          before { SettingsService.new.activate_feature! 'blocking_profanity' }
+
+          context 'admin changes only the status of an idea whose stored body contains a blocked word' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                idea_status: create(:idea_status),
+                body_multiloc: { 'nl-BE' => 'Wat een mietje.' }
+              )
+            end
+            let!(:idea_status_id) { create(:idea_status_proposed).id }
+
+            example_request 'succeeds and persists the new status' do
+              assert_status 200
+              expect(input.reload.idea_status_id).to eq idea_status_id
+            end
+          end
+
+          context 'admin edits body_multiloc to add a flagged word in a previously unused locale' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                body_multiloc: { 'en' => 'A clean idea.' }
+              )
+            end
+            let(:body_multiloc) { { 'en' => 'A clean idea.', 'nl-BE' => 'Wat een mietje.' } }
+
+            example_request '[error] is blocked with includes_banned_words on body_multiloc' do
+              assert_status 422
+              json_response = json_parse response_body
+              err = json_response.dig(:errors, :base)&.find { |e| e[:error] == 'includes_banned_words' }
+              expect(err).to be_present
+              expect(err[:blocked_words].pluck(:attribute)).to include('body_multiloc')
+            end
+          end
+
+          context 'admin edits one locale of body_multiloc; flagged word remains untouched in another locale' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                body_multiloc: { 'en' => 'Original.', 'nl-BE' => 'Wat een mietje.' }
+              )
+            end
+            let(:body_multiloc) { { 'en' => 'A cleaner English version.', 'nl-BE' => 'Wat een mietje.' } }
+
+            example_request 'succeeds — unchanged locales are not re-validated' do
+              assert_status 200
+              expect(input.reload.body_multiloc['en']).to eq 'A cleaner English version.'
+            end
+          end
+        end
+
         describe 'phase_ids' do
           let(:phase) { project.phases.first }
 
