@@ -191,12 +191,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   return (
     <>
-      {/*
-        A single, always-mounted Button (kept wrapped in Tooltip even when
-        attending) so the DOM node is stable across the attending/not-attending
-        transition — otherwise focus is lost to <body> when unregistering.
-      */}
-
       <Tooltip
         disabled={userIsAttending || !buttonDisabled}
         placement="bottom"
