@@ -1,4 +1,9 @@
 {
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-18T09:20:44.936951Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.form.controls.rankingDragHandleLabel": {
     "state": "verified",
     "verified_at": "2026-04-22T16:13:29.827729Z",
