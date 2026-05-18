@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { SelectorProps } from './MultiSelectDropdown';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
@@ -235,6 +236,7 @@ const SingleSelectDropdown = ({
           </List>
         }
       />
+      <DropdownFocusSentinel opened={opened} onClose={closeExpanded} />
     </Box>
   );
 };
