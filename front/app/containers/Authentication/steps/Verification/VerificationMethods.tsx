@@ -16,6 +16,10 @@ import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 import Outlet from 'components/Outlet';
 import Centerer from 'components/UI/Centerer';
 
+import SSOVerificationButtons, {
+  isCentralizedSSOMethod,
+} from './SSOVerificationButtons';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -75,10 +79,21 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
         </Text>
       )}
       <ButtonsContainer>
+        {/* SSO verification methods are rendered centrally; the remaining
+            form-based manual methods are still rendered by their own modules
+            through the outlet below. */}
+        <SSOVerificationButtons
+          verificationMethods={verificationMethods.data}
+          onClick={handleOnMethodSelected}
+        />
         <Outlet
           id="app.components.VerificationModal.buttons"
           onClick={handleOnMethodSelected}
-          verificationMethods={verificationMethods.data}
+          verificationMethods={verificationMethods.data.filter(
+            (method) =>
+              method.attributes.verification_method &&
+              !isCentralizedSSOMethod(method)
+          )}
         />
       </ButtonsContainer>
     </Container>

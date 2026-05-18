@@ -45,11 +45,6 @@ context 'federa verification' do
       configuration = AppConfiguration.instance
       settings = configuration.settings
 
-      settings['federa_login'] = {
-        'allowed' => true,
-        'enabled' => true
-      }
-
       settings['verification'] = {
         allowed: true,
         enabled: true,
@@ -351,11 +346,6 @@ context 'federa verification' do
     before do
       configuration = AppConfiguration.instance
       settings = configuration.settings
-
-      settings['federa_login'] = {
-        'allowed' => true,
-        'enabled' => true
-      }
 
       settings['verification'] = {
         allowed: true,

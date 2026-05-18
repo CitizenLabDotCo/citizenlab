@@ -3,6 +3,44 @@
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal, a citizen SSO method.
   class CitizenSamlOmniauth < OmniauthMethods::Base
+    include Verification::VerificationMethod
+
+    # Vienna citizen login is a login-only SSO method. Its configuration is stored
+    # alongside the verification methods (in `verification.verification_methods`),
+    # but it cannot be used to verify user identities.
+    def verification?
+      false
+    end
+
+    def verification_method_type
+      :omniauth
+    end
+
+    def id
+      '41f5a1a5-df30-4c16-b29b-5b6631c4f04b'
+    end
+
+    def name
+      'vienna_citizen'
+    end
+
+    def config_parameters
+      %i[environment]
+    end
+
+    def config_parameters_schema
+      {
+        environment: {
+          private: true,
+          type: 'string',
+          title: 'Environment',
+          description: 'Test environment or live production environment',
+          enum: %w[production test],
+          default: 'production'
+        }
+      }
+    end
+
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
@@ -45,7 +83,7 @@ module IdViennaSaml
     # Most of the settings are read from the XML file that Vienna shared with us.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('vienna_citizen_login')
+      return unless Verification::VerificationService.new.configured?(configuration, name)
 
       metadata_file = ENVIRONMENTS.dig(vienna_login_env, :metadata_xml_file)
       issuer = ENVIRONMENTS.dig(vienna_login_env, :issuer)
@@ -76,7 +114,7 @@ module IdViennaSaml
 
     # @return [Symbol] The configured Vienna Login environment as a symbol
     def vienna_login_env
-      AppConfiguration.instance.settings('vienna_citizen_login', 'environment').to_sym
+      (config&.dig(:environment) || 'production').to_sym
     end
 
     # Generates a placeholder name based on the email.

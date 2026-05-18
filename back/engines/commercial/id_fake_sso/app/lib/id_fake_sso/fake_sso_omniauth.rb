@@ -16,7 +16,7 @@ module IdFakeSso
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('fake_sso')
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       options = env['omniauth.strategy'].options
 
@@ -77,7 +77,7 @@ module IdFakeSso
     end
 
     def issuer_in_settings
-      @issuer_in_settings ||= AppConfiguration.instance.settings('fake_sso', 'issuer')
+      @issuer_in_settings ||= config&.dig(:issuer)
     end
   end
 end

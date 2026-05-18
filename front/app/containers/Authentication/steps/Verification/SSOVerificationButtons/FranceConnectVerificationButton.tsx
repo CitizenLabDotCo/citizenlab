@@ -18,7 +18,7 @@ interface Props {
   onClick: (method: TVerificationMethod) => void;
 }
 
-const VerificationFranceConnectButton = ({
+const FranceConnectVerificationButton = ({
   method,
   intl: { formatMessage },
   onClick,
@@ -27,8 +27,7 @@ const VerificationFranceConnectButton = ({
     onClick(method);
     const jwt = getJwt();
     const pathname = removeUrlLocale(window.location.pathname);
-    // See id_franceconnect/app/lib/id_franceconnect/franceconnect_omniauth.rb:9 for how it works.
-    // Possibly, front/app/api/authentication/singleSignOn.ts#setHref could be used the next time we need to add more params.
+    // See id_franceconnect/app/lib/id_franceconnect/franceconnect_omniauth.rb for how it works.
     window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&verification_pathname=${pathname}&sso_verification=true`;
   };
 
@@ -42,4 +41,4 @@ const VerificationFranceConnectButton = ({
   );
 };
 
-export default injectIntl(VerificationFranceConnectButton);
+export default injectIntl(FranceConnectVerificationButton);

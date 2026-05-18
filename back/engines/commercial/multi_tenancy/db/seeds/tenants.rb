@@ -76,59 +76,6 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
-            id_austria_login: {
-              allowed: true,
-              enabled: true
-            },
-            criipto_login: {
-              allowed: true,
-              enabled: true
-            },
-            clave_unica_login: {
-              allowed: true,
-              enabled: true
-            },
-            nemlog_in_login: {
-              allowed: true,
-              enabled: true
-            },
-            keycloak_login: {
-              allowed: true,
-              enabled: true
-            },
-            twoday_login: {
-              allowed: true,
-              enabled: true
-            },
-            acm_login: {
-              allowed: true,
-              enabled: true
-            },
-            franceconnect_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'integration',
-              version: 'v2',
-              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
-              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret')
-            },
-            hoplr_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test',
-              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
-              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
-            },
-            vienna_citizen_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test'
-            },
-            vienna_employee_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test'
-            },
             pages: {
               allowed: true,
               enabled: true
@@ -295,6 +242,7 @@ module MultiTenancy
                 # The below list is for testing purposes only.
                 {
                   name: 'fake_sso'
+                  # Set `issuer: 'https://fake-sso.onrender.com'` to test with the deployed version of the Fake SSO.
                 },
                 {
                   name: 'cow',
@@ -326,7 +274,11 @@ module MultiTenancy
                   explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
                 },
                 {
-                  name: 'franceconnect'
+                  name: 'franceconnect',
+                  environment: 'integration',
+                  version: 'v2',
+                  identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
+                  secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret')
                 },
                 {
                   name: 'auth0',
@@ -383,6 +335,21 @@ module MultiTenancy
                   rrn_environment: 'dv',
                   ui_method_name: 'ACM',
                   enabled_for_verified_actions: true
+                },
+                # Login-only SSO methods (cannot be used for identity verification).
+                {
+                  name: 'hoplr',
+                  environment: 'test',
+                  client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
+                },
+                {
+                  name: 'vienna_citizen',
+                  environment: 'test'
+                },
+                {
+                  name: 'vienna_employee',
+                  environment: 'test'
                 }
               ]
             },
@@ -507,11 +474,6 @@ module MultiTenancy
             remove_vendor_branding: {
               enabled: false,
               allowed: true
-            },
-            fake_sso: {
-              enabled: true,
-              allowed: true,
-              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
             },
             project_review: {
               enabled: true,

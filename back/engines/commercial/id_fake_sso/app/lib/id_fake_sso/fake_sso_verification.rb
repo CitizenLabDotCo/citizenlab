@@ -17,11 +17,16 @@ module IdFakeSso
     end
 
     def config_parameters
-      %i[enabled_for_verified_actions]
+      %i[issuer enabled_for_verified_actions]
     end
 
     def config_parameters_schema
       {
+        issuer: {
+          private: true,
+          type: 'string',
+          title: 'Issuer'
+        },
         enabled_for_verified_actions: {
           private: true,
           type: 'boolean',

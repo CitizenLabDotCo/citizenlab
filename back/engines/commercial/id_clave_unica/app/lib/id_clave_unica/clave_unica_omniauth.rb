@@ -27,7 +27,7 @@ module IdClaveUnica
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name) || configuration.feature_activated?('clave_unica_login')
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       options = env['omniauth.strategy'].options
       options[:scope] = %i[openid run name]

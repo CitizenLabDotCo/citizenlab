@@ -3,6 +3,44 @@
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna city employees.
   class EmployeeSamlOmniauth < OmniauthMethods::Base
+    include Verification::VerificationMethod
+
+    # Vienna employee login is a login-only SSO method. Its configuration is stored
+    # alongside the verification methods (in `verification.verification_methods`),
+    # but it cannot be used to verify user identities.
+    def verification?
+      false
+    end
+
+    def verification_method_type
+      :omniauth
+    end
+
+    def id
+      '8fde8320-fb69-47a4-8bd9-1acbbf287ffc'
+    end
+
+    def name
+      'vienna_employee'
+    end
+
+    def config_parameters
+      %i[environment]
+    end
+
+    def config_parameters_schema
+      {
+        environment: {
+          private: true,
+          type: 'string',
+          title: 'Environment',
+          description: 'Test environment or live production environment',
+          enum: %w[production test],
+          default: 'production'
+        }
+      }
+    end
+
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
@@ -40,7 +78,7 @@ module IdViennaSaml
     # Most of the settings are read from the XML file that Vienna shared with us.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('vienna_employee_login')
+      return unless Verification::VerificationService.new.configured?(configuration, name)
 
       metadata_file = ENVIRONMENTS.dig(vienna_login_env, :metadata_xml_file)
       issuer = ENVIRONMENTS.dig(vienna_login_env, :issuer)
@@ -76,7 +114,7 @@ module IdViennaSaml
 
     # @return [Symbol] The configured Vienna Login environment as a symbol
     def vienna_login_env
-      AppConfiguration.instance.settings('vienna_employee_login', 'environment').to_sym
+      (config&.dig(:environment) || 'production').to_sym
     end
   end
 end

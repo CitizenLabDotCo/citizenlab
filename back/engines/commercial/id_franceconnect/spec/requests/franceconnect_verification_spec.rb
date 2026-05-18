@@ -48,21 +48,17 @@ describe 'franceconnect verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['franceconnect_login'] = {
-      allowed: true,
-      enabled: true,
-      environment: 'integration',
-      version: 'v2',
-      identifier: 'fakeid',
-      secret: 'fakesecret',
-      scope: %w[given_name family_name email]
-    }
     settings['verification'] = {
       allowed: true,
       enabled: true,
       verification_methods: [
         {
-          name: 'franceconnect'
+          name: 'franceconnect',
+          environment: 'integration',
+          version: 'v2',
+          identifier: 'fakeid',
+          secret: 'fakesecret',
+          scope: %w[given_name family_name email]
         }
       ]
     }

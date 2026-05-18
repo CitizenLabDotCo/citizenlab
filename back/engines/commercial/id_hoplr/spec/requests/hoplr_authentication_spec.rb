@@ -60,13 +60,18 @@ context 'hoplr authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['hoplr_login'] = {
+    settings['verification'] = {
       allowed: true,
       enabled: true,
-      environment: 'test',
-      client_id: 'fakeid',
-      client_secret: 'fakesecret',
-      neighbourhood_custom_field_key: 'neighbourhood'
+      verification_methods: [
+        {
+          name: 'hoplr',
+          environment: 'test',
+          client_id: 'fakeid',
+          client_secret: 'fakesecret',
+          neighbourhood_custom_field_key: 'neighbourhood'
+        }
+      ]
     }
     configuration.save!
     host! 'example.org'

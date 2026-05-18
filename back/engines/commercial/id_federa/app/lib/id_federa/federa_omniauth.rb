@@ -56,7 +56,7 @@ module IdFedera
     end
 
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('federa_login')
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       environment = config[:environment] || 'test'
       spid_level = config[:spid_level] || '1'
@@ -102,7 +102,7 @@ module IdFedera
 
     def logout_url(_user)
       configuration = AppConfiguration.instance
-      environment = configuration.settings('federa_login', 'environment')
+      environment = config&.dig(:environment) || 'test'
       base_url = ENVIRONMENTS.dig(environment, :logout_url)
       params = {
         spid: "#{configuration.base_backend_uri}/auth/federa/metadata",

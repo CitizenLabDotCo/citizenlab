@@ -5,8 +5,9 @@ module IdHoplr
     isolate_namespace IdHoplr
 
     config.to_prepare do
-      AppConfiguration::Settings.add_feature(IdHoplr::FeatureSpecification)
-      AuthenticationService.add_method('hoplr', HoplrOmniauth.new)
+      hoplr = HoplrOmniauth.new
+      AuthenticationService.add_method('hoplr', hoplr)
+      Verification.add_method(hoplr)
     end
   end
 end

@@ -24,6 +24,10 @@ module IdNemlogIn
         minimum_age
         birthday_custom_field_key
         birthyear_custom_field_key
+        kki_uri
+        kki_username
+        kki_password
+        kki_custom_headers
         enabled_for_verified_actions
       ]
     end
@@ -60,6 +64,26 @@ module IdNemlogIn
           private: true,
           type: 'string',
           description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
+        },
+        kki_uri: {
+          private: true,
+          type: 'string',
+          description: 'KKI location API URI (Copenhagen municipality lookup, used to derive the municipality code from the CPR number). Leave empty to disable.'
+        },
+        kki_username: {
+          private: true,
+          type: 'string',
+          description: 'KKI location API basic auth username.'
+        },
+        kki_password: {
+          private: true,
+          type: 'string',
+          description: 'KKI location API basic auth password.'
+        },
+        kki_custom_headers: {
+          private: true,
+          type: 'string',
+          description: 'KKI location API custom headers, in this format (no quotes): "Ocp-Apim-Subscription-Key: 6c7924f0..., HEADER2: VALUE2"'
         },
         enabled_for_verified_actions: {
           private: true,

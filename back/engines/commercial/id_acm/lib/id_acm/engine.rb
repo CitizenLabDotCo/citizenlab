@@ -5,8 +5,6 @@ module IdAcm
     isolate_namespace IdAcm
 
     config.to_prepare do
-      AppConfiguration::Settings.add_feature(IdAcm::FeatureSpecification)
-
       acm = AcmOmniauth.new
       Verification.add_method(acm)
       AuthenticationService.add_method('acm', acm)

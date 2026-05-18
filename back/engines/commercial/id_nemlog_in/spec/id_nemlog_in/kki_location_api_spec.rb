@@ -11,13 +11,18 @@ describe IdNemlogIn::KkiLocationApi do
   before do
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['kki_location_api'] = {
+    settings['verification'] = {
       allowed: true,
       enabled: true,
-      uri: base_uri,
-      username: 'username',
-      password: 'password',
-      custom_headers: 'h1: value1, h2: value2'
+      verification_methods: [
+        {
+          name: 'nemlog_in',
+          kki_uri: base_uri,
+          kki_username: 'username',
+          kki_password: 'password',
+          kki_custom_headers: 'h1: value1, h2: value2'
+        }
+      ]
     }
     configuration.save!
   end

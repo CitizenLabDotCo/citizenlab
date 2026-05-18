@@ -19,7 +19,11 @@ interface Props {
   last: boolean;
 }
 
-const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
+const Auth0VerificationButton = ({
+  onClick,
+  verificationMethod,
+  last,
+}: Props) => {
   const handleOnClick = () => {
     onClick(verificationMethod);
     const jwt = getJwt();
@@ -39,4 +43,4 @@ const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
   );
 };
 
-export default Auth0Button;
+export default Auth0VerificationButton;
