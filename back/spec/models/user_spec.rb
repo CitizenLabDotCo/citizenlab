@@ -497,6 +497,29 @@ RSpec.describe User do
       })
       expect(user.bio_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
+
+    it 'strips style attributes from the body' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p style="color:red"><strong>Hi</strong></p>'
+      })
+      expect(user.bio_multiloc).to eq({ 'en' => '<p><strong>Hi</strong></p>' })
+    end
+
+    it 'keeps decoration and link formatting' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p><strong>bold</strong> <em>italic</em> <a href="https://example.com">link</a></p>'
+      })
+      expect(user.bio_multiloc).to eq({
+        'en' => '<p><strong>bold</strong> <em>italic</em> <a href="https://example.com" rel="nofollow">link</a></p>'
+      })
+    end
+
+    it 'removes video iframes from the body' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p>Watch</p><iframe src="https://www.youtube.com/embed/abc"></iframe>'
+      })
+      expect(user.bio_multiloc).to eq({ 'en' => '<p>Watch</p>' })
+    end
   end
 
   describe 'locale' do
