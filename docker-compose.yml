@@ -131,6 +131,7 @@ services:
     environment:
       - API_HOST=web
       - API_PORT=4000
+      - NODE_OPTIONS=--max-old-space-size=4096
     tty: true
     stdin_open: true
     profiles:
