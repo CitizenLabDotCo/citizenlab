@@ -331,7 +331,7 @@ class User < ApplicationRecord
     ec = email_confirmation
     return unless ec
 
-    unless ec.required?
+    unless confirmation_required?
       ec.code = nil
       ec.code_retry_count = 0
       ec.code_reset_count = 0

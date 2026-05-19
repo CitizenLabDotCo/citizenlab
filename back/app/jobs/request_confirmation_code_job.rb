@@ -10,31 +10,42 @@ class RequestConfirmationCodeJob < ApplicationJob
 
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
 
-    if new_email
-      user.new_email = new_email
-    end
-
     ActiveRecord::Base.transaction do
-      user.reset_confirmation_code!
-      deliver_confirmation_code!(user)
-      schedule_code_expiration! user
+      confirmation = prepare_confirmation(user, new_email)
+      confirmation.reset_code!
+      deliver_confirmation_code!(confirmation)
+      schedule_code_expiration!(user, confirmation)
       LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
     end
   end
 
   private
 
-  def deliver_confirmation_code!(user)
-    ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_now
-    user.update!(email_confirmation_code_sent_at: Time.zone.now)
+  def prepare_confirmation(user, new_email)
+    if new_email
+      user.update!(new_email: new_email)
+      user.new_email_confirmation
+    else
+      # Requesting a code on the email-confirmation flow always re-arms the
+      # user's confirmation gate. This matters for legacy passwordless users
+      # who already confirmed once but need a fresh code to log back in.
+      user.update!(confirmation_required: true) unless user.confirmation_required
+      user.email_confirmation
+    end
   end
 
-  def schedule_code_expiration!(user)
+  def deliver_confirmation_code!(confirmation)
+    ConfirmationsMailer.with(user: confirmation.user).send_confirmation_code.deliver_now
+    confirmation.update!(code_sent_at: Time.zone.now)
+  end
+
+  def schedule_code_expiration!(user, confirmation)
     ExpireConfirmationCodeOrDeleteJob.set(
-      wait_until: user.email_confirmation_code_expiration_at
+      wait_until: confirmation.expiration_at
     ).perform_later(
       user.id,
-      user.email_confirmation_code
+      confirmation.class.name,
+      confirmation.code
     )
   end
 end

@@ -161,13 +161,13 @@ class WebApi::V1::UsersController < ApplicationController
           render json: raw_json({ action: 'password' })
         end
       else
-        if @user.email_confirmation_code_reset_count == 0
+        if @user.email_confirmation.code_reset_count == 0
           # If the reset count is zero, we are in the following situation:
           # The user signed up previously and logged in successfully
           # by confirming their email, but never set a password.
           # They are now back to log in again. In this case, we want
           # to automatically send the confirmation code.
-          # If they would already have a email_confirmation_code_reset_count > 0,
+          # If they would already have a code_reset_count > 0,
           # they tried to log in previously and failed. In this case, we don't
           # automatically resend the code, because otherwise we
           # might too easily reach the retry limit. So they will

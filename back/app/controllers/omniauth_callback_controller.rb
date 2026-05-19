@@ -89,7 +89,7 @@ class OmniauthCallbackController < ApplicationController
       # If the user's email came from/matches the authver one,
       # and the provider says it was confirmed: we mark the user's email as confirmed.
       if user_has_email_confirmed_by_authver
-        @user.confirm!
+        @user.email_confirmation.confirm!
       end
 
       if @user.invite_pending?
