@@ -62,16 +62,16 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   end
 
   context 'confirmed users with no password' do
-    let(:user) do 
+    let(:user) do
       user = create(:unconfirmed_user)
       user.confirm!
       user
     end
 
     it 'does nothing to a user when the user is already confirmed' do
-      expect(user.email_confirmation_code).to eq(nil)
+      expect(user.email_confirmation_code).to be_nil
       described_class.perform_now(user.id, user.email_confirmation_code)
-      expect(user.reload.email_confirmation_code).to eq(nil)
+      expect(user.reload.email_confirmation_code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
 
