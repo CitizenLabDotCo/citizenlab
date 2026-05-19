@@ -24,10 +24,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  registration_completed_at           :datetime
 #  verified                            :boolean          default(FALSE), not null
 #  email_confirmed_at                  :datetime
-#  email_confirmation_code             :string
-#  email_confirmation_retry_count      :integer          default(0), not null
-#  email_confirmation_code_reset_count :integer          default(0), not null
-#  email_confirmation_code_sent_at     :datetime
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
@@ -169,6 +165,9 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :confirmations, dependent: :destroy
+  has_one :email_confirmation, dependent: :destroy
+  has_one :new_email_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
