@@ -6644,6 +6644,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:48.671649Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T07:05:16.444137Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Comments.childCommentBodyPlaceholder": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
