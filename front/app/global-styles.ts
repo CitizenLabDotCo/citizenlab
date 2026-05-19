@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   * {
-    &:not(.focus-visible):not(:focus-visible) {
+    &:not(.focus-visible) {
       outline: none;
     }
 
