@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class EmailConfirmation < Confirmation
-  # True if the user has not yet confirmed their email address and the platform
-  # requires it.
+  # True if the user has not yet confirmed their email address.
   #
   # Exception: if the user registered via SSO and the SSO did not return an email,
   # we treat them as not requiring confirmation unless they have actively requested
