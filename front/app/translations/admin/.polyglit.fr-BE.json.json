@@ -9264,9 +9264,19 @@
     "verified_at": "2026-05-19T21:30:55.239236Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeModeratorColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:42:11.627488Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.dateColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.totalActiveColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:42:11.627488Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": {
