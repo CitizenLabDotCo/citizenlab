@@ -6,35 +6,35 @@ require Rails.root.join('lib/email_domain_blacklist')
 #
 # Table name: users
 #
-#  id                                  :uuid             not null, primary key
-#  email                               :string
-#  password_digest                     :string
-#  slug                                :string
-#  roles                               :jsonb
-#  reset_password_token                :string
-#  created_at                          :datetime         not null
-#  updated_at                          :datetime         not null
-#  avatar                              :string
-#  first_name                          :string
-#  last_name                           :string
-#  locale                              :string
-#  bio_multiloc                        :jsonb
-#  invite_status                       :string
-#  custom_field_values                 :jsonb
-#  registration_completed_at           :datetime
-#  verified                            :boolean          default(FALSE), not null
-#  email_confirmed_at                  :datetime
-#  confirmation_required               :boolean          default(TRUE), not null
-#  block_start_at                      :datetime
-#  block_reason                        :string
-#  block_end_at                        :datetime
-#  new_email                           :string
-#  followings_count                    :integer          default(0), not null
-#  onboarding                          :jsonb            not null
-#  unique_code                         :string
-#  last_active_at                      :datetime
-#  imported                            :boolean          default(FALSE), not null
-#  token_expiry_key                    :string
+#  id                        :uuid             not null, primary key
+#  email                     :string
+#  password_digest           :string
+#  slug                      :string
+#  roles                     :jsonb
+#  reset_password_token      :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  avatar                    :string
+#  first_name                :string
+#  last_name                 :string
+#  locale                    :string
+#  bio_multiloc              :jsonb
+#  invite_status             :string
+#  custom_field_values       :jsonb
+#  registration_completed_at :datetime
+#  verified                  :boolean          default(FALSE), not null
+#  email_confirmed_at        :datetime
+#  confirmation_required     :boolean          default(TRUE), not null
+#  block_start_at            :datetime
+#  block_reason              :string
+#  block_end_at              :datetime
+#  new_email                 :string
+#  followings_count          :integer          default(0), not null
+#  onboarding                :jsonb            not null
+#  unique_code               :string
+#  last_active_at            :datetime
+#  imported                  :boolean          default(FALSE), not null
+#  token_expiry_key          :string
 #
 # Indexes
 #
