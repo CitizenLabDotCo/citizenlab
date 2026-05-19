@@ -39,14 +39,11 @@ class Confirmation < ApplicationRecord
   end
 
   def reset_code!
-    transaction do
-      update!(
-        code: self.class.generate_code,
-        code_reset_count: code_reset_count + 1,
-        code_retry_count: 0
-      )
-      after_reset
-    end
+    update!(
+      code: self.class.generate_code,
+      code_reset_count: code_reset_count + 1,
+      code_retry_count: 0
+    )
   end
 
   def expire_code!
@@ -62,9 +59,6 @@ class Confirmation < ApplicationRecord
   end
 
   protected
-
-  # Hook for subclasses to react to a code reset (e.g. flip a flag on the user).
-  def after_reset; end
 
   # Cancel pending email-change requests on OTHER users that target `email`,
   # so they don't end up with an invalid (now-taken) new_email.

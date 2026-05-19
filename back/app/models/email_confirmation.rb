@@ -23,12 +23,6 @@ class EmailConfirmation < Confirmation
     true
   end
 
-  protected
-
-  def after_reset
-    user.update!(confirmation_required: true)
-  end
-
   private
 
   def sso_user_without_email?
