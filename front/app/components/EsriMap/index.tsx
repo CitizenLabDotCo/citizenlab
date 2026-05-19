@@ -53,6 +53,12 @@ const MapContainer = styled(Box)<{
     box-shadow: none !important;
   }
 
+  .esri-attribution__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
   ${media.phone`
     .esri-legend {
       max-width: 240px !important;
