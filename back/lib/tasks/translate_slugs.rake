@@ -13,7 +13,10 @@ namespace :slugs do
     locale = args[:locale]
     execute = args[:execute] == 'execute'
 
-    Tenant.find_by(host: host).switch do
+    tenant = Tenant.find_by(host: host)
+    raise "No tenant found for host '#{host}'" if tenant.nil?
+
+    tenant.switch do
       # First, find all database tables that have a 'slug' column.
       # Exclude 'users': user slugs derive from the user's name, which is never translated.
       tables_with_slug = ActiveRecord::Base.connection.tables.select do |table|
@@ -45,7 +48,27 @@ namespace :slugs do
         model.find_each do |record|
           next unless slug_from_title_multiloc.call(record)
 
-          pp(id: record.id, title_multiloc: record.title_multiloc, slug: record.slug)
+          title = record&.title_multiloc&.[](locale)
+          if title.blank?
+            puts "SKIPPED: No #{locale} title_multiloc for #{model.name} #{record.id} to create translated slug from."
+            next
+          end
+
+          # SlugService#generate_slug treats *any* record sharing the slug as a collision,
+          # including the record itself — so re-slugging to the same value would bump it to
+          # '-1'. Skip when the slugified title already matches the current slug.
+          if SlugService.new.slugify(title) == record.slug
+            puts "UNCHANGED: #{model.name} #{record.id} slug already '#{record.slug}'."
+            next
+          end
+
+          new_slug = SlugService.new.generate_slug(record, title)
+          if execute
+            record.update!(slug: new_slug)
+            puts "UPDATED slug for #{model.name} #{record.id} - to '#{new_slug}'."
+          else
+            puts "Would translate slug for #{model.name} #{record.id} - from '#{record.slug}', to '#{new_slug}'."
+          end
         end
       end
     end
