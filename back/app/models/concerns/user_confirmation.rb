@@ -11,13 +11,11 @@ module UserConfirmation
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
   end
 
-  # True if the user does not yet have a confirmed email address.
-  # This covers:
-  # - New registrations (confirmation_required column is true)
-  # - SSO users without an email who are adding one (email is nil, new_email is set)
-  # SSO users without an email who have NOT started adding one are excluded.
   def confirmation_required?
-    return true if email.nil? && new_email.present?
+    # if the user registered via SSO, but the SSO did not return an email:
+    # we only say that the user requires confirmation if they have requested to set their
+    # email.
+    # If they haven't, we will regard them as not requiring confirmation.
     return false if sso? && verified && email.nil? && new_email.nil?
 
     confirmation_required
@@ -28,10 +26,11 @@ module UserConfirmation
     self.confirmation_required = false
     self.email_confirmation_code = nil
     self.email_confirmation_code_reset_count = 0
+    self.confirmation_required = true
   end
 
   def confirm!
-    return unless confirmation_required? || new_email.present?
+    return unless confirmation_required?
 
     confirm_new_email if new_email.present?
     confirm

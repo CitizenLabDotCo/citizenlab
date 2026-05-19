@@ -35,11 +35,11 @@ RSpec.describe RequestConfirmationCodeJob do
         expect { job.perform(user) }.not_to change(user, :new_email)
       end
 
-      it 'does not change confirmation_required' do
+      it 'sets confirmation_required to true' do
         user = create(:user)
         expect(user.confirmation_required?).to be false
         job.perform(user)
-        expect(user.reload.confirmation_required?).to be false
+        expect(user.reload.confirmation_required?).to be true
       end
 
       it 'resets email_confirmation_retry_count' do
@@ -88,11 +88,11 @@ RSpec.describe RequestConfirmationCodeJob do
           expect(user.email_confirmation_code_reset_count).to eq 2
         end
 
-        it 'does not change confirmation_required' do
+        it 'sets confirmation_required to true' do
           user = create(:user)
           expect(user.confirmation_required?).to be false
           job.perform(user, new_email: new_email)
-          expect(user.reload.confirmation_required?).to be false
+          expect(user.reload.confirmation_required?).to be true
         end
 
         it 'resets email_confirmation_retry_count' do
