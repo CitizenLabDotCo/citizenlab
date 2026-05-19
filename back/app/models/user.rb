@@ -479,14 +479,6 @@ class User < ApplicationRecord
     end
   end
 
-  def confirmation_required
-    self[:confirmation_required]
-  end
-
-  def confirmation_required=(val)
-    write_attribute :confirmation_required, val
-  end
-
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
   end
