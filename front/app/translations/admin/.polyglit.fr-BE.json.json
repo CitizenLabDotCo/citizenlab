@@ -4729,6 +4729,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.healthScoreTableCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:25:15.549471Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.communityMonitor.lastQuarter": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -4748,6 +4753,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.communityMonitor.overallHealthScore": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:25:15.549471Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.communityMonitor.participants": {
     "state": "verified",
