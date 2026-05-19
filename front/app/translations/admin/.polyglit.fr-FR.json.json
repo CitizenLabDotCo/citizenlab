@@ -9454,9 +9454,19 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:10:18.308925Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T15:12:36.607468Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:10:18.308925Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": {
@@ -9467,6 +9477,11 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T15:12:36.607468Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:10:18.308925Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": {
@@ -9953,6 +9968,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.widgets.MethodsUsed.methodsUsedStatistics": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:10:18.308925Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey": {
     "state": "verified",
@@ -18967,6 +18987,11 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.dateColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T15:12:36.607468Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:10:18.308925Z",
     "verified_by": "Adrien"
   },
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": {
