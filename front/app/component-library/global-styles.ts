@@ -21,8 +21,8 @@ const GlobalStyle = createGlobalStyle`
     &.focus-visible,
     &:focus-visible {
       outline: 2px solid #000 !important;
-      outline-offset: -2px !important;
-      box-shadow: inset 0 0 0 4px #fff !important;
+      outline-offset: 2px !important;
+      box-shadow: 0 0 0 4px #fff !important;
     }
   }
 
