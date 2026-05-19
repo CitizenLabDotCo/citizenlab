@@ -313,10 +313,14 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # Delegates to email_confirmation; preserved as a User-level shortcut because
-  # many callers (controllers, policies, services) ask this from a user context.
+  # True if the user has not yet confirmed their email address.
+  #
+  # Exception: if the user registered via SSO and the SSO did not return an email,
+  # we treat them as not requiring confirmation unless they have actively requested
+  # to set an email.
   def confirmation_required?
-    email_confirmation&.required? || false
+    return false if sso_user_without_email?
+    confirmation_required
   end
 
   # ONLY USED IN SPECS! Resets confirmation state so the user re-enters the
@@ -469,6 +473,10 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
+  end
+
+  def sso_user_without_email?
+    sso? && verified && email.nil? && new_email.nil?
   end
 
   def remove_initiated_notifications
