@@ -114,7 +114,7 @@ resource 'User Token' do
         let(:remember_me) { true }
 
         example_request 'create JWT token with default expiration' do
-          expect(status).to eq(201)
+          assert_status 201
 
           jwt = JWT.decode(json_response_body[:jwt], nil, false).first
           expect(jwt['exp']).to eq((Time.now + 30.days).to_i)
@@ -130,7 +130,7 @@ resource 'User Token' do
           let(:token_lifetime) { 8 }
 
           example_request 'create JWT token with expiration from settings' do
-            expect(status).to eq(201)
+            assert_status 201
 
             jwt = JWT.decode(json_response_body[:jwt], nil, false).first
             expect(jwt['exp']).to eq((Time.now + token_lifetime.days).to_i)
@@ -181,7 +181,7 @@ resource 'User Token' do
 
       example 'Does not create JWT token with invalid password' do
         do_request(auth: { email: email, password: 'wrongpassword' })
-        expect(status).to eq(404)
+        assert_status 404
       end
     end
 
