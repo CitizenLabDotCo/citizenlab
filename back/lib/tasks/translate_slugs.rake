@@ -1,13 +1,42 @@
 # frozen_string_literal: true
 
+# Re-derives the slug of every sluggable record of a single tenant from its
+# title_multiloc in a given locale.
+#
+# Intended for manual use on freshly cloned tenants used as demo platforms - NOT
+# on live tenants, where re-slugging would break existing inbound URLs.
+#
+# What it does:
+#   - Targets one tenant, identified by the `host` argument.
+#   - Processes projects, static pages, project folders, groups and ideas, setting
+#     each slug to the slugified `title_multiloc[locale]`.
+#   - Skips ideas whose slug is not derived from title_multiloc (only Ideation,
+#     Proposals and Voting ideas are - Native Survey and others are left untouched).
+#   - Skips a record when it has no title in the target locale, or when its slug
+#     already matches the translated title.
+#   - Writes a JSON report (translate_slugs.json) of the before/after slugs.
+#
+# What it does NOT do:
+#   - It does not translate title_multiloc - it only re-derives the slug from an
+#     already-translated title.
+#   - It does not touch user slugs (those derive from the user's name).
+#   - It does not change anything in dry-run mode (the default).
+#   - It does not run across multiple tenants - one `host` per invocation.
+#
+# Example commands (run from the repo root):
+#   Dry run (no changes applied, just reports what would happen):
+#     docker compose run --rm web bundle exec rake 'slugs:translate_slugs[example.com,fr-BE]'
+#
+#   Execute (applies the changes):
+#     docker compose run --rm web bundle exec rake 'slugs:translate_slugs[example.com,fr-BE,execute]'
+
 namespace :slugs do
-  # In development
   desc 'Translate slugs to given locale'
   task :translate_slugs, %i[host locale execute] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     host = args[:host]
     locale = args[:locale]
