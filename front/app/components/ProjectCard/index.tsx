@@ -254,7 +254,7 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled(Link)`
+const ProjectLabel = typedStyled(Link)`
   /* Sit above ProjectTitleLink's overlay so this stays independently clickable */
   position: relative;
   z-index: 2;
@@ -266,7 +266,8 @@ const ProjectLabel = styled(Link)`
   white-space: nowrap;
   padding: 8px 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
+  border: 1px solid ${({ theme }) =>
+    darken(0.05, theme.colors.tenantSecondary)};
   background: transparent;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -292,7 +293,13 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitleLink = styled(Link)`
+const ProjectTitle = styled(Title)`
+  color: ${({ theme }) => theme.colors.tenantText};
+  margin: 0;
+  padding: 0;
+`;
+
+const ProjectTitleLink = typedStyled(Link)`
   /*
     Accessible card pattern: a single primary link whose ::before pseudo-element
     expands the hitbox over the entire card, so mouse users can click anywhere
@@ -309,14 +316,8 @@ const ProjectTitleLink = styled(Link)`
     inset: 0;
     z-index: 1;
   }
-`;
 
-const ProjectTitle = styled(Title)`
-  color: ${({ theme }) => theme.colors.tenantText};
-  margin: 0;
-  padding: 0;
-
-  ${ProjectTitleLink}:hover & {
+  &:hover ${ProjectTitle} {
     text-decoration: underline;
   }
 `;
@@ -535,7 +536,7 @@ const ProjectCard = memo<InputProps>(
             className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
           >
             <ProjectLabel
-              to={projectLink}
+              {...projectLink}
               scrollToTop
               onClick={() => {
                 handleCTAOnClick(project.data.id);

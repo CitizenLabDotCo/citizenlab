@@ -247,7 +247,13 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const FolderTitleLink = styled(Link)`
+const FolderTitle = styled(Title)`
+  color: ${({ theme }) => theme.colors.tenantText};
+  margin: 0;
+  padding: 0;
+`;
+
+const FolderTitleLink = typedStyled(Link)`
   text-decoration: none;
   color: inherit;
 
@@ -257,14 +263,8 @@ const FolderTitleLink = styled(Link)`
     inset: 0;
     z-index: 1;
   }
-`;
 
-const FolderTitle = styled(Title)`
-  color: ${({ theme }) => theme.colors.tenantText};
-  margin: 0;
-  padding: 0;
-
-  ${FolderTitleLink}:hover & {
+  &:hover ${FolderTitle} {
     text-decoration: underline;
   }
 `;
