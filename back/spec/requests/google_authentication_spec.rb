@@ -203,7 +203,7 @@ describe 'google authentication' do
       expect(user.confirmation_required?).to be(false)
     end
 
-    context 'when email is not verified' do
+    context 'when email is not confirmed' do
       let(:email_verified) { false }
 
       it 'creates unconfirmed user' do
