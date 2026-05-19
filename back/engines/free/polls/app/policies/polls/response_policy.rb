@@ -22,7 +22,6 @@ module Polls
 
     def create?
       active? &&
-        (record.user_id == user.id) &&
         policy_for(record.phase.project).show? &&
         check_responding_allowed(record, user)
     end

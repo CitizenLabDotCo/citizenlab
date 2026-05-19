@@ -10,8 +10,6 @@ import {
 import { PermittedBy } from 'api/phase_permissions/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,9 +24,6 @@ interface Props {
 
 const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
-  const emailConfirmationEnabled = useFeatureFlag({
-    name: 'user_confirmation',
-  });
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
 
   const handleUpdate = (permittedBy: PermittedBy) => (e) => {
@@ -87,7 +82,6 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
           subtitle={formatMessage(messages.emailConfirmationSubtitle)}
           onClick={handleUpdate('everyone_confirmed_email')}
           selected={permittedBy === 'everyone_confirmed_email'}
-          disabled={!emailConfirmationEnabled}
           height="100%"
         />
       </Box>
@@ -107,11 +101,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
             </Box>
           }
           title={formatMessage(messages.accountCreation)}
-          subtitle={formatMessage(
-            emailConfirmationEnabled
-              ? messages.accountCreationSubtitle
-              : messages.accountCreationSubtitle_confirmationOff
-          )}
+          subtitle={formatMessage(messages.accountCreationSubtitle)}
           onClick={handleUpdate('users')}
           selected={permittedBy === 'users'}
           height="100%"

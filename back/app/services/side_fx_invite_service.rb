@@ -9,8 +9,6 @@ class SideFxInviteService
 
   def before_accept(invite)
     invite.accepted_at = Time.now
-    return unless AppConfiguration.instance.feature_activated?('user_confirmation')
-
     invite.invitee.email_confirmed_at ||= invite.accepted_at
   end
 
