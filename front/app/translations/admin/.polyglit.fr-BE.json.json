@@ -9374,6 +9374,11 @@
     "verified_at": "2026-05-19T15:12:37.235305Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.countColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:06:06.708774Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicQuestion": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9383,6 +9388,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicsTableCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:06:06.708774Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.participantsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:06:06.708774Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange": {
     "state": "verified",
