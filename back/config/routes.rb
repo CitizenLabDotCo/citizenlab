@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Rails API mode drops :new and :edit from resourceful routes, so Doorkeeper's
+  # applications admin views can't resolve new_/edit_oauth_application_path. Add
+  # them back explicitly *before* use_doorkeeper so they win over its :id route.
+  scope 'oauth' do
+    get 'applications/new', to: 'doorkeeper/applications#new', as: :new_oauth_application
+    get 'applications/:id/edit', to: 'doorkeeper/applications#edit', as: :edit_oauth_application
+  end
+
   use_doorkeeper
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'

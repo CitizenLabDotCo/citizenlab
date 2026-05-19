@@ -30,16 +30,16 @@ Doorkeeper.configure do
   # adding oauth authorized applications. In other case it will return 403 Forbidden response
   # every time somebody will try to access the admin web interface.
   #
-  # admin_authenticator do
-  #   # Put your admin authentication logic here.
-  #   # Example implementation:
-  #
-  #   if current_user
-  #     head :forbidden unless current_user.admin?
-  #   else
-  #     redirect_to sign_in_url
-  #   end
-  # end
+  admin_authenticator do
+    # Put your admin authentication logic here.
+    # Example implementation:
+
+    if current_user
+      head :forbidden unless current_user.admin?
+    else
+      redirect_to(Frontend::UrlService.new.sign_in_url)
+    end
+  end
 
   # You can use your own model classes if you need to extend (or even override) default
   # Doorkeeper models such as `Application`, `AccessToken` and `AccessGrant.
@@ -137,7 +137,11 @@ Doorkeeper.configure do
   # +ActionController::API+. The return value of this option must be a stringified class name.
   # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-controllers
   #
-  # base_controller 'ApplicationController'
+  # The app's ApplicationController inherits from ActionController::API, which can't render the
+  # authorization views Doorkeeper needs. DoorkeeperBaseController inherits from
+  # ActionController::Base and pulls in AuthToken::Authenticable so current_user resolves in the
+  # blocks below.
+  base_controller 'DoorkeeperBaseController'
 
   # Reuse access token for the same resource owner within an application (disabled by default).
   #
