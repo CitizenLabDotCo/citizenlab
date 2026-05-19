@@ -4709,6 +4709,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.categoryColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.communityMonitor.communityMonitorLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -8159,25 +8164,21 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
@@ -8198,7 +8199,6 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts": {
     "state": "verified",
     "verified_at": "2026-04-24T14:38:49.743735Z",
@@ -8244,7 +8244,6 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress": {
     "state": "verified",
     "verified_at": "2026-04-24T14:38:49.743735Z",
@@ -8315,7 +8314,6 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
@@ -8326,7 +8324,6 @@
     "verified_at": "2026-03-27T13:20:26.758283Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
@@ -9247,6 +9244,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9267,10 +9269,30 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.participantsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.visitorsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.comments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.inputs": {
     "state": "verified",
@@ -9302,6 +9324,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.categoryColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicQuestion": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9326,6 +9353,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": {
     "state": "verified",
@@ -18817,6 +18859,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -18826,6 +18873,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-19T15:12:37.235305Z",
+    "verified_by": "Adrien"
   },
   "app.containers.admin.ReportBuilder.charts.accessibility": {
     "state": "verified",
