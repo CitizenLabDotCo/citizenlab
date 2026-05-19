@@ -310,4 +310,8 @@ export default defineMessages({
     defaultMessage:
       'This {inputTerm} was collected offline and automatically uploaded to the platform.',
   },
+  actionsMenuTitle: {
+    id: 'app.components.UI.MoreActionsMenu.actionsMenuTitle',
+    defaultMessage: 'for {ideaTitle}',
+  },
 });
