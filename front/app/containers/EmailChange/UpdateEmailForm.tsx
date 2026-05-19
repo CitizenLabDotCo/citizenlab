@@ -40,6 +40,7 @@ const UpdateEmailForm = ({
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
   const [error, setError] = useState<'taken' | undefined>(undefined);
+  const currentEmail = user.data.attributes.email;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -60,14 +61,22 @@ const UpdateEmailForm = ({
     <>
       <FormProvider {...methods}>
         <Title>
-          {user.data.attributes.no_password
-            ? formatMessage(messages.titleAddEmail)
-            : formatMessage(messages.titleChangeEmail)}
+          {currentEmail
+            ? formatMessage(messages.titleChangeEmail)
+            : formatMessage(messages.titleAddEmail)}
         </Title>
         <Form>
           {isAdmin(user) && (
             <Warning mt="-20px" mb="20px">
               {formatMessage(messages.adminEmailChangeWarning)}
+            </Warning>
+          )}
+          {currentEmail && (
+            <Warning mt="-20px" mb="20px">
+              <>
+                {formatMessage(messages.currentEmail)}{' '}
+                <strong>{currentEmail}</strong>
+              </>
             </Warning>
           )}
           <LabelContainer>
