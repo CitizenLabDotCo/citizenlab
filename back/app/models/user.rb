@@ -52,7 +52,6 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include UserRoles
   include UserGroups
-  include UserConfirmation
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
@@ -206,6 +205,9 @@ class User < ApplicationRecord
   validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
   validate :validate_emails_not_banned, if: :email_or_new_email_changed?
 
+  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }
+  after_create :create_confirmations
+
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
@@ -309,6 +311,31 @@ class User < ApplicationRecord
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
+  end
+
+  # Delegates to email_confirmation; preserved as a User-level shortcut because
+  # many callers (controllers, policies, services) ask this from a user context.
+  def confirmation_required?
+    email_confirmation&.required? || false
+  end
+
+  # ONLY USED IN SPECS! Resets confirmation state so the user re-enters the
+  # confirmation flow on next sign-in.
+  def reset_confirmation_and_counts
+    raise 'Only use in specs!' unless Rails.env.test?
+
+    ec = email_confirmation
+    return unless ec
+
+    unless ec.required?
+      ec.code = nil
+      ec.code_retry_count = 0
+      ec.code_reset_count = 0
+    end
+    ec.code_sent_at = nil
+    ec.save!
+
+    self.confirmation_required = true
   end
 
   def show_public_profile?
@@ -431,6 +458,17 @@ class User < ApplicationRecord
 
     errors.add(field, 'something_went_wrong', code: 'zrb-43')
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
+  end
+
+  def auto_confirm_on_invite_accept
+    self.email_confirmed_at = Time.zone.now
+    self.confirmation_required = false
+    email_confirmation&.clear_code!
+  end
+
+  def create_confirmations
+    EmailConfirmation.create!(user: self)
+    NewEmailConfirmation.create!(user: self)
   end
 
   def remove_initiated_notifications
