@@ -64,7 +64,7 @@ describe SideFxUserService do
     end
 
     context 'when user is an invitee' do
-      let(:invitee) { create(:unconfirmed_user, invite_status: 'pending') }
+      let(:invitee) { create(:invited_user) }
 
       it 'does not send a confirmation code email' do
         expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
