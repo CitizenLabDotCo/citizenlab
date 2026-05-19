@@ -1124,6 +1124,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T14:23:57.702805Z",
+    "verified_by": "Adrien"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2114,7 +2119,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-04-29T22:13:06.613681Z",
@@ -2820,6 +2824,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.022007Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2910,7 +2919,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.components.QuillEditor.embeddedVideo": {
     "state": "verified",
     "verified_at": "2026-05-05T13:00:15.150761Z",
@@ -3170,6 +3178,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:39:06.225219Z",
+    "verified_by": "Adrien"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7221,6 +7234,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:41:26.899770Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7370,6 +7388,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.022007Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.022007Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
@@ -11676,6 +11704,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:19:59.156773Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -12261,7 +12294,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.errors.phase_too_short": {
     "state": "verified",
     "verified_at": "2026-04-21T16:13:46.512206Z",
@@ -13377,7 +13409,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
     "state": "verified",
     "verified_at": "2026-04-29T22:13:06.613681Z",

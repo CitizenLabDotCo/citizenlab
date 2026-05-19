@@ -1,5 +1,4 @@
 import { MessageDescriptor } from 'react-intl';
-import { RouteType } from 'routes';
 import { FormatMessage } from 'typings';
 
 import messages from './messages';
@@ -7,7 +6,7 @@ import messages from './messages';
 type TabRoute = {
   message: MessageDescriptor;
   name: string;
-  url: RouteType;
+  url: string;
 };
 
 const BASE_ADMIN_TABS: TabRoute[] = [
@@ -65,7 +64,7 @@ export const getAdminTabs = (
 type UntranslatedTab = {
   message: MessageDescriptor;
   name: string;
-  url: RouteType;
+  url: string;
 };
 
 const translateTabs = (

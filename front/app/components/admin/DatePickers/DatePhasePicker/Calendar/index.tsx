@@ -12,7 +12,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import TimeInput from 'components/admin/DateTimeSelection/TimeInput';
+import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';

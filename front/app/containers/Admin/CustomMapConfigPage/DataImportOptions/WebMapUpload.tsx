@@ -10,7 +10,6 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-import { useParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
@@ -18,6 +17,7 @@ import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import { ViewOptions } from '..';
 import messages from '../messages';
@@ -29,7 +29,7 @@ type Props = {
 };
 
 const WebMapUpload = ({ mapConfigId, setView }: Props) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

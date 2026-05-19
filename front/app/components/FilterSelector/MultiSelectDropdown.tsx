@@ -17,6 +17,7 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
 
@@ -276,7 +277,7 @@ const MultiSelectDropdown = ({
                         Enter/Space to the native <input type="checkbox"> inside
                         it instead of the <li role="checkbox"> that has the
                         keyboard handlers. pointerEvents: 'none' ensures clicks
-                        go through the <li>'s onClick handler. 
+                        go through the <li>'s onClick handler.
                     */}
                     <Box aria-hidden="true" pointerEvents="none">
                       <Checkbox
@@ -300,6 +301,7 @@ const MultiSelectDropdown = ({
           </Box>
         }
       />
+      <DropdownFocusSentinel opened={opened} onClose={closeExpanded} />
     </Box>
   );
 };

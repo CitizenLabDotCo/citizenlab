@@ -1,60 +1,162 @@
 import React from 'react';
 
-// eslint-disable-next-line no-restricted-imports
-import { Path } from 'history';
 import {
-  // eslint-disable-next-line no-restricted-imports
-  NavLink as RouterLink,
-  NavLinkProps,
-} from 'react-router-dom';
-import { RouteType } from 'routes';
+  type ActiveOptions,
+  type AnyRouter,
+  createLink,
+  type CreateLinkProps,
+  type LinkComponent,
+  type LinkComponentProps,
+  type RegisteredRouter,
+} from '@tanstack/react-router';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
-import updateLocationDescriptor from './updateLocationDescriptor';
+import type { AddLocale, WithLocaleAwareParams } from './localeAware';
 
-export type Props = {
-  to: Path | RouteType | { pathname: string };
-  onlyActiveOnIndex?: boolean;
+export type { WrapperTo, TypedLinkProps } from './localeAware';
+
+// styled-components erases the generic-function shape of typed router
+// components like cl-router/Link, so `styled(Link)` drops route-aware typing.
+// Use `typedStyled(Link)` instead of casting `as typeof Link` to preserve the
+// wrapped component's full type.
+export function typedStyled<C>(component: C) {
+  return styled(
+    component as unknown as React.ComponentType<unknown>
+  ) as unknown as (
+    strings: TemplateStringsArray,
+    ...interpolations: unknown[]
+  ) => C;
+}
+
+interface ExtraProps {
   scrollToTop?: boolean;
-  active?: boolean;
-  onClick?: (event: React.MouseEvent) => void;
-} & Omit<NavLinkProps, 'onClick'>;
+  onlyActiveOnIndex?: boolean;
+}
 
-/*
- * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
- */
-const Link = React.forwardRef<HTMLAnchorElement, Props>(
-  (
-    {
-      to,
-      onlyActiveOnIndex,
-      scrollToTop,
-      onClick,
-      active: _active,
-      ...otherProps
-    },
-    ref
-  ) => {
+type InnerProps = CreateLinkProps &
+  ExtraProps &
+  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+
+const Inner = React.forwardRef<HTMLAnchorElement, InnerProps>(
+  ({ scrollToTop, onlyActiveOnIndex: _i, onClick, ...rest }, ref) => (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <a
+      ref={ref}
+      {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      onClick={(e) => {
+        onClick?.(e);
+        if (scrollToTop) scrollTop('link');
+      }}
+    />
+  )
+);
+Inner.displayName = 'ClRouterLinkInner';
+
+const TypedLink: LinkComponent<typeof Inner> = createLink(Inner);
+
+// Wrapper-specific Link signature: `to` accepts the stripped form (preferred,
+// e.g. `/admin/users`) or the prefixed form (e.g. `/$locale/admin/users`).
+// `params` and `search` keep TanStack type-safety against the route tree —
+// internally we feed TanStack `AddLocale<TTo>` so the strict route literal
+// drives params/search shape resolution. The locale is optional within
+// `params` — the wrapper auto-injects it from `useLocale()`. Other route
+// params (e.g. `projectId`) remain required.
+type LocaleAwareLink<TComp> = <
+  TRouter extends AnyRouter = RegisteredRouter,
+  const TFrom extends string = string,
+  const TTo extends string | undefined = undefined,
+  const TMaskFrom extends string = TFrom,
+  const TMaskTo extends string = ''
+>(
+  props: Omit<
+    WithLocaleAwareParams<
+      LinkComponentProps<
+        TComp,
+        TRouter,
+        TFrom,
+        TTo extends string ? AddLocale<TTo> : TTo,
+        TMaskFrom,
+        TMaskTo
+      >
+    >,
+    'to'
+  > & { to?: TTo; ref?: React.Ref<HTMLAnchorElement> }
+) => React.ReactElement;
+
+// Implementation-side props: the public `LocaleAwareLink<>` signature is the
+// source of truth (applied via the cast on `export default` below). Internally
+// we widen `params` and `activeOptions` to the loose union TanStack emits so
+// the body can destructure and remap without per-call generic resolution.
+type ParamsValue =
+  | true
+  | Record<string, unknown>
+  | ((prev: unknown) => Record<string, unknown>);
+
+type LinkImplProps = ExtraProps &
+  Omit<CreateLinkProps, 'params' | 'activeOptions'> &
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+    params?: ParamsValue;
+    activeOptions?: ActiveOptions;
+  };
+
+// forwardRef so consumers (e.g. styled `<PhaseBar as={Link} ref={...}>` in the
+// project timeline) can attach a ref to the rendered <a> for focus management.
+const Link = React.forwardRef<HTMLAnchorElement, LinkImplProps>(
+  (props, ref) => {
     const locale = useLocale();
-    return (
-      <RouterLink
-        ref={ref}
-        end={onlyActiveOnIndex}
-        to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
-        onClick={(event) => {
-          onClick && onClick(event);
-          if (scrollToTop) {
-            scrollTop('link');
-          }
-        }}
-        {...otherProps}
-      />
-    );
+    const { to, params, onlyActiveOnIndex, activeOptions, ...rest } = props;
+
+    // Auto-prepend `/$locale` to absolute internal paths that don't already have
+    // it. Mirrors __mocks__/Link.tsx so test href assertions match runtime.
+    // `'/'` is special-cased to `'/$locale'` (no trailing slash) so the runtime
+    // string lines up with the type-level `AddLocale<'/'>`.
+    const resolvedTo =
+      typeof to === 'string' && to.startsWith('/') && !to.startsWith('/$locale')
+        ? to === '/'
+          ? '/$locale'
+          : `/$locale${to}`
+        : to;
+
+    const mergedParams =
+      typeof params === 'function'
+        ? (prev: unknown) => ({ locale, ...params(prev) })
+        : params && params !== true
+        ? { locale, ...params }
+        : { locale };
+
+    const resolvedActiveOptions = onlyActiveOnIndex
+      ? { exact: true, ...activeOptions }
+      : activeOptions;
+
+    // Single contained cast: the public `LocaleAwareLink<>` type already enforces
+    // the route-aware shape on callers; here we hand the resolved (locale-merged)
+    // props to `TypedLink`, whose generic param/search types we've intentionally
+    // erased to keep the wrapper non-generic.
+    const linkProps = {
+      ...rest,
+      ref,
+      to: resolvedTo,
+      params: mergedParams,
+      activeOptions: resolvedActiveOptions,
+    } as React.ComponentProps<typeof TypedLink>;
+
+    return <TypedLink {...linkProps} />;
   }
 );
+Link.displayName = 'ClRouterLink';
 
-export default Link;
+// Escape hatch for use with styled-components `as={LinkAs}`. Styled-components'
+// `as` prop can't resolve the generic-function shape of the default export
+// (`LocaleAwareLink`), so it loses `children`/ref typing. This export is the
+// same runtime component, typed plainly so `as=` works. Only use this when
+// you need the styled-`as` pattern; for direct rendering, prefer the default
+// route-aware export.
+export const LinkAs = Link as unknown as React.ForwardRefExoticComponent<
+  LinkImplProps & React.RefAttributes<HTMLAnchorElement>
+>;
+
+export default Link as LocaleAwareLink<typeof Inner>;

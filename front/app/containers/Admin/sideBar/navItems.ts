@@ -1,5 +1,4 @@
 import { IconNames } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -7,7 +6,7 @@ import messages from './messages';
 
 export type NavItem = {
   name: string;
-  link: RouteType;
+  link: string;
   iconName: IconNames;
   message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];

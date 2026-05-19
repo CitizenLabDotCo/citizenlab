@@ -12,7 +12,9 @@ import {
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-interface Props {
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+
+interface Props extends TypedLinkProps {
   icon: IconNames;
   title: ReactNode;
   description: ReactNode;
@@ -27,6 +29,9 @@ const FeatureCallout = ({
   title,
   description,
   linkText,
+  to,
+  params,
+  search,
   linkTo,
   disabledTooltipContent,
   tooltipDisabled,
@@ -34,6 +39,7 @@ const FeatureCallout = ({
   const iconElement = (
     <Icon name={icon} fill={colors.teal700} height="20px" mt="2px" />
   );
+  const hasLink = !!(to || linkTo);
 
   return (
     <Box
@@ -65,8 +71,11 @@ const FeatureCallout = ({
         </Text>
       </Box>
 
-      {linkTo && linkText && (
+      {hasLink && linkText && (
         <ButtonWithLink
+          to={to}
+          params={params}
+          search={search}
           linkTo={linkTo}
           openLinkInNewTab
           buttonStyle="text"

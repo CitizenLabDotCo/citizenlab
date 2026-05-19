@@ -14,9 +14,16 @@ import ConsentManager from '.';
 
 // mocks
 
-jest.mock('utils/cl-router/Link', () => ({ children }) => (
-  <button>{children}</button>
-));
+jest.mock('utils/cl-router/Link', () => {
+  const Link = ({ children }: { children?: React.ReactNode }) => (
+    <button>{children}</button>
+  );
+  return {
+    __esModule: true,
+    default: Link,
+    typedStyled: () => () => Link,
+  };
+});
 
 let mockAuthUser: IUserData | null = null;
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockAuthUser } }));

@@ -1,12 +1,8 @@
 import React from 'react';
 
-import { RouteType } from 'routes';
-
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import NavbarItemRow from '.';
-
-jest.mock('utils/cl-router/withRouter');
 
 const title = { en: 'English title' };
 
@@ -108,9 +104,7 @@ describe('<NavbarItemRow />', () => {
   });
 
   it('render view button if viewButtonLink is provided', () => {
-    render(
-      <NavbarItemRow title={title} viewButtonLink={'/some/link' as RouteType} />
-    );
+    render(<NavbarItemRow title={title} viewButtonLink={'/some/link'} />);
     expect(screen.getByText('View')).toBeInTheDocument();
   });
 });

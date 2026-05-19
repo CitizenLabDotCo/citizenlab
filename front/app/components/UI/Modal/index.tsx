@@ -495,7 +495,7 @@ const Modal: React.FC<Props> = ({
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
             ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
-            aria-modal="true"
+            isModal
             role="dialog"
           >
             {!niceHeader && (

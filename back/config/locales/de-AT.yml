@@ -103,7 +103,7 @@ de-AT:
     categories:
       main_content:
         comment:
-          title: Was ist Ihr Kommentar?
+          title: Was ist dein Kommentar?
         contribution:
           title: Was ist dein Beitrag?
         idea:
@@ -111,27 +111,27 @@ de-AT:
         initiative:
           title: Was ist deine Initiative?
         issue:
-          title: Was ist Ihr Kommentar?
+          title: Was ist dein Kommentar?
         option:
           title: Was ist deine Option?
         petition:
           title: Was ist deine Petition?
         post:
-          title: Was ist Ihr Beitrag?
+          title: Was ist dein Beitrag?
         project:
           title: Was ist dein Projekt?
         proposal:
           title: Was ist dein Vorschlag?
         question:
-          title: Was ist Ihre Frage?
+          title: Was ist deine Frage?
         response:
-          title: Was ist Ihre Antwort?
+          title: Was ist deine Antwort?
         story:
-          title: Was ist Ihre Story?
+          title: Was ist deine Story?
         suggestion:
-          title: Was ist Ihr Vorschlag?
+          title: Was ist dein Vorschlag?
         topic:
-          title: Was ist Ihr Thema?
+          title: Was ist dein Thema?
   errors:
     messages:
       in_the_past: muss in der Zukunft liegen
@@ -222,8 +222,8 @@ de-AT:
     ca-ES: Katalanisch
     cy-GB: Walisisch
     da-DK: Dänisch
-    de-AT: Deutsch (Österreich)
-    de-DE: Deutsch
+    de-AT: Deutsch (duzen)
+    de-DE: Deutsch (siezen)
     el-GR: Griechisch
     en: Englisch
     en-CA: Englisch (Kanada)
@@ -268,7 +268,7 @@ de-AT:
     proposals:
       title: Vorschläge
   phases:
-    community_monitor_title: Gemeinschaftspuls
+    community_monitor_title: Stimmungsbarometer
     native_survey_button: Umfrage ausfüllen
     native_survey_title: Umfrage
     open_idea_phase_title: Aktuelle Phase

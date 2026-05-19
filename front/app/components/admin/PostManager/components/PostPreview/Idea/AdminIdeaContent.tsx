@@ -37,7 +37,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -76,7 +76,7 @@ const BelongsToProject = styled.p`
   margin-bottom: 10px;
 `;
 
-const ProjectLink = styled(Link)`
+const ProjectLink = typedStyled(Link)`
   color: inherit;
   font-weight: 400;
   font-size: inherit;
@@ -222,7 +222,8 @@ const AdminIdeaContent = ({
         </ButtonWithLink>
         {!isCommonGround && (
           <ButtonWithLink
-            linkTo={`/ideas/${idea.data.attributes.slug}`}
+            to="/ideas/$slug"
+            params={{ slug: idea.data.attributes.slug }}
             // We open in a new tab not lose state of the input manager
             openLinkInNewTab
             icon="eye"
@@ -249,7 +250,8 @@ const AdminIdeaContent = ({
                 projectLink: (
                   <ProjectLink
                     className="e2e-project-link"
-                    to={`/projects/${project.data.attributes.slug}`}
+                    to="/projects/$slug"
+                    params={{ slug: project.data.attributes.slug }}
                   >
                     <T value={project.data.attributes.title_multiloc} />
                   </ProjectLink>
