@@ -10,11 +10,12 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   context 'full users who reset confirmation code' do
     let(:user) do
       user = create(:user)
+      user.new_email = 'newemail@test.com'
       user.reset_confirmation_code!
       user
     end
 
-    it 'changes the confirmation code of a user requiring confirmation' do
+    it 'changes the confirmation code of a user with a pending email change' do
       old_code = user.email_confirmation_code
       described_class.perform_now(user.id, user.email_confirmation_code)
       expect(user.reload.email_confirmation_code).not_to eq(old_code)
@@ -30,7 +31,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
       expect(DeleteUserJob).not_to have_been_enqueued
     end
 
-    it 'does nothing when the user does not require confirmation' do
+    it 'does nothing when the user does not require confirmation and has no pending email change' do
       user.email_confirmation_code
       user.confirm!
       described_class.perform_now(user.id, user.email_confirmation_code)

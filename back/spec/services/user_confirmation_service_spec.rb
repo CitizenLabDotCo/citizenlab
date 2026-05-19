@@ -137,7 +137,50 @@ RSpec.describe UserConfirmationService do
   describe '#validate_and_confirm_email_change!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email_change!
+    context 'when the code is correct' do
+      it 'returns success and swaps email without requiring confirmation_required' do
+        expect(user.confirmation_required?).to be false
+        expect(user.new_email).to eq 'new@email.com'
+        result = service.validate_and_confirm_email_change!(user, user.email_confirmation_code)
+        expect(result.success?).to be true
+        expect(user.reload.email).to eq 'new@email.com'
+        expect(user.new_email).to be_nil
+      end
+    end
+
+    context 'when the user is nil' do
+      it 'returns a user blank error' do
+        result = service.validate_and_confirm_email_change!(nil, '1234')
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ user: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is nil' do
+      it 'returns a code blank error' do
+        result = service.validate_and_confirm_email_change!(user, nil)
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ code: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is incorrect' do
+      it 'returns a code invalid error' do
+        result = service.validate_and_confirm_email_change!(user, 'failcode')
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has expired' do
+      before { user.update(email_confirmation_code_sent_at: 1.week.ago) }
+
+      it 'returns a code expired error' do
+        result = service.validate_and_confirm_email_change!(user, user.email_confirmation_code)
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :expired }])
+      end
+    end
 
     context 'when the new email is blank' do
       before do
