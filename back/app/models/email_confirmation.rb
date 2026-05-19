@@ -25,8 +25,6 @@
 #
 class EmailConfirmation < Confirmation
   def confirm!
-    return false unless user.confirmation_required?
-
     transaction do
       user.update!(email_confirmed_at: Time.zone.now, confirmation_required: false)
       clear_code!
