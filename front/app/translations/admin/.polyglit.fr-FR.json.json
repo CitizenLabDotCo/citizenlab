@@ -9299,6 +9299,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.InternalAdoptionCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:56:40.630014Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeAdminColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T21:30:55.095541Z",
@@ -9344,6 +9349,11 @@
     "verified_at": "2026-05-19T15:12:36.607468Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.participantsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:56:40.630014Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.participantsColumn": {
     "state": "verified",
     "verified_at": "2026-05-19T15:12:36.607468Z",
@@ -9368,6 +9378,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.participantsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:56:40.630014Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.participation": {
     "state": "verified",
