@@ -12,6 +12,23 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const Wrapper = styled(Box)`
+  position: relative;
+`;
+
+const ArrowBox = styled(Box)<{ side: 'start' | 'end' }>`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  ${({ side }) => (side === 'start' ? 'left: 0;' : 'right: 0;')}
+
+  ${isRtl`
+    ${({ side }: { side: 'start' | 'end' }) =>
+      side === 'start' ? 'left: auto; right: 0;' : 'right: auto; left: 0;'}
+  `}
+`;
+
 const StyledContainer = styled(Box)`
   display: flex;
   gap: 16px;
@@ -22,6 +39,17 @@ const StyledContainer = styled(Box)`
   overflow-x: scroll;
   height: auto;
   width: 100%;
+  // Leave room for the keyboard focus ring on children (extends ~6px outside
+  // the element). overflow:scroll clips descendant outlines, so we pad the
+  // container and pull it back with a negative margin so the visual layout is
+  // unchanged. The width is widened by 12px so the inner content area stays
+  // 100% of the parent — otherwise horizontal padding would falsely trigger
+  // overflow on tabs that naturally fit. Safe to do here because the arrows
+  // are absolutely positioned and no longer share flex space with the
+  // scroller.
+  width: calc(100% + 12px);
+  padding: 6px;
+  margin: -6px;
 
   ${isRtl`
   flex-direction: row-reverse;
@@ -43,88 +71,74 @@ interface Props {
 /*
  * HorizontalScroll:
  * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
+ *
+ * Arrow buttons are absolutely positioned over the scroll container's edges so
+ * that toggling their visibility does not change the container's width. This
+ * keeps `scrollWidth > clientWidth` a stable, non-bistable measurement.
  */
 const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const containerRef = React.useRef<HTMLDivElement>(null);
-  // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
+  const [showArrowButtons, setShowArrowButtons] = useState(false);
 
+  // Recompute arrow visibility and scroll-edge state on mount, on every size
+  // change (ResizeObserver), and on scroll.
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    containerRef?.current?.addEventListener('scroll', () => {
-      // Update scroll states
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!containerRef?.current) return;
-      setAtScrollStart(containerRef.current.scrollLeft === 0);
-      const maxScrollLeft =
-        containerRef.current.scrollWidth - containerRef.current.clientWidth;
-      setAtScrollEnd(containerRef.current.scrollLeft >= maxScrollLeft);
-    });
-  });
+    const container = containerRef.current;
+    if (!container) return;
 
-  // Determine if the width of the container is large enough to require horizontal scrolling
-  const showArrows =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    containerRef?.current &&
-    containerRef.current.scrollWidth > containerRef.current.clientWidth;
-  const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
+    const update = () => {
+      setShowArrowButtons(container.scrollWidth > container.clientWidth);
+      setAtScrollStart(container.scrollLeft === 0);
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      setAtScrollEnd(container.scrollLeft >= maxScrollLeft);
+    };
 
-  // Update whether arrows/horizontal scrolling is required when the width of the container changes
-  useEffect(() => {
-    setShowArrowButtons(
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      containerRef?.current &&
-        containerRef.current.scrollWidth > containerRef.current.clientWidth
-    );
-  }, [containerRef, showArrows]);
+    update();
+    container.addEventListener('scroll', update);
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(container);
+    return () => {
+      container.removeEventListener('scroll', update);
+      resizeObserver.disconnect();
+    };
+  }, []);
 
-  // Scroll the container by the specified offset
   const horizontalScroll = (scrollOffset: number) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
     containerRef.current.scrollLeft += scrollOffset;
   };
 
   return (
-    <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
-      <Box
+    <Wrapper>
+      <StyledContainer ref={containerRef} role={containerRole}>
+        {children}
+      </StyledContainer>
+      <ArrowBox
+        side="start"
         aria-hidden="true"
-        my="auto"
-        display={showArrowButtons ? 'inherit' : 'none'}
+        display={showArrowButtons ? 'block' : 'none'}
       >
         <Button
           disabled={atScrollStart}
           onClick={() => {
-            horizontalScroll(
-              isSmallerThanPhone
-                ? -200 // Scroll by 200px on mobile
-                : -350 // Scroll by 350px on desktop
-            );
+            horizontalScroll(isSmallerThanPhone ? -200 : -350);
           }}
           icon={theme.isRtl ? 'chevron-right' : 'chevron-left'}
           buttonStyle="text"
           p="0px"
-          my="auto"
           className="e2e-event-previews-scroll-left"
           ariaLabel={formatMessage(messages.scrollLeftLabel)}
         />
-      </Box>
-      <StyledContainer ref={containerRef} role={containerRole}>
-        {children}
-      </StyledContainer>
-      <Box
+      </ArrowBox>
+      <ArrowBox
+        side="end"
         aria-hidden="true"
-        my="auto"
-        display={showArrowButtons ? 'inherit' : 'none'}
+        display={showArrowButtons ? 'block' : 'none'}
       >
         <Button
           disabled={atScrollEnd}
@@ -137,8 +151,8 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           className="e2e-event-previews-scroll-right"
           ariaLabel={formatMessage(messages.scrollRightLabel)}
         />
-      </Box>
-    </Box>
+      </ArrowBox>
+    </Wrapper>
   );
 };
 
