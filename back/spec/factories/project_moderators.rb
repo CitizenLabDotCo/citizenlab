@@ -6,13 +6,7 @@ FactoryBot.define do
       projects { [create(:project)] }
       project_ids { nil }
     end
-    
-    after :build do |moderator, evaluator|
-      (evaluator.project_ids || evaluator.projects&.compact&.map(&:id)).each do |project_id|
-        moderator.add_role('project_moderator', project_id: project_id)
-      end
-
-      moderator.confirm
-    end
+    roles { (project_ids || projects&.map(&:id)).uniq.map { |id| { type: 'project_moderator', project_id: id } } }
+    after(:build, &:confirm)
   end
 end
