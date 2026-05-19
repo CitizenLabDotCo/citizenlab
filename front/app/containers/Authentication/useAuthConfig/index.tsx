@@ -11,9 +11,8 @@ export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
-  // The `id_*` SSO methods are no longer separate features. They are configured
-  // as verification methods, and the `/verification_methods` endpoint exposes a
-  // `login_method` flag for the ones that can be used to authenticate.
+  // Custom SSO methods are configured as verification methods, and the `/verification_methods` endpoint
+  // exposes a `login_method` flag for the ones that can be used to authenticate.
   const { data: verificationMethods } = useVerificationMethods();
   const hasLoginMethod = (name: TVerificationMethodName) =>
     !!verificationMethods?.data.some(
@@ -37,8 +36,7 @@ export default function useAuthConfig() {
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
-  // Google, Facebook and Azure AD are not `id_*` methods and keep their own
-  // feature flags.
+  // Google, Facebook and Azure AD are not custom ID / verification methods  have their own feature flags.
   const google = useFeatureFlag({ name: 'google_login' });
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
