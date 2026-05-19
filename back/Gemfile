@@ -269,3 +269,5 @@ commercial_engines.each do |engine_name|
   path = "engines/commercial/#{engine_name}"
   gem engine_name, path: path if File.directory?(path)
 end
+
+gem "doorkeeper", "~> 5.9"

@@ -633,6 +633,8 @@ GEM
       nokogiri (~> 1.8, >= 1.8.1)
       rubyzip (~> 1.2, >= 1.2.1)
     domain_name (0.6.20240107)
+    doorkeeper (5.9.0)
+      railties (>= 5)
     drb (2.2.3)
     easy_translate (0.5.1)
       thread
@@ -1371,6 +1373,7 @@ DEPENDENCIES
   debug
   document_annotation!
   docx (~> 0.3.0)
+  doorkeeper (~> 5.9)
   drb
   email_campaigns!
   factory_bot_rails
