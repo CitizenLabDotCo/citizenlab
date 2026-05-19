@@ -19,44 +19,46 @@ class CreateConfirmations < ActiveRecord::Migration[7.2]
     #   - has new_email          -> data goes to NewEmailConfirmation
     #   - no new_email           -> data goes to EmailConfirmation
     # Users with no email_confirmation_code get two empty rows.
-    execute <<~SQL.squish
-      INSERT INTO confirmations (
-        id, user_id, type, code, code_retry_count, code_reset_count, code_sent_at, created_at, updated_at
-      )
-      SELECT
-        gen_random_uuid(),
-        users.id,
-        'EmailConfirmation',
-        CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code            ELSE NULL END,
-        CASE WHEN users.new_email IS NULL THEN users.email_confirmation_retry_count     ELSE 0    END,
-        CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code_reset_count ELSE 0   END,
-        CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code_sent_at    ELSE NULL END,
-        NOW(),
-        NOW()
-      FROM users
-    SQL
+    safety_assured do
+      execute <<~SQL.squish
+        INSERT INTO confirmations (
+          id, user_id, type, code, code_retry_count, code_reset_count, code_sent_at, created_at, updated_at
+        )
+        SELECT
+          gen_random_uuid(),
+          users.id,
+          'EmailConfirmation',
+          CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code             ELSE NULL END,
+          CASE WHEN users.new_email IS NULL THEN users.email_confirmation_retry_count      ELSE 0    END,
+          CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code_reset_count ELSE 0    END,
+          CASE WHEN users.new_email IS NULL THEN users.email_confirmation_code_sent_at     ELSE NULL END,
+          NOW(),
+          NOW()
+        FROM users
+      SQL
 
-    execute <<~SQL.squish
-      INSERT INTO confirmations (
-        id, user_id, type, code, code_retry_count, code_reset_count, code_sent_at, created_at, updated_at
-      )
-      SELECT
-        gen_random_uuid(),
-        users.id,
-        'NewEmailConfirmation',
-        CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code            ELSE NULL END,
-        CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_retry_count     ELSE 0    END,
-        CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code_reset_count ELSE 0   END,
-        CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code_sent_at    ELSE NULL END,
-        NOW(),
-        NOW()
-      FROM users
-    SQL
+      execute <<~SQL.squish
+        INSERT INTO confirmations (
+          id, user_id, type, code, code_retry_count, code_reset_count, code_sent_at, created_at, updated_at
+        )
+        SELECT
+          gen_random_uuid(),
+          users.id,
+          'NewEmailConfirmation',
+          CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code             ELSE NULL END,
+          CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_retry_count      ELSE 0    END,
+          CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code_reset_count ELSE 0    END,
+          CASE WHEN users.new_email IS NOT NULL THEN users.email_confirmation_code_sent_at     ELSE NULL END,
+          NOW(),
+          NOW()
+        FROM users
+      SQL
 
-    remove_column :users, :email_confirmation_code
-    remove_column :users, :email_confirmation_retry_count
-    remove_column :users, :email_confirmation_code_reset_count
-    remove_column :users, :email_confirmation_code_sent_at
+      remove_column :users, :email_confirmation_code
+      remove_column :users, :email_confirmation_retry_count
+      remove_column :users, :email_confirmation_code_reset_count
+      remove_column :users, :email_confirmation_code_sent_at
+    end
   end
 
   def down
@@ -65,18 +67,20 @@ class CreateConfirmations < ActiveRecord::Migration[7.2]
     add_column :users, :email_confirmation_code_reset_count, :integer, null: false, default: 0
     add_column :users, :email_confirmation_code_sent_at, :datetime
 
-    # Pull the code data back from whichever confirmation row has it.
-    execute <<~SQL.squish
-      UPDATE users
-      SET
-        email_confirmation_code             = confirmations.code,
-        email_confirmation_retry_count      = confirmations.code_retry_count,
-        email_confirmation_code_reset_count = confirmations.code_reset_count,
-        email_confirmation_code_sent_at     = confirmations.code_sent_at
-      FROM confirmations
-      WHERE confirmations.user_id = users.id
-        AND confirmations.code IS NOT NULL
-    SQL
+    safety_assured do
+      # Pull the code data back from whichever confirmation row has it.
+      execute <<~SQL.squish
+        UPDATE users
+        SET
+          email_confirmation_code             = confirmations.code,
+          email_confirmation_retry_count      = confirmations.code_retry_count,
+          email_confirmation_code_reset_count = confirmations.code_reset_count,
+          email_confirmation_code_sent_at     = confirmations.code_sent_at
+        FROM confirmations
+        WHERE confirmations.user_id = users.id
+          AND confirmations.code IS NOT NULL
+      SQL
+    end
 
     drop_table :confirmations
   end
