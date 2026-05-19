@@ -22,7 +22,7 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    current_user || redirect_to(Frontend::UrlService.new.sign_in_url)
+    current_user || redirect_to(Frontend::UrlService.new.sign_in_url(request.fullpath))
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -37,7 +37,7 @@ Doorkeeper.configure do
     if current_user
       head :forbidden unless current_user.admin?
     else
-      redirect_to(Frontend::UrlService.new.sign_in_url)
+      redirect_to(Frontend::UrlService.new.sign_in_url(request.fullpath))
     end
   end
 
