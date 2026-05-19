@@ -129,10 +129,6 @@ resource 'User', admin_api: true do
     describe do
       before do
         configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          allowed: true,
-          enabled: true
-        }
         configuration.save!
       end
 
@@ -178,10 +174,6 @@ resource 'User', admin_api: true do
     end
 
     describe do
-      before do
-        SettingsService.new.activate_feature!('user_confirmation')
-      end
-
       let(:confirm_email) { true }
       let(:password) { 'new-password' }
       let(:roles) { [{ type: 'admin' }] }

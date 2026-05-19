@@ -11,6 +11,8 @@ FactoryBot.define do
       (evaluator.project_folder_ids || evaluator.project_folders&.compact&.map(&:id)).each do |folder_id|
         moderator.add_role('project_folder_moderator', project_folder_id: folder_id)
       end
+
+      moderator.confirm
     end
   end
 end

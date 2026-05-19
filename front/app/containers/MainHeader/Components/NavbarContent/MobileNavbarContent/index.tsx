@@ -85,7 +85,7 @@ const MobileNavbarContent = () => {
   };
 
   return (
-    <nav>
+    <nav aria-label={formatMessage(messages.ariaLabel)}>
       <RightContainer>
         {!isEmailSettingsPage && (
           <>
