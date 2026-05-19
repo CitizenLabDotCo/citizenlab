@@ -7,7 +7,7 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[7.2]
         t.string  :name,    null: false
         t.string  :uid,     null: false
         # Remove `null: false` or use conditional constraint if you are planning to use public clients.
-        t.string  :secret,  null: false
+        t.string  :secret
 
         # Remove `null: false` if you are planning to use grant flows
         # that doesn't require redirect URI to be used during authorization
@@ -72,20 +72,11 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[7.2]
         #
         # Comment out this line if you want refresh tokens to be instantly
         # revoked after use.
-        t.string   :previous_refresh_token, null: false, default: ''
+        # t.string   :previous_refresh_token, null: false, default: ''
       end
 
       add_index :oauth_access_tokens, :token, unique: true
-
-      # See https://github.com/doorkeeper-gem/doorkeeper/issues/1592
-      if ActiveRecord::Base.connection.adapter_name == 'SQLServer'
-        execute <<~SQL.squish
-          CREATE UNIQUE NONCLUSTERED INDEX index_oauth_access_tokens_on_refresh_token ON oauth_access_tokens(refresh_token)
-          WHERE refresh_token IS NOT NULL
-        SQL
-      else
-        add_index :oauth_access_tokens, :refresh_token, unique: true
-      end
+      add_index :oauth_access_tokens, :refresh_token, unique: true
 
       add_foreign_key(
         :oauth_access_tokens,
