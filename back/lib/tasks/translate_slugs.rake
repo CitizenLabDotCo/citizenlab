@@ -13,8 +13,22 @@ namespace :slugs do
     locale = args[:locale]
     execute = args[:execute] == 'execute'
 
+    puts "---------- STARTING TASK: Translate slugs to '#{locale}' ----------\n\n"
+    puts "Mode: #{execute ? 'EXECUTE - changes WILL be applied' : 'Dry run - no changes will be applied'}\n\n"
+
+    if host.blank? || locale.blank?
+      puts 'ERROR! Both host and locale arguments are required. Usage: rake slugs:translate_slugs[example.com,fr-BE,execute]'
+      next
+    end
+
     tenant = Tenant.find_by(host: host)
-    raise "No tenant found for host '#{host}'" if tenant.nil?
+    if tenant.nil?
+      puts "ERROR! No tenant found for host '#{host}'. Aborting."
+      next
+    end
+
+    reporter = ScriptReporter.new
+    reporter.add_processed_tenant(tenant)
 
     tenant.switch do
       # First, find all database tables that have a 'slug' column.
@@ -41,15 +55,28 @@ namespace :slugs do
         participation_method && participation_method.method(:generate_slug).owner == ParticipationMethod::Ideation
       end
 
-      # Iterate every sluggable record and print its title_multiloc and current slug,
+      total_inspected = 0
+      total_not_title_derived = 0
+      total_unchanged = 0
+      total_updated = 0
+      total_errors = 0
+      no_title_records = []
+
+      # Iterate every sluggable record and re-derive its slug from title_multiloc[locale],
       # skipping records whose slug is not derived from title_multiloc.
       models_with_slug.each do |model|
         puts "\n=== #{model.name} (#{model.table_name}) ==="
         model.find_each do |record|
-          next unless slug_from_title_multiloc.call(record)
+          total_inspected += 1
+
+          unless slug_from_title_multiloc.call(record)
+            total_not_title_derived += 1
+            next
+          end
 
           title = record&.title_multiloc&.[](locale)
           if title.blank?
+            no_title_records << "#{model.name} #{record.id}"
             puts "SKIPPED: No #{locale} title_multiloc for #{model.name} #{record.id} to create translated slug from."
             next
           end
@@ -58,19 +85,68 @@ namespace :slugs do
           # including the record itself — so re-slugging to the same value would bump it to
           # '-1'. Skip when the slugified title already matches the current slug.
           if SlugService.new.slugify(title) == record.slug
+            total_unchanged += 1
             puts "UNCHANGED: #{model.name} #{record.id} slug already '#{record.slug}'."
             next
           end
 
+          old_slug = record.slug
           new_slug = SlugService.new.generate_slug(record, title)
+          context = { tenant: host, locale: locale, model: model.name, id: record.id }
+
+          # Record the before/after slug for the JSON report. Done in both modes, so a dry
+          # run also produces a full report of the changes that would be applied.
+          reporter.add_change(
+            { slug: old_slug, title_multiloc: record.title_multiloc },
+            { slug: new_slug, title_multiloc: record.title_multiloc },
+            context: context
+          )
+
           if execute
-            record.update!(slug: new_slug)
-            puts "UPDATED slug for #{model.name} #{record.id} - to '#{new_slug}'."
+            begin
+              record.update!(slug: new_slug)
+              total_updated += 1
+              puts "UPDATED slug for #{model.name} #{record.id} - from '#{old_slug}', to '#{new_slug}'."
+            rescue StandardError => e
+              total_errors += 1
+              reporter.add_error(e.message, context: context)
+              puts "  ERROR! Failed to update #{model.name} #{record.id}: #{e.message}"
+            end
           else
-            puts "Would translate slug for #{model.name} #{record.id} - from '#{record.slug}', to '#{new_slug}'."
+            total_updated += 1
+            puts "WOULD UPDATE slug for #{model.name} #{record.id} - from '#{old_slug}', to '#{new_slug}'."
           end
         end
       end
+
+      summary = {
+        'Records inspected' => total_inspected,
+        (execute ? 'Slugs updated' : 'Slugs to be updated') => total_updated,
+        'Skipped (slug not title-derived)' => total_not_title_derived,
+        "Skipped (no '#{locale}' title)" => no_title_records.size,
+        'Unchanged (slug already correct)' => total_unchanged
+      }
+      summary['Errors'] = total_errors if execute
+
+      label_width = summary.keys.map(&:length).max
+      puts "\nSummary for tenant #{host} (target locale '#{locale}'):"
+      summary.each { |label, count| puts "  #{"#{label}:".ljust(label_width + 1)}  #{count}" }
+
+      # List the records that could not be translated because they have no title in the
+      # target locale - so they can be checked or translated manually.
+      if no_title_records.any?
+        puts "\n#{no_title_records.size} records skipped because no '#{locale}' title_multiloc to derive a slug from:"
+        no_title_records.each { |record_ref| puts "  #{record_ref}" }
+      end
     end
+
+    begin
+      reporter.report!('translate_slugs.json', verbose: false)
+      puts "\nReport written to translate_slugs.json"
+    rescue StandardError => e
+      puts "ERROR! Failed to write report: #{e.message}"
+    end
+
+    puts "\n---------- FINISHED TASK: Translate slugs to '#{locale}' ----------\n\n"
   end
 end
