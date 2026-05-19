@@ -19,7 +19,7 @@ resource 'Request codes' do
 
     example 'works if user has no password and has email confirmed' do
       user = create(:unconfirmed_user, email: 'test@test.com')
-      user.confirm
+      user.email_confirmation.confirm!
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be false
 
@@ -60,8 +60,9 @@ resource 'Request codes' do
       expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
     end
 
-    example 'It does not work if user reached email_confirmation_code_reset_count' do
-      user = create(:unconfirmed_user, email_confirmation_code_reset_count: 4)
+    example 'It does not work if user reached code_reset_count' do
+      user = create(:unconfirmed_user)
+      user.email_confirmation.update!(code_reset_count: 4)
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
@@ -103,9 +104,9 @@ resource 'Request codes' do
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
-    example 'It does not work if user reached email_confirmation_code_reset_count' do
+    example 'It does not work if user reached code_reset_count' do
       user = create(:user)
-      user.update_column(:email_confirmation_code_reset_count, 4)
+      user.new_email_confirmation.update!(code_reset_count: 4)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 401

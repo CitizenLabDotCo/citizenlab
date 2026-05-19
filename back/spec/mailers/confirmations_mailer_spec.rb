@@ -6,7 +6,7 @@ RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
     let_it_be(:user) do
       user = create(:unconfirmed_user, email: 'some_email@email.com')
-      user.reset_confirmation_code!
+      user.email_confirmation.reset_code!
       user
     end
     let_it_be(:mailer) { described_class.with(user: user) }
@@ -59,7 +59,7 @@ RSpec.describe ConfirmationsMailer do
     end
 
     it 'shows the code to the user' do
-      expect(message.body.encoded).to match(user.email_confirmation_code)
+      expect(message.body.encoded).to match(user.email_confirmation.code)
     end
   end
 

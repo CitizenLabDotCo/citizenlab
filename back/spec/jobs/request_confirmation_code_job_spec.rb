@@ -16,7 +16,7 @@ RSpec.describe RequestConfirmationCodeJob do
       end
 
       it 'changes the email confirmation code delivery timestamp' do
-        expect { job.perform(user) }.to change(user, :email_confirmation_code_sent_at)
+        expect { job.perform(user) }.to change { user.email_confirmation.reload.code_sent_at }
       end
 
       it 'sends the confirmation email' do
@@ -42,9 +42,9 @@ RSpec.describe RequestConfirmationCodeJob do
         expect(user.reload.confirmation_required?).to be true
       end
 
-      it 'resets email_confirmation_retry_count' do
-        user.update!(email_confirmation_retry_count: 3)
-        expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+      it 'resets code_retry_count on the email_confirmation' do
+        user.email_confirmation.update!(code_retry_count: 3)
+        expect { job.perform(user) }.to change { user.email_confirmation.reload.code_retry_count }.to(0)
       end
 
       context 'when setting a new email' do
@@ -81,23 +81,16 @@ RSpec.describe RequestConfirmationCodeJob do
           expect(user.reload.new_email).to be_nil
         end
 
-        it 'does not reset email_confirmation_code_reset_count' do
+        it 'does not reset code_reset_count between successive requests' do
           job.perform(user, new_email: new_email)
-          expect(user.email_confirmation_code_reset_count).to eq 1
+          expect(user.new_email_confirmation.reload.code_reset_count).to eq 1
           job.perform(user, new_email: new_email)
-          expect(user.email_confirmation_code_reset_count).to eq 2
+          expect(user.new_email_confirmation.reload.code_reset_count).to eq 2
         end
 
-        it 'sets confirmation_required to true' do
-          user = create(:user)
-          expect(user.confirmation_required?).to be false
-          job.perform(user, new_email: new_email)
-          expect(user.reload.confirmation_required?).to be true
-        end
-
-        it 'resets email_confirmation_retry_count' do
-          user.update!(email_confirmation_retry_count: 3)
-          expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+        it 'resets code_retry_count on the new_email_confirmation' do
+          user.new_email_confirmation.update!(code_retry_count: 3)
+          expect { job.perform(user, new_email: new_email) }.to change { user.new_email_confirmation.reload.code_retry_count }.to(0)
         end
       end
     end
@@ -114,23 +107,23 @@ RSpec.describe RequestConfirmationCodeJob do
           expect(user.email).to eq 'some_email@email.com'
         end
 
-        it 'resets email_confirmation_retry_count' do
-          user.update!(email_confirmation_retry_count: 3)
-          expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+        it 'resets code_retry_count on the email_confirmation' do
+          user.email_confirmation.update!(code_retry_count: 3)
+          expect { job.perform(user) }.to change { user.email_confirmation.reload.code_retry_count }.to(0)
         end
       end
     end
 
     context 'when the user has made too many reset requests' do
       let(:user) do
-        create(:unconfirmed_user).tap { it.update!(email_confirmation_code_reset_count: 5) }
+        create(:unconfirmed_user).tap { |u| u.email_confirmation.update!(code_reset_count: 5) }
       end
 
       it 'raises a too many resets on code error' do
         expect { job.perform(user) }.to raise_error(ActiveRecord::RecordInvalid)
 
-        expect(user).to be_invalid
-        expect(user.errors.details).to eq({ email_confirmation_code_reset_count: [{ error: :less_than_or_equal_to, value: 6, count: 5 }] })
+        expect(user.email_confirmation).to be_invalid
+        expect(user.email_confirmation.errors.details).to eq({ code_reset_count: [{ error: :less_than_or_equal_to, value: 6, count: 5 }] })
       end
     end
   end

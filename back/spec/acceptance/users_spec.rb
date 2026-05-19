@@ -112,8 +112,7 @@ resource 'Users' do
           context 'when the user has not requested any codes yet' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.confirm
-              @user.save!
+              @user.email_confirmation.confirm!
 
               allow(RequestConfirmationCodeJob).to receive(:perform_now)
             end
@@ -131,8 +130,7 @@ resource 'Users' do
           context 'when the user has already requested a code' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.confirm
-              @user.save!
+              @user.email_confirmation.confirm!
 
               RequestConfirmationCodeJob.perform_now @user
 
