@@ -352,8 +352,7 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? && # see #allows_empty_email?
-                  user_confirmation_enabled?
+                  email_was.present? # see #allows_empty_email?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
@@ -381,7 +380,7 @@ class User < ApplicationRecord
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
       bio_multiloc,
-      %i[title alignment list decoration link video]
+      %i[decoration link]
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)

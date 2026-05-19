@@ -139,15 +139,8 @@ RSpec.describe User do
 
   describe 'creating a light user - email & locale only' do
     it 'is valid' do
-      SettingsService.new.activate_feature! 'user_confirmation'
       u = described_class.new(email: 'test@test.com', locale: 'en')
       u.save!
-      expect(u).to be_valid
-    end
-
-    it 'is still valid if user confirmation is not turned on' do
-      u = described_class.new(email: 'test@test.com', locale: 'en')
-      u.save
       expect(u).to be_valid
     end
   end
@@ -202,54 +195,25 @@ RSpec.describe User do
   end
 
   describe 'authentication without password' do
-    context 'when user_confirmation feature is active' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
-
-      it 'is allowed if the user has no password and confirmation is required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        expect(!!u.authenticate('')).to be(true)
-      end
-
-      it 'is not allowed if a password has been supplied in the request' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        expect(!!u.authenticate('any_string')).to be(false)
-      end
-
-      it 'is not allowed if a password has been set' do
-        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-        expect(!!u.authenticate('')).to be(false)
-      end
-
-      it 'is not allowed if confirmation is not required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        u.confirm
-        expect(!!u.authenticate('')).to be(false)
-      end
+    it 'is allowed if the user has no password and confirmation is required' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      expect(!!u.authenticate('')).to be(true)
     end
 
-    context 'when user_confirmation feature is not active' do
-      before do
-        SettingsService.new.deactivate_feature! 'user_confirmation'
-      end
+    it 'is not allowed if a password has been supplied in the request' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      expect(!!u.authenticate('any_string')).to be(false)
+    end
 
-      it 'is not allowed if no password has been set and confirmation is required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        expect(!!u.authenticate('')).to be(false)
-        expect(!!u.authenticate('any_string')).to be(false)
-      end
+    it 'is not allowed if a password has been set' do
+      u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+      expect(!!u.authenticate('')).to be(false)
+    end
 
-      it 'is not allowed if a password has been set' do
-        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-        expect(!!u.authenticate('')).to be(false)
-      end
-
-      it 'is not allowed if confirmation is not required' do
-        u = described_class.new(email: 'bob@citizenlab.co')
-        u.confirm
-        expect(!!u.authenticate('')).to be(false)
-      end
+    it 'is not allowed if confirmation is not required' do
+      u = described_class.new(email: 'bob@citizenlab.co')
+      u.confirm
+      expect(!!u.authenticate('')).to be(false)
     end
   end
 
@@ -409,20 +373,10 @@ RSpec.describe User do
   end
 
   describe 'password' do
-    context 'user confirmation is turned on' do
-      it 'is valid when not supplied at all' do
-        # This is allowed to allow accounts without a password
-        SettingsService.new.activate_feature! 'user_confirmation'
-        u = build(:user_no_password)
-        expect(u).to be_valid
-      end
-    end
-
-    context 'user confirmation is turned off' do
-      it 'is still valid when not supplied' do
-        u = build(:user_no_password)
-        expect(u).to be_valid
-      end
+    it 'is valid when not supplied at all' do
+      # This is allowed to allow accounts without a password
+      u = build(:unconfirmed_user)
+      expect(u).to be_valid
     end
 
     it 'is valid when set to empty string' do
@@ -496,6 +450,29 @@ RSpec.describe User do
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
       expect(user.bio_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
+    end
+
+    it 'strips style attributes from the body' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p style="color:red"><strong>Hi</strong></p>'
+      })
+      expect(user.bio_multiloc).to eq({ 'en' => '<p><strong>Hi</strong></p>' })
+    end
+
+    it 'keeps decoration and link formatting' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p><strong>bold</strong> <em>italic</em> <a href="https://example.com">link</a></p>'
+      })
+      expect(user.bio_multiloc).to eq({
+        'en' => '<p><strong>bold</strong> <em>italic</em> <a href="https://example.com" rel="nofollow">link</a></p>'
+      })
+    end
+
+    it 'removes video iframes from the body' do
+      user = create(:user, bio_multiloc: {
+        'en' => '<p>Watch</p><iframe src="https://www.youtube.com/embed/abc"></iframe>'
+      })
+      expect(user.bio_multiloc).to eq({ 'en' => '<p>Watch</p>' })
     end
   end
 
@@ -861,81 +838,46 @@ RSpec.describe User do
 
   describe 'active?' do
     it 'returns true when the user has completed signup' do
-      u = build(:user)
+      u = create(:unconfirmed_user)
+      u.confirm!
       expect(u.active?).to be true
     end
 
-    it 'returns false when the user has not completed signup' do
-      u = build(:user, registration_completed_at: nil)
-      expect(u.active?).to be false
-    end
-
     it 'returns false when the user requires confirmation' do
-      SettingsService.new.activate_feature! 'user_confirmation'
-      u = build(:user)
+      u = create(:unconfirmed_user)
       expect(u.active?).to be false
     end
 
     it 'returns false when the user is blocked' do
-      u = build(:user, block_end_at: 5.days.from_now)
+      u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
+      u.confirm!
       expect(u.active?).to be false
     end
   end
 
   describe 'registration_completed_at' do
-    context 'without user confirmation turned on' do
-      it 'is set when user is created' do
-        u = create(:user)
-        expect(u.registration_completed_at).not_to be_nil
-      end
-
-      it 'is not set when an invited user is created' do
-        u = create(:invited_user)
-        expect(u.registration_completed_at).to be_nil
-      end
-
-      it 'is set when an invited user is accepted' do
-        u = create(:invited_user)
-        u.update!(invite_status: 'accepted')
-        expect(u.registration_completed_at).not_to be_nil
-      end
-
-      it 'is set to the value provided if a value is provided in update' do
-        reg_date = Time.now
-        u = create(:user)
-        u.update!(registration_completed_at: reg_date)
-        expect(u.registration_completed_at.to_i).to eq reg_date.to_i
-      end
+    it 'is not set when a user is created' do
+      u = create(:unconfirmed_user)
+      expect(u.registration_completed_at).to be_nil
     end
 
-    context 'with user confirmation turned on' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
+    it 'is set when a user is confirmed' do
+      u = create(:unconfirmed_user)
+      u.confirm!
+      expect(u.registration_completed_at).not_to be_nil
+    end
 
-      it 'is not set when a user is created' do
-        u = create(:user_with_confirmation)
-        expect(u.registration_completed_at).to be_nil
-      end
+    it 'is set when an invited user accepts the invite' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted')
+      expect(u.registration_completed_at).not_to be_nil
+    end
 
-      it 'is set when a user is confirmed' do
-        u = create(:user_with_confirmation)
-        u.confirm!
-        expect(u.registration_completed_at).not_to be_nil
-      end
-
-      it 'is set when an invited user accepts the invite' do
-        u = create(:invited_user)
-        u.update!(invite_status: 'accepted')
-        expect(u.registration_completed_at).not_to be_nil
-      end
-
-      it 'is set when an SSO user is created' do
-        u = create(:user)
-        facebook_identity = create(:facebook_identity)
-        u.identities << facebook_identity
-        expect(u.registration_completed_at).not_to be_nil
-      end
+    it 'is set when an SSO user is created' do
+      u = create(:user)
+      facebook_identity = create(:facebook_identity)
+      u.identities << facebook_identity
+      expect(u.registration_completed_at).not_to be_nil
     end
   end
 
@@ -1003,14 +945,10 @@ RSpec.describe User do
   end
 
   context 'user confirmation' do
-    subject(:user) { build(:user_with_confirmation) }
+    subject(:user) { build(:unconfirmed_user) }
 
     after do
       user.clear_changes_information
-    end
-
-    before do
-      SettingsService.new.activate_feature! 'user_confirmation'
     end
 
     it 'is initialized without a confirmation code' do
@@ -1018,13 +956,7 @@ RSpec.describe User do
     end
 
     describe '#confirmation_required?' do
-      it 'returns false if the feature is not active' do
-        SettingsService.new.deactivate_feature! 'user_confirmation'
-        expect(user.confirmation_required?).to be false
-      end
-
       it 'returns false if the user already confirmed their account' do
-        SettingsService.new.activate_feature! 'user_confirmation'
         user.save!
         user.confirm!
         expect(user.reload.confirmation_required?).to be false
@@ -1035,12 +967,12 @@ RSpec.describe User do
       end
 
       it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
+        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
         expect(u.confirmation_required?).to be false
       end
 
       it 'returns true when the user is an unverified SSO user with no email' do
-        u = build(:user, identities: [build(:facebook_identity)], email: nil)
+        u = build(:unconfirmed_user, identities: [build(:facebook_identity)], email: nil)
         expect(u.confirmation_required?).to be true
       end
     end
@@ -1113,36 +1045,28 @@ RSpec.describe User do
     describe '#email' do
       let(:email) { 'new_email@email.com' }
 
-      context 'user confirmation is turned on' do
-        before { SettingsService.new.activate_feature! 'user_confirmation' }
+      it 'raises a taken error if email already exists' do
+        create(:user, email: 'new_email@email.com')
+        expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
 
-        it 'raises a taken error if email already exists' do
-          create(:user, email: 'new_email@email.com')
-          expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
+      it 'raises an invalid error if email is invalid' do
+        invalid_email = 'newemail_com'
+        expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
 
-        it 'raises an invalid error if email is invalid' do
-          invalid_email = 'newemail_com'
-          expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
+      context 'when form submitted' do
+        let(:save_options) { { context: :form_submission } }
 
-        context 'when form submitted' do
-          let(:save_options) { { context: :form_submission } }
-
-          it 'cannot change the email if the user is passwordless' do
-            user.update!(password: nil)
-            user.assign_attributes(email: email)
-            expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
-          end
+        it 'cannot change the email if the user is passwordless' do
+          user.update!(password: nil)
+          user.assign_attributes(email: email)
+          expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end
 
     describe '#confirm!' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-      end
-
       it 'sets email confirmed at' do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
