@@ -381,7 +381,7 @@ class User < ApplicationRecord
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
       bio_multiloc,
-      %i[title alignment list decoration link video]
+      %i[decoration link]
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)

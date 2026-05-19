@@ -1124,6 +1124,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T14:23:57.702805Z",
+    "verified_by": "Adrien"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2484,6 +2489,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:54:49.306603Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:42:28.574476Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3173,6 +3188,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:39:06.225219Z",
+    "verified_by": "Adrien"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7223,6 +7243,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:41:26.899770Z",
+    "verified_by": "Adrien"
   },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",

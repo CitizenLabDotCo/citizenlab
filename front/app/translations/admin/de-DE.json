@@ -3895,7 +3895,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Es gibt keine Beiträge, die von der Community zur Überprüfung gemeldet oder von unserem Natural Language Processing-System als unangemessener Inhalt gekennzeichnet wurden",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Entfernen Sie {numberOfItems, plural, one {Inhaltswarnungen} other {# Inhaltswarnungen}}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Wurde von einem User als unangemessen gemeldet.",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Inhaltliche Warnungen",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Spam",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Berichte",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Seiten, die in Ihrer Navigationsleiste angezeigt werden",
   "app.modules.navbar.admin.containers.addProject": "Projekt zur Navigationsleiste hinzufügen",
