@@ -5,10 +5,12 @@ require 'rails_helper'
 # rubocop:disable RSpec/DescribeClass
 describe 'slugs:translate_slugs rake task' do
   before { load_rake_tasks_if_not_loaded }
-  after { Rake::Task['slugs:translate_slugs'].reenable }
 
-  # The task writes its JSON report to the working directory.
-  after { FileUtils.rm_f(Rails.root.join('translate_slugs.json')) }
+  after do
+    Rake::Task['slugs:translate_slugs'].reenable
+    # The task writes its JSON report to the working directory.
+    FileUtils.rm_f(Rails.root.join('translate_slugs.json'))
+  end
 
   let(:host) { Tenant.current.host }
   let(:locale) { 'nl-BE' }
@@ -97,7 +99,7 @@ describe 'slugs:translate_slugs rake task' do
     context 'when the record fails to save' do
       it 'leaves the slug unchanged and logs an error' do
         project = create(:project, title_multiloc: { 'en' => 'English title', 'nl-BE' => 'Nederlandse titel' }, slug: 'english-title')
-        allow_any_instance_of(Project).to receive(:update!).and_raise('Error updating slug') # rubocop:disable RSpec/AnyInstance
+        allow_any_instance_of(Project).to receive(:update!).and_raise('Error updating slug')
 
         expect { run_task(execute: true) }.to output(/ERROR! Failed to update Project/).to_stdout
         expect(project.reload.slug).to eq('english-title')
