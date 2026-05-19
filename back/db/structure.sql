@@ -259,6 +259,7 @@ DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
 DROP INDEX IF EXISTS public.index_oauth_applications_on_uid;
+DROP INDEX IF EXISTS public.index_oauth_applications_on_owner_id_and_owner_type;
 DROP INDEX IF EXISTS public.index_oauth_access_tokens_on_token;
 DROP INDEX IF EXISTS public.index_oauth_access_tokens_on_resource_owner_id;
 DROP INDEX IF EXISTS public.index_oauth_access_tokens_on_refresh_token;
@@ -3305,8 +3306,7 @@ CREATE TABLE public.oauth_access_tokens (
     expires_in integer,
     scopes character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    revoked_at timestamp(6) without time zone,
-    previous_refresh_token character varying DEFAULT ''::character varying NOT NULL
+    revoked_at timestamp(6) without time zone
 );
 
 
@@ -3318,12 +3318,14 @@ CREATE TABLE public.oauth_applications (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     uid character varying NOT NULL,
-    secret character varying NOT NULL,
+    secret character varying,
     redirect_uri text NOT NULL,
     scopes character varying DEFAULT ''::character varying NOT NULL,
     confidential boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    owner_id bigint,
+    owner_type character varying
 );
 
 
@@ -6849,6 +6851,13 @@ CREATE UNIQUE INDEX index_oauth_access_tokens_on_token ON public.oauth_access_to
 
 
 --
+-- Name: index_oauth_applications_on_owner_id_and_owner_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_oauth_applications_on_owner_id_and_owner_type ON public.oauth_applications USING btree (owner_id, owner_type);
+
+
+--
 -- Name: index_oauth_applications_on_uid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8765,6 +8774,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260519150520'),
 ('20260519142440'),
 ('20260519093224'),
 ('20260429101252'),
