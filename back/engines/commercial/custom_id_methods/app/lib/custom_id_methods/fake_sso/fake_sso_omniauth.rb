@@ -27,7 +27,7 @@ module CustomIdMethods::FakeSso
       session['omniauth.nonce'] = nil
 
       options[:issuer] = issuer
-      options[:jwt_secret_base64] = jwt_secret_base64
+      options[:jwt_secret_base64] = jwt_secret_base64 if jwt_secret_base64
       options[:client_options] = {
         identifier: 'govocal_client',
         secret: 'abc123',
@@ -72,8 +72,12 @@ module CustomIdMethods::FakeSso
       auth.info['email_verified']
     end
 
+    # The fake SSO JWT secret is only needed to verify ID tokens against a real
+    # Fake SSO service. It is not set in every environment (e.g. CI), so a
+    # missing value must not raise and break the omniauth flow.
     def jwt_secret_base64
-      Base64.encode64(ENV.fetch('FAKE_SSO_JWT_SECRET'))
+      secret = ENV.fetch('FAKE_SSO_JWT_SECRET', nil)
+      Base64.encode64(secret) if secret.present?
     end
 
     def issuer_in_settings
