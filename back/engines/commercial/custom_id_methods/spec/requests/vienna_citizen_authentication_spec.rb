@@ -3,9 +3,9 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-require_relative 'shared'
+require_relative 'vienna_shared'
 
-describe 'Vienna SAML citizen authentication' do
+context 'Vienna SAML citizen authentication' do
   include_context 'with Vienna SAML authentication enabled', 'vienna_citizen'
 
   include_examples 'authenticates when the user does not exist yet', 'vienna_citizen'

@@ -92,7 +92,7 @@ RSpec/ExpectInHook:
 # SupportedStyles: always, named_only
 RSpec/NamedSubject:
   Exclude:
-    - 'engines/commercial/id_id_card_lookup/spec/services/id_card_service_spec.rb'
+    - 'engines/commercial/custom_id_methods/spec/services/id_card_service_spec.rb'
     - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/models/area_spec.rb'

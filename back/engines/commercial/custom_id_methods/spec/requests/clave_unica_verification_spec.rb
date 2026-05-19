@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'clave_unica verification' do
+context 'clave_unica verification' do
   before do
     SettingsService.new.activate_feature! 'user_confirmation'
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')

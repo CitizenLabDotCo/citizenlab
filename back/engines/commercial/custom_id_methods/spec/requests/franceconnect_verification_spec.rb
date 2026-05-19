@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'franceconnect verification' do
+context 'franceconnect verification' do
   let(:auth_hash) do
     { 'provider' => 'franceconnect',
       'uid' => 'cfdbc2447d7a579dd48bc67e43ef44a03c208cb8c218450168cfc3ba89f502f6v1',
