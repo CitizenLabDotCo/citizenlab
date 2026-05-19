@@ -4754,6 +4754,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.quarter": {
+    "state": "verified",
+    "verified_at": "2026-05-19T21:20:59.774214Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.communityMonitor.quarterChartLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
