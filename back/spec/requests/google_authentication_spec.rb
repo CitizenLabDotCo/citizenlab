@@ -109,7 +109,7 @@ describe 'google authentication' do
     expect(user.reload.avatar.file.file).to be_present
   end
 
-  it 'deletes the previous user if unverified with password and verification is enabled' do
+  it 'deletes the previous user if user has never confirmed their email address and they have a password (not possible anymore)' do
     user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
     user.update_columns(confirmation_required: true, email_confirmed_at: nil)
     user_id = user.id
