@@ -264,6 +264,13 @@ PATH
       rails (~> 7.2)
 
 PATH
+  remote: engines/commercial/mcp_server
+  specs:
+    mcp_server (0.1.0)
+      mcp (~> 0.16)
+      rails (~> 7.2)
+
+PATH
   remote: engines/commercial/moderation
   specs:
     moderation (0.1.0)
@@ -840,6 +847,8 @@ GEM
       rest-client (>= 2.0.2)
     marcel (1.0.4)
     matrix (0.4.2)
+    mcp (0.16.0)
+      json-schema (>= 4.1)
     method_source (1.1.0)
     mime-types (3.6.2)
       logger
@@ -1420,6 +1429,7 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby (~> 1.2.16)
   matomo!
+  mcp_server!
   mini_magick (~> 4.13)
   mjml-rails (~> 4.11)
   moderation!
