@@ -234,6 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Registriert",
   "app.components.EventAttendanceButton.seeYouThere": "Wir sehen uns!",
   "app.components.EventAttendanceButton.seeYouThereName": "Wir sehen uns, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Du wurdest von {eventTitle} abgemeldet.",
   "app.components.EventCard.a11y_lessContentVisible": "Es wurden weniger Veranstaltungsinformationen sichtbar.",
   "app.components.EventCard.a11y_moreContentVisible": "Weitere Veranstaltungsinformationen wurden sichtbar.",
   "app.components.EventCard.a11y_readMore": "Mehr über die Veranstaltung \"{eventTitle}\" lesen.",

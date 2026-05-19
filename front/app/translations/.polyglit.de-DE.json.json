@@ -1174,6 +1174,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-18T14:40:25.129947Z",
+    "verified_by": "Jelena"
+  },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
