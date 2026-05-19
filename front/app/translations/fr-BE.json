@@ -234,7 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Inscrit(e)",
   "app.components.EventAttendanceButton.seeYouThere": "Au plaisir de vous y retrouver !",
   "app.components.EventAttendanceButton.seeYouThereName": "Au plaisir de vous y retrouver, {userFirstName} !",
-  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Vous avez été désinscrit de {eventTitle}",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Votre inscription à {eventTitle} a bien été annulée",
   "app.components.EventCard.a11y_lessContentVisible": "Moins d'informations sur les événements sont devenues visibles.",
   "app.components.EventCard.a11y_moreContentVisible": "Moins d'informations sur les événements sont devenues visibles.",
   "app.components.EventCard.a11y_readMore": "En savoir plus sur l'événement « {eventTitle} ».",
