@@ -3286,7 +3286,9 @@ CREATE TABLE public.oauth_access_grants (
     redirect_uri text NOT NULL,
     scopes character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    revoked_at timestamp(6) without time zone
+    revoked_at timestamp(6) without time zone,
+    code_challenge character varying,
+    code_challenge_method character varying
 );
 
 
@@ -8763,6 +8765,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260519142440'),
 ('20260519093224'),
 ('20260429101252'),
 ('20260421105121'),
