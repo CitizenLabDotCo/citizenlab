@@ -217,11 +217,7 @@ RSpec.describe ClaimTokenService do
     end
 
     context 'when user requires confirmation' do
-      let(:user) { create(:user_no_password) }
-
-      before do
-        SettingsService.new.activate_feature!('user_confirmation')
-      end
+      let(:user) { create(:unconfirmed_user) }
 
       it 'marks tokens but does not claim immediately' do
         expect(user.confirmation_required?).to be true

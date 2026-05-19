@@ -1,13 +1,12 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
+
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
@@ -16,7 +15,6 @@ import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { useLocation } from 'utils/router';
 
 import {
   triggerAuthenticationFlow$,
@@ -25,15 +23,17 @@ import {
 } from '../events';
 import {
   ErrorCode,
-  SignUpInError,
   State,
   StepConfig,
   Step,
   AuthenticationData,
   VerificationError,
+  SignUpInError,
 } from '../typings';
 
 import { getStepConfig } from './stepConfig';
+
+import { useLocation } from 'utils/router';
 
 let initialized = false;
 
@@ -41,7 +41,6 @@ export default function useSteps() {
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
   const { queueModal, removeModal } = useModalQueue();
-  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -128,8 +127,7 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      state,
-      userConfirmationEnabled
+      state
     );
   }, [
     getAuthenticationData,
@@ -138,7 +136,6 @@ export default function useSteps() {
     setError,
     updateState,
     state,
-    userConfirmationEnabled,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */

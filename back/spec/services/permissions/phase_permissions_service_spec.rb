@@ -7,8 +7,6 @@ describe Permissions::PhasePermissionsService do
   let(:phase) { project.phases.first }
   let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
 
-  before { SettingsService.new.activate_feature! 'user_confirmation' }
-
   context '"reacting_idea" denied_reason_for_action' do
     context 'when reacting is enabled' do
       let(:phase) { project.phases[1] }

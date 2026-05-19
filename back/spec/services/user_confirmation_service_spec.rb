@@ -6,7 +6,6 @@ RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
   before do
-    SettingsService.new.activate_feature! 'user_confirmation'
     RequestConfirmationCodeJob.perform_now user
   end
 
@@ -79,7 +78,7 @@ RSpec.describe UserConfirmationService do
       SettingsService.new.activate_feature! 'password_login'
     end
 
-    let(:user) { create(:user_no_password) }
+    let(:user) { create(:unconfirmed_user) }
 
     include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!
 
@@ -97,7 +96,7 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when the user has a password' do
-      let(:user) { create(:user_with_confirmation) }
+      let(:user) { create(:unconfirmed_user, password_digest: 'super_secret') }
 
       it 'returns a user has password error' do
         expect(user.confirmation_required?).to be true
@@ -109,7 +108,7 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when account already has a new_email' do
-      let(:user) { create(:user_no_password, new_email: 'some@email.com') }
+      let(:user) { create(:unconfirmed_user, new_email: 'some@email.com') }
 
       it 'returns a user has new email error' do
         result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
