@@ -2,18 +2,25 @@
   // Repository and branch configuration
   "baseBranch": "master", // Temporary, just for the rollout
   "githubLabel": "waiting for translations",
-
   // Locale definitions
   "locales": {
     "source": "en",
     "l1": [
       "da-DK",
-      { "nl-NL": ["nl-BE"] },
-      { "fr-FR": ["fr-BE"] },
-      { "de-DE": ["de-AT"] }
+      {
+        "nl-NL": ["nl-BE"]
+      },
+      {
+        "fr-FR": ["fr-BE"]
+      },
+      {
+        "de-DE": ["de-AT"]
+      }
     ],
     "l2": [
-      { "es-ES": ["es-CL"] },
+      {
+        "es-ES": ["es-CL"]
+      },
       "ar-SA",
       "hr-HR",
       "en-CA",
@@ -35,7 +42,6 @@
     ],
     "l3": ["ca-ES", "el-GR", "kl-GL", "hu-HU", "lb-LU", "ar-MA"]
   },
-
   // Level configuration — defines what's required per tier for merge readiness
   // l1: tier-1 languages — full translation and proofreading required
   // l2: tier-2 languages — translation required, proofreading optional
@@ -60,7 +66,6 @@
       "require_proofreading": []
     }
   },
-
   // Translation file definitions
   "files": [
     {
@@ -81,11 +86,6 @@
     {
       "source": "back/engines/free/email_campaigns/config/locales/en.yml",
       "pattern": "back/engines/free/email_campaigns/config/locales/{locale}.yml",
-      "format": "rails-i18n-yaml"
-    },
-    {
-      "source": "back/engines/free/user_confirmation/config/locales/en.yml",
-      "pattern": "back/engines/free/user_confirmation/config/locales/{locale}.yml",
       "format": "rails-i18n-yaml"
     },
     {
@@ -114,7 +114,6 @@
       "format": "rails-i18n-yaml"
     }
   ],
-
   // Passed to the machine translation
   "llmProjectContext": "The translations are UI elements in a civic engagement platform called Go Vocal. The platform allows residents, mostly of local governments, to engage in various ways. Government administrators can set up participation projects, which include ideation, surveys, participatory budgeting, voting and polls. Residents can than visit the platform and take part in these projects."
 }

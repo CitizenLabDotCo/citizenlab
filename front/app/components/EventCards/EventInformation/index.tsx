@@ -7,7 +7,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
@@ -20,8 +20,8 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { getEventDateString } from 'utils/dateUtils';
+import Link, { typedStyled } from 'utils/cl-router/Link';
+import { getEventDateString, userTimezone } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
 import messages from '../messages';
@@ -37,7 +37,7 @@ const EventInformationContainer = styled.div`
   height: 100%;
 `;
 
-const EventTitleLink = styled(Link)`
+const EventTitleLink = typedStyled(Link)`
   text-decoration: none;
   color: inherit;
 
@@ -60,8 +60,8 @@ const EventInformation = ({ event }: Props) => {
   const registrantCountMessage = useRegistrantCountMessage(event);
   const ariaId = useId();
 
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
+  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
+  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
 
   const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event.attributes.address_1;
@@ -76,7 +76,11 @@ const EventInformation = ({ event }: Props) => {
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
         >
-          <EventTitleLink to={`/events/${event.id}`} aria-describedby={ariaId}>
+          <EventTitleLink
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
+            aria-describedby={ariaId}
+          >
             <Title
               variant="h3"
               fontSize="l"
@@ -226,7 +230,8 @@ const EventInformation = ({ event }: Props) => {
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
-            linkTo={`/events/${event.id}`}
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
             scrollToTop
             // For accessibility, we need to add an aria-label to the button
             // to provide context for screen readers. Using the same "Read more" text

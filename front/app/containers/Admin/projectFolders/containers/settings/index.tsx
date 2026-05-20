@@ -10,8 +10,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -50,8 +50,11 @@ const goBack = () => {
   clHistory.goBack();
 };
 
-const FolderSettings = ({ params }: WithRouterProps) => {
-  const { projectFolderId } = params;
+const FolderSettings = () => {
+  const { projectFolderId } = useParams({ strict: false }) as Record<
+    string,
+    string
+  >;
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const mode = projectFolderId ? 'edit' : 'new';
 
@@ -92,4 +95,4 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   );
 };
 
-export default withRouter((inputProps) => <FolderSettings {...inputProps} />);
+export default FolderSettings;

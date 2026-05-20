@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useParams } from '@tanstack/react-router';
 import { Multiloc } from 'typings';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -28,27 +29,10 @@ jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
   jest.fn(() => ({ mutateAsync: mockAddDescriptionBuilderLayout }))
 );
 
-jest.mock('utils/cl-router/withRouter', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} params={{ projectId: 'projectId' }} />;
-      };
-    },
-  };
-});
+(useParams as jest.Mock).mockReturnValue({ projectId: 'projectId' });
 
 const dummyFunction = jest.fn();
 const multiloc = { en: 'content' } as Multiloc;
-
-const routerProps = {
-  location: {
-    pathname: '/admin/projects/projectID/description',
-  },
-  params: {
-    projectId: 'projectId',
-  },
-};
 
 let mockFeatureFlagData = true;
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
@@ -61,7 +45,6 @@ describe('DescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         contentBuildableType="project"
-        {...routerProps}
       />
     );
     const toggle = screen.getByRole('checkbox');
@@ -87,7 +70,6 @@ describe('DescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         contentBuildableType="project"
-        {...routerProps}
       />
     );
     const toggle = screen.getByRole('checkbox');
@@ -109,7 +91,6 @@ describe('DescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         contentBuildableType="project"
-        {...routerProps}
       />
     );
     expect(

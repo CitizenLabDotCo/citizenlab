@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { IProjectReviewRequestNotificationData } from 'api/notifications/types';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 
 import T from 'components/T';
 
@@ -19,7 +19,7 @@ type Props = {
 const ProjectReviewRequestNotification = memo<Props>(
   ({ notification }: Props) => (
     <NotificationWrapper
-      linkTo={adminProjectsProjectPath(notification.attributes.project_id)}
+      {...adminProjectsProjectLink(notification.attributes.project_id)}
       icon="shield-checkered"
       timing={notification.attributes.created_at}
       isRead={!!notification.attributes.read_at}

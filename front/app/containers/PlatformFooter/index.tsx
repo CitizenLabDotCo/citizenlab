@@ -18,7 +18,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -136,7 +136,7 @@ const linkStyle = css`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   ${linkStyle}
 `;
 
@@ -176,7 +176,7 @@ const PoweredByText = styled.span`
   line-height: normal;
   margin-right: 8px;
   ${media.tablet`
-    display: none;
+    margin-right: 0;
     margin-bottom: 10px;
   `}
 `;
@@ -321,7 +321,8 @@ const PlatformFooter = ({ className }: Props) => {
                       </StyledA>
                     ) : (
                       <StyledLink
-                        to={`/pages/${slug}`}
+                        to="/pages/$slug"
+                        params={{ slug }}
                         className={index === 0 ? 'first' : ''}
                         scrollToTop={true}
                       >
@@ -355,7 +356,7 @@ const PlatformFooter = ({ className }: Props) => {
                 <GoVocalLogo
                   ariaHidden={false}
                   name={getLocalizedLogoName()}
-                  title="Go Vocal"
+                  title={formatMessage(messages.goVocalLogoTitle)}
                 />
               </GoVocalLink>
             </PoweredBy>

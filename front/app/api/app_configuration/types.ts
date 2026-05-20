@@ -224,7 +224,6 @@ export interface IAppConfigurationSettings {
   disable_user_bios?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;

@@ -19,7 +19,7 @@ const ShowFullMenuButton = ({ onClick }: Props) => {
     <IconButton
       onClick={onClick}
       iconName="menu"
-      a11y_buttonActionMessage={formatMessage(messages.showFullMenu)}
+      a11y_buttonActionMessage={formatMessage(messages.showMobileNavMenu)}
       iconColor={theme.navbarTextColor ?? theme.colors.tenantText}
       iconColorOnHover={theme.navbarTextColor ?? theme.colors.tenantText}
     />

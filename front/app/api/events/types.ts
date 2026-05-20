@@ -1,4 +1,3 @@
-import { RouteType } from 'routes';
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
@@ -25,7 +24,7 @@ export interface IEventData {
     attendees_count: number;
     maximum_attendees: number | null;
     attend_button_multiloc?: Multiloc;
-    using_url?: RouteType;
+    using_url?: string;
     online_link?: string | null;
   };
   relationships: {
@@ -85,7 +84,7 @@ export interface IEventProperties {
   location_point_geojson?: GeoJSON.Point | null;
   online_link?: string;
   attend_button_multiloc?: Multiloc;
-  using_url?: RouteType;
+  using_url?: string;
   maximum_attendees?: number | null;
 }
 

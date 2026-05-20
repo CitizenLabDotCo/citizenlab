@@ -112,9 +112,35 @@ services:
     image: gotenberg/gotenberg:8.21
     restart: always
 
+  # Front-end dev server - Only starts if you run docker compose --profile frontend up
+  front:
+    container_name: cl-front
+    image: node:24.15.0
+    working_dir: /citizenlab/front
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - "web"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./front:/citizenlab/front"
+      - front_node_modules:/citizenlab/front/node_modules
+    env_file:
+      - "env_files/front-safe.env"
+      - "env_files/front-secret.env"
+    environment:
+      - API_HOST=web
+      - API_PORT=4000
+      - NODE_OPTIONS=--max-old-space-size=4096
+    tty: true
+    stdin_open: true
+    profiles:
+      - frontend
+
 volumes:
   postgres:
   bundle:
+  front_node_modules:
 
 networks:
   default:

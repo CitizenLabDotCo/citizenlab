@@ -14344,6 +14344,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T21:17:55.586604Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -14907,6 +14912,11 @@
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish": {
     "state": "verified",
     "verified_at": "2026-03-30T13:29:45.161964Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-11T16:58:40.837040Z",
     "verified_by": "Luuc"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
