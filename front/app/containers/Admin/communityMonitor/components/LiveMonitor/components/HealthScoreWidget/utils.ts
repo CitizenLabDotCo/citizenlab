@@ -1,8 +1,17 @@
 import { colors, Locale } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
+
+import messages from './messages';
 import { QuarterlyScores } from './types';
+
+type FormatMessage = (
+  messageDescriptor: MessageDescriptor,
+  values?: FormatMessageValues
+) => string;
 
 export const categoryColors = {
   overall: colors.orange500,
@@ -146,5 +155,44 @@ export const filterDataBySelectedQuarter = (
     overallHealthScores: filteredOverallHealthScores,
     categoryHealthScores: filteredCategoryHealthScores,
     totalHealthScoreCounts: filteredTotalHealthScoreCounts,
+  };
+};
+
+// buildHealthScoreA11yTable:
+export const buildHealthScoreA11yTable = (
+  sentimentScores: QuarterlyScores | null,
+  formatMessage: FormatMessage
+) => {
+  const periods =
+    sentimentScores?.overallHealthScores.map((s) => s.period) || [];
+
+  const columns = [
+    { key: 'category', label: formatMessage(messages.categoryColumn) },
+    ...periods.map((period) => ({
+      key: period,
+      label: period.replace('-', ` ${formatMessage(messages.quarter)} `),
+    })),
+  ];
+
+  const scoresByPeriod = (scores?: { period: string; score: number }[]) =>
+    scores?.reduce<Record<string, number>>((acc, s) => {
+      acc[s.period] = s.score;
+      return acc;
+    }, {}) ?? {};
+
+  const overallRow = {
+    category: formatMessage(messages.overallHealthScore),
+    ...scoresByPeriod(sentimentScores?.overallHealthScores),
+  };
+
+  const categoryRows =
+    sentimentScores?.categoryHealthScores.map((categoryScore) => ({
+      category: categoryScore.localizedLabel,
+      ...scoresByPeriod(categoryScore.scores),
+    })) || [];
+
+  return {
+    columns,
+    data: [overallRow, ...categoryRows],
   };
 };

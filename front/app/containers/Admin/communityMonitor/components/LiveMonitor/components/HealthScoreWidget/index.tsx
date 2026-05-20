@@ -28,6 +28,7 @@ import PreviousQuarterComparison from './components/PreviousQuarterComparison';
 import TotalCountsSentimentBar from './components/TotalCountsSentimentBar';
 import messages from './messages';
 import {
+  buildHealthScoreA11yTable,
   categoryColors,
   filterDataBySelectedQuarter,
   getQuarterFilter,
@@ -78,47 +79,10 @@ const HealthScoreWidget = ({
     (score) => score.period === `${year}-${quarter}`
   );
 
-  // Build columns dynamically based on periods for A11yTable
-  const periods =
-    sentimentScores?.overallHealthScores.map((s) => s.period) || [];
-  const columns = [
-    {
-      key: 'category',
-      label: formatMessage(messages.categoryColumn),
-    },
-    ...periods.map((period) => ({
-      key: period,
-      label: period.replace('-', ` ${formatMessage(messages.quarter)} `), // Replace dash with " Quarter "
-      render: (value) =>
-        value !== undefined && value !== null ? value.toFixed(1) : '—',
-    })),
-  ];
-  // Build table data for A11yTable
-  const A11ytableData: Array<Record<string, any>> = [];
-
-  // Add overall health score row
-  const overallRow = {
-    category: formatMessage(messages.overallHealthScore),
-  };
-  periods.forEach((period) => {
-    const score = sentimentScores?.overallHealthScores.find(
-      (s) => s.period === period
-    );
-    overallRow[period] = score?.score;
-  });
-  A11ytableData.push(overallRow);
-
-  // Add category rows
-  sentimentScores?.categoryHealthScores.forEach((categoryScore) => {
-    const row = {
-      category: categoryScore.localizedLabel,
-    };
-    periods.forEach((period) => {
-      const score = categoryScore.scores.find((s) => s.period === period);
-      row[period] = score?.score;
-    });
-    A11ytableData.push(row);
-  });
+  const { columns, data: A11ytableData } = buildHealthScoreA11yTable(
+    sentimentScores,
+    formatMessage
+  );
 
   return (
     <Box
