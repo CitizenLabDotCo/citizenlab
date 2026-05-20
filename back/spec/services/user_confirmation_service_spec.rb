@@ -10,7 +10,6 @@ RSpec.describe UserConfirmationService do
 
     context 'when the code is correct' do
       it 'returns success' do
-        expect(user.confirmation_required?).to be true
         result = service.public_send(method_name, user, confirmation.code)
         expect(result.success?).to be true
         expect(user.reload.confirmation_required?).to be false
@@ -76,6 +75,10 @@ RSpec.describe UserConfirmationService do
     before do
       SettingsService.new.activate_feature! 'password_login'
       RequestConfirmationCodeJob.perform_now user
+    end
+
+    it 'user should require confirmation' do
+      expect(user.confirmation_required?).to be true
     end
 
     include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!, :email_confirmation
