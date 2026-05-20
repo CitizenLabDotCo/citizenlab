@@ -23,6 +23,7 @@ describe Polls::ResponsePolicy do
   context 'for a resident' do
     let(:user) do
       user = response.user
+      EmailConfirmation.create!(user:)
       user.email_confirmation.confirm!
       user
     end
