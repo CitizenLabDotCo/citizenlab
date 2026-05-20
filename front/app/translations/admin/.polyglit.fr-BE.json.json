@@ -6414,6 +6414,21 @@
     "verified_at": "2026-04-29T22:14:57.371521Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithSpaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:41:08.464976Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithoutSpaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:41:08.464976Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithSpaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:41:08.464976Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space": {
     "state": "verified",
     "verified_at": "2026-05-20T07:06:34.634997Z",

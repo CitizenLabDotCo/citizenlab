@@ -1252,7 +1252,7 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root2": "Aucun",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithSpaces": "Le projet ne sera pas dans un dossier ou un espace. Si vous choisissez cette option, vous aurez besoin de l'approbation d'un administrateur pour publier ce projet.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithoutSpaces": "Le projet ne sera pas dans un dossier. Si vous choisissez cette option, vous aurez besoin de l'approbation d'un administrateur pour publier ce projet.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithSpaces": "Le projet ne sera ni dans un dossier, ni dans un espace.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithSpaces": "Le projet ne sera pas dans un dossier ou un espace.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithoutSpaces": "Le projet ne sera pas dans un dossier.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space": "Espace",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceDescription2": "Le projet sera dans un espace.",
