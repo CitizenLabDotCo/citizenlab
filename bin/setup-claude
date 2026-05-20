@@ -88,6 +88,17 @@ else
   else
     echo "  (current branch has no upstream — skipping pull, using local working tree)"
   fi
+
+  # Also fast-forward local `main` to `origin/main` even when HEAD is on a
+  # feature branch. `git pull` above only advances the currently-checked-out
+  # branch, so without this `main` silently lags between setup runs — devs
+  # who later switch to main get a "behind by N commits" surprise.
+  current_branch="$(git -C "$PRIVATE_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")"
+  if [ "$current_branch" != "main" ]; then
+    if ! git -C "$PRIVATE_DIR" fetch origin main:main 2>/dev/null; then
+      echo "  (could not fast-forward local main — no remote main, or local main has diverged from origin/main)"
+    fi
+  fi
 fi
 
 mkdir -p .claude
