@@ -16309,6 +16309,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.510561Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",

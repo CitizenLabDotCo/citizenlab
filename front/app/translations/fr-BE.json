@@ -1304,7 +1304,7 @@
   "app.containers.ChangeEmail.helmetDescription": "Page pour modifier votre adresse e-mail",
   "app.containers.ChangeEmail.helmetTitle": "Modifiez votre adresse e-mail",
   "app.containers.ChangeEmail.newEmailLabel": "Nouvelle adresse e-mail",
-  "app.containers.ChangeEmail.noEmail": "Vous n'avez actuellement aucune adresse e-mail enregistrée.",
+  "app.containers.ChangeEmail.noEmail": "Aucune adresse e-mail n'est encore associée à votre compte.",
   "app.containers.ChangeEmail.submitButton": "Soumettre",
   "app.containers.ChangeEmail.titleAddEmail": "Ajoutez votre adresse e-mail",
   "app.containers.ChangeEmail.titleChangeEmail": "Modifiez votre adresse e-mail",

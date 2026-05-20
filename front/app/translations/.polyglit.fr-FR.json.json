@@ -6484,6 +6484,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.447310Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -6528,6 +6533,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.447310Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -12238,6 +12248,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.447310Z",
+    "verified_by": "Adrien"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.447310Z",
+    "verified_by": "Adrien"
   },
   "app.errors.invalid_row": {
     "state": "verified",
