@@ -10,10 +10,11 @@ module McpServer
       server = MCP::Server.new(
         name: 'citizenlab',
         version: '0.1.0',
-        tools: [McpServer::Tools::HelloWorld],
-        server_context: {
-          current_user:
-        }
+        tools: [
+          McpServer::Tools::HelloWorld,
+          McpServer::Tools::CreateEvent
+        ],
+        server_context: { current_user: }
       )
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
