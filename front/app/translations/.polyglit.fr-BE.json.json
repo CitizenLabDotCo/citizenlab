@@ -1349,6 +1349,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:48:44.771067Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FiltersModal.filters": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
