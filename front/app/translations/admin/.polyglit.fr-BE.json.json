@@ -10734,6 +10734,11 @@
     "verified_at": "2026-03-23T11:07:11.932849Z",
     "verified_by": "Simon"
   },
+  "app.containers.Admin.users.UserAssignedItems.lockedFolderInSpace": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:50:49.819570Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.users.UserAssignedItems.lockedProject": {
     "state": "verified",
     "verified_at": "2026-03-23T11:07:11.932849Z",
