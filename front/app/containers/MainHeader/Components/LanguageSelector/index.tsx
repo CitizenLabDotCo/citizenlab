@@ -29,7 +29,7 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const DropdownButtonText = styled.div`
+const DropdownButtonText = styled.span`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -73,7 +73,7 @@ const Container = styled.div`
   }
 `;
 
-const ListItemText = styled.div`
+const ListItemText = styled.span`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;

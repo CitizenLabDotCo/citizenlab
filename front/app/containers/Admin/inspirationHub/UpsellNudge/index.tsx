@@ -74,7 +74,7 @@ const UpsellNudge = () => {
           alignItems="flex-start"
           justifyContent="center"
         >
-          <img src={CardSkeletons} alt="" width="100%" />
+          <img src={CardSkeletons} alt="" style={{ width: '100%' }} />
         </Box>
       </Box>
     </Box>
