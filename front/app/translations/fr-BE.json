@@ -122,7 +122,7 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Refuser la politique et fermer bannière",
   "app.components.ConsentManager.Banner.close": "Fermer",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "En acceptant les cookies, vous nous aidez à améliorer cette plateforme. {linkToCookiePolicy}.",
-  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "Accepter les cookies nous aide à améliorer cette plateforme.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": "En acceptant les cookies, vous nous aidez à améliorer cette plateforme.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Paramètres des cookies",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Lisez notre politique en matière de cookies",
   "app.components.ConsentManager.Banner.manage": "Gérer",
