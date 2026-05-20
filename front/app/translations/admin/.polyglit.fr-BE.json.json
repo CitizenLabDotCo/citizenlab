@@ -6429,6 +6429,11 @@
     "verified_at": "2026-05-20T09:41:08.464976Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithoutSpaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T10:10:51.719539Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space": {
     "state": "verified",
     "verified_at": "2026-05-20T07:06:34.634997Z",
@@ -14193,6 +14198,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEvents.timezoneInfo1": {
+    "state": "verified",
+    "verified_at": "2026-05-20T10:10:51.719539Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": {
     "state": "verified",
