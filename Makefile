@@ -144,7 +144,7 @@ blint back-lint-autocorrect:
 # Usage example:
 # make r file=spec/models/idea_spec.rb
 r rspec:
-	docker compose run --rm web bin/rspec ${file}
+	docker compose run --rm web bin/rspec $(patsubst back/%,%,${file})
 
 # SSH session onto the running web container.
 bash-exec:
