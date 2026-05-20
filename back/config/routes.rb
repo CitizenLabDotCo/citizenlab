@@ -12,10 +12,15 @@ Rails.application.routes.draw do
   use_doorkeeper
 
   # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
+  # clients try when the resource lives at a non-root path).
   namespace :oauth do
     resources :registrations, only: :create, format: :json
   end
   get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-authorization-server/mcp', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+  get '.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
 
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
