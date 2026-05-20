@@ -5,10 +5,6 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  before do
-    RequestConfirmationCodeJob.perform_now user
-  end
-
   shared_examples 'validation and confirmation' do |method_name, confirmation_assoc|
     let(:confirmation) { user.send(confirmation_assoc) }
 
@@ -76,11 +72,11 @@ RSpec.describe UserConfirmationService do
   end
 
   describe '#validate_and_confirm_unauthenticated!' do
+    let(:user) { create(:unconfirmed_user) }
     before do
       SettingsService.new.activate_feature! 'password_login'
+      RequestConfirmationCodeJob.perform_now user
     end
-
-    let(:user) { create(:unconfirmed_user) }
 
     include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!, :email_confirmation
 
@@ -138,6 +134,10 @@ RSpec.describe UserConfirmationService do
 
   describe '#validate_and_confirm_email_change!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
+
+    before do
+      RequestConfirmationCodeJob.perform_now(user, new_email: user.new_email)
+    end
 
     include_examples 'validation and confirmation', :validate_and_confirm_email_change!, :new_email_confirmation
 
