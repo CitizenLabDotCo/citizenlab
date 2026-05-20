@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Učitavanje komentara...",
   "app.containers.UsersShowPage.loadingEvents": "Učitavanje događaja...",
   "app.containers.UsersShowPage.memberSince": "Član od {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Stranica profila {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Profil i aktivnosti za {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Ova osoba još nije objavila nijedan komentar.",
   "app.containers.UsersShowPage.noCommentsForYou": "Ovdje još nema komentara.",
   "app.containers.UsersShowPage.noEventsForUser": "Još niste prisustvovali nijednom događaju.",

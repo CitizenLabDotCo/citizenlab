@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Caricamento dei commenti...",
   "app.containers.UsersShowPage.loadingEvents": "Caricamento eventi...",
   "app.containers.UsersShowPage.memberSince": "Membro dal {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Pagina del profilo di {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Profilo e attività di {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Questa persona non ha ancora pubblicato alcun commento.",
   "app.containers.UsersShowPage.noCommentsForYou": "Non ci sono ancora commenti qui.",
   "app.containers.UsersShowPage.noEventsForUser": "Non hai ancora partecipato a nessun evento.",

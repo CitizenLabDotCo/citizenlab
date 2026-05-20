@@ -11534,6 +11534,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:39:14.077267Z",
+    "verified_by": "Roger"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",

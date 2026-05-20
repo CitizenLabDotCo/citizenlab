@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Φόρτωση σχολίων...",
   "app.containers.UsersShowPage.loadingEvents": "Φόρτωση συμβάντων...",
   "app.containers.UsersShowPage.memberSince": "Μέλος από {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Σελίδα προφίλ του {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Προφίλ και δραστηριότητα για {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Αυτό το άτομο δεν έχει δημοσιεύσει ακόμα σχόλια.",
   "app.containers.UsersShowPage.noCommentsForYou": "Δεν υπάρχουν ακόμη σχόλια εδώ.",
   "app.containers.UsersShowPage.noEventsForUser": "Δεν έχετε παρακολουθήσει καμία εκδήλωση ακόμα.",

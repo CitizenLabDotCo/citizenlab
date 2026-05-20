@@ -11549,6 +11549,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:10:39.873293Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

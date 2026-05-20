@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Ladataan kommentteja...",
   "app.containers.UsersShowPage.loadingEvents": "Ladataan tapahtumia...",
   "app.containers.UsersShowPage.memberSince": "Jäsen vuodesta {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profiilisivu {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Käyttäjän {firstName} {lastName} profiili ja toiminta | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Tämä henkilö ei ole vielä lähettänyt yhtään kommenttia.",
   "app.containers.UsersShowPage.noCommentsForYou": "Täällä ei ole vielä kommentteja.",
   "app.containers.UsersShowPage.noEventsForUser": "Et ole vielä osallistunut tapahtumiin.",

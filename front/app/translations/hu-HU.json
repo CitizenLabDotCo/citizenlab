@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Megjegyzések betöltése...",
   "app.containers.UsersShowPage.loadingEvents": "Események betöltése...",
   "app.containers.UsersShowPage.memberSince": "Tagság {date}óta",
-  "app.containers.UsersShowPage.metaTitle1": "{firstName} {lastName} | profiloldala {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "{firstName} {lastName} profilja és tevékenysége | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Ez a személy még nem írt megjegyzést.",
   "app.containers.UsersShowPage.noCommentsForYou": "Itt még nincsenek hozzászólások.",
   "app.containers.UsersShowPage.noEventsForUser": "Még nem vettél részt eseményen.",

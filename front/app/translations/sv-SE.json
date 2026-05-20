@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Läser in kommentarer...",
   "app.containers.UsersShowPage.loadingEvents": "Laddar händelser...",
   "app.containers.UsersShowPage.memberSince": "Medlem sedan {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profilsida för {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Profil och aktivitet för {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Den här personen har inte skrivit några kommentarer än.",
   "app.containers.UsersShowPage.noCommentsForYou": "Det finns inga kommentarer här än.",
   "app.containers.UsersShowPage.noEventsForUser": "Du har inte deltagit i några evenemang ännu.",

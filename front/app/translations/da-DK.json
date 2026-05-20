@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "Henter kommentarer... ",
   "app.containers.UsersShowPage.loadingEvents": "Indlæser begivenheder...",
   "app.containers.UsersShowPage.memberSince": "Medlem siden {date}",
-  "app.containers.UsersShowPage.metaTitle1": "Profilside for {firstName} {lastName} | {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "Profil og aktivitet for {firstName} {lastName} | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "Denne person har endnu ikke slået nogen kommentarer op.",
   "app.containers.UsersShowPage.noCommentsForYou": "Her er der ingen kommentarer endnu.",
   "app.containers.UsersShowPage.noEventsForUser": "Du har ikke deltaget i nogen begivenheder endnu.",

@@ -2307,7 +2307,7 @@
   "app.containers.UsersShowPage.loadingComments": "تبصرے لوڈ ہو رہے ہیں...",
   "app.containers.UsersShowPage.loadingEvents": "ایونٹس لوڈ ہو رہے ہیں...",
   "app.containers.UsersShowPage.memberSince": "{date}سے ممبر",
-  "app.containers.UsersShowPage.metaTitle1": "{firstName} {lastName} | کا پروفائل صفحہ {orgName}",
+  "app.containers.UsersShowPage.metaTitle2": "{firstName} {lastName} کی پروفائل اور سرگرمی | {orgName}",
   "app.containers.UsersShowPage.noCommentsForUser": "اس شخص نے ابھی تک کوئی تبصرہ پوسٹ نہیں کیا ہے۔",
   "app.containers.UsersShowPage.noCommentsForYou": "یہاں ابھی تک کوئی تبصرہ نہیں ہے۔",
   "app.containers.UsersShowPage.noEventsForUser": "آپ نے ابھی تک کسی تقریب میں شرکت نہیں کی ہے۔",
