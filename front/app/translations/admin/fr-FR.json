@@ -3302,7 +3302,7 @@
   "app.containers.AdminPage.projects.all.homepageWarning1": "Cette page permet de définir l’ordre des projets dans le menu déroulant « Tous les projets » de la barre de navigation. Si vous utilisez les widgets « Projets et dossiers publiés » ou « Projets et dossiers (anciens) » sur votre page d’accueil, l’ordre des projets dans ces widgets sera également celui que vous définissez ici.",
   "app.containers.AdminPage.projects.all.newSpace": "Nouvel espace",
   "app.containers.AdminPage.projects.all.noProjects": "Aucun projet n'a été trouvé.",
-  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": "Seuls les administrateurs et les gestionnaires d'espace peuvent créer des dossiers de projet.",
+  "app.containers.AdminPage.projects.all.onlyAdminsAndSpaceManagersCanCreateFolders": "Seuls les administrateurs et les gestionnaires d'espace peuvent créer des dossiers.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Seuls les administrateurs peuvent créer des dossiers.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateSpaces": "Seuls les administrateurs peuvent créer des espaces.",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Analyse IA",
