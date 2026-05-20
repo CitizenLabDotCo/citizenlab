@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:21:24.048278Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -1343,6 +1348,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:48:44.771067Z",
+    "verified_by": "Adrien"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -6474,6 +6484,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.681048Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -6518,6 +6533,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.681048Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -11539,6 +11559,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:19:46.072009Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -11793,6 +11818,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:11:39.229453Z",
+    "verified_by": "Adrien"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",
@@ -12079,6 +12109,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:28:55.297196Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -12218,6 +12253,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.681048Z",
+    "verified_by": "Adrien"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:14:11.681048Z",
+    "verified_by": "Adrien"
   },
   "app.errors.invalid_row": {
     "state": "verified",

@@ -53,12 +53,15 @@ const CheckboxMultiSelect = ({
   const theme = useTheme();
   const checkedOptions = watch(name) || [];
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   return (
     <>
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref } }) => {
+        render={({ field: { ref }, fieldState }) => {
           return (
             <Box
               display="block"
@@ -66,11 +69,13 @@ const CheckboxMultiSelect = ({
               border="none"
               p="0px"
               aria-required={ariaRequired}
+              aria-invalid={fieldState.error ? true : undefined}
+              aria-describedby={ariaDescribedBy}
             >
               <ScreenReaderOnly>
                 <legend>{title}</legend>
               </ScreenReaderOnly>
-              {options.map((option) => (
+              {options.map((option, index) => (
                 <StyledBox
                   style={{ cursor: 'pointer' }}
                   mb="12px"
@@ -94,6 +99,9 @@ const CheckboxMultiSelect = ({
                     }
                     checked={checkedOptions.includes(option.value)}
                     usePrimaryBorder={false}
+                    setRef={index === 0 ? (el) => ref(el) : undefined}
+                    ariaInvalid={!!fieldState.error}
+                    ariaDescribedBy={ariaDescribedBy}
                     onChange={() => {
                       if (checkedOptions.includes(option.value)) {
                         setValue(
@@ -116,6 +124,7 @@ const CheckboxMultiSelect = ({
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -124,6 +133,7 @@ const CheckboxMultiSelect = ({
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

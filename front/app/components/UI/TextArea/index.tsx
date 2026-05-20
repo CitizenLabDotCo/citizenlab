@@ -67,6 +67,9 @@ export type Props = {
   focusOnError?: boolean;
   className?: string;
   children?: React.ReactNode;
+  setRef?: (arg: HTMLTextAreaElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 };
 
 interface State {}
@@ -137,6 +140,9 @@ export default class TextArea extends React.PureComponent<Props, State> {
       disabled,
       required,
       className,
+      setRef,
+      ariaInvalid,
+      ariaDescribedBy,
     } = this.props;
 
     return (
@@ -163,6 +169,12 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             disabled={disabled}
             required={required}
+            ref={(el) => {
+              this.textareaElement = el;
+              setRef?.(el);
+            }}
+            aria-invalid={ariaInvalid}
+            aria-describedby={ariaDescribedBy}
           />
           {value && maxCharCount && (
             <CharacterCount
