@@ -96,6 +96,20 @@ describe 'slugs:translate_slugs rake task' do
       end
     end
 
+    context 'when a custom StaticPage translated slug would be reserved' do
+      it 'leaves the slug unchanged and reports it as skipped' do
+        page = create(
+          :static_page,
+          code: 'custom',
+          title_multiloc: { 'en' => 'Some custom page', 'nl-BE' => 'About' },
+          slug: 'some-custom-page'
+        )
+
+        expect { run_task(execute: true) }.to output(/translated slug 'about' is reserved/).to_stdout
+        expect(page.reload.slug).to eq('some-custom-page')
+      end
+    end
+
     context 'when the record fails to save' do
       it 'leaves the slug unchanged and logs an error' do
         project = create(:project, title_multiloc: { 'en' => 'English title', 'nl-BE' => 'Nederlandse titel' }, slug: 'english-title')

@@ -14,6 +14,8 @@
 #     Proposals and Voting ideas are - Native Survey and others are left untouched).
 #   - Skips a record when it has no title in the target locale, or when its slug
 #     already matches the translated title.
+#   - Skips a custom static page when its translated slug would collide with a
+#     value in StaticPage::RESERVED_SLUGS (which the model would otherwise reject).
 #   - Writes a JSON report (translate_slugs.json) of the before/after slugs.
 #
 # What it does NOT do:
@@ -89,6 +91,7 @@ namespace :slugs do
       total_unchanged = 0
       total_updated = 0
       total_errors = 0
+      total_reserved_slug_collisions = 0
       no_title_records = []
 
       # Iterate every sluggable record and re-derive its slug from title_multiloc[locale],
@@ -121,6 +124,15 @@ namespace :slugs do
 
           old_slug = record.slug
           new_slug = SlugService.new.generate_slug(record, title)
+
+          # A custom StaticPage can't be saved with a slug from RESERVED_SLUGS (validate_slug
+          # in StaticPage). Skip those explicitly rather than letting update! raise.
+          if record.is_a?(StaticPage) && record.custom? && StaticPage::RESERVED_SLUGS.include?(new_slug)
+            total_reserved_slug_collisions += 1
+            puts "SKIPPED: #{model.name} #{record.id} - translated slug '#{new_slug}' is reserved."
+            next
+          end
+
           context = { tenant: host, locale: locale, model: model.name, id: record.id }
 
           # Record the before/after slug for the JSON report. Done in both modes, so a dry
@@ -153,6 +165,7 @@ namespace :slugs do
         (execute ? 'Slugs updated' : 'Slugs to be updated') => total_updated,
         'Skipped (slug not title-derived)' => total_not_title_derived,
         "Skipped (no '#{locale}' title)" => no_title_records.size,
+        'Skipped (slug would be reserved)' => total_reserved_slug_collisions,
         'Unchanged (slug already correct)' => total_unchanged
       }
       summary['Errors'] = total_errors if execute
