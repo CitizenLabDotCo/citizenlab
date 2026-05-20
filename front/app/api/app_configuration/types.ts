@@ -224,7 +224,6 @@ export interface IAppConfigurationSettings {
   disable_user_bios?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
@@ -279,7 +278,10 @@ export interface IAppConfigurationSettings {
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
+  project_widget?: AppConfigurationFeature;
+  phase_datetime_setup?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
+  hide_submission_removal_text?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -94,6 +94,7 @@ ga-IE:
         project_published: Tionscadal foilsithe
         project_review_request: D'iarr an modhnóir athbhreithniú tionscadail
         project_review_state_change: D'fhormheas an t-athbhreithneoir an tionscadal
+        proposal_expired: Téann moladh in éag gan an tairseach a bhaint amach
         proposal_gets_reported_as_spam: Tuairiscítear an togra mar thurscar
         proposal_is_assigned_to_admin: Tá an togra sannta don riarthóir
         proposal_is_published: Tá an togra foilsithe
@@ -188,6 +189,7 @@ ga-IE:
       project_published: Tionscadal foilsithe
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
+      proposal_expired_for_admin: Chuaigh moladh in éag gan an tairseach vótála a bhaint amach
       screening_digest: Meabhrúchán scagthástála seachtainiúil
       space_moderation_rights_received: Cearta bainisteora spáis faighte
       status_change_on_idea_you_follow: Athrú stádais ionchuir a leanann tú
@@ -591,6 +593,11 @@ ga-IE:
       preheader: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
       subject: Tá "%{projectTitle}" ceadaithe
       title: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Déan athbhreithniú ar an ionchur atá in éag
+      preheader: Chuaigh ionchur in éag gan an tairseach a bhaint amach
+      subject: Chuaigh "%{input_title}" in éag gan an tairseach a bhaint amach
+      title: Chuaigh ionchur in éag gan an tairseach vótála a bhaint amach
     schedules:
       quarterly: Ráithiúil, ar an gcéad lá den ráithe
       weekly:

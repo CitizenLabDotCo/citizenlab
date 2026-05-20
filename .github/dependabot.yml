@@ -7,6 +7,8 @@ updates:
       time: "04:00"
     rebase-strategy: "disabled"
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
     assignees:
       - "IvaKop"
     reviewers:
@@ -16,17 +18,9 @@ updates:
     open-pull-requests-limit: 10
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     assignees:
       - "adessy"
     reviewers:
       - "adessy"
-  - package-ecosystem: npm
-    directory: '/cl2-component-library'
-    schedule:
-      interval: monthly
-      time: '04:00'
-    open-pull-requests-limit: 10
-    assignees:
-      - 'IvaKop'
-    reviewers:
-      - 'IvaKop'

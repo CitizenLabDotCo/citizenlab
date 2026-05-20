@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -21,7 +20,7 @@ const EmptyState = () => {
       </Text>
       <Box display="flex" justifyContent="center" mt="32px">
         <ButtonWithLink
-          linkTo={formatMessage(messages.supportButtonLink3) as RouteType}
+          linkTo={formatMessage(messages.supportButtonLink3)}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.supportButtonLabel} />

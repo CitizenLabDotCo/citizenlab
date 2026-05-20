@@ -9,8 +9,6 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -23,6 +21,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -40,7 +39,9 @@ type Props = {
 };
 
 const NewIdeaHeading = ({ phase, titleText }: Props) => {
-  const { slug: projectSlug } = useParams();
+  const { slug: projectSlug } = useParams({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
   const phaseId = phase.id;
@@ -48,8 +49,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [searchParams] = useSearchParams();
-  const ideaSubmitted = searchParams.get('idea_id') !== null;
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
+  const ideaSubmitted = searchParams.idea_id !== undefined;
 
   const openModal = () => {
     setShowLeaveModal(true);
@@ -66,7 +69,10 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
     !isSmallerThanPhone &&
     canModerateProject(project.data, authUser) &&
     !isCommonGround;
-  const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
+  const linkToFormBuilder = {
+    to: '/admin/projects/$projectId/phases/$phaseId/form/edit',
+    params: { projectId: project.data.id, phaseId },
+  } as const;
 
   const onClickClose = () => {
     const pathname = isCommonGround
@@ -111,7 +117,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
           {showEditFormButton && (
             <ButtonWithLink
               icon="edit"
-              linkTo={linkToFormBuilder}
+              {...linkToFormBuilder}
               buttonStyle="primary-inverse"
               textDecorationHover="underline"
               mr="12px"

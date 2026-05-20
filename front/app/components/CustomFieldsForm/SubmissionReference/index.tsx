@@ -11,6 +11,8 @@ import {
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -30,6 +32,11 @@ const SubmissionReference = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+
+  const hideSubmissionRemovalText = useFeatureFlag({
+    name: 'hide_submission_removal_text',
+  });
+  if (hideSubmissionRemovalText) return null;
 
   return (
     <Box

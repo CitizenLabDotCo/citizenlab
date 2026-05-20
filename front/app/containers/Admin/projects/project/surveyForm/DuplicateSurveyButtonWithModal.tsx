@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
+import { useTheme } from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
@@ -11,11 +11,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import CopySurveyModal from '../surveyFormAssets/CopySurveyModal';
 
 import messages from './messages';
-import { useTheme } from 'styled-components';
 
 interface Props {
   phaseId: string;
-  editFormLink: RouteType;
+  editFormLink: string;
 }
 
 const DuplicateSurveyButtonWithModal = ({ phaseId, editFormLink }: Props) => {

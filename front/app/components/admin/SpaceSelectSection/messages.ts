@@ -15,4 +15,8 @@ export default defineMessages({
     defaultMessage:
       'Since a folder was selected, you cannot add this project to a space. The project will be in the same space as the folder.',
   },
+  pleaseSelectASpace: {
+    id: 'app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace',
+    defaultMessage: 'Please select a space.',
+  },
 });

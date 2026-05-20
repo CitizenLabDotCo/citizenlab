@@ -40,6 +40,7 @@ module EmailCampaigns
       Campaigns::ProjectPublished,
       Campaigns::ProjectReviewRequest,
       Campaigns::ProjectReviewStateChange,
+      Campaigns::ProposalExpiredForAdmin,
       Campaigns::StatusChangeOnIdeaYouFollow,
       Campaigns::SurveySubmitted,
       Campaigns::ThresholdReachedForAdmin,

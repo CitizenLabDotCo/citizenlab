@@ -173,7 +173,11 @@ const CampaignForm = ({
               </Label>
               <Text fontSize="l">
                 <FormattedMessage {...messages.allParticipantsInProject} />{' '}
-                <Link to={`/admin/projects/${project.data.id}`} target="_blank">
+                <Link
+                  to="/admin/projects/$projectId"
+                  params={{ projectId: project.data.id }}
+                  target="_blank"
+                >
                   {localize(project.data.attributes.title_multiloc)}
                 </Link>
               </Text>
@@ -232,6 +236,7 @@ const CampaignForm = ({
                 firstName: '{{first_name}}',
                 lastName: '{{last_name}}',
               })}
+              withGifSupport
               noVideos
               noAlign
             />

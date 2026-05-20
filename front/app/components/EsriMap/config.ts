@@ -11,13 +11,15 @@ import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 import { calculateScaleFromZoom } from 'utils/mapUtils/map';
 
+import messages from './messages';
 import { InitialData } from './types';
 
 export const configureMapView = (
   mapView: MapView,
   initialData: InitialData | undefined,
   globalMapSettings: AppConfigurationMapSettings,
-  isMobileOrSmaller: boolean
+  isMobileOrSmaller: boolean,
+  formatMessage?: (message: any) => string
 ) => {
   // Set map center
   setMapCenter(mapView, initialData, globalMapSettings);
@@ -44,6 +46,9 @@ export const configureMapView = (
     mapView.scale = calculateScaleFromZoom(zoomLevel);
   }
 
+  // Set map accessibility attributes
+  setMapAccessibility(mapView, formatMessage);
+
   // Change location of zoom widget if specified
   const zoom = mapView.ui.find('zoom');
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
@@ -67,12 +72,17 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller, initialData.showLegendExpanded);
+    addMapLegend(
+      mapView,
+      isMobileOrSmaller,
+      initialData.showLegendExpanded,
+      formatMessage
+    );
   }
 
   // Show layer visibility controls if set
   if (initialData?.showLayerVisibilityControl) {
-    showLayerVisibilityControls(mapView);
+    showLayerVisibilityControls(mapView, formatMessage);
   }
 
   // Add any ui elements that were passed in
@@ -81,6 +91,23 @@ export const configureMapView = (
       mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
+};
+
+// set Map Accessibility role and labels for screen readers
+export const setMapAccessibility = (
+  mapView: MapView,
+  formatMessage?: (message: any) => string
+) => {
+  mapView.when(() => {
+    const mapSurface = mapView.container?.querySelector('.esri-view-surface');
+    if (mapSurface) {
+      mapSurface.setAttribute('role', 'region');
+      mapSurface.setAttribute(
+        'aria-label',
+        formatMessage ? formatMessage(messages.mapAriaLabel) : ''
+      );
+    }
+  });
 };
 
 // setMapCenter
@@ -106,7 +133,8 @@ export const setMapCenter = (
 export const addMapLegend = (
   mapView: MapView,
   isMobileOrSmaller: boolean,
-  showLegendExpanded: boolean | undefined
+  showLegendExpanded: boolean | undefined,
+  formatMessage?: (message: any) => string
 ) => {
   // Check if legend already exists and return to prevent duplicates
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -126,7 +154,13 @@ export const addMapLegend = (
         ? !isMobileOrSmaller // By default, show the legend expanded only on desktop
         : showLegendExpanded,
     mode: 'floating',
+    expandIcon: 'legend',
+    ...(formatMessage && {
+      expandTooltip: formatMessage(messages.mapLegendAriaLabel),
+      collapseTooltip: formatMessage(messages.mapLegendAriaLabel),
+    }),
   });
+
   // Note: Incorrect type from ArcGIS API, ui might be null.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   mapView.ui?.add(legend, 'bottom-right');
@@ -134,7 +168,10 @@ export const addMapLegend = (
 
 // showLayerVisibilityControls
 // Description: Shows the layer visibility controls on the map
-export const showLayerVisibilityControls = (mapView: MapView) => {
+export const showLayerVisibilityControls = (
+  mapView: MapView,
+  formatMessage?: (message: any) => string
+) => {
   // Check if layer list already exists and return to prevent duplicates
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const existingLayerList = mapView.ui?.find(
@@ -150,6 +187,11 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
     view: mapView,
     expanded: false,
     mode: 'floating',
+    expandIcon: 'layers',
+    ...(formatMessage && {
+      expandTooltip: formatMessage(messages.mapLayerListAriaLabel),
+      collapseTooltip: formatMessage(messages.mapLayerListAriaLabel),
+    }),
   });
 
   // Note: Incorrect type from ArcGIS API, ui might be null.

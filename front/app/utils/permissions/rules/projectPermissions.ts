@@ -22,10 +22,19 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
-const canReview = (project: IProjectData, user: IUser | undefined) =>
-  isAdmin(user) ||
-  (!!project.attributes.folder_id &&
-    userModeratesFolder(user, project.attributes.folder_id));
+const canReview = (project: IProjectData, user: IUser | undefined) => {
+  if (isAdmin(user)) return true;
+
+  if (project.attributes.folder_id) {
+    return userModeratesFolder(user, project.attributes.folder_id);
+  }
+
+  if (project.attributes.space_id) {
+    return userModeratesSpace(user, project.attributes.space_id);
+  }
+
+  return false;
+};
 
 definePermissionRule(
   'project',

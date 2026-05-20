@@ -17,7 +17,7 @@ module Insights
         .transitive(false)
         .where.not(submitted_at: nil)
         .where(created_at: @phase.start_at...end_time, publication_status: %w[published submitted])
-        .includes(:author, :activities)
+        .includes(:author)
 
       ideas.map do |idea|
         {
@@ -52,12 +52,39 @@ module Insights
     # i.e. we include ideas with statuses of accepted, ineligible, etc,
     # if they ever had a status of threshold_reached.
     def threshold_reached_at(idea)
-      activity = idea.activities.find do |act|
-        act.action == 'changed_input_status' &&
-          act.payload['input_status_to_code'] == 'threshold_reached'
-      end
+      threshold_reached_at_by_idea_id[idea.id]
+    end
 
-      activity&.acted_at
+    # The legacy 'changed_input_status' branch covers activity rows logged before
+    # TAN-7658, when automatic transitions emitted their own activity action.
+    # Manual and (post-TAN-7658) automatic transitions both emit 'changed_status'.
+    def threshold_reached_at_by_idea_id
+      @threshold_reached_at_by_idea_id ||= begin
+        idea_ids = @phase.ideas.pluck(:id)
+
+        legacy = Activity
+          .where(item_type: 'Idea', item_id: idea_ids, action: 'changed_input_status')
+          .where("payload->>'input_status_to_code' = 'threshold_reached'")
+
+        current = if threshold_reached_status_id
+          Activity
+            .where(item_type: 'Idea', item_id: idea_ids, action: 'changed_status')
+            .where("payload->'change'->>1 = ?", threshold_reached_status_id)
+        else
+          Activity.none
+        end
+
+        (legacy.to_a + current.to_a)
+          .group_by(&:item_id)
+          .transform_values { |acts| acts.min_by(&:acted_at).acted_at }
+      end
+    end
+
+    def threshold_reached_status_id
+      @threshold_reached_status_id ||= IdeaStatus.find_by(
+        code: 'threshold_reached',
+        participation_method: 'proposals'
+      )&.id
     end
   end
 end

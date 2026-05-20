@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
@@ -24,13 +23,13 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../messages';
 
 import AreaTermConfig from './AreaTermConfig';
 
-export const StyledLink = styled(Link)`
+export const StyledLink = typedStyled(Link)`
   color: ${colors.white} !important;
   text-decoration: underline;
 
@@ -77,7 +76,7 @@ const AreaList = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          linkTo="/admin/settings/areas/new"
+          to="/admin/settings/areas/new"
         >
           <FormattedMessage {...messages.addAreaButton} />
         </ButtonWithLink>
@@ -163,7 +162,8 @@ const AreaListRow = ({
                     return (
                       <li key={staticPage.id}>
                         <StyledLink
-                          to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+                          to="/admin/pages-menu/pages/$customPageId/settings"
+                          params={{ customPageId: staticPage.id }}
                         >
                           {localize(staticPage.attributes.title_multiloc)}
                         </StyledLink>
@@ -185,7 +185,8 @@ const AreaListRow = ({
         <FormattedMessage {...messages.deleteButtonLabel} />
       </ButtonWithLink>
       <ButtonWithLink
-        linkTo={`/admin/settings/areas/${item.id}`}
+        to="/admin/settings/areas/$areaId"
+        params={{ areaId: item.id }}
         buttonStyle="secondary-outlined"
         icon="edit"
       >

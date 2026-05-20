@@ -1,6 +1,6 @@
-import { QueryKeys } from 'utils/cl-react-query/types';
+import { Pagination } from 'typings';
 
-import { IQueryParameters } from './types';
+import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
   type: 'folder',
@@ -9,11 +9,11 @@ const baseKey = {
 const projectFoldersKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: IQueryParameters) => [
+  list: (parameters: Pagination) => [
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id, slug }: { id?: string; slug?: string }) => [
+  item: ({ id, slug }: { id?: string | null; slug?: string }) => [
     {
       ...baseKey,
       operation: 'item',

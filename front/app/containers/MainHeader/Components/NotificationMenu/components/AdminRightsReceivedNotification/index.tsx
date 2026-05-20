@@ -14,7 +14,7 @@ interface Props {
 const AdminRightsReceivedNotification = ({ notification }: Props) => {
   return (
     <NotificationWrapper
-      linkTo={'/admin'}
+      to="/admin"
       timing={notification.attributes.created_at}
       icon="shield-checkered"
       isRead={!!notification.attributes.read_at}

@@ -7,6 +7,8 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
     attributes: {
       ordering: 0,
       publication_status: 'published',
+      scheduled_status: null,
+      scheduled_at: null,
       depth: 0,
       publication_title_multiloc: {
         en: 'Quas excepturi ea et.',
@@ -53,6 +55,8 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
     attributes: {
       ordering: 1,
       publication_status: 'archived',
+      scheduled_status: null,
+      scheduled_at: null,
       depth: 0,
       publication_title_multiloc: {
         en: 'Rem nulla consequatur vero.',

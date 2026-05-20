@@ -145,6 +145,7 @@ ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
+ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS fk_rails_2de8e52eff;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -426,6 +427,7 @@ DROP INDEX IF EXISTS public.index_claim_tokens_on_pending_claimer_id;
 DROP INDEX IF EXISTS public.index_claim_tokens_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_claim_tokens_on_expires_at;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
+DROP INDEX IF EXISTS public.index_baskets_on_user_id_and_phase_id_unique;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
@@ -464,6 +466,8 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
+DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_by_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -509,6 +513,7 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
+ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
@@ -1133,7 +1138,10 @@ CREATE TABLE public.admin_publications (
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
     children_count integer DEFAULT 0 NOT NULL,
-    first_published_at timestamp(6) without time zone
+    first_published_at timestamp(6) without time zone,
+    scheduled_status character varying,
+    scheduled_at timestamp(6) without time zone,
+    scheduled_by_id uuid
 );
 
 
@@ -4858,6 +4866,14 @@ ALTER TABLE ONLY public.report_builder_reports
 
 
 --
+-- Name: admin_publications scheduled_fields_both_or_neither; Type: CHECK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE public.admin_publications
+    ADD CONSTRAINT scheduled_fields_both_or_neither CHECK (((scheduled_status IS NULL) = (scheduled_at IS NULL))) NOT VALID;
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5190,6 +5206,20 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_admin_publications_on_scheduled_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_scheduled_by_id ON public.admin_publications USING btree (scheduled_by_id);
+
+
+--
+-- Name: index_admin_publications_on_scheduled_transition; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_scheduled_transition ON public.admin_publications USING btree (scheduled_at, scheduled_status) WHERE (scheduled_status IS NOT NULL);
+
+
+--
 -- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5453,6 +5483,13 @@ CREATE INDEX index_baskets_on_submitted_at ON public.baskets USING btree (submit
 --
 
 CREATE INDEX index_baskets_on_user_id ON public.baskets USING btree (user_id);
+
+
+--
+-- Name: index_baskets_on_user_id_and_phase_id_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_baskets_on_user_id_and_phase_id_unique ON public.baskets USING btree (user_id, phase_id) WHERE (user_id IS NOT NULL);
 
 
 --
@@ -7442,6 +7479,14 @@ ALTER TABLE ONLY public.cosponsorships
 
 
 --
+-- Name: admin_publications fk_rails_2de8e52eff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_publications
+    ADD CONSTRAINT fk_rails_2de8e52eff FOREIGN KEY (scheduled_by_id) REFERENCES public.users(id);
+
+
+--
 -- Name: webhooks_deliveries fk_rails_333f76f79b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8536,9 +8581,11 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
 ('20260408161034'),
+('20260408131955'),
 ('20260323120000'),
 ('20260313160000'),
 ('20260313120000'),

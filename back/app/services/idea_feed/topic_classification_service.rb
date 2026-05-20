@@ -8,8 +8,8 @@ module IdeaFeed
     class InvalidLLMResponse < StandardError; end
     RETRIES_INVALID_RESPONSE = 3
 
-    def initialize(phase)
-      @phase = phase
+    def initialize(project)
+      @project = project
     end
 
     # Given an idea, classifies it into one or more topics, overwriting any
@@ -55,17 +55,21 @@ module IdeaFeed
     BATCH_SIZE = 24
 
     def classify_all_inputs_in_background!
-      idea_ids = @phase.ideas.published.pluck(:id)
+      idea_ids = classifiable_inputs.pluck(:id)
       classification_jobs = idea_ids.each_slice(BATCH_SIZE).map do |batch_ids|
-        BatchTopicClassificationJob.new(@phase, batch_ids)
+        BatchTopicClassificationJob.new(@project, batch_ids)
       end
       ActiveJob.perform_all_later(classification_jobs)
     end
 
     private
 
+    def classifiable_inputs
+      @project.ideas.where(creation_phase: nil).published
+    end
+
     def load_topics
-      @phase.project.input_topics.where(depth: 0).order(:lft).includes(:children)
+      @project.input_topics.where(depth: 0).order(:lft).includes(:children)
     end
 
     def create_llm
@@ -102,9 +106,12 @@ module IdeaFeed
       @multiloc_service ||= MultilocService.new
     end
 
+    def custom_form
+      @project.custom_form || CustomForm.new(participation_context: @project)
+    end
+
     def classification_prompt(idea, topics)
-      form = @phase.pmethod.custom_form
-      input_text = Analysis::InputToText.new(custom_fields_without_topics(form)).formatted(idea)
+      input_text = Analysis::InputToText.new(custom_fields_without_topics(custom_form)).formatted(idea)
       ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_classification',
         multiloc_service:,
         project: idea.project,

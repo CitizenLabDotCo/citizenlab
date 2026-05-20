@@ -45,7 +45,7 @@ RSpec.describe Webhooks::Subscription do
 
     it 'accepts all supported events' do
       subscription = build(:webhook_subscription,
-        events: ['idea.created', 'idea.published', 'idea.changed', 'user.created'])
+        events: ['idea.created', 'idea.published', 'idea.changed', 'idea.changed_status', 'user.created'])
       expect(subscription).to be_valid
     end
   end

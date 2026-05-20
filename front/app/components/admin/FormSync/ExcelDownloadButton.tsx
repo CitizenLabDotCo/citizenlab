@@ -34,21 +34,24 @@ const ExcelDownloadButton = ({ phaseId }: Props) => {
   };
 
   return (
-    <UpsellTooltip disabled={inputImporterAllowed}>
-      <Button
-        buttonStyle="secondary-outlined"
-        icon="download"
-        onClick={downloadExampleXlsxFile}
-        disabled={!inputImporterAllowed}
-      >
-        <Box display="flex" alignItems="center" gap="4px">
-          <FormattedMessage {...messages.downloadExcelTemplate} />
-          <IconTooltip
-            content={formatMessage(messages.downloadExcelTemplateTooltip)}
-          />
-        </Box>
-      </Button>
-    </UpsellTooltip>
+    <Box display="flex" alignItems="center">
+      <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
+        <Button
+          buttonStyle="text"
+          icon="download"
+          onClick={downloadExampleXlsxFile}
+          disabled={!inputImporterAllowed}
+          px="4px"
+        >
+          <FormattedMessage {...messages.template} />
+        </Button>
+      </UpsellTooltip>
+      {inputImporterAllowed && (
+        <IconTooltip
+          content={formatMessage(messages.downloadExcelTemplateTooltip)}
+        />
+      )}
+    </Box>
   );
 };
 

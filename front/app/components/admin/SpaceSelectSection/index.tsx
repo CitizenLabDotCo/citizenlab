@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { Error, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useSpaces from 'api/spaces/useSpaces';
@@ -16,16 +16,12 @@ import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import messages from './messages';
 
 interface Props {
-  spaceId: string | null;
-  isProjectInsideFolder?: boolean;
+  spaceId?: string | null;
+  error?: boolean;
   onChange: (spaceId: string | null) => void;
 }
 
-const SpaceSelectSection = ({
-  spaceId,
-  isProjectInsideFolder = false,
-  onChange,
-}: Props) => {
+const SpaceSelectSection = ({ spaceId, error, onChange }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
@@ -38,10 +34,6 @@ const SpaceSelectSection = ({
   if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
 
   const getTooltipMessage = () => {
-    if (isProjectInsideFolder) {
-      return messages.disabledTooltip;
-    }
-
     if (userIsSpaceModerator) {
       return undefined;
     }
@@ -60,13 +52,8 @@ const SpaceSelectSection = ({
         )}
       </SubSectionTitle>
 
-      <SpaceSelect
-        spaceId={spaceId}
-        isProjectInsideFolder={isProjectInsideFolder}
-        spaces={spaces.data}
-        role={userIsAdmin ? 'admin' : 'space_moderator'}
-        onChange={onChange}
-      />
+      <SpaceSelect spaceId={spaceId} spaces={spaces.data} onChange={onChange} />
+      {error && <Error text={formatMessage(messages.pleaseSelectASpace)} />}
     </SectionField>
   );
 };

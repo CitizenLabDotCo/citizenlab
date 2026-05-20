@@ -7,7 +7,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -104,6 +104,18 @@ class WebApi::V1::UsersController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
+  def ping
+    skip_authorization
+
+    # Allows us to return a different response when a user hits an admin route in the front-end
+    if params[:admin].present? && current_user&.normal_user?
+      head :forbidden
+      return
+    end
+
+    head :ok
+  end
+
   def me
     @user = current_user
     skip_authorization
@@ -118,12 +130,6 @@ class WebApi::V1::UsersController < ApplicationController
 
   def show
     render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
-  end
-
-  def by_slug
-    @user = User.by_slug!(params[:slug])
-    authorize @user
-    show
   end
 
   def by_invite
@@ -154,9 +160,6 @@ class WebApi::V1::UsersController < ApplicationController
         else
           render json: raw_json({ action: 'password' })
         end
-      elsif !app_configuration.feature_activated?('user_confirmation')
-        # Only triggered for new users - at this point they have no password
-        render json: raw_json({ action: 'token' })
       else
         if @user.email_confirmation_code_reset_count == 0
           # If the reset count is zero, we are in the following situation:
@@ -293,19 +296,6 @@ class WebApi::V1::UsersController < ApplicationController
       end
     else
       render json: { errors: { current_password: [{ error: 'invalid' }] } }, status: :unprocessable_entity
-    end
-  end
-
-  # This endpoint is only used when user_confirmation is disabled.
-  def update_email_unconfirmed
-    authorize(current_user)
-    if current_user.update(email: params[:user][:email])
-      render json: WebApi::V1::UserSerializer.new(
-        current_user,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    else
-      render json: { errors: current_user.errors.details }, status: :unprocessable_entity
     end
   end
 

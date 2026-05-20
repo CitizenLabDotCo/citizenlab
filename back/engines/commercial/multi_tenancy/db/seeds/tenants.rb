@@ -160,19 +160,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true
             },
             anonymous_participation: {
-              enabled: true,
-              allowed: true
-            },
-            bulk_import_ideas: {
               enabled: true,
               allowed: true
             },
@@ -201,8 +193,8 @@ module MultiTenancy
               allowed: true
             },
             intercom: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             segment: {
               enabled: false,
@@ -522,8 +514,8 @@ module MultiTenancy
               allowed: true
             },
             project_scheduling: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true
             },
             platform_templates: {
               enabled: false,
@@ -591,6 +583,10 @@ module MultiTenancy
               allowed: false
             },
             email_scheduling: {
+              enabled: true,
+              allowed: true
+            },
+            phase_datetime_setup: {
               enabled: true,
               allowed: true
             }

@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:21:24.048278Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -1123,6 +1128,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T14:23:57.861055Z",
+    "verified_by": "Adrien"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
@@ -2114,6 +2124,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-04-29T22:13:06.794813Z",
+    "verified_by": "Adrien"
+  },
   "app.components.PostCardsComponents.list": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -2479,6 +2494,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:54:49.421434Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:42:28.939588Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -2814,6 +2839,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.138401Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -2903,6 +2933,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T13:00:15.266485Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -3158,6 +3193,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:39:06.385233Z",
+    "verified_by": "Adrien"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -6249,6 +6289,56 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-05-04T15:37:28.301698Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -7159,6 +7249,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:41:27.147129Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -7308,6 +7403,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.138401Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:20:44.138401Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
@@ -11614,6 +11719,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:19:59.297176Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -12203,6 +12313,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-21T16:13:46.685111Z",
+    "verified_by": "Adrien"
   },
   "app.errors.resending_code_failed": {
     "state": "verified",

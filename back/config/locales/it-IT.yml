@@ -127,7 +127,7 @@ it-IT:
         response:
           title: Qual è la tua risposta?
         story:
-          title: Qual è la tua storia?
+          title: Qual è la tua esperienza?
         suggestion:
           title: Qual è il tuo suggerimento?
         topic:

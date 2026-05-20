@@ -9,6 +9,8 @@ FactoryBot.define do
       (evaluator.space_ids || evaluator.spaces&.compact&.map(&:id)).each do |space_id|
         moderator.add_role('space_moderator', space_id: space_id)
       end
+
+      moderator.confirm
     end
   end
 end

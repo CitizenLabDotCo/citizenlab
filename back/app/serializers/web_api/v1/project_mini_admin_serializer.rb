@@ -4,11 +4,16 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   attributes(:title_multiloc, :visible_to, :listed)
 
   attribute :publication_status do |object|
-    object.admin_publication.publication_status
+    object.admin_publication.effective_publication_status
   end
 
   attribute :first_published_at do |object|
     object.admin_publication.first_published_at
+  end
+
+  attribute :scheduled_at do |object|
+    admin_pub = object.admin_publication
+    admin_pub.scheduled_at unless admin_pub.due_status_transition?
   end
 
   attribute :first_phase_start_date do |object|

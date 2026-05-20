@@ -10,14 +10,14 @@ export default defineMessages({
     defaultMessage: 'Input',
   },
   noIdeasYet: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet5',
     defaultMessage:
-      'Nothing to review yet. Click "{importFile}" to import a PDF file containing scanned input forms or an Excel file containing inputs.',
+      'Nothing to review yet. Import a PDF file containing scanned input forms or an Excel file containing inputs to continue.',
   },
   noIdeasYetNoPdf: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf3',
     defaultMessage:
-      'Nothing to review yet. Click "{importFile}" to import an Excel file containing inputs.',
+      'Nothing to review yet. Import an Excel file containing inputs to continue.',
   },
   author: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.author',

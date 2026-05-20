@@ -37,7 +37,7 @@ module ProjectFolders
 
     has_many_text_images from: :description_multiloc
 
-    has_one :admin_publication, as: :publication, dependent: :destroy
+    has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model

@@ -228,10 +228,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
   end
 
   get 'web_api/v1/projects/finished_or_archived' do
+    parameter :filter_by, 'Filter by project state. Either "finished", "archived", or "finished_and_archived".', required: true
+
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of projects per page'
-      parameter :filter_by, 'Whether to filter by finished or archived projects, or both'
     end
 
     context "when passed filter_by: 'finished'" do

@@ -9,7 +9,6 @@ import {
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { IIdeaImageData } from 'api/idea_images/types';
@@ -64,7 +63,7 @@ const IdeaCard = ({
 
   const title = localize(idea.attributes.title_multiloc);
   const body = localize(idea.attributes.body_multiloc);
-  const url: RouteType = `/ideas/${idea.attributes.slug}`;
+  const url = `/ideas/${idea.attributes.slug}`;
   const likes = idea.attributes.likes_count;
   const dislikes = idea.attributes.dislikes_count;
   const image = images[0]?.attributes?.versions?.medium;
@@ -139,15 +138,16 @@ const IdeaCard = ({
               }
               overflow={hideTextOverflow ? 'hidden' : undefined}
             >
-              <Box
-                display={hideTextOverflow ? 'block' : 'none'}
-                position="absolute"
-                mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
-                height={`${MEDIUM_LINE_HEIGHT * 2}px`}
-                width={`${textContainerRef.current?.clientWidth ?? 0}px`}
-              >
-                <Image src={GradientSrc} alt="" width="100%" height="100%" />
-              </Box>
+              {hideTextOverflow && (
+                <Box
+                  position="absolute"
+                  mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
+                  height={`${MEDIUM_LINE_HEIGHT * 2}px`}
+                  width={`${textContainerRef.current?.clientWidth ?? 0}px`}
+                >
+                  <Image src={GradientSrc} alt="" width="100%" height="100%" />
+                </Box>
+              )}
               <Box mt="12px">
                 <QuillEditedContent textColor={colors.textPrimary} fontSize="m">
                   <IdeaText
@@ -175,7 +175,7 @@ const IdeaCard = ({
       <Box display="flex" {...(showAuthor ? { pt: '8px' } : {})}>
         {showAuthor && <AuthorAvatar idea={idea} />}
         <Box marginLeft="auto">
-          <Text color="coolGrey500" fontSize="s">
+          <Text color="coolGrey600" fontSize="s">
             {showVotes && (
               <Box as="span" display="inline" mr="10px">
                 {textNumberOfVotes}
@@ -185,14 +185,14 @@ const IdeaCard = ({
               <Box as="span" display="inline">
                 <Icon
                   height="16px"
-                  fill={colors.coolGrey500}
+                  fill={colors.coolGrey600}
                   mr="3px"
                   name="vote-up"
                 />
                 {likes}
                 <Icon
                   height="16px"
-                  fill={colors.coolGrey500}
+                  fill={colors.coolGrey600}
                   ml="8px"
                   mr="3px"
                   name="vote-down"

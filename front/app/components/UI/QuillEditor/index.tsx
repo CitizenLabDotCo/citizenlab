@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
-import { configureQuill } from './configureQuill';
+import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
 import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
@@ -31,6 +31,7 @@ export interface Props {
   noVideos?: boolean;
   noAlign?: boolean;
   noLinks?: boolean;
+  withGifSupport?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -40,6 +41,7 @@ export interface Props {
   onBlur?: () => void;
   maxCharCount?: number;
   minCharCount?: number;
+  ariaLabelledBy?: string;
 }
 
 configureQuill();
@@ -53,6 +55,7 @@ const QuillEditor = ({
   noImages = false,
   noVideos = false,
   noLinks = false,
+  withGifSupport,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -62,6 +65,7 @@ const QuillEditor = ({
   onFocus,
   maxCharCount,
   minCharCount,
+  ariaLabelledBy,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -93,6 +97,8 @@ const QuillEditor = ({
       container.ownerDocument.createElement('div')
     );
 
+    setEmbeddedVideoTitle(formatMessage(messages.embeddedVideo));
+
     const quill = createQuill(editorContainer, {
       id,
       toolbarId,
@@ -100,11 +106,13 @@ const QuillEditor = ({
       noVideos,
       noAlign,
       noLinks,
+      withGifSupport,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
+      ariaLabelledBy,
     });
 
     setHTML(quill, value);
