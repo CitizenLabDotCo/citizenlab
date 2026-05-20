@@ -24,6 +24,9 @@ export type Props = {
   className?: string;
   label?: React.ReactNode;
   isSearchable?: boolean;
+  setRef?: (arg: SelectInstance<IOption, true> | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 };
 
 const MultipleSelect = ({
@@ -38,6 +41,9 @@ const MultipleSelect = ({
   className,
   label,
   isSearchable,
+  setRef,
+  ariaInvalid,
+  ariaDescribedBy,
 }: Props) => {
   const theme = useTheme();
   const selectRef = useRef<SelectInstance<IOption, true>>(null);
@@ -94,12 +100,22 @@ const MultipleSelect = ({
     <Box onKeyDown={handleKeyDown}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <ReactSelect
-        ref={selectRef}
+        ref={(instance) => {
+          (
+            selectRef as React.MutableRefObject<SelectInstance<
+              IOption,
+              true
+            > | null>
+          ).current = instance;
+          setRef?.(instance);
+        }}
         id={id}
         inputId={inputId}
         className={className}
         isMulti
         isSearchable={isSearchable}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
         backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
