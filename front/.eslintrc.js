@@ -38,7 +38,7 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-object-type': 'off',
