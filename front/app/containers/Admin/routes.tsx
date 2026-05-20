@@ -113,7 +113,7 @@ const AdminLayoutElement = () => {
 
   // Logged-out users hitting an admin route are sent home; the Unauthorized
   // screen is reserved for logged-in users without the right permissions.
-  if (!redirect && !accessAuthorized && authUser === null) {
+  if (!redirect && !accessAuthorized && !authUser) {
     return <Navigate to="/" />;
   }
 
