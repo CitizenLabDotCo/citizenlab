@@ -23,7 +23,7 @@ import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { useSearch } from 'utils/router';
@@ -103,6 +103,7 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const searchParams = useSearch({ strict: false });
   const selectedIdeaMarkerId = searchParams.idea_map_id;
   const smallerThanTablet = useBreakpoint('tablet');
@@ -210,6 +211,7 @@ const IdeasWithoutFiltersSidebar = ({
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
+                placeholder={formatMessage(messages.searchContributions)}
               />
             )}
             {showDropdownFilters && (

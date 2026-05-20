@@ -15,8 +15,11 @@ import { IPageFileData } from 'api/page_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
 import { IProjectFileData } from 'api/project_files/types';
 
+import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -82,12 +85,14 @@ interface Props {
 }
 
 const FileDisplay = ({ file, className }: Props) => {
+  const { formatMessage } = useIntl();
   if (!isNilOrError(file)) {
     const {
       file: { url },
       name,
       size,
     } = file.attributes;
+
     return (
       <Container className={className}>
         <Paperclip name="paperclip" />
@@ -96,6 +101,10 @@ const FileDisplay = ({ file, className }: Props) => {
           download={name}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={formatMessage(messages.ariaLabel, {
+            fileName: name,
+            ...(size > 0 && { fileSize: returnFileSize(size) }),
+          })}
         >
           {name}
         </FileDownloadLink>

@@ -95,7 +95,7 @@ export const canAccessRoute = (
       return isCommunityMonitorModerator(user, tenant);
     }
 
-    if (!isRegularUser(user) && isModeratorRoute(item)) {
+    if (user && !isRegularUser(user) && isModeratorRoute(item)) {
       return true;
     }
 

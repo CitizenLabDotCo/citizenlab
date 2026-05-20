@@ -17,10 +17,12 @@ module IdFedera
       }
     }.freeze
 
-    SPID_AUTHN_CONTEXT = {
-      '1' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL1',
-      '2' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL2',
-      '3' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL3'
+    # FedERa uses standard SAML 2.0 authentication context classes mapped to ISO-IEC 29115 LoA levels,
+    # not SPID-specific ones (cf. FedERa SP integration spec v1.6, chapter 13).
+    FEDERA_AUTHN_CONTEXT = {
+      '1' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport',
+      '2' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:SecureRemotePassword',
+      '3' => 'urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard'
     }.freeze
 
     def profile_to_user_attrs(auth)
@@ -59,6 +61,7 @@ module IdFedera
       environment = config[:environment] || 'test'
       spid_level = config[:spid_level] || '1'
 
+      certificate = config[:certificate]
       private_key = config[:private_key]
 
       metadata_file = ENVIRONMENTS.dig(environment, :metadata_xml_file)
@@ -81,11 +84,12 @@ module IdFedera
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
         idp_sso_service_url_runtime_params: { RelayState: :RelayState },
         idp_sso_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1']),
+        authn_context: FEDERA_AUTHN_CONTEXT.fetch(spid_level, FEDERA_AUTHN_CONTEXT['1']),
         request_attributes: []
       )
 
       if private_key.present?
+        options[:certificate] = certificate if certificate.present?
         options[:private_key] = private_key
         options[:security] = {
           authn_requests_signed: true,

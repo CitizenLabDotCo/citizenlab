@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
-    let_it_be(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
+    let_it_be(:user) do
+      user = create(:unconfirmed_user, email: 'some_email@email.com')
+      user.reset_confirmation_code!
+      user
+    end
     let_it_be(:mailer) { described_class.with(user: user) }
     let_it_be(:message) { mailer.send_confirmation_code.deliver_now }
-
-    before do
-      SettingsService.new.activate_feature! 'user_confirmation'
-    end
 
     describe 'mailgun_headers' do
       it 'includes X-Mailgun-Variables and cl_tenant_id' do
@@ -41,7 +41,7 @@ RSpec.describe ConfirmationsMailer do
     end
 
     context "when receiver's email address changes" do
-      let(:user) { create(:user_with_confirmation, email: 'just_some_email@email.com') }
+      let(:user) { create(:unconfirmed_user, email: 'just_some_email@email.com') }
       let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
 
       it "renders the receiver's new email address when present" do

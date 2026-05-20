@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   colors,
+  invisibleA11yText,
   isRtl,
   quillEditedContent,
 } from '@citizenlab/cl2-component-library';
@@ -173,6 +174,12 @@ const Container = styled.div<{
 
   &.focus div.ql-container > div.ql-editor {
     border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
+  }
+
+  /* add text label for icon toolbar visible when CSS is
+     off so the controls remain meaningful. */
+  .ql-sr-only {
+    ${invisibleA11yText()}
   }
 `;
 

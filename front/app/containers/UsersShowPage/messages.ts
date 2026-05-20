@@ -104,8 +104,9 @@ export default defineMessages({
     defaultMessage: 'Member since {date}',
   },
   metaTitle1: {
-    id: 'app.containers.UsersShowPage.metaTitle1',
-    defaultMessage: 'Profile page of {firstName} {lastName} | {orgName}',
+    id: 'app.containers.UsersShowPage.metaTitle2',
+    defaultMessage:
+      'Profile and activity for {firstName} {lastName} | {orgName}',
   },
   userShowPageMetaDescription: {
     id: 'app.containers.UsersShowPage.userShowPageMetaDescription',

@@ -175,7 +175,7 @@ const IdeaCard = ({
       <Box display="flex" {...(showAuthor ? { pt: '8px' } : {})}>
         {showAuthor && <AuthorAvatar idea={idea} />}
         <Box marginLeft="auto">
-          <Text color="coolGrey500" fontSize="s">
+          <Text color="coolGrey600" fontSize="s">
             {showVotes && (
               <Box as="span" display="inline" mr="10px">
                 {textNumberOfVotes}
@@ -185,14 +185,14 @@ const IdeaCard = ({
               <Box as="span" display="inline">
                 <Icon
                   height="16px"
-                  fill={colors.coolGrey500}
+                  fill={colors.coolGrey600}
                   mr="3px"
                   name="vote-up"
                 />
                 {likes}
                 <Icon
                   height="16px"
-                  fill={colors.coolGrey500}
+                  fill={colors.coolGrey600}
                   ml="8px"
                   mr="3px"
                   name="vote-down"

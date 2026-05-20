@@ -70,7 +70,6 @@ context 'hoplr authentication' do
     }
     configuration.save!
     host! 'example.org'
-    SettingsService.new.activate_feature!('user_confirmation')
   end
 
   def expect_user_to_have_attributes(user)
