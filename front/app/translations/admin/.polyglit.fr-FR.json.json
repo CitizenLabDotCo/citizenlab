@@ -10799,10 +10799,25 @@
     "verified_at": "2026-03-23T11:07:11.773617Z",
     "verified_by": "Simon"
   },
+  "app.containers.Admin.users.UserAssignedItems.spacesUserManages": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:44:14.461231Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.users.UserAssignedItems.thisUserCanManage": {
     "state": "verified",
     "verified_at": "2026-03-23T11:07:11.773617Z",
     "verified_by": "Simon"
+  },
+  "app.containers.Admin.users.UserAssignedItems.thisUserCanManageFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:44:14.461231Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.users.UserAssignedItems.thisUserCanManageSpaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:44:14.461231Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": {
     "state": "verified",
