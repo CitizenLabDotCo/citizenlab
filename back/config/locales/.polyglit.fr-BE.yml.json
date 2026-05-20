@@ -499,9 +499,19 @@
     "verified_at": "2026-05-20T12:55:18.584836Z",
     "verified_by": "Adrien"
   },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:07:25.354301Z",
+    "verified_by": "Adrien"
+  },
   "form_builder.pdf_export.logic_if_answered_go_to": {
     "state": "verified",
     "verified_at": "2026-05-20T12:55:18.584836Z",
+    "verified_by": "Adrien"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:07:25.354301Z",
     "verified_by": "Adrien"
   },
   "form_builder.pdf_export.logic_section": {
