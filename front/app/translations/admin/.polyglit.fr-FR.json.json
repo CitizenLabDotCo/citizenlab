@@ -2049,6 +2049,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.SpaceSelect.noSpaceBecauseOfFolder": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:08:05.248469Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.SpaceSelect.noSpaceLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
