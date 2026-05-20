@@ -331,7 +331,7 @@ resource 'Users' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:unconfirmed_user, email: email)
-              existing_user.confirm!
+              existing_user.email_confirmation.confirm!
 
               do_request
               assert_status 422
@@ -344,7 +344,7 @@ resource 'Users' do
 
               example 'email taken error is returned and confirmation requirement is not reset' do
                 existing_user = create(:unconfirmed_user, email: email)
-                existing_user.confirm!
+                existing_user.email_confirmation.confirm!
 
                 do_request
                 assert_status 422
