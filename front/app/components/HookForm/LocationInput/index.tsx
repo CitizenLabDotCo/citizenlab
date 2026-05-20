@@ -48,6 +48,9 @@ const LocationInput = ({
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   const getLocationGeojson = async (location_description: string) => {
     let location_point_geojson: Point | null = null;
     if (location_description) {
@@ -122,10 +125,15 @@ const LocationInput = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
+        render={({ field: { ref, ...field }, fieldState }) => (
           <LocationInputComponent
             className="e2e-idea-form-location-input-field"
             inputId={name}
+            setRef={(instance) => {
+              ref(instance);
+            }}
+            ariaInvalid={!!fieldState.error}
+            ariaDescribedBy={ariaDescribedBy}
             {...field}
             {...rest}
             form={'_none'}
@@ -147,6 +155,7 @@ const LocationInput = ({
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -155,6 +164,7 @@ const LocationInput = ({
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={fieldName || (name as TFieldName)}
           apiErrors={apiError}
           marginTop="8px"
