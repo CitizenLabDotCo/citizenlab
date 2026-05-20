@@ -6484,6 +6484,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.610315Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6528,6 +6533,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.610315Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
