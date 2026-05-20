@@ -12109,6 +12109,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:28:55.149555Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
