@@ -66,6 +66,8 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
+  # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
+  # It will be removed in the near future when we are sure there is no further use for it.
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
   class << self
@@ -184,6 +186,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -309,23 +312,7 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
-  def self.enhanced_user_profile_privacy?
-    AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
-  end
-
-  # Find a user by slug or by id when the id is used as slug
-  def self.by_slug!(slug)
-    enhanced_user_profile_privacy? ? find(slug) : find_by!(slug:)
-  end
-
-  def slug
-    self.class.enhanced_user_profile_privacy? && id ? id : super
-  end
-
   def show_public_profile?
-    return true unless self.class.enhanced_user_profile_privacy?
-
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods.
     # This is to avoid exposing personal data of users who have not actively used the platform.
@@ -365,8 +352,7 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? && # see #allows_empty_email?
-                  user_confirmation_enabled?
+                  email_was.present? # see #allows_empty_email?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
@@ -394,7 +380,7 @@ class User < ApplicationRecord
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
       bio_multiloc,
-      %i[title alignment list decoration link video]
+      %i[decoration link]
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)

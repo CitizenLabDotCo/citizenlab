@@ -69,11 +69,11 @@ describe('Landing page - URL sign in/up', () => {
     cy.visit('/sign-in');
 
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.contains('Log in').should('exist');
+    cy.get('[data-cy="email-flow-start"]').should('exist');
 
     cy.visit('/sign-up');
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.contains('Sign up').should('exist');
+    cy.get('[data-cy="email-flow-start"]').should('exist');
   });
 
   it('shows no authentication modal when already logged in', () => {

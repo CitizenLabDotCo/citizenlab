@@ -1,75 +1,318 @@
 {
-  "Beta": {
-    "fr-FR": "Bêta"
+  "co-sponsors": {
+    "nl-NL": "ondersteuners"
   },
-  "Common Ground": {
-    "de-DE": "ZusammenFinden"
-  },
-  "FormSync": {
-    "de-DE": "Papier-Scans"
-  },
-  "GovSuccess Manager": {
-    "de-DE": "Kundenbetreuerin",
-    "fr-FR": "Spécialiste en participation Go Vocal"
-  },
-  "Government Success Manager": {
-    "de-DE": "Kundenbetreuerin"
-  },
-  "Space (i.e. The container for folders and projects)": {
-    "da-DK": "Rum"
-  },
-  "Space Manager": {
-    "da-DK": "Rumadministrator"
-  },
-  "admin": {
-    "de-DE": "Admin"
-  },
-  "approve": {
-    "de-DE": "freigeben"
-  },
-  "email": {
-    "da-DK": "e-mail",
-    "es-ES": "correo"
+  "inspiration hub": {
+    "nl-NL": "inspiratiecentrum"
   },
   "input": {
     "de-DE": "Beitrag",
-    "fr-FR": "contribution"
+    "fr-FR": "contribution",
+    "nl-NL": "bijdrage"
+  },
+  "submit": {
+    "nl-NL": "insturen"
+  },
+  "admin": {
+    "de-DE": "Admin",
+    "nl-NL": "Platformbeheerder"
+  },
+  "posts": {
+    "nl-NL": "bijdragen"
+  },
+  "sign out": {
+    "nl-NL": "uitloggen"
+  },
+  "follow preferences": {
+    "nl-NL": "volg-voorkeuren"
+  },
+  "draft": {
+    "nl-NL": "concept"
+  },
+  "content builder": {
+    "nl-NL": "content builder"
+  },
+  "volunteering": {
+    "nl-NL": "vrijwilligers zoeken"
+  },
+  "event": {
+    "nl-NL": "activiteit"
+  },
+  "rating": {
+    "nl-NL": "beoordeling"
+  },
+  "homepage": {
+    "nl-NL": "startpagina"
+  },
+  "information (participation method)": {
+    "nl-NL": "informatie delen"
+  },
+  "survey respondents": {
+    "nl-NL": "deelnemers van de vragenlijst"
+  },
+  "seats": {
+    "da-DK": "pladser",
+    "de-DE": "Zugänge",
+    "es-ES": "asientos",
+    "nl-NL": "accounts"
+  },
+  "template": {
+    "nl-NL": "sjabloon"
+  },
+  "drop pin": {
+    "nl-NL": "pin prikken"
+  },
+  "preview link": {
+    "nl-NL": "voorbeeldlink"
+  },
+  "moderators": {
+    "de-DE": "Projektmanager*innen"
+  },
+  "users": {
+    "de-DE": "Nutzende",
+    "nl-NL": "gebruikers"
+  },
+  "finished": {
+    "nl-NL": "afgelopen"
+  },
+  "Space (i.e. The container for folders and projects)": {
+    "da-DK": "Rum",
+    "nl-NL": "Ruimte"
+  },
+  "seats overview": {
+    "de-DE": "Übersicht der Zugänge",
+    "nl-NL": "overzicht accounts"
+  },
+  "embedded": {
+    "nl-NL": "ingesloten"
+  },
+  "response (input term)": {
+    "nl-NL": "reactie"
+  },
+  "auto-insights": {
+    "nl-NL": "auto-inzichten"
+  },
+  "log in": {
+    "nl-NL": "inloggen"
+  },
+  "review (project)": {
+    "nl-NL": "beoordelen (project)"
+  },
+  "voting": {
+    "nl-NL": "stemming"
+  },
+  "ranking": {
+    "nl-NL": "rangschikking"
+  },
+  "draw area": {
+    "nl-NL": "gebied tekenen"
+  },
+  "survey": {
+    "nl-NL": "vragenlijst"
+  },
+  "survey responses": {
+    "nl-NL": "vragenlijstreacties"
+  },
+  "topic (input term)": {
+    "nl-NL": "thema"
+  },
+  "plan": {
+    "de-DE": "Lizenz"
+  },
+  "Space Manager": {
+    "da-DK": "Rumadministrator",
+    "nl-NL": "Ruimtebeheerder"
+  },
+  "liked": {
+    "nl-NL": "geliked"
+  },
+  "comments (on inputs)": {
+    "nl-NL": "reacties"
+  },
+  "profanity": {
+    "nl-NL": "vulgair taalgebruik"
+  },
+  "recipients": {
+    "de-DE": "Empfänger*innen",
+    "nl-NL": "ontvangers"
+  },
+  "widget": {
+    "nl-NL": "widget"
+  },
+  "file upload questions": {
+    "nl-NL": "bestand upload vragen"
+  },
+  "mapping questions": {
+    "nl-NL": "kaart-gerelateerde vragen"
+  },
+  "input manager": {
+    "nl-NL": "beheer bijdragen-pagina"
+  },
+  "poll": {
+    "nl-NL": "peiling"
+  },
+  "draw route": {
+    "nl-NL": "route tekenen"
+  },
+  "custom content": {
+    "nl-NL": "aangepaste inhoud"
+  },
+  "map layers": {
+    "nl-NL": "kaartlagen"
+  },
+  "email": {
+    "da-DK": "e-mail",
+    "es-ES": "correo",
+    "nl-NL": "e-mail"
   },
   "inputs": {
     "da-DK": "input",
     "de-DE": "Beiträge",
-    "fr-FR": "contributions"
+    "fr-FR": "contributions",
+    "nl-NL": "bijdragen"
   },
   "manager": {
     "da-DK": "projektleder",
     "de-DE": "Manager*innen",
     "es-ES": "gestor",
-    "fr-FR": "gestionnaire"
+    "fr-FR": "gestionnaire",
+    "nl-NL": "beheerder"
   },
-  "plan": {
-    "de-DE": "Lizenz"
+  "Common Ground": {
+    "de-DE": "ZusammenFinden",
+    "nl-NL": "Raakvlakkenmethode"
   },
-  "recipients": {
-    "de-DE": "Empfänger*innen"
+  "GovSuccess Manager": {
+    "de-DE": "Kundenbetreuerin",
+    "fr-FR": "Spécialiste en participation Go Vocal",
+    "nl-NL": "GovSuccess Manager"
   },
-  "save": {
-    "da-DK": "gem",
-    "fr-FR": "enregistrer"
+  "sort": {
+    "nl-NL": "sorteer"
+  },
+  "Beta": {
+    "fr-FR": "Bêta"
+  },
+  "story (input term)": {
+    "nl-NL": "verhaal"
+  },
+  "document annotation": {
+    "nl-NL": "feedback op een document"
+  },
+  "option (input term)": {
+    "nl-NL": "optie"
+  },
+  "topics / tags": {
+    "nl-NL": "tags"
   },
   "seat": {
     "da-DK": "plads",
     "de-DE": "Zugang",
-    "es-ES": "asiento"
+    "es-ES": "asiento",
+    "nl-NL": "account"
   },
-  "seats": {
-    "da-DK": "pladser",
-    "de-DE": "Zugänge",
-    "es-ES": "asientos"
+  "community monitor": {
+    "nl-NL": "gemeenschapsmonitor"
   },
-  "seats overview": {
-    "de-DE": "Übersicht der Zugänge"
+  "rank": {
+    "nl-NL": "rang"
   },
-  "users": {
-    "de-DE": "Nutzende"
+  "proposals": {
+    "nl-NL": "voorstellen"
+  },
+  "attendees (events)": {
+    "nl-NL": "aanwezigen"
+  },
+  "chart": {
+    "nl-NL": "grafiek"
+  },
+  "participation data": {
+    "nl-NL": "deelnamegegevens"
+  },
+  "registrants (events)": {
+    "nl-NL": "geregistreerden"
+  },
+  "post (input term)": {
+    "nl-NL": "bericht"
+  },
+  "reactions (on inputs)": {
+    "nl-NL": "likes / dislikes"
+  },
+  "approve": {
+    "de-DE": "freigeben",
+    "nl-NL": "Goedkeuren"
+  },
+  "initiative (input term)": {
+    "nl-NL": "initiatief"
+  },
+  "early access": {
+    "nl-NL": "vroege toegang"
+  },
+  "sign up": {
+    "nl-NL": "registreren"
+  },
+  "schedule (verb)": {
+    "nl-NL": "inplannen"
+  },
+  "campaign": {
+    "nl-NL": "campagne"
+  },
+  "required": {
+    "nl-NL": "vereist"
+  },
+  "ideation": {
+    "nl-NL": "ideeënvorming"
+  },
+  "stale": {
+    "nl-NL": "inactief"
+  },
+  "tag": {
+    "nl-NL": "tag"
+  },
+  "image choice": {
+    "nl-NL": "afbeelding keuze"
+  },
+  "representativeness dashboard": {
+    "nl-NL": "representativiteitsdashboard"
+  },
+  "Government Success Manager": {
+    "de-DE": "Kundenbetreuerin",
+    "nl-NL": "Government Success Manager"
+  },
+  "statement": {
+    "nl-NL": "stelling"
+  },
+  "preview (noun)": {
+    "nl-NL": "voorvertoning"
+  },
+  "comment (input term)": {
+    "nl-NL": "opmerking"
+  },
+  "FormSync": {
+    "de-DE": "Papier-Scans",
+    "nl-NL": "FormSync"
+  },
+  "save": {
+    "da-DK": "gem",
+    "fr-FR": "enregistrer",
+    "nl-NL": "opslaan"
+  },
+  "custom page": {
+    "nl-NL": "aangepaste pagina"
+  },
+  "preview (verb)": {
+    "nl-NL": "tonen"
+  },
+  "issue (input term)": {
+    "nl-NL": "probleem"
+  },
+  "sign in": {
+    "nl-NL": "inloggen"
+  },
+  "traffic sources": {
+    "nl-NL": "kanalen"
+  },
+  "petition": {
+    "nl-NL": "petitie"
   }
 }

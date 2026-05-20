@@ -7,7 +7,6 @@ import {
   colors,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
@@ -18,12 +17,13 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const Edit = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };

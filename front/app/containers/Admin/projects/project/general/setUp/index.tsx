@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useLocation, useParams } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -51,6 +50,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -638,7 +638,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 };
 
 const AdminProjectsProjectGeneralWrapper = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 

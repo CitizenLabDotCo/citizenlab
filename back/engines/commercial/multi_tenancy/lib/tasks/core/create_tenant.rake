@@ -43,10 +43,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        user_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         permissions_custom_fields: {
           enabled: true,
           allowed: true
@@ -320,8 +316,8 @@ namespace :cl2_back do
           allowed: true
         },
         project_scheduling: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         platform_templates: {
           enabled: false,

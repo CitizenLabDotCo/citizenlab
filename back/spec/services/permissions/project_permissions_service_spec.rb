@@ -6,8 +6,6 @@ describe Permissions::ProjectPermissionsService do
   let(:current_phase_attrs) { {} }
   let(:user) { create(:user) }
 
-  before { SettingsService.new.activate_feature! 'user_confirmation' }
-
   describe '"posting_idea" denied_reason_for_action' do
     context 'when posting is disabled' do
       let(:current_phase_attrs) { { submission_enabled: false } }

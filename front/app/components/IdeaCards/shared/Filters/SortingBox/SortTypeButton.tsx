@@ -49,7 +49,7 @@ const Label = styled.label<{ selected: boolean }>`
 
 type SortTypeButtonProps = {
   sortType: IdeaSortMethod;
-  handleSortOnChange: (sort: string) => void;
+  handleSortOnChange: (sort: IdeaSortMethod) => void;
   isSelected: boolean;
 };
 

@@ -39,7 +39,6 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
       <Button
         buttonStyle="primary"
         onClick={onAccept}
-        autoFocus
         // Do not remove id, it is used for custom even tracking in GTM
         id="accept-cookies-btn"
         data-testid="accept-cookies-btn"

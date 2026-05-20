@@ -106,11 +106,11 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
+          get 'me/ping', action: 'ping'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -120,9 +120,7 @@ Rails.application.routes.draw do
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
           post 'check'
-          patch 'update_email_unconfirmed'
 
-          get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
           get :check_if_exceeds_seats
@@ -147,11 +145,9 @@ Rails.application.routes.draw do
 
       scope path: 'user' do
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
-        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
-        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 

@@ -137,7 +137,7 @@ const DeleteUserModal = ({ setClose, user, returnFocusRef }: Props) => {
           mt="12px"
         >
           <ProfileLink
-            href={`/profile/${user.attributes.slug}`}
+            href={`/profile/${user.id}`}
             target="_blank"
             rel="noopener noreferrer"
           >

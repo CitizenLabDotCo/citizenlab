@@ -117,17 +117,14 @@ const ProjectHeader = ({ projectId }: Props) => {
             className="intercom-projects-project-header-buttons"
           >
             <ButtonWithLink
-              linkTo={`/projects/${project.data.attributes.slug}`}
+              to="/projects/$slug"
+              params={{ slug: project.data.attributes.slug }}
               buttonStyle="secondary-outlined"
               icon="eye"
               size="s"
               padding="4px 8px"
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
-            />
-            <PublicationStatus
-              className="intercom-product-tour-project-publication-status-dropdown"
-              project={project}
             />
             <ShareLink
               projectId={project.data.id}
@@ -140,7 +137,8 @@ const ProjectHeader = ({ projectId }: Props) => {
         </Box>
         <Box display="flex" gap="8px">
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -160,7 +158,8 @@ const ProjectHeader = ({ projectId }: Props) => {
             ·
           </Text>
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -269,6 +268,10 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Box>
             </>
           )}
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+            ·
+          </Text>
+          <PublicationStatus project={project.data} />
         </Box>
       </Box>
     </NavigationTabs>

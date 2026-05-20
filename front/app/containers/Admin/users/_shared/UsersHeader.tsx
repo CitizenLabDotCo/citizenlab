@@ -65,14 +65,14 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
         {authUserIsAdmin && (
           <Box display="flex" flexDirection="row" alignItems="flex-start">
             <ButtonWithLink
-              linkTo="/admin/users/seats"
+              to="/admin/users/seats"
               icon="shield-checkered"
               mr="12px"
             >
               <FormattedMessage {...messages.seatsOverview} />
             </ButtonWithLink>
             <ButtonWithLink
-              linkTo="/admin/dashboard/users"
+              to="/admin/dashboard/users"
               text={<FormattedMessage {...messages.userInsights} />}
               icon="chart-bar"
               buttonStyle="secondary-outlined"

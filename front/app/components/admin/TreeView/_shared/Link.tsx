@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import OriginalLink from 'utils/cl-router/Link';
@@ -16,20 +15,22 @@ const StyledLink = styled(OriginalLink)<{
     color: ${({ color }) => color};
     text-decoration: underline;
   }
-`;
+` as typeof OriginalLink;
 
-interface Props {
-  to: RouteType;
-  color?: string;
-  children: React.ReactNode;
-}
-
-const Link = ({ to, color = colors.black, children }: Props) => {
-  return (
-    <StyledLink to={to} color={color}>
-      {children}
-    </StyledLink>
-  );
-};
+// Internal props are intentionally loose: the public signature comes from
+// `: typeof OriginalLink` on the export, which preserves typed-route checking
+// at the call site.
+const Link: typeof OriginalLink = ((
+  props: { color?: string } & Record<string, unknown>
+) => {
+  const { color = colors.black, ...rest } = props as {
+    color?: string;
+  } & Record<string, unknown>;
+  const StyledLinkAny = StyledLink as unknown as React.ComponentType<{
+    color: string;
+    [key: string]: unknown;
+  }>;
+  return <StyledLinkAny {...rest} color={color} />;
+}) as typeof OriginalLink;
 
 export default Link;

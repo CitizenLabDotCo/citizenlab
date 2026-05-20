@@ -11,7 +11,6 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignFormValues } from 'api/campaigns/types';
@@ -30,12 +29,13 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams() as {
+  const { campaignId } = useParams({ strict: false }) as {
     campaignId: string;
   };
   const { data: tenant } = useAppConfiguration();
