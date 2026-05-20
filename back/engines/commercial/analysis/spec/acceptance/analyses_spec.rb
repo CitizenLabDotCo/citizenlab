@@ -144,6 +144,24 @@ resource 'Analyses' do
         expect(response_status).to eq 422
       end
     end
+
+    describe do
+      let(:project) { create(:project) }
+      let(:phase) { create(:common_ground_phase, :ongoing, project: project) }
+      let(:phase_id) { phase.id }
+
+      example_request 'Create a phase analysis (common ground phase) when no custom_form exists' do
+        expect(response_status).to eq 201
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(additional_custom_field_ids).not_to be_empty
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc])
+
+        tags = Analysis::Analysis.find(response_data[:id]).tags
+        expect(tags.count).to be > 0
+        expect(tags.pluck(:tag_type).uniq).to eq ['onboarding_example']
+      end
+    end
   end
 
   patch 'web_api/v1/analyses/:id' do
