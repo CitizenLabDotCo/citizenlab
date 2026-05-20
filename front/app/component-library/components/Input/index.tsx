@@ -210,7 +210,7 @@ class Input extends PureComponent<InputProps> {
           onChange={this.handleOnChange}
           onFocus={onFocus}
           onBlur={this.handleOnBlur}
-          ref={this.props.setRef as React.Ref<HTMLInputElement>}
+          ref={this.props.setRef}
           min={min}
           max={max}
           step={step}
