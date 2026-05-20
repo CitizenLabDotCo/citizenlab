@@ -86,6 +86,8 @@ resource 'Omniauth Callback', document: false do
       allow(app_config_mock).to receive(:settings).with(no_args).and_return({ 'core' => { 'timezone' => 'Europe/Brussels' } })
       allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
       allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
+      allow(app_config_mock).to receive(:settings).with('password_login', 'minimum_length').and_return(8)
+      allow(app_config_mock).to receive(:settings).with('core', 'locales').and_return(['en'])
       allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)
 
       app_config_mock
