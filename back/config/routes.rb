@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   end
 
   use_doorkeeper
+
+  # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  namespace :oauth do
+    resources :registrations, only: :create, format: :json
+  end
+  get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'

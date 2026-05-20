@@ -190,4 +190,17 @@ class Rack::Attack
       req.remote_ip
     end
   end
+
+  # OAuth Dynamic Client Registration by IP.
+  throttle('oauth_registrations/ip', limit: 5, period: 1.minute) do |req|
+    if req.path == '/oauth/registrations' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('oauth_registrations/ip/day', limit: 50, period: 24.hours) do |req|
+    if req.path == '/oauth/registrations' && req.post?
+      req.remote_ip
+    end
+  end
 end
