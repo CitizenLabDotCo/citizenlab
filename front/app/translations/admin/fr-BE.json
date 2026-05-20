@@ -387,7 +387,7 @@
   "app.components.admin.ReportExportMenu.downloadXlsx": "Télécharger Excel",
   "app.components.admin.SlugInput.regexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
   "app.components.admin.SpaceSelect.noSpaceBecauseOfFolder": "— Aucun espace (le dossier n'est pas dans un espace) —",
-  "app.components.admin.SpaceSelect.noSpaceLabel": "- Pas d'espace -",
+  "app.components.admin.SpaceSelect.noSpaceLabel": "- Se -",
   "app.components.admin.SpaceSelect.pleaseSelectASpace": "— Veuillez sélectionner un espace —",
   "app.components.admin.SpaceSelect.sameSpaceAsFolder": "- Même espace que le dossier -",
   "app.components.admin.TerminologyConfig.saveButton": "Enregistrer",
