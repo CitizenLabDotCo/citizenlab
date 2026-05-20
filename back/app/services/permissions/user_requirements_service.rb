@@ -103,8 +103,7 @@ class Permissions::UserRequirementsService
   def disable_everyone_confirmed_email?(permission)
     return false unless permission.permitted_by == 'everyone_confirmed_email'
 
-    !app_configuration.feature_activated?('user_confirmation') ||
-      (permission.action == 'following' && !app_configuration.feature_activated?('password_login'))
+    permission.action == 'following' && !app_configuration.feature_activated?('password_login')
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)

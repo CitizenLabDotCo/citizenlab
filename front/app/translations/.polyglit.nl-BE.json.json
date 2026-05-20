@@ -2489,6 +2489,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T12:19:54.946799Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -11529,6 +11534,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:26:48.153729Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -11783,6 +11793,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T14:18:05.023934Z",
+    "verified_by": "Luuc"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",

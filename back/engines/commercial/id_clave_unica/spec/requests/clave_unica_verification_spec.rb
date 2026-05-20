@@ -5,7 +5,6 @@ require 'rspec_api_documentation/dsl'
 
 describe 'clave_unica verification' do
   before do
-    SettingsService.new.activate_feature! 'user_confirmation'
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
@@ -274,32 +273,6 @@ describe 'clave_unica verification' do
         expect(user.email).to be_nil
         expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
-      end
-    end
-
-    context 'email confirmation disabled' do
-      before do
-        configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          'enabled' => false,
-          'allowed' => false
-        }
-        configuration.save!
-      end
-
-      it 'creates user that can update her email' do
-        get '/auth/clave_unica'
-        follow_redirect!
-
-        user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
-
-        headers = { 'Authorization' => authorization_header(user) }
-        patch '/web_api/v1/users/update_email_unconfirmed', params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
-
-        expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
-        expect(user.confirmation_required?).to be(false)
       end
     end
   end

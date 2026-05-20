@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:21:24.048278Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -1343,6 +1348,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:48:44.771067Z",
+    "verified_by": "Adrien"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -2488,6 +2498,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T17:54:49.421434Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:42:28.939588Z",
+    "verified_by": "Adrien"
   },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
@@ -11529,6 +11549,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-15T08:19:46.072009Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -11783,6 +11808,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-19T22:11:39.229453Z",
+    "verified_by": "Adrien"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",

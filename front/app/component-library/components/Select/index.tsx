@@ -113,6 +113,9 @@ export interface Props extends DefaultProps {
   placeholder?: string;
   mr?: string;
   dataCy?: string;
+  setRef?: (arg: HTMLSelectElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -172,6 +175,9 @@ class Select extends PureComponent<Props> {
       placeholder,
       mr,
       dataCy,
+      setRef,
+      ariaInvalid,
+      ariaDescribedBy,
     } = this.props;
 
     const safeValue =
@@ -208,6 +214,9 @@ class Select extends PureComponent<Props> {
             value={selectedValue}
             data-testid={testEnv('select')}
             data-cy={dataCy}
+            ref={setRef}
+            aria-invalid={ariaInvalid}
+            aria-describedby={ariaDescribedBy}
           >
             {placeholder !== undefined && (
               <option

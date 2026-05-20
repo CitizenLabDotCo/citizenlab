@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.footer.ariaLabel',
     defaultMessage: 'Secondary',
   },
+  goVocalLogoTitle: {
+    id: 'app.containers.footer.goVocalLogoTitle',
+    defaultMessage: 'Go Vocal formerly CitizenLab',
+  },
 });

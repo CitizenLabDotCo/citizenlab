@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
+import { SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { useTheme } from 'styled-components';
 
@@ -31,12 +32,16 @@ type TextSearchResponse = {
 
 export type LocationInputProps = React.ComponentProps<typeof AsyncSelect> & {
   value?: Option | null;
+  setRef?: (arg: SelectInstance<any, boolean> | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 };
 
 const LocationInput = (props: LocationInputProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const theme = useTheme();
+  const { setRef, ariaInvalid, ariaDescribedBy, ...rest } = props;
 
   const defaultOptions = props.value
     ? [{ label: props.value.value, value: props.value.value }]
@@ -100,7 +105,12 @@ const LocationInput = (props: LocationInputProps) => {
       menuShouldScrollIntoView={false}
       isClearable
       openMenuOnClick={false}
-      {...props}
+      {...rest}
+      ref={(instance) => {
+        setRef?.(instance);
+      }}
+      aria-invalid={ariaInvalid}
+      aria-describedby={ariaDescribedBy}
       placeholder={
         props.placeholder ? (
           <Text m="0" color="coolGrey600">

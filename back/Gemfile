@@ -262,7 +262,8 @@ commercial_engines = [
   'id_oostende_rrn',
   'id_hoplr',
   'id_vienna_saml',
-  'id_twoday'
+  'id_twoday',
+  'mcp_server'
 ]
 
 commercial_engines.each do |engine_name|
@@ -270,4 +271,4 @@ commercial_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem "doorkeeper", "~> 5.9"
+gem 'doorkeeper', '~> 5.9'

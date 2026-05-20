@@ -6,7 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Request codes' do
   before do
     set_api_content_type
-    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   post 'web_api/v1/user/request_code_unauthenticated' do
@@ -19,7 +18,7 @@ resource 'Request codes' do
     end
 
     example 'works if user has no password and has email confirmed' do
-      user = create(:user_no_password, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com')
       user.confirm
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be false
@@ -30,7 +29,7 @@ resource 'Request codes' do
     end
 
     example 'works if user has no password and does not have email confirmed' do
-      user = create(:user_no_password, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com')
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be true
 
@@ -52,7 +51,7 @@ resource 'Request codes' do
     # This is an edge case related to legacy users, where a user has a password set
     # but has not confirmed their email yet. This should not be possible anymore.
     example 'works if user has password and does not have email confirmed' do
-      user = create(:user_with_confirmation, email: 'test@test.com')
+      user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be true
 
@@ -62,7 +61,7 @@ resource 'Request codes' do
     end
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
-      user = create(:user_no_password, email_confirmation_code_reset_count: 4)
+      user = create(:unconfirmed_user, email_confirmation_code_reset_count: 4)
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
@@ -70,7 +69,7 @@ resource 'Request codes' do
     end
 
     example 'It does not work if new_email is present' do
-      user = create(:user_no_password, new_email: 'new@email.com')
+      user = create(:unconfirmed_user, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
 
       do_request(request_code: { email: user.email })
