@@ -3209,6 +3209,16 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.843022Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.843022Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -8843,6 +8853,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeasShow.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.843022Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasShow.commentCTA": {
     "state": "verified",
