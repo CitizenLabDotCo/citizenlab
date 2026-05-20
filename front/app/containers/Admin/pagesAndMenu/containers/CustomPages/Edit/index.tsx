@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
@@ -10,7 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import {
   pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  pagesAndMenuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -20,6 +19,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,7 +28,9 @@ import ViewCustomPageButton from './ViewCustomPageButton';
 const CustomPagesEditSettings = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
@@ -48,7 +50,7 @@ const CustomPagesEditSettings = () => {
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumbLinkTo,
+              link: pagesAndMenuBreadcrumbLink,
             },
             { label: localize(pageTitleMultiloc) },
           ]}
@@ -66,7 +68,8 @@ const CustomPagesEditSettings = () => {
             title: localize(pageTitleMultiloc),
             rightSideCTA: (
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.data.attributes.slug}`}
+                to="/pages/$slug"
+                params={{ slug: customPage.data.attributes.slug }}
               />
             ),
           }}

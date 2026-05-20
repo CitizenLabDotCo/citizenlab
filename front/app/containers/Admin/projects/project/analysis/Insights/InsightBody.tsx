@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormatMessage } from 'typings';
 
@@ -18,6 +17,7 @@ import {
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import FileItem from '../FileItem';
 
@@ -60,7 +60,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
@@ -77,7 +77,7 @@ const InsightBody = ({
     ? getErrorMessage(task.data.attributes.failure_reason, formatMessage)
     : null;
 
-  const selectedInputId = search.get('selected_input_id') || undefined;
+  const selectedInputId = search.selected_input_id || undefined;
 
   return (
     <>

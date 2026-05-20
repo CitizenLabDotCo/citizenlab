@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -19,13 +18,14 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 import SurveyNotActiveNotice from './SurveyNotActiveNotice';
 import SurveySubmittedNotice from './SurveySubmittedNotice';
 
 const IdeasNewSurveyPage = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/projects/$slug/surveys/new' });
   const {
     data: project,
     status: projectStatus,
@@ -33,17 +33,19 @@ const IdeasNewSurveyPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
 
   // If idea_id is present in the URL when this component first mounts,
   // it means the user is navigating back to a previously submitted survey
   // (via browser back/forward). The idea_id is added via history.replace
   // after submission, so it persists in the browser history entry.
-  const [hadIdeaIdOnMount] = useState(() => !!searchParams.get('idea_id'));
+  const [hadIdeaIdOnMount] = useState(() => !!searchParams.idea_id);
 
   // If we reach this component by hitting surveys/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
-  const phaseIdFromSearchParams = searchParams.get('phase_id');
+  const phaseIdFromSearchParams = searchParams.phase_id;
   const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*

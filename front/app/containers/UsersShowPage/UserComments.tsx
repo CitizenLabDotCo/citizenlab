@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { groupBy } from 'lodash-es';
 import { darken, rgba } from 'polished';
-import { useParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
 import useComments from 'api/comments/useComments';
@@ -22,6 +21,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 import PostCommentGroup from './PostCommentGroup';
@@ -58,7 +58,7 @@ const MessageContainer = styled.div`
 `;
 
 export const UserComments = () => {
-  const { userId } = useParams() as { userId: string };
+  const { userId } = useParams({ from: '/$locale/profile/$userId' });
   const { data: user } = useUserById(userId);
   const theme = useTheme();
   const { data: authUser } = useAuthUser();

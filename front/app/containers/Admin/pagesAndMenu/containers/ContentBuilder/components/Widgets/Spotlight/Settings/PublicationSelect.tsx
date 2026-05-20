@@ -1,7 +1,6 @@
 import React, { KeyboardEvent } from 'react';
 
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
@@ -14,6 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const PublicationSelect = ({ publicationId, onSelect }: Props) => {
-  const { folderId } = useParams() as {
+  const { folderId } = useParams({ strict: false }) as {
     folderId: string; // We only return projects from the folder if folderId is defined
   };
   const { data: adminPublications } = useAdminPublications({

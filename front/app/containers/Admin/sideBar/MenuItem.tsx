@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -11,9 +10,10 @@ import useFeatureFlags from 'hooks/useFeatureFlags';
 import CountBadge from 'components/UI/CountBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 import { isSuperAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import { NavItem } from './navItems';
@@ -33,7 +33,7 @@ const Text = styled.div`
   `}
 `;
 
-const MenuItemLink = styled(Link)<{ active: boolean }>`
+const MenuItemLink = typedStyled(Link)`
   flex: 0 0 auto;
   width: 224px;
   display: flex;
@@ -76,21 +76,6 @@ const MenuItemLink = styled(Link)<{ active: boolean }>`
     }
   }
 
-  ${({ active }) =>
-    active
-      ? `
-    background: rgba(0, 0, 0, 0.7);
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.teal400};
-      }
-      .cl-icon-accent {
-        fill: ${colors.blue400};
-      }
-    }
-  `
-      : ''}
-
   ${media.tablet`
     width: 56px;
     padding-right: 5px;
@@ -132,8 +117,9 @@ const MenuItem = ({ navItem }: Props) => {
   return (
     <MenuItemLink
       to={navItem.link}
-      className={`intercom-admin-menu-item-${navItem.name}`}
-      active={inspirationHubActive}
+      className={`intercom-admin-menu-item-${navItem.name}${
+        inspirationHubActive ? ' active' : ''
+      }`}
     >
       <>
         <Box

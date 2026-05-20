@@ -6,18 +6,17 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 
-const DropdownListItem = styled(Link)`
+const DropdownListItem = typedStyled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -69,8 +68,8 @@ const StyledButton = styled.button`
   }
 `;
 
-interface NavbarItemProps {
-  linkTo: RouteType;
+interface NavbarItemProps extends TypedLinkProps {
+  linkTo?: string;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }
@@ -113,7 +112,21 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
             {overflowItems.map((item, index) => (
               <DropdownListItem
                 key={index}
-                to={item.linkTo}
+                to={
+                  (item.to ?? item.linkTo) as Parameters<
+                    typeof DropdownListItem
+                  >[0]['to']
+                }
+                params={
+                  item.params as Parameters<
+                    typeof DropdownListItem
+                  >[0]['params']
+                }
+                search={
+                  item.search as Parameters<
+                    typeof DropdownListItem
+                  >[0]['search']
+                }
                 onlyActiveOnIndex={item.onlyActiveOnIndex}
                 onClick={closeDropdown}
                 scrollToTop

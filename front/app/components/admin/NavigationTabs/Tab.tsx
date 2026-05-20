@@ -6,7 +6,6 @@ import {
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -17,6 +16,8 @@ import {
   tabBorderSize,
   activeBorderSize,
 } from './tabsStyleConstants';
+
+import type { LinkProps } from '@tanstack/react-router';
 
 type ContainerProps = {
   active: boolean;
@@ -75,7 +76,7 @@ type TabProps = {
   className?: string;
   'data-cy'?: string;
   label: string | React.ReactNode;
-  url: RouteType;
+  url: string;
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -103,7 +104,11 @@ const Tab = ({
     }
   >
     <Container disable={!!disabledTooltipText} {...props}>
-      <Link to={url} onClick={handleClick} className={className ?? ''}>
+      <Link
+        to={url as LinkProps['to']}
+        onClick={handleClick}
+        className={className ?? ''}
+      >
         {label}
         {badge && <>{badge}</>}
       </Link>

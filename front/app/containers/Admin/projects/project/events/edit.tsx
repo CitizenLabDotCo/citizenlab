@@ -13,8 +13,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';
 
@@ -37,7 +35,6 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
-import DateTimeSelection from 'components/admin/DateTimeSelection';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -58,8 +55,10 @@ import {
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
+import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
 import { SubmitState, ErrorType, ApiErrorType } from './types';
 import { initializeEventTimes } from './utils';
@@ -67,7 +66,7 @@ import { initializeEventTimes } from './utils';
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id: eventId, projectId } = useParams();
+  const { id: eventId, projectId } = useParams({ strict: false });
 
   const isCreatingNewEvent = !eventId;
 
@@ -288,7 +287,7 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url as RouteType,
+      using_url: url,
     });
     setErrors({});
   };
@@ -625,7 +624,12 @@ const AdminProjectEventEdit = () => {
   return (
     <Box mt="44px" mx="44px">
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
-        <GoBackButton linkTo={`/admin/projects/${projectId}/events`} />
+        {projectId && (
+          <GoBackButton
+            to="/admin/projects/$projectId/events"
+            params={{ projectId }}
+          />
+        )}
         <Box ref={containerRef}>
           <SectionTitle>
             {event && <FormattedMessage {...messages.editEventTitle} />}

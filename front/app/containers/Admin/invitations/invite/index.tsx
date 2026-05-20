@@ -314,6 +314,14 @@ const Invitations = () => {
     async (response: any) => {
       setNewSeatsResponse(response);
 
+      const errors = response?.data?.attributes?.result?.errors;
+      if (errors?.length > 0) {
+        setApiErrors(errors);
+        setProcessing(false);
+        setProcessed(false);
+        return;
+      }
+
       let newlyAddedAdminsNumber = 0;
       let newlyAddedModeratorsNumber = 0;
 
@@ -336,7 +344,15 @@ const Invitations = () => {
         await onSubmit({ save: true }); // <-- add await here
       }
     },
-    [setNewSeatsResponse, setShowModal, onSubmit, checkIfSeatsExceeded]
+    [
+      setNewSeatsResponse,
+      setShowModal,
+      onSubmit,
+      checkIfSeatsExceeded,
+      setApiErrors,
+      setProcessing,
+      setProcessed,
+    ]
   );
 
   // State to track processed imports

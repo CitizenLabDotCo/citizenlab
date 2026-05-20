@@ -47,7 +47,7 @@ const ProjectAndFolderCards = ({
 
   // used locally to keep track of the depth of the search
   const [search, setSearch] = useState<string | null>(null);
-  const [topicIds, setTopicsIds] = useState<string[] | null>(null);
+  const [globalTopics, setGlobalTopics] = useState<string[] | null>(null);
   const [areaIds, setAreasIds] = useState<string[] | null>(null);
   const [currentTab, setCurrentTab] = useState<PublicationTab>(
     getCurrentTab(allStatusCountsWithoutFilters)
@@ -69,7 +69,7 @@ const ProjectAndFolderCards = ({
         rootLevelOnly,
         removeNotAllowedParents: true,
         remove_all_unlisted: true,
-        topicIds,
+        globalTopics,
         areaIds,
         search,
       },
@@ -88,7 +88,7 @@ const ProjectAndFolderCards = ({
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
     removeNotAllowedParents: true,
-    globalTopicIds: topicIds,
+    globalTopics,
     areaIds,
     search,
     include_publications: true,
@@ -125,7 +125,7 @@ const ProjectAndFolderCards = ({
       loadingMore={isFetchingNextPage}
       searchTerm={search}
       {...otherProps}
-      onChangeTopics={setTopicsIds}
+      onChangeTopics={setGlobalTopics}
       onChangeAreas={setAreasIds}
       onChangeSearch={handleSearchChange}
       onLoadMore={fetchNextPage}

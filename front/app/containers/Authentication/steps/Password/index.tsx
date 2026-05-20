@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  Input,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
@@ -68,6 +74,7 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
+    shouldFocusError: true,
   });
 
   if (isNilOrError(appConfiguration)) return null;
@@ -117,9 +124,11 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
             }}
           />
         </Text>
+        <Input type="hidden" value={email} autocomplete="email" />
         <Box>
           <PasswordInput
             id="e2e-password-input"
+            autocomplete="current-password"
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}

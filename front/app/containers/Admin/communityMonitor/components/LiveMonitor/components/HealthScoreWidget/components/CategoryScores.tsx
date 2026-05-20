@@ -6,10 +6,11 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
+
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { categoryColors, getYearFilter, getQuarterFilter } from '../utils';
@@ -21,12 +22,12 @@ type Props = {
 };
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Extract year and quarter from search params or defaults
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
   const periodKey = `${year}-${quarter}`;
 
   // Helper function to get score data for a category

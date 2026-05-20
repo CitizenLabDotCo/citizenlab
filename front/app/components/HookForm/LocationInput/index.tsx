@@ -3,7 +3,6 @@ import React, { useCallback, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
 import { CLError, RHFErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
@@ -15,7 +14,9 @@ import {
   Option,
 } from 'components/UI/LocationInput';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { geocode, Point, reverseGeocode } from 'utils/locationTools';
+import { useSearch } from 'utils/router';
 
 interface Props extends LocationInputProps {
   name: string;
@@ -37,9 +38,9 @@ const LocationInput = ({
     watch,
   } = useFormContext();
   const locale = useLocale();
-  const [searchParams] = useSearchParams();
-  const latitude = searchParams.get('lat');
-  const longitude = searchParams.get('lng');
+  const searchParams = useSearch({ strict: false });
+  const latitude = searchParams.lat;
+  const longitude = searchParams.lng;
   const isTouched = !!touchedFields[name];
 
   const errors = get(formContextErrors, name) as RHFErrors;
@@ -47,6 +48,9 @@ const LocationInput = ({
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
+
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
 
   const getLocationGeojson = async (location_description: string) => {
     let location_point_geojson: Point | null = null;
@@ -122,10 +126,15 @@ const LocationInput = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
+        render={({ field: { ref, ...field }, fieldState }) => (
           <LocationInputComponent
             className="e2e-idea-form-location-input-field"
             inputId={name}
+            setRef={(instance) => {
+              ref(instance);
+            }}
+            ariaInvalid={!!fieldState.error}
+            ariaDescribedBy={ariaDescribedBy}
             {...field}
             {...rest}
             form={'_none'}
@@ -139,14 +148,14 @@ const LocationInput = ({
 
               // Address has been manually changed.
               // Clear any latitude/longitude from the searchParams.
-              searchParams.delete('lat');
-              searchParams.delete('lng');
+              updateSearchParams({ lat: undefined, lng: undefined });
             }}
           />
         )}
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -155,6 +164,7 @@ const LocationInput = ({
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={fieldName || (name as TFieldName)}
           apiErrors={apiError}
           marginTop="8px"

@@ -183,6 +183,9 @@ export const createQuill = (
     });
   }
 
+  // add border HTML attribute to the editor container for CSS Disabled mode
+  editorContainer.style.border = '1px solid #808080';
+
   // Apply correct attributes for a11y
   const editor = editorContainer.getElementsByClassName('ql-editor')[0];
 
@@ -193,6 +196,35 @@ export const createQuill = (
   }
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
+
+  // add aria-labels to dropdown items for a11y
+  const pickerItems = document.querySelectorAll('.ql-picker-item');
+  pickerItems.forEach((item) => {
+    const label = item.getAttribute('data-label');
+    if (label) {
+      item.setAttribute('aria-label', label);
+    }
+  });
+
+  const toolbarElement = document.getElementById(toolbarId);
+  if (toolbarElement) {
+    // set width and height as HTML attributes (not relying on CSS)
+    toolbarElement.querySelectorAll('svg').forEach((svg) => {
+      svg.setAttribute('width', '18');
+      svg.setAttribute('height', '18');
+    });
+
+    // convert button labels to visually-hidden text (.ql-sr-only) to appear when CSS is disabled.
+    toolbarElement.querySelectorAll('button[aria-label]').forEach((btn) => {
+      const label = btn.getAttribute('aria-label');
+      if (label && !btn.querySelector('.ql-sr-only')) {
+        const span = document.createElement('span');
+        span.className = 'ql-sr-only';
+        span.textContent = label;
+        btn.appendChild(span);
+      }
+    });
+  }
 
   return quill;
 };

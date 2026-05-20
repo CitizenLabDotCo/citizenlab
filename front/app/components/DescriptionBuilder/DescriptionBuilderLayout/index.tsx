@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useLocation } from 'utils/router';
 
 type DescriptionBuilderLayoutProps = {
   children?: React.ReactNode;
   onMount: (isVisible: boolean) => void;
-} & WithRouterProps;
+};
 
 const DescriptionBuilderLayout: React.FC<DescriptionBuilderLayoutProps> = ({
   children,
   onMount,
-  location: { pathname },
 }) => {
+  const { pathname } = useLocation();
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -31,4 +31,4 @@ const DescriptionBuilderLayout: React.FC<DescriptionBuilderLayoutProps> = ({
   return <>{children}</>;
 };
 
-export default withRouter(DescriptionBuilderLayout);
+export default DescriptionBuilderLayout;
