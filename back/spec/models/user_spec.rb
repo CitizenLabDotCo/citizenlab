@@ -211,8 +211,9 @@ RSpec.describe User do
     end
 
     it 'is not allowed if confirmation is not required' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      u.confirm
+      u = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
+      u.save!
+      u.email_confirmation.confirm!
       expect(!!u.authenticate('')).to be(false)
     end
   end
@@ -839,7 +840,7 @@ RSpec.describe User do
   describe 'active?' do
     it 'returns true when the user has completed signup' do
       u = create(:unconfirmed_user)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.active?).to be true
     end
 
@@ -850,7 +851,7 @@ RSpec.describe User do
 
     it 'returns false when the user is blocked' do
       u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.active?).to be false
     end
   end
@@ -863,7 +864,7 @@ RSpec.describe User do
 
     it 'is set when a user is confirmed' do
       u = create(:unconfirmed_user)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
