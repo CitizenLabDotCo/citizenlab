@@ -2054,6 +2054,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.SpaceSelect.pleaseSelectASpace": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:32:04.448703Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.SpaceSelect.sameSpaceAsFolder": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -6384,6 +6389,11 @@
     "verified_at": "2026-04-29T22:13:06.840770Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:32:04.448703Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root2": {
     "state": "verified",
     "verified_at": "2026-04-29T22:14:57.371521Z",
@@ -6392,6 +6402,11 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space": {
     "state": "verified",
     "verified_at": "2026-05-20T07:06:34.634997Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceError": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:32:04.448703Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
@@ -7228,6 +7243,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:32:04.448703Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": {
     "state": "verified",
