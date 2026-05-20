@@ -494,6 +494,11 @@
     "verified_at": "2026-03-18T11:50:36.611698Z",
     "verified_by": "Admin"
   },
+  "form_builder.pdf_export.logic_section": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:39:43.835301Z",
+    "verified_by": "Adrien"
+  },
   "form_builder.pdf_export.matrix_print_description": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.611698Z",

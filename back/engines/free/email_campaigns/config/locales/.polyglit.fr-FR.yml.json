@@ -2124,6 +2124,16 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.native_survey_not_submitted.submissions_close_at_time": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:39:43.885280Z",
+    "verified_by": "Adrien"
+  },
+  "email_campaigns.native_survey_not_submitted.submissions_close_on_date": {
+    "state": "verified",
+    "verified_at": "2026-05-20T12:39:43.885280Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.native_survey_not_submitted.title": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
