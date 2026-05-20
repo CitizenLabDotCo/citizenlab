@@ -1049,8 +1049,8 @@ RSpec.describe User do
 
       it 'cancels any pending email change initiated with the same email' do
         target_email = 'shared-email@provider.org'
-        user1 = create(:user, email: target_email)
         user2 = create(:user, new_email: target_email)
+        user1 = create(:user, email: target_email)
         user2.new_email_confirmation.update!(code: '9999')
 
         user1.email_confirmation.update!(code: '1234')

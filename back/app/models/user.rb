@@ -157,6 +157,11 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
+
+  # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false, 
+  # which is a condition for complete_registration to set registration_completed_at
+  # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
+  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -205,7 +210,6 @@ class User < ApplicationRecord
   validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
   validate :validate_emails_not_banned, if: :email_or_new_email_changed?
 
-  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   after_create :create_confirmations
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
