@@ -10744,6 +10744,11 @@
     "verified_at": "2026-03-23T11:07:11.932849Z",
     "verified_by": "Simon"
   },
+  "app.containers.Admin.users.UserAssignedItems.lockedProjectInSpace": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:52:23.156155Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.users.UserAssignedItems.noItemsAssigned": {
     "state": "verified",
     "verified_at": "2026-03-23T11:07:11.932849Z",
@@ -11683,6 +11688,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.FoldersEdit.spaceRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:52:23.156155Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.FoldersEdit.statusLabel": {
     "state": "verified",
