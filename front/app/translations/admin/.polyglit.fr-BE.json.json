@@ -4604,6 +4604,11 @@
     "verified_at": "2026-03-18T16:35:09.151932Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.setUserAsManager": {
+    "state": "verified",
+    "verified_at": "2026-05-20T09:11:57.396007Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.setUserAsProjectModerator": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",

@@ -893,7 +893,7 @@
   "app.containers.Admin.Users.selectSpaces": "Sélectionnez les espaces",
   "app.containers.Admin.Users.setAsAdmin": "Définir en tant qu'administrateur",
   "app.containers.Admin.Users.setAsNormalUser": "Définir en tant qu'utilisateur normal",
-  "app.containers.Admin.Users.setUserAsManager": "Désigner {name} comme gestionnaire",
+  "app.containers.Admin.Users.setUserAsManager": "Nommer {name} gestionnaire",
   "app.containers.Admin.Users.spaceManager": "Gestionnaire d'espace",
   "app.containers.Admin.Users.spaces": "Espaces",
   "app.containers.Admin.Users.userBlockModal.allDone": "Terminé",
