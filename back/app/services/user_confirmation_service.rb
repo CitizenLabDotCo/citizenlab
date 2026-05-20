@@ -61,7 +61,6 @@ class UserConfirmationService
   private
 
   def validate_and_confirm!(user, code)
-    validate_user_confirmation_enabled!
     validate_retry_count!(user, code)
     validate_code_value!(user, code)
     validate_code_expiration!(user)
@@ -72,12 +71,6 @@ class UserConfirmationService
     return if app_configuration.feature_activated?('password_login')
 
     raise ValidationError.new(:base, :password_login_feature_disabled)
-  end
-
-  def validate_user_confirmation_enabled!
-    return if app_configuration.feature_activated?('user_confirmation')
-
-    raise ValidationError.new(:base, :user_confirmation_feature_disabled)
   end
 
   def validate_user!(user)

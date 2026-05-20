@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useParams, useSearchParams } from 'react-router-dom';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
+
+import { useParams, useSearch } from 'utils/router';
 
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
@@ -17,8 +17,9 @@ const SurveyFormBuilder = ({
   projectId: string;
   phaseId: string;
 }) => {
-  const [searchParams] = useSearchParams();
-  const copyFrom = searchParams.get('copy_from');
+  const { copy_from: copyFrom } = useSearch({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form/edit',
+  });
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
 
@@ -45,13 +46,17 @@ const SurveyFormBuilder = ({
         formCustomFields: newCustomFields,
         goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/survey-form`,
       }}
-      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+      viewFormLink={{
+        to: '/projects/$slug/surveys/new',
+        params: { slug: project.data.attributes.slug },
+        search: { phase_id: phase.data.id },
+      }}
     />
   );
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
     return null;

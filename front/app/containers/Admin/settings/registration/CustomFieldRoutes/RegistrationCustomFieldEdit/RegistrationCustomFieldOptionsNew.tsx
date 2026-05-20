@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -17,7 +16,9 @@ import RegistrationCustomFieldOptionsForm, {
 
 const RegistrationCustomFieldOptionsNew = () => {
   const { mutateAsync: addCustomFieldOption } = useAddCustomFieldOption();
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
 
   const handleSubmit = async (values: FormValues) => {
     await addCustomFieldOption({

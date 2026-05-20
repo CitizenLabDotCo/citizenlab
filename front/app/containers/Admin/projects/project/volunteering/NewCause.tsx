@@ -1,19 +1,20 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useAddCause from 'api/causes/useAddCause';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import CauseForm, { SubmitValues } from './CauseForm';
 import messages from './messages';
 
 const NewCause = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/volunteering/causes/new',
+  });
   const { mutateAsync: addCause } = useAddCause();
 
   const handleOnSubmit = async (formValues: SubmitValues) => {

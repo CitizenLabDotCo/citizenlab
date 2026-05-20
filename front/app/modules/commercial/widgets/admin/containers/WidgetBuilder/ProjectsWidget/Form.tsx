@@ -4,8 +4,8 @@ import { Label } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import GetProjects from 'resources/GetProjects';
 
-import { IProjectData } from 'api/projects/types';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 

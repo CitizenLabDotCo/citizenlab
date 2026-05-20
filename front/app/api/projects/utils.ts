@@ -1,5 +1,3 @@
-import { RouteType } from 'routes';
-
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
@@ -14,8 +12,11 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import projectsKeys from './keys';
 
-export function getProjectUrl(slug: string): RouteType {
-  return `/projects/${slug}`;
+export function getProjectLinkProps(slug: string) {
+  return {
+    to: '/projects/$slug',
+    params: { slug },
+  } as const;
 }
 
 export const invalidateOnCRUD = () => {

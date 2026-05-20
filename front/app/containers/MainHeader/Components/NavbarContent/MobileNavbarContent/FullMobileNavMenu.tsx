@@ -53,7 +53,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 
 const MenuItems = styled.ul`
   margin: 0;
-  padding: 0;
+  padding: 0px;
   text-align: center;
 `;
 
@@ -127,7 +127,8 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
             return null;
           })}
           <FullMobileNavMenuItem
-            linkTo={'/projects?focusSearch=true'}
+            to="/projects"
+            search={{ focusSearch: true }}
             navigationItemTitle={formatMessage(messages.search)}
             onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
             iconName="search"

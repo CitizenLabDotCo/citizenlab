@@ -1,14 +1,15 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
 import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
+import { createRoute, Outlet as RouterOutlet } from 'utils/router';
+
+import { adminRoute } from '../routes';
 
 import messages from './messages';
+
 const EsriKeyInput = lazy(() => import('./Esri/EsriKeyInput'));
 const PowerBITemplates = lazy(() => import('./PowerBI/PowerBITemplates'));
 const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
@@ -17,75 +18,76 @@ const WebhookSubscriptions = lazy(
 );
 const Tools = lazy(() => import('./'));
 
-export enum toolRoutes {
-  tools = 'tools',
-  toolsDefault = '',
-  publicApiTokens = `public-api-tokens`,
-  powerBi = `power-bi`,
-  esriIntegration = `esri-integration`,
-  webhooks = `webhooks`,
-}
+const toolsRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'tools',
+  component: () => (
+    <PageLoading>
+      <HelmetIntl title={messages.toolsLabel} />
+      <RouterOutlet />
+    </PageLoading>
+  ),
+});
 
-export type toolRouteTypes =
-  | AdminRoute<toolRoutes.tools>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.publicApiTokens}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.esriIntegration}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.webhooks}`>;
+const toolsIndexRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <Tools />
+    </PageLoading>
+  ),
+});
 
-const toolsRoutes = () => {
-  return {
-    path: toolRoutes.tools,
-    element: (
-      <PageLoading>
-        <HelmetIntl title={messages.toolsLabel} />
-        <RouterOutlet />
-      </PageLoading>
-    ),
-    children: [
-      {
-        path: toolRoutes.toolsDefault,
-        element: (
-          <PageLoading>
-            <Tools />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.publicApiTokens,
-        element: (
-          <PageLoading>
-            <PublicAPITokens />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.powerBi,
-        element: (
-          <PageLoading>
-            <PowerBITemplates />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.esriIntegration,
-        element: (
-          <PageLoading>
-            <EsriKeyInput />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.webhooks,
-        element: (
-          <PageLoading>
-            <WebhookSubscriptions />
-          </PageLoading>
-        ),
-      },
-      ...moduleConfiguration.routes['admin.tools'],
-    ],
-  };
+const publicApiTokensRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: 'public-api-tokens',
+  component: () => (
+    <PageLoading>
+      <PublicAPITokens />
+    </PageLoading>
+  ),
+});
+
+const powerBiRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: 'power-bi',
+  component: () => (
+    <PageLoading>
+      <PowerBITemplates />
+    </PageLoading>
+  ),
+});
+
+const esriRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: 'esri-integration',
+  component: () => (
+    <PageLoading>
+      <EsriKeyInput />
+    </PageLoading>
+  ),
+});
+
+const webhooksRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: 'webhooks',
+  component: () => (
+    <PageLoading>
+      <WebhookSubscriptions />
+    </PageLoading>
+  ),
+});
+
+const createAdminToolsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
+  return toolsRoute.addChildren([
+    toolsIndexRoute,
+    publicApiTokensRoute,
+    powerBiRoute,
+    esriRoute,
+    webhooksRoute,
+    ...(parseModuleRoutes(moduleRoutes, toolsRoute) as never[]),
+  ]);
 };
 
-export default toolsRoutes;
+export default createAdminToolsRoutes;

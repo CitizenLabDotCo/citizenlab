@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
-import TimeInput from 'components/admin//DateTimeSelection/TimeInput';
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
+import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import { Form } from 'components/smallForm';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';

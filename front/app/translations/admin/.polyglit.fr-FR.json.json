@@ -4639,6 +4639,11 @@
     "verified_at": "2026-03-31T07:26:08.950596Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.Users.spaces": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:06:33.958193Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.userBlockModal.allDone": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -6402,6 +6407,11 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root2": {
     "state": "verified",
     "verified_at": "2026-04-29T22:14:57.220313Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space": {
+    "state": "verified",
+    "verified_at": "2026-05-20T07:06:33.958193Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
@@ -8199,25 +8209,21 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
@@ -8238,7 +8244,6 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts": {
     "state": "verified",
     "verified_at": "2026-04-24T14:38:49.500256Z",
@@ -8284,7 +8289,6 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress": {
     "state": "verified",
     "verified_at": "2026-04-24T14:38:49.500256Z",
@@ -8355,7 +8359,6 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
@@ -8366,7 +8369,6 @@
     "verified_at": "2026-03-27T13:20:26.620399Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
@@ -14696,6 +14698,11 @@
     "state": "verified",
     "verified_at": "2026-03-31T07:23:46.906710Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": {
+    "state": "verified",
+    "verified_at": "2026-05-13T07:36:00.701208Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublishedBadge": {
     "state": "verified",

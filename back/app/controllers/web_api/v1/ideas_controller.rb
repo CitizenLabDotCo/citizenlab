@@ -534,7 +534,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :anonymous, { weglot_data: %i[locale body] })
+    # location_point_geojson is also permitted as a nested hash via
+    # idea_complex_attributes for setting a Point. Permitting it here as a
+    # scalar additionally allows the client to send `null` to clear it —
+    # strong-params silently drops a `null` value against a nested-hash
+    # permit, so without this an explicit clear from the FE has no effect.
+    simple_attributes.push(:publication_status, :project_id, :anonymous, :location_point_geojson, { weglot_data: %i[locale body] })
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end

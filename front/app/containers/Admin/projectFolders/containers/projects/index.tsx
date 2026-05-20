@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -8,6 +7,7 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -45,7 +45,9 @@ const Spacer = styled.div`
 `;
 
 const AdminFolderProjectsList = () => {
-  const { projectFolderId } = useParams();
+  const { projectFolderId } = useParams({ strict: false }) as {
+    projectFolderId: string;
+  };
   const { data: authUser } = useAuthUser();
   const { data: folder } = useProjectFolderById(projectFolderId);
 

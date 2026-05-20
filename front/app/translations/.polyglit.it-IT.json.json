@@ -614,6 +614,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:47:15.967695Z",
+    "verified_by": "Roger"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -1123,6 +1129,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-05T08:17:25.765619Z",
+    "verified_by": "Roger"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
@@ -2479,6 +2491,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:09.995298Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -2814,6 +2832,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -2903,6 +2927,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:47:15.967695Z",
+    "verified_by": "Roger"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -3158,6 +3188,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:41:04.701029Z",
+    "verified_by": "Roger"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7209,6 +7245,12 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:40:31.289747Z",
+    "verified_by": "Roger"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -7358,6 +7400,18 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
+  },
+
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:38:44.289826Z",
+    "verified_by": "Roger"
   },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
@@ -11668,6 +11722,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:39:50.160219Z",
+    "verified_by": "Roger"
   },
   "app.containers.app.navbar.signOut": {
     "state": "verified",

@@ -614,6 +614,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -1124,6 +1130,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T10:11:13.003344Z",
+    "verified_by": "Jelena"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -1338,6 +1350,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T15:53:55.595875Z",
+    "verified_by": "Jelena"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -2484,6 +2502,18 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T09:37:02.845865Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T07:08:24.037891Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -2818,6 +2848,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
@@ -3168,6 +3204,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:10:35.984484Z",
+    "verified_by": "Jelena"
   },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
@@ -7219,6 +7261,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-06T12:48:50.340774Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -7368,6 +7416,18 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.707159Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
@@ -11679,6 +11739,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -12039,6 +12105,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -12178,6 +12250,18 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.502991Z",
+    "verified_by": "Jelena"
   },
   "app.errors.invalid_row": {
     "state": "verified",

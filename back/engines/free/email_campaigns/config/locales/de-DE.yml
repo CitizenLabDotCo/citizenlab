@@ -18,7 +18,7 @@ de-DE:
     admin_labels:
       content_type:
         comments: Kommentare
-        content_moderation: Inhaltsmoderation
+        content_moderation: Spam-Moderation
         events: Veranstaltungen
         general: Allgemein
         inputs: Beiträge
@@ -727,7 +727,7 @@ de-DE:
         proposal: Dein Vorschlag ist in "%{prescreening_status_title}"
         question: Ihre Frage ist in "%{prescreening_status_title}"
         response: Ihre Antwort ist in "%{prescreening_status_title}"
-        story: Ihre Story ist in "%{prescreening_status_title}"
+        story: Deine Story ist in "%{prescreening_status_title}"
         suggestion: Ihr Vorschlag ist in "%{prescreening_status_title}"
         topic: Ihr Thema ist in "%{prescreening_status_title}"
       preheader: Es befindet sich derzeit in %{prescreening_status_title}

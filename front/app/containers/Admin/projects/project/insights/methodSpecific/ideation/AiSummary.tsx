@@ -8,7 +8,6 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -28,6 +27,7 @@ import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/S
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import { useWordSection } from '../../word/useWordSection';
@@ -45,7 +45,7 @@ interface Props {
 const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [analysisCreationAttempted, setAnalysisCreationAttempted] =
     useState(false);

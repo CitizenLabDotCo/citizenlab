@@ -1,20 +1,21 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
 const NewCampaignButton = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
+  if (!projectId) return null;
   return (
     <ButtonWithLink
       buttonStyle="admin-dark"
       icon="plus-circle"
-      linkTo={`/admin/projects/${projectId}/messaging/new`}
+      to="/admin/projects/$projectId/messaging/new"
+      params={{ projectId }}
     >
       <FormattedMessage {...messages.addCampaignButton} />
     </ButtonWithLink>
