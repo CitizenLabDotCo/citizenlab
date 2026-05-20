@@ -614,7 +614,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
     "state": "verified",
     "verified_at": "2026-05-18T07:11:25.613458Z",
@@ -1130,7 +1129,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-04-29T10:11:13.163981Z",
@@ -1351,7 +1349,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.FilterSelector.closeMenu": {
     "state": "verified",
     "verified_at": "2026-05-18T15:53:55.723374Z",
@@ -2502,13 +2499,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.ProjectCard.a11y_ctaForProject": {
     "state": "verified",
     "verified_at": "2026-05-07T09:37:02.958346Z",
     "verified_by": "Jelena"
   },
-
   "app.components.ProjectCard.a11y_ctaForProject1": {
     "state": "verified",
     "verified_at": "2026-05-08T07:08:24.141901Z",
@@ -2849,7 +2844,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
     "state": "verified",
     "verified_at": "2026-05-13T12:06:32.815255Z",
@@ -3205,7 +3199,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-12T13:10:36.086469Z",
@@ -7261,7 +7254,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.containers.IdeaCard.comments": {
     "state": "verified",
     "verified_at": "2026-05-06T12:48:50.513291Z",
@@ -7417,13 +7409,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.containers.IdeaCards.searchContributions": {
     "state": "verified",
     "verified_at": "2026-05-13T12:06:32.815255Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeaCards.searchPosts": {
     "state": "verified",
     "verified_at": "2026-05-13T12:06:32.815255Z",
@@ -11739,7 +11729,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.containers.app.navbar.showMobileNavMenu": {
     "state": "verified",
     "verified_at": "2026-05-18T07:11:25.613458Z",
@@ -12105,7 +12094,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.errors.bulk_import_user_not_valid": {
     "state": "verified",
     "verified_at": "2026-05-18T07:11:25.613458Z",
@@ -12251,13 +12239,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.errors.invalid_first_name": {
     "state": "verified",
     "verified_at": "2026-05-18T07:11:25.613458Z",
     "verified_by": "Jelena"
   },
-
   "app.errors.invalid_last_name": {
     "state": "verified",
     "verified_at": "2026-05-18T07:11:25.613458Z",
@@ -13323,7 +13309,6 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": {
     "state": "verified",
     "verified_at": "2026-05-18T07:12:08.658146Z",
