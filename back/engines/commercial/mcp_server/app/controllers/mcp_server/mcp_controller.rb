@@ -12,10 +12,17 @@ module McpServer
         version: '0.1.0',
         tools: [
           McpServer::Tools::HelloWorld,
-          McpServer::Tools::CreateEvent
+          McpServer::Tools::CreateProject,
+          McpServer::Tools::CreatePhase,
+          McpServer::Tools::CreateEvent,
+          McpServer::Tools::GetResource,
+          McpServer::Tools::ListProjects,
+          McpServer::Tools::ListPhases,
+          McpServer::Tools::ListEvents
         ],
         server_context: { current_user: }
       )
+
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
         stateless: true,
