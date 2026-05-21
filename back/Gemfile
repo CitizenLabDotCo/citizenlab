@@ -227,6 +227,7 @@ commercial_engines = [
   'content_builder',
   'custom_idea_statuses',
   'custom_maps',
+  'decidim_importer',
   'flag_inappropriate_content',
   'google_tag_manager',
   'idea_assignment',

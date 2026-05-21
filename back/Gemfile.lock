@@ -79,6 +79,14 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/decidim_importer
+  specs:
+    decidim_importer (0.1.0)
+      pundit (~> 2.0)
+      rails (~> 7.2)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/flag_inappropriate_content
   specs:
     flag_inappropriate_content (0.1.0)
@@ -1369,6 +1377,7 @@ DEPENDENCIES
   dalli (~> 3.2.8)
   database_cleaner (~> 2.1.0)
   debug
+  decidim_importer!
   document_annotation!
   docx (~> 0.3.0)
   drb
