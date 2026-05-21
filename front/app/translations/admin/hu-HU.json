@@ -1847,7 +1847,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Felhasználók: {numberOfUsers} ({percentageOfUsers}%)",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn": "Hivatkozó",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": "Látogatók",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption": "Forgalmi források adattáblázat, amely a hivatkozót, a látogatásokat és a látogatókat mutatja",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": "Látogatások",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "Dátum",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "Látogatói adattáblázat, amely a dátumot, a látogatókat és a látogatásokat mutatja",

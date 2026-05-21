@@ -1847,7 +1847,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "ਵਰਤੋਂਕਾਰ: {numberOfUsers} ({percentageOfUsers}%)",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn": "ਰੈਫਰਰ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": "ਵਿਜ਼ਿਟਰ",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption": "ਟ੍ਰੈਫਿਕ ਸਰੋਤ ਡਾਟਾ ਟੇਬਲ ਜੋ ਰੈਫਰਰ, ਵਿਜ਼ਿਟ ਅਤੇ ਵਿਜ਼ਿਟਰ ਦਿਖਾ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": "ਵਿਜ਼ਿਟ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "ਮਿਤੀ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "ਵਿਜ਼ਿਟਰ ਡਾਟਾ ਟੇਬਲ ਜੋ ਮਿਤੀ, ਵਿਜ਼ਿਟਰ ਅਤੇ ਵਿਜ਼ਿਟ ਦਿਖਾ ਰਿਹਾ ਹੈ",

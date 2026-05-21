@@ -1847,7 +1847,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Kullanıcılar: {numberOfUsers} ({percentageOfUsers}%)",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn": "Yönlendiren",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": "Ziyaretçiler",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption": "Yönlendiren, ziyaretler ve ziyaretçileri gösteren trafik kaynakları veri tablosu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": "Ziyaretler",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "Tarih",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "Tarih, ziyaretçiler ve ziyaretleri gösteren ziyaretçi veri tablosu",
