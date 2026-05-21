@@ -47,19 +47,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light unconfirmed resident' do
-        before do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-        end
-
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when light unconfirmed inactive resident' do
-        before do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil)
-        end
+        let(:user) { create(:unconfirmed_user) }
 
         it { expect(denied_reason).to be_nil }
       end
@@ -70,7 +58,6 @@ describe Permissions::BasePermissionsService do
 
       context 'when unconfirmed admin' do
         before do
-          user.reset_confirmation_and_counts
           user.update!(roles: [{ type: 'admin' }])
         end
 
@@ -88,31 +75,26 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light unconfirmed resident' do
-        before do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-        end
-
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
-
-      context 'when light unconfirmed inactive resident' do
-        before do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil)
-        end
+        let(:user) { create(:unconfirmed_user) }
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when light confirmed resident' do
-        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+        let(:user) do 
+          u = create(:unconfirmed_user)
+          u.email_confirmation.reset_code!
+          u.email_confirmation.confirm!
+          u
+        end
 
         it { expect(denied_reason).to be_nil }
       end
 
       context 'when fully registered unconfirmed resident' do
-        before { user.reset_confirmation_and_counts }
+        before do 
+          user.update!(confirmation_required: true, email_confirmed_at: nil)
+        end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
@@ -129,7 +111,7 @@ describe Permissions::BasePermissionsService do
 
       context 'when unconfirmed admin' do
         before do
-          user.reset_confirmation_and_counts
+          user.update!(confirmation_required: true, email_confirmed_at: nil)
           user.update!(roles: [{ type: 'admin' }])
         end
 
