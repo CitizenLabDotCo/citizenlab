@@ -118,6 +118,7 @@ const DemographicsWidget = ({
           {
             key: 'participants',
             label: formatMessage(messages.participantsColumn),
+            type: 'percentage',
           },
           { key: 'count', label: formatMessage(messages.countColumn) },
         ]}

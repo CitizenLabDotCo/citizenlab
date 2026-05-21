@@ -137,10 +137,18 @@ export default defineMessages({
   visitorsTrafficSourcesCaption: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption',
     defaultMessage:
-      'Traffic sources data table showing referrer, visits, and visitors',
+      'Traffic sources data table showing referrer, value, and percentage',
   },
   visitorsCaption: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption',
     defaultMessage: 'Visitors data table showing date, visitors, and visits',
+  },
+  percentageColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn',
+    defaultMessage: 'Percentage',
+  },
+  valueColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn',
+    defaultMessage: 'Value',
   },
 });

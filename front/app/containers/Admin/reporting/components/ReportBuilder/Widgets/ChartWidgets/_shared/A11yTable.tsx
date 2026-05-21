@@ -8,7 +8,7 @@ export type CellValue = string | number | null | undefined;
 
 export type Row = Record<string, CellValue>;
 
-export type ColumnType = 'date' | 'number' | 'text';
+export type ColumnType = 'date' | 'number' | 'percentage' | 'text';
 
 export interface Column {
   key: string;
@@ -25,6 +25,7 @@ interface DataTableProps<T> {
 const formatCell = (value: CellValue, type?: ColumnType): string => {
   if (value == null) return '';
   if (type === 'date') return moment(value).format('MMM DD, YYYY');
+  if (type === 'percentage') return `${value}%`;
   return String(value);
 };
 

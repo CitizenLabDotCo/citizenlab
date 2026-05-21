@@ -33,7 +33,7 @@ const VisitorsTrafficSourcesWidget = ({
       : undefined,
     ariaDescribedBy: description ? descriptionId : undefined,
   };
-  const { tableData } = useVisitorReferrerTypes({
+  const { pieData } = useVisitorReferrerTypes({
     projectId: props.projectId,
     startAt: props.startAt,
     endAt: props.endAt,
@@ -51,7 +51,7 @@ const VisitorsTrafficSourcesWidget = ({
         {...props}
         {...accessibilityProps}
       />
-      {view === 'chart' && (
+      {view !== 'table' && (
         <>
           <DescriptionText
             description={description}
@@ -60,19 +60,20 @@ const VisitorsTrafficSourcesWidget = ({
           <A11yTable
             columns={[
               {
-                key: 'referrer',
+                key: 'name',
                 label: formatMessage(messages.reffererColumn),
               },
               {
-                key: 'visits',
-                label: formatMessage(messages.visitsColumn),
+                key: 'value',
+                label: formatMessage(messages.valueColumn),
               },
               {
-                key: 'visitors',
-                label: formatMessage(messages.visitorsColumn),
+                key: 'percentage',
+                label: formatMessage(messages.percentageColumn),
+                type: 'percentage',
               },
             ]}
-            data={tableData || []}
+            data={pieData || []}
             caption={formatMessage(messages.visitorsTrafficSourcesCaption)}
           />
         </>
