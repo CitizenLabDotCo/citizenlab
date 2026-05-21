@@ -169,6 +169,15 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
+    # If client didn't provide phase_method_id, infer it from the phase + the
+    # phase's legacy participation_method (for single-method phases this is
+    # unambiguous; for multi-method phases the client should send phase_method_id
+    # explicitly to identify the submission target).
+    if input.phase_method_id.blank?
+      inferred = phase_for_input.phase_methods.find_by(method_type: phase_for_input.participation_method)
+      input.phase_method_id = inferred.id if inferred
+    end
+
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
@@ -539,7 +548,7 @@ class WebApi::V1::IdeasController < ApplicationController
     # scalar additionally allows the client to send `null` to clear it —
     # strong-params silently drops a `null` value against a nested-hash
     # permit, so without this an explicit clear from the FE has no effect.
-    simple_attributes.push(:publication_status, :project_id, :anonymous, :location_point_geojson, { weglot_data: %i[locale body] })
+    simple_attributes.push(:publication_status, :project_id, :anonymous, :location_point_geojson, :phase_method_id, { weglot_data: %i[locale body] })
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
