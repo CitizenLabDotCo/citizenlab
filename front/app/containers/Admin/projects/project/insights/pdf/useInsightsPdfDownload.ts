@@ -196,17 +196,24 @@ export default function useInsightsPdfDownload({
         new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
       ]);
 
-      const [{ snapdom }, { default: jsPDF }, container] = await Promise.all([
-        import('@zumer/snapdom'),
-        import('jspdf'),
-        containerPromise,
-      ]);
+      const [{ snapdom, preCache }, { default: jsPDF }, container] =
+        await Promise.all([
+          import('@zumer/snapdom'),
+          import('jspdf'),
+          containerPromise,
+        ]);
 
       if (!container) {
         throw new Error(`Element with id "${hiddenContainerId}" not found`);
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
+
+      // snapdom's font/style cache is cold on first capture in a fresh module
+      // instance, which makes the first 2–3 sections rasterize without text
+      // (HTML and SVG). Warm the cache for the whole hidden subtree before
+      // entering the per-section loop so every capture has fonts available.
+      await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
