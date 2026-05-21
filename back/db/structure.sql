@@ -107,6 +107,7 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7f
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS fk_rails_7a39fbbdee;
+ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_7834c125ad;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_7832d74868;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_7768309984;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
@@ -152,6 +153,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
+ALTER TABLE IF EXISTS ONLY public.phase_methods DROP CONSTRAINT IF EXISTS fk_rails_21e89c3171;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
 ALTER TABLE IF EXISTS ONLY public.input_topics DROP CONSTRAINT IF EXISTS fk_rails_1843964cdc;
@@ -243,6 +245,8 @@ DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
 DROP INDEX IF EXISTS public.index_phases_on_start_at_and_end_at;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
+DROP INDEX IF EXISTS public.index_phase_methods_on_phase_id_and_method_type;
+DROP INDEX IF EXISTS public.index_phase_methods_on_phase_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
@@ -313,6 +317,7 @@ DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
 DROP INDEX IF EXISTS public.index_ideas_on_title_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
+DROP INDEX IF EXISTS public.index_ideas_on_phase_method_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
@@ -535,6 +540,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS poll
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_options_pkey;
 ALTER TABLE IF EXISTS public.phases DROP CONSTRAINT IF EXISTS phases_start_before_end;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
+ALTER TABLE IF EXISTS ONLY public.phase_methods DROP CONSTRAINT IF EXISTS phase_methods_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS permissions_custom_fields_pkey;
@@ -669,6 +675,7 @@ DROP TABLE IF EXISTS public.project_files;
 DROP TABLE IF EXISTS public.polls_response_options;
 DROP TABLE IF EXISTS public.polls_questions;
 DROP TABLE IF EXISTS public.polls_options;
+DROP TABLE IF EXISTS public.phase_methods;
 DROP TABLE IF EXISTS public.phase_files;
 DROP TABLE IF EXISTS public.permissions_custom_fields;
 DROP TABLE IF EXISTS public.permissions;
@@ -1751,7 +1758,8 @@ CREATE TABLE public.ideas (
     manual_votes_last_updated_by_id uuid,
     manual_votes_last_updated_at timestamp(6) without time zone,
     neutral_reactions_count integer DEFAULT 0 NOT NULL,
-    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
+    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    phase_method_id uuid
 );
 
 
@@ -3349,6 +3357,21 @@ COMMENT ON COLUMN public.phase_files.migrated_file_id IS 'References the Files::
 
 
 --
+-- Name: phase_methods; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.phase_methods (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    phase_id uuid NOT NULL,
+    method_type character varying NOT NULL,
+    start_at timestamp without time zone,
+    end_at timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: polls_options; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4695,6 +4718,14 @@ ALTER TABLE ONLY public.permissions
 
 ALTER TABLE ONLY public.phase_files
     ADD CONSTRAINT phase_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: phase_methods phase_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phase_methods
+    ADD CONSTRAINT phase_methods_pkey PRIMARY KEY (id);
 
 
 --
@@ -6291,6 +6322,13 @@ CREATE INDEX index_ideas_on_manual_votes_last_updated_by_id ON public.ideas USIN
 
 
 --
+-- Name: index_ideas_on_phase_method_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_phase_method_id ON public.ideas USING btree (phase_method_id);
+
+
+--
 -- Name: index_ideas_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6778,6 +6816,20 @@ CREATE INDEX index_phase_files_on_migrated_file_id ON public.phase_files USING b
 --
 
 CREATE INDEX index_phase_files_on_phase_id ON public.phase_files USING btree (phase_id);
+
+
+--
+-- Name: index_phase_methods_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phase_methods_on_phase_id ON public.phase_methods USING btree (phase_id);
+
+
+--
+-- Name: index_phase_methods_on_phase_id_and_method_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phase_methods_on_phase_id_and_method_type ON public.phase_methods USING btree (phase_id, method_type);
 
 
 --
@@ -7431,6 +7483,14 @@ ALTER TABLE ONLY public.project_images
 
 
 --
+-- Name: phase_methods fk_rails_21e89c3171; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phase_methods
+    ADD CONSTRAINT fk_rails_21e89c3171 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
 -- Name: idea_import_files fk_rails_229b6de93f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7788,6 +7848,14 @@ ALTER TABLE ONLY public.idea_files
 
 ALTER TABLE ONLY public.nav_bar_items
     ADD CONSTRAINT fk_rails_7832d74868 FOREIGN KEY (project_folder_id) REFERENCES public.project_folders_folders(id);
+
+
+--
+-- Name: ideas fk_rails_7834c125ad; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas
+    ADD CONSTRAINT fk_rails_7834c125ad FOREIGN KEY (phase_method_id) REFERENCES public.phase_methods(id);
 
 
 --
@@ -8581,6 +8649,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260520150001'),
+('20260520150000'),
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
