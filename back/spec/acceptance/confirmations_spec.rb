@@ -71,12 +71,24 @@ resource 'Confirmations' do
       )
     end
 
-    example 'does not allow confirming a user already confirmed' do
+    example 'does not allow confirming a user without code' do
       code = user.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
+
       do_request(confirmation: { email: user.email, code: code })
       assert_status 422
+    end
+
+    example 'allows confirming a user already confirmed' do
+      code = user.email_confirmation.code
+      do_request(confirmation: { email: user.email, code: code })
+      assert_status 200
+
+      RequestConfirmationCodeJob.perform_now user
+      code = user.reload.email_confirmation.code
+      do_request(confirmation: { email: user.email, code: code })
+      assert_status 200
     end
   end
 
@@ -126,12 +138,13 @@ resource 'Confirmations' do
 
       example 'allows confirming a user with password that is already confirmed' do
         user_with_password = create(:unconfirmed_user, password: 'password123')
-        user_with_password.email_confirmation.reset_code!
+        RequestConfirmationCodeJob.perform_now user_with_password
         code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         expect(user_with_password.reload).not_to be_confirmation_required
 
-        user_with_password.email_confirmation.reset_code!
+        RequestConfirmationCodeJob.perform_now user_with_password
+        expect(user_with_password.reload).not_to be_confirmation_required
         code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 200

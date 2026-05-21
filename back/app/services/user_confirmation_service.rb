@@ -35,7 +35,6 @@ class UserConfirmationService
   end
 
   def validate_and_confirm_unauthenticated!(user, code)
-    binding.pry
     # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for unauthenticated confirmation
     validate_password_login_enabled!
