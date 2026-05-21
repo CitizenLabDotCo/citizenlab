@@ -135,7 +135,7 @@ export default defineMessages({
     defaultMessage: 'Date',
   },
   visitorsTrafficSourcesCaption: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption',
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption2',
     defaultMessage:
       'Traffic sources data table showing referrer, value, and percentage',
   },
