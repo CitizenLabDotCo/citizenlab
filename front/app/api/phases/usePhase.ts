@@ -14,6 +14,7 @@ export const fetchPhase = ({
   fetcher<IPhase>({
     path: `/phases/${phaseId}`,
     action: 'get',
+    queryParams: { include: 'phase_methods' },
   });
 
 const usePhase = (phaseId: string | undefined | null) => {
