@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::CreateProject < McpServer::BaseTool
-  description 'Creates a new project'
+  description 'Creates a new project in draft'
   input_schema(
     properties: {
       title: { description: 'Project title. A plain string (uses default locale) or a hash of locale => string.' },
       description: { description: 'Project description (HTML). A plain string or a hash of locale => string.' },
-      visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project. Defaults to "public".' },
-      publication_status: { type: 'string', enum: %w[draft published], description: 'Publication status. Defaults to "draft".' }
+      visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project. Defaults to "public".' }
     },
     required: %w[title]
   )
 
-  def self.call(title:, description: nil, visible_to: 'public', publication_status: 'draft', server_context:)
+  def self.call(title:, description: nil, visible_to: 'public', server_context:)
     project = Project.new(
       title_multiloc: to_multiloc(title),
       description_multiloc: description ? to_multiloc(description) : {},
       visible_to: visible_to,
-      admin_publication_attributes: { publication_status: publication_status }
+      admin_publication_attributes: { publication_status: 'draft' }
     )
 
     user = server_context[:current_user]
