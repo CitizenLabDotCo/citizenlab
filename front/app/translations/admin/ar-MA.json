@@ -1852,6 +1852,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "التاريخ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "جدول بيانات الزوار يوضح التاريخ، والزوار، والزيارات",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": "الوصف:",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": "النسبة المئوية",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": "القيمة",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "تمديد",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "لا",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "ما لقينا حتى شي مشروع بهاد الفلترات",

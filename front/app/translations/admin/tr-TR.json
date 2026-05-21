@@ -1852,6 +1852,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "Tarih",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "Tarih, ziyaretçiler ve ziyaretleri gösteren ziyaretçi veri tablosu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": "Açıklama:",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": "Yüzde",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": "Değer",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Esneme",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "Hayır",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "Belirtilen filtreler için proje bulunamadı",

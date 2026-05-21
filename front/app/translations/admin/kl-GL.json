@@ -1852,6 +1852,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "Ulloq",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "Pulaartut pillugit paasissutissat tabeliat ulloq, pulaartut, aamma pulaarnerit takutillugit",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": "Nassuiaat:",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": "Procentia",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": "Nalinga",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Tasiguk",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "Naamik",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "Suliassat ujaasissutinut naapertuuttut nassaarineqanngillat",

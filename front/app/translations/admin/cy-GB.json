@@ -1852,6 +1852,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "Dyddiad",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "Tabl data ymwelwyr yn dangos dyddiad, ymwelwyr, ac ymweliadau",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": "Disgrifiad:",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": "Canran",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": "Gwerth",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Ymestyn",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "Na",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "Ni chanfuwyd unrhyw brosiectau ar gyfer yr hidlwyr penodedig",
