@@ -11,12 +11,8 @@ class McpServer::Tools::ListGlobalTopics < McpServer::BaseTool
   def self.call(page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
     scope = GlobalTopic.order(:ordering)
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'global topics',
-      result[:records],
-      result[:pagination],
+      'global topics', scope, page:, per_page:,
       only: %i[id title_multiloc icon]
     )
   end

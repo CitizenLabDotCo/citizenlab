@@ -15,12 +15,8 @@ class McpServer::Tools::ListFolders < McpServer::BaseTool
       { search: search }.compact
     )
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'folders',
-      result[:records],
-      result[:pagination],
+      'folders', scope, page:, per_page:,
       only: %i[id title_multiloc slug]
     )
   end

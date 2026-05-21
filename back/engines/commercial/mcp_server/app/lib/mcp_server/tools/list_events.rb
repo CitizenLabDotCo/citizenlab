@@ -16,12 +16,8 @@ class McpServer::Tools::ListEvents < McpServer::BaseTool
       current_user: server_context[:current_user]
     ).find_records.order(:start_at)
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'events',
-      result[:records],
-      result[:pagination],
+      'events', scope, page:, per_page:,
       only: %i[id title_multiloc start_at end_at location_multiloc]
     )
   end

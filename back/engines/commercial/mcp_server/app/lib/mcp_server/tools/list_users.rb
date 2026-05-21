@@ -16,12 +16,8 @@ class McpServer::Tools::ListUsers < McpServer::BaseTool
     scope = scope.moderator if role == 'moderator'
     scope = scope.search_by_all(search) if search.present?
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'users',
-      result[:records],
-      result[:pagination],
+      'users', scope, page:, per_page:,
       only: %i[id first_name last_name email roles]
     )
   end

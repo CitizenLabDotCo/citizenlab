@@ -14,26 +14,24 @@ module McpServer
       }.freeze
 
       class_methods do
-        def paginate(scope, page: 1, per_page: DEFAULT_PER_PAGE)
-          page = [page.to_i, 1].max
-          per_page = [[per_page.to_i, 1].max, MAX_PER_PAGE].min
-          total_count = scope.count
-          records = scope.offset((page - 1) * per_page).limit(per_page)
+        def paginated_response(label, scope, page: 1, per_page: DEFAULT_PER_PAGE, **json_options)
+          per_page = per_page.to_i.clamp(1, MAX_PER_PAGE)
+          records = scope.page(page).per(per_page)
 
-          {
-            records: records,
-            pagination: {
-              page: page,
-              per_page: per_page,
-              total_count: total_count,
-              total_pages: (total_count.to_f / per_page).ceil
-            }
+          pagination = {
+            page: records.current_page,
+            per_page: per_page,
+            total_count: records.total_count,
+            total_pages: records.total_pages
           }
-        end
 
-        def paginated_response(label, records, pagination, json_options = {})
+          text = <<~TEXT.squish
+            Found #{pagination[:total_count]} #{label}
+            (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
+          TEXT
+
           MCP::Tool::Response.new(
-            [{ type: 'text', text: "Found #{pagination[:total_count]} #{label} (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)" }],
+            [{ type: 'text', text: }],
             structured_content: {
               data: records.as_json(**json_options),
               pagination: pagination

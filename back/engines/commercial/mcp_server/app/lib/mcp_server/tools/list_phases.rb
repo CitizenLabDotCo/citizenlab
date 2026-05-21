@@ -14,12 +14,8 @@ class McpServer::Tools::ListPhases < McpServer::BaseTool
     project = Project.find(project_id)
     scope = project.phases.order(:start_at)
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'phases',
-      result[:records],
-      result[:pagination],
+      'phases', scope, page:, per_page:,
       only: %i[id title_multiloc start_at end_at participation_method]
     )
   rescue ActiveRecord::RecordNotFound

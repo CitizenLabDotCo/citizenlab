@@ -16,12 +16,8 @@ class McpServer::Tools::ListProjects < McpServer::BaseTool
       current_user: server_context[:current_user]
     )
 
-    result = paginate(scope, page: page, per_page: per_page)
-
     paginated_response(
-      'projects',
-      result[:records],
-      result[:pagination],
+      'projects', scope, page:, per_page:,
       only: %i[id title_multiloc slug created_at]
     )
   end
