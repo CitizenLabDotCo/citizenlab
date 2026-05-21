@@ -104,6 +104,14 @@ module MultiTenancy
 
         serialized_models['models'].each do |klass, models|
           next unless klass.attribute_names.include?('id')
+          # Only pre-generate identifiers for models with a UUID primary key. A bigint
+          # sequence PK (e.g. the areas_static_pages join table) would cast the UUID
+          # string to a garbage/colliding integer ('cbd4...'.to_i == 0), so leave its id
+          # unset and let the database sequence assign it.
+          # Temporary fix to avoid errors when processing AreasStaticPage records,
+          # which have a bigint PK but are included in the template with UUIDs as ids.
+          # See TAN-7831 ticket for details.
+          next unless klass.columns_hash['id']&.sql_type == 'uuid'
 
           models.each do |id, attributes|
             raise "Template contains duplicate id: #{id}" if id_mapping.key?(id)
