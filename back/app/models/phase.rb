@@ -8,8 +8,8 @@
 #  project_id                       :uuid
 #  title_multiloc                   :jsonb
 #  description_multiloc             :jsonb
-#  start_at                         :date
-#  end_at                           :date
+#  start_at                         :datetime
+#  end_at                           :datetime
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #  participation_method             :string           default("ideation"), not null
@@ -37,24 +37,32 @@
 #  voting_term_singular_multiloc    :jsonb
 #  voting_term_plural_multiloc      :jsonb
 #  baskets_count                    :integer          default(0), not null
-#  votes_count                      :integer          default(0), not null
-#  campaigns_settings               :jsonb
+#  votes_count                      :bigint           default(0), not null
 #  native_survey_title_multiloc     :jsonb
 #  native_survey_button_multiloc    :jsonb
 #  expire_days_limit                :integer
 #  reacting_threshold               :integer
-#  prescreening_enabled             :boolean          default(FALSE), not null
-#  autoshare_results_enabled        :boolean          default(TRUE)
+#  autoshare_results_enabled        :boolean          default(TRUE), not null
 #  manual_votes_count               :integer          default(0), not null
 #  manual_voters_amount             :integer
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
+#  similarity_threshold_title       :float            default(0.3)
+#  similarity_threshold_body        :float            default(0.4)
+#  survey_popup_frequency           :integer
+#  similarity_enabled               :boolean          default(TRUE), not null
 #  vote_term                        :string           default("vote")
+#  voting_min_selected_options      :integer          default(1), not null
+#  voting_filtering_enabled         :boolean          default(FALSE), not null
+#  prescreening_mode                :string
+#  available_views                  :string           default(["\"card\""]), not null, is an Array
+#  draft_description_multiloc       :jsonb            not null
 #
 # Indexes
 #
 #  index_phases_on_manual_voters_last_updated_by_id  (manual_voters_last_updated_by_id)
 #  index_phases_on_project_id                        (project_id)
+#  index_phases_on_start_at_and_end_at               (start_at,end_at)
 #
 # Foreign Keys
 #
@@ -87,6 +95,7 @@ class Phase < ApplicationRecord
 
   belongs_to :project
 
+  has_many :phase_methods, dependent: :destroy
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
