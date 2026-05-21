@@ -11,16 +11,18 @@ class McpServer::Tools::ListEvents < McpServer::BaseTool
   )
 
   def self.call(project_id:, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    project = Project.find(project_id)
-    scope = project.events.order(:start_at)
+    scope = EventsFinder.new(
+      { project_ids: [project_id] },
+      current_user: server_context[:current_user]
+    ).find_records.order(:start_at)
 
     result = paginate(scope, page: page, per_page: per_page)
-    paginated_response('events', result[:records], result[:pagination],
-                       only: %i[id title_multiloc start_at end_at location_multiloc])
-  rescue ActiveRecord::RecordNotFound
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Project not found: #{project_id}" }],
-      error: true
+
+    paginated_response(
+      'events',
+      result[:records],
+      result[:pagination],
+      only: %i[id title_multiloc start_at end_at location_multiloc]
     )
   end
 end

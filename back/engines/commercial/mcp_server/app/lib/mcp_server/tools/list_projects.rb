@@ -10,11 +10,19 @@ class McpServer::Tools::ListProjects < McpServer::BaseTool
   )
 
   def self.call(search: nil, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    scope = Project.order(created_at: :desc)
-    scope = scope.search_by_all(search) if search.present?
+    scope = ProjectsFinderAdminService.execute(
+      Project.all,
+      { search: search }.compact,
+      current_user: server_context[:current_user]
+    )
 
     result = paginate(scope, page: page, per_page: per_page)
-    paginated_response('projects', result[:records], result[:pagination],
-                       only: %i[id title_multiloc slug created_at])
+
+    paginated_response(
+      'projects',
+      result[:records],
+      result[:pagination],
+      only: %i[id title_multiloc slug created_at]
+    )
   end
 end
