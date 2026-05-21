@@ -39,6 +39,7 @@ import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
+import PhaseMethodsAdmin from './components/PhaseMethodsAdmin';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
@@ -406,6 +407,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
           />
+          {phaseId && <PhaseMethodsAdmin phaseId={phaseId} />}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
