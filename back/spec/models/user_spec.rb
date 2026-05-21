@@ -987,36 +987,6 @@ RSpec.describe User do
       end
     end
 
-    describe '#reset_confirmation_and_counts' do
-      before do
-        user.save!
-        user.email_confirmation.update!(code: '1234', code_retry_count: 2, code_reset_count: 2)
-      end
-
-      it 'resets counts and required if already confirmed' do
-        user.email_confirmation.confirm!
-        user.reload.reset_confirmation_and_counts
-
-        expect(user.confirmation_required?).to be true
-        ec = user.email_confirmation.reload
-        expect(ec.code_sent_at).to be_nil
-        expect(ec.code).to be_nil
-        expect(ec.code_retry_count).to eq 0
-        expect(ec.code_reset_count).to eq 0
-      end
-
-      it 'only resets confirmation_required if not confirmed' do
-        user.reset_confirmation_and_counts
-
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-        ec = user.email_confirmation.reload
-        expect(ec.code).to eq '1234'
-        expect(ec.code_retry_count).to eq 2
-        expect(ec.code_reset_count).to eq 2
-      end
-    end
-
     describe '#email' do
       let(:email) { 'new_email@email.com' }
 

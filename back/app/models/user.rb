@@ -327,25 +327,6 @@ class User < ApplicationRecord
     confirmation_required
   end
 
-  # ONLY USED IN SPECS! Resets confirmation state so the user re-enters the
-  # confirmation flow on next sign-in.
-  def reset_confirmation_and_counts
-    raise 'Only use in specs!' unless Rails.env.test?
-
-    ec = email_confirmation
-    return unless ec
-
-    unless confirmation_required?
-      ec.code = nil
-      ec.code_retry_count = 0
-      ec.code_reset_count = 0
-    end
-    ec.code_sent_at = nil
-    ec.save!
-
-    self.confirmation_required = true
-  end
-
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods.
