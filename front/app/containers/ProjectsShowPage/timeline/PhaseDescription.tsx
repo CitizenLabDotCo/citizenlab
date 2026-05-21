@@ -23,6 +23,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+import ParallelMethods from './ParallelMethods';
 import PhaseTitle from './PhaseTitle';
 
 const Container = styled.div<{ hasBottomMargin: boolean }>`
@@ -116,6 +117,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
           )}
         </Box>
       )}
+      <ParallelMethods phaseId={selectedPhaseId} />
       {isActivePhase && (
         <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
