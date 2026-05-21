@@ -42,25 +42,16 @@ const Narrow = ({
       label: formatMessage(messages.dateColumn),
       type: 'date',
     },
+    ...(show('inputs')
+      ? [{ key: 'inputs', label: formatMessage(messages.inputs) }]
+      : []),
+    ...(show('comments')
+      ? [{ key: 'comments', label: formatMessage(messages.comments) }]
+      : []),
+    ...(show('votes')
+      ? [{ key: 'votes', label: formatMessage(messages.votes) }]
+      : []),
   ];
-  if (show('inputs')) {
-    columns.push({
-      key: 'inputs',
-      label: formatMessage(messages.inputs),
-    });
-  }
-  if (show('comments')) {
-    columns.push({
-      key: 'comments',
-      label: formatMessage(messages.comments),
-    });
-  }
-  if (show('votes')) {
-    columns.push({
-      key: 'votes',
-      label: formatMessage(messages.votes),
-    });
-  }
 
   return (
     <Box height="100%" display="flex" flexDirection="column">

@@ -58,14 +58,15 @@ const Wide = ({
       key: 'participants',
       label: formatMessage(messages.participantsColumn),
     },
+    ...(showVisitors
+      ? [
+          {
+            key: 'visitors',
+            label: formatMessage(messages.visitorsColumn),
+          },
+        ]
+      : []),
   ];
-
-  if (showVisitors) {
-    columns.push({
-      key: 'visitors',
-      label: formatMessage(messages.visitorsColumn),
-    });
-  }
 
   return (
     <Box width="100%" pb="8px" display="flex" flexDirection="column">

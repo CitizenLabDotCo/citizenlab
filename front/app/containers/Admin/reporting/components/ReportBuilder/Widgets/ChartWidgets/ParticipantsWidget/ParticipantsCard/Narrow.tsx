@@ -48,14 +48,15 @@ const Narrow = ({
       key: 'participants',
       label: formatMessage(messages.participantsColumn),
     },
+    ...(showVisitors
+      ? [
+          {
+            key: 'visitors',
+            label: formatMessage(messages.visitorsColumn),
+          },
+        ]
+      : []),
   ];
-
-  if (showVisitors) {
-    columns.push({
-      key: 'visitors',
-      label: formatMessage(messages.visitorsColumn),
-    });
-  }
 
   return (
     <Box
