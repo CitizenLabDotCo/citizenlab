@@ -90,7 +90,7 @@ const InternalAdoptionCard = ({
           {
             key: 'date',
             label: formatMessage(messages.dateCoulmn),
-            render: (value) => moment(value).format('MMM DD, YYYY'),
+            type: 'date',
           },
           {
             key: 'activeAdmins',

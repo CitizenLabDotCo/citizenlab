@@ -97,6 +97,7 @@ const Narrow = ({
           {
             key: 'date',
             label: formatMessage(messages.dateColumn),
+            type: 'date',
           },
           {
             key: 'visitors',

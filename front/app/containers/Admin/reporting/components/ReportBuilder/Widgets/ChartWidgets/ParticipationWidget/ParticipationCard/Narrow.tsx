@@ -9,7 +9,7 @@ import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
-import A11yTable from '../../_shared/A11yTable';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import messages from '../messages';
 
@@ -36,32 +36,29 @@ const Narrow = ({
   };
   const { formatMessage } = useIntl();
 
-  const columns = [
+  const columns: Column[] = [
     {
       key: 'date',
       label: formatMessage(messages.dateColumn),
-      render: (value) => moment(value).format('MMM DD, YYYY'),
+      type: 'date',
     },
   ];
   if (show('inputs')) {
     columns.push({
       key: 'inputs',
       label: formatMessage(messages.inputs),
-      render: (value) => (value != null ? value.toString() : ''),
     });
   }
   if (show('comments')) {
     columns.push({
       key: 'comments',
       label: formatMessage(messages.comments),
-      render: (value) => (value != null ? value.toString() : ''),
     });
   }
   if (show('votes')) {
     columns.push({
       key: 'votes',
       label: formatMessage(messages.votes),
-      render: (value) => (value != null ? value.toString() : ''),
     });
   }
 

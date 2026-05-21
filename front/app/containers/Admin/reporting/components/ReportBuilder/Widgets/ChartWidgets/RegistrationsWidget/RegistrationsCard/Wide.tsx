@@ -94,7 +94,7 @@ const Wide = ({
           {
             key: 'date',
             label: formatMessage(messages.dateColumn),
-            render: (value) => moment(value).format('MMM DD, YYYY'),
+            type: 'date',
           },
           {
             key: 'registrations',

@@ -3,6 +3,11 @@ import { MessageDescriptor } from 'react-intl';
 
 import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 
+import {
+  Column,
+  Row,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
+
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 
 import messages from './messages';
@@ -162,11 +167,11 @@ export const filterDataBySelectedQuarter = (
 export const buildHealthScoreA11yTable = (
   sentimentScores: QuarterlyScores | null,
   formatMessage: FormatMessage
-) => {
+): { columns: Column[]; data: Row[] } => {
   const periods =
     sentimentScores?.overallHealthScores.map((s) => s.period) || [];
 
-  const columns = [
+  const columns: Column[] = [
     { key: 'category', label: formatMessage(messages.categoryColumn) },
     ...periods.map((period) => ({
       key: period,
@@ -180,12 +185,12 @@ export const buildHealthScoreA11yTable = (
       return acc;
     }, {}) ?? {};
 
-  const overallRow = {
+  const overallRow: Row = {
     category: formatMessage(messages.overallHealthScore),
     ...scoresByPeriod(sentimentScores?.overallHealthScores),
   };
 
-  const categoryRows =
+  const categoryRows: Row[] =
     sentimentScores?.categoryHealthScores.map((categoryScore) => ({
       category: categoryScore.localizedLabel,
       ...scoresByPeriod(categoryScore.scores),

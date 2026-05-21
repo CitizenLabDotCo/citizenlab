@@ -11,7 +11,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 
-import A11yTable from '../../_shared/A11yTable';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
@@ -48,11 +48,11 @@ const Wide = ({
   };
 
   // Build columns dynamically based on showVisitors
-  const columns = [
+  const columns: Column[] = [
     {
       key: 'date',
       label: formatMessage(messages.dateColumn),
-      render: (value) => moment(value).format('MMM DD, YYYY'),
+      type: 'date',
     },
     {
       key: 'participants',

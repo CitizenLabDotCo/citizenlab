@@ -1,20 +1,34 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 
-interface Column {
+export type CellValue = string | number | null | undefined;
+
+export type Row = Record<string, CellValue>;
+
+export type ColumnType = 'date' | 'number' | 'text';
+
+export interface Column {
   key: string;
   label: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  type?: ColumnType;
 }
 
-interface DataTableProps {
+interface DataTableProps<T> {
   columns: Column[];
-  data: any[];
+  data: readonly T[];
   caption: string;
 }
 
-const A11yTable: React.FC<DataTableProps> = ({ columns, data, caption }) => {
+const formatCell = (value: CellValue, type?: ColumnType): string => {
+  if (value == null) return '';
+  if (type === 'date') return moment(value).format('MMM DD, YYYY');
+  return String(value);
+};
+
+const A11yTable = <T,>({ columns, data, caption }: DataTableProps<T>) => {
   return (
     <ScreenReaderOnly>
       <table role="table">
@@ -29,25 +43,25 @@ const A11yTable: React.FC<DataTableProps> = ({ columns, data, caption }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((column, colIndex) => {
-                const value = row[column.key];
-                const content = column.render
-                  ? column.render(value, row)
-                  : value;
+          {data.map((row, rowIndex) => {
+            const r = row as Row;
+            return (
+              <tr key={rowIndex}>
+                {columns.map((column, colIndex) => {
+                  const content = formatCell(r[column.key], column.type);
 
-                if (colIndex === 0) {
-                  return (
-                    <th key={column.key} scope="row">
-                      {content}
-                    </th>
-                  );
-                }
-                return <td key={column.key}>{content}</td>;
-              })}
-            </tr>
-          ))}
+                  if (colIndex === 0) {
+                    return (
+                      <th key={column.key} scope="row">
+                        {content}
+                      </th>
+                    );
+                  }
+                  return <td key={column.key}>{content}</td>;
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </ScreenReaderOnly>
