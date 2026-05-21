@@ -4,7 +4,7 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
   description 'Gets a resource by type and ID'
   input_schema(
     properties: {
-      type: { type: 'string', enum: %w[project phase event], description: 'The resource type' },
+      type: { type: 'string', enum: %w[project phase event area global_topic folder user], description: 'The resource type' },
       id: { type: 'string', description: 'The resource ID' }
     },
     required: %w[type id]
@@ -13,7 +13,11 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
   RESOURCE_TYPES = {
     'project' => 'Project',
     'phase' => 'Phase',
-    'event' => 'Event'
+    'event' => 'Event',
+    'area' => 'Area',
+    'global_topic' => 'GlobalTopic',
+    'folder' => 'ProjectFolders::Folder',
+    'user' => 'User'
   }.freeze
 
   def self.call(type:, id:, server_context:)

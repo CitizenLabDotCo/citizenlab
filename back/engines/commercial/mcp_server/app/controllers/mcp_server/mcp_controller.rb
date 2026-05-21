@@ -18,7 +18,11 @@ module McpServer
           McpServer::Tools::GetResource,
           McpServer::Tools::ListProjects,
           McpServer::Tools::ListPhases,
-          McpServer::Tools::ListEvents
+          McpServer::Tools::ListEvents,
+          McpServer::Tools::ListAreas,
+          McpServer::Tools::ListGlobalTopics,
+          McpServer::Tools::ListFolders,
+          McpServer::Tools::ListUsers
         ],
         server_context: { current_user: }
       )
