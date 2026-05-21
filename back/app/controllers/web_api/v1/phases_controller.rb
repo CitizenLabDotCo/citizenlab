@@ -13,13 +13,13 @@ class WebApi::V1::PhasesController < ApplicationController
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
+    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by, :phase_methods)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by phase_methods])
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions phase_methods]).serializable_hash
   end
 
   def show_mini
