@@ -75,13 +75,18 @@ resource 'Request codes' do
       expect(ConfirmationsMailer).not_to have_received(:with)
     end
 
-    example 'It does not work if new_email is present' do
+    # In the past this endpoint did not allow requesting a code
+    # when new_email was selected for tech debt reasons.
+    # But this was causing other problems, so now it's allowed.
+    # I just changed the test and left it to make sure that this keeps
+    # working.
+    example 'It works if new_email is present' do
       user = create(:unconfirmed_user, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
 
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 401
-      expect(ConfirmationsMailer).not_to have_received(:with)
+      expect(response_status).to eq 200
+      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
     end
   end
 

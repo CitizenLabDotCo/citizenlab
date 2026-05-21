@@ -11,7 +11,6 @@ class RequestCodePolicy < ApplicationPolicy
       return false
     end
 
-    return false if record.new_email.present?
     return false if record.email_confirmation.code_reset_count >= max_retries - 1
 
     true
