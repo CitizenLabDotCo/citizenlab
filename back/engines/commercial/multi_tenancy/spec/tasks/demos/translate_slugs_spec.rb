@@ -12,10 +12,7 @@ describe 'demos:translate_slugs rake task' do
     FileUtils.rm_f(Rails.root.join('translate_slugs.json'))
   end
 
-  let(:host) { Tenant.current.host }
-  let(:locale) { 'nl-BE' }
-
-  def run_task(execute: false, host: self.host, locale: self.locale)
+  def run_task(execute: false, host: Tenant.current.host, locale: 'nl-BE')
     Rake::Task['demos:translate_slugs'].invoke(host, locale, execute ? 'execute' : nil)
   end
 
