@@ -4,17 +4,19 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Request codes' do
+  let(:mail_message) { instance_double(ActionMailer::MessageDelivery, deliver_now: true) }
+  let(:parameterized_mailer) { double(send_confirmation_code: mail_message) }
+  let(:expire_job_proxy) { double(perform_later: true) }
+
   before do
     set_api_content_type
+    allow(ConfirmationsMailer).to receive(:with).and_return(parameterized_mailer)
+    allow(ExpireConfirmationCodeOrDeleteJob).to receive(:set).and_return(expire_job_proxy)
   end
 
   post 'web_api/v1/user/request_code_unauthenticated' do
     with_options scope: :request_code do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
-    end
-
-    before do
-      allow(RequestConfirmationCodeJob).to receive(:perform_now)
     end
 
     example 'works if user has no password and has email confirmed' do
@@ -25,9 +27,9 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
       # Requesting a new code should not reset the confirmation_required value
-      expect(user.confirmation_required?).to be false
+      expect(user.reload.confirmation_required?).to be false
     end
 
     example 'works if user has no password and does not have email confirmed' do
@@ -37,7 +39,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
     end
 
     example 'does not work if user has password and has email confirmed' do
@@ -47,7 +49,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+      expect(ConfirmationsMailer).not_to have_received(:with)
     end
 
     # This is an edge case related to legacy users, where a user has a password set
@@ -59,7 +61,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -68,7 +70,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+      expect(ConfirmationsMailer).not_to have_received(:with)
     end
 
     example 'It does not work if new_email is present' do
@@ -77,6 +79,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
+      expect(ConfirmationsMailer).not_to have_received(:with)
     end
   end
 
@@ -85,17 +88,13 @@ resource 'Request codes' do
       parameter :new_email, 'The email of the user requesting a confirmation code.', required: false
     end
 
-    before do
-      allow(RequestConfirmationCodeJob).to receive(:perform_now)
-    end
-
     example 'It works with authenticated user' do
       user = create(:user)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now)
-        .with(user, new_email: 'new_email@example.com').once
+      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(user.reload.new_email).to eq 'new_email@example.com'
     end
 
     example 'It does not work if new_email is blank and new_email is not yet set on user' do
@@ -103,7 +102,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: '' })
       expect(response_status).to eq 422
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+      expect(ConfirmationsMailer).not_to have_received(:with)
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -112,7 +111,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 401
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+      expect(ConfirmationsMailer).not_to have_received(:with)
     end
   end
 end
