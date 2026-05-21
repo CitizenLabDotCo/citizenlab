@@ -30,6 +30,26 @@ export interface IPhaseData {
     report?: {
       data: IRelationship | null;
     };
+    phase_methods?: {
+      data: IRelationship[];
+    };
+  };
+}
+
+export interface IPhaseMethodData {
+  id: string;
+  type: 'phase_method';
+  attributes: {
+    method_type: ParticipationMethod;
+    start_at: string | null;
+    end_at: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships: {
+    phase: {
+      data: IRelationship;
+    };
   };
 }
 
@@ -89,10 +109,12 @@ export interface IPhaseAttributes {
 
 export interface IPhases {
   data: IPhaseData[];
+  included?: IPhaseMethodData[];
 }
 
 export interface IPhase {
   data: IPhaseData;
+  included?: IPhaseMethodData[];
 }
 
 export interface IUpdatedPhaseProperties {
