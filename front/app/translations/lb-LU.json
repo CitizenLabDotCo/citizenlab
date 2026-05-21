@@ -234,6 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Registréiert",
   "app.components.EventAttendanceButton.seeYouThere": "Bis dann dohannen!",
   "app.components.EventAttendanceButton.seeYouThereName": "Bis dohin, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Dir sidd vun {eventTitle} ofgemellt ginn.",
   "app.components.EventCard.a11y_lessContentVisible": "Manner Informatiounen iwwer d'Event si siichtbar ginn.",
   "app.components.EventCard.a11y_moreContentVisible": "Méi Informatiounen iwwer d'Event si siichtbar ginn.",
   "app.components.EventCard.a11y_readMore": "Liest méi iwwer den Event \"{eventTitle}\".",

@@ -234,6 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Reģistrēts",
   "app.components.EventAttendanceButton.seeYouThere": "Uz tikšanos!",
   "app.components.EventAttendanceButton.seeYouThereName": "Uz tikšanos, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Jūs esat atreģistrēts no {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Kļuva redzams mazāk informācijas par notikumu.",
   "app.components.EventCard.a11y_moreContentVisible": "Kļuva redzams vairāk informācijas par notikumu.",
   "app.components.EventCard.a11y_readMore": "Vairāk par pasākumu \"{eventTitle}\".",
