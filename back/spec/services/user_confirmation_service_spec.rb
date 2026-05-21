@@ -81,6 +81,14 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be true
     end
 
+    it 'works when the user is already confirmed' do
+      user.email_confirmation.confirm!
+      expect(user.confirmation_required?).to be false
+      user.email_confirmation.reset_code!
+      user.email_confirmation.confirm!
+      expect(user.confirmation_required?).to be false
+    end
+
     include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!, :email_confirmation
 
     context 'when password_login is disabled' do
