@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class McpServer::Tools::HelloWorld < MCP::Tool
+class McpServer::Tools::HelloWorld < McpServer::BaseTool
   description 'A simple hello world tool that greets the user'
   input_schema(
     properties: { name: { type: 'string' } },

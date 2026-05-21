@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class McpServer::Tools::CreateEvent < MCP::Tool
+class McpServer::Tools::CreateEvent < McpServer::BaseTool
   description 'Creates an event for a project'
   input_schema(
     properties: {
@@ -45,13 +45,6 @@ class McpServer::Tools::CreateEvent < MCP::Tool
       [{ type: 'text', text: "Project not found: #{project_id}" }],
       error: true
     )
-  end
-
-  def self.to_multiloc(value)
-    return value if value.is_a?(Hash)
-
-    locale = AppConfiguration.instance.settings.dig('core', 'locales')&.first || 'en'
-    { locale => value }
   end
 
 end
