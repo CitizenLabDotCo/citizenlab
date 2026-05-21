@@ -6,7 +6,7 @@ RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
     let_it_be(:user) do
       user = create(:unconfirmed_user, email: 'some_email@email.com')
-      user.email_confirmation.reset_code!
+      RequestConfirmationCodeJob.perform_now(user)
       user
     end
     let_it_be(:mailer) { described_class.with(user: user) }

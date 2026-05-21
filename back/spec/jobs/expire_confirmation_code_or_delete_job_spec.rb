@@ -11,7 +11,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     let(:user) do
       user = create(:user)
       user.update!(confirmation_required: true)
-      user.email_confirmation.reset_code!
+      RequestConfirmationCodeJob.perform_now(user)
       user
     end
 
@@ -48,7 +48,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   context 'unconfirmed users' do
     let(:user) do
       user = create(:unconfirmed_user)
-      user.email_confirmation.reset_code!
+      RequestConfirmationCodeJob.perform_now(user)
       user
     end
 
@@ -76,7 +76,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
 
     it 'expires the code of a user that requires confirmation but has previously completed registration' do
       user.update!(confirmation_required: true)
-      user.email_confirmation.reset_code!
+      RequestConfirmationCodeJob.perform_now(user)
       old_code = user.email_confirmation.code
       described_class.perform_now(user.id, 'EmailConfirmation', old_code)
       expect(user.email_confirmation.reload.code).not_to eq(old_code)

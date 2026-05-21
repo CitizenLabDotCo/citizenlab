@@ -84,8 +84,8 @@ RSpec.describe UserConfirmationService do
     it 'works when the user is already confirmed' do
       user.email_confirmation.confirm!
       expect(user.confirmation_required?).to be false
-      user.email_confirmation.reset_code!
-      user.email_confirmation.confirm!
+      RequestConfirmationCodeJob.perform_now(user)
+      user.reload.email_confirmation.confirm!
       expect(user.confirmation_required?).to be false
     end
 

@@ -83,7 +83,7 @@ describe Permissions::BasePermissionsService do
       context 'when light confirmed resident' do
         let(:user) do 
           u = create(:unconfirmed_user)
-          u.email_confirmation.reset_code!
+          RequestConfirmationCodeJob.perform_now(u)
           u.email_confirmation.confirm!
           u
         end
@@ -143,7 +143,7 @@ describe Permissions::BasePermissionsService do
       context 'when light confirmed resident' do
         let(:user) do
           u = create(:unconfirmed_user)
-          u.email_confirmation.reset_code!
+          RequestConfirmationCodeJob.perform_now(u)
           u.email_confirmation.confirm!
           u
         end
@@ -421,7 +421,7 @@ describe Permissions::BasePermissionsService do
       context 'when light confirmed resident' do
         let(:user) do 
           u = create(:unconfirmed_user)
-          u.email_confirmation.reset_code!
+          RequestConfirmationCodeJob.perform_now(u)
           u.email_confirmation.confirm!
           u
         end
