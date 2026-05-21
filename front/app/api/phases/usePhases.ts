@@ -14,6 +14,7 @@ const fetchPhases = async ({
   return fetcher<IPhases>({
     path: `/projects/${projectId}/phases`,
     action: 'get',
+    queryParams: { include: 'phase_methods' },
   });
 };
 
