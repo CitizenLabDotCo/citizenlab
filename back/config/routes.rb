@@ -234,6 +234,8 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
+
+        resources :phase_methods, only: %i[index create destroy]
       end
 
       resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
