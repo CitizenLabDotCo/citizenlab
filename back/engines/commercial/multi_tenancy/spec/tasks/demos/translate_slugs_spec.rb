@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
-describe 'slugs:translate_slugs rake task' do
+describe 'demos:translate_slugs rake task' do
   before { load_rake_tasks_if_not_loaded }
 
   after do
-    Rake::Task['slugs:translate_slugs'].reenable
+    Rake::Task['demos:translate_slugs'].reenable
     # The task writes its JSON report to the working directory.
     FileUtils.rm_f(Rails.root.join('translate_slugs.json'))
   end
@@ -16,7 +16,7 @@ describe 'slugs:translate_slugs rake task' do
   let(:locale) { 'nl-BE' }
 
   def run_task(execute: false, host: self.host, locale: self.locale)
-    Rake::Task['slugs:translate_slugs'].invoke(host, locale, execute ? 'execute' : nil)
+    Rake::Task['demos:translate_slugs'].invoke(host, locale, execute ? 'execute' : nil)
   end
 
   describe 'dry-run mode' do

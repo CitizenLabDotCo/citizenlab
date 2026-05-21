@@ -27,12 +27,12 @@
 #
 # Example commands (run from the repo root):
 #   Dry run (no changes applied, just reports what would happen):
-#     docker compose run --rm web bundle exec rake 'slugs:translate_slugs[example.com,fr-BE]'
+#     docker compose run --rm web bundle exec rake 'demos:translate_slugs[example.com,fr-BE]'
 #
 #   Execute (applies the changes):
-#     docker compose run --rm web bundle exec rake 'slugs:translate_slugs[example.com,fr-BE,execute]'
+#     docker compose run --rm web bundle exec rake 'demos:translate_slugs[example.com,fr-BE,execute]'
 
-namespace :slugs do
+namespace :demos do
   desc 'Translate slugs to given locale'
   task :translate_slugs, %i[host locale execute] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
@@ -48,7 +48,7 @@ namespace :slugs do
     puts "Mode: #{execute ? 'EXECUTE - changes WILL be applied' : 'Dry run - no changes will be applied'}\n\n"
 
     if host.blank? || locale.blank?
-      puts 'ERROR! Both host and locale arguments are required. Usage: rake slugs:translate_slugs[example.com,fr-BE,execute]'
+      puts 'ERROR! Both host and locale arguments are required. Usage: rake demos:translate_slugs[example.com,fr-BE,execute]'
       next
     end
 
