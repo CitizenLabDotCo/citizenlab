@@ -637,7 +637,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
 DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
@@ -735,7 +734,6 @@ DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.claim_tokens;
 DROP TABLE IF EXISTS public.baskets_ideas;
 DROP TABLE IF EXISTS public.authoring_assistance_responses;
-DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas;
@@ -2169,31 +2167,12 @@ CREATE TABLE public.areas_projects (
 --
 
 CREATE TABLE public.areas_static_pages (
-    id bigint NOT NULL,
     area_id uuid NOT NULL,
     static_page_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL
 );
-
-
---
--- Name: areas_static_pages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.areas_static_pages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: areas_static_pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pages.id;
 
 
 --
@@ -3873,13 +3852,6 @@ CREATE TABLE public.wise_voice_flags (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: areas_static_pages id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_static_pages ALTER COLUMN id SET DEFAULT nextval('public.areas_static_pages_id_seq'::regclass);
 
 
 --
@@ -8581,6 +8553,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260521120000'),
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
