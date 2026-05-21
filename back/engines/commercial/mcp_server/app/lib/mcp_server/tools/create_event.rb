@@ -29,7 +29,7 @@ class McpServer::Tools::CreateEvent < MCP::Tool
     )
 
     if event.save
-      SideFxEventService.new.after_create(event, admin_user)
+      SideFxEventService.new.after_create(event, server_context[:current_user])
       MCP::Tool::Response.new([{
         type: 'text',
         text: "Event created successfully. ID: #{event.id}, Title: #{event.title_multiloc.values.first}"
@@ -54,7 +54,4 @@ class McpServer::Tools::CreateEvent < MCP::Tool
     { locale => value }
   end
 
-  def self.admin_user
-    User.admin.first!
-  end
 end
