@@ -62,11 +62,14 @@ namespace :demos do
     reporter.add_processed_tenant(tenant)
 
     tenant.switch do
-      # First, find all database tables that have a 'slug' column.
-      # Exclude 'users': user slugs derive from the user's name, which is never translated.
+      # First, find all database tables that have both a 'slug' and a 'title_multiloc'
+      # column - the slug is re-derived from title_multiloc, so a table without
+      # title_multiloc has nothing to translate from. This naturally excludes 'users':
+      # user slugs derive from the user's name (no title_multiloc), which is never translated.
       tables_with_slug = ActiveRecord::Base.connection.tables.select do |table|
-        ActiveRecord::Base.connection.column_exists?(table, :slug)
-      end - %w[users]
+        ActiveRecord::Base.connection.column_exists?(table, :slug) &&
+          ActiveRecord::Base.connection.column_exists?(table, :title_multiloc)
+      end
 
       # Map each table to its model class.
       Rails.application.eager_load!
