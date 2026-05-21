@@ -36,4 +36,34 @@ describe MultiTenancy::Templates::ApplyService do
         .to raise_error(MultiTenancy::Templates::Utils::UnknownTemplateError)
     end
   end
+
+  describe '#generate_model_identifiers!' do
+    # AreasStaticPage is the only model with a bigint (sequence) PK; every other model
+    # uses a UUID. Pre-generating a UUID for its id would cast to a garbage/colliding
+    # integer and break template application, so its id must be left for the DB sequence.
+    let(:serialized_models) do
+      {
+        'models' => {
+          Area => { 'area-1' => { 'title_multiloc' => { 'en' => 'Area' } } },
+          AreasStaticPage => { 'asp-1' => {}, 'asp-2' => {} }
+        }
+      }
+    end
+
+    it 'pre-generates a UUID id for UUID-keyed models' do
+      mapping = service.send(:generate_model_identifiers!, serialized_models)
+
+      generated_id = serialized_models['models'][Area]['area-1']['id']
+      expect(generated_id).to match(/\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/)
+      expect(mapping['area-1']).to eq(generated_id)
+    end
+
+    it 'does not assign an id to bigint-keyed models (leaves it to the DB sequence)' do
+      mapping = service.send(:generate_model_identifiers!, serialized_models)
+
+      expect(serialized_models['models'][AreasStaticPage]['asp-1']).not_to have_key('id')
+      expect(serialized_models['models'][AreasStaticPage]['asp-2']).not_to have_key('id')
+      expect(mapping).not_to include('asp-1', 'asp-2')
+    end
+  end
 end
