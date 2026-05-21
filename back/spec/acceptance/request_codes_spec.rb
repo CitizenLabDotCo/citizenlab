@@ -4,14 +4,16 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Request codes' do
-  let(:mail_message) { instance_double(ActionMailer::MessageDelivery, deliver_now: true) }
-  let(:parameterized_mailer) { double(send_confirmation_code: mail_message) }
-  let(:expire_job_proxy) { double(perform_later: true) }
+  let(:mailer) do
+    instance_double(
+      ConfirmationsMailer,
+      send_confirmation_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
+    )
+  end
 
   before do
     set_api_content_type
-    allow(ConfirmationsMailer).to receive(:with).and_return(parameterized_mailer)
-    allow(ExpireConfirmationCodeOrDeleteJob).to receive(:set).and_return(expire_job_proxy)
+    allow(ConfirmationsMailer).to receive(:with).and_return(mailer)
   end
 
   post 'web_api/v1/user/request_code_unauthenticated' do
