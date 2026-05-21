@@ -234,6 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Registreret",
   "app.components.EventAttendanceButton.seeYouThere": "Vi ses der!",
   "app.components.EventAttendanceButton.seeYouThereName": "Vi ses der, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Du er blevet afmeldt fra {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Færre oplysninger blev synlige om begivenheder.",
   "app.components.EventCard.a11y_moreContentVisible": "Flere oplysninger om begivenheder blev synlige.",
   "app.components.EventCard.a11y_readMore": "Læs mere om arrangementet \"{eventTitle}\".",

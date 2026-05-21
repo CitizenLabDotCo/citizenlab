@@ -234,6 +234,7 @@
   "app.components.EventAttendanceButton.registered": "Cláraithe",
   "app.components.EventAttendanceButton.seeYouThere": "Feicfidh mé thú ansin!",
   "app.components.EventAttendanceButton.seeYouThereName": "Feicfidh mé ansin thú, {userFirstName}!",
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": "Díchláraíodh thú ó {eventTitle}",
   "app.components.EventCard.a11y_lessContentVisible": "Bhí níos lú eolais faoin imeacht le feiceáil.",
   "app.components.EventCard.a11y_moreContentVisible": "Tháinig tuilleadh eolais faoin imeacht chun solais.",
   "app.components.EventCard.a11y_readMore": "Léigh tuilleadh faoin imeacht \"{eventTitle}\".",

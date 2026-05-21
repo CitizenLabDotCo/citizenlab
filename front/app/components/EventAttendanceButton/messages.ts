@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.components.EventAttendanceButton.forwardToFriend',
     defaultMessage: 'Forward to a friend',
   },
+  unregisteredAnnouncement: {
+    id: 'app.components.EventAttendanceButton.unregisteredAnnouncement',
+    defaultMessage: 'You have been unregistered from {eventTitle}',
+  },
 });
