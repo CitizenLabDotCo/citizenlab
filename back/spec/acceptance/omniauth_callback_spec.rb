@@ -202,6 +202,7 @@ resource 'Omniauth Callback', document: false do
         expect(status).to eq(302) # Redirect code
         user = User.find_by(email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
+        expect(user.confirmation_required?).to be false
         expect(user.email_confirmed_at).to be_present
         expect(user.verified).to be true
       end
@@ -215,6 +216,7 @@ resource 'Omniauth Callback', document: false do
         db_user = User.find_by(email: 'billy_fixed@example.com')
         expect(db_user.id).to eq(invited_user.id)
         expect(db_user).not_to be_nil
+        expect(db_user.confirmation_required?).to be false
         expect(db_user.email_confirmed_at).to be_present
       end
 
@@ -293,8 +295,9 @@ resource 'Omniauth Callback', document: false do
         do_request
 
         expect(status).to eq(302) # Redirect code
-        user = User.find_by(email: 'billy_fixed@example.com')
+        user = User.find_by(new_email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
+        expect(user.confirmation_required?).to be true
         expect(user.email_confirmed_at).to be_nil
         expect(user.verified).to be true
       end
@@ -323,8 +326,9 @@ resource 'Omniauth Callback', document: false do
           do_request
           expect(status).to eq(302)
 
-          user = User.find_by(email: 'billy_fixed@example.com')
+          user = User.find_by(new_email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
+          expect(user.confirmation_required?).to be false
           expect(user.email_confirmed_at).to be_nil
           expect(claim_token.reload.pending_claimer_id).to eq(user.id)
           expect(idea.reload.author_id).to be_nil # Not yet claimed
