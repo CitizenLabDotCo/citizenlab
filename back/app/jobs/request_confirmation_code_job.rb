@@ -26,10 +26,6 @@ class RequestConfirmationCodeJob < ApplicationJob
       user.update!(new_email: new_email)
       user.new_email_confirmation
     else
-      # Requesting a code on the email-confirmation flow always re-arms the
-      # user's confirmation gate. This matters for legacy passwordless users
-      # who already confirmed once but need a fresh code to log back in.
-      user.update!(confirmation_required: true) unless user.confirmation_required
       user.email_confirmation
     end
   end
