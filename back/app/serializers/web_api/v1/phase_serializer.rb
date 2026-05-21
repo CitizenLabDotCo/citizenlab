@@ -93,6 +93,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer
 
   has_many :permissions
+  has_many :phase_methods, record_type: :phase_method, serializer: WebApi::V1::PhaseMethodSerializer
 
   def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
