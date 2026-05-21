@@ -33,6 +33,15 @@ describe 'demos:translate_slugs rake task' do
   end
 
   describe 'execute mode' do
+    # Execute mode only applies changes on demo platforms or in development. The default
+    # test tenant is 'active' and the model forbids flipping it to 'demo', so stub the
+    # lifecycle_stage the guard reads (passing other settings lookups through).
+    before do
+      allow_any_instance_of(AppConfiguration).to receive(:settings).and_call_original
+      allow_any_instance_of(AppConfiguration)
+        .to receive(:settings).with('core', 'lifecycle_stage').and_return('demo')
+    end
+
     it 'derives the slug from the title in the target locale' do
       project = create(:project, title_multiloc: { 'en' => 'English title', 'nl-BE' => 'Nederlandse titel' }, slug: 'english-title')
 
@@ -124,6 +133,23 @@ describe 'demos:translate_slugs rake task' do
       run_task(execute: true)
 
       expect(user.reload.slug).to eq(original_slug)
+    end
+  end
+
+  describe 'lifecycle guard' do
+    # The default test tenant has lifecycle_stage 'active', and tests run outside the
+    # development env, so execute mode is blocked here.
+    it 'refuses to apply changes on a non-demo tenant outside development' do
+      project = create(:project, title_multiloc: { 'en' => 'English title', 'nl-BE' => 'Nederlandse titel' }, slug: 'english-title')
+
+      expect { run_task(execute: true) }.to output(/Execute mode is only allowed on demo platforms/).to_stdout
+      expect(project.reload.slug).to eq('english-title')
+    end
+
+    it 'still allows a dry run on a non-demo tenant' do
+      create(:project, title_multiloc: { 'en' => 'English title', 'nl-BE' => 'Nederlandse titel' }, slug: 'english-title')
+
+      expect { run_task(execute: false) }.to output(/WOULD UPDATE slug for Project/).to_stdout
     end
   end
 

@@ -4,7 +4,9 @@
 # title_multiloc in a given locale.
 #
 # Intended for manual use on freshly cloned tenants used as demo platforms - NOT
-# on live tenants, where re-slugging would break existing inbound URLs.
+# on live tenants, where re-slugging would break existing inbound URLs. For that
+# reason, execute mode only runs on demo platforms (lifecycle_stage = 'demo') or in
+# local development; a dry run is allowed everywhere.
 #
 # What it does:
 #   - Targets one tenant, identified by the `host` argument.
@@ -55,6 +57,15 @@ namespace :demos do
     tenant = Tenant.find_by(host: host)
     if tenant.nil?
       puts "ERROR! No tenant found for host '#{host}'. Aborting."
+      next
+    end
+
+    # Re-deriving slugs would break existing inbound URLs on a live tenant, so applying
+    # changes is only allowed on demo platforms (lifecycle_stage = 'demo') or in local
+    # development. A dry run stays available everywhere.
+    lifecycle_stage = tenant.switch { AppConfiguration.instance.settings('core', 'lifecycle_stage') }
+    if execute && lifecycle_stage != 'demo' && !Rails.env.development?
+      puts "ERROR! Execute mode is only allowed on demo platforms (lifecycle_stage = 'demo') or in development (current: '#{lifecycle_stage}'). Run without 'execute' to do a dry run."
       next
     end
 
