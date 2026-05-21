@@ -158,7 +158,7 @@ class User < ApplicationRecord
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
 
-  # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false, 
+  # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
   # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
   before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
@@ -173,6 +173,7 @@ class User < ApplicationRecord
   has_one :email_confirmation, dependent: :destroy
   has_one :new_email_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
+  after_create :create_confirmations
   before_destroy :destroy_baskets
 
   has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
@@ -209,8 +210,6 @@ class User < ApplicationRecord
   validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
   validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
   validate :validate_emails_not_banned, if: :email_or_new_email_changed?
-
-  after_create :create_confirmations
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -324,6 +323,7 @@ class User < ApplicationRecord
   # to set an email.
   def confirmation_required?
     return false if sso_user_without_email?
+
     confirmation_required
   end
 

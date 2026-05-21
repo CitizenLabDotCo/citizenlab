@@ -72,6 +72,7 @@ RSpec.describe UserConfirmationService do
 
   describe '#validate_and_confirm_unauthenticated!' do
     let(:user) { create(:unconfirmed_user) }
+
     before do
       SettingsService.new.activate_feature! 'password_login'
       RequestConfirmationCodeJob.perform_now user

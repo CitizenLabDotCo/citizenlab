@@ -81,7 +81,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light confirmed resident' do
-        let(:user) do 
+        let(:user) do
           u = create(:unconfirmed_user)
           RequestConfirmationCodeJob.perform_now(u)
           u.email_confirmation.confirm!
@@ -92,7 +92,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when fully registered unconfirmed resident' do
-        before do 
+        before do
           user.update!(confirmation_required: true, email_confirmed_at: nil)
         end
 
@@ -419,7 +419,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light confirmed resident' do
-        let(:user) do 
+        let(:user) do
           u = create(:unconfirmed_user)
           RequestConfirmationCodeJob.perform_now(u)
           u.email_confirmation.confirm!
@@ -440,7 +440,7 @@ describe Permissions::BasePermissionsService do
       context 'when unconfirmed admin' do
         before do
           user.update!(
-            confirmation_required: true, 
+            confirmation_required: true,
             email_confirmed_at: nil,
             roles: [{ type: 'admin' }]
           )
