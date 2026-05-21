@@ -126,10 +126,13 @@ resource 'Confirmations' do
 
       example 'allows confirming a user with password that is already confirmed' do
         user_with_password = create(:unconfirmed_user, password: 'password123')
-        user_with_password.email_confirmation.confirm!
-        expect(user_with_password).not_to be_confirmation_required
+        user_with_password.email_confirmation.reset_code!
+        code = user_with_password.reload.email_confirmation.code
+        do_request(confirmation: { email: user_with_password.email, code: })
+        expect(user_with_password.reload).not_to be_confirmation_required
 
-        code = user_with_password.email_confirmation.code
+        user_with_password.email_confirmation.reset_code!
+        code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 200
       end
