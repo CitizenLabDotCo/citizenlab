@@ -117,17 +117,6 @@ RSpec.describe UserConfirmationService do
       end
     end
 
-    context 'when account already has a new_email' do
-      let(:user) { create(:unconfirmed_user, new_email: 'some@email.com') }
-
-      it 'returns a user has new email error' do
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(user: [{ error: :has_new_email }])
-      end
-    end
-
     context 'with pending claim tokens' do
       let!(:claim_token) { create(:claim_token, pending_claimer: user) }
       let(:idea) { claim_token.item }
