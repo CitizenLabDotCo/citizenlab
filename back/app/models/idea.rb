@@ -39,6 +39,7 @@
 #  manual_votes_last_updated_at    :datetime
 #  neutral_reactions_count         :integer          default(0), not null
 #  weglot_data                     :jsonb            not null
+#  phase_method_id                 :uuid
 #
 # Indexes
 #
@@ -49,6 +50,7 @@
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
+#  index_ideas_on_phase_method_id                  (phase_method_id)
 #  index_ideas_on_project_id                       (project_id)
 #  index_ideas_on_slug                             (slug) UNIQUE
 #  index_ideas_on_title_multiloc                   (title_multiloc) USING gin
@@ -61,6 +63,7 @@
 #  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
 #  fk_rails_...  (manual_votes_last_updated_by_id => users.id)
+#  fk_rails_...  (phase_method_id => phase_methods.id)
 #  fk_rails_...  (project_id => projects.id)
 #
 class Idea < ApplicationRecord
@@ -82,6 +85,7 @@ class Idea < ApplicationRecord
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
+  belongs_to :phase_method, optional: true
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
