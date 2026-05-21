@@ -129,12 +129,20 @@ class Invites::Service
   end
 
   def check_duplicate_emails(invitees)
-    emails_indexes = invitees.each_with_object(Hash.new { [] }).with_index do |(invitee, object), index|
-      object[invitee.email] += [index]
+    # Group case-insensitively (like User.find_by_cimail), otherwise case variants
+    # of the same email slip past this check and only collide at save! time, raising
+    # an unhandled :taken_by_invite. Keep the first spelling seen for the error value.
+    indexes_by_email = Hash.new { |hash, key| hash[key] = [] }
+    display_emails = {}
+    invitees.each_with_index do |invitee, index|
+      next unless invitee.email
+
+      key = invitee.email.downcase
+      indexes_by_email[key] << index
+      display_emails[key] ||= invitee.email
     end
-    duplicated_emails_indexes = emails_indexes.select { |email, row_indexes| email && row_indexes.size > 1 }
-    duplicated_emails_indexes.each do |email, row_indexes|
-      add_error(:emails_duplicate, rows: row_indexes, value: email)
+    indexes_by_email.select { |_key, row_indexes| row_indexes.size > 1 }.each do |key, row_indexes|
+      add_error(:emails_duplicate, rows: row_indexes, value: display_emails[key])
     end
   end
 
