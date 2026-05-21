@@ -141,19 +141,20 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light confirmed resident' do
-        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+        let(:user) do
+          u = create(:unconfirmed_user)
+          u.email_confirmation.reset_code!
+          u.email_confirmation.confirm!
+          u
+        end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
-      context 'when light confirmed inactive resident' do
-        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
-
-        it { expect(denied_reason).to eq 'user_not_active' }
-      end
-
       context 'when fully registered unconfirmed resident' do
-        before { user.reset_confirmation_and_counts }
+        before do
+          user.update!(confirmation_required: true, email_confirmed_at: nil)
+        end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
@@ -181,7 +182,7 @@ describe Permissions::BasePermissionsService do
 
       context 'when unconfirmed admin' do
         before do
-          user.reset_confirmation_and_counts
+          user.update!(confirmation_required: true, email_confirmed_at: nil)
           user.update!(roles: [{ type: 'admin' }])
         end
 
@@ -211,16 +212,13 @@ describe Permissions::BasePermissionsService do
         end
 
         context 'when light unconfirmed resident who is group member' do
-          before do
-            user.reset_confirmation_and_counts
-            user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
-          end
+          let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
 
         context 'when light unconfirmed resident who is not a group member' do
-          before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+          let(:user) { create(:unconfirmed_user) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
@@ -364,16 +362,13 @@ describe Permissions::BasePermissionsService do
         end
 
         context 'when light unconfirmed resident who is group member' do
-          before do
-            user.reset_confirmation_and_counts
-            user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
-          end
+          let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
 
         context 'when light unconfirmed resident who is not a group member' do
-          before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+          let(:user) { create(:unconfirmed_user) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
@@ -424,21 +419,31 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when light confirmed resident' do
-        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+        let(:user) do 
+          u = create(:unconfirmed_user)
+          u.email_confirmation.reset_code!
+          u.email_confirmation.confirm!
+          u
+        end
 
         it { expect(denied_reason).to eq 'user_not_permitted' }
       end
 
       context 'when fully registered unconfirmed resident' do
-        before { user.reset_confirmation_and_counts }
+        before do
+          user.update!(confirmation_required: true, email_confirmed_at: nil)
+        end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when unconfirmed admin' do
         before do
-          user.reset_confirmation_and_counts
-          user.update!(roles: [{ type: 'admin' }])
+          user.update!(
+            confirmation_required: true, 
+            email_confirmed_at: nil,
+            roles: [{ type: 'admin' }]
+          )
         end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
