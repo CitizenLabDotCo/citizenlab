@@ -26,6 +26,8 @@ resource 'Request codes' do
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
       expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+      # Requesting a new code should not reset the confirmation_required value
+      expect(user.confirmation_required?).to be false
     end
 
     example 'works if user has no password and does not have email confirmed' do
