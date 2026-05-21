@@ -35,11 +35,15 @@ RSpec.describe RequestConfirmationCodeJob do
         expect { job.perform(user) }.not_to change(user, :new_email)
       end
 
-      it 'sets confirmation_required to true' do
-        user = create(:user)
-        expect(user.confirmation_required?).to be false
+      it 'does not set the confirmation_required value to true is user already confirmed' do
+        expect(user.confirmation_required?).to be true
         job.perform(user)
-        expect(user.reload.confirmation_required?).to be true
+        expect(user.confirmation_required?).to be true
+        user.email_confirmation.confirm!
+        expect(user.confirmation_required?).to be false
+
+        job.perform(user)
+        expect(user.reload.confirmation_required?).to be false
       end
 
       it 'resets code_retry_count on the email_confirmation' do
@@ -92,24 +96,16 @@ RSpec.describe RequestConfirmationCodeJob do
           user.new_email_confirmation.update!(code_retry_count: 3)
           expect { job.perform(user, new_email: new_email) }.to change { user.new_email_confirmation.reload.code_retry_count }.to(0)
         end
-      end
-    end
 
-    context 'when the user is passwordless' do
-      let(:user) { create(:unconfirmed_user, email: 'some_email@email.com') }
+        it 'does not change the confirmation_required value of a confirmed user' do
+          user = create(:unconfirmed_user)
+          job.perform(user)
+          expect(user.confirmation_required?).to be true
+          user.email_confirmation.confirm!
+          expect(user.confirmation_required?).to be false
 
-      context 'when setting a new email' do
-        let(:new_email) { 'new@email.com' }
-
-        it 'sets the user email temporarily in new_email' do
           job.perform(user, new_email: new_email)
-          expect(user.new_email).to eq new_email
-          expect(user.email).to eq 'some_email@email.com'
-        end
-
-        it 'resets code_retry_count on the email_confirmation' do
-          user.email_confirmation.update!(code_retry_count: 3)
-          expect { job.perform(user) }.to change { user.email_confirmation.reload.code_retry_count }.to(0)
+          expect(user.reload.confirmation_required?).to be false
         end
       end
     end
