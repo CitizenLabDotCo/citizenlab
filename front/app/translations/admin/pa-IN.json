@@ -1852,6 +1852,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": "ਮਿਤੀ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": "ਵਿਜ਼ਿਟਰ ਡਾਟਾ ਟੇਬਲ ਜੋ ਮਿਤੀ, ਵਿਜ਼ਿਟਰ ਅਤੇ ਵਿਜ਼ਿਟ ਦਿਖਾ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": "ਵੇਰਵਾ:",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": "ਪ੍ਰਤੀਸ਼ਤ",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": "ਮੁੱਲ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "ਖਿੱਚੋ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "ਨਹੀਂ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "ਦੱਸੇ ਗਏ ਫਿਲਟਰਾਂ ਲਈ ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਮਿਲਿਆ।",
