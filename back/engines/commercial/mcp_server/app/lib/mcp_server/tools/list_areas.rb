@@ -3,15 +3,21 @@
 class McpServer::Tools::ListAreas < McpServer::BaseTool
   description 'Lists geographic/administrative areas'
   input_schema(
-    properties: {}
+    properties: {
+      **PAGINATION_SCHEMA
+    }
   )
 
-  def self.call(server_context:)
-    areas = Area.order(:ordering)
+  def self.call(page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
+    scope = Area.order(:ordering)
 
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Found #{areas.size} areas" }],
-      structured_content: { areas: areas.as_json(only: %i[id title_multiloc ordering]) }
+    result = paginate(scope, page: page, per_page: per_page)
+
+    paginated_response(
+      'areas',
+      result[:records],
+      result[:pagination],
+      only: %i[id title_multiloc ordering]
     )
   end
 end

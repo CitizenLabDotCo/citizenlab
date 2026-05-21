@@ -3,15 +3,21 @@
 class McpServer::Tools::ListGlobalTopics < McpServer::BaseTool
   description 'Lists global topic categories for projects'
   input_schema(
-    properties: {}
+    properties: {
+      **PAGINATION_SCHEMA
+    }
   )
 
-  def self.call(server_context:)
-    topics = GlobalTopic.order(:ordering)
+  def self.call(page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
+    scope = GlobalTopic.order(:ordering)
 
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Found #{topics.size} global topics" }],
-      structured_content: { global_topics: topics.as_json(only: %i[id title_multiloc icon]) }
+    result = paginate(scope, page: page, per_page: per_page)
+
+    paginated_response(
+      'global topics',
+      result[:records],
+      result[:pagination],
+      only: %i[id title_multiloc icon]
     )
   end
 end
