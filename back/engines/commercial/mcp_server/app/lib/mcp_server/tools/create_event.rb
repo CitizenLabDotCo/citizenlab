@@ -30,21 +30,21 @@ class McpServer::Tools::CreateEvent < MCP::Tool
 
     if event.save
       SideFxEventService.new.after_create(event, server_context[:current_user])
-      MCP::Tool::Response.new([{
-        type: 'text',
-        text: "Event created successfully. ID: #{event.id}, Title: #{event.title_multiloc.values.first}"
-      }])
+      MCP::Tool::Response.new(
+        [{ type: 'text', text: "Created event #{event.id}" }],
+        structured_content: event.as_json(only: %i[id project_id title_multiloc description_multiloc location_multiloc start_at end_at online_link])
+      )
     else
-      MCP::Tool::Response.new([{
-        type: 'text',
-        text: "Failed to create event: #{event.errors.full_messages.join(', ')}"
-      }], error: true)
+      MCP::Tool::Response.new(
+        [{ type: 'text', text: "Validation failed: #{event.errors.full_messages.join(', ')}" }],
+        error: true
+      )
     end
   rescue ActiveRecord::RecordNotFound
-    MCP::Tool::Response.new([{
-      type: 'text',
-      text: "Project not found: #{project_id}"
-    }], error: true)
+    MCP::Tool::Response.new(
+      [{ type: 'text', text: "Project not found: #{project_id}" }],
+      error: true
+    )
   end
 
   def self.to_multiloc(value)
