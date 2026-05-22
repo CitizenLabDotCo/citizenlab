@@ -295,7 +295,7 @@ resource 'Omniauth Callback', document: false do
         let!(:existing_user) { create(:unconfirmed_user, email: 'existing@example.com') }
         let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
 
-        example 'updates email to the SSO returned email and does not update new_email' do
+        example 'does not update email nor new_email' do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
@@ -318,7 +318,7 @@ resource 'Omniauth Callback', document: false do
           user
         end
 
-        example 'sets email to the SSO returned email and does not update new_email' do
+        example 'does not update email nor new_email' do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
@@ -401,9 +401,14 @@ resource 'Omniauth Callback', document: false do
         let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
 
         example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
           do_request
 
           expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
           existing_user.reload
           expect(existing_user.email).to eq('existing@example.com')
           expect(existing_user.new_email).to be_nil
@@ -415,9 +420,14 @@ resource 'Omniauth Callback', document: false do
         let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
 
         example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
           do_request
 
           expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
           existing_user.reload
           expect(existing_user.email).to eq('existing@example.com')
           expect(existing_user.new_email).to be_nil
@@ -432,13 +442,18 @@ resource 'Omniauth Callback', document: false do
           user
         end
 
-        example 'does not update email but puts the SSO returned email in new_email' do
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
           do_request
 
           expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
           existing_user.reload
           expect(existing_user.email).to be_nil
-          expect(existing_user.new_email).to eq('billy_fixed@example.com')
+          expect(existing_user.new_email).to eq(nil)
         end
       end
     end
