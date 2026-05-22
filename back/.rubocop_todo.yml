@@ -293,14 +293,13 @@ Style/ArrayIntersect:
   Exclude:
     - 'app/services/user_reduce_service.rb'
 
-# Offense count: 10
+# Offense count: 9
 Style/ClassVars:
   Exclude:
     - 'app/controllers/web_api/v1/stats_comments_controller.rb'
     - 'app/controllers/web_api/v1/stats_controller.rb'
     - 'app/controllers/web_api/v1/stats_ideas_controller.rb'
     - 'app/controllers/web_api/v1/stats_reactions_controller.rb'
-    - 'app/models/email_snippet.rb'
     - 'app/services/side_fx_comment_service.rb'
     - 'app/services/side_fx_official_feedback_service.rb'
     - 'engines/commercial/public_api/app/serializers/public_api/v1/idea_serializer.rb'
