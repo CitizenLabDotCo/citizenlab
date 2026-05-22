@@ -172,13 +172,18 @@ export default function useSteps() {
       const { authenticationData, flow } = event.eventValue;
 
       authenticationDataRef.current = authenticationData;
-      updateState({ flow });
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
+        flow,
+        emailInCaseUserNeedsToConfirm
+      );
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition, updateState]);
+  }, [currentStep, transition, updateState, authUser]);
 
   // Listen for any action that triggers the VERIFICATION flow, and initialize
   // the flow in no flow is ongoing

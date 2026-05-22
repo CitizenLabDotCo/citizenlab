@@ -85,9 +85,12 @@ export const sharedSteps = (
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
+      TRIGGER_AUTHENTICATION_FLOW: async (
+        flow: 'signup' | 'signin',
+        email: string | null = null
+      ) => {
         updateState({
-          email: null,
+          email,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
