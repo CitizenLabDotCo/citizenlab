@@ -28,6 +28,14 @@ class UserService
     end
 
     def build_in_sso(user_params, confirm_user, locale)
+      # If the SSO returns an unconfirmed email, we still need to
+      # confirm it. This is done by putting the email in new_email and leaving email blank.
+      # Putting an unconfirmed email directly in email is only done
+      # when creating a user in the normal email sign up flow.
+      if user_params[:email].present? && !confirm_user
+        user_params = user_params.except(:email).merge(new_email: user_params[:email])
+      end
+
       user = User.new(user_params)
       user.locale = locale
 
