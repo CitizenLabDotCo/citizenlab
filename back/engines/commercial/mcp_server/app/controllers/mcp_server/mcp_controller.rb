@@ -10,7 +10,10 @@ module McpServer
       server = MCP::Server.new(
         name: 'citizenlab',
         version: '0.1.0',
-        tools: [McpServer::Tools::HelloWorld]
+        tools: [McpServer::Tools::HelloWorld],
+        server_context: {
+          current_user:
+        }
       )
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
@@ -40,6 +43,10 @@ module McpServer
       existing = response.headers['WWW-Authenticate'].to_s
       challenge = "Bearer resource_metadata=\"#{metadata_url}\""
       response.headers['WWW-Authenticate'] = existing.present? ? "#{existing}, #{challenge}" : challenge
+    end
+
+    def current_user
+      @current_user ||= User.find(doorkeeper_token.resource_owner_id)
     end
   end
 end
