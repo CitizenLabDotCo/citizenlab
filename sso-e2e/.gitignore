@@ -1,0 +1,9 @@
+# Local secrets — never commit. Real test credentials live here.
+.env
+
+# Playwright + node output
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+.playwright/

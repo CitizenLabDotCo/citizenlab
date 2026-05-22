@@ -1,0 +1,19 @@
+{
+  "name": "sso-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "On-demand Playwright harness for driving SSO verification methods end-to-end.",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "list": "playwright test --list",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.0",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.3.3"
+  }
+}
