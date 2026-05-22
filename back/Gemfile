@@ -243,26 +243,8 @@ commercial_engines = [
   'user_custom_fields',
   'webhooks',
 
-  # ID verification & SSO engines.
-  'id_acm',
-  'id_auth0',
-  'id_bogus',
-  'id_bosa_fas',
-  'id_clave_unica',
-  'id_cow',
-  'id_criipto',
-  'id_fake_sso',
-  'id_federa',
-  'id_franceconnect',
-  'id_gent_rrn',
-  'id_id_card_lookup',
-  'id_keycloak',
-  'id_id_austria',
-  'id_nemlog_in',
-  'id_oostende_rrn',
-  'id_hoplr',
-  'id_vienna_saml',
-  'id_twoday'
+  # ID verification & SSO engine (all the former id_* engines, merged).
+  'custom_id_methods'
 ]
 
 commercial_engines.each do |engine_name|
