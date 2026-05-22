@@ -20,7 +20,9 @@ class ChangeAreasStaticPagesIdToUuid < ActiveRecord::Migration[7.2]
   def up
     safety_assured do
       rebuild_table do |t|
+        # rubocop:disable Rails/DangerousColumnNames -- intentionally (re)defining the `id` PK
         t.primary_key :id, :uuid, default: -> { 'shared_extensions.gen_random_uuid()' }
+        # rubocop:enable Rails/DangerousColumnNames
       end
     end
   end
@@ -29,7 +31,9 @@ class ChangeAreasStaticPagesIdToUuid < ActiveRecord::Migration[7.2]
   def down
     safety_assured do
       rebuild_table do |t|
+        # rubocop:disable Rails/DangerousColumnNames -- intentionally (re)defining the `id` PK
         t.primary_key :id
+        # rubocop:enable Rails/DangerousColumnNames
       end
     end
   end
