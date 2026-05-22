@@ -18,7 +18,7 @@ type Props = {
 const ProjectPreviewIndicator = ({ projectId, ...rest }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const projectPreviewTokenCookie = get('preview_token');
+  const projectPreviewTokenCookie = get('cl2_preview_token');
 
   if (
     project?.data.attributes.publication_status === 'draft' &&

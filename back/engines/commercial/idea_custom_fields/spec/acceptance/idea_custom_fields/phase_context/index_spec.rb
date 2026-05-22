@@ -32,7 +32,7 @@ resource 'Idea Custom Fields' do
       context 'and a valid preview_token is provided in cookies' do
         before do
           phase = instance_eval(phase_var)
-          header('Cookie', "preview_token=#{phase.project.preview_token}")
+          header('Cookie', "cl2_preview_token=#{phase.project.preview_token}")
         end
 
         example 'List all public custom fields for a phase' do
@@ -46,7 +46,7 @@ resource 'Idea Custom Fields' do
       end
 
       context 'and an invalid preview_token is provided in cookies' do
-        before { header('Cookie', 'preview_token=invalid') }
+        before { header('Cookie', 'cl2_preview_token=invalid') }
 
         include_examples 'Unauthorized (401)'
       end
@@ -59,7 +59,7 @@ resource 'Idea Custom Fields' do
     context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
       before do
         phase = instance_eval(phase_var)
-        header('Cookie', "preview_token=#{phase.project.preview_token}")
+        header('Cookie', "cl2_preview_token=#{phase.project.preview_token}")
       end
 
       include_examples 'Unauthorized (401)'

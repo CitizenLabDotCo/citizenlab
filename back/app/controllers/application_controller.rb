@@ -196,7 +196,7 @@ class ApplicationController < ActionController::API
   end
 
   def set_policy_context
-    project_preview_token = cookies[:preview_token]
+    project_preview_token = cookies[:cl2_preview_token]
     if project_preview_token && AppConfiguration.instance.feature_activated?('project_preview_link')
       policy_context[:project_preview_token] = project_preview_token
     end

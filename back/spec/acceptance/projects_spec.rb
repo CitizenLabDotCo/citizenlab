@@ -1648,7 +1648,7 @@ resource 'Projects' do
           end
 
           context 'and a valid preview_token is provided in cookies' do
-            before { header('Cookie', "preview_token=#{project.preview_token}") }
+            before { header('Cookie', "cl2_preview_token=#{project.preview_token}") }
 
             example 'Get a project by id', document: false do
               do_request
@@ -1658,7 +1658,7 @@ resource 'Projects' do
           end
 
           context 'and an invalid preview_token is provided in cookies' do
-            before { header('Cookie', 'preview_token=invalid') }
+            before { header('Cookie', 'cl2_preview_token=invalid') }
 
             include_examples 'Unauthorized (401)'
           end
@@ -1669,7 +1669,7 @@ resource 'Projects' do
         end
 
         context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
-          before { header('Cookie', "preview_token=#{project.preview_token}") }
+          before { header('Cookie', "cl2_preview_token=#{project.preview_token}") }
 
           include_examples 'Unauthorized (401)'
         end

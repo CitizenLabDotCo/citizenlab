@@ -12,7 +12,7 @@ const ProjectPreviewToken = () => {
     token: string;
   };
   useEffect(() => {
-    set('preview_token', token);
+    set('cl2_preview_token', token);
     clHistory.push(`/projects/${slug}`);
   }, [token, slug]);
   return <Spinner />;
