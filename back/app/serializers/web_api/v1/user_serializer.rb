@@ -65,6 +65,10 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.blocked?
   end
 
+  attribute :new_meail, if: PRIVATE do |object|
+    object.new_email
+  end
+
   def self.name_service(params)
     UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
   end
