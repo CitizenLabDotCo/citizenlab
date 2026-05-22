@@ -210,6 +210,8 @@ const MultiSelectDropdown = ({
   }, [opened]);
 
   const handleOnClickOutside = (event: FormEvent) => {
+    // Skip trigger clicks — its onClick already toggles, otherwise it'd reopen immediately.
+    if (triggerRef.current?.contains(event.target as Node)) return;
     onClickOutside?.(event);
   };
 

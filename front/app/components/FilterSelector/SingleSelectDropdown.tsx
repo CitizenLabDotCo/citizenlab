@@ -176,6 +176,12 @@ const SingleSelectDropdown = ({
     }
   }, [opened]);
 
+  const handleOnClickOutside = (event: React.MouseEvent) => {
+    // Skip trigger clicks — its onClick already toggles, otherwise it'd reopen immediately.
+    if (triggerRef.current?.contains(event.target as Node)) return;
+    onClickOutside?.(event);
+  };
+
   return (
     <Box>
       <Box ref={triggerRef}>
@@ -231,7 +237,7 @@ const SingleSelectDropdown = ({
         right={right}
         mobileRight={mobileRight}
         opened={opened}
-        onClickOutside={onClickOutside}
+        onClickOutside={handleOnClickOutside}
         content={
           <List
             ref={listboxRef}
