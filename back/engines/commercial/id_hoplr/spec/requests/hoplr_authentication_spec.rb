@@ -133,12 +133,11 @@ context 'hoplr authentication' do
   context 'when user already exists' do
     let!(:user) { create(:user, email: 'developers+sso@citizenlab.co') }
 
-    it 'successfully authenticates and updates existing user' do
+    it 'does not update existing user' do
       get '/auth/hoplr'
       follow_redirect!
 
-      expect_user_to_have_attributes(user.reload)
-      expect(user.confirmation_required?).to be(false)
+      expect(user.identities.length).to eq(0)
     end
 
     context "when existing user's email is not confirmed" do
@@ -147,10 +146,12 @@ context 'hoplr authentication' do
       context 'when email is verified' do
         let(:email_verified) { true }
 
-        it "confirms user's email" do
+        it 'successfully authenticates and updates existing user' do
           get '/auth/hoplr'
           follow_redirect!
-          expect(User.last.confirmation_required?).to be(false)
+
+          expect_user_to_have_attributes(user.reload)
+          expect(user.confirmation_required?).to be(false)
         end
 
         context 'when SSO email is different from existing email' do

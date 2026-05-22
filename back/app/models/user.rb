@@ -381,7 +381,7 @@ class User < ApplicationRecord
   def allows_empty_email?
     return true if invite_pending?
     return true if unique_code.present? # user created in input importer
-    return false unless email_was.blank?
+    return false if email_was.present?
 
     if sso?
       # Allow empty email for SSO users, but only if none of their identities require an email
@@ -392,11 +392,11 @@ class User < ApplicationRecord
         # it is still possible that the email return was unconfirmed. In this case,
         # it ends up in new_email instead. So we allow an empty email until the email
         # gets confirmed.
-        return self.confirmation_required
+        return confirmation_required
       end
     end
 
-    return false
+    false
   end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
