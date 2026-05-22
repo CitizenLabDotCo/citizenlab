@@ -71,8 +71,6 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  console.log({ state });
-
   const email = state.email;
   if (!email) return null;
 
