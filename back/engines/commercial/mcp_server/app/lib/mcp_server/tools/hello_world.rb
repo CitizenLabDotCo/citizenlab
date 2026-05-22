@@ -10,7 +10,7 @@ class McpServer::Tools::HelloWorld < MCP::Tool
   def self.call(name:, server_context:)
     MCP::Tool::Response.new([{
       type: 'text',
-      text: "Hello, #{name}! (from CitizenLab MCP)"
+      text: "Hello, #{name}! (from #{server_context[:current_user].first_name} through CitizenLab MCP)"
     }])
   end
 end
