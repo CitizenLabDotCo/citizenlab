@@ -50,7 +50,7 @@ export interface ICustomPageEnabledSettings {
   projects_enabled: boolean;
 }
 
-export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'topics';
+export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'global_topics';
 
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
