@@ -71,7 +71,6 @@ const SingleSelectDropdown = ({
   closeExpanded,
   textColor,
   currentTitle,
-  handleKeyDown,
 }: Props) => {
   const listboxRef = useRef<HTMLUListElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -85,14 +84,23 @@ const SingleSelectDropdown = ({
   const onTriggerKeyDown = (event: KeyboardEvent) => {
     // When the listbox is open, ArrowDown / ArrowUp on the trigger moves focus
     // into the listbox and highlights the first / last option.
-    if (opened && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (!opened) {
+        toggleValuesList();
+        return;
+      }
+      listboxRef.current?.focus();
+      setFocusedIndex(0);
+      return;
+    }
+    if (event.key === 'ArrowUp' && opened) {
       event.preventDefault();
       listboxRef.current?.focus();
       const items = listboxRef.current?.querySelectorAll('li') ?? [];
-      setFocusedIndex(event.key === 'ArrowDown' ? 0 : items.length - 1);
+      setFocusedIndex(items.length - 1);
       return;
     }
-    handleKeyDown?.(event);
   };
 
   useEffect(() => {
@@ -150,6 +158,11 @@ const SingleSelectDropdown = ({
       }
     }
   };
+  useEffect(() => {
+    if (opened) {
+      focusTrigger();
+    }
+  }, [opened]);
 
   return (
     <Box>

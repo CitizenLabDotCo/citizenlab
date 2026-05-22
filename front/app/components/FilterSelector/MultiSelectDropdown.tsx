@@ -1,4 +1,4 @@
-import React, { useRef, KeyboardEvent, FormEvent } from 'react';
+import React, { useRef, KeyboardEvent, FormEvent, useEffect } from 'react';
 
 import {
   Dropdown,
@@ -87,7 +87,6 @@ export interface SelectorProps {
   closeExpanded: () => void;
   textColor?: string;
   currentTitle: string | JSX.Element;
-  handleKeyDown?: (event: KeyboardEvent) => void;
   isLoading?: boolean;
 }
 
@@ -121,7 +120,6 @@ const MultiSelectDropdown = ({
   closeExpanded,
   textColor,
   currentTitle,
-  handleKeyDown,
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
@@ -146,11 +144,12 @@ const MultiSelectDropdown = ({
 
     switch (key) {
       case 'ArrowDown':
+        event.preventDefault();
         if (!opened) {
-          handleKeyDown?.(event);
+          // ArrowDown on the closed trigger opens the list, same as Enter.
+          toggleValuesList();
           return;
         }
-        event.preventDefault();
         // From the trigger (no data-index), jump into the list at item 0.
         // From a list item, navigate to next (circular 0,1,2,3,...,0).
         tabsRef.current[isNaN(index) ? 0 : (index + 1) % totalItems]?.focus();
@@ -189,6 +188,11 @@ const MultiSelectDropdown = ({
         break;
     }
   };
+  useEffect(() => {
+    if (opened) {
+      focusTrigger();
+    }
+  }, [opened]);
 
   const handleOnClickOutside = (event: FormEvent) => {
     onClickOutside?.(event);

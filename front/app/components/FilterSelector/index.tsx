@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
@@ -206,18 +206,6 @@ const FilterSelector = ({
     closeExpanded();
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowDown' && !opened) {
-      event.preventDefault();
-      toggleValuesList();
-      return;
-    }
-    if (event.key === 'Escape' && opened) {
-      event.preventDefault();
-      closeExpanded();
-    }
-  };
-
   // We use a random id for the selectorId to ensure it doesn't conflict if multiple
   // instances of the same filter selector are rendered on the same page.
   const selectorId = useMemo(
@@ -245,7 +233,6 @@ const FilterSelector = ({
     closeExpanded,
     textColor,
     currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
-    handleKeyDown,
   };
 
   return (
