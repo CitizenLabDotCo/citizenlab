@@ -93,6 +93,9 @@ export type CheckboxProps = {
   checkedColor?: Color;
   usePrimaryBorder?: boolean;
   required?: boolean;
+  setRef?: (arg: HTMLInputElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 };
 
 type Props = {
@@ -121,6 +124,9 @@ const Checkbox = ({
   name,
   required,
   tabIndex = 0,
+  setRef,
+  ariaInvalid,
+  ariaDescribedBy,
   ...boxProps
 }: Props) => {
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
@@ -144,6 +150,9 @@ const Checkbox = ({
         tabIndex={tabIndex}
         name={name}
         required={required}
+        ref={setRef}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
       />
       <StyledCheckbox
         data-testid={dataTestId || testEnv('check-mark-background')}

@@ -76,7 +76,7 @@ interface Props {
 
 const projectsFilterTypesArray: ProjectsFilterTypes[] = [
   'no_filter',
-  'topics',
+  'global_topics',
   'areas',
 ];
 
@@ -187,7 +187,7 @@ const CustomPageSettingsForm = ({
       label: formatMessage(messages.noFilter),
     },
     {
-      name: 'topics',
+      name: 'global_topics',
       label: formatMessage(messages.byTagsFilter),
     },
     {
@@ -301,7 +301,8 @@ const CustomPageSettingsForm = ({
                           disabled={showPlanUpgradeTease}
                         />
                       </Box>
-                      {methods.watch('projects_filter_type') === 'topics' && (
+                      {methods.watch('projects_filter_type') ===
+                        'global_topics' && (
                         <SelectContainer mb="30px">
                           <MultipleSelect
                             name="global_topic_ids"

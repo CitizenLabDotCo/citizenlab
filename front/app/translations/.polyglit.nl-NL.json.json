@@ -1169,6 +1169,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-18T16:01:27.020489Z",
+    "verified_by": "Luuc"
+  },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -11534,6 +11539,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:26:48.013825Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -11788,6 +11798,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T14:18:04.879933Z",
+    "verified_by": "Luuc"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",

@@ -102,13 +102,20 @@ const AdminLayoutElement = () => {
     action: 'access',
   });
 
+  const { data: authUser, isLoading: isLoadingAuthUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  if (!appConfiguration) return null;
+  if (!appConfiguration || isLoadingAuthUser) return null;
 
   const redirect = accessAuthorized
     ? null
     : getUnauthorizedRedirect(appConfiguration.data, pathname);
+
+  // Logged-out users hitting an admin route are sent home; the Unauthorized
+  // screen is reserved for logged-in users without the right permissions.
+  if (!redirect && !accessAuthorized && !authUser) {
+    return <Navigate to="/" />;
+  }
 
   if (!redirect && !accessAuthorized) {
     return <Unauthorized />;
@@ -150,9 +157,11 @@ export const adminRoute = createRoute({
 
 // Moderators don't have access to /admin/dashboard/overview.
 const AdminIndexRedirect = () => {
-  const { data: authUser } = useAuthUser();
+  const { data: authUser, isLoading } = useAuthUser();
 
-  if (!authUser) return null;
+  if (isLoading) return null;
+
+  if (!authUser) return <Navigate to="/" />;
 
   if (!isAdmin(authUser) && isModerator(authUser)) {
     return <Navigate to="/admin/projects" />;

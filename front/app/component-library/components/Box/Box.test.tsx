@@ -475,4 +475,76 @@ describe('<Box />', () => {
       });
     });
   });
+  describe('Box style props do not leak to DOM attributes', () => {
+    it('does not forward display to the DOM', () => {
+      render(<Box display="flex">Test box</Box>);
+      expect(screen.getByText('Test box')).not.toHaveAttribute('display');
+    });
+    it('does not forward color/opacity to the DOM (collide with HTML attrs but invalid on div)', () => {
+      render(
+        <Box color="red" opacity={0.5}>
+          Test box
+        </Box>
+      );
+      const el = screen.getByText('Test box');
+      expect(el).not.toHaveAttribute('color');
+      expect(el).not.toHaveAttribute('opacity');
+    });
+    it('forwards width/height (legitimate HTML attrs on img/canvas/etc. and used by jsdom layout mock)', () => {
+      render(
+        <Box width="100px" height="40px">
+          Test box
+        </Box>
+      );
+      const el = screen.getByText('Test box');
+      expect(el).toHaveAttribute('width', '100px');
+      expect(el).toHaveAttribute('height', '40px');
+    });
+    it('does not leak style props when rendered as a non-div via `as`', () => {
+      render(
+        <Box as="button" display="flex" gap="8px" m="4px">
+          Test button
+        </Box>
+      );
+      const el = screen.getByRole('button', { name: 'Test button' });
+      expect(el).not.toHaveAttribute('display');
+      expect(el).not.toHaveAttribute('gap');
+      expect(el).not.toHaveAttribute('m');
+    });
+    it('still forwards valid DOM attributes', () => {
+      render(
+        <Box id="my-box" aria-label="hello" data-testid="x">
+          Test box
+        </Box>
+      );
+      const el = screen.getByTestId('x');
+      expect(el).toHaveAttribute('id', 'my-box');
+      expect(el).toHaveAttribute('aria-label', 'hello');
+    });
+  });
+  describe('Box rendered as a custom component via `as`', () => {
+    it('forwards non-HTML props to the custom component', () => {
+      // Regression: a previous shouldForwardProp applied the HTML-attribute
+      // validator unconditionally, stripping component-specific props (e.g.
+      // Button's `buttonStyle`) when Box was rendered via `as={Component}`.
+      const received: Record<string, unknown> = {};
+      const CustomComponent = (props: { buttonStyle?: string }) => {
+        received.buttonStyle = props.buttonStyle;
+        return <div data-testid="custom">{String(props.buttonStyle)}</div>;
+      };
+      render(<Box as={CustomComponent} buttonStyle="secondary-outlined" />);
+      expect(received.buttonStyle).toBe('secondary-outlined');
+    });
+    it('still does not forward Box style props to the custom component', () => {
+      const received: Record<string, unknown> = {};
+      const CustomComponent = (props: { display?: string; gap?: string }) => {
+        received.display = props.display;
+        received.gap = props.gap;
+        return <div data-testid="custom" />;
+      };
+      render(<Box as={CustomComponent} display="flex" gap="8px" />);
+      expect(received.display).toBeUndefined();
+      expect(received.gap).toBeUndefined();
+    });
+  });
 });
