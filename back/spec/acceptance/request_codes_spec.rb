@@ -4,21 +4,22 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Request codes' do
-  let(:mailer) do
-    instance_double(
-      ConfirmationsMailer,
-      send_confirmation_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
-    )
-  end
-
-  before do
-    set_api_content_type
-    allow(ConfirmationsMailer).to receive(:with).and_return(mailer)
-  end
+  before { set_api_content_type }
 
   post 'web_api/v1/user/request_code_unauthenticated' do
     with_options scope: :request_code do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
+    end
+
+    let(:mailer) do
+      instance_double(
+        EmailConfirmationMailer,
+        send_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
+      )
+    end
+
+    before do
+      allow(EmailConfirmationMailer).to receive(:with).and_return(mailer)
     end
 
     example 'works if user has no password and has email confirmed' do
@@ -29,7 +30,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(EmailConfirmationMailer).to have_received(:with).with(user: user).once
       # Requesting a new code should not reset the confirmation_required value
       expect(user.reload.confirmation_required?).to be false
     end
@@ -41,7 +42,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(EmailConfirmationMailer).to have_received(:with).with(user: user).once
     end
 
     example 'does not work if user has password and has email confirmed' do
@@ -51,7 +52,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
-      expect(ConfirmationsMailer).not_to have_received(:with)
+      expect(EmailConfirmationMailer).not_to have_received(:with)
     end
 
     # This is an edge case related to legacy users, where a user has a password set
@@ -63,7 +64,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(EmailConfirmationMailer).to have_received(:with).with(user: user).once
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -72,7 +73,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
-      expect(ConfirmationsMailer).not_to have_received(:with)
+      expect(EmailConfirmationMailer).not_to have_received(:with)
     end
 
     # In the past this endpoint did not allow requesting a code
@@ -86,7 +87,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 200
-      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(EmailConfirmationMailer).to have_received(:with).with(user: user).once
     end
   end
 
@@ -95,12 +96,23 @@ resource 'Request codes' do
       parameter :new_email, 'The email of the user requesting a confirmation code.', required: false
     end
 
+    let(:mailer) do
+      instance_double(
+        NewEmailConfirmationMailer,
+        send_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
+      )
+    end
+
+    before do
+      allow(NewEmailConfirmationMailer).to receive(:with).and_return(mailer)
+    end
+
     example 'It works with authenticated user' do
       user = create(:user)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 200
-      expect(ConfirmationsMailer).to have_received(:with).with(user: user).once
+      expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
       expect(user.reload.new_email).to eq 'new_email@example.com'
     end
 
@@ -109,7 +121,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: '' })
       expect(response_status).to eq 422
-      expect(ConfirmationsMailer).not_to have_received(:with)
+      expect(NewEmailConfirmationMailer).not_to have_received(:with)
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -118,7 +130,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 401
-      expect(ConfirmationsMailer).not_to have_received(:with)
+      expect(NewEmailConfirmationMailer).not_to have_received(:with)
     end
   end
 end

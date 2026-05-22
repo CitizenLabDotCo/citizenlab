@@ -75,7 +75,7 @@ RSpec.describe UserConfirmationService do
 
     before do
       SettingsService.new.activate_feature! 'password_login'
-      RequestConfirmationCodeJob.perform_now user
+      RequestEmailConfirmationCodeJob.perform_now user
     end
 
     it 'user should require confirmation' do
@@ -85,7 +85,7 @@ RSpec.describe UserConfirmationService do
     it 'works when the user is already confirmed' do
       user.email_confirmation.confirm!
       expect(user.confirmation_required?).to be false
-      RequestConfirmationCodeJob.perform_now(user)
+      RequestEmailConfirmationCodeJob.perform_now(user)
       user.reload.email_confirmation.confirm!
       expect(user.confirmation_required?).to be false
     end
@@ -137,7 +137,7 @@ RSpec.describe UserConfirmationService do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
     before do
-      RequestConfirmationCodeJob.perform_now(user, new_email: user.new_email)
+      RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
     include_examples 'validation and confirmation', :validate_and_confirm_email_change!, :new_email_confirmation

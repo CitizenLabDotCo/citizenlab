@@ -11,7 +11,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = User.find_by_cimail(email)
     authorize user, policy_class: RequestCodePolicy
 
-    RequestConfirmationCodeJob.perform_now user
+    RequestEmailConfirmationCodeJob.perform_now user
 
     head :ok
   end
@@ -28,7 +28,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    RequestConfirmationCodeJob.perform_now(current_user, new_email: new_email)
+    RequestNewEmailConfirmationCodeJob.perform_now(current_user, new_email: new_email)
 
     head :ok
   end

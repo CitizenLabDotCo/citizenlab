@@ -85,7 +85,7 @@ resource 'Confirmations' do
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
 
-      RequestConfirmationCodeJob.perform_now user
+      RequestEmailConfirmationCodeJob.perform_now user
       code = user.reload.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
@@ -103,7 +103,7 @@ resource 'Confirmations' do
       let(:email) { 'nonexistent@example.com' }
 
       before do
-        RequestConfirmationCodeJob.perform_now user
+        RequestEmailConfirmationCodeJob.perform_now user
       end
 
       example 'returns a unprocessable entity status when the email does not exist' do
@@ -116,7 +116,7 @@ resource 'Confirmations' do
       let(:user) { create(:unconfirmed_user, password: nil) }
 
       before do
-        RequestConfirmationCodeJob.perform_now user
+        RequestEmailConfirmationCodeJob.perform_now user
       end
 
       include_examples 'confirmation code validation'
@@ -138,12 +138,12 @@ resource 'Confirmations' do
 
       example 'allows confirming a user with password that is already confirmed' do
         user_with_password = create(:unconfirmed_user, password: 'password123')
-        RequestConfirmationCodeJob.perform_now user_with_password
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
         code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         expect(user_with_password.reload).not_to be_confirmation_required
 
-        RequestConfirmationCodeJob.perform_now user_with_password
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password.reload).not_to be_confirmation_required
         code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
@@ -152,7 +152,7 @@ resource 'Confirmations' do
 
       example 'allows confirming a user with password that requires confirmation' do
         user_with_password = create(:unconfirmed_user, password: 'password123')
-        RequestConfirmationCodeJob.perform_now user_with_password
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password).to be_confirmation_required
 
         code = user_with_password.email_confirmation.code
@@ -180,7 +180,7 @@ resource 'Confirmations' do
 
       before do
         header_token_for user
-        RequestConfirmationCodeJob.perform_now user, new_email: user.new_email
+        RequestNewEmailConfirmationCodeJob.perform_now user, new_email: user.new_email
       end
 
       example 'updates the user email upon successful confirmation' do
