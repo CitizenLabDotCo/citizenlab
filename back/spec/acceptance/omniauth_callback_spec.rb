@@ -55,7 +55,7 @@ resource 'Omniauth Callback', document: false do
 
   post '/auth/failure' do
     example_request 'Redirect to failure URL' do
-      expect(status).to eq(302)
+      assert_status(302)
       expect(response_headers['Location']).to include('authentication_error=true')
     end
   end
@@ -71,7 +71,7 @@ resource 'Omniauth Callback', document: false do
 
     get '/auth/clave_unica/logout_data' do
       example_request 'Returns ClaveUnica redirect URL' do
-        expect(status).to eq(200)
+        assert_status(200)
         expect(json_response_body[:url]).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
       end
     end
@@ -168,7 +168,7 @@ resource 'Omniauth Callback', document: false do
       example 'Sets secure cookie with expected headers' do
         do_request
 
-        expect(status).to eq(204)
+        assert_status(204)
 
         cookie_header = response_headers['Set-Cookie']
         expect(cookie_header).to include('cl2_jwt=test-jwt-token')
@@ -199,7 +199,7 @@ resource 'Omniauth Callback', document: false do
       example 'a new user is created and email is confirmed' do
         do_request
 
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         user = User.find_by(email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
         expect(user.confirmation_required?).to be false
@@ -212,7 +212,7 @@ resource 'Omniauth Callback', document: false do
 
         do_request
 
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         db_user = User.find_by(email: 'billy_fixed@example.com')
         expect(db_user.id).to eq(invited_user.id)
         expect(db_user).not_to be_nil
@@ -234,7 +234,7 @@ resource 'Omniauth Callback', document: false do
           expect(idea.author_id).to be_nil
 
           do_request
-          expect(status).to eq(302)
+          assert_status(302)
           user = User.find_by(email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
           expect(idea.reload.author_id).to eq(user.id)
@@ -248,7 +248,7 @@ resource 'Omniauth Callback', document: false do
             expect(idea.author_id).to be_nil
 
             do_request
-            expect(status).to eq(302)
+            assert_status(302)
             db_user = User.find_by(email: 'billy_fixed@example.com')
             expect(db_user.id).to eq(existing_user.id)
             expect(idea.reload.author_id).to eq(existing_user.id)
@@ -263,7 +263,7 @@ resource 'Omniauth Callback', document: false do
             expect(idea.author_id).to be_nil
 
             do_request
-            expect(status).to eq(302)
+            assert_status(302)
             db_user = User.find_by(email: 'billy_fixed@example.com')
             expect(db_user.id).to eq(invited_user.id)
             expect(idea.reload.author_id).to eq(invited_user.id)
@@ -280,7 +280,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -299,7 +299,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -322,7 +322,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -363,7 +363,7 @@ resource 'Omniauth Callback', document: false do
       example 'a new user is created but email is not confirmed' do
         do_request
 
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         user = User.find_by(new_email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
         expect(user.confirmation_required?).to be true
@@ -377,7 +377,7 @@ resource 'Omniauth Callback', document: false do
       example 'if there is a pending invite with this email: return error' do
         user = create(:invited_user, email: 'billy_fixed@example.com')
         do_request
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         expect(response_headers['Location']).to include('authentication_error=true')
         expect(user.reload.invite_status).to eq('pending')
       end
@@ -396,7 +396,7 @@ resource 'Omniauth Callback', document: false do
           expect(idea.author_id).to be_nil
 
           do_request
-          expect(status).to eq(302)
+          assert_status(302)
 
           user = User.find_by(new_email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
@@ -415,7 +415,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -434,7 +434,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -457,7 +457,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1) # Only the existing user
           do_request
 
-          expect(status).to eq(302)
+          assert_status(302)
 
           # Make sure no new user was created
           expect(User.count).to eq(1)
@@ -465,6 +465,19 @@ resource 'Omniauth Callback', document: false do
           existing_user.reload
           expect(existing_user.email).to be_nil
           expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when email is already taken by another confirmed user' do
+        let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
+
+        example 'Returns error' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          expect(response_headers['Location']).to include('authentication_error=true')
+          expect(User.count).to eq(1) # Still only the existing user
+          expect(User.first.identities.length).to eq(0) # No identity should be created for the existing user
         end
       end
     end
