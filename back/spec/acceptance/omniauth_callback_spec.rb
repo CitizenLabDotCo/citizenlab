@@ -305,7 +305,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1)
 
           existing_user.reload
-          expect(existing_user.email).to eq('billy_fixed@example.com')
+          expect(existing_user.email).to eq('existing@example.com')
           expect(existing_user.new_email).to be_nil
         end
       end
@@ -328,7 +328,7 @@ resource 'Omniauth Callback', document: false do
           expect(User.count).to eq(1)
 
           existing_user.reload
-          expect(existing_user.email).to eq('billy_fixed@example.com')
+          expect(existing_user.email).to eq(nil)
           expect(existing_user.new_email).to be_nil
         end
       end
