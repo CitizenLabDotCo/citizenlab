@@ -271,6 +271,67 @@ resource 'Omniauth Callback', document: false do
           end
         end
       end
+
+      context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user has an unconfirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:unconfirmed_user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'updates email to the SSO returned email and does not update new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('billy_fixed@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user does not have an email' do
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        example 'sets email to the SSO returned email and does not update new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          expect(status).to eq(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('billy_fixed@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
     end
   end
 
@@ -332,6 +393,52 @@ resource 'Omniauth Callback', document: false do
           expect(user.email_confirmed_at).to be_nil
           expect(claim_token.reload.pending_claimer_id).to eq(user.id)
           expect(idea.reload.author_id).to be_nil # Not yet claimed
+        end
+      end
+
+      context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          do_request
+
+          expect(status).to eq(302)
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user has an unconfirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:unconfirmed_user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          do_request
+
+          expect(status).to eq(302)
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user does not have an email yet' do
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        example 'does not update email but puts the SSO returned email in new_email' do
+          do_request
+
+          expect(status).to eq(302)
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to eq('billy_fixed@example.com')
         end
       end
     end
