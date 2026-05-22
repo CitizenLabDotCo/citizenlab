@@ -156,13 +156,28 @@ const MultiSelectDropdown = ({
         break;
 
       case 'ArrowUp':
-        if (!opened) return;
         event.preventDefault();
+        if (!opened) {
+          toggleValuesList();
+          return;
+        }
         // From the trigger, jump to the last item.
         // From a list item, navigate to previous (circular ...,3,2,1,0,3).
         tabsRef.current[
           isNaN(index) ? totalItems - 1 : (index - 1 + totalItems) % totalItems
         ]?.focus();
+        break;
+
+      case 'Home':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[0]?.focus();
+        break;
+
+      case 'End':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[totalItems - 1]?.focus();
         break;
 
       case 'Enter':

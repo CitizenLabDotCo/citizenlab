@@ -94,8 +94,12 @@ const SingleSelectDropdown = ({
       setFocusedIndex(0);
       return;
     }
-    if (event.key === 'ArrowUp' && opened) {
+    if (event.key === 'ArrowUp') {
       event.preventDefault();
+      if (!opened) {
+        toggleValuesList();
+        return;
+      }
       listboxRef.current?.focus();
       const items = listboxRef.current?.querySelectorAll('li') ?? [];
       setFocusedIndex(items.length - 1);
@@ -133,6 +137,14 @@ const SingleSelectDropdown = ({
               ? items.length - 1
               : prevIndex - 1
           );
+          break;
+        case 'Home':
+          event.preventDefault();
+          setFocusedIndex(0);
+          break;
+        case 'End':
+          event.preventDefault();
+          setFocusedIndex(items.length - 1);
           break;
         case 'Enter':
         case ' ':
