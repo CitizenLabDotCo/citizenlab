@@ -328,7 +328,7 @@ resource 'Omniauth Callback', document: false do
 
           user = User.find_by(new_email: 'billy_fixed@example.com')
           expect(user).not_to be_nil
-          expect(user.confirmation_required?).to be false
+          expect(user.confirmation_required?).to be true
           expect(user.email_confirmed_at).to be_nil
           expect(claim_token.reload.pending_claimer_id).to eq(user.id)
           expect(idea.reload.author_id).to be_nil # Not yet claimed
