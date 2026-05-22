@@ -9,26 +9,50 @@
 # This also removes the root cause of the tenant-template failure in TAN-7831: template
 # application assigns a uuid to every model id, and a uuid string cast to this bigint
 # column collapsed to a colliding integer ('cbd4...'.to_i == 0).
+#
+# PostgreSQL cannot reposition a column, so swapping the id type in place would leave the
+# new id as the last column - inconsistent with every other table, where id comes first.
+# The table is small and unreferenced, so we rebuild it from scratch instead: a fresh
+# table with id first, the rows copied over, then the old table dropped. Index and
+# foreign-key names derive from the table name, so the rebuilt table reproduces them
+# identically.
 class ChangeAreasStaticPagesIdToUuid < ActiveRecord::Migration[7.2]
-  # The table is small and unreferenced, so this brief rewrite is safe. Dropping the
-  # column also drops its owned sequence. Rails has no DSL for the primary-key constraint
-  # itself, so that one step stays raw SQL. Strong Migrations can't introspect these, so
-  # the change is wrapped in safety_assured.
-  # rubocop:disable Rails/DangerousColumnNames -- intentionally redefining the `id` PK
   def up
     safety_assured do
-      remove_column :areas_static_pages, :id
-      add_column :areas_static_pages, :id, :uuid,
-        default: -> { 'shared_extensions.gen_random_uuid()' }, null: false
-      execute 'ALTER TABLE areas_static_pages ADD PRIMARY KEY (id)'
+      rebuild_table do |t|
+        t.primary_key :id, :uuid, default: -> { 'shared_extensions.gen_random_uuid()' }
+      end
     end
   end
 
+  # Rebuilds the original bigint-id table, again with id first.
   def down
     safety_assured do
-      remove_column :areas_static_pages, :id
-      add_column :areas_static_pages, :id, :primary_key
+      rebuild_table do |t|
+        t.primary_key :id
+      end
     end
   end
-  # rubocop:enable Rails/DangerousColumnNames
+
+  private
+
+  def rebuild_table
+    # rename_table also renames the table's indexes, pkey and sequence to the _old name,
+    # which frees the canonical names for the rebuilt table below.
+    rename_table :areas_static_pages, :areas_static_pages_old
+
+    create_table :areas_static_pages, id: false do |t|
+      yield t
+      t.references :area, index: true, foreign_key: true, type: :uuid, null: false
+      t.references :static_page, index: true, foreign_key: true, type: :uuid, null: false
+      t.timestamps
+    end
+
+    execute(<<~SQL.squish)
+      INSERT INTO areas_static_pages (area_id, static_page_id, created_at, updated_at)
+      SELECT area_id, static_page_id, created_at, updated_at FROM areas_static_pages_old
+    SQL
+
+    drop_table :areas_static_pages_old
+  end
 end

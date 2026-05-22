@@ -2167,11 +2167,11 @@ CREATE TABLE public.areas_projects (
 --
 
 CREATE TABLE public.areas_static_pages (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     area_id uuid NOT NULL,
     static_page_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 

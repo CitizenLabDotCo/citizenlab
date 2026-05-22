@@ -4,11 +4,11 @@
 #
 # Table name: areas_static_pages
 #
+#  id             :uuid             not null, primary key
 #  area_id        :uuid             not null
 #  static_page_id :uuid             not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  id             :uuid             not null, primary key
 #
 # Indexes
 #
