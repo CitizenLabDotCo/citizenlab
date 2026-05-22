@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class DoorkeeperBaseController < ActionController::Base
+# Doorkeeper renders HTML (authorization screens) and must not inherit the
+# API-only, auth-enforcing ApplicationController, so we subclass ActionController::Base.
+class DoorkeeperBaseController < ActionController::Base # rubocop:disable Rails/ApplicationController
   include AuthToken::Authenticable
 
   private
