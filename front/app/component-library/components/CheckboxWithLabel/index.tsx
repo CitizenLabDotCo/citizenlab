@@ -34,6 +34,9 @@ const CheckboxWithLabel = ({
   ariaLabel,
   tabIndex,
   dataCy,
+  setRef,
+  ariaInvalid,
+  ariaDescribedBy,
   ...boxProps
 }: Props) => {
   const handleLabelClick = (event: React.MouseEvent) => {
@@ -65,6 +68,9 @@ const CheckboxWithLabel = ({
         required={required}
         aria-label={ariaLabel}
         tabIndex={tabIndex}
+        setRef={setRef}
+        ariaInvalid={ariaInvalid}
+        ariaDescribedBy={ariaDescribedBy}
         mr="8px"
       />
       {label}

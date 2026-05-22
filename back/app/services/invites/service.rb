@@ -129,8 +129,10 @@ class Invites::Service
   end
 
   def check_duplicate_emails(invitees)
+    # Group case-insensitively (like User.find_by_cimail), otherwise case variants
+    # of the same email slip past this check and only collide at save! time.
     emails_indexes = invitees.each_with_object(Hash.new { [] }).with_index do |(invitee, object), index|
-      object[invitee.email] += [index]
+      object[invitee.email&.downcase] += [index]
     end
     duplicated_emails_indexes = emails_indexes.select { |email, row_indexes| email && row_indexes.size > 1 }
     duplicated_emails_indexes.each do |email, row_indexes|

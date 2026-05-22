@@ -456,6 +456,52 @@ preserved="$(cat "$PUBLIC/.claude/settings.local.json" 2>/dev/null || true)"
 assert_eq "$preserved" "$PERSONAL_CONTENT" "personal .claude/settings.local.json regular file preserved by setup-claude"
 
 
+# ----------------------------------------------------------------------------
+# Test: setup-claude fast-forwards local `main` to `origin/main` even when
+# HEAD is on a feature branch. Without this, `git pull` only advances the
+# currently-checked-out branch and the dev's local `main` silently lags
+# between setup runs — they hit "behind by N commits" when they later
+# switch to it.
+# ----------------------------------------------------------------------------
+# Ensure origin has a `main` branch (the initial fixture push may have
+# landed on `master` if the test runner's `init.defaultBranch` is `master`).
+(
+  cd "$FIXTURE_WT"
+  git fetch -q origin
+  if ! git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
+    cur="$(git rev-parse --abbrev-ref HEAD)"
+    git branch -f main "$cur"
+    git -c user.email=t@t -c user.name=t push -u -q origin main
+  fi
+  git checkout -q main
+  git pull -q --ff-only
+)
+# Ensure PRIVATE has a local `main`, then put HEAD on a feature branch
+# with no upstream (so the existing pull is skipped — exercising the path
+# where the main fast-forward is the only update happening).
+(
+  cd "$PRIVATE"
+  git fetch -q origin
+  if ! git rev-parse --verify --quiet refs/heads/main >/dev/null; then
+    git branch main origin/main
+  fi
+  git checkout -q -B feature-for-main-test
+)
+behind_sha="$(git -C "$PRIVATE" rev-parse main)"
+# Advance origin/main from FIXTURE_WT.
+(
+  cd "$FIXTURE_WT"
+  echo "advance" > main-advance.txt
+  git -c user.email=t@t -c user.name=t add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "advance main"
+  git push -q origin main
+)
+ahead_sha="$(git -C "$FIXTURE_WT" rev-parse main)"
+assert_eq "$(git -C "$PRIVATE" rev-parse main)" "$behind_sha" "test setup sanity: PRIVATE main starts behind origin/main"
+run_setup
+assert_eq "$(git -C "$PRIVATE" rev-parse main)" "$ahead_sha" "local main fast-forwarded to origin/main even when HEAD is on a feature branch"
+
+
 # ============================================================================
 # Summary
 # ============================================================================
