@@ -9534,6 +9534,11 @@
     "verified_at": "2026-05-15T16:31:30.440679Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption2": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:16.012340Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": {
     "state": "verified",
     "verified_at": "2026-05-15T16:31:30.440679Z",
@@ -9553,6 +9558,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:16.012340Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:16.012340Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": {
     "state": "verified",
