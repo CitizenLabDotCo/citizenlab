@@ -88,7 +88,7 @@ describe Permissions::PhasePermissionsService do
         context 'without cookie consent' do
           let(:request) do
             instance_double(ActionDispatch::Request, {
-              cookies: { phase.id => '{}' }
+              cookies: { "cl2_#{phase.id}" => '{}' }
             })
           end
 
@@ -100,7 +100,7 @@ describe Permissions::PhasePermissionsService do
         context 'with cookie consent' do
           let(:request) do
             instance_double(ActionDispatch::Request, {
-              cookies: { phase.id => '{"lo": "LOGGED_OUT_HASH", "li": "LOGGED_IN_HASH"}' }
+              cookies: { "cl2_#{phase.id}" => '{"lo": "LOGGED_OUT_HASH", "li": "LOGGED_IN_HASH"}' }
             })
           end
 
@@ -129,10 +129,35 @@ describe Permissions::PhasePermissionsService do
           end
         end
 
+        # Cookie name prefix (cl2_) introduced May 2026 to allow whitelisting in cloudfront
+        # These tests can be removed when full whitelisting is introduced
+        context 'with consent stored under the legacy (unprefixed) cookie name' do
+          let(:request) do
+            instance_double(ActionDispatch::Request, {
+              cookies: { phase.id => '{"lo": "LOGGED_OUT_HASH", "li": "LOGGED_IN_HASH"}' }
+            })
+          end
+
+          it 'falls back to the legacy cookie when the prefixed cookie is absent' do
+            create(:native_survey_response, author: nil, author_hash: 'LOGGED_IN_HASH', project: phase.project, published_at: 2.months.ago)
+            expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
+          end
+
+          it 'prefers the prefixed cookie over the legacy one when both are present' do
+            allow(request).to receive(:cookies).and_return(
+              "cl2_#{phase.id}" => '{}',
+              phase.id => '{"lo": "LOGGED_OUT_HASH"}'
+            )
+            create(:native_survey_response, author: nil, author_hash: 'LOGGED_OUT_HASH', project: phase.project, published_at: 4.months.ago)
+            # The prefixed cookie is empty ({} = submitted without consent), so posting is still blocked
+            expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
+          end
+        end
+
         context 'with malformed cookie' do
           let(:request) do
             instance_double(ActionDispatch::Request, {
-              cookies: { phase.id => '{malformed_cookie_value' }
+              cookies: { "cl2_#{phase.id}" => '{malformed_cookie_value' }
             })
           end
 

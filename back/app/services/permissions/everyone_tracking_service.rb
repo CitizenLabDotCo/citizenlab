@@ -53,11 +53,11 @@ class Permissions::EveryoneTrackingService
       else
         new_cookie['lo'] = author_hash
       end
-      response_cookies[@phase.id] = { value: new_cookie, expires: 1.year.from_now }
+      response_cookies["cl2_#{@phase.id}"] = { value: new_cookie, expires: 1.year.from_now }
     else
       # without consent we just set an empty value {} to indicate the user has taken the survey
       expiry = @phase.pmethod.allow_posting_again_after&.from_now || @phase.end_at || 1.year.from_now
-      response_cookies[@phase.id] = { value: {}, expires: expiry }
+      response_cookies["cl2_#{@phase.id}"] = { value: {}, expires: expiry }
     end
   end
 
@@ -69,7 +69,12 @@ class Permissions::EveryoneTrackingService
   end
 
   def tracking_cookie
-    JSON.parse(@request.cookies[@phase.id] || 'null')
+    # Cookie name prefix (cl2_) introduced May 2026 to allow whitelisting in cloudfront
+    # so we fall back to the legacy (unprefixed) cookie name for users who still have
+    # the old cookie keep their tracking state until it expires or is rewritten.
+    # Fallback be removed when whitelisting added to all tenants
+    raw_cookie = @request.cookies["cl2_#{@phase.id}"] || @request.cookies[@phase.id]
+    JSON.parse(raw_cookie || 'null')
   rescue JSON::ParserError
     {}
   end

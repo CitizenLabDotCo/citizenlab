@@ -681,7 +681,7 @@ resource 'Ideas' do
             let!(:author_hash) { 'LOGGED_OUT_HASH' }
 
             example 'does not allow posting if user submitted survey without cookie consent (empty cookie present)' do
-              header('Cookie', "#{phase.id}={}")
+              header('Cookie', "cl2_#{phase.id}={}")
               do_request
               assert_status 401
               expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
@@ -689,7 +689,7 @@ resource 'Ideas' do
 
             example 'does not allow posting if submitted within 3 months' do
               response.update!(published_at: 2.months.ago)
-              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
+              header('Cookie', "cl2_#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 401
               expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
@@ -697,19 +697,19 @@ resource 'Ideas' do
 
             example 'allows posting again if submitted after 3 months' do
               response.update!(published_at: 4.months.ago)
-              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
+              header('Cookie', "cl2_#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 201
               # Saves a new idea with the same author hash from the cookie
               expect(Idea.all.pluck(:author_hash)).to match_array %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
 
               # Check that the cookie is written in the response
-              expect(CGI.unescape(response_headers['Set-Cookie'])).to include("#{phase.id}={\"lo\" => \"LOGGED_OUT_HASH\"}")
+              expect(CGI.unescape(response_headers['Set-Cookie'])).to include("cl2_#{phase.id}={\"lo\" => \"LOGGED_OUT_HASH\"}")
             end
 
             example 'Uses the logged in author hash over the logged out hash to create the new idea' do
               response.update!(published_at: 4.months.ago)
-              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\", \"li\": \"LOGGED_IN_HASH\"};cl2_consent={\"analytics\": true}")
+              header('Cookie', "cl2_#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\", \"li\": \"LOGGED_IN_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 201
               # Saves a new idea with the last author hash from the cookie

@@ -2344,7 +2344,7 @@ resource 'Projects' do
             let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
 
             example 'Get community monitor project when survey already submitted with consent' do
-              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
+              header('Cookie', "cl2_#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 200
 
