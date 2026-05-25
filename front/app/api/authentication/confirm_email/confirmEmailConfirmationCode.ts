@@ -1,12 +1,11 @@
-import { HighestRole } from 'api/users/types';
-
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
+import { HighestRole } from 'api/users/types';
 
-import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 type Response = {
