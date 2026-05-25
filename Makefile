@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -41,11 +41,22 @@ be-up:
 be-up-debug:
 	docker compose -f docker-compose.yml -f docker-compose.debug.yml up
 
+# Brings the back-end stack up together with the fake_sso OIDC provider.
+# Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
+# repo (or set FAKE_SSO_PATH to its checkout) and add
+# `127.0.0.1 host.docker.internal` to /etc/hosts.
+be-up-fake-sso:
+	docker compose --profile fake_sso up
+
 fe-up:
 	cd front && npm start
 
 up:
 	make -j 2 be-up fe-up
+
+# Same as `make up` but also starts the fake_sso OIDC provider. See be-up-fake-sso for prereqs.
+up-fake-sso:
+	make -j 2 be-up-fake-sso fe-up
 
 # Run stack with docker compose, including running npm inside of docker container
 up-docker:
@@ -182,6 +193,12 @@ e2e-setup:
 e2e-setup-and-up:
 	make e2e-setup
 	make up
+
+# Same as e2e-setup-and-up but also starts the fake_sso OIDC provider so that
+# specs covering the fake_sso flow can run. See be-up-fake-sso for prereqs.
+e2e-setup-and-up-fake-sso:
+	make e2e-setup
+	make up-fake-sso
 
 # Run it with:
 # make e2e-run-test spec=cypress/e2e/about_page.cy.ts
