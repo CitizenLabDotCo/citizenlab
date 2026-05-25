@@ -123,7 +123,9 @@ services:
   #      resolve the OIDC issuer (the back-end already reaches it via the docker
   #      host-gateway).
   fake_sso:
-    container_name: cl-fake-sso
+    # Distinct from the standalone fake_sso/docker-compose.yml (which uses
+    # `cl-fake-sso`) so the two stacks can coexist without conflicting.
+    container_name: cl-fake-sso-app
     image: node:22-alpine
     working_dir: /app
     ports:
