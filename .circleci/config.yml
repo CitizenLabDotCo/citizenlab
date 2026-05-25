@@ -758,27 +758,6 @@ jobs:
       - run: |
           docker tag e2e-web citizenlabdotco/back-e2e:$CIRCLE_SHA1
           docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
-      # ---- Build the fake_sso OIDC provider image used by e2e cypress tests.
-      # The fake_sso source lives in a separate repo. We clone it here and
-      # build with e2e/fake-sso.Dockerfile from this repo as the Dockerfile.
-      #
-      # Prerequisite: a deploy key for CitizenLabDotCo/fake_sso must be added
-      # to this CircleCI project's "SSH Keys" with hostname github.com, and
-      # its fingerprint pasted into `add_ssh_keys` below.
-      - add_ssh_keys:
-          fingerprints:
-            - "FAKE_SSO_DEPLOY_KEY_FINGERPRINT_REPLACE_ME"
-      - run:
-          name: Clone the fake_sso repo and build/push its e2e image
-          command: |
-            mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-            rm -rf /tmp/fake_sso_src
-            git clone --depth 1 git@github.com:CitizenLabDotCo/fake_sso.git /tmp/fake_sso_src
-            docker build \
-              -t citizenlabdotco/fake-sso-e2e:$CIRCLE_SHA1 \
-              -f e2e/fake-sso.Dockerfile \
-              /tmp/fake_sso_src
-            docker push citizenlabdotco/fake-sso-e2e:$CIRCLE_SHA1
       - persist_to_workspace:
           root: .
           paths:

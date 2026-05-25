@@ -46,14 +46,14 @@ services:
       - "../env_files/front-secret.env"
 
   # Fake OIDC provider used by the `fake_sso` verification/auth method.
-  # Built and pushed by the e2e-setup-db CircleCI job (see fake-sso.Dockerfile).
+  # The image is published from the fake_sso repo's own CircleCI pipeline.
   # The `host.docker.internal` alias makes both the back-end (e2e-web) and the
   # browser (cypress) resolve the issuer URL `http://host.docker.internal:8081`
   # to this container -- the same hostname the local dev convention uses, so a
   # single OIDC issuer string works in both environments.
   fake_sso:
     container_name: e2e-fake-sso
-    image: citizenlabdotco/fake-sso-e2e:${CIRCLE_SHA1}
+    image: citizenlabdotco/fake-sso:latest
     env_file:
       # Reuses the back-secret env file (already restored from workspace) so
       # FAKE_SSO_JWT_SECRET matches what the back-end uses to verify id_tokens.
