@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y curl
 
 WORKDIR /front
 
-RUN npm install express request compression
+RUN npm install express http-proxy-middleware compression
 
 ADD ./server server 
 

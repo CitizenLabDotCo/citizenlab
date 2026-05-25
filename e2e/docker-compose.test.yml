@@ -14,7 +14,6 @@ services:
       start_period: 30s
 
   front:
-    image: citizenlabdotco/cl2-devops-front-e2e-static:latest
     build:
       context: ../front/.
       dockerfile: Dockerfile-static-hosting
