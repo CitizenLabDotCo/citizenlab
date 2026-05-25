@@ -18,7 +18,7 @@
 
 const FAKE_SSO_ORIGIN = 'http://host.docker.internal:8081';
 
-describe('Fake SSO cross-domain redirect', () => {
+describe('SSO: user with confirmed email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
     cy.visit('/');
 
