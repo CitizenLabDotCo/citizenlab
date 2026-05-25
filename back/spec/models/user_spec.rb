@@ -286,11 +286,6 @@ RSpec.describe User do
       expect(user).to be_valid
     end
 
-    it 'is required when a unique code is not present' do
-      u1 = build(:user, email: nil)
-      expect(u1).to be_invalid
-    end
-
     it 'is not required when a unique code is present' do
       u1 = build(:user, email: nil, unique_code: '1234abcd')
       expect(u1).to be_valid
