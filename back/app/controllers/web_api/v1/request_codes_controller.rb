@@ -52,6 +52,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_email_change_params
-    params.require(:request_code).permit(:new_email)
+    params.fetch(:request_code, {}).permit(:new_email)
   end
 end

@@ -134,6 +134,15 @@ resource 'Request codes' do
       expect(user.reload.new_email).to eq 'new@email.com'
     end
 
+    example 'It works if request_code is an empty object but new_email is already set on user' do
+      user = create(:user, new_email: 'new@email.com')
+      header_token_for(user)
+      do_request(request_code: {})
+      expect(response_status).to eq 200
+      expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
+      expect(user.reload.new_email).to eq 'new@email.com'
+    end
+
     example 'It does not work if user reached code_reset_count' do
       user = create(:user)
       user.new_email_confirmation.update!(code_reset_count: 4)

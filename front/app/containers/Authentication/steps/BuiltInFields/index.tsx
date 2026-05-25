@@ -87,14 +87,14 @@ const BuiltInFields = ({
         email,
         password,
       });
-    } catch (e) {
-      if (isCLErrorsWrapper(e)) {
-        handleHookFormSubmissionError(e, methods.setError);
+    } catch (e: any) {
+      if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
+        setError('email_taken_and_user_can_be_verified');
         return;
       }
 
-      if (e.exception.includes('Email has already been taken')) {
-        setError('email_taken_and_user_can_be_verified');
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
