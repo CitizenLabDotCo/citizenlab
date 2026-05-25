@@ -121,7 +121,17 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: '' })
       expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:new_email, 'cannot be blank')
       expect(NewEmailConfirmationMailer).not_to have_received(:with)
+    end
+
+    example 'It works if new_email is blank but new_email is already set on user' do
+      user = create(:user, new_email: 'new@email.com')
+      header_token_for(user)
+      do_request(request_code: { new_email: '' })
+      expect(response_status).to eq 200
+      expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
+      expect(user.reload.new_email).to eq 'new@email.com'
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -130,6 +140,16 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 401
+      expect(NewEmailConfirmationMailer).not_to have_received(:with)
+    end
+
+    example 'It does not work if new_email is already taken by another user' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_email: existing_user.email })
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:new_email, 'is already taken')
       expect(NewEmailConfirmationMailer).not_to have_received(:with)
     end
   end
