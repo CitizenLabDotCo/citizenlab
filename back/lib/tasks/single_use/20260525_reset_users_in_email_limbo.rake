@@ -15,6 +15,21 @@ namespace :single_use do
   task :reset_users_in_email_limbo, %i[execute] => [:environment] do |_t, args|
     execute = args[:execute] == 'execute'
 
-    
+    puts "---------- STARTING TASK: Reset users in email limbo ----------\n\n"
+    puts "Mode: #{execute ? 'EXECUTE - changes WILL be applied' : 'Dry run - no changes will be applied'}\n\n"
+
+    Tenant.safe_switch_each do |tenant|
+      # Select users in limbo state
+      users_in_limbo = User.where(confirmation_required: true)
+        .where.not(email: nil)
+        .where(id: Identity.select(:user_id))
+
+      puts "Tenant: #{tenant.name} - Found #{users_in_limbo.count} users in email limbo"
+
+      if execute
+        users_in_limbo.update_all(email: nil)
+        puts "Tenant: #{tenant.name} - Updated #{users_in_limbo.count} users in email limbo (email set to nil)"
+      end
+    end
   end
 end
