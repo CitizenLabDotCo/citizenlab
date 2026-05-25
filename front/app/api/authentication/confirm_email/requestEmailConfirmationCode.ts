@@ -1,3 +1,4 @@
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -13,6 +14,7 @@ export const requestEmailConfirmationCodeUnauthenticated = async (
       request_code: { email },
     },
   });
+
   return true;
 };
 
@@ -26,6 +28,4 @@ export const requestEmailConfirmationCodeChangeEmail = async (
       request_code: { new_email },
     },
   });
-
-  queryClient.invalidateQueries({ queryKey: meKeys.all() });
 };
