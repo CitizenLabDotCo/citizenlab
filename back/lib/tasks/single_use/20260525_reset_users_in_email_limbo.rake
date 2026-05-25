@@ -5,7 +5,7 @@
 # - They have no confirmed email address
 # This currently puts them in a limbo state where they cannot do anything
 # (because they are seen as confirmation_required?)
-# and they also cannot request a code (because the flow expects the new_email 
+# and they also cannot request a code (because the flow expects the new_email
 # field to be set in this situation, not the normal email field).
 # This task reset the email field so that users can do things again (as
 # confirmation_required? will be false). If they want to add an email, they
