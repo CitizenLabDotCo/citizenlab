@@ -185,7 +185,6 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, unless: :allows_empty_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
@@ -376,27 +375,6 @@ class User < ApplicationRecord
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end
-  end
-
-  def allows_empty_email?
-    return true if invite_pending?
-    return true if unique_code.present? # user created in input importer
-    return false if email_was.present?
-
-    if sso?
-      # Allow empty email for SSO users, but only if none of their identities require an email
-      if identities.none?(&:email_always_present?)
-        return true
-      else
-        # Edge case: if any of the identities require an email,
-        # it is still possible that the email return was unconfirmed. In this case,
-        # it ends up in new_email instead. So we allow an empty email until the email
-        # gets confirmed.
-        return confirmation_required
-      end
-    end
-
-    false
   end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
