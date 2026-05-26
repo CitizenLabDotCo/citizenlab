@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 
 import {
   IconTooltip,
@@ -54,6 +54,9 @@ export interface Props
   hideLocaleSwitcher?: boolean;
   maxCharCount?: number;
   minCharCount?: number;
+  setRef?: (el: HTMLElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -65,13 +68,23 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     hideLocaleSwitcher,
     maxCharCount,
     minCharCount,
+    setRef,
+    ariaDescribedBy,
+    ariaInvalid,
     ...quillProps
   } = props;
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>(
     useLocale()
   );
   const tenantLocales = useAppConfigurationLocales();
+
+  useEffect(() => {
+    if (setRef && containerRef.current) {
+      setRef(containerRef.current);
+    }
+  }, [setRef]);
 
   const handleValueOnChange = useCallback(
     (value: string) => {
@@ -95,7 +108,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   const id = hideLocaleSwitcher ? props.id : `${props.id}-${selectedLocale}`;
 
   return (
-    <Container id={props.id}>
+    <Container id={props.id} ref={containerRef}>
       <LabelContainer>
         {label && (
           <StyledLabel
@@ -129,6 +142,8 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         {...quillProps}
         id={id}
         ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
+        ariaDescribedBy={ariaDescribedBy}
+        ariaInvalid={ariaInvalid}
         value={valueMultiloc?.[selectedLocale]}
         onChange={handleValueOnChange}
         maxCharCount={maxCharCount}

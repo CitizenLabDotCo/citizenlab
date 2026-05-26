@@ -40,7 +40,6 @@ const PasswordInput = ({ name, label, id, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-  const ariaInvalidId = validationError || apiError ? true : undefined;
   const ariaDescribedById =
     validationError || apiError ? `${name}-error` : undefined;
   return (
@@ -55,14 +54,17 @@ const PasswordInput = ({ name, label, id, ...rest }: Props) => {
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
+        render={({ field, fieldState }) => (
           <PasswordInputComponent
+            setRef={(el) => {
+              field.ref(el);
+            }}
             {...field}
             {...rest}
             id={id ?? name}
             aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
-            ariaInvalid={ariaInvalidId}
+            ariaInvalid={!!fieldState.error}
             ariaDescribedBy={ariaDescribedById}
           />
         )}

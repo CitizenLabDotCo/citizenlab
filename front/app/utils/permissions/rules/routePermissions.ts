@@ -52,7 +52,7 @@ export const isAdminRoute = (path: string) => {
 };
 
 const isCommunityMonitorModerator = (
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   tenant: IAppConfigurationData
 ) => {
   const communityMonitorProjectId =
@@ -62,7 +62,7 @@ const isCommunityMonitorModerator = (
     : false;
 };
 
-const isModeratedProjectRoute = (item: IRouteItem, user: IUser | undefined) => {
+const isModeratedProjectRoute = (item: IRouteItem, user: IUser | undefined | null) => {
   const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
@@ -75,7 +75,7 @@ const tenantIsChurned = (tenant: IAppConfigurationData) => {
 
 export const canAccessRoute = (
   item: IRouteItem,
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   tenant: IAppConfigurationData
 ) => {
   if (isAdminRoute(item.path)) {
@@ -95,7 +95,7 @@ export const canAccessRoute = (
       return isCommunityMonitorModerator(user, tenant);
     }
 
-    if (!isRegularUser(user) && isModeratorRoute(item)) {
+    if (user && !isRegularUser(user) && isModeratorRoute(item)) {
       return true;
     }
 

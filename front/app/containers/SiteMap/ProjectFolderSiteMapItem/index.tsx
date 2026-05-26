@@ -56,11 +56,12 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
           </li>
           {!isNilOrError(childAdminPublications) &&
             childAdminPublications.map((adminPublication) => (
-              <Project
-                key={adminPublication.id}
-                hightestTitle="h4"
-                projectId={adminPublication.relationships.publication.data.id}
-              />
+              <li key={adminPublication.id}>
+                <Project
+                  hightestTitle="h4"
+                  projectId={adminPublication.relationships.publication.data.id}
+                />
+              </li>
             ))}
         </ul>
       </>

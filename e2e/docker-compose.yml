@@ -27,6 +27,10 @@ services:
       POSTGRES_HOST: e2e-postgres
       OVERRIDE_HOST: "e2e.front"
       ASSET_HOST_URI: "http://e2e.front:3000" # it's proxied to `API_HOST: e2e-web` by webpack server
+      # Makes base_backend_uri resolve to the front-end origin so the OIDC
+      # redirect_uri (used by fake_sso) is `http://e2e.front:3000/auth/fake_sso/callback`
+      # and the session cookie set by the OAuth callback is scoped to e2e.front.
+      BASE_DEV_URI: "http://e2e.front:3000"
       WEB_CONCURRENCY: 2
       DISABLE_CRAWLER_DETECTION: true
 

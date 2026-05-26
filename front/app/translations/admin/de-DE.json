@@ -922,7 +922,7 @@
   "app.containers.Admin.communityMonitor.healthScore": "Bewertung",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Dieser Wert ist der Durchschnitt aller Fragen auf der Gefühlsskala, die von den Teilnehmenden für den ausgewählten Zeitraum beantwortet wurden.",
   "app.containers.Admin.communityMonitor.lastQuarter": "letztes Quartal",
-  "app.containers.Admin.communityMonitor.liveMonitor": "Live-Puls",
+  "app.containers.Admin.communityMonitor.liveMonitor": "Live-Barometer",
   "app.containers.Admin.communityMonitor.noResults": "Keine Ergebnisse für diesen Zeitraum.",
   "app.containers.Admin.communityMonitor.noSurveyResponses": "Keine Umfrageantworten",
   "app.containers.Admin.communityMonitor.participants": "Teilnehmende",
