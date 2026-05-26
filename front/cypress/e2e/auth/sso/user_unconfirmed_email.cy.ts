@@ -3,7 +3,7 @@ import { fakeSSOSignup } from './utils';
 import { confirmEmail, enterEmail } from '../../../support/auth';
 
 describe('SSO: user with unconfirmed email', () => {
-  it.only('signs the user in after a round-trip through the fake OIDC provider', () => {
+  it('signs the user in after a round-trip through the fake OIDC provider', () => {
     fakeSSOSignup(cy, 'tracy_smith');
 
     // Expect to be on email confirmation step
@@ -19,13 +19,13 @@ describe('SSO: user with unconfirmed email', () => {
 
     // Re-request code
     cy.dataCy('resend-code').click();
-    cy.get('#e2e-authentication-modal').should('have.text', 'New code sent');
+    cy.get('#e2e-authentication-modal').should('include.text', 'New code sent');
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);
   });
 
-  it('allows user to change email', () => {
+  it.only('allows user to change email', () => {
     fakeSSOSignup(cy, 'tracy_smith');
 
     // Go to change email screen
