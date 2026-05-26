@@ -2,13 +2,12 @@
 
 module McpServer
   class McpController < ActionController::API
-    before_action -> { doorkeeper_authorize! 'mcp:access' }
-    after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
     include Pundit::Authorization
 
-    rescue_from Pundit::NotAuthorizedError do
-      head :forbidden
-    end
+    before_action -> { doorkeeper_authorize! 'mcp:access' }
+    after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
+
+    rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
     def create
       authorize([:mcp_server, :mcp])

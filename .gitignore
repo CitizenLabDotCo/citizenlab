@@ -29,6 +29,3 @@ CLAUDE.local.md
 # MCP local files
 .serena/
 .playwright-mcp/
-
-/tmp
-/pvt-docs
