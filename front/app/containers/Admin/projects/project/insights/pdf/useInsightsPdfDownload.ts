@@ -191,11 +191,6 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
-      await Promise.race([
-        document.fonts.ready,
-        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
-      ]);
-
       const [{ snapdom, preCache }, { default: jsPDF }, container] =
         await Promise.all([
           import('@zumer/snapdom'),
@@ -209,11 +204,25 @@ export default function useInsightsPdfDownload({
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
 
+      // Wait for fonts after the hidden subtree has rendered — it triggers
+      // font fetches that aren't pending when this function starts.
+      await Promise.race([
+        document.fonts.ready,
+        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
+      ]);
+
       // snapdom's font/style cache is cold on first capture in a fresh module
       // instance, which makes the first 2–3 sections rasterize without text
       // (HTML and SVG). Warm the cache for the whole hidden subtree before
       // entering the per-section loop so every capture has fonts available.
       await preCache(container, { embedFonts: true });
+
+      // preCache can itself trigger font fetches when it walks the subtree.
+      // Wait once more so the first toCanvas call has every face loaded.
+      await Promise.race([
+        document.fonts.ready,
+        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
+      ]);
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
