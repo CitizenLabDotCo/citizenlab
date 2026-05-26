@@ -14,7 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
-import A11yTable from '../_shared/A11yTable';
+import A11yTable, { Column } from '../_shared/A11yTable';
 import { DescriptionText } from '../_shared/DescriptionText';
 import chartWidgetMessages from '../messages';
 
@@ -75,6 +75,16 @@ const DemographicsWidget = ({
     ariaDescribedBy: description ? descriptionId : undefined,
   };
 
+  const columns: Column[] = [
+    { key: 'category', label: formatMessage(messages.categoryColumn) },
+    {
+      key: 'participants',
+      label: formatMessage(messages.participantsColumn),
+      type: 'percentage',
+    },
+    { key: 'count', label: formatMessage(messages.countColumn) },
+  ];
+
   if (isLoading) return null;
 
   if (!demographicsResponse) {
@@ -113,15 +123,7 @@ const DemographicsWidget = ({
         descriptionId={descriptionId}
       />
       <A11yTable
-        columns={[
-          { key: 'category', label: formatMessage(messages.categoryColumn) },
-          {
-            key: 'participants',
-            label: formatMessage(messages.participantsColumn),
-            type: 'percentage',
-          },
-          { key: 'count', label: formatMessage(messages.countColumn) },
-        ]}
+        columns={columns}
         data={chartData}
         caption={formatMessage(messages.demographicsTableCaption)}
       />

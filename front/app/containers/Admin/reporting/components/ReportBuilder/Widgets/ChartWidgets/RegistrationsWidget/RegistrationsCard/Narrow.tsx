@@ -8,7 +8,7 @@ import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
-import A11yTable from '../../_shared/A11yTable';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
 import messages from '../messages';
 
@@ -34,6 +34,19 @@ const Narrow = ({
     ariaDescribedBy,
   };
   const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'registrations',
+      label: formatMessage(messages.registrationsColumn),
+    },
+  ];
+
   return (
     <Box
       width="100%"
@@ -72,17 +85,7 @@ const Narrow = ({
       </Box>
 
       <A11yTable
-        columns={[
-          {
-            key: 'date',
-            label: formatMessage(messages.dateColumn),
-            type: 'date',
-          },
-          {
-            key: 'registrations',
-            label: formatMessage(messages.registrationsColumn),
-          },
-        ]}
+        columns={columns}
         data={timeSeries || []}
         caption={formatMessage(messages.registrationCaption)}
       />

@@ -11,7 +11,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 
-import A11yTable from '../../_shared/A11yTable';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import messages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
@@ -48,6 +48,22 @@ const Wide = ({
     ariaDescribedBy,
   };
   const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'visitors',
+      label: formatMessage(messages.visitorsColumn),
+    },
+    {
+      key: 'visits',
+      label: formatMessage(messages.visitsColumn),
+    },
+  ];
 
   return (
     <Box
@@ -115,21 +131,7 @@ const Wide = ({
         />
       </Box>
       <A11yTable
-        columns={[
-          {
-            key: 'date',
-            label: formatMessage(messages.dateColumn),
-            type: 'date',
-          },
-          {
-            key: 'visitors',
-            label: formatMessage(messages.visitorsColumn),
-          },
-          {
-            key: 'visits',
-            label: formatMessage(messages.visitsColumn),
-          },
-        ]}
+        columns={columns}
         data={timeSeries || []}
         caption={formatMessage(messages.visitorsCaption)}
       />

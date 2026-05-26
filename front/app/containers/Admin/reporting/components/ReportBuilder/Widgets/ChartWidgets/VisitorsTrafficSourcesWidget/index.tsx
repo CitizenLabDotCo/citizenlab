@@ -7,7 +7,7 @@ import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { useIntl } from 'utils/cl-intl';
 
 import Card from '../../_shared/Card';
-import A11yTable from '../_shared/A11yTable';
+import A11yTable, { Column } from '../_shared/A11yTable';
 import { DescriptionText } from '../_shared/DescriptionText';
 import messages from '../messages';
 
@@ -39,6 +39,23 @@ const VisitorsTrafficSourcesWidget = ({
     endAt: props.endAt,
   });
   const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'name',
+      label: formatMessage(messages.reffererColumn),
+    },
+    {
+      key: 'value',
+      label: formatMessage(messages.valueColumn),
+    },
+    {
+      key: 'percentage',
+      label: formatMessage(messages.percentageColumn),
+      type: 'percentage',
+    },
+  ];
+
   return (
     <Card
       title={title}
@@ -58,21 +75,7 @@ const VisitorsTrafficSourcesWidget = ({
             descriptionId={descriptionId}
           />
           <A11yTable
-            columns={[
-              {
-                key: 'name',
-                label: formatMessage(messages.reffererColumn),
-              },
-              {
-                key: 'value',
-                label: formatMessage(messages.valueColumn),
-              },
-              {
-                key: 'percentage',
-                label: formatMessage(messages.percentageColumn),
-                type: 'percentage',
-              },
-            ]}
+            columns={columns}
             data={pieData || []}
             caption={formatMessage(messages.visitorsTrafficSourcesCaption)}
           />

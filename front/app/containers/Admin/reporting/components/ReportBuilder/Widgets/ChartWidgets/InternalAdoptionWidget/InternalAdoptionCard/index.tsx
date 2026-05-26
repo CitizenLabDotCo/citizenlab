@@ -9,7 +9,7 @@ import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { useIntl } from 'utils/cl-intl';
 
 import NoData from '../../../_shared/NoData';
-import A11yTable from '../../_shared/A11yTable';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import chartWidgetMessages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Props } from '../typings';
@@ -39,6 +39,26 @@ const InternalAdoptionCard = ({
   const { formatMessage } = useIntl();
 
   const previousDays = getDaysInRange(startAt, endAt);
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateCoulmn),
+      type: 'date',
+    },
+    {
+      key: 'activeAdmins',
+      label: formatMessage(messages.activeAdminColumn),
+    },
+    {
+      key: 'activeModerators',
+      label: formatMessage(messages.activeModeratorColumn),
+    },
+    {
+      key: 'totalActive',
+      label: formatMessage(messages.totalActiveColumn),
+    },
+  ];
 
   if (
     stats?.admins.active === 0 &&
@@ -86,25 +106,7 @@ const InternalAdoptionCard = ({
       </Box>
 
       <A11yTable
-        columns={[
-          {
-            key: 'date',
-            label: formatMessage(messages.dateCoulmn),
-            type: 'date',
-          },
-          {
-            key: 'activeAdmins',
-            label: formatMessage(messages.activeAdminColumn),
-          },
-          {
-            key: 'activeModerators',
-            label: formatMessage(messages.activeModeratorColumn),
-          },
-          {
-            key: 'totalActive',
-            label: formatMessage(messages.totalActiveColumn),
-          },
-        ]}
+        columns={columns}
         data={timeSeries || []}
         caption={formatMessage(messages.InternalAdoptionCaption)}
       />
