@@ -76,6 +76,11 @@ const Header = styled.h2`
 
 export const H2 = styled.h2`
   font-size: ${fontSizes.xxl}px !important;
+  scroll-margin-top: ${(props) => props.theme.menuHeight + 20}px;
+
+  ${(props) => media.tablet`
+    scroll-margin-top: ${props.theme.mobileTopBarHeight + 20}px;
+  `}
 `;
 
 export const H3 = styled.h3`
@@ -86,11 +91,17 @@ export const H4 = styled.h4`
   font-size: ${fontSizes.l}px !important;
 `;
 
-const NavItem = styled.button`
-  cursor: pointer;
+const NavItem = styled.a`
+  && {
+    color: ${colors.textPrimary};
+    text-decoration: none;
+  }
+  &:visited,
+  &:hover,
   &:focus,
-  &:hover {
-    text-decoration: underline;
+  &:active {
+    color: ${colors.textPrimary};
+    text-decoration: none;
   }
 `;
 
@@ -118,13 +129,10 @@ const SiteMap = () => {
       }
     };
 
-  const homeSection = useRef<HTMLHeadingElement | null>(null);
   const projectsSection = useRef<HTMLHeadingElement | null>(null);
   const archivedSection = useRef<HTMLHeadingElement | null>(null);
   const currentSection = useRef<HTMLHeadingElement | null>(null);
   const draftSection = useRef<HTMLHeadingElement | null>(null);
-  const userSpaceSection = useRef<HTMLHeadingElement | null>(null);
-  const customPagesSection = useRef<HTMLHeadingElement | null>(null);
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
@@ -164,26 +172,17 @@ const SiteMap = () => {
                     </Header>
                     <Ul>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(homeSection)}
-                        >
+                        <NavItem href="#home-section">
                           <FormattedMessage {...messages.homeSection} />
                         </NavItem>
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(userSpaceSection)}
-                        >
+                        <NavItem href="#user-space-section">
                           <FormattedMessage {...messages.userSpaceSection} />
                         </NavItem>
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(projectsSection)}
-                        >
+                        <NavItem href="#projects-section">
                           <FormattedMessage {...messages.projectsSection} />
                         </NavItem>
                         {hasProjectSubsection && (
@@ -228,17 +227,14 @@ const SiteMap = () => {
                         )}
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(customPagesSection)}
-                        >
+                        <NavItem href="#custom-pages-section">
                           <FormattedMessage {...messages.customPageSection} />
                         </NavItem>
                       </li>
                     </Ul>
                   </TOC>
 
-                  <H2 ref={homeSection} tabIndex={-1}>
+                  <H2 id="home-section" tabIndex={-1}>
                     <FormattedMessage {...messages.homeSection} />
                   </H2>
                   <ul>
@@ -289,7 +285,7 @@ const SiteMap = () => {
                   <>
                     {authUser && (
                       <>
-                        <H2 ref={userSpaceSection} tabIndex={-1}>
+                        <H2 id="user-space-section" tabIndex={-1}>
                           <FormattedMessage {...messages.userSpaceSection} />
                         </H2>
                         <ul>
@@ -323,7 +319,7 @@ const SiteMap = () => {
                   <>
                     {customStaticPages.length > 0 && (
                       <>
-                        <H2 ref={customPagesSection} tabIndex={-1}>
+                        <H2 id="custom-pages-section" tabIndex={-1}>
                           <FormattedMessage {...messages.customPageSection} />
                         </H2>
                         <Ul>

@@ -34,10 +34,10 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
   if (!isNilOrError(adminPublications)) {
     return (
       <>
-        <H2 ref={projectsSectionRef} tabIndex={-1}>
+        <H2 ref={projectsSectionRef} id="projects-section" tabIndex={-1}>
           <FormattedMessage {...messages.projectsSection} />
         </H2>
-        <AllProjectsLink to="/projects" id="projects-section">
+        <AllProjectsLink to="/projects">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
         {adminPublications.map((adminPublication) => (
