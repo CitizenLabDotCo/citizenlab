@@ -1,0 +1,78 @@
+import { fakeSSOSignup } from './utils';
+import { confirmEmail } from '../../../support/auth';
+import { randomEmail } from '../../../support/commands';
+
+describe('SSO: user without email', () => {
+  it('signs the user in after a round-trip through the fake OIDC provider', () => {
+    fakeSSOSignup(cy, 'jane_doe');
+
+    // Enter and confirm email
+    const email = randomEmail();
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+  });
+
+  it('shows error when trying to sign up with an email that already exists', () => {
+    fakeSSOSignup(cy, 'jane_doe');
+
+    const existingEmail = 'admin@govocal.com';
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(existingEmail);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    expect(
+      cy.get('#e2e-authentication-modal')
+    ).to.include.text('An account with this email already exists');
+  });
+
+  it('allows user to re-request a code', () => {
+    fakeSSOSignup(cy, 'jane_doe');
+
+    // Enter email
+    const email = randomEmail();
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    // Re-request code
+    cy.dataCy('resend-code').click();
+    cy.get('#e2e-authentication-modal').should('include.text', 'New code sent');
+
+    // Confirm email with the new code (which is always the same in the e2e env)
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+  });
+
+  it('allows user to change email', () => {
+    fakeSSOSignup(cy, 'jane_doe');
+
+    // Enter email
+    const email = randomEmail();
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    // Go back to change email
+    cy.get('#e2e-go-to-change-email').click();
+
+    const newEmail = randomEmail();
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(newEmail);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    // Confirm email with the new code (which is always the same in the e2e env)
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    // Confirm user has new email
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.equal(newEmail);
+    });
+  });
+});
