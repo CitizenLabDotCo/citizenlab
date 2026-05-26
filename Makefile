@@ -116,6 +116,19 @@ be-up-hoplr:
 fe-up-hoplr:
 	cd front && npm start
 
+be-up-federa:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-federa:
+	cd front && npm run start:sso:federa
+
+# Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
+sso-reset-hosts:
+	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+
 # Run it with:
 # make c
 # # or
