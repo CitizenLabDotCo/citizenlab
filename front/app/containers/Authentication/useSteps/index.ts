@@ -34,7 +34,6 @@ import {
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
-const hasRefetchedAuthUserAfterRedirect = false;
 
 export default function useSteps() {
   const { pathname, search } = useLocation();

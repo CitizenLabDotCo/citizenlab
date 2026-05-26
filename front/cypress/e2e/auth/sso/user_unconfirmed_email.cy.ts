@@ -25,7 +25,7 @@ describe('SSO: user with unconfirmed email', () => {
     confirmEmail(cy);
   });
 
-  it.only('allows user to change email', () => {
+  it('allows user to change email', () => {
     fakeSSOSignup(cy, 'tracy_smith');
 
     // Go to change email screen
@@ -33,7 +33,8 @@ describe('SSO: user with unconfirmed email', () => {
 
     // Enter new email and continue
     const newEmail = randomEmail();
-    enterEmail(cy, newEmail);
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(newEmail);
+    cy.get('#e2e-built-in-fields-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);
