@@ -15,6 +15,8 @@ import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/use
 
 import useLocale from 'hooks/useLocale';
 
+import A11yTable from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
+
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +28,7 @@ import PreviousQuarterComparison from './components/PreviousQuarterComparison';
 import TotalCountsSentimentBar from './components/TotalCountsSentimentBar';
 import messages from './messages';
 import {
+  buildHealthScoreA11yTable,
   categoryColors,
   filterDataBySelectedQuarter,
   getQuarterFilter,
@@ -38,6 +41,7 @@ type Props = {
   quarter?: string;
   year?: string;
 };
+
 const HealthScoreWidget = ({
   phaseId,
   ariaDescribedBy,
@@ -73,6 +77,11 @@ const HealthScoreWidget = ({
   // Get the current overall health score
   const currentOverallHealthScore = sentimentScores?.overallHealthScores.find(
     (score) => score.period === `${year}-${quarter}`
+  );
+
+  const { columns, data: A11yTableData } = buildHealthScoreA11yTable(
+    sentimentScores,
+    formatMessage
   );
 
   return (
@@ -154,6 +163,12 @@ const HealthScoreWidget = ({
           quarter={quarter}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={A11yTableData}
+        caption={formatMessage(messages.healthScoreTableCaption)}
+      />
     </Box>
   );
 };
