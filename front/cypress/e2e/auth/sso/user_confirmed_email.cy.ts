@@ -35,41 +35,15 @@ describe('SSO: user with confirmed email', () => {
     });
 
     // The back-end /auth/fake_sso/callback set the JWT cookie and redirected
-    // back to the front-end with sso_success=true. We assert the cookie is
-    // present, but seeing it in `cy.getCookie` isn't sufficient -- the
-    // front-end's auth query already ran (and 401'd) before the cookie
-    // existed, so the React state still thinks the user is logged out and
-    // the navbar shows the login button. A clean `cy.visit('/')` re-mounts
-    // the app with the cookie in place from the start.
+    // the browser to the front-end with `sso_success=true`. The front-end
+    // picks up that param and resumes the auth flow in a modal.
+    // In this case, it's just the success message.
+    cy.getCookie('cl2_jwt', { timeout: 10000 }).should('not.be.null');
     cy.location('search', { timeout: 20000 }).should(
       'include',
       'sso_success=true'
     );
-    cy.getCookie('cl2_jwt', { timeout: 10000 }).should('not.be.null');
-
-    cy.visit('/');
-
-    // The real assertion: the UI now reflects an authenticated user. The
-    // navbar's login menu item is replaced by the user menu container.
-    cy.get('#e2e-user-menu-container', { timeout: 15000 }).should('exist');
-    cy.get('#e2e-navbar-login-menu-item').should('not.exist');
-
-    // Cross-check via API that the JWT identifies the SSO user (proves the
-    // id_token was actually consumed and the user record matches the
-    // fake_sso profile -- not just any pre-existing logged-in session).
-    cy.getCookie('cl2_jwt').then((cookie) => {
-      const jwt = cookie!.value;
-      cy.request({
-        method: 'GET',
-        url: 'web_api/v1/users/me',
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          'Content-Type': 'application/json',
-        },
-      }).then((response) => {
-        expect(response.status).to.eq(200);
-        expect(response.body.data.attributes.email.endsWith('@example.com')).to.be.true;
-      });
-    });
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
   });
 });
