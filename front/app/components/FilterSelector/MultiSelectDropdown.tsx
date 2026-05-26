@@ -1,4 +1,4 @@
-import React, { useRef, KeyboardEvent, FormEvent } from 'react';
+import React, { useRef, KeyboardEvent, FormEvent, useEffect } from 'react';
 
 import {
   Dropdown,
@@ -87,7 +87,6 @@ export interface SelectorProps {
   closeExpanded: () => void;
   textColor?: string;
   currentTitle: string | JSX.Element;
-  handleKeyDown?: (event: KeyboardEvent) => void;
   isLoading?: boolean;
 }
 
@@ -121,7 +120,6 @@ const MultiSelectDropdown = ({
   closeExpanded,
   textColor,
   currentTitle,
-  handleKeyDown,
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
@@ -146,24 +144,40 @@ const MultiSelectDropdown = ({
 
     switch (key) {
       case 'ArrowDown':
+        event.preventDefault();
         if (!opened) {
-          handleKeyDown?.(event);
+          // ArrowDown on the closed trigger opens the list, same as Enter.
+          toggleValuesList();
           return;
         }
-        event.preventDefault();
         // From the trigger (no data-index), jump into the list at item 0.
         // From a list item, navigate to next (circular 0,1,2,3,...,0).
         tabsRef.current[isNaN(index) ? 0 : (index + 1) % totalItems]?.focus();
         break;
 
       case 'ArrowUp':
-        if (!opened) return;
         event.preventDefault();
+        if (!opened) {
+          toggleValuesList();
+          return;
+        }
         // From the trigger, jump to the last item.
         // From a list item, navigate to previous (circular ...,3,2,1,0,3).
         tabsRef.current[
           isNaN(index) ? totalItems - 1 : (index - 1 + totalItems) % totalItems
         ]?.focus();
+        break;
+
+      case 'Home':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[0]?.focus();
+        break;
+
+      case 'End':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[totalItems - 1]?.focus();
         break;
 
       case 'Enter':
@@ -189,8 +203,15 @@ const MultiSelectDropdown = ({
         break;
     }
   };
+  useEffect(() => {
+    if (opened) {
+      focusTrigger();
+    }
+  }, [opened]);
 
   const handleOnClickOutside = (event: FormEvent) => {
+    // Skip trigger clicks — its onClick already toggles, otherwise it'd reopen immediately.
+    if (triggerRef.current?.contains(event.target as Node)) return;
     onClickOutside?.(event);
   };
 
