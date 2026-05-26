@@ -25,7 +25,7 @@ describe('Change email in profile', () => {
     cy.visit('/profile/edit');
   }
 
-  it('allows changing the email during sign-up', () => {
+  it('allows changing the email', () => {
     const password = randomString();
     signUpAndGoToProfile(password);
 
@@ -71,7 +71,31 @@ describe('Change email in profile', () => {
     cy.get('.e2e-error-message')
       .first()
       .should('contain.text', 'This email is already in use.');
-  })
+  });
+
+  it('allows resending code', () => {
+    signUpAndGoToProfile();
+
+    // Click 'Change email' button
+    cy.get('a[href="/en/profile/change-email"]').click();
+
+    // Enter new email
+    const newEmail = randomEmail();
+    cy.get('input[name="email"]').type(newEmail);
+    cy.dataCy('change-email-submit-button').click();
+
+    // Re-request code
+    cy.dataCy('resend-code').click();
+    cy.get('#e2e-authentication-modal').should('include.text', 'New code sent');
+
+    // Confirm email
+    confirmEmail(cy);
+
+    // Verify change was successful
+    cy.get('.e2e-success-message')
+      .first()
+      .should('contain.text', 'Your email has been successfully updated.');
+  });
 
   it('is possible to exit flow without getting in a weird limbo', () => {
     signUpAndGoToProfile();
