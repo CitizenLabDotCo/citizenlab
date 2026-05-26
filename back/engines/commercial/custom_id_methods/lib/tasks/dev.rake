@@ -89,6 +89,14 @@ DEV_ID_METHOD_CONFIGS = {
     'ui_method_name' => 'ACM',
     'enabled_for_verified_actions' => true
   },
+  'federa' => {
+    'name' => 'federa',
+    'environment' => 'test',
+    'spid_level' => '1',
+    'certificate' => ENV.fetch('DEFAULT_ID_FEDERA_CERTIFICATE', 'fake certificate'),
+    'private_key' => ENV.fetch('DEFAULT_ID_FEDERA_PRIVATE_KEY', 'fake private key'),
+    'enabled_for_verified_actions' => true
+  },
 
   # Verification-only methods (cannot be used for login/SSO).
   'cow' => {
@@ -107,6 +115,18 @@ DEV_ID_METHOD_CONFIGS = {
     'card_id_placeholder' => 'xx-xxxxx-xx',
     'card_id_tooltip' => 'You can find this number on you ID card. We check your number without storing it.',
     'explainer_image_url' => 'http://localhost:4000/id_card_explainer.jpg'
+  },
+  'gent_rrn' => {
+    'name' => 'gent_rrn',
+    'api_key' => ENV.fetch('DEFAULT_ID_GENT_RRN_API_KEY', 'fake key'),
+    'environment' => 'dv',
+    'custom_field_key' => 'gent_wijk',
+    'wijk_mapping' => {}
+  },
+  'oostende_rrn' => {
+    'name' => 'oostende_rrn',
+    'api_key' => ENV.fetch('DEFAULT_ID_OOSTENDE_RRN_API_KEY', 'fake key'),
+    'environment' => 'dv'
   },
 
   # Login-only SSO methods (cannot be used for identity verification).
