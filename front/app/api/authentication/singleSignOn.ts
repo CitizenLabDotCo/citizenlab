@@ -9,6 +9,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import { trackVirtualPageView } from 'utils/analytics';
+import { getJwt } from 'utils/auth/jwt';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -45,6 +46,9 @@ export interface SSOParams {
   // registration flow when there is BE support
   verification_success?: string;
   claim_tokens?: string[];
+  // JWT of the currently-logged-in user, so the backend can attach the
+  // verified identity to their existing account instead of creating a new one.
+  token?: string;
 }
 
 export const redirectToSSOProvider = (
@@ -87,6 +91,7 @@ function setHref(
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
     claim_tokens: claimTokens,
+    token: getJwt() ?? undefined,
   };
 
   // NOTE: SSO passthru params are not currently called for Vienna SAML login
