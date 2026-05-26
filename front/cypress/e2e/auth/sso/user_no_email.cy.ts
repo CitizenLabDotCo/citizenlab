@@ -24,9 +24,9 @@ describe('SSO: user without email', () => {
     cy.get('#e2e-authentication-modal').get('input[type="email"]').type(existingEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
-    expect(
-      cy.get('#e2e-authentication-modal')
-    ).to.include.text('An account with this email already exists');
+    cy.get(
+      '#e2e-authentication-modal'
+    ).should('include.text', 'An account with this email already exists');
   });
 
   it('allows user to re-request a code', () => {
