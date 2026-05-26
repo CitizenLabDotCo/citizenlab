@@ -26,18 +26,17 @@ module CustomIdMethods::Federa
     }.freeze
 
     def profile_to_user_attrs(auth)
-      attrs = auth.dig(:extra, :raw_info).to_h
+      attrs = unwrap_attrs(auth)
 
       custom_field_values = {}
 
-      # Handle birthyear
-      birthdate = auth.extra.raw_info['dataNascita']
+      birthdate = attrs['dataNascita']
       if birthdate.present? && CustomField.find_by(key: 'birthyear')
         custom_field_values['birthyear'] = Date.parse(birthdate).year
       end
 
-      # Handle municipality_code
-      municipality_code = auth.extra.raw_info['comuneDomicilio']
+      # NOTE: Attribute not currently returned by Federa
+      municipality_code = attrs['comuneDomicilio']
       if municipality_code.present? && CustomField.find_by(key: 'municipality_code')
         custom_field_values['municipality_code'] = municipality_code
       end
@@ -51,8 +50,8 @@ module CustomIdMethods::Federa
     end
 
     def profile_to_uid(auth)
-      attrs = auth.dig(:extra, :raw_info).to_h
-      attrs['codiceIdentificativoSPID'] || attrs['codiceFiscale']
+      attrs = unwrap_attrs(auth)
+      attrs['spidCode'] || attrs['CodiceFiscale']
     end
 
     def omniauth_setup(configuration, env)
@@ -126,6 +125,15 @@ module CustomIdMethods::Federa
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    private
+
+    # SAML attributes are inherently multi-valued, so ruby-saml exposes every
+    # value as an array (e.g. `"nome" => ["Paolo"]`). FedERa only ever sends one
+    # value per attribute, so we flatten to the first element for ergonomic access.
+    def unwrap_attrs(auth)
+      auth.dig(:extra, :raw_info).to_h.transform_values { |v| Array.wrap(v).first }
     end
   end
 end
