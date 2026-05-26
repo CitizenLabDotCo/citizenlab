@@ -25,7 +25,6 @@ const PAGE_MARGIN_MM = 15;
 const SECTION_GAP_MM = 4;
 const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
-const FONTS_READY_TIMEOUT_MS = 3_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
@@ -204,25 +203,11 @@ export default function useInsightsPdfDownload({
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
 
-      // Wait for fonts after the hidden subtree has rendered — it triggers
-      // font fetches that aren't pending when this function starts.
-      await Promise.race([
-        document.fonts.ready,
-        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
-      ]);
-
       // snapdom's font/style cache is cold on first capture in a fresh module
-      // instance, which makes the first 2–3 sections rasterize without text
-      // (HTML and SVG). Warm the cache for the whole hidden subtree before
-      // entering the per-section loop so every capture has fonts available.
+      // instance, which makes the first 2–3 sections rasterize without text.
+      // Walk the subtree to populate the style/font cache for every face the
+      // hidden DOM uses.
       await preCache(container, { embedFonts: true });
-
-      // preCache can itself trigger font fetches when it walks the subtree.
-      // Wait once more so the first toCanvas call has every face loaded.
-      await Promise.race([
-        document.fonts.ready,
-        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
-      ]);
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
@@ -240,6 +225,21 @@ export default function useInsightsPdfDownload({
       if (sections.length === 0) {
         throw new Error('No PDF sections found in hidden container');
       }
+
+      // preCache populates style/font data but doesn't exercise the rasterizer
+      // pipeline. The first real toCanvas call still sometimes produces
+      // text-less output on a cold module. Run one throwaway capture on the
+      // first section so the SVG → Image → canvas path has run end-to-end
+      // before the real loop starts.
+      await captureWithTimeout(
+        () =>
+          snapdom.toCanvas(sections[0], {
+            scale: CAPTURE_SCALE,
+            backgroundColor: colors.white,
+            embedFonts: true,
+          }),
+        SECTION_TIMEOUT_MS
+      );
 
       safeSetStatus('capturing');
       safeSetProgress({ completed: 0, total: sections.length });
