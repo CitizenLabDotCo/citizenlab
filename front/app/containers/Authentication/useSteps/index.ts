@@ -5,7 +5,6 @@ import getAuthenticationRequirements from 'api/authentication/authentication_req
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { SSOParams } from 'api/authentication/singleSignOn';
-import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { useModalQueue } from 'containers/App/ModalQueue';
@@ -35,7 +34,7 @@ import {
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
-let hasRefetchedAuthUserAfterRedirect = false;
+const hasRefetchedAuthUserAfterRedirect = false;
 
 export default function useSteps() {
   const { pathname, search } = useLocation();
@@ -146,7 +145,7 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = (async (...args) => {
+      const wrappedAction = (async (...args: any[]) => {
         setError(null);
         setLoading(true);
 
@@ -228,27 +227,6 @@ export default function useSteps() {
 
     // authUser === undefined means the request is still loading
     if (authUser === undefined) return;
-
-    // authUser === null means the request has loaded and there is no authenticated user
-    // but this is not possible if the SSO/verification redirect was successful.
-    // So in this case, what might have happened is that the cookie was set after the authUser query ran.
-    // In this case, we will refetch the authUser.
-    // This situation might only happen with cypress, but in any case, this will make everything more
-    // resilient to the timing of the authUser query and the redirect flow.
-    // We also use the hasRefetchedAuthUserAfterRedirect to make sure
-    // this does not become some infinite loop.
-    if (
-      authUser === null &&
-      !hasRefetchedAuthUserAfterRedirect &&
-      (
-        search.sso_success === 'true' ||
-        search.verification_success === 'true'
-      )
-    ) {
-      queryClient.invalidateQueries({ queryKey: meKeys.all() });
-      hasRefetchedAuthUserAfterRedirect = true;
-      return;
-    }
 
     initialized = true;
     if (currentStep !== 'closed') return;
@@ -366,6 +344,7 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
+
       const emailInCaseUserNeedsToConfirm =
         authUser?.data.attributes.new_email ?? null;
 

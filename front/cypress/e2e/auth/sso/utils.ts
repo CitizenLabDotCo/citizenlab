@@ -18,8 +18,9 @@ export const fakeSSOSignup = (cy: Cypress.Chainable, profileName: ProfileName) =
   cy.get('#e2e-login-with-fake-sso').click();
 
   // Browser is now on the fake_sso authorize page.
-  cy.origin(FAKE_SSO_ORIGIN, () => {
-    cy.get('select#profile-select').select('john_doe');
+  cy.origin(FAKE_SSO_ORIGIN, { args: { profileName } }, ({ profileName }) => {
+    cy.get('select#profile-select').select(profileName);
+    cy.get('select#profile-select').should('have.value', profileName);
     cy.get('#submit-button').click();
   });
 
@@ -31,4 +32,10 @@ export const fakeSSOSignup = (cy: Cypress.Chainable, profileName: ProfileName) =
     'include',
     'sso_success=true'
   );
+
+  // Unfortunate that we have to do this, but cypress
+  // is just super weird and slow with cookies. After
+  // reloading the page the cookies are properly set and the user
+  // will be logged in correctly
+  cy.reload();
 }
