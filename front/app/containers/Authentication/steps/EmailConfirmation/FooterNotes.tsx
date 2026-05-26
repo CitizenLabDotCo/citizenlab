@@ -53,7 +53,7 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
       <FormattedMessage {...messages.didntGetAnEmail} />
 
       {codeResent ? (
-        <FooterNoteSuccessMessage>
+        <FooterNoteSuccessMessage data-cy="confirmation-code-sent-message">
           <FooterNoteSuccessMessageIcon name="check-circle" />
           <FormattedMessage {...messages.confirmationCodeSent} />
         </FooterNoteSuccessMessage>

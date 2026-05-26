@@ -86,7 +86,7 @@ describe('Change email in profile', () => {
 
     // Re-request code
     cy.dataCy('resend-code').click();
-    cy.get('#e2e-authentication-modal').should('include.text', 'New code sent');
+    cy.dataCy('confirmation-code-sent-message').should('be.visible');
 
     // Confirm email
     confirmEmail(cy);
