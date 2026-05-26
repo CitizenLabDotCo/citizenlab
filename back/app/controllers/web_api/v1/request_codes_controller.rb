@@ -38,7 +38,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     new_email_with_fallback = new_email.presence || current_user.new_email
 
     RequestNewEmailConfirmationCodeJob.perform_now(
-      current_user, 
+      current_user,
       new_email: new_email_with_fallback
     )
 
