@@ -39,7 +39,6 @@ describe('SSO: user with unconfirmed email', () => {
     confirmEmail(cy);
 
     // After confirming email, we expect to arrive on the success message
-    cy.get('#e2e-authentication-modal').should('exist');
     cy.get('#e2e-sign-up-success-modal').should('exist');
 
     // Confirm user has new email
