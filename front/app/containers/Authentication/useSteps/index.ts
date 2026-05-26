@@ -361,7 +361,7 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
-      updateState({ flow, email: authUser.data.attributes.email ?? null });
+      updateState({ flow, email: authUser?.data.attributes.email ?? null });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       // Check that the path is the same as the one stored in local storage
