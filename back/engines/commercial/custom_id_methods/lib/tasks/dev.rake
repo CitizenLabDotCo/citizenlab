@@ -219,8 +219,6 @@ namespace :dev do
       settings['verification']['enabled'] = true
       settings['verification']['allowed'] = true
       settings['verification']['verification_methods'] = methods
-      # Fake SSO has its own feature flag and ships with a ready-made verified-actions scenario.
-      settings['fake_sso']['enabled'] = true if names.include?('fake_sso')
       AppConfiguration.instance.update!(settings: settings)
 
       setup_verified_actions_test_data if names.include?('fake_sso')
