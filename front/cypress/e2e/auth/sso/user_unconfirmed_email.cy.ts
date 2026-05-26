@@ -43,7 +43,7 @@ describe('SSO: user with unconfirmed email', () => {
     cy.get('#e2e-sign-up-success-modal').should('exist');
 
     // Confirm user has new email
-    cy.getAdminAuthUser().then((user) => {
+    cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.equal(newEmail);
     })
   });
