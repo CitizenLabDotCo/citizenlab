@@ -7,6 +7,10 @@ import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable, { Column } from '../../_shared/A11yTable';
+import messages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 
 import {
@@ -32,6 +36,24 @@ const Narrow = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'visitors',
+      label: formatMessage(messages.visitorsColumn),
+    },
+    {
+      key: 'visits',
+      label: formatMessage(messages.visitsColumn),
+    },
+  ];
+
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && (
@@ -87,6 +109,11 @@ const Narrow = ({
           {...accessibilityProps}
         />
       </Box>
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.visitorsCaption)}
+      />
     </Box>
   );
 };

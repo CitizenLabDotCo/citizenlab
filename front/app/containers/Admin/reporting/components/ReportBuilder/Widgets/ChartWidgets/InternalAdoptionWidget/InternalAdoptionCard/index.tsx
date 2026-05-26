@@ -6,12 +6,16 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/InternalAdoptionCard/Chart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
 import NoData from '../../../_shared/NoData';
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import chartWidgetMessages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Props } from '../typings';
 import useInternalAdoption from '../useInternalAdoption';
 
+import messages from './messages';
 import { Statistics } from './Statistics';
 
 const InternalAdoptionCard = ({
@@ -32,8 +36,29 @@ const InternalAdoptionCard = ({
     compare_start_at: compareStartAt,
     compare_end_at: compareEndAt,
   });
+  const { formatMessage } = useIntl();
 
   const previousDays = getDaysInRange(startAt, endAt);
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateCoulmn),
+      type: 'date',
+    },
+    {
+      key: 'activeAdmins',
+      label: formatMessage(messages.activeAdminColumn),
+    },
+    {
+      key: 'activeModerators',
+      label: formatMessage(messages.activeModeratorColumn),
+    },
+    {
+      key: 'totalActive',
+      label: formatMessage(messages.totalActiveColumn),
+    },
+  ];
 
   if (
     stats?.admins.active === 0 &&
@@ -79,6 +104,12 @@ const InternalAdoptionCard = ({
           ariaDescribedBy={ariaDescribedBy}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.InternalAdoptionCaption)}
+      />
     </Box>
   );
 };
