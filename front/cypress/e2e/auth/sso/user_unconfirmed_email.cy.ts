@@ -1,6 +1,6 @@
 import { randomEmail } from '../../../support/commands';
 import { fakeSSOSignup } from './utils';
-import { confirmEmail, enterEmail } from '../../../support/auth';
+import { confirmEmail } from '../../../support/auth';
 
 describe('SSO: user with unconfirmed email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
@@ -43,6 +43,8 @@ describe('SSO: user with unconfirmed email', () => {
     cy.get('#e2e-sign-up-success-modal').should('exist');
 
     // Confirm user has new email
-    cy.getAuthUser().its('data.attributes.email').should('equal', newEmail);
+    cy.getAdminAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.equal(newEmail);
+    })
   });
 });
