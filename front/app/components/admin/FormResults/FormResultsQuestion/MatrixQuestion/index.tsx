@@ -100,6 +100,7 @@ const MatrixQuestion = ({ result }: Props) => {
                             my="auto"
                             fontSize="s"
                             color={percentage >= 75 ? 'white' : 'textPrimary'}
+                            fontWeight="semi-bold"
                           >
                             {`${percentage}%`}
                           </Text>
