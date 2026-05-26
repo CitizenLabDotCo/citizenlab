@@ -1,88 +1,45 @@
-import {
-  getQuarterFilter,
-  getYearFilter,
-} from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
-
 import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
-jest.mock(
-  'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils',
-  () => {
-    const actual = jest.requireActual(
-      'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils'
-    );
-    return {
-      ...actual,
-      getYearFilter: jest.fn(),
-      getQuarterFilter: jest.fn(),
-    };
-  }
-);
-
 describe('getPublishedAtFromFilter', () => {
-  it('returns correct start date for Q1', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2025');
-    (getQuarterFilter as jest.Mock).mockReturnValue('1');
-
-    const result = getPublishedAtFromFilter(undefined, undefined);
-    expect(result).toBe('2025-01-01');
+  it('returns the first day of Q1 when both params are provided', () => {
+    expect(getPublishedAtFromFilter('2025', '1')).toBe('2025-01-01');
   });
 
-  it('returns correct start date for Q3', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue('3');
-
-    const result = getPublishedAtFromFilter(undefined, undefined);
-    expect(result).toBe('2024-07-01');
+  it('returns the first day of Q3 when both params are provided', () => {
+    expect(getPublishedAtFromFilter('2024', '3')).toBe('2024-07-01');
   });
 
-  it('returns undefined when year is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue(null);
-    (getQuarterFilter as jest.Mock).mockReturnValue('2');
-
-    const result = getPublishedAtFromFilter(undefined, undefined);
-    expect(result).toBeUndefined();
+  it('returns undefined when yearParam is undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter(undefined, '1')).toBeUndefined();
   });
 
-  it('returns undefined when quarter is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue(null);
+  it('returns undefined when quarterParam is undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter('2025', undefined)).toBeUndefined();
+  });
 
-    const result = getPublishedAtFromFilter(undefined, undefined);
-    expect(result).toBeUndefined();
+  it('returns undefined when both params are undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter(undefined, undefined)).toBeUndefined();
   });
 });
 
 describe('getPublishedAtToFilter', () => {
-  it('returns correct end date for Q1', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2025');
-    (getQuarterFilter as jest.Mock).mockReturnValue('1');
-
-    const result = getPublishedAtToFilter(undefined, undefined);
-    expect(result).toBe('2025-03-31');
+  it('returns the last day of Q1 when both params are provided', () => {
+    expect(getPublishedAtToFilter('2025', '1')).toBe('2025-03-31');
   });
 
-  it('returns correct end date for Q4', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2023');
-    (getQuarterFilter as jest.Mock).mockReturnValue('4');
-
-    const result = getPublishedAtToFilter(undefined, undefined);
-    expect(result).toBe('2023-12-31');
+  it('returns the last day of Q4 when both params are provided', () => {
+    expect(getPublishedAtToFilter('2023', '4')).toBe('2023-12-31');
   });
 
-  it('returns undefined when year is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue(null);
-    (getQuarterFilter as jest.Mock).mockReturnValue('2');
-
-    const result = getPublishedAtToFilter(undefined, undefined);
-    expect(result).toBeUndefined();
+  it('returns undefined when yearParam is undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter(undefined, '1')).toBeUndefined();
   });
 
-  it('returns undefined when quarter is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue(null);
+  it('returns undefined when quarterParam is undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter('2025', undefined)).toBeUndefined();
+  });
 
-    const result = getPublishedAtToFilter(undefined, undefined);
-    expect(result).toBeUndefined();
+  it('returns undefined when both params are undefined (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter(undefined, undefined)).toBeUndefined();
   });
 });
