@@ -95,6 +95,7 @@ export const sharedSteps = (
           prefilledBuiltInFields: null,
           ssoProvider: null,
           claimTokens: null,
+          flow
         });
 
         const { requirements, disabled_reason } = await getRequirements();
