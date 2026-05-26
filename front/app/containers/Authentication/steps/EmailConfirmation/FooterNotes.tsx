@@ -58,7 +58,10 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
           <FormattedMessage {...messages.confirmationCodeSent} />
         </FooterNoteSuccessMessage>
       ) : (
-        <FooterNoteLink onClick={onResendCode}>
+        <FooterNoteLink
+          onClick={onResendCode}
+          data-cy="resend-code"
+        >
           <FormattedMessage {...messages.sendNewCode} />
         </FooterNoteLink>
       )}
