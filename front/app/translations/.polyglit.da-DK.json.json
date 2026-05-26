@@ -3214,6 +3214,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:08:07.690606Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:08:07.690606Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -8858,6 +8868,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeasShow.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:08:07.690606Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.IdeasShow.commentCTA": {
     "state": "verified",

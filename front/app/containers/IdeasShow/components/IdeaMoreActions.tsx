@@ -9,6 +9,8 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import SpamReportForm from 'containers/SpamReport';
 
 import Modal from 'components/UI/Modal';
@@ -38,6 +40,7 @@ interface Props {
 
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const [isSpamModalVisible, setIsSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
@@ -57,6 +60,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     action: 'edit',
     context: idea,
   });
+
+  const ideaTitle = localize(idea.attributes.title_multiloc);
 
   const openSpamModal = () => {
     setIsSpamModalVisible(true);
@@ -119,6 +124,9 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
               showLabel={false}
               actions={actions}
               ref={moreActionsButtonRef}
+              ideaTitle={formatMessage(messages.actionsMenuTitle, {
+                ideaTitle,
+              })}
             />
           </MoreActionsMenuWrapper>
           <Modal
