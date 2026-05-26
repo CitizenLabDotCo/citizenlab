@@ -1,9 +1,4 @@
 {
-  "app.components.EsriMap.mapAriaLabel": {
-    "state": "verified",
-    "verified_at": "2026-05-18T09:20:44.936951Z",
-    "verified_by": "kielgast@govocal.com"
-  },
   "EmailSettingsPage.emailSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -1134,6 +1129,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-18T09:20:44.936951Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -1353,6 +1353,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:09:14.080696Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -2498,6 +2503,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T08:09:48.671649Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T07:05:16.444137Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
@@ -6474,6 +6489,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:09:14.080696Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -6518,6 +6538,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-26T10:09:14.080696Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -6648,16 +6673,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
-  },
-  "app.components.ProjectCard.a11y_ctaForProject": {
-    "state": "verified",
-    "verified_at": "2026-05-07T08:09:48.671649Z",
-    "verified_by": "kielgast@govocal.com"
-  },
-  "app.components.ProjectCard.a11y_ctaForProject1": {
-    "state": "verified",
-    "verified_at": "2026-05-08T07:05:16.444137Z",
-    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Comments.childCommentBodyPlaceholder": {
     "state": "verified",
@@ -9489,11 +9504,6 @@
     "verified_at": "2026-04-24T10:50:26.324675Z",
     "verified_by": "kielgast@govocal.com"
   },
-  "app.containers.footer.goVocalLogoTitle": {
-    "state": "verified",
-    "verified_at": "2026-05-11T11:49:31.249789Z",
-    "verified_by": "kielgast@govocal.com"
-  },
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -11808,6 +11818,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-11T11:49:31.249789Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",
