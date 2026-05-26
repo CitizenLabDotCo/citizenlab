@@ -75,7 +75,7 @@ describe('FolderMoreActionsMenu', () => {
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
     await user.click(threeDotsButton);
 
-    const deleteFolderButton = await screen.findByRole('button', {
+    const deleteFolderButton = await screen.findByRole('menuitem', {
       name: 'Delete folder',
     });
     await user.click(deleteFolderButton);
@@ -103,7 +103,7 @@ describe('FolderMoreActionsMenu', () => {
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
       await user.click(threeDotsButton);
 
-      const deleteFolderButton = await screen.findByRole('button', {
+      const deleteFolderButton = await screen.findByRole('menuitem', {
         name: 'Delete folder',
       });
       expect(deleteFolderButton).toBeInTheDocument();
