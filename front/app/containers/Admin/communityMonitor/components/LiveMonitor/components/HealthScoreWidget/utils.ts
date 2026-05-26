@@ -1,5 +1,5 @@
 import { colors, Locale } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
+import { FormatMessage } from 'typings';
 
 import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 
@@ -8,15 +8,8 @@ import {
   Row,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
 
-import { FormatMessageValues } from 'utils/cl-intl/useIntl';
-
 import messages from './messages';
 import { QuarterlyScores } from './types';
-
-type FormatMessage = (
-  messageDescriptor: MessageDescriptor,
-  values?: FormatMessageValues
-) => string;
 
 export const categoryColors = {
   overall: colors.orange500,

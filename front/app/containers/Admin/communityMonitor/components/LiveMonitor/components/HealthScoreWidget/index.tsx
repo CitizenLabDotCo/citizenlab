@@ -79,7 +79,7 @@ const HealthScoreWidget = ({
     (score) => score.period === `${year}-${quarter}`
   );
 
-  const { columns, data: A11ytableData } = buildHealthScoreA11yTable(
+  const { columns, data: A11yTableData } = buildHealthScoreA11yTable(
     sentimentScores,
     formatMessage
   );
@@ -166,7 +166,7 @@ const HealthScoreWidget = ({
 
       <A11yTable
         columns={columns}
-        data={A11ytableData}
+        data={A11yTableData}
         caption={formatMessage(messages.healthScoreTableCaption)}
       />
     </Box>
