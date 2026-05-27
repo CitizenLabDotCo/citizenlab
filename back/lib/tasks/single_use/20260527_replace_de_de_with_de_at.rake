@@ -86,9 +86,10 @@ namespace :single_use do
       # 2) Walk every JSON/JSONB column on every concrete model. The walker
       # finds `de-DE` hash keys at any nesting depth and rewrites them to
       # `de-AT` (when `de-AT` is absent or empty at that path).
+      json_column_types = %i[json jsonb].freeze
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
-          m.columns.any? { |c| %i[json jsonb].include?(c.type) }
+          m.columns.any? { |c| json_column_types.include?(c.type) }
       end
       puts "Found #{models.size} model(s) with JSON/JSONB columns.\n\n"
 
@@ -96,7 +97,7 @@ namespace :single_use do
       total_skipped = 0
 
       models.sort_by(&:name).each do |model|
-        json_columns = model.columns.select { |c| %i[json jsonb].include?(c.type) }
+        json_columns = model.columns.select { |c| json_column_types.include?(c.type) }
 
         json_columns.each do |column|
           attr = column.name
