@@ -6,7 +6,11 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/RegistrationsCard/Chart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
+import messages from '../messages';
 
 import {
   RegistrationsStatistic,
@@ -29,6 +33,20 @@ const Narrow = ({
     ariaLabel,
     ariaDescribedBy,
   };
+  const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'registrations',
+      label: formatMessage(messages.registrationsColumn),
+    },
+  ];
+
   return (
     <Box
       width="100%"
@@ -65,6 +83,12 @@ const Narrow = ({
           {...accessibilityProps}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.registrationCaption)}
+      />
     </Box>
   );
 };
