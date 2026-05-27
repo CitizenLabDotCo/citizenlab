@@ -20,6 +20,7 @@ const CENTRALIZED_METHODS: TVerificationMethodName[] = [
   'auth0',
   'clave_unica',
   'criipto',
+  'etat_lu',
   'fake_sso',
   'federa',
   'franceconnect',

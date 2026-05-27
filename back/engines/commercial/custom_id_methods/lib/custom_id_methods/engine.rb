@@ -31,6 +31,10 @@ module CustomIdMethods
       Verification.add_method(criipto)
       AuthenticationService.add_method('criipto', criipto)
 
+      etat_lu = CustomIdMethods::EtatLu::EtatLuOmniauth.new
+      AuthenticationService.add_method('etat_lu', etat_lu)
+      Verification.add_method(etat_lu)
+
       fake_sso = CustomIdMethods::FakeSso::FakeSsoOmniauth.new
       AuthenticationService.add_method('fake_sso', fake_sso)
       Verification.add_method(fake_sso)

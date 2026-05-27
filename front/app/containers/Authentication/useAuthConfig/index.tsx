@@ -64,6 +64,7 @@ export default function useAuthConfig() {
     hoplr: hasLoginMethod('hoplr'),
     idAustria: hasLoginMethod('id_austria'),
     criipto: hasLoginMethod('criipto'),
+    etatLu: hasLoginMethod('etat_lu'),
     nemlogIn: hasLoginMethod('nemlog_in'),
     keycloak: hasLoginMethod('keycloak') || providerForTest === 'keycloak',
     twoday: hasLoginMethod('twoday') || providerForTest === 'twoday',

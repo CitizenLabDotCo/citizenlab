@@ -13,6 +13,7 @@ export const verificationTypesLeavingPlatform = [
   'criipto',
   'bosa_fas',
   'clave_unica',
+  'etat_lu',
   'federa',
   'franceconnect',
   'nemlog_in',
@@ -29,6 +30,7 @@ export type TVerificationMethodName =
   | 'clave_unica'
   | 'cow'
   | 'criipto'
+  | 'etat_lu'
   | 'federa'
   | 'franceconnect'
   | 'gent_rrn'
@@ -171,6 +173,18 @@ export type IDIdAustriaMethod = {
   };
 };
 
+export type IDEtatLuMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'etat_lu';
+    method_metadata?: MethodMetadata;
+    login_method: boolean;
+    verification_method: boolean;
+    ui_method_name: string;
+  };
+};
+
 export type TVerificationMethod =
   | TGenericMethod
   | IDFakeSSOMethod
@@ -180,4 +194,5 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAcmMethod
   | IDAuth0Method
-  | IDIdAustriaMethod;
+  | IDIdAustriaMethod
+  | IDEtatLuMethod;

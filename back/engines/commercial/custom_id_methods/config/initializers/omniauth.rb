@@ -39,6 +39,13 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: CRIIPTO_SETUP_PROC, name: 'criipto', issuer: CustomIdMethods::Criipto::CriiptoOmniauth.new.method(:issuer)
 end
 
+ETAT_LU_SETUP_PROC = lambda do |env|
+  CustomIdMethods::EtatLu::EtatLuOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: ETAT_LU_SETUP_PROC, name: 'etat_lu', issuer: CustomIdMethods::EtatLu::EtatLuOmniauth.new.method(:issuer)
+end
+
 FAKE_SSO_SETUP_PROC = lambda do |env|
   CustomIdMethods::FakeSso::FakeSsoOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end

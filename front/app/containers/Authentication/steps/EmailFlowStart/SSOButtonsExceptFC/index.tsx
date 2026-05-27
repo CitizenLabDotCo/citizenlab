@@ -166,6 +166,18 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFedera} />
         </WrappedAuthProviderButton>
       )}
+      {ssoProviders.etatLu && (
+        <WrappedAuthProviderButton
+          icon="etat_lu"
+          authProvider="etat_lu"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage
+            {...sharedMessages.continueWithLoginMechanism}
+            values={{ loginMechanismName: 'eAccess' }}
+          />
+        </WrappedAuthProviderButton>
+      )}
       {ssoProviders.viennaCitizen && <ViennaSamlButton onClick={onClickSSO} />}
       {ssoProviders.google && (
         <WrappedAuthProviderButton

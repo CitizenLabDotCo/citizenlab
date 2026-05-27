@@ -20,6 +20,7 @@ export interface SSOProviderMap {
   hoplr: 'hoplr';
   id_austria: 'id_austria';
   criipto: 'criipto';
+  etat_lu: 'etat_lu';
   fake_sso: 'fake_sso';
   federa: 'federa';
   nemlog_in: 'nemlog_in';

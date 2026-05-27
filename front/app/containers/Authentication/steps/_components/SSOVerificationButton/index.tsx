@@ -87,6 +87,10 @@ const SSOVerificationButton = ({
       label: messages.verifyFedera,
       icon: 'shield-check',
     },
+    etat_lu: {
+      label: messages.verifyEtatLu,
+      icon: 'etat_lu',
+    },
   };
 
   const buttonConfig = verificationButtonConfigs[methodName];
