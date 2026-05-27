@@ -117,6 +117,225 @@ The Oslo workshop reached an aligned interim direction: allow **surveys to be cr
 
 ---
 
+## Concept model
+
+Across the platforms in this research, the same seven concepts recur under different names. This section names them, defines them, and pins down how they relate — both to each other and to Go Vocal's vocabulary. The names chosen below are Go Vocal-native where Go Vocal already has the concept, which is most of them.
+
+| Platform        | Project             | Activity               | Input               | Method               | Phase               | Timeline         | Folder     |
+| --------------- | ------------------- | ---------------------- | ------------------- | -------------------- | ------------------- | ---------------- | ---------- |
+| **Go Vocal**    | Project             | _(fused into Phase)_   | Idea                | Participation method | **Phase** _(fused)_ | Timeline         | Folder     |
+| Decidim         | Participatory Space | Component              | Proposal / Response | Component type       | Step / Phase        | (phase nav)      | —          |
+| Consul          | Advanced Process    | Module                 | Proposal / Comment  | Module type          | Phase               | —                | —          |
+| Citizen Space   | _(none)_            | Activity               | Response            | Activity type        | —                   | —                | Department |
+| EngagementHQ    | Project             | Tool                   | Submission          | Tool type            | Stage               | Lifecycle widget | —          |
+| Social Pinpoint | Project             | Widget / Tool          | Submission / Pin    | Widget type          | Stage               | Timeline widget  | —          |
+| Commonplace     | Engagement Hub      | Module (Tile)          | Comment / Pin       | Module type          | Milestone           | Timeline         | —          |
+| coUrbanize      | Project             | Tool (Tab)             | Comment / Pin       | Tool type            | —                   | (Updates feed)   | —          |
+| PublicInput     | Project             | tools on Page & Survey | Response            | tool type            | Step                | —                | Topic Page |
+| MetroQuest      | _(none)_            | Screen                 | Response            | Screen template      | —                   | —                | —          |
+| Konveio         | Document            | Tool                   | Annotation          | Tool type            | —                   | —                | (Plan Hub) |
+| Maptionnaire    | Project / Hub       | Module / Survey        | Response            | (mix)                | —                   | Timeline element | —          |
+
+Column headers are the cluster names used throughout this document. Cells show each platform's term; an em-dash means the concept doesn't exist on that platform; "(fused)" / "(none)" means the platform doesn't keep it as a distinct object. Note also that "tile", "tab", "card", "section" are not separate clusters — they are visual presentations of an Activity.
+
+### Project
+
+**Definition.** The top-level container for a single engagement effort. Has identity (title, banner, slug), a description, an owner/team, settings; usually the URL-addressable unit residents land on.
+
+**UX.** Each Project gets its own page — sometimes a full microsite. Listed and discovered from a homepage grid. The Project page is the primary surface from which residents reach everything else.
+
+**In Go Vocal today.** Maps directly. A Project has a title, description, slug, banner image, content-builder page, and a list of phases.
+
+**Relations.**
+
+- Contains many Activities (in competitor model) — or many Phases (in Go Vocal today).
+- Optionally has many Phases.
+- Optionally belongs to one Folder.
+- Optionally has one Timeline.
+- Has one or more input Forms (project-level for transitive methods, phase-level for non-transitive).
+
+**Variations.**
+
+- Decidim nests Projects under "Spaces" of different _kinds_ (Process, Assembly, Conference, Initiative), each typed with slightly different behaviour.
+- Commonplace calls it Engagement Hub — branding the multi-tool nature.
+- MetroQuest, Konveio, Maptionnaire collapse Project into the Activity itself — there is no separate container.
+- Citizen Space has no Project layer at all; the portfolio is flat at the Activity level.
+- PublicInput layers a higher-level Topic Page above Projects (overlapping with Folder).
+
+### Activity
+
+**Definition.** A single participation unit residents engage with — one survey, one ideation/comment thread, one map, one budget exercise, one document review. Carries its own state: open/close window, settings, permissions, results.
+
+**UX.** Surfaced on the Project page as a tab, tile, card, or section, each with its own CTA ("Take the survey," "Add your idea," "Pin a location"). Clicking the CTA usually opens the Activity's own interactive surface (the survey form, the ideas wall, the map).
+
+**In Go Vocal today.** **No standalone concept.** This role is filled by Phase: each Phase carries exactly one Activity (with one Method, in one time window). To run two Activities, you create two Phases.
+
+**Relations.**
+
+- Belongs to exactly one Project.
+- Has exactly one Method — a survey is a survey, not also an ideation.
+- In the competitor model, has **its own** optional start/end dates, independent of any Phase. This is the property that enables overlapping windows, always-on activities, and concurrent methods on one project.
+- Owns **one Form** (a set of Fields). Fields can have a public/private visibility axis — public Fields (title, body) make an Activity look like ideation; private Fields (admin-only) make it look like a survey. A single Form mixing both Field kinds spans that spectrum and collapses the most-requested "survey + ideation" parallel case into one richer Activity.
+- Owns its own **permissions** (who can perform the Activity's actions, what data they share, what verification they need). The set of available actions is determined by the Method; the rule layer is per-Activity. **Action descriptors** — the computed per-user runtime answer to "can I do this right now?" — are also Activity-scoped. Today these all live on Phase because Phase = Activity; unbundled, they follow Activity, and the action-descriptor surface multiplies (one set per Activity per user, rather than one set per Project).
+- Produces **Inputs** (see the Input cluster) and can reference Inputs produced by other Activities — this is what "transitivity" really is, a relationship between Activities rather than a Method-level flag.
+
+**Variations.**
+
+- Decidim Component is the most structured form: a typed component attached to a Space, with **per-Phase settings** so its behaviour changes across phases without the Component itself moving.
+- EngagementHQ Tools: each tab can hold multiple instances of the same Tool type (e.g. several Places maps).
+- Social Pinpoint Widgets: free-floating page components, drag-dropped into sections; can be pulled across projects.
+- Citizen Space Activity collapses with Project — there is no Project layer above.
+- MetroQuest Screen is an Activity-like unit but pipelined into one linear survey flow rather than free-floating alongside others.
+
+### Input
+
+**Definition.** The artifact a resident produces by engaging with an Activity — an idea, a survey response, a comment, a pin on a map, a vote, an annotation. Carries content (the Form submission), metadata (author, timestamp), and a lifecycle (Status).
+
+**UX.** Surfaced in lists, cards, or maps on the Activity's page. Often clickable to a detail page (e.g. an Idea page with its comments) or featured back into widgets ("most-reacted ideas"). Inputs are sometimes themselves participation surfaces — comments and reactions on an Idea can be modelled as Inputs that reference another Input.
+
+**In Go Vocal today.** Idea (the model name covers ideas, proposals, survey responses, and contributions of all methods that produce them). Has a `creation_phase`, can belong to multiple phases via `ideas_phases`, carries a `status` via `idea_status_id`, and stores the Form submission as JSON fields plus title/body.
+
+**Relations.**
+
+- An Input is produced by exactly one Activity (today: by exactly one `creation_phase`).
+- An Input can be _referenced_ by another Activity — e.g. a Voting Activity operates on Inputs produced by an Ideation Activity. This is what "transitivity" really is: a cross-Activity reference, not a Method-level flag.
+- An Input has at most one **Status** at a time, with a workflow.
+- Comments, reactions, and cosponsorships are themselves Inputs that point at another Input — or are modelled as attributes (Go Vocal makes the attribute choice; Decidim mixes the two).
+
+**Status (sub-concept of Input).** A label on an Input that evolves over time, on its own rhythm — independent of Project Phases. Transitions can be manual (an admin changes the status), automatic (Proposals' `reacting_threshold`, `expire_days_limit`), or scheduled. Today statuses are platform-scoped (`custom_idea_statuses` engine) and Method-dependent. This is a **per-Input lifecycle that runs underneath the per-Project Phase timeline** — every Input has its own status journey, and that journey is not bound to which Phase the project is currently in.
+
+**Variations.**
+
+- Decidim distinguishes Inputs by Component type: Proposals component produces Proposals, Surveys produces Responses, Debates produces Debate posts. Status workflows are per Component.
+- Consul: Inputs include Proposals, Comments, Debate posts, and Polls — each with its own status workflow.
+- Citizen Space: Inputs are Responses, typed against the question structure of the Activity.
+- EngagementHQ, Social Pinpoint: Inputs vary by Tool — Ideas, Submissions, Pins, Stories, Comments.
+- Konveio: Inputs are Annotations / Comments tied to a location in a PDF.
+- Most platforms treat **comments and reactions as Inputs in their own right**, which makes cross-Activity reporting and "track responses by a user across projects" (Feedback Cluster 6) much more natural than in Go Vocal's attribute-based model.
+
+### Method
+
+**Definition.** The kind of participation an Activity offers — survey, idea collection, voting, mapping, polling, debate, document annotation, budgeting, volunteering, information, etc. A type taxonomy.
+
+**UX.** Not directly visible to residents as a label — manifests as the _behaviour_ of the Activity (a survey looks like a survey). To admins, picked from a gallery / picker when creating an Activity.
+
+**In Go Vocal today.** **Participation method** — a string column on Phase, one of ~11 values (ideation, voting, native_survey, etc.). Each value maps to a `ParticipationMethod::*` Ruby class encoding capability flags, defaults, default form fields, and validations.
+
+**Relations.**
+
+- A Method is a _type_, not an instance — many Activities share one Method.
+- An Activity has exactly one Method, set at creation.
+- Methods carry capabilities and constraints (does it support commenting? voting? exports? toxicity detection?) that drive Activity validations and feature toggles.
+
+**Variations.**
+
+- Go Vocal: ~11 methods, tightly typed via Ruby classes, capability flags drive validations.
+- Decidim: ~10 component types; the open-source ecosystem supports custom ones.
+- EngagementHQ: 9 fixed Tool types, no extensibility for clients.
+- Social Pinpoint: claims 40+ tools — a broader, more granular catalog.
+- MetroQuest: 14 screen templates, each narrower (a question type rather than a full method).
+- Konveio blurs Method altogether — many tools can be embedded anywhere in a document.
+
+**Anomalies in Go Vocal's Method taxonomy.** Several of Go Vocal's ~11 Methods aren't really primitive Method types — they look more like presets, settings, or templates forced into the Method slot because the Phase-has-one-Method constraint leaves nowhere else to put them:
+
+- **Information** is not a participation Method at all — it is _a Phase with no Activity attached_. The Phase's description / content-builder content is what residents see. In the unbundled model, Information disappears as a Method.
+- **Voting** is better modelled as a per-Phase setting on an ideation-like Activity, à la Decidim — "creation enabled" in one Phase, "voting enabled" in another, operating on the same Inputs. Today it has to be its own Method because two settings cannot live on one Phase.
+- **Proposals** reads as a template / preset: ideation-like collection + voting + cosponsor Field + reacting threshold + expire-days + a specific status workflow. The cleaner taxonomy splits this into atomic Methods plus an Activity- or Project-level _template_ layer (Decidim agrees — Initiatives is its own Space _kind_, not a Component type).
+- **Commenting** is overloaded — half capability flag on certain Methods, half per-Phase toggle, welded to ideation-like Methods. Two flavours hide here: **comment-on-Input** (today's, embedded in ideation/proposals/voting) and **comment-on-Project** (Heist-op-den-Berg's ask, and a first-class Tool on most competitors). Both could be Activities in their own right.
+
+### Phase
+
+**Definition.** A labelled, time-bounded chunk of a Project's lifecycle — "Consultation," "Review," "Decision," "Implementation." In the abstract: a start, an end, a name, optionally a description. **This is the cluster where "having a start and end date" is the defining property.**
+
+**UX.** Communicated to residents via the Timeline (next cluster), sometimes labelled on the Project header ("Currently in: Consultation"). Phases set expectations about what is happening when.
+
+**In Go Vocal today.** Phase — but **Go Vocal's Phase carries four roles at once**: time segment (this cluster), Activity, Method, and Timeline entry. The pure time-segment role is fused with the other three. This fusion is the structural source of most parallel-participation gaps described in the rest of this document.
+
+**Relations.**
+
+- Belongs to one Project.
+- Has a start and an end date.
+- In the **competitor model**: a Phase does **not contain** Activities — Activities live on the Project; the Phase is a time-axis label.
+- In **Decidim**: a Phase carries per-Component **settings** — a Component is configured _for each Phase_ without changing which Component it is.
+- In **Go Vocal today**: a Phase contains exactly one Activity, one Method, one form-context — fused into the same record.
+- In the unbundled model, a Phase can hold **zero** Activities (the Information-style text-only Phase), **one** (today's case), or **many** (parallel participation); conversely, an Activity can have **zero** Phases (always-on), **one** (today), or **all** of them (the continuous survey). Today's "exactly one Activity per Phase" is the special case at the centre of that grid.
+- **Permissions are scoped to Phase today**, but this is a side-effect of the fusion: the actions being permitted belong to the Activity, not the time-segment. In the unbundled model, permissions follow Activity rather than Phase.
+
+**Variations.**
+
+- Decidim Step: pure time segment; one Step "active" at a time; settings vary by Step; sequential; can be open-ended.
+- Consul Advanced Process Phase: similar — phases group settings, freely combinable.
+- EngagementHQ Stage: not date-bound at all. Manually advanced by an admin. Pure status flag, decorative.
+- Social Pinpoint Stage: status (upcoming / active / complete) with optional date _as text_. Not enforced.
+- Commonplace Milestone: a dated point on the timeline, sometimes also a comms trigger.
+- Citizen Space, coUrbanize, MetroQuest, Konveio, Maptionnaire: no Phase concept.
+
+### Timeline
+
+**Definition.** The visual element that narrates project progress over time — a horizontal bar, a list of stages, a labelled track. Shows which Phase the project is in.
+
+**UX.** A widget placed on the Project page (top, sidebar, or both). Sometimes clickable to jump between Phase content. In the competitor model: a _narrative communication tool_. In Go Vocal: also the _navigation menu_ into participation, since each Phase carries the Activity.
+
+**In Go Vocal today.** Timeline — rendered automatically from the Project's Phases. The active Phase is highlighted based on the wall clock. Clicking a Phase opens that Phase's participation surface.
+
+**Relations.**
+
+- A Project has at most one Timeline.
+- A Timeline displays many Phases.
+- In **competitor model**: the Timeline is structurally independent of Activities — they don't appear on it.
+- In **Go Vocal today**: Timeline ⇄ Phase is tight — a Phase _is_ a Timeline entry, and Timeline state derives from Phase dates.
+
+**Variations.**
+
+- Go Vocal Timeline: dates-as-truth, computed active Phase, gates participation.
+- EngagementHQ Lifecycle: stage names only, no dates, manually advanced.
+- Social Pinpoint Timeline: stages with optional date text, manually marked active / complete.
+- Commonplace project timeline: milestones with dates; can trigger comms reminders.
+- Decidim and Consul: phase navigators, visually less prominent.
+- **Notable variant — the "double Timeline":** clients sometimes maintain a static _initiative timeline_ (e.g. a banner image showing construction milestones) in parallel with the platform's _engagement timeline_. Lejre is the concrete example. This suggests Timeline-as-narrative might itself split into two flavours: participation-driven and project-driven.
+
+### Folder
+
+**Definition.** A grouping above the Project — a container for related Projects under one umbrella. Used for organisation, navigation, and sometimes shared access.
+
+**UX.** Surfaced as a card on the homepage, a section in a project list, sometimes its own page with description and a list of the Projects inside.
+
+**In Go Vocal today.** Folder. A Project belongs to zero or one Folder. Folders have a title, description, image. Currently no nesting (folders-in-folders is a recurring feedback ask).
+
+**Relations.**
+
+- Contains many Projects.
+- A Project belongs to zero or one Folder.
+- Folders do not currently have a Timeline or a Method — but Feedback Cluster 7 wants Timeline at folder level.
+- Folders do not currently aggregate analytics — Feedback Cluster 6 wants folder-level reporting.
+
+**Variations.**
+
+- PublicInput "Project Group / Topic Page": a stronger version — the Topic Page itself can carry a Timeline spanning the Projects underneath, effectively pulling the Timeline concept up a level.
+- Citizen Space Department / Workspace: primarily an access-control grouping, not a navigational unit.
+- Decidim, Consul: no real Folder; multiple Spaces are listed by type.
+- Most platforms: limited or no grouping above the Project. Go Vocal's Folder is, in this comparison, relatively rich.
+
+### The fusion in Go Vocal
+
+The single fact that explains most of the friction in the rest of this document is that **Go Vocal's Phase carries four roles simultaneously**: a Phase _and_ an Activity _and_ exactly one Method _and_ one Timeline entry — one record, four responsibilities. A second-order symptom: because every Phase _must_ carry a Method, several of Go Vocal's "Methods" (Information, Voting, Proposals, partly Commenting) are not really primitive Method types but presets, settings, or templates squeezed into the Method slot for lack of a better home.
+
+Every other parallel-participation-capable platform separates at least Activity from Phase. Decidim — the platform whose model most resembles Go Vocal — keeps them as distinct objects related by _per-Phase settings_, not by membership. Inputs and their Statuses are also a separate concept from the Phase in those models, with their own per-Input lifecycle running underneath the project's timeline.
+
+Re-read every cluster in the Feedback section through this lens and each becomes a request to **unbundle** one of the fused roles:
+
+- _Multiple methods at once_ → multiple Activities in one Phase.
+- _Overlapping phases_ → Activities with independent windows.
+- _Always-on_ → an Activity with no Phase, or one spanning all Phases.
+- _Information-only phase_ → a Phase with **no** Activity.
+- _Flexible dates_ → dates move off the Phase, or the Phase becomes display-only.
+- _Audience-segmented_ → multiple Activities of the same Method with different settings.
+- _Voting after ideation on the same Inputs_ → one Activity with different per-Phase settings, not two Methods on two Phases.
+- _Permissions / action descriptors per activity_ → today scoped to Phase because Phase = Activity; unbundled, they follow Activity, and the action-descriptor surface multiplies (one set per Activity per user instead of one per Project).
+- _Reporting across activities / per input lifecycle_ → Inputs and Statuses become first-class concepts with their own grain, distinct from Phases.
+
+---
+
 ## Competitors
 
 A recurring **sales** driver for this feature: most competing platforms already support parallel participation, and prospects are visibly disappointed to learn Go Vocal does not. This section summarises how 11 competing platforms handle it, based on official product and help documentation (web research, May 2026).
@@ -135,15 +354,11 @@ The most direct competitor and the one most often cited by prospects. A project 
 
 Projects are standalone **microsites** built with a drag-and-drop **Page Builder** (section/column layout). Engagement tools — Social Maps, Ideas Walls, Surveys/Forms, participatory Budgets, Forums/Discussions, Virtual Town Halls (markets "40+ tools") — are placed as **page components**, multiple per page. The **Engagement Widget** can even pull tools from _any_ project in the account onto one page. A **Timeline widget** supports unlimited stages but is **informational, not gating** — tools are opened/closed independently. Reporting: per-activity **Results reports** plus cross-tool **Overview reports**, rolling up to project, team or site-wide level. Pattern A.
 
-- https://help.socialpinpoint.com/en/articles/5866588-page-builder-the-engagement-widget
 - https://learn.socialpinpoint.com/social-pinpoint-hacks/managing-multi-phase-engagement
 
 ### Commonplace
 
 With **Commonplace 2.0 / the Engagement Hub**, a project is a single hub page hosting **multiple modules as tiles** — Community Heatmap (geolocated map comments), Design Feedback (document/proposal feedback), and surveys — **side-by-side, concurrently**. Commonplace explicitly markets this as a fix for its older model, where modules lived on **separate project subdomains** and forced respondents to jump between URLs (the same "hack" Go Vocal clients complain about). The hub also has an informational project timeline and news posts. A real-time Client Dashboard aggregates responses, themes and sentiment. Pattern A.
-
-- https://www.commonplace.is/product-roadmap/commonplace-2.0-guide
-- https://www.commonplace.is/citizen-engagement-platform
 
 ### coUrbanize
 
@@ -156,14 +371,12 @@ A project is a single microsite organised into **navigable tabs** (typically Upd
 A project is a **Page & Survey** — one hosted page combining content blocks, questions, interactive maps, documents, comment widgets and polls into a single response set; it also takes multichannel input (SMS, voicemail, email, social). It uses **"steps"** (sequential pages, optionally free-jump) rather than time-bound phases; phasing of a larger initiative happens at the **Project Group / Topic Page** level, which groups multiple projects and shows a visual timeline. **Unified reporting is a confirmed differentiator**: every comment, response and meeting logs to one resident record/CRM, with cross-project longitudinal dashboards and Census demographic overlays for equity-gap analysis. Pattern A. _(Directly relevant to the "reporting is the real prize" feedback.)_
 
 - https://publicinput.com/wp/platform/features/
-- https://support.publicinput.com/en/articles/3294314-how-to-add-a-step
 
 ### MetroQuest
 
 A different model. A MetroQuest project is **one survey** assembled from a sequence of ~5 **screens** (14 screen templates spanning ranking, image/scenario rating, map markers, budget allocation, tradeoffs, standard questions). It fuses **multiple methods into one guided, sequential flow** — participants take a short "tour"; "Connected Screens" pipe answers from one screen into later ones. This is **Pattern B: multi-method but sequential**, not concurrent independent tools. Reporting is unified at the survey level. Relevant as a model for "ask several question types in one seamless flow" (cf. the gating-questions feedback cluster).
 
 - https://support.metroquest.com/screen-guide
-- https://support.metroquest.com/connected-screens/
 
 ### Konveio
 
@@ -176,7 +389,6 @@ A different model. A MetroQuest project is **one survey** assembled from a seque
 A project centres on **one survey** (12-month platform access) plus optional modules: core map-based questionnaires, gamified budget allocation / participatory budgeting, and a **Webpage Builder** hub. Within a single survey, planners freely **mix mapping and non-mapping questions** (Pattern B). The Webpage Builder hub **embeds multiple questionnaires, maps and media together** (Pattern A). A visual timeline element can be added to any project page (display only); a dedicated **multi-phase participatory budgeting** feature runs a genuine staged process. Reporting is per-survey/project.
 
 - https://www.maptionnaire.com/product
-- https://support.maptionnaire.com/hc/en-us/articles/360017777539-Webpage-Builder
 
 ### Decidim
 
