@@ -8,7 +8,7 @@
 # What it does:
 #   - Targets one tenant, identified by the `host` argument.
 #   - Ensures `de-AT` is in the tenant's `core.locales` settings (adds if missing).
-#   - For every JSON/JSONB column on every ApplicationRecord model, recursively
+#   - For every JSONB column on every ApplicationRecord model, recursively
 #     walks the value and, for every hash where `de-DE` is a key AND `de-AT`
 #     is absent or empty, moves the `de-DE` value to a `de-AT` key (deleting
 #     `de-DE`). This catches both top-level multiloc columns (e.g.
@@ -90,25 +90,24 @@ namespace :single_use do
         end
       end
 
-      # 2) Walk every JSON/JSONB column on every concrete model. The walker
-      # finds `de-DE` hash keys at any nesting depth and rewrites them to
-      # `de-AT` (when `de-AT` is absent or empty at that path).
-      json_column_types = %i[json jsonb].freeze
+      # 2) Walk every JSONB column on every concrete model. The walker finds
+      # `de-DE` hash keys at any nesting depth and rewrites them to `de-AT`
+      # (when `de-AT` is absent or empty at that path).
       # View-backed models (e.g. Moderation::Moderation) cannot be written to;
       # they project from underlying tables that this task already updates.
       view_table_names = ApplicationRecord.connection.views.to_set
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
           view_table_names.exclude?(m.table_name) &&
-          m.columns.any? { |c| json_column_types.include?(c.type) }
+          m.columns.any? { |c| c.type == :jsonb }
       end
-      puts "Found #{models.size} model(s) with JSON/JSONB columns.\n\n"
+      puts "Found #{models.size} model(s) with JSONB columns.\n\n"
 
       total_replaced = 0
       total_skipped = 0
 
       models.sort_by(&:name).each do |model|
-        json_columns = model.columns.select { |c| json_column_types.include?(c.type) }
+        json_columns = model.columns.select { |c| c.type == :jsonb }
 
         json_columns.each do |column|
           attr = column.name
