@@ -20,6 +20,9 @@
 #     that were rewritten.
 #
 # What it does NOT do:
+#   - It does not check for the presence of `de-DE` in the tenant locales before
+#     starting, as this task is designed to also fix cases where `de-DE` has
+#     been mistakenly removed before running this task. A warning is printed.
 #   - It does not translate content - the `de-AT` value is an exact copy of the
 #     `de-DE` value.
 #   - It does not touch a multiloc that already has a populated `de-AT` value
@@ -71,6 +74,10 @@ namespace :single_use do
       locales_before = app_config.settings('core', 'locales') || []
       puts "Tenant: #{host} - locales in use (before): #{locales_before.inspect}\n\n"
 
+      # Loud announcement. We cannot abort here, however, as we want to use this to fix case where
+      # de-DE locale has ben mistakenly removed before running this task.
+      puts "NO de-DE LOCALE FOUND IN TENANT LOCALES!.\n\n" unless locales_before.include?('de-DE')
+
       # 1) Add de-AT to tenant locales if missing.
       if locales_before.include?('de-AT')
         puts "Tenant locales already include 'de-AT' - no change needed.\n\n"
@@ -87,8 +94,12 @@ namespace :single_use do
       # finds `de-DE` hash keys at any nesting depth and rewrites them to
       # `de-AT` (when `de-AT` is absent or empty at that path).
       json_column_types = %i[json jsonb].freeze
+      # View-backed models (e.g. Moderation::Moderation) cannot be written to;
+      # they project from underlying tables that this task already updates.
+      view_table_names = ApplicationRecord.connection.views.to_set
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
+          !view_table_names.include?(m.table_name) &&
           m.columns.any? { |c| json_column_types.include?(c.type) }
       end
       puts "Found #{models.size} model(s) with JSON/JSONB columns.\n\n"

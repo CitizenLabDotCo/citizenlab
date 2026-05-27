@@ -267,6 +267,38 @@ describe 'single_use:replace_de_DE_with_de_AT rake task' do
     end
   end
 
+  context 'view-backed models (e.g. Moderation::Moderation)' do
+    before { configure_locales(%w[en de-DE]) }
+
+    # `create(:idea)` materialises a row in the `Moderation::Moderation`
+    # view via the underlying project. We then patch the project's
+    # `title_multiloc` to contain de-DE so the view's
+    # `project_title_multiloc` surfaces de-DE — without the view filter,
+    # the task would attempt to write to the view and raise ReadOnlyRecord.
+    let!(:idea) do
+      i = create(:idea)
+      i.project.update_columns(title_multiloc: { 'en' => 'Hello', 'de-DE' => 'Hallo' })
+      i
+    end
+
+    it 'are skipped: no report entry references the view' do
+      # Sanity checks on the precondition.
+      expect(ApplicationRecord.connection.views).to include(Moderation::Moderation.table_name)
+      surfacing_rows = Moderation::Moderation
+        .where(project_id: idea.project_id)
+        .where("project_title_multiloc ->> 'de-DE' IS NOT NULL")
+      expect(surfacing_rows).to be_any
+
+      run_task(execute: true)
+
+      report = JSON.parse(File.read(report_path))
+      moderation_changes = report['changes'].select { |c| c.dig('context', 'model') == 'Moderation::Moderation' }
+      moderation_errors = report['errors'].select { |e| e.dig('context', 'model') == 'Moderation::Moderation' }
+      expect(moderation_changes).to be_empty
+      expect(moderation_errors).to be_empty
+    end
+  end
+
   context 'User.locale migration' do
     before { configure_locales(%w[en de-DE]) }
 
