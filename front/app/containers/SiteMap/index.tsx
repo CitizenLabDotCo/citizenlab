@@ -86,10 +86,8 @@ export const H4 = styled.h4`
 `;
 
 const NavItem = styled.a`
-  && {
-    color: ${colors.textPrimary};
-    text-decoration: none;
-  }
+  text-decoration: none !important;
+  color: ${colors.textPrimary} !important;
   &:visited,
   &:hover,
   &:focus,
