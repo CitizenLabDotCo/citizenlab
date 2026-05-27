@@ -221,6 +221,22 @@ resource 'Users' do
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
           end
         end
+
+        context 'when user was created by SSO, has a password, email confirmed' do
+          # TODO
+        end
+
+        context 'when user was created by SSO, has a password, email unconfirmed' do
+          # TODO
+        end
+
+        context 'when user was created by SSO, no password, email confirmed' do
+          # TODO
+        end
+
+        context 'when user was created by SSO, no password, email unconfirmed' do
+          # TODO
+        end
       end
 
       context 'when password_login is turned off' do
