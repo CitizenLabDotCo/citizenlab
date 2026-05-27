@@ -73,7 +73,7 @@ const MethodsUsedCard = ({
   const previousDays = getDaysInRange(startAt, endAt);
 
   return (
-    <Box>
+    <Box role="list" aria-label={formatMessage(messages.methodsUsedStatistics)}>
       {PARTICIPATION_METHODS.map((method) => {
         const bottomLabelValue = comparedCounts?.[method];
 
@@ -84,6 +84,8 @@ const MethodsUsedCard = ({
             width={layout === 'narrow' ? '120px' : '160px'}
             mb="8px"
             mr="12px"
+            role="listitem"
+            tabIndex={0}
           >
             <Statistic
               name={formatMessage(LABELS[method])}

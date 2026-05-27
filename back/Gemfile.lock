@@ -610,7 +610,7 @@ GEM
     crass (1.0.6)
     crawler_detect (1.2.9)
       qonfig (>= 0.24)
-    css_parser (1.14.0)
+    css_parser (1.22.0)
       addressable
     csv (3.3.0)
     dalli (3.2.8)
@@ -648,7 +648,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.14.1)
+    faraday (2.14.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -788,7 +788,7 @@ GEM
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
-    jwt (2.9.3)
+    jwt (2.10.3)
       base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -1375,7 +1375,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  faraday (~> 2.14.0)
+  faraday (~> 2.14.2)
   faraday-jwt (~> 0.1.0)
   faraday-multipart
   flag_inappropriate_content!
@@ -1412,7 +1412,7 @@ DEPENDENCIES
   intercom (~> 4.2)
   json-schema (~> 4.3)
   jsonapi-serializer
-  jwt (~> 2.9.2)
+  jwt (~> 2.10.3)
   kaminari (~> 1.2)
   license_finder
   liquid (~> 5.8)

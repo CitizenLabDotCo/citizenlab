@@ -163,6 +163,19 @@ resource 'User Custom Fields' do
         end
       end
 
+      describe 'min_characters on a registration text field' do
+        # Registration form sends no min_characters; backend leaves it nil (effectively min of 1).
+        # Contrast: survey FormBuilder seeds new text fields with min_characters: 2.
+        let(:input_type) { 'text' }
+        let(:title_multiloc) { { 'en' => 'Your nickname' } }
+
+        example 'Stores nil when min_characters is omitted from the request' do
+          do_request
+          assert_status 201
+          expect(response_data.dig(:attributes, :min_characters)).to be_nil
+        end
+      end
+
       context 'when images are included in the description' do
         let(:input_type) { custom_field.input_type }
         let(:title_multiloc) { custom_field.title_multiloc }
