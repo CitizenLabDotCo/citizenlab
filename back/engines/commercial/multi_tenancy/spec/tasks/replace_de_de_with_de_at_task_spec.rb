@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
-describe 'single_use:replace_de_DE_with_de_AT rake task' do
+describe 'cl2back:replace_de_DE_with_de_AT rake task' do
   before { load_rake_tasks_if_not_loaded }
 
   after do
-    Rake::Task['single_use:replace_de_DE_with_de_AT'].reenable
+    Rake::Task['cl2back:replace_de_DE_with_de_AT'].reenable
     FileUtils.rm_f(report_path)
   end
 
   def run_task(host: Tenant.current.host, execute: false)
-    Rake::Task['single_use:replace_de_DE_with_de_AT'].invoke(host, execute ? 'execute' : nil)
+    Rake::Task['cl2back:replace_de_DE_with_de_AT'].invoke(host, execute ? 'execute' : nil)
   end
 
   def configure_locales(locales)

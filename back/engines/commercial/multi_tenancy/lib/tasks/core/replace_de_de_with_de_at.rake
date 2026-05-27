@@ -35,13 +35,13 @@
 # Example commands (run from the repo root):
 #   Dry run (no changes applied, just reports what would happen):
 #     docker compose run --rm web bundle exec rake \
-#       single_use:replace_de_DE_with_de_AT[example.com]
+#       cl2back:replace_de_DE_with_de_AT[example.com]
 #
 #   Execute (applies the changes):
 #     docker compose run --rm web bundle exec rake \
-#       single_use:replace_de_DE_with_de_AT[example.com,execute]
+#       cl2back:replace_de_DE_with_de_AT[example.com,execute]
 
-namespace :single_use do
+namespace :cl2back do
   desc 'For a tenant, rename de-DE multiloc keys to de-AT across every model, and update tenant locales accordingly.'
   task :replace_de_DE_with_de_AT, %i[host execute] => [:environment] do |_t, args|
     host = args[:host]
@@ -53,7 +53,7 @@ namespace :single_use do
     reporter = ScriptReporter.new
 
     if host.blank?
-      puts 'ERROR! No host argument provided. Usage: rake single_use:replace_de_DE_with_de_AT[example.com,execute]'
+      puts 'ERROR! No host argument provided. Usage: rake cl2back:replace_de_DE_with_de_AT[example.com,execute]'
       next
     end
 
