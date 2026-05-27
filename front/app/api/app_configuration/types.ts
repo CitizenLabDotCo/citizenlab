@@ -109,50 +109,6 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
-  franceconnect_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  clave_unica_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  hoplr_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  id_austria_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  criipto_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  keycloak_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  twoday_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  acm_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  federa_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  nemlog_in_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  vienna_citizen_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
