@@ -17,11 +17,7 @@ const AllProjectsLink = typedStyled(Link)`
   margin-bottom: 20px;
 `;
 
-interface Props {
-  projectsSectionRef: any;
-}
-
-const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
+const ProjectsAndFoldersSection = () => {
   const { data } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
@@ -34,7 +30,7 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
   if (!isNilOrError(adminPublications)) {
     return (
       <>
-        <H2 ref={projectsSectionRef} id="projects-section" tabIndex={-1}>
+        <H2 id="projects-section" tabIndex={-1}>
           <FormattedMessage {...messages.projectsSection} />
         </H2>
         <AllProjectsLink to="/projects">

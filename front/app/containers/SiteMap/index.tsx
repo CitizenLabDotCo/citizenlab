@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, MouseEvent, RefObject, useRef } from 'react';
+import React from 'react';
 
 import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -16,7 +16,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
@@ -65,11 +64,6 @@ const Ul = styled.ul`
   margin-bottom: 0 !important;
 `;
 
-const ProjectsSubsectionUl = styled.ul`
-  list-style-type: circle;
-  margin-bottom: 0 !important;
-`;
-
 const Header = styled.h2`
   font-weight: bold;
 `;
@@ -114,27 +108,6 @@ const SiteMap = () => {
   const hasStaticPageWithCode = (code: TCustomPageCode): boolean => {
     return pages?.data.some((page) => page.attributes.code === code) || false;
   };
-
-  const scrollTo =
-    (component: RefObject<HTMLHeadingElement | null>) =>
-    (event: MouseEvent | KeyboardEvent) => {
-      if (component.current) {
-        // if the event is synthetic, it's a key event and we move focus
-        // https://github.com/facebook/react/issues/3907
-        if ((event as any).detail === 0) {
-          component.current.focus();
-        }
-
-        component.current.scrollIntoView();
-      }
-    };
-
-  const projectsSection = useRef<HTMLHeadingElement | null>(null);
-  const archivedSection = useRef<HTMLHeadingElement | null>(null);
-  const currentSection = useRef<HTMLHeadingElement | null>(null);
-  const draftSection = useRef<HTMLHeadingElement | null>(null);
-  const hasProjectSubsection =
-    archivedSection.current || draftSection.current || currentSection.current;
 
   if (pages) {
     const nonCustomStaticPages = pages.data.filter((page) => {
@@ -185,46 +158,6 @@ const SiteMap = () => {
                         <NavItem href="#projects-section">
                           <FormattedMessage {...messages.projectsSection} />
                         </NavItem>
-                        {hasProjectSubsection && (
-                          <ProjectsSubsectionUl>
-                            {currentSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(currentSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsCurrent}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                            {archivedSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(archivedSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsArchived}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                            {draftSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(draftSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsDraft}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                          </ProjectsSubsectionUl>
-                        )}
                       </li>
                       <li>
                         <NavItem href="#custom-pages-section">
@@ -313,9 +246,7 @@ const SiteMap = () => {
                     )}
                   </>
 
-                  <ProjectsAndFoldersSection
-                    projectsSectionRef={projectsSection}
-                  />
+                  <ProjectsAndFoldersSection />
                   <>
                     {customStaticPages.length > 0 && (
                       <>
