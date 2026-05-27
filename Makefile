@@ -61,9 +61,28 @@ be-up-sso:
 fe-up-sso:
 	cd front && npm run start:sso
 
+# Criipto
+be-up-criipto:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[criipto]'
+	docker compose up
+
+fe-up-criipto:
+	cd front && npm run start
+
+# France connect
+be-up-franceconnect:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[franceconnect]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-franceconnect:
+	cd front && npm run start:sso
+
 # Clave Unica
 be-up-claveunica:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[claveunica]'
 	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
 fe-up-claveunica:
@@ -72,6 +91,7 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[nemlog_in]'
 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
 fe-up-nemlogin:
@@ -80,6 +100,7 @@ fe-up-nemlogin:
 # ID Austria
 be-up-idaustria:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[id_austria]'
 	BASE_DEV_URI=https://idaustria-g3fy.loca.lt ASSET_HOST_URI=https://idaustria-g3fy.loca.lt docker compose up
 
 fe-up-idaustria:
@@ -88,6 +109,7 @@ fe-up-idaustria:
 # Keycloak (Oslo ID-Porten & Rheinbahn)
 be-up-idporten:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[idporten]'
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
 fe-up-idporten:
@@ -96,6 +118,8 @@ fe-up-idporten:
 # Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
 be-up-rheinbahn:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[rheinbahn]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
 
 fe-up-rheinbahn:
@@ -104,21 +128,25 @@ fe-up-rheinbahn:
 # Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[twoday]'
 	BASE_DEV_URI=https://twoday-h5jkg.loca.lt ASSET_HOST_URI=https://twoday-h5jkg.loca.lt docker compose up
 
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
 
+# Hoplr
 be-up-hoplr:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[hoplr]'
 	BASE_DEV_URI=http://localhost:3000 ASSET_HOST_URI=http://localhost:3000 docker compose up
 
 fe-up-hoplr:
 	cd front && npm start
 
+# Federa (Modena SSO)
 be-up-federa:
 	docker compose down
-	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa,fake_sso]'
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa]'
 	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
 
@@ -126,7 +154,8 @@ fe-up-federa:
 	cd front && npm run start:sso:federa
 
 # Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
-sso-reset-hosts:
+sso-reset:
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
 	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 
 # Run it with:
