@@ -99,7 +99,7 @@ namespace :single_use do
       view_table_names = ApplicationRecord.connection.views.to_set
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
-          !view_table_names.include?(m.table_name) &&
+          view_table_names.exclude?(m.table_name) &&
           m.columns.any? { |c| json_column_types.include?(c.type) }
       end
       puts "Found #{models.size} model(s) with JSON/JSONB columns.\n\n"
