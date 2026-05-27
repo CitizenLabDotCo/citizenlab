@@ -40,13 +40,6 @@ DEV_ID_METHOD_CONFIGS = {
     'domain' => 'fake_domain',
     'method_name_multiloc' => { 'en' => 'Verify with Auth0' }
   },
-  'nemlog_in' => {
-    'name' => 'nemlog_in',
-    'environment' => 'pre_production_integration',
-    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
-    'enabled_for_verified_actions' => true
-  },
   'criipto' => {
     'name' => 'criipto',
     'domain' => 'cl-test.criipto.id',
@@ -63,12 +56,20 @@ DEV_ID_METHOD_CONFIGS = {
     'ui_method_name' => 'ID Austria',
     'enabled_for_verified_actions' => true
   },
-  'keycloak' => {
+  'idporten' => {
     'name' => 'keycloak',
-    'provider' => ENV.fetch('DEFAULT_ID_KEYCLOAK_PROVIDER', 'idporten'),
-    'client_id' => ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
-    'client_secret' => ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
-    'issuer' => ENV.fetch('DEFAULT_ID_KEYCLOAK_ISSUER', 'fake issuer'),
+    'provider' => ENV.fetch('DEFAULT_ID_IDPORTEN_PROVIDER', 'idporten'),
+    'client_id' => ENV.fetch('DEFAULT_ID_IDPORTEN_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_ID_IDPORTEN_CLIENT_SECRET', 'fake secret'),
+    'issuer' => ENV.fetch('DEFAULT_ID_IDPORTEN_ISSUER', 'fake issuer'),
+    'enabled_for_verified_actions' => true
+  },
+  'rheinbahn' => {
+    'name' => 'keycloak',
+    'provider' => ENV.fetch('DEFAULT_ID_RHEINBAHN_PROVIDER', 'rheinbahn'),
+    'client_id' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_SECRET', 'fake secret'),
+    'issuer' => ENV.fetch('DEFAULT_ID_RHEINBAHN_ISSUER', 'fake issuer'),
     'enabled_for_verified_actions' => true
   },
   'twoday' => {
@@ -127,6 +128,13 @@ DEV_ID_METHOD_CONFIGS = {
     'name' => 'oostende_rrn',
     'api_key' => ENV.fetch('DEFAULT_ID_OOSTENDE_RRN_API_KEY', 'fake key'),
     'environment' => 'dv'
+  },
+  'nemlog_in' => {
+    'name' => 'nemlog_in',
+    'environment' => 'pre_production_integration',
+    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
+    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+    'enabled_for_verified_actions' => true
   },
 
   # Login-only SSO methods (cannot be used for identity verification).

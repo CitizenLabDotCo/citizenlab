@@ -15,13 +15,13 @@ describe CustomIdMethods::Federa::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'nome' => 'Mario',
-              'cognome' => 'Rossi',
-              'emailAddressPersonale' => 'mario.rossi@example.it',
-              'comuneDomicilio' => '1234',
-              'dataNascita' => '1980-01-01',
-              'codiceIdentificativoSPID' => 'SPID-1234-abcd',
-              'codiceFiscale' => 'RSSMRA80A01H501U'
+              'nome' => ['Mario'],
+              'cognome' => ['Rossi'],
+              'emailAddressPersonale' => ['mario.rossi@example.it'],
+              'comuneDomicilio' => ['1234'],
+              'dataNascita' => ['1980-01-01'],
+              'spidCode' => ['SPID-1234-abcd'],
+              'CodiceFiscale' => ['RSSMRA80A01H501U']
             },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
@@ -57,9 +57,9 @@ describe CustomIdMethods::Federa::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'nome' => 'Mario',
-              'cognome' => 'Rossi',
-              'codiceFiscale' => 'RSSMRA80A01H501U'
+              'nome' => ['Mario'],
+              'cognome' => ['Rossi'],
+              'CodiceFiscale' => ['RSSMRA80A01H501U']
             },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
@@ -79,39 +79,39 @@ describe CustomIdMethods::Federa::FederaOmniauth do
   end
 
   describe '#profile_to_uid' do
-    context 'when codiceIdentificativoSPID is present' do
+    context 'when spidCode is present' do
       let(:auth) do
         OmniAuth::AuthHash.new(
           {
             'extra' => {
               'raw_info' => {
-                'codiceIdentificativoSPID' => 'SPID-1234-abcd',
-                'codiceFiscale' => 'RSSMRA80A01H501U'
+                'spidCode' => ['SPID-1234-abcd'],
+                'CodiceFiscale' => ['RSSMRA80A01H501U']
               }
             }
           }
         )
       end
 
-      it 'returns codiceIdentificativoSPID as uid' do
+      it 'returns spidCode as uid' do
         expect(omniauth.profile_to_uid(auth)).to eq('SPID-1234-abcd')
       end
     end
 
-    context 'when codiceIdentificativoSPID is absent' do
+    context 'when spidCode is absent' do
       let(:auth) do
         OmniAuth::AuthHash.new(
           {
             'extra' => {
               'raw_info' => {
-                'codiceFiscale' => 'RSSMRA80A01H501U'
+                'CodiceFiscale' => ['RSSMRA80A01H501U']
               }
             }
           }
         )
       end
 
-      it 'falls back to codiceFiscale' do
+      it 'falls back to CodiceFiscale' do
         expect(omniauth.profile_to_uid(auth)).to eq('RSSMRA80A01H501U')
       end
     end
@@ -136,7 +136,7 @@ describe CustomIdMethods::Federa::FederaOmniauth do
           'provider' => 'federa',
           'uid' => 'ABCD1234',
           'extra' => {
-            'raw_info' => { 'nome' => 'Mario' },
+            'raw_info' => { 'nome' => ['Mario'] },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
           }
         }

@@ -26,18 +26,17 @@ module CustomIdMethods::Federa
     }.freeze
 
     def profile_to_user_attrs(auth)
-      attrs = auth.dig(:extra, :raw_info).to_h
+      attrs = unwrap_attrs(auth)
 
       custom_field_values = {}
 
-      # Handle birthyear
-      birthdate = auth.extra.raw_info['dataNascita']
+      birthdate = attrs['dataNascita']
       if birthdate.present? && CustomField.find_by(key: 'birthyear')
         custom_field_values['birthyear'] = Date.parse(birthdate).year
       end
 
-      # Handle municipality_code
-      municipality_code = auth.extra.raw_info['comuneDomicilio']
+      # NOTE: Attribute not currently returned by Federa
+      municipality_code = attrs['comuneDomicilio']
       if municipality_code.present? && CustomField.find_by(key: 'municipality_code')
         custom_field_values['municipality_code'] = municipality_code
       end
@@ -51,8 +50,8 @@ module CustomIdMethods::Federa
     end
 
     def profile_to_uid(auth)
-      attrs = auth.dig(:extra, :raw_info).to_h
-      attrs['codiceIdentificativoSPID'] || attrs['codiceFiscale']
+      attrs = unwrap_attrs(auth)
+      attrs['spidCode'] || attrs['CodiceFiscale']
     end
 
     def omniauth_setup(configuration, env)
@@ -69,15 +68,15 @@ module CustomIdMethods::Federa
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
       idp_metadata = idp_metadata_parser.parse_to_hash(File.read(metadata_file))
 
-      # FedERa requires a RelayState parameter in the SAML AuthnRequest.
-      # omniauth-saml's additional_params_for_authn_request reads RelayState from
-      # request.params via idp_sso_service_url_runtime_params. We inject a RelayState
-      # into the query string so it gets picked up and forwarded to the IdP.
-      unless Rack::Utils.parse_query(env['QUERY_STRING'] || '').key?('RelayState')
-        relay_state = SecureRandom.uuid
-        qs = env['QUERY_STRING'] || ''
-        env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
-      end
+      # FedERa requires a RelayState parameter in the SAML AuthnRequest. We also
+      # use it to round-trip the original request's query params (token,
+      # verification_pathname, sso_*, …) across the SAML POST callback, because
+      # the session cookie that omniauth normally uses for this can't be relied
+      # on: SAML's HTTP-POST binding is a cross-site POST, and depending on
+      # SameSite/Secure cookie settings and the local SSL setup, the browser may
+      # drop the cookie or Rails may refuse to write it. RelayState is opaque to
+      # FedERa and echoed back in the response, so it's a safe carrier.
+      handle_relay_state(env)
 
       options = idp_metadata.merge(
         issuer: "#{configuration.base_backend_uri}/auth/federa/metadata",
@@ -126,6 +125,70 @@ module CustomIdMethods::Federa
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    private
+
+    # SAML attributes are inherently multi-valued, so ruby-saml exposes every
+    # value as an array (e.g. `"nome" => ["Paolo"]`). FedERa only ever sends one
+    # value per attribute, so we flatten to the first element for ergonomic access.
+    def unwrap_attrs(auth)
+      auth.dig(:extra, :raw_info).to_h.transform_values { |v| Array.wrap(v).first }
+    end
+
+    RELAY_STATE_CACHE_PREFIX = 'federa:relay_state:'
+    RELAY_STATE_CACHE_TTL = 10.minutes
+
+    def handle_relay_state(env)
+      if env['PATH_INFO'].to_s.end_with?('/callback')
+        restore_omniauth_params_from_relay_state(env)
+      else
+        stash_omniauth_params_in_relay_state(env)
+      end
+    end
+
+    # Request phase: stash the incoming GET params in Rails.cache keyed by a
+    # RelayState UUID, and ensure that UUID is in the query string so
+    # omniauth-saml forwards it to the IdP as RelayState.
+    def stash_omniauth_params_in_relay_state(env)
+      query = Rack::Utils.parse_query(env['QUERY_STRING'] || '')
+      relay_state = query['RelayState'].presence || SecureRandom.uuid
+
+      params_to_stash = query.except('RelayState')
+      if params_to_stash.any?
+        Rails.cache.write(
+          "#{RELAY_STATE_CACHE_PREFIX}#{relay_state}",
+          params_to_stash,
+          expires_in: RELAY_STATE_CACHE_TTL
+        )
+      end
+
+      unless query.key?('RelayState')
+        qs = env['QUERY_STRING'] || ''
+        env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
+      end
+    end
+
+    # Callback phase: read the RelayState that FedERa echoed back, look up the
+    # original GET params in the cache, and inject them into the session under
+    # 'omniauth.params'. OmniAuth::Strategy#callback_call (which runs right
+    # after this setup_phase) reads `session.delete('omniauth.params')` into
+    # `env['omniauth.params']`, so the controller sees the original `token`.
+    def restore_omniauth_params_from_relay_state(env)
+      relay_state = ActionDispatch::Request.new(env).params['RelayState']
+      return if relay_state.blank?
+
+      cache_key = "#{RELAY_STATE_CACHE_PREFIX}#{relay_state}"
+      stashed = Rails.cache.read(cache_key)
+      return unless stashed.is_a?(Hash)
+
+      Rails.cache.delete(cache_key)
+
+      session = env['rack.session']
+      return unless session
+
+      existing = session['omniauth.params'] || {}
+      session['omniauth.params'] = stashed.merge(existing)
     end
   end
 end

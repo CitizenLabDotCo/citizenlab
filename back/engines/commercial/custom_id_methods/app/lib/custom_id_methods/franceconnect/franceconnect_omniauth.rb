@@ -42,10 +42,12 @@ module CustomIdMethods::Franceconnect
     def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.active?(configuration, name)
 
+      scope = %w[openid] + (config[:scope] || %w[email given_name family_name])
+
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
           discovery: true, # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
-          scope: %w[openid] + config[:scope],
+          scope: scope,
           issuer: issuer, # the integration env is now using 'https'
           client_auth_method: 'jwks', # France connect does not use BASIC authentication
           acr_values: 'eidas1',
@@ -59,7 +61,7 @@ module CustomIdMethods::Franceconnect
       else
         # Version 1 - Will not work after Sept 2025
         env['omniauth.strategy'].options.merge!(
-          scope: %w[openid] + config[:scope],
+          scope: scope,
           response_type: :code,
           state: true, # required by France connect
           nonce: true, # required by France connect

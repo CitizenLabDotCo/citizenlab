@@ -20,13 +20,13 @@ context 'federa verification' do
         'credentials' => {},
         'extra' =>
           { 'raw_info' =>
-              { 'nome' => 'Mario',
-                'cognome' => 'Rossi',
-                'emailAddressPersonale' => 'mario.rossi@example.org',
-                'comuneDomicilio' => '1234',
-                'dataNascita' => '1980-01-01',
-                'codiceFiscale' => user_uid,
-                'codiceIdentificativoSPID' => nil },
+              { 'nome' => ['Mario'],
+                'cognome' => ['Rossi'],
+                'emailAddressPersonale' => ['mario.rossi@example.org'],
+                'comuneDomicilio' => ['1234'],
+                'dataNascita' => ['1980-01-01'],
+                'CodiceFiscale' => [user_uid],
+                'spidCode' => nil },
             'response_object' => '<saml:Response>...</saml:Response>' }
       }
     end
@@ -118,7 +118,7 @@ context 'federa verification' do
 
       user2 = create(:user)
       token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-      auth_hash['extra']['raw_info']['codiceFiscale'] = 'TINIT-ZYXWVU98T76S543R'
+      auth_hash['extra']['raw_info']['CodiceFiscale'] = ['TINIT-ZYXWVU98T76S543R']
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get "/auth/federa?token=#{token2}"
@@ -131,16 +131,16 @@ context 'federa verification' do
       follow_redirect!
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
-      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq('mario.rossi@example.org')
+      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq(['mario.rossi@example.org'])
 
       # Change the auth hash so we can check that it is updated
-      auth_hash['extra']['raw_info']['emailAddressPersonale'] = 'mario.rossi@newmail.org'
+      auth_hash['extra']['raw_info']['emailAddressPersonale'] = ['mario.rossi@newmail.org']
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get '/auth/federa'
       follow_redirect!
       expect_user_to_be_verified_and_identified(user)
-      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq('mario.rossi@newmail.org')
+      expect(user.identities.first.auth_hash['extra']['raw_info']['emailAddressPersonale']).to eq(['mario.rossi@newmail.org'])
     end
 
     it 'does not persist response_object in the stored auth_hash' do
@@ -185,7 +185,7 @@ context 'federa verification' do
     end
 
     it 'does not send email to empty address (when just registered)' do
-      auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
+      auth_hash['extra']['raw_info']['emailAddressPersonale'] = [nil]
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
       get '/auth/federa'
@@ -197,14 +197,14 @@ context 'federa verification' do
     context 'when verification is already taken by new user' do
       before do
         # Create user via SSO without email so they are considered "blank"
-        auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
+        auth_hash['extra']['raw_info']['emailAddressPersonale'] = [nil]
         OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
         get '/auth/federa'
         follow_redirect!
 
         # Restore email for subsequent requests
-        auth_hash['extra']['raw_info']['emailAddressPersonale'] = 'mario.rossi@example.org'
+        auth_hash['extra']['raw_info']['emailAddressPersonale'] = ['mario.rossi@example.org']
         OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
       end
 
@@ -254,7 +254,7 @@ context 'federa verification' do
           'minimum_length' => 8
         }
         configuration.save!
-        auth_hash['extra']['raw_info']['emailAddressPersonale'] = nil
+        auth_hash['extra']['raw_info']['emailAddressPersonale'] = [nil]
         OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
       end
 
@@ -296,6 +296,57 @@ context 'federa verification' do
         expect(user.email).to be_nil
         expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
+      end
+    end
+
+    # FedERa uses SAML's HTTP-POST callback binding, which is a cross-site POST.
+    # The session cookie omniauth normally uses to carry `omniauth.params`
+    # (including the verification `token`) across the roundtrip is dropped by
+    # the browser in that context (because of SameSite=Lax). Instead, we round-trip
+    # the original GET params through SAML RelayState + Rails.cache
+    context 'when params are round-tripped via RelayState (session cookie dropped)' do
+      let(:relay_state) { SecureRandom.uuid }
+      let(:cache_key) { "federa:relay_state:#{relay_state}" }
+
+      it 'recovers the verification token from cache and verifies the existing user' do
+        Rails.cache.write(
+          cache_key,
+          { 'token' => @token, 'verification_pathname' => '/yipie' },
+          expires_in: 10.minutes
+        )
+
+        post '/auth/federa/callback', params: { 'RelayState' => relay_state }
+
+        expect_user_to_be_verified(@user)
+        expect(response).to redirect_to('/en/yipie?verification_success=true')
+        expect(Rails.cache.read(cache_key)).to be_nil # Deletes the cache entry afterwards
+      end
+
+      it 'falls back to the signup path when the RelayState is unknown (expired or never written)' do
+        post '/auth/federa/callback', params: { 'RelayState' => 'never-written-uuid' }
+
+        # Without a recovered token, the controller falls through to auth_callback,
+        # which (no email match for a fresh mock) creates a new user, leaving the
+        # original logged-in user untouched.
+        expect(User.count).to eq(2)
+        expect(@user.reload.verified).to be(false)
+      end
+
+      it 'stashes the incoming GET params in cache during the request phase' do
+        get "/auth/federa?token=#{@token}&verification_pathname=/yipie"
+
+        # The request-phase setup adds a RelayState UUID to env['QUERY_STRING']
+        # and stashes the remaining params in Rails.cache under that UUID.
+        # In test mode the redirect to the callback URL drops the query string,
+        # so we recover the UUID by reading what omniauth then stored in session.
+        stashed_relay_state = session['omniauth.params']['RelayState']
+        expect(stashed_relay_state).to be_present
+
+        cached = Rails.cache.read("federa:relay_state:#{stashed_relay_state}")
+        expect(cached).to include(
+          'token' => @token,
+          'verification_pathname' => '/yipie'
+        )
       end
     end
   end
