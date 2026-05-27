@@ -61,6 +61,15 @@ be-up-sso:
 fe-up-sso:
 	cd front && npm run start:sso
 
+# ACM (Itsme)
+be-up-acm:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[acm]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-acm:
+	cd front && npm run start:sso
+
 # Criipto
 be-up-criipto:
 	docker compose down
