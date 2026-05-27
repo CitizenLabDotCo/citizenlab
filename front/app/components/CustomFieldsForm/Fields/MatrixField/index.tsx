@@ -17,7 +17,7 @@ interface Props {
 const MatrixField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
-    formState: { errors: formContextErrors, submitCount },
+    formState: { errors: formContextErrors },
   } = useFormContext();
 
   const name = question.key;
@@ -25,7 +25,6 @@ const MatrixField = ({ question, scrollErrorIntoView }: Props) => {
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
   const apiError = errors?.error && ([errors] as CLError[]);
-  const showValidationError = submitCount > 0 && validationError;
 
   return (
     <>
@@ -36,7 +35,7 @@ const MatrixField = ({ question, scrollErrorIntoView }: Props) => {
           return <Matrix question={question} {...field} />;
         }}
       />
-      {showValidationError && (
+      {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
