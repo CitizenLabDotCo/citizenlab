@@ -118,7 +118,7 @@ fe-up-hoplr:
 
 be-up-federa:
 	docker compose down
-	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa]'
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa,fake_sso]'
 	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
 

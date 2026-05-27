@@ -298,6 +298,57 @@ context 'federa verification' do
         expect(user.active?).to be(true)
       end
     end
+
+    # FedERa uses SAML's HTTP-POST callback binding, which is a cross-site POST.
+    # The session cookie omniauth normally uses to carry `omniauth.params`
+    # (including the verification `token`) across the roundtrip is dropped by
+    # the browser in that context (because of SameSite=Lax). Instead, we round-trip
+    # the original GET params through SAML RelayState + Rails.cache
+    context 'when params are round-tripped via RelayState (session cookie dropped)' do
+      let(:relay_state) { SecureRandom.uuid }
+      let(:cache_key) { "federa:relay_state:#{relay_state}" }
+
+      it 'recovers the verification token from cache and verifies the existing user' do
+        Rails.cache.write(
+          cache_key,
+          { 'token' => @token, 'verification_pathname' => '/yipie' },
+          expires_in: 10.minutes
+        )
+
+        post '/auth/federa/callback', params: { 'RelayState' => relay_state }
+
+        expect_user_to_be_verified(@user)
+        expect(response).to redirect_to('/en/yipie?verification_success=true')
+        expect(Rails.cache.read(cache_key)).to be_nil # Deletes the cache entry afterwards
+      end
+
+      it 'falls back to the signup path when the RelayState is unknown (expired or never written)' do
+        post '/auth/federa/callback', params: { 'RelayState' => 'never-written-uuid' }
+
+        # Without a recovered token, the controller falls through to auth_callback,
+        # which (no email match for a fresh mock) creates a new user, leaving the
+        # original logged-in user untouched.
+        expect(User.count).to eq(2)
+        expect(@user.reload.verified).to be(false)
+      end
+
+      it 'stashes the incoming GET params in cache during the request phase' do
+        get "/auth/federa?token=#{@token}&verification_pathname=/yipie"
+
+        # The request-phase setup adds a RelayState UUID to env['QUERY_STRING']
+        # and stashes the remaining params in Rails.cache under that UUID.
+        # In test mode the redirect to the callback URL drops the query string,
+        # so we recover the UUID by reading what omniauth then stored in session.
+        stashed_relay_state = session['omniauth.params']['RelayState']
+        expect(stashed_relay_state).to be_present
+
+        cached = Rails.cache.read("federa:relay_state:#{stashed_relay_state}")
+        expect(cached).to include(
+          'token' => @token,
+          'verification_pathname' => '/yipie'
+        )
+      end
+    end
   end
 
   context 'when test mode is disabled' do
