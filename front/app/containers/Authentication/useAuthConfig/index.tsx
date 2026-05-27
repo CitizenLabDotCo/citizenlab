@@ -1,4 +1,6 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { TVerificationMethodName } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
@@ -8,6 +10,15 @@ import { useLocation, useSearch } from 'utils/router';
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
+
+  // Custom SSO methods are configured as verification methods, and the `/verification_methods` endpoint
+  // exposes a `login_method` flag for the ones that can be used to authenticate.
+  const { data: verificationMethods } = useVerificationMethods();
+  const hasLoginMethod = (name: TVerificationMethodName) =>
+    !!verificationMethods?.data.some(
+      (method) =>
+        method.attributes.name === name && method.attributes.login_method
+    );
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak
@@ -25,6 +36,7 @@ export default function useAuthConfig() {
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
+  // Google, Facebook and Azure AD are not custom ID / verification methods  have their own feature flags.
   const google = useFeatureFlag({ name: 'google_login' });
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
@@ -41,70 +53,23 @@ export default function useAuthConfig() {
     name: 'azure_ad_b2c_login',
   });
 
-  const franceconnect = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-
-  const viennaCitizen = useFeatureFlag({
-    name: 'vienna_citizen_login',
-  });
-
-  const claveUnica = useFeatureFlag({
-    name: 'clave_unica_login',
-  });
-
-  const hoplr = useFeatureFlag({
-    name: 'hoplr_login',
-  });
-
-  const idAustria = useFeatureFlag({
-    name: 'id_austria_login',
-  });
-
-  const criipto = useFeatureFlag({
-    name: 'criipto_login',
-  });
-
-  const nemlogIn = useFeatureFlag({
-    name: 'nemlog_in_login',
-  });
-
-  const keycloak =
-    useFeatureFlag({
-      name: 'keycloak_login',
-    }) || providerForTest === 'keycloak';
-
-  const twoday =
-    useFeatureFlag({
-      name: 'twoday_login',
-    }) || providerForTest === 'twoday';
-
-  const acm =
-    useFeatureFlag({
-      name: 'acm_login',
-    }) || providerForTest === 'acm';
-
-  const federa = useFeatureFlag({ name: 'federa_login' });
-
-  const fakeSso = useFeatureFlag({ name: 'fake_sso' });
-
   const ssoProviders = {
     google,
     facebook,
     azureAd,
     azureAdB2c,
-    franceconnect,
-    viennaCitizen,
-    claveUnica,
-    hoplr,
-    idAustria,
-    criipto,
-    nemlogIn,
-    keycloak,
-    twoday,
-    acm,
-    federa,
-    fakeSso,
+    franceconnect: hasLoginMethod('franceconnect'),
+    viennaCitizen: hasLoginMethod('vienna_citizen'),
+    claveUnica: hasLoginMethod('clave_unica'),
+    hoplr: hasLoginMethod('hoplr'),
+    idAustria: hasLoginMethod('id_austria'),
+    criipto: hasLoginMethod('criipto'),
+    nemlogIn: hasLoginMethod('nemlog_in'),
+    keycloak: hasLoginMethod('keycloak') || providerForTest === 'keycloak',
+    twoday: hasLoginMethod('twoday') || providerForTest === 'twoday',
+    acm: hasLoginMethod('acm') || providerForTest === 'acm',
+    federa: hasLoginMethod('federa'),
+    fakeSso: hasLoginMethod('fake_sso'),
   };
 
   return {
