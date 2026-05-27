@@ -1,28 +1,30 @@
 # frozen_string_literal: true
 
-# Renames `de-DE` multiloc keys to `de-AT` across every `_multiloc` attribute
-# of every ApplicationRecord model in a single tenant. Also adds `de-AT` to
-# the tenant's locales first (if missing) and removes `de-DE` at the end
-# (if present), so the tenant ends up using `de-AT` instead of `de-DE`.
+# Converts a single tenant from `de-DE` to `de-AT` in a single pass: adds
+# `de-AT` to the tenant locales, rewrites every `de-DE` multiloc key (top-level
+# or nested) to `de-AT`, migrates each `User.locale = 'de-DE'` to `'de-AT'`,
+# and finally removes `de-DE` from the tenant locales.
 #
 # What it does:
 #   - Targets one tenant, identified by the `host` argument.
 #   - Ensures `de-AT` is in the tenant's `core.locales` settings (adds if missing).
-#   - For every model with columns ending in `_multiloc`, finds records where
-#     the `de-DE` key exists with a value AND `de-AT` is absent or empty,
-#     and moves the `de-DE` value to a `de-AT` key (deleting `de-DE`).
+#   - For every JSON/JSONB column on every ApplicationRecord model, recursively
+#     walks the value and, for every hash where `de-DE` is a key AND `de-AT`
+#     is absent or empty, moves the `de-DE` value to a `de-AT` key (deleting
+#     `de-DE`). This catches both top-level multiloc columns (e.g.
+#     `title_multiloc`) and nested multilocs embedded in larger JSON blobs
+#     (e.g. `ContentBuilder::Layout#craftjs_json`).
 #   - Updates every `User` whose `locale` is `'de-DE'` to `'de-AT'`.
 #   - Removes `de-DE` from the tenant's `core.locales` settings (if present).
-#   - Writes a JSON report with the before/after multiloc values.
+#   - Writes a JSON report with the before/after JSON values and the paths
+#     that were rewritten.
 #
 # What it does NOT do:
 #   - It does not translate content - the `de-AT` value is an exact copy of the
 #     `de-DE` value.
-#   - It does not touch a multiloc that already has a populated `de-AT` value;
-#     such cases are caught by the scope filter and left untouched.
-#   - It does not walk nested JSON structures (e.g. craftjs_json) - only the
-#     top-level multiloc hash on each `_multiloc` column. Nested cases are
-#     handled by sibling tasks (see the content builder layout variant).
+#   - It does not touch a multiloc that already has a populated `de-AT` value
+#     at the same path; such cases are reported as skipped and the `de-DE`
+#     entry is left in place there.
 #   - It uses `update_columns` to bypass validations and callbacks - this is
 #     intentional for a locale-key rename that does not change content and may
 #     otherwise trip multiloc presence validators during the transition.
@@ -81,48 +83,68 @@ namespace :single_use do
         end
       end
 
-      # 2) Walk every concrete model with `_multiloc` columns.
+      # 2) Walk every JSON/JSONB column on every concrete model. The walker
+      # finds `de-DE` hash keys at any nesting depth and rewrites them to
+      # `de-AT` (when `de-AT` is absent or empty at that path).
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
-          m.columns.any? { |c| c.name.end_with?('_multiloc') }
+          m.columns.any? { |c| %i[json jsonb].include?(c.type) }
       end
-      puts "Found #{models.size} model(s) with `_multiloc` columns.\n\n"
+      puts "Found #{models.size} model(s) with JSON/JSONB columns.\n\n"
 
       total_replaced = 0
+      total_skipped = 0
 
       models.sort_by(&:name).each do |model|
-        multiloc_attrs = model.columns.map(&:name).select { |n| n.end_with?('_multiloc') }
+        json_columns = model.columns.select { |c| %i[json jsonb].include?(c.type) }
 
-        multiloc_attrs.each do |attr|
-          # de-DE key present with a non-null value AND de-AT absent or empty string.
-          scope = model
-            .where.not("#{attr} -> 'de-DE' IS NULL")
-            .where("#{attr} -> 'de-AT' IS NULL OR #{attr} ->> 'de-AT' = ''")
-
+        json_columns.each do |column|
+          attr = column.name
+          # Cheap text pre-filter: only load records whose JSON serialization
+          # contains the literal "de-DE" anywhere. The walker then verifies
+          # whether each occurrence is a real hash key.
+          scope = model.where("#{attr}::text LIKE ?", '%"de-DE"%')
           count = scope.count
           next if count.zero?
 
           puts "#{model.name}##{attr}: #{count} candidate record(s)"
 
           scope.find_each do |record|
-            before_multiloc = record[attr].deep_dup
-            after_multiloc = record[attr].deep_dup
-            after_multiloc['de-AT'] = after_multiloc.delete('de-DE')
+            original = record[attr]
+            next if original.nil?
+
+            walker = ReplaceDeDeWithDeAtWalker.new
+            after = original.deep_dup
+            walker.process!(after)
+
+            walker.skipped_paths.each do |p|
+              puts "  SKIP: #{model.name} #{record.id} #{attr} at #{p} (de-AT already populated)"
+            end
+            total_skipped += walker.skipped
+
+            next if walker.replaced.zero?
+
+            walker.replaced_paths.each do |p|
+              puts "  #{execute ? 'REPLACED' : 'WOULD REPLACE'} #{model.name} #{record.id} #{attr} at #{p}"
+            end
 
             context = {
               tenant: host,
               model: model.name,
               record_id: record.id,
-              attribute: attr
+              attribute: attr,
+              replaced: walker.replaced,
+              skipped: walker.skipped,
+              replaced_paths: walker.replaced_paths,
+              skipped_paths: walker.skipped_paths
             }
-            reporter.add_change(before_multiloc, after_multiloc, context: context)
-            total_replaced += 1
-            puts "  #{execute ? 'REPLACED' : 'WOULD REPLACE'} #{model.name} #{record.id} #{attr}"
+            reporter.add_change(original, after, context: context)
+            total_replaced += walker.replaced
 
             next unless execute
 
             begin
-              record.update_columns(attr => after_multiloc)
+              record.update_columns(attr => after)
             rescue StandardError => e
               reporter.add_error(e.message, context: context)
               puts "  ERROR! Failed to update #{model.name} #{record.id} #{attr}: #{e.message}"
@@ -172,8 +194,9 @@ namespace :single_use do
       puts "\nFinal tenant locales: #{AppConfiguration.instance.reload.settings('core', 'locales').inspect}" if execute
 
       puts "\nSummary for tenant #{host}:"
-      puts "  Multiloc values #{execute ? 'replaced' : 'to be replaced'}:    #{total_replaced}"
-      puts "  User.locale values #{execute ? 'replaced' : 'to be replaced'}: #{total_users_updated}"
+      puts "  Multiloc keys #{execute ? 'replaced' : 'to be replaced'}:               #{total_replaced}"
+      puts "  Multiloc keys skipped (de-AT already populated):  #{total_skipped}"
+      puts "  User.locale values #{execute ? 'replaced' : 'to be replaced'}:          #{total_users_updated}"
     end
 
     begin
@@ -184,5 +207,52 @@ namespace :single_use do
     end
 
     puts "\n---------- FINISHED TASK: Replace de-DE with de-AT ----------\n\n"
+  end
+end
+
+# Recursively walks a JSON structure and renames every `de-DE` hash key to
+# `de-AT`, keeping a duplicate of the value. A multiloc that already has a
+# populated (non-empty) `de-AT` value at the same path is left untouched.
+# Renames hash keys only; string values are not touched.
+class ReplaceDeDeWithDeAtWalker
+  attr_reader :replaced, :skipped, :replaced_paths, :skipped_paths
+
+  def initialize
+    @replaced = 0
+    @skipped = 0
+    @replaced_paths = []
+    @skipped_paths = []
+  end
+
+  # Mutates +node+ in place.
+  def process!(node, path = '$')
+    walk(node, path)
+  end
+
+  private
+
+  def walk(node, path)
+    case node
+    when Hash
+      # Recurse first, then mutate, to avoid modifying the hash while iterating.
+      node.each { |key, value| walk(value, "#{path}.#{key}") }
+      replace_de_de_key(node, path) if node.key?('de-DE')
+    when Array
+      node.each_with_index { |value, index| walk(value, "#{path}[#{index}]") }
+    end
+  end
+
+  def replace_de_de_key(multiloc, path)
+    de_at_value = multiloc['de-AT']
+    # Replace if de-AT is absent (or JSON null) or an empty string; otherwise
+    # leave de-DE alone.
+    if de_at_value.nil? || de_at_value == ''
+      multiloc['de-AT'] = multiloc.delete('de-DE')
+      @replaced += 1
+      @replaced_paths << path
+    else
+      @skipped += 1
+      @skipped_paths << path
+    end
   end
 end

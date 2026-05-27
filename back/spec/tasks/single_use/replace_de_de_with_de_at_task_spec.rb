@@ -194,6 +194,79 @@ describe 'single_use:replace_de_DE_with_de_AT rake task' do
     end
   end
 
+  context 'nested multilocs inside a JSON column' do
+    before { configure_locales(%w[en de-DE]) }
+
+    # The de-DE multiloc sits seven levels below the craftjs_json root,
+    # reached through both nested hashes and an array.
+    let!(:layout) do
+      create(
+        :layout,
+        craftjs_json: {
+          'ROOT' => {
+            'type' => 'div',
+            'nodes' => ['deepNode'],
+            'props' => {},
+            'custom' => {},
+            'hidden' => false,
+            'isCanvas' => true,
+            'displayName' => 'div',
+            'linkedNodes' => {}
+          },
+          'deepNode' => {
+            'type' => { 'resolvedName' => 'Container' },
+            'nodes' => [],
+            'props' => {
+              'config' => {
+                'sections' => [
+                  { 'block' => { 'content' => { 'de-DE' => '<p>Tief verschachtelter Text</p>' } } }
+                ]
+              }
+            },
+            'custom' => {},
+            'hidden' => false,
+            'parent' => 'ROOT',
+            'isCanvas' => false,
+            'displayName' => 'Container',
+            'linkedNodes' => {}
+          }
+        }
+      )
+    end
+
+    it 'replaces the de-DE key regardless of nesting depth' do
+      run_task(execute: true)
+
+      multiloc = layout.reload.craftjs_json
+        .dig('deepNode', 'props', 'config', 'sections', 0, 'block', 'content')
+      expect(multiloc).not_to have_key('de-DE')
+      expect(multiloc['de-AT']).to eq('<p>Tief verschachtelter Text</p>')
+    end
+
+    it 'leaves a nested multiloc untouched when de-AT is already populated' do
+      layout.update_columns(
+        craftjs_json: layout.craftjs_json.deep_merge(
+          'deepNode' => {
+            'props' => {
+              'config' => {
+                'sections' => [
+                  { 'block' => { 'content' => { 'de-DE' => 'Deutsch', 'de-AT' => 'Servus' } } }
+                ]
+              }
+            }
+          }
+        )
+      )
+
+      run_task(execute: true)
+
+      multiloc = layout.reload.craftjs_json
+        .dig('deepNode', 'props', 'config', 'sections', 0, 'block', 'content')
+      expect(multiloc['de-DE']).to eq('Deutsch')
+      expect(multiloc['de-AT']).to eq('Servus')
+    end
+  end
+
   context 'User.locale migration' do
     before { configure_locales(%w[en de-DE]) }
 
