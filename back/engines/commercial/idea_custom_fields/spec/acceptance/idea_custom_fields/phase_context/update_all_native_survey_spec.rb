@@ -135,6 +135,27 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 1
       end
 
+      example 'Stores min_characters on an inserted text field' do
+        # FormBuilder seeds new survey text fields with min_characters: 2;
+        # assert that value passes through the bulk-update endpoint.
+        request = {
+          custom_fields: [
+            { input_type: 'page', page_layout: 'default' },
+            {
+              input_type: 'text',
+              title_multiloc: { 'en' => 'Inserted field' },
+              min_characters: 2
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data][1][:attributes][:min_characters]).to eq 2
+      end
+
       example 'Add a custom field with options, including an "other" option and delete a field with options' do
         delete_field = create(:custom_field_select, :with_options, resource: custom_form)
         delete_options = delete_field.options
