@@ -52,6 +52,8 @@ resource 'Verification methods' do
           type: 'verification_method',
           attributes: {
             name: 'cow',
+            login_method: false,
+            verification_method: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
@@ -69,6 +71,8 @@ resource 'Verification methods' do
           type: 'verification_method',
           attributes: {
             name: 'fake_sso',
+            login_method: true,
+            verification_method: true,
             method_metadata: {
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
@@ -96,6 +100,8 @@ resource 'Verification methods' do
             card_id_placeholder: 'xx-xxxxx-xx',
             card_id_tooltip: "You can find this number on you card. We just check, we don't store it",
             explainer_image_url: 'https://some.fake/image.png',
+            login_method: false,
+            verification_method: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
@@ -121,6 +127,8 @@ resource 'Verification methods' do
           type: 'verification_method',
           attributes: {
             name: 'fake_sso',
+            login_method: true,
+            verification_method: true,
             method_metadata: {
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
@@ -151,6 +159,8 @@ resource 'Verification methods' do
           type: 'verification_method',
           attributes: {
             name: 'cow',
+            login_method: false,
+            verification_method: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
