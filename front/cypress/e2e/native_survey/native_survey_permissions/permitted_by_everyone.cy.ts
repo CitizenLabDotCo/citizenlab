@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, randomEmail } from '../../../support/commands';
 import {
   updatePermission,
