@@ -299,6 +299,33 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
     end
   end
 
+  context 'audit-log models (Activity)' do
+    # Activity records are an immutable event log: payloads capture what the
+    # data looked like at the moment of the action. The task must NOT rewrite
+    # them — that would falsify history.
+    before { configure_locales(%w[en de-DE]) }
+
+    let!(:activity) do
+      create(
+        :changed_title_activity,
+        payload: { 'change' => [{ 'en' => 'old', 'de-DE' => 'alt' }, { 'en' => 'new', 'de-DE' => 'neu' }] }
+      )
+    end
+
+    it 'leaves the payload untouched' do
+      original_payload = activity.payload
+      run_task(execute: true)
+      expect(activity.reload.payload).to eq(original_payload)
+    end
+
+    it 'records no change for the Activity model in the report' do
+      run_task(execute: true)
+      report = JSON.parse(File.read(report_path))
+      activity_changes = report['changes'].select { |c| c.dig('context', 'model') == 'Activity' }
+      expect(activity_changes).to be_empty
+    end
+  end
+
   context 'User.locale migration' do
     before { configure_locales(%w[en de-DE]) }
 
