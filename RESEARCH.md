@@ -1,12 +1,24 @@
 # Parallel Participation — Research
 
+Exploratory research for the parallel-participation track. **Status: research only — no solution is proposed or decided here.** The goal is a neutral, shared understanding of the problem space before any design work begins.
+
+Three parts:
+
+- **Feedback** — what customers and GSMs ask for, clustered; descriptive (needs as expressed, not solutions).
+- **Competitors** — how 11 other engagement platforms handle running multiple participation methods at once.
+- **Concept model** — a shared vocabulary mapping Go Vocal's concepts to competitors', and how they relate.
+
+_Last updated: May 2026 · branch `exploration-parallel-participation`._
+
+---
+
 ## Feedback
 
 This section synthesises and clusters the feedback gathered on **parallel participation (PP)**. It is descriptive — it captures _needs and requests as expressed_, not solutions.
 
 **Sources:**
 
-- **Stakeholder interviews** with 8 GovSuccess / Community Managers (Jelena, Pauline, Jolijn, Sophie, Sarah, Zelda, Cindy, Joris), reporting on patterns across their client portfolios.
+- **Stakeholder interviews** with 8 GovSuccess / Community Managers (Jelena, Pauline, Jolijn, Sophie, Sarah, Zelda, Cindy, Joris), reporting on patterns across their client portfolios. _(This internal GSM "Cindy" is a different person from Hyattsville's client contact Cindy Zork, listed below.)_
 - **An Oslo client workshop** (19 May 2026) with Oslo Kommune (André Helgestad et al.).
 - **Three further client interviews** (May 2026): **California** (Wesley Rowe), **Frome Town** (Miles Macey), **Hyattsville** (Cindy Zork).
 - **~50 logged feedback entries (2019–2026)** tagged "Parallel participation", spanning ~40 client organisations across NL, BE, DE, UK, US, the Nordics, AT and CZ.
@@ -74,6 +86,8 @@ Distinct from "parallel": clients want **flow control**. Two variants: (a) phase
 ### Cluster 6 — Unified cross-method & folder-level reporting / analytics
 
 Flagged in the interviews as **"the real prize"** — the lock-in is solving reporting, not the front-office layout. GSMs who already know how to hack PP today (via folders/links) say the hacks "look fine in the front office but break down in analysis". Needs: report across a whole folder/parent (not just one project), representativeness figures per folder, tracking one user's responses across projects/phases, and keeping the _link_ between a survey response and the project/idea it refers to (Saskatoon: surveys must manually re-ask which project they concern). **Frome Town is the sharpest illustration:** they ran a survey and Common Ground in parallel via a folder; the survey drew more participants, but the two data sets could not be combined — so the Common Ground feedback **did not ultimately inform the final decision**. Parallel methods that can't be reported together don't just frustrate analysis; they waste the participation that was collected.
+
+_Current state:_ "reporting" is three features over a shared analytics layer — Report Builder (custom reports, scoped to a single phase or platform-wide), the fixed admin Dashboards (platform-wide only), and per-phase insights. The scopes it covers today are effectively **single phase** and **whole platform**: there is no folder-level report, the participation analytics carry a project dimension but no phase/activity one, and survey results are generated per phase. The intermediate grain — a folder or group of related activities — is not currently a reporting scope.
 
 **Customers:** Gemeente Woerden (folder reports + representativeness per folder), Cotswold District Council (track responses per user across projects; folder reports), Newham Council (quarterly cross-project reporting), Frome Town (Miles Macey — folder data won't integrate across methods); interview signal — Jelena (highest-priority gap), Pauline ("70% of why my hacks are sub-optimal is reporting"), Jolijn, Sarah & Sophie (Saskatoon).
 
@@ -155,7 +169,110 @@ The interviews describe a consistent "hack playbook", all with the same downstre
 - **A separate "community events" project** as a container.
 - Sacrificing the most appropriate method (e.g. using a survey instead of voting) just to fit everything into one phase (Oslo).
 
-The Oslo workshop reached an aligned interim direction: allow **surveys to be created as project-level activities outside timeline phases**, while other activity types stay phase-bound — paired with visual cues (method icons, a clear dashboard) and a back-office redesign that separates activity management from the strict timeline. _(Recorded here as feedback context; solutioning is out of scope for this section.)_
+Oslo's signal fits the clusters above: the rigid sequential structure forces them to sacrifice the most appropriate method to fit everything into one phase, and they want lighter activities (notably surveys) to run alongside a phase rather than inside it. _(Solution directions explored in that workshop are out of scope for this descriptive section.)_
+
+---
+
+## Competitors
+
+A recurring **sales** driver for this feature: most competing platforms already support parallel participation, and prospects are visibly disappointed to learn Go Vocal does not. This section summarises how 11 competing platforms handle it, based on official product and help documentation (web research, May 2026).
+
+**Headline finding:** almost every competitor treats participation tools as **free-floating, concurrently-available components** on a single project page, microsite, hub, or document. Where a timeline or "lifecycle" widget exists, it is an **informational status display — it does not gate which tools are open**. Go Vocal's model (one method per phase, phases strictly sequential and non-overlapping, the timeline gating participation) is the **outlier**. Two distinct patterns of "parallel" appear: (A) multiple independent tools side-by-side on one page; (B) multiple methods fused into one guided survey flow (sequential screens, but multi-method).
+
+### Granicus EngagementHQ _(formerly Bang the Table)_
+
+The most direct competitor and the one most often cited by prospects. A project page has a dedicated **Tools** section rendered as **tabs below the project description**; admins "Add Tool" and drag to reorder. Nine tools: Surveys, Forums, Ideas, Places (maps), Stories, Guestbook, Questions (Q&A), Polls, News. **Multiple tools run concurrently** as side-by-side tabs; residents click between them. Each tool is opened/closed via its own settings. The **Lifecycle widget** shows customisable stages (default: Open / Under Review / Final Report) but is purely a **visual status communicator — it does not bind or gate tools**. Reporting is per-tool, with project-level aggregation. Pattern A.
+
+- https://helpdesk.bangthetable.com/en/articles/3656440-understanding-the-project-page
+- https://helpdesk.bangthetable.com/en/articles/9569813-use-multiple-tools-for-multi-stage-projects
+- https://helpdesk.bangthetable.com/en/articles/3705269-use-the-lifecycle-widget-to-display-a-timeline
+
+### Social Pinpoint
+
+Projects are standalone **microsites** built with a drag-and-drop **Page Builder** (section/column layout). Engagement tools — Social Maps, Ideas Walls, Surveys/Forms, participatory Budgets, Forums/Discussions, Virtual Town Halls (markets "40+ tools") — are placed as **page components**, multiple per page. The **Engagement Widget** can even pull tools from _any_ project in the account onto one page. A **Timeline widget** supports unlimited stages but is **informational, not gating** — tools are opened/closed independently. Reporting: per-activity **Results reports** plus cross-tool **Overview reports**, rolling up to project, team or site-wide level. Pattern A.
+
+- https://learn.socialpinpoint.com/social-pinpoint-hacks/managing-multi-phase-engagement
+
+### Commonplace
+
+With **Commonplace 2.0 / the Engagement Hub**, a project is a single hub page hosting **multiple modules as tiles** — Community Heatmap (geolocated map comments), Design Feedback (document/proposal feedback), and surveys — **side-by-side, concurrently**. Commonplace explicitly markets this as a fix for its older model, where modules lived on **separate project subdomains** and forced respondents to jump between URLs (the same "hack" Go Vocal clients complain about). The hub also has an informational project timeline and news posts. A real-time Client Dashboard aggregates responses, themes and sentiment. Pattern A.
+
+### coUrbanize
+
+A project is a single microsite organised into **navigable tabs** (typically Updates, Comments, Map, Survey, Information). Multiple tools are **continuously available at once**: moderated comment threads, surveys and live polls, an interactive map, custom tabs/forms, document sharing, letters of support. The model is explicitly **"always-on" continuous engagement** — there is no resident-facing phase gating; timeline-style communication is handled via Updates posts and an "Incorporated Feedback" tool. AI-assisted reporting synthesises sentiment across channels. Pattern A.
+
+- https://www.courbanize.com/what-we-offer
+
+### PublicInput
+
+A project is a **Page & Survey** — one hosted page combining content blocks, questions, interactive maps, documents, comment widgets and polls into a single response set; it also takes multichannel input (SMS, voicemail, email, social). It uses **"steps"** (sequential pages, optionally free-jump) rather than time-bound phases; phasing of a larger initiative happens at the **Project Group / Topic Page** level, which groups multiple projects and shows a visual timeline. **Unified reporting is a confirmed differentiator**: every comment, response and meeting logs to one resident record/CRM, with cross-project longitudinal dashboards and Census demographic overlays for equity-gap analysis. Pattern A. _(Directly relevant to the "reporting is the real prize" feedback.)_
+
+- https://publicinput.com/wp/platform/features/
+
+### MetroQuest
+
+A different model. A MetroQuest project is **one survey** assembled from a sequence of ~5 **screens** (14 screen templates spanning ranking, image/scenario rating, map markers, budget allocation, tradeoffs, standard questions). It fuses **multiple methods into one guided, sequential flow** — participants take a short "tour"; "Connected Screens" pipe answers from one screen into later ones. This is **Pattern B: multi-method but sequential**, not concurrent independent tools. Reporting is unified at the survey level. Relevant as a model for "ask several question types in one seamless flow" (cf. the gating-questions feedback cluster).
+
+- https://support.metroquest.com/screen-guide
+
+### Konveio
+
+**Document-centric.** The core unit is an interactive document (a draft plan/policy PDF). A single document can host **many tools simultaneously**: in-context sticky-note comments, threaded replies, embedded forms/surveys, discussion forums, dot voting, Community Mapping, Simulator Surveys (trade-off tools), embedded media. There is **no phase/timeline engine within a document** — lifecycle stages are handled by publishing separate documents. Commenting windows can auto-close on a date. Reporting is document-scoped (AI auto-themes comments; CSV/annotated-PDF export). Pattern A, around a document rather than a project page. _(Go Vocal's nearest equivalent is the document-annotation method.)_
+
+- https://www.konveio.com/features/feedback
+
+### Maptionnaire
+
+A project centres on **one survey** (12-month platform access) plus optional modules: core map-based questionnaires, gamified budget allocation / participatory budgeting, and a **Webpage Builder** hub. Within a single survey, planners freely **mix mapping and non-mapping questions** (Pattern B). The Webpage Builder hub **embeds multiple questionnaires, maps and media together** (Pattern A). A visual timeline element can be added to any project page (display only); a dedicated **multi-phase participatory budgeting** feature runs a genuine staged process. Reporting is per-survey/project.
+
+- https://www.maptionnaire.com/product
+
+### Decidim
+
+**The most architecturally relevant reference.** Decidim has both a phase concept _and_ parallel tools, and resolves the tension cleanly. A **participatory space** (e.g. a Participatory Process) contains **components** — the participation tools (Proposals, Surveys, Budgets, Debates, Meetings, Pages…). A process is also divided into **phases/steps** ordered in time. Crucially: **components attach to the space, not to a phase** — many components can be active and visible simultaneously throughout the process. Phases do _not_ turn components on/off; instead each component exposes **per-step settings** (e.g. proposal _creation_ enabled in step 1, _voting_ in step 2). Only one step is "active" at a time, selecting which settings apply. So true parallel participation within a phase is fully supported; phases fine-tune behaviour over time. Pattern A. _(This space/component + per-step-settings split is worth studying closely as a model.)_
+
+- https://docs.decidim.org/en/develop/features/components.html
+- https://docs.decidim.org/en/develop/admin/spaces/processes/phases
+- https://docs.decidim.org/en/develop/admin/components/proposals.html
+
+### Consul Democracy
+
+**Modular.** Core modules — Debates, Citizen Proposals, Polls/Voting, Participatory Budgeting, Collaborative Legislation — are independent, site-wide sections that admins activate separately and that **run concurrently by default**, each with its own lifecycle. An optional **"Advanced Processes"** module is the closest analogue to a Decidim phased process: it lets admins "define and combine generic phases of participation in a free way". Whether Advanced Processes phases can overlap in time is **not confirmed** in the docs. Pattern A.
+
+- https://docs.consuldemocracy.org/use_guide
+- https://docs.consuldemocracy.org/use_guide/6.-advanced-processes
+
+### Citizen Space (Delib)
+
+A flatter model. The unit is an **"activity"** (a survey, info page, form, poll, map exercise…), each self-contained with its own dates. There is **no process-with-components container** and no multi-tool phased timeline. **Parallel participation is achieved only at portfolio level** — run many activities concurrently and **manually cross-link** them from each Overview. Within one activity, flow can be linear, non-linear, or linear-with-skip-logic, but that governs one survey, not multiple tools. The weakest parallel-participation story of the set.
+
+- https://help.delib.net/article/27-citizen-space-activity-set-up-detailed-instructions
+- https://www.delib.net/citizen_space
+
+### Synthesis
+
+| Platform             | Container                | Parallel pattern          | Timeline gates tools?              |
+| -------------------- | ------------------------ | ------------------------- | ---------------------------------- |
+| EngagementHQ         | Project page (tool tabs) | A                         | No (Lifecycle = status)            |
+| Social Pinpoint      | Microsite (Page Builder) | A                         | No (Timeline = status)             |
+| Commonplace          | Engagement Hub (tiles)   | A                         | No                                 |
+| coUrbanize           | Microsite (tabs)         | A                         | No (always-on)                     |
+| PublicInput          | Page & Survey            | A                         | No (steps ≠ phases)                |
+| MetroQuest           | One survey (screens)     | B                         | n/a (single flow)                  |
+| Konveio              | Interactive document     | A                         | No                                 |
+| Maptionnaire         | Survey + Webpage hub     | A + B                     | No (display only)                  |
+| Decidim              | Space → components       | A                         | No (phases tune settings)          |
+| Consul               | Site-wide modules        | A                         | No                                 |
+| Citizen Space        | Flat activities          | Portfolio-level only      | n/a                                |
+| **Go Vocal (today)** | **Project → phases**     | **None — 1 method/phase** | **Yes — phase = current activity** |
+
+Key takeaways:
+
+- **The market baseline is Pattern A**: drop multiple tools onto one project page, all concurrently available, with no phase gating. Prospects arriving from EngagementHQ, Social Pinpoint, Commonplace or coUrbanize expect exactly this.
+- **Timelines are kept but never gate participation.** Every competitor with a timeline treats it as a status/communication display. This matches the Go Vocal feedback ("keep the timeline, relax it").
+- **Decidim is the closest sophisticated model** — and the only competitor that, like Go Vocal, has a real phase concept. Its resolution (components are space-scoped; phases only carry per-step _settings_) is the most directly transferable reference.
+- **Unified cross-tool / cross-project reporting is a real differentiator only for PublicInput.** Most competitors offer per-tool or per-project reporting only — confirming the feedback that solving reporting, not the front-office layout, is "the real prize".
+- **MetroQuest's multi-method-in-one-flow (Pattern B)** is a separate idea worth noting — it speaks to the "gating questions before participation" and "seamless single experience" feedback rather than to side-by-side tools.
 
 ---
 
@@ -375,106 +492,3 @@ Re-read every cluster in the Feedback section through this lens and each becomes
 - _Voting after ideation on the same Inputs_ → one Activity with different per-Phase settings, not two Methods on two Phases.
 - _Permissions / action descriptors per activity_ → today scoped to Phase because Phase = Activity; unbundled, they follow Activity, and the action-descriptor surface multiplies (one set per Activity per user instead of one per Project).
 - _Reporting across activities / per input lifecycle_ → Inputs and Statuses become first-class concepts with their own grain, distinct from Phases.
-
----
-
-## Competitors
-
-A recurring **sales** driver for this feature: most competing platforms already support parallel participation, and prospects are visibly disappointed to learn Go Vocal does not. This section summarises how 11 competing platforms handle it, based on official product and help documentation (web research, May 2026).
-
-**Headline finding:** almost every competitor treats participation tools as **free-floating, concurrently-available components** on a single project page, microsite, hub, or document. Where a timeline or "lifecycle" widget exists, it is an **informational status display — it does not gate which tools are open**. Go Vocal's model (one method per phase, phases strictly sequential and non-overlapping, the timeline gating participation) is the **outlier**. Two distinct patterns of "parallel" appear: (A) multiple independent tools side-by-side on one page; (B) multiple methods fused into one guided survey flow (sequential screens, but multi-method).
-
-### Granicus EngagementHQ _(formerly Bang the Table)_
-
-The most direct competitor and the one most often cited by prospects. A project page has a dedicated **Tools** section rendered as **tabs below the project description**; admins "Add Tool" and drag to reorder. Nine tools: Surveys, Forums, Ideas, Places (maps), Stories, Guestbook, Questions (Q&A), Polls, News. **Multiple tools run concurrently** as side-by-side tabs; residents click between them. Each tool is opened/closed via its own settings. The **Lifecycle widget** shows customisable stages (default: Open / Under Review / Final Report) but is purely a **visual status communicator — it does not bind or gate tools**. Reporting is per-tool, with project-level aggregation. Pattern A.
-
-- https://helpdesk.bangthetable.com/en/articles/3656440-understanding-the-project-page
-- https://helpdesk.bangthetable.com/en/articles/9569813-use-multiple-tools-for-multi-stage-projects
-- https://helpdesk.bangthetable.com/en/articles/3705269-use-the-lifecycle-widget-to-display-a-timeline
-
-### Social Pinpoint
-
-Projects are standalone **microsites** built with a drag-and-drop **Page Builder** (section/column layout). Engagement tools — Social Maps, Ideas Walls, Surveys/Forms, participatory Budgets, Forums/Discussions, Virtual Town Halls (markets "40+ tools") — are placed as **page components**, multiple per page. The **Engagement Widget** can even pull tools from _any_ project in the account onto one page. A **Timeline widget** supports unlimited stages but is **informational, not gating** — tools are opened/closed independently. Reporting: per-activity **Results reports** plus cross-tool **Overview reports**, rolling up to project, team or site-wide level. Pattern A.
-
-- https://learn.socialpinpoint.com/social-pinpoint-hacks/managing-multi-phase-engagement
-
-### Commonplace
-
-With **Commonplace 2.0 / the Engagement Hub**, a project is a single hub page hosting **multiple modules as tiles** — Community Heatmap (geolocated map comments), Design Feedback (document/proposal feedback), and surveys — **side-by-side, concurrently**. Commonplace explicitly markets this as a fix for its older model, where modules lived on **separate project subdomains** and forced respondents to jump between URLs (the same "hack" Go Vocal clients complain about). The hub also has an informational project timeline and news posts. A real-time Client Dashboard aggregates responses, themes and sentiment. Pattern A.
-
-### coUrbanize
-
-A project is a single microsite organised into **navigable tabs** (typically Updates, Comments, Map, Survey, Information). Multiple tools are **continuously available at once**: moderated comment threads, surveys and live polls, an interactive map, custom tabs/forms, document sharing, letters of support. The model is explicitly **"always-on" continuous engagement** — there is no resident-facing phase gating; timeline-style communication is handled via Updates posts and an "Incorporated Feedback" tool. AI-assisted reporting synthesises sentiment across channels. Pattern A.
-
-- https://www.courbanize.com/what-we-offer
-
-### PublicInput
-
-A project is a **Page & Survey** — one hosted page combining content blocks, questions, interactive maps, documents, comment widgets and polls into a single response set; it also takes multichannel input (SMS, voicemail, email, social). It uses **"steps"** (sequential pages, optionally free-jump) rather than time-bound phases; phasing of a larger initiative happens at the **Project Group / Topic Page** level, which groups multiple projects and shows a visual timeline. **Unified reporting is a confirmed differentiator**: every comment, response and meeting logs to one resident record/CRM, with cross-project longitudinal dashboards and Census demographic overlays for equity-gap analysis. Pattern A. _(Directly relevant to the "reporting is the real prize" feedback.)_
-
-- https://publicinput.com/wp/platform/features/
-
-### MetroQuest
-
-A different model. A MetroQuest project is **one survey** assembled from a sequence of ~5 **screens** (14 screen templates spanning ranking, image/scenario rating, map markers, budget allocation, tradeoffs, standard questions). It fuses **multiple methods into one guided, sequential flow** — participants take a short "tour"; "Connected Screens" pipe answers from one screen into later ones. This is **Pattern B: multi-method but sequential**, not concurrent independent tools. Reporting is unified at the survey level. Relevant as a model for "ask several question types in one seamless flow" (cf. the gating-questions feedback cluster).
-
-- https://support.metroquest.com/screen-guide
-
-### Konveio
-
-**Document-centric.** The core unit is an interactive document (a draft plan/policy PDF). A single document can host **many tools simultaneously**: in-context sticky-note comments, threaded replies, embedded forms/surveys, discussion forums, dot voting, Community Mapping, Simulator Surveys (trade-off tools), embedded media. There is **no phase/timeline engine within a document** — lifecycle stages are handled by publishing separate documents. Commenting windows can auto-close on a date. Reporting is document-scoped (AI auto-themes comments; CSV/annotated-PDF export). Pattern A, around a document rather than a project page. _(Go Vocal's nearest equivalent is the document-annotation method.)_
-
-- https://www.konveio.com/features/feedback
-
-### Maptionnaire
-
-A project centres on **one survey** (12-month platform access) plus optional modules: core map-based questionnaires, gamified budget allocation / participatory budgeting, and a **Webpage Builder** hub. Within a single survey, planners freely **mix mapping and non-mapping questions** (Pattern B). The Webpage Builder hub **embeds multiple questionnaires, maps and media together** (Pattern A). A visual timeline element can be added to any project page (display only); a dedicated **multi-phase participatory budgeting** feature runs a genuine staged process. Reporting is per-survey/project.
-
-- https://www.maptionnaire.com/product
-
-### Decidim
-
-**The most architecturally relevant reference.** Decidim has both a phase concept _and_ parallel tools, and resolves the tension cleanly. A **participatory space** (e.g. a Participatory Process) contains **components** — the participation tools (Proposals, Surveys, Budgets, Debates, Meetings, Pages…). A process is also divided into **phases/steps** ordered in time. Crucially: **components attach to the space, not to a phase** — many components can be active and visible simultaneously throughout the process. Phases do _not_ turn components on/off; instead each component exposes **per-step settings** (e.g. proposal _creation_ enabled in step 1, _voting_ in step 2). Only one step is "active" at a time, selecting which settings apply. So true parallel participation within a phase is fully supported; phases fine-tune behaviour over time. Pattern A. _(This space/component + per-step-settings split is worth studying closely as a model.)_
-
-- https://docs.decidim.org/en/develop/features/components.html
-- https://docs.decidim.org/en/develop/admin/spaces/processes/phases
-- https://docs.decidim.org/en/develop/admin/components/proposals.html
-
-### Consul Democracy
-
-**Modular.** Core modules — Debates, Citizen Proposals, Polls/Voting, Participatory Budgeting, Collaborative Legislation — are independent, site-wide sections that admins activate separately and that **run concurrently by default**, each with its own lifecycle. An optional **"Advanced Processes"** module is the closest analogue to a Decidim phased process: it lets admins "define and combine generic phases of participation in a free way". Whether Advanced Processes phases can overlap in time is **not confirmed** in the docs. Pattern A.
-
-- https://docs.consuldemocracy.org/use_guide
-- https://docs.consuldemocracy.org/use_guide/6.-advanced-processes
-
-### Citizen Space (Delib)
-
-A flatter model. The unit is an **"activity"** (a survey, info page, form, poll, map exercise…), each self-contained with its own dates. There is **no process-with-components container** and no multi-tool phased timeline. **Parallel participation is achieved only at portfolio level** — run many activities concurrently and **manually cross-link** them from each Overview. Within one activity, flow can be linear, non-linear, or linear-with-skip-logic, but that governs one survey, not multiple tools. The weakest parallel-participation story of the set.
-
-- https://help.delib.net/article/27-citizen-space-activity-set-up-detailed-instructions
-- https://www.delib.net/citizen_space
-
-### Synthesis
-
-| Platform             | Container                | Parallel pattern          | Timeline gates tools?              |
-| -------------------- | ------------------------ | ------------------------- | ---------------------------------- |
-| EngagementHQ         | Project page (tool tabs) | A                         | No (Lifecycle = status)            |
-| Social Pinpoint      | Microsite (Page Builder) | A                         | No (Timeline = status)             |
-| Commonplace          | Engagement Hub (tiles)   | A                         | No                                 |
-| coUrbanize           | Microsite (tabs)         | A                         | No (always-on)                     |
-| PublicInput          | Page & Survey            | A                         | No (steps ≠ phases)                |
-| MetroQuest           | One survey (screens)     | B                         | n/a (single flow)                  |
-| Konveio              | Interactive document     | A                         | No                                 |
-| Maptionnaire         | Survey + Webpage hub     | A + B                     | No (display only)                  |
-| Decidim              | Space → components       | A                         | No (phases tune settings)          |
-| Consul               | Site-wide modules        | A                         | No                                 |
-| Citizen Space        | Flat activities          | Portfolio-level only      | n/a                                |
-| **Go Vocal (today)** | **Project → phases**     | **None — 1 method/phase** | **Yes — phase = current activity** |
-
-Key takeaways:
-
-- **The market baseline is Pattern A**: drop multiple tools onto one project page, all concurrently available, with no phase gating. Prospects arriving from EngagementHQ, Social Pinpoint, Commonplace or coUrbanize expect exactly this.
-- **Timelines are kept but never gate participation.** Every competitor with a timeline treats it as a status/communication display. This matches the Go Vocal feedback ("keep the timeline, relax it").
-- **Decidim is the closest sophisticated model** — and the only competitor that, like Go Vocal, has a real phase concept. Its resolution (components are space-scoped; phases only carry per-step _settings_) is the most directly transferable reference.
-- **Unified cross-tool / cross-project reporting is a real differentiator only for PublicInput.** Most competitors offer per-tool or per-project reporting only — confirming the feedback that solving reporting, not the front-office layout, is "the real prize".
-- **MetroQuest's multi-method-in-one-flow (Pattern B)** is a separate idea worth noting — it speaks to the "gating questions before participation" and "seamless single experience" feedback rather than to side-by-side tools.
