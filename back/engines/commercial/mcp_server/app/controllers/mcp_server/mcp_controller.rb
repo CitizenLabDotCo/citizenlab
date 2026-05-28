@@ -15,23 +15,7 @@ module McpServer
       server = MCP::Server.new(
         name: 'citizenlab',
         version: '0.1.0',
-        tools: [
-          McpServer::Tools::HelloWorld,
-          McpServer::Tools::CreateProject,
-          McpServer::Tools::CreatePhase,
-          McpServer::Tools::CreateEvent,
-          McpServer::Tools::GetResource,
-          McpServer::Tools::ListProjects,
-          McpServer::Tools::ListPhases,
-          McpServer::Tools::ListEvents,
-          McpServer::Tools::ListAreas,
-          McpServer::Tools::ListGlobalTopics,
-          McpServer::Tools::ListFolders,
-          McpServer::Tools::ListUsers,
-          McpServer::Tools::ListPhasePermissions,
-          McpServer::Tools::UpdatePhasePermission,
-          McpServer::Tools::ListUserCustomFields
-        ],
+        tools: tools,
         server_context: { current_user: }
       )
 
@@ -61,6 +45,26 @@ module McpServer
 
     def current_user
       @current_user ||= User.find(doorkeeper_token.resource_owner_id)
+    end
+
+    def tools
+      @tools ||= [
+        McpServer::Tools::HelloWorld,
+        McpServer::Tools::CreateProject,
+        McpServer::Tools::CreatePhase,
+        McpServer::Tools::CreateEvent,
+        McpServer::Tools::GetResource,
+        McpServer::Tools::ListProjects,
+        McpServer::Tools::ListPhases,
+        McpServer::Tools::ListEvents,
+        McpServer::Tools::ListAreas,
+        McpServer::Tools::ListGlobalTopics,
+        McpServer::Tools::ListFolders,
+        McpServer::Tools::ListUsers,
+        McpServer::Tools::ListPhasePermissions,
+        McpServer::Tools::UpdatePhasePermission,
+        McpServer::Tools::ListUserCustomFields
+      ]
     end
   end
 end
