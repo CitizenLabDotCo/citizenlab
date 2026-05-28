@@ -26,9 +26,12 @@ const SECTION_GAP_MM = 4;
 const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
-const FONTS_PRELOAD_TIMEOUT_MS = 5_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
+// Give the browser time to finish any in-flight font/image fetches and the
+// font system time to decode glyphs before snapdom begins capturing. Mirrors
+// the 5s wait used by the PrintReport route, which avoids the same race.
+const PRE_CAPTURE_SETTLE_MS = 5_000;
 
 const sliceCanvas = (
   source: HTMLCanvasElement,
@@ -78,79 +81,6 @@ const sectionLabel = (section: HTMLElement, index: number): string => {
   const text = heading?.textContent?.trim();
   if (text) return text.slice(0, 80);
   return `Section ${index + 1}`;
-};
-
-// snapdom's `embedFonts: true` issues its own `fetch()` for every @font-face
-// source URL and inlines them as data URIs in the captured SVG. Warming the
-// HTTP cache so those fetches hit `(disk cache)` is not enough on a cold
-// session: even with cached bytes, snapdom's post-fetch processing (parsing
-// the woff binary, encoding to base64, registering @font-face in the captured
-// SVG) appears to race against the SVG-to-canvas rasterization, and text
-// renders without glyphs on the first capture of a fresh session.
-//
-// The robust fix is to hand snapdom pre-built `localFonts` entries with the
-// font bytes already encoded as data URIs. With those provided, snapdom skips
-// its own discovery/fetch/encode path and uses our data directly, so the
-// first capture behaves the same as subsequent ones.
-interface FontVariant {
-  url: string;
-  weight: number;
-  style: 'normal' | 'italic';
-}
-
-const PUBLIC_SANS_VARIANTS: FontVariant[] = [
-  { url: '/PublicSans-Light.woff2', weight: 300, style: 'normal' },
-  { url: '/PublicSans-LightItalic.woff2', weight: 300, style: 'italic' },
-  { url: '/PublicSans-Regular.woff2', weight: 400, style: 'normal' },
-  { url: '/PublicSans-Italic.woff2', weight: 400, style: 'italic' },
-  { url: '/PublicSans-Medium.woff2', weight: 500, style: 'normal' },
-  { url: '/PublicSans-MediumItalic.woff2', weight: 500, style: 'italic' },
-  { url: '/PublicSans-SemiBold.woff2', weight: 600, style: 'normal' },
-  { url: '/PublicSans-SemiBoldItalic.woff2', weight: 600, style: 'italic' },
-  { url: '/PublicSans-Bold.woff2', weight: 700, style: 'normal' },
-  { url: '/PublicSans-BoldItalic.woff2', weight: 700, style: 'italic' },
-];
-
-interface LocalFontEntry {
-  family: string;
-  src: string;
-  weight: number;
-  style: 'normal' | 'italic';
-}
-
-const blobToDataUrl = (blob: Blob): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(blob);
-  });
-
-const buildLocalFonts = async (
-  timeoutMs: number
-): Promise<LocalFontEntry[]> => {
-  const work = PUBLIC_SANS_VARIANTS.map(
-    async ({ url, weight, style }): Promise<LocalFontEntry | null> => {
-      try {
-        const response = await fetch(url, { credentials: 'include' });
-        if (!response.ok) return null;
-        const blob = await response.blob();
-        const dataUrl = await blobToDataUrl(blob);
-        return { family: 'Public Sans', src: dataUrl, weight, style };
-      } catch {
-        return null;
-      }
-    }
-  );
-
-  const collected = await Promise.race([
-    Promise.all(work),
-    new Promise<(LocalFontEntry | null)[]>((resolve) =>
-      setTimeout(() => resolve([]), timeoutMs)
-    ),
-  ]);
-
-  return collected.filter((entry): entry is LocalFontEntry => entry !== null);
 };
 
 // `setIsDownloading(true)` triggers a re-render that mounts the hidden
@@ -264,14 +194,6 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
-      // Fetch every Public Sans variant ourselves and build snapdom
-      // `localFonts` entries with the bytes already base64-encoded as data
-      // URIs. Running in parallel with the container mount and dynamic
-      // imports so we don't add latency. Without this, snapdom's first
-      // capture in a fresh session rasterizes without text because its own
-      // fetch/encode pipeline races the SVG→canvas conversion.
-      const localFontsPromise = buildLocalFonts(FONTS_PRELOAD_TIMEOUT_MS);
-
       const [{ snapdom, preCache }, { default: jsPDF }, container] =
         await Promise.all([
           import('@zumer/snapdom'),
@@ -284,14 +206,8 @@ export default function useInsightsPdfDownload({
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
-      const localFonts = await localFontsPromise;
 
-      // snapdom's font/style cache is cold on first capture in a fresh module
-      // instance, which makes the first 2–3 sections rasterize without text.
-      // Walk the subtree to populate the style/font cache for every face the
-      // hidden DOM uses. We pass `localFonts` so snapdom skips its own remote
-      // discovery and uses the pre-encoded entries we built above.
-      await preCache(container, { embedFonts: true, localFonts });
+      await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
@@ -321,9 +237,16 @@ export default function useInsightsPdfDownload({
             scale: CAPTURE_SCALE,
             backgroundColor: colors.white,
             embedFonts: true,
-            localFonts,
           }),
         SECTION_TIMEOUT_MS
+      );
+
+      // snapdom's toCanvas resolves before its internal font fetches are
+      // actually finished — those continue in the background. Wait here so
+      // those fetches (and the browser's font-decode work) complete before
+      // the real capture loop starts.
+      await new Promise((resolve) =>
+        setTimeout(resolve, PRE_CAPTURE_SETTLE_MS)
       );
 
       safeSetStatus('capturing');
@@ -349,7 +272,6 @@ export default function useInsightsPdfDownload({
               scale: CAPTURE_SCALE,
               backgroundColor: colors.white,
               embedFonts: true,
-              localFonts,
             }),
           SECTION_TIMEOUT_MS
         );
