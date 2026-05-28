@@ -114,6 +114,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_704e460729;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_6f51315d9b;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
@@ -195,6 +196,7 @@ DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
+DROP INDEX IF EXISTS public.index_users_on_phone_number;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -210,6 +212,7 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
@@ -512,6 +515,7 @@ ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS su
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS static_pages_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS sms_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
@@ -651,6 +655,7 @@ DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.spaces;
+DROP TABLE IF EXISTS public.sms_deliveries;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
@@ -1548,7 +1553,8 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    token_expiry_key character varying
+    token_expiry_key character varying,
+    phone_number character varying
 );
 
 
@@ -3641,6 +3647,23 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: sms_deliveries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sms_deliveries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid,
+    phone_number character varying NOT NULL,
+    body text NOT NULL,
+    message_sid character varying,
+    status character varying NOT NULL,
+    error_message character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: spaces; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4879,6 +4902,14 @@ ALTER TABLE public.admin_publications
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sms_deliveries sms_deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT sms_deliveries_pkey PRIMARY KEY (id);
 
 
 --
@@ -7012,6 +7043,13 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 
 
 --
+-- Name: index_sms_deliveries_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_user_id ON public.sms_deliveries USING btree (user_id);
+
+
+--
 -- Name: index_spam_reports_on_reported_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7114,6 +7152,13 @@ CREATE INDEX index_ucf_representativeness_ref_distributions_on_custom_field ON p
 --
 
 CREATE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_phone_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_phone_number ON public.users USING btree (phone_number);
 
 
 --
@@ -7732,6 +7777,14 @@ ALTER TABLE ONLY public.ideas_input_topics
 
 ALTER TABLE ONLY public.groups_permissions
     ADD CONSTRAINT fk_rails_6fa6389d80 FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
+
+
+--
+-- Name: sms_deliveries fk_rails_704e460729; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT fk_rails_704e460729 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -8581,6 +8634,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260526100720'),
+('20260526100719'),
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),

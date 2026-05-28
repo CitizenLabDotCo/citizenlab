@@ -151,7 +151,7 @@ Rails.application.routes.draw do
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
-      get 'test_sms', to: 'sms_test#test_sms'
+      post 'sms/sends', to: 'sms/sends#create' if Rails.env.development?
 
       resources :global_topics do
         patch 'reorder', on: :member
