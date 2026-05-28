@@ -49,7 +49,6 @@ module McpServer
 
     def tools
       @tools ||= [
-        McpServer::Tools::HelloWorld,
         McpServer::Tools::CreateProject,
         McpServer::Tools::CreatePhase,
         McpServer::Tools::CreateEvent,
