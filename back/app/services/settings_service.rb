@@ -106,16 +106,23 @@ class SettingsService
     }
   end
 
-  # Ensures the FE does not show verification if:
-  # a) There are no verification methods
-  # b) All verification methods are flagged as 'hide_from_profile'
+  # Ensures the FE does not show verification if no configured method drives
+  # verification UI in the profile. Login-only SSO methods (Hoplr, Vienna) share
+  # the `verification_methods` settings bucket but cannot verify identities, and
+  # individual methods may be flagged with `hide_from_profile`.
   def disable_verification_if_no_methods_enabled(settings)
     return settings if !settings['verification'] || settings['verification']['enabled'] == false
 
-    enabled = settings['verification']['verification_methods'].present?
-    enabled = false if settings['verification']['verification_methods']&.pluck('hide_from_profile')&.all?(true)
+    configured = settings['verification']['verification_methods'] || []
+    vm_service = ::Verification::VerificationService.new
+    any_shown_in_profile = configured.any? do |method_config|
+      method = vm_service.method_by_name(method_config['name'])
+      next false unless method&.respond_to?(:verification?) && method.verification?
 
-    settings['verification']['enabled'] = enabled
+      !method_config['hide_from_profile']
+    end
+
+    settings['verification']['enabled'] = any_shown_in_profile
     settings
   end
 

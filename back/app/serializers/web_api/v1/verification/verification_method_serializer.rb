@@ -14,6 +14,15 @@ module WebApi::V1::Verification
       AuthenticationService.all_methods.value?(record)
     end
 
+    # Whether the method should drive verification UI in the user profile/menu.
+    # False for login-only SSO methods (verification? = false) and for methods
+    # the admin has flagged with `hide_from_profile`.
+    attribute :show_verification_in_profile do |record|
+      is_verification_method = record.respond_to?(:verification?) ? record.verification? : true
+      hidden = record.respond_to?(:config) && record.config&.dig(:hide_from_profile)
+      is_verification_method && !hidden
+    end
+
     ::Verification::VerificationService.new.all_methods.each do |method|
       next unless method.respond_to?(:exposed_config_parameters)
 

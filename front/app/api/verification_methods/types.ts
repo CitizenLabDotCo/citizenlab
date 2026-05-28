@@ -68,6 +68,7 @@ type TGenericMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
   };
 };
 
@@ -79,6 +80,7 @@ export type IDFakeSSOMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
   };
 };
 
@@ -90,6 +92,7 @@ export type IDLookupMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     card_id: string;
     card_id_placeholder: string;
     card_id_tooltip: string;
@@ -106,6 +109,7 @@ export type IDCriiptoMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     ui_method_name: string;
   };
 };
@@ -118,6 +122,7 @@ export type IDKeycloakMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     ui_method_name: string;
     provider: IconNames;
   };
@@ -131,6 +136,7 @@ export type IDTwodayMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     ui_method_name: string;
   };
 };
@@ -143,6 +149,7 @@ export type IDAcmMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     ui_method_name: string;
   };
 };
@@ -155,6 +162,7 @@ export type IDAuth0Method = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
     method_name_multiloc: Multiloc;
   };
 };
@@ -168,6 +176,7 @@ export type IDIdAustriaMethod = {
     method_metadata?: MethodMetadata;
     login_method: boolean;
     verification_method: boolean;
+    show_verification_in_profile: boolean;
   };
 };
 

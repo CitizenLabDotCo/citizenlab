@@ -147,9 +147,18 @@ fe-up-twoday:
 be-up-hoplr:
 	docker compose down
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[hoplr]'
-	BASE_DEV_URI=http://localhost:3000 ASSET_HOST_URI=http://localhost:3000 docker compose up
+	docker compose up
 
 fe-up-hoplr:
+	cd front && npm start
+
+# Vienna
+be-up-vienna:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[vienna_citizen,vienna_employee]'
+	docker compose up
+
+fe-up-vienna:
 	cd front && npm start
 
 # Federa (Modena SSO)

@@ -283,5 +283,21 @@ describe SettingsService do
       updated_settings = ss.send(:disable_verification_if_no_methods_enabled, settings)
       expect(updated_settings['verification']['enabled']).to be true
     end
+
+    it 'disables verification on the front-end if all configured methods are login-only SSO methods' do
+      settings = {
+        'verification' => {
+          'allowed' => true,
+          'enabled' => true,
+          'verification_methods' => [
+            { 'name' => 'vienna_citizen' },
+            { 'name' => 'hoplr' }
+          ]
+        }
+      }
+
+      updated_settings = ss.send(:disable_verification_if_no_methods_enabled, settings)
+      expect(updated_settings['verification']['enabled']).to be false
+    end
   end
 end

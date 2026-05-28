@@ -54,6 +54,7 @@ resource 'Verification methods' do
             name: 'cow',
             login_method: false,
             verification_method: true,
+            show_verification_in_profile: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
@@ -73,6 +74,7 @@ resource 'Verification methods' do
             name: 'fake_sso',
             login_method: true,
             verification_method: true,
+            show_verification_in_profile: true,
             method_metadata: {
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
@@ -102,6 +104,7 @@ resource 'Verification methods' do
             explainer_image_url: 'https://some.fake/image.png',
             login_method: false,
             verification_method: true,
+            show_verification_in_profile: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
@@ -129,6 +132,7 @@ resource 'Verification methods' do
             name: 'fake_sso',
             login_method: true,
             verification_method: true,
+            show_verification_in_profile: true,
             method_metadata: {
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
@@ -161,6 +165,7 @@ resource 'Verification methods' do
             name: 'cow',
             login_method: false,
             verification_method: true,
+            show_verification_in_profile: true,
             method_metadata: {
               allowed_for_verified_actions: false,
               locked_attributes: [],
