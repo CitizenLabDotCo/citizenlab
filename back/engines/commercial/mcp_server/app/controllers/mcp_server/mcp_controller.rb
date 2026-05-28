@@ -27,7 +27,9 @@ module McpServer
           McpServer::Tools::ListAreas,
           McpServer::Tools::ListGlobalTopics,
           McpServer::Tools::ListFolders,
-          McpServer::Tools::ListUsers
+          McpServer::Tools::ListUsers,
+          McpServer::Tools::ListPhasePermissions,
+          McpServer::Tools::UpdatePhasePermission
         ],
         server_context: { current_user: }
       )
