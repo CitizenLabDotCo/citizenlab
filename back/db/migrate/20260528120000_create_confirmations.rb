@@ -53,20 +53,10 @@ class CreateConfirmations < ActiveRecord::Migration[7.2]
           NOW()
         FROM users
       SQL
-
-      remove_column :users, :email_confirmation_code
-      remove_column :users, :email_confirmation_retry_count
-      remove_column :users, :email_confirmation_code_reset_count
-      remove_column :users, :email_confirmation_code_sent_at
     end
   end
 
   def down
-    add_column :users, :email_confirmation_code, :string
-    add_column :users, :email_confirmation_retry_count, :integer, null: false, default: 0
-    add_column :users, :email_confirmation_code_reset_count, :integer, null: false, default: 0
-    add_column :users, :email_confirmation_code_sent_at, :datetime
-
     safety_assured do
       # Pull the code data back from whichever confirmation row has it.
       execute <<~SQL.squish
