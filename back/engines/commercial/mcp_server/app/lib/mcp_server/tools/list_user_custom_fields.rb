@@ -2,8 +2,7 @@
 
 class McpServer::Tools::ListUserCustomFields < McpServer::BaseTool
   description <<~DESC.squish
-    Lists user profile fields enabled and visible for participants. Use to discover
-    custom_field_ids to pass as demographic_questions in update_phase_permission.
+    Lists user profile fields (aka demographic questions or user custom fields).
   DESC
 
   input_schema(
