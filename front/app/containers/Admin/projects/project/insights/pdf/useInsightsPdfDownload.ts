@@ -81,49 +81,76 @@ const sectionLabel = (section: HTMLElement, index: number): string => {
 };
 
 // snapdom's `embedFonts: true` issues its own `fetch()` for every @font-face
-// source URL (both woff2 and woff fallback) to inline them as data URIs in the
-// captured SVG. On the first export of a session those URLs aren't in the HTTP
-// cache yet — the `<link rel="preload">` tags in index.html only populate the
-// browser's preload cache, which is separate from the HTTP cache and is
-// discarded if not consumed quickly. `document.fonts.load()` doesn't help
-// either because snapdom bypasses the font system and fetches the URL
-// directly.
+// source URL and inlines them as data URIs in the captured SVG. Warming the
+// HTTP cache so those fetches hit `(disk cache)` is not enough on a cold
+// session: even with cached bytes, snapdom's post-fetch processing (parsing
+// the woff binary, encoding to base64, registering @font-face in the captured
+// SVG) appears to race against the SVG-to-canvas rasterization, and text
+// renders without glyphs on the first capture of a fresh session.
 //
-// To make the first attempt behave like later attempts, we explicitly fetch
-// every woff/woff2 URL ourselves before snapdom runs. Those fetches go through
-// the regular HTTP cache, so snapdom's subsequent fetches all hit cache and
-// embed instantly. The list mirrors the @font-face declarations in fonts.css.
-const PUBLIC_SANS_FONT_URLS: string[] = [
-  '/PublicSans-Light.woff2',
-  '/PublicSans-Light.woff',
-  '/PublicSans-LightItalic.woff2',
-  '/PublicSans-LightItalic.woff',
-  '/PublicSans-Regular.woff2',
-  '/PublicSans-Regular.woff',
-  '/PublicSans-Italic.woff2',
-  '/PublicSans-Italic.woff',
-  '/PublicSans-Medium.woff2',
-  '/PublicSans-Medium.woff',
-  '/PublicSans-MediumItalic.woff2',
-  '/PublicSans-MediumItalic.woff',
-  '/PublicSans-SemiBold.woff2',
-  '/PublicSans-SemiBold.woff',
-  '/PublicSans-SemiBoldItalic.woff2',
-  '/PublicSans-SemiBoldItalic.woff',
-  '/PublicSans-Bold.woff2',
-  '/PublicSans-Bold.woff',
-  '/PublicSans-BoldItalic.woff2',
-  '/PublicSans-BoldItalic.woff',
+// The robust fix is to hand snapdom pre-built `localFonts` entries with the
+// font bytes already encoded as data URIs. With those provided, snapdom skips
+// its own discovery/fetch/encode path and uses our data directly, so the
+// first capture behaves the same as subsequent ones.
+interface FontVariant {
+  url: string;
+  weight: number;
+  style: 'normal' | 'italic';
+}
+
+const PUBLIC_SANS_VARIANTS: FontVariant[] = [
+  { url: '/PublicSans-Light.woff2', weight: 300, style: 'normal' },
+  { url: '/PublicSans-LightItalic.woff2', weight: 300, style: 'italic' },
+  { url: '/PublicSans-Regular.woff2', weight: 400, style: 'normal' },
+  { url: '/PublicSans-Italic.woff2', weight: 400, style: 'italic' },
+  { url: '/PublicSans-Medium.woff2', weight: 500, style: 'normal' },
+  { url: '/PublicSans-MediumItalic.woff2', weight: 500, style: 'italic' },
+  { url: '/PublicSans-SemiBold.woff2', weight: 600, style: 'normal' },
+  { url: '/PublicSans-SemiBoldItalic.woff2', weight: 600, style: 'italic' },
+  { url: '/PublicSans-Bold.woff2', weight: 700, style: 'normal' },
+  { url: '/PublicSans-BoldItalic.woff2', weight: 700, style: 'italic' },
 ];
 
-const preloadFonts = async (timeoutMs: number): Promise<void> => {
-  const fetches = PUBLIC_SANS_FONT_URLS.map((url) =>
-    fetch(url).catch(() => undefined)
+interface LocalFontEntry {
+  family: string;
+  src: string;
+  weight: number;
+  style: 'normal' | 'italic';
+}
+
+const blobToDataUrl = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+
+const buildLocalFonts = async (
+  timeoutMs: number
+): Promise<LocalFontEntry[]> => {
+  const work = PUBLIC_SANS_VARIANTS.map(
+    async ({ url, weight, style }): Promise<LocalFontEntry | null> => {
+      try {
+        const response = await fetch(url, { credentials: 'include' });
+        if (!response.ok) return null;
+        const blob = await response.blob();
+        const dataUrl = await blobToDataUrl(blob);
+        return { family: 'Public Sans', src: dataUrl, weight, style };
+      } catch {
+        return null;
+      }
+    }
   );
-  await Promise.race([
-    Promise.allSettled(fetches),
-    new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+
+  const collected = await Promise.race([
+    Promise.all(work),
+    new Promise<(LocalFontEntry | null)[]>((resolve) =>
+      setTimeout(() => resolve([]), timeoutMs)
+    ),
   ]);
+
+  return collected.filter((entry): entry is LocalFontEntry => entry !== null);
 };
 
 // `setIsDownloading(true)` triggers a re-render that mounts the hidden
@@ -237,15 +264,13 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
-      // Kick off explicit loads for every Public Sans weight/style upfront,
-      // in parallel with the container mount and dynamic imports. Without
-      // this, weights that aren't above the fold on the visible UI (e.g.
-      // semi-bold used by matrix cells) only begin loading when the hidden
-      // tree mounts, and on the first ever export of a session their woff2
-      // files aren't HTTP-cached yet, so snapdom captures before they arrive.
-      // Subsequent exports hit cache, which is why the bug only surfaces on
-      // the first attempt and disappears after refresh.
-      const fontsPromise = preloadFonts(FONTS_PRELOAD_TIMEOUT_MS);
+      // Fetch every Public Sans variant ourselves and build snapdom
+      // `localFonts` entries with the bytes already base64-encoded as data
+      // URIs. Running in parallel with the container mount and dynamic
+      // imports so we don't add latency. Without this, snapdom's first
+      // capture in a fresh session rasterizes without text because its own
+      // fetch/encode pipeline races the SVG→canvas conversion.
+      const localFontsPromise = buildLocalFonts(FONTS_PRELOAD_TIMEOUT_MS);
 
       const [{ snapdom, preCache }, { default: jsPDF }, container] =
         await Promise.all([
@@ -259,13 +284,14 @@ export default function useInsightsPdfDownload({
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
-      await fontsPromise;
+      const localFonts = await localFontsPromise;
 
       // snapdom's font/style cache is cold on first capture in a fresh module
       // instance, which makes the first 2–3 sections rasterize without text.
       // Walk the subtree to populate the style/font cache for every face the
-      // hidden DOM uses.
-      await preCache(container, { embedFonts: true });
+      // hidden DOM uses. We pass `localFonts` so snapdom skips its own remote
+      // discovery and uses the pre-encoded entries we built above.
+      await preCache(container, { embedFonts: true, localFonts });
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
@@ -295,6 +321,7 @@ export default function useInsightsPdfDownload({
             scale: CAPTURE_SCALE,
             backgroundColor: colors.white,
             embedFonts: true,
+            localFonts,
           }),
         SECTION_TIMEOUT_MS
       );
@@ -322,6 +349,7 @@ export default function useInsightsPdfDownload({
               scale: CAPTURE_SCALE,
               backgroundColor: colors.white,
               embedFonts: true,
+              localFonts,
             }),
           SECTION_TIMEOUT_MS
         );
