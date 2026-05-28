@@ -85,15 +85,18 @@ export const filterForCommunityMonitorQuarter = ({
 
 // getPublishedAtFromFilter
 // Description: This function generates a "published_at_from" date from the URL quarter parameters.
+// Returns undefined when either yearParam or quarterParam is missing — so that
+// non-Community-Monitor flows (which don't carry ?year=/?quarter= in the URL)
+// don't get a phantom current-quarter date filter baked into their summaries.
 export const getPublishedAtFromFilter = (
   yearParam: string | undefined,
   quarterParam: Quarter | undefined
 ) => {
-  // Get the year/quarter from URL
+  if (!yearParam || !quarterParam) return undefined;
+
   const yearFilter = getYearFilter(yearParam);
   const quarterFilter = getQuarterFilter(quarterParam);
 
-  // Parse quarter and year filters
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
   const year = yearFilter ? parseInt(yearFilter, 10) : null;
 
@@ -105,15 +108,16 @@ export const getPublishedAtFromFilter = (
 
 // getPublishedAtToFilter
 // Description: This function generates a "published_at_to" date from the URL quarter parameters.
+// See note on getPublishedAtFromFilter — same gating applies.
 export const getPublishedAtToFilter = (
   yearParam: string | undefined,
   quarterParam: Quarter | undefined
 ) => {
-  // Get the year/quarter from URL
+  if (!yearParam || !quarterParam) return undefined;
+
   const yearFilter = getYearFilter(yearParam);
   const quarterFilter = getQuarterFilter(quarterParam);
 
-  // Parse quarter and year filters
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
   const year = yearFilter ? parseInt(yearFilter, 10) : null;
 

@@ -16,6 +16,8 @@ import MethodSpecificInsights from '../methodSpecific/MethodSpecificInsights';
 import ParticipantsTimeline from '../ParticipantsTimeline';
 import ParticipationMetrics from '../participationMetrics/ParticipationMetrics';
 
+import FontWarmup from './FontWarmup';
+
 interface Props {
   phase: IPhaseData;
 }
@@ -36,6 +38,7 @@ const InsightsPdfContent = ({ phase }: Props) => {
       display="flex"
       flexDirection="column"
     >
+      <FontWarmup />
       <Box data-pdf-section="true">
         {phaseName && (
           <Title variant="h1" as="h1" color="textPrimary" m="0px" mb="24px">
