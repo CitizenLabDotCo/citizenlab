@@ -29,7 +29,8 @@ module McpServer
           McpServer::Tools::ListFolders,
           McpServer::Tools::ListUsers,
           McpServer::Tools::ListPhasePermissions,
-          McpServer::Tools::UpdatePhasePermission
+          McpServer::Tools::UpdatePhasePermission,
+          McpServer::Tools::ListUserCustomFields
         ],
         server_context: { current_user: }
       )
