@@ -25,17 +25,23 @@ module McpServer
             total_pages: records.total_pages
           }
 
-          text = <<~TEXT.squish
+          structured_content = {
+            data: records.as_json(**json_options),
+            pagination: pagination
+          }
+
+          summary = <<~TEXT.squish
             Found #{pagination[:total_count]} #{label}
             (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
           TEXT
 
+          # MCP spec recommends duplicating structured_content into a text block for
+          # clients that don't surface structuredContent to the LLM (e.g. Claude Desktop).
+          text = "#{summary}\n\n#{structured_content.to_json}"
+
           MCP::Tool::Response.new(
             [{ type: 'text', text: }],
-            structured_content: {
-              data: records.as_json(**json_options),
-              pagination: pagination
-            }
+            structured_content:
           )
         end
       end
