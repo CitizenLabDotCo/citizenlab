@@ -8,6 +8,7 @@ This section synthesises and clusters the feedback gathered on **parallel partic
 
 - **Stakeholder interviews** with 8 GovSuccess / Community Managers (Jelena, Pauline, Jolijn, Sophie, Sarah, Zelda, Cindy, Joris), reporting on patterns across their client portfolios.
 - **An Oslo client workshop** (19 May 2026) with Oslo Kommune (André Helgestad et al.).
+- **Three further client interviews** (May 2026): **California** (Wesley Rowe), **Frome Town** (Miles Macey), **Hyattsville** (Cindy Zork).
 - **~50 logged feedback entries (2019–2026)** tagged "Parallel participation", spanning ~40 client organisations across NL, BE, DE, UK, US, the Nordics, AT and CZ.
 
 The signal is **remarkably consistent and long-standing** — the same core request appears every year since 2019, from clients of every size and country.
@@ -31,10 +32,10 @@ By far the dominant request, expressed continuously since 2019. Phrased variousl
 
 - **Survey + ideation** — the single most cited combo (Jelena estimates ~80% of cases; "survey to collect lay of the land, ideation alongside").
 - **Survey + survey** — multiple surveys at once, often to _different audience segments_ (see Cluster 9).
-- **Mapping + survey**, **issue reporting + solution crowdsourcing**, **vote + ideation + comment**, online + offline (events).
+- **Mapping + survey**, **issue reporting + solution crowdsourcing**, **vote + ideation + comment**, **survey + Common Ground**, **idea board + parallel survey**, online + offline (events).
 - Note: ideation → voting is generally seen as **sequential, not parallel**.
 
-**Customers:** Gemeente Nieuwkoop, NTP, Gemeente Maashorst, Stadt Heidelberg, Stadt Rodgau, Gemeente Goes, Culemborg, District of Saanich (BC), City of Durham, Durham County Council, Gesundheit Österreich (GÖG), Oslo Kommune, IPR Prague, Düsseldorf Marketing, Heist-op-den-Berg, Newham Council / London Borough of Newham, Havant Borough Council, Mairie de Massy, City of Lancaster (PA), Stockport Council, Agora, Stad Kortrijk, Hørsholm, Gemeente Texel, Gemeente Amstelveen, Ettelbruck, City of Bothell (WA), Chillicothe (OH), AG Urban, Gemeente Hollands Kroon, Helsingborg Kommune, Lokeren / Oudenaarde.
+**Customers:** Gemeente Nieuwkoop, NTP, Gemeente Maashorst, Stadt Heidelberg, Stadt Rodgau, Gemeente Goes, Culemborg, District of Saanich (BC), City of Durham, Durham County Council, Gesundheit Österreich (GÖG), Oslo Kommune, IPR Prague, Düsseldorf Marketing, Heist-op-den-Berg, Newham Council / London Borough of Newham, Havant Borough Council, Mairie de Massy, City of Lancaster (PA), Stockport Council, Agora, Stad Kortrijk, Hørsholm, Gemeente Texel, Gemeente Amstelveen, Ettelbruck, City of Bothell (WA), Chillicothe (OH), AG Urban, Gemeente Hollands Kroon, Helsingborg Kommune, Lokeren / Oudenaarde, California (Wesley Rowe — multiple surveys running while a phase is active), Frome Town (survey + Common Ground on one project), Hyattsville (parallel survey alongside an idea board; in-person + digital collection).
 
 ---
 
@@ -50,7 +51,7 @@ A distinct framing: phases today must be strictly sequential and non-overlapping
 
 A request to run methods that are _not bound to a phase window at all_ — e.g. a comment box or survey open for a project's entire duration, while other phased activities come and go. Partly competitive: clients migrating from Granicus / Social Pinpoint expect an always-on comment box. Tied to the broader desire for continuous community feedback.
 
-**Customers:** Chillicothe, OH ("commenting open for the entire period while the survey is only open during one phase"); Bank of England (timeline phases all viewable/commentable at once); interview signal from Sarah & Sophie (always-on survey / always-on comment box).
+**Customers:** Chillicothe, OH ("commenting open for the entire period while the survey is only open during one phase"); Bank of England (timeline phases all viewable/commentable at once); interview signal from Sarah & Sophie (always-on survey / always-on comment box); Hyattsville (an **FAQ board** as a perpetual, timeline-free project that drives engagement across other initiatives; and master-planning projects where residents joining mid-process need to contribute outside the current phase); California (activities that run in parallel to the timeline, not constrained by the current phase).
 
 ---
 
@@ -72,9 +73,9 @@ Distinct from "parallel": clients want **flow control**. Two variants: (a) phase
 
 ### Cluster 6 — Unified cross-method & folder-level reporting / analytics
 
-Flagged in the interviews as **"the real prize"** — the lock-in is solving reporting, not the front-office layout. GSMs who already know how to hack PP today (via folders/links) say the hacks "look fine in the front office but break down in analysis". Needs: report across a whole folder/parent (not just one project), representativeness figures per folder, tracking one user's responses across projects/phases, and keeping the _link_ between a survey response and the project/idea it refers to (Saskatoon: surveys must manually re-ask which project they concern).
+Flagged in the interviews as **"the real prize"** — the lock-in is solving reporting, not the front-office layout. GSMs who already know how to hack PP today (via folders/links) say the hacks "look fine in the front office but break down in analysis". Needs: report across a whole folder/parent (not just one project), representativeness figures per folder, tracking one user's responses across projects/phases, and keeping the _link_ between a survey response and the project/idea it refers to (Saskatoon: surveys must manually re-ask which project they concern). **Frome Town is the sharpest illustration:** they ran a survey and Common Ground in parallel via a folder; the survey drew more participants, but the two data sets could not be combined — so the Common Ground feedback **did not ultimately inform the final decision**. Parallel methods that can't be reported together don't just frustrate analysis; they waste the participation that was collected.
 
-**Customers:** Gemeente Woerden (folder reports + representativeness per folder), Cotswold District Council (track responses per user across projects; folder reports), Newham Council (quarterly cross-project reporting); interview signal — Jelena (highest-priority gap), Pauline ("70% of why my hacks are sub-optimal is reporting"), Jolijn, Sarah & Sophie (Saskatoon).
+**Customers:** Gemeente Woerden (folder reports + representativeness per folder), Cotswold District Council (track responses per user across projects; folder reports), Newham Council (quarterly cross-project reporting), Frome Town (Miles Macey — folder data won't integrate across methods); interview signal — Jelena (highest-priority gap), Pauline ("70% of why my hacks are sub-optimal is reporting"), Jolijn, Sarah & Sophie (Saskatoon).
 
 ---
 
@@ -90,7 +91,7 @@ Requests around _where and how_ the timeline appears: a (clickable) timeline at 
 
 Today the input form is project-scoped for ideation, so all ideation phases of a project share one form. Clients with several ideation phases want **distinct input forms per phase / per project**, and the ability to remove or modify default fields.
 
-**Customers:** Gemeente Amstelveen ("different ideation phases need different input forms"), Gemeente Maashorst (more than one input form per project), Gemeente Utrecht (remove/modify default fields).
+**Customers:** Gemeente Amstelveen ("different ideation phases need different input forms"), Gemeente Maashorst (more than one input form per project), Gemeente Utrecht (remove/modify default fields), Hyattsville (a single input form across the whole timeline is a constraint — managed today by keeping forms generic; wants to change forms or add specific fields between phases).
 
 ---
 
@@ -98,7 +99,48 @@ Today the input form is project-scoped for ideation, so all ideation phases of a
 
 Running different methods or forms for **different audience segments** at the same time — e.g. separate surveys for tourists, businesses and residents; or adjusting the type of engagement to the type of user. Noted in interviews as underweighted in current framing. Some clients would prefer to handle this with **logic inside a single survey** rather than managing many parallel surveys.
 
-**Customers:** City of Allen, TX (user-specific phases; engagement adjusted to user type); interview signal from Pauline (~40% of her cases are multiple surveys to different stakeholder groups).
+**Customers:** City of Allen, TX (user-specific phases; engagement adjusted to user type); interview signal from Pauline (~40% of her cases are multiple surveys to different stakeholder groups); Hyattsville (survey **logic letting participants pick a topic** — e.g. park planning: transportation vs food — instead of completing a full survey, to lift engagement).
+
+---
+
+### Cluster 10 — Public vs private (mixed-visibility) participation
+
+A recurring _reason_ for running methods in parallel: pairing a **private** channel (a survey only admins see) with a **public** channel (ideation / Common Ground, visible to everyone). Clients want both at once — private for sensitive or unpolished input, public for visible deliberation — and sometimes couple them with an **editorial workflow**: collect privately, rephrase, then publish as public cards.
+
+**Customers / examples:**
+
+- **Frome Town** (Miles Macey): a town-centre toilets project ran a **survey (private, personal feedback) + Common Ground (public, broader views)** at the same time; the explicit intent was to offer two visibility modes.
+- **Hyattsville** (Cindy Zork): an **FAQ board** collects questions privately via an external form; staff rephrase negative or unproductive submissions into constructive ones, then publish them as public idea cards — wanting the private survey to run in parallel with the public idea module while keeping editorial control (beyond today's moderation).
+- **California** (Wesley Rowe): public engagement plus private demographic capture in the same project (see Cluster 11).
+
+_Maps directly to the public/private Field-visibility axis in the Concept model — a single richer Form mixing public and private Fields could serve much of this without two separate activities._
+
+---
+
+### Cluster 11 — User-level demographic data (collected once, not per survey)
+
+Clients want demographic / equalities data treated as **user attributes** collected once and reused across activities — not re-asked inside every survey and stored as survey responses. Today the structure pushes demographics into project surveys, which duplicates the questions across activities, treats demographics as responses rather than attributes, and makes cross-activity and cross-project analysis hard.
+
+**Customers / examples:**
+
+- **California** (Wesley Rowe): demographic questions are "forced into project surveys rather than the user account level… treated as survey responses rather than user attributes," complicating analysis. Also prefers asking key questions **early** to maintain momentum (vs the end-of-survey convention).
+- **Durham County Council**: avoid duplicating **equalities questions**; pull equalities feedback from registered and non-registered users into one dataset.
+- **Newham Council**: **registration fields per project** (e.g. business-owner status relevant to one department, irrelevant to others).
+- **Cotswold District Council**: track all responses **by a user** across multiple projects and stages.
+
+_Closely tied to Cluster 6 — where demographic data lives is a root cause of the cross-activity analysis pain._
+
+---
+
+### Cluster 12 — Live / synchronous participation _(single-source, emerging)_
+
+Using participation features to drive **real-time** interaction during live events (e.g. a Zoom session), Mentimeter-style — ranking, budget allocation, or polling answered live by an audience to steer discussion. Today's sequential phase structure makes this hard to integrate into a live session.
+
+**Customers / examples:**
+
+- **California** (Wesley Rowe): wants to run survey interactions (ranking, budget exercises) **inside live events** to drive discussion in real time; explicitly compared to **Mentimeter**.
+
+_Weight: one source so far — flagged as an emerging signal, not yet a validated theme. Distinct from the other clusters because it is about synchronous, in-the-moment participation rather than concurrent asynchronous activities._
 
 ---
 
@@ -106,7 +148,7 @@ Running different methods or forms for **different audience segments** at the sa
 
 The interviews describe a consistent "hack playbook", all with the same downstream pain (analysis breaks, resident gets lost):
 
-- **Folders containing multiple projects** — the most common workaround; looks fine in the front office, breaks down in reporting.
+- **Folders containing multiple projects** — the most common workaround (Frome Town runs a survey + Common Ground this way; Hyattsville houses simultaneous projects in one folder); looks fine in the front office, breaks down in reporting.
 - **Hidden / unlisted survey projects** linked from a phase or project description — the resident clicks out of the project context.
 - **End-of-survey links** chaining one method to the next.
 - **Duplicate projects** — the same project built twice with different methods.
