@@ -2,9 +2,10 @@
 
 Exploratory research for the parallel-participation track. **Status: research only — no solution is proposed or decided here.** The goal is a neutral, shared understanding of the problem space before any design work begins.
 
-Three parts:
+Four parts:
 
 - **Feedback** — what customers and GSMs ask for, clustered; descriptive (needs as expressed, not solutions).
+- **Theoretical grounding** — how the academic and institutional literature frames participation, and what it does (and doesn't) say about running methods in parallel.
 - **Competitors** — how 11 other engagement platforms handle running multiple participation methods at once.
 - **Concept model** — a shared vocabulary mapping Go Vocal's concepts to competitors', and how they relate.
 
@@ -170,6 +171,55 @@ The interviews describe a consistent "hack playbook", all with the same downstre
 - Sacrificing the most appropriate method (e.g. using a survey instead of voting) just to fit everything into one phase (Oslo).
 
 Oslo's signal fits the clusters above: the rigid sequential structure forces them to sacrifice the most appropriate method to fit everything into one phase, and they want lighter activities (notably surveys) to run alongside a phase rather than inside it. _(Solution directions explored in that workshop are out of scope for this descriptive section.)_
+
+---
+
+## Theoretical grounding
+
+A short, honest review of how the academic and institutional literature frames participation, to ground the rest of this document. Two caveats first: **"parallel participation" is not itself a named academic concept** — the building blocks below are well-sourced, but the synthesis into "run several methods at once within one project" is practitioner inference; and the literature decomposes participation along _different axes_ than our Concept model, so it informs our thinking rather than mapping onto it one-to-one.
+
+### Two families of framework
+
+The field has two kinds of model that are easy to conflate (and Go Vocal's Phase conflates them):
+
+- **Levels of influence.** Arnstein's _Ladder of Citizen Participation_ (1969) and the **IAP2 Spectrum** (Inform → Consult → Involve → Collaborate → Empower) measure _how much power the public holds over the decision_ — **not a time sequence**. IAP2 is explicitly a tool for choosing the right level _per decision_, not a pipeline to run in order.
+- **A multi-dimensional design space.** Archon Fung's **"Democracy Cube"** (2006) decomposes any participation mechanism into three _orthogonal_ axes — **who participates**, **how they communicate and decide**, and **how much authority** it carries — with no single best setting. This is the closest academic analogue to the "unbundling" argument in our Concept model: a participation design is a point in a multi-dimensional space, not one fused, typed object. (Fung's axes are who / how / power, not the structural Activity / Method / Phase / Timeline axes we use — a parallel in spirit, not in detail.)
+
+### Staging over time is grounded; rigid linearity is not
+
+Time-staged models are well-established: the **Double Diamond** (Design Council) and Kaner's _Diamond of Participatory Decision-Making_ formalise the diverge-then-converge rhythm behind "ideation first, decide later"; the **participatory-budgeting lifecycle** (idea collection → proposal development → voting → implementation) is explicitly cyclical; and **deliberative mini-publics** run learning → deliberation → recommendation, where _learn-before-decide_ is treated as essential.
+
+But the scholarship is **wary of rigid linearity**: the policy-cycle "stages" model is widely criticised for oversimplifying messy policymaking, and Participatory Action Research is built on iterative plan–act–reflect loops. This lands almost exactly on Cluster 4 — staging is valuable scaffolding (deliberative integrity, transparency, expectation-setting), but over-rigid linear design is a recognised failure mode. _Relax the timeline, don't remove it._
+
+### The principled case for combining methods
+
+Where one linear track is insufficient, the literature offers reasons stronger than "competitors do it":
+
+- **Mixed methods / triangulation** (Torrance 2012; the Greene–Caracelli tradition): no single method answers everything — combining them gives triangulation, complementarity and scope (a survey for breadth and quantified priorities, a workshop for reasoning and legitimacy). _Strong as research methodology; its transfer to governance engagement is reasonable but partly inferential._
+- **Divergent and convergent activities together**: Decide Madrid is the worked example — mass digital ideation feeding a representative offline assembly (Nesta / Bass 2019).
+- **Inclusion / reaching different publics**: different channels reach different demographics, and online-only predictably excludes some groups (digital divide — Hoffmann et al. 2021). _That channels must run_ concurrently _rather than sequentially is practitioner consensus, not an established empirical finding._
+- **Hybrid vs blended** (Fischer 2016; Nesta): _hybrid_ = parallel channels the participant chooses between; _blended_ = integrated into one flow with shared data. e-participation success correlates with _linking_ online to offline (Royo et al. 2024) — the academic backbone for Cluster 6's "the value only lands if the data integrates."
+- **Continuous / always-on participation**: the OECD "deliberative wave" documents permanent / standing deliberative bodies coexisting with time-boxed processes (grounds Cluster 3).
+
+### Honest limits
+
+- "Parallel participation" is practitioner framing, not a canonical model — components sourced, synthesis ours.
+- The strict claim that methods must run **simultaneously** (not merely be combined) is the **least-evidenced** part.
+- Much mixed-methods evidence is about **research**, not governance engagement.
+- Running many methods at once carries documented **risks**: tokenism (Arnstein), elite capture / self-selection, participation fatigue, and synthesis / capacity burden — including Bass's "impartiality problem" (_who decides how to summarise the online input?_).
+
+### Key references
+
+- Arnstein, S. R. (1969). _A Ladder of Citizen Participation._ JAIP 35(4). https://lithgow-schmidt.dk/sherry-arnstein/ladder-of-citizen-participation_en.pdf
+- Fung, A. (2006). _Varieties of Participation in Complex Governance._ Public Administration Review. https://faculty.fiu.edu/~revellk/pad3003/Fung.pdf
+- IAP2 (2018). _Spectrum of Public Participation._ https://cdn.ymaws.com/www.iap2.org/resource/resmgr/pillars/spectrum_8.5x11_print.pdf
+- Design Council (2019). _Framework for Innovation (Double Diamond)._ https://www.designcouncil.org.uk/resources/framework-for-innovation/
+- Kaner, S. (2014). _Facilitator's Guide to Participatory Decision-Making_ (3rd ed.).
+- OECD (2020). _Innovative Citizen Participation and New Democratic Institutions: Catching the Deliberative Wave._ https://www.oecd.org/en/publications/innovative-citizen-participation-and-new-democratic-institutions_339306da-en.html
+- Torrance, H. (2012). _Triangulation, Respondent Validation, and Democratic Participation in Mixed Methods Research._ Journal of Mixed Methods Research. https://journals.sagepub.com/doi/abs/10.1177/1558689812437185
+- Bass, T. (Nesta, 2019). _Three ideas for blending digital and deliberative democracy._ https://www.nesta.org.uk/blog/three-ideas-blending-digital-and-deliberative-democracy/
+- Royo, S., Pina, V., & Garcia-Rayado, J. (2024). _The success of e-participation._ Policy & Internet. https://onlinelibrary.wiley.com/doi/full/10.1002/poi3.363
+- Hoffmann, C. P. et al. (2021). _Digital Divides in Political Participation._ Policy & Internet. https://onlinelibrary.wiley.com/doi/abs/10.1002/poi3.225
 
 ---
 
