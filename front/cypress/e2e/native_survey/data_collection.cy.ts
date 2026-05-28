@@ -1,7 +1,8 @@
 import {
-  updatePermission
+  updatePermission,
 } from '../../support/permitted_by_utils';
 import { setSurvey } from './utils';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Native survey data collection', () => {
   describe('permitted_by = everyone', () => {
@@ -71,10 +72,79 @@ describe('Native survey data collection', () => {
         // Answer third question
         cy.get(`input#${question3key}`).type('This is an open ended answer');
 
-        // Intercept submit request
+        // Submit survey
         cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+        cy.dataCy('e2e-submit-form').click();
+
+        // Make sure request body contains custom field value
+        cy.wait('@submitSurvey').then((interception) => {
+          const ideaPayload = interception.request.body.idea;
+          expect(ideaPayload[question1key]).to.eq(question1Option1Key);
+          expect(ideaPayload[question2key]).to.eq(question2Option1Key);
+          expect(ideaPayload[question3key]).to.eq(
+            'This is an open ended answer'
+          );
+        });
+
+        // Now we should be on last page
+        cy.dataCy('e2e-after-submission').should('exist');
+      });
+    });
+
+    describe('as a logged in user', () => {
+      before(() => {
+        const email = randomEmail();
+        const password = randomString();
+
+        cy.apiSignup(
+          randomString(),
+          randomString(),
+          email,
+          password
+        ).then(() => {
+          cy.setLoginCookie(email, password)
+        })
+      })
+
+      it('saves all survey data', () => {
+        cy.visit(`/projects/${projectSlug}`);
+
+        // Click take survey button
+        cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+        // Confirm we're in the survey now
+        cy.location('pathname').should(
+          'eq',
+          `/en/projects/${projectSlug}/surveys/new`
+        );
+
+        // Answer first question and go to next page
+        cy.get('fieldset').first().find('input').first().check({ force: true });
+        cy.wait(1000);
+        cy.intercept('POST', '/web_api/v1/ideas').as('submitPage1');
+        cy.dataCy('e2e-next-page').click();
+        cy.wait('@submitPage1').then((interception) => {
+          const ideaPayload = interception.request.body.idea;
+          expect(ideaPayload[question1key]).to.eq(question1Option1Key);
+        });
+
+        // Answer second question and go to next page
+        cy.wait(1000);
+        cy.get('fieldset').first().find('input').first().check({ force: true });
+        cy.wait(1000);
+        cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitPage2');
+        cy.dataCy('e2e-next-page').click();
+        cy.wait('@submitPage2').then((interception) => {
+          const ideaPayload = interception.request.body.idea;
+          expect(ideaPayload[question1key]).to.eq(question1Option1Key);
+          expect(ideaPayload[question2key]).to.eq(question2Option1Key);
+        });
+
+        // Answer third question
+        cy.get(`input#${question3key}`).type('This is an open ended answer');
 
         // Submit survey
+        cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
         cy.dataCy('e2e-submit-form').click();
 
         // Make sure request body contains custom field value
