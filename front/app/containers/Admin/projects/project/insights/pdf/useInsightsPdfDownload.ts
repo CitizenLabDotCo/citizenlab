@@ -226,14 +226,17 @@ export default function useInsightsPdfDownload({
         throw new Error('No PDF sections found in hidden container');
       }
 
-      // preCache populates style/font data but doesn't exercise the rasterizer
-      // pipeline. The first real toCanvas call still sometimes produces
-      // text-less output on a cold module. Run one throwaway capture on the
-      // first section so the SVG → Image → canvas path has run end-to-end
-      // before the real loop starts.
+      // Throwaway capture of a tiny element that contains text in every
+      // weight/style combination the PDF uses. snapdom embeds each font face
+      // exercised here, so the real loop never sees a fresh weight (which on
+      // a cold session would race against the font fetch and rasterize
+      // without glyphs — observed as bold rendering but regular missing).
+      const warmupTarget =
+        container.querySelector<HTMLElement>('[data-pdf-font-warmup="true"]') ??
+        sections[0];
       await captureWithTimeout(
         () =>
-          snapdom.toCanvas(sections[0], {
+          snapdom.toCanvas(warmupTarget, {
             scale: CAPTURE_SCALE,
             backgroundColor: colors.white,
             embedFonts: true,
