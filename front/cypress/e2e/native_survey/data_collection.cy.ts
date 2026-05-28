@@ -8,6 +8,11 @@ describe('Native survey data collection', () => {
     let projectId = '';
     let phaseId = '';
     let projectSlug = '';
+    let question1key = '';
+    let question2key = '';
+    let question3key = '';
+    let question1Option1Key = '';
+    let question2Option1Key = '';
 
     before(() => {
       cy.createProjectWithNativeSurveyPhase().then((result) => {
@@ -17,9 +22,23 @@ describe('Native survey data collection', () => {
 
         return updatePermission({
           phaseId,
-          permitted_by: 'everyone'
+          permitted_by: 'everyone',
+          user_fields_in_form: false
         }).then(() => {
-          setSurvey(cy, phaseId);
+          return setSurvey(cy, phaseId).then((response) => {
+            const data = response.body.data;
+            const question1 = data[1];
+            const question2 = data[3];
+            const question3 = data[5];
+
+            question1key = question1.attributes.key;
+            question2key = question2.attributes.key;
+            question3key = question3.attributes.key;
+
+            const included = response.body.included;
+            question1Option1Key = included[1].attributes.key;
+            question2Option1Key = included[3].attributes.key;
+          });
         })
       });
     });
@@ -41,10 +60,16 @@ describe('Native survey data collection', () => {
           `/en/projects/${projectSlug}/surveys/new`
         );
 
-        cy.wait(10000);
+        // Answer first question and go to next page
+        cy.get('fieldset').first().find('input').first().check({ force: true });
+        cy.dataCy('e2e-next-page').click();
 
-        // Answer question and go to next page
-        // TODO answer a bunch of questions
+        // Answer second question and go to next page
+        cy.get('fieldset').first().find('input').first().check({ force: true });
+        cy.dataCy('e2e-next-page').click();
+
+        // Answer third question
+        cy.get(`input#${question3key}`).type('This is an open ended answer');
 
         // Intercept submit request
         cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
@@ -55,8 +80,11 @@ describe('Native survey data collection', () => {
         // Make sure request body contains custom field value
         cy.wait('@submitSurvey').then((interception) => {
           const ideaPayload = interception.request.body.idea;
-          throw new Error(JSON.stringify(ideaPayload));
-          // expect(ideaPayload[`u_${customFieldKey}`]).to.eq(answer);
+          expect(ideaPayload[question1key]).to.eq(question1Option1Key);
+          expect(ideaPayload[question2key]).to.eq(question2Option1Key);
+          expect(ideaPayload[question3key]).to.eq(
+            'This is an open ended answer'
+          );
         });
 
         // Now we should be on last page
