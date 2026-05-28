@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-import { render } from 'utils/testUtils/rtl';
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import SurveyForm from './index';
 
