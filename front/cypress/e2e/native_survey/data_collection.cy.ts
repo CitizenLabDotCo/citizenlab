@@ -1,13 +1,31 @@
+import {
+  updatePermission
+} from '../../support/permitted_by_utils';
+import { setSurvey } from './utils';
+
 describe('Native survey data collection', () => {
   describe('permitted_by = everyone', () => {
+    let projectId = '';
+    let phaseId = '';
     let projectSlug = '';
 
     before(() => {
-      // TODO
+      cy.createProjectWithNativeSurveyPhase().then((result) => {
+        projectId = result.projectId;
+        phaseId = result.phaseId;
+        projectSlug = result.projectSlug;
+
+        return updatePermission({
+          phaseId,
+          permitted_by: 'everyone'
+        }).then(() => {
+          setSurvey(cy, phaseId);
+        })
+      });
     });
 
     after(() => {
-      // TODO
+      cy.apiRemoveProject(projectId);
     });
 
     describe('as a visitor', () => {
@@ -22,6 +40,8 @@ describe('Native survey data collection', () => {
           'eq',
           `/en/projects/${projectSlug}/surveys/new`
         );
+
+        cy.wait(10000);
 
         // Answer question and go to next page
         // TODO answer a bunch of questions
