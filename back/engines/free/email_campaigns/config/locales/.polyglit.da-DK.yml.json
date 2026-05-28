@@ -309,6 +309,11 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.recipient_segment.users_who_follow_or_participated": {
+    "state": "verified",
+    "verified_at": "2026-05-28T09:00:27.726056Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.admin_labels.recipient_segment.users_who_follow_the_input": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
