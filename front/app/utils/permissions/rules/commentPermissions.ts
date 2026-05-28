@@ -5,7 +5,7 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-const isAuthor = (comment: ICommentData, user?: IUser) => {
+const isAuthor = (comment: ICommentData, user?: IUser | null) => {
   return (
     user &&
     comment.relationships.author.data &&
@@ -50,10 +50,10 @@ definePermissionRule(
   (comment: ICommentData, user, _tenant, { projectId }) => {
     return user
       ? !(
-          isAuthor(comment, user) ||
-          isAdmin(user) ||
-          (typeof projectId === 'string' && isProjectModerator(user, projectId))
-        )
+        isAuthor(comment, user) ||
+        isAdmin(user) ||
+        (typeof projectId === 'string' && isProjectModerator(user, projectId))
+      )
       : false;
   }
 );

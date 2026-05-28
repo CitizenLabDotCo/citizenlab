@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -87,6 +87,15 @@ be-up-franceconnect:
 
 fe-up-franceconnect:
 	cd front && npm run start:sso
+
+# Brings the back-end stack up together with the fake_sso OIDC provider.
+# Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
+# repo (or set FAKE_SSO_PATH to its checkout) and add
+# `127.0.0.1 host.docker.internal` to /etc/hosts.
+be-up-fake-sso:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
+	docker compose --profile fake_sso up
 
 # Clave Unica
 be-up-claveunica:
