@@ -115,6 +115,10 @@ namespace :cl2back do
           # contains the literal "de-DE" anywhere. The walker then verifies
           # whether each occurrence is a real hash key.
           scope = model.where("#{attr}::text LIKE ?", '%"de-DE"%')
+          # Apartment-excluded models (e.g. Tenant) live in the public schema
+          # and ignore tenant.switch, so we must constrain them to the target
+          # tenant explicitly. Tenant.id matches AppConfiguration.id.
+          scope = scope.where(id: tenant.id) if Apartment.excluded_models.include?(model.name)
           count = scope.count
           next if count.zero?
 

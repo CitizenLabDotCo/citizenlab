@@ -338,6 +338,60 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
     end
   end
 
+  context 'with another tenant present in the public.tenants table' do
+    # `Tenant` is in Apartment's `excluded_models`, so `Tenant.where(...)`
+    # ignores `tenant.switch` and scans every tenant row. The task must
+    # constrain itself to the row matching the host argument.
+    # Note: `Tenant#settings` is a deprecated reader that delegates to
+    # `AppConfiguration.instance.settings`; we go through `read_attribute`
+    # to get the raw public.tenants jsonb column, which is what the task
+    # actually walks.
+    let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant', locales: %w[en de-DE]) }
+
+    around do |example|
+      main_tenant = Tenant.current
+      example.run
+      main_tenant.switch!
+    end
+
+    before do
+      configure_locales(%w[en de-DE])
+
+      target = Tenant.current
+      target_settings = target.read_attribute(:settings).deep_dup
+      target_settings['core']['organization_name'] = { 'en' => 'Target', 'de-DE' => 'Ziel' }
+      target.update_columns(settings: target_settings)
+
+      other_settings = other_tenant.read_attribute(:settings).deep_dup
+      other_settings['core']['organization_name'] = { 'en' => 'Other', 'de-DE' => 'Andere' }
+      other_tenant.update_columns(settings: other_settings)
+    end
+
+    it "rewrites de-DE to de-AT in the target tenant's row" do
+      run_task(execute: true)
+
+      multiloc = Tenant.current.reload.read_attribute(:settings).dig('core', 'organization_name')
+      expect(multiloc).not_to have_key('de-DE')
+      expect(multiloc['de-AT']).to eq('Ziel')
+    end
+
+    it 'leaves other tenants in the public.tenants table untouched' do
+      run_task(execute: true)
+
+      multiloc = other_tenant.reload.read_attribute(:settings).dig('core', 'organization_name')
+      expect(multiloc).to include('de-DE' => 'Andere')
+      expect(multiloc).not_to have_key('de-AT')
+    end
+
+    it 'reports a Tenant change only for the target tenant' do
+      run_task(execute: true)
+
+      report = JSON.parse(File.read(report_path))
+      tenant_changes = report['changes'].select { |c| c.dig('context', 'model') == 'Tenant' }
+      expect(tenant_changes.map { |c| c.dig('context', 'record_id') }).to eq([Tenant.current.id])
+    end
+  end
+
   context 'when no tenant matches the given host' do
     before { configure_locales(%w[en de-DE]) }
 
