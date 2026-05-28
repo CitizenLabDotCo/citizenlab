@@ -28,6 +28,10 @@ const SECTION_TIMEOUT_MS = 45_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
+// Give the browser time to finish any in-flight font/image fetches and the
+// font system time to decode glyphs before snapdom begins capturing. Mirrors
+// the 5s wait used by the PrintReport route, which avoids the same race.
+const PRE_CAPTURE_SETTLE_MS = 5_000;
 
 const sliceCanvas = (
   source: HTMLCanvasElement,
@@ -203,10 +207,6 @@ export default function useInsightsPdfDownload({
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
 
-      // snapdom's font/style cache is cold on first capture in a fresh module
-      // instance, which makes the first 2–3 sections rasterize without text.
-      // Walk the subtree to populate the style/font cache for every face the
-      // hidden DOM uses.
       await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
@@ -239,6 +239,14 @@ export default function useInsightsPdfDownload({
             embedFonts: true,
           }),
         SECTION_TIMEOUT_MS
+      );
+
+      // snapdom's toCanvas resolves before its internal font fetches are
+      // actually finished — those continue in the background. Wait here so
+      // those fetches (and the browser's font-decode work) complete before
+      // the real capture loop starts.
+      await new Promise((resolve) =>
+        setTimeout(resolve, PRE_CAPTURE_SETTLE_MS)
       );
 
       safeSetStatus('capturing');
