@@ -26,6 +26,7 @@ const SECTION_GAP_MM = 4;
 const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
+const FONTS_PRELOAD_TIMEOUT_MS = 5_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
 
@@ -77,6 +78,52 @@ const sectionLabel = (section: HTMLElement, index: number): string => {
   const text = heading?.textContent?.trim();
   if (text) return text.slice(0, 80);
   return `Section ${index + 1}`;
+};
+
+// snapdom's `embedFonts: true` issues its own `fetch()` for every @font-face
+// source URL (both woff2 and woff fallback) to inline them as data URIs in the
+// captured SVG. On the first export of a session those URLs aren't in the HTTP
+// cache yet — the `<link rel="preload">` tags in index.html only populate the
+// browser's preload cache, which is separate from the HTTP cache and is
+// discarded if not consumed quickly. `document.fonts.load()` doesn't help
+// either because snapdom bypasses the font system and fetches the URL
+// directly.
+//
+// To make the first attempt behave like later attempts, we explicitly fetch
+// every woff/woff2 URL ourselves before snapdom runs. Those fetches go through
+// the regular HTTP cache, so snapdom's subsequent fetches all hit cache and
+// embed instantly. The list mirrors the @font-face declarations in fonts.css.
+const PUBLIC_SANS_FONT_URLS: string[] = [
+  '/PublicSans-Light.woff2',
+  '/PublicSans-Light.woff',
+  '/PublicSans-LightItalic.woff2',
+  '/PublicSans-LightItalic.woff',
+  '/PublicSans-Regular.woff2',
+  '/PublicSans-Regular.woff',
+  '/PublicSans-Italic.woff2',
+  '/PublicSans-Italic.woff',
+  '/PublicSans-Medium.woff2',
+  '/PublicSans-Medium.woff',
+  '/PublicSans-MediumItalic.woff2',
+  '/PublicSans-MediumItalic.woff',
+  '/PublicSans-SemiBold.woff2',
+  '/PublicSans-SemiBold.woff',
+  '/PublicSans-SemiBoldItalic.woff2',
+  '/PublicSans-SemiBoldItalic.woff',
+  '/PublicSans-Bold.woff2',
+  '/PublicSans-Bold.woff',
+  '/PublicSans-BoldItalic.woff2',
+  '/PublicSans-BoldItalic.woff',
+];
+
+const preloadFonts = async (timeoutMs: number): Promise<void> => {
+  const fetches = PUBLIC_SANS_FONT_URLS.map((url) =>
+    fetch(url).catch(() => undefined)
+  );
+  await Promise.race([
+    Promise.allSettled(fetches),
+    new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+  ]);
 };
 
 // `setIsDownloading(true)` triggers a re-render that mounts the hidden
@@ -190,6 +237,16 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
+      // Kick off explicit loads for every Public Sans weight/style upfront,
+      // in parallel with the container mount and dynamic imports. Without
+      // this, weights that aren't above the fold on the visible UI (e.g.
+      // semi-bold used by matrix cells) only begin loading when the hidden
+      // tree mounts, and on the first ever export of a session their woff2
+      // files aren't HTTP-cached yet, so snapdom captures before they arrive.
+      // Subsequent exports hit cache, which is why the bug only surfaces on
+      // the first attempt and disappears after refresh.
+      const fontsPromise = preloadFonts(FONTS_PRELOAD_TIMEOUT_MS);
+
       const [{ snapdom, preCache }, { default: jsPDF }, container] =
         await Promise.all([
           import('@zumer/snapdom'),
@@ -202,6 +259,7 @@ export default function useInsightsPdfDownload({
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
+      await fontsPromise;
 
       // snapdom's font/style cache is cold on first capture in a fresh module
       // instance, which makes the first 2–3 sections rasterize without text.
