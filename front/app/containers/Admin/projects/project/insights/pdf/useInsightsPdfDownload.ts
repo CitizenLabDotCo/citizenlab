@@ -207,7 +207,6 @@ export default function useInsightsPdfDownload({
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
 
-      // Walk the subtree to populate snapdom's internal style/font cache.
       await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
