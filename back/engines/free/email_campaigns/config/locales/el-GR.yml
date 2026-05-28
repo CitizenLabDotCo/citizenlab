@@ -67,6 +67,7 @@ el-GR:
         user_with_unsubmitted_votes: Χρήστης που δεν έχει υποβάλει την ψήφο του
         users_who_engaged_but_not_voted: Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν
         users_who_engaged_with_the_project: Χρήστες που ασχολήθηκαν με το έργο
+        users_who_follow_or_participated: Χρήστες που ακολουθούν το έργο ή έχουν συμμετάσχει
         users_who_follow_the_input: Χρήστες που ακολουθούν την εισαγωγή
         users_who_follow_the_project: Χρήστες που ακολουθούν το έργο
         users_who_follow_the_proposal: Χρήστες που ακολουθούν την πρόταση
