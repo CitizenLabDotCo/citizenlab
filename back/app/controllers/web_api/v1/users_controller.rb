@@ -143,42 +143,39 @@ class WebApi::V1::UsersController < ApplicationController
     authorize :user, :check?
     email = params[:user][:email]
 
-    if User::EMAIL_REGEX.match?(email)
-      @user = User.find_by_cimail(email)
-      if @user.nil?
-        render json: raw_json({ action: 'terms' })
-      elsif @user.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif !@user.no_password? || @user.sso?
-        if @user.confirmation_required?
-          # If a user has a password set but still needs to confirm their email,
-          # we send them to the confirm action first.
-          # This situation only exists for legacy users that were created before
-          # we made email confirmation required before being able to set a password
-          RequestEmailConfirmationCodeJob.perform_now(@user)
-          render json: raw_json({ action: 'confirm' })
-        else
-          render json: raw_json({ action: 'password' })
-        end
-      else
-        if @user.email_confirmation.code_reset_count == 0
-          # If the reset count is zero, we are in the following situation:
-          # The user signed up previously and logged in successfully
-          # by confirming their email, but never set a password.
-          # They are now back to log in again. In this case, we want
-          # to automatically send the confirmation code.
-          # If they would already have a code_reset_count > 0,
-          # they tried to log in previously and failed. In this case, we don't
-          # automatically resend the code, because otherwise we
-          # might too easily reach the retry limit. So they will
-          # have to request it themselves
-          RequestEmailConfirmationCodeJob.perform_now(@user)
-        end
-        render json: raw_json({ action: 'confirm' })
-      end
-    else
+    unless User::EMAIL_REGEX.match?(email)
       render json: { errors: { email: [{ error: 'invalid', value: email }] } }, status: :unprocessable_entity
+      return
     end
+
+    @user = User.find_by_cimail(email)
+
+    if @user.nil?
+      render json: raw_json({ action: 'terms' })
+      return
+    end
+
+    if @user.invite_pending?
+      render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if @user.confirmation_required?
+      request_code_if_first_time(@user)
+      render json: raw_json({ action: 'confirm' })
+      return
+    end
+
+    user_has_password = !@user.no_password?
+
+    if user_has_password
+      render json: raw_json({ action: 'password' })
+      return
+    end
+
+    # Any other case, we send a code
+    request_code_if_first_time(@user)
+    render json: raw_json({ action: 'confirm' })
   end
 
   def create
@@ -378,5 +375,16 @@ class WebApi::V1::UsersController < ApplicationController
 
   def user_exceeds_seats_params
     params.permit(:seat_type, :user_id, :user_email)
+  end
+
+  def request_code_if_first_time(user)
+    # If users already have a code_reset_count > 0,
+    # they tried to log in previously and failed. In this case, we don't
+    # automatically resend the code, because otherwise we
+    # might too easily reach the retry limit. So they will
+    # have to request it themselves
+    if user.email_confirmation.code_reset_count == 0
+      RequestEmailConfirmationCodeJob.perform_now(user)
+    end
   end
 end

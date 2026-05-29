@@ -130,7 +130,6 @@ resource 'Users' do
           context 'when the user has already requested a code' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.email_confirmation.confirm!
 
               RequestEmailConfirmationCodeJob.perform_now @user
 
@@ -223,7 +222,7 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, has a password, email confirmed' do
-          before { create(:sso_user) }
+          let(:email) { create(:sso_user).email }
 
           example_request 'Returns "password"' do
             assert_status 200
@@ -232,7 +231,8 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, has a password, email unconfirmed' do
-          before { create(:sso_user, confirmation_required: true, email_confirmed_at: nil) }
+          let(:user) { create(:unconfirmed_user, password_digest: 'super_secret', identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
 
           example_request 'Returns "confirm"' do
             assert_status 200
@@ -241,7 +241,7 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, no password, email confirmed' do
-          before { create(:sso_user, password_digest: nil) }
+          let(:email) { create(:sso_user, password_digest: nil).email }
 
           example_request 'Returns "confirm"' do
             assert_status 200
@@ -250,7 +250,8 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, no password, email unconfirmed' do
-          before { create(:sso_user, password_digest: nil, confirmation_required: true, email_confirmed_at: nil) }
+          let(:user) { create(:unconfirmed_user, identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
 
           example_request 'Returns "confirm"' do
             assert_status 200
