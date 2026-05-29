@@ -63,7 +63,7 @@ module McpServer
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
         McpServer::Tools::ListUserCustomFields
-      ]
+      ].map(&:make)
     end
   end
 end

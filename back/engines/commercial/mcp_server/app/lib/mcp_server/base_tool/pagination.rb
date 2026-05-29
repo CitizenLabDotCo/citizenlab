@@ -13,37 +13,35 @@ module McpServer
         per_page: { type: 'integer', description: "Results per page (default: #{DEFAULT_PER_PAGE}, max: #{MAX_PER_PAGE})" }
       }.freeze
 
-      class_methods do
-        def paginated_response(label, scope, page: 1, per_page: DEFAULT_PER_PAGE, **json_options)
-          per_page = per_page.to_i.clamp(1, MAX_PER_PAGE)
-          records = scope.page(page).per(per_page)
+      def paginated_response(label, scope, page: 1, per_page: DEFAULT_PER_PAGE, **json_options)
+        per_page = per_page.to_i.clamp(1, MAX_PER_PAGE)
+        records = scope.page(page).per(per_page)
 
-          pagination = {
-            page: records.current_page,
-            per_page: per_page,
-            total_count: records.total_count,
-            total_pages: records.total_pages
-          }
+        pagination = {
+          page: records.current_page,
+          per_page: per_page,
+          total_count: records.total_count,
+          total_pages: records.total_pages
+        }
 
-          structured_content = {
-            data: records.as_json(**json_options),
-            pagination: pagination
-          }
+        structured_content = {
+          data: records.as_json(**json_options),
+          pagination: pagination
+        }
 
-          summary = <<~TEXT.squish
-            Found #{pagination[:total_count]} #{label}
-            (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
-          TEXT
+        summary = <<~TEXT.squish
+          Found #{pagination[:total_count]} #{label}
+          (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
+        TEXT
 
-          # MCP spec recommends duplicating structured_content into a text block for
-          # clients that don't surface structuredContent to the LLM (e.g. Claude Desktop).
-          text = "#{summary}\n\n#{structured_content.to_json}"
+        # MCP spec recommends duplicating structured_content into a text block for
+        # clients that don't surface structuredContent to the LLM (e.g. Claude Desktop).
+        text = "#{summary}\n\n#{structured_content.to_json}"
 
-          MCP::Tool::Response.new(
-            [{ type: 'text', text: }],
-            structured_content:
-          )
-        end
+        MCP::Tool::Response.new(
+          [{ type: 'text', text: }],
+          structured_content:
+        )
       end
     end
   end

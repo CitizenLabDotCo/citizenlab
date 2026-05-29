@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::GetResource < McpServer::BaseTool
-  description 'Gets a resource by type and ID'
-  input_schema(
-    properties: {
-      type: { type: 'string', enum: %w[project phase event area global_topic folder user], description: 'The resource type' },
-      id: { type: 'string', description: 'The resource ID' }
-    },
-    required: %w[type id]
-  )
-
   RESOURCE_TYPES = {
     'project' => 'Project',
     'phase' => 'Phase',
@@ -20,7 +11,26 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
     'user' => 'User'
   }.freeze
 
-  def self.call(type:, id:, server_context:)
+  def self.make
+    klass = self
+    description = 'Gets a resource by type and ID'
+
+    MCP::Tool.define(name: 'get_resource', description:, input_schema:) do |**kwargs|
+      klass.new.call(**kwargs)
+    end
+  end
+
+  def self.input_schema
+    {
+      properties: {
+        type: { type: 'string', enum: RESOURCE_TYPES.keys, description: 'The resource type' },
+        id: { type: 'string', description: 'The resource ID' }
+      },
+      required: %w[type id]
+    }
+  end
+
+  def call(type:, id:, server_context:)
     model_name = RESOURCE_TYPES[type]
     return MCP::Tool::Response.new(
       [{ type: 'text', text: "Unknown resource type: #{type}" }],

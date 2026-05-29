@@ -3,7 +3,7 @@
 class McpServer::BaseTool < MCP::Tool
   include McpServer::BaseTool::Pagination
 
-  def self.to_multiloc(value)
+  def to_multiloc(value)
     return value if value.is_a?(Hash)
 
     locale = AppConfiguration.instance.settings.dig('core', 'locales')&.first || 'en'

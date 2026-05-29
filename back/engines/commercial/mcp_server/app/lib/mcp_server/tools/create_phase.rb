@@ -1,24 +1,34 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::CreatePhase < McpServer::BaseTool
-  description 'Creates a new phase for a project'
-  input_schema(
-    properties: {
-      project_id: { type: 'string', description: 'The ID of the project' },
-      title: { description: 'Phase title. A plain string (uses default locale) or a hash of locale => string.' },
-      start_at: { type: 'string', description: 'Phase start date in ISO 8601 format' },
-      end_at: { type: 'string', description: 'Phase end date in ISO 8601 format. Optional for the last phase.' },
-      participation_method: {
-        type: 'string',
-        enum: %w[ideation proposals information native_survey voting poll volunteering],
-        description: 'Participation method. Defaults to "ideation".'
-      },
-      description: { description: 'Phase description (HTML). A plain string or a hash of locale => string.' }
-    },
-    required: %w[project_id title start_at]
-  )
+  def self.make
+    klass = self
+    description = 'Creates a new phase for a project'
 
-  def self.call(project_id:, title:, start_at:, end_at: nil, participation_method: 'ideation', description: nil, server_context:)
+    MCP::Tool.define(name: 'create_phase', description:, input_schema:) do |**kwargs|
+      klass.new.call(**kwargs)
+    end
+  end
+
+  def self.input_schema
+    {
+      properties: {
+        project_id: { type: 'string', description: 'The ID of the project' },
+        title: { description: 'Phase title. A plain string (uses default locale) or a hash of locale => string.' },
+        start_at: { type: 'string', description: 'Phase start date in ISO 8601 format' },
+        end_at: { type: 'string', description: 'Phase end date in ISO 8601 format. Optional for the last phase.' },
+        participation_method: {
+          type: 'string',
+          enum: %w[ideation proposals information native_survey voting poll volunteering],
+          description: 'Participation method. Defaults to "ideation".'
+        },
+        description: { description: 'Phase description (HTML). A plain string or a hash of locale => string.' }
+      },
+      required: %w[project_id title start_at]
+    }
+  end
+
+  def call(project_id:, title:, start_at:, end_at: nil, participation_method: 'ideation', description: nil, server_context:)
     project = Project.find(project_id)
 
     phase = Phase.new(
