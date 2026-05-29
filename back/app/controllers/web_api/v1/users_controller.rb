@@ -150,6 +150,12 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_cimail(email)
 
+    # If password_login is disabled, we only allow super admins to use this endpoint
+    if !app_configuration.feature_activated?('password_login') && !@user&.super_admin?
+      render json: { errors: { email: [{ error: 'password_login_disabled', value: email }] } }, status: :forbidden
+      return
+    end
+
     if @user.nil?
       render json: raw_json({ action: 'terms' })
       return

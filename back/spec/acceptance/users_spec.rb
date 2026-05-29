@@ -262,13 +262,27 @@ resource 'Users' do
 
       context 'when password_login is turned off' do
         before do
+          @super_admin = create(:super_admin)
+          @user = create(:user)
           SettingsService.new.deactivate_feature! 'password_login'
         end
 
-        let(:email) { 'test@test.com' }
-
-        example_request 'it also works (necessary for ?super_admin param)' do
+        example 'it works for super admins (necessary for ?super_admin param)' do
+          do_request({ user: { email: @super_admin.email } })
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
           assert_status 200
+        end
+
+        example 'it does not work for other users' do
+          do_request({ user: { email: @user.email } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
+        end
+
+        example 'it does not work if user does not exist' do
+          do_request({ user: { email: 'nonexisting@user.com' } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
         end
       end
 
