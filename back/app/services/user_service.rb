@@ -77,7 +77,7 @@ class UserService
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.
     # Used by build-then-save flows that can't call EmailConfirmation#confirm!
     # because the email_confirmation row doesn't exist until after_create.
-    def mark_confirmed_in_memory(user)
+    def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
     end

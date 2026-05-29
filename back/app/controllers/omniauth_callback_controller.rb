@@ -77,8 +77,9 @@ class OmniauthCallbackController < ApplicationController
 
     # We only allow merging accounts if email returned by
     # authver method is confirmed
-    if email_confirmed_authver && user_attrs[:email].present?
-      user = User.find_by_cimail(user_attrs.fetch(:email))
+    email = user_attrs[:email]
+    if email_confirmed_authver && email.present?
+      user = User.find_by_cimail(email)
       return user if user
     end
 
