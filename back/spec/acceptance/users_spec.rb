@@ -223,19 +223,39 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, has a password, email confirmed' do
-          # TODO
+          before { create(:sso_user) }
+
+          example_request 'Returns "password"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
         end
 
         context 'when user was created by SSO, has a password, email unconfirmed' do
-          # TODO
+          before { create(:sso_user, email_confirmed: false, email_confirmed_at: nil) }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
 
         context 'when user was created by SSO, no password, email confirmed' do
-          # TODO
+          before { create(:sso_user, password_digest: nil) }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
 
         context 'when user was created by SSO, no password, email unconfirmed' do
-          # TODO
+          before { create(:sso_user, password_digest: nil, email_confirmed: false, email_confirmed_at: nil) }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
       end
 
