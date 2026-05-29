@@ -2,12 +2,13 @@
 
 Exploratory research for the parallel-participation track. **Status: research only — no solution is proposed or decided here.** The goal is a neutral, shared understanding of the problem space before any design work begins.
 
-Four parts:
+Five parts:
 
 - **Feedback** — what customers and GSMs ask for, clustered; descriptive (needs as expressed, not solutions).
 - **Theoretical grounding** — how the academic and institutional literature frames participation, and what it does (and doesn't) say about running methods in parallel.
 - **Competitors** — how 11 other engagement platforms handle running multiple participation methods at once.
 - **Concept model** — a shared vocabulary mapping Go Vocal's concepts to competitors', and how they relate.
+- **Solution direction** — a proposed target model (the "north star") to steer toward as we ship more immediate parallel-participation solutions.
 
 _Last updated: May 2026 · branch `exploration-parallel-participation`._
 
@@ -542,3 +543,86 @@ Re-read every cluster in the Feedback section through this lens and each becomes
 - _Voting after ideation on the same Inputs_ → one Activity with different per-Phase settings, not two Methods on two Phases.
 - _Permissions / action descriptors per activity_ → today scoped to Phase because Phase = Activity; unbundled, they follow Activity, and the action-descriptor surface multiplies (one set per Activity per user instead of one per Project).
 - _Reporting across activities / per input lifecycle_ → Inputs and Statuses become first-class concepts with their own grain, distinct from Phases.
+
+---
+
+## Solution direction
+
+_This part shifts from description to proposal. Everything above is research; what follows is an **opinionated** target — a direction, not a decision._
+
+We treat the ideal end-state as a **north star**: the model we would build with no time constraints. We are unlikely to reach it in one step — its job is to **orient the more immediate parallel-participation solutions** so each one is a step toward the target rather than a detour away from it. (Those immediate steps will be a separate subsection once we've aligned on the target.)
+
+### Target model (north star)
+
+**The core move.** Everything follows from one decision: **unbundle the `Phase`**, which today fuses four roles — a time-segment, a participation activity, a single method, and a timeline entry — into separate first-class concepts. (This is the multi-dimensional framing from Theoretical grounding made concrete: a participation design is a point in a space of independent axes, not one typed object.)
+
+The first-class entities become:
+
+- **Project** — the container / initiative (inside nestable **Folders**).
+- **Activity** — a participation unit. Owns a form, a schedule, permissions, settings, an optional status workflow, and produces inputs. _This is the concept Go Vocal lacks today._
+- **Phase** — a pure time-segment with a title / description; narrative only.
+- **Timeline** — the ordered phases, for display and navigation.
+- **Input** — the artifact a resident submits (today's idea / response), belongs to an Activity.
+- **Interaction** — a lightweight participation event (react / vote / comment / cosponsor / rank), first-class.
+- **Form / Field** — owned by the Activity.
+- **Template** — a named preset that configures an Activity (what "method" largely becomes).
+
+**Activities are timeless; phases enable and configure them over time.** An Activity is not "in" a phase. It exists on the Project, and its availability is a **schedule**:
+
+- **always-on** — open whenever the project is published (a continuous survey, a standing comment box);
+- **phase-bound** — tied to one or more phases, with **per-phase settings** that change its behaviour over time;
+- **custom window** — its own explicit start / end, independent of phases.
+
+The per-phase settings are the heart of the model. The canonical example, which also dissolves "voting" as a separate method:
+
+> **Ideation → voting on the same inputs** = _one_ Collection activity, phase-bound to two phases, configured `Consultation { submit: on, vote: off }` then `Decision { submit: off, vote: on }`. The same inputs simply carry through. No separate voting phase, no "transitive" flag.
+
+Consequences that fall out for free:
+
+- **Multiple methods at once** → several activities active in one phase.
+- **Always-on / continuous** → the always-on schedule.
+- **Overlapping** → activities with overlapping windows (the strict phase non-overlap rule stops being a participation concern).
+- **Phases become optional** → a project can have zero phases (a perpetual board) or many.
+- **`current_phase` stops being the participation gate** — it survives only as a narrative pointer ("we're in Consultation"); what's open is decided per Activity.
+
+**Methods become three layers.** Today's ~11 participation methods are mostly bundles of capability flags — a sign they are presets, not types. Split them:
+
+- **Activity kinds (primitives)** — essentially two: **Collection** (residents submit inputs through a form; heavily parameterised — input visibility, allowed interactions, form shape, geo-anchoring, status workflow; hosts pluggable engines such as survey logic and vote allocation) and **Content** (read-only information / embeds; no inputs).
+- **Capabilities (toggles on a Collection, can vary per phase)** — react, vote, comment, rank, cosponsor. _This is where voting, commenting and reacting belong_ — not as methods, but as interaction capabilities on a set of inputs.
+- **Templates (named presets)** — "Ideation", "Survey", "Proposals", "Participatory budget", "Common ground", "Poll", "Volunteering", "Document annotation". A template = a Collection + capabilities + form template + status workflow + defaults + a label. **Templates are non-negotiable**: they preserve the guided, recognisable experience for admins and residents while the primitive layer stays internal.
+
+Reclassifying today's methods against this:
+
+- **Information** → not a method; it is **Content** (or simply project / phase description). It only exists as a "method" because every phase must carry one.
+- **Voting** → a **capability** on a set of inputs (with budget / allocation settings).
+- **Survey vs Ideation** → the _same_ primitive (Collection); the difference is settings — input **visibility** (private vs public), **interactivity** (reactions / comments on or off) and form shape.
+- **Proposals** → a **template** (Collection + cosponsor field + reaction threshold + expiry + status workflow).
+- **Community monitor, Poll, Common ground, Document annotation** → templates / variants of Collection.
+
+New activity types worth adding (from the feedback): a **project-level discussion / comment box**; **Q&A**; **live / synchronous polling** (Cluster 12); **petition / letters of support**; and **standing / continuous panels** (which the always-on schedule enables without new machinery).
+
+**The form is owned by the Activity.** This cleanly resolves today's project-form-vs-phase-form split. Two refinements matter:
+
+- **Field visibility** — each field is _public_ (shown on input cards → the "ideation" look) or _private_ (admin-only → the "survey" look). One form mixing both is the single-activity answer to the most-requested survey + ideation combo (Clusters 1 and 10).
+- **Input-fields vs user-fields** — demographic / equalities questions are **user attributes**, stored on the user and reused across activities, not survey responses (Cluster 11). The form may _surface_ a user-field, but it writes to the user and is collected once.
+
+**Inputs, statuses, and interactions.**
+
+- **Input** is first-class, belonging to an Activity.
+- **Statuses** are a **per-input lifecycle** governed by a **status workflow** attached to the Activity / template — transitions manual, automatic (threshold / expiry), or scheduled, and **independent of phases** (each input runs on its own clock).
+- **Reactions, votes, comments, cosponsorships** are modelled as **first-class participation events** (actor, type, target, activity, timestamp), not buried attributes. This is the unlock for reporting (Clusters 6 and 11): every act becomes a queryable event with an activity grain, making cross-method aggregation, per-user tracking, and folder roll-ups natural.
+
+**Permissions** move to the **Activity** (who may perform each action here, what data they share, what verification they need); they sit on Phase today only because Phase = Activity. **Action descriptors** are then computed per-activity per-user, so a project page shows several participation states at once. **Folder-level** permissions become possible (a recurring ask).
+
+**Phases, timeline, folders.** A **Phase** is a narrative chapter (start / end / title / description) — academically grounded as staging, but it **scopes activity behaviour over time without gating** participation. Because dates no longer gate, they can be **approximate, seasonal, or absent** (Cluster 4). The **Timeline** is display / navigation only. **Folders** are nestable and can carry their own timeline, reporting and permissions (Clusters 6 and 7); at the limit, Project and Folder converge toward "a container with activities, a timeline, and reporting at multiple levels" — flagged, but likely beyond a first cut.
+
+**What the target resolves.** Each feedback cluster maps to one move: C1 multiple methods → many activities per project; C2 overlapping → activity windows; C3 always-on → always-on schedule; C4 flexible dates → dates stop gating; C5 conditional flow → per-phase settings / activity sequencing; C6 reporting → activity grain + interactions-as-events; C7 timeline UX → timeline demoted to display, folder-level possible; C8 forms → activity-owned forms; C9 segmentation → multiple activities + user-fields; C10 public / private → field visibility; C11 demographics → user-fields; C12 live → a synchronous activity type.
+
+**Open design decisions** (to decide, not pre-decided here): how far to merge survey and ideation in the _UI_ (the data model merges them; the admin experience need not); whether phases may overlap or stay strictly sequential; whether Project and Folder eventually unify; whether inputs and interactions share one store or stay distinct.
+
+**Caveats.**
+
+- **Over-abstraction is the main risk** — "everything is a Collection + capabilities" could ruin the admin UX. Templates must keep the experience guided and named; the primitive layer stays mostly invisible.
+- **Some "settings" are substantial engines** — survey paging / logic and vote / basket allocation are pluggable behaviours, not checkboxes.
+- **Migration is large** — every phase splits into phase + activity; every `current_phase` / `permission_scope` consumer changes; analytics and forms re-home. This is exactly why it is the no-time-constraints track.
+- **Don't overclaim the need for concurrency** — the evidence supports _combining_ methods more strongly than running them _simultaneously_; the target should _enable_ concurrency without resting the case on it.
