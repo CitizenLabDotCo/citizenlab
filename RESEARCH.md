@@ -563,31 +563,32 @@ The first-class entities become:
 - **Phase** — a pure time-segment with a title / description; narrative only.
 - **Timeline** — the ordered phases, for display and navigation.
 - **Input** — the artifact a resident submits (today's idea / response), belongs to an Activity.
-- **Interaction** — a lightweight participation event (react / vote / comment / cosponsor / rank), first-class.
+- **Interaction** — a lightweight, mostly content-less participation event (react / vote / cosponsor / rank / attend), first-class. (A **comment** is content-bearing and repliable, so it is better modelled as an Input that _targets_ another Input — not a pure Interaction.)
 - **Form / Field** — owned by the Activity.
 - **Template** — a named preset that configures an Activity (what "method" largely becomes).
 
-**Activities are timeless; phases enable and configure them over time.** An Activity is not "in" a phase. It exists on the Project, and its availability is a **schedule**:
+**Activities are timeless; phases enable and configure them over time.** An Activity is not "in" a phase — it exists on the Project. Two _independent_ questions govern how it relates to time:
 
-- **always-on** — open whenever the project is published (a continuous survey, a standing comment box);
-- **phase-bound** — tied to one or more phases, with **per-phase settings** that change its behaviour over time;
-- **custom window** — its own explicit start / end, independent of phases.
+1. **When is it available?** Its lifecycle is _always-on_ (open whenever the project is published — a continuous survey, a standing comment box), _phase-driven_ (it appears and closes as named phases come and go), or _custom-window_ (its own explicit start / end, independent of phases).
+2. **How does it behave while available?** Which actions are open (submit, vote, comment, react…) and their settings can carry **per-phase overrides**, so one activity behaves differently as phases progress.
 
-The per-phase settings are the heart of the model. The canonical example, which also dissolves "voting" as a separate method:
+The second axis is the novel, powerful part — and it is easy to conflate with the first, so keep them distinct. For phase-driven activities it helps to picture an **Activity × Phase matrix**: each cell holds the activity's configuration during that phase (or "absent"). An always-on activity is a row that ignores the columns; the example below is one row across two cells. The canonical case, which also dissolves "voting" as a separate method:
 
-> **Ideation → voting on the same inputs** = _one_ Collection activity, phase-bound to two phases, configured `Consultation { submit: on, vote: off }` then `Decision { submit: off, vote: on }`. The same inputs simply carry through. No separate voting phase, no "transitive" flag.
+> **Ideation → voting on the same inputs** = _one_ Collection activity spanning two phases, configured `Consultation { submit: on, vote: off }` then `Decision { submit: off, vote: on }`. The same inputs simply carry through. No separate voting phase, no "transitive" flag.
+
+Where a later activity instead works on a _different_ input set — collect many proposals, curate a shortlist, then vote on the shortlist — that is **two** activities, the second referencing the first's inputs. Rule of thumb: same inputs, behaviour changing over time → one activity with per-phase overrides; a curated or genuinely separate set → two activities linked by reference.
 
 Consequences that fall out for free:
 
 - **Multiple methods at once** → several activities active in one phase.
-- **Always-on / continuous** → the always-on schedule.
+- **Always-on / continuous** → the always-on lifecycle.
 - **Overlapping** → activities with overlapping windows (the strict phase non-overlap rule stops being a participation concern).
 - **Phases become optional** → a project can have zero phases (a perpetual board) or many.
 - **`current_phase` stops being the participation gate** — it survives only as a narrative pointer ("we're in Consultation"); what's open is decided per Activity.
 
 **Methods become three layers.** Today's ~11 participation methods are mostly bundles of capability flags — a sign they are presets, not types. Split them:
 
-- **Activity kinds (primitives)** — essentially two: **Collection** (residents submit inputs through a form; heavily parameterised — input visibility, allowed interactions, form shape, geo-anchoring, status workflow; hosts pluggable engines such as survey logic and vote allocation) and **Content** (read-only information / embeds; no inputs).
+- **Activity kinds (primitives)** — essentially two: **Collection** (a set of inputs gathered through a form; heavily parameterised — _who may create inputs_ (residents **or** admins — which is how polls, voting on pre-set options, and volunteering all fit), input visibility, allowed interactions, form shape, geo-anchoring, status workflow; hosts pluggable engines such as survey logic and vote allocation) and **Content** (read-only information / embeds; no inputs). (**Events** — a scheduled gathering with attendance — likely need a third kind, or Content plus an _attend_ interaction; flagged as unresolved.)
 - **Capabilities (toggles on a Collection, can vary per phase)** — react, vote, comment, rank, cosponsor. _This is where voting, commenting and reacting belong_ — not as methods, but as interaction capabilities on a set of inputs.
 - **Templates (named presets)** — "Ideation", "Survey", "Proposals", "Participatory budget", "Common ground", "Poll", "Volunteering", "Document annotation". A template = a Collection + capabilities + form template + status workflow + defaults + a label. **Templates are non-negotiable**: they preserve the guided, recognisable experience for admins and residents while the primitive layer stays internal.
 
@@ -610,15 +611,15 @@ New activity types worth adding (from the feedback): a **project-level discussio
 
 - **Input** is first-class, belonging to an Activity.
 - **Statuses** are a **per-input lifecycle** governed by a **status workflow** attached to the Activity / template — transitions manual, automatic (threshold / expiry), or scheduled, and **independent of phases** (each input runs on its own clock).
-- **Reactions, votes, comments, cosponsorships** are modelled as **first-class participation events** (actor, type, target, activity, timestamp), not buried attributes. This is the unlock for reporting (Clusters 6 and 11): every act becomes a queryable event with an activity grain, making cross-method aggregation, per-user tracking, and folder roll-ups natural.
+- **Reactions, votes, cosponsorships, rankings, attendances** are modelled as **first-class participation events** (actor, type, target, activity, timestamp), not buried attributes — and comments as Inputs targeting other Inputs. This is the unlock for reporting (Clusters 6 and 11): every act becomes a queryable record with an activity grain, making cross-method aggregation, per-user tracking, and folder roll-ups natural.
 
 **Permissions** move to the **Activity** (who may perform each action here, what data they share, what verification they need); they sit on Phase today only because Phase = Activity. **Action descriptors** are then computed per-activity per-user, so a project page shows several participation states at once. **Folder-level** permissions become possible (a recurring ask).
 
 **Phases, timeline, folders.** A **Phase** is a narrative chapter (start / end / title / description) — academically grounded as staging, but it **scopes activity behaviour over time without gating** participation. Because dates no longer gate, they can be **approximate, seasonal, or absent** (Cluster 4). The **Timeline** is display / navigation only. **Folders** are nestable and can carry their own timeline, reporting and permissions (Clusters 6 and 7); at the limit, Project and Folder converge toward "a container with activities, a timeline, and reporting at multiple levels" — flagged, but likely beyond a first cut.
 
-**What the target resolves.** Each feedback cluster maps to one move: C1 multiple methods → many activities per project; C2 overlapping → activity windows; C3 always-on → always-on schedule; C4 flexible dates → dates stop gating; C5 conditional flow → per-phase settings / activity sequencing; C6 reporting → activity grain + interactions-as-events; C7 timeline UX → timeline demoted to display, folder-level possible; C8 forms → activity-owned forms; C9 segmentation → multiple activities + user-fields; C10 public / private → field visibility; C11 demographics → user-fields; C12 live → a synchronous activity type.
+**What the target resolves.** Most clusters map cleanly to a single move: C1 multiple methods → many activities per project; C2 overlapping → activity windows (and phases, no longer gating, may overlap freely); C3 always-on → the always-on lifecycle; C4 flexible dates → dates stop gating; C6 reporting → activity grain + interactions-as-events; C7 timeline UX → timeline demoted to display, folder-level possible; C8 forms → activity-owned forms; C9 segmentation → group-targeted activities + user-fields; C10 public / private → field visibility; C11 demographics → user-fields. Two clusters are only **partially** addressed, and should be named as such: **C5** (conditional / sequential flows) — the model supports per-phase reconfiguration and ordering activities across phases, but _completion-triggered_ phases and _gating questions before participation_ (a within-activity flow) need mechanisms it does not yet define; and **C12** (live / synchronous) — a real-time, session-bound activity has a different lifecycle (live shared state, ephemeral results) that may not reduce to the async Collection primitive.
 
-**Open design decisions** (to decide, not pre-decided here): how far to merge survey and ideation in the _UI_ (the data model merges them; the admin experience need not); whether phases may overlap or stay strictly sequential; whether Project and Folder eventually unify; whether inputs and interactions share one store or stay distinct.
+**Open design decisions** (to decide, not pre-decided here): how far to merge survey and ideation in the _UI_ (the data model merges them; the admin experience need not); whether a **Template** is only a creation-time scaffold or a persistent type the system keeps tracking; where **Events** fit (a third activity kind, or Content plus an _attend_ interaction); whether phases may overlap or stay strictly sequential; whether Project and Folder eventually unify; whether inputs and interactions share one store or stay distinct.
 
 **Caveats.**
 
