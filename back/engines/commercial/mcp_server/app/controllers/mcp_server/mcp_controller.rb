@@ -3,17 +3,17 @@
 module McpServer
   class McpController < ActionController::API
     include Pundit::Authorization
+    rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
     before_action -> { doorkeeper_authorize! 'mcp:access' }
     after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
-
-    rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
     def create
       authorize([:mcp_server, :mcp])
 
       server = MCP::Server.new(
-        name: 'citizenlab',
+        name: 'go_vocal',
+        title: "Go Vocal (#{AppConfiguration.instance.host})",
         version: '0.1.0',
         tools: tools
       )
