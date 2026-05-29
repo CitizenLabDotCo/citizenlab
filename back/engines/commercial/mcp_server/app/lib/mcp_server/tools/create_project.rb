@@ -13,9 +13,9 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
   def self.input_schema
     {
       properties: {
-        title: { description: 'Project title. A plain string (uses default locale) or a hash of locale => string.' },
-        description: { description: 'Project description (HTML). A plain string or a hash of locale => string.' },
-        description_preview: { description: 'Plain-text summary for search/previews. A plain string or a hash of locale => string.' },
+        title: { **multiloc_schema, description: 'Project title.' },
+        description: { **multiloc_schema, description: 'Project description (HTML).' },
+        description_preview: { **multiloc_schema, description: 'Plain-text summary for search/previews.' },
         visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project. Defaults to "public".' },
         area_ids: { type: 'array', items: { type: 'string' }, description: 'Array of area IDs to associate with the project. Use list_areas to find valid IDs.' },
         global_topic_ids: { type: 'array', items: { type: 'string' }, description: 'Array of global topic IDs. Use list_global_topics to find valid IDs.' },
@@ -30,18 +30,20 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
   def call(title:, description: nil, description_preview: nil, visible_to: 'public',
            area_ids: nil, global_topic_ids: nil, folder_id: nil,
            default_assignee_id: nil, live_auto_input_topics_enabled: false, server_context:)
-    project = Project.new(
-      title_multiloc: to_multiloc(title),
-      description_multiloc: description ? to_multiloc(description) : {},
-      description_preview_multiloc: description_preview ? to_multiloc(description_preview) : {},
+    attributes = {
+      title_multiloc: title,
       visible_to: visible_to,
       admin_publication_attributes: { publication_status: 'draft' },
-      area_ids: area_ids || [],
-      global_topic_ids: global_topic_ids || [],
+      area_ids: area_ids,
+      global_topic_ids: global_topic_ids,
       folder_id: folder_id,
       default_assignee_id: default_assignee_id,
       live_auto_input_topics_enabled: live_auto_input_topics_enabled
-    )
+    }
+    attributes[:description_multiloc] = description if description
+    attributes[:description_preview_multiloc] = description_preview if description_preview
+
+    project = Project.new(attributes)
 
     user = server_context[:current_user]
     SideFxProjectService.new.before_create(project, user)

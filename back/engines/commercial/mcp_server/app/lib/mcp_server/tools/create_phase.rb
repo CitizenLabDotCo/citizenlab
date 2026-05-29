@@ -14,7 +14,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
     {
       properties: {
         project_id: { type: 'string', description: 'The ID of the project' },
-        title: { description: 'Phase title. A plain string (uses default locale) or a hash of locale => string.' },
+        title: { **multiloc_schema, description: 'Phase title.' },
         start_at: { type: 'string', description: 'Phase start date in ISO 8601 format' },
         end_at: { type: 'string', description: 'Phase end date in ISO 8601 format. Optional for the last phase.' },
         participation_method: {
@@ -22,7 +22,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           enum: %w[ideation proposals information native_survey voting poll volunteering],
           description: 'Participation method. Defaults to "ideation".'
         },
-        description: { description: 'Phase description (HTML). A plain string or a hash of locale => string.' }
+        description: { **multiloc_schema, description: 'Phase description (HTML).' }
       },
       required: %w[project_id title start_at]
     }
@@ -31,14 +31,16 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   def call(project_id:, title:, start_at:, end_at: nil, participation_method: 'ideation', description: nil, server_context:)
     project = Project.find(project_id)
 
-    phase = Phase.new(
+    attributes = {
       project: project,
-      title_multiloc: to_multiloc(title),
-      description_multiloc: description ? to_multiloc(description) : {},
+      title_multiloc: title,
       start_at: start_at,
       end_at: end_at,
       participation_method: participation_method
-    )
+    }
+    attributes[:description_multiloc] = description if description
+
+    phase = Phase.new(attributes)
 
     user = server_context[:current_user]
     SideFxPhaseService.new.before_create(phase, user)

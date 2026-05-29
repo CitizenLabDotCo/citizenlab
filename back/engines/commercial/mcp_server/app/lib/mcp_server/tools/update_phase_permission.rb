@@ -79,8 +79,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           DESC
         },
         access_denied_explanation_multiloc: {
-          type: 'object',
-          description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote"). Multiloc: { "en": "...", "fr-FR": "..." }.'
+          **multiloc_schema,
+          description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote").'
         }
       },
       required: %w[phase_id action permitted_by]

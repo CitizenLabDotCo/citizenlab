@@ -14,11 +14,11 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
     {
       properties: {
         project_id: { type: 'string', description: 'The ID of the project to create the event for' },
-        title: { description: 'Event title. A plain string (uses default locale) or a hash of locale => string.' },
+        title: { **multiloc_schema, description: 'Event title.' },
         start_at: { type: 'string', description: 'Event start date/time in ISO 8601 format' },
         end_at: { type: 'string', description: 'Event end date/time in ISO 8601 format' },
-        description: { description: 'Event description. A plain string or a hash of locale => string.' },
-        location: { description: 'Event location. A plain string or a hash of locale => string.' },
+        description: { **multiloc_schema, description: 'Event description.' },
+        location: { **multiloc_schema, description: 'Event location.' },
         online_link: { type: 'string', description: 'URL for online events' }
       },
       required: %w[project_id title start_at end_at]
@@ -28,15 +28,17 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
   def call(project_id:, title:, start_at:, end_at:, description: nil, location: nil, online_link: nil, server_context:)
     project = Project.find(project_id)
 
-    event = Event.new(
+    attributes = {
       project: project,
-      title_multiloc: to_multiloc(title),
-      description_multiloc: description ? to_multiloc(description) : {},
-      location_multiloc: location ? to_multiloc(location) : {},
+      title_multiloc: title,
       online_link: online_link,
       start_at: start_at,
       end_at: end_at
-    )
+    }
+    attributes[:description_multiloc] = description if description
+    attributes[:location_multiloc] = location if location
+
+    event = Event.new(attributes)
 
     if event.save
       SideFxEventService.new.after_create(event, server_context[:current_user])
