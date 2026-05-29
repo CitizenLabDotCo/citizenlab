@@ -8,7 +8,7 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     confirmation = lookup_confirmation(user, confirmation_type)
     return unless confirmation
     return unless confirmation.code == code_to_expire
-    return unless still_relevant?(user, confirmation)
+    return unless confirmation.pending?
 
     confirmation.expire_code!
 
@@ -25,13 +25,6 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     case type
     when 'EmailConfirmation' then user.email_confirmation
     when 'NewEmailConfirmation' then user.new_email_confirmation
-    end
-  end
-
-  def still_relevant?(user, confirmation)
-    case confirmation
-    when EmailConfirmation then user.confirmation_required?
-    when NewEmailConfirmation then user.new_email.present?
     end
   end
 end

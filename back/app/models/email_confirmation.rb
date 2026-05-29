@@ -32,4 +32,8 @@ class EmailConfirmation < Confirmation
     end
     true
   end
+
+  def pending?
+    user.confirmation_required?
+  end
 end

@@ -42,4 +42,8 @@ class NewEmailConfirmation < Confirmation
     end
     true
   end
+
+  def pending?
+    user.new_email.present?
+  end
 end
