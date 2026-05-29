@@ -1,6 +1,6 @@
 # Parallel Participation — Research
 
-Exploratory research for the parallel-participation track. **Status: research only — no solution is proposed or decided here.** The goal is a neutral, shared understanding of the problem space before any design work begins.
+Research and proposed direction for the parallel-participation track. The first four parts are **descriptive research** — needs, prior art, and a shared vocabulary, with no solution baked in. The final part, **Solution direction**, is an **opinionated proposal** (a north star plus immediate steps), clearly marked as a direction to steer by, not a decision that has been made.
 
 Five parts:
 
