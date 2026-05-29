@@ -66,7 +66,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('.e2e-modal-close-button').first().click();
     cy.clearCookies();
 
-    // Sign up through Fake SSO (return unconfirmed email)
+    // Sign up through Fake SSO (return confirmed email)
     fakeSSOSignup(cy, 'john_doe', { email });
 
     // We expect to arrive on the success message
