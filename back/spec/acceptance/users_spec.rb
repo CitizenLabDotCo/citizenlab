@@ -232,7 +232,7 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, has a password, email unconfirmed' do
-          before { create(:sso_user, email_confirmed: false, email_confirmed_at: nil) }
+          before { create(:sso_user, confirmation_required: true, email_confirmed_at: nil) }
 
           example_request 'Returns "confirm"' do
             assert_status 200
@@ -250,7 +250,7 @@ resource 'Users' do
         end
 
         context 'when user was created by SSO, no password, email unconfirmed' do
-          before { create(:sso_user, password_digest: nil, email_confirmed: false, email_confirmed_at: nil) }
+          before { create(:sso_user, password_digest: nil, confirmation_required: true, email_confirmed_at: nil) }
 
           example_request 'Returns "confirm"' do
             assert_status 200
