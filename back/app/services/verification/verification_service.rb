@@ -40,21 +40,38 @@ module Verification
       end
     end
 
+    # All methods configured by the admin (i.e. with an entry in the
+    # `verification.verification_methods` setting), including login-only SSO
+    # methods that cannot be used for identity verification.
     # @param [AppConfiguration] app_configuration
-    def active_methods(app_configuration)
+    def configured_methods(app_configuration)
       return [] unless app_configuration.feature_activated?('verification')
 
-      active_methods = app_configuration.settings['verification']['verification_methods']
-      active_method_names = active_methods.pluck('name')
+      configured_names = app_configuration.settings('verification', 'verification_methods')&.pluck('name') || []
       all_methods.select do |method|
-        active_method_names.include?(method.name) if method.respond_to?(:name)
+        configured_names.include?(method.name) if method.respond_to?(:name)
       end
+    end
+
+    # Methods that can be used to verify user identities. Subset of
+    # `configured_methods` that excludes login-only SSO methods.
+    # @param [AppConfiguration] app_configuration
+    def active_methods(app_configuration)
+      configured_methods(app_configuration).select(&:verification?)
     end
 
     # @param [AppConfiguration] configuration
     # @return [Boolean]
     def active?(configuration, method_name)
       active_methods(configuration).include? method_by_name(method_name)
+    end
+
+    # Whether the method has been configured by the admin, regardless of whether
+    # it can be used for identity verification. Used to gate SSO login.
+    # @param [AppConfiguration] configuration
+    # @return [Boolean]
+    def configured?(configuration, method_name)
+      configured_methods(configuration).include? method_by_name(method_name)
     end
 
     def enabled?(method_name)
@@ -104,6 +121,9 @@ module Verification
 
     def verify_omniauth(user:, auth:)
       method = method_by_name(auth.provider)
+      # Login-only SSO methods (e.g. Hoplr, Vienna) cannot verify identities.
+      raise NoMatchError unless method.respond_to?(:verification?) && method.verification?
+
       if method.respond_to?(:entitled?)
         entitled = method.entitled?(auth) # NOTE: Some methods raise more detailed NotEntitledErrors themselves
         raise NotEntitledError if !entitled
