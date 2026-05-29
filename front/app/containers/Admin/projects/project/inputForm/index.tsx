@@ -6,13 +6,13 @@ import usePhase from 'api/phases/usePhase';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
 import { isPDFUploadSupported } from '../inputImporter/ReviewSection/utils';
 
+import FormInputEditButtonWithWarningModal from './FormInputEditButtonWithWarningModal';
 import messages from './messages';
 
 export const InputForm = () => {
@@ -22,6 +22,7 @@ export const InputForm = () => {
 
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;
+  const editFormLink = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
 
   return (
     <Box maxWidth="1200px">
@@ -32,17 +33,11 @@ export const InputForm = () => {
         <FormattedMessage {...messages.inputFormDescription} />
       </SectionDescription>
       <Box display="flex" flexDirection="row">
-        <ButtonWithLink
-          mr="8px"
-          to="/admin/projects/$projectId/phases/$phaseId/form/edit"
-          params={{ projectId, phaseId }}
-          width="auto"
-          icon="edit"
-          data-cy="e2e-edit-input-form"
-          buttonStyle="admin-dark"
-        >
-          <FormattedMessage {...messages.editInputForm} />
-        </ButtonWithLink>
+        <FormInputEditButtonWithWarningModal
+          projectId={projectId}
+          phaseId={phaseId}
+          editFormLink={editFormLink}
+        />
       </Box>
       <Box mt="28px">
         <ImportInputsSection
