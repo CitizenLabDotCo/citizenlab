@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::ListUsers < McpServer::BaseTool
-  def self.make
-    klass = self
-    description = 'Lists users. Search by name/email, filter by role.'
+  def name = 'list_users'
+  def description = 'Lists users. Search by name/email, filter by role.'
 
-    MCP::Tool.define(name: 'list_users', description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
-  end
-
-  def self.input_schema
+  def input_schema
     {
       properties: {
         search: { type: 'string', description: 'Search by name or email' },
@@ -20,15 +14,19 @@ class McpServer::Tools::ListUsers < McpServer::BaseTool
     }
   end
 
-  def call(search: nil, role: nil, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    scope = User.active.order(created_at: :desc)
-    scope = scope.admin if role == 'admin'
-    scope = scope.moderator if role == 'moderator'
-    scope = scope.search_by_all(search) if search.present?
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      scope = User.active.order(created_at: :desc)
+      scope = scope.admin if params[:role] == 'admin'
+      scope = scope.moderator if params[:role] == 'moderator'
+      scope = scope.search_by_all(params[:search]) if params[:search].present?
 
-    paginated_response(
-      'users', scope, page:, per_page:,
-      only: %i[id first_name last_name email roles]
-    )
+      paginated_response(
+        'users',
+        scope,
+        **params.slice(:page, :per_page),
+        only: %i[id first_name last_name email roles]
+      )
+    end
   end
 end

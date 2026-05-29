@@ -11,16 +11,10 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
     'user' => 'User'
   }.freeze
 
-  def self.make
-    klass = self
-    description = 'Gets a resource by type and ID'
+  def name = 'get_resource'
+  def description = 'Gets a resource by type and ID'
 
-    MCP::Tool.define(name: 'get_resource', description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
-  end
-
-  def self.input_schema
+  def input_schema
     {
       properties: {
         type: { type: 'string', enum: RESOURCE_TYPES.keys, description: 'The resource type' },
@@ -30,22 +24,15 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
     }
   end
 
-  def call(type:, id:, server_context:)
-    model_name = RESOURCE_TYPES[type]
-    return MCP::Tool::Response.new(
-      [{ type: 'text', text: "Unknown resource type: #{type}" }],
-      error: true
-    ) unless model_name
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      type = params[:type]
+      id = params[:id]
+      record = McpServer::Tools::GetResource::RESOURCE_TYPES[type].constantize.find(id)
 
-    record = model_name.constantize.find(id)
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "#{type} #{id}" }],
-      structured_content: record.as_json
-    )
-  rescue ActiveRecord::RecordNotFound
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "#{type} not found: #{id}" }],
-      error: true
-    )
+      ok("#{type} #{id}", structured: record.as_json)
+    rescue ActiveRecord::RecordNotFound
+      error("#{type} not found: #{id}")
+    end
   end
 end

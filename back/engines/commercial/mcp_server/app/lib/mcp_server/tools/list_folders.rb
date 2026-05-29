@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::ListFolders < McpServer::BaseTool
-  def self.make
-    klass = self
-    description = 'Lists project folders. Search by title.'
+  def name = 'list_folders'
+  def description = 'Lists project folders. Search by title.'
 
-    MCP::Tool.define(name: 'list_folders', description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
-  end
-
-  def self.input_schema
+  def input_schema
     {
       properties: {
         search: { type: 'string', description: 'Search folders by title' },
@@ -19,15 +13,21 @@ class McpServer::Tools::ListFolders < McpServer::BaseTool
     }
   end
 
-  def call(search: nil, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    scope = FoldersFinderAdminService.execute(
-      ProjectFolders::Folder.all,
-      { search: search }.compact
-    )
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      finder_params = params.slice(:search)
 
-    paginated_response(
-      'folders', scope, page:, per_page:,
-      only: %i[id title_multiloc slug]
-    )
+      scope = FoldersFinderAdminService.execute(
+        ProjectFolders::Folder.all,
+        finder_params,
+      )
+
+      paginated_response(
+        'folders',
+        scope,
+        **params.slice(:page, :per_page),
+        only: %i[id title_multiloc slug]
+      )
+    end
   end
 end

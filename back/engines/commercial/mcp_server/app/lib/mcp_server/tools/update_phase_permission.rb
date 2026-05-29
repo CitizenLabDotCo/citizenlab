@@ -1,26 +1,18 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
-  # Sentinel used to distinguish from explicit-nil in kwargs.
-  OMITTED = Object.new.freeze
-  private_constant :OMITTED
+  def name = 'update_phase_permission'
+  def title = 'Update phase permission'
 
-  def self.make
-    klass = self
-    name = 'update_phase_permission'
-    title = 'Update phase permission'
-    description = <<~DESC.squish
+  def description
+    <<~DESC.squish
       Updates a phase permission (auto-created with the phase). Sets who can perform an action,
       with optional group restrictions, demographic-question requirements, verification recency,
       and a custom rejection message.
     DESC
-
-    MCP::Tool.define(name:, title:, description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
   end
 
-  def self.input_schema
+  def input_schema
     {
       properties: {
         phase_id: { type: 'string' },
@@ -87,83 +79,68 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     }
   end
 
-  def call(
-    phase_id:, action:, permitted_by:,
-    group_ids: nil, demographic_questions: OMITTED,
-    verification_expiry: nil, access_denied_explanation_multiloc: nil,
-    server_context:
-  )
-    phase = Phase.find(phase_id)
-    permission = phase.permissions.find_by(action: action)
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      phase = Phase.find(params[:phase_id])
+      permission = phase.permissions.find_by(action: params[:action])
 
-    return invalid_action_response(phase, action) if permission.nil?
+      return invalid_action_response(phase, params[:action]) if permission.nil?
 
-    attributes = {
-      permitted_by: permitted_by,
-      group_ids: group_ids,
-      verification_expiry: verification_expiry,
-      access_denied_explanation_multiloc: access_denied_explanation_multiloc
-    }.compact
+      attributes = {
+        permitted_by: params[:permitted_by],
+        group_ids: params[:group_ids],
+        verification_expiry: params[:verification_expiry],
+        access_denied_explanation_multiloc: params[:access_denied_explanation_multiloc]
+      }.compact
 
-    ActiveRecord::Base.transaction do
-      return validation_error_response(permission) unless permission.update(attributes)
+      ActiveRecord::Base.transaction do
+        return validation_error_response(permission) unless permission.update(attributes)
 
-      replace_demographic_questions(permission, demographic_questions) unless demographic_questions.equal?(OMITTED)
+        replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
+      end
+
+      ok(
+        "Updated #{params[:action]} permission on phase #{phase.id}",
+        structured: McpServer::Tools::ListPhasePermissions.serialize(permission.reload)
+      )
+    rescue ActiveRecord::RecordNotFound
+      error("Phase not found: #{params[:phase_id]}")
     end
 
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Updated #{action} permission on phase #{phase.id}" }],
-      structured_content: McpServer::Tools::ListPhasePermissions.serialize(permission.reload)
-    )
-  rescue ActiveRecord::RecordNotFound
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Phase not found: #{phase_id}" }],
-      error: true
-    )
-  end
+    private
 
-  def invalid_action_response(phase, action)
-    valid_actions = Permission.available_actions(phase) || []
-    MCP::Tool::Response.new(
-      [{
-         type: 'text',
-         text: "Action '#{action}' does not apply to this phase (participation_method: '#{phase.participation_method}'). Valid actions: #{valid_actions.join(', ')}."
-       }],
-      error: true
-    )
-  end
-
-  def validation_error_response(permission)
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Validation failed: #{permission.errors.full_messages.join(', ')}" }],
-      error: true
-    )
-  end
-
-  # Sets global_custom_fields and the permissions_custom_fields rows on the permission.
-  # Three cases:
-  #
-  # - nil: reset to tenant defaults (all enabled user fields)
-  # - []: no user fields at all
-  # - [...]: use the specified list of fields
-  #
-  # Row replacement destroys all records and recreates them. Not the most efficient
-  # approach, but much simpler, and recreating gives us correct ordering for free
-  # (acts_as_list assigns position on insert).
-  #
-  # @param permission [Permission]
-  # @param demographic_questions [Array<Hash>, nil] each entry has keys:
-  #   - `:custom_field_id` (String) — the user custom field id
-  #   - `:required` (Boolean, default true) — whether the field is mandatory
-  def replace_demographic_questions(permission, demographic_questions)
-    permission.update!(global_custom_fields: demographic_questions.nil?)
-    permission.permissions_custom_fields.destroy_all
-
-    demographic_questions.to_a.each do |entry|
-      permission.permissions_custom_fields.create!(
-        custom_field_id: entry.fetch(:custom_field_id),
-        required: entry.fetch(:required, true)
+    def invalid_action_response(phase, action)
+      valid_actions = Permission.available_actions(phase) || []
+      error(
+        "Action '#{action}' does not apply to this phase (participation_method: '#{phase.participation_method}'). " \
+          "Valid actions: #{valid_actions.join(', ')}."
       )
+    end
+
+    def validation_error_response(permission)
+      error("Validation failed: #{permission.errors.full_messages.join(', ')}")
+    end
+
+    # Sets global_custom_fields and the permissions_custom_fields rows on the permission.
+    # Three cases:
+    #
+    # - nil: reset to tenant defaults (all enabled user fields)
+    # - []: no user fields at all
+    # - [...]: use the specified list of fields
+    #
+    # Row replacement destroys all records and recreates them. Not the most efficient
+    # approach, but much simpler, and recreating gives us correct ordering for free
+    # (acts_as_list assigns position on insert).
+    def replace_demographic_questions(permission, demographic_questions)
+      permission.update!(global_custom_fields: demographic_questions.nil?)
+      permission.permissions_custom_fields.destroy_all
+
+      demographic_questions.to_a.each do |entry|
+        permission.permissions_custom_fields.create!(
+          custom_field_id: entry.fetch(:custom_field_id),
+          required: entry.fetch(:required, true)
+        )
+      end
     end
   end
 end

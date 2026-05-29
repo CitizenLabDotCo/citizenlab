@@ -15,8 +15,7 @@ module McpServer
       server = MCP::Server.new(
         name: 'citizenlab',
         version: '0.1.0',
-        tools: tools,
-        server_context: { current_user: }
+        tools: tools
       )
 
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
@@ -43,10 +42,6 @@ module McpServer
       response.headers['WWW-Authenticate'] = existing.present? ? "#{existing}, #{challenge}" : challenge
     end
 
-    def current_user
-      @current_user ||= User.find(doorkeeper_token.resource_owner_id)
-    end
-
     def tools
       @tools ||= [
         McpServer::Tools::CreateProject,
@@ -63,7 +58,15 @@ module McpServer
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
         McpServer::Tools::ListUserCustomFields
-      ].map(&:make)
+      ].map { |klass| klass.for(current_user:, token_scopes:) }
+    end
+
+    def current_user
+      @current_user ||= User.find(doorkeeper_token.resource_owner_id)
+    end
+
+    def token_scopes
+      doorkeeper_token.scopes.to_a
     end
   end
 end

@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::ListProjects < McpServer::BaseTool
-  def self.make
-    klass = self
-    description = 'Lists projects. Search by title or description.'
+  def name = 'list_projects'
+  def description = 'Lists projects. Search by title or description.'
 
-    MCP::Tool.define(name: 'list_projects', description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
-  end
-
-  def self.input_schema
+  def input_schema
     {
       properties: {
         search: { type: 'string', description: 'Search by title or description' },
@@ -19,16 +13,20 @@ class McpServer::Tools::ListProjects < McpServer::BaseTool
     }
   end
 
-  def call(search: nil, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    scope = ProjectsFinderAdminService.execute(
-      Project.all,
-      { search: search }.compact,
-      current_user: server_context[:current_user]
-    )
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      scope = ProjectsFinderAdminService.execute(
+        Project.all,
+        params.slice(:search),
+        current_user: current_user
+      )
 
-    paginated_response(
-      'projects', scope, page:, per_page:,
-      only: %i[id title_multiloc slug created_at]
-    )
+      paginated_response(
+        'projects',
+        scope,
+        **params.slice(:page, :per_page),
+        only: %i[id title_multiloc slug created_at]
+      )
+    end
   end
 end

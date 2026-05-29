@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::ListPhases < McpServer::BaseTool
-  def self.make
-    klass = self
-    description = 'Lists phases for a project, ordered by start date'
+  def name = 'list_phases'
+  def description = 'Lists phases for a project, ordered by start date'
 
-    MCP::Tool.define(name: 'list_phases', description:, input_schema:) do |**kwargs|
-      klass.new.call(**kwargs)
-    end
-  end
-
-  def self.input_schema
+  def input_schema
     {
       properties: {
         project_id: { type: 'string', description: 'The ID of the project' },
@@ -20,18 +14,19 @@ class McpServer::Tools::ListPhases < McpServer::BaseTool
     }
   end
 
-  def call(project_id:, page: 1, per_page: DEFAULT_PER_PAGE, server_context:)
-    project = Project.find(project_id)
-    scope = project.phases.order(:start_at)
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      project = Project.find(params[:project_id])
+      scope = project.phases.order(:start_at)
 
-    paginated_response(
-      'phases', scope, page:, per_page:,
-      only: %i[id title_multiloc start_at end_at participation_method]
-    )
-  rescue ActiveRecord::RecordNotFound
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: "Project not found: #{project_id}" }],
-      error: true
-    )
+      paginated_response(
+        'phases',
+        scope,
+        **params.slice(:page, :per_page),
+        only: %i[id title_multiloc start_at end_at participation_method]
+      )
+    rescue ActiveRecord::RecordNotFound
+      error("Project not found: #{params[:project_id]}")
+    end
   end
 end
