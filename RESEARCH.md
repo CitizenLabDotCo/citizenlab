@@ -530,6 +530,20 @@ Column headers are the cluster names used throughout this document. Cells show e
 
 The single fact that explains most of the friction in the rest of this document is that **Go Vocal's Phase carries four roles simultaneously**: a Phase _and_ an Activity _and_ exactly one Method _and_ one Timeline entry — one record, four responsibilities. A second-order symptom: because every Phase _must_ carry a Method, several of Go Vocal's "Methods" (Information, Voting, Proposals, partly Commenting) are not really primitive Method types but presets, settings, or templates squeezed into the Method slot for lack of a better home.
 
+Today, a single Phase record is the hub everything hangs off — it is the time segment, the activity, the method, and the timeline step all at once:
+
+```mermaid
+graph TD
+  Folder --> Project
+  Project --> Phase["Phase — time + activity + one method + timeline entry, fused"]
+  Phase -->|owns or shares| Form
+  Phase --> Input["Input — idea / response"]
+  Input --> Status
+  Phase -. rendered as .-> Step["Timeline step"]
+```
+
+The Target model below splits that one record into separate concepts — most importantly pulling **Activity** out from under Phase so the two relate _side by side_ under the Project (see the concept-model diagram in that section).
+
 Every other parallel-participation-capable platform separates at least Activity from Phase. Decidim — the platform whose model most resembles Go Vocal — keeps them as distinct objects related by _per-Phase settings_, not by membership. Inputs and their Statuses are also a separate concept from the Phase in those models, with their own per-Input lifecycle running underneath the project's timeline.
 
 Re-read every cluster in the Feedback section through this lens and each becomes a request to **unbundle** one of the fused roles:
@@ -566,6 +580,24 @@ The first-class entities become:
 - **Interaction** — a lightweight, mostly content-less participation event (react / vote / cosponsor / rank / attend), first-class. (A **comment** is content-bearing and repliable, so it is better modelled as an Input that _targets_ another Input — not a pure Interaction.)
 - **Form / Field** — owned by the Activity.
 - **Template** — a named preset that configures an Activity (what "method" largely becomes).
+
+The entities and how they relate — the thick edge is the crux (an **Activity** is _configured per phase_, which is what makes one activity behave differently over time):
+
+```mermaid
+graph TD
+  Folder["Folder (nestable)"] --> Project
+  Project --> Phase["Phase — time segment"]
+  Project --> Activity
+  Project -. has one .-> Timeline
+  Timeline -. displays .-> Phase
+  Activity == configured per phase ==> Phase
+  Activity --> Method
+  Activity -->|owns| Form
+  Form --> Field["Field — public / private"]
+  Activity --> Input
+  Input --> Status
+  Input --> Interaction["Interaction — react / vote / …"]
+```
 
 **Activities are timeless; phases enable and configure them over time.** An Activity is not "in" a phase — it exists on the Project. Two _independent_ questions govern how it relates to time:
 
