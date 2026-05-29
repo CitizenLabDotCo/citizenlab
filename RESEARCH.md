@@ -627,3 +627,98 @@ New activity types worth adding (from the feedback): a **project-level discussio
 - **Some "settings" are substantial engines** — survey paging / logic and vote / basket allocation are pluggable behaviours, not checkboxes.
 - **Migration is large** — every phase splits into phase + activity; every `current_phase` / `permission_scope` consumer changes; analytics and forms re-home. This is exactly why it is the no-time-constraints track.
 - **Don't overclaim the need for concurrency** — the evidence supports _combining_ methods more strongly than running them _simultaneously_; the target should _enable_ concurrency without resting the case on it.
+
+### Immediate solutions
+
+The north star is years of work; clients need relief now. This subsection lists **releasable iterations** — each shippable on its own, each chosen so the eventual migration _builds on_ it rather than throwing it away. The discipline throughout: **side-step the `current_phase` blast radius** until we're deliberately ready for the big migration, **reuse the Phase machinery** where it already behaves like an Activity, and **keep any new flags generic** so a survey-only v1 doesn't harden into a survey-only design.
+
+Each iteration is described with a fixed structure:
+
+- **Ships** — the releasable outcome.
+- **Effort** — rough calendar time for two developers. (Verified against the codebase, not guessed.)
+- **North-star brick** — what part of the Target model it advances, and why the migration keeps it.
+- **Challenges** — the concrete risks, from a code audit of the current implementation.
+- **Needs unlocked** — which Feedback clusters it addresses.
+
+The iterations are ordered roughly by recommended sequence. The first four are quarter-sized; the last two are larger bridges toward the target, included because they are the natural next bricks even though they exceed a three-month window. A note on the final hand-off to the full migration closes the subsection.
+
+#### Iteration 1 — Private (admin-only) fields on input forms
+
+**Ships.** A per-field "visible to everyone / admins only" toggle in the form builder. An ideation (or proposals / voting) input form can then collect fields that residents fill in but only admins see — survey-style private questions mixed into a public ideation form. Public fields show on input cards; private fields are admin-only and still appear in exports.
+
+**Effort.** ~1–2 weeks. This is largely a **restore**: the platform had a per-field `answer_visible_to` column that was removed in a custom-fields cleanup (the fields layer was in poor shape and the feature was unused), but the entire downstream pipeline — value filtering, serialization, the resident-facing "this answer won't be public" hint, and exports — is still live and keys off `CustomField#visible_to_public?`. The work is to re-add the per-field setting (cleanly, not by reverting the old commit), point `visible_to_public?` at it, and surface the toggle in the builder.
+
+**North-star brick.** Directly implements the **field-visibility axis** — public vs private Fields on one Form. That is the data-model half of "survey + ideation in one activity," so it survives the migration untouched (Forms become Activity-owned; fields keep their visibility flag).
+
+**Challenges.** Small, with two judgement calls. (1) The custom-fields architecture is acknowledged as not in great shape, so this should be re-introduced cleanly rather than wholesale-reverted. (2) Pick the default deliberately — extra fields are effectively admin-only today; keep that, with explicit opt-in to public. Native surveys are intentionally outside the public/private notion (responses are private by nature), so the toggle should appear only where it is meaningful (ideation-like methods).
+
+**Needs unlocked.** Cluster 10 (public / private participation) directly, and a large slice of Cluster 1 (survey + ideation, the most-requested combo) via the _richer-form_ path — with no parallel-activity machinery at all. The cheapest high-value move on the board.
+
+#### Iteration 2 — Flexible timeline date _display_
+
+**Ships.** An optional per-phase display label — "Spring 2027", a month, or free text — shown on the timeline and CTA in place of exact dates. The real `start_at` / `end_at` persist underneath and keep driving all logic.
+
+**Effort.** ~1 week, almost entirely front-end. There are only a few date-display sites (the phase title and the CTA time-indicator) plus one optional label attribute threaded through the phase type.
+
+**North-star brick.** The first sliver of **separating the display date from the gating date** — the move that lets the timeline become narrative rather than mechanism. Small but directional; nothing here is discarded later.
+
+**Challenges.** Low. It must respect the existing date-formatting branches (single-day phases, the datetime-setup feature flag). Set expectations clearly: this is a _presentation_ affordance only — dates still gate participation until the big migration, so this does not by itself deliver "no-date" timelines, only the appearance of approximate ones.
+
+**Needs unlocked.** Cluster 4 (approximate / seasonal / less-rigid timeline dates) — partially, on the display layer.
+
+#### Iteration 3 — Demographics as reusable user fields (guardrail + finish)
+
+**Ships.** (1) A form-builder nudge so that adding a demographic-type question surfaces the existing reusable **user field** (collected once, stored on the profile) instead of inviting a fresh per-survey question; (2) a more discoverable "ask these user fields in this activity" control; (3) closing the open TODO that hides verification-locked fields from the in-form injection.
+
+**Effort.** ~1–2 weeks, mostly front-end / UX plus one backend TODO. The collection-and-reuse spine already exists: a phase can already ask user-profile fields in the participation flow and write the answers back to the user, and per-phase demographic reporting already works. This iteration is **governance and polish on a built mechanism**, not a new build.
+
+**North-star brick.** Reinforces **demographics = user attributes, not survey responses** — the Input-fields-vs-user-fields distinction. Keeping demographic data at the user grain is what later makes cross-activity and folder-level reporting coherent.
+
+**Challenges.** Mostly UX/governance: nothing stops an author re-creating "gender" as a plain survey question today, and the right fix is a _nudge_, not a hard block (a hard block would catch legitimate cases). A reporting-scope asymmetry remains — the report-builder demographics widget is project-scoped, not per-phase — and is explicitly out of scope here.
+
+**Needs unlocked.** Cluster 11 (collect-once demographics) directly; supports Cluster 9 (segmenting by user attributes) and Cluster 6 (cleaner cross-activity demographic analysis).
+
+#### Iteration 4 — Parallel "off-timeline" survey activities _(flagship)_
+
+**Ships.** The ability to add one or more survey activities to a project that run _alongside_ the timeline rather than as sequential phases — open on their own schedule (including always-on), rendered as their own CTA / section, and reported independently. Surveys-only in v1 (the aligned direction), but built on a generic off-timeline mechanism.
+
+**Effort.** ~5–7 weeks, decomposed into separately-releasable steps in a deliberately safe order:
+
+- **4a — Off-timeline plumbing (backend), ~2 wk.** Add a generic off-timeline flag + scopes on Phase, and exclude such phases from `current_phase`, the timeline active-status MIN/MAX, phase numbering / first-last, the overlap validation, and the open-ended-last-phase rules. Moderator-only at this stage. This step carries the single scariest risk and must land airtight before anything builds on it.
+- **4b — Front-office rendering, ~1–2 wk.** Render parallel surveys as independent CTAs / sections, reading permissions per-phase (the button and survey routes are already per-phase). Exclude them from the timeline bar and from the index-based URL numbering to avoid desync.
+- **4c — Open end-user submission, ~1–2 wk.** Generalise input routing and the posting-permission scope so ordinary users can submit to a _specific_ parallel survey (today only moderators may target a non-current phase). The most security-sensitive step.
+- **4d — Admin, ~1 wk.** A "parallel survey" affordance in the project builder; the back-office timeline groups parallel phases separately.
+
+**North-star brick.** This is the **first real appearance of the Activity concept** — a participation unit decoupled from the timeline. Framed as "the first Activities are surveys, riding on the Phase table for now," the eventual migration _promotes_ these records to true Activities rather than discarding them. The off-timeline flag is the seed of the Activity ↔ Phase split.
+
+**Challenges.** The scariest edge, from the audit: an always-open parallel phase (start in the past, no end) would be returned by the wall-clock `current_phase` and **silently hijack the permission scope of the entire project**. Excluding parallel phases from `current_phase` is mandatory and must be airtight — hence 4a first, heavily tested. Genuine de-riskers: overlap is enforced in pure Ruby (no database constraint to fight); permissions are **already per-phase**, so only the project-level resolution funnel needs a bypass; the community-monitor survey is a working precedent for a perpetual off-timeline survey; and the front-office buttons / routes are already per-phase. Watch-outs: `start_at` is required and is the _sole_ ordering key, so a "timeless" survey still needs a date and must be excluded from every first / last / Nth computation; and date-driven phase emails (started / ending) will fire for parallel phases unless excluded. The discipline that keeps this a brick and not a hack: keep the flag generic and resist survey-only branches.
+
+**Needs unlocked.** Clusters 1 (concurrent methods) and 3 (always-on / continuous), plus the private-survey side of 10. Natural cheap extension once the primitive exists: a **project-level comment box / discussion** — another always-on activity, and a recurring migration-from-competitors expectation.
+
+#### Iteration 5 — Non-transitive ideation phases (phase-specific input forms) _(beyond a quarter)_
+
+**Ships.** An ideation phase can be marked "non-transitive" so it owns its own input form, and its inputs are phase-bound rather than shared across the project's ideation phases. Clients with several ideation phases can finally give each its own form.
+
+**Effort.** ~4–6 weeks (large) — because it is not merely form ownership. The clean precedent is **Proposals**, which already subclasses Ideation but is non-transitive with a phase-owned form; this iteration generalises that pattern to ideation.
+
+**North-star brick.** Moves the **Form onto the Phase (≈ Activity)** — the target's "Form owned by the Activity." It establishes that an ideation-like activity can be fully self-contained, a prerequisite for treating ideation phases as Activities during the migration.
+
+**Challenges.** The transitivity conflict is real and is the reason this is large. Transitive ideas have no creation phase, resolve their form via the _project_, and can live in several phases at once; per-phase forms break the "which form governs this idea" resolution, the portability of stored field values, and cross-phase listing. The only clean route is making these phases **non-transitive** — which means their inputs stop flowing between phases, a deliberate behaviour change clients opt into per phase. The analysis engine also hardcodes "ideation form = project" in several places and must be taught otherwise. Existing projects need no migration (opt-in per phase). These ripple effects are why it sits beyond the quarter.
+
+**Needs unlocked.** Cluster 8 (phase-specific / multiple input forms) directly; partially Clusters 1 and 5 (different forms at different stages of one process).
+
+#### Iteration 6 — Interactions as first-class events + an activity grain for analytics _(beyond a quarter, foundational)_
+
+**Ships.** Reactions, votes, cosponsorships, rankings and attendances modelled as uniform first-class participation events (actor, type, target, activity, timestamp) — with comments treated as inputs targeting other inputs — and a **phase / activity dimension** added to the analytics layer. This enables cross-method aggregation, tracking one user's contributions across a project or folder, and folder-level roll-ups.
+
+**Effort.** Large overall (the full version is multi-quarter), but a useful first slice — adding the phase / activity dimension to the participation facts — is ~3–4 weeks and independently valuable. Best approached as a discovery spike → incremental dimension addition → then the cross-activity report surfaces.
+
+**North-star brick.** Introduces the **Interaction** entity and the **activity grain** in reporting — the foundation the whole reporting story rests on. Today analytics carries a project dimension but no phase / activity one, and survey results are phase-locked, which is precisely why cross-method reporting is impossible now.
+
+**Challenges.** It is a data-model and analytics-pipeline change touching the most data-heavy part of the system (versioned SQL views, fact tables). High value, high effort. It is best sequenced _after_ the Activity concept exists (Iteration 4 onward), so the new grain is meaningful rather than retrofitted to fused phases.
+
+**Needs unlocked.** Cluster 6 (unified cross-method / folder reporting — repeatedly named "the real prize"); strengthens Cluster 11 (cross-activity demographics).
+
+#### Hand-off to the full migration
+
+These iterations stop short of the genuine unbundling on purpose. After them, the remaining gap to the Target model is: promoting off-timeline phases (Iteration 4) and non-transitive ideation phases (Iteration 5) into a real **Activity** entity; introducing **per-phase configuration overrides** (the `Consultation { submit: on }` → `Decision { vote: on }` mechanism); and making `current_phase` multi-valued, which finally retires the timeline's gating role. Each iteration above is chosen so that this migration _extends_ it rather than replacing it. The deliberately-deferred big-bang items — multi-valued `current_phase` / overlapping timeline phases, and the full Activity model — _are_ that migration, not immediate work.
