@@ -221,7 +221,7 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
-  self.ignored_columns = %w[
+  self.ignored_columns += %w[
     email_confirmation_code
     email_confirmation_retry_count
     email_confirmation_code_reset_count
