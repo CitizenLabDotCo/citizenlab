@@ -16,14 +16,14 @@ class UserService
     def create_in_admin_api(user_params, confirm_user)
       user = User.new(user_params)
       user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
-      mark_confirmed_in_memory(user) if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.save
 
       user
     end
 
     def update_in_admin_api(user, user_params, confirm_user)
-      mark_confirmed_in_memory(user) if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.update(user_params)
     end
 
@@ -39,12 +39,12 @@ class UserService
       user = User.new(user_params)
       user.locale = locale
 
-      mark_confirmed_in_memory(user) if confirm_user
+      build_user_confirmation(user) if confirm_user
       user
     end
 
     def update_in_sso!(user, user_params, confirm_user)
-      mark_confirmed_in_memory(user) if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.update_merging_custom_fields!(user_params)
     end
 
@@ -68,7 +68,7 @@ class UserService
 
     def update_in_tenant_template!(user, user_params = {})
       user.assign_attributes(user_params)
-      mark_confirmed_in_memory(user)
+      build_user_confirmation(user)
       user.save!
     end
 
