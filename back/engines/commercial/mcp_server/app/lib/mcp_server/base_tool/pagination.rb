@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module McpServer::BaseTool::Pagination
+  include McpServer::BaseTool::ResponseHelpers
+
   MAX_PER_PAGE = 50
   DEFAULT_PER_PAGE = 20
 
@@ -32,13 +34,6 @@ module McpServer::BaseTool::Pagination
       (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
     TEXT
 
-    # MCP spec recommends duplicating structured_content into a text block for
-    # clients that don't surface structuredContent to the LLM (e.g. Claude Desktop).
-    text = "#{summary}\n\n#{structured_content.to_json}"
-
-    MCP::Tool::Response.new(
-      [{ type: 'text', text: }],
-      structured_content:
-    )
+    ok(summary, structured: structured_content)
   end
 end
