@@ -12,8 +12,6 @@ class CreateConfirmations < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :confirmations, %i[user_id type], unique: true
-
     # Backfill: every user gets both an EmailConfirmation and a NewEmailConfirmation row.
     # The code/counts/sent_at land in whichever row matches the user's current state:
     #   - has new_email          -> data goes to NewEmailConfirmation
@@ -54,6 +52,8 @@ class CreateConfirmations < ActiveRecord::Migration[7.2]
         FROM users
       SQL
     end
+
+    add_index :confirmations, %i[user_id type], unique: true
   end
 
   def down
