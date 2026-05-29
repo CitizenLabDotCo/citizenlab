@@ -49,11 +49,35 @@ describe('SSO: user with unconfirmed email', () => {
   });
 });
 
-describe.only('SSO: user with unconfirmed email - edge cases', () => {
+describe('SSO: user with unconfirmed email - edge cases', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-authentication-modal').should('exist');
+  });
+
+  it('works if user signs up, does not confirm email, then logs in with SSO with same confirmed email', () => {
+    const email = randomEmail();
+
+    // Create account with unconfirmed email
+    enterEmail(cy, email);
+
+    // Close modal, log out
+    cy.get('.e2e-modal-close-button').first().click();
+    cy.clearCookies();
+
+    // Sign up through Fake SSO (return unconfirmed email)
+    fakeSSOSignup(cy, 'john_doe', { email });
+
+    // We expect to arrive on the success message
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    // Confirm that I can post idea
+    cy.visit('/projects/an-idea-bring-it-to-your-council');
+    cy.acceptCookies();
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+    cy.location('pathname').should('eq', '/en/projects/an-idea-bring-it-to-your-council/ideas/new');
   });
 
   it('works if user signs up, does not confirm email, then logs in with SSO with same unconfirmed email', () => {
@@ -66,7 +90,7 @@ describe.only('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('.e2e-modal-close-button').first().click();
     cy.clearCookies();
 
-    // Sign up through Fake SSO
+    // Sign up through Fake SSO (return unconfirmed email)
     fakeSSOSignup(cy, 'tracy_smith', { email });
 
     // Confirm email
