@@ -16,6 +16,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   ICustomFieldInputType,
+  ICustomFieldSettingsTab,
 } from 'api/custom_fields/types';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
@@ -82,8 +83,8 @@ const FormEdit = ({
   const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [selectedField, setSelectedField] = useState<
-    IFlatCustomFieldWithIndex | undefined
+  const [selectedFieldInfo, setSelectedFieldInfo] = useState<
+    { index: number; defaultTab?: ICustomFieldSettingsTab } | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
@@ -134,6 +135,22 @@ const FormEdit = ({
     name: 'customFields',
     control,
   });
+
+  const liveCustomFields = watch('customFields') as IFlatCustomField[];
+  const selectedField: IFlatCustomFieldWithIndex | undefined =
+    selectedFieldInfo && liveCustomFields[selectedFieldInfo.index]
+      ? {
+          ...liveCustomFields[selectedFieldInfo.index],
+          index: selectedFieldInfo.index,
+          defaultTab: selectedFieldInfo.defaultTab,
+        }
+      : undefined;
+
+  const setSelectedField = (field: IFlatCustomFieldWithIndex | undefined) => {
+    setSelectedFieldInfo(
+      field ? { index: field.index, defaultTab: field.defaultTab } : undefined
+    );
+  };
 
   // This tracks form update. We isolate it to avoid setting data on other changes
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
@@ -374,7 +391,7 @@ const FormEdit = ({
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
-                          key={selectedField.id}
+                          key={selectedFieldInfo?.index}
                           field={selectedField}
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
