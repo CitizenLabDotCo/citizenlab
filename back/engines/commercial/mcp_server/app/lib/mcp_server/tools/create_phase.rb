@@ -1,6 +1,24 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::CreatePhase < McpServer::BaseTool
+  UNGATED_METHODS = %w[
+    ideation
+    proposals
+    information
+    native_survey
+    voting
+    volunteering
+  ].freeze
+
+  # Mirrors the admin picker (ParticipationMethodPicker.tsx).
+  # `community_monitor_survey` is bootstrapped elsewhere, not picked.
+  GATED_METHODS = {
+    'common_ground' => 'common_ground',
+    'document_annotation' => 'konveio_document_annotation',
+    'poll' => 'polls',
+    'survey' => 'surveys'
+  }.freeze
+
   def name = 'create_phase'
   def description = 'Creates a new phase for a project'
 
@@ -13,7 +31,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         end_at: { type: 'string', description: 'Phase end date in ISO 8601 format. Optional for the last phase.' },
         participation_method: {
           type: 'string',
-          enum: %w[ideation proposals information native_survey voting poll volunteering],
+          enum: available_participation_methods,
           description: 'Participation method. Defaults to "ideation".'
         },
         description_multiloc: { **multiloc_schema, description: 'Phase description (HTML).' }
@@ -37,5 +55,13 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
     end
+  end
+
+  private
+
+  def available_participation_methods
+    config = AppConfiguration.instance
+    enabled_gated = GATED_METHODS.select { |_, flag| config.feature_activated?(flag) }.keys
+    (UNGATED_METHODS + enabled_gated) & Phase::PARTICIPATION_METHODS
   end
 end
