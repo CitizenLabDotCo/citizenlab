@@ -59,8 +59,11 @@ class UserService
       user.update_merging_custom_fields!(user_params)
     end
 
-    def assign_params_in_accept_invite(user, user_params)
+    def assign_params_in_accept_invite(user, user_params, confirm_user = false)
       user.assign_attributes(user_params.merge(invite_status: 'accepted'))
+      # If the user's email came from/matches the authver one, and the provider
+      # says it was confirmed: we mark the user's email as confirmed.
+      user.email_confirmation.confirm! if confirm_user
       user
     end
 

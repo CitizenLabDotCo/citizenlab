@@ -123,20 +123,13 @@ class OmniauthCallbackController < ApplicationController
 
       @identity.update(user: @user) unless @identity.user
 
-      # Same as above, but for non-invite users:
-      # If the user's email came from/matches the authver one,
-      # and the provider says it was confirmed: we mark the user's email as confirmed.
-      if user_has_email_confirmed_by_authver
-        @user.email_confirmation.confirm!
-      end
-
       if @user.invite_pending?
         @invite = @user.invitee_invite
         if !@invite || @invite.accepted_at
           signin_failure_redirect
           return
         end
-        UserService.assign_params_in_accept_invite(@user, user_attrs)
+        UserService.assign_params_in_accept_invite(@user, user_attrs, user_has_email_confirmed_by_authver)
 
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite

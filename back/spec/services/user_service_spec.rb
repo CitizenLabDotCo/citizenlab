@@ -323,10 +323,37 @@ describe UserService do
   end
 
   describe '.assign_params_in_accept_invite' do
-    it 'assigns attributes to a user' do
+    it 'assigns attributes and marks the invite as accepted' do
       user = User.new
       service.assign_params_in_accept_invite(user, user_params)
       expect(user.first_name).to eq 'Test'
+      expect(user.invite_status).to eq 'accepted'
+    end
+
+    context 'when confirm_user is true' do
+      it 'confirms the user email' do
+        user = create(:invited_user)
+        expect(user.confirmation_required).to be true
+
+        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, true)
+
+        user.reload
+        expect(user.confirmation_required).to be false
+        expect(user.email_confirmed_at).to be_present
+      end
+    end
+
+    context 'when confirm_user is false' do
+      it 'does not confirm the user email' do
+        user = create(:invited_user)
+
+        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, false)
+
+        # Nothing is persisted (and the email is not confirmed) when confirm_user is false.
+        user.reload
+        expect(user.confirmation_required).to be true
+        expect(user.email_confirmed_at).to be_nil
+      end
     end
   end
 
