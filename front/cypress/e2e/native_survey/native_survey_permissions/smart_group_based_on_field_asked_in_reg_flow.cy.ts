@@ -1,6 +1,6 @@
 import moment = require('moment');
-import { randomString, randomEmail } from '../../support/commands';
-import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
+import { randomString, randomEmail } from '../../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
 
 describe('Native survey permissions', () => {
   describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
