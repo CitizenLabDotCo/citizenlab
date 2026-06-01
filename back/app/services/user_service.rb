@@ -54,10 +54,8 @@ class UserService
       user_params = sso_user_attrs.slice(*attrs).compact
       user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
 
-      sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
-      confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
+      resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
 
-      build_user_confirmation(user) if confirm_user
       user.update_merging_custom_fields!(user_params)
     end
 
@@ -86,6 +84,38 @@ class UserService
     end
 
     private
+
+    # Decides what to do with the email returned by the SSO and mutates
+    # `user_params` (and the user's confirmation state) accordingly.
+    #
+    # - If the SSO returned no email, nothing is touched.
+    # - If we're not allowed to update the email (`:email` not in the params),
+    #   we only confirm the email the user already has when the SSO vouches for
+    #   that exact same email.
+    # - If we are allowed to update the email:
+    #   - a confirmed SSO email becomes the user's (confirmed) email;
+    #   - an unconfirmed SSO email is ignored when the user already has a
+    #     confirmed email, otherwise it goes into `new_email` to be confirmed
+    #     later (mirroring `build_in_sso`).
+    def resolve_sso_email!(user, user_params, sso_email, sso_email_confirmed)
+      return if sso_email.blank?
+
+      unless user_params.key?(:email)
+        build_user_confirmation(user) if sso_email_confirmed && sso_email == user.email
+        return
+      end
+
+      if sso_email_confirmed
+        user_params[:email] = sso_email
+        build_user_confirmation(user)
+      elsif user.email.present? && !user.confirmation_required
+        # Don't overwrite an already-confirmed email with an unconfirmed one.
+        user_params.delete(:email)
+      else
+        user_params.delete(:email)
+        user_params[:new_email] = sso_email
+      end
+    end
 
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.
     # Used by build-then-save flows that can't call EmailConfirmation#confirm!
