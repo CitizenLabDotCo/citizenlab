@@ -146,6 +146,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
       yml_custom_form = {
         'participation_context_ref' => lookup_ref(cf.participation_context_id, %i[project phase]),
+        'print_start_multiloc' => cf.print_start_multiloc,
+        'print_end_multiloc' => cf.print_end_multiloc,
+        'print_personal_data_fields' => cf.print_personal_data_fields,
         'created_at' => shift_timestamp(cf.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(cf.updated_at, shift_timestamps)&.iso8601
       }
@@ -300,6 +303,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       {
         'project_ref' => lookup_ref(p.project_id, :project),
         'remote_image_url' => p.image_url,
+        'alt_text_multiloc' => p.alt_text_multiloc,
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
@@ -611,6 +615,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       {
         'event_ref' => lookup_ref(image.event_id, :event),
         'remote_image_url' => image.image_url,
+        'alt_text_multiloc' => image.alt_text_multiloc,
         'ordering' => image.ordering,
         'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
@@ -626,6 +631,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'permitted_by' => p.permitted_by,
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
+        'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
+        'everyone_tracking_enabled' => p.everyone_tracking_enabled,
+        'verification_expiry' => p.verification_expiry,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,

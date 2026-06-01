@@ -14,216 +14,198 @@ require 'rails_helper'
 #
 #   1. Column coverage — for every model that has a `yml_<x>` method, every
 #      column is exported, detected as a derived/bookkeeping column, or
-#      allowlisted in IGNORED_COLUMNS. Catches "added a column but forgot to
+#      allowlisted in `ignored_columns`. Catches "added a column but forgot to
 #      add it to the yml_<x> method".
 #
 #   2. Model coverage — every persisted model is either covered by export or
-#      listed in EXCLUDED_MODELS with a reason. Catches "added a project-scoped
+#      listed in `excluded_models` with a reason. Catches "added a project-scoped
 #      model that should be cloned but isn't" (and forces a conscious decision
 #      for every new model).
-describe 'ProjectCopyService export coverage' do
-  SERVICE_PATH = Rails.root.join('app/services/project_copy_service.rb').freeze
+describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/DescribeClass
+  let(:service_path) { Rails.root.join('app/services/project_copy_service.rb') }
 
   # Real (non-derived) columns that are intentionally NOT carried over by
   # ProjectCopyService#export, keyed by model name. `# REVIEW` marks fields
   # that look like they might actually belong in the export (the bug class
   # this spec exists to catch) — allowlisted for now to keep the baseline
   # green, pending a human call.
-  IGNORED_COLUMNS = {
-    # AdminPublication is exported as nested `admin_publication_attributes` on
-    # Project, with only `publication_status` (the rest is either derived
-    # nested-set bookkeeping or tenant-wide publication scheduling state).
-    # Listed here for completeness even though AdminPublication has no
-    # dedicated yml_method.
-    'AdminPublication' => %w[
-      children_allowed first_published_at scheduled_status scheduled_at scheduled_by_id
-      publication_id publication_type ordering parent_id
-    ],
+  let(:ignored_columns) do
+    {
+      # AdminPublication is exported as nested `admin_publication_attributes` on
+      # Project, with only `publication_status` (the rest is either derived
+      # nested-set bookkeeping or tenant-wide publication scheduling state).
+      # Listed here for completeness even though AdminPublication has no
+      # dedicated yml_method.
+      'AdminPublication' => %w[
+        children_allowed first_published_at scheduled_status scheduled_at scheduled_by_id
+        publication_id ordering parent_id
+      ],
 
-    'BasketsIdea' => %w[created_at updated_at], # join-table timestamps, not content
+      'BasketsIdea' => %w[created_at updated_at], # join-table timestamps, not content
 
-    'Comment' => %w[children_count], # rebuilt via counter cache
+      'CustomField' => %w[
+        logic min_characters max_characters
+      ], # REVIEW: (especially min_characters/max_characters — likely real gap)
 
-    'CustomField' => %w[
-      logic constraints answer_visible_to other_option_text_multiloc
-      min_characters max_characters
-    ], # REVIEW (especially min_characters/max_characters — likely real gap)
+      'CustomForm' => %w[fields_last_updated_at],
 
-    'CustomForm' => %w[
-      fields_last_updated_at print_start_multiloc print_end_multiloc print_personal_data_fields
-    ], # REVIEW (except fields_last_updated_at)
+      'Event' => %w[maximum_attendees], # REVIEW
 
-    'Event' => %w[maximum_attendees], # REVIEW
+      'Idea' => %w[
+        idea_status_id assignee_id assigned_at
+        manual_votes_amount manual_votes_last_updated_by_id manual_votes_last_updated_at
+      ], # status/moderation/manual-vote operational state
 
-    'Idea' => %w[
-      idea_status_id assignee_id assigned_at
-      manual_votes_amount manual_votes_last_updated_by_id manual_votes_last_updated_at
-      idea_trending_info_id
-    ], # status/moderation/manual-vote operational state
+      'Phase' => %w[
+        manual_voters_amount manual_voters_last_updated_by_id manual_voters_last_updated_at
+        allow_anonymous_participation voting_term_singular_multiloc voting_term_plural_multiloc
+        similarity_threshold_title similarity_threshold_body
+        similarity_enabled voting_filtering_enabled draft_description_multiloc
+      ], # REVIEW: (except manual_voters_* operational state)
 
-    'Permission' => %w[
-      verification_expiry access_denied_explanation_multiloc everyone_tracking_enabled
-    ], # REVIEW (except verification_expiry)
+      'Project' => %w[
+        default_assignee_id preview_token
+        header_bg_alt_text_multiloc listed track_participation_location internal_role
+      ], # REVIEW: (except default_assignee_id, preview_token, internal_role)
 
-    'Phase' => %w[
-      manual_voters_amount manual_voters_last_updated_by_id manual_voters_last_updated_at
-      allow_anonymous_participation voting_term_singular_multiloc voting_term_plural_multiloc
-      similarity_threshold_title similarity_threshold_body
-      similarity_enabled voting_filtering_enabled draft_description_multiloc
-    ], # REVIEW (except manual_voters_* operational state)
-
-    'Project' => %w[
-      default_assignee_id preview_token
-      header_bg_alt_text_multiloc listed track_participation_location
-      first_published_at internal_role
-    ], # REVIEW (except default_assignee_id, preview_token, internal_role)
-
-    'ProjectImage' => %w[alt_text_multiloc], # REVIEW
-    'EventImage' => %w[alt_text_multiloc], # REVIEW
-    'IdeaImage' => %w[alt_text_multiloc], # REVIEW
-
-    # User auth/session/role state — deliberately not exported (privacy/security)
-    'User' => %w[
-      roles last_active_at imported onboarding
-      reset_password_token invite_status confirmation_required new_email token_expiry_key
-      email_confirmed_at email_confirmation_code email_confirmation_retry_count
-      email_confirmation_code_reset_count email_confirmation_code_sent_at
-    ]
-  }.freeze
+      # User auth/session/role state — deliberately not exported (privacy/security)
+      'User' => %w[
+        roles last_active_at imported onboarding
+        reset_password_token invite_status confirmation_required new_email token_expiry_key
+        email_confirmed_at email_confirmation_code email_confirmation_code_sent_at
+      ]
+    }.freeze
+  end
 
   # Cache/derived columns with no shared concern or detectable convention, so they
   # have to be named. Kept global (not per-model) because they are pure caches that
   # are regenerated, never template content.
-  REGENERATED_CACHE_COLUMNS = %w[weglot_data].freeze
+  let(:regenerated_cache_columns) { %w[weglot_data].freeze }
 
   # Persisted models that intentionally have no `yml_<x>` method in ProjectCopyService,
   # keyed by reason.
-  EXCLUDED_MODELS = {
-    # The tenant itself and its global configuration — not project content.
-    tenant_infrastructure: %w[Tenant AppConfiguration Space],
+  let(:excluded_models) do
+    {
+      # The tenant itself and its global configuration — not project content.
+      tenant_infrastructure: %w[Tenant AppConfiguration Space],
 
-    # Analytics read models (the materialized/base-table ones; the view-backed
-    # Analytics models are filtered out structurally). Derived from live data
-    # and rebuilt downstream — never seeded from a project copy.
-    analytics: %w[
-      Analytics::DimensionDate Analytics::DimensionLocale Analytics::DimensionLocalesFactVisits
-      Analytics::DimensionProjectsFactVisits Analytics::DimensionReferrerType
-      Analytics::DimensionType Analytics::FactVisit
-    ],
+      # Analytics read models (the materialized/base-table ones; the view-backed
+      # Analytics models are filtered out structurally). Derived from live data
+      # and rebuilt downstream — never seeded from a project copy.
+      analytics: %w[
+        Analytics::DimensionDate Analytics::DimensionLocale Analytics::DimensionLocalesFactVisits
+        Analytics::DimensionProjectsFactVisits Analytics::DimensionReferrerType
+        Analytics::DimensionType Analytics::FactVisit
+      ],
 
-    # AI analysis, insights and embeddings — derived from user content.
-    analysis: %w[
-      Analysis::AdditionalCustomField Analysis::Analysis Analysis::BackgroundTask
-      Analysis::CommentsSummary Analysis::HeatmapCell Analysis::Insight
-      Analysis::Question Analysis::Summary Analysis::Tag Analysis::Tagging
-      AuthoringAssistanceResponse EmbeddingsSimilarity
-    ],
+      # AI analysis, insights and embeddings — derived from user content.
+      analysis: %w[
+        Analysis::AdditionalCustomField Analysis::Analysis Analysis::BackgroundTask
+        Analysis::CommentsSummary Analysis::HeatmapCell Analysis::Insight
+        Analysis::Question Analysis::Summary Analysis::Tag Analysis::Tagging
+        AuthoringAssistanceResponse EmbeddingsSimilarity
+      ],
 
-    # Tenant-wide taxonomies that aren't project-scoped. Project copy does
-    # export `input_topic` (the project's own topic tree), not the global ones.
-    tenant_taxonomy: %w[Area GlobalTopic DefaultInputTopic],
+      # Tenant-wide taxonomies that aren't project-scoped. Project copy does
+      # export `input_topic` (the project's own topic tree), not the global ones.
+      tenant_taxonomy: %w[Area GlobalTopic DefaultInputTopic],
 
-    # Groups / project membership — tenant-wide, not project-content.
-    # `GroupsPermission` joins Group↔Permission: per-permission group lists;
-    # since the groups themselves aren't carried over, the join isn't either.
-    groups: %w[Group GroupsProject GroupsPermission Membership SmartGroups::Rules::CustomFieldDate],
+      # Groups / project membership — tenant-wide, not project-content.
+      # `GroupsPermission` joins Group↔Permission: per-permission group lists;
+      # since the groups themselves aren't carried over, the join isn't either.
+      groups: %w[Group GroupsProject GroupsPermission Membership],
 
-    # Activity logs, telemetry and derived caches — runtime data, not content.
-    tracking_and_caches: %w[
-      Activity IdeaExposure ParticipationLocation
-      ImpactTracking::Pageview ImpactTracking::Salt ImpactTracking::Session
-      MachineTranslations::MachineTranslation ReportBuilder::PublishedGraphDataUnit
-      Webhooks::Delivery Webhooks::Subscription
-    ],
+      # Activity logs, telemetry and derived caches — runtime data, not content.
+      tracking_and_caches: %w[
+        Activity IdeaExposure ParticipationLocation
+        ImpactTracking::Pageview ImpactTracking::Salt ImpactTracking::Session
+        MachineTranslations::MachineTranslation ReportBuilder::PublishedGraphDataUnit
+        Webhooks::Delivery Webhooks::Subscription
+      ],
 
-    # Per-user runtime objects regenerated through normal use.
-    user_runtime: %w[Notification Onboarding::CampaignDismissal],
+      # Per-user runtime objects regenerated through normal use.
+      user_runtime: %w[Notification Onboarding::CampaignDismissal],
 
-    # Background-job / queue infrastructure.
-    jobs: %w[Jobs::Tracker Que::ActiveRecord::Model],
+      # Background-job / queue infrastructure.
+      jobs: %w[Jobs::Tracker Que::ActiveRecord::Model],
 
-    # Authentication, identity, verification and anti-abuse — per-user/security
-    # state, never carried over by a project copy.
-    auth_and_security: %w[
-      Identity Invite Verification::Verification ClaimToken EmailBan CommonPassword
-      PublicApi::ApiClient IdIdCardLookup::IdCard
-    ],
+      # Authentication, identity, verification and anti-abuse — per-user/security
+      # state, never carried over by a project copy.
+      auth_and_security: %w[
+        Identity Invite Verification::Verification ClaimToken EmailBan CommonPassword
+        PublicApi::ApiClient CustomIdMethods::IdCardLookup::IdCard
+      ],
 
-    # Moderation / spam / content flags — per-tenant runtime moderation state.
-    moderation: %w[
-      Moderation::ModerationStatus SpamReport
-      FlagInappropriateContent::InappropriateContentFlag WiseVoiceFlag
-    ],
+      # Moderation / spam / content flags — per-tenant runtime moderation state.
+      moderation: %w[
+        Moderation::ModerationStatus SpamReport
+        FlagInappropriateContent::InappropriateContentFlag WiseVoiceFlag
+      ],
 
-    # Bulk imported metadata, including BulkImportIdeas::ProjectImport which
-    # is *created by* import (not exported).
-    import: %w[
-      BulkImportIdeas::IdeaImport BulkImportIdeas::IdeaImportFile
-      BulkImportIdeas::ProjectImport InvitesImport
-    ],
+      # Bulk imported metadata, including BulkImportIdeas::ProjectImport which
+      # is *created by* import (not exported).
+      import: %w[
+        BulkImportIdeas::IdeaImport BulkImportIdeas::IdeaImportFile
+        BulkImportIdeas::ProjectImport InvitesImport
+      ],
 
-    # Project folders — a project copy doesn't carry its parent folder.
-    project_folders: %w[ProjectFolders::Folder ProjectFolders::File ProjectFolders::Image],
+      # Project folders — a project copy doesn't carry its parent folder.
+      project_folders: %w[ProjectFolders::Folder ProjectFolders::File ProjectFolders::Image],
 
-    # Idea moderation / review state — recreated on import as needed.
-    idea_review: %w[IdeaStatus ProjectReview IdeaRelation IdeasTopic],
+      # Idea moderation / review state — recreated on import as needed.
+      idea_review: %w[IdeaStatus ProjectReview IdeaRelation],
 
-    # Survey responses — native survey responses are exported as ideas; this
-    # is the (legacy/external) Surveys engine's response model.
-    surveys: %w[Surveys::Response],
+      # Survey responses — native survey responses are exported as ideas; this
+      # is the (legacy/external) Surveys engine's response model.
+      surveys: %w[Surveys::Response],
 
-    # Email campaigns runtime — tenant-wide, not project-scoped.
-    email_campaigns: %w[
-      EmailCampaigns::Campaign EmailCampaigns::CampaignEmailCommand
-      EmailCampaigns::CampaignsGroup EmailCampaigns::Consent EmailCampaigns::Delivery
-      EmailCampaigns::Example EmailCampaigns::UnsubscriptionToken
-      EmailSnippet
-    ],
+      # Email campaigns runtime — tenant-wide, not project-scoped.
+      email_campaigns: %w[
+        EmailCampaigns::Campaign EmailCampaigns::CampaignEmailCommand
+        EmailCampaigns::CampaignsGroup EmailCampaigns::Consent EmailCampaigns::Delivery
+        EmailCampaigns::Example EmailCampaigns::UnsubscriptionToken
+        EmailSnippet
+      ],
 
-    # Reports — tenant-wide reporting state, not project content.
-    reports: %w[ReportBuilder::Report],
+      # Reports — tenant-wide reporting state, not project content.
+      reports: %w[ReportBuilder::Report],
 
-    # Pages and the home page — tenant-wide CMS content, not project content.
-    pages: %w[
-      StaticPage StaticPageFile StaticPagesTopic StaticPagesGlobalTopic
-      HomePage NavBarItem AreasProject AreasStaticPage IdeasInputTopic
-    ],
+      # Pages and the home page — tenant-wide CMS content, not project content.
+      pages: %w[
+        StaticPage StaticPageFile StaticPagesGlobalTopic
+        NavBarItem AreasProject AreasStaticPage IdeasInputTopic
+      ],
 
-    # Per-tenant admin moderation runtime (internal comments on ideas — not
-    # part of project content surfaced to end users).
-    admin_runtime: %w[InternalComment],
+      # Per-tenant admin moderation runtime (internal comments on ideas — not
+      # part of project content surfaced to end users).
+      admin_runtime: %w[InternalComment],
 
-    # Experiment / AB-test runtime.
-    experiments: %w[Experiment],
+      # Experiment / AB-test runtime.
+      experiments: %w[Experiment],
 
-    # Representativeness reference distributions & custom-field value binning.
-    representativeness: %w[CustomFieldBin UserCustomFields::Representativeness::RefDistribution],
+      # Representativeness reference distributions & custom-field value binning.
+      representativeness: %w[CustomFieldBin UserCustomFields::Representativeness::RefDistribution],
 
-    # Files engine — separate cross-resource attachments.
-    files: %w[Files::File Files::FileAttachment Files::FilesProject Files::Preview Files::Transcript],
+      # Files engine — separate cross-resource attachments.
+      files: %w[Files::File Files::FileAttachment Files::FilesProject Files::Preview Files::Transcript],
 
-    # Map presets — tenant-wide map config defaults, not project-scoped.
-    maps: %w[CustomMaps::MapPreset CustomMaps::LegendItem],
+      # Polls anonymous responses — discardable, not exported.
+      polls_responses: %w[Polls::Response Polls::ResponseOption],
 
-    # Polls anonymous responses — discardable, not exported.
-    polls_responses: %w[Polls::Response Polls::ResponseOption],
+      # Inline nested-attribute models — exported indirectly as `_attributes`
+      # on their parent. Column coverage for them is checked via `ignored_columns`
+      # against the parent's nested keys.
+      nested_attributes: %w[AdminPublication TextImage],
 
-    # Project descriptions - should be exported, but quite difficult to update all IDs etc
-    project_descriptions: %w[ProjectDescriptionBuilder::Layout],
+      # REVIEW: these look like they may belong in a project copy. Listed to
+      # keep the baseline green pending a human decision on whether to export
+      # them. `ProjectsGlobalTopic` and `Cosponsorship` are the most likely real
+      # gaps; `PermissionsCustomField` is the per-permission custom-field link.
+      review: %w[Cosponsorship PermissionsCustomField ProjectsGlobalTopic]
+    }.freeze
+  end
 
-    # Inline nested-attribute models — exported indirectly as `_attributes`
-    # on their parent. Column coverage for them is checked via IGNORED_COLUMNS
-    # against the parent's nested keys.
-    nested_attributes: %w[AdminPublication TextImage],
-
-    # REVIEW: these look like they may belong in a project copy. Listed to
-    # keep the baseline green pending a human decision on whether to export
-    # them. `ProjectsGlobalTopic` and `Cosponsorship` are the most likely real
-    # gaps; `PermissionsCustomField` is the per-permission custom-field link.
-    review: %w[Cosponsorship PermissionsCustomField ProjectsGlobalTopic]
-  }.freeze
-
-  EXCLUDED_MODEL_NAMES = EXCLUDED_MODELS.values.flatten.to_set.freeze
+  let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
 
   # Bookkeeping/cache columns detected by introspection — never template content,
   # so they're excluded globally rather than listed per model.
@@ -239,7 +221,7 @@ describe 'ProjectCopyService export coverage' do
     columns += model.column_names.grep(/_count\z/)
     columns += model.columns.select { |c| c.sql_type == 'tsvector' }.map(&:name)
     columns += model.columns.select { |c| c.sql_type.to_s.match?(/geometry|geography/) }.map(&:name)
-    (columns.compact + REGENERATED_CACHE_COLUMNS).uniq
+    (columns.compact + regenerated_cache_columns).uniq
   end
 
   # Parse the service source file once. Returns a hash:
@@ -248,13 +230,13 @@ describe 'ProjectCopyService export coverage' do
   # (e.g. 'polls/question'). The yml method to scan is discovered from the
   # right-hand side of that assignment.
   def parse_export_source
-    src = File.read(SERVICE_PATH)
+    src = File.read(service_path)
     lines = src.lines
 
     # 1. Build export-key -> yml-method mapping. The `@template['models'][...]`
     #    pattern only appears inside `export`, so no block detection needed.
     export_to_method = {}
-    src.scan(/@template\['models'\]\['([\w\/]+)'\][^=]*=\s*\S*\s*(yml_\w+)/) do |key, method|
+    src.scan(%r{@template\['models'\]\['([\w/]+)'\][^=]*=\s*\S*\s*(yml_\w+)}) do |key, method|
       export_to_method[key] = method
     end
 
@@ -328,18 +310,15 @@ describe 'ProjectCopyService export coverage' do
       next if model.nil? || !(model < ApplicationRecord)
       next unless ActiveRecord::Base.connection.tables.include?(model.table_name)
 
-      covered = covered_columns_for(keys) + derived_columns(model) + IGNORED_COLUMNS.fetch(model.name, [])
+      covered = covered_columns_for(keys) + derived_columns(model) + ignored_columns.fetch(model.name, [])
       uncovered = model.column_names - covered
       report[model.name] = uncovered if uncovered.any?
     end
 
-    message = report.map { |model, cols| "  #{model}: #{cols.join(', ')}" }.join("\n")
+    message = report.map { |model, cols| " - #{model}: #{cols.join(', ')}" }.join("\n")
     expect(report).to(
       be_empty,
-      "The following model columns are neither exported by ProjectCopyService#export, " \
-      "detected as a derived/bookkeeping column, nor allowlisted in IGNORED_COLUMNS.\n" \
-      "Either add them to the corresponding yml_<x> method in ProjectCopyService, " \
-      "or add them to IGNORED_COLUMNS with a reason:\n#{message}"
+      "The following model columns are neither exported by ProjectCopyService#export nor added to `ignored_columns` in this spec:\n#{message}"
     )
   end
 
@@ -369,18 +348,79 @@ describe 'ProjectCopyService export coverage' do
   end
 
   it 'exports every project-scoped model (or explicitly ignores it)' do
-    exported_model_names = parse_export_source.keys.map { |k| k.classify }.to_set
+    exported_model_names = parse_export_source.keys.to_set(&:classify)
 
     uncovered = persisted_base_models
-      .reject { |m| exported_model_names.include?(m.name) || EXCLUDED_MODEL_NAMES.include?(m.name) }
+      .reject { |m| exported_model_names.include?(m.name) || excluded_model_names.include?(m.name) }
       .map(&:name).sort
 
+    message = uncovered.map { |name| " - #{name}" }.join("\n")
     expect(uncovered).to(
       be_empty,
-      "The following persisted models are neither covered by ProjectCopyService#export " \
-      "nor listed in EXCLUDED_MODELS.\nDecide whether each belongs in a project copy: " \
-      "add a yml_<x> method (and wire it into ProjectCopyService#export), or add it " \
-      "to EXCLUDED_MODELS with a reason:\n  #{uncovered.join("\n  ")}"
+      "The following persisted models are neither exported by ProjectCopyService#export nor added to `excluded_models` in this spec.\n#{message}"
+    )
+  end
+
+  # Stale-entry guard: catches `ignored_columns` rows where the model has been
+  # renamed/removed, the column no longer exists, OR the column is in fact
+  # exported/derived (redundant entry that pretends a real gap exists).
+  it 'has no stale or redundant entries in `ignored_columns`' do
+    Rails.application.eager_load!
+    exported_keys_by_model = parse_export_source.transform_keys(&:classify)
+    problems = []
+
+    ignored_columns.each do |model_name, columns|
+      model = model_name.safe_constantize
+      unless model.is_a?(Class) && model < ActiveRecord::Base
+        problems << "#{model_name}: not an ActiveRecord model"
+        next
+      end
+
+      yml_keys = exported_keys_by_model[model_name] || []
+      covered = covered_columns_for(yml_keys).to_set
+      derived = derived_columns(model).to_set
+      actual = model.column_names.to_set
+
+      columns.each do |col|
+        if actual.exclude?(col)
+          problems << "#{model_name}: '#{col}' is not a column on the model"
+        elsif covered.include?(col)
+          problems << "#{model_name}: '#{col}' is already exported (remove from `ignored_columns`)"
+        elsif derived.include?(col)
+          problems << "#{model_name}: '#{col}' is a derived/bookkeeping column (remove from `ignored_columns`)"
+        end
+      end
+    end
+
+    expect(problems).to(
+      be_empty,
+      "Stale or redundant `ignored_columns` entries:\n#{problems.map { |p| " - #{p}" }.join("\n")}"
+    )
+  end
+
+  # Stale-entry guard: catches `excluded_models` rows where the model has been
+  # renamed/removed, OR where the model actually has a yml_<x> method in
+  # ProjectCopyService (redundant entry).
+  it 'has no stale or redundant entries in `excluded_models`' do
+    Rails.application.eager_load!
+    exported_model_names = parse_export_source.keys.to_set(&:classify)
+    problems = []
+
+    excluded_model_names.each do |model_name|
+      model = model_name.safe_constantize
+      unless model.is_a?(Class) && model < ActiveRecord::Base
+        problems << "#{model_name}: not an ActiveRecord model"
+        next
+      end
+
+      if exported_model_names.include?(model_name)
+        problems << "#{model_name}: is exported by ProjectCopyService#export (remove from `excluded_models`)"
+      end
+    end
+
+    expect(problems).to(
+      be_empty,
+      "Stale or redundant `excluded_models` entries:\n#{problems.map { |p| " - #{p}" }.join("\n")}"
     )
   end
 end
