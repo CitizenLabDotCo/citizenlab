@@ -608,6 +608,27 @@ describe Invites::Service do
       end
     end
 
+    context 'with duplicate emails that differ only in case' do
+      let(:hash_array) do
+        [
+          { email: 'someuser@somedomain.com' },
+          { email: 'SomeUser@somedomain.com' }
+        ]
+      end
+
+      # check_duplicate_emails compares the raw email strings, so case variants
+      # slip past the up-front duplicate check. The collision is then only caught
+      # by the case-insensitive DB lookup at save! time, which raises
+      # :taken_by_invite (an error key with no translation) and crashes
+      # Invites::CountNewSeatsJob. They should be flagged as duplicates instead.
+      it 'detects them as duplicates instead of crashing at save time' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
+        expect(service_errors.first.rows).to eq [2, 3]
+      end
+    end
+
     context 'with duplicate first and last names' do
       let(:hash_array) do
         [

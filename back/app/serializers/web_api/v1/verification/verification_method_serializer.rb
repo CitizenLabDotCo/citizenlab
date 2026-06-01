@@ -4,6 +4,16 @@ module WebApi::V1::Verification
   class VerificationMethodSerializer < ::WebApi::V1::BaseSerializer
     attributes :name
 
+    # Whether the method can be used to verify user identities.
+    attribute :verification_method do |record|
+      record.respond_to?(:verification?) ? record.verification? : true
+    end
+
+    # Whether the method can be used to authenticate (SSO login).
+    attribute :login_method do |record|
+      AuthenticationService.all_methods.value?(record)
+    end
+
     ::Verification::VerificationService.new.all_methods.each do |method|
       next unless method.respond_to?(:exposed_config_parameters)
 

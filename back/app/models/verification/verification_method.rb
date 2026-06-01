@@ -29,5 +29,12 @@ module Verification
     def enabled?
       true
     end
+
+    # Whether this method can be used to verify user identities. Login-only SSO
+    # methods (e.g. Hoplr, Vienna) store their configuration alongside the
+    # verification methods, but should not be offered as verification options.
+    def verification?
+      true
+    end
   end
 end

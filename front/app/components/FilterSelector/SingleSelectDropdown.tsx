@@ -71,7 +71,6 @@ const SingleSelectDropdown = ({
   closeExpanded,
   textColor,
   currentTitle,
-  handleKeyDown,
 }: Props) => {
   const listboxRef = useRef<HTMLUListElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -85,14 +84,27 @@ const SingleSelectDropdown = ({
   const onTriggerKeyDown = (event: KeyboardEvent) => {
     // When the listbox is open, ArrowDown / ArrowUp on the trigger moves focus
     // into the listbox and highlights the first / last option.
-    if (opened && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+    if (event.key === 'ArrowDown') {
       event.preventDefault();
+      if (!opened) {
+        toggleValuesList();
+        return;
+      }
       listboxRef.current?.focus();
-      const items = listboxRef.current?.querySelectorAll('li') ?? [];
-      setFocusedIndex(event.key === 'ArrowDown' ? 0 : items.length - 1);
+      setFocusedIndex(0);
       return;
     }
-    handleKeyDown?.(event);
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!opened) {
+        toggleValuesList();
+        return;
+      }
+      listboxRef.current?.focus();
+      const items = listboxRef.current?.querySelectorAll('li') ?? [];
+      setFocusedIndex(items.length - 1);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -126,6 +138,14 @@ const SingleSelectDropdown = ({
               : prevIndex - 1
           );
           break;
+        case 'Home':
+          event.preventDefault();
+          setFocusedIndex(0);
+          break;
+        case 'End':
+          event.preventDefault();
+          setFocusedIndex(items.length - 1);
+          break;
         case 'Enter':
         case ' ':
           if (focusedIndex !== null) {
@@ -149,6 +169,17 @@ const SingleSelectDropdown = ({
           break;
       }
     }
+  };
+  useEffect(() => {
+    if (opened) {
+      focusTrigger();
+    }
+  }, [opened]);
+
+  const handleOnClickOutside = (event: React.MouseEvent) => {
+    // Skip trigger clicks — its onClick already toggles, otherwise it'd reopen immediately.
+    if (triggerRef.current?.contains(event.target as Node)) return;
+    onClickOutside?.(event);
   };
 
   return (
@@ -206,7 +237,7 @@ const SingleSelectDropdown = ({
         right={right}
         mobileRight={mobileRight}
         opened={opened}
-        onClickOutside={onClickOutside}
+        onClickOutside={handleOnClickOutside}
         content={
           <List
             ref={listboxRef}
