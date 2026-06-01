@@ -286,7 +286,7 @@ it-IT:
     follow:
       unfollow_here: Hai ricevuto questa notifica a causa di un elemento che segui. <a href="%{unfollow_url}">Puoi smettere di seguirlo qui.</a>
     footer:
-      link_privacy_policy: Politica sulla privacy
+      link_privacy_policy: Informativa sulla privacy
       link_terms_conditions: Termini e condizioni
       link_unsubscribe: Annulla l'iscrizione
       powered_by: Alimentato da
