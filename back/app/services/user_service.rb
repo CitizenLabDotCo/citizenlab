@@ -43,7 +43,20 @@ class UserService
       user
     end
 
-    def update_in_sso!(user, user_params, confirm_user)
+    # Updates the user with attributes from the auth response if `updateable_user_attrs` is set.
+    # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method.
+    # @param [User] user
+    # @param auth the omniauth auth hash
+    # @param [OmniauthMethods::Base] authver_method
+    def update_in_sso!(user, auth, authver_method)
+      attrs = authver_method.updateable_user_attrs
+      sso_user_attrs = authver_method.profile_to_user_attrs(auth)
+      user_params = sso_user_attrs.slice(*attrs).compact
+      user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
+
+      sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
+      confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
+
       build_user_confirmation(user) if confirm_user
       user.update_merging_custom_fields!(user_params)
     end

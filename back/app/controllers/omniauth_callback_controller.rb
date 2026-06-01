@@ -152,7 +152,7 @@ class OmniauthCallbackController < ApplicationController
 
       else # !@user.invite_pending?
         begin
-          update_user!(auth, @user, authver_method)
+          UserService.update_in_sso!(@user, auth, authver_method)
           update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
           ClaimTokenService.claim(@user, claim_tokens)
@@ -273,22 +273,6 @@ class OmniauthCallbackController < ApplicationController
     }
   end
 
-  # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
-  # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method
-  # @param [OmniauthMethods::Base] authver_method
-  # @param [User] user
-  def update_user!(auth, user, authver_method)
-    attrs = authver_method.updateable_user_attrs
-    sso_user_attrs = authver_method.profile_to_user_attrs(auth)
-    user_params = sso_user_attrs.slice(*attrs).compact
-    user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-
-    sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
-    confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
-
-    UserService.update_in_sso!(user, user_params, confirm_user)
-  end
-
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
   def update_identity!(auth, identity, authver_method)
     identity.update_auth_hash!(auth, authver_method)
@@ -343,7 +327,7 @@ class OmniauthCallbackController < ApplicationController
       if @user&.invite_not_pending?
         begin
           handle_verification(auth, @user)
-          update_user!(auth, @user, verification_method)
+          UserService.update_in_sso!(@user, auth, verification_method)
           url = add_uri_params(
             Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['verification_pathname']),
             filter_omniauth_params.merge(verification_success: true)

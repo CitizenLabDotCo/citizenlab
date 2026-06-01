@@ -97,9 +97,19 @@ describe UserService do
   end
 
   describe '.update_in_sso!' do
-    it 'updates an existing user' do
+    let(:auth) { instance_double(OmniAuth::AuthHash) }
+    let(:authver_method) do
+      instance_double(
+        OmniauthMethods::Base,
+        updateable_user_attrs: [:first_name],
+        profile_to_user_attrs: { first_name: 'Updated' },
+        email_confirmed?: false
+      )
+    end
+
+    it 'updates an existing user with the attributes returned by the SSO method' do
       user = User.create(user_params)
-      service.update_in_sso!(user, { first_name: 'Updated' }, confirm_user)
+      service.update_in_sso!(user, auth, authver_method)
       expect(user.reload.first_name).to eq('Updated')
     end
   end
