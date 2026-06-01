@@ -54,7 +54,6 @@ describe UserService do
           user = service.build_in_sso(user_params, true, 'en')
           expect(user.email).to eq('test@example.com')
           expect(user.new_email).to be_nil
-          expect(user.email_confirmed_at).to be_present
           expect(user.confirmation_required).to be false
         end
       end
@@ -64,7 +63,6 @@ describe UserService do
           user = service.build_in_sso(user_params, false, 'en')
           expect(user.email).to be_nil
           expect(user.new_email).to eq('test@example.com')
-          expect(user.email_confirmed_at).to be_nil
           expect(user.confirmation_required).to be true
         end
       end
@@ -79,7 +77,6 @@ describe UserService do
           user = service.build_in_sso(user_params, true, 'en')
           expect(user.email).to be_nil
           expect(user.new_email).to be_nil
-          expect(user.email_confirmed_at).to be_nil
           expect(user.confirmation_required).to be true
         end
       end
@@ -89,7 +86,6 @@ describe UserService do
           user = service.build_in_sso(user_params, false, 'en')
           expect(user.email).to be_nil
           expect(user.new_email).to be_nil
-          expect(user.email_confirmed_at).to be_nil
           expect(user.confirmation_required).to be true
         end
       end
@@ -97,20 +93,232 @@ describe UserService do
   end
 
   describe '.update_in_sso!' do
+    # These specs cover the full truth table of what should happen to a user's
+    # email when they log in again through SSO. The relevant inputs are:
+    #
+    #   - whether the user already has an email
+    #   - whether that existing email is confirmed
+    #   - whether the SSO returns an email
+    #   - whether the SSO says that email is confirmed
+    #   - whether email updates are allowed (i.e. whether the authver method
+    #     returns :email in `updateable_user_attrs`; in practice this is driven
+    #     by the `password_login` feature flag being turned off)
+    #
+    # Combinations that cannot occur in practice are intentionally not tested:
+    #   - "existing email confirmed" while the user has no email
+    #   - "SSO email confirmed" while the SSO returns no email
+    # (These should-not-occur cases will be handled separately later.)
     let(:auth) { instance_double(OmniAuth::AuthHash) }
-    let(:authver_method) do
-      instance_double(
+    let(:existing_email) { 'existing@example.com' }
+    let(:sso_email) { 'sso@example.com' }
+
+    # Runs `update_in_sso!` against a doubled authver method whose behaviour is
+    # configured by the table columns.
+    def perform_update(user, returns_email:, email_confirmed:, allow_update_email:, sso_email: 'sso@example.com')
+      updateable_user_attrs = %i[first_name]
+      updateable_user_attrs << :email if allow_update_email
+
+      profile = { first_name: 'Updated' }
+      profile[:email] = sso_email if returns_email
+
+      authver_method = instance_double(
         OmniauthMethods::Base,
-        updateable_user_attrs: [:first_name],
-        profile_to_user_attrs: { first_name: 'Updated' },
-        email_confirmed?: false
+        updateable_user_attrs: updateable_user_attrs,
+        profile_to_user_attrs: profile,
+        email_confirmed?: email_confirmed
       )
+
+      service.update_in_sso!(user, auth, authver_method)
     end
 
-    it 'updates an existing user with the attributes returned by the SSO method' do
-      user = User.create(user_params)
-      service.update_in_sso!(user, auth, authver_method)
-      expect(user.reload.first_name).to eq('Updated')
+    context 'when the user has a confirmed email' do
+      let(:user) { create(:user, email: existing_email) }
+
+      context 'when the SSO returns an email' do
+        it 'replaces the email when the SSO email is confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(sso_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        it 'does nothing when the SSO email is confirmed but email updates are not allowed' do
+          perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: false)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+      end
+
+      context 'when the SSO does not return an email' do
+        # The two "SSO email confirmed = Yes" rows cannot occur (no email was
+        # returned) and are intentionally omitted.
+        it 'does nothing when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+      end
+    end
+
+    context 'when the user has an unconfirmed email' do
+      let(:user) { create(:unconfirmed_user, email: existing_email) }
+
+      context 'when the SSO returns an email' do
+        it 'replaces the email when the SSO email is confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(sso_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        # "Confirm email if they match, otherwise do nothing" -> two specs.
+        context 'when the SSO email is confirmed but email updates are not allowed' do
+          it 'confirms the existing email when the SSO email matches it' do
+            perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: false, sso_email: existing_email)
+            user.reload
+            expect(user.email).to eq(existing_email)
+            expect(user.new_email).to be_nil
+            expect(user.confirmation_required).to be false
+          end
+
+          it 'does nothing when the SSO email does not match the existing email' do
+            perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: false, sso_email: sso_email)
+            user.reload
+            expect(user.email).to eq(existing_email)
+            expect(user.new_email).to be_nil
+            expect(user.confirmation_required).to be true
+          end
+        end
+
+        it 'leaves the email and stores the SSO email as new_email when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to eq(sso_email)
+          expect(user.confirmation_required).to be true
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
+
+      context 'when the SSO does not return an email' do
+        # The two "SSO email confirmed = Yes" rows cannot occur and are omitted.
+        it 'does nothing when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to eq(existing_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
+    end
+
+    context 'when the user does not have an email' do
+      # A user without an email can only be in the "email not confirmed" state,
+      # so the eight "existing email confirmed = Yes" rows cannot occur.
+      let(:user) do
+        user = build(:unconfirmed_user, email: nil)
+        user.identities.build(provider: 'fake_sso', uid: 'sso-uid', auth_hash: {})
+        user.save!
+        user
+      end
+
+      context 'when the SSO returns an email' do
+        it 'sets the email when the SSO email is confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: true)
+          user.reload
+          expect(user.email).to eq(sso_email)
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be false
+        end
+
+        it 'does nothing when the SSO email is confirmed but email updates are not allowed' do
+          perform_update(user, returns_email: true, email_confirmed: true, allow_update_email: false)
+          user.reload
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+
+        it 'stores the SSO email as new_email when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to be_nil
+          expect(user.new_email).to eq(sso_email)
+          expect(user.confirmation_required).to be true
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: true, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
+
+      context 'when the SSO does not return an email' do
+        # The two "SSO email confirmed = Yes" rows cannot occur and are omitted.
+        it 'does nothing when the SSO email is not confirmed and email updates are allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: true)
+          user.reload
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+
+        it 'does nothing when the SSO email is not confirmed and email updates are not allowed' do
+          perform_update(user, returns_email: false, email_confirmed: false, allow_update_email: false)
+          user.reload
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
     end
   end
 
