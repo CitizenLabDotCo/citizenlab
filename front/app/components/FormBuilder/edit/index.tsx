@@ -136,7 +136,10 @@ const FormEdit = ({
     control,
   });
 
-  const liveCustomFields = watch('customFields') as IFlatCustomField[];
+  // Only the position is held in state; the field's data is read from the live
+  // form on each render so edits and server round-trips are reflected without
+  // a separate copy to maintain.
+  const liveCustomFields: IFlatCustomField[] = watch('customFields');
   const selectedField: IFlatCustomFieldWithIndex | undefined =
     selectedFieldInfo && liveCustomFields[selectedFieldInfo.index]
       ? {
