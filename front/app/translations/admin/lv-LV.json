@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Novērtējiet šī ieskata kvalitāti",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Atjaunot filtrus",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Apkopojiet",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Ar MI darbināta analīze nav iekļauta jūsu pašreizējā plānā. Sazinieties ar savu pašvaldības sadarbības vadītāju vai administratoru, lai to atbloķētu.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Kopsavilkums par",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Kopsavilkums par visiem ievades datiem",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Pieprasījumu neizdevās izpildīt. Lūdzu, mēģiniet vēlreiz vēlāk.",

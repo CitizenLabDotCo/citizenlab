@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Rate the quality of this insight",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Restore filters",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Summarize",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "AI-powered analysis is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Summary for",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Summary for all inputs",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "The request could not be completed. Please try again later.",

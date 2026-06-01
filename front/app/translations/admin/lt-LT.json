@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Įvertinkite šios įžvalgos kokybę",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Atkurti filtrus",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Apibendrinkite",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Dirbtiniu intelektu pagrįsta analizė nėra įtraukta į jūsų dabartinį planą. Susisiekite su savo vyriausybės sėkmės vadovu arba administratoriumi, kad ją atrakintumėte.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Santrauka",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Visų įvesties duomenų santrauka",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Užklausos nepavyko įvykdyti. Prašome bandyti vėliau.",
