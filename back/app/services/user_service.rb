@@ -60,10 +60,14 @@ class UserService
     end
 
     def assign_params_in_accept_invite(user, user_params, confirm_user = false)
-      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
+      # Confirm while the user is still invite_pending, so that completing the
+      # registration (triggered when invite_status becomes 'accepted') stays with
+      # the caller's save and is still seen by SideFxUserService#after_update.
+      #
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
       user.email_confirmation.confirm! if confirm_user
+      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
       user
     end
 
