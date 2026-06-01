@@ -1014,6 +1014,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "time.formats.hour_of_day": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:18:29.923075Z",
+    "verified_by": "Roger"
+  },
   "time.pm": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
