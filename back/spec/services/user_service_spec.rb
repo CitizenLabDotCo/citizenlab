@@ -46,10 +46,53 @@ describe UserService do
       expect(user.persisted?).to be false
     end
 
-    it 'puts email in new_email if email is not confirmed' do
-      user = service.build_in_sso(user_params, false, 'en')
-      expect(user.email).to be_nil
-      expect(user.new_email).to eq(user_params[:email])
+    context 'when the SSO returns an email' do
+      let(:user_params) { super().merge(email: 'test@example.com') }
+
+      context 'and the SSO says the email is verified' do
+        it 'puts the email in email and confirms the user' do
+          user = service.build_in_sso(user_params, true, 'en')
+          expect(user.email).to eq('test@example.com')
+          expect(user.new_email).to be_nil
+          expect(user.email_confirmed_at).to be_present
+          expect(user.confirmation_required).to be false
+        end
+      end
+
+      context 'and the SSO does not say the email is verified' do
+        it 'puts the email in new_email and does not confirm the user' do
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.email).to be_nil
+          expect(user.new_email).to eq('test@example.com')
+          expect(user.email_confirmed_at).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
+    end
+
+    context 'when the SSO does not return an email' do
+      let(:user_params) { super().except(:email) }
+
+      context 'and the SSO says the email is verified' do
+        # Should not be possible
+        it 'leaves the email blank and does not confirm the user' do
+          user = service.build_in_sso(user_params, true, 'en')
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.email_confirmed_at).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
+
+      context 'and the SSO does not say the email is verified' do
+        it 'leaves the email blank and does not confirm the user' do
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.email_confirmed_at).to be_nil
+          expect(user.confirmation_required).to be true
+        end
+      end
     end
   end
 

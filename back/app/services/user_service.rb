@@ -39,7 +39,7 @@ class UserService
       user = User.new(user_params)
       user.locale = locale
 
-      build_user_confirmation(user) if confirm_user
+      build_user_confirmation(user) if confirm_user && user.email.present?
       user
     end
 
