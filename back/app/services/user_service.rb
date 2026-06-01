@@ -59,7 +59,7 @@ class UserService
       user.update_merging_custom_fields!(user_params)
     end
 
-    def assign_params_in_accept_invite(user, user_params, confirm_user = false)
+    def assign_params_in_accept_invite(user, user_params, confirm_user: false)
       # Confirm while the user is still invite_pending, so that completing the
       # registration (triggered when invite_status becomes 'accepted') stays with
       # the caller's save and is still seen by SideFxUserService#after_update.

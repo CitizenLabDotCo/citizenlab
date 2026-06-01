@@ -129,7 +129,7 @@ class OmniauthCallbackController < ApplicationController
           signin_failure_redirect
           return
         end
-        UserService.assign_params_in_accept_invite(@user, user_attrs, user_has_email_confirmed_by_authver)
+        UserService.assign_params_in_accept_invite(@user, user_attrs, confirm_user: user_has_email_confirmed_by_authver)
 
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite

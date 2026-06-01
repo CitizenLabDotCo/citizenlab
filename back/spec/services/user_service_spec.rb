@@ -335,7 +335,7 @@ describe UserService do
         user = create(:invited_user)
         expect(user.confirmation_required).to be true
 
-        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, true)
+        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, confirm_user: true)
 
         user.reload
         expect(user.confirmation_required).to be false
@@ -347,7 +347,7 @@ describe UserService do
       it 'does not confirm the user email' do
         user = create(:invited_user)
 
-        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, false)
+        service.assign_params_in_accept_invite(user, { first_name: 'Updated' }, confirm_user: false)
 
         # Nothing is persisted (and the email is not confirmed) when confirm_user is false.
         user.reload
