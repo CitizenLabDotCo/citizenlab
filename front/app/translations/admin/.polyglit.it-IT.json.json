@@ -2954,6 +2954,56 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorder": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.noCancel": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.title": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.yesContinue": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:44:34.455199Z",
+    "verified_by": "Roger"
+  },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
