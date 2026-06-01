@@ -994,6 +994,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.terms_and_conditions_body": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:13:35.524396Z",
+    "verified_by": "Roger"
+  },
   "static_pages.terms_and_conditions_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
