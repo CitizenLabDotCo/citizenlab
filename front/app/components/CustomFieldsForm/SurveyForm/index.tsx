@@ -120,6 +120,7 @@ const SurveyForm = ({
     <Box w="100%">
       {nestedPagesData[currentPageIndex] && (
         <SurveyPage
+          key={currentPageIndex}
           page={nestedPagesData[currentPageIndex].page}
           pages={nestedPagesData}
           pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}

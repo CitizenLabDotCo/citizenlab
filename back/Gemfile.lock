@@ -71,6 +71,18 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/custom_id_methods
+  specs:
+    custom_id_methods (1.0.0)
+      admin_api
+      httparty
+      omniauth-auth0 (~> 2.0)
+      omniauth-saml (~> 2.2.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
+      savon (>= 2.12, < 2.15)
+
+PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
@@ -93,138 +105,6 @@ PATH
   remote: engines/commercial/google_tag_manager
   specs:
     google_tag_manager (0.1.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_acm
-  specs:
-    id_acm (1.0.0)
-      omniauth_openid_connect (~> 0.8.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_auth0
-  specs:
-    id_auth0 (0.1.0)
-      omniauth-auth0 (~> 2.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_bogus
-  specs:
-    id_bogus (0.1.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_bosa_fas
-  specs:
-    id_bosa_fas (0.1.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_clave_unica
-  specs:
-    id_clave_unica (0.1.0)
-      id_id_card_lookup
-      omniauth_openid_connect
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_cow
-  specs:
-    id_cow (0.1.0)
-      rails (~> 7.2)
-      savon (>= 2.12, < 2.15)
-
-PATH
-  remote: engines/commercial/id_criipto
-  specs:
-    id_criipto (0.1.0)
-      omniauth_openid_connect (~> 0.8.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_fake_sso
-  specs:
-    id_fake_sso (0.1.0)
-      omniauth_openid_connect
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_federa
-  specs:
-    id_federa (1.0.0)
-      omniauth-saml (~> 2.2.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_franceconnect
-  specs:
-    id_franceconnect (0.1.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_gent_rrn
-  specs:
-    id_gent_rrn (0.1.0)
-      httparty
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_hoplr
-  specs:
-    id_hoplr (0.1.0)
-      omniauth_openid_connect
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_id_austria
-  specs:
-    id_id_austria (1.0.0)
-      omniauth_openid_connect (~> 0.8.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_id_card_lookup
-  specs:
-    id_id_card_lookup (0.1.0)
-      admin_api
-      rails (~> 7.2)
-      savon (>= 2.12, < 2.15)
-
-PATH
-  remote: engines/commercial/id_keycloak
-  specs:
-    id_keycloak (0.1.0)
-      omniauth_openid_connect (~> 0.8.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_nemlog_in
-  specs:
-    id_nemlog_in (1.0.0)
-      omniauth-saml (~> 2.2.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_oostende_rrn
-  specs:
-    id_oostende_rrn (0.1.0)
-      httparty
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_twoday
-  specs:
-    id_twoday (1.0.0)
-      omniauth_openid_connect (~> 0.8.0)
-      rails (~> 7.2)
-
-PATH
-  remote: engines/commercial/id_vienna_saml
-  specs:
-    id_vienna_saml (1.0.0)
-      omniauth-saml (~> 2.2.0)
       rails (~> 7.2)
 
 PATH
@@ -610,7 +490,7 @@ GEM
     crass (1.0.6)
     crawler_detect (1.2.9)
       qonfig (>= 0.24)
-    css_parser (1.14.0)
+    css_parser (1.22.0)
       addressable
     csv (3.3.0)
     dalli (3.2.8)
@@ -648,7 +528,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.14.1)
+    faraday (2.14.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -788,7 +668,7 @@ GEM
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
-    jwt (2.9.3)
+    jwt (2.10.3)
       base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -1365,6 +1245,7 @@ DEPENDENCIES
   content_builder!
   counter_culture (~> 3.5)
   csv (~> 3.3.0)
+  custom_id_methods!
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.1.0)
@@ -1375,7 +1256,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  faraday (~> 2.14.0)
+  faraday (~> 2.14.2)
   faraday-jwt (~> 0.1.0)
   faraday-multipart
   flag_inappropriate_content!
@@ -1385,25 +1266,6 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
-  id_acm!
-  id_auth0!
-  id_bogus!
-  id_bosa_fas!
-  id_clave_unica!
-  id_cow!
-  id_criipto!
-  id_fake_sso!
-  id_federa!
-  id_franceconnect!
-  id_gent_rrn!
-  id_hoplr!
-  id_id_austria!
-  id_id_card_lookup!
-  id_keycloak!
-  id_nemlog_in!
-  id_oostende_rrn!
-  id_twoday!
-  id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
   impact_tracking!
@@ -1412,7 +1274,7 @@ DEPENDENCIES
   intercom (~> 4.2)
   json-schema (~> 4.3)
   jsonapi-serializer
-  jwt (~> 2.9.2)
+  jwt (~> 2.10.3)
   kaminari (~> 1.2)
   license_finder
   liquid (~> 5.8)

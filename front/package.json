@@ -26,6 +26,7 @@
     "start:sso:idporten": "HTTPS_HOST=keycloak-r3tyu.loca.lt vite --mode development",
     "start:sso:rheinbahn": "HTTPS_HOST=demo.stg.govocal.com vite --mode development",
     "start:sso:twoday": "HTTPS_HOST=twoday-h5jkg.loca.lt vite --mode development",
+    "start:sso:federa": "HTTPS_HOST=demo.stg.govocal.com vite --mode development",
     "start:production": "rimraf ./build && npm run build && node server/production",
     "start:images": "cross-env NODE_ENV=production node server/images",
     "visualize-bundle": "vite-bundle-visualizer",
