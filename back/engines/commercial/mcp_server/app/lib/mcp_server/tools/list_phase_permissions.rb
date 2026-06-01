@@ -20,20 +20,6 @@ class McpServer::Tools::ListPhasePermissions < McpServer::BaseTool
     }
   end
 
-  # Kept as a class method — also called externally from UpdatePhasePermission.
-  def self.serialize(permission)
-    {
-      action: permission.action,
-      permitted_by: permission.permitted_by,
-      group_ids: permission.groups.pluck(:id),
-      demographic_questions: permission.permissions_custom_fields.map do |pcf|
-        { custom_field_id: pcf.custom_field_id, required: pcf.required }
-      end,
-      verification_expiry: permission.verification_expiry,
-      access_denied_explanation_multiloc: permission.access_denied_explanation_multiloc
-    }
-  end
-
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
@@ -41,7 +27,7 @@ class McpServer::Tools::ListPhasePermissions < McpServer::BaseTool
       permissions = phase
         .permissions.includes(:groups, :permissions_custom_fields)
         .order_by_action(phase)
-        .map { |permission| McpServer::Tools::ListPhasePermissions.serialize(permission) }
+        .map { |permission| McpServer::Serializers::Permission.serialize(permission) }
 
       ok(
         "Found #{permissions.size} permission(s) on phase #{phase.id}",

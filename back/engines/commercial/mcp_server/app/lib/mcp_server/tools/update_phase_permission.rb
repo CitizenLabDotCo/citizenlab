@@ -101,7 +101,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
       ok(
         "Updated #{params[:action]} permission on phase #{phase.id}",
-        structured: McpServer::Tools::ListPhasePermissions.serialize(permission.reload)
+        structured: McpServer::Serializers::Permission.serialize(permission.reload)
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
