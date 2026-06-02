@@ -14,4 +14,24 @@ export default defineMessages({
     defaultMessage:
       'Project page preview and content builder are coming in a later step.',
   },
+  timelinePhases: {
+    id: 'app.containers.Admin.projects.project.timelinePhases',
+    defaultMessage: 'Timeline phases',
+  },
+  newPhase: {
+    id: 'app.containers.Admin.projects.project.newPhase',
+    defaultMessage: 'New phase',
+  },
+  phaseStatusPast: {
+    id: 'app.containers.Admin.projects.project.phaseStatusPast',
+    defaultMessage: 'Past',
+  },
+  phaseStatusUpcoming: {
+    id: 'app.containers.Admin.projects.project.phaseStatusUpcoming',
+    defaultMessage: 'Upcoming',
+  },
+  phaseNoEndDate: {
+    id: 'app.containers.Admin.projects.project.phaseNoEndDate',
+    defaultMessage: 'No end date',
+  },
 });
