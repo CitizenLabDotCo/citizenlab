@@ -18,7 +18,15 @@ class SideFxUserService
     end
 
     user.create_email_campaigns_unsubscription_token
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
+    if should_send_confirmation_email?(user)
+      if user.email.present?
+        RequestEmailConfirmationCodeJob.perform_now(user)
+      else
+        # Some SSO methods only set new_email (e.g. when the SSO email is unconfirmed),
+        # so we use the new_email confirmation flow to promote it to email after confirmation.
+        RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
+      end
+    end
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
     ClaimTokenService.claim(user, claim_tokens)
   end
@@ -156,7 +164,7 @@ class SideFxUserService
   end
 
   def should_send_confirmation_email?(user)
-    !user.invite_pending? && user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
+    !user.invite_pending? && user.confirmation_required? && user.email_confirmation.code_sent_at.nil? &&
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 

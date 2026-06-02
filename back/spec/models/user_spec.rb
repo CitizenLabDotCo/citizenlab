@@ -211,8 +211,9 @@ RSpec.describe User do
     end
 
     it 'is not allowed if confirmation is not required' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      u.confirm
+      u = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
+      u.save!
+      u.email_confirmation.confirm!
       expect(!!u.authenticate('')).to be(false)
     end
   end
@@ -283,11 +284,6 @@ RSpec.describe User do
 
       user.first_name = 'UpdatedName'
       expect(user).to be_valid
-    end
-
-    it 'is required when a unique code is not present' do
-      u1 = build(:user, email: nil)
-      expect(u1).to be_invalid
     end
 
     it 'is not required when a unique code is present' do
@@ -839,7 +835,7 @@ RSpec.describe User do
   describe 'active?' do
     it 'returns true when the user has completed signup' do
       u = create(:unconfirmed_user)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.active?).to be true
     end
 
@@ -850,7 +846,7 @@ RSpec.describe User do
 
     it 'returns false when the user is blocked' do
       u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.active?).to be false
     end
   end
@@ -863,7 +859,7 @@ RSpec.describe User do
 
     it 'is set when a user is confirmed' do
       u = create(:unconfirmed_user)
-      u.confirm!
+      u.email_confirmation.confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
@@ -952,13 +948,14 @@ RSpec.describe User do
     end
 
     it 'is initialized without a confirmation code' do
-      expect(user.email_confirmation_code).to be_nil
+      user.save!
+      expect(user.email_confirmation.code).to be_nil
     end
 
     describe '#confirmation_required?' do
       it 'returns false if the user already confirmed their account' do
         user.save!
-        user.confirm!
+        user.email_confirmation.confirm!
         expect(user.reload.confirmation_required?).to be false
       end
 
@@ -977,68 +974,11 @@ RSpec.describe User do
       end
     end
 
-    describe '#confirmation_required' do
-      it 'raises a private method error' do
-        expect { user.confirmation_required }.to raise_error NoMethodError
-      end
-    end
-
-    describe '#confirmation_required=' do
-      it 'raises a private method error' do
-        expect { user.confirmation_required = false }.to raise_error NoMethodError
-      end
-    end
-
     describe '#set_confirmation_required' do
       it 'does not perform a commit to the db' do
         user.validate
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
-      end
-    end
-
-    describe '#reset_confirmation_and_counts' do
-      before do
-        user.update!(
-          email_confirmation_code: '1234',
-          email_confirmation_retry_count: 2,
-          email_confirmation_code_reset_count: 2
-        )
-      end
-
-      it 'resets counts and required if already confirmed' do
-        user.confirm
-        user.reset_confirmation_and_counts
-
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmation_code_sent_at).to be_nil
-        expect(user.email_confirmation_code).to be_nil
-        expect(user.email_confirmation_retry_count).to eq 0
-        expect(user.email_confirmation_code_reset_count).to eq 0
-      end
-
-      it 'only resets confirmation_required if not confirmed' do
-        user.reset_confirmation_and_counts
-
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-        expect(user.email_confirmation_code_changed?).to be false
-        expect(user.email_confirmation_retry_count_changed?).to be false
-        expect(user.email_confirmation_code_reset_count_changed?).to be false
-      end
-    end
-
-    describe '#confirm' do
-      it 'sets the email_confirmed_at field' do
-        user.save!
-        user.confirm
-        expect(user.email_confirmed_at).not_to be_nil
-      end
-
-      it 'sets confirmation_required? to false' do
-        user.save!
-        user.confirm
-        expect(user.confirmation_required?).to be false
       end
     end
 
@@ -1066,23 +1006,25 @@ RSpec.describe User do
       end
     end
 
-    describe '#confirm!' do
+    describe '#email_confirmation#confirm!' do
       it 'sets email confirmed at' do
         user.save!
-        expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+        expect { user.email_confirmation.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
 
       it 'cancels any pending email change initiated with the same email' do
-        new_email = 'new-email@provider.org'
-        user1, user2 = create_list(:user, 2, new_email: new_email, email_confirmation_code: 9999)
-        user1.update_column(:confirmation_required, true)
-        user1.save!
+        target_email = 'shared-email@provider.org'
+        user2 = create(:user, new_email: target_email)
+        user1 = create(:user, email: target_email)
+        user2.new_email_confirmation.update!(code: '9999')
 
-        user1.confirm!
+        user1.email_confirmation.update!(code: '1234')
+        user1.update!(confirmation_required: true)
+        user1.email_confirmation.confirm!
 
         user2.reload
         expect(user2.new_email).to be_nil
-        expect(user2.email_confirmation_code).to be_nil
+        expect(user2.new_email_confirmation.reload.code).to be_nil
       end
     end
   end
