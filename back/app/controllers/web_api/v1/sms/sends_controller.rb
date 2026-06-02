@@ -2,8 +2,7 @@
 
 # Development-only endpoint for manually triggering an SMS send. Route is
 # only mounted when Rails.env.development?, so this can never be hit in
-# staging or production. Runs the job synchronously so the response reflects
-# the actual Twilio API call result.
+# staging or production.
 module WebApi
   module V1
     module Sms
@@ -13,11 +12,10 @@ module WebApi
         skip_after_action :verify_policy_scoped
 
         def create
-          # Call run directly (not perform_now) so we get the delivery back —
-          # Que's perform wrapper doesn't propagate the run method's return value.
-          delivery = ::Sms::SendJob.new.run(
+          delivery = ::Sms::Sender.new.send(
             to: params.require(:phone_number),
-            body: params.require(:body)
+            body: params.require(:body),
+            provider: (params[:provider] || ::Sms::Sender::DEFAULT_PROVIDER).to_sym
           )
 
           render json: {

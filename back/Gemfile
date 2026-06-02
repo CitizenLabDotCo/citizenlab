@@ -154,6 +154,7 @@ gem 'ruby_llm', git: 'https://github.com/crmne/ruby_llm.git', ref: '7282f9725cb3
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'aws-sdk-cloudfront', '~> 1.118.0'
+gem 'aws-sdk-pinpointsmsvoicev2', '~> 1.58.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
 gem 'mailgun-ruby', '~>1.2.16'
