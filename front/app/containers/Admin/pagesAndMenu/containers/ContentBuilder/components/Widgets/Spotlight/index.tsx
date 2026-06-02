@@ -78,7 +78,7 @@ const Spotlight = ({
 
   const avatarIds =
     publication?.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
-    [];
+    undefined;
 
   const link = publication
     ? `/${publicationType}s/${publication.data.attributes.slug}`

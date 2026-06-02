@@ -91,7 +91,7 @@ const Spotlight = ({
             </Box>
           )}
 
-          {!hideAvatars && (loading || (avatarIds && avatarIds.length > 0)) && (
+          {!hideAvatars && (
             <Box
               mt="16px"
               w="100%"
