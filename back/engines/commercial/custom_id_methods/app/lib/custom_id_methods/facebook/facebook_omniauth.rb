@@ -2,12 +2,51 @@
 
 module CustomIdMethods::Facebook
   class FacebookOmniauth < OmniauthMethods::Base
+    include Verification::VerificationMethod
+
+    # Facebook is a login-only SSO method. Its configuration lives alongside the
+    # verification methods (in `verification.verification_methods`), but it cannot
+    # be used to verify user identities.
+    def verification?
+      false
+    end
+
+    def verification_method_type
+      :omniauth
+    end
+
+    def id
+      'd6158130-5752-483f-83fb-ccf24beceaf5'
+    end
+
+    def name
+      'facebook'
+    end
+
+    def config_parameters
+      %i[app_id app_secret]
+    end
+
+    def config_parameters_schema
+      {
+        app_id: {
+          title: 'App ID',
+          type: 'string'
+        },
+        app_secret: {
+          title: 'App Secret',
+          type: 'string',
+          private: true
+        }
+      }
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('facebook_login')
+      return unless Verification::VerificationService.new.configured?(configuration, name)
 
-      env['omniauth.strategy'].options[:client_id] = configuration.settings('facebook_login', 'app_id')
-      env['omniauth.strategy'].options[:client_secret] = configuration.settings('facebook_login', 'app_secret')
+      env['omniauth.strategy'].options[:client_id] = config[:app_id]
+      env['omniauth.strategy'].options[:client_secret] = config[:app_secret]
       env['omniauth.strategy'].options[:info_fields] = 'first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)'
     end
 

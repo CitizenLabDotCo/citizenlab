@@ -12,13 +12,24 @@ module CustomIdMethods
 
     config.to_prepare do
       # Built-in login-only SSO methods (moved here from back/lib/omniauth_methods).
-      # NOTE: still gated by the facebook_login/google_login/azure_ad_login/
-      # azure_ad_b2c_login feature flags; they move to verification_methods in a
-      # follow-up step.
-      AuthenticationService.add_method('facebook', CustomIdMethods::Facebook::FacebookOmniauth.new)
-      AuthenticationService.add_method('google', CustomIdMethods::Google::GoogleOmniauth.new)
-      AuthenticationService.add_method('azureactivedirectory', CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new)
-      AuthenticationService.add_method('azureactivedirectory_b2c', CustomIdMethods::AzureActiveDirectoryB2c::AzureActiveDirectoryB2cOmniauth.new)
+      # Their configuration lives in `verification.verification_methods`, so they
+      # are registered both as authentication methods and as (login-only)
+      # verification methods.
+      facebook = CustomIdMethods::Facebook::FacebookOmniauth.new
+      AuthenticationService.add_method('facebook', facebook)
+      Verification.add_method(facebook)
+
+      google = CustomIdMethods::Google::GoogleOmniauth.new
+      AuthenticationService.add_method('google', google)
+      Verification.add_method(google)
+
+      azure_ad = CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new
+      AuthenticationService.add_method('azureactivedirectory', azure_ad)
+      Verification.add_method(azure_ad)
+
+      azure_ad_b2c = CustomIdMethods::AzureActiveDirectoryB2c::AzureActiveDirectoryB2cOmniauth.new
+      AuthenticationService.add_method('azureactivedirectory_b2c', azure_ad_b2c)
+      Verification.add_method(azure_ad_b2c)
 
       acm = CustomIdMethods::Acm::AcmOmniauth.new
       Verification.add_method(acm)
