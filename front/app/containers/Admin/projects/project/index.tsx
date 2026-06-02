@@ -18,7 +18,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import messages from './messages';
-import ProjectNavRail from './newBackoffice/ProjectNavRail';
+import ProjectSidebar from './newBackoffice/ProjectSidebar';
 import ProjectHeader from './projectHeader';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
@@ -47,7 +47,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
       >
         <ProjectHeader projectId={projectId} />
         <Box display="flex" flexGrow={1} minHeight="0">
-          <ProjectNavRail projectId={projectId} />
+          <ProjectSidebar projectId={projectId} />
           <Box flexGrow={1} minWidth="0">
             <RouterOutlet />
           </Box>
