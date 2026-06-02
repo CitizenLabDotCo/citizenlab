@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class Facebook < OmniauthMethods::Base
+module CustomIdMethods::Facebook
+  class FacebookOmniauth < OmniauthMethods::Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('facebook_login')
@@ -30,17 +30,18 @@ module OmniauthMethods
       user_attrs
     end
 
+    def updateable_user_attrs
+      super + %i[remote_avatar_url]
+    end
+
     private
 
     def remote_avatar_url(auth)
       return unless AppConfiguration.instance.feature_activated?('user_avatars')
 
-      picture = auth&.extra&.raw_info&.picture&.data
+      raw_info = auth&.extra&.raw_info
+      picture = raw_info&.picture&.data
       picture.url if picture && !picture.is_silhouette
     end
-  end
-
-  def updateable_user_attrs
-    super + %i[remote_avatar_url]
   end
 end

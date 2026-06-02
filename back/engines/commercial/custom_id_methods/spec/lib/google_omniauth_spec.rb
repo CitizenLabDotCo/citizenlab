@@ -2,27 +2,29 @@
 
 require 'rails_helper'
 
-describe OmniauthMethods::Google do
+describe CustomIdMethods::Google::GoogleOmniauth do
+  let(:google_method) { described_class.new }
+
   describe 'profile_to_user_attrs' do
     it 'correctly interprets gender, locale and image for google' do
-      auth = OpenStruct.new({
+      auth = OmniAuth::AuthHash.new(
         provider: 'google',
-        info: OpenStruct.new({
+        info: {
           'first_name' => 'Jos',
           'last_name' => 'Jossens',
           'email' => 'jos@josnet.com',
           'image' => 'http://www.josnet.com/my-picture'
-        }),
-        extra: OpenStruct.new({
-          raw_info: OpenStruct.new({
+        },
+        extra: {
+          raw_info: {
             gender: 'female',
             locale: 'fr-FR'
-          })
-        })
-      })
+          }
+        }
+      )
 
-      expect(subject).to receive(:image_available?).and_return(true)
-      user_attrs = subject.profile_to_user_attrs(auth)
+      expect(google_method).to receive(:image_available?).and_return(true)
+      user_attrs = google_method.profile_to_user_attrs(auth)
 
       expect(user_attrs).to include({
         locale: 'fr-FR',

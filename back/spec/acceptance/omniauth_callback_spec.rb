@@ -94,7 +94,7 @@ resource 'Omniauth Callback', document: false do
     end
 
     def mock_facebook_auth_method(user)
-      facebook_method = instance_double(OmniauthMethods::Facebook)
+      facebook_method = instance_double(CustomIdMethods::Facebook::FacebookOmniauth)
       allow(facebook_method).to receive_messages(
         profile_to_user_attrs: { email: user.email, first_name: user.first_name },
         email_confirmed?: true,

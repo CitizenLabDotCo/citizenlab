@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 class AuthenticationService
-  @all_methods = {
-    'facebook' => OmniauthMethods::Facebook.new,
-    'google' => OmniauthMethods::Google.new,
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
-    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
-  }
+  # All authentication methods (including the built-in Facebook/Google/Azure SSO
+  # methods) are registered by the custom_id_methods engine via #add_method.
+  @all_methods = {}
 
   class << self
     attr_reader :all_methods

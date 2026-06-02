@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class AzureActiveDirectoryB2c < OmniauthMethods::Base
+module CustomIdMethods::AzureActiveDirectoryB2c
+  class AzureActiveDirectoryB2cOmniauth < OmniauthMethods::Base
     # Azure AD B2C endpoints are specific to the user flow ("policy") that an application wishes to use to authenticate users.
     # The endpoints can be found in "Azure AD B2C | App registrations" -> Endpoints.
     # @param [AppConfiguration] configuration

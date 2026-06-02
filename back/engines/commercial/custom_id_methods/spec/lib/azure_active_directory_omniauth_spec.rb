@@ -2,28 +2,30 @@
 
 require 'rails_helper'
 
-describe OmniauthMethods::AzureActiveDirectory do
+describe CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth do
+  subject(:azure_method) { described_class.new }
+
   describe 'profile_to_user_attrs' do
     let(:auth) do
-      OpenStruct.new({
+      OmniAuth::AuthHash.new(
         provider: 'azureactivedirectory',
-        info: OpenStruct.new({
+        info: {
           'name' => 'jos_jossens',
           'first_name' => 'Jos',
           'last_name' => 'Jossens',
           'email' => 'jos@josnet.com',
           'image' => 'http://www.josnet.com/my-picture'
-        }),
-        extra: OpenStruct.new({
-          raw_info: OpenStruct.new({
+        },
+        extra: {
+          raw_info: {
             locale: 'fr'
-          })
-        })
-      })
+          }
+        }
+      )
     end
 
     it 'correctly interprets user attributes for Azure AD' do
-      expect(subject.profile_to_user_attrs(auth)).to match({
+      expect(azure_method.profile_to_user_attrs(auth)).to match({
         first_name: 'Jos',
         last_name: 'Jossens',
         email: 'jos@josnet.com',
@@ -34,7 +36,7 @@ describe OmniauthMethods::AzureActiveDirectory do
 
     it 'correctly interprets user attributes when email is nil' do
       auth.info['email'] = nil
-      expect(subject.profile_to_user_attrs(auth)).to match({
+      expect(azure_method.profile_to_user_attrs(auth)).to match({
         first_name: 'Jos',
         last_name: 'Jossens',
         email: nil,
@@ -47,7 +49,7 @@ describe OmniauthMethods::AzureActiveDirectory do
       auth.info['email'] = ''
       auth.info['first_name'] = ''
       auth.info['last_name'] = ''
-      expect(subject.profile_to_user_attrs(auth)).to match({
+      expect(azure_method.profile_to_user_attrs(auth)).to match({
         first_name: 'jos_jossens',
         last_name: 'jos_jossens',
         email: nil,
