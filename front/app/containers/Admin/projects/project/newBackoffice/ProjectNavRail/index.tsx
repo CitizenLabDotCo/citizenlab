@@ -20,8 +20,6 @@ import messages from '../messages';
 
 import type { LinkProps } from '@tanstack/react-router';
 
-const RAIL_WIDTH = '236px';
-
 const Nav = styled(Box)`
   a,
   a:hover {
@@ -125,14 +123,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
   ];
 
   return (
-    <Nav
-      as="nav"
-      flex={`0 0 ${RAIL_WIDTH}`}
-      width={RAIL_WIDTH}
-      background={colors.white}
-      borderRight={`1px solid ${colors.grey200}`}
-      p="12px"
-    >
+    <Nav as="nav" p="12px">
       <Box display="flex" flexDirection="column" gap="2px">
         {items.map((item) => {
           const active = pathname.includes(item.match);
