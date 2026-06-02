@@ -210,6 +210,7 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
