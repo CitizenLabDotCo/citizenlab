@@ -44,6 +44,12 @@ FactoryBot.define do
       gender { ['male', 'female', 'unspecified', nil][rand(4)] }
       birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
     end
+
+    factory :sso_user do
+      after(:create) do |user|
+        user.identities << create(:facebook_identity, user: user)
+      end
+    end
   end
 
   # This is an unconfirmed user. This is basically the state that a user is in
