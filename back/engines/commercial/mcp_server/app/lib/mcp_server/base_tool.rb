@@ -17,7 +17,7 @@ class McpServer::BaseTool
   def input_schema = raise NotImplementedError
 
   # Subclasses MAY override these.
-  def title = name.tr('_', ' ').capitalize
+  def title = name.humanize
   def output_schema = nil
   def icons = []
   def meta = nil
