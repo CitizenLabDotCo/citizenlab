@@ -45,6 +45,12 @@ describe UserService do
       user = service.build_in_sso(user_params, confirm_user, 'en')
       expect(user.persisted?).to be false
     end
+
+    it 'puts email in new_email if email is not confirmed' do
+      user = service.build_in_sso(user_params, false, 'en')
+      expect(user.email).to be_nil
+      expect(user.new_email).to eq(user_params[:email])
+    end
   end
 
   describe '.update_in_sso!' do

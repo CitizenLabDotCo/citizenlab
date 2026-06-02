@@ -73,8 +73,15 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
-    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
-    return user if user
+    email_confirmed_authver = authver_method.email_confirmed?(auth)
+
+    # We only allow merging accounts if email returned by
+    # authver method is confirmed
+    email = user_attrs[:email]
+    if email_confirmed_authver && email.present?
+      user = User.find_by_cimail(email)
+      return user if user
+    end
 
     if verify
       # Try and find the user by verification for verification methods without an email
@@ -120,7 +127,7 @@ class OmniauthCallbackController < ApplicationController
       # If the user's email came from/matches the authver one,
       # and the provider says it was confirmed: we mark the user's email as confirmed.
       if user_has_email_confirmed_by_authver
-        @user.confirm!
+        @user.email_confirmation.confirm!
       end
 
       if @user.invite_pending?

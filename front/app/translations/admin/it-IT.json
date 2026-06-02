@@ -893,7 +893,7 @@
   "app.containers.Admin.Users.selectSpaces": "Seleziona aree",
   "app.containers.Admin.Users.setAsAdmin": "Imposta come amministratore",
   "app.containers.Admin.Users.setAsNormalUser": "Imposta come utente normale",
-  "app.containers.Admin.Users.setUserAsManager": "Assegna {name} come manager",
+  "app.containers.Admin.Users.setUserAsManager": "Imposta {name} come manager",
   "app.containers.Admin.Users.spaceManager": "Manager d'area",
   "app.containers.Admin.Users.spaces": "Aree",
   "app.containers.Admin.Users.userBlockModal.allDone": "Completato",

@@ -62,6 +62,7 @@ export interface IUserAttributes {
   no_password?: boolean;
   followings_count: number;
   last_active_at?: string | null;
+  new_email?: string | null;
 }
 
 export interface IUserData {
