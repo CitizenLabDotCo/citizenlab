@@ -56,12 +56,14 @@ const CustomPageProjectsAndEvents = ({
     getCurrentTab(allStatusCountsWithoutFilters)
   );
 
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
   const globalTopics = page.relationships.global_topics.data.map(
     (topic) => topic.id
   );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const spaceId = page.relationships.space?.data?.id;
+  const spaceIds = spaceId ? [spaceId] : undefined;
 
   const {
     data,
@@ -73,6 +75,7 @@ const CustomPageProjectsAndEvents = ({
     pageSize: 6,
     globalTopics,
     areaIds,
+    spaceIds,
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly: false,
     removeNotAllowedParents: true,
@@ -130,17 +133,20 @@ const CustomPageProjectsAndEvents = ({
 };
 
 const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
   const globalTopics = page.relationships.global_topics.data.map(
     (topic) => topic.id
   );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const spaceId = page.relationships.space?.data?.id;
+  const spaceIds = spaceId ? [spaceId] : undefined;
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
       globalTopics,
       areaIds,
+      spaceIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: false,
       removeNotAllowedParents: true,

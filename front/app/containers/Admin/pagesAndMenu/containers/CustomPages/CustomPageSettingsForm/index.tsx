@@ -19,6 +19,8 @@ import useAreas from 'api/areas/useAreas';
 import { ProjectsFilterTypes } from 'api/custom_pages/types';
 import { IGlobalTopicData } from 'api/global_topics/types';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import { SpaceData } from 'api/spaces/types';
+import useSpaces from 'api/spaces/useSpaces';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -63,6 +65,7 @@ export interface FormValues {
   projects_filter_type: ProjectsFilterTypes;
   global_topic_ids?: string[];
   area_id?: string | null;
+  space_id?: string | null;
 }
 
 type TMode = 'new' | 'edit';
@@ -78,6 +81,7 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
   'no_filter',
   'global_topics',
   'areas',
+  'spaces',
 ];
 
 const fieldMarginBottom = '40px';
@@ -95,6 +99,7 @@ const CustomPageSettingsForm = ({
     name: 'advanced_custom_pages',
     onlyCheckAllowed: true,
   });
+  const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
   const { data: areas } = useAreas({});
@@ -102,6 +107,7 @@ const CustomPageSettingsForm = ({
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
   const { data: topics } = useGlobalTopics();
+  const { data: spaces } = useSpaces();
   const { formatMessage } = useIntl();
 
   const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
@@ -151,6 +157,15 @@ const CustomPageSettingsForm = ({
 
         return string().nullable();
       }),
+    space_id: string()
+      .nullable()
+      .when('projects_filter_type', ([value]) => {
+        if (value === 'spaces') {
+          return string().required(formatMessage(messages.selectASpace));
+        }
+
+        return string().nullable();
+      }),
   });
 
   const methods = useForm<FormValues>({
@@ -171,7 +186,7 @@ const CustomPageSettingsForm = ({
   };
 
   const mapFilterEntityToOptions = (
-    input: IAreaData[] | IGlobalTopicData[]
+    input: IAreaData[] | IGlobalTopicData[] | SpaceData[]
   ) => {
     return input.map((entity) => {
       return {
@@ -194,13 +209,22 @@ const CustomPageSettingsForm = ({
       name: 'areas',
       label: formatMessage(messages.byAreaFilter),
     },
+    ...(isSpacesEnabled
+      ? [
+          {
+            name: 'spaces' as const,
+            label: formatMessage(messages.bySpaceFilter),
+          },
+        ]
+      : []),
   ];
 
   if (
     isNilOrError(areas) ||
     isNilOrError(topics) ||
     isNilOrError(locale) ||
-    isNilOrError(appConfig)
+    isNilOrError(appConfig) ||
+    (isSpacesEnabled && isNilOrError(spaces))
   ) {
     return null;
   }
@@ -321,6 +345,17 @@ const CustomPageSettingsForm = ({
                           />
                         </SelectContainer>
                       )}
+                      {isSpacesEnabled &&
+                        methods.watch('projects_filter_type') === 'spaces' &&
+                        spaces && (
+                          <SelectContainer mb="20px">
+                            <Select
+                              name="space_id"
+                              options={mapFilterEntityToOptions(spaces.data)}
+                              label={formatMessage(messages.selectedSpaceLabel)}
+                            />
+                          </SelectContainer>
+                        )}
                     </Box>
                   </div>
                 </Tooltip>

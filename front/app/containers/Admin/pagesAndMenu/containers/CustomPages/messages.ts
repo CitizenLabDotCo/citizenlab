@@ -83,6 +83,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter',
     defaultMessage: 'By tag(s)',
   },
+  bySpaceFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.bySpaceFilter',
+    defaultMessage: 'By space',
+  },
   selectedTagsLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel',
     defaultMessage: 'Selected tags',
@@ -98,6 +102,14 @@ export default defineMessages({
   selectAnArea: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea',
     defaultMessage: 'Please select an area',
+  },
+  selectedSpaceLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpaceLabel',
+    defaultMessage: 'Selected space',
+  },
+  selectASpace: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace',
+    defaultMessage: 'Please select a space',
   },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',

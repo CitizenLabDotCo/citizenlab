@@ -28,6 +28,9 @@ export interface ICustomPageData {
     areas: {
       data: IRelationship[];
     };
+    space?: {
+      data: IRelationship | null;
+    };
   };
 }
 
@@ -50,7 +53,11 @@ export interface ICustomPageEnabledSettings {
   projects_enabled: boolean;
 }
 
-export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'global_topics';
+export type ProjectsFilterTypes =
+  | 'no_filter'
+  | 'areas'
+  | 'global_topics'
+  | 'spaces';
 
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;

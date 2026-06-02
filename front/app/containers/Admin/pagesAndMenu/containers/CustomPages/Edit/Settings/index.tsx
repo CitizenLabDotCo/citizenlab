@@ -40,11 +40,14 @@ const EditCustomPageSettings = () => {
     const handleOnSubmit = async (formValues: FormValues) => {
       // the form returns one area_id as a string,
       // the backend expects an array of area_ids
+      const isSpaces = formValues.projects_filter_type === 'spaces';
       const newFormValues = {
         ...formValues,
         ...(formValues.projects_filter_type === 'areas' && {
           area_ids: [formValues.area_id],
         }),
+        // Clear space_id when not in spaces mode so the backend nullifies it
+        space_id: isSpaces ? formValues.space_id : null,
       };
       await updateCustomPage({
         id: customPageId,
@@ -58,6 +61,7 @@ const EditCustomPageSettings = () => {
     const areaIds = customPage.data.relationships.areas.data.map(
       (areaRelationship) => areaRelationship.id
     );
+    const spaceId = customPage.data.relationships.space?.data?.id ?? null;
 
     return (
       <CustomPageSettingsForm
@@ -72,6 +76,7 @@ const EditCustomPageSettings = () => {
           projects_filter_type: customPage.data.attributes.projects_filter_type,
           global_topic_ids: topicIds,
           area_id: areaIds[0],
+          space_id: spaceId,
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}

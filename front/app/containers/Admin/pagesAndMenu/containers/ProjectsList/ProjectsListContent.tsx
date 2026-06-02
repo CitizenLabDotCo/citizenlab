@@ -22,12 +22,14 @@ interface Props {
 }
 
 const ProjectsListContent = ({ customPage }: Props) => {
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
   const globalTopics = customPage.relationships.global_topics.data.map(
     (topic) => topic.id
   );
   const areaIds = customPage.relationships.areas.data.map((area) => area.id);
+  const spaceId = customPage.relationships.space?.data?.id;
+  const spaceIds = spaceId ? [spaceId] : undefined;
   // Needs to be in sync with the projects list shown in
   // the projects list config of the custom page in the admin.
   // Comment reference to find it easily: 881dd218.
@@ -35,6 +37,7 @@ const ProjectsListContent = ({ customPage }: Props) => {
   const { data } = useAdminPublications({
     globalTopics,
     areaIds,
+    spaceIds,
     publicationStatusFilter: ['published', 'archived'],
     onlyProjects: true,
     remove_all_unlisted: true,
