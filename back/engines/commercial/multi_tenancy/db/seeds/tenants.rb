@@ -43,37 +43,6 @@ module MultiTenancy
               enable_signup: true,
               minimum_length: 8
             },
-            facebook_login: {
-              allowed: true,
-              enabled: true,
-              app_id: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID'),
-              app_secret: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET')
-            },
-            google_login: {
-              allowed: true,
-              enabled: true,
-              client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
-              client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
-            },
-            azure_ad_login: {
-              allowed: true,
-              enabled: true,
-              tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
-              client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
-              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure Active Directory',
-              visibility: 'show'
-            },
-            azure_ad_b2c_login: {
-              allowed: true,
-              enabled: true,
-              tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
-              tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
-              policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
-              client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
-              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure AD B2C'
-            },
             pages: {
               allowed: true,
               enabled: true
@@ -231,10 +200,38 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               verification_methods: [
-                # Only the Fake SSO method is seeded by default. To enable other
+                # The built-in SSO login methods (Facebook, Google, Azure AD,
+                # Azure AD B2C) and Fake SSO are seeded by default. To enable other
                 # verification/SSO methods locally, use: rake dev:enable_id_method[<method_name>]
                 {
                   name: 'fake_sso'
+                },
+                {
+                  name: 'facebook',
+                  app_id: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID'),
+                  app_secret: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET')
+                },
+                {
+                  name: 'google',
+                  client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
+                  client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
+                },
+                {
+                  name: 'azureactivedirectory',
+                  tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
+                  client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
+                  logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+                  login_mechanism_name: 'Azure Active Directory',
+                  visibility: 'show'
+                },
+                {
+                  name: 'azureactivedirectory_b2c',
+                  tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
+                  tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
+                  policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
+                  client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
+                  logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+                  login_mechanism_name: 'Azure AD B2C'
                 }
               ]
             },
