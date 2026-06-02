@@ -6,9 +6,19 @@ type ProfileName =
   | 'jane_doe'
   | 'tracy_smith'
   | 'billy_fixed'
-  | 'jenny_fixed';
+  | 'jenny_fixed'
+  | 'bradley_fixed';
 
-export const fakeSSOSignup = (cy: Cypress.Chainable, profileName: ProfileName) => {
+type Overrides = {
+  email?: string;
+  sub?: string;
+}
+
+export const fakeSSOSignup = (
+  cy: Cypress.Chainable,
+  profileName: ProfileName,
+  { email, sub }: Overrides = {}
+) => {
   cy.visit('/');
 
   // Sanity check: no session cookie before the SSO flow starts.
@@ -18,9 +28,15 @@ export const fakeSSOSignup = (cy: Cypress.Chainable, profileName: ProfileName) =
   cy.get('#e2e-login-with-fake-sso').click();
 
   // Browser is now on the fake_sso authorize page.
-  cy.origin(FAKE_SSO_ORIGIN, { args: { profileName } }, ({ profileName }) => {
+  cy.origin(FAKE_SSO_ORIGIN, { args: { profileName, email, sub } }, ({ profileName, email, sub }) => {
     cy.get('select#profile-select').select(profileName);
     cy.get('select#profile-select').should('have.value', profileName);
+    if (email) {
+      cy.get('input#email-input').clear().type(email);
+    }
+    if (sub) {
+      cy.get('input#sub-input').clear().type(sub);
+    }
     cy.get('#submit-button').click();
   });
 

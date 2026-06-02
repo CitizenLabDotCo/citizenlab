@@ -870,9 +870,7 @@ RSpec.describe User do
     end
 
     it 'is set when an SSO user is created' do
-      u = create(:user)
-      facebook_identity = create(:facebook_identity)
-      u.identities << facebook_identity
+      u = create(:sso_user)
       expect(u.registration_completed_at).not_to be_nil
     end
   end
