@@ -45,6 +45,11 @@ const AdminProjectPhaseIndex = ({
       name: 'report_builder',
     }),
   };
+  // In the redesigned back office the phases are shown as a vertical list in the
+  // project sidebar, so the horizontal timeline bar is hidden here.
+  const parallelParticipation = useFeatureFlag({
+    name: 'parallel_participation',
+  });
 
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
@@ -58,14 +63,16 @@ const AdminProjectPhaseIndex = ({
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <Box mt="16px" px="24px">
-        <Timeline
-          projectId={project.id}
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          isBackoffice
-        />
-      </Box>
+      {!parallelParticipation && (
+        <Box mt="16px" px="24px">
+          <Timeline
+            projectId={project.id}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
+            isBackoffice
+          />
+        </Box>
+      )}
       <Box
         p="8px 24px 24px 24px"
         display="flex"
