@@ -41,6 +41,13 @@ module CustomIdMethods::Facebook
       }
     end
 
+    # Exposed publicly via the /verification_methods endpoint. app_id is public
+    # information (it appears in the OpenGraph `fb:app_id` meta tag and Messenger
+    # share links); app_secret is intentionally not exposed.
+    def exposed_config_parameters
+      %i[app_id]
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.configured?(configuration, name)

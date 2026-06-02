@@ -66,6 +66,12 @@ module CustomIdMethods::AzureActiveDirectoryB2c
       }
     end
 
+    # Exposed publicly via the /verification_methods endpoint so the frontend can
+    # render the SSO button (logo, label).
+    def exposed_config_parameters
+      %i[logo_url login_mechanism_name]
+    end
+
     # Azure AD B2C endpoints are specific to the user flow ("policy") that an application wishes to use to authenticate users.
     # The endpoints can be found in "Azure AD B2C | App registrations" -> Endpoints.
     # @param [AppConfiguration] configuration

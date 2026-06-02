@@ -1,5 +1,8 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { TVerificationMethodName } from 'api/verification_methods/types';
+import {
+  IDAzureAdMethod,
+  IDAzureAdB2cMethod,
+  TVerificationMethodName,
+} from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -8,10 +11,8 @@ import useSuperAdmin from 'hooks/useSuperAdmin';
 import { useLocation, useSearch } from 'utils/router';
 
 export default function useAuthConfig() {
-  const { data: appConfiguration } = useAppConfiguration();
-  const appConfigurationSettings = appConfiguration?.data.attributes.settings;
-
-  // Custom SSO methods are configured as verification methods, and the `/verification_methods` endpoint
+  // All SSO methods (including the built-in Facebook/Google/Azure ones) are
+  // configured as verification methods, and the `/verification_methods` endpoint
   // exposes a `login_method` flag for the ones that can be used to authenticate.
   const { data: verificationMethods } = useVerificationMethods();
   const hasLoginMethod = (name: TVerificationMethodName) =>
@@ -36,22 +37,28 @@ export default function useAuthConfig() {
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
-  // Google, Facebook and Azure AD are not custom ID / verification methods  have their own feature flags.
-  const google = useFeatureFlag({ name: 'google_login' });
+  const google = hasLoginMethod('google');
 
-  const facebook = useFeatureFlag({ name: 'facebook_login' });
+  const facebook = hasLoginMethod('facebook');
 
-  const azureAdSettings = appConfigurationSettings?.azure_ad_login;
+  const azureAdMethod = verificationMethods?.data.find(
+    (method): method is IDAzureAdMethod =>
+      method.attributes.name === 'azureactivedirectory' &&
+      method.attributes.login_method
+  );
+  const azureAdSettings = azureAdMethod?.attributes;
   const azureAdVisiblity = azureAdSettings?.visibility;
   const azureAdIsVisible = ['show', undefined].includes(azureAdVisiblity);
 
-  const azureAd =
-    useFeatureFlag({ name: 'azure_ad_login' }) &&
-    (azureAdIsVisible || showAdminOnlyMethods);
+  const azureAd = !!azureAdMethod && (azureAdIsVisible || showAdminOnlyMethods);
 
-  const azureAdB2c = useFeatureFlag({
-    name: 'azure_ad_b2c_login',
-  });
+  const azureAdB2cMethod = verificationMethods?.data.find(
+    (method): method is IDAzureAdB2cMethod =>
+      method.attributes.name === 'azureactivedirectory_b2c' &&
+      method.attributes.login_method
+  );
+  const azureAdB2cSettings = azureAdB2cMethod?.attributes;
+  const azureAdB2c = !!azureAdB2cMethod;
 
   const ssoProviders = {
     google,
@@ -76,5 +83,6 @@ export default function useAuthConfig() {
     passwordLoginEnabled,
     ssoProviders,
     azureAdSettings,
+    azureAdB2cSettings,
   };
 }
