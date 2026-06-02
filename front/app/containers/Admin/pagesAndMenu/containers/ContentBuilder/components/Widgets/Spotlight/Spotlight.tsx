@@ -32,6 +32,10 @@ interface Props {
   avatarIds?: string[];
   hideAvatars?: boolean;
   userCount?: number;
+  avatarsContext?: {
+    type: 'project' | 'group';
+    id: string;
+  };
 }
 
 const Spotlight = ({
@@ -44,6 +48,7 @@ const Spotlight = ({
   avatarIds,
   hideAvatars,
   userCount,
+  avatarsContext,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
@@ -104,6 +109,7 @@ const Spotlight = ({
                 <AvatarBubbles
                   avatarIds={avatarIds}
                   userCount={userCount ?? 4}
+                  context={avatarsContext}
                 />
               )}
             </Box>

@@ -72,7 +72,7 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  const currentUserCount = userCount || randomAvatars?.meta.total;
+  const currentUserCount = userCount ?? randomAvatars?.meta.total;
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
   const avatarsWithIds = avatarsWithIdsQueries
