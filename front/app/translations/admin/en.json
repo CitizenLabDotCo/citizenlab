@@ -3207,7 +3207,7 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Input tags",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).",
-  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "AI-powered tagging overrides your manual tag definitions. Tags will be created, updated, and assigned automatically.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "AI-powered tagging overrides your manual tag definitions. Tags will be created, updated, and assigned automatically. Before you turn on Perspectives, make sure to delete all existing manual tags below.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatically detect and assign tags",
   "app.containers.AdminPage.Topics.perspectives": "Perspectives",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
