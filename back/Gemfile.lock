@@ -603,8 +603,8 @@ GEM
       base64
       fiber-storage
       logger
-    groupdate (6.5.1)
-      activesupport (>= 7)
+    groupdate (6.8.0)
+      activesupport (>= 7.2)
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
@@ -1264,7 +1264,7 @@ DEPENDENCIES
   fog-aws (~> 3.24)
   frontend!
   google_tag_manager!
-  groupdate (~> 6.5)
+  groupdate (~> 6.8)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
   idea_assignment!
