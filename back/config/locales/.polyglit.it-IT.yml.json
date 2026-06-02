@@ -1209,6 +1209,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "user.anon_scheme.animals": {
+    "state": "verified",
+    "verified_at": "2026-06-02T06:49:57.325155Z",
+    "verified_by": "Roger"
+  },
   "user_blocked_mailer.send_user_blocked_email.for_more_information": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
