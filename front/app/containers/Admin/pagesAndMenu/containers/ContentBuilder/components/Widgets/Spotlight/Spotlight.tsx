@@ -15,7 +15,7 @@ import { useTheme } from 'styled-components';
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import AvatarBubbles from 'components/AvatarBubbles';
+import AvatarBubbles, { AvatarBubblesContext } from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -32,10 +32,7 @@ interface Props {
   avatarIds?: string[];
   hideAvatars?: boolean;
   userCount?: number;
-  avatarsContext?: {
-    type: 'project' | 'group';
-    id: string;
-  };
+  avatarsContext?: AvatarBubblesContext;
 }
 
 const Spotlight = ({
