@@ -3355,7 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Évaluez la qualité de cet insight",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Restaurer les filtres",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Résumer",
-  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "L'analyse assistée par IA n'est pas incluse dans votre forfait actuel. Contactez votre Gestionnaire de succès gouvernemental ou votre administrateur pour la débloquer.",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "L'analyse assistée par IA n'est pas incluse dans votre forfait actuel. Contactez votre Conseillère en participation ou votre administrateur pour la débloquer.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Résumé pour",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Résumé de toutes les contributions",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "La requête n’a pas pu être complétée. Veuillez réessayer plus tard.",
