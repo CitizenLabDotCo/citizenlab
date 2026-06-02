@@ -39,6 +39,13 @@ const SurveyForm = ({
   const [userNavigationHistory, setUserNavigationHistory] = useState<number[]>([
     0,
   ]);
+  // Per-page <SurveyPage> remounts on every navigation (via key={currentPageIndex}),
+  // which destroys the React Hook Form instance. Authenticated users don't lose
+  // values because each page's submit persists a draft on the server, refetched
+  // into `initialFormData`. Anonymous users have no draft (the per-page submit
+  // is a no-op), so we accumulate their values here and feed them back as
+  // defaultValues on each remount.
+  const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -66,6 +73,12 @@ const SurveyForm = ({
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => {
+    // Carry the page's values forward across the next remount so anonymous
+    // users don't lose answers from previous pages, and so the final submit
+    // sends every answer from every visited page.
+    const mergedValues = { ...accumulatedValues, ...formValues };
+    setAccumulatedValues(mergedValues);
+
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
     // If there is no user (because permitted_by is 'everyone' and the user is signed out)
     // there is no draft idea. So instead we wait until we are on the submit page
@@ -83,7 +96,7 @@ const SurveyForm = ({
           : null;
 
       const idea = await addIdea({
-        ...formValues,
+        ...mergedValues,
         project_id: projectId,
         phase_ids,
         publication_status: isSubmitPage ? 'published' : 'draft',
@@ -94,7 +107,7 @@ const SurveyForm = ({
       await updateIdea({
         id: draftIdea.data.id,
         requestBody: {
-          ...formValues,
+          ...mergedValues,
           project_id: projectId,
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
@@ -132,8 +145,11 @@ const SurveyForm = ({
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}
+          onCapturePageValues={(values) =>
+            setAccumulatedValues((prev) => ({ ...prev, ...values }))
+          }
           phase={phase.data}
-          defaultValues={initialFormData}
+          defaultValues={{ ...initialFormData, ...accumulatedValues }}
         />
       )}
     </Box>
