@@ -94,8 +94,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       }.compact
 
       ActiveRecord::Base.transaction do
-        return validation_error_response(permission) unless permission.update(attributes)
-
+        permission.update!(attributes)
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
 
@@ -105,6 +104,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
+    rescue ActiveRecord::RecordInvalid => e
+      validation_error_response(e.record)
     end
 
     private
@@ -117,8 +118,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       )
     end
 
-    def validation_error_response(permission)
-      error("Validation failed: #{permission.errors.full_messages.join(', ')}")
+    def validation_error_response(record)
+      error("Validation failed: #{record.errors.full_messages.join(', ')}")
     end
 
     # Sets global_custom_fields and the permissions_custom_fields rows on the permission.
