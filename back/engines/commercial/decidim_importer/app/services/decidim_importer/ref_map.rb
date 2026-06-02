@@ -1,37 +1,29 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Registry of intermediate records keyed by the Decidim `"<table>-<id>"` string (the unique join
-  # key agreed in migration planning, since Decidim uses bigint PKs that don't survive the move to
-  # UUIDs). Lets any extractor resolve a cross-file reference (e.g. a step's
-  # `decidim_participatory_processes-5`) to the record that was registered for it.
+  # Registry of intermediate records keyed by the Decidim row `uid` (e.g. `decidim-user-1`,
+  # `decidim-participatoryprocessgroup-2`). Decidim's CSV export emits the same `uid` string in
+  # primary-key and foreign-key columns, so it's the natural cross-file join key — kept verbatim
+  # so any extractor can look up a referenced record by exactly the string it found in the CSV.
   class RefMap
-    def self.key(table, id)
-      "#{table}-#{id}"
-    end
-
     def initialize
-      @by_key = {}
+      @by_uid = {}
       @ordered = []
     end
 
+    # @param uid [String] the Decidim row `uid`.
     # @return [DecidimImporter::Record] the registered record (for chaining).
-    def register(table, id, record)
-      key = self.class.key(table, id)
-      raise ArgumentError, "duplicate ref key: #{key}" if @by_key.key?(key)
+    def register(uid, record)
+      raise ArgumentError, "duplicate ref key: #{uid}" if @by_uid.key?(uid)
 
-      record.key = key
-      @by_key[key] = record
+      record.key = uid
+      @by_uid[uid] = record
       @ordered << record
       record
     end
 
-    def fetch(table, id)
-      @by_key[self.class.key(table, id)]
-    end
-
-    def fetch_by_key(key)
-      @by_key[key]
+    def fetch(uid)
+      @by_uid[uid]
     end
 
     # All records in registration order. Insertion order within a model is preserved by the

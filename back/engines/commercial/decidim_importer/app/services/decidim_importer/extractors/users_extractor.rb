@@ -2,32 +2,30 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim `decidim_users` ──▶ Go Vocal `User`.
+    # Decidim users CSV (`02--users.csv`) ──▶ Go Vocal `User`.
     #
-    # Only **confirmed, non-deleted** users are imported (planning decision: no deleted/anonymised
-    # accounts, no unconfirmed-email accounts, no passwords). The Decidim numeric id is preserved in
-    # `unique_code` as the `"decidim_users-<id>"` join key so contributions can be re-linked later.
-    # The "about" text and personal URL are folded into the bio; demographics go into
+    # Only **confirmed, non-deleted, non-blocked** accounts with an email are imported (planning
+    # decision: no spam/anonymised accounts, no unconfirmed-email accounts, no passwords). The
+    # Decidim `uid` is preserved verbatim in `unique_code` so contributions can be re-linked. The
+    # plain-text "about" and personal URL are folded into the bio; demographics found in
+    # `extended_data` (Decidim's JSON blob for the configured extra user fields) go into
     # `custom_field_values`.
     class UsersExtractor < BaseExtractor
-      TABLE = 'decidim_users'
-
-      # Assumed Decidim export headers — override when the real export is available.
       COLUMNS = {
-        id: 'id',
+        uid: 'uid',
         name: 'name',
         email: 'email',
+        blocked: 'blocked',
         confirmed_at: 'confirmed_at',
         deleted_at: 'deleted_at',
         locale: 'locale',
         about: 'about',
         personal_url: 'personal_url',
-        avatar_url: 'avatar_url',
+        avatar: 'avatar',
         admin: 'admin',
+        extended_data: 'extended_data',
         created_at: 'created_at',
-        updated_at: 'updated_at',
-        gender: 'gender',
-        birth_date: 'birth_date'
+        updated_at: 'updated_at'
       }.freeze
 
       GENDER_MAP = { 'male' => 'male', 'female' => 'female', 'other' => 'unspecified' }.freeze
@@ -39,18 +37,19 @@ module DecidimImporter
       private
 
       def build_user(row)
-        id = present_value(row[COLUMNS[:id]])
+        uid = present_value(row[COLUMNS[:uid]])
         email = present_value(row[COLUMNS[:email]])
-        return nil if id.nil?
-        return nil if email.nil? # planning: only import users with an email
-        return nil if present_value(row[COLUMNS[:deleted_at]]) # skip deleted/anonymised accounts
-        return nil if present_value(row[COLUMNS[:confirmed_at]]).nil? # only confirmed emails
+        return nil if uid.nil?
+        return nil if email.nil?
+        return nil if present_value(row[COLUMNS[:deleted_at]])
+        return nil if present_value(row[COLUMNS[:confirmed_at]]).nil?
+        return nil if truthy?(row[COLUMNS[:blocked]])
 
         attributes = {
           'email' => email,
           'locale' => locale_mapper.map(row[COLUMNS[:locale]]),
           'bio_multiloc' => bio_multiloc(row),
-          'unique_code' => RefMap.key(TABLE, id),
+          'unique_code' => uid,
           'registration_completed_at' => timestamp(row[COLUMNS[:created_at]]),
           'created_at' => timestamp(row[COLUMNS[:created_at]]),
           'updated_at' => timestamp(row[COLUMNS[:updated_at]]),
@@ -67,10 +66,10 @@ module DecidimImporter
         cfv = custom_field_values(row)
         attributes['custom_field_values'] = cfv if cfv.any?
 
-        avatar = present_value(row[COLUMNS[:avatar_url]])
+        avatar = present_value(row[COLUMNS[:avatar]])
         attributes['remote_avatar_url'] = avatar if avatar
 
-        ref_map.register(TABLE, id, Record.new('user', attributes))
+        ref_map.register(uid, Record.new('user', attributes))
       end
 
       # Decidim stores a single display name; split into first/last (last token => last name).
@@ -84,26 +83,34 @@ module DecidimImporter
         { 'first_name' => parts[0..-2].join(' '), 'last_name' => parts[-1] }
       end
 
+      # `about` is a plain string (sometimes a multiloc JSON on multilingual platforms); the URL is
+      # appended as an HTML paragraph in each present locale.
       def bio_multiloc(row)
-        about = present_value(row[COLUMNS[:about]])
+        about = multiloc(row[COLUMNS[:about]])
         url = present_value(row[COLUMNS[:personal_url]])
-        return {} if about.nil? && url.nil?
+        return about if url.nil?
 
-        text = [about, url && "<p>#{url}</p>"].compact.join("\n")
-        { primary_locale => text }
+        url_html = "<p>#{url}</p>"
+        return { primary_locale => url_html } if about.empty?
+
+        about.transform_values { |text| [text, url_html].compact.join("\n") }
       end
 
       def roles_for(row)
         truthy?(row[COLUMNS[:admin]]) ? [{ 'type' => 'admin' }] : []
       end
 
+      # Decidim's `extended_data` is a JSON blob holding the configured extra user fields
+      # (gender, phone_number, date_of_birth, …). Pick the demographic ones GV has built-in slots
+      # for.
       def custom_field_values(row)
+        data = try_parse_json(row[COLUMNS[:extended_data]]) || {}
         values = {}
 
-        gender = GENDER_MAP[present_value(row[COLUMNS[:gender]])&.downcase]
+        gender = GENDER_MAP[present_value(data['gender'])&.downcase]
         values['gender'] = gender if gender
 
-        birthyear = birthyear_from(row[COLUMNS[:birth_date]])
+        birthyear = birthyear_from(data['date_of_birth'])
         values['birthyear'] = birthyear if birthyear
 
         values

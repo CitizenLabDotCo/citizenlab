@@ -2,19 +2,20 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim `decidim_participatory_process_user_roles` ──▶ deferred moderator-role assignments.
+    # Decidim `participatory_process_user_roles` ──▶ deferred moderator-role assignments.
     #
     # Project-scoped roles live in Go Vocal's JSONB `roles` array, which can't carry a template ref
     # to a not-yet-created project. So this extractor doesn't register template records; it returns
     # plain assignment tuples that {RoleAssigner} applies *after* deserialization, once project ids
     # exist.
+    #
+    # NOTE: columns are still assumed — the user-roles CSV isn't part of the first sample export.
+    # The user/process columns are expected to be Decidim uids (`decidim-user-…`,
+    # `decidim-participatoryprocess-…`).
     class ProcessRolesExtractor < BaseExtractor
-      USER_TABLE = UsersExtractor::TABLE
-      PROJECT_TABLE = ProjectsExtractor::TABLE
-
       COLUMNS = {
-        user_id: 'decidim_user_id',
-        process_id: 'decidim_participatory_process_id',
+        user: 'decidim_user',
+        process: 'decidim_participatory_process',
         role: 'role'
       }.freeze
 
@@ -24,15 +25,15 @@ module DecidimImporter
       # @return [Array<Hash>] assignment tuples for RoleAssigner.
       def run
         rows.filter_map do |row|
-          user_id = present_value(row[COLUMNS[:user_id]])
-          process_id = present_value(row[COLUMNS[:process_id]])
+          user_uid = present_value(row[COLUMNS[:user]])
+          process_uid = present_value(row[COLUMNS[:process]])
           role = present_value(row[COLUMNS[:role]])&.downcase
-          next if user_id.nil? || process_id.nil?
+          next if user_uid.nil? || process_uid.nil?
           next unless MODERATOR_ROLES.include?(role)
 
           {
-            user_key: RefMap.key(USER_TABLE, user_id),
-            target_key: RefMap.key(PROJECT_TABLE, process_id),
+            user_key: user_uid,
+            target_key: process_uid,
             role: 'project_moderator',
             scope_attribute: 'project_id'
           }

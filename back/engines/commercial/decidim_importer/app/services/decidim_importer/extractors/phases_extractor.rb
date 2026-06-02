@@ -8,13 +8,13 @@ module DecidimImporter
     # description + dates only). Decidim steps are sequential and non-overlapping, which matches Go
     # Vocal's timeline, so dates carry over directly. Steps with no usable dates are skipped and
     # reported so the client can correct them before re-import.
+    #
+    # NOTE: column names are still assumed — the participatory-process-steps CSV isn't part of the
+    # first sample export. The `process` column is expected to be the project's `uid`.
     class PhasesExtractor < BaseExtractor
-      TABLE = 'decidim_participatory_process_steps'
-      PROJECT_TABLE = ProjectsExtractor::TABLE
-
       COLUMNS = {
-        id: 'id',
-        process_id: 'decidim_participatory_process_id',
+        uid: 'uid',
+        process: 'decidim_participatory_process',
         title: 'title',
         description: 'description',
         start_date: 'start_date',
@@ -38,20 +38,20 @@ module DecidimImporter
       private
 
       def build_phase(row)
-        id = present_value(row[COLUMNS[:id]])
-        process_id = present_value(row[COLUMNS[:process_id]])
-        return nil if id.nil? || process_id.nil?
+        uid = present_value(row[COLUMNS[:uid]])
+        process_uid = present_value(row[COLUMNS[:process]])
+        return nil if uid.nil? || process_uid.nil?
 
-        project = ref_map.fetch(PROJECT_TABLE, process_id)
+        project = ref_map.fetch(process_uid)
         if project.nil?
-          @skipped << { id: id, reason: "no project for process #{process_id}" }
+          @skipped << { uid: uid, reason: "no project for process #{process_uid}" }
           return nil
         end
 
         start_at = present_value(row[COLUMNS[:start_date]])
         if start_at.nil?
           # Dates may be recoverable from the Decidim admin log; flagged for manual review meanwhile.
-          @skipped << { id: id, reason: 'missing start_date' }
+          @skipped << { uid: uid, reason: 'missing start_date' }
           return nil
         end
 
@@ -65,7 +65,7 @@ module DecidimImporter
 
         record = Record.new('phase', attributes)
         record.reference('project', project)
-        ref_map.register(TABLE, id, record)
+        ref_map.register(uid, record)
       end
     end
   end

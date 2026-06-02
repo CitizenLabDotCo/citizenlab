@@ -10,9 +10,9 @@ RSpec.describe DecidimImporter::TemplateBuilder do
   end
 
   it 'emits models in dependency order regardless of registration order' do
-    ref_map.register('decidim_participatory_process_steps', '1', record('phase', { 'title_multiloc' => { 'en' => 'P' } }))
-    ref_map.register('decidim_users', '1', record('user', { 'email' => 'a@b.co' }))
-    ref_map.register('decidim_participatory_processes', '1', record('project', { 'title_multiloc' => { 'en' => 'X' } }))
+    ref_map.register('decidim-step-1', record('phase', { 'title_multiloc' => { 'en' => 'P' } }))
+    ref_map.register('decidim-user-1', record('user', { 'email' => 'a@b.co' }))
+    ref_map.register('decidim-participatoryprocess-1', record('project', { 'title_multiloc' => { 'en' => 'X' } }))
 
     models = described_class.new(ref_map).models['models']
 
@@ -23,8 +23,8 @@ RSpec.describe DecidimImporter::TemplateBuilder do
     project = record('project', { 'title_multiloc' => { 'en' => 'X' } })
     phase = record('phase', { 'title_multiloc' => { 'en' => 'P' } })
     phase.reference('project', project)
-    ref_map.register('decidim_participatory_processes', '1', project)
-    ref_map.register('decidim_participatory_process_steps', '1', phase)
+    ref_map.register('decidim-participatoryprocess-1', project)
+    ref_map.register('decidim-step-1', phase)
 
     builder = described_class.new(ref_map)
     models = builder.models['models']

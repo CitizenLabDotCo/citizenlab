@@ -1,39 +1,63 @@
 # frozen_string_literal: true
 
+require 'tmpdir'
+
 module DecidimImporter
   # Orchestrates a Decidim → Go Vocal import for the base scaffold (users, folders, projects,
-  # phases). Reads the per-model XLSX exports, builds a tenant-template graph and applies it through
-  # the existing template deserializer, then assigns the deferred moderator roles.
+  # phases). Reads the Decidim CSV export (a zip file containing per-model CSVs), builds a
+  # tenant-template graph and applies it through the existing template deserializer, then assigns
+  # the deferred moderator roles.
   #
   # @example
-  #   DecidimImporter::Importer.from_files(
-  #     users: 'tmp/users.xlsx',
-  #     folders: 'tmp/process_groups.xlsx',
-  #     projects: 'tmp/processes.xlsx',
-  #     phases: 'tmp/steps.xlsx',
-  #     process_roles: 'tmp/process_user_roles.xlsx'
-  #   ).import
+  #   DecidimImporter::Importer.from_zip('tmp/example.com.zip').import
   class Importer
-    # The XLSX models the base-scaffold iteration understands.
-    MODELS = %i[users folders projects phases process_roles].freeze
+    # Maps importer model symbol → glob pattern (relative to the export root) for the matching
+    # Decidim CSV file. Files whose pattern doesn't match anything are silently skipped, so the
+    # importer can run on a partial export (the first samples ship only users + process groups).
+    FILE_PATTERNS = {
+      users: '*--users.csv',
+      folders: 'participatory-processes/*--participatory-process-groups.csv'
+      # When real exports include these files, add the patterns:
+      # projects: 'participatory-processes/*--participatory-processes.csv',
+      # phases: 'participatory-processes/*--participatory-process-steps.csv',
+      # process_roles: 'participatory-processes/*--participatory-process-user-roles.csv'
+    }.freeze
 
-    # Build an importer straight from xlsx file paths (or IO/buffers).
-    def self.from_files(files, **)
-      xlsx_service = XlsxService.new
-      rows_by_model = files.to_h do |model, source|
-        buffer = source.respond_to?(:read) ? source.read : File.binread(source)
-        [model, xlsx_service.xlsx_to_hash_array(buffer)]
+    # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
+    # memory, then tears the tempdir down.
+    def self.from_zip(zip_path, **)
+      raise ArgumentError, "file not found: #{zip_path}" unless File.file?(zip_path)
+
+      Dir.mktmpdir('decidim_import_') do |tmp|
+        ZipExtractor.extract(zip_path, tmp)
+        from_directory(ZipExtractor.detect_csv_root(tmp), **)
+      end
+    end
+
+    # Build an importer by scanning a directory of already-unzipped Decidim CSVs. The directory
+    # should be the one that *directly* contains the export's CSV files
+    # (e.g. `…/localhost--20260527144704`).
+    def self.from_directory(path, **)
+      rows_by_model = FILE_PATTERNS.each_with_object({}) do |(model, pattern), acc|
+        file = Dir.glob(File.join(path, pattern)).first
+        acc[model] = CsvReader.read(file) if file
       end
       new(rows_by_model, **)
     end
 
-    # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed rows keyed by model
-    #   (:users, :folders, :projects, :phases, :process_roles).
-    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {})
+    # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
+    #   (:users, :folders, :projects, :phases, :process_roles). Missing keys are treated as
+    #   "model not in this export" and silently skipped.
+    # @param import_images [Boolean] when false, `remote_*_url` attributes are dropped from the
+    #   template before deserialize, so no external HTTP is performed. Useful for dry runs and for
+    #   exports whose image URLs reference an unreachable host (e.g. the Decidim dev instance's
+    #   `http://localhost/rails/active_storage/...` blob redirects).
+    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true)
       @rows_by_model = rows_by_model
       @primary_locale = primary_locale
       @locale_mapper = LocaleMapper.new(locale_mapping, fallback_locale: primary_locale)
       @ref_map = RefMap.new
+      @import_images = import_images
     end
 
     attr_reader :ref_map
@@ -44,10 +68,12 @@ module DecidimImporter
       run_extractor(Extractors::UsersExtractor, :users)
       run_extractor(Extractors::FoldersExtractor, :folders)
       run_extractor(Extractors::ProjectsExtractor, :projects)
-      @phases_extractor = Extractors::PhasesExtractor.new(
-        rows_for(:phases), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      )
-      @phases_extractor.run
+      if @rows_by_model.key?(:phases)
+        @phases_extractor = Extractors::PhasesExtractor.new(
+          rows_for(:phases), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        )
+        @phases_extractor.run
+      end
       TemplateBuilder.new(ref_map)
     end
 
@@ -59,6 +85,7 @@ module DecidimImporter
       builder = build_template
       # Round-trip through YAML so we exercise the actual artifact the deserializer consumes.
       template = YAML.load(builder.to_yaml, aliases: true)
+      strip_remote_image_urls!(template) unless @import_images
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       created_object_ids
@@ -72,10 +99,14 @@ module DecidimImporter
     private
 
     def run_extractor(klass, model)
+      return unless @rows_by_model.key?(model)
+
       klass.new(rows_for(model), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale).run
     end
 
     def role_assignments
+      return [] unless @rows_by_model.key?(:process_roles)
+
       Extractors::ProcessRolesExtractor.new(
         rows_for(:process_roles), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       ).run
@@ -83,6 +114,15 @@ module DecidimImporter
 
     def rows_for(model)
       @rows_by_model[model] || []
+    end
+
+    # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
+    def strip_remote_image_urls!(template)
+      template['models'].each_value do |records|
+        records.each do |attrs|
+          attrs.delete_if { |k, _| k.is_a?(String) && k.start_with?('remote_') && k.end_with?('_url') }
+        end
+      end
     end
   end
 end
