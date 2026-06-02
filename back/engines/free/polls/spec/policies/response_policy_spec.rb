@@ -21,11 +21,7 @@ describe Polls::ResponsePolicy do
   end
 
   context 'for a resident' do
-    let(:user) do
-      user = response.user
-      user.confirm!
-      user
-    end
+    let(:user) { response.user }
 
     it { is_expected.to permit(:create) }
 

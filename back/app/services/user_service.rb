@@ -16,27 +16,35 @@ class UserService
     def create_in_admin_api(user_params, confirm_user)
       user = User.new(user_params)
       user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
-      user.confirm if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.save
 
       user
     end
 
     def update_in_admin_api(user, user_params, confirm_user)
-      user.confirm if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.update(user_params)
     end
 
     def build_in_sso(user_params, confirm_user, locale)
+      # If the SSO returns an unconfirmed email, we still need to
+      # confirm it. This is done by putting the email in new_email and leaving email blank.
+      # Putting an unconfirmed email directly in email is only done
+      # when creating a user in the normal email sign up flow.
+      if user_params[:email].present? && !confirm_user
+        user_params = user_params.except(:email).merge(new_email: user_params[:email])
+      end
+
       user = User.new(user_params)
       user.locale = locale
 
-      user.confirm if confirm_user
+      build_user_confirmation(user) if confirm_user
       user
     end
 
     def update_in_sso!(user, user_params, confirm_user)
-      user.confirm if confirm_user
+      build_user_confirmation(user) if confirm_user
       user.update_merging_custom_fields!(user_params)
     end
 
@@ -60,8 +68,18 @@ class UserService
 
     def update_in_tenant_template!(user, user_params = {})
       user.assign_attributes(user_params)
-      user.confirm
+      build_user_confirmation(user)
       user.save!
+    end
+
+    private
+
+    # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.
+    # Used by build-then-save flows that can't call EmailConfirmation#confirm!
+    # because the email_confirmation row doesn't exist until after_create.
+    def build_user_confirmation(user)
+      user.email_confirmed_at = Time.zone.now
+      user.confirmation_required = false
     end
   end
 end
