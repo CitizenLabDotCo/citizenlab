@@ -15,6 +15,7 @@ module DecidimImporter
     # Decidim CSV file. Files whose pattern doesn't match anything are silently skipped, so the
     # importer can run on a partial export (the first samples ship only users + process groups).
     FILE_PATTERNS = {
+      organization: '*--organization.csv',
       users: '*--users.csv',
       folders: 'participatory-processes/*--participatory-process-groups.csv'
       # When real exports include these files, add the patterns:
@@ -45,6 +46,29 @@ module DecidimImporter
       new(rows_by_model, **)
     end
 
+    # Applies a previously dumped tenant-template YAML file to the current tenant, independent of
+    # the CSV/zip pipeline (the file is the only input). Returns the deserializer's created-ids
+    # hash. Note: scoped moderator roles (`RoleAssigner`) are *not* applied here — that pass needs
+    # the in-memory ref map, so it only runs in the combined {#import} path. Real exports don't
+    # carry process-roles yet, so a file-based import is currently complete.
+    #
+    # @param import_images [Boolean] when false, `remote_*_url` attributes are stripped before
+    #   deserialize (no external HTTP), e.g. for exports whose image URLs are unreachable.
+    def self.apply_template_file(path, import_images: true)
+      template = YAML.load_file(path, aliases: true)
+      strip_remote_image_urls!(template) unless import_images
+      MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+    end
+
+    # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
+    def self.strip_remote_image_urls!(template)
+      template['models'].each_value do |records|
+        records.each do |attrs|
+          attrs.delete_if { |k, _| k.is_a?(String) && k.start_with?('remote_') && k.end_with?('_url') }
+        end
+      end
+    end
+
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
     #   (:users, :folders, :projects, :phases, :process_roles). Missing keys are treated as
     #   "model not in this export" and silently skipped.
@@ -65,7 +89,8 @@ module DecidimImporter
     # Builds the {TemplateBuilder} for the configured exports without applying anything. Extractors
     # must run folders → projects → phases so cross-record refs resolve; users are independent.
     def build_template
-      run_extractor(Extractors::UsersExtractor, :users)
+      user_custom_fields.register!(ref_map)
+      run_users_extractor
       run_extractor(Extractors::FoldersExtractor, :folders)
       run_extractor(Extractors::ProjectsExtractor, :projects)
       if @rows_by_model.key?(:phases)
@@ -77,6 +102,14 @@ module DecidimImporter
       TemplateBuilder.new(ref_map)
     end
 
+    # The AppConfiguration patch derived from `01--organization.csv` — a JSON-able hash of just the
+    # fields with a Go Vocal equivalent, for merging into the target tenant's app config on import.
+    # The template pipeline itself doesn't touch app config, so this is a separate artifact.
+    # Returns `{}` when the export has no organization file.
+    def app_config_patch
+      AppConfigMapper.new(organization_row, locale_mapper: @locale_mapper, primary_locale: @primary_locale).patch
+    end
+
     # The YAML artifact (the product output) for the configured exports.
     delegate :to_yaml, to: :build_template
 
@@ -85,7 +118,7 @@ module DecidimImporter
       builder = build_template
       # Round-trip through YAML so we exercise the actual artifact the deserializer consumes.
       template = YAML.load(builder.to_yaml, aliases: true)
-      strip_remote_image_urls!(template) unless @import_images
+      self.class.strip_remote_image_urls!(template) unless @import_images
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       created_object_ids
@@ -97,6 +130,29 @@ module DecidimImporter
     end
 
     private
+
+    # Custom user fields are seeded from the organization's `extra_user_fields` config (if present)
+    # and feed both the template (new `custom_field` records) and the users extractor (which keys to
+    # copy off `extended_data`).
+    def user_custom_fields
+      @user_custom_fields ||= UserCustomFields.new(
+        organization_row, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+    end
+
+    def run_users_extractor
+      return unless @rows_by_model.key?(:users)
+
+      Extractors::UsersExtractor.new(
+        rows_for(:users), ref_map,
+        locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        extra_text_field_keys: user_custom_fields.text_field_keys
+      ).run
+    end
+
+    def organization_row
+      rows_for(:organization).first
+    end
 
     def run_extractor(klass, model)
       return unless @rows_by_model.key?(model)
@@ -114,15 +170,6 @@ module DecidimImporter
 
     def rows_for(model)
       @rows_by_model[model] || []
-    end
-
-    # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
-    def strip_remote_image_urls!(template)
-      template['models'].each_value do |records|
-        records.each do |attrs|
-          attrs.delete_if { |k, _| k.is_a?(String) && k.start_with?('remote_') && k.end_with?('_url') }
-        end
-      end
     end
   end
 end

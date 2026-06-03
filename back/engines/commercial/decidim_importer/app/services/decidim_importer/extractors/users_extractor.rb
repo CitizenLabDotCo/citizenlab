@@ -30,6 +30,14 @@ module DecidimImporter
 
       GENDER_MAP = { 'male' => 'male', 'female' => 'female', 'other' => 'unspecified' }.freeze
 
+      # @param extra_text_field_keys [Array<String>] `extended_data` keys that the organization's
+      #   `extra_user_fields` config exposes as free-text Go Vocal custom fields (e.g.
+      #   'phone_number'). Their raw values are copied verbatim onto `custom_field_values`.
+      def initialize(rows, ref_map, extra_text_field_keys: [], **)
+        super(rows, ref_map, **)
+        @extra_text_field_keys = extra_text_field_keys
+      end
+
       def run
         rows.filter_map { |row| build_user(row) }
       end
@@ -112,6 +120,11 @@ module DecidimImporter
 
         birthyear = birthyear_from(data['date_of_birth'])
         values['birthyear'] = birthyear if birthyear
+
+        @extra_text_field_keys.each do |key|
+          value = present_value(data[key])
+          values[key] = value if value
+        end
 
         values
       end

@@ -7,8 +7,11 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
   let(:ref_map) { DecidimImporter::RefMap.new }
   let(:mapper) { DecidimImporter::LocaleMapper.new }
 
-  def extract(rows)
-    described_class.new(rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR').run
+  def extract(rows, extra_text_field_keys: [])
+    described_class.new(
+      rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR',
+      extra_text_field_keys: extra_text_field_keys
+    ).run
   end
 
   def row(overrides = {})
@@ -53,6 +56,14 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
   it 'reads gender and birthyear out of extended_data JSON' do
     attrs = extract([row('extended_data' => '{"gender":"other","date_of_birth":"1990-05-12"}')]).first.attributes
     expect(attrs['custom_field_values']).to eq({ 'gender' => 'unspecified', 'birthyear' => 1990 })
+  end
+
+  it 'copies configured extra text fields out of extended_data into custom_field_values' do
+    rows = [row('extended_data' => '{"gender":"female","phone_number":"+33123","postal_code":"75001"}')]
+    attrs = extract(rows, extra_text_field_keys: %w[phone_number postal_code]).first.attributes
+    expect(attrs['custom_field_values']).to eq(
+      'gender' => 'female', 'phone_number' => '+33123', 'postal_code' => '75001'
+    )
   end
 
   context 'with the real Decidim export fixture' do

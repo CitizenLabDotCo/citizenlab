@@ -1,43 +1,77 @@
 # frozen_string_literal: true
 
-# Usage:
-#   rake decidim_importer:run[tmp/import_files/example.com.zip,localhost,fr-FR]
-#   rake decidim_importer:run[tmp/import_files/example.com.zip,localhost,fr-FR,false]   # skip image fetches
-#   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,localhost,fr-FR]
+# Two-step workflow — dump, then import the dumped file:
+#   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
+#     → writes tmp/import_files/example.com.template.yml + tmp/import_files/example.com.app_config.json
+#   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
+#   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #
-# `path` accepts either a Decidim export zip or an already-unzipped directory. The task switches
-# into the tenant matching `host` and applies the import inside it. The 4th argument disables
-# image fetching — use it when the export's `remote_*_url` values point at an unreachable host
-# (e.g. the source Decidim's `http://localhost/...` blob redirects).
+# Plus a throwaway-tenant smoke test straight from an export (no file in between):
+#   rake decidim_importer:verify[tmp/import_files/example.com.zip,fr-FR]
+#
+# `dump_yaml` takes a Decidim export (zip or unzipped dir) and only writes files — it never touches
+# a tenant. `import` takes the dumped tenant-template YAML and deserializes it into the tenant
+# matching `host`; its 3rd argument disables image fetching, for templates whose `remote_*_url`
+# values point at an unreachable host (e.g. the source Decidim's `http://localhost/...` redirects).
+#
+# `dump_yaml` also writes `<base>.app_config.json` — the subset of `01--organization.csv` that maps
+# onto Go Vocal AppConfiguration settings. The template pipeline does not apply app config, so an
+# operator merges that JSON into the tenant's config separately.
 namespace :decidim_importer do
-  desc 'Imports a Decidim CSV export (zip or unzipped dir) into the tenant matching `host`.'
-  task :run, %i[path host primary_locale import_images] => [:environment] do |_t, args|
-    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
+  desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
+  task :dump_yaml, %i[path primary_locale] => [:environment] do |_t, args|
     path = args.fetch(:path)
+    importer = build_importer(path, primary_locale: args[:primary_locale] || 'fr-FR')
+
+    yaml_path = output_path(path, 'template.yml')
+    File.write(yaml_path, importer.to_yaml)
+    Rails.logger.info "Wrote #{yaml_path}"
+    write_app_config_json(importer, path)
+  end
+
+  desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`.'
+  task :import, %i[file host import_images] => [:environment] do |_t, args|
+    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
+    file = args.fetch(:file)
     import_images = args[:import_images].to_s.downcase != 'false'
 
-    Rails.logger.info "Decidim import → tenant=#{tenant.host} path=#{path} import_images=#{import_images}"
+    Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
     tenant.switch do
-      importer = build_importer(path, primary_locale: args[:primary_locale] || 'fr-FR', import_images: import_images)
-      created = importer.import
+      created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
       created.each { |klass, ids| Rails.logger.info "  created #{ids.size} #{klass}" }
-      importer.skipped_phases.each do |skipped|
-        Rails.logger.warn "  skipped phase #{skipped[:uid]}: #{skipped[:reason]}"
-      end
     end
     Rails.logger.info 'COMPLETE'
   end
 
-  desc 'Builds the tenant-template YAML from a Decidim export and writes it next to the input (no import).'
-  task :dump_yaml, %i[path host primary_locale] => [:environment] do |_t, args|
-    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
+  desc 'Applies a Decidim export to a throwaway tenant to confirm the YAML deserializes, then destroys it.'
+  task :verify, %i[path primary_locale locales] => [:environment] do |_t, args|
     path = args.fetch(:path)
-    out_path = yaml_output_path(path)
-    tenant.switch do
-      yaml = build_importer(path, primary_locale: args[:primary_locale] || 'fr-FR').to_yaml
-      File.write(out_path, yaml)
+    primary_locale = args[:primary_locale] || 'fr-FR'
+    locales = (args[:locales] || "#{primary_locale},en").split(/[,\s]+/).compact_blank.uniq
+
+    name = "decidim-verify-#{SecureRandom.hex(4)}"
+    host = "#{name}.localhost"
+    config_attrs = { settings: SettingsService.new.minimal_required_settings(
+      locales: locales, lifecycle_stage: 'demo'
+    ) }.with_indifferent_access
+
+    puts "Decidim verify → throwaway tenant=#{host} locales=#{locales.join(',')} path=#{path}"
+    success, tenant, = MultiTenancy::TenantService.new.initialize_tenant({ name: name, host: host }, config_attrs)
+    raise "failed to create throwaway tenant #{host}" unless success
+
+    begin
+      tenant.switch do
+        # Images are skipped: verification is about structure, and exports often carry unreachable
+        # `remote_*_url` hosts that would fail the fetch for reasons unrelated to the template.
+        importer = build_importer(path, primary_locale: primary_locale, import_images: false)
+        created = importer.import
+        created.each { |klass, ids| puts "  created #{ids.size} #{klass}" }
+        importer.skipped_phases.each { |s| puts "  skipped phase #{s[:uid]}: #{s[:reason]}" }
+      end
+      puts "VERIFY OK — applied cleanly, tearing down #{host}"
+    ensure
+      tenant.destroy!
     end
-    Rails.logger.info "Wrote #{out_path}"
   end
 
   # Picks the appropriate Importer factory based on whether `path` is a zip file or a directory.
@@ -51,12 +85,27 @@ namespace :decidim_importer do
     end
   end
 
-  # Drops the input's extension and appends `.template.yml`, keeping the same parent directory.
-  # `/tmp/example.zip` => `/tmp/example.template.yml`; a directory `/tmp/example` => same.
-  def yaml_output_path(input_path)
+  # Writes the importer's app-config patch next to the input as `<base>.app_config.json`, unless the
+  # export has no organization file (patch empty).
+  def write_app_config_json(importer, input_path)
+    patch = importer.app_config_patch
+    if patch.empty?
+      Rails.logger.info '  no organization data → skipping app-config JSON'
+      return
+    end
+
+    json_path = output_path(input_path, 'app_config.json')
+    File.write(json_path, JSON.pretty_generate(patch))
+    Rails.logger.info "Wrote #{json_path}"
+  end
+
+  # Drops the input's extension and appends `.<suffix>`, keeping the same parent directory.
+  # `/tmp/example.zip`, 'template.yml' => `/tmp/example.template.yml`; a directory `/tmp/example`
+  # keeps its name.
+  def output_path(input_path, suffix)
     normalized = input_path.chomp('/')
     parent = File.dirname(normalized)
     base = File.basename(normalized, File.extname(normalized))
-    File.join(parent, "#{base}.template.yml")
+    File.join(parent, "#{base}.#{suffix}")
   end
 end
