@@ -6,39 +6,35 @@ require Rails.root.join('lib/email_domain_blacklist')
 #
 # Table name: users
 #
-#  id                                  :uuid             not null, primary key
-#  email                               :string
-#  password_digest                     :string
-#  slug                                :string
-#  roles                               :jsonb
-#  reset_password_token                :string
-#  created_at                          :datetime         not null
-#  updated_at                          :datetime         not null
-#  avatar                              :string
-#  first_name                          :string
-#  last_name                           :string
-#  locale                              :string
-#  bio_multiloc                        :jsonb
-#  invite_status                       :string
-#  custom_field_values                 :jsonb
-#  registration_completed_at           :datetime
-#  verified                            :boolean          default(FALSE), not null
-#  email_confirmed_at                  :datetime
-#  email_confirmation_code             :string
-#  email_confirmation_retry_count      :integer          default(0), not null
-#  email_confirmation_code_reset_count :integer          default(0), not null
-#  email_confirmation_code_sent_at     :datetime
-#  confirmation_required               :boolean          default(TRUE), not null
-#  block_start_at                      :datetime
-#  block_reason                        :string
-#  block_end_at                        :datetime
-#  new_email                           :string
-#  followings_count                    :integer          default(0), not null
-#  onboarding                          :jsonb            not null
-#  unique_code                         :string
-#  last_active_at                      :datetime
-#  imported                            :boolean          default(FALSE), not null
-#  token_expiry_key                    :string
+#  id                        :uuid             not null, primary key
+#  email                     :string
+#  password_digest           :string
+#  slug                      :string
+#  roles                     :jsonb
+#  reset_password_token      :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  avatar                    :string
+#  first_name                :string
+#  last_name                 :string
+#  locale                    :string
+#  bio_multiloc              :jsonb
+#  invite_status             :string
+#  custom_field_values       :jsonb
+#  registration_completed_at :datetime
+#  verified                  :boolean          default(FALSE), not null
+#  email_confirmed_at        :datetime
+#  confirmation_required     :boolean          default(TRUE), not null
+#  block_start_at            :datetime
+#  block_reason              :string
+#  block_end_at              :datetime
+#  new_email                 :string
+#  followings_count          :integer          default(0), not null
+#  onboarding                :jsonb            not null
+#  unique_code               :string
+#  last_active_at            :datetime
+#  imported                  :boolean          default(FALSE), not null
+#  token_expiry_key          :string
 #
 # Indexes
 #
@@ -56,7 +52,6 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include UserRoles
   include UserGroups
-  include UserConfirmation
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
@@ -162,6 +157,11 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
+
+  # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
+  # which is a condition for complete_registration to set registration_completed_at
+  # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
+  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -169,7 +169,11 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :confirmations, dependent: :destroy
+  has_one :email_confirmation, dependent: :destroy
+  has_one :new_email_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
+  after_create :create_confirmations
   before_destroy :destroy_baskets
 
   has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
@@ -181,7 +185,6 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, unless: :allows_empty_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
@@ -312,6 +315,17 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
+  # True if the user has not yet confirmed their email address.
+  #
+  # Exception: if the user registered via SSO and the SSO did not return an email,
+  # we treat them as not requiring confirmation unless they have actively requested
+  # to set an email.
+  def confirmation_required?
+    return false if sso_user_without_email?
+
+    confirmation_required
+  end
+
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods.
@@ -352,7 +366,7 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? # see #allows_empty_email?
+                  email_was.present?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
@@ -361,12 +375,6 @@ class User < ApplicationRecord
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end
-  end
-
-  def allows_empty_email?
-    invite_pending? ||
-      unique_code.present? || # user created in input importer
-      (email_was.blank? && sso? && identities.none?(&:email_always_present?))
   end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
@@ -434,20 +442,27 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
+  def auto_confirm_on_invite_accept
+    self.email_confirmed_at = Time.zone.now
+    self.confirmation_required = false
+    email_confirmation&.clear_code!
+  end
+
+  def create_confirmations
+    EmailConfirmation.create!(user: self)
+    NewEmailConfirmation.create!(user: self)
+  end
+
+  def sso_user_without_email?
+    sso? && verified && email.nil? && new_email.nil?
+  end
+
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       unless notification.update initiating_user: nil
         notification.destroy!
       end
     end
-  end
-
-  def confirmation_required
-    self[:confirmation_required]
-  end
-
-  def confirmation_required=(val)
-    write_attribute :confirmation_required, val
   end
 
   def destroy_baskets

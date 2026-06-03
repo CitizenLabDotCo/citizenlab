@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Bewäert d'Qualitéit vun dëser Erkenntnis",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Filteren zrécksetzen",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Zesummefaassen",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "AI-gestützt Analys ass net an Ärem aktuelle Plang abegraff. Schwätzt mat Ärem Government Success Manager oder Administrateur, fir dës Funktioun fräizeschalten.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Zesummefaassung fir",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Zesummefaassung fir all Inputen",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "D'Ufro konnt net ofgeschloss ginn. Probéiert wgl. spéider nach eng Kéier.",

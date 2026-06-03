@@ -5,7 +5,7 @@ describe('Project description builder navigation', () => {
   const projectTitle = randomString();
 
   before(() => {
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
@@ -51,8 +51,7 @@ describe('Project description builder navigation', () => {
       .click();
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
+      `${Cypress.config().baseUrl
       }/en/admin/description-builder/projects/${projectId}/description`
     );
   });
@@ -64,8 +63,7 @@ describe('Project description builder navigation', () => {
       .click();
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
+      `${Cypress.config().baseUrl
       }/en/admin/description-builder/projects/${projectId}/description`
     );
     cy.get('#e2e-go-back-button').should('be.visible').click();

@@ -37,7 +37,7 @@ import messages from './messages';
 interface BaseProps {
   loading: boolean;
   setError: SetError;
-  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
+  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => Promise<void>;
 }
 
 interface Props extends BaseProps {
@@ -87,7 +87,12 @@ const BuiltInFields = ({
         email,
         password,
       });
-    } catch (e) {
+    } catch (e: any) {
+      if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
+        setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;

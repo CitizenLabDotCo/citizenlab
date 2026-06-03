@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -61,9 +61,46 @@ be-up-sso:
 fe-up-sso:
 	cd front && npm run start:sso
 
+# ACM (Itsme)
+be-up-acm:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[acm]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-acm:
+	cd front && npm run start:sso
+
+# Criipto
+be-up-criipto:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[criipto]'
+	docker compose up
+
+fe-up-criipto:
+	cd front && npm run start
+
+# France connect
+be-up-franceconnect:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[franceconnect]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-franceconnect:
+	cd front && npm run start:sso
+
+# Brings the back-end stack up together with the fake_sso OIDC provider.
+# Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
+# repo (or set FAKE_SSO_PATH to its checkout) and add
+# `127.0.0.1 host.docker.internal` to /etc/hosts.
+be-up-fake-sso:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
+	docker compose --profile fake_sso up
+
 # Clave Unica
 be-up-claveunica:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[claveunica]'
 	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
 fe-up-claveunica:
@@ -72,6 +109,7 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[nemlog_in]'
 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
 fe-up-nemlogin:
@@ -80,6 +118,7 @@ fe-up-nemlogin:
 # ID Austria
 be-up-idaustria:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[id_austria]'
 	BASE_DEV_URI=https://idaustria-g3fy.loca.lt ASSET_HOST_URI=https://idaustria-g3fy.loca.lt docker compose up
 
 fe-up-idaustria:
@@ -88,6 +127,7 @@ fe-up-idaustria:
 # Keycloak (Oslo ID-Porten & Rheinbahn)
 be-up-idporten:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[idporten]'
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
 fe-up-idporten:
@@ -96,6 +136,8 @@ fe-up-idporten:
 # Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
 be-up-rheinbahn:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[rheinbahn]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
 
 fe-up-rheinbahn:
@@ -104,17 +146,44 @@ fe-up-rheinbahn:
 # Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[twoday]'
 	BASE_DEV_URI=https://twoday-h5jkg.loca.lt ASSET_HOST_URI=https://twoday-h5jkg.loca.lt docker compose up
 
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
 
+# Hoplr
 be-up-hoplr:
 	docker compose down
-	BASE_DEV_URI=http://localhost:3000 ASSET_HOST_URI=http://localhost:3000 docker compose up
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[hoplr]'
+	docker compose up
 
 fe-up-hoplr:
 	cd front && npm start
+
+# Vienna
+be-up-vienna:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[vienna_citizen,vienna_employee]'
+	docker compose up
+
+fe-up-vienna:
+	cd front && npm start
+
+# Federa (Modena SSO)
+be-up-federa:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-federa:
+	cd front && npm run start:sso:federa
+
+# Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
+sso-reset:
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
+	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
 
 # Run it with:
 # make c
@@ -144,7 +213,7 @@ blint back-lint-autocorrect:
 # Usage example:
 # make r file=spec/models/idea_spec.rb
 r rspec:
-	docker compose run --rm web bin/rspec ${file}
+	docker compose run --rm web bin/rspec $(patsubst back/%,%,${file})
 
 # SSH session onto the running web container.
 bash-exec:

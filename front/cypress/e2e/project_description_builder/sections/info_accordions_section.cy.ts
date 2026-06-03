@@ -9,7 +9,7 @@ describe('Project description builder Info & Accordions section', () => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
