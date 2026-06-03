@@ -9,6 +9,10 @@ class IdMethodService
     @configured_methods_hash = build_configured_methods_hash
   end
 
+  def all_methods
+    ::IdMethods.all_methods
+  end
+
   private
 
   def build_configured_methods_hash

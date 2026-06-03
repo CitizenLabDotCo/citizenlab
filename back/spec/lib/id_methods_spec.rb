@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Verification do
+describe IdMethods do
   describe '.add_method' do
     around do |example|
       methods = described_class.all_methods.dup
