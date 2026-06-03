@@ -1,26 +1,45 @@
 # frozen_string_literal: true
 
 class IdMethodService
-  attr_reader :configured_methods, :configured_methods_hash
-
-  def initialize(app_configuration = AppConfiguration.instance)
-    @app_configuration = app_configuration
-    @configured_methods = @app_configuration.settings('verification', 'verification_methods')
-    @configured_methods_hash = build_configured_methods_hash
-  end
-
   def all_methods
     ::IdMethods.all_methods
   end
 
-  private
+  def method_by_name(name)
+    all_methods.find { |m| m.name == name }
+  end
 
-  def build_configured_methods_hash
-    hash = {}
-    configured_methods.each do |method|
-      hash[method['name']] = method
+  # To list all the methods in admin HQ settings
+  def all_methods_json_schema
+    all_methods.map do |method|
+      {
+        type: 'object',
+        title: method.name,
+        required: ['name'],
+        properties: {
+          name: { type: 'string', enum: [method.name], default: method.name, readOnly: true },
+          **method.config_parameters.to_h do |cp|
+            parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
+            [cp, parameter_schema || { type: 'string', private: 'true' }]
+          end
+        }
+      }
+    end.to_json
+  end
+
+  def configured_methods(app_configuration)
+    configured_methods = app_configuration.settings('verification', 'id_methods') || []
+    configured_names = configured_methods.pluck('name')
+    all_methods.select do |method|
+      configured_names.include?(method.name) if method.respond_to?(:name)
     end
+  end
 
-    hash
+  # Whether the method has been configured by the admin, regardless of whether
+  # it can be used for identity verification. Used to gate SSO login.
+  # @param [AppConfiguration] app_configuration
+  # @return [Boolean]
+  def configured?(app_configuration, method_name)
+    configured_methods(app_configuration).include? method_by_name(method_name)
   end
 end
