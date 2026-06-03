@@ -673,6 +673,7 @@
   "app.components.VerificationModal.verifyBOSA": "Verify with itsme or eID",
   "app.components.VerificationModal.verifyBosaFas": "Verify with itsme or eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verify with Clave Unica",
+  "app.components.VerificationModal.verifyEtatLu": "Verify with eAccess",
   "app.components.VerificationModal.verifyFakeSSO": "Verify with Fake SSO",
   "app.components.VerificationModal.verifyFedera": "Verify with SPID, CIE or CNS",
   "app.components.VerificationModal.verifyIdAustria": "Verify with ID Austria",
