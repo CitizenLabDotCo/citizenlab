@@ -168,8 +168,6 @@ namespace :cl2_back do
           allowed: true
         },
         verification: {
-          enabled: true,
-          allowed: true,
           verification_methods: [
             {
               name: 'cow',

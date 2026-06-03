@@ -14,10 +14,13 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        res[f] = {
-          'allowed' => !!default_setting(schema, f, 'allowed'),
-          'enabled' => !!default_setting(schema, f, 'enabled')
-        }
+        feature = {}
+        # Some features (e.g. `verification`) are no longer toggleable and don't
+        # define `allowed`/`enabled` in their schema, so only set what's defined.
+        %w[allowed enabled].each do |key|
+          feature[key] = !!default_setting(schema, f, key) if schema.dig('properties', f, 'properties', key)
+        end
+        res[f] = feature
       end
       res
     end
