@@ -735,7 +735,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace": "Please select a space",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea": "Please select an area",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedAreasLabel": "Selected area",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpaceLabel": "Selected space",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel": "Selected spaces",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel": "Selected tags",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError": "The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRequiredError": "You must enter a slug",
