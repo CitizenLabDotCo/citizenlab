@@ -11,7 +11,9 @@ module WebApi::V1::Verification
 
     # Whether the method can be used to authenticate (SSO login).
     attribute :login_method do |record|
-      AuthenticationService.all_methods.value?(record)
+      # TODO: authservice
+      # AuthenticationService.all_methods.value?(record)
+      IdMethodService.new.all_methods.include?(record)
     end
 
     IdMethodService.new.all_methods.each do |method|
