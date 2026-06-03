@@ -309,7 +309,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   end
 
   def prescreening_mode_enum
-    # TODO It does not take the actual participation method into account.
+    # TODO: It does not take the actual participation method into account.
     config = AppConfiguration.instance
     return [nil] unless config.feature_activated?('prescreening') || config.feature_activated?('prescreening_ideation')
 

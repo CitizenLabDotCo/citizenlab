@@ -9,7 +9,7 @@ module McpServer
     after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
 
     def create
-      authorize([:mcp_server, :mcp])
+      authorize(%i[mcp_server mcp])
 
       server = MCP::Server.new(
         name: 'go_vocal',

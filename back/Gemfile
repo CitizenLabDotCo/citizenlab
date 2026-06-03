@@ -249,7 +249,7 @@ commercial_engines = [
   'webhooks',
 
   # ID verification & SSO engine (all the former id_* engines, merged).
-  'custom_id_methods',
+  'custom_id_methods'
 ]
 
 commercial_engines.each do |engine_name|

@@ -114,7 +114,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       valid_actions = Permission.available_actions(phase) || []
       error(
         "Action '#{action}' does not apply to this phase (participation_method: '#{phase.participation_method}'). " \
-          "Valid actions: #{valid_actions.join(', ')}."
+        "Valid actions: #{valid_actions.join(', ')}."
       )
     end
 

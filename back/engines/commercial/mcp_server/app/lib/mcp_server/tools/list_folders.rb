@@ -19,7 +19,7 @@ class McpServer::Tools::ListFolders < McpServer::BaseTool
 
       scope = FoldersFinderAdminService.execute(
         ProjectFolders::Folder.all,
-        finder_params,
+        finder_params
       )
 
       paginated_response(

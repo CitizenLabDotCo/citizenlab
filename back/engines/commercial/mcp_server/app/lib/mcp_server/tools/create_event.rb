@@ -26,7 +26,7 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
 
       ok(
         "Created event #{event.id}",
-         structured: event.as_json(only: %i[id project_id title_multiloc description_multiloc location_multiloc start_at end_at online_link])
+        structured: event.as_json(only: %i[id project_id title_multiloc description_multiloc location_multiloc start_at end_at online_link])
       )
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
