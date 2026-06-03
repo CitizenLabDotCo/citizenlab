@@ -5,8 +5,12 @@ class IdMethodService
     @all_methods ||= IdMethods.all_methods
   end
 
+  def all_methods_by_name
+    @all_methods_by_name ||= IdMethods.all_methods_by_name
+  end
+
   def method_by_name(name)
-    all_methods.find { |m| m.name == name }
+    all_methods_by_name[name]
   end
 
   # To list all the methods in admin HQ settings

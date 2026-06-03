@@ -12,11 +12,14 @@ module IdMethods
   # anymore since we sorted out the whole verification terminology.
   # but the stuff about the auto reloading might still be relevant, so I left it in.)
   mattr_accessor(:all_methods) { [] }
+  mattr_accessor(:all_methods_by_name) { {} }
 
   class << self
     def add_method(id_method)
       all_methods.reject! { |m| m.id == id_method.id }
       all_methods << id_method
+
+      all_methods_by_name[id_method.name] = id_method
     end
   end
 end
