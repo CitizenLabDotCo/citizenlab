@@ -8,9 +8,9 @@ module DecidimImporter
     # its `admin_publication_attributes.parent_attributes_ref` at the folder's nested
     # admin-publication hash. Publication status is derived from whether the process was published.
     #
-    # NOTE: this extractor's `COLUMNS` are still based on assumed Decidim export headers — the
-    # participatory-processes CSV isn't part of the first sample export. Update once that file
-    # arrives. The `group` column is expected to be the folder's `uid` (Decidim export convention).
+    # Columns match the export's per-process `01---participatory-process.csv`. The
+    # `participatory_process_group` column holds the group's `uid` (blank when the process isn't
+    # grouped).
     class ProjectsExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -18,7 +18,7 @@ module DecidimImporter
         description: 'description',
         short_description: 'short_description',
         hero_image: 'hero_image',
-        group: 'decidim_participatory_process_group',
+        group: 'participatory_process_group',
         published_at: 'published_at',
         created_at: 'created_at',
         updated_at: 'updated_at'

@@ -35,14 +35,14 @@ module DecidimImporter
           'description' => '<p>Proposez vos projets.</p>',
           'short_description' => 'Le budget participatif annuel',
           'hero_image' => '',
-          'decidim_participatory_process_group' => 'decidim-participatoryprocessgroup-10',
+          'participatory_process_group' => 'decidim-participatoryprocessgroup-10',
           'published_at' => '2021-01-01', 'created_at' => '2021-01-01',
           'updated_at' => '2021-01-01' },
         { 'uid' => 'decidim-participatoryprocess-101', 'title' => 'Concertation mobilité',
           'description' => '<p>Repensons la mobilité.</p>',
           'short_description' => 'Mobilité douce',
           'hero_image' => '',
-          'decidim_participatory_process_group' => '',
+          'participatory_process_group' => '',
           'published_at' => '', 'created_at' => '2021-02-01', 'updated_at' => '2021-02-01' }
       ]
     end

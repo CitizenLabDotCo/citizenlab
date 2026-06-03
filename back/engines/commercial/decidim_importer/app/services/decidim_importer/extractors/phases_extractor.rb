@@ -9,8 +9,10 @@ module DecidimImporter
     # Vocal's timeline, so dates carry over directly. Steps with no usable dates are skipped and
     # reported so the client can correct them before re-import.
     #
-    # NOTE: column names are still assumed — the participatory-process-steps CSV isn't part of the
-    # first sample export. The `process` column is expected to be the project's `uid`.
+    # Columns match the export's per-process `02---steps.csv`. That CSV has no process column — the
+    # owning directory *is* the association — so the importer stamps each step row with its process
+    # `uid` under `decidim_participatory_process` before this extractor runs (see
+    # {Importer.read_processes}).
     class PhasesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

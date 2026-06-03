@@ -39,7 +39,7 @@ RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
         DecidimImporter::CsvReader.read(
           File.join(
             DecidimImporter::DecidimExportFixture.csv_root,
-            'participatory-processes/01--participatory-process-groups.csv'
+            '05---participatory-processes/01--participatory-process-groups.csv'
           )
         )
       )

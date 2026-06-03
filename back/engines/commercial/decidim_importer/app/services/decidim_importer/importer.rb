@@ -12,17 +12,23 @@ module DecidimImporter
   #   DecidimImporter::Importer.from_zip('tmp/example.com.zip').import
   class Importer
     # Maps importer model symbol → glob pattern (relative to the export root) for the matching
-    # Decidim CSV file. Files whose pattern doesn't match anything are silently skipped, so the
-    # importer can run on a partial export (the first samples ship only users + process groups).
+    # single-file Decidim CSV. Files whose pattern doesn't match anything are silently skipped, so
+    # the importer can run on a partial export. Globs are written with `--` separators but `*`
+    # absorbs the extra dash in newer exports' `NN---name.csv` triple-dash naming, and `*` matches
+    # the empty string so the numeric `NN---` directory prefix is optional too.
     FILE_PATTERNS = {
       organization: '*--organization.csv',
       users: '*--users.csv',
-      folders: 'participatory-processes/*--participatory-process-groups.csv'
-      # When real exports include these files, add the patterns:
-      # projects: 'participatory-processes/*--participatory-processes.csv',
-      # phases: 'participatory-processes/*--participatory-process-steps.csv',
-      # process_roles: 'participatory-processes/*--participatory-process-user-roles.csv'
+      folders: '*participatory-processes/*--participatory-process-groups.csv'
     }.freeze
+
+    # Glob (relative to the export root) for each participatory-process directory. Newer exports
+    # nest one folder per process under `NN---participatory-processes/`, each holding the process's
+    # own CSV and a steps CSV (the steps file has no process column — the directory *is* the
+    # association). See {.read_processes}.
+    PROCESS_DIR_GLOB = '*participatory-processes/*'
+    PROCESS_FILE_GLOB = '*--participatory-process.csv'
+    STEPS_FILE_GLOB = '*--steps.csv'
 
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
@@ -43,7 +49,39 @@ module DecidimImporter
         file = Dir.glob(File.join(path, pattern)).first
         acc[model] = CsvReader.read(file) if file
       end
+      read_processes(path).each { |model, rows| rows_by_model[model] = rows if rows.any? }
       new(rows_by_model, **)
+    end
+
+    # Reads every participatory-process directory, aggregating their process rows into `:projects`
+    # and their step rows into `:phases`. Because the steps CSV carries no process column, each step
+    # row is stamped with its process `uid` (under the key the {Extractors::PhasesExtractor}
+    # expects) so phases can be linked back to their project.
+    def self.read_processes(root)
+      projects = []
+      phases = []
+      process_dirs(root).each do |dir|
+        process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
+        next unless process_file
+
+        process_rows = CsvReader.read(process_file)
+        projects.concat(process_rows)
+        process_uid = process_rows.first&.fetch('uid', nil)
+
+        steps_file = Dir.glob(File.join(dir, STEPS_FILE_GLOB)).first
+        next unless steps_file
+
+        phases.concat(CsvReader.read(steps_file).map { |step| step.merge('decidim_participatory_process' => process_uid) })
+      end
+      { projects: projects, phases: phases }
+    end
+
+    # A process directory is any subdirectory of `*participatory-processes/` that holds a
+    # participatory-process CSV (robust to the `NN---decidim--participatory-process--N` naming).
+    def self.process_dirs(root)
+      Dir.glob(File.join(root, PROCESS_DIR_GLOB)).select do |path|
+        File.directory?(path) && Dir.glob(File.join(path, PROCESS_FILE_GLOB)).any?
+      end
     end
 
     # Applies a previously dumped tenant-template YAML file to the current tenant, independent of
