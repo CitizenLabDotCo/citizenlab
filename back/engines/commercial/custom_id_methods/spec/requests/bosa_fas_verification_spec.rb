@@ -46,8 +46,6 @@ context 'bosa_fas verification' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
-      allowed: true,
-      enabled: true,
       verification_methods: [{ name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake' }]
     }
     configuration.save!

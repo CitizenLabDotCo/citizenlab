@@ -63,8 +63,6 @@ context 'ACM verification (Oostende Itsme)' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
-      allowed: true,
-      enabled: true,
       verification_methods: [{
         name: 'acm',
         domain: 'some.test.domain.com',

@@ -56,8 +56,6 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
-      allowed: true,
-      enabled: true,
       verification_methods: [{
         name: 'nemlog_in',
         environment: 'pre_production_integration',

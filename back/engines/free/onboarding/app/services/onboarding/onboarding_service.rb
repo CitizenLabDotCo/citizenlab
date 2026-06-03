@@ -40,8 +40,8 @@ module Onboarding
     end
 
     def needs_verification?(user)
-      settings = ::SettingsService.new.disable_verification_if_no_methods_enabled(AppConfiguration.instance.settings)
-      settings['verification']['enabled'] && !user.verified
+      # settings = ::SettingsService.new.disable_verification_if_no_methods_enabled(AppConfiguration.instance.settings)
+      !user.verified
     end
   end
 end

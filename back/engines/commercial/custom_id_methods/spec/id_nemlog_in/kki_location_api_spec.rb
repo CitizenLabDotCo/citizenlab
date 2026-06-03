@@ -12,8 +12,6 @@ describe CustomIdMethods::NemlogIn::KkiLocationApi do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
-      allowed: true,
-      enabled: true,
       verification_methods: [
         {
           name: 'nemlog_in',

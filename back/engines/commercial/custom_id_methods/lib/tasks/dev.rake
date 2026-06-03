@@ -224,8 +224,6 @@ namespace :dev do
 
     tenant.switch do
       settings = AppConfiguration.instance.settings
-      settings['verification']['enabled'] = true
-      settings['verification']['allowed'] = true
       settings['verification']['verification_methods'] = methods
       AppConfiguration.instance.update!(settings: settings)
 

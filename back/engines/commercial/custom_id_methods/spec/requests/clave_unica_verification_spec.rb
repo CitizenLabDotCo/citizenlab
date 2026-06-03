@@ -52,8 +52,6 @@ context 'clave_unica verification' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
-      allowed: true,
-      enabled: true,
       verification_methods: [{ name: 'clave_unica', client_id: 'fake', client_secret: 'fake' }]
     }
     configuration.save!

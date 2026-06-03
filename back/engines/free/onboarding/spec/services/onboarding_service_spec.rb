@@ -65,8 +65,6 @@ describe Onboarding::OnboardingService do
       before do
         @app_config = AppConfiguration.instance.tap do |cfg|
           cfg.settings['verification'] = {
-            allowed: true,
-            enabled: true,
             verification_methods: [
               { name: 'fake_sso' }
             ]
@@ -89,14 +87,6 @@ describe Onboarding::OnboardingService do
         it 'does not return :verification if the user dismissed :verification' do
           Onboarding::CampaignDismissal.create(user: user_not_verified, campaign_name: 'verification')
           expect(service.current_campaign(user_not_verified)).not_to eq :verification
-        end
-
-        context 'when verification is not active' do
-          it 'does not return :verification' do
-            SettingsService.new.deactivate_feature! 'verification'
-            Onboarding::CampaignDismissal.create(user: user_not_verified, campaign_name: 'verification')
-            expect(service.current_campaign(user_not_verified)).not_to eq :verification
-          end
         end
 
         context 'when there are no verification methods' do
