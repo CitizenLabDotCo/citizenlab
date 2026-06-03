@@ -4,6 +4,7 @@ module Sms
       # Twilio MessageStatus values -> Sms::Delivery statuses.
       # https://www.twilio.com/docs/messaging/api/message-resource#message-status-values
       STATUS_MAPPING = {
+        'accepted' => 'queued',
         'queued' => 'queued',
         'sending' => 'queued',
         'sent' => 'sent',
@@ -19,7 +20,10 @@ module Sms
           body: body,
           status_callback: callback_url
         )
-        { message_sid: message.sid, status: message.status }
+        # The create response status is normally `queued` (or `accepted`); fall
+        # back to `queued` for any status we don't explicitly map so the delivery
+        # never lands on a non-vocabulary value.
+        { message_sid: message.sid, status: STATUS_MAPPING.fetch(message.status, 'queued') }
       rescue ::Twilio::REST::RestError => e
         raise Error, e.message
       end

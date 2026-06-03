@@ -10,7 +10,7 @@ RSpec.describe Sms::Sender do
   end
 
   describe '#send' do
-    it 'creates a delivery, sends via Twilio by default, marks it sent, and returns it' do
+    it 'creates a delivery, sends via Twilio by default, stores the returned status, and returns it' do
       allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_abc', status: 'queued')
 
       delivery = nil
@@ -18,7 +18,7 @@ RSpec.describe Sms::Sender do
         .to change(Sms::Delivery, :count).by(1)
 
       expect(delivery).to eq(Sms::Delivery.last)
-      expect(delivery.status).to eq('sent')
+      expect(delivery.status).to eq('queued')
       expect(delivery.message_sid).to eq('SM_abc')
     end
 

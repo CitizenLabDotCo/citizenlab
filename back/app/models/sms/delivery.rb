@@ -26,13 +26,8 @@ module Sms
   class Delivery < ApplicationRecord
     self.table_name = 'sms_deliveries'
 
-    # queued/sent are set when we hand the message to the provider; delivered,
-    # undelivered and failed are reached asynchronously via provider callbacks.
-    # Order is significant: it defines lifecycle progression so we can keep status
-    # advancement monotonic (see #advance_status!). queued/sent come first; the
-    # three terminal outcomes follow (a message reaches exactly one of them, so
-    # their order relative to each other is irrelevant).
-    STATUSES = %w[queued sent delivered undelivered failed].freeze
+    # The statuses order matters for advance_status!
+    STATUSES = %w[pending queued sent delivered undelivered failed].freeze
 
     belongs_to :user, optional: true
 

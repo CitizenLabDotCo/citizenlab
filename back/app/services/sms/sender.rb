@@ -18,12 +18,12 @@ module Sms
         user_id: user_id,
         phone_number: normalized_to,
         body: body,
-        status: 'queued'
+        status: 'pending'
       )
 
       begin
         result = provider_instance.send(to: normalized_to, body: body)
-        delivery.update!(message_sid: result[:message_sid], status: 'sent')
+        delivery.update!(message_sid: result[:message_sid], status: result[:status])
       rescue Sms::Error => e
         delivery.update!(status: 'failed', error_message: e.message)
         raise
