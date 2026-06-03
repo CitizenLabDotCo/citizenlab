@@ -2,7 +2,7 @@
 
 module CustomIdMethods::Acm
   module AcmVerification
-    include IdMethods::Base
+    include IdMethods::BaseIdMethod
 
     def verification_method_type
       :omniauth

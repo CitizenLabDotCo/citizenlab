@@ -3,7 +3,7 @@
 module CustomIdMethods::ViennaSaml
   # Provides a SAML Omniauth configuration for Vienna city employees.
   class EmployeeSamlOmniauth < IdMethods::Base
-    include IdMethods::Base
+    include IdMethods::BaseIdMethod
 
     # Vienna employee login is a login-only SSO method. Its configuration is stored
     # alongside the verification methods (in `verification.verification_methods`),

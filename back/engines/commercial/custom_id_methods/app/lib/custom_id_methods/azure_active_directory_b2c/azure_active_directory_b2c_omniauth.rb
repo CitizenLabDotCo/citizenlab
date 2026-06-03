@@ -2,7 +2,7 @@
 
 module CustomIdMethods::AzureActiveDirectoryB2c
   class AzureActiveDirectoryB2cOmniauth < IdMethods::Base
-    include IdMethods::Base
+    include IdMethods::BaseIdMethod
 
     # Azure AD B2C is a login-only SSO method. Its configuration lives alongside
     # the verification methods (in `verification.verification_methods`), but it

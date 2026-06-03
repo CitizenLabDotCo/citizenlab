@@ -2,7 +2,7 @@
 
 module CustomIdMethods::Auth0
   module Auth0Verification
-    include IdMethods::Base
+    include IdMethods::BaseIdMethod
 
     def verification_method_type
       :omniauth

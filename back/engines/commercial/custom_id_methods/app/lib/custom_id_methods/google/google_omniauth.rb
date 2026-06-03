@@ -2,7 +2,7 @@
 
 module CustomIdMethods::Google
   class GoogleOmniauth < IdMethods::Base
-    include IdMethods::Base
+    include IdMethods::BaseIdMethod
 
     GOOGLE_PLACEHOLDER_AVATAR_URL = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
 
