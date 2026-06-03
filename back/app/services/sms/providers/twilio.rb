@@ -1,7 +1,7 @@
 module Sms
   module Providers
     class Twilio < Base
-      # Twilio MessageStatus values -> SmsDelivery statuses.
+      # Twilio MessageStatus values -> Sms::Delivery statuses.
       # https://www.twilio.com/docs/messaging/api/message-resource#message-status-values
       STATUS_MAPPING = {
         'queued' => 'queued',

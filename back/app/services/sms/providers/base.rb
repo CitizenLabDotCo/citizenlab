@@ -24,7 +24,7 @@ module Sms
       # Normalises a provider callback into our own vocabulary.
       # @param params [ActionController::Parameters] the callback params
       # @return [Hash{Symbol => String, nil}] { message_sid:, status: } where
-      #   status is one of SmsDelivery::STATUSES (nil if the event is unmapped)
+      #   status is one of Sms::Delivery::STATUSES (nil if the event is unmapped)
       def parse_callback(params)
         raise NotImplementedError
       end

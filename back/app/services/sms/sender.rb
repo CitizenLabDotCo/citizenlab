@@ -15,7 +15,7 @@ module Sms
       normalized_to = Sms::PhoneNormalizer.normalize(to)
       raise Sms::Error, "Invalid phone number: #{to}" unless Sms::PhoneNormalizer.valid?(normalized_to)
 
-      delivery = SmsDelivery.create!(
+      delivery = Delivery.create!(
         user_id: user_id,
         phone_number: normalized_to,
         body: body,

@@ -17,9 +17,9 @@ RSpec.describe Sms::Sender do
 
       delivery = nil
       expect { delivery = described_class.new.send(to: '+14155552671', body: 'hi') }
-        .to change(SmsDelivery, :count).by(1)
+        .to change(Sms::Delivery, :count).by(1)
 
-      expect(delivery).to eq(SmsDelivery.last)
+      expect(delivery).to eq(Sms::Delivery.last)
       expect(delivery.status).to eq('sent')
       expect(delivery.message_sid).to eq('SM_abc')
     end
@@ -45,7 +45,7 @@ RSpec.describe Sms::Sender do
     it 'raises Sms::Error for an unknown provider' do
       expect { described_class.new.send(to: '+14155552671', body: 'hi', provider: :carrier_pigeon) }
         .to raise_error(Sms::Error, /Unknown SMS provider/)
-      expect(SmsDelivery.count).to eq(0)
+      expect(Sms::Delivery.count).to eq(0)
     end
 
     it 'normalizes the phone number before storing' do
@@ -60,7 +60,7 @@ RSpec.describe Sms::Sender do
       expect(twilio_provider).not_to receive(:send)
       expect { described_class.new.send(to: 'not-a-phone', body: 'hi') }
         .to raise_error(Sms::Error, /Invalid phone number/)
-      expect(SmsDelivery.count).to eq(0)
+      expect(Sms::Delivery.count).to eq(0)
     end
 
     it 'marks the delivery failed and re-raises when the provider fails' do
@@ -69,7 +69,7 @@ RSpec.describe Sms::Sender do
       expect { described_class.new.send(to: '+14155552671', body: 'hi') }
         .to raise_error(Sms::Error)
 
-      delivery = SmsDelivery.last
+      delivery = Sms::Delivery.last
       expect(delivery.status).to eq('failed')
       expect(delivery.error_message).to eq('Twilio rejected it')
     end
