@@ -7,8 +7,8 @@ require 'mcp_server/version'
 Gem::Specification.new do |s|
   s.name        = 'mcp_server'
   s.version     = McpServer::VERSION
-  s.authors     = ['CitizenLab']
-  s.summary     = 'MCP server for CitizenLab'
+  s.authors     = ['Go Vocal']
+  s.summary     = 'MCP server for Go Vocal'
   s.licenses    = [Gem::Licenses::NONSTANDARD]
 
   s.files = Dir['{app,config,lib}/**/*']
