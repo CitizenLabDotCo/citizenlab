@@ -32,7 +32,7 @@ class IdMethodService
   end
 
   def configured_methods(app_configuration)
-    configured_methods = app_configuration.settings('verification', 'id_methods') || []
+    configured_methods = app_configuration.settings('verification', 'verification_methods') || []
     configured_names = configured_methods.pluck('name')
     all_methods.select do |method|
       configured_names.include?(method.name) if method.respond_to?(:name)
