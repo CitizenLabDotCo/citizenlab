@@ -2,8 +2,7 @@
 
 module Verification
   class VerificationService
-    def initialize(sfxv_service = SideFxVerificationService.new)
-      @sfxv_service = sfxv_service
+    def initialize
       @id_method_service = IdMethodService.new
     end
 
@@ -26,6 +25,10 @@ module Verification
     # @return [Boolean]
     def active?(configuration, method_name)
       active_methods(configuration).include? @id_method_service.method_by_name(method_name)
+    end
+
+    def method_by_name(method_name)
+      active_methods(AppConfiguration.instance).find { |method| method.name == method_name }
     end
 
     # Not all verification methods are allowed at a permission/action level
@@ -190,10 +193,12 @@ module Verification
         active: true
       )
 
-      @sfxv_service.before_create(verification, user)
+      sfxv_service = SideFxVerificationService.new
+
+      sfxv_service.before_create(verification, user)
       ActiveRecord::Base.transaction do
         verification.save!
-        @sfxv_service.after_create(verification, user)
+        sfxv_service.after_create(verification, user)
       end
 
       verification

@@ -79,7 +79,7 @@ module CustomIdMethods::AzureActiveDirectory
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       env['omniauth.strategy'].options[:client_id] = config[:client_id]
       env['omniauth.strategy'].options[:tenant] = config[:tenant]
@@ -99,7 +99,7 @@ module CustomIdMethods::AzureActiveDirectory
       # Called on every login attempt (via AuthenticationService.sso_enforced_for_email?),
       # including on tenants that have no verification configured. Guard before
       # reading #config, which assumes the verification setting is present.
-      return [] unless Verification::VerificationService.new.configured?(AppConfiguration.instance, name)
+      return [] unless IdMethodService.new.configured?(AppConfiguration.instance, name)
 
       domains_str = config[:enforced_email_domains]
       return [] if domains_str.blank?

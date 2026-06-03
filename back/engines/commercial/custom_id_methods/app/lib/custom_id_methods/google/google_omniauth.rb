@@ -45,7 +45,7 @@ module CustomIdMethods::Google
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       env['omniauth.strategy'].options[:client_id] = config[:client_id]
       env['omniauth.strategy'].options[:client_secret] = config[:client_secret]

@@ -1435,7 +1435,7 @@
             "type": "array",
             "default": [],
             "items": {
-              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
+              "anyOf": <%= IdMethodService.new.all_methods_json_schema %>
             }
           }
         }

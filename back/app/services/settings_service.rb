@@ -110,19 +110,7 @@ class SettingsService
   # a) There are no verification methods
   # b) All verification methods are flagged as 'hide_from_profile' or verification? = false
   def disable_verification_if_no_methods_enabled(settings)
-    return settings if !settings['verification'] || settings['verification']['enabled'] == false
-
-    methods = settings['verification']['verification_methods']
-    verification_service = Verification::VerificationService.new
-    enabled = methods.present? && methods.any? do |method_config|
-      next false if method_config['hide_from_profile']
-
-      method = verification_service.method_by_name(method_config['name'])
-      method&.verification?
-    end
-
-    settings['verification']['enabled'] = enabled
-    settings
+    # TODO
   end
 
   private

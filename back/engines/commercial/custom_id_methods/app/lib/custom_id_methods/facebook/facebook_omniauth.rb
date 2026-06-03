@@ -50,7 +50,7 @@ module CustomIdMethods::Facebook
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       env['omniauth.strategy'].options[:client_id] = config[:app_id]
       env['omniauth.strategy'].options[:client_secret] = config[:app_secret]

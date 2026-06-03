@@ -83,7 +83,7 @@ module CustomIdMethods::ViennaSaml
     # Most of the settings are read from the XML file that Vienna shared with us.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       metadata_file = ENVIRONMENTS.dig(vienna_login_env, :metadata_xml_file)
       issuer = ENVIRONMENTS.dig(vienna_login_env, :issuer)

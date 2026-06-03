@@ -76,7 +76,7 @@ module CustomIdMethods::AzureActiveDirectoryB2c
     # The endpoints can be found in "Azure AD B2C | App registrations" -> Endpoints.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       options = env['omniauth.strategy'].options
 
