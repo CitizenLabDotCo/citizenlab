@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::AzureActiveDirectory
-  class AzureActiveDirectoryOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class AzureActiveDirectoryOmniauth < IdMethods::Base
+    include IdMethods::Base
 
     # Azure AD is a login-only SSO method. Its configuration lives alongside the
     # verification methods (in `verification.verification_methods`), but it cannot

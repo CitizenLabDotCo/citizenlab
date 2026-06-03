@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Criipto
-  class CriiptoOmniauth < OmniauthMethods::Base
+  class CriiptoOmniauth < IdMethods::Base
     include CriiptoVerification
 
     def profile_to_user_attrs(auth)

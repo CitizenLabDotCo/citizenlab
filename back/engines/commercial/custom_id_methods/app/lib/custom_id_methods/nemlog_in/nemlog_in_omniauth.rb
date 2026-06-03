@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::NemlogIn
-  class NemlogInOmniauth < OmniauthMethods::Base
+  class NemlogInOmniauth < IdMethods::Base
     include NemlogInVerification
 
     # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp

@@ -2,7 +2,7 @@
 
 module CustomIdMethods::ClaveUnica
   module ClaveUnicaVerification
-    include Verification::VerificationMethod
+    include IdMethods::Base
 
     def verification_method_type
       :omniauth

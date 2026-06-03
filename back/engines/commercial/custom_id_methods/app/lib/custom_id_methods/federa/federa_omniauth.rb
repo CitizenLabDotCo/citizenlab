@@ -3,7 +3,7 @@
 # NOTES: Domain partecipa.comune.modena.it
 
 module CustomIdMethods::Federa
-  class FederaOmniauth < OmniauthMethods::Base
+  class FederaOmniauth < IdMethods::Base
     include FederaVerification
 
     ENVIRONMENTS = {

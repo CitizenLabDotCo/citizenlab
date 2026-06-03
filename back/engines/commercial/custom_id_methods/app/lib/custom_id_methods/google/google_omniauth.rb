@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Google
-  class GoogleOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class GoogleOmniauth < IdMethods::Base
+    include IdMethods::Base
 
     GOOGLE_PLACEHOLDER_AVATAR_URL = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
 

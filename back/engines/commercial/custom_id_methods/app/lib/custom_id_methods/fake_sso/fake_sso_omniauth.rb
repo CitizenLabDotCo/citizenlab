@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::FakeSso
-  class FakeSsoOmniauth < OmniauthMethods::Base
+  class FakeSsoOmniauth < IdMethods::Base
     include FakeSsoVerification
 
     def profile_to_user_attrs(auth)

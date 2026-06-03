@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Verification
-  module VerificationMethod
+module IdMethods
+  module BaseIdMethod
     # It allows to migrate from one provider to another. See how it's overridden.
     def name_for_hashing
       name

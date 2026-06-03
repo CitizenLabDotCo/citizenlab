@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
+module IdMethods
   class Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)

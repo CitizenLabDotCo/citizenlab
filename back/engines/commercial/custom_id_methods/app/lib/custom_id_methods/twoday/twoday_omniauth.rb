@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Twoday
-  class TwodayOmniauth < OmniauthMethods::Base
+  class TwodayOmniauth < IdMethods::Base
     include TwodayVerification
 
     def profile_to_user_attrs(auth)

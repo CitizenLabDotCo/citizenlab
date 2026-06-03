@@ -2,7 +2,7 @@
 
 module CustomIdMethods::BosaFas
   module BosaFasVerification
-    include Verification::VerificationMethod
+    include IdMethods::Base
 
     def verification_method_type
       :omniauth

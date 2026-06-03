@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Acm
-  class AcmOmniauth < OmniauthMethods::Base
+  class AcmOmniauth < IdMethods::Base
     include AcmVerification
 
     def profile_to_user_attrs(auth)

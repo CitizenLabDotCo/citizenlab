@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Facebook
-  class FacebookOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class FacebookOmniauth < IdMethods::Base
+    include IdMethods::Base
 
     # Facebook is a login-only SSO method. Its configuration lives alongside the
     # verification methods (in `verification.verification_methods`), but it cannot

@@ -3,7 +3,7 @@
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module CustomIdMethods::Franceconnect
-  class FranceconnectOmniauth < OmniauthMethods::Base
+  class FranceconnectOmniauth < IdMethods::Base
     include FranceconnectVerification
 
     # The flow of the sso_verification param in case of FranceConnect:

@@ -2,7 +2,7 @@
 
 module CustomIdMethods::NemlogIn
   module NemlogInVerification
-    include Verification::VerificationMethod
+    include IdMethods::Base
 
     def verification_method_type
       :omniauth
