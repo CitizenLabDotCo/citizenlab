@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Vos données de réponse pourraient être inexactes",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Modifier le texte",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Vous corrigez une faute de frappe ? Cela n'affectera pas vos données de réponse.",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Supprimer une question",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Vous perdrez les données de réponse liées à cette question dans toutes les phases utilisant le même formulaire",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Attention : les phases d'idéation, de vote et de budget participatif de ce projet partagent un seul formulaire de contribution. Toutes les modifications effectuées ici s'appliqueront à l'ensemble de ces phases.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Non, annuler",

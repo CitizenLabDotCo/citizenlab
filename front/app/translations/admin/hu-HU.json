@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "A válaszadatok pontatlanná válhatnak",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Szöveg szerkesztése",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Csak elírást javít? Ez nem befolyásolja a válaszadatokat",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Kérdés törlése",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Elveszíti az adott kérdéshez kapcsolódó válaszadatokat minden olyan szakaszban, amely ugyanazt az űrlapot használja",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Figyelem: A projekt ötletgyűjtési, szavazási és költségvetési szakaszai közös beviteli űrlapot használnak. Az itt végzett módosítások mindegyikre vonatkozni fognak.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nem, mégse",

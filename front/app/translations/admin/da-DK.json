@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Dine svardata kan blive unøjagtige",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Rediger tekst",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Retter du en stavefejl? Det vil ikke påvirke dine svardata",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Slet et spørgsmål",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Du vil miste svardata knyttet til det spørgsmål i alle faser, der bruger den samme formular",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Advarsel: Faserne for idégenerering, afstemning og budgettering i dette projekt deler den samme formular. Alle ændringer, du foretager her, vil gælde for dem alle.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nej, annuller",

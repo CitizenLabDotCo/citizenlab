@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Je responsgegevens kunnen onnauwkeurig worden",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Tekst bewerken",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Corrigeer je een typefout? Dit heeft geen invloed op je responsgegevens",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Een vraag verwijderen",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Je verliest de responsgegevens die aan die vraag zijn gekoppeld in alle fasen die hetzelfde formulier gebruiken",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Waarschuwing: de fasen voor ideeënvorming, stemming en budgettering in dit project delen hetzelfde bijdrageformulier. Wijzigingen die je hier aanbrengt, zijn van toepassing op al deze fasen.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nee, annuleren",

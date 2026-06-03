@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Jūsu atbilžu dati var būt neprecīzi",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Rediģēt tekstu",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Labojat drukas kļūdu? Tas neietekmēs jūsu atbilžu datus",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Dzēst jautājumu",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Jūs zaudēsiet atbilžu datus, kas saistīti ar šo jautājumu visās fāzēs, kurās tiek izmantota šī pati forma",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Brīdinājums: ideju apkopošanas, balsošanas un budžeta plānošanas fāzēm šajā projektā ir kopīga ievades forma. Jebkuras šeit veiktās izmaiņas tiks piemērotas tām visām.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nē, atcelt",

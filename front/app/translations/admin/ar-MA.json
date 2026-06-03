@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "بيانات الأجوبة ديالك تقدر تولي غير دقيقة",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "تعديل النص",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "كتصحح غير غلط مطبعي؟ هادشي ما غيأثرش على بيانات الأجوبة ديالك",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "حذف سؤال",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "غتضيع بيانات الأجوبة اللي مرتبطة بهاد السؤال فكاع المراحل اللي كتستعمل نفس الاستمارة",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "تحذير: مراحل اقتراح الأفكار، التصويت، والميزانية فهاد المشروع كيتشاركو فاستمارة وحدة. أي تعديلات غديرها هنا غتطبق عليهم كاملين.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "لا، إلغاء",

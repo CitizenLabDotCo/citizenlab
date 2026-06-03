@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Τα δεδομένα των απαντήσεών σας ενδέχεται να είναι ανακριβή",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Επεξεργασία κειμένου",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Διορθώνετε ένα τυπογραφικό λάθος; Δεν θα επηρεάσει τα δεδομένα των απαντήσεών σας",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Διαγραφή ερώτησης",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Θα χάσετε τα δεδομένα απαντήσεων που συνδέονται με αυτήν την ερώτηση σε όλες τις φάσεις που χρησιμοποιούν την ίδια φόρμα",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Προειδοποίηση: Οι φάσεις ιδεών, ψηφοφορίας και συμμετοχικού προϋπολογισμού σε αυτό το έργο μοιράζονται μια ενιαία φόρμα εισαγωγής. Οποιεσδήποτε αλλαγές κάνετε εδώ θα ισχύουν για όλες.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Όχι, ακύρωση",

@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "آپ کے جوابات کا ڈیٹا غیر درست ہو سکتا ہے",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "متن میں ترمیم کریں",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "املا کی غلطی درست کر رہے ہیں؟ اس سے آپ کے جوابات کا ڈیٹا متاثر نہیں ہوگا",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "ایک سوال حذف کریں",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "آپ ان تمام مراحل میں اس سوال سے منسلک جوابات کا ڈیٹا کھو دیں گے جو ایک ہی فارم استعمال کر رہے ہیں",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "انتباہ: اس پروجیکٹ میں آئیڈیشن، ووٹنگ، اور بجٹنگ کے مراحل ایک ہی ان پٹ فارم کا اشتراک کرتے ہیں۔ آپ یہاں جو بھی ترمیم کریں گے وہ ان سب پر لاگو ہوگی۔",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "نہیں، منسوخ کریں",

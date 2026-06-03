@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Svardataene dine kan bli unøyaktige",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Rediger tekst",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Retter du en skrivefeil? Det vil ikke påvirke svardataene dine",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Slett et spørsmål",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Du vil miste svardata knyttet til det spørsmålet i alle faser som bruker samme skjema",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Advarsel: Fasene for idéskaping, avstemning og budsjettering i dette prosjektet deler samme inndataskjema. Alle endringer du gjør her, vil gjelde for alle disse fasene.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nei, avbryt",

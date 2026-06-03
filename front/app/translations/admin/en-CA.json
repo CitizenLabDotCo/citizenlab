@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Your response data may be inaccurate",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Edit text",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Fixing a typo? It won't affect your response data",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Delete a question",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "You'll lose response data linked to that question in all phases using the same form",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Warning: Ideation, voting, and budgeting phases in this project share a single input form. Any edits you make here will apply to all of them.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "No, cancel",

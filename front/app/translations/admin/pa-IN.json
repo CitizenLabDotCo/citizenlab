@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "ਤੁਹਾਡਾ ਜਵਾਬ ਡੇਟਾ ਗਲਤ ਹੋ ਸਕਦਾ ਹੈ",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "ਟੈਕਸਟ ਵਿੱਚ ਸੋਧ ਕਰੋ",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "ਲਿਖਣ ਦੀ ਗਲਤੀ ਸੁਧਾਰ ਰਹੇ ਹੋ? ਇਹ ਤੁਹਾਡੇ ਜਵਾਬ ਡੇਟਾ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਨਹੀਂ ਕਰੇਗੀ",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "ਸਵਾਲ ਮਿਟਾਓ",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "ਤੁਸੀਂ ਉਸ ਸਵਾਲ ਨਾਲ ਜੁੜਿਆ ਜਵਾਬ ਡੇਟਾ ਉਹਨਾਂ ਸਾਰੇ ਪੜਾਵਾਂ ਵਿੱਚ ਗੁਆ ਦੇਵੋਗੇ ਜੋ ਇੱਕੋ ਫਾਰਮ ਦੀ ਵਰਤੋਂ ਕਰ ਰਹੇ ਹਨ",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "ਚੇਤਾਵਨੀ: ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਵਿਚਾਰ-ਵਟਾਂਦਰਾ, ਵੋਟਿੰਗ ਅਤੇ ਬਜਟ ਬਣਾਉਣ ਦੇ ਪੜਾਅ ਇੱਕੋ ਇਨਪੁਟ ਫਾਰਮ ਸਾਂਝਾ ਕਰਦੇ ਹਨ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਇੱਥੇ ਕੀਤੀ ਗਈ ਕੋਈ ਵੀ ਸੋਧ ਉਹਨਾਂ ਸਾਰਿਆਂ 'ਤੇ ਲਾਗੂ ਹੋਵੇਗੀ।",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "ਨਹੀਂ, ਰੱਦ ਕਰੋ",

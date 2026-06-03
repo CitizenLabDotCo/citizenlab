@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "قد تكون بيانات الردود غير دقيقة",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "تعديل النص",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "هل تقوم بتصحيح خطأ إملائي؟ لن يؤثر ذلك على بيانات الردود الخاصة بك",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "حذف سؤال",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "ستفقد بيانات الردود المرتبطة بهذا السؤال في جميع المراحل التي تستخدم النموذج نفسه",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "تحذير: تشترك مراحل طرح الأفكار والتصويت والميزانية التشاركية في هذا المشروع في نموذج إدخال واحد. أي تعديلات تجريها هنا ستنطبق عليها جميعاً.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "لا، إلغاء",

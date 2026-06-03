@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Dane odpowiedzi mogą być niedokładne",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Edytuj tekst",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Poprawiasz literówkę? Nie wpłynie to na dane odpowiedzi",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Usuń pytanie",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Utracisz dane odpowiedzi powiązane z tym pytaniem we wszystkich fazach korzystających z tego samego formularza",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Uwaga: Fazy zgłaszania pomysłów, głosowania i budżetowania w tym projekcie korzystają z tego samego formularza wejściowego. Wszelkie wprowadzone tutaj zmiany zostaną zastosowane do wszystkich tych faz.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nie, anuluj",

@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Yanıt verileriniz hatalı olabilir",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Metni düzenle",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Bir yazım hatasını mı düzeltiyorsunuz? Bu, yanıt verilerinizi etkilemez",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Soruyu sil",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Aynı formu kullanan tüm aşamalarda o soruyla bağlantılı yanıt verilerini kaybedeceksiniz",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Uyarı: Bu projedeki fikir toplama, oylama ve bütçeleme aşamaları tek bir giriş formunu paylaşır. Burada yapacağınız tüm düzenlemeler hepsine uygulanacaktır.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Hayır, iptal et",

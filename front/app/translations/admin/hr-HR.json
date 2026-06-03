@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Vaši podaci o odgovorima mogli bi biti netočni",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Uredi tekst",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Ispravljate tipfeler? To neće utjecati na vaše podatke o odgovorima",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Obriši pitanje",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Izgubit ćete podatke o odgovorima povezane s tim pitanjem u svim fazama koje koriste isti obrazac",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Upozorenje: faze ideacije, glasovanja i budžetiranja u ovom projektu dijele isti obrazac za unos. Sve izmjene koje ovdje napravite primijenit će se na sve njih.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ne, odustani",

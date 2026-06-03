@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "I dati delle risposte potrebbero non essere accurati",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Modifica testo",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Stai correggendo un refuso? Non influirà sui dati delle risposte",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Elimina una domanda",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Perderai i dati delle risposte collegati a quella domanda in tutte le fasi che utilizzano lo stesso modulo",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Attenzione: le fasi di ideazione, voto e bilancio partecipativo in questo progetto condividono un unico modulo del contributo. Qualsiasi modifica apportata qui si applicherà a tutte le fasi.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "No, annulla",

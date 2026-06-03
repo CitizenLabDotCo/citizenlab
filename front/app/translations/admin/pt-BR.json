@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Seus dados de resposta podem ficar imprecisos",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Editar texto",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Corrigindo um erro de digitação? Isso não afetará seus dados de resposta",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Excluir uma pergunta",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Você perderá os dados de resposta vinculados a essa pergunta em todas as fases que usam o mesmo formulário",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Aviso: As fases de ideação, votação e orçamento neste projeto compartilham um único formulário de entrada. Quaisquer edições feitas aqui serão aplicadas a todas elas.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Não, cancelar",

@@ -571,6 +571,7 @@
   "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": "Är Äntwert-Date kéinten ongenau ginn",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Text beaarbechten",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "E Tippfeeler korrigéieren? Dat huet keen Afloss op Är Äntwert-Daten",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Eng Fro läschen",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Dir verléiert d'Äntwert-Daten, déi mat dëser Fro verbonne sinn, an alle Phasen, déi de selwechte Formulaire benotzen",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Warnung: D'Phasen fir d'Ideesammlung, d'Ofstëmmung an d'Budgetéierung an dësem Projet deelen sech een eenzegen Input-Formulaire. All Ännerungen, déi Dir hei maacht, ginn op si all ugewannt.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nee, ofbriechen",
