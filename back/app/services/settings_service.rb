@@ -113,7 +113,8 @@ class SettingsService
   # a) There are no verification methods
   # b) All verification methods are flagged as 'hide_from_profile' or verification? = false
   def disable_verification_if_no_methods_enabled(settings)
-    # TODO
+    # TODO: disable_verification_if_no_methods_enabled
+    settings
   end
 
   private
