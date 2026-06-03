@@ -3,8 +3,7 @@
 module Sms
   class Sender
     PROVIDERS = {
-      twilio: Sms::Providers::Twilio,
-      aws: Sms::Providers::Aws
+      twilio: Sms::Providers::Twilio
     }.freeze
 
     DEFAULT_PROVIDER = :twilio

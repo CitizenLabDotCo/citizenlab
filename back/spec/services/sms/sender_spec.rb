@@ -4,11 +4,9 @@ require 'rails_helper'
 
 RSpec.describe Sms::Sender do
   let(:twilio_provider) { instance_double(Sms::Providers::Twilio) }
-  let(:aws_provider) { instance_double(Sms::Providers::Aws) }
 
   before do
     allow(Sms::Providers::Twilio).to receive(:new).and_return(twilio_provider)
-    allow(Sms::Providers::Aws).to receive(:new).and_return(aws_provider)
   end
 
   describe '#send' do
@@ -24,22 +22,12 @@ RSpec.describe Sms::Sender do
       expect(delivery.message_sid).to eq('SM_abc')
     end
 
-    it 'routes to the AWS provider when provider: :aws is passed' do
-      allow(aws_provider).to receive(:send).and_return(message_sid: 'aws-1', status: 'queued')
-      expect(twilio_provider).not_to receive(:send)
-
-      delivery = described_class.new.send(to: '+14155552671', body: 'hi', provider: :aws)
-
-      expect(delivery.status).to eq('sent')
-      expect(delivery.message_sid).to eq('aws-1')
-    end
-
     it 'accepts the provider as a string' do
-      allow(aws_provider).to receive(:send).and_return(message_sid: 'aws-2', status: 'queued')
+      allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_2', status: 'queued')
 
-      delivery = described_class.new.send(to: '+14155552671', body: 'hi', provider: 'aws')
+      delivery = described_class.new.send(to: '+14155552671', body: 'hi', provider: 'twilio')
 
-      expect(delivery.message_sid).to eq('aws-2')
+      expect(delivery.message_sid).to eq('SM_2')
     end
 
     it 'raises Sms::Error for an unknown provider' do
