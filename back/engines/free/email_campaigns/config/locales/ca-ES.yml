@@ -67,6 +67,7 @@ ca-ES:
         user_with_unsubmitted_votes: Usuari que no ha enviat els seus vots
         users_who_engaged_but_not_voted: Usuaris que s'han implicat amb el projecte però no han votat
         users_who_engaged_with_the_project: Usuaris que han participat amb el projecte
+        users_who_follow_or_participated: Usuaris que segueixen el projecte o que hi han participat
         users_who_follow_the_input: Usuaris que segueixen l'entrada
         users_who_follow_the_project: Usuaris que segueixen el projecte
         users_who_follow_the_proposal: Usuaris que segueixen la proposta

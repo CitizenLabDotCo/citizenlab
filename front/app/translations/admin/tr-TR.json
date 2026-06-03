@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Bu içgörünün kalitesini değerlendirin",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Filtreleri geri yükle",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Özetleyin",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Yapay zeka destekli analiz mevcut planınıza dahil değildir. Kilidini açmak için Kamu Başarı Yöneticinizle veya yöneticinizle görüşün.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Şunlar için özet",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Tüm girdiler için özet",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "İstek tamamlanamadı. Lütfen daha sonra tekrar deneyin.",

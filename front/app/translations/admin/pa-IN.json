@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "ਇਸ ਸੂਝ ਦੀ ਗੁਣਵੱਤਾ ਨੂੰ ਦਰਜਾ ਦਿਓ",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "ਫਿਲਟਰ ਰੀਸਟੋਰ ਕਰੋ",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "ਸੰਖੇਪ",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "AI-ਦੁਆਰਾ ਸੰਚਾਲਿਤ ਵਿਸ਼ਲੇਸ਼ਣ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਗਵਰਨਮੈਂਟ ਸਕਸੈਸ ਮੈਨੇਜਰ ਜਾਂ ਐਡਮਿਨ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "ਲਈ ਸੰਖੇਪ",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "ਸਾਰੇ ਇਨਪੁਟਸ ਲਈ ਸੰਖੇਪ",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "ਬੇਨਤੀ ਪੂਰੀ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",

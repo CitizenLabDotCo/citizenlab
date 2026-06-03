@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Beoordeel de kwaliteit van dit inzicht",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Herstel filters",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Samenvatten",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "AI-gestuurde analyse is niet inbegrepen in je huidige pakket. Neem contact op met je Government Success Manager of Platformbeheerder om dit te ontgrendelen.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Samenvatting voor",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Samenvatting voor alle bijdragen",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Het verzoek kon niet worden voltooid. Probeer het later nog eens.",

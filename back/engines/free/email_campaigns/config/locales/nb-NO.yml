@@ -67,6 +67,7 @@ nb-NO:
         user_with_unsubmitted_votes: Bruker som ikke har avgitt stemme
         users_who_engaged_but_not_voted: Brukere som har engasjert seg i prosjektet, men som ikke har stemt
         users_who_engaged_with_the_project: Brukere som engasjerte seg i prosjektet
+        users_who_follow_or_participated: Brukere som følger prosjektet eller har deltatt
         users_who_follow_the_input: Brukere som følger innspillene
         users_who_follow_the_project: Brukere som følger prosjektet
         users_who_follow_the_proposal: Brukere som følger forslaget

@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Rátáil cáilíocht an léargais seo",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Athchóirigh scagairí",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Achoimre a dhéanamh",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Níl anailís faoi thiomáint ag AI san áireamh i do phlean reatha. Labhair le do Bhainisteoir Rathúlachta Rialtais nó le riarthóir chun é a dhíghlasáil.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Achoimre do",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Achoimre ar na hionchuir uile",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Níorbh fhéidir an t-iarratas a chomhlánú. Déan iarracht arís ar ball.",
