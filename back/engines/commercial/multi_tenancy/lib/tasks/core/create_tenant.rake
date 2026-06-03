@@ -159,10 +159,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        events_widget: {
-          enabled: true,
-          allowed: true
-        },
         polls: {
           enabled: true,
           allowed: true
