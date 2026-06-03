@@ -152,6 +152,8 @@ Rails.application.routes.draw do
       end
 
       post 'sms/sends', to: 'sms/sends#create' if Rails.env.development?
+      post 'sms/callbacks/twilio', to: 'sms/callbacks#twilio'
+      post 'sms/callbacks/aws', to: 'sms/callbacks#aws'
 
       resources :global_topics do
         patch 'reorder', on: :member
