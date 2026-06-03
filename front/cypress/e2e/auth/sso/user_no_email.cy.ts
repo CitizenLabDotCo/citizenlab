@@ -21,12 +21,15 @@ describe('SSO: user without email', () => {
     fakeSSOSignup(cy, 'jane_doe');
 
     const existingEmail = 'admin@govocal.com';
-    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(existingEmail);
+    cy.get('#e2e-authentication-modal')
+      .get('input[type="email"]')
+      .type(existingEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
-    cy.get(
-      '#e2e-authentication-modal'
-    ).should('include.text', 'An account with this email already exists');
+    cy.get('#e2e-authentication-modal').should(
+      'include.text',
+      'An account with this email already exists'
+    );
   });
 
   it('allows user to re-request a code', () => {
@@ -61,7 +64,9 @@ describe('SSO: user without email', () => {
     cy.get('#e2e-go-to-change-email').click();
 
     const newEmail = randomEmail();
-    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(newEmail);
+    cy.get('#e2e-authentication-modal')
+      .get('input[type="email"]')
+      .type(newEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)

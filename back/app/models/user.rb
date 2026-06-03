@@ -55,6 +55,7 @@ class User < ApplicationRecord
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
+  include UserDoorkeeper
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
