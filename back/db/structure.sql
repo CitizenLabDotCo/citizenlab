@@ -196,7 +196,6 @@ DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
-DROP INDEX IF EXISTS public.index_users_on_phone_number;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -1553,8 +1552,7 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    token_expiry_key character varying,
-    phone_number character varying
+    token_expiry_key character varying
 );
 
 
@@ -7155,13 +7153,6 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_phone_number; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_phone_number ON public.users USING btree (phone_number);
-
-
---
 -- Name: index_users_on_registration_completed_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8635,7 +8626,6 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260526100720'),
-('20260526100719'),
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),

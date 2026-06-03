@@ -39,12 +39,10 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  last_active_at                      :datetime
 #  imported                            :boolean          default(FALSE), not null
 #  token_expiry_key                    :string
-#  phone_number                        :string
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
-#  index_users_on_phone_number               (phone_number)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
@@ -165,7 +163,6 @@ class User < ApplicationRecord
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
   before_validation :complete_registration
-  before_validation :normalize_phone_number, if: :phone_number_changed?
 
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
@@ -196,7 +193,6 @@ class User < ApplicationRecord
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
-  validates :phone_number, format: { with: Sms::PhoneNormalizer::E164_REGEX }, allow_nil: true
 
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
@@ -396,10 +392,6 @@ class User < ApplicationRecord
 
   def sanitize_last_name
     self.last_name = ActionView::Base.full_sanitizer.sanitize(last_name)
-  end
-
-  def normalize_phone_number
-    self.phone_number = Sms::PhoneNormalizer.normalize(phone_number)
   end
 
   def email_or_new_email_changed?
