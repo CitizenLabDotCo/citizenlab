@@ -233,7 +233,6 @@ export interface IAppConfigurationSettings {
   spaces?: AppConfigurationFeature;
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
-  email_scheduling?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
 }
