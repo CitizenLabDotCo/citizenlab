@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Graddiwch ansawdd y mewnwelediad hwn",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Adfer hidlwyr",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Crynhoi",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Nid yw dadansoddiad wedi'i bweru gan AI wedi'i gynnwys yn eich cynllun presennol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Crynodeb ar gyfer",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Crynodeb ar gyfer yr holl fewnbynnau",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Ni ellid cwblhau'r cais. Rhowch gynnig arall arni yn nes ymlaen.",
