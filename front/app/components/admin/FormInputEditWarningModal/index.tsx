@@ -50,7 +50,7 @@ const FormInputEditWarningModal = ({
           </Box>
           <Box>
             <Text m="0px" mb="8px" fontWeight="bold">
-              {formatMessage(messages.deteleAQuestion)}
+              {formatMessage(messages.deleteAQuestion)}
             </Text>
             <Text m="0px" fontSize="s">
               {formatMessage(messages.deleteAQuestionDescription)}
@@ -102,7 +102,6 @@ const FormInputEditWarningModal = ({
             onClick={() => {
               clHistory.push(editFormLink);
             }}
-            data-cy="e2e-form-input-edit-warning-modal-continue"
           >
             {formatMessage(messages.yesContinue)}
           </Button>

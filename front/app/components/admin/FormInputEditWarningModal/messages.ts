@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage:
       'Warning: Ideation, voting, and budgeting phases in this project share a single input form. Any edits you make here will apply to all of them.',
   },
-  deteleAQuestion: {
-    id: 'app.components.formBuilder.formInputEditWarningModal.deteleAQuestion',
+  deleteAQuestion: {
+    id: 'app.components.formBuilder.formInputEditWarningModal.deleteAQuestion',
     defaultMessage: 'Delete a question',
   },
   deleteAQuestionDescription: {

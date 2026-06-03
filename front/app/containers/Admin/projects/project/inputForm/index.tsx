@@ -12,7 +12,7 @@ import { useParams } from 'utils/router';
 
 import { isPDFUploadSupported } from '../inputImporter/ReviewSection/utils';
 
-import FormInputEditButtonWithWarningModal from './FormInputEditButtonWithWarningModal';
+import EditInputFormButton from './EditInputFormButton';
 import messages from './messages';
 
 export const InputForm = () => {
@@ -33,7 +33,7 @@ export const InputForm = () => {
         <FormattedMessage {...messages.inputFormDescription} />
       </SectionDescription>
       <Box display="flex" flexDirection="row">
-        <FormInputEditButtonWithWarningModal
+        <EditInputFormButton
           projectId={projectId}
           phaseId={phaseId}
           editFormLink={editFormLink}

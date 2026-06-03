@@ -17,11 +17,7 @@ interface Props {
   editFormLink: string;
 }
 
-const FormInputEditButtonWithWarningModal = ({
-  projectId,
-  phaseId,
-  editFormLink,
-}: Props) => {
+const EditInputFormButton = ({ projectId, phaseId, editFormLink }: Props) => {
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const { data: phase } = usePhase(phaseId);
   const { data: phases } = usePhases(projectId);
@@ -68,4 +64,4 @@ const FormInputEditButtonWithWarningModal = ({
   );
 };
 
-export default FormInputEditButtonWithWarningModal;
+export default EditInputFormButton;
