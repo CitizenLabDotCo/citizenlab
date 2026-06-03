@@ -27,6 +27,10 @@ class IdMethodService
     end.to_json
   end
 
+  def enabled?(method_name)
+    method_by_name(method_name)&.enabled?
+  end
+
   def configured_methods(app_configuration)
     configured_methods = app_configuration.settings('verification', 'id_methods') || []
     configured_names = configured_methods.pluck('name')
