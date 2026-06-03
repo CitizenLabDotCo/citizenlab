@@ -20,12 +20,20 @@ module CustomIdMethods::EtatLu
       options = env['omniauth.strategy'].options
       options[:scope] = %i[openid email profile]
       options[:response_type] = :code
-      options[:discovery] = true
       options[:issuer] = issuer
+
+      # NOTE: Cannot use auto-discovery: the État luxembourgeois discovery document
+      # omits `subject_types_supported`, which openid_connect treats as required and
+      # rejects (raising DiscoveryFailed). We pass the endpoints explicitly instead.
+      # The jwks_uri suffix (openid_Default_App_INT_ETAT) is environment-specific.
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
-        redirect_uri: "#{configuration.base_backend_uri}/auth/etat_lu/callback"
+        redirect_uri: "#{configuration.base_backend_uri}/auth/etat_lu/callback",
+        authorization_endpoint: "#{issuer}/sps/oauth/oauth20/authorize",
+        token_endpoint: "#{issuer}/sps/oauth/oauth20/token",
+        userinfo_endpoint: "#{issuer}/sps/oauth/oauth20/userinfo",
+        jwks_uri: "#{issuer}/sps/oauth/oauth20/jwks/openid_Default_App_INT_ETAT"
       }
     end
 
