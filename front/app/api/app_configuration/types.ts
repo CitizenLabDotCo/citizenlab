@@ -234,7 +234,6 @@ export interface IAppConfigurationSettings {
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
   email_scheduling?: AppConfigurationFeature;
-  project_widget?: AppConfigurationFeature;
   phase_datetime_setup?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
