@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Redigera text",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Rättar du ett stavfel? Det kommer inte att påverka dina svarsdata",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Du kommer att förlora svarsdata kopplad till den frågan i alla faser som använder samma formulär",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Ta bort en fråga",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Varning: Faser för idéinsamling, omröstning och budgetering i det här projektet delar samma formulär. Alla ändringar du gör här kommer att gälla för dem alla.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nej, avbryt",
   "app.components.formBuilder.formInputEditWarningModal.title": "Redigera formulär",

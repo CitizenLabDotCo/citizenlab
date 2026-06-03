@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Editar el text",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Corregir una errada? No afectarà les dades de les respostes",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Perdràs les dades de les respostes vinculades a aquesta pregunta en totes les fases que utilitzen el mateix formulari",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Eliminar una pregunta",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Avís: les fases d'ideació, votació i pressupostos d'aquest projecte comparteixen un únic formulari d'entrada. Qualsevol edició que hi facis s'aplicarà a totes.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "No, cancel·la",
   "app.components.formBuilder.formInputEditWarningModal.title": "Editar el formulari d'entrada",

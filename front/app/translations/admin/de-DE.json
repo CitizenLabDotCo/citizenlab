@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Text bearbeiten",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Korrigieren Sie einen Tippfehler? Das hat keine Auswirkungen auf Ihre Antwortdaten",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Sie verlieren die mit dieser Frage verknüpften Antwortdaten in allen Phasen, die dasselbe Formular verwenden",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Frage löschen",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Warnung: Die Phasen Ideensammlung, Abstimmung und Budgetierung in diesem Projekt teilen sich ein gemeinsames Eingabeformular. Alle Änderungen, die Sie hier vornehmen, gelten für alle diese Phasen.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nein, abbrechen",
   "app.components.formBuilder.formInputEditWarningModal.title": "Eingabeformular bearbeiten",

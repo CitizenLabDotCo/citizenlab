@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Allatat aaqqissukkit",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Kukkunermik aaqqissuiniarpiit? Taanna akissutinut sunniuteqassanngilaq",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Akissutit paasissutissaataat apeqqummut tassunga atanillit immikkoortuni tamani immersugassamik atueqatigiittuni annaassavatit",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Apeqqut piiaruk",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Mianersoqqussut: Isumassarsiorneq, taasinissaq aamma missingersuusiorneq suliniummi uani immersugassamik ataatsimik atueqatigiipput. Allannguutit tamaasa immikkoortunut tamanut atuutissapput.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Naamik, taamaatiguk",
   "app.components.formBuilder.formInputEditWarningModal.title": "Immersugassaq aaqqissuuguk",

@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Redaguoti tekstą",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Taisote rašybos klaidą? Tai neturės įtakos jūsų atsakymų duomenims.",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Prarasite su tuo klausimu susijusius atsakymų duomenis visuose etapuose, kuriuose naudojama ta pati forma.",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Ištrinti klausimą",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Įspėjimas: idėjų teikimo, balsavimo ir biudžeto sudarymo etapai šiame projekte naudoja tą pačią įvesties formą. Bet kokie čia atlikti pakeitimai bus taikomi jiems visiems.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ne, atšaukti",
   "app.components.formBuilder.formInputEditWarningModal.title": "Redaguoti įvesties formą",

@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Editar texto",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "¿Vas a corregir una errata? No afectará a los datos de las respuestas",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Perderás los datos de las respuestas vinculados a esa pregunta en todas las fases que utilicen el mismo formulario",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Eliminar una pregunta",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Advertencia: Las fases de ideación, votación y presupuestos de este proyecto comparten un único formulario de entrada. Cualquier edición que realices aquí se aplicará a todas ellas.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "No, cancelar",
   "app.components.formBuilder.formInputEditWarningModal.title": "Editar formulario de entrada",

@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Cuir téacs in eagar",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "An bhfuil clóscríobh á cheartú agat? Ní bheidh tionchar aige sin ar do shonraí freagartha",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Caillfidh tú sonraí freagartha atá nasctha leis an gceist sin i ngach céim a úsáideann an fhoirm chéanna",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Ceist a scriosadh",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Rabhadh: Roinneann na céimeanna smaointeoireachta, vótála agus buiséadais sa tionscadal seo foirm ionchuir amháin. Beidh feidhm ag aon eagarthóireacht a dhéanann tú anseo maidir leo go léir.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Níl, cealaigh",
   "app.components.formBuilder.formInputEditWarningModal.title": "Cuir an fhoirm ionchuir in eagar",

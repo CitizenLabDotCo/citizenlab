@@ -572,7 +572,6 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Muokkaa tekstiä",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Korjaatko kirjoitusvirheen? Se ei vaikuta vastaustietoihin",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Menetät kyseiseen kysymykseen liittyvät vastaustiedot kaikissa vaiheissa, jotka käyttävät samaa lomaketta",
-  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": "Poista kysymys",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Varoitus: Tämän projektin ideointi-, äänestys- ja budjetointivaiheet käyttävät samaa vastauslomaketta. Kaikki tähän tekemäsi muokkaukset vaikuttavat niihin kaikkiin.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ei, peruuta",
   "app.components.formBuilder.formInputEditWarningModal.title": "Muokkaa vastauslomaketta",
