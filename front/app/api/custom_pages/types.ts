@@ -28,8 +28,8 @@ export interface ICustomPageData {
     areas: {
       data: IRelationship[];
     };
-    space?: {
-      data: IRelationship | null;
+    spaces: {
+      data: IRelationship[];
     };
   };
 }

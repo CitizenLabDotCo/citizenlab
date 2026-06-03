@@ -62,8 +62,14 @@ const CustomPageProjectsAndEvents = ({
     (topic) => topic.id
   );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
-  const spaceId = page.relationships.space?.data?.id;
-  const spaceIds = spaceId ? [spaceId] : undefined;
+  const spaceIdList = page.relationships.spaces.data.map((space) => space.id);
+  const spaceIds = spaceIdList.length > 0 ? spaceIdList : undefined;
+
+  // When filtering by space we show folder cards in the space too (not just
+  // projects), so we keep folder publications in the result set and restrict
+  // to top-level publications to avoid duplicating folder children as
+  // standalone project cards.
+  const isSpaceFiltered = !!spaceIds;
 
   const {
     data,
@@ -77,9 +83,9 @@ const CustomPageProjectsAndEvents = ({
     areaIds,
     spaceIds,
     publicationStatusFilter: getPublicationStatuses(currentTab),
-    rootLevelOnly: false,
+    rootLevelOnly: isSpaceFiltered,
     removeNotAllowedParents: true,
-    onlyProjects: true,
+    onlyProjects: !isSpaceFiltered,
     remove_all_unlisted: true,
   });
 
@@ -139,8 +145,9 @@ const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
     (topic) => topic.id
   );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
-  const spaceId = page.relationships.space?.data?.id;
-  const spaceIds = spaceId ? [spaceId] : undefined;
+  const spaceIdList = page.relationships.spaces.data.map((space) => space.id);
+  const spaceIds = spaceIdList.length > 0 ? spaceIdList : undefined;
+  const isSpaceFiltered = !!spaceIds;
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
@@ -148,9 +155,9 @@ const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
       areaIds,
       spaceIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
-      rootLevelOnly: false,
+      rootLevelOnly: isSpaceFiltered,
       removeNotAllowedParents: true,
-      onlyProjects: true,
+      onlyProjects: !isSpaceFiltered,
     }
   );
 

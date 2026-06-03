@@ -28,17 +28,11 @@
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
 #  header_bg                    :string
-#  space_id                     :uuid
 #
 # Indexes
 #
-#  index_static_pages_on_code      (code)
-#  index_static_pages_on_slug      (slug) UNIQUE
-#  index_static_pages_on_space_id  (space_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (space_id => spaces.id)
+#  index_static_pages_on_code  (code)
+#  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
   include Files::FileAttachable
@@ -63,7 +57,8 @@ class StaticPage < ApplicationRecord
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages
 
-  belongs_to :space, optional: true
+  has_many :static_pages_spaces, dependent: :destroy
+  has_many :spaces, through: :static_pages_spaces
 
   accepts_nested_attributes_for :nav_bar_item
 
@@ -126,7 +121,18 @@ class StaticPage < ApplicationRecord
       global_topics? && !Current.loading_tenant_template
     end
   )
-  validates :space, presence: true, if: -> { spaces? && !Current.loading_tenant_template }
+  validates(
+    :spaces, length: { minimum: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of StaticPagesSpace records that are not created yet. (When loading a
+      # tenant template, StaticPagesSpace records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      # NOTE: `spaces?` refers to the projects_filter_type enum predicate.
+      spaces? && !Current.loading_tenant_template
+    end
+  )
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -148,7 +154,7 @@ class StaticPage < ApplicationRecord
       when 'global_topics'
         { global_topics: static_pages_global_topics.pluck(:global_topic_id) }
       when 'spaces'
-        { spaces: [space_id].compact }
+        { spaces: static_pages_spaces.pluck(:space_id) }
       else
         {}
       end
@@ -210,12 +216,7 @@ class StaticPage < ApplicationRecord
     # projects_filter_type returns the key as a string, and .keys also returns strings
     current_key = projects_filter_type
     (self.class.associations_project_filter_types.keys - [current_key]).each do |association|
-      case association
-      when 'spaces'
-        self.space_id = nil
-      else
-        public_send(association).destroy_all
-      end
+      public_send(association).destroy_all
     end
   end
 end

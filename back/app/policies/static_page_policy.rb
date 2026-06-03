@@ -51,7 +51,7 @@ class StaticPagePolicy < ApplicationPolicy
       :header_bg,
       { area_ids: [] },
       { global_topic_ids: [] },
-      :space_id,
+      { space_ids: [] },
       { nav_bar_item_title_multiloc: CL2_SUPPORTED_LOCALES }
     ]
   end

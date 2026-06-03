@@ -103,13 +103,13 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea',
     defaultMessage: 'Please select an area',
   },
-  selectedSpaceLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpaceLabel',
-    defaultMessage: 'Selected space',
+  selectedSpacesLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel',
+    defaultMessage: 'Selected spaces',
   },
   selectASpace: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace',
-    defaultMessage: 'Please select a space',
+    defaultMessage: 'Please select at least one space',
   },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',

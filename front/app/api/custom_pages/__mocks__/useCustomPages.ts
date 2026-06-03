@@ -14,8 +14,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
     attributes: {
@@ -116,8 +116,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
   },
@@ -179,8 +179,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
   },
@@ -242,8 +242,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
   },
@@ -303,8 +303,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
   },
@@ -363,8 +363,8 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
-      space: {
-        data: null,
+      spaces: {
+        data: [],
       },
     },
   },

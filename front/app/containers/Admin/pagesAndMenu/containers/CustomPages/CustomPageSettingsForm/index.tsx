@@ -65,7 +65,7 @@ export interface FormValues {
   projects_filter_type: ProjectsFilterTypes;
   global_topic_ids?: string[];
   area_id?: string | null;
-  space_id?: string | null;
+  space_ids?: string[];
 }
 
 type TMode = 'new' | 'edit';
@@ -157,14 +157,16 @@ const CustomPageSettingsForm = ({
 
         return string().nullable();
       }),
-    space_id: string()
+    space_ids: array()
       .nullable()
       .when('projects_filter_type', ([value]) => {
         if (value === 'spaces') {
-          return string().required(formatMessage(messages.selectASpace));
+          return array()
+            .of(string())
+            .min(1, formatMessage(messages.selectASpace));
         }
 
-        return string().nullable();
+        return array();
       }),
   });
 
@@ -348,11 +350,13 @@ const CustomPageSettingsForm = ({
                       {isSpacesEnabled &&
                         methods.watch('projects_filter_type') === 'spaces' &&
                         spaces && (
-                          <SelectContainer mb="20px">
-                            <Select
-                              name="space_id"
+                          <SelectContainer mb="30px">
+                            <MultipleSelect
+                              name="space_ids"
                               options={mapFilterEntityToOptions(spaces.data)}
-                              label={formatMessage(messages.selectedSpaceLabel)}
+                              label={formatMessage(
+                                messages.selectedSpacesLabel
+                              )}
                             />
                           </SelectContainer>
                         )}

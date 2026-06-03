@@ -21,7 +21,7 @@ const NewCustomPage = () => {
       ...(formValues.projects_filter_type === 'areas' && {
         area_ids: [formValues.area_id],
       }),
-      space_id: isSpaces ? formValues.space_id : null,
+      space_ids: isSpaces ? formValues.space_ids ?? [] : [],
     };
 
     const { data } = await createCustomPage(omit(newFormValues, 'area_id'));
@@ -41,7 +41,7 @@ const NewCustomPage = () => {
       defaultValues={{
         projects_filter_type: 'no_filter',
         area_id: null,
-        space_id: null,
+        space_ids: [],
         global_topic_ids: [],
       }}
       hideSlug

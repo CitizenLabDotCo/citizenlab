@@ -46,8 +46,8 @@ const EditCustomPageSettings = () => {
         ...(formValues.projects_filter_type === 'areas' && {
           area_ids: [formValues.area_id],
         }),
-        // Clear space_id when not in spaces mode so the backend nullifies it
-        space_id: isSpaces ? formValues.space_id : null,
+        // Clear space_ids when not in spaces mode so the backend removes the join records
+        space_ids: isSpaces ? formValues.space_ids ?? [] : [],
       };
       await updateCustomPage({
         id: customPageId,
@@ -61,7 +61,9 @@ const EditCustomPageSettings = () => {
     const areaIds = customPage.data.relationships.areas.data.map(
       (areaRelationship) => areaRelationship.id
     );
-    const spaceId = customPage.data.relationships.space?.data?.id ?? null;
+    const spaceIds = customPage.data.relationships.spaces.data.map(
+      (spaceRelationship) => spaceRelationship.id
+    );
 
     return (
       <CustomPageSettingsForm
@@ -76,7 +78,7 @@ const EditCustomPageSettings = () => {
           projects_filter_type: customPage.data.attributes.projects_filter_type,
           global_topic_ids: topicIds,
           area_id: areaIds[0],
-          space_id: spaceId,
+          space_ids: spaceIds,
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}

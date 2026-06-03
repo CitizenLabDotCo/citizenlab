@@ -64,6 +64,16 @@ class AdminPublicationsFilteringService
     folder_publications_in_scope.or(projects_still_in_scope)
   end
 
+  add_filter('filter_folders_by_space') do |scope, options|
+    next scope if options[:spaces].blank?
+
+    folders_in_space = ProjectFolders::Folder.where(space_id: options[:spaces])
+    folder_publications_in_space = scope.where(publication: folders_in_space)
+    non_folders_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
+    folder_publications_in_space.or(non_folders_in_scope)
+  end
+
   add_filter('compute_visible_children_counts') do |scope, _|
     # TODO: this is a workaround (not a filter) to compute @children_counts before the 'top_level_only' and 'folder' filter.
     # It must be done before bc when keeping only top-level publications (by_folder with folder == ""), the

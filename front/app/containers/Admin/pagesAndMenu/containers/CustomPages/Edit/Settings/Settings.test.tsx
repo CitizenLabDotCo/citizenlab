@@ -42,7 +42,7 @@ const mockCustomPage: ICustomPageData = {
     nav_bar_item: { data: { id: '123', type: 'nav_bar_item' } },
     global_topics: { data: [] },
     areas: { data: [] },
-    space: { data: null },
+    spaces: { data: [] },
   },
 };
 jest.mock('api/custom_pages/useCustomPageById', () =>
