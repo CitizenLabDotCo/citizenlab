@@ -8,7 +8,8 @@ describe Permissions::PermissionsCustomFieldsService do
   before do
     @domicile_field = create(:custom_field_domicile, enabled: true, required: true)
     @gender_field = create(:custom_field_gender, enabled: true, required: false)
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.settings['verification'] = { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
   end
 
   describe '#fields_for_permission' do

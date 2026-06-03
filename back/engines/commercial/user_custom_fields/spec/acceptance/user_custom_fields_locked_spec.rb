@@ -8,9 +8,10 @@ resource 'User Custom Fields - Locked Fields' do
 
   before do
     header 'Content-Type', 'application/json'
-    SettingsService.new.activate_feature! 'verification', settings: {
+    AppConfiguration.instance.settings['verification'] = {
       verification_methods: [{ name: 'bogus', enabled_for_verified_actions: true }]
     }
+    AppConfiguration.instance.save!
   end
 
   let(:user) { create(:user) }
