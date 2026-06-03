@@ -125,10 +125,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            widgets: {
-              enabled: true,
-              allowed: true
-            },
             granular_permissions: {
               enabled: true,
               allowed: true
