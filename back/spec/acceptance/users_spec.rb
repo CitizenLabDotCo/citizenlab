@@ -112,10 +112,9 @@ resource 'Users' do
           context 'when the user has not requested any codes yet' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.confirm
-              @user.save!
+              @user.email_confirmation.confirm!
 
-              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+              allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
 
             let(:email) { 'test@test.com' }
@@ -124,19 +123,17 @@ resource 'Users' do
               expect(@user.password_digest).to be_nil
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+              expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(@user)
             end
           end
 
           context 'when the user has already requested a code' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.confirm
-              @user.save!
 
-              RequestConfirmationCodeJob.perform_now @user
+              RequestEmailConfirmationCodeJob.perform_now @user
 
-              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+              allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
 
             let(:email) { 'test@test.com' }
@@ -145,7 +142,7 @@ resource 'Users' do
               expect(@user.password_digest).to be_nil
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+              expect(RequestEmailConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
             end
           end
         end
@@ -179,7 +176,7 @@ resource 'Users' do
         context 'when a user exists with a password and does not have email confirmed', document: false do
           before do
             @user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
-            allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
           end
 
           let(:email) { 'test@test.com' }
@@ -189,7 +186,7 @@ resource 'Users' do
             expect(@user.confirmation_required?).to be true
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(@user)
           end
         end
 
@@ -223,17 +220,69 @@ resource 'Users' do
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
           end
         end
+
+        context 'when user was created by SSO, has a password, email confirmed' do
+          let(:email) { create(:sso_user).email }
+
+          example_request 'Returns "password"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when user was created by SSO, has a password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, password_digest: 'super_secret', identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when user was created by SSO, no password, email confirmed' do
+          let(:email) { create(:sso_user, password_digest: nil).email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when user was created by SSO, no password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
       end
 
       context 'when password_login is turned off' do
         before do
+          @super_admin = create(:super_admin)
+          @user = create(:user)
           SettingsService.new.deactivate_feature! 'password_login'
         end
 
-        let(:email) { 'test@test.com' }
-
-        example_request 'it also works (necessary for ?super_admin param)' do
+        example 'it works for super admins (necessary for ?super_admin param)' do
+          do_request({ user: { email: @super_admin.email } })
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
           assert_status 200
+        end
+
+        example 'it does not work for other users' do
+          do_request({ user: { email: @user.email } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
+        end
+
+        example 'it does not work if user does not exist' do
+          do_request({ user: { email: 'nonexisting@user.com' } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
         end
       end
 
@@ -293,7 +342,7 @@ resource 'Users' do
       context 'when password_login is turned on' do
         before do
           SettingsService.new.activate_feature! 'password_login'
-          allow(RequestConfirmationCodeJob).to receive(:perform_now)
+          allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
         end
 
         let(:email) { Faker::Internet.email }
@@ -303,7 +352,7 @@ resource 'Users' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
             user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+            expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(user.confirmation_required?).to be(true)
           end
 
@@ -333,7 +382,7 @@ resource 'Users' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:unconfirmed_user, email: email)
-              existing_user.confirm!
+              existing_user.email_confirmation.confirm!
 
               do_request
               assert_status 422
@@ -346,7 +395,7 @@ resource 'Users' do
 
               example 'email taken error is returned and confirmation requirement is not reset' do
                 existing_user = create(:unconfirmed_user, email: email)
-                existing_user.confirm!
+                existing_user.email_confirmation.confirm!
 
                 do_request
                 assert_status 422

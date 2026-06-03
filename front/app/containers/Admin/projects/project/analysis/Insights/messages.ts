@@ -94,6 +94,11 @@ export default defineMessages({
     defaultMessage:
       'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
   },
+  summarizeUpsellMessage: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage',
+    defaultMessage:
+      'AI-powered analysis is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
   inputsSelected: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.inputsSelected',
     defaultMessage: 'inputs selected',

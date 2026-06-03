@@ -71,7 +71,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_who_follow_the_project'
+      'email_campaigns.admin_labels.recipient_segment.users_who_follow_or_participated'
     end
 
     def self.content_type_multiloc_key

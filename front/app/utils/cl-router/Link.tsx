@@ -9,7 +9,10 @@ import {
   type LinkComponentProps,
   type RegisteredRouter,
 } from '@tanstack/react-router';
-import styled from 'styled-components';
+import styled, {
+  type DefaultTheme,
+  type Interpolation,
+} from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
@@ -23,12 +26,16 @@ export type { WrapperTo, TypedLinkProps } from './localeAware';
 // components like cl-router/Link, so `styled(Link)` drops route-aware typing.
 // Use `typedStyled(Link)` instead of casting `as typeof Link` to preserve the
 // wrapped component's full type.
+//
+// Interpolations are typed as styled-components' `Interpolation` (props carry
+// `theme`) rather than `unknown` — otherwise `${({ theme }) => ...}` callbacks
+// lose their contextual type and `theme` becomes an implicit `any`.
 export function typedStyled<C>(component: C) {
   return styled(
     component as unknown as React.ComponentType<unknown>
   ) as unknown as (
     strings: TemplateStringsArray,
-    ...interpolations: unknown[]
+    ...interpolations: Interpolation<{ theme: DefaultTheme }>[]
   ) => C;
 }
 

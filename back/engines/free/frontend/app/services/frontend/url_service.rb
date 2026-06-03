@@ -86,6 +86,14 @@ module Frontend
       "#{home_url(options)}#{pathname}"
     end
 
+    def sign_in_url(return_to)
+      if return_to.present?
+        "#{home_url}/sign-in?return_to=#{CGI.escape(return_to)}"
+      else
+        "#{home_url}/sign-in"
+      end
+    end
+
     def invite_url(token, options = {})
       "#{home_url(options)}/invite?token=#{token}"
     end

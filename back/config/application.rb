@@ -77,6 +77,8 @@ module Cl2Back
       # with the form post. But it's sent if redirect is used instead of form post (all other SSO providers).
       # When the cookie is not sent, the nonce verification fails.
 
+      # FedERa is intentionally NOT in this list as it round-trips its params through
+      # SAML RelayState (see CustomIdMethods::Federa::FederaOmniauth#handle_relay_state)
       sso_providers_with_form_post = %w[azureactivedirectory nemlog_in azureactivedirectory_b2c]
       return if sso_providers_with_form_post.any? { request.path.starts_with?("/auth/#{_1}") }
 
@@ -85,6 +87,7 @@ module Cl2Back
 
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+    config.middleware.use ActionDispatch::Flash # Required by Doorkeeper's admin views
 
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql

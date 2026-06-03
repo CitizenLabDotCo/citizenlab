@@ -7,6 +7,5 @@ FactoryBot.define do
       project_ids { nil }
     end
     roles { (project_ids || projects&.map(&:id)).uniq.map { |id| { type: 'project_moderator', project_id: id } } }
-    after(:build, &:confirm)
   end
 end
