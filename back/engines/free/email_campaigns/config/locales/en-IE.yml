@@ -67,6 +67,7 @@ en-IE:
         user_with_unsubmitted_votes: User who has not submitted their votes
         users_who_engaged_but_not_voted: Users who engaged with the project but have not voted
         users_who_engaged_with_the_project: Users who engaged with the project
+        users_who_follow_or_participated: Users who follow the project or have participated
         users_who_follow_the_input: Users who follow the input
         users_who_follow_the_project: Users who follow the project
         users_who_follow_the_proposal: Users who follow the proposal

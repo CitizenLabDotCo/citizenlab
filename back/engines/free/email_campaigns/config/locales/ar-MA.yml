@@ -67,6 +67,7 @@ ar-MA:
         user_with_unsubmitted_votes: المستخدم الذي لم يقدم أصواتهم
         users_who_engaged_but_not_voted: المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا
         users_who_engaged_with_the_project: المستخدمون الذين شاركوا في المشروع
+        users_who_follow_or_participated: المستعملين اللي متبعين المشروع ولاّ اللي شاركوا فيه
         users_who_follow_the_input: المستخدمون الذين يتابعون الإدخال
         users_who_follow_the_project: المستخدمون الذين يتابعون المشروع
         users_who_follow_the_proposal: المستخدمون الذين يتابعون الاقتراح

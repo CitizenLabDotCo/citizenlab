@@ -67,6 +67,7 @@ sv-SE:
         user_with_unsubmitted_votes: Användare som inte har lämnat sina röster
         users_who_engaged_but_not_voted: Användare som engagerat sig i projektet men inte röstat
         users_who_engaged_with_the_project: Användare som engagerade sig i projektet
+        users_who_follow_or_participated: Användare som följer projektet eller har deltagit
         users_who_follow_the_input: Användare som följer bidraget
         users_who_follow_the_project: Användare som följer projektet
         users_who_follow_the_proposal: Användare som följer förslaget
