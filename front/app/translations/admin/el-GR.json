@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Αξιολογήστε την ποιότητα αυτής της πληροφορίας",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Επαναφορά φίλτρων",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Σύνοψη",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Η ανάλυση με τεχνητή νοημοσύνη δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας. Επικοινωνήστε με τον Government Success Manager ή τον διαχειριστή σας για να την ξεκλειδώσετε.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Σύνοψη για",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Σύνοψη για όλες τις εισροές",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Το αίτημα δεν ήταν δυνατό να ολοκληρωθεί. Παρακαλούμε δοκιμάστε ξανά αργότερα.",

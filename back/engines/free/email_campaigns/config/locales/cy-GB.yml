@@ -67,6 +67,7 @@ cy-GB:
         user_with_unsubmitted_votes: Defnyddiwr nad yw wedi cyflwyno ei bleidleisiau
         users_who_engaged_but_not_voted: Defnyddwyr a ymgysylltodd â'r prosiect ond nad ydynt wedi pleidleisio
         users_who_engaged_with_the_project: Defnyddwyr a ymgysylltodd â'r prosiect
+        users_who_follow_or_participated: Defnyddwyr sy'n dilyn y prosiect neu sydd wedi cymryd rhan
         users_who_follow_the_input: Defnyddwyr sy'n dilyn y mewnbwn
         users_who_follow_the_project: Defnyddwyr sy'n dilyn y prosiect
         users_who_follow_the_proposal: Defnyddwyr sy'n dilyn y cynnig

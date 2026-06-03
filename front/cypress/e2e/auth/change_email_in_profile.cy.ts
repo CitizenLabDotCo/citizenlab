@@ -23,7 +23,7 @@ describe('Change email in profile', () => {
 
     // Go to profile
     cy.visit('/profile/edit');
-  }
+  };
 
   it('allows changing the email', () => {
     const password = randomString();
@@ -115,5 +115,5 @@ describe('Change email in profile', () => {
     cy.get('#e2e-user-menu-dropdown-button').click();
     cy.get('a[href="/en/profile/edit"]').click();
     cy.url().should('include', '/en/profile/edit');
-  })
+  });
 });

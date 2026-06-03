@@ -17184,6 +17184,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:51.948548Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",

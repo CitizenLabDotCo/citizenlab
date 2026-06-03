@@ -67,10 +67,10 @@ const canUserAccessAdminFolderRoute = (
 ) => {
   const hasAdminFolderRouteAccess = user
     ? isProjectFolderModerator(user) &&
-    // folder mods have the same
-    // access rights as project mods
-    // besides their respective folders/projects
-    (isModeratorRoute(item) || item.path.includes('admin/projects/folders'))
+      // folder mods have the same
+      // access rights as project mods
+      // besides their respective folders/projects
+      (isModeratorRoute(item) || item.path.includes('admin/projects/folders'))
     : false;
 
   return canAccessRoute(item, user, tenant) || hasAdminFolderRouteAccess;

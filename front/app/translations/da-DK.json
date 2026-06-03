@@ -186,6 +186,7 @@
   "app.components.CustomFieldsForm.notPublic1": "*Dette svar vil kun blive delt med projektledere og ikke med offentligheden.",
   "app.components.CustomFieldsForm.otherArea": "Et andet sted",
   "app.components.CustomFieldsForm.progressBarLabel": "Fremskridt",
+  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% færdig",
   "app.components.CustomFieldsForm.removeAnswer": "Fjern svar",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Vælg så mange, som du vil",
   "app.components.CustomFieldsForm.selectBetween": "*Vælg mellem {minItems} og {maxItems} muligheder",
