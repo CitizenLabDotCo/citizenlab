@@ -144,7 +144,7 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = (async (...args) => {
+      const wrappedAction = (async (...args: any[]) => {
         setError(null);
         setLoading(true);
 
@@ -172,13 +172,18 @@ export default function useSteps() {
       const { authenticationData, flow } = event.eventValue;
 
       authenticationDataRef.current = authenticationData;
-      updateState({ flow });
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
+        flow,
+        emailInCaseUserNeedsToConfirm
+      );
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition, updateState]);
+  }, [currentStep, transition, updateState, authUser]);
 
   // Listen for any action that triggers the VERIFICATION flow, and initialize
   // the flow in no flow is ongoing
@@ -218,7 +223,10 @@ export default function useSteps() {
   // Logic to launch other flows
   useEffect(() => {
     if (initialized) return;
+
+    // authUser === undefined means the request is still loading
     if (authUser === undefined) return;
+
     initialized = true;
     if (currentStep !== 'closed') return;
 
@@ -347,7 +355,11 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
-      updateState({ flow, email: authUser.data.attributes.email ?? null });
+
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       // Check that the path is the same as the one stored in local storage

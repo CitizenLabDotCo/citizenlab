@@ -25,10 +25,13 @@ const PAGE_MARGIN_MM = 15;
 const SECTION_GAP_MM = 4;
 const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
-const FONTS_READY_TIMEOUT_MS = 3_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
+// Give the browser time to finish any in-flight font/image fetches and the
+// font system time to decode glyphs before snapdom begins capturing. Mirrors
+// the 5s wait used by the PrintReport route, which avoids the same race.
+const PRE_CAPTURE_SETTLE_MS = 5_000;
 
 const sliceCanvas = (
   source: HTMLCanvasElement,
@@ -191,22 +194,20 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
-      await Promise.race([
-        document.fonts.ready,
-        new Promise((resolve) => setTimeout(resolve, FONTS_READY_TIMEOUT_MS)),
-      ]);
-
-      const [{ snapdom }, { default: jsPDF }, container] = await Promise.all([
-        import('@zumer/snapdom'),
-        import('jspdf'),
-        containerPromise,
-      ]);
+      const [{ snapdom, preCache }, { default: jsPDF }, container] =
+        await Promise.all([
+          import('@zumer/snapdom'),
+          import('jspdf'),
+          containerPromise,
+        ]);
 
       if (!container) {
         throw new Error(`Element with id "${hiddenContainerId}" not found`);
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
+
+      await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
       // the outer is too coarse (and may exceed the 16,384 px canvas limit on
@@ -224,6 +225,32 @@ export default function useInsightsPdfDownload({
       if (sections.length === 0) {
         throw new Error('No PDF sections found in hidden container');
       }
+
+      // Throwaway capture of a tiny element that contains text in every
+      // weight/style combination the PDF uses. snapdom embeds each font face
+      // exercised here, so the real loop never sees a fresh weight (which on
+      // a cold session would race against the font fetch and rasterize
+      // without glyphs — observed as bold rendering but regular missing).
+      const warmupTarget =
+        container.querySelector<HTMLElement>('[data-pdf-font-warmup="true"]') ??
+        sections[0];
+      await captureWithTimeout(
+        () =>
+          snapdom.toCanvas(warmupTarget, {
+            scale: CAPTURE_SCALE,
+            backgroundColor: colors.white,
+            embedFonts: true,
+          }),
+        SECTION_TIMEOUT_MS
+      );
+
+      // snapdom's toCanvas resolves before its internal font fetches are
+      // actually finished — those continue in the background. Wait here so
+      // those fetches (and the browser's font-decode work) complete before
+      // the real capture loop starts.
+      await new Promise((resolve) =>
+        setTimeout(resolve, PRE_CAPTURE_SETTLE_MS)
+      );
 
       safeSetStatus('capturing');
       safeSetProgress({ completed: 0, total: sections.length });

@@ -1174,6 +1174,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-18T14:40:25.266640Z",
+    "verified_by": "Jelena"
+  },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -3208,6 +3213,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
   },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
@@ -6484,6 +6499,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.732594Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6528,6 +6548,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.732594Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -8843,6 +8868,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasShow.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasShow.commentCTA": {
     "state": "verified",

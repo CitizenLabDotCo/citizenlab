@@ -36,12 +36,14 @@ export const AvatarImageBubble = styled.img<{
   object-position: center;
 `;
 
+export type AvatarBubblesContext = {
+  type: 'project' | 'group';
+  id: string;
+};
+
 interface Props {
   limit?: number;
-  context?: {
-    type: 'project' | 'group';
-    id: string;
-  };
+  context?: AvatarBubblesContext;
   size?: number;
   overlap?: number;
   avatarIds?: string[];
@@ -72,7 +74,7 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  const currentUserCount = userCount || randomAvatars?.meta.total;
+  const currentUserCount = userCount ?? randomAvatars?.meta.total;
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
   const avatarsWithIds = avatarsWithIdsQueries

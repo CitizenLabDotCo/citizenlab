@@ -115,7 +115,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
           content={
             <>
               <Box mb="8px">
-                <img src={tooltipImage} alt="" width="100%" />
+                <img src={tooltipImage} alt="" style={{ width: '100%' }} />
               </Box>
               {formatMessage(messages.webMapTooltip)}
             </>

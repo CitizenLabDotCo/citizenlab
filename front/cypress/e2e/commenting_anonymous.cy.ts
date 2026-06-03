@@ -19,7 +19,7 @@ describe('Idea with anonymous commenting allowed', () => {
       userId = response.body.data.id;
     });
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then(() => {
+    cy.getAdminAuthUser().then(() => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: '',

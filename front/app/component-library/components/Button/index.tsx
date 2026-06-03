@@ -375,6 +375,12 @@ function getButtonStyle(
       }
     }
 
+    &:focus-visible,
+    &.focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
     &.fullWidth {
       flex: 1;
       width: 100%;

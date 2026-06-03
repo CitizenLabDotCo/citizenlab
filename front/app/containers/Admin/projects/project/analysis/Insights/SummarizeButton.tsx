@@ -6,6 +6,8 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
@@ -25,6 +27,7 @@ const SummarizeButton = ({
   analysisId: string;
 }) => {
   const { formatMessage } = useIntl();
+  const summarizeAllowed = useFeatureFlag({ name: 'analysis' });
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
@@ -63,9 +66,11 @@ const SummarizeButton = ({
     preCheck?.data.attributes.impossible_reason === 'too_many_inputs';
 
   const summaryPossible =
-    !tooManyInputs && !applyInputsLimit && inputsCount > 0;
+    summarizeAllowed && !tooManyInputs && !applyInputsLimit && inputsCount > 0;
 
-  const tooltipContent = applyInputsLimit
+  const tooltipContent = !summarizeAllowed
+    ? formatMessage(messages.summarizeUpsellMessage)
+    : applyInputsLimit
     ? formatMessage(messages.tooltipTextLimit)
     : tooManyInputs
     ? formatMessage(messages.tooManyInputs)

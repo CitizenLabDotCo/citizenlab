@@ -12,6 +12,7 @@ SET row_security = off;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_fd29df3731;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
+ALTER TABLE IF EXISTS ONLY public.confirmations DROP CONSTRAINT IF EXISTS fk_rails_f8bd36e66a;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_f5c8c46abb;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
@@ -428,6 +429,8 @@ DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
+DROP INDEX IF EXISTS public.index_confirmations_on_user_id_and_type;
+DROP INDEX IF EXISTS public.index_confirmations_on_user_id;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_comments_on_parent_id;
@@ -624,6 +627,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS cu
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.confirmations DROP CONSTRAINT IF EXISTS confirmations_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.claim_tokens DROP CONSTRAINT IF EXISTS claim_tokens_pkey;
@@ -653,7 +657,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
 DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
@@ -750,11 +753,11 @@ DROP TABLE IF EXISTS public.custom_field_bins;
 DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
+DROP TABLE IF EXISTS public.confirmations;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.claim_tokens;
 DROP TABLE IF EXISTS public.baskets_ideas;
 DROP TABLE IF EXISTS public.authoring_assistance_responses;
-DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas;
@@ -1553,10 +1556,6 @@ CREATE TABLE public.users (
     registration_completed_at timestamp without time zone,
     verified boolean DEFAULT false NOT NULL,
     email_confirmed_at timestamp without time zone,
-    email_confirmation_code character varying,
-    email_confirmation_retry_count integer DEFAULT 0 NOT NULL,
-    email_confirmation_code_reset_count integer DEFAULT 0 NOT NULL,
-    email_confirmation_code_sent_at timestamp without time zone,
     confirmation_required boolean DEFAULT true NOT NULL,
     block_start_at timestamp without time zone,
     block_reason character varying,
@@ -2188,31 +2187,12 @@ CREATE TABLE public.areas_projects (
 --
 
 CREATE TABLE public.areas_static_pages (
-    id bigint NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     area_id uuid NOT NULL,
     static_page_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: areas_static_pages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.areas_static_pages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: areas_static_pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pages.id;
 
 
 --
@@ -2266,6 +2246,23 @@ CREATE TABLE public.claim_tokens (
 CREATE TABLE public.common_passwords (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     password character varying
+);
+
+
+--
+-- Name: confirmations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.confirmations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    type character varying NOT NULL,
+    code character varying,
+    code_retry_count integer DEFAULT 0 NOT NULL,
+    code_reset_count integer DEFAULT 0 NOT NULL,
+    code_sent_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3950,13 +3947,6 @@ CREATE TABLE public.wise_voice_flags (
 
 
 --
--- Name: areas_static_pages id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_static_pages ALTER COLUMN id SET DEFAULT nextval('public.areas_static_pages_id_seq'::regclass);
-
-
---
 -- Name: que_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4185,6 +4175,14 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.common_passwords
     ADD CONSTRAINT common_passwords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: confirmations confirmations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.confirmations
+    ADD CONSTRAINT confirmations_pkey PRIMARY KEY (id);
 
 
 --
@@ -5672,6 +5670,20 @@ CREATE INDEX index_comments_on_rgt ON public.comments USING btree (rgt);
 --
 
 CREATE INDEX index_common_passwords_on_password ON public.common_passwords USING btree (password);
+
+
+--
+-- Name: index_confirmations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_confirmations_on_user_id ON public.confirmations USING btree (user_id);
+
+
+--
+-- Name: index_confirmations_on_user_id_and_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_confirmations_on_user_id_and_type ON public.confirmations USING btree (user_id, type);
 
 
 --
@@ -8744,6 +8756,14 @@ ALTER TABLE ONLY public.files_projects
 
 
 --
+-- Name: confirmations fk_rails_f8bd36e66a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.confirmations
+    ADD CONSTRAINT fk_rails_f8bd36e66a FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: events_attendances fk_rails_fba307ba3b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8774,9 +8794,13 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260528180000'),
+('20260528120000'),
+('20260521120000'),
 ('20260519150520'),
 ('20260519142440'),
 ('20260519093224'),
+('20260518120000'),
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
