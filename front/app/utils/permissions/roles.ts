@@ -34,7 +34,7 @@ export const userHasRole = (user: IUser, role: TRole['type']) => {
   return result !== undefined;
 };
 
-export const isAdmin = (user: IUser | undefined) => {
+export const isAdmin = (user: IUser | undefined | null) => {
   if (!user) return false;
 
   return userHasRole(user, 'admin');
@@ -46,7 +46,7 @@ const MODERATOR_TYPES = [
   'space_moderator',
 ];
 
-export const isModerator = (user: IUser | undefined) => {
+export const isModerator = (user: IUser | undefined | null) => {
   if (!user) return false;
 
   return MODERATOR_TYPES.includes(user.data.attributes.highest_role ?? 'user');
@@ -60,20 +60,20 @@ export const isModerator = (user: IUser | undefined) => {
   In the backend, it's used for data integrity.
   Most of the times it's used it's to make sure that we don't accept test data from CL employees as valid data.
 */
-export const isSuperAdmin = (user: IUser | undefined) => {
+export const isSuperAdmin = (user: IUser | undefined | null) => {
   if (!user) return false;
 
   return user.data.attributes.highest_role === 'super_admin';
 };
 
-export const isRegularUser = (user: IUser | undefined) => {
+export const isRegularUser = (user: IUser | undefined | null) => {
   if (!user) return false;
 
   return user.data.attributes.highest_role === 'user';
 };
 
 export const isProjectModerator = (
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   projectId?: string
 ) => {
   if (!user) return false;
@@ -89,7 +89,7 @@ export const isProjectModerator = (
   return roles.some((r) => r.type === 'project_moderator');
 };
 
-export const isSpaceModerator = (user: IUser | undefined, spaceId?: string) => {
+export const isSpaceModerator = (user: IUser | undefined | null, spaceId?: string) => {
   if (!user) return false;
 
   const roles = user.data.attributes.roles || [];

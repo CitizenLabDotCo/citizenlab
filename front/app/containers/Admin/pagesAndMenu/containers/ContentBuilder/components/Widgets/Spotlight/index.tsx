@@ -109,6 +109,11 @@ const Spotlight = ({
       avatarIds={avatarIds}
       hideAvatars={hideAvatars}
       userCount={publication?.data.attributes.participants_count}
+      avatarsContext={
+        publicationType === 'project' && publicationId
+          ? { type: 'project', id: publicationId }
+          : undefined
+      }
     />
   );
 };

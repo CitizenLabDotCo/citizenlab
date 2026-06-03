@@ -49,7 +49,7 @@ export const missingDataFlow = (
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setCurrentStep('email:start');
+        setCurrentStep('missing-data:built-in');
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmEmailConfirmationCodeChangeEmail(code);

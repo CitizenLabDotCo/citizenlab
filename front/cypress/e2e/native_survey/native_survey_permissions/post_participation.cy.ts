@@ -1,11 +1,11 @@
-import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
-import { randomString } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
+import { randomString } from '../../../support/commands';
 import {
   updatePermission,
   setupProject,
   addPermissionsCustomField,
   confirmUserCustomFieldHasValue,
-} from '../../support/permitted_by_utils';
+} from '../../../support/permitted_by_utils';
 
 describe('Post Participation Signup: survey', () => {
   let customFieldId = '';

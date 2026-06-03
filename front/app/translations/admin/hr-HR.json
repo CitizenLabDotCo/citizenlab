@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Ocijenite kvalitetu ovog uvida",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Vrati filtre",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Rezimirati",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "Analiza potpomognuta umjetnom inteligencijom nije uključena u vaš trenutačni plan. Obratite se svom Government Success Manageru ili administratoru kako biste je otključali.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Sažetak za",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Sažetak za sve ulaze",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Zahtjev nije moguće dovršiti. Pokušajte ponovno kasnije.",

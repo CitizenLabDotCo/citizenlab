@@ -15,7 +15,7 @@ import { useTheme } from 'styled-components';
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import AvatarBubbles from 'components/AvatarBubbles';
+import AvatarBubbles, { AvatarBubblesContext } from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -32,6 +32,7 @@ interface Props {
   avatarIds?: string[];
   hideAvatars?: boolean;
   userCount?: number;
+  avatarsContext?: AvatarBubblesContext;
 }
 
 const Spotlight = ({
@@ -44,6 +45,7 @@ const Spotlight = ({
   avatarIds,
   hideAvatars,
   userCount,
+  avatarsContext,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
@@ -104,6 +106,7 @@ const Spotlight = ({
                 <AvatarBubbles
                   avatarIds={avatarIds}
                   userCount={userCount ?? 4}
+                  context={avatarsContext}
                 />
               )}
             </Box>
