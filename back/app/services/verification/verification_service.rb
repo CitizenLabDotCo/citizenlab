@@ -4,6 +4,7 @@ module Verification
   class VerificationService
     def initialize(sfxv_service = SideFxVerificationService.new)
       @sfxv_service = sfxv_service
+      @id_method_service = IdMethodService.new
     end
 
     def find_verification_group(groups)
@@ -18,13 +19,13 @@ module Verification
     # `configured_methods` that excludes login-only SSO methods.
     # @param [AppConfiguration] app_configuration
     def active_methods(app_configuration)
-      configured_methods(app_configuration).select(&:verification?)
+      @id_method_service.configured_methods(app_configuration).select(&:verification?)
     end
 
     # @param [AppConfiguration] configuration
     # @return [Boolean]
     def active?(configuration, method_name)
-      active_methods(configuration).include? method_by_name(method_name)
+      active_methods(configuration).include? @id_method_service.method_by_name(method_name)
     end
 
     # Not all verification methods are allowed at a permission/action level
@@ -58,7 +59,7 @@ module Verification
     class ParameterInvalidError < StandardError; end
 
     def verify_sync(user:, method_name:, verification_parameters:)
-      method = method_by_name(method_name)
+      method = @id_method_service.method_by_name(method_name)
       response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
@@ -69,7 +70,7 @@ module Verification
     end
 
     def verify_omniauth(user:, auth:)
-      method = method_by_name(auth.provider)
+      method = @id_method_service.method_by_name(auth.provider)
       # Login-only SSO methods (e.g. Hoplr, Vienna) cannot verify identities.
       raise NoMatchError unless method.respond_to?(:verification?) && method.verification?
 
@@ -85,7 +86,7 @@ module Verification
     def locked_attributes(user)
       method_names = user.verifications.active.pluck(:method_name).uniq || []
       attributes = method_names.flat_map do |method_name|
-        ver_method = method_by_name(method_name)
+        ver_method = @id_method_service.method_by_name(method_name)
         if ver_method.respond_to? :locked_attributes
           ver_method.locked_attributes
         else
@@ -98,7 +99,7 @@ module Verification
     def locked_custom_fields(user)
       method_names = user.verifications.active.pluck(:method_name).uniq || []
       custom_fields = method_names.flat_map do |method_name|
-        ver_method = method_by_name(method_name)
+        ver_method = @id_method_service.method_by_name(method_name)
         if ver_method.respond_to? :locked_custom_fields
           ver_method.locked_custom_fields
         else

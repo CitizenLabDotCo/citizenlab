@@ -2,7 +2,7 @@
 
 class IdMethodService
   def all_methods
-    ::IdMethods.all_methods
+    @all_methods ||= IdMethods.all_methods
   end
 
   def method_by_name(name)
