@@ -436,10 +436,6 @@ module MultiTenancy
             email_scheduling: {
               enabled: true,
               allowed: true
-            },
-            phase_datetime_setup: {
-              enabled: true,
-              allowed: true
             }
           })
         )
