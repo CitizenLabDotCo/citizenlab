@@ -54,7 +54,10 @@ module McpServer
         McpServer::Tools::ListAreas,
         McpServer::Tools::ListGlobalTopics,
         McpServer::Tools::ListFolders,
-        McpServer::Tools::ListUsers,
+        # TODO: re-enable once PII redaction is sorted (drop email, redact last_name, etc.).
+        # Also restore the default_assignee_id field on create_project (dropped since the
+        # LLM has no way to look up user IDs without this tool).
+        # McpServer::Tools::ListUsers,
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
         McpServer::Tools::ListUserCustomFields

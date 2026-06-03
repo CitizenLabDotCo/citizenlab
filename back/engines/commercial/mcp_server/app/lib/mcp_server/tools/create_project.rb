@@ -14,7 +14,6 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
         area_ids: { type: 'array', items: { type: 'string' }, description: 'Array of area IDs to associate with the project. Use list_areas to find valid IDs.' },
         global_topic_ids: { type: 'array', items: { type: 'string' }, description: 'Array of global topic IDs. Use list_global_topics to find valid IDs.' },
         folder_id: { type: 'string', description: 'ID of the project folder. Use list_folders to find valid IDs.' },
-        default_assignee_id: { type: 'string', description: 'User ID of the default idea assignee. Use list_users to find valid IDs.' },
         live_auto_input_topics_enabled: { type: 'boolean', description: 'Auto-detect and assign topics to inputs. Defaults to false.' }
       },
       required: %w[title_multiloc]
