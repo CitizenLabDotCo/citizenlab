@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 import Tabs from 'components/UI/Tabs';
@@ -25,7 +23,6 @@ type WidgetTab = 'ideas' | 'projects';
 
 const AdminSettingsWidgets = () => {
   const { formatMessage } = useIntl();
-  const projectWidgetEnabled = useFeatureFlag({ name: 'project_widget' });
   const [selectedTab, setSelectedTab] = useState<WidgetTab>('ideas');
 
   const goBack = () => {
@@ -33,15 +30,7 @@ const AdminSettingsWidgets = () => {
   };
 
   const tabItems = [
-    { name: 'ideas', label: formatMessage(messages.tabIdeas) },
-    ...(projectWidgetEnabled
-      ? [
-          {
-            name: 'projects' as const,
-            label: formatMessage(messages.tabProjects),
-          },
-        ]
-      : []),
+    { name: 'ideas', label: formatMessage(messages.tabIdeas) }, { name: 'projects', label: formatMessage(messages.tabProjects) }
   ];
 
   return (
