@@ -33,10 +33,12 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
 import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
-import Tabs from 'components/HookForm/Tabs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -85,6 +87,9 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
 ];
 
 const fieldMarginBottom = '40px';
+
+// Hide the "NEW" badge on the "By space" radio after this date.
+const SPACES_FILTER_NEW_BADGE_EXPIRY = new Date('2026-12-04');
 
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
@@ -198,24 +203,29 @@ const CustomPageSettingsForm = ({
     });
   };
 
-  const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
+  const projectsFilterOptions: {
+    value: ProjectsFilterTypes;
+    label: string;
+    isNew?: boolean;
+  }[] = [
     {
-      name: 'no_filter',
+      value: 'no_filter',
       label: formatMessage(messages.noFilter),
     },
     {
-      name: 'global_topics',
+      value: 'global_topics',
       label: formatMessage(messages.byTagsFilter),
     },
     {
-      name: 'areas',
+      value: 'areas',
       label: formatMessage(messages.byAreaFilter),
     },
     ...(isSpacesEnabled
       ? [
           {
-            name: 'spaces' as const,
+            value: 'spaces' as const,
             label: formatMessage(messages.bySpaceFilter),
+            isNew: true,
           },
         ]
       : []),
@@ -289,18 +299,14 @@ const CustomPageSettingsForm = ({
             )}
 
             {showAdvancedCustomPages && (
-              <LinkedProjectContainer
-                display="inline-flex"
-                disabled={showPlanUpgradeTease}
+              <Tooltip
+                placement="top-start"
+                content={formatMessage(messages.contactGovSuccessToAccess)}
+                disabled={!showPlanUpgradeTease}
+                hideOnClick={false}
               >
-                <Tooltip
-                  maxWidth="250px"
-                  placement="right-end"
-                  content={formatMessage(messages.contactGovSuccessToAccess)}
-                  disabled={!showPlanUpgradeTease}
-                  hideOnClick={false}
-                >
-                  <div>
+                <div>
+                  <LinkedProjectContainer disabled={showPlanUpgradeTease}>
                     <Box mb={fieldMarginBottom}>
                       <Box
                         display="flex"
@@ -320,51 +326,71 @@ const CustomPageSettingsForm = ({
                         </Label>
                       </Box>
                       <Box mb="30px">
-                        <Tabs
-                          name="projects_filter_type"
-                          items={projectsFilterTabs}
-                          minTabWidth={120}
-                          disabled={showPlanUpgradeTease}
-                        />
+                        <RadioGroup name="projects_filter_type" padding="0px">
+                          <Box display="flex" flexDirection="column" gap="8px">
+                            {projectsFilterOptions.map((option) => (
+                              <Radio
+                                key={option.value}
+                                name="projects_filter_type"
+                                id={`projects_filter_type_${option.value}`}
+                                value={option.value}
+                                disabled={showPlanUpgradeTease}
+                                label={
+                                  <Box
+                                    display="inline-flex"
+                                    alignItems="center"
+                                    gap="8px"
+                                  >
+                                    <span>{option.label}</span>
+                                    {option.isNew && (
+                                      <NewLabel
+                                        expiryDate={
+                                          SPACES_FILTER_NEW_BADGE_EXPIRY
+                                        }
+                                      />
+                                    )}
+                                  </Box>
+                                }
+                              />
+                            ))}
+                          </Box>
+                        </RadioGroup>
                       </Box>
-                      {methods.watch('projects_filter_type') ===
-                        'global_topics' && (
-                        <SelectContainer mb="30px">
-                          <MultipleSelect
-                            name="global_topic_ids"
-                            options={mapFilterEntityToOptions(topics.data)}
-                            label={formatMessage(messages.selectedTagsLabel)}
-                          />
-                        </SelectContainer>
-                      )}
-                      {methods.watch('projects_filter_type') === 'areas' && (
-                        <SelectContainer mb="20px">
-                          <Select
-                            name="area_id"
-                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                            options={mapFilterEntityToOptions(areas?.data)}
-                            label={formatMessage(messages.selectedAreasLabel)}
-                          />
-                        </SelectContainer>
-                      )}
-                      {isSpacesEnabled &&
-                        methods.watch('projects_filter_type') === 'spaces' &&
-                        spaces && (
-                          <SelectContainer mb="30px">
-                            <MultipleSelect
-                              name="space_ids"
-                              options={mapFilterEntityToOptions(spaces.data)}
-                              label={formatMessage(
-                                messages.selectedSpacesLabel
-                              )}
-                            />
-                          </SelectContainer>
-                        )}
                     </Box>
-                  </div>
-                </Tooltip>
-              </LinkedProjectContainer>
+                  </LinkedProjectContainer>
+                </div>
+              </Tooltip>
             )}
+            {methods.watch('projects_filter_type') === 'global_topics' && (
+              <SelectContainer mb="30px">
+                <MultipleSelect
+                  name="global_topic_ids"
+                  options={mapFilterEntityToOptions(topics.data)}
+                  label={formatMessage(messages.selectedTagsLabel)}
+                />
+              </SelectContainer>
+            )}
+            {methods.watch('projects_filter_type') === 'areas' && (
+              <SelectContainer mb="20px">
+                <Select
+                  name="area_id"
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  options={mapFilterEntityToOptions(areas?.data)}
+                  label={formatMessage(messages.selectedAreasLabel)}
+                />
+              </SelectContainer>
+            )}
+            {isSpacesEnabled &&
+              methods.watch('projects_filter_type') === 'spaces' &&
+              spaces && (
+                <SelectContainer mb="30px">
+                  <MultipleSelect
+                    name="space_ids"
+                    options={mapFilterEntityToOptions(spaces.data)}
+                    label={formatMessage(messages.selectedSpacesLabel)}
+                  />
+                </SelectContainer>
+              )}
           </SectionField>
         </SectionFormWrapper>
       </form>
