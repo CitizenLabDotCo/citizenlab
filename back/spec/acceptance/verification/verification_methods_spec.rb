@@ -10,9 +10,8 @@ resource 'Verification methods' do
     header 'Content-Type', 'application/json'
     create(:custom_field_gender)
     create(:custom_field_birthyear)
-    SettingsService.new.activate_feature!(
-      'verification',
-      settings: {
+    configuration = AppConfiguration.instance
+    configuration.settings['verification'] = {
         verification_methods: [
           {
             name: 'cow',
@@ -34,7 +33,7 @@ resource 'Verification methods' do
           }
         ]
       }
-    )
+    configuration.save!
   end
 
   get 'web_api/v1/verification_methods' do

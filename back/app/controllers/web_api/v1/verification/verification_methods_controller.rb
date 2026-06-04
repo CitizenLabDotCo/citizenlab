@@ -7,10 +7,10 @@ module WebApi
         skip_before_action :authenticate_user
 
         def index
-          vm_service = ::Verification::VerificationService.new
+          id_method_service = ::IdMethodService.new
           # Returns all configured methods, including login-only SSO methods.
           # Consumers filter by the `verification_method` / `login_method` attributes.
-          @verification_methods = vm_service.configured_methods(AppConfiguration.instance)
+          @verification_methods = id_method_service.configured_methods(AppConfiguration.instance)
           @verification_methods = policy_scope(@verification_methods, policy_scope_class: ::Verification::VerificationMethodPolicy::Scope)
           @verification_methods = paginate Kaminari.paginate_array(@verification_methods)
 
