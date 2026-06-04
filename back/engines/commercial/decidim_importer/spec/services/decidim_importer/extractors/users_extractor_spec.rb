@@ -48,6 +48,16 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(extract(rows)).to be_empty
   end
 
+  it 'skips accounts whose email domain is on the Go Vocal blacklist' do
+    blacklisted = EmailDomainBlacklist.load.first
+    spam = row('uid' => 'decidim-user-8', 'email' => "spammer@#{blacklisted}")
+    legit = row('uid' => 'decidim-user-9', 'email' => 'real@example.org')
+
+    records = extract([spam, legit])
+
+    expect(records.map { |r| r.attributes['email'] }).to eq(['real@example.org'])
+  end
+
   it 'registers users under their Decidim uid for later joins' do
     extract([row('uid' => 'decidim-user-7', 'email' => 'jean@y.fr')])
     expect(ref_map.fetch('decidim-user-7').attributes['email']).to eq 'jean@y.fr'

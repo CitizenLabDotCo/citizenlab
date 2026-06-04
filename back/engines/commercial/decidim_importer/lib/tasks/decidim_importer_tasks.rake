@@ -6,13 +6,16 @@
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #
-# Plus a throwaway-tenant smoke test straight from an export (no file in between):
-#   rake decidim_importer:verify[tmp/import_files/example.com.zip,fr-FR]
+# Dry-run a dumped template on a throwaway tenant that's created then destroyed:
+#   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
+#   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]  # tenant locales
 #
 # `dump_yaml` takes a Decidim export (zip or unzipped dir) and only writes files — it never touches
-# a tenant. `import` takes the dumped tenant-template YAML and deserializes it into the tenant
-# matching `host`; its 3rd argument disables image fetching, for templates whose `remote_*_url`
-# values point at an unreachable host (e.g. the source Decidim's `http://localhost/...` redirects).
+# a tenant. `import` and `verify` both consume the dumped tenant-template YAML: `import` deserializes
+# it into the tenant matching `host` (its 3rd argument disables image fetching, for templates whose
+# `remote_*_url` values point at an unreachable host, e.g. the source Decidim's `http://localhost/...`
+# redirects); `verify` deserializes it into a fresh throwaway tenant and destroys it afterwards, so a
+# template can be smoke-tested without touching a real tenant.
 #
 # `dump_yaml` also writes `<base>.app_config.json` — the subset of `01--organization.csv` that maps
 # onto Go Vocal AppConfiguration settings. The template pipeline does not apply app config, so an
@@ -43,11 +46,10 @@ namespace :decidim_importer do
     Rails.logger.info 'COMPLETE'
   end
 
-  desc 'Applies a Decidim export to a throwaway tenant to confirm the YAML deserializes, then destroys it.'
-  task :verify, %i[path primary_locale locales] => [:environment] do |_t, args|
-    path = args.fetch(:path)
-    primary_locale = args[:primary_locale] || 'fr-FR'
-    locales = (args[:locales] || "#{primary_locale},en").split(/[,\s]+/).compact_blank.uniq
+  desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
+  task :verify, %i[file locales] => [:environment] do |_t, args|
+    file = args.fetch(:file)
+    locales = (args[:locales] || 'fr-FR,en').split(/[,\s]+/).compact_blank.uniq
 
     name = "decidim-verify-#{SecureRandom.hex(4)}"
     host = "#{name}.localhost"
@@ -55,7 +57,7 @@ namespace :decidim_importer do
       locales: locales, lifecycle_stage: 'demo'
     ) }.with_indifferent_access
 
-    puts "Decidim verify → throwaway tenant=#{host} locales=#{locales.join(',')} path=#{path}"
+    puts "Decidim verify → throwaway tenant=#{host} locales=#{locales.join(',')} file=#{file}"
     success, tenant, = MultiTenancy::TenantService.new.initialize_tenant({ name: name, host: host }, config_attrs)
     raise "failed to create throwaway tenant #{host}" unless success
 
@@ -63,10 +65,8 @@ namespace :decidim_importer do
       tenant.switch do
         # Images are skipped: verification is about structure, and exports often carry unreachable
         # `remote_*_url` hosts that would fail the fetch for reasons unrelated to the template.
-        importer = build_importer(path, primary_locale: primary_locale, import_images: false)
-        created = importer.import
+        created = DecidimImporter::Importer.apply_template_file(file, import_images: false)
         created.each { |klass, ids| puts "  created #{ids.size} #{klass}" }
-        importer.skipped_phases.each { |s| puts "  skipped phase #{s[:uid]}: #{s[:reason]}" }
       end
       puts "VERIFY OK — applied cleanly, tearing down #{host}"
     ensure

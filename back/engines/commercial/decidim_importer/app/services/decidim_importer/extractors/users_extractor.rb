@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
+require Rails.root.join('lib/email_domain_blacklist')
+
 module DecidimImporter
   module Extractors
     # Decidim users CSV (`02--users.csv`) ──▶ Go Vocal `User`.
     #
-    # Only **confirmed, non-deleted, non-blocked** accounts with an email are imported (planning
-    # decision: no spam/anonymised accounts, no unconfirmed-email accounts, no passwords). The
-    # Decidim `uid` is preserved verbatim in `unique_code` so contributions can be re-linked. The
-    # plain-text "about" and personal URL are folded into the bio; demographics found in
-    # `extended_data` (Decidim's JSON blob for the configured extra user fields) go into
-    # `custom_field_values`.
+    # Only **confirmed, non-deleted, non-blocked** accounts with an email Go Vocal would accept are
+    # imported (planning decision: no spam/anonymised accounts, no unconfirmed-email accounts, no
+    # passwords). Decidim exports carry plenty of spam accounts whose email domain is on Go Vocal's
+    # blacklist (`config/our_domain_blacklist.txt` + the disposable-domains list); the `User` model
+    # rejects those, and since template application is all-or-nothing, a single one would abort the
+    # whole import — so they're skipped here. The Decidim `uid` is preserved verbatim in
+    # `unique_code` so contributions can be re-linked. The plain-text "about" and personal URL are
+    # folded into the bio; demographics found in `extended_data` (Decidim's JSON blob for the
+    # configured extra user fields) go into `custom_field_values`.
     class UsersExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -52,6 +57,7 @@ module DecidimImporter
         return nil if present_value(row[COLUMNS[:deleted_at]])
         return nil if present_value(row[COLUMNS[:confirmed_at]]).nil?
         return nil if truthy?(row[COLUMNS[:blocked]])
+        return nil if blacklisted_email_domain?(email)
 
         attributes = {
           'email' => email,
@@ -78,6 +84,19 @@ module DecidimImporter
         attributes['remote_avatar_url'] = avatar if avatar
 
         ref_map.register(uid, Record.new('user', attributes))
+      end
+
+      # True when the email's domain is on the same blacklist the `User` model validates against, so
+      # we skip the account rather than letting it fail (and roll back) the whole import.
+      def blacklisted_email_domain?(email)
+        domain = email.split('@').last&.strip&.downcase
+        return false if domain.blank?
+
+        email_domain_blacklist.include?(domain)
+      end
+
+      def email_domain_blacklist
+        @email_domain_blacklist ||= EmailDomainBlacklist.load.to_set
       end
 
       # Decidim stores a single display name; split into first/last (last token => last name).
