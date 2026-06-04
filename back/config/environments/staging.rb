@@ -49,6 +49,10 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
+  # SSL is terminated at CloudFront, so request.protocol is 'http' and URL
+  # helpers inherit that. Pin the scheme to 'https' for URL generation.
+  Rails.application.routes.default_url_options[:protocol] = 'https'
+
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
