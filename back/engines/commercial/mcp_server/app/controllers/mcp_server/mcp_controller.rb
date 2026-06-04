@@ -36,7 +36,7 @@ module McpServer
     # resource-metadata document via the WWW-Authenticate header so they can
     # discover the authorization server and start the OAuth flow.
     def advertise_resource_metadata
-      metadata_url = "#{request.base_url}/.well-known/oauth-protected-resource"
+      metadata_url = "#{AppConfiguration.instance.base_backend_uri}/.well-known/oauth-protected-resource"
       existing = response.headers['WWW-Authenticate'].to_s
       challenge = "Bearer resource_metadata=\"#{metadata_url}\""
       response.headers['WWW-Authenticate'] = existing.present? ? "#{existing}, #{challenge}" : challenge
