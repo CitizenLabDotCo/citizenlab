@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
@@ -14,6 +14,7 @@ interface Props {
 const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const roundedPercentage = Math.round(formCompletionPercentage);
 
   return (
     <Box
@@ -21,7 +22,7 @@ const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={formCompletionPercentage}
+      aria-valuenow={roundedPercentage}
       aria-label={formatMessage(messages.progressBarLabel)}
     >
       <Box background={colors.background}>
@@ -32,6 +33,20 @@ const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
           style={{ transition: 'width 0.3s ease-in-out' }}
         />
       </Box>
+      <Text
+        m="0"
+        fontSize="s"
+        color="textSecondary"
+        position="absolute"
+        top="4px"
+        left="0"
+        right="0"
+        textAlign="center"
+      >
+        {formatMessage(messages.progressPercentage, {
+          percentage: roundedPercentage,
+        })}
+      </Text>
     </Box>
   );
 };

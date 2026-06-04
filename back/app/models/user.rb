@@ -55,6 +55,7 @@ class User < ApplicationRecord
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
+  include UserDoorkeeper
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
@@ -220,13 +221,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  self.ignored_columns += %w[
-    email_confirmation_code
-    email_confirmation_retry_count
-    email_confirmation_code_reset_count
-    email_confirmation_code_sent_at
-  ]
 
   def update_merging_custom_fields!(attributes)
     attributes = attributes.deep_stringify_keys

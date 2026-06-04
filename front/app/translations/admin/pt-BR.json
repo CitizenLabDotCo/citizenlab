@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Avalie a qualidade deste insight",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Restaurar filtros",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Resumir",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "A análise baseada em IA não está incluída no seu plano atual. Fale com seu Gerente de Sucesso do Governo ou administrador para desbloqueá-la.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Resumo para",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Resumo para todas as entradas",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Não foi possível concluir a solicitação. Por favor, tente novamente mais tarde.",
