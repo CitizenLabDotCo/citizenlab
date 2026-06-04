@@ -256,13 +256,14 @@ resource 'Permissions' do
 
       context "'everyone_confirmed_email' permissions" do
         before do
+          @user = create(:unconfirmed_user)
+          header_token_for @user
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'everyone_confirmed_email')
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-          @user.reset_confirmation_and_counts
           @user.update!(
             first_name: 'Jack',
             last_name: nil,

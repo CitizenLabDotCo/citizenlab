@@ -70,7 +70,8 @@ module Analysis
     end
 
     def response_language
-      locale = Locale.monolingual&.to_s ||
+      locale = specified_locale ||
+               Locale.monolingual&.to_s ||
                most_recent_task_created_activity&.user&.locale ||
                AppConfiguration.instance.settings('core', 'locales').first ||
                I18n.default_locale

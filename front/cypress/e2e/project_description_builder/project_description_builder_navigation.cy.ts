@@ -5,7 +5,7 @@ describe('Project description builder navigation', () => {
   const projectTitle = randomString();
 
   before(() => {
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
       const userId = user.body.data.id;

@@ -2,13 +2,15 @@ import React, { useState, forwardRef } from 'react';
 
 import {
   Box,
+  Dropdown,
+  DropdownListItem,
   Icon,
   IconNames,
   Spinner,
+  Text,
   colors,
   fontSizes,
   media,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -65,38 +67,9 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 3px;
-  margin-bottom: 3px;
-`;
-
-const ListItem = styled.button`
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${colors.white};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 100ms ease-out;
-
-  & > span {
-    margin-right: 5px;
-  }
-
-  &:hover,
-  &:focus {
-    color: white;
-    background: ${colors.grey700};
-  }
+const StyledSpinner = styled(Spinner)`
+  margin-right: 8px;
+  width: 20px;
 `;
 
 export interface IAction {
@@ -117,6 +90,7 @@ export interface Props {
   id?: string;
   'data-cy'?: string;
   onClick?: (event: React.MouseEvent) => void;
+  ideaTitle?: string;
 }
 
 const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
@@ -129,6 +103,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
       className,
       id,
       onClick,
+      ideaTitle,
     } = props;
     const { formatMessage } = useIntl();
     const [visible, setVisible] = useState(false);
@@ -145,6 +120,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
     const toggleMenu = (event: React.MouseEvent) => {
       onClick && onClick(event);
       event.preventDefault();
+      event.stopPropagation();
       setVisible((current) => !current);
     };
 
@@ -152,6 +128,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
       (handler: (event: React.MouseEvent) => Promise<any> | void) =>
       async (event: React.MouseEvent) => {
         event.preventDefault();
+        event.stopPropagation();
         await handler(event);
         hide();
       };
@@ -162,68 +139,60 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <Container className={className || ''}>
-        <Tooltip
-          placement="bottom"
-          duration={[200, 0]}
-          visible={visible}
+        <MoreOptionsButton
+          ref={moreActionsButtonRef}
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={toggleMenu}
+          aria-expanded={visible}
+          id={id}
+          data-cy={props['data-cy']}
+          className="e2e-more-actions"
+          data-testid="moreOptionsButton"
+          aria-labelledby={showLabel ? labelId : undefined}
+          aria-label={formatMessage(messages.actionsMenu, {
+            title: ideaTitle || '',
+          })}
+        >
+          <MoreOptionsIcon name="dots-horizontal" color={color} />
+          {showLabel && (
+            <MoreOptionsLabel id={labelId}>{labelAndTitle}</MoreOptionsLabel>
+          )}
+        </MoreOptionsButton>
+        <Dropdown
+          opened={visible}
           onClickOutside={hide}
-          theme="dark"
+          className="e2e-more-actions-list"
+          right="0px"
+          mobileRight="0px"
           content={
-            <List className="e2e-more-actions-list">
+            <Box role="menu">
               {actions.map((action, index) => {
                 const { handler, label, icon, name, isLoading } = action;
 
                 return (
-                  <ListItem
+                  <DropdownListItem
                     key={index}
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={handleListItemOnClick(handler)}
                     className={name ? `e2e-action-${name}` : undefined}
+                    role="menuitem"
                   >
-                    {label}
-                    {icon && !isLoading && (
-                      <Box
-                        width="20px"
-                        height="20px"
-                        display="flex"
-                        alignItems="center"
-                        ml="12px"
-                      >
-                        <Icon name={icon} fill="white" />
+                    <Text textAlign="left" m="0px">
+                      <Box display="flex" gap="8px" alignItems="center">
+                        {isLoading ? (
+                          <StyledSpinner size="20px" />
+                        ) : (
+                          icon && <Icon name={icon} />
+                        )}
+                        {label}
                       </Box>
-                    )}
-                    {isLoading && (
-                      <Box ml="12px">
-                        <Spinner color="white" size="20px" />
-                      </Box>
-                    )}
-                  </ListItem>
+                    </Text>
+                  </DropdownListItem>
                 );
               })}
-            </List>
+            </Box>
           }
-          useContentWrapper={false}
-        >
-          <MoreOptionsButton
-            ref={moreActionsButtonRef}
-            onMouseDown={removeFocusAfterMouseClick}
-            onClick={toggleMenu}
-            aria-expanded={visible}
-            id={id}
-            data-cy={props['data-cy']}
-            className="e2e-more-actions"
-            data-testid="moreOptionsButton"
-            aria-labelledby={showLabel ? labelId : undefined}
-            aria-label={
-              !showLabel ? formatMessage(messages.moreOptions) : undefined
-            }
-          >
-            <MoreOptionsIcon name="dots-horizontal" color={color} />
-            {showLabel && (
-              <MoreOptionsLabel id={labelId}>{labelAndTitle}</MoreOptionsLabel>
-            )}
-          </MoreOptionsButton>
-        </Tooltip>
+        />
       </Container>
     );
   }

@@ -209,7 +209,7 @@ describe 'google authentication' do
       it 'creates unconfirmed user' do
         get '/auth/google'
         follow_redirect!
-        user = User.find_by(email: 'boris.brompton@orange.uk')
+        user = User.find_by(new_email: 'boris.brompton@orange.uk')
         expect(user.confirmation_required?).to be(true)
       end
 

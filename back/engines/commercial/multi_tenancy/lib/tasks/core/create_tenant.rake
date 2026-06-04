@@ -214,6 +214,10 @@ namespace :cl2_back do
             }
           ]
         },
+        fake_sso: {
+          enabled: true,
+          allowed: true
+        },
         project_preview_link: {
           enabled: true,
           allowed: true
@@ -368,6 +372,10 @@ namespace :cl2_back do
           allowed: true
         },
         phase_datetime_setup: {
+          enabled: true,
+          allowed: true
+        },
+        mcp_server: {
           enabled: true,
           allowed: true
         }

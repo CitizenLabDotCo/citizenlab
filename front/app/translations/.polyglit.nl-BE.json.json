@@ -614,6 +614,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -928,6 +933,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.progressPercentage": {
+    "state": "verified",
+    "verified_at": "2026-06-02T12:04:13.392120Z",
+    "verified_by": "Luuc"
   },
   "app.components.CustomFieldsForm.removeAnswer": {
     "state": "verified",
@@ -1348,6 +1358,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -3198,6 +3213,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T14:17:01.137490Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T14:17:01.137490Z",
+    "verified_by": "Luuc"
   },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
@@ -6474,6 +6499,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -6518,6 +6548,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -8833,6 +8868,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeasShow.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T14:17:01.137490Z",
+    "verified_by": "Luuc"
   },
   "app.containers.IdeasShow.commentCTA": {
     "state": "verified",
@@ -12089,6 +12129,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.118563Z",
@@ -12228,6 +12273,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:34:26.174191Z",
+    "verified_by": "Luuc"
   },
   "app.errors.invalid_row": {
     "state": "verified",

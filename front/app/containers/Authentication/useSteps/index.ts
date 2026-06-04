@@ -144,7 +144,7 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = (async (...args) => {
+      const wrappedAction = (async (...args: any[]) => {
         setError(null);
         setLoading(true);
 
@@ -172,13 +172,18 @@ export default function useSteps() {
       const { authenticationData, flow } = event.eventValue;
 
       authenticationDataRef.current = authenticationData;
-      updateState({ flow });
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
+        flow,
+        emailInCaseUserNeedsToConfirm
+      );
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition, updateState]);
+  }, [currentStep, transition, updateState, authUser]);
 
   // Listen for any action that triggers the VERIFICATION flow, and initialize
   // the flow in no flow is ongoing
@@ -218,7 +223,10 @@ export default function useSteps() {
   // Logic to launch other flows
   useEffect(() => {
     if (initialized) return;
+
+    // authUser === undefined means the request is still loading
     if (authUser === undefined) return;
+
     initialized = true;
     if (currentStep !== 'closed') return;
 
@@ -241,6 +249,18 @@ export default function useSteps() {
 
     // launch sign in flow, derived from route
     if (pathname.endsWith('/sign-in') || pathname.endsWith('/sign-in/admin')) {
+      // Capture `return_to` so we can navigate the browser there once auth
+      // completes. Only same-origin paths are accepted (must start with a
+      // single "/", excluding protocol-relative "//..." URLs) so this can't
+      // be turned into an open redirector.
+      if (
+        typeof search.return_to === 'string' &&
+        search.return_to.startsWith('/') &&
+        !search.return_to.startsWith('//')
+      ) {
+        localStorage.setItem('auth_return_to', search.return_to);
+      }
+
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
           context: GLOBAL_CONTEXT,
@@ -335,7 +355,11 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
-      updateState({ flow, email: authUser.data.attributes.email ?? null });
+
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       // Check that the path is the same as the one stored in local storage
@@ -355,6 +379,21 @@ export default function useSteps() {
     setError,
     updateState,
   ]);
+
+  // Honour `return_to` stashed by the /sign-in route once the user is
+  // authenticated and the auth modal has fully closed. Uses a full-page
+  // navigation (not clHistory.push) so non-SPA targets like Rails-served
+  // Doorkeeper endpoints actually hit the backend.
+  useEffect(() => {
+    if (currentStep !== 'closed') return;
+    if (isNilOrError(authUser)) return;
+
+    const returnTo = localStorage.getItem('auth_return_to');
+    if (!returnTo) return;
+
+    localStorage.removeItem('auth_return_to');
+    window.location.assign(returnTo);
+  }, [currentStep, authUser]);
 
   return {
     currentStep,

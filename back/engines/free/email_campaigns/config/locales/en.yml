@@ -68,6 +68,7 @@ en:
         users_who_follow_the_input: Users who follow the input
         users_who_follow_the_project: Users who follow the project’s topic or area tags
         users_who_follow_the_proposal: Users who follow the proposal
+        users_who_follow_or_participated: Users who follow the project or have participated
       trigger:
         7_days_after_invite_is_sent: 7 days after invite is sent
         7_days_before_the_project_changes_phase: 7 days before the project changes phase

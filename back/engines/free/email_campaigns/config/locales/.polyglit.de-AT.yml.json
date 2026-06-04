@@ -309,6 +309,11 @@
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
   },
+  "email_campaigns.admin_labels.recipient_segment.users_who_follow_or_participated": {
+    "state": "verified",
+    "verified_at": "2026-05-28T09:10:04.718418Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.recipient_segment.users_who_follow_the_input": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",

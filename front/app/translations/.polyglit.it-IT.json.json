@@ -934,6 +934,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.progressPercentage": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:45:43.556449Z",
+    "verified_by": "Roger"
+  },
   "app.components.CustomFieldsForm.removeAnswer": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -1174,6 +1179,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
+  },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -1348,6 +1358,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -3193,6 +3208,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
   },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
@@ -6469,6 +6489,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
+  },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -6513,6 +6538,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -12084,6 +12114,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -12223,6 +12258,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-26T12:18:21.615650Z",
+    "verified_by": "Roger"
   },
   "app.errors.invalid_row": {
     "state": "verified",
