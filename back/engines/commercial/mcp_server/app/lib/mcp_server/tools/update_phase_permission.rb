@@ -35,7 +35,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         group_ids: {
           type: 'array',
           items: { type: 'string' },
-          description: 'Restricts to members of these groups (narrows further). Ignored when permitted_by is "everyone" or "admins_moderators". Pass [] to clear.'
+          description: 'Restricts to members of these groups (narrows further). Call list_groups to find group IDs. Ignored when permitted_by is "everyone" or "admins_moderators". Pass [] to clear.'
         },
         demographic_questions: {
           type: %w[array null],
