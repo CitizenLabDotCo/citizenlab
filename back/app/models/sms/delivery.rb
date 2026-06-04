@@ -29,6 +29,10 @@ module Sms
     # The statuses order matters for advance_status!
     STATUSES = %w[pending queued sent delivered undelivered failed].freeze
 
+    # A message reaches exactly one terminal outcome. Once there, no later
+    # callback may move it (e.g. a stray `failed` must not overwrite `delivered`).
+    TERMINAL_STATUSES = %w[delivered undelivered failed].freeze
+
     belongs_to :user, optional: true
 
     validates :phone_number, presence: true
@@ -37,10 +41,12 @@ module Sms
 
     # Moves the delivery to `new_status` only when that represents forward
     # progress, so out-of-order provider callbacks (Twilio warns these can arrive
-    # in any order) never regress it. Persists the change.
+    # in any order) never regress it. A delivery already in a terminal status is
+    # frozen there. Persists the change.
     # @return [Boolean] whether the status actually advanced
     def advance_status!(new_status)
       raise ArgumentError, "unknown status: #{new_status.inspect}" unless STATUSES.include?(new_status)
+      return false if TERMINAL_STATUSES.include?(status)
       return false if STATUSES.index(new_status) <= STATUSES.index(status)
 
       update!(status: new_status)
