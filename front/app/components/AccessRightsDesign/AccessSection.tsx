@@ -310,8 +310,8 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
 
       {config.mode === 'admins' && (
         <Hint>
-          Only admins and managers can take this action. You can still ask
-          everyone who participates the demographic questions below.
+          Only admins and managers can take this action. No other requirements
+          apply.
         </Hint>
       )}
 

@@ -110,14 +110,19 @@ const AccessRightsDesign = ({
               onChange={handleConfigChange}
             />
 
-            {/* Demographic questions can be collected in every mode; the
-                account-only parts (PII, anonymity) hide themselves inside. */}
-            <Divider my="24px" />
-            <DataSection
-              config={config}
-              passwordAvailable={passwordAvailable}
-              onChange={handleConfigChange}
-            />
+            {/* Admins-only is a closed gate — nothing else applies. For the
+                other modes, demographics can be collected (the account-only
+                parts hide themselves inside DataSection). */}
+            {config.mode !== 'admins' && (
+              <>
+                <Divider my="24px" />
+                <DataSection
+                  config={config}
+                  passwordAvailable={passwordAvailable}
+                  onChange={handleConfigChange}
+                />
+              </>
+            )}
           </Box>
         )}
       </Box>

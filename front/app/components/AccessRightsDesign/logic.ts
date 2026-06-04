@@ -44,8 +44,9 @@ export const placementLocked = (config: AccessConfig): boolean =>
  *  - methods the platform doesn't offer are switched off;
  *  - access controls (methods, groups, PII, anonymity) need an account, so
  *    they clear when the action is open to anyone or limited to admins;
- *  - demographic questions can still be collected in every mode, but without
- *    an account they can only be asked on a form page, not in registration;
+ *  - admins-only is a closed gate: nothing else applies, so demographics clear
+ *    too. In the open ("anyone") mode demographics survive, but can only be
+ *    asked on a form page, not in registration;
  *  - a password only makes sense alongside the confirmed-email account.
  */
 export const normalize = (
@@ -74,7 +75,9 @@ export const normalize = (
       password: hasAccount && methods.email.enabled ? config.pii.password : false,
     },
     dataCollection: hasAccount ? config.dataCollection : 'all_data',
-    // Demographics survive every mode; only their placement is constrained.
+    // Demographics survive the open/account modes, but admins-only clears them.
+    demographics: config.mode === 'admins' ? [] : config.demographics,
+    // In the open mode demographics can only be asked on a form page.
     demographicsPlacement:
       config.mode === 'anyone' ? 'form_page' : config.demographicsPlacement,
   };
@@ -112,7 +115,6 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
         icon: 'shield-checkered',
         tone: 'access',
       },
-      ...demographicsChip(config),
     ];
   }
 
