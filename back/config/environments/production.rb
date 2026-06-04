@@ -46,10 +46,6 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # SSL is terminated at CloudFront, so request.protocol is 'http' and URL
-  # helpers inherit that. Pin the scheme to 'https' for URL generation.
-  Rails.application.routes.default_url_options[:protocol] = 'https'
-
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 

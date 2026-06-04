@@ -6,6 +6,13 @@ module Oauth
     skip_before_action :authenticate_user
     skip_after_action :verify_authorized
 
+    # Force https in URL helpers — these responses are consumed by external
+    # OAuth/MCP clients that require https authorization endpoints. TLS
+    # terminates at CloudFront, so request.protocol is 'http' inside Rails.
+    def default_url_options
+      Rails.env.local? ? super : super.merge(protocol: 'https')
+    end
+
     def authorization_server
       render json: {
         issuer: AppConfiguration.instance.base_backend_uri,
