@@ -14,15 +14,21 @@ import {
 
 import Modal from 'components/UI/Modal';
 
-import { VERIFICATION_RETURNED_FIELDS } from './data';
+import { VERIFICATION_RETURNED_FIELDS, VerificationReturnedField } from './data';
 
 interface Props {
   opened: boolean;
   methodName: string;
+  fields?: VerificationReturnedField[];
   onClose: () => void;
 }
 
-const VerificationFieldsModal = ({ opened, methodName, onClose }: Props) => (
+const VerificationFieldsModal = ({
+  opened,
+  methodName,
+  fields = VERIFICATION_RETURNED_FIELDS,
+  onClose,
+}: Props) => (
   <Modal
     opened={opened}
     close={onClose}
@@ -42,7 +48,7 @@ const VerificationFieldsModal = ({ opened, methodName, onClose }: Props) => (
       </Text>
 
       <Box mt="12px">
-        {VERIFICATION_RETURNED_FIELDS.map((field) => (
+        {fields.map((field) => (
           <Box
             key={field.label}
             display="flex"

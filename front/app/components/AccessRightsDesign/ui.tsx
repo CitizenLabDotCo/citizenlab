@@ -86,6 +86,51 @@ export const Hint = ({ children }: { children: ReactNode }) => (
   </Box>
 );
 
+/** A selectable card for the top-level access-mode choice. */
+export const ModeCard = ({
+  icon,
+  title,
+  description,
+  selected,
+  onClick,
+}: {
+  icon: IconNames;
+  title: string;
+  description: string;
+  selected: boolean;
+  onClick: () => void;
+}) => (
+  <Box
+    as="button"
+    type="button"
+    flex="1 1 200px"
+    p="12px"
+    display="flex"
+    alignItems="flex-start"
+    gap="8px"
+    borderRadius="8px"
+    border={`1px solid ${selected ? colors.teal400 : colors.borderLight}`}
+    bgColor={selected ? colors.teal50 : colors.white}
+    style={{ cursor: 'pointer', textAlign: 'left' }}
+    onClick={onClick}
+  >
+    <Icon
+      name={icon}
+      width="20px"
+      height="20px"
+      fill={selected ? colors.teal500 : colors.coolGrey500}
+    />
+    <Box display="flex" flexDirection="column" gap="4px">
+      <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
+        {title}
+      </Text>
+      <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+        {description}
+      </Text>
+    </Box>
+  </Box>
+);
+
 /**
  * A single progressive-disclosure row: collapsed it shows just a title + a
  * muted one-line summary of its current value; expanded it reveals its

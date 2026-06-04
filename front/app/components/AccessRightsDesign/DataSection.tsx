@@ -160,10 +160,18 @@ const PLACEMENT_OPTIONS: { value: DemographicsPlacement; label: string }[] = [
 interface Props {
   config: AccessConfig;
   passwordAvailable: boolean;
+  // The password requirement is specific to email/password accounts; SSO-only
+  // variants (e.g. Stadt Wien Konto) hide it entirely.
+  showPassword?: boolean;
   onChange: (config: AccessConfig) => void;
 }
 
-const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
+const DataSection = ({
+  config,
+  passwordAvailable,
+  showPassword = true,
+  onChange,
+}: Props) => {
   // PII and anonymity need an account; demographics are collected in any mode.
   const showAccountParts = config.mode === 'account';
   const lockPlacement = placementLocked(config);
@@ -205,23 +213,25 @@ const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
                 })
               }
             />
-            <PiiToggle
-              icon="lock"
-              title="Password"
-              description={
-                passwordAvailable
-                  ? 'Require a password on the account.'
-                  : 'Requires the “Confirmed email” method to be enabled.'
-              }
-              checked={config.pii.password}
-              disabled={!passwordAvailable}
-              onChange={() =>
-                onChange({
-                  ...config,
-                  pii: { ...config.pii, password: !config.pii.password },
-                })
-              }
-            />
+            {showPassword && (
+              <PiiToggle
+                icon="lock"
+                title="Password"
+                description={
+                  passwordAvailable
+                    ? 'Require a password on the account.'
+                    : 'Requires the “Confirmed email” method to be enabled.'
+                }
+                checked={config.pii.password}
+                disabled={!passwordAvailable}
+                onChange={() =>
+                  onChange({
+                    ...config,
+                    pii: { ...config.pii, password: !config.pii.password },
+                  })
+                }
+              />
+            )}
           </Expander>
         )}
 

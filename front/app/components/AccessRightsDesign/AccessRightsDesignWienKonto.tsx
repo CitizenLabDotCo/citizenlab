@@ -9,13 +9,14 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import AccessSection from './AccessSection';
+import AccessSectionWienKonto from './AccessSectionWienKonto';
 import {
-  DEFAULT_CONFIG,
+  DEFAULT_CONFIG_WIEN_KONTO,
   DEFAULT_PLATFORM_SETTINGS,
+  STADT_WIEN_KONTO_NAME,
 } from './data';
 import DataSection from './DataSection';
-import { buildSummary, normalize } from './logic';
+import { buildSummaryWienKonto, normalize } from './logic';
 import { AccessConfig, PlatformSettings } from './types';
 import { Chip } from './ui';
 
@@ -26,23 +27,20 @@ interface Props {
 }
 
 /**
- * "Participation requirements" — a single, collapsible panel that captures
- * everything a participant must satisfy before they can take an action:
- * authentication, group membership, personal info and demographic questions.
+ * Stadt Wien Konto variant of the participation-requirements panel.
  *
- * Design notes (see the chat for the full rationale):
- *  - One panel, two groups: *who can participate* (access) and *what we ask*
- *    (data). This mirrors the brief's own split of access-rights vs collection.
- *  - Collapses to a one-line summary of chips so several actions fit on a page.
- *  - The rules engine in logic.ts keeps invalid combinations impossible: turn
- *    off all auth and the data section greys out; turn off password login and
- *    the email method disables; etc.
+ * Identical to the standard panel except for the sign-in choice: instead of
+ * picking between confirmed email / phone / identity verification, "require
+ * sign-in" means a single fixed SSO method — the Stadt Wien Konto — with no
+ * further options. This covers configurations that mandate one specific city
+ * account. Everything downstream (groups, personal info, demographics,
+ * anonymity) behaves the same, except the password requirement is dropped
+ * since SSO accounts have no platform password.
  */
-const AccessRightsDesign = ({
-  initialConfig = DEFAULT_CONFIG,
+const AccessRightsDesignWienKonto = ({
+  initialConfig = DEFAULT_CONFIG_WIEN_KONTO,
   defaultOpen = true,
 }: Props) => {
-  // In the real component these come from the AppConfiguration settings.
   const settings: PlatformSettings = DEFAULT_PLATFORM_SETTINGS;
   const [config, setConfig] = useState<AccessConfig>(
     normalize(initialConfig, settings)
@@ -52,9 +50,7 @@ const AccessRightsDesign = ({
   const handleConfigChange = (next: AccessConfig) =>
     setConfig(normalize(next, settings));
 
-  const summary = buildSummary(config);
-  const passwordAvailable =
-    settings.passwordLoginEnabled && config.methods.email.enabled;
+  const summary = buildSummaryWienKonto(config, STADT_WIEN_KONTO_NAME);
 
   return (
     <Box maxWidth="760px" my="24px">
@@ -90,7 +86,6 @@ const AccessRightsDesign = ({
             </Title>
           </Box>
 
-          {/* When collapsed, the summary chips stand in for the whole panel. */}
           {!isOpen && (
             <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap" ml="4px">
               {summary.map((chip) => (
@@ -104,21 +99,15 @@ const AccessRightsDesign = ({
           <Box px="20px" pb="20px">
             <Divider mt="0" mb="20px" />
 
-            <AccessSection
-              config={config}
-              settings={settings}
-              onChange={handleConfigChange}
-            />
+            <AccessSectionWienKonto config={config} onChange={handleConfigChange} />
 
-            {/* Admins-only is a closed gate — nothing else applies. For the
-                other modes, demographics can be collected (the account-only
-                parts hide themselves inside DataSection). */}
             {config.mode !== 'admins' && (
               <>
                 <Divider my="24px" />
                 <DataSection
                   config={config}
-                  passwordAvailable={passwordAvailable}
+                  passwordAvailable={false}
+                  showPassword={false}
                   onChange={handleConfigChange}
                 />
               </>
@@ -130,4 +119,4 @@ const AccessRightsDesign = ({
   );
 };
 
-export default AccessRightsDesign;
+export default AccessRightsDesignWienKonto;

@@ -37,52 +37,8 @@ import {
   Recency,
   TimeUnit,
 } from './types';
-import { SectionHeader, Hint, Expander } from './ui';
+import { SectionHeader, Hint, Expander, ModeCard } from './ui';
 import VerificationFieldsModal from './VerificationFieldsModal';
-
-const ModeCard = ({
-  icon,
-  title,
-  description,
-  selected,
-  onClick,
-}: {
-  icon: IconNames;
-  title: string;
-  description: string;
-  selected: boolean;
-  onClick: () => void;
-}) => (
-  <Box
-    as="button"
-    type="button"
-    flex="1 1 200px"
-    p="12px"
-    display="flex"
-    alignItems="flex-start"
-    gap="8px"
-    borderRadius="8px"
-    border={`1px solid ${selected ? colors.teal400 : colors.borderLight}`}
-    bgColor={selected ? colors.teal50 : colors.white}
-    style={{ cursor: 'pointer', textAlign: 'left' }}
-    onClick={onClick}
-  >
-    <Icon
-      name={icon}
-      width="20px"
-      height="20px"
-      fill={selected ? colors.teal500 : colors.coolGrey500}
-    />
-    <Box>
-      <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
-        {title}
-      </Text>
-      <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-        {description}
-      </Text>
-    </Box>
-  </Box>
-);
 
 const METHOD_META: Record<
   AuthMethodKey,

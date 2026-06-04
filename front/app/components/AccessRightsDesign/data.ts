@@ -32,6 +32,18 @@ export const VERIFICATION_RETURNED_FIELDS: VerificationReturnedField[] = [
   { label: 'Gender', locked: false },
 ];
 
+// ---- "Stadt Wien Konto" variant: a single, fixed SSO sign-in method ----
+
+export const STADT_WIEN_KONTO_NAME = 'Stadt Wien Konto';
+
+export const STADT_WIEN_KONTO_RETURNED_FIELDS: VerificationReturnedField[] = [
+  { label: 'First name', locked: true },
+  { label: 'Last name', locked: true },
+  { label: 'Email', locked: true },
+  { label: 'Date of birth', locked: true },
+  { label: 'District', locked: false },
+];
+
 export interface MockGroup {
   id: string;
   title: string;
@@ -92,4 +104,15 @@ export const DEFAULT_CONFIG: AccessConfig = {
   demographics: [],
   demographicsPlacement: 'registration',
   dataCollection: 'all_data',
+};
+
+// The Stadt Wien Konto variant has a single fixed sign-in method, so there are
+// no per-method toggles — `methods` stay off and sign-in is implied by `mode`.
+export const DEFAULT_CONFIG_WIEN_KONTO: AccessConfig = {
+  ...DEFAULT_CONFIG,
+  methods: {
+    email: { enabled: false, recency: null },
+    phone: { enabled: false, recency: null },
+    verification: { enabled: false, recency: null },
+  },
 };

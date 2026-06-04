@@ -182,6 +182,56 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
   return chips;
 };
 
+// Summary for the Stadt Wien Konto variant: the sign-in method is fixed, so the
+// per-method chips are replaced by a single "Stadt Wien Konto" chip.
+export const buildSummaryWienKonto = (
+  config: AccessConfig,
+  signInLabel: string
+): SummaryChip[] => {
+  if (config.mode === 'admins') {
+    return [
+      {
+        key: 'admins',
+        label: 'Admins & managers only',
+        icon: 'shield-checkered',
+        tone: 'access',
+      },
+    ];
+  }
+
+  if (config.mode === 'anyone') {
+    return [
+      { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
+      ...demographicsChip(config),
+    ];
+  }
+
+  const chips: SummaryChip[] = [
+    { key: 'signin', label: signInLabel, icon: 'shield-checkered', tone: 'access' },
+  ];
+  if (config.groupIds.length > 0) {
+    chips.push({
+      key: 'groups',
+      label: `${config.groupIds.length} group${config.groupIds.length > 1 ? 's' : ''}`,
+      icon: 'group',
+      tone: 'access',
+    });
+  }
+  if (config.pii.name) {
+    chips.push({ key: 'name', label: 'Name', icon: 'user-circle', tone: 'data' });
+  }
+  chips.push(...demographicsChip(config));
+  if (config.dataCollection !== 'all_data') {
+    chips.push({
+      key: 'anonymity',
+      label: config.dataCollection === 'anonymous' ? 'Anonymous' : 'PII excluded',
+      icon: 'user-circle',
+      tone: 'data',
+    });
+  }
+  return chips;
+};
+
 export const demographicTitle = (fieldId: string): string =>
   DEMOGRAPHIC_FIELDS.find((f) => f.id === fieldId)?.title ?? fieldId;
 
