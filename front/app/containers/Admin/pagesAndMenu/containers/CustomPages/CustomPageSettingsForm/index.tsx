@@ -42,7 +42,6 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
@@ -88,9 +87,6 @@ const projectsFilterTypesArray: ProjectsFilterTypes[] = [
 
 const fieldMarginBottom = '40px';
 
-// Hide the "NEW" badge on the "By space" radio after this date.
-const SPACES_FILTER_NEW_BADGE_EXPIRY = new Date('2026-12-04');
-
 const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
@@ -115,7 +111,7 @@ const CustomPageSettingsForm = ({
   const { data: spaces } = useSpaces();
   const { formatMessage } = useIntl();
 
-  const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
+  const hasMultipleConfiguredLocales = configuredLocales
     ? configuredLocales.length > 1
     : false;
 
@@ -231,13 +227,7 @@ const CustomPageSettingsForm = ({
       : []),
   ];
 
-  if (
-    isNilOrError(areas) ||
-    isNilOrError(topics) ||
-    isNilOrError(locale) ||
-    isNilOrError(appConfig) ||
-    (isSpacesEnabled && isNilOrError(spaces))
-  ) {
+  if (!areas || !topics || !appConfig || (isSpacesEnabled && !spaces)) {
     return null;
   }
 
@@ -344,9 +334,7 @@ const CustomPageSettingsForm = ({
                                     <span>{option.label}</span>
                                     {option.isNew && (
                                       <NewLabel
-                                        expiryDate={
-                                          SPACES_FILTER_NEW_BADGE_EXPIRY
-                                        }
+                                        expiryDate={new Date('2026-12-04')}
                                       />
                                     )}
                                   </Box>
