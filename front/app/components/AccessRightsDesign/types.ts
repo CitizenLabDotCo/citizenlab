@@ -8,6 +8,8 @@
 // more" methods, toggle name and password separately, etc.). See index.tsx for
 // where the two models meet and the README note in the chat for the trade-off.
 
+import { Multiloc } from 'typings';
+
 export type TimeUnit = 'days' | 'weeks' | 'months';
 
 // `null` means "confirmation never expires" (confirm once, ever).
@@ -33,15 +35,23 @@ export type AccessMode = 'anyone' | 'account' | 'admins';
 // not *collecting*: you can ask for a name yet keep the submission anonymous.
 export type DataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 
+// Where demographic questions are asked:
+//  - 'registration': as a step before the user participates (in the sign-in flow)
+//  - 'form_page':    as an extra page appended to the end of the form itself
+export type DemographicsPlacement = 'registration' | 'form_page';
+
 export interface AccessConfig {
   mode: AccessMode;
   methods: Record<AuthMethodKey, AuthMethodState>;
   groupIds: string[];
+  // Override for the "you don't meet the requirements" message, per locale.
+  accessDeniedMultiloc: Multiloc;
   pii: {
     name: boolean; // first + last name, toggled as a pair
     password: boolean;
   };
   demographics: DemographicSelection[];
+  demographicsPlacement: DemographicsPlacement;
   dataCollection: DataCollection;
 }
 

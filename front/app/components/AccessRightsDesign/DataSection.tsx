@@ -22,9 +22,15 @@ import {
   demographicTitle,
   demographicsSummary,
   piiSummary,
+  placementLocked,
 } from './logic';
-import { AccessConfig, DataCollection, DemographicSelection } from './types';
-import { SectionHeader, Expander } from './ui';
+import {
+  AccessConfig,
+  DataCollection,
+  DemographicSelection,
+  DemographicsPlacement,
+} from './types';
+import { SectionHeader, Expander, Hint } from './ui';
 
 const PiiToggle = ({
   icon,
@@ -140,6 +146,17 @@ const ANONYMITY_OPTIONS: {
   },
 ];
 
+const PLACEMENT_OPTIONS: { value: DemographicsPlacement; label: string }[] = [
+  {
+    value: 'registration',
+    label: 'Ask demographic questions before the user participates',
+  },
+  {
+    value: 'form_page',
+    label: 'Collect demographics by adding a new page to the end of the form',
+  },
+];
+
 interface Props {
   config: AccessConfig;
   passwordAvailable: boolean;
@@ -147,6 +164,10 @@ interface Props {
 }
 
 const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
+  // PII and anonymity need an account; demographics are collected in any mode.
+  const showAccountParts = config.mode === 'account';
+  const lockPlacement = placementLocked(config);
+
   const selectedIds = config.demographics.map((d) => d.fieldId);
   const addableFields = DEMOGRAPHIC_FIELDS.filter(
     (f) => !selectedIds.includes(f.id)
@@ -165,50 +186,100 @@ const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
       />
 
       <Box border={`1px solid ${colors.borderLight}`} borderRadius="8px" px="14px">
-        {/* Personal info */}
-        <Expander
-          icon="user-circle"
-          title="Personal info"
-          summary={piiSummary(config)}
-        >
-          <PiiToggle
+        {/* Personal info — only meaningful when there's an account. */}
+        {showAccountParts && (
+          <Expander
             icon="user-circle"
-            title="Full name"
-            description="Ask for first and last name."
-            checked={config.pii.name}
-            onChange={() =>
-              onChange({
-                ...config,
-                pii: { ...config.pii, name: !config.pii.name },
-              })
-            }
-          />
-          <PiiToggle
-            icon="lock"
-            title="Password"
-            description={
-              passwordAvailable
-                ? 'Require a password on the account.'
-                : 'Requires the “Confirmed email” method to be enabled.'
-            }
-            checked={config.pii.password}
-            disabled={!passwordAvailable}
-            onChange={() =>
-              onChange({
-                ...config,
-                pii: { ...config.pii, password: !config.pii.password },
-              })
-            }
-          />
-        </Expander>
+            title="Personal info"
+            summary={piiSummary(config)}
+          >
+            <PiiToggle
+              icon="user-circle"
+              title="Full name"
+              description="Ask for first and last name."
+              checked={config.pii.name}
+              onChange={() =>
+                onChange({
+                  ...config,
+                  pii: { ...config.pii, name: !config.pii.name },
+                })
+              }
+            />
+            <PiiToggle
+              icon="lock"
+              title="Password"
+              description={
+                passwordAvailable
+                  ? 'Require a password on the account.'
+                  : 'Requires the “Confirmed email” method to be enabled.'
+              }
+              checked={config.pii.password}
+              disabled={!passwordAvailable}
+              onChange={() =>
+                onChange({
+                  ...config,
+                  pii: { ...config.pii, password: !config.pii.password },
+                })
+              }
+            />
+          </Expander>
+        )}
 
-        {/* Demographics */}
-        <Box borderTop={`1px solid ${colors.divider}`}>
+        {/* Demographics — available in every mode. */}
+        <Box
+          borderTop={
+            showAccountParts ? `1px solid ${colors.divider}` : undefined
+          }
+        >
           <Expander
             icon="user-data"
             title="Demographic questions"
             summary={demographicsSummary(config)}
           >
+            {/* Where the questions are asked. */}
+            <Text as="p" mt="0" mb="6px" fontSize="xs" fontWeight="bold" color="coolGrey600">
+              When to ask
+            </Text>
+            {PLACEMENT_OPTIONS.map((option) => {
+              const disabled = lockPlacement && option.value === 'registration';
+              return (
+                <Box key={option.value} mb="2px">
+                  <Radio
+                    name="demographics-placement"
+                    value={option.value}
+                    currentValue={config.demographicsPlacement}
+                    disabled={disabled}
+                    onChange={(value: DemographicsPlacement) =>
+                      onChange({ ...config, demographicsPlacement: value })
+                    }
+                    label={
+                      <Text
+                        as="span"
+                        m="0"
+                        fontSize="s"
+                        color={disabled ? 'coolGrey500' : 'primary'}
+                      >
+                        {option.label}
+                      </Text>
+                    }
+                  />
+                </Box>
+              );
+            })}
+            {lockPlacement && (
+              <Box mb="10px">
+                <Hint>
+                  With “Anyone” there is no sign-in step, so demographics can only
+                  be asked on a form page.
+                </Hint>
+              </Box>
+            )}
+
+            <Box mt="12px" mb="8px" borderTop={`1px solid ${colors.divider}`} />
+
+            <Text as="p" mt="0" mb="8px" fontSize="xs" fontWeight="bold" color="coolGrey600">
+              Questions
+            </Text>
             {config.demographics.length === 0 && (
               <Text as="p" mt="0" mb="8px" fontSize="s" color="coolGrey500">
                 No demographic questions asked.
@@ -263,7 +334,8 @@ const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
           </Expander>
         </Box>
 
-        {/* Anonymity / data linking */}
+        {/* Anonymity / data linking — only with an account to link against. */}
+        {showAccountParts && (
         <Box borderTop={`1px solid ${colors.divider}`}>
           <Expander
             icon="shield-checkered"
@@ -294,6 +366,7 @@ const DataSection = ({ config, passwordAvailable, onChange }: Props) => {
             {activeWarning && <Error text={activeWarning} />}
           </Expander>
         </Box>
+        )}
       </Box>
     </Box>
   );

@@ -34,33 +34,24 @@ export const hasEnabledMethod = (config: AccessConfig): boolean =>
   config.methods.phone.enabled ||
   config.methods.verification.enabled;
 
+/** Only 'anyone' forces demographics onto a form page; others allow either. */
+export const placementLocked = (config: AccessConfig): boolean =>
+  config.mode === 'anyone';
+
 /**
  * Force a config into a valid state given the current platform settings.
  * This encodes the "tricky parts" from the brief:
  *  - methods the platform doesn't offer are switched off;
- *  - without an account we can't store PII or demographics, so those clear;
+ *  - access controls (methods, groups, PII, anonymity) need an account, so
+ *    they clear when the action is open to anyone or limited to admins;
+ *  - demographic questions can still be collected in every mode, but without
+ *    an account they can only be asked on a form page, not in registration;
  *  - a password only makes sense alongside the confirmed-email account.
  */
 export const normalize = (
   config: AccessConfig,
   settings: PlatformSettings
 ): AccessConfig => {
-  // Admins-only is a closed gate: nothing else applies, so clear it all.
-  if (config.mode === 'admins') {
-    return {
-      ...config,
-      methods: {
-        email: { enabled: false, recency: null },
-        phone: { enabled: false, recency: null },
-        verification: { enabled: false, recency: null },
-      },
-      groupIds: [],
-      pii: { name: false, password: false },
-      demographics: [],
-      dataCollection: 'all_data',
-    };
-  }
-
   const hasAccount = config.mode === 'account';
 
   const methods = { ...config.methods };
@@ -74,16 +65,18 @@ export const normalize = (
   return {
     ...config,
     methods,
-    // Without an account there is nobody to restrict, store PII against, or
-    // attach demographics to — so those all clear.
+    // Account-only settings: nobody to restrict, store PII against, or
+    // anonymise without an account.
     groupIds: hasAccount ? config.groupIds : [],
     pii: {
       name: hasAccount ? config.pii.name : false,
       // Password requires the email/password account specifically.
       password: hasAccount && methods.email.enabled ? config.pii.password : false,
     },
-    demographics: hasAccount ? config.demographics : [],
     dataCollection: hasAccount ? config.dataCollection : 'all_data',
+    // Demographics survive every mode; only their placement is constrained.
+    demographicsPlacement:
+      config.mode === 'anyone' ? 'form_page' : config.demographicsPlacement,
   };
 };
 
@@ -96,21 +89,37 @@ export interface SummaryChip {
   tone: 'access' | 'data' | 'open';
 }
 
+// Demographic questions can be collected in every mode, so this chip is shared.
+const demographicsChip = (config: AccessConfig): SummaryChip[] => {
+  if (config.demographics.length === 0) return [];
+  const n = config.demographics.length;
+  return [
+    {
+      key: 'demographics',
+      label: `${n} question${n > 1 ? 's' : ''}`,
+      icon: 'user-data',
+      tone: 'data',
+    },
+  ];
+};
+
 export const buildSummary = (config: AccessConfig): SummaryChip[] => {
   if (config.mode === 'admins') {
     return [
       {
         key: 'admins',
-        label: 'Admins & collaborators only',
+        label: 'Admins & managers only',
         icon: 'shield-checkered',
         tone: 'access',
       },
+      ...demographicsChip(config),
     ];
   }
 
   if (!requiresAccount(config)) {
     return [
       { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
+      ...demographicsChip(config),
     ];
   }
 
@@ -156,15 +165,8 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
   if (config.pii.password) {
     chips.push({ key: 'password', label: 'Password', icon: 'lock', tone: 'data' });
   }
-  if (config.demographics.length > 0) {
-    const n = config.demographics.length;
-    chips.push({
-      key: 'demographics',
-      label: `${n} question${n > 1 ? 's' : ''}`,
-      icon: 'user-data',
-      tone: 'data',
-    });
-  }
+
+  chips.push(...demographicsChip(config));
 
   if (config.dataCollection !== 'all_data') {
     chips.push({

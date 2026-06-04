@@ -2,12 +2,35 @@
 // runnable without a backend. In the real component these would come from
 // `useGroups`, the global user-custom-fields API and the AppConfiguration.
 
+import { SupportedLocale } from 'typings';
+
 import {
   AccessConfig,
   AuthMethodKey,
   PlatformSettings,
   TimeUnit,
 } from './types';
+
+// Locales configured on the platform (would come from AppConfiguration).
+export const MOCK_LOCALES: SupportedLocale[] = ['en', 'fr-FR', 'nl-NL'];
+
+// Default shown to users who don't meet the requirements.
+export const DEFAULT_ACCESS_DENIED_MESSAGE =
+  'You do not meet the requirements to participate in this process.';
+
+// Fields an identity-verification method hands back. Some are "locked":
+// the user cannot edit them because they come straight from the register.
+export interface VerificationReturnedField {
+  label: string;
+  locked: boolean;
+}
+
+export const VERIFICATION_RETURNED_FIELDS: VerificationReturnedField[] = [
+  { label: 'First name', locked: true },
+  { label: 'Last name', locked: true },
+  { label: 'Year of birth', locked: true },
+  { label: 'Gender', locked: false },
+];
 
 export interface MockGroup {
   id: string;
@@ -64,7 +87,9 @@ export const DEFAULT_CONFIG: AccessConfig = {
     verification: { enabled: false, recency: null },
   },
   groupIds: [],
+  accessDeniedMultiloc: {},
   pii: { name: false, password: false },
   demographics: [],
+  demographicsPlacement: 'registration',
   dataCollection: 'all_data',
 };

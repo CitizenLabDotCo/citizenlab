@@ -110,17 +110,14 @@ const AccessRightsDesign = ({
               onChange={handleConfigChange}
             />
 
-            {/* Collecting data only makes sense once an account is required. */}
-            {config.mode === 'account' && (
-              <>
-                <Divider my="24px" />
-                <DataSection
-                  config={config}
-                  passwordAvailable={passwordAvailable}
-                  onChange={handleConfigChange}
-                />
-              </>
-            )}
+            {/* Demographic questions can be collected in every mode; the
+                account-only parts (PII, anonymity) hide themselves inside. */}
+            <Divider my="24px" />
+            <DataSection
+              config={config}
+              passwordAvailable={passwordAvailable}
+              onChange={handleConfigChange}
+            />
           </Box>
         )}
       </Box>

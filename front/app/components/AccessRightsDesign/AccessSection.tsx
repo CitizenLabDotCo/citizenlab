@@ -1,6 +1,6 @@
 // Design prototype – "Who can participate": authentication methods + groups.
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -10,12 +10,18 @@ import {
   Toggle,
   Input,
   Select,
+  Button,
   colors,
 } from '@citizenlab/cl2-component-library';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { AUTH_METHOD_LABELS, MOCK_GROUPS, TIME_UNIT_LABELS } from './data';
+import {
+  AUTH_METHOD_LABELS,
+  MOCK_GROUPS,
+  TIME_UNIT_LABELS,
+} from './data';
+import ErrorMessageModal from './ErrorMessageModal';
 import {
   groupsSummary,
   hasEnabledMethod,
@@ -32,6 +38,7 @@ import {
   TimeUnit,
 } from './types';
 import { SectionHeader, Hint, Expander } from './ui';
+import VerificationFieldsModal from './VerificationFieldsModal';
 
 const ModeCard = ({
   icon,
@@ -174,12 +181,14 @@ const MethodRow = ({
   available,
   unavailableReason,
   onChange,
+  onShowReturnedFields,
 }: {
   methodKey: AuthMethodKey;
   state: AuthMethodState;
   available: boolean;
   unavailableReason: string;
   onChange: (state: AuthMethodState) => void;
+  onShowReturnedFields?: () => void;
 }) => {
   const meta = METHOD_META[methodKey];
   const enabled = available && state.enabled;
@@ -215,6 +224,21 @@ const MethodRow = ({
           </Box>
         }
       />
+      {available && methodKey === 'verification' && onShowReturnedFields && (
+        <Box ml="42px" mt="6px">
+          <Text
+            as="span"
+            m="0"
+            fontSize="xs"
+            style={linkStyle}
+            role="button"
+            tabIndex={0}
+            onClick={onShowReturnedFields}
+          >
+            See which fields this returns
+          </Text>
+        </Box>
+      )}
       {enabled && (
         <Box ml="42px" mt="6px">
           <RecencyControl
@@ -236,6 +260,8 @@ interface Props {
 
 const AccessSection = ({ config, settings, onChange }: Props) => {
   const hasAccount = requiresAccount(config);
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+  const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   const unavailableReason = (key: AuthMethodKey): string => {
     if (key === 'email') {
@@ -275,8 +301,8 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
         />
         <ModeCard
           icon="lock"
-          title="Admins only"
-          description="Admins & collaborators."
+          title="Admins & managers only"
+          description="Restricted to staff."
           selected={config.mode === 'admins'}
           onClick={() => setMode('admins')}
         />
@@ -284,8 +310,8 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
 
       {config.mode === 'admins' && (
         <Hint>
-          Only admins and collaborators can take this action. No other
-          requirements apply.
+          Only admins and managers can take this action. You can still ask
+          everyone who participates the demographic questions below.
         </Hint>
       )}
 
@@ -306,6 +332,7 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
                     methods: { ...config.methods, [key]: state },
                   })
                 }
+                onShowReturnedFields={() => setReturnedFieldsOpen(true)}
               />
             ))}
 
@@ -342,10 +369,35 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
                   placeholder="All participants (no group restriction)"
                 />
               </Box>
+
+              <Box mt="12px">
+                <Button
+                  buttonStyle="secondary-outlined"
+                  size="s"
+                  icon="edit"
+                  onClick={() => setErrorMessageOpen(true)}
+                >
+                  Customize error message
+                </Button>
+              </Box>
             </Expander>
           </Box>
         </>
       )}
+
+      <ErrorMessageModal
+        opened={errorMessageOpen}
+        valueMultiloc={config.accessDeniedMultiloc}
+        onClose={() => setErrorMessageOpen(false)}
+        onChange={(accessDeniedMultiloc) =>
+          onChange({ ...config, accessDeniedMultiloc })
+        }
+      />
+      <VerificationFieldsModal
+        opened={returnedFieldsOpen}
+        methodName={settings.verificationMethodName}
+        onClose={() => setReturnedFieldsOpen(false)}
+      />
     </Box>
   );
 };
