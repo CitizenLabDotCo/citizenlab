@@ -13,8 +13,14 @@ module DecidimImporter
       'es' => 'es-ES'
     }.freeze
 
+    # @param mapping [Hash] explicit Decidim-code → Go Vocal-code overrides (highest precedence).
+    # @param fallback_locale [String] the Go Vocal locale for the source platform's primary language;
+    #   used for blank/unknown codes *and* to override the default region for that language. E.g.
+    #   `fallback_locale: 'fr-BE'` maps Decidim `fr` → `fr-BE` instead of the default `fr-FR`, so a
+    #   French export lands in the target's French variant.
     def initialize(mapping = {}, fallback_locale: 'fr-FR')
-      @mapping = DEFAULT_MAPPING.merge(mapping)
+      base_language = fallback_locale.to_s.split('-').first
+      @mapping = DEFAULT_MAPPING.merge(base_language => fallback_locale).merge(mapping)
       @fallback_locale = fallback_locale
     end
 

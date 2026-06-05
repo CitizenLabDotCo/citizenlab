@@ -43,5 +43,11 @@ module DecidimImporter
     # The YAML artifact. Shared attribute-hash objects are emitted as YAML anchors/aliases, so
     # `YAML.load(yaml, aliases: true)` round-trips back to a ref-resolvable structure.
     delegate :to_yaml, to: :models
+
+    # Record count per model the template will create, in dependency (emission) order.
+    # @return [Hash{String=>Integer}]
+    def model_counts
+      models['models'].transform_values(&:size)
+    end
   end
 end

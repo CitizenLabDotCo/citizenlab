@@ -98,6 +98,42 @@ module DecidimImporter
       MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
     end
 
+    # Applies an AppConfiguration patch JSON (the companion artifact `dump_yaml` writes) to the
+    # current tenant: deep-merges its `settings` over the tenant's, and — when image fetching is on —
+    # sets its remote logo/favicon URLs. No-op returning false when `path` is nil or missing; returns
+    # true when applied. Apply this *before* the template so locale settings are in place for the
+    # records that use them.
+    def self.apply_app_config_file(path, import_images: true)
+      return false unless path && File.file?(path)
+
+      apply_app_config(JSON.parse(File.read(path)), import_images: import_images)
+      true
+    end
+
+    def self.apply_app_config(patch, import_images: true)
+      config = AppConfiguration.instance
+      settings = patch['settings']
+      if settings.is_a?(Hash)
+        merged = config.settings.deep_merge(settings)
+        if (incoming_locales = settings.dig('core', 'locales'))
+          # Union, not replace: the tenant must keep supporting every locale its existing users
+          # already use while gaining the imported content's locales (deep_merge would overwrite the
+          # array, dropping locales and failing AppConfiguration's `validate_locales`).
+          merged['core']['locales'] = (config.settings('core', 'locales') || []) | incoming_locales
+        end
+        config.settings = merged
+      end
+
+      if import_images
+        patch.slice('remote_logo_url', 'remote_favicon_url').each do |attr, value|
+          setter = :"#{attr}="
+          config.public_send(setter, value) if config.respond_to?(setter)
+        end
+      end
+      config.save!
+      config
+    end
+
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
     def self.strip_remote_image_urls!(template)
       template['models'].each_value do |records|

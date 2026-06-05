@@ -18,17 +18,21 @@
 # template can be smoke-tested without touching a real tenant.
 #
 # `dump_yaml` also writes `<base>.app_config.json` — the subset of `01--organization.csv` that maps
-# onto Go Vocal AppConfiguration settings. The template pipeline does not apply app config, so an
-# operator merges that JSON into the tenant's config separately.
+# onto Go Vocal AppConfiguration settings. `import` looks for that sibling file (same base name,
+# `.template.yml` → `.app_config.json`) and merges it into the tenant's AppConfiguration *before*
+# applying the template, so the tenant's locales/branding are in place for the imported records.
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
   task :dump_yaml, %i[path primary_locale] => [:environment] do |_t, args|
     path = args.fetch(:path)
     importer = build_importer(path, primary_locale: args[:primary_locale] || 'fr-FR')
+    builder = importer.build_template
 
     yaml_path = output_path(path, 'template.yml')
-    File.write(yaml_path, importer.to_yaml)
+    File.write(yaml_path, builder.to_yaml)
     Rails.logger.info "Wrote #{yaml_path}"
+    log_model_summary(builder)
+    importer.skipped_phases.each { |s| Rails.logger.warn "  skipped phase #{s[:uid]}: #{s[:reason]}" }
     write_app_config_json(importer, path)
   end
 
@@ -38,8 +42,16 @@ namespace :decidim_importer do
     file = args.fetch(:file)
     import_images = args[:import_images].to_s.downcase != 'false'
 
+    json = app_config_sibling(file)
+
     Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
     tenant.switch do
+      # App config first: it sets the tenant's locales, which the template's records rely on.
+      if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
+        Rails.logger.info "  applied app config from #{json}"
+      else
+        Rails.logger.info "  no app-config JSON at #{json} → skipping"
+      end
       created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
       created.each { |klass, ids| Rails.logger.info "  created #{ids.size} #{klass}" }
     end
@@ -72,6 +84,21 @@ namespace :decidim_importer do
     ensure
       tenant.destroy!
     end
+  end
+
+  # Logs how many of each model the built template will create, in dependency order.
+  def log_model_summary(builder)
+    counts = builder.model_counts
+    Rails.logger.info "Template will create #{counts.values.sum} records:"
+    counts.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+  end
+
+  # The app-config JSON `dump_yaml` writes beside the template: same base name, with the
+  # `.template.yml` suffix swapped for `.app_config.json` (falls back to swapping a plain `.yml`).
+  def app_config_sibling(yaml_file)
+    candidate = yaml_file.sub(/\.template\.yml\z/i, '.app_config.json')
+    candidate = yaml_file.sub(/\.ya?ml\z/i, '.app_config.json') if candidate == yaml_file
+    candidate
   end
 
   # Picks the appropriate Importer factory based on whether `path` is a zip file or a directory.

@@ -19,6 +19,14 @@ RSpec.describe DecidimImporter::TemplateBuilder do
     expect(models.keys).to eq(%w[user project phase])
   end
 
+  it 'counts records per model in dependency order' do
+    ref_map.register('decidim-user-1', record('user', { 'email' => 'a@b.co' }))
+    ref_map.register('decidim-user-2', record('user', { 'email' => 'c@d.co' }))
+    ref_map.register('decidim-participatoryprocess-1', record('project', { 'title_multiloc' => { 'en' => 'X' } }))
+
+    expect(described_class.new(ref_map).model_counts).to eq('user' => 2, 'project' => 1)
+  end
+
   it 'shares the referenced attributes object so a YAML round-trip resolves into a ref' do
     project = record('project', { 'title_multiloc' => { 'en' => 'X' } })
     phase = record('phase', { 'title_multiloc' => { 'en' => 'P' } })

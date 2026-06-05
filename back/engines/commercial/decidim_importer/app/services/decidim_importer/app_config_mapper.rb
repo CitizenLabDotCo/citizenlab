@@ -47,10 +47,22 @@ module DecidimImporter
       put(core, 'organization_name', multiloc(@row['name']))
       put(core, 'meta_description', multiloc(@row['description']))
       put(core, 'locales', mapped_locales)
-      put(core, 'timezone', present_value(@row['time_zone']))
+      put(core, 'timezone', mapped_timezone)
       put(core, 'organization_site', present_value(@row['official_url']))
       put(core, 'from_email', smtp_from_email)
       core
+    end
+
+    # Decidim stores friendly time-zone names (e.g. "Paris", "UTC"); Go Vocal's settings schema
+    # expects an IANA identifier ("Europe/Paris"). Map via ActiveSupport, fall back to the raw value,
+    # and only emit it if it's one Go Vocal actually supports (else omit — a bad timezone would fail
+    # the AppConfiguration validation on merge).
+    def mapped_timezone
+      raw = present_value(@row['time_zone'])
+      return nil if raw.nil?
+
+      candidates = [ActiveSupport::TimeZone[raw]&.tzinfo&.name, raw].compact
+      candidates.find { |tz| TimezoneService::SUPPORTED_TIMEZONES.include?(tz) }
     end
 
     # Decidim `default_locale` first, then `available_locales`, each mapped onto a Go Vocal code.

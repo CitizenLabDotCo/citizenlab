@@ -31,6 +31,13 @@ RSpec.describe DecidimImporter::AppConfigMapper do
     expect(core['from_email']).to eq('hello@acme.example')
   end
 
+  it "maps Decidim's friendly time zone onto a Go Vocal IANA identifier, omitting unsupported ones" do
+    expect(patch_for('name' => '{"fr":"X"}', 'time_zone' => 'Paris').dig('settings', 'core', 'timezone'))
+      .to eq('Europe/Paris')
+    expect(patch_for('name' => '{"fr":"X"}', 'time_zone' => 'Nowhere/Bogus').dig('settings', 'core'))
+      .not_to have_key('timezone')
+  end
+
   it 'exposes logo and favicon as remote URLs and omits unmapped/blank fields' do
     patch = patch_for(
       'name' => '{"fr":"X"}', 'logo' => 'http://localhost/logo.png',

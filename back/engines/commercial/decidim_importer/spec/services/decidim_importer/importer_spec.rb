@@ -84,4 +84,35 @@ RSpec.describe DecidimImporter::Importer do
       file&.unlink
     end
   end
+
+  describe '.apply_app_config_file' do
+    it 'deep-merges the patch settings into the tenant AppConfiguration' do
+      file = Tempfile.new(['decidim', '.app_config.json'])
+      file.write({ 'settings' => { 'core' => { 'organization_name' => { 'en' => 'Imported City' } } } }.to_json)
+      file.close
+
+      applied = described_class.apply_app_config_file(file.path, import_images: false)
+
+      expect(applied).to be(true)
+      # Deep-merge: the imported locale overrides en, the tenant's other settings are preserved.
+      expect(AppConfiguration.instance.settings('core', 'organization_name')).to include('en' => 'Imported City')
+    ensure
+      file&.unlink
+    end
+
+    it 'is a no-op returning false when the file is absent' do
+      expect(described_class.apply_app_config_file('/no/such.app_config.json')).to be(false)
+    end
+
+    it 'unions locales with the existing ones rather than dropping them' do
+      existing = AppConfiguration.instance.settings('core', 'locales')
+      expect(existing).not_to be_empty
+      new_locale = 'fr-FR'
+
+      described_class.apply_app_config({ 'settings' => { 'core' => { 'locales' => [new_locale] } } })
+
+      locales = AppConfiguration.instance.settings('core', 'locales')
+      expect(locales).to include(*existing, new_locale)
+    end
+  end
 end
