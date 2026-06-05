@@ -71,7 +71,8 @@ module McpServer
         # McpServer::Tools::ListUsers,
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
-        McpServer::Tools::ListUserCustomFields
+        McpServer::Tools::ListUserCustomFields,
+        McpServer::Tools::GetReportingSqlSchema
       ].map { |klass| klass.for(current_user:, token_scopes:) }
     end
 
