@@ -440,6 +440,10 @@ module MultiTenancy
             phase_datetime_setup: {
               enabled: true,
               allowed: true
+            },
+            mcp_server: {
+              enabled: true,
+              allowed: true
             }
           })
         )

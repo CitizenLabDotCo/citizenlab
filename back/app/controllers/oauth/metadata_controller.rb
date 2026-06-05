@@ -8,7 +8,7 @@ module Oauth
 
     def authorization_server
       render json: {
-        issuer: request.base_url,
+        issuer: AppConfiguration.instance.base_backend_uri,
         authorization_endpoint: oauth_authorization_url,
         token_endpoint: oauth_token_url,
         registration_endpoint: oauth_registrations_url,
@@ -27,7 +27,7 @@ module Oauth
       render json: {
         resource: mcp_server_url,
         resource_name: 'Go Vocal MCP Server',
-        authorization_servers: [request.base_url],
+        authorization_servers: [AppConfiguration.instance.base_backend_uri],
         bearer_methods_supported: ['header'],
         scopes_supported: Doorkeeper.config.scopes.to_a
       }
