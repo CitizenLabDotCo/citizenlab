@@ -2,8 +2,6 @@
 
 module CustomIdMethods::GentRrn
   class GentRrnVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :manual_sync
     end

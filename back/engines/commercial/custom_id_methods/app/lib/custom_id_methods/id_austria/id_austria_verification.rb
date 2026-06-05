@@ -2,8 +2,6 @@
 
 module CustomIdMethods::IdAustria
   module IdAustriaVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :omniauth
     end

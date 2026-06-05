@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Cow
   class CowVerification
-    include IdMethods::BaseIdMethod
-
     SHARED_SAVON_CONFIG = {
       wsdl: 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl',
       ssl_cert_file: ENV.fetch('VERIFICATION_COW_SSL_CERT_FILE'),

@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Twoday
   module TwodayVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :omniauth
     end

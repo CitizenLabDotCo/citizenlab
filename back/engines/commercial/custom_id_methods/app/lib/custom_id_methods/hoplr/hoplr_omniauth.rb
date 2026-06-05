@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Hoplr
   class HoplrOmniauth < IdMethods::Base
-    include IdMethods::BaseIdMethod
-
     # Hoplr is a login-only SSO method. Its configuration is stored alongside the
     # verification methods (in `verification.verification_methods`), but it cannot
     # be used to verify user identities.

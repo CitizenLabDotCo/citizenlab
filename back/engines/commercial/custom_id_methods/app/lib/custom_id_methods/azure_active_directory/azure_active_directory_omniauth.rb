@@ -2,8 +2,6 @@
 
 module CustomIdMethods::AzureActiveDirectory
   class AzureActiveDirectoryOmniauth < IdMethods::Base
-    include IdMethods::BaseIdMethod
-
     # Azure AD is a login-only SSO method. Its configuration lives alongside the
     # verification methods (in `verification.verification_methods`), but it cannot
     # be used to verify user identities.

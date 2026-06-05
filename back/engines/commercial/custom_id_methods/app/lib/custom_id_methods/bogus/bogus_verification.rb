@@ -3,8 +3,6 @@
 module CustomIdMethods::Bogus
   # Fake method for testing purposes only
   class BogusVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :manual_sync
     end

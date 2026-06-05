@@ -3,8 +3,6 @@
 module CustomIdMethods::IdCardLookup
   # Verifies a user by matching their entered ID card id against an uploaded list
   class IdCardLookupVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :manual_sync
     end

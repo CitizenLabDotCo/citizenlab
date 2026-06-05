@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Facebook
   class FacebookOmniauth < IdMethods::Base
-    include IdMethods::BaseIdMethod
-
     # Facebook is a login-only SSO method. Its configuration lives alongside the
     # verification methods (in `verification.verification_methods`), but it cannot
     # be used to verify user identities.

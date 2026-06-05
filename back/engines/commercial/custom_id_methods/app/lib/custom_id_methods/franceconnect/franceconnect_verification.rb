@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Franceconnect
   module FranceconnectVerification
-    include IdMethods::BaseIdMethod
-
     def verification_method_type
       :omniauth
     end
