@@ -14,7 +14,7 @@ module WebApi::V1::Verification
       record.authentication?
     end
 
-    ::Verification::VerificationService.new.all_methods.each do |method|
+    IdMethodService.new.all_methods.each do |method|
       next unless method.respond_to?(:exposed_config_parameters)
 
       method.exposed_config_parameters.each do |config_param|

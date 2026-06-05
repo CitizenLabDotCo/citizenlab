@@ -7,6 +7,14 @@ module CustomIdMethods::IdCardLookup
       'id_card_lookup'
     end
 
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     def verification_method_type
       :manual_sync
     end
