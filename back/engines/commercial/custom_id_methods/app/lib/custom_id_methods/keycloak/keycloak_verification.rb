@@ -78,10 +78,5 @@ module CustomIdMethods::Keycloak
         name
       end
     end
-
-    # Verification is only enabled for ID-Porten not Rheinbahn
-    def enabled?
-      config[:provider] == 'idporten'
-    end
   end
 end
