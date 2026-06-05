@@ -110,14 +110,14 @@ RSpec.describe AppConfiguration do
   describe '#public_settings' do
     it 'does not include private fields' do
       app_config.settings['verification'] = {
-        allowed: true, enabled: true, verification_methods: [
+        verification_methods: [
           { name: 'clave_unica', client_id: '123', client_secret: '321' }
         ]
       }
       app_config.save!
 
       # `verification_methods` is a private setting, so it is stripped out.
-      expect(app_config.public_settings['verification']).to eq({ 'allowed' => true, 'enabled' => true })
+      expect(app_config.public_settings['verification']).to eq({})
     end
   end
 end
