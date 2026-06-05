@@ -8,7 +8,7 @@ module Oauth
 
     def authorization_server
       render json: {
-        issuer: request.base_url,
+        issuer: AppConfiguration.instance.base_backend_uri,
         # The consent screen is rendered by the SPA (not Doorkeeper's HTML page),
         # so we advertise the frontend page URL as the authorization endpoint.
         authorization_endpoint: Frontend::UrlService.new.oauth_authorize_url,
@@ -29,7 +29,7 @@ module Oauth
       render json: {
         resource: mcp_server_url,
         resource_name: 'Go Vocal MCP Server',
-        authorization_servers: [request.base_url],
+        authorization_servers: [AppConfiguration.instance.base_backend_uri],
         bearer_methods_supported: ['header'],
         scopes_supported: Doorkeeper.config.scopes.to_a
       }
