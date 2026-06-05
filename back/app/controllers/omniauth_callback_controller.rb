@@ -300,8 +300,6 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    # TODO: authservice
-    # @auth_method ||= authentication_service.method_by_provider(auth_provider)
     @auth_method ||= IdMethodService.new.method_by_name(auth_provider)
   end
 

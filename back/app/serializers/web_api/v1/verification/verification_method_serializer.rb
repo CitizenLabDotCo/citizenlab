@@ -6,12 +6,12 @@ module WebApi::V1::Verification
 
     # Whether the method can be used to verify user identities.
     attribute :verification_method do |record|
-      record.respond_to?(:verification?) ? record.verification? : true
+      record.verification?
     end
 
     # Whether the method can be used to authenticate (SSO login).
     attribute :authentication_method do |record|
-      AuthenticationService.all_methods.value?(record)
+      record.authentication?
     end
 
     ::Verification::VerificationService.new.all_methods.each do |method|
