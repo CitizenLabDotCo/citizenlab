@@ -335,12 +335,9 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when SSO method returns email but it is not confirmed' do
-    let(:mailer) do
-      instance_double(
-        NewEmailConfirmationMailer,
-        send_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
-      )
-    end
+    # The confirmation code email is sent through the EmailCampaigns engine via
+    # DeliveryService#send_now_to_user; spy on it to assert the code was sent.
+    let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
       AppConfiguration.instance.settings['verification'] = {
@@ -351,7 +348,7 @@ resource 'Omniauth Callback', document: false do
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: false)
-      allow(NewEmailConfirmationMailer).to receive(:with).and_return(mailer)
+      allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
     end
 
     after do
@@ -370,7 +367,8 @@ resource 'Omniauth Callback', document: false do
         expect(user.verified).to be true
 
         # Make sure confirmation email was sent
-        expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(an_instance_of(EmailCampaigns::Campaigns::NewEmailConfirmation), user, hash_including(:code)).once
       end
 
       example 'if there is a pending invite with this email: return error' do

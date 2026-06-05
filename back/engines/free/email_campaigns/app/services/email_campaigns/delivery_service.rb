@@ -11,6 +11,7 @@ module EmailCampaigns
       Campaigns::CommentOnIdeaYouFollow,
       Campaigns::CommentOnYourComment,
       Campaigns::CosponsorOfYourIdea,
+      Campaigns::EmailConfirmation,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
@@ -29,6 +30,7 @@ module EmailCampaigns
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
+      Campaigns::NewEmailConfirmation,
       Campaigns::NewIdeaForAdminPublished,
       Campaigns::NewIdeaForAdminPrescreening,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
@@ -94,6 +96,20 @@ module EmailCampaigns
     #  called when explicit send is requested by human
     def send_now(campaign)
       apply_send_pipeline([campaign])
+    end
+
+    # Sends one campaign to one recipient immediately (synchronously) with a
+    # caller-supplied event_payload. For transactional emails that must arrive
+    # right away (e.g. confirmation codes). Runs Trackable hooks so a Delivery
+    # record is saved, but bypasses the recipient-filter pipeline.
+    def send_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.run_before_send_hooks(command)
+      campaign.mailer_class
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_now
+      campaign.run_after_send_hooks(command)
     end
 
     def send_preview(campaign, recipient)

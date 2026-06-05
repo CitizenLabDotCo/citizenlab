@@ -170,6 +170,14 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :email_confirmation_campaign, class: 'EmailCampaigns::Campaigns::EmailConfirmation' do
+    enabled { true }
+  end
+
+  factory :new_email_confirmation_campaign, class: 'EmailCampaigns::Campaigns::NewEmailConfirmation' do
+    enabled { true }
+  end
+
   factory :admin_digest_campaign, class: 'EmailCampaigns::Campaigns::AdminDigest' do
     enabled { true }
     schedule { weekly_schedule }
