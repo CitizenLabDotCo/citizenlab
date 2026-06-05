@@ -5,12 +5,12 @@ import oauthAuthorizationKeys from './keys';
 export type OAuthAuthorizationKeys = Keys<typeof oauthAuthorizationKeys>;
 
 // The OAuth 2.1 authorize-request params, forwarded by the client app on the
-// consent page URL. `client_id`, `response_type` and `redirect_uri` are always
-// present; the rest depend on the client (PKCE params are required by our server).
+// consent page URL. All optional: they come from an untrusted external redirect
+// (the backend validates them), so the SPA treats every field as best-effort.
 export interface OAuthAuthorizationParams {
-  client_id: string;
-  response_type: string;
-  redirect_uri: string;
+  client_id?: string;
+  response_type?: string;
+  redirect_uri?: string;
   scope?: string;
   state?: string;
   code_challenge?: string;

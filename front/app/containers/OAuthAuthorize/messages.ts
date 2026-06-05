@@ -14,14 +14,30 @@ export default defineMessages({
     defaultMessage:
       '{clientName} is requesting access to your account on this platform. If you authorize, it will be able to:',
   },
-  scopeMcpAccess: {
-    id: 'containers.OAuthAuthorize.scopeMcpAccess',
-    defaultMessage:
-      'Read and manage platform data on your behalf via the assistant integration.',
+  scopeMcpAccessTitle: {
+    id: 'containers.OAuthAuthorize.scopeMcpAccessTitle',
+    defaultMessage: 'Read and manage platform data',
   },
-  scopeFallback: {
-    id: 'containers.OAuthAuthorize.scopeFallback',
-    defaultMessage: 'Access the "{scope}" scope.',
+  scopeMcpAccessDetail: {
+    id: 'containers.OAuthAuthorize.scopeMcpAccessDetail',
+    defaultMessage: 'Acts on your behalf via the assistant integration.',
+  },
+  scopeFallbackTitle: {
+    id: 'containers.OAuthAuthorize.scopeFallbackTitle',
+    defaultMessage: 'Access the "{scope}" scope',
+  },
+  scopeFallbackDetail: {
+    id: 'containers.OAuthAuthorize.scopeFallbackDetail',
+    defaultMessage: 'requested by this application.',
+  },
+  inControlTitle: {
+    id: 'containers.OAuthAuthorize.inControlTitle',
+    defaultMessage: "You're in control",
+  },
+  inControlDetail: {
+    id: 'containers.OAuthAuthorize.inControlDetail',
+    defaultMessage:
+      'You can revoke access at any time from your account settings.',
   },
   authorizeButton: {
     id: 'containers.OAuthAuthorize.authorizeButton',

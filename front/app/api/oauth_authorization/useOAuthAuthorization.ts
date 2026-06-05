@@ -10,9 +10,7 @@ import {
   OAuthAuthorizationParams,
 } from './types';
 
-// Reads the pending OAuth authorization (client app + requested scopes) so the
-// SPA can render a branded consent screen. Not cached/retried: the params come
-// straight from the client redirect and the result is single-use.
+// Reads the pending OAuth authorization (client app + requested scopes) so we can render a branded consent screen.
 const useOAuthAuthorization = (
   params: OAuthAuthorizationParams,
   { enabled = true }: { enabled?: boolean } = {}

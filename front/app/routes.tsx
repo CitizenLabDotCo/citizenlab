@@ -169,9 +169,23 @@ const signInRoute = createRoute({
   ),
 });
 
+// OAuth 2.1 authorize-request params, forwarded by the client app on the
+// consent page URL (an external redirect, like our SSO/verification params).
+const oauthAuthorizeSearchSchema = yup.object({
+  client_id: yup.string(),
+  response_type: yup.string(),
+  redirect_uri: yup.string(),
+  scope: yup.string(),
+  state: yup.string(),
+  code_challenge: yup.string(),
+  code_challenge_method: yup.string(),
+});
+
 const oauthAuthorizeRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'oauth/authorize',
+  validateSearch: (search: Record<string, unknown>) =>
+    oauthAuthorizeSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <OAuthAuthorize />
