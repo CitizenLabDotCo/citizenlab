@@ -224,6 +224,28 @@ export const createQuill = (
         btn.appendChild(span);
       }
     });
+
+    // Close when focus moves outside the picker for keyboard and screen reader users.
+    toolbarElement.querySelectorAll('.ql-picker').forEach((picker) => {
+      picker
+        .querySelectorAll<HTMLElement>('.ql-picker-item')
+        .forEach((item) => {
+          item.tabIndex = -1;
+        });
+
+      picker.addEventListener('focusout', (event) => {
+        const nextFocused = (event as FocusEvent).relatedTarget as Node | null;
+        if (nextFocused && picker.contains(nextFocused)) return;
+
+        picker.classList.remove('ql-expanded');
+        picker
+          .querySelector('.ql-picker-label')
+          ?.setAttribute('aria-expanded', 'false');
+        picker
+          .querySelector('.ql-picker-options')
+          ?.setAttribute('aria-hidden', 'true');
+      });
+    });
   }
 
   return quill;
