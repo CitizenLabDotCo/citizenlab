@@ -13,12 +13,12 @@ import { useLocation, useSearch } from 'utils/router';
 export default function useAuthConfig() {
   // All SSO methods (including the built-in Facebook/Google/Azure ones) are
   // configured as verification methods, and the `/verification_methods` endpoint
-  // exposes a `login_method` flag for the ones that can be used to authenticate.
+  // exposes a `authentication_method` flag for the ones that can be used to authenticate.
   const { data: verificationMethods } = useVerificationMethods();
   const hasLoginMethod = (name: TVerificationMethodName) =>
     !!verificationMethods?.data.some(
       (method) =>
-        method.attributes.name === name && method.attributes.login_method
+        method.attributes.name === name && method.attributes.authentication_method
     );
 
   // Allows testing of specific SSO providers without showing to all users
@@ -44,7 +44,7 @@ export default function useAuthConfig() {
   const azureAdMethod = verificationMethods?.data.find(
     (method): method is IDAzureAdMethod =>
       method.attributes.name === 'azureactivedirectory' &&
-      method.attributes.login_method
+      method.attributes.authentication_method
   );
   const azureAdSettings = azureAdMethod?.attributes;
   const azureAdVisiblity = azureAdSettings?.visibility;
@@ -55,7 +55,7 @@ export default function useAuthConfig() {
   const azureAdB2cMethod = verificationMethods?.data.find(
     (method): method is IDAzureAdB2cMethod =>
       method.attributes.name === 'azureactivedirectory_b2c' &&
-      method.attributes.login_method
+      method.attributes.authentication_method
   );
   const azureAdB2cSettings = azureAdB2cMethod?.attributes;
   const azureAdB2c = !!azureAdB2cMethod;

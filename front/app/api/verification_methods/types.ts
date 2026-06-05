@@ -70,7 +70,7 @@ type TGenericMethod = {
   attributes: {
     name: TVerificationMethodName;
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
   };
 };
@@ -81,7 +81,7 @@ export type IDFakeSSOMethod = {
   attributes: {
     name: 'fake_sso';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
   };
 };
@@ -92,7 +92,7 @@ export type IDLookupMethod = {
   attributes: {
     name: 'id_card_lookup';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     card_id: string;
     card_id_placeholder: string;
@@ -108,7 +108,7 @@ export type IDCriiptoMethod = {
   attributes: {
     name: 'criipto';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     ui_method_name: string;
   };
@@ -120,7 +120,7 @@ export type IDKeycloakMethod = {
   attributes: {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     ui_method_name: string;
     provider: IconNames;
@@ -133,7 +133,7 @@ export type IDTwodayMethod = {
   attributes: {
     name: 'twoday';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     ui_method_name: string;
   };
@@ -145,7 +145,7 @@ export type IDAcmMethod = {
   attributes: {
     name: 'acm';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     ui_method_name: string;
   };
@@ -157,7 +157,7 @@ export type IDAuth0Method = {
   attributes: {
     name: 'auth0';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     method_name_multiloc: Multiloc;
   };
@@ -170,7 +170,7 @@ export type IDIdAustriaMethod = {
     name: 'id_austria';
     ui_method_name: string;
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
   };
 };
@@ -184,7 +184,7 @@ export type IDFacebookMethod = {
   attributes: {
     name: 'facebook';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     app_id?: string;
   };
@@ -196,7 +196,7 @@ export type IDGoogleMethod = {
   attributes: {
     name: 'google';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
   };
 };
@@ -207,7 +207,7 @@ export type IDAzureAdMethod = {
   attributes: {
     name: 'azureactivedirectory';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     logo_url?: string;
     login_mechanism_name?: string;
@@ -222,7 +222,7 @@ export type IDAzureAdB2cMethod = {
   attributes: {
     name: 'azureactivedirectory_b2c';
     method_metadata?: MethodMetadata;
-    login_method: boolean;
+    authentication_method: boolean;
     verification_method: boolean;
     logo_url?: string;
     login_mechanism_name?: string;

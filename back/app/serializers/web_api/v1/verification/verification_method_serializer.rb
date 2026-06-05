@@ -10,13 +10,11 @@ module WebApi::V1::Verification
     end
 
     # Whether the method can be used to authenticate (SSO login).
-    attribute :login_method do |record|
-      # TODO: authservice
-      # AuthenticationService.all_methods.value?(record)
-      IdMethodService.new.all_methods.include?(record)
+    attribute :authentication_method do |record|
+      AuthenticationService.all_methods.value?(record)
     end
 
-    IdMethodService.new.all_methods.each do |method|
+    ::Verification::VerificationService.new.all_methods.each do |method|
       next unless method.respond_to?(:exposed_config_parameters)
 
       method.exposed_config_parameters.each do |config_param|
