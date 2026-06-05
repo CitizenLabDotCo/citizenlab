@@ -5,8 +5,7 @@ module McpServer
     include Pundit::Authorization
     rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
-    before_action -> { doorkeeper_authorize! 'mcp:access' }
-    after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
+    around_action :authorize_mcp_access
 
     def create
       authorize(%i[mcp_server mcp])
@@ -31,6 +30,18 @@ module McpServer
     end
 
     private
+
+    # Authorize via Doorkeeper, and append the RFC 9728 resource_metadata parameter to the
+    # WWW-Authenticate header on 401s so MCP clients can discover the OAuth authorization
+    # server. Uses around_action to add the header (instead of a simpler after_action)
+    # because doorkeeper_authorize! responds with head :unauthorized on invalid tokens,
+    # which causes Rails to skip after_actions.
+    def authorize_mcp_access
+      doorkeeper_authorize! 'mcp:access'
+      yield unless performed?
+    ensure
+      advertise_resource_metadata if response.unauthorized?
+    end
 
     # RFC 9728 §5.1: a 401 from a protected resource must point clients to the
     # resource-metadata document via the WWW-Authenticate header so they can
