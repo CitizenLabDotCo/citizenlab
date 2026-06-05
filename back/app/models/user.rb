@@ -342,12 +342,6 @@ class User < ApplicationRecord
   def validate_not_duplicate_new_email
     return unless new_email
 
-    # Validate email format
-    if errors[:new_email].present?
-      ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
-      errors.add(:email, :invalid, value: new_email)
-    end
-
     duplicate_user = User.find_by_cimail(new_email)
 
     # If nobody is using this email, return
@@ -361,12 +355,6 @@ class User < ApplicationRecord
 
   def validate_not_duplicate_email
     return unless email
-
-    # Validate email format
-    if errors[:email].present?
-      ErrorsService.new.remove errors, :email, :invalid, value: email
-      errors.add(:email, :invalid, value: email)
-    end
 
     duplicate_user = User.find_by_cimail(email)
 
