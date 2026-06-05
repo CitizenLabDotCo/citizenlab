@@ -2,7 +2,41 @@
 
 _Status: an opinionated **target model** — the ideal end-state we want to steer toward as we ship incremental solutions. It is a direction, not a committed build plan, and not a near-term scope. Refined together with the team's technical discussions. June 2026._
 
-## Introduction
+## Multiple timelines
+
+_Several parallel sequential tracks; the top one drives the clock._
+
+### How it works
+
+A project holds **several ordered timelines** instead of one. Each timeline is an ordinary sequence of phases — exactly today's model, unchanged _within_ a track. The **top timeline** drives `current_phase` (and everything keyed on it); the ones below run in parallel and are progressively more in the background. "Parallel participation" is then just a second track: a survey track running alongside the main ideation track over the same calendar period. The data set lives at the track level — phases that share a form belong to one track, so ideation→voting within a track share one form, as they do today.
+
+_Example: a "Wemmel park" project keeps its main timeline (Inform → Collect ideas → Decide) and adds a parallel "Resident survey" timeline whose single phase spans the same weeks._
+
+### Data model
+
+- **Relationships.** A **Timeline** groups **Phases**; a **Phase** keeps everything it has today (its `participation_method` string + method config). The **Form** stays where it is now (project-level for ideation, phase-level for the others) but is _scoped to a track_; there is **no Process / data-set entity** — the track is the implicit data-set grain. **Method** stays a string on the phase. **Input** and **Permission** are unchanged.
+- **Entities.** New: **`Timeline`** (`phase_timelines`) — `belongs_to :project`, an **`ordering`** position (the top one is primary and drives the clock), title. Changed: **`Phase`** gains `timeline_id` (it was attached directly to the project). Everything else is untouched.
+- **ER sketch.** `Project 1—* Timeline (ordered; top drives the clock) · Timeline 1—* Phase (sequential) · Phase —has→ participation_method + config · Idea —creation_phase→ Phase · Permission → Phase · current_phase: one per Timeline (top = the legacy value)`
+- **Resolving an input.** Unchanged from today: `Input → creation_phase → method + form`. Within a single track a phase is unambiguous (one method, one form), so nothing new is needed — and because data sets never span tracks, the "are the forms compatible to transition?" question never arises (within a track, ideation and voting share the track's form by construction).
+- **A note on recycling `Phase`.** With no process entity, the `Phase` does double duty — a narrative time-chapter _and_ the data-set carrier. A phase is a labelled chapter (title + description); a process wouldn't carry those. So a one-phase survey track wears phase chrome (title/description/dates) that really just labels the survey and can duplicate its own title. A mild leaky-abstraction cost — the same overload behind the near-term "extras = a phase + a boolean" — not a blocker.
+
+### Immediate requests
+
+- **Extra surveys.** A parallel survey is modelled as a **lower-ordered timeline** — typically a single survey phase running alongside the main timeline; the "Extras" list is just the project's non-top timelines. Backward-compatible (phases are unchanged), but heavier than a flag: each extra survey is a whole timeline, and submission still needs `current_phase` / permissions to resolve for a non-top track (tractable for self-contained surveys; the known obstacle for anything transitive).
+- **Parallel ideation, different forms.** Run as a **second ideation timeline**, each track owning its own form. Two ideations can't be _peers inside one_ timeline (a single timeline's phases are sequential and share one form), but ordering lets you push the second track **into the background** — surfaced like an extra rather than as a competing timeline. Worth being clear that this is a workaround: the second ideation is structurally a separate track, with its own data set and its own current-phase.
+
+### The long-term bet
+
+- **Unification: L0–L1.** Method stays a typed string on the phase, the form is per phase/track, and there is no process to unify around — so reconfiguring an ideation into a survey or proposal, mixing public and private fields in one form, and per-submission visibility are genuinely _out of model_ (structural absences, not UX gaps). It is the least unified candidate.
+- **Upside.** Lowest blast radius and most backward-compatible — the top timeline preserves the ~316 `current_phase` call sites, and within-track behaviour is identical to today; it _multiplies_ the timeline rather than eroding it (protecting the differentiator); and it is the only candidate with a worked effort estimate (James, ~20–45 days). It ships parallelism without a remodel.
+- **Cost.** It forfeits the unification prize — mixed-visibility inputs, per-submission publishing, morphing one method into another, and **native cross-method reporting** stay out of reach (a survey and an ideation remain different shapes). Parallel ideation lives in separate (orderable, hideable) tracks rather than one shared grid; timelines can proliferate; and it is a parallelism _mechanism_, not a remodelling — so "reconcile to one model later" means collapsing N timelines, which only gets harder over time.
+- **Verdict:** the cheapest, lowest-risk way to ship parallelism — a strong near-term tactic, and an acceptable _destination_ only if input-unification isn't a long-term goal; its L0–L1 ceiling keeps the unification prize permanently out of reach.
+
+## Grid
+
+_One timeline; processes configured per phase._
+
+### Introduction
 
 This document describes the **ideal way to model participation** in Go Vocal — the shape we would build with no time or migration constraints. Its job is to act as a **north star**: every near-term, shippable step should move _toward_ it rather than away from it.
 
@@ -21,7 +55,7 @@ This document describes the **ideal way to model participation** in Go Vocal —
 
 The rest of this document defines the concepts precisely, works through the model and its hardest open question (the start/end-mid-phase issue) and the overlap friction it creates, shows how each existing method maps onto it, maps it to the needs we identified, and records where it agrees with — and diverges from — what the team has discussed.
 
-## Glossary
+### Glossary
 
 The vocabulary here is deliberate: naming has been the most persistent source of confusion in the discussions, so each term is pinned down once and used consistently throughout.
 
@@ -49,11 +83,11 @@ The vocabulary here is deliberate: naming has been the most persistent source of
 
 - **Template** — A named preset that scaffolds a process: a form template + default interactions + a status workflow + a recognisable label. Proposals and the Community Monitor are **templates, not primitives**. A template is a **creation-time scaffold** (plus a label for recognisability), not a separate persistent type the system keeps tracking.
 
-## The model in detail
+### The model in detail
 
 The model has few concepts but a few firm rules. This section states them precisely.
 
-### Time: phases and the timeline
+#### Time: phases and the timeline
 
 - A project's time is a **single ordered list of phases**. Each phase is a stretch of time with a title and description.
 - Phases are **sequential and non-overlapping**. Because there is one timeline, "where are we now?" always has exactly one answer.
@@ -61,7 +95,7 @@ The model has few concepts but a few firm rules. This section states them precis
 - **Manual vs automated:** a phase may carry exact dates (the active phase then follows the wall clock) or be labelled approximately (seasons, "Spring 2027") or advanced manually. The timeline is **presentational** — it communicates progression; it does not, on its own, open or close participation.
 - A phase **need not host participation.** A phase with no active process is an information/content phase — its description and content are what residents see.
 
-### Process: the unit of participation
+#### Process: the unit of participation
 
 A process is fully described by six things:
 
@@ -74,7 +108,7 @@ A process is fully described by six things:
 
 The defining invariant: **one process = one data set = one form.** A different data set means a different process. A project may host many processes — in parallel or in sequence.
 
-### Per-phase configuration: the grid
+#### Per-phase configuration: the grid
 
 Picture a grid: **rows are processes, columns are phases, and each cell is the process's configuration during that phase** (or "not active"). A cell says: is the process active here; which interactions are open and with what settings; which fields are shown / required / hidden.
 
@@ -89,23 +123,23 @@ The canonical example — ideation then voting — is one row across two cells:
 
 The **curate-then-vote** variant (collect many ideas, vote on a shortlist) needs no second process either: voting applies only to inputs whose status is, say, `accepted` — a **status filter within the one process**.
 
-### Inputs, statuses, interactions
+#### Inputs, statuses, interactions
 
 - **Input** — belongs to exactly one process; carries its form answers, metadata, and a status; resident- or admin-authored.
 - **Status** — a per-input lifecycle defined by the process, running independently of phases, and able to gate interactions (e.g. only `accepted` inputs are votable).
 - **Interaction** — modelled as a **first-class event** (actor, type, target, process, time). This is the substrate the reporting story rests on (see [Reporting](#reporting--the-open-frontier)). Comments are content-bearing inputs that target another input, but are enabled like any interaction.
 
-### Templates
+#### Templates
 
 A template scaffolds a process at creation — a form template + default interactions + a status workflow + a recognisable label. **Proposals** and the **Community Monitor** are templates of an ideas-process and a survey-process respectively. A template is a creation-time scaffold plus a label, not a persistent type the system keeps tracking.
 
-### `current_phase` stays single-valued (the key de-risk)
+#### `current_phase` stays single-valued (the key de-risk)
 
 Because time is one sequential concept, **exactly one phase is current at any moment** — `current_phase` remains single-valued and well-defined. What changes is only what hangs off it: "what can I do now?" becomes **"the processes active in the current phase"** (possibly several) instead of "the current phase's one method."
 
 In migration terms this is roughly `current_phase.participation_method → current_phase.active_processes`. The ~316 `current_phase` call sites largely survive. This is a far gentler change than making `current_phase` _multi-valued_ — which is exactly what free-floating activity dates would force, and exactly what the team wants to avoid. (See the next section.)
 
-## The time model: the start/end-mid-phase question
+### The time model: the start/end-mid-phase question
 
 This is the single most consequential — and most contested — modelling choice. It looks like a small UX detail (date pickers) but it decides whether the system has **one** notion of time or **two**.
 
@@ -135,7 +169,7 @@ The **only** thing Option A cannot express is an activity that starts or ends on
 
 **On the team's current direction.** The June design leans toward Option B (off-timeline surveys with their own dates). Adopting that as the _default_ would place near-term work on the **opposite side of this fork** from the north star. That is why the choice should be made deliberately — ideally tested against real "must start/end off a phase boundary" cases, of which none compelling has surfaced. (It is also why the "reconcile later" point was worth clarifying: it meant _unifying the two time models into one_, **not** collapsing parallel participation back into a single sequence.)
 
-## Handling overlap
+### Handling overlap
 
 Option A models time as a single partition, so "two activities overlap for a while" is expressed by **cutting a boundary** where the overlap starts and ends: posting-only → posting + voting → voting-only becomes three contiguous segments rather than two overlapping bars. This is correct, but it raises a real worry: admins think in **intervals** ("posting runs Jan–Mar, voting Feb–Apr"), not partitions, and a literal three-phase timeline both fragments the narrative and invites the question _"why did I have to create this middle phase?"_ The friction is genuine — but it lives in the **authoring and display layers, not the model.** Three things must be kept separate:
 
@@ -158,7 +192,7 @@ This is the formal version of "show _diverge_ and _converge_ as groups and make 
 
 **The honest residual cost.** Auto-inserted boundaries still touch everything keyed on phase transitions — phase-started emails, the analytics phase dimension, phase-scoped reports. Without the narrative-vs-config-change tag, every overlap edge would fire a spurious "new phase" notification and fragment reporting. _That_ — tagging boundaries and teaching the phase-transition machinery to ignore the silent ones — is the real work overlap hides; the modelling itself is cheap.
 
-### The tempting wrong turn: auto-merging configurations
+#### The tempting wrong turn: auto-merging configurations
 
 A seductive alternative removes the overlap segment entirely: let the admin define two phases with their own dates and **automatically compute** the overlap's configuration by merging the two field-by-field (posting-on ∪ posting-off → on; group X ∪ group Y → both). It should be **considered and rejected**, for a precise reason rather than an aesthetic one.
 
@@ -181,11 +215,11 @@ For everything else there is **no join**: the two values are _alternatives_, not
 
 Two further nails: the configuration space is **open-ended** — every future setting would need its own merge rule, and most won't have one; and auto-merge is **implicit and uneditable** — the admin can neither see nor directly control the overlap behaviour, which defeats the purpose of an admin tool. The explicit segment is visible and editable. So: **let the admin choose the overlap's configuration; never derive it.**
 
-### The one real limit
+#### The one real limit
 
 Option A's single genuine cost is a boundary that _must not_ become a phase — a config change that, for some reason, must stay invisible even to the model. That set is nearly empty: inserting a silent, config-change boundary is cheap once the narrative-vs-config-change tag exists. Naming this as the one true limit is more honest than claiming overlap is free.
 
-## How each existing method dissolves
+### How each existing method dissolves
 
 Every current participation method becomes either a **process** (often via a template) or plain **content**. The unifying axes are the six that define a process — most importantly form/field-visibility, input authorship, anchoring, and interactions.
 
@@ -205,7 +239,7 @@ Every current participation method becomes either a **process** (often via a tem
 
 Only two map to **content rather than a process**: external survey and information. Everything else is a process, several of them via templates. Two further cleanups become natural (not required): **survey and common ground could merge** (both are forms of custom fields), and the long list of methods collapses to "process + a handful of templates."
 
-## How the model meets the needs
+### How the model meets the needs
 
 Mapping the model back to the feedback clusters (`RESEARCH.md`). Most fall directly out of the model; the honest gaps are called out.
 
@@ -226,7 +260,7 @@ Mapping the model back to the feedback clusters (`RESEARCH.md`). Most fall direc
 
 Honest summary: **C1–C4, C7, C8, C10 fall out cleanly; C9 and C11 are supported via permissions/user-fields; C5 is partial; C6 is the frontier; C12 is out of scope.**
 
-## Reporting — the open frontier
+### Reporting — the open frontier
 
 Reporting is where this model is strongest in _potential_ and least _settled_ in practice — and it is the need GSMs called "the real prize."
 
@@ -236,7 +270,7 @@ Reporting is where this model is strongest in _potential_ and least _settled_ in
 
 So: **per-process reporting is the floor; first-class interactions + project/folder roll-up is the aspiration and the real prize.** This is the part of the north star that most needs dedicated design, and the part least settled today. It is named here as the frontier rather than smoothed over.
 
-## Agreement with the meetings, and where they explored variations
+### Agreement with the meetings, and where they explored variations
 
 This model did not emerge in isolation — much of it is where the team's technical discussions independently converged. This section is explicit about both the agreement and the genuine divergences, so neither is hidden.
 
