@@ -24,6 +24,7 @@ import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
 const HomePage = lazy(() => import('containers/HomePage'));
+const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
@@ -106,8 +107,6 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
-  // /sign-in?return_to=/path — same-origin path the SPA navigates to after auth
-  return_to: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
@@ -166,6 +165,16 @@ const signInRoute = createRoute({
   component: () => (
     <PageLoading>
       <HomePage />
+    </PageLoading>
+  ),
+});
+
+const oauthAuthorizeRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'oauth/authorize',
+  component: () => (
+    <PageLoading>
+      <OAuthAuthorize />
     </PageLoading>
   ),
 });
@@ -611,6 +620,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       homeRoute,
       signInAdminRoute,
       signInRoute,
+      oauthAuthorizeRoute,
       signUpRoute,
       inviteRoute,
       siteMapRoute,

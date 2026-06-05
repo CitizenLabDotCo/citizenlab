@@ -9,7 +9,9 @@ module Oauth
     def authorization_server
       render json: {
         issuer: request.base_url,
-        authorization_endpoint: oauth_authorization_url,
+        # The consent screen is rendered by the SPA (not Doorkeeper's HTML page),
+        # so we advertise the frontend page URL as the authorization endpoint.
+        authorization_endpoint: Frontend::UrlService.new.oauth_authorize_url,
         token_endpoint: oauth_token_url,
         registration_endpoint: oauth_registrations_url,
         revocation_endpoint: oauth_revoke_url,
