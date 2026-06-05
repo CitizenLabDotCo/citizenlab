@@ -10,10 +10,6 @@ module CustomIdMethods::Twoday
       '535bc0d4-cc3a-44e8-a339-2595ec330759'
     end
 
-    def name
-      'twoday'
-    end
-
     def config_parameters
       %i[
         ui_method_name

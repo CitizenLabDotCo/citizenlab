@@ -4,6 +4,18 @@ module CustomIdMethods::Twoday
   class TwodayOmniauth < IdMethods::Base
     include TwodayVerification
 
+    def name
+      'twoday'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: auth.info.first_name,

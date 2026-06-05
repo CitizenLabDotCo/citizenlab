@@ -4,6 +4,18 @@ module CustomIdMethods::NemlogIn
   class NemlogInOmniauth < IdMethods::Base
     include NemlogInVerification
 
+    def name
+      'nemlog_in'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp
     ENVIRONMENTS = {
       pre_production_integration: {

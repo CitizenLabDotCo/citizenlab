@@ -2,16 +2,24 @@
 
 module CustomIdMethods::OostendeRrn
   class OostendeRrnVerification < IdMethods::Base
+    def name
+      'oostende_rrn'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     def verification_method_type
       :manual_sync
     end
 
     def id
       '00c4faa6-4b0f-11ed-b878-0242ac120002'
-    end
-
-    def name
-      'oostende_rrn'
     end
 
     def config_parameters

@@ -40,7 +40,7 @@ export default function useAuthConfig() {
       ...providers,
       [name]: enabled,
     };
-  }, {} as Record<TVerificationMethodName, boolean>);
+  }, {} as Record<TVerificationMethodName, boolean | undefined>);
 
   const azureAdMethod = idMethods?.data.find(
     (method): method is IDAzureAdMethod =>

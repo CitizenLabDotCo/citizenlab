@@ -10,10 +10,6 @@ module CustomIdMethods::Keycloak
       'd6938fe6-4bee-4490-b80c-b14dafb5da1b'
     end
 
-    def name
-      'keycloak'
-    end
-
     def config_parameters
       %i[
         provider

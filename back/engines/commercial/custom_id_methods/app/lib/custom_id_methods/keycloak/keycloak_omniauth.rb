@@ -4,6 +4,18 @@ module CustomIdMethods::Keycloak
   class KeycloakOmniauth < IdMethods::Base
     include KeycloakVerification
 
+    def name
+      'keycloak'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: format_name(auth.info.first_name),
