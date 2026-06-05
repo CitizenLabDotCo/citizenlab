@@ -11,7 +11,7 @@ module CustomIdMethods::Cow
     end
 
     def authentication?
-      true
+      false
     end
 
     SHARED_SAVON_CONFIG = {
