@@ -6,9 +6,16 @@ module Oauth
     skip_before_action :authenticate_user
     skip_after_action :verify_authorized
 
+    # Force https in URL helpers — these responses are consumed by external
+    # OAuth/MCP clients that require https authorization endpoints. TLS
+    # terminates at CloudFront, so request.protocol is 'http' inside Rails.
+    def default_url_options
+      Rails.env.local? ? super : super.merge(protocol: 'https')
+    end
+
     def authorization_server
       render json: {
-        issuer: request.base_url,
+        issuer: AppConfiguration.instance.base_backend_uri,
         authorization_endpoint: oauth_authorization_url,
         token_endpoint: oauth_token_url,
         registration_endpoint: oauth_registrations_url,
@@ -27,7 +34,7 @@ module Oauth
       render json: {
         resource: mcp_server_url,
         resource_name: 'Go Vocal MCP Server',
-        authorization_servers: [request.base_url],
+        authorization_servers: [AppConfiguration.instance.base_backend_uri],
         bearer_methods_supported: ['header'],
         scopes_supported: Doorkeeper.config.scopes.to_a
       }

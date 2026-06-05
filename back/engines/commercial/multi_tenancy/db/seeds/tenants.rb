@@ -424,6 +424,10 @@ module MultiTenancy
             spaces: {
               enabled: false,
               allowed: false
+            },
+            mcp_server: {
+              enabled: true,
+              allowed: true
             }
           })
         )

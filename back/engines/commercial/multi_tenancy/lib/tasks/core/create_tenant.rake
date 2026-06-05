@@ -358,6 +358,10 @@ namespace :cl2_back do
         spaces: {
           enabled: true,
           allowed: true
+        },
+        mcp_server: {
+          enabled: true,
+          allowed: true
         }
       }
     )
