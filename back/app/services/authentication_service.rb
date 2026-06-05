@@ -13,13 +13,13 @@ class AuthenticationService
       domain = email.split('@').last&.strip&.downcase
       return false if domain.blank?
 
-      configured_authentication_methods = @id_method_service
+      configured_authentication_methods = IdMethodService.new
         .configured_methods(AppConfiguration.instance)
-        .select(:authentication?)
+        .select(&:authentication?)
 
-      configured_authentication_methods.any? { 
-        |_, method| method.enforced_email_domains.include?(domain) 
-      }
+      configured_authentication_methods.any? do |method|
+        method.enforced_email_domains.include?(domain)
+      end
     end
   end
 
