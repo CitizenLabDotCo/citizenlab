@@ -2979,6 +2979,11 @@
     "verified_at": "2026-06-01T07:57:31.243976Z",
     "verified_by": "Jelena"
   },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-05T08:13:40.392714Z",
+    "verified_by": "Jelena"
+  },
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": {
     "state": "verified",
     "verified_at": "2026-06-01T07:57:31.243976Z",
