@@ -126,10 +126,6 @@ module CustomIdMethods::Federa
       false
     end
 
-    def verification_prioritized?
-      true
-    end
-
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }

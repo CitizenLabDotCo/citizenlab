@@ -91,10 +91,6 @@ module CustomIdMethods::ClaveUnica
       false
     end
 
-    def verification_prioritized?
-      true
-    end
-
     def email_confirmed?(_auth)
       false
     end

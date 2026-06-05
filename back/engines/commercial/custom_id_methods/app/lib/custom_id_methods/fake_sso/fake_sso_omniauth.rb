@@ -72,10 +72,6 @@ module CustomIdMethods::FakeSso
       'http'
     end
 
-    def verification_prioritized?
-      true
-    end
-
     def email_always_present?
       false
     end

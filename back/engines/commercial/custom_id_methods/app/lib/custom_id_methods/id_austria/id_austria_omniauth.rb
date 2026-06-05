@@ -57,10 +57,6 @@ module CustomIdMethods::IdAustria
       false
     end
 
-    def verification_prioritized?
-      true
-    end
-
     def email_confirmed?(auth)
       # Even if the response says the email is NOT verified, we assume that it is if email is present
       # TODO (Luuc): confirm what this response looks like in production, and see if we can tighten this

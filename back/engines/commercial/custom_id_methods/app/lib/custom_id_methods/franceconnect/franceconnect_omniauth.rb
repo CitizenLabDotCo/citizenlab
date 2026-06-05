@@ -142,10 +142,6 @@ module CustomIdMethods::Franceconnect
       'franceconnect_merging_failed'
     end
 
-    def verification_prioritized?
-      true
-    end
-
     private
 
     def version
