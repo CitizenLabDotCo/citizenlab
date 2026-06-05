@@ -148,6 +148,7 @@ PATH
   specs:
     mcp_server (0.1.0)
       mcp (~> 0.16)
+      pg_query (~> 6.0)
       rails (~> 7.2)
 
 PATH
@@ -604,6 +605,18 @@ GEM
       thor (>= 0.20, < 2.a)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
+    google-protobuf (4.35.0-aarch64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
@@ -848,6 +861,8 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.6)
+    pg_query (6.2.2)
+      google-protobuf (>= 3.25.3)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)

@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
+  # The single source of truth for which tables the reporting tools expose. Both
+  # this schema tool and the run_reporting_sql_query sandbox (McpServer::SqlSandboxer)
+  # read from here, so a table can never be advertised but rejected, or vice versa.
+  # Currently: the participations fact plus the dimensions it joins to.
   REPORTING_TABLES = %w[
     analytics_fact_participations
+    analytics_dimension_dates
+    analytics_dimension_projects
+    analytics_dimension_types
+    analytics_dimension_users
   ].freeze
 
   def name = 'get_reporting_sql_schema'
