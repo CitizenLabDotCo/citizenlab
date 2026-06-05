@@ -47,7 +47,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
 
   return (
     <>
-      {ssoProviders.claveUnica && (
+      {ssoProviders.clave_unica && (
         <Box mb="18px">
           <ClaveUnicaExpandedAuthProviderButton
             showConsent={true}
@@ -55,7 +55,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </Box>
       )}
-      {ssoProviders.fakeSso && (
+      {ssoProviders.fake_sso && (
         <WrappedAuthProviderButton
           icon="bullseye"
           authProvider="fake_sso"
@@ -74,16 +74,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithHoplr} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.nemlogIn && (
-        <WrappedAuthProviderButton
-          icon="mitid"
-          authProvider="nemlog_in"
-          onClick={onClickSSO}
-        >
-          <FormattedMessage {...messages.continueWithNemlogIn} />
-        </WrappedAuthProviderButton>
-      )}
-      {ssoProviders.idAustria && (
+      {ssoProviders.id_austria && (
         <WrappedAuthProviderButton
           icon="idaustria"
           authProvider="id_austria"
@@ -160,7 +151,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFedera} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.viennaCitizen && <ViennaSamlButton onClick={onClickSSO} />}
+      {ssoProviders.vienna_citizen && <ViennaSamlButton onClick={onClickSSO} />}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
           icon="google"
@@ -179,7 +170,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFacebook} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.azureAd && (
+      {ssoProviders.azureactivedirectory && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
           imageUrl={azureProviderLogoUrl}
@@ -192,7 +183,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.azureAdB2c && (
+      {ssoProviders.azureactivedirectory_b2c && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
           imageUrl={azureB2cProviderLogoUrl}
