@@ -4,6 +4,18 @@ module CustomIdMethods::FakeSso
   class FakeSsoOmniauth < IdMethods::Base
     include FakeSsoVerification
 
+    def name
+      'fake_sso'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: auth.info['first_name'],

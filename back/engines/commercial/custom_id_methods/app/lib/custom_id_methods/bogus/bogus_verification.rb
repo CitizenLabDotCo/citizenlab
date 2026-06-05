@@ -3,16 +3,24 @@
 module CustomIdMethods::Bogus
   # Fake method for testing purposes only
   class BogusVerification < IdMethods::Base
+    def name
+      'bogus'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     def verification_method_type
       :manual_sync
     end
 
     def id
       '380cc6e1-6978-4a3d-8ad0-d72552b55d20'
-    end
-
-    def name
-      'bogus'
     end
 
     def config_parameters

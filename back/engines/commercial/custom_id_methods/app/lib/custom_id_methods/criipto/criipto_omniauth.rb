@@ -4,6 +4,18 @@ module CustomIdMethods::Criipto
   class CriiptoOmniauth < IdMethods::Base
     include CriiptoVerification
 
+    def name
+      'criipto'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       case config[:identity_source]
       when DK_MIT_ID

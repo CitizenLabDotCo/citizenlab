@@ -4,11 +4,16 @@ module CustomIdMethods::Google
   class GoogleOmniauth < IdMethods::Base
     GOOGLE_PLACEHOLDER_AVATAR_URL = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
 
-    # Google is a login-only SSO method. Its configuration lives alongside the
-    # verification methods (in `verification.verification_methods`), but it cannot
-    # be used to verify user identities.
+    def name
+      'google'
+    end
+
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -17,10 +22,6 @@ module CustomIdMethods::Google
 
     def id
       '1ea7ec6a-2647-4f85-bc40-dba704cc82e2'
-    end
-
-    def name
-      'google'
     end
 
     def config_parameters

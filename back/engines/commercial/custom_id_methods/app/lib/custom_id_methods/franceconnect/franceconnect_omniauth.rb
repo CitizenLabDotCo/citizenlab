@@ -6,6 +6,18 @@ module CustomIdMethods::Franceconnect
   class FranceconnectOmniauth < IdMethods::Base
     include FranceconnectVerification
 
+    def name
+      'franceconnect'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     # The flow of the sso_verification param in case of FranceConnect:
     # 1. FE sends request to BE /auth/franceconnect?token=...&verification_pathname=...&sso_verification=true
     #    (see front/app/modules/commercial/id_franceconnect/components/VerificationFranceConnectButton.tsx:32)

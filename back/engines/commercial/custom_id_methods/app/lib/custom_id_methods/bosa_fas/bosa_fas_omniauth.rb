@@ -4,6 +4,18 @@ module CustomIdMethods::BosaFas
   class BosaFasOmniauth < IdMethods::Base
     include BosaFasVerification
 
+    def name
+      'bosa_fas'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     ENVIRONMENTS = {
       'integration' => {
         host: 'idp.iamfas.int.belgium.be',

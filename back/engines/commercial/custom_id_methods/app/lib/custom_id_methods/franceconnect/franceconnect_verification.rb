@@ -10,10 +10,6 @@ module CustomIdMethods::Franceconnect
       '68fecc38-9449-4087-9475-fc31e05a0936'
     end
 
-    def name
-      'franceconnect'
-    end
-
     def config_parameters
       %i[environment identifier secret version scope enabled_for_verified_actions]
     end

@@ -2,11 +2,16 @@
 
 module CustomIdMethods::AzureActiveDirectory
   class AzureActiveDirectoryOmniauth < IdMethods::Base
-    # Azure AD is a login-only SSO method. Its configuration lives alongside the
-    # verification methods (in `verification.verification_methods`), but it cannot
-    # be used to verify user identities.
+    def name
+      'azureactivedirectory'
+    end
+
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -15,10 +20,6 @@ module CustomIdMethods::AzureActiveDirectory
 
     def id
       '7a610902-304b-4399-9f9e-da68ff478e86'
-    end
-
-    def name
-      'azureactivedirectory'
     end
 
     def config_parameters

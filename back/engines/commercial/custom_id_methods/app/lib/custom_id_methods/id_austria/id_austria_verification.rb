@@ -10,10 +10,6 @@ module CustomIdMethods::IdAustria
       '91068f8a-c4a5-4fc8-ab3e-ca2eb74f9c3c'
     end
 
-    def name
-      'id_austria'
-    end
-
     def ui_method_name
       config[:ui_method_name].presence || name
     end

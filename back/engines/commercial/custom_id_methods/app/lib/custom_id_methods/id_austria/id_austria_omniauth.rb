@@ -4,6 +4,18 @@ module CustomIdMethods::IdAustria
   class IdAustriaOmniauth < IdMethods::Base
     include IdAustriaVerification
 
+    def name
+      'id_austria'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_uid(auth)
       auth['extra']['raw_info']['urn:pvpgvat:oidc.bpk']
     end

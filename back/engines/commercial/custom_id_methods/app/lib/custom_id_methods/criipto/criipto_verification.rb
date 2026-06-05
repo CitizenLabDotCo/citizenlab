@@ -13,10 +13,6 @@ module CustomIdMethods::Criipto
       '5768eff0-05ce-5f55-a657-3284d38d102a'
     end
 
-    def name
-      'criipto'
-    end
-
     def ui_method_name
       config[:ui_method_name].presence || name
     end

@@ -4,6 +4,18 @@ module CustomIdMethods::Acm
   class AcmOmniauth < IdMethods::Base
     include AcmVerification
 
+    def name
+      'acm'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       # Validate the RRN against the API and store the result in a custom field
       # Custom field should be a select field with options: [valid, lives_outside, under_minimum_age, no_match, service_error]

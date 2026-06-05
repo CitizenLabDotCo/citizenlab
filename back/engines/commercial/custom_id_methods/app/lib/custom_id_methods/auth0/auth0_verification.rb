@@ -10,10 +10,6 @@ module CustomIdMethods::Auth0
       'c6b24830-e17a-48a6-9f05-bd8fd3a4a0a6'
     end
 
-    def name
-      'auth0'
-    end
-
     def config_parameters
       %i[client_id client_secret domain method_name_multiloc enabled_for_verified_actions]
     end

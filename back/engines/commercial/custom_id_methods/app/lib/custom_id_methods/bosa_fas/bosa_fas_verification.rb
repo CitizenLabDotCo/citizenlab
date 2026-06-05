@@ -10,10 +10,6 @@ module CustomIdMethods::BosaFas
       '6a66cafb-08a8-451f-8c0b-f349cdfdaaee'
     end
 
-    def name
-      'bosa_fas'
-    end
-
     def config_parameters
       %i[environment identifier secret enabled_for_verified_actions]
     end

@@ -10,10 +10,6 @@ module CustomIdMethods::FakeSso
       '8bb00a8d-26a5-4e00-866d-36e23986d441'
     end
 
-    def name
-      'fake_sso'
-    end
-
     def config_parameters
       %i[issuer enabled_for_verified_actions]
     end

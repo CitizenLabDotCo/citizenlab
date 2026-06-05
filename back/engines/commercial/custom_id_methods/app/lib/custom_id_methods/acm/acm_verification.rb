@@ -10,10 +10,6 @@ module CustomIdMethods::Acm
       'e8f3a1b2-9c4d-4e5f-a6b7-c8d9e0f1a2b3'
     end
 
-    def name
-      'acm'
-    end
-
     def config_parameters
       %i[
         ui_method_name

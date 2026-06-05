@@ -4,6 +4,18 @@ module CustomIdMethods::ClaveUnica
   class ClaveUnicaOmniauth < IdMethods::Base
     include ClaveUnicaVerification
 
+    def name
+      'clave_unica'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       info = {
         locale: AppConfiguration.instance.closest_locale_to('es-CL')

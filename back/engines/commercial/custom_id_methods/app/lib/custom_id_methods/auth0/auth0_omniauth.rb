@@ -4,6 +4,18 @@ module CustomIdMethods::Auth0
   class Auth0Omniauth < IdMethods::Base
     include Auth0Verification
 
+    def name
+      'auth0'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.active?(configuration, name)

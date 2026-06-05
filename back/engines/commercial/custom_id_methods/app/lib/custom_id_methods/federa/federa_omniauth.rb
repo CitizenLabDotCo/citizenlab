@@ -6,6 +6,18 @@ module CustomIdMethods::Federa
   class FederaOmniauth < IdMethods::Base
     include FederaVerification
 
+    def name
+      'federa'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
     ENVIRONMENTS = {
       'test' => {
         metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'federa', 'idp_metadata_test.xml'),
