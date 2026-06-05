@@ -14,10 +14,16 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        res[f] = {
-          'allowed' => !!default_setting(schema, f, 'allowed'),
-          'enabled' => !!default_setting(schema, f, 'enabled')
-        }
+        # `verification` is no longer toggleable and doesn't define
+        # `allowed`/`enabled` in its schema, so don't inject them.
+        res[f] = if f == 'verification'
+          {}
+        else
+          {
+            'allowed' => !!default_setting(schema, f, 'allowed'),
+            'enabled' => !!default_setting(schema, f, 'enabled')
+          }
+        end
       end
       res
     end
