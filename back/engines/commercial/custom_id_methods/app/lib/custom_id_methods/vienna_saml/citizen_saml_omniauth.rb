@@ -3,11 +3,16 @@
 module CustomIdMethods::ViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal, a citizen SSO method.
   class CitizenSamlOmniauth < IdMethods::Base
-    # Vienna citizen login is a login-only SSO method. Its configuration is stored
-    # alongside the verification methods (in `verification.verification_methods`),
-    # but it cannot be used to verify user identities.
+    def name
+      'vienna_citizen'
+    end
+
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -16,10 +21,6 @@ module CustomIdMethods::ViennaSaml
 
     def id
       '41f5a1a5-df30-4c16-b29b-5b6631c4f04b'
-    end
-
-    def name
-      'vienna_citizen'
     end
 
     def config_parameters
