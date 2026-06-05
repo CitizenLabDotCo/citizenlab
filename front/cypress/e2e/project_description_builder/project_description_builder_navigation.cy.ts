@@ -51,7 +51,8 @@ describe('Project description builder navigation', () => {
       .click();
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl
+      `${
+        Cypress.config().baseUrl
       }/en/admin/description-builder/projects/${projectId}/description`
     );
   });
@@ -63,7 +64,8 @@ describe('Project description builder navigation', () => {
       .click();
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl
+      `${
+        Cypress.config().baseUrl
       }/en/admin/description-builder/projects/${projectId}/description`
     );
     cy.get('#e2e-go-back-button').should('be.visible').click();

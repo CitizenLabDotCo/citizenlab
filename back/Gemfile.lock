@@ -144,6 +144,13 @@ PATH
       rails (~> 7.2)
 
 PATH
+  remote: engines/commercial/mcp_server
+  specs:
+    mcp_server (0.1.0)
+      mcp (~> 0.16)
+      rails (~> 7.2)
+
+PATH
   remote: engines/commercial/moderation
   specs:
     moderation (0.1.0)
@@ -513,6 +520,8 @@ GEM
       nokogiri (~> 1.8, >= 1.8.1)
       rubyzip (~> 1.2, >= 1.2.1)
     domain_name (0.6.20240107)
+    doorkeeper (5.9.0)
+      railties (>= 5)
     drb (2.2.3)
     easy_translate (0.5.1)
       thread
@@ -723,6 +732,8 @@ GEM
       rest-client (>= 2.0.2)
     marcel (1.0.4)
     matrix (0.4.2)
+    mcp (0.16.0)
+      json-schema (>= 4.1)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -1256,6 +1267,7 @@ DEPENDENCIES
   debug
   document_annotation!
   docx (~> 0.3.0)
+  doorkeeper (~> 5.9)
   drb
   email_campaigns!
   factory_bot_rails
@@ -1286,6 +1298,7 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby (~> 1.2.16)
   matomo!
+  mcp_server!
   mini_magick (~> 4.13)
   mjml-rails (~> 4.11)
   moderation!

@@ -11,15 +11,15 @@ export const getInitialData = (
 ) => {
   const initialFormData = idea
     ? {
-      ...idea.attributes,
-      author_id: idea.relationships.author?.data?.id,
-      cosponsor_ids: idea.relationships.cosponsors?.data?.map(
-        (cosponsor) => cosponsor.id
-      ),
-      topic_ids: idea.relationships.input_topics?.data.map(
-        (topic) => topic.id
-      ),
-    }
+        ...idea.attributes,
+        author_id: idea.relationships.author?.data?.id,
+        cosponsor_ids: idea.relationships.cosponsors?.data?.map(
+          (cosponsor) => cosponsor.id
+        ),
+        topic_ids: idea.relationships.input_topics?.data.map(
+          (topic) => topic.id
+        ),
+      }
     : {};
 
   const customFieldValues = authUser?.data.attributes.custom_field_values;

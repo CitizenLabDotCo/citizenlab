@@ -33,7 +33,9 @@ describe('SSO: user with unconfirmed email', () => {
 
     // Enter new email and continue
     const newEmail = randomEmail();
-    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(newEmail);
+    cy.get('#e2e-authentication-modal')
+      .get('input[type="email"]')
+      .type(newEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)
@@ -45,7 +47,7 @@ describe('SSO: user with unconfirmed email', () => {
     // Confirm user has new email
     cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.equal(newEmail);
-    })
+    });
   });
 });
 
@@ -77,7 +79,10 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.acceptCookies();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-    cy.location('pathname').should('eq', '/en/projects/an-idea-bring-it-to-your-council/ideas/new');
+    cy.location('pathname').should(
+      'eq',
+      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+    );
   });
 
   it('works if user signs up, does not confirm email, then logs in with SSO with same unconfirmed email', () => {
@@ -104,6 +109,9 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.acceptCookies();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-    cy.location('pathname').should('eq', '/en/projects/an-idea-bring-it-to-your-council/ideas/new');
-  })
+    cy.location('pathname').should(
+      'eq',
+      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+    );
+  });
 });

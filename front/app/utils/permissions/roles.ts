@@ -89,7 +89,10 @@ export const isProjectModerator = (
   return roles.some((r) => r.type === 'project_moderator');
 };
 
-export const isSpaceModerator = (user: IUser | undefined | null, spaceId?: string) => {
+export const isSpaceModerator = (
+  user: IUser | undefined | null,
+  spaceId?: string
+) => {
   if (!user) return false;
 
   const roles = user.data.attributes.roles || [];

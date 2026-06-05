@@ -15,7 +15,10 @@ const isAuthor = (idea: IIdeaData, user: IUser | undefined | null) => {
   );
 };
 
-const isIdeaProjectModerator = (idea: IIdeaData, user: IUser | undefined | null) => {
+const isIdeaProjectModerator = (
+  idea: IIdeaData,
+  user: IUser | undefined | null
+) => {
   return user && isProjectModerator(user, idea.relationships.project.data.id);
 };
 
