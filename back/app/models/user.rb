@@ -342,7 +342,8 @@ class User < ApplicationRecord
   def validate_not_duplicate_new_email
     return unless new_email
 
-    # Validate email format
+    # If there is a validation error:
+    # Rename the error from new_email to email (for some reason this is important)
     if errors.of_kind?(:new_email, :invalid)
       ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
       errors.add(:email, :invalid, value: new_email)
