@@ -17,7 +17,9 @@ class SettingsService
         feature = {}
         # Some features (e.g. `verification`) are no longer toggleable and don't
         # define `allowed`/`enabled` in their schema, so only set what's defined.
-        %w[allowed enabled].each do |key|
+        keys = %w[allowed enabled]
+
+        keys.each do |key|
           feature[key] = !!default_setting(schema, f, key) if schema.dig('properties', f, 'properties', key)
         end
         res[f] = feature

@@ -12,27 +12,27 @@ resource 'Verification methods' do
     create(:custom_field_birthyear)
     configuration = AppConfiguration.instance
     configuration.settings['verification'] = {
-        verification_methods: [
-          {
-            name: 'cow',
-            api_username: 'fake_username',
-            api_password: 'fake_password',
-            rut_empresa: 'fake_rut_empresa'
-          },
-          {
-            name: 'id_card_lookup',
-            ui_method_name: 'By social security number',
-            card_id: 'Social security number',
-            card_id_placeholder: 'xx-xxxxx-xx',
-            card_id_tooltip: 'You can find this number on you card. We just check, we don\'t store it',
-            explainer_image_url: 'https://some.fake/image.png'
-          },
-          {
-            name: 'fake_sso',
-            enabled_for_verified_actions: true
-          }
-        ]
-      }
+      verification_methods: [
+        {
+          name: 'cow',
+          api_username: 'fake_username',
+          api_password: 'fake_password',
+          rut_empresa: 'fake_rut_empresa'
+        },
+        {
+          name: 'id_card_lookup',
+          ui_method_name: 'By social security number',
+          card_id: 'Social security number',
+          card_id_placeholder: 'xx-xxxxx-xx',
+          card_id_tooltip: 'You can find this number on you card. We just check, we don\'t store it',
+          explainer_image_url: 'https://some.fake/image.png'
+        },
+        {
+          name: 'fake_sso',
+          enabled_for_verified_actions: true
+        }
+      ]
+    }
     configuration.save!
   end
 

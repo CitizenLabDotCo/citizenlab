@@ -11,7 +11,7 @@ module CustomIdMethods
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
-      ID_METHODS = [
+      [
         CustomIdMethods::Facebook::FacebookOmniauth.new,
         CustomIdMethods::Google::GoogleOmniauth.new,
 

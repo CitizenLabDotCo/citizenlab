@@ -6,7 +6,7 @@ module IdMethods
       raise NotImplementedError
     end
 
-    # Whether this method can be used to verify user identities. 
+    # Whether this method can be used to verify user identities.
     def verification?
       raise NotImplementedError
     end
