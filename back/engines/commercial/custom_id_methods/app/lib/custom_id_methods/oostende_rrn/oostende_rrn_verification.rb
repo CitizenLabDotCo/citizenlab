@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::OostendeRrn
-  class OostendeRrnVerification
+  class OostendeRrnVerification < IdMethods::Base
     def verification_method_type
       :manual_sync
     end

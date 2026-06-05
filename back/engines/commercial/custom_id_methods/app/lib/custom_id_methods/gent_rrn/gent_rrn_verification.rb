@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::GentRrn
-  class GentRrnVerification
+  class GentRrnVerification < IdMethods::Base
     def verification_method_type
       :manual_sync
     end
