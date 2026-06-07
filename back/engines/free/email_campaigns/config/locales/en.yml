@@ -50,7 +50,9 @@ en:
         project_reviewers: Project reviewers and folder managers
         user_changing_email: User who is changing their email address
         user_confirming_email: User who is confirming their email address
+        user_requesting_password_reset: User who requested a password reset
         user_who_commented: User who commented
+        user_who_is_blocked: User whose account is blocked
         user_who_is_invited_to_cosponsor_a_proposal: User who is invited to co-sponsor a proposal
         user_who_is_mentioned: User who is mentioned
         user_who_is_receiving_admin_rights: User who is receiving admin rights
@@ -110,6 +112,7 @@ en:
         user_comments_on_input: User comments on input
         user_comments_on_proposal: User comments on proposal
         user_confirms_email: User confirms their email address
+        user_is_blocked: User's account is blocked
         user_is_given_admin_rights: User is given admin rights
         user_is_given_folder_manager_rights: User is given folder manager rights
         user_is_given_project_manager_rights: User is given project manager rights
@@ -121,6 +124,7 @@ en:
         user_registers_for_the_first_time: User registers for the first time
         user_replies_to_comment: User replies to comment
         user_replies_to_internal_comment: User replies to internal comment
+        user_requests_password_reset: User requests a password reset
         voting_1_day_after_last_votes: 1 day after user last voted
         voting_2_days_before_phase_closes: 2 days before voting phase closes
         voting_basket_submitted: Votes are submitted
@@ -197,6 +201,7 @@ en:
       status_change_on_idea_you_follow: Status change of an input that you follow
       survey_submitted: Survey submitted
       threshold_reached_for_admin: Proposal reached the voting threshold
+      user_blocked: Account blocked
       user_digest: Weekly overview
       voting_basket_not_submitted: Votes not submitted
       voting_basket_submitted: Confirmation of voting
@@ -548,6 +553,12 @@ en:
       project_title: Example project
       proposal_title: Example Proposal
       space_title: Example space
+    password_reset:
+      cta_button: Reset your password
+      event_description: You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.
+      preheader: Reset your password for %{organizationName}
+      subject: '%{organizationName}: Reset your password'
+      title: Choose a new password
     project_folder_moderation_rights_received:
       cta_button: View this folder
       event_description: "You've been given folder manager rights on %{organizationName}'s participation platform for the following folder:"
@@ -670,6 +681,14 @@ en:
       preheader: Make sure to take the next steps
       subject: '"%{input_title}" reached the voting threshold'
       title: A proposal reached the voting threshold!
+    user_blocked:
+      for_more_information: For more information on this, you can consult the %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:'
+      paragraph_1_without_reason: Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines.
+      preheader: Your account on the participation platform of %{organizationName} has been temporarily disabled
+      subject: Your account has been temporarily disabled
+      title: Your account has been temporarily disabled
+      you_can_sign_in_again_from: You can sign in again from %{date}
     user_digest:
       commented: '%{authorFirstName} commented:'
       cta_button: Go to the platform

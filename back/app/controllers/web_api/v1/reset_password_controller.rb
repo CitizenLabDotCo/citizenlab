@@ -13,7 +13,8 @@ class WebApi::V1::ResetPasswordController < ApplicationController
 
       user.update! reset_password_token: token
 
-      reset_password_service.send_email_later user, token
+      # Sent synchronously: the user is waiting for this email to reset their password.
+      reset_password_service.send_email user, token
       reset_password_service.log_activity user, token
     end
     head :accepted
