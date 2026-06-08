@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::CreateCause < McpServer::BaseTool
-  def name = 'create_cause'
+  def name = 'create_volunteering_cause'
 
   def description
     <<~DESC.squish
@@ -25,7 +25,6 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
-      return wrong_method_error(phase) unless phase.volunteering?
 
       attributes = params.slice(:title_multiloc, :description_multiloc).compact
       cause = Volunteering::Cause.new(phase: phase, **attributes)
@@ -42,15 +41,6 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
       error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
-    end
-
-    private
-
-    def wrong_method_error(phase)
-      error(
-        "Phase #{phase.id} has participation_method '#{phase.participation_method}', " \
-        "but causes can only be added to 'volunteering' phases."
-      )
     end
   end
 end
