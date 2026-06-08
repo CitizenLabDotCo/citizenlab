@@ -332,3 +332,46 @@ _Example: a "Wemmel park" project runs a "Share your ideas" process (Jun–Aug),
 ### Neighbours
 
 Grid ↔ Free-floating processes ↔ Self-contained processes are one spectrum on **where a process's time lives**: attach every process to a phase → the Grid (one clock); leave them free-dated → Free-floating; give a process its own scheduled, changing config → Self-contained.
+
+## Self-contained processes
+
+_Each process owns its multi-step lifecycle on its own schedule; a project is a portfolio of them._
+
+### How it works
+
+A project is a **portfolio of processes running in parallel**, and each process is a self-contained mini-project: it owns its form, its data set, its statuses and its permissions — and **its own internal lifecycle, a sequence of dated steps** (e.g. collect → shortlist → vote → results). A process changes behaviour as it advances its steps, **on its own schedule**, independent of the others. Time lives _inside_ each process. The project keeps a **narrative timeline on top** — authored chapters telling the project's story — but it is **cosmetic**: it does not gate participation; each process gates itself through its own steps.
+
+**The power, in one line:** it is the only candidate with **both** a multi-step lifecycle on _one_ data set **and** an independent schedule per process:
+
+|                    | multi-step on one data set?  | independently scheduled?            |
+| ------------------ | ---------------------------- | ----------------------------------- |
+| Grid               | ✅ (config per shared phase) | ❌ (all share the project timeline) |
+| Free-floating      | ❌ (flat process)            | ✅                                  |
+| **Self-contained** | **✅**                       | **✅**                              |
+
+_Example: a "Wemmel park" participatory budget runs as **17 neighbourhood processes**, each with the same collect → shortlist → vote → results lifecycle but on **its own dates**, alongside an always-on "Suggestion box" — and you roll up reporting across all 17. No single shared timeline can express 17 differently-clocked lifecycles; this model can._
+
+### Data model
+
+- **Relationships.** A **Project** owns many **Processes** plus an **authored narrative timeline** (chapters, cosmetic). A **Process** is the data-set owner — its **Form** (`CustomForm.participation_context = Process`, 1—1), its **inputs**, **statuses**, **interactions** and **permissions** — and it owns a **lifecycle of `ProcessStep`s**. An **Input** belongs to exactly one Process. **Method** is a template (form + step sequence + statuses). The narrative timeline is **not** linked to processes and does not gate.
+- **Entities.** New: **`Process`** (data-set owner) and **`ProcessStep`** — `belongs_to :process`, `ordering`, `start_at`/`end_at` (or duration; may be manual/approximate), per-step interaction toggles & field visibility. Changed: **`Input`** gains `process_id` and its "phase" becomes the **step** it was created in; **`Permission`** scope → Process (or step); the project **`Phase`** becomes a **narrative chapter** (no method, no gating); **`ParticipationMethod`** dissolves into the process template.
+- **ER sketch.** `Project 1—* Process · Project 1—* NarrativeChapter (cosmetic) · Process 1—* ProcessStep (sequential, dated, per-step config) · Process 1—1 Form · Input *—1 Process · current step: per Process`
+- **Ideation → voting (native — the cleanest of the five).** Simply **two steps of one process** on one data set: it advances `collect` → `vote`, the same inputs carry through — no second process, no reference, no shared-timeline cells. Proposals fit most naturally too (collect → threshold → decision _are_ the steps).
+- **Time & transitions.** Time lives **inside each process**: a poller crosses **each process's step boundaries**, advancing that process on its own schedule, so "phase started" becomes **"process step started"** (per process). There is **no single project `current_phase`** — each process has its own current step (multi-valued at the project level). The narrative timeline can transition too (the displayed chapter advances), but **cosmetically** — it never opens or closes anything. So there are **two clocks** (narrative + per-process lifecycles), but because the narrative doesn't gate they can't _conflict_ — the cost is upkeep, not incoherence.
+- **Resolving an input.** `Input → Process → current step → {interactions, field visibility}`, with `{form, statuses, permission}` from the Process. One form per process (evolvable), so no form-compatibility check, and ideation→voting needs no reference because it's one process.
+
+### Immediate requests
+
+- **Extra surveys.** Native: a survey is a process with a small lifecycle (draft → open → closed → results) on its own dates, parallel to everything else. No special "Extras" concept; submission is per-process, so the `current_phase` obstacle dissolves.
+- **Parallel ideation, different forms.** Native: two ideation processes, each its own form and lifecycle, running in parallel and shown together under the project narrative. Met directly; "same timeline" isn't a constraint, since the narrative doesn't gate.
+
+### The long-term bet
+
+- **Unification: L4 (the highest).** Everything the Grid has — form per process, per-field/per-submission visibility, interactions decoupled, method-as-template — **plus** the lifecycle, which adds expressiveness (curate → publish → vote on one set) and makes ideation→voting and proposals native.
+- **Upside.** The cleanest unified-inputs **and** reporting story (each process is one data set with a lifecycle → per-process reporting is "the real prize"); the **only** model for a **fleet of identically-structured, independently-scheduled processes with roll-up** (PB across neighbourhoods, staggered cohorts, rolling proposals); free dates and the submission obstacle both fall out; strongest templates (form + step sequence + statuses).
+- **Cost.** The **hardest migration**, because it _inverts_ the timeline's role: today the timeline is the load-bearing spine (phases drive `current_phase`, permissions, emails, reporting); here it is demoted to a cosmetic narrative while per-process lifecycles take over — so today's mixed-method timeline **splits into separate processes + a narrative**, and `current_phase` goes per-process (the largest rework of the five). It is also the biggest **conceptual** shift for admins (think in per-process lifecycles, not one project timeline), and the narrative-on-top reintroduces a second (cosmetic) clock to maintain.
+- **Verdict:** the highest ceiling of all five — but you **don't migrate to it directly**. It is the Grid's **continuation**: reach it via the Grid (which preserves the timeline), then let a process's config detach onto its own schedule **only** when a project genuinely needs the fleet-of-independent-lifecycles. So it is the **stretch destination**, not the next step.
+
+### Neighbours
+
+One spectrum on **where a process's time lives**: the **Grid** configures a process per _shared_ project phase (one clock; the migration-friendly step that _preserves_ today's timeline); **Self-contained** lets that config detach onto the process's _own_ private steps (timeline → narrative; `current_phase` → per-process). It is also **Multiple timelines upgraded** with a real data-set owner (L0–L1 → L4), and a **close cousin of Free-floating** (both = narrative + per-process time; a structured lifecycle here vs a flat window there).
