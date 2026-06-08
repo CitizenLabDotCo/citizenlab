@@ -2,7 +2,7 @@
 
 module WebApi
   module V1
-    module Verification
+    module IdMethods
       class VerificationMethodsController < ApplicationController
         skip_before_action :authenticate_user
 
