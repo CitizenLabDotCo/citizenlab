@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Verification
-  class VerificationMethodPolicy < ApplicationPolicy
+module IdMethods
+  class IdMethodPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       # scope is an array, not an AR scope
       def resolve

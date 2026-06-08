@@ -3,19 +3,17 @@
 module WebApi
   module V1
     module IdMethods
-      class VerificationMethodsController < ApplicationController
+      class IdMethodsController < ApplicationController
         skip_before_action :authenticate_user
 
         def index
           id_method_service = ::IdMethodService.new
-          # Returns all configured methods, including login-only SSO methods.
-          # Consumers filter by the `verification_method` / `authentication_method` attributes.
-          @verification_methods = id_method_service.configured_methods(AppConfiguration.instance)
-          @verification_methods = policy_scope(@verification_methods, policy_scope_class: ::Verification::VerificationMethodPolicy::Scope)
-          @verification_methods = paginate Kaminari.paginate_array(@verification_methods)
+          @id_methods = id_method_service.configured_methods(AppConfiguration.instance)
+          @id_methods = policy_scope(@id_methods, policy_scope_class: ::IdMethods::IdMethodPolicy::Scope)
+          @id_methods = paginate Kaminari.paginate_array(@id_methods)
 
           render json: linked_json(
-            @verification_methods,
+            @id_methods,
             WebApi::V1::Verification::VerificationMethodSerializer,
             params: jsonapi_serializer_params
           )
@@ -23,13 +21,13 @@ module WebApi
 
         def first_enabled
           method = ::Verification::VerificationService.new.first_method_enabled
-          authorize method, policy_class: ::Verification::VerificationMethodPolicy
+          authorize method, policy_class: ::IdMethods::IdMethodPolicy
           respond_with(method)
         end
 
         def first_enabled_for_verified_actions
           method = ::Verification::VerificationService.new.first_method_enabled_for_verified_actions
-          authorize method, policy_class: ::Verification::VerificationMethodPolicy
+          authorize method, policy_class: ::IdMethods::IdMethodPolicy
           respond_with(method)
         end
 
