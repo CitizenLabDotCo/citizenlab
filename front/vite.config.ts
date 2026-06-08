@@ -165,6 +165,7 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+        TWEMOJI_BASE_URL: process.env.TWEMOJI_BASE_URL,
       },
     },
   };
