@@ -32,6 +32,42 @@ _Example: a "Wemmel park" project keeps its main timeline (Inform → Collect id
 - **Cost.** It forfeits the unification prize — mixed-visibility inputs, per-submission publishing, morphing one method into another, and **native cross-method reporting** stay out of reach (a survey and an ideation remain different shapes). Parallel ideation lives in separate (orderable, hideable) tracks rather than one shared grid; timelines can proliferate; and it is a parallelism _mechanism_, not a remodelling — so "reconcile to one model later" means collapsing N timelines, which only gets harder over time.
 - **Verdict:** the cheapest, lowest-risk way to ship parallelism — a strong near-term tactic, and an acceptable _destination_ only if input-unification isn't a long-term goal; its L0–L1 ceiling keeps the unification prize permanently out of reach.
 
+## Method components
+
+_Persist `ParticipationMethod` as a component you attach to phases or the project; voting stays a method by reference._
+
+### How it works
+
+Promote `ParticipationMethod` from today's transient string-object into a **persisted record** you can **attach to a phase _or_ the project**, **several at a time**. Each component carries its kind and config, owns its permission, and — when its method is self-contained — its form. **Phase-attached** components inherit the phase's window; **project-attached** ones are off-timeline "extras" with **their own dates**. Phases stay **sequential**, so the timeline remains the spine. **Voting stays its own method**, acting on an ideation component's ideas **by reference**. The defining choice: this makes the **method** first-class — not the data set.
+
+_Example: a "Wemmel park" project keeps its main timeline with an ideation component on "Collect ideas" and a voting component on "Decide" (voting references the ideas), plus an off-timeline "Resident survey" component attached to the project with its own dates._
+
+### Data model
+
+- **Relationships.** A **`ParticipationMethod`** is a persisted record attached (polymorphic `context`) to a **Phase** or the **Project**; many non-conflicting components per phase. It owns its **Permission**, and its **Form** _when the method is self-contained_ (a survey). **Input** belongs to the component that collected it; a **voting** component **references** an ideation component's inputs. Phases stay sequential.
+- **Entities.** New: persisted **`ParticipationMethod`** (kind, config, polymorphic `context` = Phase | Project, own `start_at`/`end_at` for project-attached, own permission, own form). Changed: the phase's `participation_method` string + method config move **onto the component**; **`CustomForm`** context → the component (for self-contained methods); **`Permission`** scope → component; **`Input`** gains a component link. Phases keep their dates and sequence.
+- **ER sketch.** `Project 1—* ParticipationMethod (context: Phase | Project) · Phase 0..* ParticipationMethod · ParticipationMethod 1—1 Form (self-contained methods) · ParticipationMethod —references→ ParticipationMethod (voting → ideas) · Input *—1 ParticipationMethod · current_phase: still single (timeline); off-timeline components sit outside it`
+- **Ideation → voting & the form crux.** ideation→voting is **two components joined by reference** (the "voting on past ideas" pattern). A component owns its form cleanly **only when method ≡ data set** (surveys). For **transitive** ideation/voting the form belongs to the **shared data set**, which this model has **no entity for** — so it **stays on the project** (as today). _The fix is to make the shared form the (implicit) process — see the long-term bet._
+- **Time & transitions.** **Hybrid clocks.** Phase-attached components ride the **one timeline clock** (gated by `current_phase`); project-attached components run on **their own dates** (a **second clock**, gated by their own dates + permission, _not_ `current_phase` — which is why resident submission to them works without the obstacle). Don't allow "phase-attached **and** own dates" (the clamp/overflow mess). One real interaction: the project's **active/draft status** becomes the **union** of the timeline phases **and** every off-timeline component's window (Rob's "the timeline is no longer the spine"). Off-timeline components need their own "started" poller.
+- **Resolving an input.** `Input → its component → {form, permission, kind}` — but an input's **full config can split across the components that reference it** (the ideas on the ideation component, the votes on the voting component), the **messiest resolution of the five**.
+
+### Immediate requests
+
+- **Extra surveys.** Native-ish: a survey component attached to the **project**, with its own dates ("Extras"); many allowed. A survey is self-contained, so it owns its form cleanly, and submission resolves per-component — so the `current_phase` obstacle dissolves.
+- **Parallel ideation, different forms.** Achievable **in one timeline** — two ideation components on a phase, each its own form — but it forces the form-ownership fork: **per-component forms** make this work _yet keep voting separate_ (a **fork** from the Grid); the **shared-form** variant (below) instead forces the different-form ideation **off-timeline**. So you can have different forms _or_ a clean on-ramp, not both — which is precisely what the unified Grid resolves.
+
+### The long-term bet
+
+- **Unification: L1–L2.** A persisted unit owning its form lifts it above Multiple timelines' recycled phases — but method-stays-a-type, voting-by-reference, and config-split-across-components keep it low. Morphing, mixed-visibility, and per-submission visibility are not native.
+- **Upside.** The **smallest leap of the real remodels** — the method object already exists, so you persist it and move the phase's method attributes onto it; phases stay sequential, so `current_phase` mostly survives; it keeps the familiar "methods on phases / voting on past ideas" model (least retraining); it ships **extra surveys _and_ parallel ideation in one timeline**; the submission obstacle dissolves for off-timeline components; and it is **Decidim-proven** (components dropped on a phase).
+- **The fork that decides its long-term value.** Method components makes the **method** first-class; the north star needs the **data set** first-class. So **as-is** (per-component forms, voting separate) it is a **fork** from the Grid — evolving toward the Process means **unwinding** separate-voting (→ a config) and introducing the data-set owner you skipped. **With "shared form is the process"** (the May 21 path — on-timeline transitive components recycle one form; detached ones get a new form) the shared-form group becomes the **implicit process**, and it turns into an **on-ramp**: later you formalise that group into one `Process`. Even then, two _different_ ideation forms can't both sit on the timeline (the different one must detach), so full parallel-ideation-in-one-timeline still needs the Grid's **multiple explicit processes**.
+- **Cost.** Config splits across referencing components (messiest resolution); it keeps the "voting acts on past ideas" clumsiness; two clocks for the off-timeline subset (plus a second "started" poller); and the project's active status leaks off the timeline.
+- **Verdict:** the most incremental real remodel and the cheapest way to ship both immediate asks — but on the **method axis**, so it is a **fork** from the unified Process unless you deliberately adopt **shared-form-as-process** (the May 21 path), which makes it an **on-ramp**. A fine next step; a destination only if a Decidim-style component model is the goal.
+
+### Neighbours
+
+The **bridge** between Multiple timelines (L0–L1, recycled phases) and the Process trio (L3–L4, an explicit data-set owner): it persists the unit but keeps method-as-a-type. The hinge is the form — **without shared-form-as-process it is a fork from the Grid; with it (the May 21 "form is the process" path) it is an on-ramp** — though even then it cannot put two different ideation forms on one timeline. Real-world analogue: **Decidim's components**.
+
 ## Grid
 
 _One timeline; processes configured per phase._
