@@ -49,6 +49,8 @@ class AuthenticationService
     # When a user created an account with someone else's email, chose a password, but could not
     # verify the email, we don't want that user to hijack the real email owner after they create
     # an account (with SSO).
+    # (this should not be possible anymore anyway, since you now always confirm your email
+    # before setting a password. But just in case)
     return nil if !user
 
     if user.confirmation_required? && !user.email_confirmed_at && user.password_digest

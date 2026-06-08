@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "قيم جودة هذه الرؤية",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "استعادة المرشحات",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "لخص",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "التحليل المدعوم بالذكاء الاصطناعي غير مشمول في خطتك الحالية. تواصل مع مدير نجاح الحكومات أو المسؤول لتفعيله.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "ملخص ل",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "ملخص لجميع المدخلات",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "لم يتم إكمال الطلب. يُرجى المحاولة لاحقًا.",

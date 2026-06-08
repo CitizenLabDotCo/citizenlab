@@ -67,6 +67,7 @@ hu-HU:
         user_with_unsubmitted_votes: Felhasználó, aki nem adta le szavazatát
         users_who_engaged_but_not_voted: Felhasználók, akik részt vettek a projektben, de nem szavaztak
         users_who_engaged_with_the_project: Felhasználók, akik részt vettek a projektben
+        users_who_follow_or_participated: A projektet követő vagy abban részt vett felhasználók
         users_who_follow_the_input: Felhasználók, akik követik a bevitelt
         users_who_follow_the_project: A projektet követő felhasználók
         users_who_follow_the_proposal: A javaslatot követő felhasználók

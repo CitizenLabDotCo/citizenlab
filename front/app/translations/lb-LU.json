@@ -186,6 +186,7 @@
   "app.components.CustomFieldsForm.notPublic1": "*Dës Äntwert gëtt nëmme mat de Projetmanager gedeelt, an net mat der Ëffentlechkeet.",
   "app.components.CustomFieldsForm.otherArea": "Irgendwou anescht",
   "app.components.CustomFieldsForm.progressBarLabel": "Fortschrëtt",
+  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% fäerdeg",
   "app.components.CustomFieldsForm.removeAnswer": "Äntwert ewechhuelen",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Wielt sou vill wéi Dir wëllt",
   "app.components.CustomFieldsForm.selectBetween": "*Wiel tëscht den Optiounen {minItems} an {maxItems}",

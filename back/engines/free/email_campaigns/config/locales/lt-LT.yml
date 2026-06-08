@@ -67,6 +67,7 @@ lt-LT:
         user_with_unsubmitted_votes: Naudotojas, kuris nepateikė savo balsų
         users_who_engaged_but_not_voted: Naudotojai, kurie dalyvavo projekte, bet nebalsavo
         users_who_engaged_with_the_project: Vartotojai, dalyvavę projekte
+        users_who_follow_or_participated: Vartotojai, kurie seka projektą arba jame dalyvavo
         users_who_follow_the_input: Vartotojai, kurie seka įvestį
         users_who_follow_the_project: Vartotojai, kurie seka projektą
         users_who_follow_the_proposal: Naudotojai, kurie seka pasiūlymą

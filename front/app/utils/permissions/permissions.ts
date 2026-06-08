@@ -18,7 +18,7 @@ interface IResourceData {
 
 type PermissionRule = (
   resource: TPermissionItem | null,
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   tenant: IAppConfigurationData,
   context?: any
 ) => boolean;

@@ -25,7 +25,7 @@ describe('Input manager', () => {
     });
 
     it('Filters on Assigned to me', () => {
-      cy.getAuthUser().then((user) => {
+      cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const projectDescription = randomString();
@@ -80,7 +80,7 @@ describe('Input manager', () => {
 
   describe('Need feedback toggle', () => {
     it('Filters on ideas that need feedback', () => {
-      cy.getAuthUser().then((user) => {
+      cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const projectDescription = randomString();
@@ -176,7 +176,7 @@ describe('Input manager', () => {
         });
     });
     it('Closes when you delete the idea', () => {
-      cy.getAuthUser().then((user) => {
+      cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const projectDescription = randomString();

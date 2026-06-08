@@ -43,6 +43,7 @@ declare global {
       getTopics: typeof getTopics;
       getUserById: typeof getUserById;
       getAuthUser: typeof getAuthUser;
+      getAdminAuthUser: typeof getAdminAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
@@ -570,6 +571,21 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
 }
 
 function getAuthUser() {
+  return cy.getCookie('cl2_jwt').then((cookie) => {
+    const jwt = cookie?.value;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/me',
+    });
+  });
+}
+
+function getAdminAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -2202,6 +2218,7 @@ Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
 Cypress.Commands.add('getUserById', getUserById);
 Cypress.Commands.add('getAuthUser', getAuthUser);
+Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);

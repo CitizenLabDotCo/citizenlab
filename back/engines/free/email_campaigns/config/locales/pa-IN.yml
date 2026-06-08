@@ -67,6 +67,7 @@ pa-IN:
         user_with_unsubmitted_votes: ਉਹ ਉਪਭੋਗਤਾ ਜਿਨ੍ਹਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ ਹਨ
         users_who_engaged_but_not_voted: ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਪਰ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ
         users_who_engaged_with_the_project: ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਉਪਭੋਗਤਾ
+        users_who_follow_or_participated: ਉਹ ਵਰਤੋਂਕਾਰ ਜੋ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਫਾਲੋ ਕਰਦੇ ਹਨ ਜਾਂ ਜਿਨ੍ਹਾਂ ਨੇ ਹਿੱਸਾ ਲਿਆ ਹੈ
         users_who_follow_the_input: ਉਪਭੋਗਤਾ ਜੋ ਇਨਪੁਟ ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹਨ
         users_who_follow_the_project: ਪ੍ਰੋਜੈਕਟ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
         users_who_follow_the_proposal: ਪ੍ਰਸਤਾਵ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ

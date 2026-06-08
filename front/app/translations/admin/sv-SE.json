@@ -3355,6 +3355,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Bedöm kvaliteten på denna insikt",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Återställ filter",
   "app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton": "Sammanfatta",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": "AI-baserad analys ingår inte i din nuvarande plan. Kontakta din Government Success Manager eller administratör för att låsa upp den.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Sammanfattning för",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Sammanfattning för alla inmatningar",
   "app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError": "Förfrågan kunde inte slutföras. Vänligen försök igen senare.",

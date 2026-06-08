@@ -102,7 +102,21 @@ context 'hoplr authentication' do
     expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
     user = User.last
-    expect_user_to_have_attributes(user)
+    expect(user.identities.first).to have_attributes({
+      provider: 'hoplr',
+      user_id: user.id,
+      uid: '817624'
+    })
+    expect(user).to have_attributes({
+      verified: false,
+      first_name: 'Developer',
+      last_name: 'Govocal',
+      new_email: 'developers+sso@citizenlab.co',
+      locale: 'en',
+      custom_field_values: {
+        'neighbourhood' => '2133'
+      }
+    })
     expect(cookies[:cl2_jwt]).to be_present
 
     expect(user.confirmation_required?).to be(true)
@@ -124,12 +138,11 @@ context 'hoplr authentication' do
   context 'when user already exists' do
     let!(:user) { create(:user, email: 'developers+sso@citizenlab.co') }
 
-    it 'successfully authenticates and updates existing user' do
+    it 'does not update existing user' do
       get '/auth/hoplr'
       follow_redirect!
 
-      expect_user_to_have_attributes(user.reload)
-      expect(user.confirmation_required?).to be(false)
+      expect(user.identities.length).to eq(0)
     end
 
     context "when existing user's email is not confirmed" do
@@ -138,10 +151,12 @@ context 'hoplr authentication' do
       context 'when email is verified' do
         let(:email_verified) { true }
 
-        it "confirms user's email" do
+        it 'successfully authenticates and updates existing user' do
           get '/auth/hoplr'
           follow_redirect!
-          expect(User.last.confirmation_required?).to be(false)
+
+          expect_user_to_have_attributes(user.reload)
+          expect(user.confirmation_required?).to be(false)
         end
 
         context 'when SSO email is different from existing email' do

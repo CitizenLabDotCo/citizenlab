@@ -18,7 +18,7 @@ describe('Project description builder preview', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';

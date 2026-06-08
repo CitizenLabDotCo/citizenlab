@@ -11,6 +11,7 @@ back/config/tenant_templates/private/*.yml
 node_modules
 
 *.DS_Store
+.tmp/
 
 # JetBrains settings files
 .idea/

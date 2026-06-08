@@ -92,7 +92,7 @@ export const SelectionScreen = ({
       </Box>
       <Tooltip
         zIndex={9999999}
-        disabled={userIsAdmin}
+        disabled={!!userIsAdmin}
         theme="dark"
         content={
           <Text my="8px" color="white" fontSize="s">
