@@ -34,6 +34,7 @@ export interface ICampaignData {
     deliveries_count: number;
     content_type_multiloc: Multiloc;
     content_type_ordering: number;
+    campaign_ordering: number;
     recipient_role_multiloc: Multiloc;
     recipient_role_ordering: number;
     // Seems to be always defined, null for invite_received
