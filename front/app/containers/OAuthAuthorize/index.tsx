@@ -190,7 +190,12 @@ const OAuthAuthorize = () => {
             <InfoCard
               icon={<IconBadge name="shield-check" />}
               title={<FormattedMessage {...messages.inControlTitle} />}
-              detail={<FormattedMessage {...messages.inControlDetail} />}
+              detail={
+                <FormattedMessage
+                  {...messages.inControlDetail}
+                  values={{ clientName: client_name }}
+                />
+              }
             />
           </Box>
 

@@ -35,9 +35,9 @@ export default defineMessages({
     defaultMessage: "You're in control",
   },
   inControlDetail: {
-    id: 'containers.OAuthAuthorize.inControlDetail',
+    id: 'containers.OAuthAuthorize.inControlDetail2',
     defaultMessage:
-      'You can revoke access at any time from your account settings.',
+      'You can disconnect this access at any time from {clientName}.',
   },
   authorizeButton: {
     id: 'containers.OAuthAuthorize.authorizeButton',
