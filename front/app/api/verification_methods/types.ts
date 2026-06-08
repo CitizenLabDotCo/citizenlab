@@ -66,7 +66,7 @@ export type MethodMetadata = {
 
 type TGenericMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: TVerificationMethodName;
     method_metadata?: MethodMetadata;
@@ -77,7 +77,7 @@ type TGenericMethod = {
 
 export type IDFakeSSOMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'fake_sso';
     method_metadata?: MethodMetadata;
@@ -88,7 +88,7 @@ export type IDFakeSSOMethod = {
 
 export type IDLookupMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'id_card_lookup';
     method_metadata?: MethodMetadata;
@@ -104,7 +104,7 @@ export type IDLookupMethod = {
 
 export type IDCriiptoMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'criipto';
     method_metadata?: MethodMetadata;
@@ -116,7 +116,7 @@ export type IDCriiptoMethod = {
 
 export type IDKeycloakMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
@@ -129,7 +129,7 @@ export type IDKeycloakMethod = {
 
 export type IDTwodayMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'twoday';
     method_metadata?: MethodMetadata;
@@ -141,7 +141,7 @@ export type IDTwodayMethod = {
 
 export type IDAcmMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'acm';
     method_metadata?: MethodMetadata;
@@ -153,7 +153,7 @@ export type IDAcmMethod = {
 
 export type IDAuth0Method = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'auth0';
     method_metadata?: MethodMetadata;
@@ -165,7 +165,7 @@ export type IDAuth0Method = {
 
 export type IDIdAustriaMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'id_austria';
     ui_method_name: string;
@@ -180,7 +180,7 @@ export type IDIdAustriaMethod = {
 // UI-relevant settings are exposed via the method's serialized attributes.
 export type IDFacebookMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'facebook';
     method_metadata?: MethodMetadata;
@@ -192,7 +192,7 @@ export type IDFacebookMethod = {
 
 export type IDGoogleMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'google';
     method_metadata?: MethodMetadata;
@@ -203,7 +203,7 @@ export type IDGoogleMethod = {
 
 export type IDAzureAdMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'azureactivedirectory';
     method_metadata?: MethodMetadata;
@@ -218,7 +218,7 @@ export type IDAzureAdMethod = {
 
 export type IDAzureAdB2cMethod = {
   id: string;
-  type: 'verification_method';
+  type: 'id_method';
   attributes: {
     name: 'azureactivedirectory_b2c';
     method_metadata?: MethodMetadata;
