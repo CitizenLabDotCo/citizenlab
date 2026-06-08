@@ -8,7 +8,7 @@ import { VerificationMethodsKeys, IVerificationMethod } from './types';
 
 const fetchVerificationMethod = () =>
   fetcher<IVerificationMethod>({
-    path: `/verification_methods/first_enabled`,
+    path: `/verification_methods/first_enabled_verification_method`,
     action: 'get',
   });
 
@@ -19,7 +19,7 @@ const useVerificationMethod = () => {
     IVerificationMethod,
     VerificationMethodsKeys
   >({
-    queryKey: verificationMethodsKeys.item({ endpoint: 'first_enabled' }),
+    queryKey: verificationMethodsKeys.item({ endpoint: 'first_enabled_verification_method' }),
     queryFn: () => fetchVerificationMethod(),
   });
 };

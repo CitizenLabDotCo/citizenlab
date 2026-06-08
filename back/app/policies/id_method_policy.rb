@@ -9,7 +9,7 @@ module IdMethods
       end
     end
 
-    def first_enabled?
+    def first_enabled_verification_method?
       true
     end
 

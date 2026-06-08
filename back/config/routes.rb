@@ -398,8 +398,8 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
+      resources :id_methods, module: 'id_methods', only: [:index] do
+        get :first_enabled_verification_method, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
         IdMethodService.new
           .all_methods

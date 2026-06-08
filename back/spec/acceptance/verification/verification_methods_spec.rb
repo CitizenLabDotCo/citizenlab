@@ -149,7 +149,7 @@ resource 'Verification methods' do
     end
   end
 
-  get 'web_api/v1/verification_methods/first_enabled' do
+  get 'web_api/v1/verification_methods/first_enabled_verification_method' do
     example_request 'Returns the first verification method enabled' do
       expect(status).to eq(200)
       expect(response_data).to eq(
