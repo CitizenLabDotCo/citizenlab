@@ -3,8 +3,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Verification methods' do
-  explanation "Verification methods are the channels that let users prove they're real. (e.g. itsme)"
+resource 'Id methods' do
+  explanation "Id methods are the methods for people to either login/signup (authentication), prove their identity (verification) or both."
 
   before do
     header 'Content-Type', 'application/json'
@@ -36,19 +36,19 @@ resource 'Verification methods' do
     configuration.save!
   end
 
-  get 'web_api/v1/verification_methods' do
+  get 'web_api/v1/id_methods' do
     with_options scope: :page do
       parameter :number, 'Page number'
-      parameter :size, 'Number of verification methods per page'
+      parameter :size, 'Number of id methods per page'
     end
 
-    example_request 'Lists all active verification methods' do
+    example_request 'Lists all active id methods' do
       expect(status).to eq(200)
       expect(response_data.length).to eq 3
       expect(response_data[0]).to eq(
         {
           id: '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f',
-          type: 'verification_method',
+          type: 'id_method',
           attributes: {
             name: 'cow',
             authentication_method: false,
@@ -67,7 +67,7 @@ resource 'Verification methods' do
       expect(response_data[1]).to eq(
         {
           id: '8bb00a8d-26a5-4e00-866d-36e23986d441',
-          type: 'verification_method',
+          type: 'id_method',
           attributes: {
             name: 'fake_sso',
             authentication_method: true,
@@ -93,7 +93,7 @@ resource 'Verification methods' do
       expect(response_data[2]).to eq(
         {
           id: '516e134d-e22b-4386-a783-0db4c2708256',
-          type: 'verification_method',
+          type: 'id_method',
           attributes: {
             card_id: 'Social security number',
             card_id_placeholder: 'xx-xxxxx-xx',
@@ -117,13 +117,13 @@ resource 'Verification methods' do
     end
   end
 
-  get 'web_api/v1/verification_methods/first_enabled_for_verified_actions' do
-    example_request 'Returns the first verification method enabled for verified actions' do
+  get 'web_api/v1/id_methods/first_enabled_for_verified_actions' do
+    example_request 'Returns the first id method enabled for verified actions' do
       expect(status).to eq(200)
       expect(response_data).to eq(
         {
           id: '8bb00a8d-26a5-4e00-866d-36e23986d441',
-          type: 'verification_method',
+          type: 'id_method',
           attributes: {
             name: 'fake_sso',
             authentication_method: true,
@@ -149,13 +149,13 @@ resource 'Verification methods' do
     end
   end
 
-  get 'web_api/v1/verification_methods/first_enabled_verification_method' do
-    example_request 'Returns the first verification method enabled' do
+  get 'web_api/v1/id_methods/first_enabled_verification_method' do
+    example_request 'Returns the first id method enabled' do
       expect(status).to eq(200)
       expect(response_data).to eq(
         {
           id: '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f',
-          type: 'verification_method',
+          type: 'id_method',
           attributes: {
             name: 'cow',
             authentication_method: false,
