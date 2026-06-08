@@ -12,7 +12,7 @@ import { useLocation, useSearch } from 'utils/router';
 
 export default function useAuthConfig() {
   // All SSO methods (including the built-in Facebook/Google/Azure ones) are
-  // configured as verification methods, and the `/verification_methods` endpoint
+  // configured as verification methods, and the `/id_methods` endpoint
   // exposes a `authentication_method` flag for the ones that can be used to authenticate.
   const { data: idMethods } = useVerificationMethods();
 

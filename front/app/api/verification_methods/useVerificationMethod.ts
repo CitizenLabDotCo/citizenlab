@@ -8,7 +8,7 @@ import { VerificationMethodsKeys, IVerificationMethod } from './types';
 
 const fetchVerificationMethod = () =>
   fetcher<IVerificationMethod>({
-    path: `/verification_methods/first_enabled_verification_method`,
+    path: `/id_methods/first_enabled_verification_method`,
     action: 'get',
   });
 
