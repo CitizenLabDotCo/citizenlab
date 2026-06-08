@@ -3935,7 +3935,7 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.navBarMaxItemsNumber1": "Vous pouvez ajouter jusqu'à 6 éléments à la barre de navigation",
   "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
-  "app.modules.navbar.admin.containers.pageSubtitle1": "Votre barre de navigation peut afficher jusqu'à six pages en plus de la page d'accueil. Vous pouvez renommer et réorganiser les éléments et ajouter de nouvelles pages avec votre propre contenu.",
+  "app.modules.navbar.admin.containers.pageSubtitle1": "La barre de navigation peut afficher jusqu'à 6 éléments en plus de la page d'accueil. Vous pouvez les renommer, les réorganiser ou ajouter de nouvelles pages avec votre propre contenu.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "IA",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Utilisez l'icône ☰ ci-dessous pour faire glisser du contenu IA dans votre rapport.",
