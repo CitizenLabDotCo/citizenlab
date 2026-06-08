@@ -304,14 +304,10 @@ const CustomPageSettingsForm = ({
                         width="100%"
                       >
                         <Label>
-                          <span>
-                            {formatMessage(messages.linkedProjectsLabel)}
-                          </span>
+                          <span>{formatMessage(messages.linkedItems)}</span>
                           <IconTooltip
                             ml="10px"
-                            content={formatMessage(
-                              messages.linkedProjectsTooltip
-                            )}
+                            content={formatMessage(messages.linkedItemsTooltip)}
                           />
                         </Label>
                       </Box>
