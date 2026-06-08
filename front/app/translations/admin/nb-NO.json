@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Lagre heltebanneret",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Hjem",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Tilby innhold på minst ett språk",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Du kan bare legge til opptil 5 elementer i navigasjonsfeltet",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sider og meny | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Fjern fra navlinjen",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Lagre og aktiver heltebanneret",

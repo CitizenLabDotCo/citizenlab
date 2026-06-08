@@ -694,7 +694,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Сачувај херој банер",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Почетна",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Обезбедите садржај за најмање један језик",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "You can only add up to 5 items to the navigation bar",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Странице и мени | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Уклони са навигационе траке",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Сачувајте и омогућите банер хероја",

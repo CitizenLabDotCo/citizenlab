@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Tallenna sankaribanneri",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Etusivu",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Tarjoa sisältöä vähintään yhdelle kielelle",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Voit lisätä enintään 5 kohdetta navigointipalkkiin",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sivut ja valikko | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Poista navigointipalkista",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Tallenna ja ota käyttöön sankaribanneri",

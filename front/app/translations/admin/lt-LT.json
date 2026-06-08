@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Išsaugoti herojaus banerį",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Pagrindinis",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Pateikite turinį bent viena kalba.",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Į naršymo juostą galite įtraukti ne daugiau kaip 5 elementus.",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Puslapiai ir meniu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Pašalinti iš navbar",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Išsaugoti ir įjungti herojaus banerį",

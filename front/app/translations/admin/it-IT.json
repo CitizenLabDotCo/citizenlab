@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Salva banner principale",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Fornisci contenuti per almeno una lingua",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Puoi aggiungere solo un massimo di 5 elementi alla barra di navigazione",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pagine e menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Rimuovi dalla barra di navigazione",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Salva e abilita banner principale",

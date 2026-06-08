@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Saglabāt lielo reklāmkarogu",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Sākums",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Nodrošiniet saturu vismaz vienā valodā",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Navigācijas joslā var pievienot tikai līdz 5 vienībām.",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Lapas un izvēlne | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Noņemt no navigācijas joslas",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Saglabāt un iespējot lielo reklāmkarogu",

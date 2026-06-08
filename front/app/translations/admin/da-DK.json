@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Gem heltebanner",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Hjem",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Tilvejebringe indhold på mindst ét sprog",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Du kan kun tilføje op til 5 elementer til navigationslinjen",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sider og menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Fjern fra navigationslinjen",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Gem og aktiver heltebanner",
