@@ -26,7 +26,7 @@ module WebApi::V1::IdMethods
 
     # Method metadata
     attribute :method_metadata do |record|
-      ::Verification::VerificationService.new.method_metadata(record)
+      IdMethodService.new.method_metadata(record)
     end
   end
 end
