@@ -46,7 +46,7 @@ describe('<VisibleNavbarItemList />', () => {
 
   it('render correct number of locked rows', () => {
     render(<VisibleNavbarItemList />);
-    expect(screen.getAllByTestId('locked-row')).toHaveLength(2);
+    expect(screen.getAllByTestId('locked-row')).toHaveLength(1);
   });
 
   it('calls onReorder with correct id and position on reorder', () => {
@@ -62,7 +62,7 @@ describe('<VisibleNavbarItemList />', () => {
     expect(mockReorderNavbarItem).toHaveBeenCalledTimes(1);
     expect(mockReorderNavbarItem).toHaveBeenCalledWith({
       id: '2003e851-6cae-4ce8-a0e4-4b930fe73009',
-      ordering: 4,
+      ordering: 3,
     });
   });
 
@@ -122,11 +122,11 @@ describe('<VisibleNavbarItemList />', () => {
 
     fireEvent.click(removeButtons[0]);
     expect(mockRemoveNavbarItem).toHaveBeenCalledWith(
-      '2003e851-6cae-4ce8-a0e4-4b930fe73009'
+      'a51b389f-279c-49c8-9631-a86d862ffd12'
     );
     fireEvent.click(removeButtons[1]);
     expect(mockRemoveNavbarItem).toHaveBeenLastCalledWith(
-      'f2e26926-40b6-4692-8321-d1a7ed7ee77c'
+      '2003e851-6cae-4ce8-a0e4-4b930fe73009'
     );
   });
 });
