@@ -9,7 +9,7 @@ module CustomIdMethods::Keycloak
     end
 
     def verification?
-      true
+      config[:provider] == 'idporten'
     end
 
     def authentication?
