@@ -70,7 +70,7 @@ module CustomIdMethods::AzureActiveDirectory
       }
     end
 
-    # Exposed publicly via the /verification_methods endpoint so the frontend can
+    # Exposed publicly via the /id_methods endpoint so the frontend can
     # render the SSO button (logo, label) and enforce visibility / domain rules.
     def exposed_config_parameters
       %i[logo_url login_mechanism_name visibility enforced_email_domain_error_multiloc]
