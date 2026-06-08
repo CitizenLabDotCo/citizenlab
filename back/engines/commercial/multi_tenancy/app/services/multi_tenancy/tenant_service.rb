@@ -58,6 +58,8 @@ module MultiTenancy
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         Permissions::PermissionsUpdateService.new.update_all_permissions # fix permissions
+        McpServer::AnalyticsReaderProvisioner.provision_safely # reporting read grants (the clone strips them)
+        McpServer::ReportingSchemaAnnotator.annotate_safely # reporting table/column docs for the schema tool
         TrackTenantJob.perform_later tenant
       end
 

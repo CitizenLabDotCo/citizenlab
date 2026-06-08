@@ -29,11 +29,19 @@ RSpec.describe McpServer::Tools::GetReportingSqlSchema do
     end
 
     it 'returns column metadata for the participations fact view' do
-      columns = run.structured_content.fetch('analytics_fact_participations')
+      table = run.structured_content.fetch('analytics_fact_participations')
 
-      expect(columns.map { |c| c[:name] })
+      expect(table[:columns].map { |c| c[:name] })
         .to include('participant_id', 'dimension_project_id', 'dimension_date_created_id')
-      expect(columns.first.keys).to match_array(%i[name type null default comment])
+      expect(table[:columns].first.keys).to match_array(%i[name type null default comment])
+    end
+
+    it 'includes the documentation comments for the table and its columns' do
+      table = run.structured_content.fetch('analytics_fact_participations')
+
+      expect(table[:description]).to match(/one row per participation action/)
+      participant_id = table[:columns].find { |c| c[:name] == 'participant_id' }
+      expect(participant_id[:comment]).to match(/distinct counts/)
     end
 
     it 'filters to the requested tables' do

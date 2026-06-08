@@ -35,22 +35,35 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     def run
       requested = params[:table_names].presence || REPORTING_TABLES
       table_names = REPORTING_TABLES & requested
+      connection = ActiveRecord::Base.connection
 
       schema = table_names.index_with do |table_name|
-        ActiveRecord::Base.connection.columns(table_name).map do |column|
-          {
-            name: column.name,
-            type: column.sql_type,
-            null: column.null,
-            default: column.default,
-            comment: column.comment
-          }
-        end
+        {
+          description: relation_comment(connection, table_name),
+          columns: connection.columns(table_name).map do |column|
+            {
+              name: column.name,
+              type: column.sql_type,
+              null: column.null,
+              default: column.default,
+              comment: column.comment
+            }
+          end
+        }
       end
 
       ok("SQL schema for #{table_names.join(', ')}", structured: schema)
     rescue ActiveRecord::StatementInvalid => e
       error("Error fetching schema: #{e.message}")
+    end
+
+    private
+
+    # The relation-level comment. We can't use connection.table_comment: it filters
+    # to base tables, so it returns nil for the dimension/fact VIEWS. obj_description
+    # over the regclass works for tables and views alike, resolved via search_path.
+    def relation_comment(connection, table_name)
+      connection.select_value("SELECT obj_description(#{connection.quote(table_name)}::regclass, 'pg_class')")
     end
   end
 end
