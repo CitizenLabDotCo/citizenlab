@@ -23,12 +23,12 @@ export default defineMessages({
     defaultMessage: 'Acts on your behalf via the assistant integration.',
   },
   scopeFallbackTitle: {
-    id: 'containers.OAuthAuthorize.scopeFallbackTitle',
-    defaultMessage: 'Access the "{scope}" scope',
+    id: 'containers.OAuthAuthorize.scopeFallbackTitle2',
+    defaultMessage: 'Access "{scope}"',
   },
   scopeFallbackDetail: {
-    id: 'containers.OAuthAuthorize.scopeFallbackDetail',
-    defaultMessage: 'requested by this application.',
+    id: 'containers.OAuthAuthorize.scopeFallbackDetail2',
+    defaultMessage: 'A permission requested by this application.',
   },
   inControlTitle: {
     id: 'containers.OAuthAuthorize.inControlTitle',
