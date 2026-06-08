@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+module EmailCampaigns
+  class WebApi::V1::SmsConsentSerializer < ::WebApi::V1::BaseSerializer
+    attributes :consented, :created_at, :updated_at
+
+    attribute :campaign_name do |object|
+      object.campaign_type.safe_constantize&.campaign_name
+    end
+
+    attribute :campaign_type_description_multiloc do |object|
+      object.campaign_type.safe_constantize&.campaign_description_multiloc
+    end
+  end
+end

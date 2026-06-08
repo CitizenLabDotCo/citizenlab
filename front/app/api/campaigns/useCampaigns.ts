@@ -11,6 +11,7 @@ import { getCampaignsContextPath } from './util';
 const fetchCampaigns = (filters: QueryParameters) => {
   const {
     manual: manual,
+    channel,
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
@@ -21,6 +22,7 @@ const fetchCampaigns = (filters: QueryParameters) => {
     action: 'get',
     queryParams: {
       manual,
+      channel,
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,

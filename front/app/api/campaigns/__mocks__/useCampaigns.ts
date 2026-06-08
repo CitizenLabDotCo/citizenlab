@@ -5,6 +5,7 @@ export const campaignsData: ICampaignData[] = [
     id: '1',
     type: 'campaign',
     attributes: {
+      channel: 'email',
       enabled: true,
       can_be_disabled: true,
       sender: 'author',
@@ -48,6 +49,7 @@ export const campaignsData: ICampaignData[] = [
     id: '2',
     type: 'campaign',
     attributes: {
+      channel: 'email',
       enabled: true,
       can_be_disabled: true,
       sender: 'author',

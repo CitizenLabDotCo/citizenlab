@@ -117,7 +117,7 @@ module EmailCampaigns
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
 
-      users_scope = User.where.not(email: nil)
+      users_scope = recipient_base_scope
       while current_class <= ::EmailCampaigns::Campaign
         users_scope = current_class.recipient_filters.inject(users_scope) do |users_scope, action_symbol|
           send(action_symbol, users_scope, activity: activity, time: time)
@@ -180,6 +180,19 @@ module EmailCampaigns
 
     def manual?
       false
+    end
+
+    # The transport channel a campaign is delivered through. Email is the default;
+    # SMS campaigns override this to :sms so DeliveryService dispatches accordingly.
+    def delivery_channel
+      :email
+    end
+
+    # Base set of users a campaign can be sent to, before recipient filters are
+    # applied. Channels with different addressing requirements (e.g. SMS needs a
+    # verified phone) override this.
+    def recipient_base_scope
+      User.where.not(email: nil)
     end
 
     def activity_context(_activity)

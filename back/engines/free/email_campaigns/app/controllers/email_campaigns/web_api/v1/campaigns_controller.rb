@@ -17,6 +17,13 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      if params[:channel].present?
+        channel_types = DeliveryService.new.campaign_classes
+          .select { |claz| claz.new.delivery_channel.to_s == params[:channel] }
+          .map(&:name)
+        @campaigns = @campaigns.where(type: channel_types)
+      end
+
       if campaign_context
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
@@ -118,7 +125,11 @@ module EmailCampaigns
     end
 
     def preview
-      preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
+      preview = if @campaign.delivery_channel == :sms
+        sms_preview(@campaign, current_user)
+      else
+        EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
+      end
       render json: {
         data: {
           id: @campaign.id,
@@ -129,21 +140,40 @@ module EmailCampaigns
     end
 
     def deliveries
-      @deliveries = @campaign.deliveries
-        .includes(:user)
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      render json: linked_json(
-        @deliveries,
-        WebApi::V1::DeliverySerializer,
-        params: jsonapi_serializer_params,
-        include: [:user]
-      )
+      if @campaign.delivery_channel == :sms
+        @deliveries = @campaign.sms_deliveries
+          .includes(:user)
+          .order(:created_at)
+          .page(params.dig(:page, :number))
+          .per(params.dig(:page, :size))
+        render json: linked_json(
+          @deliveries,
+          WebApi::V1::SmsDeliverySerializer,
+          params: jsonapi_serializer_params,
+          include: [:user]
+        )
+      else
+        @deliveries = @campaign.deliveries
+          .includes(:user)
+          .order(:created_at)
+          .page(params.dig(:page, :number))
+          .per(params.dig(:page, :size))
+        render json: linked_json(
+          @deliveries,
+          WebApi::V1::DeliverySerializer,
+          params: jsonapi_serializer_params,
+          include: [:user]
+        )
+      end
     end
 
     def stats
-      render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
+      counts = if @campaign.delivery_channel == :sms
+        Sms::Delivery.status_counts(@campaign)
+      else
+        EmailCampaigns::Delivery.status_counts(@campaign.id)
+      end
+      render json: raw_json(counts)
     end
 
     def supported_campaign_names
@@ -158,6 +188,10 @@ module EmailCampaigns
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    def sms_preview(campaign, recipient)
+      { body: campaign.sms_body(recipient.locale) }
     end
 
     def campaign_context
@@ -176,7 +210,22 @@ module EmailCampaigns
     end
 
     def campaign_params
-      @campaign.manual? ? manual_campaign_params : automated_campaign_params
+      if @campaign.delivery_channel == :sms
+        sms_campaign_params
+      elsif @campaign.manual?
+        manual_campaign_params
+      else
+        automated_campaign_params
+      end
+    end
+
+    def sms_campaign_params
+      params.require(:campaign).permit(
+        :enabled,
+        :scheduled_at,
+        group_ids: [],
+        body_multiloc: I18n.available_locales
+      )
     end
 
     def manual_campaign_params

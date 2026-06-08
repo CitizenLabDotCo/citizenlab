@@ -32,6 +32,12 @@ const MessagingDashboard = () => {
       url: '/admin/messaging/emails/automated',
       className: 'intercom-messaging-automated-emails',
     },
+    {
+      name: 'manual-sms',
+      label: formatMessage(messages.textMessages),
+      url: '/admin/messaging/sms/custom',
+      className: 'intercom-messaging-custom-sms',
+    },
   ];
 
   return (

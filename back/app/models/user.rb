@@ -35,10 +35,13 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  last_active_at            :datetime
 #  imported                  :boolean          default(FALSE), not null
 #  token_expiry_key          :string
+#  phone_number              :string
+#  phone_number_verified_at  :datetime
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_phone_number               (phone_number)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
@@ -173,6 +176,7 @@ class User < ApplicationRecord
   has_many :confirmations, dependent: :destroy
   has_one :email_confirmation, dependent: :destroy
   has_one :new_email_confirmation, dependent: :destroy
+  has_one :phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   after_create :create_confirmations
   before_destroy :destroy_baskets
@@ -325,6 +329,16 @@ class User < ApplicationRecord
     return false if sso_user_without_email?
 
     confirmation_required
+  end
+
+  # Store phone numbers in a canonical E.164 form so lookups and provider sends
+  # are consistent regardless of how the user typed them.
+  def phone_number=(value)
+    super(value.present? ? (Sms::PhoneNormalizer.normalize(value) || value) : value)
+  end
+
+  def phone_verified?
+    phone_number.present? && phone_number_verified_at.present?
   end
 
   def show_public_profile?

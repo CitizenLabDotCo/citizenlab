@@ -323,4 +323,62 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.scheduled',
     defaultMessage: 'Scheduled',
   },
+  // SMS / text messages
+  textMessages: {
+    id: 'app.containers.Admin.messaging.textMessages',
+    defaultMessage: 'Text messages',
+  },
+  textMessagesDescription: {
+    id: 'app.containers.Admin.messaging.textMessagesDescription',
+    defaultMessage:
+      'Send out SMS text messages to participants who verified their phone number and opted in.',
+  },
+  addSmsCampaignButton: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignButton',
+    defaultMessage: 'Create text message',
+  },
+  addSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignTitle',
+    defaultMessage: 'New text message',
+  },
+  fieldSmsBody: {
+    id: 'app.containers.Admin.messaging.fieldSmsBody',
+    defaultMessage: 'Message',
+  },
+  fieldSmsBodyTooltip: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyTooltip',
+    defaultMessage:
+      'Plain text only. Long messages are split into multiple billed SMS segments (160 characters each).',
+  },
+  fieldSmsBodyError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyError',
+    defaultMessage: 'Provide a message for all languages',
+  },
+  smsRecipientsNote: {
+    id: 'app.containers.Admin.messaging.smsRecipientsNote',
+    defaultMessage:
+      'Only participants with a verified phone number who opted in to SMS will receive this message.',
+  },
+  noSmsCampaignsHeader: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsHeader',
+    defaultMessage: 'Send your first text message',
+  },
+  noSmsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsDescription',
+    defaultMessage:
+      'Reach participants directly by SMS. Choose who to contact and track delivery.',
+  },
+  smsCreated: {
+    id: 'app.containers.Admin.messaging.smsCreated',
+    defaultMessage: 'Text message successfully created in draft',
+  },
+  sendTestSmsButton: {
+    id: 'app.containers.Admin.messaging.sendTestSmsButton',
+    defaultMessage: 'Send a preview to my phone',
+  },
+  smsPreviewSentConfirmation: {
+    id: 'app.containers.Admin.messaging.smsPreviewSentConfirmation',
+    defaultMessage:
+      'A preview text message has been sent to your verified phone number',
+  },
 });

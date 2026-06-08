@@ -51,6 +51,15 @@ RSpec.describe Sms::Sender do
       expect(Sms::Delivery.count).to eq(0)
     end
 
+    it 'stores the polymorphic source when given' do
+      allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_src', status: 'queued')
+      campaign = create(:sms_manual_campaign)
+
+      delivery = described_class.new.send(to: '+14155552671', body: 'hi', source: campaign)
+
+      expect(delivery.source).to eq(campaign)
+    end
+
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(twilio_provider).to receive(:send).and_raise(Sms::Error, 'Twilio rejected it')
 

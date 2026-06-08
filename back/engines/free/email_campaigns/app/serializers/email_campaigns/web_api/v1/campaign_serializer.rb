@@ -57,6 +57,10 @@ module EmailCampaigns
       object.can_be_disabled?
     end
 
+    attribute :channel do |object|
+      object.delivery_channel
+    end
+
     attribute :schedule, if: proc { |object|
       schedulable?(object) && !object.manual?
     }
@@ -78,7 +82,11 @@ module EmailCampaigns
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|
-      Delivery.status_counts(object.id)
+      if object.delivery_channel == :sms
+        Sms::Delivery.status_counts(object)
+      else
+        Delivery.status_counts(object.id)
+      end
     end
 
     attribute :sender, if: proc { |object|
@@ -95,7 +103,7 @@ module EmailCampaigns
     }
 
     attribute :body_multiloc, if: proc { |object|
-      content_configurable? object
+      content_configurable?(object) || sms_content_configurable?(object)
     } do |object|
       TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
     end
@@ -148,6 +156,10 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
+    end
+
+    def self.sms_content_configurable?(object)
+      object.class.included_modules.include?(SmsContentConfigurable)
     end
 
     def self.previewable?(object)

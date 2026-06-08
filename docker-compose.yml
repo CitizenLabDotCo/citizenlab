@@ -68,8 +68,10 @@ services:
       - "env_files/back-secret.env"
     environment:
       - BUNDLE_PATH=/bundle
+      - BASE_DEV_URI
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
+      - ASSET_HOST_URI
     tty: true
     stdin_open: true
 

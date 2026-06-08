@@ -170,6 +170,9 @@ Rails.application.routes.draw do
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
+
+        post 'request_phone_confirmation_code', to: 'phone_confirmations#request_code'
+        post 'confirm_phone_code', to: 'phone_confirmations#confirm_code'
       end
 
       post 'sms/sends', to: 'sms/sends#create' if Rails.env.development?

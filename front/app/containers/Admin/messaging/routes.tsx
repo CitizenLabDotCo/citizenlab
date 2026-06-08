@@ -15,6 +15,9 @@ const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
 const EmailsEdit = lazy(() => import('./Edit'));
+const CustomSmsIndex = lazy(() => import('./CustomSms/All'));
+const CustomSmsNew = lazy(() => import('./CustomSms/New'));
+const CustomSmsShow = lazy(() => import('./CustomSms/Show'));
 
 // Messaging edit search schema
 const messagingEditSearchSchema = yup.object({
@@ -116,6 +119,38 @@ const automatedEmailsEditRoute = createRoute({
   ),
 });
 
+const customSmsRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/custom',
+  component: () => (
+    <PageLoading>
+      <CustomSmsIndex />
+    </PageLoading>
+  ),
+});
+
+const customSmsNewRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/custom/new',
+  component: () => (
+    <PageLoading>
+      <CustomSmsNew />
+    </PageLoading>
+  ),
+});
+
+const customSmsShowRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/custom/$campaignId',
+  validateSearch: (search: Record<string, unknown>) =>
+    customEmailsShowSearchSchema.validateSync(search, { stripUnknown: true }),
+  component: () => (
+    <PageLoading>
+      <CustomSmsShow />
+    </PageLoading>
+  ),
+});
+
 const createAdminMessagingRoutes = () => {
   return messagingRoute.addChildren([
     messagingIndexRoute,
@@ -125,6 +160,9 @@ const createAdminMessagingRoutes = () => {
     customEmailsEditRoute,
     automatedEmailsRoute,
     automatedEmailsEditRoute,
+    customSmsRoute,
+    customSmsNewRoute,
+    customSmsShowRoute,
   ]);
 };
 

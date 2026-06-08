@@ -10,7 +10,11 @@ module EmailCampaigns
     RECENCY_THRESHOLD = 1.week
 
     def save_examples(campaigns_with_command)
-      campaigns = campaigns_with_command.map { |(_command, campaign)| campaign }.uniq
+      # Examples store rendered email HTML; only email campaigns are relevant.
+      campaigns = campaigns_with_command
+        .map { |(_command, campaign)| campaign }
+        .uniq
+        .select { |campaign| campaign.delivery_channel == :email }
 
       campaigns.each do |campaign|
         base_scope = Example.where(campaign: campaign)

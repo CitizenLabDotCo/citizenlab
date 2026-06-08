@@ -28,6 +28,7 @@ const AutomatedEmails = () => {
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const { data: campaigns } = useCampaigns({
+    channel: 'email',
     withoutCampaignNames: [
       'manual',
       ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),

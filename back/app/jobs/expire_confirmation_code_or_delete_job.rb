@@ -25,6 +25,7 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     case type
     when 'EmailConfirmation' then user.email_confirmation
     when 'NewEmailConfirmation' then user.new_email_confirmation
+    when 'PhoneConfirmation' then user.phone_confirmation
     end
   end
 end

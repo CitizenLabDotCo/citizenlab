@@ -24,6 +24,7 @@ module EmailCampaigns
       Campaigns::InviteReminder,
       Campaigns::Manual,
       Campaigns::ManualProjectParticipants,
+      Campaigns::SmsManual,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
@@ -71,6 +72,18 @@ module EmailCampaigns
       campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
     end
 
+    def sms_campaign_classes
+      campaign_classes.select { |campaign| campaign.new.delivery_channel == :sms }
+    end
+
+    def sms_campaign_types
+      sms_campaign_classes.map(&:name)
+    end
+
+    def sms_consentable_campaign_types_for(user)
+      SmsConsentable.consentable_sms_campaign_types(sms_campaign_classes, user, self)
+    end
+
     def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
@@ -105,7 +118,7 @@ module EmailCampaigns
       return unless commands.any?
 
       commands.each do |command|
-        process_command(campaign, command)
+        process_command(campaign, command.merge(preview: true))
       end
     end
 
@@ -182,7 +195,12 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      case campaign.delivery_channel
+      when :sms
+        send_sms_command(campaign, command)
+      else
+        send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      end
     end
 
     # This method is triggered when the given sending command should be sent
@@ -192,6 +210,20 @@ module EmailCampaigns
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    # Sends an SMS command through the SMS transport stack. This is the single
+    # place SMS campaign deliveries are written, so swapping the delivery target
+    # (e.g. to test reusing the email delivery table) is a localized change here.
+    def send_sms_command(campaign, command)
+      Sms::SendJob.set(wait: command[:delay] || 0).perform_later(
+        to: command[:recipient].phone_number,
+        body: command[:body],
+        user_id: command[:recipient].id,
+        # Previews go to the admin only and must not count toward the campaign's
+        # deliveries/sent status, so they are not attributed to the campaign.
+        source: command[:preview] ? nil : campaign
+      )
     end
 
     def generate_commands(campaign, recipient, options = {})

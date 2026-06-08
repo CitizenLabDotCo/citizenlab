@@ -293,4 +293,70 @@ export default defineMessages({
     defaultMessage:
       'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
   },
+  phoneTitle: {
+    id: 'app.containers.UsersEditPage.phoneTitle',
+    defaultMessage: 'Phone number',
+  },
+  phoneSubtitle: {
+    id: 'app.containers.UsersEditPage.phoneSubtitle',
+    defaultMessage:
+      'Add and verify a phone number to receive SMS text messages.',
+  },
+  phoneNumberLabel: {
+    id: 'app.containers.UsersEditPage.phoneNumberLabel',
+    defaultMessage: 'Phone number (international format)',
+  },
+  phoneCurrent: {
+    id: 'app.containers.UsersEditPage.phoneCurrent',
+    defaultMessage: 'Your verified phone number is {phone}.',
+  },
+  phoneSendCode: {
+    id: 'app.containers.UsersEditPage.phoneSendCode',
+    defaultMessage: 'Send verification code',
+  },
+  phoneCodeLabel: {
+    id: 'app.containers.UsersEditPage.phoneCodeLabel',
+    defaultMessage: 'Verification code',
+  },
+  phoneVerifyButton: {
+    id: 'app.containers.UsersEditPage.phoneVerifyButton',
+    defaultMessage: 'Verify',
+  },
+  phoneCancel: {
+    id: 'app.containers.UsersEditPage.phoneCancel',
+    defaultMessage: 'Cancel',
+  },
+  phoneCodeSent: {
+    id: 'app.containers.UsersEditPage.phoneCodeSent',
+    defaultMessage: 'A verification code has been sent to your phone.',
+  },
+  phoneVerified: {
+    id: 'app.containers.UsersEditPage.phoneVerified',
+    defaultMessage: 'Your phone number has been verified.',
+  },
+  phoneInvalidCode: {
+    id: 'app.containers.UsersEditPage.phoneInvalidCode',
+    defaultMessage: 'That code is invalid or expired. Please try again.',
+  },
+  phoneError: {
+    id: 'app.containers.UsersEditPage.phoneError',
+    defaultMessage:
+      'Something went wrong. Please check the number and try again.',
+  },
+  smsConsentTitle: {
+    id: 'app.containers.UsersEditPage.smsConsentTitle',
+    defaultMessage: 'SMS notifications',
+  },
+  smsConsentSubtitle: {
+    id: 'app.containers.UsersEditPage.smsConsentSubtitle',
+    defaultMessage: 'Choose which text messages you want to receive.',
+  },
+  smsConsentSave: {
+    id: 'app.containers.UsersEditPage.smsConsentSave',
+    defaultMessage: 'Save',
+  },
+  smsConsentSaved: {
+    id: 'app.containers.UsersEditPage.smsConsentSaved',
+    defaultMessage: 'Your SMS preferences have been saved.',
+  },
 });

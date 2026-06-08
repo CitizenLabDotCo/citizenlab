@@ -38,6 +38,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :highest_role, if: PRIVATE
   attribute :email, if: PRIVATE
   attribute :last_active_at, if: PRIVATE
+  attribute :phone_number, if: PRIVATE
+  attribute :phone_number_verified_at, if: PRIVATE
   attribute :block_start_at, if: PRIVATE
   attribute :block_end_at, if: PRIVATE
   attribute :block_reason, if: PRIVATE

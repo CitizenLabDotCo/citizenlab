@@ -57,7 +57,30 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  def validate_and_confirm_phone!(user, code)
+    validate_user!(user)
+    validate_phone!(user)
+
+    confirmation = user.phone_confirmation
+    raise ValidationError.new(:code, :blank) if confirmation.nil?
+
+    validate_retry_count!(confirmation, code)
+    validate_code_value!(confirmation, code)
+    validate_code_expiration!(confirmation)
+    # Phone confirmation is a profile action, not a login flow, so it does not
+    # go through ClaimTokenService the way email confirmation does.
+    raise ValidationError.new(:user, :confirmation, message: 'Something went wrong.') unless confirmation.confirm!
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
   private
+
+  def validate_phone!(user)
+    raise ValidationError.new(:user, :no_phone) if user.phone_number.blank?
+  end
 
   def validate_and_confirm!(user, confirmation, code)
     validate_retry_count!(confirmation, code)

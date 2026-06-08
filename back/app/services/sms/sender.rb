@@ -8,7 +8,7 @@ module Sms
 
     DEFAULT_PROVIDER = :twilio
 
-    def send(to:, body:, user_id: nil, provider: DEFAULT_PROVIDER)
+    def send(to:, body:, user_id: nil, source: nil, provider: DEFAULT_PROVIDER)
       provider_instance = build_provider(provider)
 
       normalized_to = Sms::PhoneNormalizer.normalize(to)
@@ -18,7 +18,8 @@ module Sms
         user_id: user_id,
         phone_number: normalized_to,
         body: body,
-        status: 'pending'
+        status: 'pending',
+        source: source
       )
 
       begin

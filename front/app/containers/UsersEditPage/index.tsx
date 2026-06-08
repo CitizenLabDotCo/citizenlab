@@ -13,8 +13,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
+import PhoneNumberSettings from './PhoneNumberSettings';
 import ProfileDeletion from './ProfileDeletion';
 import ProfileForm from './ProfileForm';
+import SmsConsentForm from './SmsConsentForm';
 import tracks from './tracks';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import VerificationStatus from './VerificationStatus';
@@ -57,10 +59,12 @@ const UsersEditPage = () => {
             <VerificationStatus />
             <ProfileForm />
             <LoginCredentials user={authUser.data} />
+            <PhoneNumberSettings />
             <ProfileDeletion />
             <CampaignsConsentForm
               trackEventName={tracks.defaultSettingsChanged}
             />
+            <SmsConsentForm />
           </div>
         </Container>
       </main>

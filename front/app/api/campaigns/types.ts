@@ -17,6 +17,8 @@ export interface ICampaignData {
   attributes: {
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
+    // The delivery channel of the campaign.
+    channel: 'email' | 'sms';
     // Only undefined for invite_received?
     enabled: boolean;
     can_be_disabled: boolean;
@@ -157,6 +159,7 @@ type AdminModeratorCampaignName =
 export type CampaignName =
   | 'manual'
   | 'manual_project_participants'
+  | 'sms_manual'
   | 'invite_received'
   | 'invite_reminder'
   | RegisterUserCampaignName
@@ -165,6 +168,7 @@ export type CampaignName =
 export interface QueryParameters {
   context?: CampaignContext;
   manual?: boolean;
+  channel?: 'email' | 'sms';
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;

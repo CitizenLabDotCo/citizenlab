@@ -89,6 +89,7 @@ ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_99326fb65d;
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
+ALTER TABLE IF EXISTS ONLY public.email_campaigns_sms_consents DROP CONSTRAINT IF EXISTS fk_rails_9513bbc964;
 ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk_rails_94bf1dac11;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
@@ -201,6 +202,7 @@ DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
+DROP INDEX IF EXISTS public.index_users_on_phone_number;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -217,6 +219,7 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_source;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
@@ -399,6 +402,7 @@ DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embeddable;
 DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
+DROP INDEX IF EXISTS public.index_email_campaigns_sms_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_recipient_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_user_id;
@@ -501,6 +505,7 @@ DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
 DROP INDEX IF EXISTS public.idx_on_webhooks_subscription_id_status_c35145e2df;
 DROP INDEX IF EXISTS public.idx_on_context_type_context_id_root_job_type_d5d424e7c3;
+DROP INDEX IF EXISTS public.idx_on_campaign_type_user_id_7f50a68bd0;
 DROP INDEX IF EXISTS public.i_v_user;
 DROP INDEX IF EXISTS public.i_v_timestamp;
 DROP INDEX IF EXISTS public.i_v_referrer_type;
@@ -610,6 +615,7 @@ ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS event_fi
 ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS embeddings_similarities_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_snippets DROP CONSTRAINT IF EXISTS email_snippets_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_unsubscription_tokens DROP CONSTRAINT IF EXISTS email_campaigns_unsubscription_tokens_pkey;
+ALTER TABLE IF EXISTS ONLY public.email_campaigns_sms_consents DROP CONSTRAINT IF EXISTS email_campaigns_sms_consents_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS email_campaigns_examples_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_deliveries DROP CONSTRAINT IF EXISTS email_campaigns_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_consents DROP CONSTRAINT IF EXISTS email_campaigns_consents_pkey;
@@ -742,6 +748,7 @@ DROP TABLE IF EXISTS public.event_files;
 DROP TABLE IF EXISTS public.embeddings_similarities;
 DROP TABLE IF EXISTS public.email_snippets;
 DROP TABLE IF EXISTS public.email_campaigns_unsubscription_tokens;
+DROP TABLE IF EXISTS public.email_campaigns_sms_consents;
 DROP TABLE IF EXISTS public.email_campaigns_examples;
 DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
@@ -1570,7 +1577,9 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    token_expiry_key character varying
+    token_expiry_key character varying,
+    phone_number character varying,
+    phone_number_verified_at timestamp(6) without time zone
 );
 
 
@@ -2526,6 +2535,20 @@ CREATE TABLE public.email_campaigns_examples (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     campaign_id uuid
+);
+
+
+--
+-- Name: email_campaigns_sms_consents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_campaigns_sms_consents (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    campaign_type character varying NOT NULL,
+    user_id uuid NOT NULL,
+    consented boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3728,7 +3751,9 @@ CREATE TABLE public.sms_deliveries (
     status character varying NOT NULL,
     error_message character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    source_type character varying,
+    source_id uuid
 );
 
 
@@ -4364,6 +4389,14 @@ ALTER TABLE ONLY public.email_campaigns_deliveries
 
 ALTER TABLE ONLY public.email_campaigns_examples
     ADD CONSTRAINT email_campaigns_examples_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_campaigns_sms_consents email_campaigns_sms_consents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_campaigns_sms_consents
+    ADD CONSTRAINT email_campaigns_sms_consents_pkey PRIMARY KEY (id);
 
 
 --
@@ -5226,6 +5259,13 @@ CREATE INDEX i_v_user ON public.analytics_fact_visits USING btree (dimension_use
 
 
 --
+-- Name: idx_on_campaign_type_user_id_7f50a68bd0; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_campaign_type_user_id_7f50a68bd0 ON public.email_campaigns_sms_consents USING btree (campaign_type, user_id);
+
+
+--
 -- Name: idx_on_context_type_context_id_root_job_type_d5d424e7c3; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5937,6 +5977,13 @@ CREATE INDEX index_email_campaigns_examples_on_campaign_id ON public.email_campa
 --
 
 CREATE INDEX index_email_campaigns_examples_on_recipient_id ON public.email_campaigns_examples USING btree (recipient_id);
+
+
+--
+-- Name: index_email_campaigns_sms_consents_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_sms_consents_on_user_id ON public.email_campaigns_sms_consents USING btree (user_id);
 
 
 --
@@ -7214,6 +7261,13 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 
 
 --
+-- Name: index_sms_deliveries_on_source; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_source ON public.sms_deliveries USING btree (source_type, source_id);
+
+
+--
 -- Name: index_sms_deliveries_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7323,6 +7377,13 @@ CREATE INDEX index_ucf_representativeness_ref_distributions_on_custom_field ON p
 --
 
 CREATE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_phone_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_phone_number ON public.users USING btree (phone_number);
 
 
 --
@@ -8192,6 +8253,14 @@ ALTER TABLE ONLY public.files_transcripts
 
 
 --
+-- Name: email_campaigns_sms_consents fk_rails_9513bbc964; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_campaigns_sms_consents
+    ADD CONSTRAINT fk_rails_9513bbc964 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: notifications fk_rails_97eb4c3a35; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8838,6 +8907,9 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260608120200'),
+('20260608120100'),
+('20260608120000'),
 ('20260528180000'),
 ('20260528120000'),
 ('20260526100720'),

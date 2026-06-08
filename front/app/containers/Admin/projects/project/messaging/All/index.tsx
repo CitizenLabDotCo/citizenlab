@@ -32,6 +32,7 @@ const CustomEmails = () => {
     context: { projectId },
     pageSize: 10,
     manual: true,
+    channel: 'email',
   });
 
   const campaignsList = campaigns?.pages[currentPage - 1];
