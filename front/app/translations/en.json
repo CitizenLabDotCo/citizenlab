@@ -2716,7 +2716,7 @@
   "containers.OAuthAuthorize.authorizeExplanation2": "{clientName} is requesting access to your account on this platform. If you authorize, it will be able to:",
   "containers.OAuthAuthorize.authorizeHeading": "Authorize {clientName}",
   "containers.OAuthAuthorize.denyButton": "Cancel",
-  "containers.OAuthAuthorize.inControlDetail": "You can revoke access at any time from your account settings.",
+  "containers.OAuthAuthorize.inControlDetail2": "You can disconnect this access at any time from {clientName}.",
   "containers.OAuthAuthorize.inControlTitle": "You're in control",
   "containers.OAuthAuthorize.invalidRequestExplanation": "The request is missing information or has expired. Please start again from the application you were using.",
   "containers.OAuthAuthorize.invalidRequestHeading": "This authorization request is invalid",
