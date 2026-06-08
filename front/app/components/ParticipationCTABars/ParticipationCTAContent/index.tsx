@@ -1,13 +1,21 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import TimeIndicator from './TimeIndicator';
+
+const CTAButtonWrapper = styled(Box)`
+  && button:focus-visible,
+  && button.focus-visible {
+    outline: 2px solid ${colors.white};
+    outline-offset: 3px;
+  }
+`;
 
 type Props = {
   hasUserParticipated?: boolean;
@@ -41,7 +49,7 @@ const ParticipationCTAContent = ({
         />
         <Box ml="auto">{participationState}</Box>
       </Box>
-      {CTAButton}
+      <CTAButtonWrapper>{CTAButton}</CTAButtonWrapper>
     </Box>
   ) : (
     <Box
@@ -77,7 +85,9 @@ const ParticipationCTAContent = ({
         </Box>
 
         <Box display="flex" alignItems="center" ml="auto">
-          <Box ml={CTAButton !== undefined ? '12px' : '0'}>{CTAButton}</Box>
+          <CTAButtonWrapper ml={CTAButton !== undefined ? '12px' : '0'}>
+            {CTAButton}
+          </CTAButtonWrapper>
         </Box>
       </Box>
     </Box>
