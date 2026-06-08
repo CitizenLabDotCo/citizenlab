@@ -891,7 +891,7 @@ GEM
     public_suffix (6.0.1)
     puma (7.2.1)
       nio4r (~> 2.0)
-    pundit (2.5.0)
+    pundit (2.5.2)
       activesupport (>= 3.0.0)
     qonfig (0.30.0)
       base64 (>= 0.2)
@@ -1330,7 +1330,7 @@ DEPENDENCIES
   pry-rescue
   public_api!
   puma (~> 7.2.1)
-  pundit (~> 2.5.0)
+  pundit (~> 2.5.2)
   que (~> 2.4.1)
   rack-attack (~> 6)
   rack-cors (= 2.0.2)

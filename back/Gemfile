@@ -77,7 +77,7 @@ group :test do
   gem 'vcr', '~> 6.2'
 end
 
-gem 'pundit', '~> 2.5.0'
+gem 'pundit', '~> 2.5.2'
 gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.10.3'
