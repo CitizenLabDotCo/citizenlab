@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module WebApi::V1::Verification
-  class VerificationMethodSerializer < ::WebApi::V1::BaseSerializer
+module WebApi::V1::IdMethods
+  class IdMethodSerializer < ::WebApi::V1::BaseSerializer
     attributes :name
 
     # Whether the method can be used to verify user identities.
