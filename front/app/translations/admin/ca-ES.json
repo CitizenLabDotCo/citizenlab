@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Desar el bàner de l'heroi",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content for at least one language",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Només pots afegir fins a 5 elements a la barra de navegació",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pàgines i menú | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Eliminar de la barra de navegació",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Desar i activar el bàner d'heroi",

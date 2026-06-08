@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "حفظ البانر الرئيسي",
   "app.containers.Admin.PagesAndMenu.homeTitle": "الرئيسية",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "أدخل المحتوى بلغة واحدة على الأقل",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "يمكنك إضافة ما يصل إلى 5 عناصر فقط إلى شريط التنقل",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "الصفحات والقائمة | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "إزالة من شريط التنقل",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "حفظ البانر الرئيسي وتمكينه",

@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Αποθήκευση κύριου μπάνερ",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content for at least one language",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Μπορείτε να προσθέσετε έως και 5 στοιχεία στη γραμμή πλοήγησης",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Σελίδες & μενού | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Κατάργηση από τη γραμμή πλοήγησης",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Αποθήκευση και ενεργοποίηση κύριου μπάνερ",

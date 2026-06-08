@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Hero Banner speichern",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Startseite",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Geben Sie Inhalte für mindestens eine Sprache ein",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Sie können nur bis zu 5 Elemente zur Navigationsleiste hinzufügen.",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Seiten & Menü | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Von der Nav.-Leiste entfernen",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Hero-Banner speichern und aktivieren",

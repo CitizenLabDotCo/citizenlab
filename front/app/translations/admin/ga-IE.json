@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Sábháil meirge laoch",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Baile",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Cuir ábhar ar fáil i dteanga amháin ar a laghad",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Ní féidir leat ach suas le 5 mhír a chur leis an mbarra nascleanúna",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Leathanaigh & roghchlár | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Bain den bharra nascleanúna",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Sábháil agus cumasaigh meirge laoch",

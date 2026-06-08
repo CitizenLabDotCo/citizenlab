@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "ہیرو بینر کو بچائیں۔",
   "app.containers.Admin.PagesAndMenu.homeTitle": "گھر",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "کم از کم ایک زبان کے لیے مواد فراہم کریں۔",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "آپ نیویگیشن بار میں صرف 5 آئٹمز تک شامل کر سکتے ہیں۔",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "صفحات اور مینو | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "navbar سے ہٹا دیں۔",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "ہیرو بینر کو محفوظ اور فعال کریں۔",

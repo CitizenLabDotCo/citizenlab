@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Hero-Banner späicheren",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content for at least one language",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Dir kënnt maximal 5 Elementer an d'Navigatiounsläischt bäisetzen",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Pages & menu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Vun der Navigatiounsleescht ewechhuelen",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Hero-Banner späicheren an aktivéieren",

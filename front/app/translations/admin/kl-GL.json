@@ -760,7 +760,6 @@
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Banner iseqqaarfimmiittoq toqqoruk",
   "app.containers.Admin.PagesAndMenu.homeTitle": "Home",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Provide content for at least one language",
-  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Aqqusaartarfimmut annerpaamik tallimanik ilanngussisinnaavutit",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Quppernerit toqqagassallu | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Navigationslinjemiit peeruk",
   "app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner": "Save and enable hero banner",
