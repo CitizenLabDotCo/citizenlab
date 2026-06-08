@@ -411,3 +411,88 @@ _Example: a "Wemmel park" participatory budget runs as **17 neighbourhood proces
 ### Neighbours
 
 One spectrum on **where a process's time lives**: the **Grid** configures a process per _shared_ project phase (one clock; the migration-friendly step that _preserves_ today's timeline); **Self-contained** lets that config detach onto the process's _own_ private steps (timeline → narrative; `current_phase` → per-process). It is also **Multiple timelines upgraded** with a real data-set owner (L0–L1 → L4), and a **close cousin of Free-floating** (both = narrative + per-process time; a structured lifecycle here vs a flat window there).
+
+## Comparison
+
+The five candidates differ on a long list of mechanics — number of clocks, `current_phase` shape, gating-vs-narrating, voting-as-config-vs-reference, one-form-vs-shared, where submission is gated. But almost all of those are **consequences** of just three forks, and those three separate all five cleanly:
+
+| Defining fork                                                                                                         | Multiple timelines | Method components | Grid          | Free-floating | Self-contained    |
+| --------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------------- | ------------- | ------------- | ----------------- |
+| **Data-set owner** — a first-class `Process`, or an implicit _shared form_ across separate units? _(unification)_     | implicit           | implicit          | **`Process`** | **`Process`** | **`Process`**     |
+| **Where time lives** — the _timeline_ / the process's _own dates_ / the process's _own lifecycle_ _(time model)_      | the timeline       | the timeline      | the timeline  | **own dates** | **own lifecycle** |
+| **Where the method lives** — a _string on the phase_ / a _persisted component_ / a process _template_ _(method axis)_ | **string**         | **component**     | template      | template      | template          |
+
+Read each column down and every candidate has a unique signature — five fingerprints from three properties.
+
+**How to read it.** Two forks carry most of the story:
+
+- **Owner × time** isolates the **Grid** (`Process` + timeline), pairs **Free-floating / Self-contained** (`Process` + the process's own time — flat dates vs an internal lifecycle), and pairs **Multiple timelines / Method components** (no `Process` — activities sharing a form).
+- **Where the method lives** is the tie-breaker that splits that last pair — and it reveals the _method-solidity_ axis (string → persisted entity → dissolved into config). Tellingly it is **non-monotonic** with unification: **Method components makes the method _most_ solid yet is _less_ unified than the trio, which dissolves it** — "optimising the wrong axis," in a single cell.
+
+Everything else in the mechanics is derived from these three: time-on-the-timeline ⇒ the timeline _gates_ and `current_phase` stays meaningful; time-on-the-process ⇒ the timeline _narrates_ and `current_phase` goes multi-valued; an explicit `Process` ⇒ a 1—1 form and voting-as-config/step; an implicit shared form ⇒ voting-by-reference and a shared/ambiguous form.
+
+### The mechanics in full
+
+The forks above generate the rest. For reference, the consequences side by side (MT = Multiple timelines, MC = Method components, G = Grid, FF = Free-floating, SC = Self-contained):
+
+| Mechanic                        | MT                          | MC                                                | G                                  | FF                                 | SC                                 |
+| ------------------------------- | --------------------------- | ------------------------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| **— time & clock —**            |                             |                                                   |                                    |                                    |                                    |
+| How many clocks                 | one calendar, N tracks      | hybrid (1 + 1 per off-timeline cmp)               | **one**                            | **two**                            | **many** + cosmetic narrative      |
+| Project-level timelines         | several (ordered)           | one                                               | one                                | one (presentational)               | one (cosmetic)                     |
+| Timeline: gates or narrates?    | gates                       | gates                                             | gates **+ configures**             | narrates                           | narrates                           |
+| **— phase ↔ process —**         |                             |                                                   |                                    |                                    |                                    |
+| Phases a process spans          | a track = its phases        | one per component                                 | **many** shared                    | **zero** (own dates)               | its **own** steps                  |
+| Voting / ideation→voting        | a voting phase in the track | separate component, **by reference**              | per-phase **config** (one process) | separate process, **by reference** | an internal **step** (one process) |
+| Where behaviour config lives    | the **phase**               | the **component**                                 | the **cell** (process × phase)     | the **process** (flat)             | the **step**                       |
+| **— form, input, submission —** |                             |                                                   |                                    |                                    |                                    |
+| Form: one process or many?      | shared across a track       | 1—1 for surveys; **project-level for transitive** | **1—1**                            | **1—1**                            | **1—1**                            |
+| `current_phase` shape           | one per timeline            | single (off-timeline outside)                     | **single**                         | narrative-only / multi-valued      | per-process step (multi-valued)    |
+| What gates submission           | `current_phase` (per track) | `current_phase` / per-component                   | `current_phase` → active processes | **per-process**                    | **per-process**                    |
+| `creation_phase` fate           | kept                        | → its component                                   | split → process + timing           | dropped (→ process)                | → process (= the step)             |
+
+### Input unification
+
+How far "method" collapses from a fixed _type_ into mere _configuration_ — the axis that decides which long-term needs are reachable at all:
+
+| Level  | What it means                                                                         | Reaches it                                            |
+| ------ | ------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **L0** | typed methods; no reconfiguration; visibility fixed by type                           | _(today)_                                             |
+| **L1** | one container, but kind fixed at creation                                             | Multiple timelines                                    |
+| **L2** | interactions become toggles; kind still fixed                                         | Method components                                     |
+| **L3** | form editable on a live set; per-field public/private in one form                     | Grid · Free-floating                                  |
+| **L4** | **per-submission** visibility; any interaction on any set; novel unnamed combinations | Self-contained _(Grid · Free-floating reach into it)_ |
+
+Placement: **Multiple timelines L0–L1 · Method components L1–L2 · Grid L3–L4 · Free-floating L3–L4 · Self-contained L4.**
+
+**What weaker unification forfeits** — these are structural absences, not UX gaps: morphing one method into another; mixing public + private in one submission; per-submission publish choice; evolving a form on a live data set; applying an interaction across methods; and **native cross-method reporting — the GSMs' "real prize."** The crisp framing: low-unification candidates can place methods _side by side_; only high-unification ones can _blend_ them — and blended is where the durable value lives.
+
+**Only possible at L3–L4** (the demos that make the loss concrete): one submission carrying a **public idea + private demographics**, reported together; a **"publish or keep private" author choice** per submission; **curate → publish → vote on one data set** with no copying; **enriching the form mid-process**; and formats we never shipped (e.g. a private inbox that **auto-publishes on a cosponsor threshold, then opens voting**). At L4 an admin can build methods we haven't invented; below L3 they pick from our menu.
+
+### Positioning: unification × effort
+
+The two axes are orthogonal, so the choice is a 2-D placement, not a line. Effort here = migration blast-radius.
+
+```
+              cheap / compatible  ─────────────────────▶  costly / radical
+  high   │                          Grid        Free-floating    Self-contained
+  unif.  │                        (L3–L4)          (L3–L4)           (L4)
+         │
+  low    │   Multiple timelines    Method components
+  unif.  │      (L0–L1)               (L1–L2)
+```
+
+The picture's one message: **the Grid sits at high unification for the lowest effort of the unified options** — it keeps `current_phase` single and the timeline load-bearing, where Free-floating and Self-contained pay more (the rewrite; the timeline-inversion). And effort alone would rank the cheap-but-low-ceiling tactics (Multiple timelines, Method components) ahead of where they belong.
+
+### Recommendation
+
+The **Grid** is the strongest north star: it reaches high unification (L3–L4) at the **lowest blast radius of the unified options** — keeping `current_phase` single-valued and the timeline load-bearing — and it is the **on-ramp to Self-contained** (a Grid process, handed its own schedule, _is_ a self-contained process). So it maximises the strategic wins — unified inputs, parallel ideation in one timeline, the per-process reporting floor — while protecting the differentiator and staying reachable in steps.
+
+Around it:
+
+- **Self-contained processes** — the **stretch destination**: the highest ceiling (a fleet of independently-scheduled, multi-step processes with roll-up — PB across neighbourhoods), but reached _via_ the Grid, not by a direct migration that would invert the timeline.
+- **Free-floating processes** — the **genuine fork**: the same unification tier, but it buys free-floating dates by letting the timeline _narrate_ and accepting the `current_phase` rewrite. This is the one decision the team must make deliberately — _keep the timeline load-bearing (Grid) or buy date-freedom (Free-floating)_ — and it is precisely the live divergence in the meetings.
+- **Method components** — a **fork** from the Grid as-is (it makes the _method_ first-class), but an **on-ramp** if it adopts _shared-form-as-process_ (the May 21 path).
+- **Multiple timelines** (and its seed, the phase boolean) — the **cheapest near-term tactic**: a fine first step, but its L0–L1 ceiling keeps it from being a destination.
+
+So: **steer toward the Grid; reach it through shared-form steps; make the free-floating-dates fork the one deliberate decision; and hold Self-contained as the stretch goal for when a project genuinely needs a fleet of independently-clocked processes.**
