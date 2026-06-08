@@ -62,7 +62,7 @@ describe('<VisibleNavbarItemList />', () => {
     expect(mockReorderNavbarItem).toHaveBeenCalledTimes(1);
     expect(mockReorderNavbarItem).toHaveBeenCalledWith({
       id: '2003e851-6cae-4ce8-a0e4-4b930fe73009',
-      ordering: 3,
+      ordering: 4,
     });
   });
 
