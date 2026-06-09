@@ -90,8 +90,6 @@ export interface IAppConfigurationSettings {
     enabled_fragments: string[];
   };
   verification?: {
-    allowed: boolean;
-    enabled: boolean;
     verification_methods: string[];
   };
   smart_groups?: AppConfigurationFeature;
