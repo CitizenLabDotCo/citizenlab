@@ -21,12 +21,22 @@ resource 'Project', admin_api: true do
         description_multiloc: kind_of(Hash),
         slug: project.slug,
         map_config_id: nil,
-        visible_to: 'public'
+        visible_to: 'public',
+        listed: true
       )
       expect(json_response_body.first[:admin_publication]).to include(
         publication_status: 'published'
       )
       expect(json_response_body.first[:folder]).to be_nil
+    end
+
+    context 'when the project is not listed' do
+      let!(:project) { create(:project, listed: false) }
+
+      example_request 'Serializes listed as false' do
+        expect(status).to eq 200
+        expect(json_response_body.first).to include(listed: false)
+      end
     end
   end
 
