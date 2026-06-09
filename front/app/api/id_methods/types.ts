@@ -153,14 +153,14 @@ type TOtherMethodName = Exclude<
 export type IDOtherMethod = TGenericMethod<TOtherMethodName>;
 
 export type TVerificationMethod =
-  | IDLookupMethod
-  | IDCriiptoMethod
-  | IDKeycloakMethod
-  | IDTwodayMethod
   | IDAcmMethod
   | IDAuth0Method
-  | IDIdAustriaMethod
-  | IDFacebookMethod
   | IDAzureAdMethod
   | IDAzureAdB2cMethod
+  | IDCriiptoMethod
+  | IDFacebookMethod
+  | IDIdAustriaMethod
+  | IDKeycloakMethod
+  | IDLookupMethod
+  | IDTwodayMethod
   | IDOtherMethod;
