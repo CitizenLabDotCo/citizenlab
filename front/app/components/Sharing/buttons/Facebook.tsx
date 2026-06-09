@@ -30,6 +30,16 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: ${darken(0.1, colors.facebook)};
   }
+
+  button:focus-visible,
+  button:focus {
+    outline: none;
+  }
+
+  &:has(:focus-visible) {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
 `;
 
 const Facebook = ({

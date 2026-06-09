@@ -79,7 +79,9 @@ module CustomIdMethods
       Verification.add_method(keycloak)
       AuthenticationService.add_method('keycloak', keycloak)
 
-      Verification.add_method(CustomIdMethods::NemlogIn::NemlogInOmniauth.new)
+      nemlog_in = CustomIdMethods::NemlogIn::NemlogInOmniauth.new
+      AuthenticationService.add_method('nemlog_in', nemlog_in)
+      Verification.add_method(nemlog_in)
 
       Verification.add_method(CustomIdMethods::OostendeRrn::OostendeRrnVerification.new)
 

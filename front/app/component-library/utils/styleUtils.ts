@@ -493,6 +493,11 @@ export function quillEditedContent(
         text-decoration: none;
         background-color: ${darken(0.15, buttonColor)};
       }
+
+      &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -4px;
+      }
     }
   `;
 }
