@@ -4,19 +4,19 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import idMethodsKeys from './keys';
-import { IdMethodsKeys, IVerificationMethod } from './types';
+import { IdMethodsKeys, IdMethod } from './types';
 
 const fetchVerificationMethodVerifiedActions = () =>
-  fetcher<IVerificationMethod>({
+  fetcher<IdMethod>({
     path: `/id_methods/first_enabled_for_verified_actions`,
     action: 'get',
   });
 
 const useVerificationMethodVerifiedActions = () => {
   return useQuery<
-    IVerificationMethod,
+    IdMethod,
     CLErrors,
-    IVerificationMethod,
+    IdMethod,
     IdMethodsKeys
   >({
     queryKey: idMethodsKeys.item({

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  TVerificationMethod,
+  IdMethodData,
   IDAuth0Method,
 } from 'api/id_methods/types';
 
@@ -14,7 +14,7 @@ import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 interface Props {
-  onClick: (method: TVerificationMethod) => void;
+  onClick: (method: IdMethodData) => void;
   verificationMethod: IDAuth0Method;
   last: boolean;
 }

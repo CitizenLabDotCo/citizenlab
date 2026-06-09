@@ -4,7 +4,7 @@ import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
 import {
-  TVerificationMethod,
+  IdMethodData,
   IdMethodName,
 } from 'api/id_methods/types';
 
@@ -21,10 +21,10 @@ import messages from './messages';
 interface Props {
   last: boolean;
   verificationMethodName?: IdMethodName; // TODO: JS - tidy up the fact we have both here
-  verificationMethod?: TVerificationMethod;
+  verificationMethod?: IdMethodData;
   grayBorder?: boolean;
   standardSSOBehavior?: boolean;
-  onClick?: (method: TVerificationMethod) => void;
+  onClick?: (method: IdMethodData) => void;
   onClickStandardSSO?: () => void;
 }
 

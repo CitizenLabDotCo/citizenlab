@@ -3,7 +3,7 @@ import {
   IDAzureAdB2cMethod,
   IdMethodName,
 } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
@@ -14,7 +14,7 @@ export default function useAuthConfig() {
   // All SSO methods (including the built-in Facebook/Google/Azure ones) are
   // configured as verification methods, and the `/id_methods` endpoint
   // exposes a `authentication_method` flag for the ones that can be used to authenticate.
-  const { data: idMethods } = useVerificationMethods();
+  const { data: idMethods } = useIdMethods();
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak

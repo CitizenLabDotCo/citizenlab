@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 import { IdMethodName } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -33,7 +33,7 @@ const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
 
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
 
   const ssoWithoutEmailEnabled = !!verificationMethods?.data.some((method) =>
     SSO_METHODS_WITHOUT_EMAIL.includes(method.attributes.name)

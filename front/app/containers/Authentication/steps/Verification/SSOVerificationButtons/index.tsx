@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  TVerificationMethod,
+  IdMethodData,
   IdMethodName,
   IDAuth0Method,
 } from 'api/id_methods/types';
@@ -29,13 +29,13 @@ const CENTRALIZED_METHODS: IdMethodName[] = [
   'twoday',
 ];
 
-export const isCentralizedSSOMethod = (method: TVerificationMethod) =>
+export const isCentralizedSSOMethod = (method: IdMethodData) =>
   method.attributes.verification_method &&
   CENTRALIZED_METHODS.includes(method.attributes.name);
 
 interface Props {
-  verificationMethods: TVerificationMethod[];
-  onClick: (method: TVerificationMethod) => void;
+  verificationMethods: IdMethodData[];
+  onClick: (method: IdMethodData) => void;
 }
 
 const SSOVerificationButtons = ({ verificationMethods, onClick }: Props) => {

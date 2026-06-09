@@ -8,8 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { TVerificationMethod } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import { IdMethodData } from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
@@ -42,15 +42,15 @@ const ButtonsContainer = styled.div`
 `;
 
 interface Props {
-  onMethodSelected: (selectedMethod: TVerificationMethod) => void;
+  onMethodSelected: (selectedMethod: IdMethodData) => void;
   onSkipped?: () => void;
 }
 
 const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
   const isCopenhagenPlatform = useCopenhagenPlatformCheck();
 
-  const handleOnMethodSelected = (method: TVerificationMethod) => {
+  const handleOnMethodSelected = (method: IdMethodData) => {
     onMethodSelected(method);
   };
 

@@ -4,7 +4,7 @@ import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IdMethodName } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { AuthProvider } from 'containers/Authentication/typings';
 
@@ -49,7 +49,7 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
     const { formatMessage } = useIntl();
-    const { data: verificationMethods } = useVerificationMethods();
+    const { data: verificationMethods } = useIdMethods();
 
     const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
       setTacAccepted(tacAccepted);

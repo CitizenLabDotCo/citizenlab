@@ -2,7 +2,7 @@ import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
-import { TVerificationMethod } from 'api/id_methods/types';
+import { IdMethodData } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
@@ -14,8 +14,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 interface Props {
-  method: TVerificationMethod;
-  onClick: (method: TVerificationMethod) => void;
+  method: IdMethodData;
+  onClick: (method: IdMethodData) => void;
 }
 
 const FranceConnectVerificationButton = ({

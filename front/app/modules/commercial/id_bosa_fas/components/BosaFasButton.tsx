@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/id_methods/types';
+import { IdMethodData } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
@@ -13,9 +13,9 @@ import { removeUrlLocale } from 'utils/removeUrlLocale';
 import messages from '../messages';
 
 interface Props {
-  method: TVerificationMethod;
+  method: IdMethodData;
   last: boolean;
-  onClick: (method: TVerificationMethod) => void;
+  onClick: (method: IdMethodData) => void;
 }
 
 const BosaFasButton = ({ method, last, onClick }: Props) => {

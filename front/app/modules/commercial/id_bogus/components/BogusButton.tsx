@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/id_methods/types';
+import { IdMethodData } from 'api/id_methods/types';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 interface Props {
-  method: TVerificationMethod;
+  method: IdMethodData;
   last: boolean;
-  onClick: (method: TVerificationMethod) => void;
+  onClick: (method: IdMethodData) => void;
 }
 
 const BogusButton = ({ method, last, onClick }: Props) => {

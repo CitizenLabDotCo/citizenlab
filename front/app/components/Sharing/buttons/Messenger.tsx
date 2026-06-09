@@ -4,7 +4,7 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
 import { IDFacebookMethod } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
@@ -20,7 +20,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('messenger');

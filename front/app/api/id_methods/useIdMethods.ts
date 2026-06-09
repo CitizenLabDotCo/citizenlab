@@ -4,24 +4,24 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import idMethodsKeys from './keys';
-import { IdMethodsKeys, IVerificationMethods } from './types';
+import { IdMethodsKeys, IdMethods } from './types';
 
-const fetchVerificationMethods = () =>
-  fetcher<IVerificationMethods>({
+const fetchIdMethods = () =>
+  fetcher<IdMethods>({
     path: `/id_methods`,
     action: 'get',
   });
 
-const useVerificationMethods = () => {
+const useIdMethods = () => {
   return useQuery<
-    IVerificationMethods,
+    IdMethods,
     CLErrors,
-    IVerificationMethods,
+    IdMethods,
     IdMethodsKeys
   >({
     queryKey: idMethodsKeys.list(),
-    queryFn: () => fetchVerificationMethods(),
+    queryFn: () => fetchIdMethods(),
   });
 };
 
-export default useVerificationMethods;
+export default useIdMethods;

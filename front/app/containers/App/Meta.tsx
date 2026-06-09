@@ -6,7 +6,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useAuthUser from 'api/me/useAuthUser';
 import { IDFacebookMethod } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -26,7 +26,7 @@ const Meta = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: homepageLayout } = useContentBuilderLayout('homepage');
   const { data: authUser } = useAuthUser();
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { pathname } = useLocation();
@@ -100,8 +100,8 @@ const Meta = () => {
         {showDefaultTitleAndDescTags && (
           <title>
             {`${authUser && authUser.data.attributes.unread_notifications
-                ? `(${authUser.data.attributes.unread_notifications}) `
-                : ''
+              ? `(${authUser.data.attributes.unread_notifications}) `
+              : ''
               } ${metaTitle}`}
           </title>
         )}

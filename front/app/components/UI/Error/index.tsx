@@ -17,7 +17,7 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 import { IDAzureAdMethod } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -242,7 +242,7 @@ const findCustomErrorMessage = (
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 

@@ -2,14 +2,14 @@ import React from 'react';
 
 import {
   IDLookupMethod,
-  TVerificationMethod,
+  IdMethodData,
 } from 'api/id_methods/types';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 interface Props {
   method: IDLookupMethod;
-  onClick: (method: TVerificationMethod) => void;
+  onClick: (method: IdMethodData) => void;
   last: boolean;
 }
 

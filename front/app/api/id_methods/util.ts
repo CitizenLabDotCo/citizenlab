@@ -1,8 +1,8 @@
-import { TVerificationMethod, IdMethodName } from './types';
+import { IdMethodData, IdMethodName } from './types';
 
 export function isLastVerificationMethod(
   verificationMethodName: IdMethodName,
-  verificationMethods: TVerificationMethod[]
+  verificationMethods: IdMethodData[]
 ) {
   return (
     verificationMethods

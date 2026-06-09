@@ -47,12 +47,12 @@ export type IdMethodName =
   | 'vienna_citizen'
   | 'vienna_employee';
 
-export interface IVerificationMethods {
-  data: TVerificationMethod[];
+export interface IdMethods {
+  data: IdMethodData[];
 }
 
-export interface IVerificationMethod {
-  data: TVerificationMethod;
+export interface IdMethod {
+  data: IdMethodData;
 }
 
 export type MethodMetadata = {
@@ -152,7 +152,7 @@ type TOtherMethodName = Exclude<
 
 export type IDOtherMethod = TGenericMethod<TOtherMethodName>;
 
-export type TVerificationMethod =
+export type IdMethodData =
   | IDAcmMethod
   | IDAuth0Method
   | IDAzureAdMethod

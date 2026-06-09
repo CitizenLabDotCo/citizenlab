@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/id_methods/types';
+import { IdMethodData } from 'api/id_methods/types';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
@@ -9,8 +9,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  method: TVerificationMethod;
-  onClick: (method: TVerificationMethod) => void;
+  method: IdMethodData;
+  onClick: (method: IdMethodData) => void;
   last: boolean;
 }
 

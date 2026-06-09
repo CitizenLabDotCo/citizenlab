@@ -3,10 +3,10 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import {
-  TVerificationMethod,
+  IdMethodData,
   omniauthVerificationTypes,
 } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
@@ -36,10 +36,10 @@ const VerificationSteps = memo<Props>(
   ({ onCompleted, onError, authenticationData }) => {
     const [activeStep, setActiveStep] =
       useState<TVerificationStep>('method-selection');
-    const [method, setMethod] = useState<TVerificationMethod | null>(null);
+    const [method, setMethod] = useState<IdMethodData | null>(null);
 
     const { data: authUser } = useAuthUser();
-    const { data: verificationMethods } = useVerificationMethods();
+    const { data: verificationMethods } = useIdMethods();
 
     useEffect(() => {
       if (activeStep === 'success' && onCompleted) {
@@ -51,7 +51,7 @@ const VerificationSteps = memo<Props>(
       }
     }, [onCompleted, onError, activeStep]);
 
-    const onMethodSelected = (selectedMethod: TVerificationMethod) => {
+    const onMethodSelected = (selectedMethod: IdMethodData) => {
       // Save the successAction and the current context in local
       // storage for when user returns from verification which leaves platform.
       if (

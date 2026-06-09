@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IDKeycloakMethod } from 'api/id_methods/types';
-import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
@@ -32,7 +32,7 @@ interface Props {
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
   const { ssoProviders, azureAdSettings, azureAdB2cSettings } = useAuthConfig();
 
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: verificationMethods } = useIdMethods();
 
   const azureProviderName = azureAdSettings?.login_mechanism_name;
   const azureProviderLogoUrl = azureAdSettings?.logo_url;
