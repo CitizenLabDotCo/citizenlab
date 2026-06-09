@@ -283,7 +283,7 @@ da-DK:
       subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       title: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
     email_confirmation:
-      best_regards: Med venlig hilsen,
+      best_regards: Venlig hilsen,
       event_description: 'Tak for din deltagelse. Indtast venligst denne bekræftelseskode i vinduet på %{organizationName}s borgerinddragelsesplatform:'
       expire_code: Denne kode udløber om
       hours_24: 24 timer.
@@ -503,7 +503,7 @@ da-DK:
       today: I dag
       yesterday: I går
     new_email_confirmation:
-      best_regards: Med venlig hilsen,
+      best_regards: Venlig hilsen,
       event_description: 'Indtast venligst denne bekræftelseskode i vinduet på %{organizationName}s borgerinddragelsesplatform for at bekræfte din nye e-mailadresse:'
       expire_code: Denne kode udløber om
       hours_24: 24 timer.
