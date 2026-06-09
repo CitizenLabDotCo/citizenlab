@@ -48,7 +48,11 @@ da-DK:
         new_attendee: Nyligt registreret bruger
         project_review_requester: Bruger, der anmodede om projektgennemgang
         project_reviewers: Projektgodkendere og mappeadministratorer
+        user_changing_email: Bruger, der ændrer sin e-mailadresse
+        user_confirming_email: Bruger, der bekræfter sin e-mailadresse
+        user_requesting_password_reset: Bruger, der har anmodet om nulstilling af adgangskode
         user_who_commented: Bruger der kommenterede
+        user_who_is_blocked: Bruger, hvis konto er blokeret
         user_who_is_invited_to_cosponsor_a_proposal: Bruger der er inviteret til at være medstiller på et forslag
         user_who_is_mentioned: Bruger der er nævnt
         user_who_is_receiving_admin_rights: Bruger der får administratorrettigheder
@@ -105,9 +109,12 @@ da-DK:
         registration_to_event: Tilmelding til en begivenhed
         survey_1_day_after_draft_saved: 1 dag efter at brugeren sidst gemte undersøgelsen i kladden
         user_accepts_invitation_to_cosponsor_a_proposal: Brugeren accepterer invitationen til at være medstiller på et forslag
+        user_changes_email: Bruger ændrer sin e-mailadresse
         user_comments: Brugerkommentarer
         user_comments_on_input: Brugerkommentarer til input
         user_comments_on_proposal: Brugernes kommentarer til forslaget
+        user_confirms_email: Bruger bekræfter sin e-mailadresse
+        user_is_blocked: Brugers konto er blokeret
         user_is_given_admin_rights: Brugeren får administratorrettigheder
         user_is_given_folder_manager_rights: Brugeren tildeles rettigheder som mappeprojektleder
         user_is_given_folder_moderator_rights: Brugeren får rettigheder som mappemoderator
@@ -121,6 +128,7 @@ da-DK:
         user_registers_for_the_first_time: Brugeren registrerer sig for første gang
         user_replies_to_comment: Bruger svarer på kommentar
         user_replies_to_internal_comment: Bruger svarer på intern kommentar
+        user_requests_password_reset: Bruger anmoder om nulstilling af adgangskode
         voting_1_day_after_last_votes: 1 dag efter brugeren sidst stemte
         voting_2_days_before_phase_closes: 2 dage før afstemningsfasen slutter
         voting_basket_submitted: Stemmerne er afgivet
@@ -160,6 +168,7 @@ da-DK:
       comment_on_your_comment: Et svar på min kommentar
       community_monitor_report: Rapport fra Borgerbarometer
       cosponsor_of_your_idea: En bruger accepterer min invitation til at være medstiller på mit forslag
+      email_confirmation: Bekræftelseskode til e-mail
       event_registration_confirmation: Bekræftelse af tilmelding til begivenhed
       idea_marked_as_spam: Rapportering af idé-spam
       idea_published: Publicering af min idé
@@ -178,6 +187,7 @@ da-DK:
       moderator_digest: Ugentlig oversigt for projektledere
       native_survey_not_submitted: Undersøgelse ikke indsendt
       new_comment_for_admin: Ny kommentar i et projekt jeg modererer
+      new_email_confirmation: Ny bekræftelseskode til e-mail
       new_idea_for_admin_prescreening: Nyt input, der kræver godkendelse i et projekt jeg modererer
       new_idea_for_admin_published: Nyt offentliggjort input i et projekt jeg modererer
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
@@ -196,6 +206,7 @@ da-DK:
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
       survey_submitted: Undersøgelse indsendt
       threshold_reached_for_admin: Forslag har nået stemmegrænsen
+      user_blocked: Konto blokeret
       user_digest: Ugentlig oversigt
       voting_basket_not_submitted: Stemmer ikke afgivet
       voting_basket_submitted: Bekræftelse af afstemning
@@ -271,6 +282,15 @@ da-DK:
       preheader: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       title: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
+    email_confirmation:
+      best_regards: Med venlig hilsen,
+      event_description: 'Tak for din deltagelse. Indtast venligst denne bekræftelseskode i vinduet på %{organizationName}s borgerinddragelsesplatform:'
+      expire_code: Denne kode udløber om
+      hours_24: 24 timer.
+      ignore_email: Hvis du ikke har anmodet om en kode, kan du roligt ignorere denne e-mail.
+      preheader: Bekræft din e-mailadresse for %{organizationName}
+      subject: Bekræft din e-mailadresse til %{organizationName}s borgerinddragelsesplatform
+      title: Bekræft din e-mailadresse
     event_registration_confirmation:
       cta_add_to_calendar: Tilføj til din kalender
       cta_button: Se begivenheden
@@ -482,6 +502,15 @@ da-DK:
       title: '%{firstName}, en ny kommentar er blevet slået op på din platform'
       today: I dag
       yesterday: I går
+    new_email_confirmation:
+      best_regards: Med venlig hilsen,
+      event_description: 'Indtast venligst denne bekræftelseskode i vinduet på %{organizationName}s borgerinddragelsesplatform for at bekræfte din nye e-mailadresse:'
+      expire_code: Denne kode udløber om
+      hours_24: 24 timer.
+      ignore_email: Hvis du ikke har anmodet om en kode, kan du roligt ignorere denne e-mail.
+      preheader: Bekræft din nye e-mailadresse til %{organizationName}
+      subject: Bekræft din nye e-mailadresse til %{organizationName}s borgerinddragelsesplatform
+      title: Bekræft din nye e-mailadresse
     new_idea_for_admin_prescreening:
       cta_button: Gennemgå input
       days_ago: '%{numberOfDays} dage siden'
@@ -507,6 +536,12 @@ da-DK:
       preheader: Der er en opdatering på et input, du følger
       subject: Officiel feedback blev lagt ud på "%{input_title}"
       title: Der er en opdatering på "%{input_title}"
+    password_reset:
+      cta_button: Nulstil din adgangskode
+      event_description: Du har anmodet om at nulstille din adgangskode til %{organizationName}s borgerinddragelsesplatform. Klik på knappen nedenfor for at vælge en ny, sikker adgangskode. Linket udløber om 1 time.
+      preheader: Nulstil din adgangskode til %{organizationName}
+      subject: '%{organizationName}: Nulstil din adgangskode'
+      title: Vælg en ny adgangskode
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +687,14 @@ da-DK:
       preheader: Sørg for, at du gennemfører de næste trin
       subject: Et initiativ har nået stemmetærskelgrænsen på din platform
       title: Et forslag har nået stemmegrænsen!
+    user_blocked:
+      for_more_information: For mere information om dette kan du læse %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Din konto på %{organizationName}s borgerinddragelsesplatform er blevet midlertidigt deaktiveret af følgende årsag:'
+      paragraph_1_without_reason: Din konto på %{organizationName}s borgerinddragelsesplatform er blevet midlertidigt deaktiveret på grund af overtrædelse af retningslinjerne for fællesskabet.
+      preheader: Din konto på %{organizationName}s borgerinddragelsesplatform er blevet midlertidigt deaktiveret
+      subject: Din konto er blevet midlertidigt deaktiveret
+      title: Din konto er blevet midlertidigt deaktiveret
+      you_can_sign_in_again_from: Du kan logge ind igen fra %{date}
     user_digest:
       commented: '%{authorFirstName} kommenterede:'
       cta_button: Besøg platformen
