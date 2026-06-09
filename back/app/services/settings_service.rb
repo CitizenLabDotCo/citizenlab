@@ -14,9 +14,12 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        # `verification` is no longer toggleable and doesn't define
-        # `allowed`/`enabled` in its schema, so don't inject them.
-        res[f] = if f == 'verification'
+        # `verification` is no longer a feature flag and thus doesn't define
+        # `allowed`/`enabled` in its schema. So we don't need to add
+        # these attributes.
+        # `id_config` is a copy of verification (verification will be cleaned)
+        # up in a later task. So it also doesn't define `allowed`/`enabled` in its schema.
+        res[f] = if f == 'verification' || f == 'id_config'
           {}
         else
           {

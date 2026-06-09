@@ -1438,6 +1438,24 @@
         }
       },
 
+      "id_config": {
+        "type": "object",
+        "title": "Id methods: authentication (SSO) and verification",
+        "description": "Use a pre-defined list to define authentication (SSO) and verification methods.",
+        "additionalProperties": false,
+        "properties": {
+          "id_methods": {
+            "title": "Id methods",
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf": <%= IdMethodService.new.all_methods_json_schema %>
+            }
+          }
+        }
+      },
+
       "community_monitor": {
         "type": "object",
         "title": "Community Monitor",
