@@ -652,10 +652,9 @@ jobs:
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
           # Emoji rendering (twemoji) ships ~4k immutable SVGs served at stable
-          # codepoint URLs. Derive their URL prefix from a hash of their contents
-          # so the URL changes iff a glyph changes. Exported via BASH_ENV so the
-          # build (vite reads process.env.TWEMOJI_BASE_URL) and the sync step below
-          # agree on the prefix. Unset locally, so dev serves them from app/public/.
+          # codepoint URLs. Export their URL prefix as a BASH_ENV from a hash of their
+          # contents that the build changes the URL if any icons change.
+          # Unset locally, so dev serves them from app/public/.
           name: Compute content-hashed twemoji asset prefix
           command: |
             TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
@@ -678,13 +677,13 @@ jobs:
             aws s3 sync app/public/twemoji/ "s3://cl2-front-staging${TWEMOJI_BASE_URL}" --acl public-read --size-only --cache-control "public, max-age=31536000, immutable"
             rm -rf build/twemoji
       - run:
+          # Content-hashed JS bundles ([name].[hash].min.js / .chunk.js) are
+          # immutable: a change produces a new filename, so cache them for a year.
+          # Everything else (fonts, css) keeps the default cache
+          # Except index.html (no-cache, below)
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            # Content-hashed JS bundles ([name].[hash].min.js / .chunk.js) are
-            # immutable: a change produces a new filename, so cache them for a year.
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "*" --include "*.min.js" --include "*.chunk.js" --size-only --cache-control "public, max-age=31536000, immutable"
-            # Everything else keeps the default cache: index.html (no-cache, below)
-            # and the non-content-hashed assets (fonts, css) served at stable URLs.
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html" --exclude "*.min.js" --exclude "*.chunk.js" --size-only
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-staging/.well-known/security.txt --acl public-read --content-type text/plain
@@ -724,13 +723,13 @@ jobs:
             aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --size-only --cache-control "public, max-age=31536000, immutable"
             rm -rf build/twemoji
       - run:
+          # Content-hashed JS bundles ([name].[hash].min.js / .chunk.js) are
+          # immutable: a change produces a new filename, so cache them for a year.
+          # Everything else (fonts, css) keeps the default cache
+          # Except index.html (no-cache, below)
           name: Deploy production version
           command: |
-            # Content-hashed JS bundles ([name].[hash].min.js / .chunk.js) are
-            # immutable: a change produces a new filename, so cache them for a year.
             aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "*" --include "*.min.js" --include "*.chunk.js" --size-only --cache-control "public, max-age=31536000, immutable"
-            # Everything else keeps the default cache: index.html (no-cache, below)
-            # and the non-content-hashed assets (fonts, css) served at stable URLs.
             aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html" --exclude "*.min.js" --exclude "*.chunk.js" --size-only
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
