@@ -161,6 +161,9 @@ describe('Native survey CTA bar', () => {
   });
 
   after(() => {
+    if (phaseId) {
+      cy.apiRemovePhase(phaseId);
+    }
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
