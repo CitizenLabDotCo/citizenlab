@@ -17,7 +17,7 @@ namespace :single_use do
         if execute
           settings['id_config'] ||= {}
           settings['id_config']['id_methods'] = verification_methods
-          Current.app_configuration.update!(settings: settings)
+          AppConfiguration.instance.update!(settings: settings)
           puts "Updated id_config with verification methods."
         else
           puts "Dry run - id_config would be updated with verification methods."

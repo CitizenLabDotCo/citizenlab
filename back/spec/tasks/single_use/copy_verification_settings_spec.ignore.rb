@@ -16,22 +16,22 @@ describe 'single_use:copy_verification_settings rake task' do
       { 'name' => 'acm', 'rrn_result_custom_field_key' => 'some_key' },
       { 'name' => 'fake_sso', issuer: 'http://example.com', enabled_for_verified_actions: true }
     ]
-    settings = AppConfiguration.instance.settings
-    settings['verification']['verification_methods'] = @methods
-    Current.app_configuration.update!(settings: settings)
+    @settings = AppConfiguration.instance.settings
+    @settings['verification']['verification_methods'] = @methods
+    Current.app_configuration.update!(settings: @settings)
   end
 
   it 'does not copy verification settings if dry run' do
     run_task(execute: false)
 
-    expect(settings['id_config']).to be_nil
-    expect(settings['verification']['verification_methods']).to eq(@methods)
+    expect(@settings['id_config']).to eq({})
+    expect(@settings['verification']['verification_methods']).to eq(@methods)
   end
 
   it 'copies verification settings to id_config if execute' do
     run_task(execute: true)
 
-    expect(settings['id_config']).to eq({
+    expect(@settings['id_config']).to eq({
       'id_methods' => @methods
     })
     expect(settings['verification']['verification_methods']).to eq(@methods)
