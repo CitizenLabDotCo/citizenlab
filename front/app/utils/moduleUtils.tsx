@@ -10,9 +10,9 @@ import {
 } from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
+import { IdMethodData } from 'api/id_methods/types';
 import { IIdeaData } from 'api/ideas/types';
 import { TNotificationData } from 'api/notifications/types';
-import { IdMethodData } from 'api/id_methods/types';
 
 import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
@@ -62,7 +62,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.form': {
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.header': {
     type: GroupCreationModal;
@@ -71,7 +70,6 @@ export interface OutletsPropertyMap {
     initialValues: IGroupDataAttributes;
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.UsersGroup.header': {
     type: GroupCreationModal;

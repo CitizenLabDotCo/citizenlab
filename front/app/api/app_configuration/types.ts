@@ -211,7 +211,7 @@ export interface IAppConfigurationSettings {
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = Exclude<keyof IAppConfigurationSettings, 'verification'>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
