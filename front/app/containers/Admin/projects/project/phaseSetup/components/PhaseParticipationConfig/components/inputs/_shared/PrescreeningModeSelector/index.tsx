@@ -21,9 +21,11 @@ interface Props {
 
 const descriptionMessages: Record<string, MessageDescriptor> = {
   flagged_only: messages.prescreeningModeFlaggedOnlyDescription,
-  all: messages.prescreeningModeAllDescription,
+  all: messages.prescreeningModeAllDescriptionWithWarning,
   disabled: messages.prescreeningModeOffDescription,
 };
+
+console.log(descriptionMessages);
 
 interface SelectProps {
   mode: PrescreeningMode | null | undefined;
