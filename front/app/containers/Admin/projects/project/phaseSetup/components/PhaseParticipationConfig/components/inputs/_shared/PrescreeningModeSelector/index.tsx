@@ -91,7 +91,6 @@ const PrescreeningModeSelector = ({
     name: 'flag_inappropriate_content',
   });
 
-  // This feature flag is temporary and will be removed after rollout.
   const prescreeningFlaggedOnlyEnabled = useFeatureFlag({
     name: 'prescreening_flagged_only',
   });
