@@ -16,8 +16,8 @@ import { CLError, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
-import { IDAzureAdMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDAzureAdMethod } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -341,7 +341,7 @@ const Error = (props: ErrorProps) => {
                       const errorMessage = customErrorMessage
                         ? customErrorMessage
                         : errorMessageDescriptor &&
-                          formatMessage(errorMessageDescriptor, values);
+                        formatMessage(errorMessageDescriptor, values);
 
                       if (!errorMessage) return null;
 

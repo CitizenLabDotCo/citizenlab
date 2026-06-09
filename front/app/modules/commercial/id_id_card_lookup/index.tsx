@@ -3,8 +3,8 @@ import React from 'react';
 import {
   TVerificationMethodName,
   IDLookupMethod,
-} from 'api/verification_methods/types';
-import { isLastVerificationMethod } from 'api/verification_methods/util';
+} from 'api/id_methods/types';
+import { isLastVerificationMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

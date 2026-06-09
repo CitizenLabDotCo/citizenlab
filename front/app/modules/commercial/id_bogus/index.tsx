@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isLastVerificationMethod } from 'api/verification_methods/util';
+import { isLastVerificationMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

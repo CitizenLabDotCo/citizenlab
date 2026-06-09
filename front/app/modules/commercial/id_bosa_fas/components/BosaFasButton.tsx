@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
+import { TVerificationMethod } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 

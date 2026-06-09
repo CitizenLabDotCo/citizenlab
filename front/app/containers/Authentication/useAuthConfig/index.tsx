@@ -2,8 +2,8 @@ import {
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
   TVerificationMethodName,
-} from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+} from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';

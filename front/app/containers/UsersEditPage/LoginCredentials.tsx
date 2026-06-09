@@ -3,8 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
-import { TVerificationMethodName } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { TVerificationMethodName } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

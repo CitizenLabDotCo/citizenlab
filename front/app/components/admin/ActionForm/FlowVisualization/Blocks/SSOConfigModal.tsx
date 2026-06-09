@@ -11,7 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
+import useVerificationMethodVerifiedActions from 'api/id_methods/useVerificationMethodVerifiedActions';
 
 import useLocalize from 'hooks/useLocalize';
 

@@ -3,8 +3,8 @@ import React, { memo, useCallback, useState } from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { TVerificationMethodName } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { TVerificationMethodName } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import { AuthProvider } from 'containers/Authentication/typings';
 

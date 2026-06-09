@@ -3,7 +3,7 @@ import React from 'react';
 import {
   TVerificationMethod,
   IDAuth0Method,
-} from 'api/verification_methods/types';
+} from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 

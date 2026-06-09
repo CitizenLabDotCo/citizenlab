@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import verificationMethodsKeys from './keys';
+import idMethodsKeys from './keys';
 import { VerificationMethodsKeys, IVerificationMethod } from './types';
 
 const fetchVerificationMethod = () =>
@@ -19,7 +19,7 @@ const useVerificationMethod = () => {
     IVerificationMethod,
     VerificationMethodsKeys
   >({
-    queryKey: verificationMethodsKeys.item({ endpoint: 'first_enabled_verification_method' }),
+    queryKey: idMethodsKeys.item({ endpoint: 'first_enabled_verification_method' }),
     queryFn: () => fetchVerificationMethod(),
   });
 };

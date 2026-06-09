@@ -2,7 +2,7 @@ import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
+import { TVerificationMethod } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 

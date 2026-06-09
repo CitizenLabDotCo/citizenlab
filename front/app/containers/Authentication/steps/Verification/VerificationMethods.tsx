@@ -8,8 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { TVerificationMethod } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 

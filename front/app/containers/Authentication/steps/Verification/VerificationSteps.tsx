@@ -6,8 +6,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import {
   TVerificationMethod,
   verificationTypesLeavingPlatform,
-} from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+} from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationData } from 'containers/Authentication/typings';

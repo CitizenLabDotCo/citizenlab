@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useAuthUser from 'api/me/useAuthUser';
-import { IDFacebookMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDFacebookMethod } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -40,16 +40,16 @@ const Meta = () => {
     /* eslint-disable @typescript-eslint/no-unnecessary-condition */
     const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
-          (node: any) => {
-            return (
-              node &&
-              node.type &&
-              typeof node.type === 'object' &&
-              'resolvedName' in node.type &&
-              node.type.resolvedName === 'HomepageBanner'
-            );
-          }
-        )
+        (node: any) => {
+          return (
+            node &&
+            node.type &&
+            typeof node.type === 'object' &&
+            'resolvedName' in node.type &&
+            node.type.resolvedName === 'HomepageBanner'
+          );
+        }
+      )
       : null;
     /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
@@ -99,11 +99,10 @@ const Meta = () => {
 
         {showDefaultTitleAndDescTags && (
           <title>
-            {`${
-              authUser && authUser.data.attributes.unread_notifications
+            {`${authUser && authUser.data.attributes.unread_notifications
                 ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
-            } ${metaTitle}`}
+              } ${metaTitle}`}
           </title>
         )}
         {showDefaultTitleAndDescTags && (

@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import { IDFacebookMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDFacebookMethod } from 'api/id_methods/types';
+import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';

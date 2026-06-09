@@ -3,9 +3,9 @@ import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
-import verificationMethodsKeys from './keys';
+import idMethodsKeys from './keys';
 
-export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;
+export type VerificationMethodsKeys = Keys<typeof idMethodsKeys>;
 
 export const verificationTypesLeavingPlatform = [
   'auth0',

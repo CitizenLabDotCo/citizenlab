@@ -4,7 +4,7 @@ import {
   TVerificationMethod,
   TVerificationMethodName,
   IDAuth0Method,
-} from 'api/verification_methods/types';
+} from 'api/id_methods/types';
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 

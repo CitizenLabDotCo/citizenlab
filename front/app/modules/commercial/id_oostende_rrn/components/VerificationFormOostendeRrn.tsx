@@ -9,7 +9,7 @@ import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
 import usersKeys from 'api/users/keys';
-import { TVerificationMethod } from 'api/verification_methods/types';
+import { TVerificationMethod } from 'api/id_methods/types';
 
 import {
   FormContainer,
