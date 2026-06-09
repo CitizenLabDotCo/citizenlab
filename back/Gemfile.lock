@@ -762,7 +762,7 @@ GEM
       activerecord (>= 7)
     net-http (0.6.0)
       uri
-    net-imap (0.5.14)
+    net-imap (0.5.15)
       date
       net-protocol
     net-pop (0.1.2)
