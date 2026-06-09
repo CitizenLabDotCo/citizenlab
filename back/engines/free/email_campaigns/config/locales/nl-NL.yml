@@ -692,7 +692,7 @@ nl-NL:
     user_blocked:
       for_more_information: Voor meer informatie hierover kun je de %{termsAndConditionsPage} raadplegen
       paragraph_1_with_reason: 'Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:'
-      paragraph_1_without_reason: Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens een schending van de communityrichtlijnen.
+      paragraph_1_without_reason: Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens een schending van de gemeenschapsrichtlijnen.
       preheader: Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld
       subject: Je account is tijdelijk uitgeschakeld
       title: Je account is tijdelijk uitgeschakeld
