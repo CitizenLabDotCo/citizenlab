@@ -29,7 +29,7 @@ describe IdMethodService do
       configuration.settings['verification']['verification_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
       configuration.save!
 
-      metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)
+      metadata = service.method_metadata(service.all_methods.find { |m| m[:name] == 'fake_sso' })
       expect(metadata[:name]).to eq 'Fake SSO'
       expect(metadata[:locked_attributes]).to contain_exactly({ 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' }, { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' })
       expect(metadata[:other_attributes]).to contain_exactly({ 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' })
