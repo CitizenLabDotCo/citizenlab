@@ -329,12 +329,15 @@ class User < ApplicationRecord
 
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
-    # either by posting ideas or comments in phases with public participation methods.
+    # either by posting ideas or comments in phases with public participation methods,
+    # or by accepting an invitation to co-sponsor a proposal.
     # This is to avoid exposing personal data of users who have not actively used the platform.
     ideas
       .joins(:ideas_phases)
       .joins(:phases)
-      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
+      comments.exists? ||
+      cosponsorships.where(status: 'accepted').exists?
   end
 
   private
