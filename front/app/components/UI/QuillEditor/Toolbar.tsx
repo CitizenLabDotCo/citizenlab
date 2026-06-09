@@ -141,6 +141,47 @@ const Toolbar = ({
     }
   };
 
+  const handleDropdownKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    const onLabel = target.classList.contains('ql-picker-label');
+    const onItem = target.classList.contains('ql-picker-item');
+    if (!onLabel && !onItem) return;
+
+    const picker = event.currentTarget.querySelector('.ql-picker');
+    const items = Array.from(
+      picker?.querySelectorAll<HTMLElement>('.ql-picker-item') ?? []
+    );
+    if (items.length === 0) return;
+
+    const focusItem = (index: number) =>
+      items[(index + items.length) % items.length].focus();
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        event.preventDefault();
+        if (onLabel) {
+          picker?.classList.add('ql-expanded');
+          target.setAttribute('aria-expanded', 'true');
+          picker
+            ?.querySelector('.ql-picker-options')
+            ?.setAttribute('aria-hidden', 'false');
+          focusItem(0);
+        } else {
+          focusItem(
+            items.indexOf(target) + (event.key === 'ArrowDown' ? 1 : -1)
+          );
+        }
+        break;
+      case 'Enter':
+        if (onItem) {
+          picker?.querySelector<HTMLElement>('.ql-picker-label')?.focus();
+        }
+        break;
+      default:
+    }
+  };
+
   const trackBasic =
     (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
     (_event: React.MouseEvent<HTMLElement>) => {
@@ -160,7 +201,13 @@ const Toolbar = ({
   return (
     <div id={id}>
       {!limitedTextFormatting && (
-        <span className="ql-formats" role="button" onClick={trackClickDropdown}>
+        // remove role="button" from span to allow native keyboard interactions with the dropdown in safari browser
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <span
+          className="ql-formats"
+          onClick={trackClickDropdown}
+          onKeyDown={handleDropdownKeyDown}
+        >
           <select className="ql-header" defaultValue={''}>
             <option value="2" aria-selected={false}>
               {formatMessage(messages.title)}

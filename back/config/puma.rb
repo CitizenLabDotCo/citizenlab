@@ -41,7 +41,7 @@ if web_concurrency.to_i > 1
   # process behavior so workers use less memory.
   preload_app!
 
-  on_worker_boot do
+  before_worker_boot do
     ActiveSupport.on_load(:active_record) do
       ActiveRecord::Base.establish_connection
     end
