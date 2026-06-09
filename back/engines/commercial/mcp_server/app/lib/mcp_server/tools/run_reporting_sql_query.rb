@@ -10,10 +10,11 @@
 #
 #   Layer 2 (here): the real security boundary, enforced by Postgres. Each query
 #   runs in a transaction under the `analytics_reader` role (SELECT only on the
-#   analytics views), with `search_path` pinned to the current tenant schema and
-#   resource limits set. All of it is `SET LOCAL`, so the role, search_path and
-#   limits auto-revert when the transaction ends and the pooled connection
-#   returns clean.
+#   analytics views), with resource limits set. Apartment has already pinned
+#   `search_path` to the current tenant schema, so unqualified names resolve there;
+#   we only assert up front that we are in a real tenant. The role and limits are
+#   `SET LOCAL`, so they auto-revert when the transaction ends and the pooled
+#   connection returns clean.
 #
 # NOTE: layer 2 depends on the `analytics_reader` role and its per-tenant-schema
 # grants existing in the database. Until that provisioning migration lands, valid
@@ -29,10 +30,12 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
   def name = 'run_reporting_sql_query'
 
   def description
-    'Runs a single read-only SELECT query against the reporting tables ' \
-      '(see the `get_reporting_sql_schema` tool for the available tables and columns). ' \
-      'Only analytics_fact_* / analytics_dimension_* tables may be referenced, unqualified. ' \
-      "At most #{ROW_LIMIT} rows are returned."
+    <<~DOC.squish
+      Runs a single read-only SELECT query against the reporting tables
+      (see the `get_reporting_sql_schema` tool for the available tables and columns).
+      Only analytics_fact_* / analytics_dimension_* tables may be referenced, unqualified.
+      At most #{ROW_LIMIT} rows are returned.
+    DOC
   end
 
   def input_schema
@@ -70,9 +73,12 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
 
     private
 
-    # Layer 2: execute under the restricted role, pinned to the tenant schema,
-    # with resource limits. One validated statement per transaction.
+    # Layer 2: execute under the restricted role with resource limits. Apartment
+    # has already pinned search_path to the current tenant schema, so unqualified
+    # names resolve there; we just assert we are in a real tenant first. One
+    # validated statement per transaction.
     def execute(normalized_sql)
+      ensure_tenant_context!
       conn = ActiveRecord::Base.connection
       result = nil
 
@@ -80,10 +86,6 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
         conn.execute("SET LOCAL statement_timeout = #{conn.quote(STATEMENT_TIMEOUT)}")
         conn.execute("SET LOCAL lock_timeout = #{conn.quote(LOCK_TIMEOUT)}")
         conn.execute("SET LOCAL work_mem = #{conn.quote(WORK_MEM)}")
-        # Tenant schema only (no public): the analytics views live in the tenant
-        # schema, and with layer 1 forbidding qualified names there is nothing
-        # else for an unqualified reference to resolve to.
-        conn.execute("SET LOCAL search_path TO #{conn.quote_column_name(tenant_schema)}")
         conn.execute("SET LOCAL ROLE #{conn.quote_column_name(ANALYTICS_READER_ROLE)}")
 
         capped_sql = "SELECT * FROM (#{normalized_sql}) mcp_reporting_query LIMIT #{ROW_LIMIT + 1}"
@@ -93,15 +95,14 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
       result
     end
 
-    # The schema name comes from trusted tenant context, validated against the
-    # known tenant list, never from model output.
-    def tenant_schema
+    # Refuse to run outside a real tenant. Apartment normally pins the connection to
+    # the request's tenant schema; this guards the edge case (e.g. a public-schema
+    # context) where the tool would otherwise query the shared/public analytics views.
+    def ensure_tenant_context!
       schema = Apartment::Tenant.current
-      unless Apartment.tenant_names.include?(schema)
-        raise ActiveRecord::StatementInvalid, "No tenant context for reporting query (schema: #{schema})."
-      end
+      return if Apartment.tenant_names.include?(schema)
 
-      schema
+      raise ActiveRecord::StatementInvalid, "No tenant context for reporting query (schema: #{schema})."
     end
   end
 end

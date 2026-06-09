@@ -62,4 +62,15 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
       expect(response.content.first[:text]).to match(/Query rejected/).and match(/Schema-qualified/)
     end
   end
+
+  describe 'tenant-context guard' do
+    it 'refuses to run a sandbox-valid query outside a real tenant (e.g. the public schema)' do
+      response = Apartment::Tenant.switch('public') do
+        run('SELECT count(*) AS n FROM analytics_fact_participations')
+      end
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/No tenant context/)
+    end
+  end
 end
