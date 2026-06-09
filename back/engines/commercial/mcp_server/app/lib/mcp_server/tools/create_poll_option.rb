@@ -6,36 +6,39 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Adds an answer option to an existing poll question. The option is appended after
-      the question's existing options. Use list_poll_questions to find question IDs.
+      Adds an answer option to an existing poll question. By default the option is appended
+      after the question's existing options; pass `ordering` to insert it at a specific
+      zero-based position. Use list_poll_questions to find question IDs.
     DESC
   end
 
   def input_schema
     {
       properties: {
-        poll_question_id: { type: 'string', description: 'The ID of the poll question to add the option to.' },
-        title_multiloc: { **multiloc_schema, description: 'Option title.' }
+        question_id: { type: 'string', description: 'The ID of the poll question to add the option to.' },
+        title_multiloc: { **multiloc_schema, description: 'Option title.' },
+        ordering: { type: 'integer', description: "Zero-based position among the question's options. Defaults to the end." }
       },
-      required: %w[poll_question_id title_multiloc]
+      required: %w[question_id title_multiloc]
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      question = Polls::Question.find(params[:poll_question_id])
+      question = Polls::Question.find(params[:question_id])
       option = Polls::Option.new(question: question, title_multiloc: params[:title_multiloc])
 
       Polls::SideFxOptionService.new.before_create(option, current_user)
       option.save!
+      option.insert_at(params[:ordering]) if params[:ordering]
       Polls::SideFxOptionService.new.after_create(option, current_user)
 
       ok(
         "Created poll option #{option.id}",
-        structured: option.as_json(only: %i[id question_id title_multiloc ordering])
+        structured: option.reload.as_json(only: %i[id question_id title_multiloc ordering])
       )
     rescue ActiveRecord::RecordNotFound
-      error("Poll question not found: #{params[:poll_question_id]}")
+      error("Poll question not found: #{params[:question_id]}")
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
     end
