@@ -31,10 +31,10 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
 
   def description
     <<~DOC.squish
-      Runs a single read-only SELECT query against the reporting tables
-      (see the `get_reporting_sql_schema` tool for the available tables and columns).
-      Only analytics_fact_* / analytics_dimension_* tables may be referenced, unqualified.
-      At most #{ROW_LIMIT} rows are returned.
+      Runs a single read-only postgres compatible SELECT query against the reporting tables
+      as return by the `get_reporting_sql_schema` tool. There let you answer data reporting
+      questions about participants, inputs, users, visitors, ... on the connect Go Vocal
+      platform. At most #{ROW_LIMIT} rows are returned.
     DOC
   end
 

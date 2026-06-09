@@ -14,7 +14,6 @@ module Analytics
     def self.table_description
       <<~DOC.squish
         Project dimension with descriptive attributes for projects (participation containers).
-        Referenced by analytics_fact_participations.dimension_project_id.
       DOC
     end
 
