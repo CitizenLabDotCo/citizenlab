@@ -64,173 +64,101 @@ export type MethodMetadata = {
   other_custom_fields: Multiloc[];
 };
 
-type TGenericMethod = {
+// Base shape shared by every id method. Concrete methods are built from this by
+// narrowing the `name` and (optionally) merging in method-specific attributes.
+type TGenericMethod<
+  Name extends IdMethodName = IdMethodName,
+  ExtraAttributes = unknown
+> = {
   id: string;
   type: 'id_method';
   attributes: {
-    name: IdMethodName;
+    name: Name;
     method_metadata?: MethodMetadata;
     authentication_method: boolean;
     verification_method: boolean;
-  };
+  } & ExtraAttributes;
 };
 
-export type IDFakeSSOMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'fake_sso';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-  };
-};
+export type IDFakeSSOMethod = TGenericMethod<'fake_sso'>;
 
-export type IDLookupMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'id_card_lookup';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
+export type IDLookupMethod = TGenericMethod<
+  'id_card_lookup',
+  {
     card_id: string;
     card_id_placeholder: string;
     card_id_tooltip: string;
     explainer_image_url: string;
     ui_method_name: string;
-  };
-};
+  }
+>;
 
-export type IDCriiptoMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'criipto';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    ui_method_name: string;
-  };
-};
+export type IDCriiptoMethod = TGenericMethod<
+  'criipto',
+  { ui_method_name: string }
+>;
 
-export type IDKeycloakMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'keycloak';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    ui_method_name: string;
-    provider: IconNames;
-  };
-};
+export type IDKeycloakMethod = TGenericMethod<
+  'keycloak',
+  { ui_method_name: string; provider: IconNames }
+>;
 
-export type IDTwodayMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'twoday';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    ui_method_name: string;
-  };
-};
+export type IDTwodayMethod = TGenericMethod<
+  'twoday',
+  { ui_method_name: string }
+>;
 
-export type IDAcmMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'acm';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    ui_method_name: string;
-  };
-};
+export type IDAcmMethod = TGenericMethod<'acm', { ui_method_name: string }>;
 
-export type IDAuth0Method = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'auth0';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    method_name_multiloc: Multiloc;
-  };
-};
+export type IDAuth0Method = TGenericMethod<
+  'auth0',
+  { method_name_multiloc: Multiloc }
+>;
 
-export type IDIdAustriaMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'id_austria';
-    ui_method_name: string;
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-  };
-};
+export type IDIdAustriaMethod = TGenericMethod<
+  'id_austria',
+  { ui_method_name: string }
+>;
 
-// Built-in SSO login methods (login-only; cannot verify identities). Their
-// configuration lives in `verification.verification_methods`, and the
-// UI-relevant settings are exposed via the method's serialized attributes.
-export type IDFacebookMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'facebook';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    app_id?: string;
-  };
-};
+export type IDFacebookMethod = TGenericMethod<'facebook', { app_id?: string }>;
 
-export type IDGoogleMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'google';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-  };
-};
+export type IDGoogleMethod = TGenericMethod<'google'>;
 
-export type IDAzureAdMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'azureactivedirectory';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
+export type IDAzureAdMethod = TGenericMethod<
+  'azureactivedirectory',
+  {
     logo_url?: string;
     login_mechanism_name?: string;
     visibility?: 'show' | 'link' | 'hide';
     enforced_email_domain_error_multiloc?: Multiloc;
-  };
-};
+  }
+>;
 
-export type IDAzureAdB2cMethod = {
-  id: string;
-  type: 'id_method';
-  attributes: {
-    name: 'azureactivedirectory_b2c';
-    method_metadata?: MethodMetadata;
-    authentication_method: boolean;
-    verification_method: boolean;
-    logo_url?: string;
-    login_mechanism_name?: string;
-  };
-};
+export type IDAzureAdB2cMethod = TGenericMethod<
+  'azureactivedirectory_b2c',
+  { logo_url?: string; login_mechanism_name?: string }
+>;
+
+// Methods that carry no method-specific attributes beyond the generic ones.
+type TOtherMethodName = Exclude<
+  IdMethodName,
+  | 'fake_sso'
+  | 'id_card_lookup'
+  | 'criipto'
+  | 'keycloak'
+  | 'twoday'
+  | 'acm'
+  | 'auth0'
+  | 'id_austria'
+  | 'facebook'
+  | 'google'
+  | 'azureactivedirectory'
+  | 'azureactivedirectory_b2c'
+>;
+
+export type IDOtherMethod = TGenericMethod<TOtherMethodName>;
 
 export type TVerificationMethod =
-  | TGenericMethod
   | IDFakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
@@ -242,4 +170,5 @@ export type TVerificationMethod =
   | IDFacebookMethod
   | IDGoogleMethod
   | IDAzureAdMethod
-  | IDAzureAdB2cMethod;
+  | IDAzureAdB2cMethod
+  | IDOtherMethod;
