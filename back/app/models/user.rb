@@ -337,7 +337,7 @@ class User < ApplicationRecord
       .joins(:phases)
       .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
       comments.exists? ||
-      cosponsorships.where(status: 'accepted').exists?
+      cosponsorships.exists?(status: 'accepted')
   end
 
   private
