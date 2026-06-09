@@ -284,13 +284,13 @@ de-AT:
       title: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     email_confirmation:
       best_regards: Mit freundlichen Grüßen
-      event_description: 'Vielen Dank für Ihre Teilnahme. Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein:'
+      event_description: 'Vielen Dank für deine Teilnahme. Bitte gebe diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein:'
       expire_code: Dieser Code läuft ab in
       hours_24: 24 Stunden.
-      ignore_email: Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren.
-      preheader: Bestätigen Sie Ihre E-Mail-Adresse für %{organizationName}
-      subject: Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
-      title: Bestätigen Sie Ihre E-Mail-Adresse
+      ignore_email: Wenn du keinen Code angefordert hast, kannst du diese E-Mail einfach ignorieren.
+      preheader: Bestätige deine E-Mail-Adresse für %{organizationName}
+      subject: Bestätige deine E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
+      title: Bestätige deine E-Mail-Adresse
     event_registration_confirmation:
       cta_add_to_calendar: Zum Kalender hinzufügen
       cta_button: Veranstaltung ansehen
@@ -504,13 +504,13 @@ de-AT:
       yesterday: Gestern
     new_email_confirmation:
       best_regards: Mit freundlichen Grüßen
-      event_description: 'Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein, um Ihre neue E-Mail-Adresse zu bestätigen:'
+      event_description: 'Bitte gebe diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein, um deine neue E-Mail-Adresse zu bestätigen:'
       expire_code: Dieser Code läuft ab in
       hours_24: 24 Stunden.
-      ignore_email: Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren.
-      preheader: Bestätigen Sie Ihre neue E-Mail-Adresse für %{organizationName}
-      subject: Bestätigen Sie Ihre neue E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
-      title: Bestätigen Sie Ihre neue E-Mail-Adresse
+      ignore_email: Wenn du keinen Code angefordert hast, kannst du diese E-Mail einfach ignorieren.
+      preheader: Bestätige deine neue E-Mail-Adresse für %{organizationName}
+      subject: Bestätige deine neue E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
+      title: Bestätige deine neue E-Mail-Adresse
     new_idea_for_admin_prescreening:
       cta_button: Beitrag prüfen
       days_ago: vor %{numberOfDays} Tagen
@@ -538,8 +538,8 @@ de-AT:
       title: Es gibt ein Update zu "%{input_title}"
     password_reset:
       cta_button: Passwort zurücksetzen
-      event_description: Sie haben eine Zurücksetzung Ihres Passworts für die Beteiligungsplattform von %{organizationName} angefordert. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.
-      preheader: Setzen Sie Ihr Passwort für %{organizationName} zurück
+      event_description: Du hast eine Zurücksetzung deines Passworts für die Beteiligungsplattform von %{organizationName} angefordert. Klicke auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.
+      preheader: Setze dein Passwort für %{organizationName} zurück
       subject: '%{organizationName}: Passwort zurücksetzen'
       title: Neues Passwort wählen
     preview_data:
@@ -688,13 +688,13 @@ de-AT:
       subject: Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht
       title: Ein Vorschlag hat die Abstimmungsschwelle erreicht!
     user_blocked:
-      for_more_information: Weitere Informationen hierzu finden Sie unter %{termsAndConditionsPage}
-      paragraph_1_with_reason: 'Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:'
-      paragraph_1_without_reason: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aufgrund eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert.
-      preheader: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert
-      subject: Ihr Konto wurde vorübergehend deaktiviert
-      title: Ihr Konto wurde vorübergehend deaktiviert
-      you_can_sign_in_again_from: Sie können sich ab dem %{date} wieder anmelden
+      for_more_information: Weitere Informationen hierzu findest du unter %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Dein Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:'
+      paragraph_1_without_reason: Dein Konto auf der Beteiligungsplattform von %{organizationName} wurde aufgrund eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert.
+      preheader: Dein Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert
+      subject: Dein Konto wurde vorübergehend deaktiviert
+      title: Dein Konto wurde vorübergehend deaktiviert
+      you_can_sign_in_again_from: Du kannst dich ab dem %{date} wieder anmelden
     user_digest:
       commented: '%{authorFirstName} kommentierte:'
       cta_button: Zur Plattform
