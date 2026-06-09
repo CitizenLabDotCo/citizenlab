@@ -1,13 +1,13 @@
 import { IdMethodData, IdMethodName } from './types';
 
-export function isLastVerificationMethod(
-  verificationMethodName: IdMethodName,
-  verificationMethods: IdMethodData[]
+export function isLastIdMethod(
+  idMethodName: IdMethodName,
+  idMethods: IdMethodData[]
 ) {
   return (
-    verificationMethods
+    idMethods
       .map((vm) => vm.attributes.name)
-      .indexOf(verificationMethodName) ===
-    verificationMethods.length - 1
+      .indexOf(idMethodName) ===
+    idMethods.length - 1
   );
 }

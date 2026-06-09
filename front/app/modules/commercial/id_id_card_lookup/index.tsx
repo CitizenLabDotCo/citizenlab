@@ -4,7 +4,7 @@ import {
   IdMethodName,
   IDLookupMethod,
 } from 'api/id_methods/types';
-import { isLastVerificationMethod } from 'api/id_methods/util';
+import { isLastIdMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -27,7 +27,7 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastVerificationMethod(
+        const last = isLastIdMethod(
           verificationMethodName,
           verificationMethods
         );
