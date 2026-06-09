@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "پوسٹ",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "تمام ان پٹ",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "اشاعت سے پہلے تمام ان پٹس کو منتظم کا جائزہ لینے کی ضرورت ہوتی ہے۔ ان پٹس اس وقت تک نظر نہیں آئیں گے جب تک کہ کوئی منتظم ان کا جائزہ نہیں لے گا اور ان کی منظوری نہیں دے گا۔ مصنفین ان پٹ کو اسکرین کرنے یا ان پر ردعمل ظاہر کرنے کے بعد ان میں ترمیم نہیں کر سکتے۔",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "اشاعت سے پہلے تمام اندراجات کے لیے ایڈمن کے جائزے کی ضرورت ہوتی ہے۔ اندراجات اس وقت تک نظر نہیں آئیں گے جب تک کہ کوئی ایڈمن ان کا جائزہ لے کر انہیں منظور نہ کر لے۔ اسکریننگ یا ردعمل ظاہر کیے جانے کے بعد مصنفین اندراجات میں ترمیم نہیں کر سکتے۔ صرف غیر معمولی صورتوں میں استعمال کریں۔ تمام اندراجات کی پری اسکریننگ جمہوری شرکت پر اثر انداز ہو سکتی ہے۔ اپنے گورنمنٹ سکسیس مینیجر سے مشورہ کرنے کے بعد ہی اسے فعال کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "جھنڈا لگا ہوا ان پٹس",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "صرف نامناسب مواد کے لیے جھنڈا لگائے گئے ان پٹس کو اشاعت سے پہلے جائزہ لینے کی ضرورت ہے۔ باقی تمام معلومات فوری طور پر شائع کی جاتی ہیں۔ مصنفین شائع ہونے کے بعد ان پٹس میں ترمیم کر سکتے ہیں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "آف",

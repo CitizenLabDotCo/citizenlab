@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Sūtīt",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Visas ievades",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Visiem ievadītajiem datiem pirms publicēšanas nepieciešama administratora pārbaude. Ievadi nebūs redzami, kamēr tos nepārskatīs un neapstiprinās administrators. Autori nevar rediģēt ievaddatus pēc tam, kad tie ir pārbaudīti vai uz tiem ir reaģēts.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Visiem iesniegumiem pirms publicēšanas ir nepieciešama administratora pārskatīšana. Iesniegumi nebūs redzami, kamēr administrators tos nebūs pārskatījis un apstiprinājis. Autori nevar rediģēt iesniegumus pēc tam, kad tie ir pārbaudīti vai uz tiem ir saņemta reakcija. Izmantojiet tikai izņēmuma gadījumos. Visu iesniegumu iepriekšēja pārbaude var ietekmēt demokrātisko līdzdalību. Iespējojiet tikai pēc konsultēšanās ar savu pašvaldību sadarbības vadītāju.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Ievadi ar karodziņiem",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Pirms publicēšanas jāpārskata tikai tie ievades dati, kas atzīmēti kā neatbilstoša satura. Visi pārējie dati tiek publicēti nekavējoties. Autori var rediģēt ievaddatus pēc to publicēšanas.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Izslēgts",

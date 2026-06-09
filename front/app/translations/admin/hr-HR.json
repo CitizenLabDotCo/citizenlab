@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Objava",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Svi ulazi",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Svi unosi zahtijevaju administratorski pregled prije objave. Unosi neće biti vidljivi dok ih administrator ne pregleda i odobri. Autori ne mogu uređivati unose nakon što su pregledani ili na njih reagirano.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Svi unosi zahtijevaju pregled administratora prije objave. Unosi neće biti vidljivi dok ih administrator ne pregleda i odobri. Autori ne mogu uređivati unose nakon što su pregledani ili nakon što je na njih reagirano. Koristite samo u iznimnim slučajevima. Prethodni pregled svih unosa može utjecati na demokratsko sudjelovanje. Omogućite tek nakon savjetovanja sa svojim voditeljem za uspjeh klijenata.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Označeni unosi",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Samo unosi označeni kao neprikladan sadržaj zahtijevaju pregled prije objave. Svi ostali unosi objavljuju se odmah. Autori mogu uređivati unose nakon što su objavljeni.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Isključeno",

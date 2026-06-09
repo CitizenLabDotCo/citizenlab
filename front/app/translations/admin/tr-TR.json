@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Posta",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Tüm girdiler",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Tüm girdiler yayınlanmadan önce yönetici incelemesi gerektirir. Girdiler, bir yönetici tarafından incelenip onaylanana kadar görünür olmayacaktır. Yazarlar, girdileri incelendikten veya tepki verildikten sonra düzenleyemezler.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Tüm girişler yayınlanmadan önce yönetici incelemesi gerektirir. Girişler, bir yönetici tarafından incelenip onaylanana kadar görünür olmayacaktır. Yazarlar, girişler incelendikten veya tepki aldıktan sonra bunları düzenleyemezler. Yalnızca istisnai durumlar için kullanın. Tüm girişlerin önceden incelenmesi demokratik katılımı etkileyebilir. Yalnızca hükümet başarı yöneticinize danıştıktan sonra etkinleştirin.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "İşaretli girdiler",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Yalnızca uygunsuz içerik nedeniyle işaretlenen girdilerin yayınlanmadan önce incelenmesi gerekir. Diğer tüm girdiler hemen yayınlanır. Yazarlar girdileri yayınlandıktan sonra düzenleyebilirler.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Kapalı",
