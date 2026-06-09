@@ -48,11 +48,11 @@ de-DE:
         new_attendee: Neu registrierte*r Benutzer*in
         project_review_requester: Projektmanager*in, der oder die die Freigabe beantragt hat
         project_reviewers: Projektüberprüfer*innen und Ordnermanager*innen
-        user_changing_email: Benutzer, der seine E-Mail-Adresse ändert
-        user_confirming_email: Nutzer:in, der/die die E-Mail-Adresse bestätigt
-        user_requesting_password_reset: Benutzer, der das Zurücksetzen des Passworts angefordert hat
+        user_changing_email: Nutzer*in, die ihre E-Mail-Adresse ändert
+        user_confirming_email: Nutzer*in, die die E-Mail-Adresse bestätigt
+        user_requesting_password_reset: Nutzer*in, die das Zurücksetzen des Passworts angefordert hat
         user_who_commented: Nutzer*in kommentiert
-        user_who_is_blocked: Benutzer, dessen Konto gesperrt ist
+        user_who_is_blocked: Nutzer*in, dessen Konto gesperrt ist
         user_who_is_invited_to_cosponsor_a_proposal: Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen
         user_who_is_mentioned: Erwähnte Admins & Manager*innen
         user_who_is_receiving_admin_rights: Nutzer*in erhält Admin-Rechte
@@ -109,12 +109,12 @@ de-DE:
         registration_to_event: Anmeldung zu einer Veranstaltung
         survey_1_day_after_draft_saved: 1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat
         user_accepts_invitation_to_cosponsor_a_proposal: Nutzer*in nimmt Einladung zur Unterstützung eines Vorschlags an
-        user_changes_email: Benutzer ändert seine E-Mail-Adresse
+        user_changes_email: Nutzer*in ändert ihre E-Mail-Adresse
         user_comments: Kommentar wird veröffentlicht
         user_comments_on_input: Kommentar wird veröffentlicht
         user_comments_on_proposal: Nutzer*in kommentiert Vorschlag
-        user_confirms_email: Benutzer bestätigt seine E-Mail-Adresse
-        user_is_blocked: Das Konto des Benutzers ist gesperrt
+        user_confirms_email: Nutzer*in bestätigt ihre E-Mail-Adresse
+        user_is_blocked: Das Konto der Nutzerin ist gesperrt
         user_is_given_admin_rights: Nutzer*in erhält Admin-Rechte
         user_is_given_folder_manager_rights: Nutzer*in erhält Ordner-Manager*innen-Rechte
         user_is_given_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
@@ -128,7 +128,7 @@ de-DE:
         user_registers_for_the_first_time: Direkt nach der 1. Registrierung
         user_replies_to_comment: Antwort wird veröffentlicht
         user_replies_to_internal_comment: Nutzer*in antwortet auf internen Kommentar
-        user_requests_password_reset: Benutzer fordert das Zurücksetzen des Passworts an
+        user_requests_password_reset: Nutzer*in fordert das Zurücksetzen des Passworts an
         voting_1_day_after_last_votes: 1 Tag nach der letzten Stimmabgabe der Nutzer*innen
         voting_2_days_before_phase_closes: 2 Tage vor Ende der Abstimmung
         voting_basket_submitted: Stimmen eingereicht
@@ -283,7 +283,7 @@ de-DE:
       subject: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       title: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     email_confirmation:
-      best_regards: Mit freundlichen Grüßen,
+      best_regards: Mit freundlichen Grüßen
       event_description: 'Vielen Dank für Ihre Teilnahme. Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein:'
       expire_code: Dieser Code läuft ab in
       hours_24: 24 Stunden.
@@ -503,7 +503,7 @@ de-DE:
       today: Heute
       yesterday: Gestern
     new_email_confirmation:
-      best_regards: Mit freundlichen Grüßen,
+      best_regards: Mit freundlichen Grüßen
       event_description: 'Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein, um Ihre neue E-Mail-Adresse zu bestätigen:'
       expire_code: Dieser Code läuft ab in
       hours_24: 24 Stunden.
