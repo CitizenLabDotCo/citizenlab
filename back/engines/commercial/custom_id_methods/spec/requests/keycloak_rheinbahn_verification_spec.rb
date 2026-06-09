@@ -99,7 +99,7 @@ context 'keycloak verification (Rheinbahn)' do
     expect_user_to_not_be_verified(user)
     expect(user).to have_attributes({
       first_name: 'Unøy-Aktig',
-      last_name: 'Kost Nost',
+      last_name: 'Kost Nost'
     })
     expect(user.identities.first).to have_attributes({
       provider: 'keycloak',
