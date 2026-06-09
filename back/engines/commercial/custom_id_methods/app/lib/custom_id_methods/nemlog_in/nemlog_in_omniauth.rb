@@ -13,7 +13,7 @@ module CustomIdMethods::NemlogIn
     end
 
     def authentication?
-      false
+      true
     end
 
     # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp

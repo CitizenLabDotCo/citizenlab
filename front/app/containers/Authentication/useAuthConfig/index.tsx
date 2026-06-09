@@ -61,6 +61,13 @@ export default function useAuthConfig() {
 
   ssoProviders.azureactivedirectory = azureAdOverride;
 
+  // NOTE: Quick fix - required a better solution
+  // NemLog-in is intentionally hidden from the
+  // default sign-up/log-in screen.
+  // It can still be used in verified actions
+  // to sign up or log in.
+  ssoProviders.nemlog_in = false;
+
   return {
     passwordLoginEnabled,
     ssoProviders,

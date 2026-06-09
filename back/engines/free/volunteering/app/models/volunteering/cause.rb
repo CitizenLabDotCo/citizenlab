@@ -29,6 +29,7 @@ module Volunteering
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :description_multiloc, multiloc: { presence: false, html: true }
+    validate :phase_supports_causes, on: :create
 
     before_validation :sanitize_description_multiloc
     before_validation :strip_title
@@ -38,6 +39,15 @@ module Volunteering
     end
 
     private
+
+    # Causes only make sense in a volunteering phase. The inverse (a phase leaving
+    # the volunteering method while it still has causes) is guarded on the phase
+    # side by Volunteering::VolunteeringPhase#causes_allowed_in_participation_method.
+    def phase_supports_causes
+      return if phase.nil? || phase.volunteering?
+
+      errors.add(:phase, :unsupported_participation_method, message: "must be a volunteering phase (participation_method is '#{phase.participation_method}')")
+    end
 
     def sanitize_description_multiloc
       service = SanitizationService.new
