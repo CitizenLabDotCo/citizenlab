@@ -6,7 +6,7 @@ RSpec.describe McpServer::Tools::GetReportingSqlSchema do
   describe '#input_schema' do
     it 'restricts table_names to the whitelisted reporting tables' do
       enum = described_class.new.input_schema.dig(:properties, :table_names, :items, :enum)
-      expect(enum).to eq(described_class::REPORTING_TABLES)
+      expect(enum).to eq(described_class::REPORTING_TABLE_NAMES)
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe McpServer::Tools::GetReportingSqlSchema do
 
       expect(response.error?).to be false
       expect(response.structured_content.keys)
-        .to match_array(McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES)
+        .to match_array(McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES)
     end
 
     it 'returns column metadata for the participations fact view' do

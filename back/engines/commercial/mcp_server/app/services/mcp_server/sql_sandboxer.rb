@@ -178,7 +178,7 @@ module McpServer
     # The single source of truth for queryable tables, shared with the schema
     # tool. Referenced lazily to avoid eager constant resolution at load time.
     def allowed_tables
-      McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES
+      McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES
     end
 
     def check_function!(func_call)

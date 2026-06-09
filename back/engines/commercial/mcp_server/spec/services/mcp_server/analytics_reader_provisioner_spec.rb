@@ -37,7 +37,7 @@ RSpec.describe McpServer::AnalyticsReaderProvisioner do
     end
 
     it 'grants SELECT on every reporting table' do
-      McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES.each do |table|
+      McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES.each do |table|
         expect(can_select?(table)).to be(true), "expected analytics_reader to read #{table}"
       end
     end

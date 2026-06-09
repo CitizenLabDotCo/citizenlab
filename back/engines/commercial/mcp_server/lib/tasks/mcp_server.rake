@@ -14,17 +14,4 @@ namespace :mcp_server do
 
     puts "Done: provisioned #{tenant_names.size} tenant(s)."
   end
-
-  desc 'Re-apply the reporting table/column documentation comments across all tenants. ' \
-       'Re-run after a scenic view-version bump (which drops VIEW comments) or after ' \
-       'editing ReportingSchemaAnnotator::ANNOTATIONS.'
-  task reannotate_reporting_schema: :environment do
-    tenant_names = Apartment.tenant_names
-    tenant_names.each do |schema|
-      McpServer::ReportingSchemaAnnotator.annotate!(schema)
-      puts "  annotated reporting schema on #{schema}"
-    end
-
-    puts "Done: annotated #{tenant_names.size} tenant(s)."
-  end
 end

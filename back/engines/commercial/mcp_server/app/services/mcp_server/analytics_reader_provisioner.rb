@@ -77,7 +77,7 @@ module McpServer
       private
 
       def reporting_tables
-        McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES
+        McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES
       end
 
       def quoted_role = quote_ident(ROLE)

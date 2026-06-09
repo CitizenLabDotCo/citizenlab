@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
-  # The single source of truth for which tables the reporting tools expose. Both
-  # this schema tool and the run_reporting_sql_query sandbox (McpServer::SqlSandboxer)
-  # read from here, so a table can never be advertised but rejected, or vice versa.
-  # Currently: the participations fact plus the dimensions it joins to.
-  REPORTING_TABLES = %w[
-    analytics_fact_participations
-    analytics_dimension_dates
-    analytics_dimension_projects
-    analytics_dimension_types
-    analytics_dimension_users
+  # The single source of truth for which relations the reporting tools expose, held
+  # as the analytics models that own them. Each model documents itself via
+  # .table_description / .field_descriptions, and its .table_name is what the LLM
+  # queries. The run_reporting_sql_query sandbox (McpServer::SqlSandboxer) and the
+  # analytics_reader provisioner read REPORTING_TABLE_NAMES, so a table can never be
+  # advertised but rejected, or vice versa.
+  REPORTING_TABLES = [
+    Analytics::FactParticipation,
+    Analytics::DimensionDate,
+    Analytics::DimensionProject,
+    Analytics::DimensionType,
+    Analytics::DimensionUser
   ].freeze
+
+  REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
 
   def name = 'get_reporting_sql_schema'
   def description = 'Gets the SQL schema for the tables to run reporting queries against with the `run_reporting_sql_query` tool. Optionally, specify the names of the tables to get the schema for those specific tables only.'
@@ -24,7 +28,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
           description: 'The names of the database tables to get the schema for (optional)',
           items: {
             type: 'string',
-            enum: REPORTING_TABLES
+            enum: REPORTING_TABLE_NAMES
           }
         }
       }
@@ -33,37 +37,27 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      requested = params[:table_names].presence || REPORTING_TABLES
-      table_names = REPORTING_TABLES & requested
+      requested = params[:table_names].presence
+      models = REPORTING_TABLES.select { |model| requested.nil? || requested.include?(model.table_name) }
       connection = ActiveRecord::Base.connection
 
-      schema = table_names.index_with do |table_name|
-        {
-          description: relation_comment(connection, table_name),
-          columns: connection.columns(table_name).map do |column|
-            {
-              name: column.name,
-              type: column.sql_type,
-              null: column.null,
-              default: column.default,
-              comment: column.comment
-            }
-          end
-        }
+      schema = models.to_h do |model|
+        field_docs = model.field_descriptions
+        columns = connection.columns(model.table_name).map do |column|
+          {
+            name: column.name,
+            type: column.sql_type,
+            null: column.null,
+            default: column.default,
+            comment: field_docs[column.name]
+          }
+        end
+        [model.table_name, { description: model.table_description, columns: columns }]
       end
 
-      ok("SQL schema for #{table_names.join(', ')}", structured: schema)
+      ok("SQL schema for #{schema.keys.join(', ')}", structured: schema)
     rescue ActiveRecord::StatementInvalid => e
       error("Error fetching schema: #{e.message}")
-    end
-
-    private
-
-    # The relation-level comment. We can't use connection.table_comment: it filters
-    # to base tables, so it returns nil for the dimension/fact VIEWS. obj_description
-    # over the regclass works for tables and views alike, resolved via search_path.
-    def relation_comment(connection, table_name)
-      connection.select_value("SELECT obj_description(#{connection.quote(table_name)}::regclass, 'pg_class')")
     end
   end
 end

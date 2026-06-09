@@ -1390,41 +1390,6 @@ CREATE TABLE public.analytics_dimension_dates (
 
 
 --
--- Name: TABLE analytics_dimension_dates; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.analytics_dimension_dates IS 'Date dimension with one row per calendar date, used to bucket facts by day, week, month or year. Join a fact dimension_date_*_id to this date column. Dates are calendar dates in UTC and are not adjusted to the tenant timezone.';
-
-
---
--- Name: COLUMN analytics_dimension_dates.date; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_dates.date IS 'Calendar date and primary key. Target of the fact dimension_date_*_id foreign keys.';
-
-
---
--- Name: COLUMN analytics_dimension_dates.year; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_dates.year IS 'Year as text, for example 2026.';
-
-
---
--- Name: COLUMN analytics_dimension_dates.month; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_dates.month IS 'Month as YYYY-MM text, for example 2026-06.';
-
-
---
--- Name: COLUMN analytics_dimension_dates.week; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_dates.week IS 'Date of the Monday that starts the week containing this date (the week bucket).';
-
-
---
 -- Name: analytics_dimension_locales; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1487,27 +1452,6 @@ CREATE VIEW public.analytics_dimension_projects AS
 
 
 --
--- Name: VIEW analytics_dimension_projects; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON VIEW public.analytics_dimension_projects IS 'Project dimension with descriptive attributes for projects (participation containers). Referenced by analytics_fact_participations.dimension_project_id.';
-
-
---
--- Name: COLUMN analytics_dimension_projects.id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_projects.id IS 'Project primary key. Target of fact dimension_project_id foreign keys.';
-
-
---
--- Name: COLUMN analytics_dimension_projects.title_multiloc; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_projects.title_multiloc IS 'Project title as a multiloc JSON object keyed by locale, for example {"en": "Budget 2026"}. Read one locale with the ->> operator, for example title_multiloc->>''en''.';
-
-
---
 -- Name: analytics_dimension_projects_fact_visits; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1567,34 +1511,6 @@ CREATE TABLE public.analytics_dimension_types (
     name character varying,
     parent character varying
 );
-
-
---
--- Name: TABLE analytics_dimension_types; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON TABLE public.analytics_dimension_types IS 'Type dimension describing the kind of participation. Referenced by analytics_fact_participations.dimension_type_id (and other facts). Each row is a (name, parent) pair.';
-
-
---
--- Name: COLUMN analytics_dimension_types.id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_types.id IS 'Primary key. Target of fact dimension_type_id foreign keys.';
-
-
---
--- Name: COLUMN analytics_dimension_types.name; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_types.name IS 'Type name. One of idea, proposal, comment, reaction, poll, volunteer, survey, basket, event_attendance or follower.';
-
-
---
--- Name: COLUMN analytics_dimension_types.parent; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_types.parent IS 'Category the type applies to: post for idea and proposal; idea or proposal for comment; idea or comment for reaction; the followed entity (for example project or phase) for follower; NULL for poll, volunteer, survey, basket and event_attendance.';
 
 
 --
@@ -1667,41 +1583,6 @@ CREATE VIEW public.analytics_dimension_users AS
    FROM (public.users u
      LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
            FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
-
-
---
--- Name: VIEW analytics_dimension_users; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON VIEW public.analytics_dimension_users IS 'User dimension with classification attributes, one row per user. Referenced by facts via dimension_user_id.';
-
-
---
--- Name: COLUMN analytics_dimension_users.id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_users.id IS 'User primary key. Target of fact dimension_user_id foreign keys.';
-
-
---
--- Name: COLUMN analytics_dimension_users.role; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_users.role IS 'Highest role of the user, taken from the first entry of their roles. One of admin, project_moderator, project_folder_moderator or space_moderator, or citizen for ordinary users with no special role.';
-
-
---
--- Name: COLUMN analytics_dimension_users.invite_status; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_users.invite_status IS 'Invitation state: pending (invited, not yet accepted), accepted, or NULL when the user registered directly rather than by invitation.';
-
-
---
--- Name: COLUMN analytics_dimension_users.has_visits; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_dimension_users.has_visits IS 'True when the user has at least one recorded visit. Visits here come from the Matomo-based visits fact, which can differ from the visitor numbers shown on dashboards (a different source).';
 
 
 --
@@ -2122,76 +2003,6 @@ UNION ALL
    FROM ((public.events_attendances ea
      LEFT JOIN public.events e ON ((e.id = ea.event_id)))
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)));
-
-
---
--- Name: VIEW analytics_fact_participations; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON VIEW public.analytics_fact_participations IS 'Fact table with one row per participation action: a published idea or native-survey response, a comment, a reaction (like/dislike), a poll response, a volunteering sign-up, a basket (participatory-budgeting submission) or an event attendance. Count distinct participants with participant_id (it handles anonymous actions), not dimension_user_id. Join the dimension_* keys to the matching analytics_dimension_* tables.';
-
-
---
--- Name: COLUMN analytics_fact_participations.id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.id IS 'Identifier of the underlying source record (idea, comment, reaction, poll response, volunteer, basket or event attendance). Unique per row.';
-
-
---
--- Name: COLUMN analytics_fact_participations.dimension_user_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.dimension_user_id IS 'Acting user; foreign key to analytics_dimension_users.id. NULL for anonymous actions. Do not count participants on this column (anonymous rows would be dropped); use participant_id.';
-
-
---
--- Name: COLUMN analytics_fact_participations.participant_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.participant_id IS 'Stable per-participant key for distinct counts. Equals the user id when known. For anonymous ideas, native-survey responses and comments it falls back to a stable author hash, so repeat actions de-duplicate. For anonymous reactions, poll responses, baskets and volunteering it falls back to the row id, so each such action counts as a separate participant. Event attendances use the attendee id only.';
-
-
---
--- Name: COLUMN analytics_fact_participations.dimension_project_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.dimension_project_id IS 'Project the action belongs to; foreign key to analytics_dimension_projects.id. Can be NULL when the action is not linked to a project.';
-
-
---
--- Name: COLUMN analytics_fact_participations.dimension_type_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.dimension_type_id IS 'Participation type; foreign key to analytics_dimension_types.id. In this fact the type is one of idea, survey, comment, reaction, poll, volunteer, basket or event_attendance.';
-
-
---
--- Name: COLUMN analytics_fact_participations.dimension_date_created_id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.dimension_date_created_id IS 'Creation date (created_at truncated to a date); foreign key to analytics_dimension_dates.date. Date only, in UTC, so it can differ from the tenant-local date near midnight.';
-
-
---
--- Name: COLUMN analytics_fact_participations.reactions_count; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.reactions_count IS 'Reactions associated with the row. For idea and comment rows: likes plus dislikes received by that item. For reaction rows: always 1 (the reaction itself). 0 for polls, volunteering, baskets and event attendances.';
-
-
---
--- Name: COLUMN analytics_fact_participations.likes_count; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.likes_count IS 'Likes (up-votes). For idea and comment rows: likes received by the item. For reaction rows: 1 when the reaction is a like, else 0. 0 for the other types.';
-
-
---
--- Name: COLUMN analytics_fact_participations.dislikes_count; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.analytics_fact_participations.dislikes_count IS 'Dislikes (down-votes). For idea and comment rows: dislikes received by the item. For reaction rows: 1 when the reaction is a dislike, else 0. 0 for the other types.';
 
 
 --
@@ -8991,7 +8802,6 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20260605140000'),
 ('20260605120000'),
 ('20260528180000'),
 ('20260528120000'),
