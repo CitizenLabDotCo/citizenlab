@@ -39,6 +39,7 @@ module IdMethods
     end
 
     def enabled_for_verified_actions?
+      return false if config.nil?
       config[:enabled_for_verified_actions] || false
     end
 
