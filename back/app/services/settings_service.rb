@@ -74,7 +74,6 @@ class SettingsService
   end
 
   def format_for_front_end(settings, schema)
-    settings = disable_verification_if_no_methods_enabled(settings)
     remove_private_settings(settings, schema)
   end
 
@@ -110,14 +109,6 @@ class SettingsService
         authentication_token_lifetime_in_days: 30
       }
     }
-  end
-
-  # Ensures the FE does not show verification if:
-  # a) There are no verification methods
-  # b) All verification methods are flagged as 'hide_from_profile' or verification? = false
-  def disable_verification_if_no_methods_enabled(settings)
-    # TODO: disable_verification_if_no_methods_enabled
-    settings
   end
 
   private
