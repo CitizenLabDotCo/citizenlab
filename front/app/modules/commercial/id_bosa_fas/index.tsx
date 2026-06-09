@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { TVerificationMethodName } from 'api/id_methods/types';
+import { IdMethodName } from 'api/id_methods/types';
 import { isLastVerificationMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const BosaFasButton = React.lazy(() => import('./components/BosaFasButton'));
 
-const verificationMethodName: TVerificationMethodName = 'bosa_fas';
+const verificationMethodName: IdMethodName = 'bosa_fas';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({

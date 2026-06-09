@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
-import { TVerificationMethodName } from 'api/id_methods/types';
+import { IdMethodName } from 'api/id_methods/types';
 import useVerificationMethodVerifiedActions from 'api/id_methods/useVerificationMethodVerifiedActions';
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
@@ -31,7 +31,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
 
   const methodName = verificationMethod.data.attributes.name;
 
-  const methodButton = (methodName: TVerificationMethodName) => {
+  const methodButton = (methodName: IdMethodName) => {
     if (methodName === 'clave_unica') {
       return (
         <ClaveUnicaExpandedAuthProviderButton

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   TVerificationMethod,
-  TVerificationMethodName,
+  IdMethodName,
   IDAuth0Method,
 } from 'api/id_methods/types';
 
@@ -15,7 +15,7 @@ import FranceConnectVerificationButton from './FranceConnectVerificationButton';
 // SSO verification methods rendered by this centralized component. The
 // remaining (form-based, manual) methods are still rendered through the
 // `app.components.VerificationModal.buttons` outlet by their own modules.
-const CENTRALIZED_METHODS: TVerificationMethodName[] = [
+const CENTRALIZED_METHODS: IdMethodName[] = [
   'acm',
   'auth0',
   'clave_unica',

@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
-import { TVerificationMethodName } from 'api/id_methods/types';
+import { IdMethodName } from 'api/id_methods/types';
 import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -22,7 +22,7 @@ type PasswordChangeProps = {
 // SSO methods that don't return an email by default (email_always_present? ==
 // false): users authenticated through these need to be able to set/change their
 // email.
-const SSO_METHODS_WITHOUT_EMAIL: TVerificationMethodName[] = [
+const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
   'clave_unica',
   'id_austria',
   'nemlog_in',

@@ -5,9 +5,9 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import idMethodsKeys from './keys';
 
-export type VerificationMethodsKeys = Keys<typeof idMethodsKeys>;
+export type IdMethodsKeys = Keys<typeof idMethodsKeys>;
 
-export const verificationTypesLeavingPlatform = [
+export const omniauthVerificationTypes = [
   'auth0',
   'id_austria',
   'criipto',
@@ -21,7 +21,7 @@ export const verificationTypesLeavingPlatform = [
   'fake_sso',
 ];
 
-export type TVerificationMethodName =
+export type IdMethodName =
   | 'auth0'
   | 'bogus'
   | 'fake_sso'
@@ -68,7 +68,7 @@ type TGenericMethod = {
   id: string;
   type: 'id_method';
   attributes: {
-    name: TVerificationMethodName;
+    name: IdMethodName;
     method_metadata?: MethodMetadata;
     authentication_method: boolean;
     verification_method: boolean;

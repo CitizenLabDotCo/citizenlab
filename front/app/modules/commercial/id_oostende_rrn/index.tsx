@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TVerificationMethodName } from 'api/id_methods/types';
+import { IdMethodName } from 'api/id_methods/types';
 import { isLastVerificationMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -12,7 +12,7 @@ const VerificationFormOostendeRrn = React.lazy(
   () => import('./components/VerificationFormOostendeRrn')
 );
 
-const verificationMethodName: TVerificationMethodName = 'oostende_rrn';
+const verificationMethodName: IdMethodName = 'oostende_rrn';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({

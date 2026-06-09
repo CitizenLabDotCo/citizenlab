@@ -2,12 +2,12 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import {
   TVerificationMethod,
-  verificationTypesLeavingPlatform,
+  omniauthVerificationTypes,
 } from 'api/id_methods/types';
 import useVerificationMethods from 'api/id_methods/useVerificationMethods';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationData } from 'containers/Authentication/typings';
@@ -55,7 +55,7 @@ const VerificationSteps = memo<Props>(
       // Save the successAction and the current context in local
       // storage for when user returns from verification which leaves platform.
       if (
-        verificationTypesLeavingPlatform.includes(
+        omniauthVerificationTypes.includes(
           selectedMethod.attributes.name
         )
       ) {

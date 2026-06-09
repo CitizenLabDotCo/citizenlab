@@ -1,7 +1,7 @@
 import {
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
-  TVerificationMethodName,
+  IdMethodName,
 } from 'api/id_methods/types';
 import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
@@ -40,7 +40,7 @@ export default function useAuthConfig() {
       ...providers,
       [name]: enabled,
     };
-  }, {} as Record<TVerificationMethodName, boolean | undefined>);
+  }, {} as Record<IdMethodName, boolean | undefined>);
 
   const azureAdMethod = idMethods?.data.find(
     (method): method is IDAzureAdMethod =>

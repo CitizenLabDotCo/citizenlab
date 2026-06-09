@@ -3,7 +3,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { TVerificationMethodName } from 'api/id_methods/types';
+import { IdMethodName } from 'api/id_methods/types';
 import useVerificationMethods from 'api/id_methods/useVerificationMethods';
 
 import { AuthProvider } from 'containers/Authentication/typings';
@@ -70,7 +70,7 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
 
     if (isNilOrError(verificationMethods)) return null;
 
-    const verificationMethodName: TVerificationMethodName = 'clave_unica';
+    const verificationMethodName: IdMethodName = 'clave_unica';
     const claveUnicaMethod = verificationMethods.data.find(
       (vm) => vm.attributes.name === verificationMethodName
     );
