@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Id methods' do
-  explanation "Id methods are the methods for people to either login/signup (authentication), prove their identity (verification) or both."
+  explanation 'Id methods are the methods for people to either login/signup (authentication), prove their identity (verification) or both.'
 
   before do
     header 'Content-Type', 'application/json'
