@@ -34,12 +34,12 @@ export const isCentralizedSSOMethod = (method: IdMethodData) =>
   CENTRALIZED_METHODS.includes(method.attributes.name);
 
 interface Props {
-  verificationMethods: IdMethodData[];
+  idMethods: IdMethodData[];
   onClick: (method: IdMethodData) => void;
 }
 
-const SSOVerificationButtons = ({ verificationMethods, onClick }: Props) => {
-  const methods = verificationMethods.filter(isCentralizedSSOMethod);
+const SSOVerificationButtons = ({ idMethods, onClick }: Props) => {
+  const methods = idMethods.filter(isCentralizedSSOMethod);
 
   return (
     <>

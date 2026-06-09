@@ -11,17 +11,17 @@ const verificationMethodName: IdMethodName = 'bosa_fas';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
-      verificationMethods,
+      idMethods,
       ...otherProps
     }) => {
-      const method = verificationMethods.find(
+      const method = idMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
         const last = isLastIdMethod(
           verificationMethodName,
-          verificationMethods
+          idMethods
         );
         return <BosaFasButton last={last} method={method} {...otherProps} />;
       }

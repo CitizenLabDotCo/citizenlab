@@ -242,11 +242,11 @@ const findCustomErrorMessage = (
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: verificationMethods } = useIdMethods();
+  const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const ssoEnforcedForDomainMultiloc = verificationMethods?.data
+  const ssoEnforcedForDomainMultiloc = idMethods?.data
     .find(
       (method): method is IDAzureAdMethod =>
         method.attributes.name === 'azureactivedirectory'

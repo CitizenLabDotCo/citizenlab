@@ -33,9 +33,9 @@ const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
 
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const { data: verificationMethods } = useIdMethods();
+  const { data: idMethods } = useIdMethods();
 
-  const ssoWithoutEmailEnabled = !!verificationMethods?.data.some((method) =>
+  const ssoWithoutEmailEnabled = !!idMethods?.data.some((method) =>
     SSO_METHODS_WITHOUT_EMAIL.includes(method.attributes.name)
   );
 

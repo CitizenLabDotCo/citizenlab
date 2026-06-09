@@ -32,14 +32,14 @@ interface Props {
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
   const { ssoProviders, azureAdSettings, azureAdB2cSettings } = useAuthConfig();
 
-  const { data: verificationMethods } = useIdMethods();
+  const { data: idMethods } = useIdMethods();
 
   const azureProviderName = azureAdSettings?.login_mechanism_name;
   const azureProviderLogoUrl = azureAdSettings?.logo_url;
   const azureB2cProviderName = azureAdB2cSettings?.login_mechanism_name;
   const azureB2cProviderLogoUrl = azureAdB2cSettings?.logo_url;
 
-  const keycloakMethod = verificationMethods?.data.find(
+  const keycloakMethod = idMethods?.data.find(
     (item) => item.attributes.name === 'keycloak'
   ) as IDKeycloakMethod | undefined;
   const keycloakIcon = keycloakMethod?.attributes.provider;

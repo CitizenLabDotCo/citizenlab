@@ -16,17 +16,17 @@ const verificationMethodName: IdMethodName = 'oostende_rrn';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
-      verificationMethods,
+      idMethods,
       ...otherProps
     }) => {
-      const method = verificationMethods.find(
+      const method = idMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
         const last = isLastIdMethod(
           verificationMethodName,
-          verificationMethods
+          idMethods
         );
         return (
           <OostendeRrnButton method={method} last={last} {...otherProps} />

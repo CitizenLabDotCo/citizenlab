@@ -4,9 +4,9 @@ import { Helmet } from 'react-helmet-async';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import useAuthUser from 'api/me/useAuthUser';
 import { IDFacebookMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -26,7 +26,7 @@ const Meta = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: homepageLayout } = useContentBuilderLayout('homepage');
   const { data: authUser } = useAuthUser();
-  const { data: verificationMethods } = useIdMethods();
+  const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { pathname } = useLocation();
@@ -58,7 +58,7 @@ const Meta = () => {
     const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
     const url = `https://${tenant.data.attributes.host}`;
-    const facebookMethod = verificationMethods?.data.find(
+    const facebookMethod = idMethods?.data.find(
       (method): method is IDFacebookMethod =>
         method.attributes.name === 'facebook'
     );

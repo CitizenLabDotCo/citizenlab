@@ -39,7 +39,7 @@ const VerificationSteps = memo<Props>(
     const [method, setMethod] = useState<IdMethodData | null>(null);
 
     const { data: authUser } = useAuthUser();
-    const { data: verificationMethods } = useIdMethods();
+    const { data: idMethods } = useIdMethods();
 
     useEffect(() => {
       if (activeStep === 'success' && onCompleted) {
@@ -93,7 +93,7 @@ const VerificationSteps = memo<Props>(
       goToSuccessStep();
     }, [goToSuccessStep]);
 
-    if (verificationMethods) {
+    if (idMethods) {
       return (
         <Container id="e2e-verification-wizard-root">
           {activeStep === 'method-selection' && (

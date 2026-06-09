@@ -49,7 +49,7 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
     const { formatMessage } = useIntl();
-    const { data: verificationMethods } = useIdMethods();
+    const { data: idMethods } = useIdMethods();
 
     const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
       setTacAccepted(tacAccepted);
@@ -68,10 +68,10 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
       onSelectAuthProvider('clave_unica');
     }, [onSelectAuthProvider]);
 
-    if (isNilOrError(verificationMethods)) return null;
+    if (isNilOrError(idMethods)) return null;
 
     const verificationMethodName: IdMethodName = 'clave_unica';
-    const claveUnicaMethod = verificationMethods.data.find(
+    const claveUnicaMethod = idMethods.data.find(
       (vm) => vm.attributes.name === verificationMethodName
     );
     if (!claveUnicaMethod) return null;

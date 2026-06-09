@@ -20,7 +20,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: verificationMethods } = useIdMethods();
+  const { data: idMethods } = useIdMethods();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('messenger');
@@ -31,7 +31,7 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked, properties);
   };
 
-  const facebookMethod = verificationMethods?.data.find(
+  const facebookMethod = idMethods?.data.find(
     (method): method is IDFacebookMethod => method.attributes.name === 'facebook'
   );
   const facebookAppId = facebookMethod?.attributes.app_id;

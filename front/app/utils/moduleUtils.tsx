@@ -99,7 +99,7 @@ export interface OutletsPropertyMap {
   };
   'app.components.VerificationModal.buttons': {
     onClick: (method: IdMethodData) => void;
-    verificationMethods: IdMethodData[];
+    idMethods: IdMethodData[];
   };
   'app.components.VerificationModal.methodSteps': {
     method: IdMethodData | null;
