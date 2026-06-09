@@ -64,7 +64,12 @@ export default function useAuthConfig() {
     hoplr: hasLoginMethod('hoplr'),
     idAustria: hasLoginMethod('id_austria'),
     criipto: hasLoginMethod('criipto'),
-    nemlogIn: hasLoginMethod('nemlog_in'),
+    // NOTE: Quick fix - required a better solution
+    // NemLog-in is intentionally hidden from the login-method list.
+    // It remains a functional auth method: the backend still reports
+    // `login_method: true` and the /auth/nemlog_in route and the verification
+    // flow keep working — it's just not shown as a self-serve login button.
+    nemlogIn: false,
     keycloak: hasLoginMethod('keycloak') || providerForTest === 'keycloak',
     twoday: hasLoginMethod('twoday') || providerForTest === 'twoday',
     acm: hasLoginMethod('acm') || providerForTest === 'acm',

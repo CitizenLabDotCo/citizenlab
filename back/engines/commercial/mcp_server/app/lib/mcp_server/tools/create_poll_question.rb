@@ -6,10 +6,11 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Creates a question for a poll phase, optionally with its answer options in one call.
-      Poll phases start empty — add one question per thing you want to ask. The phase's
-      participation_method must be 'poll'. A question needs at least one option to be
-      answerable; pass them via `options` here, or add them later with create_poll_option.
+      Creates a single question in a poll phase, optionally with its answer options in the
+      same call. Call once per question you want to add. Requires the phase's
+      participation_method to be 'poll'. A question is only answerable once it has at least
+      one answer option: provide them now via `options`, or add them afterwards with the
+      `create_poll_option` tool.
     DESC
   end
 
@@ -27,7 +28,7 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
           type: 'integer',
           description: <<~DESC.squish
             Maximum number of options a respondent may select.
-            Only applies when question_type is 'multiple_options'; leave unset for unlimited.
+            Only applies when `question_type` is "multiple_options"; leave unset for unlimited.
           DESC
         },
         options: {
@@ -49,8 +50,6 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
-      return wrong_method_error(phase) unless phase.poll?
-
       question = build_question(phase)
 
       ActiveRecord::Base.transaction do
@@ -58,7 +57,7 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
         question.save!
         Polls::SideFxQuestionService.new.after_create(question, current_user)
 
-        Array(params[:options]).each { |option_params| create_option(question, option_params) }
+        Array.wrap(params[:options]).each { |option_params| create_option(question, option_params) }
       end
 
       ok(
@@ -89,13 +88,6 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
       question.as_json(
         only: %i[id phase_id title_multiloc question_type max_options ordering],
         include: { options: { only: %i[id title_multiloc ordering] } }
-      )
-    end
-
-    def wrong_method_error(phase)
-      error(
-        "Phase #{phase.id} has participation_method '#{phase.participation_method}', " \
-        "but poll questions can only be added to 'poll' phases."
       )
     end
   end
