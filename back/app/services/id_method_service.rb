@@ -32,15 +32,14 @@ class IdMethodService
   end
 
   def configured_methods(app_configuration)
-    configured_methods = app_configuration.settings('verification', 'verification_methods') || []
+    configured_methods = app_configuration.settings('id_config', 'id_methods') || []
     configured_names = configured_methods.pluck('name')
     all_methods.select do |method|
       configured_names.include?(method.name)
     end
   end
 
-  # Whether the method has been configured by the admin, regardless of whether
-  # it can be used for identity verification. Used to gate SSO login.
+  # Whether the method has been configured by the admin.
   # @param [AppConfiguration] app_configuration
   # @return [Boolean]
   def configured?(app_configuration, method_name)

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class SettingsService
-  NON_FEATURE_FLAG_SETTINGS = %w[verification id_config].freeze
+  # `id_config` is not a feature flag and thus doesn't define
+  # `allowed`/`enabled` in its schema. So we don't need to add
+  # these attributes.
+  NON_FEATURE_FLAG_SETTINGS = ['id_config'].freeze
 
   # Checks whether
   def dependencies_met?(settings, schema)
@@ -16,11 +19,6 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        # `verification` is no longer a feature flag and thus doesn't define
-        # `allowed`/`enabled` in its schema. So we don't need to add
-        # these attributes.
-        # `id_config` is a copy of verification (verification will be cleaned)
-        # up in a later task. So it also doesn't define `allowed`/`enabled` in its schema.
         res[f] = if NON_FEATURE_FLAG_SETTINGS.include?(f)
           {}
         else
