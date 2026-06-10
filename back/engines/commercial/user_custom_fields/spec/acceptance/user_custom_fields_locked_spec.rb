@@ -9,6 +9,8 @@ resource 'User Custom Fields - Locked Fields' do
   before do
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [{ name: 'bogus', enabled_for_verified_actions: true }]
     }
     AppConfiguration.instance.save!

@@ -65,6 +65,8 @@ describe Onboarding::OnboardingService do
       before do
         @app_config = AppConfiguration.instance.tap do |cfg|
           cfg.settings['id_config'] = {
+            allowed: true,
+            enabled: true,
             id_methods: [
               { name: 'fake_sso' }
             ]

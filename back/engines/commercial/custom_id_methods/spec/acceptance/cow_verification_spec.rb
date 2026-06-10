@@ -15,6 +15,8 @@ resource 'Verifications' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!

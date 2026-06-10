@@ -168,6 +168,8 @@ namespace :cl2_back do
           allowed: true
         },
         id_config: {
+          allowed: true,
+          enabled: true,
           id_methods: [
             {
               name: 'cow',

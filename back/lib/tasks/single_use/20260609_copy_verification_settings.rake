@@ -8,19 +8,22 @@ namespace :single_use do
 
     Tenant.safe_switch_each do |tenant|
       settings = AppConfiguration.instance.settings
-      verification_methods = settings.dig('verification', 'verification_methods')
+      verification = settings['verification']
+      verification_methods = verification&.dig('verification_methods')
 
       if verification_methods.present?
         puts "Tenant: #{tenant.name}"
-        puts "Current verification settings: #{verification_methods}"
+        puts "Current verification settings: #{verification}"
 
         if execute
           settings['id_config'] ||= {}
+          settings['id_config']['allowed'] = verification['allowed']
+          settings['id_config']['enabled'] = verification['enabled']
           settings['id_config']['id_methods'] = verification_methods
           AppConfiguration.instance.update!(settings: settings)
-          puts 'Updated id_config with verification methods.'
+          puts 'Updated id_config with verification settings.'
         else
-          puts 'Dry run - id_config would be updated with verification methods.'
+          puts 'Dry run - id_config would be updated with verification settings.'
         end
 
         puts "\n"

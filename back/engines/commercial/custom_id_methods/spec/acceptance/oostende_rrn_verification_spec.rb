@@ -13,6 +13,8 @@ resource 'Verifications' do
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     configuration.settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [
         {
           name: 'oostende_rrn',

@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class SettingsService
-  # `id_config` is not a feature flag and thus doesn't define
-  # `allowed`/`enabled` in its schema. So we don't need to add
-  # these attributes.
-  NON_FEATURE_FLAG_SETTINGS = ['id_config'].freeze
-
-  # Checks whether
   def dependencies_met?(settings, schema)
     missing_dependencies(settings, schema).empty?
   end
@@ -19,14 +13,10 @@ class SettingsService
     else
       res = settings.clone
       missing_features.each do |f|
-        res[f] = if NON_FEATURE_FLAG_SETTINGS.include?(f)
-          {}
-        else
-          {
-            'allowed' => !!default_setting(schema, f, 'allowed'),
-            'enabled' => !!default_setting(schema, f, 'enabled')
-          }
-        end
+        res[f] = {
+          'allowed' => !!default_setting(schema, f, 'allowed'),
+          'enabled' => !!default_setting(schema, f, 'enabled')
+        }
       end
       res
     end

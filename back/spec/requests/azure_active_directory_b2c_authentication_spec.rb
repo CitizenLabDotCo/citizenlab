@@ -37,6 +37,8 @@ context 'Azure AD B2C authentication' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [
         {
           name: 'azureactivedirectory_b2c',

@@ -291,6 +291,8 @@ resource 'Users' do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
             'id_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]
@@ -325,6 +327,8 @@ resource 'Users' do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
             'id_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]

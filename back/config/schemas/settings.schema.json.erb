@@ -1281,7 +1281,10 @@
         "title": "Id methods: authentication (SSO) and verification",
         "description": "Use a pre-defined list to define authentication (SSO) and verification methods.",
         "additionalProperties": false,
+        "required": ["allowed", "enabled"],
         "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
           "id_methods": {
             "title": "Id methods",
             "private": true,

@@ -510,7 +510,7 @@ describe Permissions::UserRequirementsService do
 
       before do
         # To allow permitted_by 'verified' we need to enable at least one verification method
-        AppConfiguration.instance.settings['id_config'] = { 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
 

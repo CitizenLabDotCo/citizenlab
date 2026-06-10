@@ -11,6 +11,8 @@ resource 'Verifications' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [{
         name: 'id_card_lookup',
         ui_method_name: 'By social security number',

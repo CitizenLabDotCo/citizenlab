@@ -46,6 +46,8 @@ context 'federa verification' do
       settings = configuration.settings
 
       settings['id_config'] = {
+        allowed: true,
+        enabled: true,
         id_methods: [{
           name: 'federa',
           environment: 'test',
@@ -360,6 +362,8 @@ context 'federa verification' do
       settings = configuration.settings
 
       settings['id_config'] = {
+        allowed: true,
+        enabled: true,
         id_methods: [{
           name: 'federa',
           environment: 'test',

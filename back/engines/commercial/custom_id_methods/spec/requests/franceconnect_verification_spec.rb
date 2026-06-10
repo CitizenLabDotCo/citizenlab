@@ -49,6 +49,8 @@ context 'franceconnect verification' do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [
         {
           name: 'franceconnect',

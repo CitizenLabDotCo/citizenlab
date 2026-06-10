@@ -10,6 +10,8 @@ resource 'Verification Id Cards', admin_api: true do
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [
         {
           name: 'id_card_lookup',

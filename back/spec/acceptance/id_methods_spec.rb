@@ -12,6 +12,8 @@ resource 'Id methods' do
     create(:custom_field_birthyear)
     configuration = AppConfiguration.instance
     configuration.settings['id_config'] = {
+      allowed: true,
+      enabled: true,
       id_methods: [
         {
           name: 'cow',

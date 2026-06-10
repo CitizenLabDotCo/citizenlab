@@ -197,6 +197,8 @@ module MultiTenancy
               allowed: true
             },
             id_config: {
+              allowed: true,
+              enabled: true,
               id_methods: [
                 # The built-in authentication methods (Facebook, Google, Azure AD,
                 # Azure AD B2C) and Fake SSO are seeded by default. To enable other
