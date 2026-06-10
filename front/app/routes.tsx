@@ -653,6 +653,11 @@ export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
   createRouter({
     routeTree: buildRouteTree(moduleRoutes),
     trailingSlash: 'preserve',
+    defaultNotFoundComponent: () => (
+      <PageLoading>
+        <PageNotFound />
+      </PageLoading>
+    ),
   });
 
 export let router = createAppRouter();
