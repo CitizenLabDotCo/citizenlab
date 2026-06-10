@@ -290,8 +290,8 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['verification'] = {
-            'verification_methods' => [
+          settings['id_config'] = {
+            'id_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]
           }
@@ -324,8 +324,8 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['verification'] = {
-            'verification_methods' => [
+          settings['id_config'] = {
+            'id_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]
           }

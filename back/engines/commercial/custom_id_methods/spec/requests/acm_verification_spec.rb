@@ -62,8 +62,8 @@ context 'ACM verification (Oostende Itsme)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [{
+    settings['id_config'] = {
+      id_methods: [{
         name: 'acm',
         domain: 'some.test.domain.com',
         client_id: '12345',
@@ -127,7 +127,7 @@ context 'ACM verification (Oostende Itsme)' do
 
   def disable_rrn_verification
     configuration = AppConfiguration.instance
-    configuration.settings['verification']['verification_methods'].first['rrn_api_key'] = ''
+    configuration.settings['id_config']['id_methods'].first['rrn_api_key'] = ''
     configuration.save!
   end
 

@@ -8,8 +8,8 @@ resource 'User Custom Fields - Locked Fields' do
 
   before do
     header 'Content-Type', 'application/json'
-    AppConfiguration.instance.settings['verification'] = {
-      verification_methods: [{ name: 'bogus', enabled_for_verified_actions: true }]
+    AppConfiguration.instance.settings['id_config'] = {
+      id_methods: [{ name: 'bogus', enabled_for_verified_actions: true }]
     }
     AppConfiguration.instance.save!
   end

@@ -15,8 +15,8 @@ describe AuthenticationService do
     context 'when Azure AD has enforced domains' do
       before do
         settings = AppConfiguration.instance.settings
-        settings['verification'] = {
-          'verification_methods' => [
+        settings['id_config'] = {
+          'id_methods' => [
             { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com,company.org' }
           ]
         }

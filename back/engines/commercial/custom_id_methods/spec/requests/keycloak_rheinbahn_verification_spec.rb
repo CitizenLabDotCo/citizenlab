@@ -74,8 +74,8 @@ context 'keycloak verification (Rheinbahn)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [{
+    settings['id_config'] = {
+      id_methods: [{
         name: 'keycloak',
         provider: 'rheinbahn',
         issuer: 'https://some.test.domain.com/auth/realms/example-realm',

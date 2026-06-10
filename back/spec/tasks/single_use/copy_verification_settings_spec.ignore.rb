@@ -11,7 +11,7 @@ describe 'single_use:copy_verification_settings rake task' do
       { 'name' => 'fake_sso', 'issuer' => 'http://example.com', 'enabled_for_verified_actions' => true }
     ]
     settings = AppConfiguration.instance.settings
-    settings['verification']['verification_methods'] = @methods
+    settings['id_config']['id_methods'] = @methods
     AppConfiguration.instance.update!(settings: settings)
   end
 
@@ -28,7 +28,7 @@ describe 'single_use:copy_verification_settings rake task' do
     # cached AppConfiguration, so it operates on a fresh settings hash.
     settings = AppConfiguration.instance.reload.settings
     expect(settings['id_config']).to eq({})
-    expect(settings.dig('verification', 'verification_methods')).to eq(@methods)
+    expect(settings.dig('id_config', 'id_methods')).to eq(@methods)
   end
 
   it 'copies verification settings to id_config if execute' do
@@ -38,7 +38,7 @@ describe 'single_use:copy_verification_settings rake task' do
     expect(settings['id_config']).to eq({
       'id_methods' => @methods
     })
-    expect(settings.dig('verification', 'verification_methods')).to eq(@methods)
+    expect(settings.dig('id_config', 'id_methods')).to eq(@methods)
   end
 end
 # rubocop:enable RSpec/DescribeClass

@@ -59,8 +59,8 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [
+    settings['id_config'] = {
+      id_methods: [
         { name: provider_name, environment: 'test' }
       ]
     }

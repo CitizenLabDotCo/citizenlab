@@ -55,8 +55,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     OmniAuth.config.mock_auth[:nemlog_in] = saml_auth_response
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [{
+    settings['id_config'] = {
+      id_methods: [{
         name: 'nemlog_in',
         environment: 'pre_production_integration',
         issuer: 'https://example.com',
@@ -155,7 +155,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       before do
         configuration = AppConfiguration.instance
         settings = configuration.settings
-        settings['verification']['verification_methods'].first['birthyear_custom_field_key'] = 'birthyear'
+        settings['id_config']['id_methods'].first['birthyear_custom_field_key'] = 'birthyear'
         configuration.save!
       end
 
@@ -171,7 +171,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       before do
         configuration = AppConfiguration.instance
         settings = configuration.settings
-        settings['verification']['verification_methods'].delete('birthyear_custom_field_key')
+        settings['id_config']['id_methods'].first.delete('birthyear_custom_field_key')
         configuration.save!
       end
 

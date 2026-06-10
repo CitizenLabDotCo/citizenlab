@@ -81,8 +81,8 @@ resource 'Omniauth Callback', document: false do
     before do
       @user = create(:user, email: 'facebook_user@example.com')
 
-      AppConfiguration.instance.settings['verification'] = {
-        verification_methods: [{ name: 'facebook' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        id_methods: [{ name: 'facebook' }]
       }
       AppConfiguration.instance.save!
 
@@ -125,8 +125,8 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
@@ -286,8 +286,8 @@ resource 'Omniauth Callback', document: false do
     end
 
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true

@@ -167,8 +167,8 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        verification: {
-          verification_methods: [
+        id_config: {
+          id_methods: [
             {
               name: 'cow',
               api_username: 'fake_username',

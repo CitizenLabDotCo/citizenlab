@@ -45,8 +45,8 @@ context 'federa verification' do
       configuration = AppConfiguration.instance
       settings = configuration.settings
 
-      settings['verification'] = {
-        verification_methods: [{
+      settings['id_config'] = {
+        id_methods: [{
           name: 'federa',
           environment: 'test',
           spid_level: '1',
@@ -359,8 +359,8 @@ context 'federa verification' do
       configuration = AppConfiguration.instance
       settings = configuration.settings
 
-      settings['verification'] = {
-        verification_methods: [{
+      settings['id_config'] = {
+        id_methods: [{
           name: 'federa',
           environment: 'test',
           spid_level: '1',

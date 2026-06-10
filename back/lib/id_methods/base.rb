@@ -25,7 +25,7 @@ module IdMethods
     # Public method, does not get overridden in practice.
     # @return [Hash, nil]
     def config
-      (AppConfiguration.instance.settings('verification', 'verification_methods') || [])
+      (AppConfiguration.instance.settings('id_config', 'id_methods') || [])
         .find { |method| method['name'] == name }
         .to_h # if find returns nil
         .except('allowed', 'enabled')

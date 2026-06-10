@@ -64,8 +64,8 @@ describe Onboarding::OnboardingService do
     context 'verification' do
       before do
         @app_config = AppConfiguration.instance.tap do |cfg|
-          cfg.settings['verification'] = {
-            verification_methods: [
+          cfg.settings['id_config'] = {
+            id_methods: [
               { name: 'fake_sso' }
             ]
           }
@@ -92,7 +92,7 @@ describe Onboarding::OnboardingService do
         context 'when there are no verification methods' do
           it 'does not return :verification' do
             settings = AppConfiguration.instance.settings
-            settings['verification']['verification_methods'] = []
+            settings['id_config']['id_methods'] = []
             AppConfiguration.instance.update!(settings:)
             Onboarding::CampaignDismissal.create(user: user_not_verified, campaign_name: 'verification')
             expect(service.current_campaign(user_not_verified)).not_to eq :verification
@@ -102,7 +102,7 @@ describe Onboarding::OnboardingService do
         context 'when all verification methods have "hide_from_profile = true"' do
           it 'does not return :verification' do
             settings = AppConfiguration.instance.settings
-            settings['verification']['verification_methods'] = [
+            settings['id_config']['id_methods'] = [
               { name: 'fake_sso', hide_from_profile: true }
             ]
             AppConfiguration.instance.update!(settings:)

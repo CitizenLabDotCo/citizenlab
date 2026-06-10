@@ -196,11 +196,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            verification: {
-              verification_methods: [
-                # The built-in SSO login methods (Facebook, Google, Azure AD,
+            id_config: {
+              id_methods: [
+                # The built-in authentication methods (Facebook, Google, Azure AD,
                 # Azure AD B2C) and Fake SSO are seeded by default. To enable other
-                # verification/SSO methods locally, use: rake dev:enable_id_method[<method_name>]
+                # verification/authentication methods locally, use: rake dev:enable_id_method[<method_name>]
                 {
                   name: 'fake_sso'
                 },

@@ -23,8 +23,8 @@ resource 'User Token' do
     context 'when the email domain has SSO enforced' do
       before do
         settings = AppConfiguration.instance.settings
-        settings['verification'] = {
-          'verification_methods' => [
+        settings['id_config'] = {
+          'id_methods' => [
             { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
           ]
         }

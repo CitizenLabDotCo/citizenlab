@@ -45,8 +45,8 @@ context 'bosa_fas verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [{ name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake' }]
+    settings['id_config'] = {
+      id_methods: [{ name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake' }]
     }
     configuration.save!
     host! 'example.org'

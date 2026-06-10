@@ -6,8 +6,8 @@ describe IdMethodService do
   let(:service) { described_class.new }
 
   before do
-    AppConfiguration.instance.settings['verification'] = {
-      verification_methods: [
+    AppConfiguration.instance.settings['id_config'] = {
+      id_methods: [
         { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
       ]
     }
@@ -26,7 +26,7 @@ describe IdMethodService do
       create(:custom_field_birthyear)
 
       configuration = AppConfiguration.instance
-      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
+      configuration.settings['id_config']['id_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
       configuration.save!
 
       method = Verification::VerificationService.new.first_method_enabled_for_verified_actions

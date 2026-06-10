@@ -48,8 +48,8 @@ context 'franceconnect verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [
+    settings['id_config'] = {
+      id_methods: [
         {
           name: 'franceconnect',
           environment: 'integration',
