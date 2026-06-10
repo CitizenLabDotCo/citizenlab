@@ -417,7 +417,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Beitragsprüfung",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Wie soll ein Beitrag genannt werden?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Einblicke",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Mängel",
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Mangel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Gib hier den Link zu deinem Konveio-Dokument an. Weitere Informationen zum Einrichten von Konveio findest du in unserem {supportArticleLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "Support-Artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/de/articles/527582-einbetten-von-konveio-pdf-dokumenten-zum-sammeln-von-feedback",
