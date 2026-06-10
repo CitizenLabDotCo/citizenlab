@@ -110,6 +110,13 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: KEYCLOAK_SETUP_PROC, name: 'keycloak', issuer: CustomIdMethods::Keycloak::KeycloakOmniauth.new.method(:issuer)
 end
 
+RHEINBAHN_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Rheinbahn::RheinbahnOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: RHEINBAHN_SETUP_PROC, name: 'rheinbahn', issuer: CustomIdMethods::Rheinbahn::RheinbahnOmniauth.new.method(:issuer)
+end
+
 NEMLOG_IN_SAML_SETUP_PROC = lambda do |env|
   CustomIdMethods::NemlogIn::NemlogInOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end

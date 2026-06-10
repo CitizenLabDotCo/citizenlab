@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module CustomIdMethods::Keycloak
-  class KeycloakOmniauth < IdMethods::Base
-    include KeycloakVerification
+module CustomIdMethods::Rheinbahn
+  class RheinbahnOmniauth < IdMethods::Base
+    include RheinbahnVerification
 
     def name
-      'keycloak'
+      'rheinbahn'
     end
 
     def verification?
-      true
+      false
     end
 
     def authentication?
@@ -21,7 +21,7 @@ module CustomIdMethods::Keycloak
         first_name: format_name(auth.info.first_name),
         last_name: format_name(auth.info.last_name),
         email: auth.info.email,
-        locale: AppConfiguration.instance.closest_locale_to('nb-NO') # No need to get the locale from the provider
+        locale: AppConfiguration.instance.closest_locale_to('de-DE')
       }
     end
 
@@ -37,7 +37,7 @@ module CustomIdMethods::Keycloak
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
-        redirect_uri: "#{configuration.base_backend_uri}/auth/keycloak/callback",
+        redirect_uri: "#{configuration.base_backend_uri}/auth/rheinbahn/callback",
 
         # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
         client_signing_alg: :RS256,
@@ -50,7 +50,7 @@ module CustomIdMethods::Keycloak
     end
 
     def email_always_present?
-      false
+      true
     end
 
     def email_confirmed?(auth)

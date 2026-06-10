@@ -1,4 +1,3 @@
-import { IconNames } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -17,6 +16,7 @@ export const omniauthVerificationTypes = [
   'franceconnect',
   'nemlog_in',
   'keycloak',
+  'rheinbahn',
   'twoday',
   'fake_sso',
 ];
@@ -43,6 +43,7 @@ export type IdMethodName =
   | 'keycloak'
   | 'nemlog_in'
   | 'oostende_rrn'
+  | 'rheinbahn'
   | 'twoday'
   | 'vienna_citizen'
   | 'vienna_employee';
@@ -125,11 +126,6 @@ export type IDLookupMethod = TGenericMethod<
   }
 >;
 
-export type IDKeycloakMethod = TGenericMethod<
-  'keycloak',
-  { ui_method_name: string; provider: IconNames }
->;
-
 export type IDTwodayMethod = TGenericMethod<
   'twoday',
   { ui_method_name: string }
@@ -146,7 +142,6 @@ type TOtherMethodName = Exclude<
   | 'facebook'
   | 'id_austria'
   | 'id_card_lookup'
-  | 'keycloak'
   | 'twoday'
 >;
 
@@ -160,7 +155,6 @@ export type IdMethodData =
   | IDCriiptoMethod
   | IDFacebookMethod
   | IDIdAustriaMethod
-  | IDKeycloakMethod
   | IDLookupMethod
   | IDTwodayMethod
   | IDOtherMethod;

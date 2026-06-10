@@ -24,6 +24,7 @@ export interface SSOProviderMap {
   federa: 'federa';
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
+  rheinbahn: 'rheinbahn';
   twoday: 'twoday';
   acm: 'acm';
   id_vienna_saml: 'id_vienna_saml';

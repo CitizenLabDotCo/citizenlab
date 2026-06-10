@@ -2,9 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IDKeycloakMethod } from 'api/id_methods/types';
-import useIdMethods from 'api/id_methods/useIdMethods';
-
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
@@ -32,18 +29,10 @@ interface Props {
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
   const { ssoProviders, azureAdSettings, azureAdB2cSettings } = useAuthConfig();
 
-  const { data: idMethods } = useIdMethods();
-
   const azureProviderName = azureAdSettings?.login_mechanism_name;
   const azureProviderLogoUrl = azureAdSettings?.logo_url;
   const azureB2cProviderName = azureAdB2cSettings?.login_mechanism_name;
   const azureB2cProviderLogoUrl = azureAdB2cSettings?.logo_url;
-
-  const keycloakMethod = idMethods?.data.find(
-    (item) => item.attributes.name === 'keycloak'
-  ) as IDKeycloakMethod | undefined;
-  const keycloakIcon = keycloakMethod?.attributes.provider;
-  const keycloakName = keycloakMethod?.attributes.method_metadata?.name;
 
   return (
     <>
@@ -100,16 +89,30 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.keycloak && keycloakIcon && keycloakName && (
+      {ssoProviders.keycloak && (
         <WrappedAuthProviderButton
-          icon={keycloakIcon}
+          icon="idporten"
           authProvider="keycloak"
           onClick={onClickSSO}
         >
           <FormattedMessage
             {...sharedMessages.continueWithLoginMechanism}
             values={{
-              loginMechanismName: keycloakName,
+              loginMechanismName: 'ID-Porten',
+            }}
+          />
+        </WrappedAuthProviderButton>
+      )}
+      {ssoProviders.rheinbahn && (
+        <WrappedAuthProviderButton
+          icon="rheinbahn"
+          authProvider="rheinbahn"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage
+            {...sharedMessages.continueWithLoginMechanism}
+            values={{
+              loginMechanismName: 'Rheinbahn',
             }}
           />
         </WrappedAuthProviderButton>

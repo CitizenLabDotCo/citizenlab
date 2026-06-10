@@ -64,14 +64,6 @@ DEV_ID_METHOD_CONFIGS = {
     'issuer' => ENV.fetch('DEFAULT_ID_IDPORTEN_ISSUER', 'fake issuer'),
     'enabled_for_verified_actions' => true
   },
-  'rheinbahn' => {
-    'name' => 'keycloak',
-    'provider' => ENV.fetch('DEFAULT_ID_RHEINBAHN_PROVIDER', 'rheinbahn'),
-    'client_id' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_ID', 'fake id'),
-    'client_secret' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_SECRET', 'fake secret'),
-    'issuer' => ENV.fetch('DEFAULT_ID_RHEINBAHN_ISSUER', 'fake issuer'),
-    'enabled_for_verified_actions' => true
-  },
   'twoday' => {
     'name' => 'twoday',
     'client_id' => ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
@@ -138,6 +130,12 @@ DEV_ID_METHOD_CONFIGS = {
   },
 
   # Login-only SSO methods (cannot be used for identity verification).
+  'rheinbahn' => {
+    'name' => 'rheinbahn',
+    'client_id' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_ID_RHEINBAHN_CLIENT_SECRET', 'fake secret'),
+    'issuer' => ENV.fetch('DEFAULT_ID_RHEINBAHN_ISSUER', 'fake issuer')
+  },
   'hoplr' => {
     'name' => 'hoplr',
     'environment' => 'test',

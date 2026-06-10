@@ -3,10 +3,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-context 'keycloak verification (Rheinbahn)' do
+context 'rheinbahn authentication' do
   let(:auth_hash) do
     {
-      'provider' => 'keycloak',
+      'provider' => 'rheinbahn',
       'uid' => 'b045a9a9-cf7e-4add-acc7-1f606eb1e9e0',
       'info' => {
         'name' => 'UNØY-AKTIG KOST NOST',
@@ -70,14 +70,13 @@ context 'keycloak verification (Rheinbahn)' do
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
 
     OmniAuth.config.test_mode = true
-    OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
+    OmniAuth.config.mock_auth[:rheinbahn] = OmniAuth::AuthHash.new(auth_hash)
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
       verification_methods: [{
-        name: 'keycloak',
-        provider: 'rheinbahn',
+        name: 'rheinbahn',
         issuer: 'https://some.test.domain.com/auth/realms/example-realm',
         client_id: '12345',
         client_secret: '78910'
@@ -102,7 +101,7 @@ context 'keycloak verification (Rheinbahn)' do
       last_name: 'Kost Nost'
     })
     expect(user.identities.first).to have_attributes({
-      provider: 'keycloak',
+      provider: 'rheinbahn',
       user_id: user.id,
       uid: auth_hash['uid']
     })
@@ -111,7 +110,7 @@ context 'keycloak verification (Rheinbahn)' do
   end
 
   it 'does not verify or add an identity an existing logged in user' do
-    get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    get "/auth/rheinbahn?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
     expect_user_to_not_be_verified(@user)
@@ -120,7 +119,7 @@ context 'keycloak verification (Rheinbahn)' do
 
   it 'creates a new user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/keycloak?param=some-param'
+    get '/auth/rheinbahn?param=some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -140,7 +139,7 @@ context 'keycloak verification (Rheinbahn)' do
   context 'when identity is already taken by a user' do
     before do
       # Login and create the new user first
-      get '/auth/keycloak'
+      get '/auth/rheinbahn'
       follow_redirect!
     end
 
@@ -152,7 +151,7 @@ context 'keycloak verification (Rheinbahn)' do
     end
 
     it 'logs the user in as the existing sso user' do
-      get '/auth/keycloak?param=some-param'
+      get '/auth/rheinbahn?param=some-param'
       follow_redirect!
 
       expect(response).to redirect_to('/en/?param=some-param&sso_flow=signin&sso_success=true')

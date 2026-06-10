@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-module CustomIdMethods::Keycloak
-  module KeycloakVerification
+module CustomIdMethods::Rheinbahn
+  module RheinbahnVerification
     def verification_method_type
       :omniauth
     end
 
     def id
-      'd6938fe6-4bee-4490-b80c-b14dafb5da1b'
+      'c7e0a4d2-9f1b-4a36-8e52-3b0d6f8a1c94'
     end
 
     def config_parameters
@@ -25,7 +25,7 @@ module CustomIdMethods::Keycloak
         issuer: {
           private: true,
           type: 'string',
-          description: 'Full URL to the issuer of the ID-Porten keycloak instance - eg https://keycloak.com/auth/realms/realm-name'
+          description: 'Full URL to the issuer of the Rheinbahn keycloak instance - eg https://keycloak.com/auth/realms/realm-name'
         },
         enabled_for_verified_actions: {
           private: true,
@@ -38,6 +38,10 @@ module CustomIdMethods::Keycloak
           description: 'Should verification be hidden in the user profile and under the username?'
         }
       }
+    end
+
+    def exposed_config_parameters
+      []
     end
 
     def locked_attributes
@@ -57,7 +61,7 @@ module CustomIdMethods::Keycloak
     end
 
     def ui_method_name
-      'ID-Porten'
+      'Rheinbahn'
     end
   end
 end
