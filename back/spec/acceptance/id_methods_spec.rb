@@ -12,6 +12,8 @@ resource 'Id methods' do
     create(:custom_field_birthyear)
     configuration = AppConfiguration.instance
     configuration.settings['verification'] = {
+      allowed: true,
+      enabled: true,
       verification_methods: [
         {
           name: 'cow',

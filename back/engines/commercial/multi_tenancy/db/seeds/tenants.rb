@@ -197,6 +197,8 @@ module MultiTenancy
               allowed: true
             },
             verification: {
+              enabled: true,
+              allowed: true,
               verification_methods: [
                 # The built-in SSO login methods (Facebook, Google, Azure AD,
                 # Azure AD B2C) and Fake SSO are seeded by default. To enable other

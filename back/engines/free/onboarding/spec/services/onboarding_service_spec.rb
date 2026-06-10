@@ -65,6 +65,8 @@ describe Onboarding::OnboardingService do
       before do
         @app_config = AppConfiguration.instance.tap do |cfg|
           cfg.settings['verification'] = {
+            allowed: true,
+            enabled: true,
             verification_methods: [
               { name: 'fake_sso' }
             ]

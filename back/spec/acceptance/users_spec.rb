@@ -291,6 +291,8 @@ resource 'Users' do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['verification'] = {
+            allowed: true,
+            enabled: true,
             'verification_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]
@@ -325,6 +327,8 @@ resource 'Users' do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
           settings['verification'] = {
+            allowed: true,
+            enabled: true,
             'verification_methods' => [
               { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
             ]

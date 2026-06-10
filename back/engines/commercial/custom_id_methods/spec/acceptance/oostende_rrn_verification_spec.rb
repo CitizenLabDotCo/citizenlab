@@ -13,6 +13,8 @@ resource 'Verifications' do
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     configuration.settings['verification'] = {
+      allowed: true,
+      enabled: true,
       verification_methods: [
         {
           name: 'oostende_rrn',

@@ -17,6 +17,8 @@ resource 'Verifications' do
     @cfo11 = create(:custom_field_option, custom_field: @custom_field)
     configuration = AppConfiguration.instance
     configuration.settings['verification'] = {
+      allowed: true,
+      enabled: true,
       verification_methods: [
         {
           name: 'gent_rrn',

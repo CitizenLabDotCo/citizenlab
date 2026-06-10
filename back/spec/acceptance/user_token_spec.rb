@@ -24,6 +24,8 @@ resource 'User Token' do
       before do
         settings = AppConfiguration.instance.settings
         settings['verification'] = {
+          allowed: true,
+          enabled: true,
           'verification_methods' => [
             { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
           ]

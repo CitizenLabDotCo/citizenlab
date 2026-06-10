@@ -67,7 +67,7 @@ RSpec.describe Permission do
   describe 'verification' do
     context 'verification enabled for an action' do
       before do
-        AppConfiguration.instance.settings['verification'] = { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.settings['verification'] = { allowed: true, enabled: true, verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
 

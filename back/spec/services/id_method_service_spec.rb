@@ -7,6 +7,8 @@ describe IdMethodService do
 
   before do
     AppConfiguration.instance.settings['verification'] = {
+      allowed: true,
+      enabled: true,
       verification_methods: [
         { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
       ]
