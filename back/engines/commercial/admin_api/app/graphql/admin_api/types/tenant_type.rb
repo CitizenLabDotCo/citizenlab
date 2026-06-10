@@ -32,10 +32,10 @@ module AdminApi
         facebook_login_config&.dig('app_secret')
       end
 
-      # Facebook login config now lives in `verification.verification_methods`
+      # Facebook login config now lives in `id_config.id_methods`
       # (as the entry named 'facebook'), rather than a top-level feature flag.
       def facebook_login_config
-        object.dig('verification', 'verification_methods')&.find { |method| method['name'] == 'facebook' }
+        object.dig('id_config', 'id_methods')&.find { |method| method['name'] == 'facebook' }
       end
 
       field :integration_onze_stad_app_allowed, Boolean, null: true

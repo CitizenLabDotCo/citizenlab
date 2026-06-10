@@ -12,8 +12,8 @@ resource 'Verifications' do
     header_token_for @user
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
-    configuration.settings['verification'] = {
-      verification_methods: [
+    configuration.settings['id_config'] = {
+      id_methods: [
         {
           name: 'oostende_rrn',
           api_key: 'fake_api_key',

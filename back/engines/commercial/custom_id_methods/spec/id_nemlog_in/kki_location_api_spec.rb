@@ -11,8 +11,8 @@ describe CustomIdMethods::NemlogIn::KkiLocationApi do
   before do
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [
+    settings['id_config'] = {
+      id_methods: [
         {
           name: 'nemlog_in',
           kki_uri: base_uri,

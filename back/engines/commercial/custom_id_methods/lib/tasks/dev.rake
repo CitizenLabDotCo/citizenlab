@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Enable verification/SSO methods for local development only
+# Enable verification/authentication methods for local development only
 # Use `rake dev:enable_id_method[<name>]` to enable a single method
 # Use `rake dev:enable_id_method[<name>,<name>]` to enable multiple methods
 # Use `rake dev:enable_id_method[all]` to enable every configured methods
 
-# Config for every custom verification/SSO method we support
+# Config for every custom verification/authentication method we support
 DEV_ID_METHOD_CONFIGS = {
-  # Methods for both identity verification and login/SSO.
+  # Methods for both identity verification and authentication/SSO.
   'fake_sso' => {
     'name' => 'fake_sso',
     'method_name_multiloc' => {},
@@ -98,6 +98,13 @@ DEV_ID_METHOD_CONFIGS = {
     'private_key' => ENV.fetch('DEFAULT_ID_FEDERA_PRIVATE_KEY', 'fake private key'),
     'enabled_for_verified_actions' => true
   },
+  'nemlog_in' => {
+    'name' => 'nemlog_in',
+    'environment' => 'pre_production_integration',
+    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
+    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+    'enabled_for_verified_actions' => true
+  },
 
   # Verification-only methods (cannot be used for login/SSO).
   'cow' => {
@@ -129,15 +136,8 @@ DEV_ID_METHOD_CONFIGS = {
     'api_key' => ENV.fetch('DEFAULT_ID_OOSTENDE_RRN_API_KEY', 'fake key'),
     'environment' => 'dv'
   },
-  'nemlog_in' => {
-    'name' => 'nemlog_in',
-    'environment' => 'pre_production_integration',
-    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
-    'enabled_for_verified_actions' => true
-  },
 
-  # Login-only SSO methods (cannot be used for identity verification).
+  # Authentication-only SSO methods (cannot be used for identity verification).
   'hoplr' => {
     'name' => 'hoplr',
     'environment' => 'test',
@@ -224,7 +224,7 @@ namespace :dev do
 
     tenant.switch do
       settings = AppConfiguration.instance.settings
-      settings['verification']['verification_methods'] = methods
+      settings['id_config']['id_methods'] = methods
       AppConfiguration.instance.update!(settings: settings)
 
       setup_verified_actions_test_data if names.include?('fake_sso')

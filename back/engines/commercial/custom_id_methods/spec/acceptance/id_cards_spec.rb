@@ -9,8 +9,8 @@ resource 'Verification Id Cards', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
-      verification_methods: [
+    settings['id_config'] = {
+      id_methods: [
         {
           name: 'id_card_lookup',
           ui_method_name: 'By social security number',
