@@ -29,7 +29,7 @@ describe 'single_use:copy_verification_settings rake task' do
     # Re-read from the DB: the rake task switches tenants, which resets the
     # cached AppConfiguration, so it operates on a fresh settings hash.
     settings = AppConfiguration.instance.reload.settings
-    expect(settings['id_config']).to eq({})
+    expect(settings['id_config']).to eq({ 'allowed' => false, 'enabled' => false })
     expect(settings.dig('verification', 'verification_methods')).to eq(@methods)
   end
 
