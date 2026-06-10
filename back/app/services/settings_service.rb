@@ -2,7 +2,7 @@
 
 class SettingsService
   NON_FEATURE_FLAG_SETTINGS = %w[verification id_config].freeze
-  
+
   # Checks whether
   def dependencies_met?(settings, schema)
     missing_dependencies(settings, schema).empty?
