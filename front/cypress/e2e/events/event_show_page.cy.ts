@@ -74,8 +74,42 @@ describe('Event show page', () => {
       });
   });
 
+  afterEach(() => {
+    if (eventIdNoCoordinates) {
+      // delete participant added during the first test to avoid errors on retries
+      return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+        const adminJwt = response.body.jwt;
+
+        return cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
+          },
+          method: 'GET',
+          url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
+        }).then((response) => {
+          const attendances = response.body.data;
+          if (attendances.length !== 0){
+            attendances.forEach((attendance: any) => {
+              cy.request({
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${adminJwt}`,
+                },
+                method: 'DELETE',
+                url: `web_api/v1/event_attendances/${attendance.id}`,
+              });
+            });
+          }
+        });
+      });
+    }
+  });
+
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if(projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('shows event information when authorized', () => {
