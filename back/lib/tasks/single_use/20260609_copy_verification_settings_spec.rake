@@ -18,9 +18,9 @@ namespace :single_use do
           settings['id_config'] ||= {}
           settings['id_config']['id_methods'] = verification_methods
           AppConfiguration.instance.update!(settings: settings)
-          puts "Updated id_config with verification methods."
+          puts 'Updated id_config with verification methods.'
         else
-          puts "Dry run - id_config would be updated with verification methods."
+          puts 'Dry run - id_config would be updated with verification methods.'
         end
 
         puts "\n"

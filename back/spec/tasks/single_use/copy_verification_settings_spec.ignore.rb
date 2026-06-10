@@ -4,16 +4,8 @@ require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
 describe 'single_use:copy_verification_settings rake task' do
-  before { load_rake_tasks_if_not_loaded }
-  after { Rake::Task['single_use:copy_verification_settings'].reenable }
-
-  def run_task(execute: false)
-    Rake::Task['single_use:copy_verification_settings'].invoke(execute ? 'execute' : nil)
-  end
-
   before do
-    # String keys throughout: settings are persisted to a jsonb column, so they
-    # always come back string-keyed after a round-trip through the database.
+    load_rake_tasks_if_not_loaded
     @methods = [
       { 'name' => 'acm', 'rrn_result_custom_field_key' => 'some_key' },
       { 'name' => 'fake_sso', 'issuer' => 'http://example.com', 'enabled_for_verified_actions' => true }
@@ -21,6 +13,12 @@ describe 'single_use:copy_verification_settings rake task' do
     settings = AppConfiguration.instance.settings
     settings['verification']['verification_methods'] = @methods
     AppConfiguration.instance.update!(settings: settings)
+  end
+
+  after { Rake::Task['single_use:copy_verification_settings'].reenable }
+
+  def run_task(execute: false)
+    Rake::Task['single_use:copy_verification_settings'].invoke(execute ? 'execute' : nil)
   end
 
   it 'does not copy verification settings if dry run' do

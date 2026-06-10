@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SettingsService
+  NON_FEATURE_FLAG_SETTINGS = %w[verification id_config].freeze
+  
   # Checks whether
   def dependencies_met?(settings, schema)
     missing_dependencies(settings, schema).empty?
@@ -19,7 +21,7 @@ class SettingsService
         # these attributes.
         # `id_config` is a copy of verification (verification will be cleaned)
         # up in a later task. So it also doesn't define `allowed`/`enabled` in its schema.
-        res[f] = if f == 'verification' || f == 'id_config'
+        res[f] = if NON_FEATURE_FLAG_SETTINGS.include?(f)
           {}
         else
           {
