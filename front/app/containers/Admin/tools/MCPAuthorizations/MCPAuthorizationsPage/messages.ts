@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'MCP authorizations',
   },
   pageDescription: {
-    id: 'app.containers.Admin.tools.MCPAuthorizations.pageDescription2',
+    id: 'app.containers.Admin.tools.MCPAuthorizations.pageDescription3',
     defaultMessage:
-      'View and manage your client authorizations for MCP (Model Context Protocol) integrations.',
+      'View and manage client authorizations for your MCP (Model Context Protocol) integrations.',
   },
   clientName: {
     id: 'app.containers.Admin.tools.MCPAuthorizations.clientName',
