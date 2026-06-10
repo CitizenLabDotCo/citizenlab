@@ -2,8 +2,6 @@
 
 require 'rails_helper'
 
-# Request specs for the SPA-facing endpoint that lists/revokes the current user's
-# MCP client authorizations. See WebApi::V1::McpAuthorizationsController.
 describe WebApi::V1::McpAuthorizationsController do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
@@ -25,8 +23,7 @@ describe WebApi::V1::McpAuthorizationsController do
 
   describe 'GET /web_api/v1/mcp_authorizations' do
     it "returns one row per client for the current user's non-revoked tokens" do
-      first_authorized = 3.days.ago
-      create_token(user, app1, created_at: first_authorized)
+      create_token(user, app1)
       create_token(user, app1) # second token, same client -> still one row
       create_token(user, app2)
       create_token(other_user, app1) # another user's token -> excluded
@@ -41,9 +38,6 @@ describe WebApi::V1::McpAuthorizationsController do
       expect(acme['id']).to eq(app1.id)
       expect(acme['type']).to eq('mcp_authorization')
       expect(acme.dig('attributes', 'client_id')).to eq(app1.uid)
-      expect(acme.dig('attributes', 'status')).to eq('active')
-      # authorized_at is the earliest token's created_at for that client
-      expect(Time.zone.parse(acme.dig('attributes', 'authorized_at'))).to be_within(2.seconds).of(first_authorized)
     end
 
     it 'excludes revoked tokens' do
@@ -81,12 +75,12 @@ describe WebApi::V1::McpAuthorizationsController do
       expect(untouched.reload.revoked_at).to be_nil
     end
 
-    it "does not revoke another user's tokens (no IDOR)" do
-      other_token = create_token(other_user, app1)
+    it "rejects revoking a client the current user hasn't authorized (no IDOR)" do
+      other_token = create_token(other_user, app1) # current user has no token for app1
 
       delete "/web_api/v1/mcp_authorizations/#{app1.id}", headers: auth_headers
 
-      expect(response).to have_http_status(:no_content)
+      expect(response).to have_http_status(:unauthorized)
       expect(other_token.reload.revoked_at).to be_nil
     end
 

@@ -4,8 +4,6 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import mcpAuthorizationKeys from './keys';
 
-// id is the client application's id; the backend revokes every token + grant the
-// current user holds for that client.
 const revokeMCPAuthorization = (id: string) =>
   fetcher({
     path: `/mcp_authorizations/${id}`,

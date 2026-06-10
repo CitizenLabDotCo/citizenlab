@@ -26,7 +26,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from './messages';
 
 const MCPAuthorizationsPage = () => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
   const { data: authorizations, isLoading } = useMCPAuthorizations();
   const { mutate: revokeAuthorization } = useRevokeMCPAuthorization();
 
@@ -53,8 +53,6 @@ const MCPAuthorizationsPage = () => {
             <Tr>
               <Th>{formatMessage(messages.clientName)}</Th>
               <Th>{formatMessage(messages.clientId)}</Th>
-              <Th>{formatMessage(messages.authorizedOn)}</Th>
-              <Th>{formatMessage(messages.status)}</Th>
               <Th>{formatMessage(messages.actions)}</Th>
             </Tr>
           </Thead>
@@ -63,21 +61,6 @@ const MCPAuthorizationsPage = () => {
               <Tr key={authorization.id}>
                 <Td>{authorization.attributes.client_name}</Td>
                 <Td>{authorization.attributes.client_id}</Td>
-                <Td>{formatDate(authorization.attributes.authorized_at)}</Td>
-                <Td>
-                  <Box
-                    as="span"
-                    display="inline-block"
-                    px="8px"
-                    py="2px"
-                    borderRadius="4px"
-                    background={colors.successLight}
-                  >
-                    <Text as="span" m="0px" variant="bodyS" color="success">
-                      {formatMessage(messages.statusActive)}
-                    </Text>
-                  </Box>
-                </Td>
                 <Td>
                   <Button
                     buttonStyle="secondary-outlined"

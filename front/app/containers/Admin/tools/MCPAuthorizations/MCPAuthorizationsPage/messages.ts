@@ -18,21 +18,9 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.MCPAuthorizations.clientId',
     defaultMessage: 'Client ID',
   },
-  authorizedOn: {
-    id: 'app.containers.Admin.tools.MCPAuthorizations.authorizedOn',
-    defaultMessage: 'Authorized on',
-  },
-  status: {
-    id: 'app.containers.Admin.tools.MCPAuthorizations.status',
-    defaultMessage: 'Status',
-  },
   actions: {
     id: 'app.containers.Admin.tools.MCPAuthorizations.actions',
     defaultMessage: 'Actions',
-  },
-  statusActive: {
-    id: 'app.containers.Admin.tools.MCPAuthorizations.statusActive',
-    defaultMessage: 'Active',
   },
   revokeAccess: {
     id: 'app.containers.Admin.tools.MCPAuthorizations.revokeAccess',
