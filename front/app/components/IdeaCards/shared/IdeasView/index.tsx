@@ -82,7 +82,7 @@ const IdeasView = ({
         />
       )}
       {view === 'map' && projectId && (
-        <Box aria-label={'view-tab-2'} id={'view-panel-2'}>
+        <Box id={'view-panel-2'}>
           <IdeasMap
             projectId={projectId}
             phaseId={phaseId}
