@@ -36,6 +36,10 @@ Rails.application.routes.draw do
       # HTML authorize page). See WebApi::V1::OauthAuthorizationsController.
       resource :oauth_authorization, only: %i[show create], controller: 'oauth_authorizations'
 
+      # The current user's MCP client authorizations (list + revoke), grouped by
+      # client. See WebApi::V1::McpAuthorizationsController.
+      resources :mcp_authorizations, only: %i[index destroy]
+
       concern :reactable do
         resources :reactions, except: [:update], shallow: true do
           post :up, on: :collection
