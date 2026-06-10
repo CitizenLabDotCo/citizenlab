@@ -88,6 +88,54 @@ resource 'User', admin_api: true do
     end
   end
 
+  delete 'admin_api/users/bulk_delete_by_emails_or_ids', active_job_inline_adapter: true do
+    parameter :emails, 'Array of user emails'
+    parameter :ids, 'Array of user ids'
+
+    let!(:user_by_id) { create(:user) }
+
+    context 'when all emails and ids match a user' do
+      let(:emails) { [user.email] }
+      let(:ids) { [user_by_id.id] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).not_to receive(:capture_message)
+      end
+
+      example_request 'Delete users by emails and ids' do
+        expect(status).to eq 200
+      end
+    end
+
+    context 'when some emails or ids do not match a user' do
+      let(:emails) { [user.email, 'not-existing-email@example.com'] }
+      let(:ids) { [user_by_id.id, SecureRandom.uuid] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Delete the matching users and report the rest' do
+        expect(status).to eq 200
+      end
+    end
+
+    context 'when neither emails nor ids are given' do
+      before do
+        expect(DeleteUserJob).not_to receive(:perform_later)
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Reports an error and deletes nothing' do
+        expect(status).to eq 200
+      end
+    end
+  end
+
   get 'admin_api/users/:id' do
     let(:id) { user.id }
 
