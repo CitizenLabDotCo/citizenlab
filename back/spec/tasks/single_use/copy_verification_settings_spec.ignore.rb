@@ -11,6 +11,8 @@ describe 'single_use:copy_verification_settings rake task' do
       { 'name' => 'fake_sso', 'issuer' => 'http://example.com', 'enabled_for_verified_actions' => true }
     ]
     settings = AppConfiguration.instance.settings
+    settings['verification']['allowed'] = true
+    settings['verification']['enabled'] = true
     settings['verification']['verification_methods'] = @methods
     AppConfiguration.instance.update!(settings: settings)
   end
@@ -36,6 +38,8 @@ describe 'single_use:copy_verification_settings rake task' do
 
     settings = AppConfiguration.instance.reload.settings
     expect(settings['id_config']).to eq({
+      'allowed' => true,
+      'enabled' => true,
       'id_methods' => @methods
     })
     expect(settings.dig('verification', 'verification_methods')).to eq(@methods)
