@@ -24,6 +24,11 @@ module AdminApi
       head :ok
     end
 
+    def bulk_delete_by_emails_or_ids
+      AdminApi::BulkDeleteUsersJob.perform_later(params[:emails], params[:ids])
+      head :ok
+    end
+
     def show
       # This uses default model serialization
       render json: @user
