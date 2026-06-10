@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'omniauth_openid_connect', '~> 0.8.0'
   s.add_dependency 'omniauth-saml', '~> 2.2.0'
   s.add_dependency 'rails', '~> 7.2'
-  s.add_dependency 'savon', '>= 2.12', '< 2.15'
+  s.add_dependency 'savon', '>= 2.12', '< 2.18'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
