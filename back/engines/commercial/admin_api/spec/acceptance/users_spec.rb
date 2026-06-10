@@ -73,21 +73,6 @@ resource 'User', admin_api: true do
     end
   end
 
-  delete 'admin_api/users/bulk_delete_by_emails', active_job_inline_adapter: true do
-    parameter :emails, 'Array of user emails'
-
-    let(:emails) { [user.email, 'not-existing-email@example.com'] }
-
-    before do
-      expect(DeleteUserJob).to receive(:perform_later).with(user).once
-      expect(Sentry).to receive(:capture_message).once
-    end
-
-    example_request 'Delete users by emails' do
-      expect(status).to eq 200
-    end
-  end
-
   delete 'admin_api/users/bulk_delete_by_emails_or_ids', active_job_inline_adapter: true do
     parameter :emails, 'Array of user emails'
     parameter :ids, 'Array of user ids'

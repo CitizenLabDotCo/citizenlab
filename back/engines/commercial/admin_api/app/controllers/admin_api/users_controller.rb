@@ -19,11 +19,6 @@ module AdminApi
       render json: @user
     end
 
-    def bulk_delete_by_emails
-      AdminApi::BulkDeleteUsersJob.perform_later(params[:emails])
-      head :ok
-    end
-
     def bulk_delete_by_emails_or_ids
       AdminApi::BulkDeleteUsersJob.perform_later(params[:emails], params[:ids])
       head :ok
