@@ -62,6 +62,8 @@ module McpServer
         McpServer::Tools::CreatePollQuestion,
         McpServer::Tools::CreatePollOption,
         McpServer::Tools::GetResource,
+        McpServer::Tools::GetForm,
+        McpServer::Tools::ReplaceForm,
         McpServer::Tools::ListProjects,
         McpServer::Tools::ListPhases,
         McpServer::Tools::ListEvents,
