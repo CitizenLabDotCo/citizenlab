@@ -8,7 +8,7 @@ namespace :single_use do
 
     Tenant.safe_switch_each do |tenant|
       settings = AppConfiguration.instance.settings
-      
+
       if execute
         settings.delete('verification') if settings.key?('verification')
         settings.delete('facebook_login') if settings.key?('facebook_login')
