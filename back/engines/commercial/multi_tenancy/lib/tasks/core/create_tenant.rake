@@ -214,10 +214,6 @@ namespace :cl2_back do
             }
           ]
         },
-        fake_sso: {
-          enabled: true,
-          allowed: true
-        },
         project_preview_link: {
           enabled: true,
           allowed: true
