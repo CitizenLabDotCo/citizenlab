@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Facebook
-  class FacebookOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class FacebookOmniauth < IdMethods::Base
+    def name
+      'facebook'
+    end
 
-    # Facebook is a login-only SSO method. Its configuration lives alongside the
-    # verification methods (in `verification.verification_methods`), but it cannot
-    # be used to verify user identities.
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -17,10 +20,6 @@ module CustomIdMethods::Facebook
 
     def id
       'd6158130-5752-483f-83fb-ccf24beceaf5'
-    end
-
-    def name
-      'facebook'
     end
 
     def config_parameters
@@ -41,7 +40,7 @@ module CustomIdMethods::Facebook
       }
     end
 
-    # Exposed publicly via the /verification_methods endpoint. app_id is public
+    # Exposed publicly via the /id_methods endpoint. app_id is public
     # information (it appears in the OpenGraph `fb:app_id` meta tag and Messenger
     # share links); app_secret is intentionally not exposed.
     def exposed_config_parameters
@@ -50,7 +49,7 @@ module CustomIdMethods::Facebook
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       env['omniauth.strategy'].options[:client_id] = config[:app_id]
       env['omniauth.strategy'].options[:client_secret] = config[:app_secret]

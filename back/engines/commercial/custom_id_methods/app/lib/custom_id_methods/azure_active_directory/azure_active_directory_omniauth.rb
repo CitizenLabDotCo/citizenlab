@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::AzureActiveDirectory
-  class AzureActiveDirectoryOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class AzureActiveDirectoryOmniauth < IdMethods::Base
+    def name
+      'azureactivedirectory'
+    end
 
-    # Azure AD is a login-only SSO method. Its configuration lives alongside the
-    # verification methods (in `verification.verification_methods`), but it cannot
-    # be used to verify user identities.
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -17,10 +20,6 @@ module CustomIdMethods::AzureActiveDirectory
 
     def id
       '7a610902-304b-4399-9f9e-da68ff478e86'
-    end
-
-    def name
-      'azureactivedirectory'
     end
 
     def config_parameters
@@ -71,7 +70,7 @@ module CustomIdMethods::AzureActiveDirectory
       }
     end
 
-    # Exposed publicly via the /verification_methods endpoint so the frontend can
+    # Exposed publicly via the /id_methods endpoint so the frontend can
     # render the SSO button (logo, label) and enforce visibility / domain rules.
     def exposed_config_parameters
       %i[logo_url login_mechanism_name visibility enforced_email_domain_error_multiloc]
@@ -79,7 +78,7 @@ module CustomIdMethods::AzureActiveDirectory
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       env['omniauth.strategy'].options[:client_id] = config[:client_id]
       env['omniauth.strategy'].options[:tenant] = config[:tenant]
@@ -99,7 +98,7 @@ module CustomIdMethods::AzureActiveDirectory
       # Called on every login attempt (via AuthenticationService.sso_enforced_for_email?),
       # including on tenants that have no verification configured. Guard before
       # reading #config, which assumes the verification setting is present.
-      return [] unless Verification::VerificationService.new.configured?(AppConfiguration.instance, name)
+      return [] unless IdMethodService.new.configured?(AppConfiguration.instance, name)
 
       domains_str = config[:enforced_email_domains]
       return [] if domains_str.blank?

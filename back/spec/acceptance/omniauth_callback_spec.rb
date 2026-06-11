@@ -82,8 +82,8 @@ resource 'Omniauth Callback', document: false do
       @user = create(:user, email: 'facebook_user@example.com')
 
       AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
+        allowed: true,
+        enabled: true,
         verification_methods: [{ name: 'facebook' }]
       }
       AppConfiguration.instance.save!
@@ -128,8 +128,8 @@ resource 'Omniauth Callback', document: false do
   context 'when SSO method returns email and it is confirmed' do
     before do
       AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
+        allowed: true,
+        enabled: true,
         verification_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
@@ -291,8 +291,8 @@ resource 'Omniauth Callback', document: false do
 
     before do
       AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
+        allowed: true,
+        enabled: true,
         verification_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!

@@ -20,7 +20,7 @@ resource 'Verifications' do
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/bogus/verification' do
+  post 'web_api/v1/id_methods/bogus/verification' do
     with_options scope: :verification do
       parameter :desired_error, "Let's you fake errors. Pick your flavour: no_match, not_entitled, taken. Leave empty for success.", required: false
     end

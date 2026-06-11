@@ -3,18 +3,18 @@
 require 'rails_helper'
 
 describe Verification::VerificationService do
-  let(:sfxv_service) { instance_double(Verification::SideFxVerificationService) }
-  let(:service) { described_class.new sfxv_service }
+  let(:service) { described_class.new }
 
   before do
-    SettingsService.new.activate_feature!(
-      'verification',
-      settings: {
-        verification_methods: [
-          { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
-        ]
-      }
-    )
+    AppConfiguration.instance.settings['verification'] = {
+      allowed: true,
+      enabled: true,
+      verification_methods: [
+        { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+      ]
+    }
+
+    AppConfiguration.instance.save!
   end
 
   describe 'verify_sync' do
@@ -31,21 +31,14 @@ describe Verification::VerificationService do
         .to receive(:verify_sync)
         .and_return({ uid: 'fakeuuid' })
 
-      expect(sfxv_service)
-        .to receive(:before_create)
-        .with(instance_of(Verification::Verification), user)
+      expect { service.verify_sync(**params) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(an_instance_of(Verification::Verification), 'created', user, anything, payload: { method: 'bogus' })
 
-      expect(sfxv_service)
-        .to receive(:after_create)
-        .with(instance_of(Verification::Verification), user)
-
-      service.verify_sync(**params)
+      expect(user.reload.verified).to be true
     end
 
     it 'updates the user with received attributes from verify_sync' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
-
       params = {
         user: user,
         method_name: 'bogus',
@@ -65,8 +58,6 @@ describe Verification::VerificationService do
     end
 
     it 'updates the user with received custom_field_values from verify_sync' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
       user.update!(custom_field_values: {
@@ -98,9 +89,6 @@ describe Verification::VerificationService do
     end
 
     it 'adds a verification' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
-
       params = {
         user: user,
         method_name: 'cow',
@@ -126,9 +114,6 @@ describe Verification::VerificationService do
     end
 
     it 'raises a VerificationTakenError when another user verified with that identity' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
-
       params1 = {
         user: create(:user),
         method_name: 'cow',
@@ -192,29 +177,6 @@ describe Verification::VerificationService do
         verification = create(:verification, method_name: 'bogus')
         expect(service.locked_custom_fields(verification.user)).to be_empty
       end
-    end
-  end
-
-  describe 'method_metadata' do
-    it 'returns allowed_for_verified_actions: false if first method does not support verified actions' do
-      vm = service.method_metadata(service.first_method_enabled)
-      expect(vm[:allowed_for_verified_actions]).to be(false)
-    end
-
-    it 'returns information about the first enabled method enabled for actions' do
-      create(:custom_field_gender)
-      create(:custom_field_birthyear)
-
-      configuration = AppConfiguration.instance
-      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
-      configuration.save!
-
-      metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)
-      expect(metadata[:name]).to eq 'Fake SSO'
-      expect(metadata[:locked_attributes]).to contain_exactly({ 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' }, { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' })
-      expect(metadata[:other_attributes]).to contain_exactly({ 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' })
-      expect(metadata[:locked_custom_fields]).to contain_exactly({ 'en' => 'gender' }, { 'en' => 'birthyear' })
-      expect(metadata[:other_custom_fields]).to be_empty
     end
   end
 end

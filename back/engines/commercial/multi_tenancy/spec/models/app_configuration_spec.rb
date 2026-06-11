@@ -110,7 +110,9 @@ RSpec.describe AppConfiguration do
   describe '#public_settings' do
     it 'does not include private fields' do
       app_config.settings['verification'] = {
-        allowed: true, enabled: true, verification_methods: [
+        allowed: true,
+        enabled: true,
+        verification_methods: [
           { name: 'clave_unica', client_id: '123', client_secret: '321' }
         ]
       }

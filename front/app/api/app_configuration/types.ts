@@ -90,8 +90,6 @@ export interface IAppConfigurationSettings {
     enabled_fragments: string[];
   };
   verification?: {
-    allowed: boolean;
-    enabled: boolean;
     verification_methods: string[];
   };
   smart_groups?: AppConfigurationFeature;
@@ -208,7 +206,7 @@ export interface IAppConfigurationSettings {
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = Exclude<keyof IAppConfigurationSettings, 'verification'>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {

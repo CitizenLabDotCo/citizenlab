@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::AzureActiveDirectoryB2c
-  class AzureActiveDirectoryB2cOmniauth < OmniauthMethods::Base
-    include Verification::VerificationMethod
+  class AzureActiveDirectoryB2cOmniauth < IdMethods::Base
+    def name
+      'azureactivedirectory_b2c'
+    end
 
-    # Azure AD B2C is a login-only SSO method. Its configuration lives alongside
-    # the verification methods (in `verification.verification_methods`), but it
-    # cannot be used to verify user identities.
     def verification?
       false
+    end
+
+    def authentication?
+      true
     end
 
     def verification_method_type
@@ -17,10 +20,6 @@ module CustomIdMethods::AzureActiveDirectoryB2c
 
     def id
       '08ac0e90-1a7d-4684-9117-b5cefe907e89'
-    end
-
-    def name
-      'azureactivedirectory_b2c'
     end
 
     def config_parameters
@@ -66,7 +65,7 @@ module CustomIdMethods::AzureActiveDirectoryB2c
       }
     end
 
-    # Exposed publicly via the /verification_methods endpoint so the frontend can
+    # Exposed publicly via the /id_methods endpoint so the frontend can
     # render the SSO button (logo, label).
     def exposed_config_parameters
       %i[logo_url login_mechanism_name]
@@ -76,7 +75,7 @@ module CustomIdMethods::AzureActiveDirectoryB2c
     # The endpoints can be found in "Azure AD B2C | App registrations" -> Endpoints.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.configured?(configuration, name)
+      return unless IdMethodService.new.configured?(configuration, name)
 
       options = env['omniauth.strategy'].options
 

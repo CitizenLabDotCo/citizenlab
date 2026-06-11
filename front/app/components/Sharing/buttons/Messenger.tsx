@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import { IDFacebookMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDFacebookMethod } from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
@@ -20,7 +20,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: idMethods } = useIdMethods();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('messenger');
@@ -31,7 +31,7 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked, properties);
   };
 
-  const facebookMethod = verificationMethods?.data.find(
+  const facebookMethod = idMethods?.data.find(
     (method): method is IDFacebookMethod => method.attributes.name === 'facebook'
   );
   const facebookAppId = facebookMethod?.attributes.app_id;

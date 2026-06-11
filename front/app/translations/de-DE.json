@@ -52,7 +52,6 @@
   "app.components.AuthProviders.continueWithHoplr": "Weiter mit Hoplr",
   "app.components.AuthProviders.continueWithIdAustria": "Anmelden mit ID-Austria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Weiter mit {loginMechanismName}",
-  "app.components.AuthProviders.continueWithNemlogIn": "Weiter mit MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse.{br}{br}Sie können nicht über FranceConnect auf die Plattform zugreifen, da die persönlichen Daten nicht übereinstimmen. Um sich über FranceConnect anzumelden, müssen Sie zunächst Ihren Vor- oder Nachnamen auf dieser Plattform ändern, damit er mit Ihren offiziellen Angaben übereinstimmt.{br}{br}Sie können sich wie gewohnt unten einloggen.",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "Sie können sich nicht anmelden, da Ihre Adresse nicht im erforderlichen Gebiet liegt.",
   "app.components.AuthProviders.livesOutsideAreaVerificationFailed": "Sie können nicht verifiziert werden, da Ihre Adresse nicht in dem erforderlichen Gebiet liegt.",
