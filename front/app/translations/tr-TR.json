@@ -185,6 +185,7 @@
   "app.components.CustomFieldsForm.notPublic1": "*Bu cevap sadece proje yöneticileriyle paylaşılacak, kamuoyuyla paylaşılmayacaktır.",
   "app.components.CustomFieldsForm.otherArea": "Başka bir yerde",
   "app.components.CustomFieldsForm.progressBarLabel": "İlerleme",
+  "app.components.CustomFieldsForm.progressPercentage": "% {percentage} tamamlandı",
   "app.components.CustomFieldsForm.removeAnswer": "Cevabı kaldır",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*İstediğiniz kadar seçin",
   "app.components.CustomFieldsForm.selectBetween": "* {minItems} ve {maxItems} seçenekleri arasından seçim yapın",
