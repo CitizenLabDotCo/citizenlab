@@ -33,12 +33,6 @@ import messages from './messages';
 
 type MenuItemType = 'custom_page' | 'default_page' | 'folder' | 'project';
 
-interface FormValues {
-  type: MenuItemType;
-  itemId: string;
-  titleMultiloc: Multiloc;
-}
-
 // An option that is selectable in the second dropdown, paired with the
 // IItemNotInNavbar payload used to create the navbar item.
 interface AvailableItem {
@@ -128,10 +122,14 @@ const NewMenuItemModal = ({ opened, onClose }: Props) => {
     ),
   });
 
-  const methods = useForm<FormValues>({
+  const methods = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
-    defaultValues: { type: 'custom_page', itemId: '', titleMultiloc: {} },
+    defaultValues: {
+      type: 'custom_page' as MenuItemType,
+      itemId: '',
+      titleMultiloc: {} as Multiloc,
+    },
   });
 
   const type = methods.watch('type');
@@ -215,7 +213,7 @@ const NewMenuItemModal = ({ opened, onClose }: Props) => {
     onClose();
   };
 
-  const onFormSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (formValues: { titleMultiloc: Multiloc }) => {
     if (!selectedItem) return;
     try {
       await addNavbarItem({
