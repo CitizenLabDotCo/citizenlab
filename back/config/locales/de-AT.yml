@@ -446,7 +446,7 @@ de-AT:
       neutral_reactions_count: Unsicher
       participants: Teilnehmende
       picks: Auswahl
-      project: '{orgName, select, München {Bezirke} other {Projekte}}'
+      project: Projekt
       published_at: Veröffentlicht
       registration_completed_at: Registrierung abgeschlossen am
       status: Status
