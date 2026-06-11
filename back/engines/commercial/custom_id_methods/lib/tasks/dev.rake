@@ -151,12 +151,12 @@ DEV_ID_METHOD_CONFIGS = {
     'app_secret' => ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET', 'fake secret')
   },
   'azureactivedirectory' => {
-    'name': 'azureactivedirectory',
-    'tenant': ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID', 'fake id'),
-    'client_id': ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID', 'fake secret'),
-    'logo_url': 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-    'login_mechanism_name': 'Azure Active Directory',
-    'visibility': 'show'
+    name: 'azureactivedirectory',
+    tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID', 'fake id'),
+    client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID', 'fake secret'),
+    logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+    login_mechanism_name: 'Azure Active Directory',
+    visibility: 'show'
   },
   'azureactivedirectory_b2c' => {
     'name' => 'azureactivedirectory_b2c',
