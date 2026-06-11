@@ -17,12 +17,14 @@ import T from 'components/T';
 import Emoji from 'components/UI/Emoji';
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
+import tracks from '../tracks';
 
 interface Props {
   projectId: string;
@@ -60,8 +62,16 @@ const SelectedTopicContent = ({
 
   const handleSubtopicClick = (subtopicId: string) => {
     if (selectedSubtopicId === subtopicId) {
+      trackEventByName(tracks.subtopicDeselected, {
+        subtopicId,
+        parentTopicId: topicId,
+      });
       removeSearchParams(['subtopic', 'sheet_open']);
     } else {
+      trackEventByName(tracks.subtopicSelected, {
+        subtopicId,
+        parentTopicId: topicId,
+      });
       removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }

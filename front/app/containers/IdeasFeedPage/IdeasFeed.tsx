@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
@@ -22,6 +23,7 @@ import useVirtualScroll from './hooks/useVirtualScroll';
 import messages from './messages';
 import ScrollHintOverlay from './ScrollHintOverlay';
 import { NOTE_WIDTH, NOTE_ASPECT_RATIO } from './StickyNotes/StickyNote';
+import tracks from './tracks';
 
 const PEEK_HEIGHT = 200;
 
@@ -152,21 +154,38 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
-  const handleIdeaSelect = useCallback((ideaId: string) => {
-    updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
-  }, []);
+  const handleIdeaSelect = useCallback(
+    (ideaId: string) => {
+      trackEventByName(tracks.ideaOpened, { ideaId, phaseId, topicId });
+      updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
+    },
+    [phaseId, topicId]
+  );
 
   const onScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {
       handleScroll(e, {
         onNearEnd: () => {
           if (hasNextPage && !isFetchingNextPage) {
+            trackEventByName(tracks.moreIdeasLoaded, {
+              phaseId,
+              topicId,
+              loadedCount: ideasLength,
+            });
             fetchNextPage();
           }
         },
       });
     },
-    [handleScroll, hasNextPage, isFetchingNextPage, fetchNextPage]
+    [
+      handleScroll,
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+      phaseId,
+      topicId,
+      ideasLength,
+    ]
   );
 
   if (isLoading) {

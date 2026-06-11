@@ -11,11 +11,13 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   projectSlug: string;
@@ -46,6 +48,11 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
   };
 
   const handleClick = () => {
+    trackEventByName(tracks.addIdeaButtonClicked, {
+      phaseId,
+      authenticationRequired: !!authenticationRequirements,
+    });
+
     if (authenticationRequirements) {
       const successAction: SuccessAction = {
         name: 'redirectToIdeaForm',
