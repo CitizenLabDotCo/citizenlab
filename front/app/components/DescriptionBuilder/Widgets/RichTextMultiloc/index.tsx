@@ -86,6 +86,4 @@ RichTextMultiloc.craft = {
   },
 };
 
-export const richTextMultilocTitle = messages.richTextMultiloc;
-
 export default RichTextMultiloc;
