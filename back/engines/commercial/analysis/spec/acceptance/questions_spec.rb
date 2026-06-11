@@ -88,7 +88,7 @@ resource 'Questions' do
           },
           inputs_count: 0,
           custom_field_ids: { main_custom_field_id: analysis.main_custom_field_id, additional_custom_field_ids: analysis.additional_custom_field_ids },
-          accuracy: 0.8,
+          accuracy: 0.9,
           missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String),
@@ -148,7 +148,7 @@ resource 'Questions' do
           filters: { reactions_from: 5 },
           inputs_count: 0,
           custom_field_ids: {},
-          accuracy: 0.8,
+          accuracy: 0.9,
           missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String),
@@ -223,7 +223,7 @@ resource 'Questions' do
         id: kind_of(String),
         type: 'question_pre_check',
         attributes: {
-          accuracy: 0.8,
+          accuracy: 0.9,
           impossible_reason: nil
         }
       })
