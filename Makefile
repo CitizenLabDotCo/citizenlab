@@ -180,6 +180,24 @@ be-up-federa:
 fe-up-federa:
 	cd front && npm run start:sso:federa
 
+# Google, Facebook
+be-up-social-logins:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[google,facebook]'
+	docker compose up
+
+fe-up-social-logins:
+	cd front && npm start
+
+# Azure AD & Azure AD B2C.
+be-up-azure:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[azureactivedirectory,azureactivedirectory_b2c]'
+	docker compose up
+
+fe-up-azure:
+	cd front && npm start
+
 # Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
 sso-reset:
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
