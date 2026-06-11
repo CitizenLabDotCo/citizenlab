@@ -2,8 +2,18 @@
 
 module CustomIdMethods::IdCardLookup
   # Verifies a user by matching their entered ID card id against an uploaded list
-  class IdCardLookupVerification
-    include Verification::VerificationMethod
+  class IdCardLookupVerification < IdMethods::Base
+    def name
+      'id_card_lookup'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
 
     def verification_method_type
       :manual_sync
@@ -11,10 +21,6 @@ module CustomIdMethods::IdCardLookup
 
     def id
       '516e134d-e22b-4386-a783-0db4c2708256'
-    end
-
-    def name
-      'id_card_lookup'
     end
 
     def config_parameters

@@ -4,9 +4,9 @@ import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
 import {
-  TVerificationMethod,
-  TVerificationMethodName,
-} from 'api/verification_methods/types';
+  IdMethodData,
+  IdMethodName,
+} from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
@@ -20,11 +20,11 @@ import messages from './messages';
 
 interface Props {
   last: boolean;
-  verificationMethodName?: TVerificationMethodName; // TODO: JS - tidy up the fact we have both here
-  verificationMethod?: TVerificationMethod;
+  verificationMethodName?: IdMethodName; // TODO: JS - tidy up the fact we have both here
+  verificationMethod?: IdMethodData;
   grayBorder?: boolean;
   standardSSOBehavior?: boolean;
-  onClick?: (method: TVerificationMethod) => void;
+  onClick?: (method: IdMethodData) => void;
   onClickStandardSSO?: () => void;
 }
 
@@ -42,7 +42,7 @@ const SSOVerificationButton = ({
   if (!methodName) return null;
 
   const verificationButtonConfigs: {
-    [methodName in TVerificationMethodName]?: {
+    [methodName in IdMethodName]?: {
       label: MessageDescriptor;
       icon: IconNames;
     };
@@ -101,11 +101,10 @@ const SSOVerificationButton = ({
       onClickStandardSSO?.();
     } else {
       const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/${
-        verificationMethod?.attributes.name
-      }?token=${jwt}&verification_pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
+      window.location.href = `${AUTH_PATH}/${verificationMethod?.attributes.name
+        }?token=${jwt}&verification_pathname=${removeUrlLocale(
+          window.location.pathname
+        )}`;
     }
   };
 

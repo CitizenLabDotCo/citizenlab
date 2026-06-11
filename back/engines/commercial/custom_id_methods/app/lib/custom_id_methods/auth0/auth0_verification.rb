@@ -2,18 +2,12 @@
 
 module CustomIdMethods::Auth0
   module Auth0Verification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       'c6b24830-e17a-48a6-9f05-bd8fd3a4a0a6'
-    end
-
-    def name
-      'auth0'
     end
 
     def config_parameters

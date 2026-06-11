@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::IdAustria
-  class IdAustriaOmniauth < OmniauthMethods::Base
+  class IdAustriaOmniauth < IdMethods::Base
     include IdAustriaVerification
+
+    def name
+      'id_austria'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_uid(auth)
       auth['extra']['raw_info']['urn:pvpgvat:oidc.bpk']
@@ -43,10 +55,6 @@ module CustomIdMethods::IdAustria
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(auth)

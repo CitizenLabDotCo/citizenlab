@@ -9,13 +9,13 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerVerificationOnly } from 'containers/Authentication/events';
 import messages from 'containers/UsersEditPage/messages';
 
 import Avatar from 'components/Avatar';
-import FeatureFlag from 'components/FeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection } from 'components/UI/FormComponents';
 
@@ -112,6 +112,7 @@ const ReverifyButton = styled.button`
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const { data: authUser } = useAuthUser();
+  const { data: firstVerificationMethod } = useVerificationMethod();
   if (isNilOrError(authUser)) return null;
 
   const authUserIsVerified = authUser.data.attributes.verified;
@@ -125,70 +126,70 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
     </ReverifyButton>
   );
 
+  if (!firstVerificationMethod) return null;
+
   return (
-    <FeatureFlag name="verification">
-      <Container
-        id="e2e-verification-status"
-        className={`${className} e2e${
-          authUserIsVerified ? '' : '-not'
+
+    <Container
+      id="e2e-verification-status"
+      className={`${className} e2e${authUserIsVerified ? '' : '-not'
         }-verified`}
-      >
-        {authUserIsVerified ? (
-          <>
-            <StyledAvatar
-              userId={authUser.data.id}
-              size={52}
-              addVerificationBadge
-              aria-hidden
-            />
-            <Content>
-              <Title>
-                <FormattedMessage {...messages.verifiedIdentityTitle} />
-              </Title>
-              <Text>
-                <FormattedMessage {...messages.verifiedIdentitySubtitle} />
-              </Text>
-              <Text>
-                <FormattedMessage
-                  {...messages.updateverification}
-                  values={{ reverifyButton }}
-                />
-              </Text>
-            </Content>
-          </>
-        ) : (
-          <>
-            <AvatarAndShield aria-hidden>
-              <StyledAvatar
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                userId={authUser?.data.id}
-                size={52}
-                bgColor="transparent"
-                padding={0}
-                borderThickness={2}
-                borderColor="#fff"
+    >
+      {authUserIsVerified ? (
+        <>
+          <StyledAvatar
+            userId={authUser.data.id}
+            size={52}
+            addVerificationBadge
+            aria-hidden
+          />
+          <Content>
+            <Title>
+              <FormattedMessage {...messages.verifiedIdentityTitle} />
+            </Title>
+            <Text>
+              <FormattedMessage {...messages.verifiedIdentitySubtitle} />
+            </Text>
+            <Text>
+              <FormattedMessage
+                {...messages.updateverification}
+                values={{ reverifyButton }}
               />
-              <ShieldIcon name="shield-check" />
-            </AvatarAndShield>
-            <Content>
-              <Title>
-                <FormattedMessage {...messages.becomeVerifiedTitle} />
-              </Title>
-              <StyledText>
-                <FormattedMessage {...messages.becomeVerifiedSubtitle} />
-              </StyledText>
-            </Content>
-            <VerifyButton
-              onClick={triggerVerificationOnly}
-              id="e2e-verify-user-button"
-            >
-              <FormattedMessage {...messages.verifyNow} />
-            </VerifyButton>
-          </>
-        )}
-      </Container>
-    </FeatureFlag>
+            </Text>
+          </Content>
+        </>
+      ) : (
+        <>
+          <AvatarAndShield aria-hidden>
+            <StyledAvatar
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              userId={authUser?.data.id}
+              size={52}
+              bgColor="transparent"
+              padding={0}
+              borderThickness={2}
+              borderColor="#fff"
+            />
+            <ShieldIcon name="shield-check" />
+          </AvatarAndShield>
+          <Content>
+            <Title>
+              <FormattedMessage {...messages.becomeVerifiedTitle} />
+            </Title>
+            <StyledText>
+              <FormattedMessage {...messages.becomeVerifiedSubtitle} />
+            </StyledText>
+          </Content>
+          <VerifyButton
+            onClick={triggerVerificationOnly}
+            id="e2e-verify-user-button"
+          >
+            <FormattedMessage {...messages.verifyNow} />
+          </VerifyButton>
+        </>
+      )}
+    </Container>
   );
 });
 

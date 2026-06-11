@@ -10,9 +10,9 @@ import {
 } from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
+import { IdMethodData } from 'api/id_methods/types';
 import { IIdeaData } from 'api/ideas/types';
 import { TNotificationData } from 'api/notifications/types';
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
@@ -62,7 +62,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.form': {
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.header': {
     type: GroupCreationModal;
@@ -71,7 +70,6 @@ export interface OutletsPropertyMap {
     initialValues: IGroupDataAttributes;
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.UsersGroup.header': {
     type: GroupCreationModal;
@@ -98,11 +96,11 @@ export interface OutletsPropertyMap {
     type: ManagerType;
   };
   'app.components.VerificationModal.buttons': {
-    onClick: (method: TVerificationMethod) => void;
-    verificationMethods: TVerificationMethod[];
+    onClick: (method: IdMethodData) => void;
+    idMethods: IdMethodData[];
   };
   'app.components.VerificationModal.methodSteps': {
-    method: TVerificationMethod | null;
+    method: IdMethodData | null;
     onCancel: () => void;
     onVerified: () => void;
     activeStep: TVerificationStep;
@@ -185,10 +183,10 @@ export type RouteConfiguration = {
 
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
-    ? RecursivePartial<U>[]
-    : T[P] extends Record<string, any>
-    ? RecursivePartial<T[P]>
-    : T[P];
+  ? RecursivePartial<U>[]
+  : T[P] extends Record<string, any>
+  ? RecursivePartial<T[P]>
+  : T[P];
 };
 
 export interface Routes {
@@ -314,53 +312,53 @@ export const insertConfiguration =
     insertAfterName,
     insertBeforeName,
   }: InsertConfigurationOptions<T>) =>
-  (items: T[]): T[] => {
-    const itemsClone = cloneDeep(items);
-    const itemAlreadyInserted = itemsClone.some(
-      (item) => item.name === configuration.name
-    );
-    // index of item where we need to insert before/after
-    const referenceIndex = itemsClone.findIndex(
-      (item) => item.name === (insertAfterName || insertBeforeName)
-    );
-    const insertIndex = clamp(
-      // if number is outside of lower and upper, it picks
-      // the closes value. If it's inside the ranges, the
-      // number is kept
-      insertAfterName ? referenceIndex + 1 : referenceIndex,
-      0,
-      itemsClone.length
-    );
-    const isItemInsertedBefore =
-      itemAlreadyInserted &&
-      insertBeforeName &&
-      insertIndex &&
-      insertIndex < itemsClone.length &&
-      itemsClone[insertIndex].name === insertBeforeName &&
-      itemsClone[insertIndex - 1].name === configuration.name;
-    const isItemInsertedAfter =
-      itemAlreadyInserted &&
-      insertAfterName &&
-      insertIndex < itemsClone.length &&
-      itemsClone[insertIndex].name === insertAfterName;
-
-    // If item is already inserted then let's not do anything
-    if (isItemInsertedBefore || isItemInsertedAfter) {
-      return itemsClone;
-    }
-
-    if (itemAlreadyInserted) {
-      itemsClone.splice(
-        itemsClone.findIndex((item) => item.name === configuration.name),
-        1
+    (items: T[]): T[] => {
+      const itemsClone = cloneDeep(items);
+      const itemAlreadyInserted = itemsClone.some(
+        (item) => item.name === configuration.name
       );
-    }
+      // index of item where we need to insert before/after
+      const referenceIndex = itemsClone.findIndex(
+        (item) => item.name === (insertAfterName || insertBeforeName)
+      );
+      const insertIndex = clamp(
+        // if number is outside of lower and upper, it picks
+        // the closes value. If it's inside the ranges, the
+        // number is kept
+        insertAfterName ? referenceIndex + 1 : referenceIndex,
+        0,
+        itemsClone.length
+      );
+      const isItemInsertedBefore =
+        itemAlreadyInserted &&
+        insertBeforeName &&
+        insertIndex &&
+        insertIndex < itemsClone.length &&
+        itemsClone[insertIndex].name === insertBeforeName &&
+        itemsClone[insertIndex - 1].name === configuration.name;
+      const isItemInsertedAfter =
+        itemAlreadyInserted &&
+        insertAfterName &&
+        insertIndex < itemsClone.length &&
+        itemsClone[insertIndex].name === insertAfterName;
 
-    const newItems = [
-      ...itemsClone.slice(0, insertIndex),
-      configuration,
-      ...itemsClone.slice(insertIndex),
-    ];
+      // If item is already inserted then let's not do anything
+      if (isItemInsertedBefore || isItemInsertedAfter) {
+        return itemsClone;
+      }
 
-    return newItems;
-  };
+      if (itemAlreadyInserted) {
+        itemsClone.splice(
+          itemsClone.findIndex((item) => item.name === configuration.name),
+          1
+        );
+      }
+
+      const newItems = [
+        ...itemsClone.slice(0, insertIndex),
+        configuration,
+        ...itemsClone.slice(insertIndex),
+      ];
+
+      return newItems;
+    };

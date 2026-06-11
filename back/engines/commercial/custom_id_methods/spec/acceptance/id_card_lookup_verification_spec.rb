@@ -25,7 +25,7 @@ resource 'Verifications' do
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/id_card_lookup/verification' do
+  post 'web_api/v1/id_methods/id_card_lookup/verification' do
     with_options scope: :verification do
       parameter :card_id
     end

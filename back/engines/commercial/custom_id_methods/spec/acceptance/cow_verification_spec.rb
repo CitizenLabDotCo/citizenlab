@@ -22,7 +22,7 @@ resource 'Verifications' do
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/cow/verification' do
+  post 'web_api/v1/id_methods/cow/verification' do
     with_options scope: :verification do
       parameter :run, 'The RUN number of the citizen', required: true
       parameter :id_serial, 'The ID card serial number of the citizen', required: true

@@ -290,9 +290,12 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['verification'] = {
+            allowed: true,
+            enabled: true,
+            'verification_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -323,9 +326,12 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['verification'] = {
+            allowed: true,
+            enabled: true,
+            'verification_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end

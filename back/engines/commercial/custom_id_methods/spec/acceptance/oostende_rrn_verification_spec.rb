@@ -26,7 +26,7 @@ resource 'Verifications' do
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/oostende_rrn/verification' do
+  post 'web_api/v1/id_methods/oostende_rrn/verification' do
     with_options scope: :verification do
       parameter :rrn, 'The rrn (rijksregister nummer) the user wants to validate their identity with', required: true
     end

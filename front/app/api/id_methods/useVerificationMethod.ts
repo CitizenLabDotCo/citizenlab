@@ -3,23 +3,23 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import verificationMethodsKeys from './keys';
-import { VerificationMethodsKeys, IVerificationMethod } from './types';
+import idMethodsKeys from './keys';
+import { IdMethodsKeys, IdMethod } from './types';
 
 const fetchVerificationMethod = () =>
-  fetcher<IVerificationMethod>({
-    path: `/verification_methods/first_enabled`,
+  fetcher<IdMethod>({
+    path: `/id_methods/first_enabled_verification_method`,
     action: 'get',
   });
 
 const useVerificationMethod = () => {
   return useQuery<
-    IVerificationMethod,
+    IdMethod,
     CLErrors,
-    IVerificationMethod,
-    VerificationMethodsKeys
+    IdMethod,
+    IdMethodsKeys
   >({
-    queryKey: verificationMethodsKeys.item({ endpoint: 'first_enabled' }),
+    queryKey: idMethodsKeys.item({ endpoint: 'first_enabled_verification_method' }),
     queryFn: () => fetchVerificationMethod(),
   });
 };

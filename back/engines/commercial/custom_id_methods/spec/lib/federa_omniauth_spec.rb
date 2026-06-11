@@ -123,12 +123,6 @@ describe CustomIdMethods::Federa::FederaOmniauth do
     end
   end
 
-  describe '#verification_prioritized?' do
-    it 'returns true' do
-      expect(omniauth.verification_prioritized?).to be true
-    end
-  end
-
   describe '#filter_auth_to_persist' do
     let(:auth) do
       OmniAuth::AuthHash.new(
