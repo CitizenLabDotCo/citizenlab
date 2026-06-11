@@ -90,17 +90,22 @@ RSpec.describe Permission do
       expect(build(:permission, permitted_by: 'verified')).not_to be_valid
     end
 
-    it "is valid as 'everyone' when the action is 'posting_idea'" do
+    it "is valid as 'everyone' when the action is 'posting_idea' and the method supports it" do
       expect(build(:permission, permitted_by: 'everyone', action: 'posting_idea')).to be_valid
     end
 
-    it "is invalid as 'everyone' when the action is not 'posting_idea'" do
+    it "is valid as 'everyone' for 'taking_survey' on an external survey phase" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'taking_survey', permission_scope: create(:typeform_survey_phase))
+      expect(permission).to be_valid
+    end
+
+    it "is invalid as 'everyone' when the action does not allow it" do
       permission = build(:permission, permitted_by: 'everyone', action: 'commenting_idea')
       expect(permission).not_to be_valid
       expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
     end
 
-    it "allows other permitted_by values for actions that are not 'posting_idea'" do
+    it "allows other permitted_by values for actions that do not allow 'everyone'" do
       expect(build(:permission, permitted_by: 'users', action: 'commenting_idea')).to be_valid
     end
   end

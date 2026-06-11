@@ -46,6 +46,9 @@ class Permission < ApplicationRecord
     'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
+  # 'everyone' is only meaningful for the submission action of participation
+  # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
+  EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
@@ -190,12 +193,19 @@ class Permission < ApplicationRecord
 
   def validate_permitted_by_everyone
     return unless permitted_by == 'everyone'
-    return if action == 'posting_idea'
+    return if permitted_by_everyone_allowed?
 
     errors.add(
       :permitted_by,
       :everyone_not_allowed_for_action,
-      message: "permitted_by can only be 'everyone' when the action is 'posting_idea'."
+      message: "permitted_by can only be 'everyone' when the action and participation method allow it."
     )
+  end
+
+  def permitted_by_everyone_allowed?
+    return false unless EVERYONE_PERMITTED_ACTIONS.include?(action)
+    return false unless permission_scope.respond_to?(:pmethod)
+
+    permission_scope.pmethod.supports_permitted_by_everyone?
   end
 end
