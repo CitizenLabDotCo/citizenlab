@@ -27,7 +27,10 @@ module CustomIdMethods::Rheinbahn
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name)
+      # Rheinbahn is authentication-only, so gate on whether the method is
+      # configured (not on VerificationService#active?, which only covers
+      # methods that can verify identities).
+      return unless IdMethodService.new.configured?(configuration, name)
 
       options = env['omniauth.strategy'].options
 

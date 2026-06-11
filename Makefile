@@ -124,7 +124,7 @@ be-up-idaustria:
 fe-up-idaustria:
 	cd front && npm run start:sso:idaustria
 
-# Keycloak (Oslo ID-Porten & Rheinbahn)
+# Keycloak (Oslo ID-Porten)
 be-up-idporten:
 	docker compose down
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[idporten]'
@@ -133,7 +133,7 @@ be-up-idporten:
 fe-up-idporten:
 	cd front && npm run start:sso:idporten
 
-# Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
+# Rheinbahn
 be-up-rheinbahn:
 	docker compose down
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[rheinbahn]'
