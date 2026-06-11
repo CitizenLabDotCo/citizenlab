@@ -59,11 +59,14 @@ module McpServer
         McpServer::Tools::CreatePhase,
         McpServer::Tools::CreateEvent,
         McpServer::Tools::CreateCause,
+        McpServer::Tools::CreatePollQuestion,
+        McpServer::Tools::CreatePollOption,
         McpServer::Tools::GetResource,
         McpServer::Tools::ListProjects,
         McpServer::Tools::ListPhases,
         McpServer::Tools::ListEvents,
         McpServer::Tools::ListCauses,
+        McpServer::Tools::ListPollQuestions,
         McpServer::Tools::ListAreas,
         McpServer::Tools::ListGlobalTopics,
         McpServer::Tools::ListFolders,
@@ -73,7 +76,8 @@ module McpServer
         # McpServer::Tools::ListUsers,
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
-        McpServer::Tools::ListUserCustomFields
+        McpServer::Tools::ListUserCustomFields,
+        McpServer::Tools::ListGroups
       ].map { |klass| klass.for(current_user:, token_scopes:) }
     end
 

@@ -9,7 +9,9 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
     'global_topic' => 'GlobalTopic',
     'folder' => 'ProjectFolders::Folder',
     'user' => 'User',
-    'cause' => 'Volunteering::Cause'
+    'cause' => 'Volunteering::Cause',
+    'poll_question' => 'Polls::Question',
+    'poll_option' => 'Polls::Option'
   }.freeze
 
   def name = 'get_resource'
