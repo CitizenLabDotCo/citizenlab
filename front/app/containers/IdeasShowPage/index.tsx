@@ -114,14 +114,8 @@ const IdeasShowPage = () => {
               />
             </Box>
           </Box>
-          {showCTABar && (
-            <Box
-              position="fixed"
-              bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-              width="100vw"
-            >
-              <ProjectCTABar projectId={project.data.id} />
-            </Box>
+          {showCTABar && isSmallerThanTablet && (
+            <ProjectCTABar projectId={project.data.id} />
           )}
         </VotingContext>
       </main>
