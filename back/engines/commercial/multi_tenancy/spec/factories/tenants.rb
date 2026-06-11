@@ -51,10 +51,6 @@ FactoryBot.define do
           organization_type: 'medium_city',
           onboarding: true
         },
-        verification: {
-          enabled: false,
-          allowed: false
-        },
         follow: {
           enabled: true,
           allowed: true

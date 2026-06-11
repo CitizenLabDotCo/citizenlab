@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::GentRrn
-  class GentRrnVerification
-    include Verification::VerificationMethod
+  class GentRrnVerification < IdMethods::Base
+    def name
+      'gent_rrn'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
 
     def verification_method_type
       :manual_sync
@@ -10,10 +20,6 @@ module CustomIdMethods::GentRrn
 
     def id
       '8a6d6f7e-a451-41ea-8e0a-0021439923a0'
-    end
-
-    def name
-      'gent_rrn'
     end
 
     def config_parameters

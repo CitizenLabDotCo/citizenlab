@@ -11,6 +11,7 @@ module AdminApi
       :map_config_id,
       :image_path, # Used by project library
       :visible_to,
+      :listed, # Used by project library
       :ideas_count,
       :participants_count,
       :current_phase_end_at,

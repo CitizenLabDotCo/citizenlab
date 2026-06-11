@@ -36,13 +36,18 @@ context 'Azure AD B2C authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['azure_ad_b2c_login'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      tenant_name: 'citizenlabtest',
-      tenant_id: '9272e410-597e-498d-a253-8dc97a38f541',
-      policy_name: 'B2C_1_default_signup_signin_flow',
-      client_id: 'fakeid'
+      id_methods: [
+        {
+          name: 'azureactivedirectory_b2c',
+          tenant_name: 'citizenlabtest',
+          tenant_id: '9272e410-597e-498d-a253-8dc97a38f541',
+          policy_name: 'B2C_1_default_signup_signin_flow',
+          client_id: 'fakeid'
+        }
+      ]
     }
     configuration.save!
     host! 'example.org'

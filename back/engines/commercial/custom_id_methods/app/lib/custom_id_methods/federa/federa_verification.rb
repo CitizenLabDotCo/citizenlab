@@ -2,18 +2,12 @@
 
 module CustomIdMethods::Federa
   module FederaVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       'b8e4d4a7-3f1c-4c5e-9a2b-6d8f0e1c3a5b'
-    end
-
-    def name
-      'federa'
     end
 
     def config_parameters

@@ -5,8 +5,7 @@ module McpServer
     include Pundit::Authorization
     rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
-    before_action -> { doorkeeper_authorize! 'mcp:access' }
-    after_action :advertise_resource_metadata, if: -> { response.unauthorized? }
+    around_action :authorize_mcp_access
 
     def create
       authorize(%i[mcp_server mcp])
@@ -32,11 +31,23 @@ module McpServer
 
     private
 
+    # Authorize via Doorkeeper, and append the RFC 9728 resource_metadata parameter to the
+    # WWW-Authenticate header on 401s so MCP clients can discover the OAuth authorization
+    # server. Uses around_action to add the header (instead of a simpler after_action)
+    # because doorkeeper_authorize! responds with head :unauthorized on invalid tokens,
+    # which causes Rails to skip after_actions.
+    def authorize_mcp_access
+      doorkeeper_authorize! 'mcp:access'
+      yield unless performed?
+    ensure
+      advertise_resource_metadata if response.unauthorized?
+    end
+
     # RFC 9728 §5.1: a 401 from a protected resource must point clients to the
     # resource-metadata document via the WWW-Authenticate header so they can
     # discover the authorization server and start the OAuth flow.
     def advertise_resource_metadata
-      metadata_url = "#{request.base_url}/.well-known/oauth-protected-resource"
+      metadata_url = "#{AppConfiguration.instance.base_backend_uri}/.well-known/oauth-protected-resource"
       existing = response.headers['WWW-Authenticate'].to_s
       challenge = "Bearer resource_metadata=\"#{metadata_url}\""
       response.headers['WWW-Authenticate'] = existing.present? ? "#{existing}, #{challenge}" : challenge
@@ -47,10 +58,15 @@ module McpServer
         McpServer::Tools::CreateProject,
         McpServer::Tools::CreatePhase,
         McpServer::Tools::CreateEvent,
+        McpServer::Tools::CreateCause,
+        McpServer::Tools::CreatePollQuestion,
+        McpServer::Tools::CreatePollOption,
         McpServer::Tools::GetResource,
         McpServer::Tools::ListProjects,
         McpServer::Tools::ListPhases,
         McpServer::Tools::ListEvents,
+        McpServer::Tools::ListCauses,
+        McpServer::Tools::ListPollQuestions,
         McpServer::Tools::ListAreas,
         McpServer::Tools::ListGlobalTopics,
         McpServer::Tools::ListFolders,
@@ -60,7 +76,8 @@ module McpServer
         # McpServer::Tools::ListUsers,
         McpServer::Tools::ListPhasePermissions,
         McpServer::Tools::UpdatePhasePermission,
-        McpServer::Tools::ListUserCustomFields
+        McpServer::Tools::ListUserCustomFields,
+        McpServer::Tools::ListGroups
       ].map { |klass| klass.for(current_user:, token_scopes:) }
     end
 
