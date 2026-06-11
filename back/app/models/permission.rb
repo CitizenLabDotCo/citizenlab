@@ -70,6 +70,7 @@ class Permission < ApplicationRecord
   validate :validate_require_verification
   validate :validate_require_confirmed_email
   validate :validate_verification_expiry
+  validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
@@ -184,6 +185,17 @@ class Permission < ApplicationRecord
       :verification_expiry,
       :verification_expiry_cannot_be_set,
       message: 'Verification expiry can only be set when verification is required.'
+    )
+  end
+
+  def validate_permitted_by_everyone
+    return unless permitted_by == 'everyone'
+    return if action == 'posting_idea'
+
+    errors.add(
+      :permitted_by,
+      :everyone_not_allowed_for_action,
+      message: "permitted_by can only be 'everyone' when the action is 'posting_idea'."
     )
   end
 end

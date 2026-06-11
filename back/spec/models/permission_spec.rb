@@ -89,6 +89,20 @@ RSpec.describe Permission do
     it 'is no longer valid for the removed verified value' do
       expect(build(:permission, permitted_by: 'verified')).not_to be_valid
     end
+
+    it "is valid as 'everyone' when the action is 'posting_idea'" do
+      expect(build(:permission, permitted_by: 'everyone', action: 'posting_idea')).to be_valid
+    end
+
+    it "is invalid as 'everyone' when the action is not 'posting_idea'" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'commenting_idea')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
+    it "allows other permitted_by values for actions that are not 'posting_idea'" do
+      expect(build(:permission, permitted_by: 'users', action: 'commenting_idea')).to be_valid
+    end
   end
 
   describe 'following permission default' do
