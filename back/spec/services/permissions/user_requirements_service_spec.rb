@@ -76,8 +76,13 @@ describe Permissions::UserRequirementsService do
         end
       end
 
-      context 'when permitted_by is set to everyone_confirmed_email' do
-        let(:permission) { create(:permission, permitted_by: 'everyone_confirmed_email') }
+      # Formerly the 'everyone_confirmed_email' permitted_by. It is now a 'users'
+      # permission that only requires a confirmed email (require_name and
+      # require_password are false). Note that, unlike the old everyone_confirmed_email
+      # behaviour, onboarding is no longer forced off - these are plain 'users'
+      # permissions and follow the normal onboarding rule.
+      context 'when permitted_by is users and only a confirmed email is required' do
+        let(:permission) { create(:permission, :by_everyone_confirmed_email) }
 
         before do
           permission.update!(global_custom_fields: false)
@@ -90,12 +95,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: %i[email confirmation]
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -106,12 +111,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: [:confirmation]
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -122,12 +127,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: []
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -138,12 +143,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: [:confirmation]
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -153,12 +158,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: []
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -170,12 +175,12 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: [:confirmation]
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -186,49 +191,48 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
+              permitted_by: 'users',
               missing_user_attributes: []
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
 
+        # The old behaviour escalated a 'following' permission to full 'users'
+        # registration when password_login was disabled. That fallback is gone:
+        # the requirements are now driven purely by the require_* flags, so they
+        # are the same regardless of whether password_login is enabled.
         context 'when the action is following' do
           before { permission.update!(permission_scope: nil, action: 'following') }
 
-          it 'does not permit a visitor when password login is enabled' do
-            requirements = service.requirements(permission, nil)
-            expect(service.permitted?(requirements)).to be false
-            expect(requirements).to eq({
-              authentication: {
-                permitted_by: 'everyone_confirmed_email',
-                missing_user_attributes: %i[email confirmation]
-              },
-              verification: false,
-              custom_fields: { 'birthyear' => 'optional' },
-              onboarding: false,
-              group_membership: false
-            })
-          end
-
-          it 'does not permit a visitor and returns the requirements for "users" instead when password login is NOT enabled' do
-            SettingsService.new.deactivate_feature! 'password_login'
-
-            requirements = service.requirements(permission, nil)
-            expect(service.permitted?(requirements)).to be false
-            expect(requirements).to eq({
+          let(:expected_visitor_requirements) do
+            {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: %i[first_name last_name email confirmation password]
+                missing_user_attributes: %i[email confirmation]
               },
               verification: false,
               custom_fields: { 'birthyear' => 'optional' },
               onboarding: true,
               group_membership: false
-            })
+            }
+          end
+
+          it 'does not permit a visitor when password login is enabled' do
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq(expected_visitor_requirements)
+          end
+
+          it 'has the same requirements when password login is NOT enabled' do
+            SettingsService.new.deactivate_feature! 'password_login'
+
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq(expected_visitor_requirements)
           end
         end
       end
@@ -505,11 +509,11 @@ describe Permissions::UserRequirementsService do
       end
     end
 
-    context 'verification via permitted_by "verified"' do
-      let(:verified_permission) { create(:permission, permitted_by: 'verified') }
+    context 'verification via require_verification' do
+      let(:verified_permission) { create(:permission, :by_verified) }
 
       before do
-        # To allow permitted_by 'verified' we need to enable at least one verification method
+        # To allow require_verification we need to enable at least one verification method
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -518,7 +522,7 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(verified_permission, nil)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
       end
@@ -529,14 +533,16 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
 
         it 'does not remove missing authentication requirements if not verified' do
           user.update!(unique_code: '1234abcd', email: nil, password: nil)
           requirements = service.requirements(verified_permission, user)
-          expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+          # A verified permission requires neither name nor password (require_name/require_password
+          # are false), so only the still-missing email remains.
+          expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email]
         end
       end
 
@@ -550,7 +556,7 @@ describe Permissions::UserRequirementsService do
           it 'verification is satisfied' do
             requirements = service.requirements(verified_permission, user)
             expect(service.permitted?(requirements)).to be true
-            expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
             expect(requirements[:verification]).to be false
           end
 
@@ -577,7 +583,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 15.minutes do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be true
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be false
             end
           end
@@ -586,7 +592,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 30.minutes + 1.second do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
@@ -598,7 +604,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 1.day + 1.second do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
@@ -608,7 +614,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 23.hours do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be true
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be false
             end
           end
@@ -618,7 +624,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 30.days + 1.second do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
