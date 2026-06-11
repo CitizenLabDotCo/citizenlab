@@ -21,7 +21,6 @@ AdminApi::Engine.routes.draw do
   resources :users, only: %i[index create update show] do
     get :by_email, on: :collection
     get :jwt_token, on: :member
-    delete :bulk_delete_by_emails, on: :collection
     delete :bulk_delete_by_emails_or_ids, on: :collection
   end
 
