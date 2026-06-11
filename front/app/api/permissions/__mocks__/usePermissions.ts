@@ -14,6 +14,11 @@ export const permissionsData: IPermissionData[] = [
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
+      require_confirmed_email: true,
+      confirmed_email_expiry: null,
+      require_name: true,
+      require_password: true,
+      require_verification: false,
     },
     relationships: {
       permission_scope: {

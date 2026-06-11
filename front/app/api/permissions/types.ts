@@ -27,6 +27,11 @@ export interface IGlobalPermissionData {
     verification_enabled: boolean;
     verification_expiry: number | null;
     everyone_tracking_enabled: boolean;
+    require_confirmed_email: boolean;
+    confirmed_email_expiry: number | null;
+    require_name: boolean;
+    require_password: boolean;
+    require_verification: boolean;
   };
   relationships: {
     permission_scope: {
@@ -58,4 +63,9 @@ export interface PermissionUpdateParams {
   global_custom_fields: boolean;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
+  require_confirmed_email: boolean;
+  confirmed_email_expiry: number | null;
+  require_name: boolean;
+  require_password: boolean;
+  require_verification: boolean;
 }

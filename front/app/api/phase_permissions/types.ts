@@ -46,6 +46,11 @@ export interface IPhasePermissionData {
     everyone_tracking_enabled: boolean;
     user_data_collection: UserDataCollection;
     user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
+    require_confirmed_email: boolean;
+    confirmed_email_expiry: number | null;
+    require_name: boolean;
+    require_password: boolean;
+    require_verification: boolean;
   };
   relationships: {
     permission_scope: {
@@ -92,4 +97,9 @@ interface IPermissionUpdate {
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
   everyone_tracking_enabled: boolean;
+  require_confirmed_email: boolean;
+  confirmed_email_expiry: number | null;
+  require_name: boolean;
+  require_password: boolean;
+  require_verification: boolean;
 }

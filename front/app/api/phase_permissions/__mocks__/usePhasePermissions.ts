@@ -19,6 +19,11 @@ export const phasePermissionsData: IPhasePermissionData = {
       locked: true,
       explanation: 'user_fields_in_form_not_supported_for_action',
     },
+    require_confirmed_email: true,
+    confirmed_email_expiry: null,
+    require_name: true,
+    require_password: true,
+    require_verification: false,
   },
   relationships: {
     permission_scope: {
