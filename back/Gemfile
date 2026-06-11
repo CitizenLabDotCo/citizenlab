@@ -135,7 +135,7 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 gem 'omniauth-saml', '~> 2.2.3'
 gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-facebook', '~> 10.0.0'
-gem 'omniauth-google-oauth2', '~> 1.2.1'
+gem 'omniauth-google-oauth2', '~> 1.2.2'
 
 # Libraries for PDF generation /reading
 gem 'pdf-reader'
