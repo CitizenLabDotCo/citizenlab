@@ -11,29 +11,25 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       model: 'Event',
       sidefx: 'SideFxEventService',
       attrs: %i[title_multiloc description_multiloc location_multiloc start_at end_at online_link],
-      reorder: false,
-      output: %i[id project_id title_multiloc description_multiloc location_multiloc start_at end_at online_link]
+      reorder: false
     },
     'cause' => {
       model: 'Volunteering::Cause',
       sidefx: 'Volunteering::SideFxCauseService',
       attrs: %i[title_multiloc description_multiloc],
-      reorder: true,
-      output: %i[id phase_id title_multiloc description_multiloc ordering volunteers_count]
+      reorder: true
     },
     'poll_question' => {
       model: 'Polls::Question',
       sidefx: 'Polls::SideFxQuestionService',
       attrs: %i[title_multiloc question_type max_options],
-      reorder: true,
-      output: %i[id phase_id title_multiloc question_type max_options ordering]
+      reorder: true
     },
     'poll_option' => {
       model: 'Polls::Option',
       sidefx: 'Polls::SideFxOptionService',
       attrs: %i[title_multiloc],
-      reorder: true,
-      output: %i[id question_id title_multiloc ordering]
+      reorder: true
     }
   }.freeze
 
@@ -88,7 +84,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       record.insert_at(ordering) if config[:reorder] && !ordering.nil?
       config[:sidefx].constantize.new.after_update(record, current_user)
 
-      ok("Updated #{params[:type]} #{record.id}", structured: record.reload.as_json(only: config[:output]))
+      ok("Updated #{params[:type]} #{record.id}")
     rescue ActiveRecord::RecordNotFound
       error("#{params[:type]} not found: #{params[:id]}")
     rescue ActiveRecord::RecordInvalid => e

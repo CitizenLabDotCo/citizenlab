@@ -74,10 +74,9 @@ RSpec.describe McpServer::Tools::UpdateResource do
 
   describe 'registry integrity' do
     described_class::RESOURCES.each do |type, config|
-      it "#{type}: every attrs/output entry is a real model attribute" do
+      it "#{type}: every updatable attr is a real model attribute" do
         model_attrs = config[:model].constantize.attribute_names.map(&:to_sym)
         expect(config[:attrs] - model_attrs).to be_empty
-        expect(config[:output] - model_attrs).to be_empty
       end
     end
   end
