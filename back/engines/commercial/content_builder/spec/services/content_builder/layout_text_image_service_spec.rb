@@ -80,4 +80,60 @@ describe ContentBuilder::LayoutTextImageService do
       expect(service.render_data_images({})).to eq({})
     end
   end
+
+  describe '#swap_data_images' do
+    let(:project) { create(:project) }
+    let(:base64_img) { '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">' }
+
+    it 'extracts a new base64 image into a TextImage owned by the imageable and references it' do
+      craftjs_json = craftjs_with_rich_text({ 'en' => "<p>Hi</p>#{base64_img}" })
+
+      expect do
+        service.swap_data_images(craftjs_json, imageable: project)
+      end.to change(TextImage, :count).by(1)
+
+      text_image = TextImage.order(:created_at).last
+      expect(text_image.imageable).to eq(project)
+      rendered = craftjs_json['bridge']['props']['text']['en']
+      expect(rendered).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+      expect(rendered).not_to include('src=')
+    end
+
+    it 'strips a serializer-injected src from an already-referenced image without creating a new TextImage' do
+      text_image = create(:text_image, imageable: project)
+      html = %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">)
+      craftjs_json = craftjs_with_rich_text({ 'en' => html })
+      rendered = service.render_data_images(craftjs_json, imageable: project)
+      expect(rendered['bridge']['props']['text']['en']).to include('src=')
+
+      expect do
+        service.swap_data_images(rendered, imageable: project)
+      end.not_to change(TextImage, :count)
+
+      round_tripped = rendered['bridge']['props']['text']['en']
+      expect(round_tripped).not_to include('src=')
+      expect(round_tripped).to include(text_image.text_reference)
+    end
+
+    it 'ignores non-RichTextMultiloc nodes' do
+      craftjs_json = {
+        'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'props' => {}, 'nodes' => ['text'], 'linkedNodes' => {} },
+        'text' => {
+          'type' => { 'resolvedName' => 'TextMultiloc' },
+          'props' => { 'text' => { 'en' => base64_img } },
+          'parent' => 'ROOT', 'nodes' => [], 'linkedNodes' => {}
+        }
+      }
+
+      expect do
+        service.swap_data_images(craftjs_json, imageable: project)
+      end.not_to change(TextImage, :count)
+      expect(craftjs_json['text']['props']['text']['en']).to eq(base64_img)
+    end
+
+    it 'returns blank craftjs_json unchanged' do
+      expect(service.swap_data_images(nil)).to be_nil
+      expect(service.swap_data_images({})).to eq({})
+    end
+  end
 end
