@@ -65,6 +65,7 @@ const RichTextMultilocSettings = () => {
       <QuillMultilocWithLocaleSwitcher
         maxHeight="300px"
         id="quill-editor"
+        withCTAButton
         valueMultiloc={text}
         onChange={(value) => {
           setProp((props: Props) => (props.text = value));
