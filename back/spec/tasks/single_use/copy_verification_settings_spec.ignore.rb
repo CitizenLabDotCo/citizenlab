@@ -42,7 +42,7 @@ describe 'single_use:copy_verification_settings rake task' do
       'enabled' => true,
       'id_methods' => @methods
     })
-    expect(settings.dig('verification', 'verification_methods')).to eq(@methods)
+    expect(settings.dig('id_config', 'id_methods')).to eq(@methods)
   end
 end
 # rubocop:enable RSpec/DescribeClass

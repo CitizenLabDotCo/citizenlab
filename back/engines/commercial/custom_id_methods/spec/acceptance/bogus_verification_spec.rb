@@ -11,10 +11,10 @@ resource 'Verifications' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'bogus' }]
+      id_methods: [{ name: 'bogus' }]
     }
     create(:custom_field, key: 'gender')
     configuration.save!

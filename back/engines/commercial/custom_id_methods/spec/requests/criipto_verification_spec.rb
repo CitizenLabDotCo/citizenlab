@@ -92,10 +92,10 @@ context 'criipto verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'criipto',
         identity_source: 'DK MitID',
         domain: 'some.test.domain.com',
@@ -358,7 +358,7 @@ context 'criipto verification' do
   context 'when configured for auth0 backward compatibility' do
     before do
       config = AppConfiguration.instance
-      criipto = config.settings('verification', 'verification_methods').first
+      criipto = config.settings('id_config', 'id_methods').first
       criipto[:method_name_for_hashing] = 'auth0'
       criipto[:uid_field_pattern] = 'adfs|cl-test-criipto-verify-DK-NemID-POCES|%{nameidentifier}'
       config.save!

@@ -10,10 +10,10 @@ describe CustomIdMethods::Keycloak::KeycloakOmniauth do
 
   def configure_keycloak(provider:)
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       'allowed' => true,
       'enabled' => true,
-      'verification_methods' => [{
+      'id_methods' => [{
         'name' => 'keycloak',
         'provider' => provider,
         'issuer' => 'https://some.test.domain.com/auth/realms/example-realm',
