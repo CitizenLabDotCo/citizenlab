@@ -17,7 +17,14 @@ resource 'PermissionsCustomField' do
     let(:idea_id) { create(:idea, project: project).id }
 
     example 'List all default permissions fields of a "verified" permission with locked fields' do
-      permission = create(:permission, permission_scope: project.phases.first, action: action, permitted_by: 'verified', global_custom_fields: true)
+      permission = create(
+        :permission, 
+        permission_scope: project.phases.first, 
+        action: action, 
+        permitted_by: 'users',
+        require_verification: true, 
+        global_custom_fields: true
+      )
       custom_field = create(:custom_field_gender, required: false, enabled: false)
 
       do_request
