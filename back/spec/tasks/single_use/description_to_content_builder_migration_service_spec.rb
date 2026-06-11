@@ -27,6 +27,18 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         expect(service.stats).to include(migrated: 1, projects_migrated: 1)
       end
 
+      it 'sets content_buildable_type so the controller lookup finds the layout' do
+        # Regression guard: a NULL content_buildable_type makes the layout
+        # invisible to the controller's find_by! (404 / empty editor).
+        service.migrate_buildable(project, persist: true)
+
+        layout = project.content_builder_layouts.find_by(code: 'project_description')
+        expect(layout.content_buildable_type).to eq('Project')
+        expect(
+          ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
+        ).to eq(layout)
+      end
+
       it 'leaves description_multiloc untouched' do
         service.migrate_buildable(project, persist: true)
         expect(project.reload.description_multiloc).to eq(description)
