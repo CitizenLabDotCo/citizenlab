@@ -23,24 +23,28 @@ class ReworkPermissionAuthRequirements < ActiveRecord::Migration[7.2]
     add_column :permissions, :require_password, :boolean, null: false, default: true
     add_column :permissions, :require_verification, :boolean, null: false, default: false
 
-    execute(<<~SQL.squish)
-      UPDATE permissions
-      SET permitted_by = 'users',
-          require_confirmed_email = TRUE,
-          require_name = FALSE,
-          require_password = FALSE
-      WHERE permitted_by = 'everyone_confirmed_email';
-    SQL
+    # Plain data backfills on the small permissions table; Strong Migrations
+    # cannot inspect raw execute, so we explicitly assert they are safe.
+    safety_assured do
+      execute(<<~SQL.squish)
+        UPDATE permissions
+        SET permitted_by = 'users',
+            require_confirmed_email = TRUE,
+            require_name = FALSE,
+            require_password = FALSE
+        WHERE permitted_by = 'everyone_confirmed_email';
+      SQL
 
-    execute(<<~SQL.squish)
-      UPDATE permissions
-      SET permitted_by = 'users',
-          require_confirmed_email = TRUE,
-          require_verification = TRUE,
-          require_name = FALSE,
-          require_password = FALSE
-      WHERE permitted_by = 'verified';
-    SQL
+      execute(<<~SQL.squish)
+        UPDATE permissions
+        SET permitted_by = 'users',
+            require_confirmed_email = TRUE,
+            require_verification = TRUE,
+            require_name = FALSE,
+            require_password = FALSE
+        WHERE permitted_by = 'verified';
+      SQL
+    end
   end
 
   def down
@@ -49,21 +53,23 @@ class ReworkPermissionAuthRequirements < ActiveRecord::Migration[7.2]
     # rows are exactly those with require_verification, and `everyone_confirmed_email`
     # rows are exactly those produced by the `up` step (confirmed email required,
     # name and password not required, no verification).
-    execute(<<~SQL.squish)
-      UPDATE permissions
-      SET permitted_by = 'verified'
-      WHERE permitted_by = 'users' AND require_verification = TRUE;
-    SQL
+    safety_assured do
+      execute(<<~SQL.squish)
+        UPDATE permissions
+        SET permitted_by = 'verified'
+        WHERE permitted_by = 'users' AND require_verification = TRUE;
+      SQL
 
-    execute(<<~SQL.squish)
-      UPDATE permissions
-      SET permitted_by = 'everyone_confirmed_email'
-      WHERE permitted_by = 'users'
-        AND require_verification = FALSE
-        AND require_confirmed_email = TRUE
-        AND require_name = FALSE
-        AND require_password = FALSE;
-    SQL
+      execute(<<~SQL.squish)
+        UPDATE permissions
+        SET permitted_by = 'everyone_confirmed_email'
+        WHERE permitted_by = 'users'
+          AND require_verification = FALSE
+          AND require_confirmed_email = TRUE
+          AND require_name = FALSE
+          AND require_password = FALSE;
+      SQL
+    end
 
     remove_column :permissions, :require_verification
     remove_column :permissions, :require_password
