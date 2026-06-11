@@ -99,6 +99,12 @@ RSpec.describe Permission do
       expect(permission).to be_valid
     end
 
+    it "is invalid as 'everyone' for global (scope-less) permissions" do
+      permission = build(:global_permission, permitted_by: 'everyone', action: 'visiting')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
     it "is invalid as 'everyone' when the action does not allow it" do
       permission = build(:permission, permitted_by: 'everyone', action: 'commenting_idea')
       expect(permission).not_to be_valid

@@ -243,7 +243,7 @@ resource 'Permissions' do
     get 'web_api/v1/phases/:phase_id/permissions/:action/requirements' do
       context "'everyone' permissions" do
         before do
-          @permission = @phase.permissions.first
+          @permission = @phase.permissions.find_by!(action: 'posting_idea')
           @permission.update!(permitted_by: 'everyone')
         end
 
@@ -305,35 +305,6 @@ resource 'Permissions' do
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
-              onboarding: false,
-              group_membership: false
-            }
-          })
-        end
-      end
-    end
-
-    get 'web_api/v1/permissions/:action/requirements' do
-      context 'with everyone permission' do
-        before do
-          @permission = Permission.where(permission_scope_type: nil).first
-          @permission.update!(permitted_by: 'everyone')
-        end
-
-        let(:action) { @permission.action }
-
-        example_request 'Get the participation requirements of a user in the global scope' do
-          assert_status 200
-          expect(response_data[:attributes]).to eq({
-            permitted: true,
-            disabled_reason: nil,
-            requirements: {
-              authentication: {
-                permitted_by: 'everyone',
-                missing_user_attributes: []
-              },
-              verification: false,
-              custom_fields: {},
               onboarding: false,
               group_membership: false
             }
