@@ -3358,7 +3358,12 @@ CREATE TABLE public.permissions (
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     everyone_tracking_enabled boolean DEFAULT false NOT NULL,
     user_fields_in_form boolean DEFAULT false NOT NULL,
-    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL
+    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL,
+    require_confirmed_email boolean DEFAULT true NOT NULL,
+    confirmed_email_expiry integer,
+    require_name boolean DEFAULT true NOT NULL,
+    require_password boolean DEFAULT true NOT NULL,
+    require_verification boolean DEFAULT false NOT NULL
 );
 
 
@@ -8761,6 +8766,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260611120000'),
 ('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),
