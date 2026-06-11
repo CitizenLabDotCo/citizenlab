@@ -87,6 +87,31 @@ const DescriptionBuilderToggle = ({
     return null;
   }
 
+  const linkProps =
+    contentBuildableType === 'project'
+      ? ({
+          to: '/admin/description-builder/projects/$projectId/description',
+          params: { projectId: contentBuildableId },
+        } as const)
+      : ({
+          to: '/admin/description-builder/folders/$folderId/description',
+          params: { folderId: contentBuildableId },
+        } as const);
+
+  // Project descriptions are edited exclusively in the Content Builder: the
+  // builder-vs-WYSIWYG toggle and the inline Quill editor are gone — we only
+  // surface the link into the builder. (Folders still use the toggle below,
+  // pending the rework that makes their description optional at creation.)
+  if (contentBuildableType === 'project') {
+    return (
+      <Box data-testid="descriptionBuilderToggle">
+        <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
+          {formatMessage(messages.linkText)}
+        </StyledLink>
+      </Box>
+    );
+  }
+
   const toggledescriptionBuilderLinkVisible = () => {
     toggleLayoutEnabledStatus(!descriptionBuilderLinkVisible);
     setDescriptionBuilderLinkVisible(!descriptionBuilderLinkVisible);
@@ -99,17 +124,6 @@ const DescriptionBuilderToggle = ({
       enabled,
     });
   };
-
-  const linkProps =
-    contentBuildableType === 'project'
-      ? ({
-          to: '/admin/description-builder/projects/$projectId/description',
-          params: { projectId: contentBuildableId },
-        } as const)
-      : ({
-          to: '/admin/description-builder/folders/$folderId/description',
-          params: { folderId: contentBuildableId },
-        } as const);
 
   return (
     <Box data-testid="descriptionBuilderToggle">
