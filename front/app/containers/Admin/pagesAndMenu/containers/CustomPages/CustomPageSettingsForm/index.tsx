@@ -358,8 +358,7 @@ const CustomPageSettingsForm = ({
               <SelectContainer mb="20px">
                 <Select
                   name="area_id"
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  options={mapFilterEntityToOptions(areas?.data)}
+                  options={mapFilterEntityToOptions(areas.data)}
                   label={formatMessage(messages.selectedAreasLabel)}
                 />
               </SelectContainer>
