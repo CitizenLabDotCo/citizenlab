@@ -28,8 +28,9 @@ RSpec.describe ReworkPermissionAuthRequirements do
   end
 
   # Restore the post-migration schema afterwards so the DB is left as the rest of
-  # the suite expects it.
-  after(:all) { described_class.new.migrate(:up) unless ActiveRecord::Base.connection.column_exists?(:permissions, :require_confirmed_email) }
+  # the suite expects it. after(:all) is intentional here: the schema change must
+  # be restored once, not after every example.
+  after(:all) { described_class.new.migrate(:up) unless ActiveRecord::Base.connection.column_exists?(:permissions, :require_confirmed_email) } # rubocop:disable RSpec/BeforeAfterAll
 
   let(:connection) { ActiveRecord::Base.connection }
 

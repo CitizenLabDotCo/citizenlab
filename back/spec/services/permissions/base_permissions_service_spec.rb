@@ -86,9 +86,9 @@ describe Permissions::BasePermissionsService do
 
         it 'works if name, password and custom field requirements are disabled' do
           permission = create(
-            :permission, 
-            permitted_by: 'users', 
-            require_name: false, 
+            :permission,
+            permitted_by: 'users',
+            require_name: false,
             require_password: false,
             global_custom_fields: false
           )
@@ -102,9 +102,9 @@ describe Permissions::BasePermissionsService do
         it 'does not work if name not required but password required, custom field requirements disabled' do
           permission = create(
             :permission,
-            permitted_by: 'users', 
-            require_name: false, 
-            require_password: true,
+            permitted_by: 'users',
+            require_name: false,
+            require_password: true
           )
           permission.update!(global_custom_fields: false)
           permission.permissions_custom_fields.destroy_all
@@ -116,8 +116,8 @@ describe Permissions::BasePermissionsService do
         it 'does not work if neither name nor password required, but there is a required custom field' do
           permission = create(
             :permission,
-            permitted_by: 'users', 
-            require_name: false, 
+            permitted_by: 'users',
+            require_name: false,
             require_password: false
           )
 
