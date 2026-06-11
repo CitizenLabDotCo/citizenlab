@@ -125,14 +125,14 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
   const handleNoteClick = (ideaId: string) => {
-    trackEventByName(tracks.pileNoteClicked, { ideaId, phaseId });
+    trackEventByName(tracks.pileNoteClicked);
     clHistory.push(
       `/projects/${slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${ideaId}`
     );
   };
 
   const handleSeeAllClick = () => {
-    trackEventByName(tracks.seeAllIdeasClicked, { phaseId });
+    trackEventByName(tracks.seeAllIdeasClicked);
     clHistory.push(`/projects/${slug}/ideas-feed?phase_id=${phaseId}`);
   };
 

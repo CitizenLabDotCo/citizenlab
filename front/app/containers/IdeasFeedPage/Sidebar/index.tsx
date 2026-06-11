@@ -71,19 +71,16 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
-      trackEventByName(tracks.topicSelected, { topicId, projectId, phaseId });
+      trackEventByName(tracks.topicSelected);
       updateSearchParams({ topic: topicId });
     } else {
-      trackEventByName(tracks.topicDeselected, { projectId, phaseId });
+      trackEventByName(tracks.topicDeselected);
       removeSearchParams(['topic', 'subtopic']);
     }
   };
 
   const handleCloseIdea = () => {
-    trackEventByName(tracks.ideaDetailClosed, {
-      ideaId: selectedIdeaId,
-      phaseId,
-    });
+    trackEventByName(tracks.ideaDetailClosed);
     removeSearchParams(['idea_id', 'sheet_open']);
   };
 

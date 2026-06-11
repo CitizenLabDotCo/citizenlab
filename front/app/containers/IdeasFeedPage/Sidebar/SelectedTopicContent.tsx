@@ -62,16 +62,10 @@ const SelectedTopicContent = ({
 
   const handleSubtopicClick = (subtopicId: string) => {
     if (selectedSubtopicId === subtopicId) {
-      trackEventByName(tracks.subtopicDeselected, {
-        subtopicId,
-        parentTopicId: topicId,
-      });
+      trackEventByName(tracks.subtopicDeselected);
       removeSearchParams(['subtopic', 'sheet_open']);
     } else {
-      trackEventByName(tracks.subtopicSelected, {
-        subtopicId,
-        parentTopicId: topicId,
-      });
+      trackEventByName(tracks.subtopicSelected);
       removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }

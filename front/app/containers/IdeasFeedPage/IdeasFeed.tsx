@@ -154,38 +154,23 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
-  const handleIdeaSelect = useCallback(
-    (ideaId: string) => {
-      trackEventByName(tracks.ideaOpened, { ideaId, phaseId, topicId });
-      updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
-    },
-    [phaseId, topicId]
-  );
+  const handleIdeaSelect = useCallback((ideaId: string) => {
+    trackEventByName(tracks.ideaOpened);
+    updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
+  }, []);
 
   const onScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {
       handleScroll(e, {
         onNearEnd: () => {
           if (hasNextPage && !isFetchingNextPage) {
-            trackEventByName(tracks.moreIdeasLoaded, {
-              phaseId,
-              topicId,
-              loadedCount: ideasLength,
-            });
+            trackEventByName(tracks.moreIdeasLoaded);
             fetchNextPage();
           }
         },
       });
     },
-    [
-      handleScroll,
-      hasNextPage,
-      isFetchingNextPage,
-      fetchNextPage,
-      phaseId,
-      topicId,
-      ideasLength,
-    ]
+    [handleScroll, hasNextPage, isFetchingNextPage, fetchNextPage]
   );
 
   if (isLoading) {

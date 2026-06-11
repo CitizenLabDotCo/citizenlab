@@ -48,10 +48,7 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
   };
 
   const handleClick = () => {
-    trackEventByName(tracks.addIdeaButtonClicked, {
-      phaseId,
-      authenticationRequired: !!authenticationRequirements,
-    });
+    trackEventByName(tracks.addIdeaButtonClicked);
 
     if (authenticationRequirements) {
       const successAction: SuccessAction = {
