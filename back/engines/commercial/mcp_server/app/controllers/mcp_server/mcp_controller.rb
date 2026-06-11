@@ -61,6 +61,7 @@ module McpServer
         McpServer::Tools::CreateCause,
         McpServer::Tools::CreatePollQuestion,
         McpServer::Tools::CreatePollOption,
+        McpServer::Tools::UpdateResource,
         McpServer::Tools::GetResource,
         McpServer::Tools::ListProjects,
         McpServer::Tools::ListPhases,
