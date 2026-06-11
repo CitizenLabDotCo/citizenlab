@@ -36,6 +36,7 @@ class Permissions::UserRequirementsService
         field.required = permissions_custom_field.required
       end
     end
+
     fields.reject(&:hidden?) # Should not return hidden fields
   end
 
