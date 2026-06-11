@@ -284,12 +284,12 @@ it-IT:
       title: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
     email_confirmation:
       best_regards: Cordiali saluti,
-      event_description: 'Grazie per la partecipazione. Inserisci questo codice di conferma nella finestra sulla piattaforma di partecipazione di %{organizationName}:'
+      event_description: 'Grazie per la partecipazione. Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName}:'
       expire_code: Questo codice scadrà tra
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
-      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo indirizzo email
     event_registration_confirmation:
       cta_add_to_calendar: Aggiungi al tuo calendario
@@ -504,12 +504,12 @@ it-IT:
       yesterday: Ieri
     new_email_confirmation:
       best_regards: Cordiali saluti,
-      event_description: 'Inserisci questo codice di conferma nella finestra sulla piattaforma di partecipazione di %{organizationName} per confermare il tuo nuovo indirizzo e-mail:'
+      event_description: 'Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName} per confermare il tuo nuovo indirizzo e-mail:'
       expire_code: Questo codice scadrà tra
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo nuovo indirizzo email per %{organizationName}
-      subject: Conferma il tuo nuovo indirizzo email per la piattaforma di partecipazione di %{organizationName}
+      subject: Conferma il tuo nuovo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo nuovo indirizzo e-mail
     new_idea_for_admin_prescreening:
       cta_button: Esamina il contributo
@@ -538,7 +538,7 @@ it-IT:
       title: C'è un aggiornamento su "%{input_title}"
     password_reset:
       cta_button: Reimposta la tua password
-      event_description: Hai richiesto il ripristino della password per la piattaforma di partecipazione di %{organizationName}. Clicca sul pulsante qui sotto per scegliere una nuova password sicura. Il link scadrà tra 1 ora.
+      event_description: Hai richiesto il ripristino della password per la piattaforma partecipativa di %{organizationName}. Clicca sul pulsante qui sotto per scegliere una nuova password sicura. Il link scadrà tra 1 ora.
       preheader: Reimposta la tua password per %{organizationName}
       subject: '%{organizationName}: Reimposta la tua password'
       title: Scegli una nuova password
@@ -689,9 +689,9 @@ it-IT:
       title: Una proposta ha raggiunto la soglia di voto!
     user_blocked:
       for_more_information: Per ulteriori informazioni a riguardo, puoi consultare la %{termsAndConditionsPage}
-      paragraph_1_with_reason: 'Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
-      paragraph_1_without_reason: Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della community.
-      preheader: Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato
+      paragraph_1_with_reason: 'Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
+      paragraph_1_without_reason: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della community.
+      preheader: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato
       subject: Il tuo account è stato temporaneamente disabilitato
       title: Il tuo account è stato temporaneamente disabilitato
       you_can_sign_in_again_from: Potrai effettuare nuovamente l'accesso a partire dal %{date}
