@@ -74,9 +74,10 @@ RSpec.describe McpServer::Tools::UpdateResource do
 
   describe 'registry integrity' do
     described_class::RESOURCES.each do |type, config|
-      it "#{type}: every updatable attr is a real model attribute" do
-        model_attrs = config[:model].constantize.attribute_names.map(&:to_sym)
-        expect(config[:attrs] - model_attrs).to be_empty
+      it "#{type}: every updatable attr has a model setter" do
+        record = config[:model].constantize.new
+        missing = config[:attrs].reject { |attr| record.respond_to?(:"#{attr}=") }
+        expect(missing).to be_empty
       end
     end
   end
@@ -87,12 +88,13 @@ RSpec.describe McpServer::Tools::UpdateResource do
 
       response = run(
         type: 'event', id: event.id,
-        attributes: { title_multiloc: { 'en' => 'New' }, online_link: 'https://example.test/x' }
+        attributes: { title_multiloc: { 'en' => 'New' }, online_link: 'https://example.test/x', maximum_attendees: 50 }
       )
 
       expect(response.error?).to be(false)
       expect(event.reload.title_multiloc).to eq({ 'en' => 'New', 'nl-BE' => 'Oud' })
       expect(event.online_link).to eq('https://example.test/x')
+      expect(event.maximum_attendees).to eq(50)
     end
 
     it 'rejects ordering for a non-reorderable type' do

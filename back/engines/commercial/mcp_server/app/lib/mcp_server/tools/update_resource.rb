@@ -10,7 +10,10 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     'event' => {
       model: 'Event',
       sidefx: 'SideFxEventService',
-      attrs: %i[title_multiloc description_multiloc location_multiloc start_at end_at online_link],
+      attrs: %i[
+        title_multiloc description_multiloc location_multiloc address_2_multiloc attend_button_multiloc
+        start_at end_at online_link address_1 using_url maximum_attendees location_point_geojson
+      ],
       reorder: false
     },
     'cause' => {
