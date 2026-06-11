@@ -76,11 +76,11 @@ describe('Event show page', () => {
 
   afterEach(() => {
     if (eventIdNoCoordinates) {
-      // delete participant added during the first test to avoid errors on retries
-      return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      // delete participant added during the first test
+      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
 
-        return cy.request({
+        cy.request({
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${adminJwt}`,
