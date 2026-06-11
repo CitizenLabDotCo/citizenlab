@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::CreateEvent < McpServer::BaseTool
-  SERIALIZED_FIELDS = %i[
-    id project_id title_multiloc description_multiloc location_multiloc address_2_multiloc
-    attend_button_multiloc online_link address_1 using_url maximum_attendees start_at end_at
-  ].freeze
-
   def name = 'create_event'
   def description = 'Creates an event for a project'
 
@@ -44,7 +39,10 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
 
       ok(
         "Created event #{event.id}",
-        structured: event.as_json(only: SERIALIZED_FIELDS)
+        structured: event.as_json(only: %i[
+          id project_id title_multiloc description_multiloc location_multiloc address_2_multiloc
+          attend_button_multiloc online_link address_1 using_url maximum_attendees start_at end_at
+        ])
       )
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
