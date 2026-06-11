@@ -17,6 +17,11 @@
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #  user_fields_in_form                :boolean          default(FALSE), not null
 #  user_data_collection               :string           default("all_data"), not null
+#  require_confirmed_email            :boolean          default(TRUE), not null
+#  confirmed_email_expiry             :integer
+#  require_name                       :boolean          default(TRUE), not null
+#  require_password                   :boolean          default(TRUE), not null
+#  require_verification               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -24,7 +29,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
+  PERMITTED_BIES = %w[everyone users admins_moderators].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following attending_event],
@@ -62,7 +67,8 @@ class Permission < ApplicationRecord
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
-  validate :validate_verified_permitted_by
+  validate :validate_require_verification
+  validate :validate_require_confirmed_email
   validate :validate_verification_expiry
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
 
@@ -94,17 +100,15 @@ class Permission < ApplicationRecord
   end
 
   def verification_enabled?
-    # Verification can be enabled by permitted_by OR by a verification group
-    return true if permitted_by == 'verified'
+    # Verification can be enabled by the require_verification attribute OR by a verification group
+    return true if require_verification
     return true if groups.any? && Verification::VerificationService.new.find_verification_group(groups)
 
     false
   end
 
   def allow_global_custom_fields?
-    return true if %w[users verified].include? permitted_by
-
-    false
+    permitted_by == 'users'
   end
 
   def everyone_tracking_enabled?
@@ -131,32 +135,55 @@ class Permission < ApplicationRecord
   private
 
   def set_permitted_by_and_global_custom_fields
-    self.permitted_by ||= if action == 'following'
-      'everyone_confirmed_email'
-    else
-      'users'
+    if permitted_by.nil?
+      self.permitted_by = 'users'
+      # Following used to default to the 'everyone_confirmed_email' permitted_by.
+      # That value no longer exists, so we reproduce the same effect with the
+      # require_* attributes: only a confirmed email is required.
+      if action == 'following'
+        self.require_confirmed_email = true
+        self.require_name = false
+        self.require_password = false
+      end
     end
     self.global_custom_fields ||= true
   end
 
-  def validate_verified_permitted_by
-    return unless permitted_by == 'verified' && Verification::VerificationService.new.first_method_enabled_for_verified_actions.nil?
+  def validate_require_verification
+    return unless require_verification && require_verification_changed?
+    return if Verification::VerificationService.new.first_method_enabled
 
     errors.add(
-      :permitted_by,
-      :verified_permitted_by_not_allowed,
-      message: 'Verified permitted_by is not allowed because there are no methods enabled for actions.'
+      :require_verification,
+      :require_verification_not_allowed,
+      message: 'Verification cannot be required because there are no verification methods enabled.'
     )
+  end
+
+  def validate_require_confirmed_email
+    return unless require_confirmed_email && require_confirmed_email_changed?
+    return if password_login_signup_enabled?
+
+    errors.add(
+      :require_confirmed_email,
+      :require_confirmed_email_not_allowed,
+      message: 'A confirmed email can only be required when password login signup is enabled.'
+    )
+  end
+
+  def password_login_signup_enabled?
+    config = AppConfiguration.instance
+    config.feature_activated?('password_login') && !!config.settings('password_login', 'enable_signup')
   end
 
   def validate_verification_expiry
     return if verification_expiry.nil?
-    return if permitted_by == 'verified' || !verification_expiry_changed?
+    return if require_verification || !verification_expiry_changed?
 
     errors.add(
-      :permitted_by,
+      :verification_expiry,
       :verification_expiry_cannot_be_set,
-      message: 'Verification expiry can only be set for a verified permitted_by.'
+      message: 'Verification expiry can only be set when verification is required.'
     )
   end
 end
