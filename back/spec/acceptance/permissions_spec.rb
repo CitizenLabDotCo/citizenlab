@@ -304,7 +304,7 @@ resource 'Permissions' do
                 missing_user_attributes: ['confirmation']
               },
               verification: false,
-              custom_fields: { 'birthyear' => 'required', 'extra_field' => 'required' },
+              custom_fields: { birthyear: 'required', extra_field: 'required' },
               onboarding: false,
               group_membership: false
             }
