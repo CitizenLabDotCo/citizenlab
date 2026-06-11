@@ -100,7 +100,7 @@ be-up-fake-sso:
 # Clave Unica
 be-up-claveunica:
 	docker compose down
-	docker compose run --rm web bundle exec rake 'dev:enable_id_method[claveunica]'
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[clave_unica]'
 	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
 fe-up-claveunica:
