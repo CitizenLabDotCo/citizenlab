@@ -46,7 +46,11 @@ module Tasks
           end
 
           if persist
-            buildable.content_builder_layouts.create!(
+            # NB: create via Layout (not buildable.content_builder_layouts) so the
+            # polymorphic content_buildable_type is set — the has_many lacks
+            # `as:`, and a NULL type is invisible to the controller's find_by!.
+            ContentBuilder::Layout.create!(
+              content_buildable: buildable,
               code: code,
               enabled: true,
               craftjs_json: build_bridge_craftjs_json(buildable.description_multiloc)
