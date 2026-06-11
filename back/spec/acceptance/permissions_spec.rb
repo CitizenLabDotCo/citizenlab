@@ -268,18 +268,14 @@ resource 'Permissions' do
         end
       end
 
-      # TODO: This case is blocked on the Permissions::UserRequirementsService rework.
-      # 'everyone_confirmed_email' is no longer a valid permitted_by; it is now a
-      # 'users' permission with require_confirmed_email (and require_name/require_password
-      # false). The requirements endpoint still derives missing_user_attributes from
-      # permitted_by rather than the new require_* flags, so there is no correct
-      # representation to assert until the service is updated. Re-enable and rewrite then.
-      context "'everyone_confirmed_email' permissions", skip: 'pending Permissions::UserRequirementsService rework for require_* flags' do
+      # Formerly the 'everyone_confirmed_email' permitted_by, now a 'users' permission
+      # that only requires a confirmed email (no name, no password).
+      context "'users' permission requiring only a confirmed email" do
         before do
           @user = create(:unconfirmed_user)
           header_token_for @user
           @permission = @phase.permissions.first
-          @permission.update!(permitted_by: 'everyone_confirmed_email')
+          @permission.update!(permitted_by: 'users', require_confirmed_email: true, require_name: false, require_password: false)
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
@@ -294,7 +290,9 @@ resource 'Permissions' do
 
         let(:action) { @permission.action }
 
-        # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
+        # NOTE: Unlike the old everyone_confirmed_email behaviour, a 'users' permission DOES
+        # collect the global registration custom fields (allow_global_custom_fields? is true),
+        # so the unsatisfied required fields are returned here.
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
@@ -302,11 +300,11 @@ resource 'Permissions' do
             disabled_reason: 'user_missing_requirements',
             requirements: {
               authentication: {
-                permitted_by: 'everyone_confirmed_email',
+                permitted_by: 'users',
                 missing_user_attributes: ['confirmation']
               },
               verification: false,
-              custom_fields: {},
+              custom_fields: { 'birthyear' => 'required', 'extra_field' => 'required' },
               onboarding: false,
               group_membership: false
             }
