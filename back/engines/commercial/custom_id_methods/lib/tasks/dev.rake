@@ -138,6 +138,34 @@ DEV_ID_METHOD_CONFIGS = {
   },
 
   # Authentication-only SSO methods (cannot be used for identity verification).
+  # These all work on plain localhost (no HTTPS tunnel needed); supply real
+  # credentials via the DEFAULT_* env vars to actually complete a login.
+  'google' => {
+    'name' => 'google',
+    'client_id' => ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET', 'fake secret')
+  },
+  'facebook' => {
+    'name' => 'facebook',
+    'app_id' => ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID', 'fake id'),
+    'app_secret' => ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET', 'fake secret')
+  },
+  'azureactivedirectory' => {
+    'name': 'azureactivedirectory',
+    'tenant': ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID', 'fake id'),
+    'client_id': ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID', 'fake secret'),
+    'logo_url': 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+    'login_mechanism_name': 'Azure Active Directory',
+    'visibility': 'show'
+  },
+  'azureactivedirectory_b2c' => {
+    'name' => 'azureactivedirectory_b2c',
+    'tenant_name' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME', 'fake tenant name'),
+    'tenant_id' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID', 'fake tenant id'),
+    'policy_name' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME', 'fake policy'),
+    'client_id' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID', 'fake id'),
+    'login_mechanism_name' => 'Azure AD B2C'
+  },
   'hoplr' => {
     'name' => 'hoplr',
     'environment' => 'test',

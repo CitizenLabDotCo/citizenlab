@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import TimeInput from 'components/admin/TimeSelection/TimeInput';
@@ -234,9 +233,6 @@ const Calendar = ({
   const timeZone = tenant?.data.attributes.settings.core.timezone;
   const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
 
-  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
-    name: 'phase_datetime_setup',
-  });
   const { formatMessage } = useIntl();
 
   const startMonth = getStartMonth({
@@ -397,8 +393,7 @@ const Calendar = ({
         timeZone={userTimezone}
         className={className}
       />
-      {isPhaseDatetimeSetupEnabled &&
-        (isSingleDaySelection ? (
+      {isSingleDaySelection ? (
           <Box mt="16px">
             <Text m="0" mb="8px" fontSize="l">
               {formatMessage(messages.sameDaySelection)}
@@ -444,7 +439,7 @@ const Calendar = ({
               )}
             </Box>
           </TimeInputContainer>
-        ))}
+      )}
     </DayPickerStyles>
   );
 };
