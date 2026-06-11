@@ -61,7 +61,16 @@ class MoveSsoLoginFlagsToVerificationMethods < ActiveRecord::Migration[7.1]
       verification['enabled'] = true
     end
 
-    config.update!(settings: settings)
+    # Drop any keys that are no longer defined in the (now trimmed) settings
+    # schema — notably the legacy `*_login` SSO flags removed in TAN-7920. They
+    # are still present in stored tenant settings, and re-saving the whole hash
+    # would otherwise fail `additionalProperties` validation. This is the same
+    # mechanism as the cl2back:clean_tenant_settings task; running it here makes
+    # the migration self-contained instead of depending on that task running
+    # later in the deploy.
+    config.settings = settings
+    config.cleanup_settings
+    config.save!
   end
 
   def down
