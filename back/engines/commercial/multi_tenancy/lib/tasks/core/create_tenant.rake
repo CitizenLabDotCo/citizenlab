@@ -63,10 +63,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        widgets: {
-          enabled: true,
-          allowed: true
-        },
         granular_permissions: {
           enabled: true,
           allowed: true
@@ -156,10 +152,6 @@ namespace :cl2_back do
           allowed: true
         },
         konveio_document_annotation: {
-          enabled: true,
-          allowed: true
-        },
-        events_widget: {
           enabled: true,
           allowed: true
         },
@@ -360,14 +352,6 @@ namespace :cl2_back do
           allowed: false
         },
         spaces: {
-          enabled: true,
-          allowed: true
-        },
-        email_scheduling: {
-          enabled: true,
-          allowed: true
-        },
-        phase_datetime_setup: {
           enabled: true,
           allowed: true
         },

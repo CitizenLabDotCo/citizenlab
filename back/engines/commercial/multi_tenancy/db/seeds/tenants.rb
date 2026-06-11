@@ -94,10 +94,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            widgets: {
-              enabled: true,
-              allowed: true
-            },
             granular_permissions: {
               enabled: true,
               allowed: true
@@ -185,10 +181,6 @@ module MultiTenancy
               allowed: true
             },
             konveio_document_annotation: {
-              enabled: true,
-              allowed: true
-            },
-            events_widget: {
               enabled: true,
               allowed: true
             },
@@ -429,14 +421,6 @@ module MultiTenancy
             spaces: {
               enabled: false,
               allowed: false
-            },
-            email_scheduling: {
-              enabled: true,
-              allowed: true
-            },
-            phase_datetime_setup: {
-              enabled: true,
-              allowed: true
             },
             mcp_server: {
               enabled: true,

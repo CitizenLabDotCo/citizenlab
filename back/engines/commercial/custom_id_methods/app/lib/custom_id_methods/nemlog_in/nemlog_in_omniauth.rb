@@ -16,10 +16,13 @@ module CustomIdMethods::NemlogIn
       true
     end
 
-    # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp
+    # IdP metadata (including the signing certificate) is published at
+    # https://www.nemlog-in.dk/metadata/#broker-idp. NemLog-in rotates these
+    # certificates periodically; when a rotation happens the response signature
+    # stops validating ("Invalid Signature on SAML Response") and the relevant
+    # file below must be refreshed from the published OIOSAML3 broker metadata.
     ENVIRONMENTS = {
       pre_production_integration: {
-        # But the certificates from `production_integration` are used, because the ones from `pre_production_integration` give "Invalid Signature on SAML Response"
         metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'nemlog_in', 'idp_metadata', 'pre_production_integration.xml')
       },
       production_integration: {
