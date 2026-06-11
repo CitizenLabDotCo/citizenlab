@@ -195,27 +195,37 @@ resource 'AdminPublication' do
       end
 
       describe '`spaces` parameter' do
-        example 'Lists only projects and folders that belong to the specified spaces' do
+        example 'List all admin publications with the specified spaces' do
           space_a = create(:space)
           space_b = create(:space)
 
-          # Top-level projects, one per space
           project_a = create(:project, space: space_a)
           project_b = create(:project, space: space_b)
 
-          # A folder per space, each containing a project in the same space
-          nested_project_a = create(:project, space: space_a)
-          folder_a = create(:project_folder, space: space_a, projects: [nested_project_a])
+          do_request(spaces: [space_a.id])
+
+          assert_status 200
+          # Only the top-level project in space_a is returned.
+          expect(publication_ids).to contain_exactly(project_a.id)
+          expect(publication_ids).not_to include(project_b.id)
+        end
+
+        example 'List admin publications representing folders that contain project(s) with the specified spaces' do
+          space_a = create(:space)
+          space_b = create(:space)
+
+          # A folder in space_a containing a project in the same space (a project's space must match
+          # its folder's space), and a folder in another space that must not be returned.
+          nested_project = create(:project, space: space_a)
+          folder_a = create(:project_folder, space: space_a, projects: [nested_project])
           folder_b = create(:project_folder, space: space_b)
 
           do_request(spaces: [space_a.id])
 
           assert_status 200
-          # Only space_a's publications come back: its top-level project, its folder, and the
-          # project nested in that folder. The pre-existing space-less projects/folders are excluded.
-          expect(publication_ids).to contain_exactly(project_a.id, folder_a.id, nested_project_a.id)
-          # No leak of space_b's project or folder.
-          expect(publication_ids).not_to include(project_b.id, folder_b.id)
+          # Both the folder in space_a and its nested project are returned.
+          expect(publication_ids).to contain_exactly(folder_a.id, nested_project.id)
+          expect(publication_ids).not_to include(folder_b.id)
         end
       end
 
