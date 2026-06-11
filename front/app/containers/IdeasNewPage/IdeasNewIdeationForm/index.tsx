@@ -95,115 +95,118 @@ const IdeasNewIdeationForm = ({
 
   return (
     <>
-      <main id="e2e-idea-new-page">
-        <IdeasNewMeta />
-        <Box
-          w="100%"
-          bgColor={colors.grey100}
-          h="100vh"
-          position="fixed"
-          zIndex="1010"
-          overflow="hidden"
-        >
-          <Box display="flex" flexDirection="row" h="100%" w="100%">
-            <Box
-              flex="1"
-              display="flex"
-              mx="auto"
-              justifyContent="center"
-              w="100%"
-            >
-              <Box w="100%" maxWidth={maxWidth}>
+      <IdeasNewMeta />
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+        overflow="hidden"
+      >
+        <Box display="flex" flexDirection="row" h="100%" w="100%">
+          <Box
+            flex="1"
+            display="flex"
+            mx="auto"
+            justifyContent="center"
+            w="100%"
+          >
+            <Box w="100%" maxWidth={maxWidth}>
+              <Box
+                as="header"
+                w="100%"
+                position="relative"
+                top={isSmallerThanPhone ? '0' : '40px'}
+              >
+                {phaseId && (
+                  <NewIdeaHeading phase={phase.data} titleText={titleText} />
+                )}
+              </Box>
+              <Box
+                as="main"
+                id="e2e-idea-new-page"
+                display="flex"
+                justifyContent="center"
+                pt={isSmallerThanPhone ? '0' : '40px'}
+                w="100%"
+              >
                 <Box
+                  background={colors.white}
+                  maxWidth={maxWidth}
                   w="100%"
-                  position="relative"
-                  top={isSmallerThanPhone ? '0' : '40px'}
-                >
-                  {phaseId && (
-                    <NewIdeaHeading phase={phase.data} titleText={titleText} />
-                  )}
-                </Box>
-                <Box
+                  h={calculateDynamicHeight(isSmallerThanPhone)}
+                  pb={isSmallerThanPhone ? '0' : '80px'}
                   display="flex"
-                  justifyContent="center"
-                  pt={isSmallerThanPhone ? '0' : '40px'}
-                  w="100%"
                 >
-                  <Box
-                    background={colors.white}
-                    maxWidth={maxWidth}
-                    w="100%"
-                    h={calculateDynamicHeight(isSmallerThanPhone)}
-                    pb={isSmallerThanPhone ? '0' : '80px'}
-                    display="flex"
-                  >
-                    <Suspense>
-                      <IdeationForm
-                        projectId={project.data.id}
-                        phaseId={phaseId}
-                        participationMethod={participationMethod}
-                      />
-                    </Suspense>
-                  </Box>
+                  <Suspense>
+                    <IdeationForm
+                      projectId={project.data.id}
+                      phaseId={phaseId}
+                      participationMethod={participationMethod}
+                    />
+                  </Suspense>
                 </Box>
               </Box>
+            </Box>
 
-              {selectedIdeaId &&
-                (isSmallerThanPhone ? (
+            {selectedIdeaId &&
+              (isSmallerThanPhone ? (
+                <Box
+                  position="fixed"
+                  top="0"
+                  left="0"
+                  width="100%"
+                  height="100%"
+                  bg="rgba(0,0,0,0.4)"
+                  zIndex="2000"
+                  onClick={handleCloseDetail}
+                >
                   <Box
-                    position="fixed"
-                    top="0"
-                    left="0"
+                    as="aside"
+                    position="absolute"
+                    bottom="0"
                     width="100%"
-                    height="100%"
-                    bg="rgba(0,0,0,0.4)"
-                    zIndex="2000"
-                    onClick={handleCloseDetail}
+                    height="75%"
+                    bgColor={colors.white}
+                    borderRadius="16px 16px 0 0"
+                    overflowY="auto"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <Box
-                      position="absolute"
-                      bottom="0"
-                      width="100%"
-                      height="75%"
-                      bgColor={colors.white}
-                      borderRadius="16px 16px 0 0"
-                      overflowY="auto"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Box
-                        width="40px"
-                        height="4px"
-                        bgColor={colors.grey300}
-                        borderRadius="2px"
-                        m="8px auto"
-                      />
-                      <InputDetailView
-                        ideaId={selectedIdeaId}
-                        onClose={handleCloseDetail}
-                      />
-                    </Box>
-                  </Box>
-                ) : (
-                  <Box
-                    top="40px"
-                    width="375px"
-                    minWidth="375px"
-                    borderLeft={`1px solid ${colors.grey300}`}
-                    overflowY="auto"
-                    bgColor={colors.white}
-                    position="relative"
-                    mb="80px"
-                  >
+                      width="40px"
+                      height="4px"
+                      bgColor={colors.grey300}
+                      borderRadius="2px"
+                      m="8px auto"
+                    />
                     <InputDetailView
                       ideaId={selectedIdeaId}
                       onClose={handleCloseDetail}
                     />
                   </Box>
-                ))}
-            </Box>
+                </Box>
+              ) : (
+                <Box
+                  as="aside"
+                  top="40px"
+                  width="375px"
+                  minWidth="375px"
+                  borderLeft={`1px solid ${colors.grey300}`}
+                  overflowY="auto"
+                  bgColor={colors.white}
+                  position="relative"
+                  mb="80px"
+                >
+                  <InputDetailView
+                    ideaId={selectedIdeaId}
+                    onClose={handleCloseDetail}
+                  />
+                </Box>
+              ))}
           </Box>
         </Box>
-      </main>
+      </Box>
     </>
   );
 };
