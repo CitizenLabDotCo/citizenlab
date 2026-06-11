@@ -38,7 +38,11 @@ let mockFeatureFlagData = true;
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('DescriptionBuilderToggle', () => {
-  it('shows confirm link  appropriately when builder option toggled', () => {
+  beforeEach(() => {
+    mockFeatureFlagData = true;
+  });
+
+  it('shows only the Content Builder link for projects — no toggle, no WYSIWYG editor', () => {
     render(
       <DescriptionBuilderToggle
         valueMultiloc={multiloc}
@@ -47,40 +51,13 @@ describe('DescriptionBuilderToggle', () => {
         contentBuildableType="project"
       />
     );
-    const toggle = screen.getByRole('checkbox');
-    expect(
-      screen.queryByText('Edit description in Content Builder')
-    ).not.toBeInTheDocument();
-    toggle.click();
     expect(
       screen.getByText('Edit description in Content Builder')
     ).toBeInTheDocument();
-
-    expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      contentBuildableId: 'projectId',
-      contentBuildableType: 'project',
-      enabled: true,
-    });
-  });
-
-  it('shows confirm Quill editor appropriately when builder option toggled', () => {
-    render(
-      <DescriptionBuilderToggle
-        valueMultiloc={multiloc}
-        onChange={dummyFunction}
-        label={'QuillLabel'}
-        contentBuildableType="project"
-      />
-    );
-    const toggle = screen.getByRole('checkbox');
-    expect(screen.queryByText('QuillLabel')).toBeInTheDocument();
-    toggle.click();
+    // The builder-vs-WYSIWYG toggle and the inline Quill editor are gone.
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
-    expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      contentBuildableId: 'projectId',
-      contentBuildableType: 'project',
-      enabled: true,
-    });
+    expect(mockAddDescriptionBuilderLayout).not.toHaveBeenCalled();
   });
 
   it('does not render component when feature flag is not active', () => {
@@ -94,7 +71,7 @@ describe('DescriptionBuilderToggle', () => {
       />
     );
     expect(
-      screen.queryByTestId('DescriptionBuilderToggle')
+      screen.queryByTestId('descriptionBuilderToggle')
     ).not.toBeInTheDocument();
   });
 });
