@@ -36,10 +36,10 @@ context 'Azure AD B2C authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [
+      id_methods: [
         {
           name: 'azureactivedirectory_b2c',
           tenant_name: 'citizenlabtest',

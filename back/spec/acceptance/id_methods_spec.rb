@@ -11,10 +11,10 @@ resource 'Id methods' do
     create(:custom_field_gender)
     create(:custom_field_birthyear)
     configuration = AppConfiguration.instance
-    configuration.settings['verification'] = {
+    configuration.settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [
+      id_methods: [
         {
           name: 'cow',
           api_username: 'fake_username',

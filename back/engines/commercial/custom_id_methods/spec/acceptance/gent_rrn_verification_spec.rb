@@ -16,10 +16,10 @@ resource 'Verifications' do
     @cfo5 = create(:custom_field_option, custom_field: @custom_field)
     @cfo11 = create(:custom_field_option, custom_field: @custom_field)
     configuration = AppConfiguration.instance
-    configuration.settings['verification'] = {
+    configuration.settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [
+      id_methods: [
         {
           name: 'gent_rrn',
           api_key: 'fake_api_key',
