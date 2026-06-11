@@ -11,6 +11,26 @@ module CustomIdMethods
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
+      # Built-in login-only SSO methods (moved here from back/lib/omniauth_methods).
+      # Their configuration lives in `verification.verification_methods`, so they
+      # are registered both as authentication methods and as (login-only)
+      # verification methods.
+      facebook = CustomIdMethods::Facebook::FacebookOmniauth.new
+      AuthenticationService.add_method('facebook', facebook)
+      Verification.add_method(facebook)
+
+      google = CustomIdMethods::Google::GoogleOmniauth.new
+      AuthenticationService.add_method('google', google)
+      Verification.add_method(google)
+
+      azure_ad = CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new
+      AuthenticationService.add_method('azureactivedirectory', azure_ad)
+      Verification.add_method(azure_ad)
+
+      azure_ad_b2c = CustomIdMethods::AzureActiveDirectoryB2c::AzureActiveDirectoryB2cOmniauth.new
+      AuthenticationService.add_method('azureactivedirectory_b2c', azure_ad_b2c)
+      Verification.add_method(azure_ad_b2c)
+
       acm = CustomIdMethods::Acm::AcmOmniauth.new
       Verification.add_method(acm)
       AuthenticationService.add_method('acm', acm)

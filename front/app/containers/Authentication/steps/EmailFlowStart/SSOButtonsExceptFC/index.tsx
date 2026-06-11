@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IDKeycloakMethod } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
@@ -31,19 +30,14 @@ interface Props {
 }
 
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
-  const { ssoProviders } = useAuthConfig();
+  const { ssoProviders, azureAdSettings, azureAdB2cSettings } = useAuthConfig();
 
-  const { data: tenant } = useAppConfiguration();
   const { data: verificationMethods } = useVerificationMethods();
 
-  const tenantSettings = tenant?.data.attributes.settings;
-
-  const azureProviderName =
-    tenantSettings?.azure_ad_login?.login_mechanism_name;
-  const azureProviderLogoUrl = tenantSettings?.azure_ad_login?.logo_url;
-  const azureB2cProviderName =
-    tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
-  const azureB2cProviderLogoUrl = tenantSettings?.azure_ad_b2c_login?.logo_url;
+  const azureProviderName = azureAdSettings?.login_mechanism_name;
+  const azureProviderLogoUrl = azureAdSettings?.logo_url;
+  const azureB2cProviderName = azureAdB2cSettings?.login_mechanism_name;
+  const azureB2cProviderLogoUrl = azureAdB2cSettings?.logo_url;
 
   const keycloakMethod = verificationMethods?.data.find(
     (item) => item.attributes.name === 'keycloak'

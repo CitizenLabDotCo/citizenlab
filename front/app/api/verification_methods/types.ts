@@ -41,7 +41,11 @@ export type TVerificationMethodName =
   | 'acm'
   | 'hoplr'
   | 'vienna_citizen'
-  | 'vienna_employee';
+  | 'vienna_employee'
+  | 'facebook'
+  | 'google'
+  | 'azureactivedirectory'
+  | 'azureactivedirectory_b2c';
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
@@ -171,6 +175,60 @@ export type IDIdAustriaMethod = {
   };
 };
 
+// Built-in SSO login methods (login-only; cannot verify identities). Their
+// configuration lives in `verification.verification_methods`, and the
+// UI-relevant settings are exposed via the method's serialized attributes.
+export type IDFacebookMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'facebook';
+    method_metadata?: MethodMetadata;
+    login_method: boolean;
+    verification_method: boolean;
+    app_id?: string;
+  };
+};
+
+export type IDGoogleMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'google';
+    method_metadata?: MethodMetadata;
+    login_method: boolean;
+    verification_method: boolean;
+  };
+};
+
+export type IDAzureAdMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'azureactivedirectory';
+    method_metadata?: MethodMetadata;
+    login_method: boolean;
+    verification_method: boolean;
+    logo_url?: string;
+    login_mechanism_name?: string;
+    visibility?: 'show' | 'link' | 'hide';
+    enforced_email_domain_error_multiloc?: Multiloc;
+  };
+};
+
+export type IDAzureAdB2cMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'azureactivedirectory_b2c';
+    method_metadata?: MethodMetadata;
+    login_method: boolean;
+    verification_method: boolean;
+    logo_url?: string;
+    login_mechanism_name?: string;
+  };
+};
+
 export type TVerificationMethod =
   | TGenericMethod
   | IDFakeSSOMethod
@@ -180,4 +238,8 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAcmMethod
   | IDAuth0Method
-  | IDIdAustriaMethod;
+  | IDIdAustriaMethod
+  | IDFacebookMethod
+  | IDGoogleMethod
+  | IDAzureAdMethod
+  | IDAzureAdB2cMethod;
