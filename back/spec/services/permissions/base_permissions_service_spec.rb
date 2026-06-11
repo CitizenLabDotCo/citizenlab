@@ -64,7 +64,7 @@ describe Permissions::BasePermissionsService do
       end
     end
 
-    context 'when permitted by full residents' do
+    context 'when permitted by users' do
       let(:permission) { create(:permission, permitted_by: 'users') }
       let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
