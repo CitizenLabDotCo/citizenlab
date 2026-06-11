@@ -2887,11 +2887,9 @@ CREATE TABLE public.idea_imports (
     import_user_id uuid,
     file_id uuid,
     user_created boolean DEFAULT false,
-    required boolean DEFAULT false,
     approved_at timestamp without time zone,
     page_range text[] DEFAULT '{}'::text[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
@@ -3552,7 +3550,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -8761,6 +8758,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260611000000'),
+('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),
 ('20260522000000'),
