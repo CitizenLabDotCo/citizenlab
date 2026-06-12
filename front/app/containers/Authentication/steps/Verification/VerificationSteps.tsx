@@ -2,12 +2,12 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import {
-  TVerificationMethod,
-  verificationTypesLeavingPlatform,
-} from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+  IdMethodData,
+  omniauthVerificationTypes,
+} from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationData } from 'containers/Authentication/typings';
@@ -36,10 +36,10 @@ const VerificationSteps = memo<Props>(
   ({ onCompleted, onError, authenticationData }) => {
     const [activeStep, setActiveStep] =
       useState<TVerificationStep>('method-selection');
-    const [method, setMethod] = useState<TVerificationMethod | null>(null);
+    const [method, setMethod] = useState<IdMethodData | null>(null);
 
     const { data: authUser } = useAuthUser();
-    const { data: verificationMethods } = useVerificationMethods();
+    const { data: idMethods } = useIdMethods();
 
     useEffect(() => {
       if (activeStep === 'success' && onCompleted) {
@@ -51,11 +51,11 @@ const VerificationSteps = memo<Props>(
       }
     }, [onCompleted, onError, activeStep]);
 
-    const onMethodSelected = (selectedMethod: TVerificationMethod) => {
+    const onMethodSelected = (selectedMethod: IdMethodData) => {
       // Save the successAction and the current context in local
       // storage for when user returns from verification which leaves platform.
       if (
-        verificationTypesLeavingPlatform.includes(
+        omniauthVerificationTypes.includes(
           selectedMethod.attributes.name
         )
       ) {
@@ -93,7 +93,7 @@ const VerificationSteps = memo<Props>(
       goToSuccessStep();
     }, [goToSuccessStep]);
 
-    if (verificationMethods) {
+    if (idMethods) {
       return (
         <Container id="e2e-verification-wizard-root">
           {activeStep === 'method-selection' && (

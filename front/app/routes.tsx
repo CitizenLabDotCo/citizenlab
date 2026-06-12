@@ -106,6 +106,8 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
+  // /sign-in?return_to=/path — same-origin path the SPA navigates to after auth
+  return_to: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
@@ -651,6 +653,11 @@ export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
   createRouter({
     routeTree: buildRouteTree(moduleRoutes),
     trailingSlash: 'preserve',
+    defaultNotFoundComponent: () => (
+      <PageLoading>
+        <PageNotFound />
+      </PageLoading>
+    ),
   });
 
 export let router = createAppRouter();

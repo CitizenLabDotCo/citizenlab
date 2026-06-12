@@ -43,6 +43,7 @@ declare global {
       getTopics: typeof getTopics;
       getUserById: typeof getUserById;
       getAuthUser: typeof getAuthUser;
+      getAdminAuthUser: typeof getAdminAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
@@ -124,9 +125,9 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}@${Math.random()
-    .toString(36)
-    .substr(2, 12)
-    .toLowerCase()}.com`;
+      .toString(36)
+      .substr(2, 12)
+      .toLowerCase()}.com`;
 }
 
 function unregisterServiceWorkers() {
@@ -570,6 +571,21 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
 }
 
 function getAuthUser() {
+  return cy.getCookie('cl2_jwt').then((cookie) => {
+    const jwt = cookie?.value;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/me',
+    });
+  });
+}
+
+function getAdminAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1372,7 +1388,7 @@ function apiVerifyBogus(jwt: string, error?: string) {
       Authorization: `Bearer ${jwt}`,
     },
     method: 'POST',
-    url: 'web_api/v1/verification_methods/bogus/verification',
+    url: 'web_api/v1/id_methods/bogus/verification',
     body: {
       verification: {
         desired_error: error || '',
@@ -1424,9 +1440,9 @@ function apiCreateEvent({
           address_1: location,
           location_point_geojson: includeLocation
             ? {
-                type: 'Point',
-                coordinates: [4.418731568531502, 50.86899604801978],
-              }
+              type: 'Point',
+              coordinates: [4.418731568531502, 50.86899604801978],
+            }
             : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
@@ -1583,7 +1599,7 @@ function apiUpdatePermissionCustomField(
   permissionId: string,
   action: IPhasePermissionAction,
   custom_field_id: string
-) {}
+) { }
 
 function apiCreateManualGroup({ title }: { title: Multiloc }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1752,10 +1768,10 @@ const createBaseCustomField =
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
-          maximum: 5,
-          linear_scale_label_1_multiloc: { en: 'Min label' },
-          linear_scale_label_5_multiloc: { en: 'Max label' },
-        }
+        maximum: 5,
+        linear_scale_label_1_multiloc: { en: 'Min label' },
+        linear_scale_label_5_multiloc: { en: 'Max label' },
+      }
       : {}),
   });
 
@@ -2202,6 +2218,7 @@ Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
 Cypress.Commands.add('getUserById', getUserById);
 Cypress.Commands.add('getAuthUser', getAuthUser);
+Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);

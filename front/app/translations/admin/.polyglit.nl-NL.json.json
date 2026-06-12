@@ -3944,6 +3944,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.104245Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -4744,6 +4749,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.categoryColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.communityMonitor.communityMonitorLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -4758,6 +4768,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.communityMonitor.healthScoreTableCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.communityMonitor.lastQuarter": {
     "state": "verified",
@@ -4779,10 +4794,20 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.overallHealthScore": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.communityMonitor.participants": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.communityMonitor.quarter": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.communityMonitor.quarterChartLabel": {
     "state": "verified",
@@ -8249,25 +8274,21 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",
@@ -8288,7 +8309,6 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingWithCounts": {
     "state": "verified",
     "verified_at": "2026-04-24T18:39:52.960417Z",
@@ -8334,7 +8354,6 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importingProgress": {
     "state": "verified",
     "verified_at": "2026-04-24T18:39:52.960417Z",
@@ -8415,7 +8434,6 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": {
     "state": "verified",
     "verified_at": "2026-04-22T11:58:15.734472Z",
@@ -8426,13 +8444,11 @@
     "verified_at": "2026-03-27T12:42:38.058493Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-22T11:58:15.734472Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",
@@ -9353,6 +9369,31 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.InternalAdoptionCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeAdminColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.activeModeratorColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.InternalAdoptionCard.totalActiveColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -9373,15 +9414,45 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.participantsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.participantsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ParticipantsCard.visitorsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.comments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.inputs": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.participantsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.participation": {
     "state": "verified",
@@ -9408,6 +9479,16 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.categoryColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.countColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicQuestion": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -9417,6 +9498,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicsTableCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.participantsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange": {
     "state": "verified",
@@ -9433,10 +9524,55 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption2": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:15.759371Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:15.759371Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-22T17:14:15.759371Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": {
     "state": "verified",
@@ -9917,6 +10053,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.reporting.widgets.MethodsUsed.methodsUsedStatistics": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey": {
     "state": "verified",
@@ -16290,7 +16431,7 @@
   },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
     "state": "verified",
-    "verified_at": "2026-04-23T17:17:59.182906Z",
+    "verified_at": "2026-06-05T14:57:04.822453Z",
     "verified_by": "Luuc"
   },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": {
@@ -17053,6 +17194,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:51.783674Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -17135,8 +17281,8 @@
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.383601Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-06-05T14:57:04.822453Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": {
     "state": "verified",
@@ -18988,6 +19134,16 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.dateColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationCaption": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -18997,6 +19153,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationsColumn": {
+    "state": "verified",
+    "verified_at": "2026-05-15T16:31:30.263788Z",
+    "verified_by": "Luuc"
   },
   "app.containers.admin.ReportBuilder.charts.accessibility": {
     "state": "verified",
@@ -19958,6 +20119,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.modules.navbar.admin.containers.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.104245Z",
+    "verified_by": "Luuc"
+  },
   "app.modules.navbar.admin.containers.pageHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -19967,6 +20133,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.modules.navbar.admin.containers.pageSubtitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.104245Z",
+    "verified_by": "Luuc"
   },
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": {
     "state": "verified",

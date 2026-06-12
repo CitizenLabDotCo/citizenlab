@@ -32,7 +32,7 @@ describe('Block user', () => {
       .find('.e2e-more-actions')
       .click();
 
-    cy.get('.tippy-content').contains('Block').click();
+    cy.get('.e2e-more-actions-list').contains('Block').click();
 
     cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
@@ -56,7 +56,7 @@ describe('Block user', () => {
       .find('.e2e-more-actions')
       .click();
 
-    cy.get('.tippy-content').contains('Unblock');
+    cy.get('.e2e-more-actions-list').contains('Unblock');
   });
 
   it('Unblock from User Manager', () => {
@@ -67,7 +67,7 @@ describe('Block user', () => {
       .find('.e2e-more-actions')
       .click();
 
-    cy.get('.tippy-content').contains('Unblock').click();
+    cy.get('.e2e-more-actions-list').contains('Unblock').click();
 
     cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
@@ -81,7 +81,7 @@ describe('Block user', () => {
       .find('.e2e-more-actions')
       .click();
 
-    cy.get('.tippy-content').contains('Block');
+    cy.get('.e2e-more-actions-list').contains('Block');
   });
 
   it('Block from User Profile', () => {
@@ -97,7 +97,7 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click();
 
-    cy.get('.tippy-content').contains('Block').click();
+    cy.get('.e2e-more-actions-list').contains('Block').click();
 
     cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
@@ -117,7 +117,7 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click();
 
-    cy.get('.tippy-content').contains('Unblock');
+    cy.get('.e2e-more-actions-list').contains('Unblock');
   });
 
   it('Unblock from User Profile', () => {
@@ -133,7 +133,7 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click();
 
-    cy.get('.tippy-content').contains('Unblock').click();
+    cy.get('.e2e-more-actions-list').contains('Unblock').click();
 
     cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
@@ -141,6 +141,6 @@ describe('Block user', () => {
 
     cy.get('.e2e-more-actions').click();
 
-    cy.get('.tippy-content').contains('Block');
+    cy.get('.e2e-more-actions-list').contains('Block');
   });
 });

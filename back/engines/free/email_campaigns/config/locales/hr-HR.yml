@@ -67,6 +67,7 @@ hr-HR:
         user_with_unsubmitted_votes: Korisnik koji nije predao svoje glasove
         users_who_engaged_but_not_voted: Korisnici koji su sudjelovali u projektu, ali nisu glasali
         users_who_engaged_with_the_project: Korisnici koji su sudjelovali u projektu
+        users_who_follow_or_participated: Korisnici koji prate projekt ili su sudjelovali
         users_who_follow_the_input: Korisnici koji prate unos
         users_who_follow_the_project: Korisnici koji prate projekt
         users_who_follow_the_proposal: Korisnici koji prate prijedlog

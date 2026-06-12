@@ -67,6 +67,7 @@ tr-TR:
         user_with_unsubmitted_votes: Oylarını göndermemiş olan kullanıcı
         users_who_engaged_but_not_voted: Proje ile ilgilenen ancak oy kullanmayan kullanıcılar
         users_who_engaged_with_the_project: Proje ile etkileşime geçen kullanıcılar
+        users_who_follow_or_participated: Projeyi takip eden veya katılmış olan kullanıcılar
         users_who_follow_the_input: Girişi takip eden kullanıcılar
         users_who_follow_the_project: Projeyi takip eden kullanıcılar
         users_who_follow_the_proposal: Teklifi takip eden kullanıcılar

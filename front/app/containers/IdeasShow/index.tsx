@@ -30,6 +30,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
+import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
+import SharingButtonComponent from './components/Buttons/SharingButtonComponent';
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
 import IdeaTitle from './components/IdeaTitle';
@@ -209,6 +211,12 @@ export const IdeasShow = ({
                 width="100%"
                 toolTipType="input"
               />
+              <Box mt="16px">
+                <IdeaSharingButton
+                  ideaId={ideaId}
+                  buttonComponent={<SharingButtonComponent />}
+                />
+              </Box>
             </Box>
           )}
         </Box>

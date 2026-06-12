@@ -67,6 +67,7 @@ ur-PK:
         user_with_unsubmitted_votes: وہ صارف جس نے اپنا ووٹ جمع نہیں کرایا
         users_who_engaged_but_not_voted: وہ صارفین جو پروجیکٹ کے ساتھ مشغول ہیں لیکن ووٹ نہیں دیا ہے۔
         users_who_engaged_with_the_project: وہ صارفین جو پروجیکٹ کے ساتھ منسلک ہیں۔
+        users_who_follow_or_participated: وہ صارفین جو پروجیکٹ کو فالو کرتے ہیں یا اس میں حصہ لے چکے ہیں
         users_who_follow_the_input: ان پٹ کی پیروی کرنے والے صارفین
         users_who_follow_the_project: وہ صارفین جو پروجیکٹ کی پیروی کرتے ہیں۔
         users_who_follow_the_proposal: وہ صارفین جو تجویز کی پیروی کرتے ہیں۔

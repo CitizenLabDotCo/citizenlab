@@ -24,12 +24,18 @@ module AdminApi
     class TenantSettingsSchema < GraphQL::Schema::Object
       field :facebook_login_app_id, String, null: true
       def facebook_login_app_id
-        object.dig('facebook_login', 'app_id')
+        facebook_login_config&.dig('app_id')
       end
 
       field :facebook_login_app_secret, String, null: true
       def facebook_login_app_secret
-        object.dig('facebook_login', 'app_secret')
+        facebook_login_config&.dig('app_secret')
+      end
+
+      # Facebook login config now lives in `id_config.id_methods`
+      # (as the entry named 'facebook'), rather than a top-level feature flag.
+      def facebook_login_config
+        object.dig('id_config', 'id_methods')&.find { |method| method['name'] == 'facebook' }
       end
 
       field :integration_onze_stad_app_allowed, Boolean, null: true

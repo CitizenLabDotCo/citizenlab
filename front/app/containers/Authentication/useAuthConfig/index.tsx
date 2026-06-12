@@ -1,4 +1,9 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import {
+  IDAzureAdMethod,
+  IDAzureAdB2cMethod,
+  IdMethodName,
+} from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
@@ -6,8 +11,10 @@ import useSuperAdmin from 'hooks/useSuperAdmin';
 import { useLocation, useSearch } from 'utils/router';
 
 export default function useAuthConfig() {
-  const { data: appConfiguration } = useAppConfiguration();
-  const appConfigurationSettings = appConfiguration?.data.attributes.settings;
+  // All SSO methods (including the built-in Facebook/Google/Azure ones) are
+  // configured as verification methods, and the `/id_methods` endpoint
+  // exposes a `authentication_method` flag for the ones that can be used to authenticate.
+  const { data: idMethods } = useIdMethods();
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak
@@ -25,91 +32,46 @@ export default function useAuthConfig() {
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
-  const google = useFeatureFlag({ name: 'google_login' });
+  const ssoProviders = (idMethods?.data || []).reduce((providers, method) => {
+    const { authentication_method, name } = method.attributes;
+    const enabled = authentication_method || providerForTest === name;
 
-  const facebook = useFeatureFlag({ name: 'facebook_login' });
+    return {
+      ...providers,
+      [name]: enabled,
+    };
+  }, {} as Record<IdMethodName, boolean | undefined>);
 
-  const azureAdSettings = appConfigurationSettings?.azure_ad_login;
+  const azureAdMethod = idMethods?.data.find(
+    (method): method is IDAzureAdMethod =>
+      method.attributes.name === 'azureactivedirectory' &&
+      method.attributes.authentication_method
+  );
+  const azureAdSettings = azureAdMethod?.attributes;
   const azureAdVisiblity = azureAdSettings?.visibility;
   const azureAdIsVisible = ['show', undefined].includes(azureAdVisiblity);
+  const azureAdOverride = !!azureAdMethod && (azureAdIsVisible || showAdminOnlyMethods);
 
-  const azureAd =
-    useFeatureFlag({ name: 'azure_ad_login' }) &&
-    (azureAdIsVisible || showAdminOnlyMethods);
+  const azureAdB2cMethod = idMethods?.data.find(
+    (method): method is IDAzureAdB2cMethod =>
+      method.attributes.name === 'azureactivedirectory_b2c' &&
+      method.attributes.authentication_method
+  );
+  const azureAdB2cSettings = azureAdB2cMethod?.attributes;
 
-  const azureAdB2c = useFeatureFlag({
-    name: 'azure_ad_b2c_login',
-  });
+  ssoProviders.azureactivedirectory = azureAdOverride;
 
-  const franceconnect = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-
-  const viennaCitizen = useFeatureFlag({
-    name: 'vienna_citizen_login',
-  });
-
-  const claveUnica = useFeatureFlag({
-    name: 'clave_unica_login',
-  });
-
-  const hoplr = useFeatureFlag({
-    name: 'hoplr_login',
-  });
-
-  const idAustria = useFeatureFlag({
-    name: 'id_austria_login',
-  });
-
-  const criipto = useFeatureFlag({
-    name: 'criipto_login',
-  });
-
-  const nemlogIn = useFeatureFlag({
-    name: 'nemlog_in_login',
-  });
-
-  const keycloak =
-    useFeatureFlag({
-      name: 'keycloak_login',
-    }) || providerForTest === 'keycloak';
-
-  const twoday =
-    useFeatureFlag({
-      name: 'twoday_login',
-    }) || providerForTest === 'twoday';
-
-  const acm =
-    useFeatureFlag({
-      name: 'acm_login',
-    }) || providerForTest === 'acm';
-
-  const federa = useFeatureFlag({ name: 'federa_login' });
-
-  const fakeSso = useFeatureFlag({ name: 'fake_sso' });
-
-  const ssoProviders = {
-    google,
-    facebook,
-    azureAd,
-    azureAdB2c,
-    franceconnect,
-    viennaCitizen,
-    claveUnica,
-    hoplr,
-    idAustria,
-    criipto,
-    nemlogIn,
-    keycloak,
-    twoday,
-    acm,
-    federa,
-    fakeSso,
-  };
+  // NOTE: Quick fix - required a better solution
+  // NemLog-in is intentionally hidden from the
+  // default sign-up/log-in screen.
+  // It can still be used in verified actions
+  // to sign up or log in.
+  ssoProviders.nemlog_in = false;
 
   return {
     passwordLoginEnabled,
     ssoProviders,
     azureAdSettings,
+    azureAdB2cSettings,
   };
 }

@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.previousXDays',
     defaultMessage: 'Previous {days} days: {count}',
   },
+  methodsUsedStatistics: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.methodsUsedStatistics',
+    defaultMessage: 'Methods used statistics',
+  },
 });

@@ -68,6 +68,9 @@
   "moderators": {
     "de-DE": "Projektmanager*innen"
   },
+  "space": {
+    "de-DE": "Space"
+  },
   "users": {
     "de-DE": "Nutzende",
     "nl-NL": "gebruikers"
@@ -190,6 +193,9 @@
   "sort": {
     "nl-NL": "sorteer"
   },
+  "user": {
+    "de-DE": "Nutzer*in"
+  },
   "Beta": {
     "fr-FR": "Bêta"
   },
@@ -287,6 +293,9 @@
   },
   "comment (input term)": {
     "nl-NL": "opmerking"
+  },
+  "input form": {
+    "de-DE": "Eingabeformular"
   },
   "FormSync": {
     "de-DE": "Papier-Scans",

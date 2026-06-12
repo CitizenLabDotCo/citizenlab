@@ -14,7 +14,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
       userId = response.body.data.id;
     });
-    cy.getAuthUser().then(() => {
+    cy.getAdminAuthUser().then(() => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: '',
