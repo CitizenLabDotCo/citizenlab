@@ -3,8 +3,10 @@
 
 import React from 'react';
 
+import { IPhasePermissionData } from 'api/phase_permissions/types';
+
 import { piiSummary } from '../logic';
-import { Changes, IPhasePermissionData } from '../types';
+import { Changes } from '../types';
 import { Expander } from '../ui';
 
 import PiiToggle from './PiiToggle';

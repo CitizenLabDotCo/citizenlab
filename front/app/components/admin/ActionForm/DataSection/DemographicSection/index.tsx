@@ -11,9 +11,10 @@ import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fiel
 import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useDeletePermissionsPhaseCustomField';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { demographicsSummary } from '../../logic';
-import { Changes, IPhasePermissionData } from '../../types';
+import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import DemographicsPlacement from './DemographicsPlacement';

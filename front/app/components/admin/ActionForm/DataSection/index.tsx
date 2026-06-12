@@ -6,9 +6,10 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 import usePhase from 'api/phases/usePhase';
 
-import { Changes, IPhasePermissionData } from '../types';
+import { Changes } from '../types';
 import { SectionHeader } from '../ui';
 
 import AnonymitySection from './AnonymitySection';

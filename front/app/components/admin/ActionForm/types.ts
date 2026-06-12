@@ -16,8 +16,6 @@ import {
   UserDataCollection,
 } from 'api/phase_permissions/types';
 
-export type { IPhasePermissionData, PermittedBy, UserDataCollection };
-
 // The set of edits the panel can emit. A superset of `ActionForm`'s `Changes`,
 // extended with the composable `require_*` / `*_expiry` fields this design edits
 // directly (the old form bundled these into the `permitted_by` enum instead).

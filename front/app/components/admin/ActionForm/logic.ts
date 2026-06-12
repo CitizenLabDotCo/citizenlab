@@ -6,15 +6,13 @@
 
 import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import { UserDataCollection } from 'api/phase_permissions/types';
+import {
+  IPhasePermissionData,
+  UserDataCollection,
+} from 'api/phase_permissions/types';
 
 import { AUTH_METHOD_LABELS } from './data';
-import {
-  AuthMethodKey,
-  Changes,
-  IPhasePermissionData,
-  METHOD_FIELDS,
-} from './types';
+import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
 export const getMethod = (

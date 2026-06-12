@@ -7,13 +7,14 @@ import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useGroups from 'api/groups/useGroups';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { getGroupIds, groupsSummary } from '../../logic';
-import { Changes, IPhasePermissionData } from '../../types';
+import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import ErrorMessageModal from './ErrorMessageModal';

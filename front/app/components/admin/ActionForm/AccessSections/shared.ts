@@ -2,7 +2,9 @@ import { CSSProperties } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-import { Changes, IPhasePermissionData } from '../types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
+
+import { Changes } from '../types';
 
 // Common props for both access-section variants.
 export interface AccessSectionProps {

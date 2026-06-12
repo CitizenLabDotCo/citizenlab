@@ -5,10 +5,13 @@ import React from 'react';
 
 import { Box, Text, Radio, Error } from '@citizenlab/cl2-component-library';
 
-import { UserDataCollection } from 'api/phase_permissions/types';
+import {
+  IPhasePermissionData,
+  UserDataCollection,
+} from 'api/phase_permissions/types';
 
 import { DATA_COLLECTION_SUMMARY } from '../logic';
-import { Changes, IPhasePermissionData } from '../types';
+import { Changes } from '../types';
 import { Expander } from '../ui';
 
 const ANONYMITY_OPTIONS: {
